@@ -5,8 +5,5 @@
 - 感兴趣的领域：加密协议逻辑漏洞、信息泄露、条件竞争、UAF；基带；底层驱动；TEE；硬件安全
 - 相关知识仅供个人学习分享，不得用于网络攻击行为
 
-
-* [网络协议](https://htmlpreview.github.io/?https://github.com/fdgnneig/testblog/blob/main/OSI%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE_HTML/index.html) 
-* [test](https://github.com/fdgnneig/myblog/tree/main/pic)
 * [安卓](https://github.com/fdgnneig/myblog/tree/main/%E5%AE%89%E5%8D%93)
 
