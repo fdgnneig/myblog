@@ -1,0 +1,461 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>安卓应用开发</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="6kfnbbld8o50v41tkvpulm3g7h">安卓应用开发</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91_files/images/%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91.jpg"></div>
+<h2 class="topic">
+<a name="43vpt132gqv3deuuinjcatvel9">注意点</a>
+</h2>
+<h3 class="topic">
+<a name="30djhn40oph4n7oh1icfcsrdmn">&nbsp;xml中空间的id的格式为&#13;
+ android:id="@+id/btn5"&#13;
+java代码中根据控件id获得控件的代码为&#13;
+Button button5=findViewById(R.id.btn5);&#13;
+需要注意格式&#13;
+对于控件id，只有该控件第一次被引用时才需要为"@+id/btn5"，表示新创建控件id&#13;
+如果控件id在xml文件中再次被引用，则使用"@id/btn5"，不需要加+号</a>
+</h3>
+<h2 class="topic">
+<a name="7t9qgoeafsh9iu8j72tch9dpjk">listview</a>
+</h2>
+<h3 class="topic">
+<a name="5prcqg9sqm9lbjmrq051hge1v4">&nbsp;listview显示内容需要三要素</a>
+</h3>
+<h3 class="topic">
+<a name="7fbfl5tq7sq51jdmuttph7k9gt">&nbsp;&nbsp;item是list中的行</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91_files/1jah17bj8gst9hshshit209jgo.png"></p>
+<h3 class="topic">
+<a name="0q2eedph0veo2up423mrt2eg7d">&nbsp;三种适配器</a>
+</h3>
+<h3 class="topic">
+<a name="03bhmuf3058rkr16pbu26u8ffb">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91_files/547mtcdii80togenalgmsnanuc.png"></p>
+<h3 class="topic">
+<a name="4m7hscfanpci0htfj0pivjbst4">&nbsp;&nbsp;&nbsp;ArrayAdapter</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91_files/6vp66aeu0t0fi7q4flddc3fkur.png"></p>
+<h3 class="topic">
+<a name="5giiubpffd7k7r8qhsqd227jos">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91_files/5svf1pchq8h1cpsjrh8kigsg0a.png"></p>
+<h3 class="topic">
+<a name="08dhb56boljrjmdc062stedod2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该项目的res/layout</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91_files/2v9erte759cuo73b6q3i7gns7o.png"></p>
+<h3 class="topic">
+<a name="6kecqsjmdmqojvproinubo4hto">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;activity_main.xml</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91_files/6ini7u8k1pn19dksd94v7tg4vi.png"></p>
+<h3 class="topic">
+<a name="4h6gbeb5srctocnhj3i7okr1m5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;item.xml：用于布局listview中每一行（即item）的格式，这里显示该listview中每一行都是TextView</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91_files/6vqifkkoe8gigtrr99li4b571o.png"></p>
+<h3 class="topic">
+<a name="67k09lq9m85sn1utge02jde60t">&nbsp;&nbsp;&nbsp;SimpleAdapter</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91_files/64uuqmh8l383hpuduav32eios9.png"></p>
+<h3 class="topic">
+<a name="6vqagbbrih3fgf4f8qgl8i8086">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91_files/0vsj4q8fkimdbfg19p0bkiciji.png"></p>
+<h3 class="topic">
+<a name="75nutdjmhoq2mdedpd6cik3r61">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;item.xml</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91_files/1oc3d0hs7hipb38ac1f8s7586q.png"></p>
+<h3 class="topic">
+<a name="6ho6hiiev82vi7kb17enph0tsr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;activity_main.xml</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91_files/6rero3gu2qjbvkcqqbdpba15u3.png"></p>
+<h3 class="topic">
+<a name="3m2cl0pjp44bdg9jhs0j1n5200">&nbsp;&nbsp;&nbsp;BaseAdapter</a>
+</h3>
+<h3 class="topic">
+<a name="6v07thqd0kghl3r7pshuhr7ma8">&nbsp;&nbsp;&nbsp;&nbsp;需要实现一个类，该类继承自BaseAdapter</a>
+</h3>
+<h3 class="topic">
+<a name="1q4uutd5305hrn9gtb94gvjbu4">&nbsp;&nbsp;&nbsp;&nbsp;比较复杂，参考demo中的代码</a>
+</h3>
+<h3 class="topic">
+<a name="3k1olvh13b86cahupqboahfne2">&nbsp;使用流程</a>
+</h3>
+<h3 class="topic">
+<a name="34c4uid1tia313dmlekrirgprl">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91_files/6tfh8ccqopllc9bjfr7e5s6mcb.png"></p>
+<h3 class="topic">
+<a name="7fbr72sjknovesubs8rm6p368a">&nbsp;java容器arraylist和hashmap</a>
+</h3>
+<h3 class="topic">
+<a name="1c9sn92u5q170epqtc5eaha6jl">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91_files/6fe8tnoss0kasjarfikp8btuog.png"></p>
+<h3 class="topic">
+<a name="6i4qauh7588kt2jq05ntkinf29">&nbsp;控件的事件处理</a>
+</h3>
+<h3 class="topic">
+<a name="110p902hhoncojikaf7eb626m5">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91_files/6uia12i1b0bk75cgj8odq77fua.png"></p>
+<h3 class="topic">
+<a name="4rk4fo16steuu3mftq7an7ru7p">&nbsp;以上代码具体可见r3demo</a>
+</h3>
+<h2 class="topic">
+<a name="559lv56qhdd95knnl8iikajc9v">Activity</a>
+</h2>
+<h3 class="topic">
+<a name="11aggms2en0oen4ri01fspesjl">&nbsp;四大组件</a>
+</h3>
+<h3 class="topic">
+<a name="6ga1d7m5omp0e60idmdb1c0vr4">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91_files/3b56ii7ve85cqs2b7131oe055q.png"></p>
+<h3 class="topic">
+<a name="6ue9hu77ko8e5jigu6vnaon7e0">&nbsp;activety定义</a>
+</h3>
+<h3 class="topic">
+<a name="336stf8rm6hj2prnckg56eip9n">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91_files/1lji3gu265ul06htd720lg8g3e.png"></p>
+<h3 class="topic">
+<a name="28vqta8j3tcbvpaiktp6utluth">&nbsp;activity使用</a>
+</h3>
+<h3 class="topic">
+<a name="3ikh7ikdfor7oqgk1kb1hntsmq">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91_files/6j5s1bsn267u44jl0qkmjisib6.png"></p>
+<h3 class="topic">
+<a name="615lrus154t1ne0de8bteq7dnt">&nbsp;activity的生命周期</a>
+</h3>
+<h3 class="topic">
+<a name="2tpr34o88nflauv7923pdojtp7">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91_files/78buh9bt6gtm442u9ee0ihndvc.png"></p>
+<h3 class="topic">
+<a name="27g3j916p0qod3hb3vvisv1v5b">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91_files/0heok0j455oq2ulfj1o3k4f5le.png"></p>
+<h3 class="topic">
+<a name="5llmk83eo2mm4uh3rgluc1acds">&nbsp;&nbsp;activity中还有一些函数会在整个声明周期中被调用，比如onPostCreate()等</a>
+</h3>
+<h3 class="topic">
+<a name="4cmgdfa0hfib3f0s4gd1sj34gd">&nbsp;&nbsp;&nbsp;https://blog.csdn.net/xingchenxuanfeng/article/details/53810351</a>
+</h3>
+<h3 class="topic">
+<a name="0gq3h00a2296h6r80umpmeerhj">&nbsp;&nbsp;&nbsp;onCreate &ndash;&gt; onContentChanged &ndash;&gt; onStart &ndash;&gt; onPostCreate &ndash;&gt; onResume &ndash;&gt; onPostResume &ndash;&gt; onPause &ndash;&gt; onStop &ndash;&gt; onDestroy</a>
+</h3>
+<h3 class="topic">
+<a name="363f8euvlotb0d3frdu8dpc59g">&nbsp;注册activity</a>
+</h3>
+<h3 class="topic">
+<a name="3qgleoq1meh8nvqfv7n3vdit4i">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91_files/1amd76esg1i6d93tsfv5bbk9mo.png"></p>
+<h3 class="topic">
+<a name="4ssfm87jd1iudee9kp696hbq7d">&nbsp;&nbsp;&nbsp;&lt;intent-filter&gt;标签用于指定activity的启动方式，一个activity只能有一个&lt;intent-filter&gt;action标签，可以有多个&lt;intent-filter&gt;categroy标签</a>
+</h3>
+<h3 class="topic">
+<a name="7415b4uhrbrh1ctv41ocq7grnu">&nbsp;activity的启动</a>
+</h3>
+<h3 class="topic">
+<a name="05o0mrvt3317hshke8hps2r1jv">&nbsp;&nbsp;显式启动</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91_files/4161qv3tncch0af7tdj11lp54m.png"></p>
+<h3 class="topic">
+<a name="61tumskcsfrgnslm2c2siit7m7">&nbsp;&nbsp;&nbsp;按键响应函数中打开新的activity</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91_files/6dhpfict6ghpgq3q4s5qlr2abn.png"></p>
+<h3 class="topic">
+<a name="67kdv6v9g790u9qojl5l5rd4fv">&nbsp;&nbsp;隐式启动，传递数据</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91_files/09job163tjp5d7h3r74qnb5k63.png"></p>
+<h3 class="topic">
+<a name="6eg20e2ek4i44l6f9j8ccdv5se">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91_files/3k8g32rsi6a61kfl718squp3i0.png"></p>
+<h3 class="topic">
+<a name="38tv2mbmq4507mup2bpb1t9g35">&nbsp;&nbsp;&nbsp;&nbsp;被启动的activity</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91_files/0nia3clnvj2gbh3pd35ni55ifk.png"></p>
+<h3 class="topic">
+<a name="2r5t0l2f6jt9d64nurj4n0cmfe">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;按钮响应函数：通过隐式启动activity</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91_files/6raelfbm7grvjb3rcq9d63sipa.png"></p>
+<h3 class="topic">
+<a name="7pme7vvf6h1ligasr4148dli1b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;被启动的activity中重写oncreate，在该函数中接收数据</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91_files/28v4ceksuppem4d78d655nlhl2.png"></p>
+<h3 class="topic">
+<a name="65t3orilbjj9ljdtcbjdnegrvn">&nbsp;&nbsp;隐式启动，传递数据并返回数据</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91_files/2jqumgk7jhsm3chrmc45i5l61p.png"></p>
+<h3 class="topic">
+<a name="3fbcgcl1os6et11mj0451vbsq9">&nbsp;&nbsp;&nbsp;被启动的activity</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91_files/4btpofagkmqjel1mp4ce9dtiqo.png"></p>
+<h3 class="topic">
+<a name="3muo6ggveqrupupkuivbne0lkp">&nbsp;&nbsp;&nbsp;&nbsp;通过隐式启动activity，并且向其传数据，要求返回结果</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91_files/2vrfu59nhfkstf8mvv412dhkds.png"></p>
+<h3 class="topic">
+<a name="26r6gq7mehen32j0kafctntc31">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;被启动的activity接收数据并返回结果，返回的数据来自本界面中的EditText</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91_files/4qfevj27oq60o4jk7rsthueqgv.png"></p>
+<h3 class="topic">
+<a name="6vmdh6lmpqoa9v4n8npl9q7sea">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过重写onActivityResult函数接收其他activity返回的数据</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91_files/0jdabkmc3ibq460b9vl2bddias.png"></p>
+<h3 class="topic">
+<a name="58g82tt69rjj8n1fds2ahq442e">&nbsp;activitys四种启动模式</a>
+</h3>
+<h3 class="topic">
+<a name="3snoq38sb15no3qrhtnt9rdd2f">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91_files/4rf7n9va7ssijj2hg9j4ba7ggd.png"></p>
+<h3 class="topic">
+<a name="6585hjsh4chk7pdhs9cv4pfrkf">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91_files/3la6ud7u54ailll2v01t03t0j1.png"></p>
+<h3 class="topic">
+<a name="7hcu5h1dm7p1imjl3o7nbr4om6">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91_files/74k6393305h5kjlj7mjtnhrrmh.png"></p>
+<h3 class="topic">
+<a name="7tuq2epbvjmfqo7dok03ogm8pn">&nbsp;&nbsp;&nbsp;如果task中虽然存在该活动，但是不在栈顶，singletop也会创建一个活动，并将其放入栈顶</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91_files/0naiv8b7mb4agkcv9mott0bar4.png"></p>
+<h3 class="topic">
+<a name="7sb7ctb32r7sh34egpk56dv86g">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91_files/3ogj45barl32o7a1k57dj1894a.png"></p>
+<h3 class="topic">
+<a name="75f2l5rq9c0tnd7lsd9ventpqr">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91_files/63pn0ua3upfr192um9gmgvsgm9.png"></p>
+<h2 class="topic">
+<a name="7sfr3kfcuuvu3pkb3t2e8i4f06">sharedpreferences</a>
+</h2>
+<h3 class="topic">
+<a name="29qgdghutfgut29eo5ejtc1037">&nbsp;定义</a>
+</h3>
+<h3 class="topic">
+<a name="7816o10nm8lu4h5koh5vnh6erd">&nbsp;&nbsp;这里的路径是安卓手机系统的文件路径</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91_files/7jl18i2tg526reojo8v7tvubvg.png"></p>
+<h3 class="topic">
+<a name="0b5unmj74h5msrgcr5fvkg9hg5">&nbsp;基本操作</a>
+</h3>
+<h3 class="topic">
+<a name="7jn7nqq20k0vs0d21m26i8gsks">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91_files/0a2j7pd6188ph1pi5pef6d3q0g.png"></p>
+<h3 class="topic">
+<a name="0ijr1q13glkd3s3q8a3a45kjq2">&nbsp;sharedpreferences常用于保存配置数据&#13;
+实际app中部分配置数据保存在本地，有的配置数据保存在服务器，需要在app运行时远端拉取</a>
+</h3>
+<h3 class="topic">
+<a name="57r256p3964pqqse5d6q9caca2">&nbsp;对应demo位于r3demo中</a>
+</h3>
+<h2 class="topic">
+<a name="5jhnmjhbvs2ko5udpo6c8anuvi">service</a>
+</h2>
+<h3 class="topic">
+<a name="27cisntkfktem56qve1fjjt4f2">&nbsp;定义</a>
+</h3>
+<h3 class="topic">
+<a name="68pihc0o0kdpuo045gu2e6tb88">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91_files/5ros914jog06cnck6f2c8mo1ut.png"></p>
+<h3 class="topic">
+<a name="45k6i1vf2dq9iaa91c8aia3e6t">&nbsp;&nbsp;&nbsp;service有两种启动方式&#13;
+1、在组件中直接启动，启动后组件与service无法通讯&#13;
+2、将service绑定到某个组件中启动，service启动后可以和该组件通讯</a>
+</h3>
+<h3 class="topic">
+<a name="5k0el45s7p5l2bd8ias91v660i">&nbsp;service生命周期</a>
+</h3>
+<h3 class="topic">
+<a name="2cj5924vk1q5m8774vljf9kkvj">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91_files/2c4pu2q0i5lsen1pns08dfrs8r.png"></p>
+<h3 class="topic">
+<a name="42nhmojfl9pgu1eo6inf4pjobb">&nbsp;&nbsp;&nbsp;当service通过start方式启动，则会调用onStartCommand()&#13;
+当service通过bind方式启动，则会调用onBind()&#13;
+以上两函数均为Service的虚函数，需要在定义的service子类中实现两函数</a>
+</h3>
+<h3 class="topic">
+<a name="7e81ap79lk3hlldm726s3q1p88">&nbsp;&nbsp;&nbsp;&nbsp;子类中实现该两个函数</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91_files/3s8pb1rdpambictv3ndiui50go.png"></p>
+<h3 class="topic">
+<a name="38r25l74hdnu99sognghi6n503">&nbsp;&nbsp;&nbsp;灰色框中的函数均为Service类的虚函数，可以在子类中进行实现</a>
+</h3>
+<h3 class="topic">
+<a name="3sv7uu8nf9pku29bkprgk8u8tu">&nbsp;service相关</a>
+</h3>
+<h3 class="topic">
+<a name="1nbd6k342dt1an7mvtlni0no6u">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91_files/5ot1n1uvg74i1a80dcq9id2gsb.png"></p>
+<h3 class="topic">
+<a name="1hrdql0n68u1bcbh9bv8ev9j9j">&nbsp;添加注册一个services</a>
+</h3>
+<h3 class="topic">
+<a name="2gpas0o4gnbegq4jao0t8ctlln">&nbsp;&nbsp;通过创建一个Service的子类为项目增加service</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91_files/5u1kreg4pomk02kdnsb855e661.png"></p>
+<h3 class="topic">
+<a name="4d3qupk9rrtqo30soc2pf0hn4g">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91_files/518a537487gn00rdj7udl13nv6.png"></p>
+<h3 class="topic">
+<a name="3mgas1iq4it3vplemvict1t0u9">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91_files/6346fqnvjnofanmoc7nqkoiti7.png"></p>
+<h3 class="topic">
+<a name="18glte47st0uo2npt745sbcrp7">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91_files/077nljc8k1gpveiinpg10v1vu1.png"></p>
+<h3 class="topic">
+<a name="0tri8esg3grrnmrdkfacq3p1r7">&nbsp;启动service</a>
+</h3>
+<h3 class="topic">
+<a name="4d4qio62n3d0filjmj2v802v5l">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91_files/7jn9v3vg798vp9c3ujbkhenvrl.png"></p>
+<h3 class="topic">
+<a name="2g8btkivcd33m96jrvkqaela50">&nbsp;&nbsp;&nbsp;通过外部类实现按钮响应</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91_files/1pdanogncsjurmrjlt7l5i1e37.png"></p>
+<h3 class="topic">
+<a name="5o9uee7nuq0rfcna7ld72opvi4">&nbsp;&nbsp;&nbsp;&nbsp;直接启动、关闭service，推测启动service时也可以利用intent给service传递数据，因为onStartCommand()函数有intent参数</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91_files/4r324sg841lraainj7c90q6mtb.png"></p>
+<h3 class="topic">
+<a name="73t3n3apmh6mjv384cn0fl3ivc">&nbsp;&nbsp;&nbsp;&nbsp;通过binder方式启动、关闭service，推测启动service时也可以利用intent给service传递数据，因为onBind()函数有intent参数</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91_files/01qpo6u2c0bd7sad71j1ipbt3p.png"></p>
+<h3 class="topic">
+<a name="1msg2ov8pu7md4fmrlgrquun0s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bindService函数中的serviceConnection对象是在mianactivity中定义的，其中onServiceConnected函数会在bind完成后被调用，函数参数中存在IBinder对象，可以使用该对象调用函数与service通讯</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91_files/531gn9tm683h2hh0bh39had9q0.png"></p>
+<h3 class="topic">
+<a name="08sjpjvtrfhcchnqf2hbceum1c">&nbsp;service与线程的关系</a>
+</h3>
+<h3 class="topic">
+<a name="0siug4094uoc5j9n05tdhi4eda">&nbsp;&nbsp;service是在进程主线程中执行的，如果service为local service，则运行在本app的主线程上（即app的ui线程上），如果是remote service，则service运行在独立进程的主线程上</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91_files/2211rul6v5o099iqbu9e1m4bsd.png"></p>
+<h3 class="topic">
+<a name="3bfailqn16aaqoikrogpsbau3c">&nbsp;&nbsp;&nbsp;系统对一个service只会建立一个实例，对于同一类的service不会有两个service对象被实例化</a>
+</h3>
+<h3 class="topic">
+<a name="3v1jf1qj8ghfkmbcea96m8lrdi">&nbsp;intnet service</a>
+</h3>
+<h3 class="topic">
+<a name="3p52llhmsda67b9m0o1q1gn75r">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91_files/5c3hm10i3nghhjsspbi4s1h9jd.png"></p>
+<h3 class="topic">
+<a name="2miuj5fklvgf5gifecvcv5md0b">&nbsp;&nbsp;&nbsp;如果要进行的操作耗时较长，可以使用intentservice处理，从而避免因为使用service从而导致主线程阻塞</a>
+</h3>
+<h3 class="topic">
+<a name="7psgo1kmkmi8qou0gt6m90jvrs">&nbsp;&nbsp;&nbsp;其创建和注册于serviece相同，均需要创建新的.class文件以及写xml文件</a>
+</h3>
+<h3 class="topic">
+<a name="1f9m923qq91tqb8gae20vhjbff">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91_files/7k09s21fsc5m0oinv2bq3o24j3.png"></p>
+<h3 class="topic">
+<a name="3uj3t2vmkk06rbtd31j04tflgm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91_files/6nlukd8egi557oga1shea0jekm.png"></p>
+<h3 class="topic">
+<a name="355ankb2m8vcfensc70sc37sds">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;intentservice中onHandleIntent函数在intentservice启动时会被自动调用，用于完成耗时较长的任务，因为不会占用主线程，所以不会导致ANR，此处时将线程暂停5秒</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91_files/3ppnn2r6dv2f3b1uc5fu95o714.png"></p>
+<h3 class="topic">
+<a name="1qmd1slbjrpean66d7r33hqau1">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91_files/5e8lvkae4nnpacmkb0jef4mn39.png"></p>
+<h3 class="topic">
+<a name="08e72m722b6d613bjj7d90rfnd">&nbsp;&nbsp;启动intent service</a>
+</h3>
+<h3 class="topic">
+<a name="3uag99l3rejj4v5pjn2552vn11">&nbsp;&nbsp;&nbsp;方法与普通service相同</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91_files/7hk5j6lcqppg1sg87hmk2vu65r.png"></p>
+<h3 class="topic">
+<a name="13kjdj7ouofvjfrsorgqojtrls">&nbsp;详细代码见r3demo</a>
+</h3>
+</body>
+</html>

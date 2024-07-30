@@ -1,0 +1,826 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>linux内核-1</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="49pk593inshir24n6ciolq0uil">linux内核-1</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="linux%E5%86%85%E6%A0%B8-1_files/images/linux%E5%86%85%E6%A0%B8-1.jpg"></div>
+<h2 class="topic">
+<a name="7ta4pohg53cchdomdgpviiqimu">内核编译与修改</a>
+</h2>
+<h3 class="topic">
+<a name="3m6v2q6ec5l29k45vr1jor5k9j">&nbsp;参考文档：Linux内核修改与编译图文教程</a>
+</h3>
+<h3 class="topic">
+<a name="4bg7pgp4sn3mvhq23uspu6vb6e">&nbsp;编译不同版本的linux内核的思路大致一样，但是在具体实现细节上还是存在区别，比如指定配置文件的命令和具体目录</a>
+</h3>
+<h3 class="topic">
+<a name="2upgl0858e7hggag7jd7vkbcv4">&nbsp;大致流程</a>
+</h3>
+<h3 class="topic">
+<a name="2h3lvvds8htfigto0jcv748jtq">&nbsp;&nbsp;下载新内核</a>
+</h3>
+<h3 class="topic">
+<a name="4d5qu2vr3g00ugllvbo4b9lfoi">&nbsp;&nbsp;修改新内核添加一个系统调用</a>
+</h3>
+<h3 class="topic">
+<a name="0q0h5mpchurp15vvm40mnhg375">&nbsp;&nbsp;&nbsp;应用层可以通过系统调用，从而在应用层通过系统调用号发起系统调用请求</a>
+</h3>
+<h3 class="topic">
+<a name="1ng05d3rceotjqu88j82jdqbrq">&nbsp;&nbsp;将新内核进行编译加载</a>
+</h3>
+<h3 class="topic">
+<a name="3e52g8gsltsagt64pf42mgn4es">&nbsp;&nbsp;&nbsp;这个这个过程中可以在中断向量表中添加中断号以及对应的中断处理函数，从而为编译后的内核实现新的功能</a>
+</h3>
+<h2 class="topic">
+<a name="7svjr3pagnes75ues8dsju4paj">参考资料</a>
+</h2>
+<h3 class="topic">
+<a name="4415571dc4bd2acn6i8ts39tg8">&nbsp;手把手教你写操作系统</a>
+</h3>
+<h2 class="topic">
+<a name="213st877lg3ngjp4c16jmvc77v">理论基础</a>
+</h2>
+<h3 class="topic">
+<a name="46p5mao54eo4jc4dmqnhdoiggg">&nbsp;阅读linux内核源码</a>
+</h3>
+<h3 class="topic">
+<a name="0u6gftr1slnst552jpj7qk32g1">&nbsp;&nbsp;Linux_内核完全注释_V11_赵炯</a>
+</h3>
+<h3 class="topic">
+<a name="7imfhf69u6tta9i3nmp88npib6">&nbsp;书籍</a>
+</h3>
+<h3 class="topic">
+<a name="2ncia1d8cslp04nkmddvjfatlk">&nbsp;&nbsp;应用层</a>
+</h3>
+<h3 class="topic">
+<a name="7spq7ssfjkcmqvbihsg9pnsd55">&nbsp;&nbsp;&nbsp;unix环境高级编程第二版</a>
+</h3>
+<h3 class="topic">
+<a name="3ssu7ikniu6glkeo7huuvl034d">&nbsp;&nbsp;&nbsp;linux程序设计第四版</a>
+</h3>
+<h3 class="topic">
+<a name="41eg5h58mllngpdc4lg6nl4pkn">&nbsp;&nbsp;内核层</a>
+</h3>
+<h3 class="topic">
+<a name="3pentmji0cggup7oorci3uq801">&nbsp;&nbsp;&nbsp;linux设备驱动程序第三版</a>
+</h3>
+<h3 class="topic">
+<a name="4mur2tu9sr176rggne589l9u61">&nbsp;&nbsp;&nbsp;linux内核设计与实现第三版</a>
+</h3>
+<h3 class="topic">
+<a name="69igtoe80jursid1utc1bc6bn5">&nbsp;&nbsp;&nbsp;linux设备驱动开发详解</a>
+</h3>
+<h3 class="topic">
+<a name="0f6tni2dspqucq2c3irem0nvli">&nbsp;&nbsp;原代码分析</a>
+</h3>
+<h3 class="topic">
+<a name="160pnaril3kqbh9honui6eo4sc">&nbsp;&nbsp;&nbsp;Linux_内核完全注释_V11_赵炯</a>
+</h3>
+<h3 class="topic">
+<a name="2g57fm4ppgcjurtgo9d9miunq3">&nbsp;&nbsp;&nbsp;深入分析linux内核源码</a>
+</h3>
+<h3 class="topic">
+<a name="51bs6b42eb8c7je3kf7091rk9l">&nbsp;linux内核源码目录树</a>
+</h3>
+<h3 class="topic">
+<a name="398u1so03sfjo15sf6q8e62ab0">&nbsp;&nbsp;init</a>
+</h3>
+<h3 class="topic">
+<a name="2ap5dio4k6lotiga93rd4nkps2">&nbsp;&nbsp;&nbsp;初始化相关</a>
+</h3>
+<h3 class="topic">
+<a name="2pva3kpbgvjapfaqcpvhnatgh8">&nbsp;&nbsp;arch</a>
+</h3>
+<h3 class="topic">
+<a name="6sqscvc44f92pdn5cqiaskah71">&nbsp;&nbsp;&nbsp;架构相关</a>
+</h3>
+<h3 class="topic">
+<a name="5uc0qq1maeum0u7cvohf24tad0">&nbsp;&nbsp;dirvers</a>
+</h3>
+<h3 class="topic">
+<a name="1enf8iir44f388rdonhc1vmmbj">&nbsp;&nbsp;&nbsp;硬件驱动相关声卡、显卡、网卡</a>
+</h3>
+<h3 class="topic">
+<a name="1e20fos5lqogn4jn5d06dchu2a">&nbsp;&nbsp;fs</a>
+</h3>
+<h3 class="topic">
+<a name="2eoi9uo3cej37vm8ouv0jvj4f4">&nbsp;&nbsp;&nbsp;文件系统相关</a>
+</h3>
+<h3 class="topic">
+<a name="1vctop678ugum6lgrb5hmj6dm0">&nbsp;&nbsp;&nbsp;&nbsp;重要，云计算等会涉及</a>
+</h3>
+<h3 class="topic">
+<a name="1e1v89ei98v159ap1pprnd22nl">&nbsp;&nbsp;net</a>
+</h3>
+<h3 class="topic">
+<a name="2al7dqv8qvuttac6gqv5oanie9">&nbsp;&nbsp;&nbsp;网络</a>
+</h3>
+<h3 class="topic">
+<a name="04vm5v2rvues9n9m029g8arf2e">&nbsp;&nbsp;mm</a>
+</h3>
+<h3 class="topic">
+<a name="1nc8vj3s62lnoml8q4emibtp23">&nbsp;&nbsp;&nbsp;内存</a>
+</h3>
+<h3 class="topic">
+<a name="3vjj2683b9if1s3bsg9o9lma2i">&nbsp;&nbsp;ipc</a>
+</h3>
+<h3 class="topic">
+<a name="50l7052uf5q09n04f5hookrh4h">&nbsp;&nbsp;&nbsp;通讯</a>
+</h3>
+<h3 class="topic">
+<a name="2h60mj0mgq9tp7hgeto9molj48">&nbsp;&nbsp;kernel</a>
+</h3>
+<h3 class="topic">
+<a name="3otq62q64ne3e5jntk7afpqph9">&nbsp;&nbsp;&nbsp;内核相关，比如内核库，内核中不能调用c语言库&#13;
+很多是用汇编写的</a>
+</h3>
+<h3 class="topic">
+<a name="0m5l1nvrdd71dlaruujr3o798v">&nbsp;&nbsp;include</a>
+</h3>
+<h3 class="topic">
+<a name="11q54k06esgopc01db0nkgqnp5">&nbsp;&nbsp;&nbsp;头文件</a>
+</h3>
+<h3 class="topic">
+<a name="4lrnpotcu90k0ia4sf8973pgfi">&nbsp;寄存器与汇编</a>
+</h3>
+<h3 class="topic">
+<a name="5t1fru0t2lne77c6q8qmdupv51">&nbsp;&nbsp;linux内核主要是通过c语言和汇编写的（纯汇编或嵌入汇编）</a>
+</h3>
+<h3 class="topic">
+<a name="2cbkrhiemdi9mf9r468s6mrntu">&nbsp;&nbsp;&nbsp;包括x86中的寄存器和x64中的寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="2bmosb1k6tv5ll8k97b3stn8kp">&nbsp;&nbsp;linux使用AT&amp;T汇编</a>
+</h3>
+<h3 class="topic">
+<a name="05d0b8ci56074l4l91gluaocqv">&nbsp;&nbsp;&nbsp;intel汇编和AT&amp;T汇编均是x86汇编，仅仅是组织格式不同</a>
+</h3>
+<h3 class="topic">
+<a name="4kf0oips8ef74vfl30npl1du1e">&nbsp;&nbsp;&nbsp;AT&amp;T格式的汇编语法</a>
+</h3>
+<h3 class="topic">
+<a name="763kgavsl2kgrc45qrgfh5hi3s">&nbsp;&nbsp;&nbsp;&nbsp;寄存器引用</a>
+</h3>
+<h3 class="topic">
+<a name="6p0i9m26hs2r2dp75epo2mto5l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;寄存器引用之前要加上%</a>
+</h3>
+<h3 class="topic">
+<a name="4b1v6ldkf87ahc3mp8dfvsq5no">&nbsp;&nbsp;&nbsp;&nbsp;操作数顺序</a>
+</h3>
+<h3 class="topic">
+<a name="2chgi7l211ud4393n00gce1t6u">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;源操作数在左边，目的操作数在右边，与x86相反</a>
+</h3>
+<h3 class="topic">
+<a name="2vs1l0mcsmqbrqmon62l4seq1n">&nbsp;&nbsp;&nbsp;&nbsp;立即数/常数</a>
+</h3>
+<h3 class="topic">
+<a name="00jfesvu6uh8huls33ak9e9rmu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;立即数要在前面加上$</a>
+</h3>
+<h3 class="topic">
+<a name="596jjug904gheerl52rm51vseo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果不加会将立即数当作内存地址</a>
+</h3>
+<h3 class="topic">
+<a name="4gvqahinghc41gk55gu2rl6pqa">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;符号常数直接引用</a>
+</h3>
+<h3 class="topic">
+<a name="3k0oa0q7h8brolec7eosfmb9dg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;引用符号地址要在符号前面加上$</a>
+</h3>
+<h3 class="topic">
+<a name="4pub9c6nu5b2jkh3hacefu3u1h">&nbsp;&nbsp;&nbsp;&nbsp;操作数长度</a>
+</h3>
+<h3 class="topic">
+<a name="0h3b5sd4he58j9o47htlt3h0ae">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;操作数的长度用加在指令后面的符号表示</a>
+</h3>
+<h3 class="topic">
+<a name="1sbles1lhp0s0nk3h392qdvima">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;b（byte）-》8位  &#13;
+w（word）-》16位    &#13;
+l（long）-》32位</a>
+</h3>
+<h3 class="topic">
+<a name="4hg9dgapn52urde1s54ugvkpid">&nbsp;&nbsp;&nbsp;&nbsp;jmp/call的操作数前面要加上*作为前缀</a>
+</h3>
+<h3 class="topic">
+<a name="4t3eptckjilj2hlf28cms5afka">&nbsp;&nbsp;&nbsp;&nbsp;远跳转、远转移</a>
+</h3>
+<h3 class="topic">
+<a name="2b6ppm2snmjgq031ufgamcntu2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在intel汇编中远跳转、远转移是在jmp 或call后面加far</a>
+</h3>
+<h3 class="topic">
+<a name="36bqiuv5spncmsa9prhqumfdvo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;jmp far</a>
+</h3>
+<h3 class="topic">
+<a name="2smfr4o0ni2387olh1015djv0p">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;call far</a>
+</h3>
+<h3 class="topic">
+<a name="242qr0s69k3kbrtioo8algpfa4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在AT&amp;T汇编中用ljmp  lcall表示远跳转、远转移</a>
+</h3>
+<h3 class="topic">
+<a name="12mhs76lp9q1b8n7gsg0uvqerq">&nbsp;&nbsp;&nbsp;&nbsp;远程返回指令</a>
+</h3>
+<h3 class="topic">
+<a name="39e03ap112ilcmm71dhuuh9qec">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;intel</a>
+</h3>
+<h3 class="topic">
+<a name="60ud1hi9iptuddevr3q3cqnkd1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ret far</a>
+</h3>
+<h3 class="topic">
+<a name="09cfkeidjkurftea10dc280ojc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lret $</a>
+</h3>
+<h3 class="topic">
+<a name="4u08kl65p4p83uoeqh964j4qlt">&nbsp;&nbsp;&nbsp;&nbsp;寻址方式</a>
+</h3>
+<h3 class="topic">
+<a name="6t95ir3go91s22viq9b3hi9n2i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;见ppt</a>
+</h3>
+<h3 class="topic">
+<a name="765a14ahqtuqdrjrbvfl54dt2t">&nbsp;&nbsp;&nbsp;&nbsp;嵌入式汇编指令</a>
+</h3>
+<h3 class="topic">
+<a name="53i95his87emv4aq8ase8qckcm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;由于gcc编译器的原因，有时嵌入汇编指令中需要在寄存器前面加上两个%%</a>
+</h3>
+<h3 class="topic">
+<a name="08ckfjbhh2cq0h9kgs28nu59h3">&nbsp;&nbsp;&nbsp;&nbsp;ppt</a>
+</h3>
+<h3 class="topic">
+<a name="4rf6apne8nk1r10hab7idbnv3p">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-1_files/1mbg61i6m8o8m3882dundnat0n.png"></p>
+<h3 class="topic">
+<a name="0cqot8bj3tv2h2knc8v1fc8f4r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-1_files/79g9h8hesg9923ash5po568hfl.png"></p>
+<h3 class="topic">
+<a name="1rl1v0hqrs6iqnb8ie8a78fiin">&nbsp;&nbsp;&nbsp;linux嵌入式汇编</a>
+</h3>
+<h3 class="topic">
+<a name="0de0ev3h16aa2sc9gv6mki21v9">&nbsp;&nbsp;&nbsp;&nbsp;类似于函数 output为输出部分 input为输入部分 modify为修改部分</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-1_files/113drfq6d80na89vf6fctq6npv.png"></p>
+<h3 class="topic">
+<a name="3524cteniu4b2aopq1li6gt7lc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-1_files/4to6e4edk4ei2usni5g5rn4eco.png"></p>
+<h3 class="topic">
+<a name="601g5prl4o563cdencbvbdvkue">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-1_files/2cg8v7b729a26qa7trnoouknfj.png"></p>
+<h3 class="topic">
+<a name="7r637hc9em2d3khtsl3i0u23nf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-1_files/7rtvoioh6npbpeokkd4un4nc07.png"></p>
+<h3 class="topic">
+<a name="49rjrponqbfn7valknrct3l9r1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-1_files/3hcd8smcr0tdso7uieaolqq4bf.png"></p>
+<h3 class="topic">
+<a name="03t1s0ain0b82s1fnc57ql2k9g">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;jne2f中的f是指fornt 是指前面&#13;
+同理b表示后面 back</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-1_files/4394g97er46ch62e971o330k7s.png"></p>
+<h3 class="topic">
+<a name="43tqaqg9l37fkao08ddvcrmj27">&nbsp;内存分段与内存分页</a>
+</h3>
+<h3 class="topic">
+<a name="6aia9chqpa2oefgdh0hn7nbnkn">&nbsp;&nbsp;x86将32位虚拟内存地址分为4部分寻址物理内存，x64通过将虚拟地址分为5部分从而寻址物理内存</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-1_files/7t6kl8t198v3olc00oen0cv2lt.png"></p>
+<h3 class="topic">
+<a name="4blj3ii61nu2n9k6a3aaq0hfi7">&nbsp;中断机制</a>
+</h3>
+<h3 class="topic">
+<a name="030eomamh7u40buvm857fffpta">&nbsp;&nbsp;中断向量</a>
+</h3>
+<h3 class="topic">
+<a name="4te9sjsved9thj9dnho68dcnkj">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-1_files/504c03bqmbksv58rn8vu018tn2.png"></p>
+<h3 class="topic">
+<a name="6qgnodent4d2pfl3kj4uusbedl">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-1_files/65c90tkg9ses42q52sgk2nldal.png"></p>
+<h3 class="topic">
+<a name="28g3493kjijs2g5dnju36kme9u">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;异常（软件）和中断（硬件）都在中断描述符表中进行处理</a>
+</h3>
+<h3 class="topic">
+<a name="6iicrkkkaqmhgmj6h7uj55od5u">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;linuxz中异常分为故障、陷阱，不会将标志寄存器的IF位清零</a>
+</h3>
+<h3 class="topic">
+<a name="69dnst5nu7tr0o3gplggiatjho">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;故障是cpu内部产生的错误</a>
+</h3>
+<h3 class="topic">
+<a name="6uleqb015jktka6fjfu1fagp44">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;陷阱时程序员故意为之的，包括系统调用int 0x80、int3断点等</a>
+</h3>
+<h3 class="topic">
+<a name="1tp0d1vcklva5psome2f9jhqka">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;linux中的中断硬件产生，会将标志寄存器的if位清零，可以分为屏蔽中断和非屏蔽中断</a>
+</h3>
+<h3 class="topic">
+<a name="0jvm1f0tf3q3kdoi71747bthif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;非屏蔽中断</a>
+</h3>
+<h3 class="topic">
+<a name="2gbh8lhq1vq5oced40sdceb4kq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;屏蔽中断</a>
+</h3>
+<h3 class="topic">
+<a name="5d3t8suqh8cvi6h3bop28kqnl4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当该类中断发生时，会将同级的中断和优先级低的中断屏蔽掉</a>
+</h3>
+<h3 class="topic">
+<a name="7nvd037dh8j8m5onbq8n52ovm5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;linux系统调用syscalll就是int 0x80</a>
+</h3>
+<h3 class="topic">
+<a name="31jt46j4067auqho0keor6at1d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;中断本质就是硬件设备发送的电信号</a>
+</h3>
+<h3 class="topic">
+<a name="3268tgk13e9tg7foub59n9d1m3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;中断也可以分为软中断和硬中断，前者使用中断向量48~255表示，系统调用就是一个软中断 中断向量号为0x80，当执行int 0x80时就会执行中断处理函数system_call()</a>
+</h3>
+<h3 class="topic">
+<a name="2nsqn57371pmbb2lahehir0j1h">&nbsp;&nbsp;中断描述符表</a>
+</h3>
+<h3 class="topic">
+<a name="0jg8675mdro0msfjo6kvce1jv6">&nbsp;&nbsp;&nbsp;中断描述符表</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-1_files/6cckkd3ipd9jmtp293f6veo8vp.png"></p>
+<h3 class="topic">
+<a name="6e31mbnd994okslsg8stcv6f0l">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-1_files/2qa1lusf46v2sh0md88c5dfimn.png"></p>
+<h3 class="topic">
+<a name="11u725dd98qo87gq3gdhptsb34">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;linux中和windows中都存在IDT表，即中断描述符表，用于存放中断向量编号和中断处理函数，当发生中断时，系统根据中断号执行相应的中断处理函数</a>
+</h3>
+<h3 class="topic">
+<a name="4o926qdp8hsqmkgmasrb2stjp1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;中断向量表(IDT)中的每一个元素栈8个字节，每一个元素都称为一个门，门分为三种中断门、陷阱门、系统门（即任务门），根据门描述符中的段选择符可以找到中断处理程序所在内存的段基地址，进一步根据门描述符中的偏移确定中断处理程序在指定段中的偏移，从而确定中断处理程序的地址</a>
+</h3>
+<h3 class="topic">
+<a name="4tdmkfbsm6oa3q0oitk4es7tcd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;中断门和陷阱门的DPL均为0，说明这两类门描述符的请求特权级是内核层的</a>
+</h3>
+<h3 class="topic">
+<a name="4n6ahufsq6f72ltd877oib0l76">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;系统门的DPL为3，说明此时请求特权级为用户层的（说明由用户层发起），中断号3、4、5、0x80的中断描述符均是系统门</a>
+</h3>
+<h3 class="topic">
+<a name="0qnnj2bd72pfokcg3s0oe0fq1l">&nbsp;&nbsp;中断的上半部和下半部</a>
+</h3>
+<h3 class="topic">
+<a name="5r63kemr6ile9idkb9u14rbmhp">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-1_files/5tm206ovn537m0rfeu2ikqkbvj.png"></p>
+<h3 class="topic">
+<a name="4c79jegd50802a6p9q9vhpdrg8">&nbsp;&nbsp;&nbsp;&nbsp;中断分为上半部和下半部，上半部用于存放中断处理函数，从而快速响应中断的处理，上半部是关中断的，即当该中断发生时，同级别或低级别的中断如果发送就不会被处理，中断下半部用于处理本次中断处理其他比较耗时的操作（即中断上半部分没有处理完的操作），下半部是开中断的，所以可以同时响应其他的中断</a>
+</h3>
+<h3 class="topic">
+<a name="1e5atsg87o51r6tg8kto5jts5n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;中断下半部的实现方式可以是softirq或tasklet</a>
+</h3>
+<h3 class="topic">
+<a name="5jjsiqfi7qut5bpua2fvtca3f1">&nbsp;&nbsp;内核的进程上下文和中断上下文</a>
+</h3>
+<h3 class="topic">
+<a name="0n4iqaa3bppuu34pgi9cfqtosq">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-1_files/6gqbabgdr6nu9o0lhrie8s3sme.png"></p>
+<h3 class="topic">
+<a name="72bo0cbkpk7q1bm4uo5gmfa7un">&nbsp;&nbsp;&nbsp;&nbsp;当内核提供系统调用服务供进程使用时，说明内核在进程工作，所以可以说此时内核运行在进程上下文</a>
+</h3>
+<h3 class="topic">
+<a name="3evflddknvf2mpujijg2tmjf2q">&nbsp;&nbsp;&nbsp;&nbsp;当内核运行中断处理程序的时候，说明内核正在为硬件工作，此时可以说内核运行在中断上下文</a>
+</h3>
+<h3 class="topic">
+<a name="1iu3s667pedumjpjgj4959hm4n">&nbsp;&nbsp;&nbsp;&nbsp;因为内核为中断运行相比于为进程运行由更多的约束条件（比如不能睡眠），所以编写中断处理程序时，需要注意这些</a>
+</h3>
+<h3 class="topic">
+<a name="7ddsg62qtt4da36bgj31brh1td">&nbsp;内核启动过程</a>
+</h3>
+<h3 class="topic">
+<a name="5e8mdpme34jamjk8ce10fkvg91">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-1_files/6vuduoqvps5064kkhq8f3bel1q.png"></p>
+<h3 class="topic">
+<a name="5hqoeijc12o7a3ocln4a2gt0un">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-1_files/0hel0igh9c6vlg66l4cvv9qd45.png"></p>
+<h3 class="topic">
+<a name="32vdisqnpjt6bcs5t38cd3f1jn">&nbsp;linux文件系统</a>
+</h3>
+<h3 class="topic">
+<a name="0e8kpe6kqjs63fltkpg9olrpmi">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-1_files/6lf1gbg9m06u65b9e6faso8ofo.png"></p>
+<h3 class="topic">
+<a name="4u3g9nm2ppfn2bfm8scjdss0jt">&nbsp;&nbsp;&nbsp;file_operation是一个结构体，其中有很多函数，用于分别实现用户层的相应请求，类似于windows中驱动对象的派遣函数结构体</a>
+</h3>
+<h3 class="topic">
+<a name="25k9idbel5q6i37b5edh83a9o4">&nbsp;linux重要模块</a>
+</h3>
+<h3 class="topic">
+<a name="21fc61j1ugg5bqpvo6ktco4j7s">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-1_files/5076jh3tprgocn81hcs58i6lju.png"></p>
+<h3 class="topic">
+<a name="67at2ko2m8sf2ga7k7gstkfnob">&nbsp;微内核域宏内核</a>
+</h3>
+<h3 class="topic">
+<a name="7mmof5isb35p0i060c70olvpma">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-1_files/6shn7m06to01q5o0vs7l8k3vol.png"></p>
+<h3 class="topic">
+<a name="3kabf3vfgnvubje0v10m8d0jl6">&nbsp;&nbsp;&nbsp;微内核中每个系统模块作为一个进程进行运行，都有各自的mian函数，模块与模块间通讯需要使用进程间的通讯手段完成，比如各种消息机制、共享内存</a>
+</h3>
+<h3 class="topic">
+<a name="731hflb9lmlt1n65e2iutcnnuv">&nbsp;&nbsp;&nbsp;宏内核运行时是一个独立的内存映像，即内核整体是一个进程，模块间的通讯通过直接调用其他模块中的函数实现</a>
+</h3>
+<h2 class="topic">
+<a name="6ralsn5hqfbff9ii53gsrt2kut">linux内核开发</a>
+</h2>
+<h3 class="topic">
+<a name="0ipliq647ckqltf7a6om9v0fuc">&nbsp;helloworld</a>
+</h3>
+<h3 class="topic">
+<a name="3mtj9fh0ls0np2qe8tfhu36b6a">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-1_files/5a7s18ijul29of292valonvcu6.png"></p>
+<h3 class="topic">
+<a name="01eplilsfqf9ij56crcmg1chim">&nbsp;&nbsp;&nbsp;test_init为模块的初始化函数（类似于windows中的DRIVER_ENTRY）、test_exit为模块的退出函数（类似于windows中的DRIVER_UNLOAD）两者名字可以随便取</a>
+</h3>
+<h3 class="topic">
+<a name="6hjaeuvkeo464192f4cdobt8b7">&nbsp;&nbsp;&nbsp;&nbsp;前者在内核模块载入时调用、后者在内核模块卸载时调用</a>
+</h3>
+<h3 class="topic">
+<a name="7gsm746qgtna4ufejkbdg5po2c">&nbsp;&nbsp;&nbsp;GPL：修改使用GPL协议的代码的成果产出必须同样进行开源</a>
+</h3>
+<h3 class="topic">
+<a name="1lhvemn32lqn8b7n7qg4k5kgs4">&nbsp;&nbsp;&nbsp;linux中是使用find命令在指定路径中查找内核函数或结构体的定义可以使用find命令，（如右图，查找daemonize符号）</a>
+</h3>
+<h3 class="topic">
+<a name="3i17potdpghstph93ageuaul0g">&nbsp;编译内核模块</a>
+</h3>
+<h3 class="topic">
+<a name="7cong86vfeu1rep3nl6gfkf7eu">&nbsp;&nbsp;需要提供makefile文件</a>
+</h3>
+<h3 class="topic">
+<a name="0o9ssg79imsi95334jp8nokjje">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-1_files/3lvkne5i3do9gtjv9upmlm138g.png"></p>
+<h3 class="topic">
+<a name="2ajiqgqc138rpdllm5bsdjhdoq">&nbsp;具体操作</a>
+</h3>
+<h3 class="topic">
+<a name="2repiprrvqrkumej590l8vhuim">&nbsp;&nbsp;make clean指令清理之前编译留下的中间文件，仅仅保存源代码文件和Makefile文件</a>
+</h3>
+<h3 class="topic">
+<a name="0nntud58uduvvsebpd6bkenkc1">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-1_files/16f3ili7vfs7nr46mahe1oit5a.png"></p>
+<h3 class="topic">
+<a name="0s3e4f02iu9ahtjmhdok8r214g">&nbsp;&nbsp;执行make指令，最后生成hello.ko文件</a>
+</h3>
+<h3 class="topic">
+<a name="3vkb227shnfvnncl9jj3kntihd">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-1_files/5kmb53adefvsbcob2mfaibqpc0.png"></p>
+<h3 class="topic">
+<a name="2841lptnefv4jn45dnqui8nrcu">&nbsp;&nbsp;加载运行新的内存模块</a>
+</h3>
+<h3 class="topic">
+<a name="59mt8k79l6kiuv58t22hcktdu0">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-1_files/5amnsdi270f2kqqvr823oj0qh9.png"></p>
+<h3 class="topic">
+<a name="78l2q80oufm0i71hdam32k4kda">&nbsp;&nbsp;&nbsp;&nbsp;insmod 加载内核模块&#13;
+rmmod 卸载内核模块&#13;
+lsmod 显示当前存在的内核模块&#13;
+modinfo 查看内核模块信息&#13;
+dmesg命令用于查看内存输出的信息(kprintf)  | tail是只显示最后10行输出&#13;
+也可以通过查看 proc/kmsg文件中的内容，查看内核的输出</a>
+</h3>
+<h3 class="topic">
+<a name="2i0ju2fqqrskmcs1dsrh4h2nv1">&nbsp;内核模块自启动</a>
+</h3>
+<h3 class="topic">
+<a name="0824889lcgfjc8848lkke8ppip">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-1_files/1veo2uu7da9cjc733ru9s0klka.png"></p>
+<h3 class="topic">
+<a name="64gaddqck6o83n25n092k22arr">&nbsp;加载内核模块的时候提供参数</a>
+</h3>
+<h3 class="topic">
+<a name="63kp2ak85ni9ka6d7s89g4hvci">&nbsp;&nbsp;insmod可以提供参数，通过命令行将参数传递给驱动函数</a>
+</h3>
+<h3 class="topic">
+<a name="5qaeiuvdq3h543rppn4bb93par">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-1_files/5fd937egjeu2ouimbmc70l52g7.png"></p>
+<h3 class="topic">
+<a name="4309o62jid14e8u2cn78cb1lb9">&nbsp;&nbsp;&nbsp;&nbsp;通过命令行给内核模块传递参数，并且发现设置的参数可以通过指定目录下的文件进行查找和设置</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-1_files/1jdv13e6vg2k7b529rbnuv67lb.png"></p>
+<h3 class="topic">
+<a name="1mfhq943cf7pp8phos93rcmbb8">&nbsp;&nbsp;windows中可以通过注册表，在加载驱动程序的时给驱动程序进行传参</a>
+</h3>
+<h3 class="topic">
+<a name="7lsthpktnu0dntvoqba5nbh9l6">&nbsp;多模块之间共享数据和接口</a>
+</h3>
+<h3 class="topic">
+<a name="14qoe9c4d0cmfc6b061lcm2p0h">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-1_files/0qdnqo7nqcauvofvpfsgp0maeg.png"></p>
+<h3 class="topic">
+<a name="6hnsq0hq2vebi21v2r3cdhocqk">&nbsp;&nbsp;&nbsp;当内核模块编译好之后会产生Module.symvers文件，当该模块到处指定函数或全局变量给其他模块使用时，需要在导入模块的makefile文件中指定Module.symvers文件的路径，或者将Module.symvers拷贝到导入模块的路径下</a>
+</h3>
+<h3 class="topic">
+<a name="42rncihefo4ah5edk1f263ki34">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-1_files/08hk8k9lv0gftkq79u24pnn1bu.png"></p>
+<h3 class="topic">
+<a name="4615i38oe7363gee5vvi89emdm">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-1_files/2bgq4q315bim8k04nenvvshbvm.png"></p>
+<h3 class="topic">
+<a name="0v1cgkf31c9mdu91cem8p32nnq">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-1_files/1brglkmetr6mvk0u0j8aml81qp.png"></p>
+<h3 class="topic">
+<a name="10c522j3ogqqphj6osh8him6ot">&nbsp;&nbsp;导出模块需要先加载到内核，导入模块才能正确加载到内核，因为导入模块中需要使用到处导出模块导出的哈数或数据</a>
+</h3>
+<h3 class="topic">
+<a name="6v23oaf0m4ehijr2lmt52ov4ut">&nbsp;&nbsp;&nbsp;在卸载模块时，导出模块无法在导入模块之前被卸载，因为导出模块中的数据正在被导入模块使用，即导出模块的引用计数至少为1</a>
+</h3>
+<h3 class="topic">
+<a name="03sq0reeqb0gchr2j3c6vpccba">&nbsp;r3和r0之间的通讯</a>
+</h3>
+<h3 class="topic">
+<a name="73act07o6arbjspflh0b7m45tq">&nbsp;&nbsp;mknod指令中250是主工作号，0是次工作号</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-1_files/4qoh0irm7ets6vjho3brjb4rjt.png"></p>
+<h3 class="topic">
+<a name="5ec8ta4uj9g7tv14141aeo7tsi">&nbsp;&nbsp;&nbsp;与windows差不多，都是在r3通过设备对象名打开设备对象，从而打开r0的内核模块，从而向设备对象发送各种读写请求</a>
+</h3>
+<h3 class="topic">
+<a name="1u3713u9fcm8eb18pdet81dtof">&nbsp;&nbsp;3环程序</a>
+</h3>
+<h3 class="topic">
+<a name="2gbcagvi7lml4o5k0oltfq6ogs">&nbsp;&nbsp;&nbsp;1.	#include &lt;stdio.h&gt;&#13;
+2.	#include &lt;unistd.h&gt;&#13;
+3.	#include &lt;fcntl.h&gt;&#13;
+4.	&#13;
+5.	&#13;
+6.	int main(void)&#13;
+7.	{&#13;
+8.	    int fd, i;&#13;
+9.	    int data;&#13;
+10.	    fd = open(&ldquo;/dev/second&rdquo;,O_RDONLY);//使用open打开设备/dev/second&#13;
+11.	    if (fd &lt; 0)&#13;
+12.	    {&#13;
+13.	        printf(&ldquo;open /dev/second error\n&rdquo;);&#13;
+14.	    }&#13;
+15.	    for(i = 0; ; i++)&#13;
+16.	    {&#13;
+17.	      read(fd, &amp;data, sizeof(data));//调用设备的read函数，每个一秒调用一次&#13;
+18.	      printf(&ldquo;read /dev/second is %d\n&rdquo;,data);&#13;
+19.	      sleep(1);&#13;
+20.	       }&#13;
+21.	    close(fd);&#13;
+22.	}&#13;
+</a>
+</h3>
+<h3 class="topic">
+<a name="2cbe53n7rrjlasbdr30mt3k2do">&nbsp;&nbsp;&nbsp;&nbsp;makefile</a>
+</h3>
+<h3 class="topic">
+<a name="7acldg8brk6nj4cnl0gk1g0ecv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1.	timer-client:timer-client.o&#13;
+2.	        gcc -o timer-client timer-client.o&#13;
+3.	timer-client.o:timer-client.c&#13;
+4.	        gcc -c timer-client.c -o timer-client.o&#13;
+5.	clean:&#13;
+6.	        rm -f *.o timer-client&#13;
+</a>
+</h3>
+<h3 class="topic">
+<a name="0b37jpa1i2jaupq1dud4d8carj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0环程序</a>
+</h3>
+<h3 class="topic">
+<a name="0h8ak07jjfdn881ltcb7bcmdgf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1.	#include &lt;linux/module.h&gt;&#13;
+2.	#include &lt;linux/types.h&gt;&#13;
+3.	#include &lt;linux/fs.h&gt;&#13;
+4.	#include &lt;linux/errno.h&gt;&#13;
+5.	#include &lt;linux/mm.h&gt;&#13;
+6.	#include &lt;linux/sched.h&gt;&#13;
+7.	#include &lt;linux/init.h&gt;&#13;
+8.	#include &lt;linux/cdev.h&gt;&#13;
+9.	#include &lt;asm/io.h&gt;&#13;
+10.	#include &lt;asm/system.h&gt;&#13;
+11.	#include &lt;asm/uaccess.h&gt;&#13;
+12.	#include &lt;linux/timer.h&gt;&#13;
+13.	#include &lt;asm/atomic.h&gt;&#13;
+14.	&#13;
+15.	&#13;
+16.	#define SECOND_MAJOR 0&#13;
+17.	&#13;
+18.	&#13;
+19.	static int second_major = SECOND_MAJOR; //默认为0的主设备号，可以用于接收用户的输入，从而使用用户指定的设备号&#13;
+20.	&#13;
+21.	&#13;
+22.	struct second_dev&#13;
+23.	{&#13;
+24.	    struct cdev cdev;  //即指向设备对象&#13;
+25.	    atomic_t counter;  // 该值类型为atomic_t，说明是一个原子操作&#13;
+26.	    struct timer_list s_timer;&#13;
+27.	};// second_dev是一个全局结构体，用于保存设备对象的指针cdev、与应用层通讯的数据（counter和定时器timer）&#13;
+28.	//可以将该结构体理解为驱动执行时候的上下文&#13;
+29.	&#13;
+30.	struct second_dev *second_devp;&#13;
+31.	&#13;
+32.	&#13;
+33.	static void second_timer_handle(unsigned long arg)&#13;
+34.	{&#13;
+35.	    mod_timer(&amp;second_devp-&gt;s_timer, jiffies + HZ);//将定时器超时时间设置为下一秒，从而使得下一秒后定时器函数依然执行&#13;
+36.	    atomic_inc(&amp;second_devp-&gt;counter);//原子操作使得counter自增1&#13;
+37.	    &#13;
+38.	    printk(KERN_INFO &ldquo;current jiffies is %ld\n&rdquo;,jiffies);//输出内核信息&#13;
+39.	}&#13;
+40.	&#13;
+41.	&#13;
+42.	int second_open(struct inode *inode, struct file *filp)&#13;
+43.	{&#13;
+44.	  init_timer(&amp;second_devp-&gt;s_timer);//初始化定时器，定时器保存在second_devp结构体中&#13;
+45.	  second_devp-&gt;s_timer.function = &amp;second_timer_handle; //设置定时器的处理函数，即到指定时间时，会调用的函数&#13;
+46.	  second_devp-&gt;s_timer.expires = jiffies + HZ;//设置定时器的超时时间，这里为1秒，即一秒后会执行定时器对应函数&#13;
+47.	  &#13;
+48.	  add_timer(&amp;second_devp-&gt;s_timer);//将定时器添加到定时器队列中&#13;
+49.	  atomic_set(&amp;second_devp-&gt;counter, 0);//原子操作，将counter设置为0&#13;
+50.	  return 0;    &#13;
+51.	}&#13;
+52.	&#13;
+53.	&#13;
+54.	int second_release(struct inode *inode, struct file *filp)&#13;
+55.	{&#13;
+56.	    del_timer(&amp;second_devp-&gt;s_timer);//销毁定时器&#13;
+57.	    &#13;
+58.	    return 0;&#13;
+59.	}&#13;
+60.	static ssize_t second_read(struct file *filp, char __user *buf, size_t count, &#13;
+61.	  loff_t *ppos)//参数分别为文件句柄(即用户层执行open打开设备后获得的，用于标识设备、buf即用户层内存、count为读取数据大小&#13;
+62.	{&#13;
+63.	    int counter;&#13;
+64.	    &#13;
+65.	    counter = atomic_read(&amp;second_devp-&gt;counter);//源字操作，将counter读出来，&#13;
+66.	    if (put_user(counter, (int *)buf))//将counter写道用户层空间buf中&#13;
+67.	    {&#13;
+68.	        return -EFAULT;&#13;
+69.	    }else&#13;
+70.	    {&#13;
+71.	        return sizeof(unsigned int);//返回传输的字节数&#13;
+72.	    }&#13;
+73.	    &#13;
+74.	}&#13;
+75.	&#13;
+76.	//该结构体类似windows内核中驱动对象的派遣函数的数组，保存着该设备用于响应3环调用的函数，这里会响应open、release、read&#13;
+77.	static const struct file_operations second_fops =&#13;
+78.	{&#13;
+79.	    .owner = THIS_MODULE,&#13;
+80.	    .open = second_open,&#13;
+81.	    .release = second_release,&#13;
+82.	    .read = second_read,&#13;
+83.	};&#13;
+84.	static void second_setup_cdev(struct second_dev *dev, int index)//本函数真正创建、初始化、添加设备对象结构体&#13;
+85.	{     //根据主设备号，获得对应设备号。推测MKDEV不是为了创建设备对象，而是根据获得second_major，devno&#13;
+86.	    int err, devno = MKDEV(second_major, index);&#13;
+87.	    cdev_init(&amp;dev-&gt;cdev, &amp;second_fops); //从second_dev中取出设备对象的指针cdev，将其进行初始化&#13;
+88.	    dev-&gt;cdev.owner = THIS_MODULE;  //设备对象的owner字段设置为THIS_MODULE&#13;
+89.	    dev-&gt;cdev.ops = &amp;second_fops;   //设备对象的ops字段设置为second_fops结构体，该结构体中指定该设备用于响应调用的函数&#13;
+90.	    err = cdev_add(&amp;dev-&gt;cdev, devno, 1);//调用cdev_add添加设备&#13;
+91.	    if (err)&#13;
+92.	    {&#13;
+93.	        printk(KERN_NOTICE &ldquo;Error %d add second%d&rdquo;, err, index);&#13;
+94.	    }&#13;
+95.	}//该函数执行完毕后，本驱动程序将一个设备注册完成，之后可以使用该设备响应3环的调用&#13;
+96.	int second_init(void)&#13;
+97.	{&#13;
+98.	    int ret;&#13;
+99.	    dev_t devno = MKDEV(second_major, 0); //通过MKDEV生成一个设备号，devno驱动最后会生成一个设备对象，应用层通过设备对象 &#13;
+100.	                                // 的设备名打开设备对象，从而与r0进行通讯&#13;
+101.	&#13;
+102.	    if (second_major) //主设备号，该数据是用户层作为参数传进来的，其值默认为0&#13;
+103.	    {//如果主设备号不为0，即是从3环传进来的，则调用register_chrdev_region注册设备区域，设备名称为&ldquo;second&rdquo;&#13;
+104.	        ret = register_chrdev_region(devno, 1, &ldquo;second&rdquo;);&#13;
+105.	    }else&#13;
+106.	    {//如果主设备号为默认的0，则调用alloc_chrdev_region申请字符设备内存区域，设备名称为&ldquo;second&rdquo;&#13;
+107.	        ret = alloc_chrdev_region(&amp;devno, 0, 1, &ldquo;second&rdquo;);&#13;
+108.	        second_major = MAJOR(devno);//根据alloc_chrdev_region返回值获得主设备号&#13;
+109.	    }&#13;
+110.	    if (ret &lt; 0)&#13;
+111.	    {&#13;
+112.	        return ret;&#13;
+113.	    }&#13;
+114.	    &#13;
+115.	    second_devp = kmalloc(sizeof(struct second_dev), GFP_KERNEL);//分配一块内存，内存大小为second_dev结构体大小&#13;
+116.	    if (!second_devp)         //可以将该结构体理解为驱动执行时候的上下文，具体存储的数据可以看之前该结构体的定义&#13;
+117.	    {            &#13;
+118.	        ret = -ENOMEM;   &#13;
+119.	        goto fail_malloc;&#13;
+120.	    }&#13;
+121.	    //将该结构体初始化为0&#13;
+122.	    memset(second_devp, 0, sizeof(struct second_dev));&#13;
+123.	    //将该结构体传递给second_setup_cdev函数，该函数负责结构体中的字段的赋值，即注册设备&#13;
+124.	    second_setup_cdev(second_devp, 0);&#13;
+125.	    &#13;
+126.	    return 0;&#13;
+127.	&#13;
+128.	&#13;
+129.	  fail_malloc:&#13;
+130.	      unregister_chrdev_region(devno, 1);&#13;
+131.	      return ret;&#13;
+132.	}&#13;
+133.	&#13;
+134.	&#13;
+135.	void second_exit(void)&#13;
+136.	{&#13;
+137.	    cdev_del(&amp;second_devp-&gt;cdev);&#13;
+138.	    kfree(second_devp);&#13;
+139.	    unregister_chrdev_region(MKDEV(second_major, 0), 1);&#13;
+140.	}&#13;
+141.	&#13;
+142.	&#13;
+143.	MODULE_AUTHOR(&ldquo;djwow&rdquo;);&#13;
+144.	MODULE_LICENSE(&ldquo;Dual BSD/GPL&rdquo;);&#13;
+145.	&#13;
+146.	&#13;
+147.	module_param(second_major, int, S_IRUGO);&#13;
+148.	&#13;
+149.	&#13;
+150.	module_init(second_init);&#13;
+151.	module_exit(second_exit);&#13;
+152.	&#13;
+</a>
+</h3>
+<h3 class="topic">
+<a name="3b1u47qa6i3t4q6innur2jpjr7">&nbsp;&nbsp;使用以下指令使得0环与3环进行通讯</a>
+</h3>
+<h3 class="topic">
+<a name="6456u0rvmsuj36e82ulf34nber">&nbsp;&nbsp;&nbsp;注意这里与windwos最大的区别在于将内核模块加载到内核之后，内核模块会创建设备对象，还需要我们通过mknod指令创建设备节点，从而当3环程序执行时，才能使用内核对象</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-1_files/1mm5bvd6dr13vkq7kh7tsfqfiv.png"></p>
+<h3 class="topic">
+<a name="65l0k6glq6p0d7lq4h2q6i12q3">&nbsp;&nbsp;操作流程</a>
+</h3>
+<h3 class="topic">
+<a name="1029upelit6b9k2fvht7di0fpu">&nbsp;&nbsp;&nbsp;编译内核模块并加载内核模块</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-1_files/0h0n7qj7566dgujm273goufm0k.png"></p>
+<h3 class="topic">
+<a name="5mpg8m38tth5hlrfl9rksdmi2i">&nbsp;&nbsp;&nbsp;&nbsp;查看内核模块所定义的设备对象，主工作号为251，且该设备对象是一个字符设备(character devices)，还有一种设备叫块设备(block devices)</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-1_files/4elatihav1fnm9mdgbs376ftg4.png"></p>
+<h3 class="topic">
+<a name="699du6suld4k4a25is0j9jpn7d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;创建设备节点</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-1_files/0bun3g6jgl8tam7lrdv1r84u5h.png"></p>
+<h3 class="topic">
+<a name="483grpi1a0oudp9efhvdi6550o">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;编译客户端程序并运行</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-1_files/75gjivjee1j9eoa8ja2g64i7na.png"></p>
+<h3 class="topic">
+<a name="74kvmfm26dfcl1r40eg02ns3ro">&nbsp;以上具体的程序demo可以查看linux内核代码demo</a>
+</h3>
+</body>
+</html>

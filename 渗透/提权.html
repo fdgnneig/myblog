@@ -1,0 +1,891 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>提权</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="39ma2eqnp9963kd1l7nl79u754">提权</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="%E6%8F%90%E6%9D%83_files/images/%E6%8F%90%E6%9D%83.jpg"></div>
+<h2 class="topic">
+<a name="0q4ic5balgltqmnt39dovl5n8r">已经获得目标的普通用户权限，尝试获得root权限&#13;
+尽管由于操作系统版本，补丁程序级别和各种其他因素的不同，每个提权目标都可以被认为是唯一的，但是还是有一些常见的升级方法。 为了利用这些资源，我们将搜索配置错误的服务，对二进制文件或服务的文件权限限制不足，直接的内核漏洞，以高特权运行的易受攻击的软件，存储在本地文件上的敏感信息，在执行二进制文件之前始终提升特权的注册表设置，安装 可能包含硬编码凭据的脚本以及许多其他脚本。</a>
+</h2>
+<h2 class="topic">
+<a name="2g5kkencck0b1u2r2q935cvlbb">信息收集</a>
+</h2>
+<h3 class="topic">
+<a name="5vujfgclnrsb1dobmibuj49jqj">&nbsp;在折衷目标并获得非特权用户的最初立足点之后，我们的第一步是收集有关目标的尽可能多的信息。 这使我们可以更好地了解受感染机器的性质，并发现特权升级的可能途径。</a>
+</h3>
+<h3 class="topic">
+<a name="02bgjtb4fp2nektlou8u224arv">&nbsp;手动枚举收集信息</a>
+</h3>
+<h3 class="topic">
+<a name="1pljbi9jdqa6rpehilihrll0v8">&nbsp;&nbsp;手动枚举系统可能很耗时。 但是，这种方法可以进行更多控制，并且可以帮助识别自动化工具经常会遗漏的其他特殊特权升级方法。&#13;
+   根据目标操作系统的版本，此模块中的某些命令可能需要稍作修改。 此外，并非本节中介绍的所有命令都可以在专用客户端上复制。</a>
+</h3>
+<h3 class="topic">
+<a name="3f83u7lfbqtun2riue8l9vgti2">&nbsp;&nbsp;枚举用户</a>
+</h3>
+<h3 class="topic">
+<a name="5991phne0ili3k3ih7v4if3g7b">&nbsp;&nbsp;&nbsp;在获得对目标的初始访问权限时，我们应该识别的第一件事就是用户上下文。 在Windows和Linux平台上都可以使用whoami命令，这是一个很好的起点。</a>
+</h3>
+<h3 class="topic">
+<a name="537g33lftrekbtk9i274f35cd4">&nbsp;&nbsp;&nbsp;&nbsp;在不带参数的情况下运行时，whoami将显示外壳程序运行所使用的用户名。 在Windows上，我们可以将发现的用户名作为参数传递给net user命令以收集更多信息。根据上面的输出，我们以学生用户的身份运行，并收集了包括该用户所属的组在内的其他信息。</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%8F%90%E6%9D%83_files/3da2ivom7b7ucldtaa39epa4qi.png"></p>
+<h3 class="topic">
+<a name="5e7olnvg57f14hl9sn18m6it1r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在基于Linux的系统上，我们可以使用id命令来收集用户上下文信息，输出显示我们正在作为学生用户运行，其用户标识符（UID）和组标识符（GID）均为1000。</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%8F%90%E6%9D%83_files/3johogf3tinampiq19elnrbb9k.png"></p>
+<h3 class="topic">
+<a name="69u82234sgmvdnvri3t4te1enm">&nbsp;&nbsp;&nbsp;要发现系统上的其他用户帐户，我们可以在基于Windows的系统上使用net user命令。</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%8F%90%E6%9D%83_files/4vfgf70perc5kgo12inlip7978.png"></p>
+<h3 class="topic">
+<a name="1s8s11qenommbgl364mqgaspdd">&nbsp;&nbsp;&nbsp;&nbsp;要枚举基于Linux的系统上的用户，我们可以简单地读取/ etc / passwd文件的内容。passwd文件列出了几个用户帐户，包括目标计算机上各种服务（例如www-data）使用的帐户，这表明可能已安装了Web服务器。</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%8F%90%E6%9D%83_files/2crnjqapbau94fcvv20obif5jg.png"></p>
+<h3 class="topic">
+<a name="7rtibbf1pk4vf8mntbjpmpnkhq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   列举目标计算机上的所有用户可以帮助识别潜在的高特权用户帐户，我们可以以此为目标来提升我们的特权</a>
+</h3>
+<h3 class="topic">
+<a name="5o7cl08fap8bk501v6dibi25go">&nbsp;&nbsp;枚举主机名</a>
+</h3>
+<h3 class="topic">
+<a name="06ph4k41412vi2ftpu2rnuqn17">&nbsp;&nbsp;&nbsp;机器的主机名通常可以提供有关其功能角色的线索。 主机名通常会包含可识别的缩写，例如Web服务器的Web，数据库服务器的db，域控制器的dc等。</a>
+</h3>
+<h3 class="topic">
+<a name="0732l222183nl2g08ijgh9c4jt">&nbsp;&nbsp;&nbsp;&nbsp;我们可以使用适当命名的hostname命令发现主机名，该命令已安装在Windows和Linux上。</a>
+</h3>
+<h3 class="topic">
+<a name="7up90e2gpt43s97tv10rr2gp6p">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Windows机器的相当通用的名称确实指出了网络中可能的命名约定，该约定可以帮助我们找到其他工作站</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%8F%90%E6%9D%83_files/47vpk6jirejmdfsmbsu98uqvd3.png"></p>
+<h3 class="topic">
+<a name="2s6rltip4a8f91nqlr8hf81vc1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Linux客户端的主机名向我们提供了有关正在使用的OS（Debian）的信息。</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%8F%90%E6%9D%83_files/1ja0as0ahmb7hvgdl9qhb89kov.png"></p>
+<h3 class="topic">
+<a name="0762gq28gqr6maf6iero5eh6d6">&nbsp;&nbsp;枚举操作系统版本和体系结构</a>
+</h3>
+<h3 class="topic">
+<a name="0cb9s99u2kt4p4negstv7avl3f">&nbsp;&nbsp;&nbsp;在特权升级过程中的某个时刻，我们可能需要依赖内核漏洞利用程序，这些漏洞利用程序专门利用目标操作系统核心中的漏洞。 这些类型的利用是针对特定目标类型（由特定操作系统和版本组合指定）构建的。 由于使用不匹配的内核漏洞攻击目标可能导致系统不稳定（导致访问丢失并可能会警告系统管理员）</a>
+</h3>
+<h3 class="topic">
+<a name="45qspmm6ipimc8su4fupo5lk3q">&nbsp;&nbsp;&nbsp;&nbsp;在Windows操作系统上，我们可以使用systeminfo实用程序收集特定的操作系统和体系结构信息。&#13;
+  我们还可以使用findstr以及一些有用的标志来过滤输出。 具体来说，我们可以使用/ B在行的开头匹配模式，并使用/ C：指定特定的搜索字符串。使用这些标志来提取操作系统的名称（名称）及其版本（版本）和体系结构（系统）。</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%8F%90%E6%9D%83_files/7gms0j1eo3ajel7r09acpqcdp3.png"></p>
+<h3 class="topic">
+<a name="1btmh4hb507db33j360dbp3u7u">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  在Linux上，/ etc / issue和/ etc / *-release文件包含类似的信息。 我们还可以发出uname -a命令： / etc目录中的文件包含操作系统版本（Debian 9），uname -a输出内核版本（4.9.0-6）和体系结构（i686 / x86）。</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%8F%90%E6%9D%83_files/5nln01n71ph06ajqvt6kp6gr9j.png"></p>
+<h3 class="topic">
+<a name="5u0cunnq5g3929k271mok2imve">&nbsp;&nbsp;枚举运行的金进程和服务</a>
+</h3>
+<h3 class="topic">
+<a name="74s670vv52v37dkk5hbfn8gnq6">&nbsp;&nbsp;&nbsp;接下来，让我们看一下正在运行的流程和服务，这些流程和服务可以使我们提升特权。 为此，该过程必须在特权帐户的上下文中运行，并且必须具有不安全的权限，或者允许我们以意想不到的方式与其交互。</a>
+</h3>
+<h3 class="topic">
+<a name="30t76jethmbbk0len5kmmhkjn6">&nbsp;&nbsp;&nbsp;&nbsp;   我们可以使用tasklist450命令列出Windows上正在运行的进程。  / SVC标志将返回映射到特定Windows服务的进程。&#13;
+  输出显示MySQL服务正在机器上运行，在适当的条件下可能会引起您的兴趣。&#13;
+  请记住，此输出未列出特权用户运行的进程。 在基于Windows的系统上，我们需要具有较高的特权才能收集此信息，这使处理过程更加困难</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%8F%90%E6%9D%83_files/1iv04i2mk26e1g0s7qr9t2o56a.png"></p>
+<h3 class="topic">
+<a name="4srqgi0osfsplqb7qbj2lsa127">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在Linux上，我们可以使用ps命令列出系统进程（包括特权用户运行的进程）。 我们将使用a和x标志列出所有有或没有tty（即界面终端）的进程，并使用u标志以用户可读的格式列出进程。输出列出了几个以root用户身份运行的进程，值得研究它们可能存在的漏洞。我们的ps命令也在输出中列出。</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%8F%90%E6%9D%83_files/1a0dc4h80hs04hmfa6a255946b.png"></p>
+<h3 class="topic">
+<a name="75p4i08i40iardoq7sgkhco9ff">&nbsp;&nbsp;枚举网络信息</a>
+</h3>
+<h3 class="topic">
+<a name="7h0kvn6gnmls1ull89ukosjf5j">&nbsp;&nbsp;&nbsp;我们对目标主机的分析的下一步是检查可用的网络接口，路由和开放端口。&#13;
+  此信息可以帮助我们确定受感染的目标是否连接到多个网络，因此可以用作枢纽。 此外，特定虚拟接口的存在可能表明存在虚拟化或防病毒软件</a>
+</h3>
+<h3 class="topic">
+<a name="4b9046ml1dkfqdq3o8oahvda6f">&nbsp;&nbsp;&nbsp;&nbsp;  攻击者可能使用受感染的目标在连接的网络之间旋转或移动。 这将扩大网络可见性，并使攻击者可以将原始攻击机器无法直接看到的主机作为目标。&#13;
+  我们还可以调查端口绑定，以查看运行中的服务是否仅在环回地址上可用，而不在可路由的地址上可用。 研究在回送接口上侦听的特权程序或服务可能会扩大我们的攻击范围，并增加我们进行特权升级攻击的可能性。</a>
+</h3>
+<h3 class="topic">
+<a name="7p741o7m221sedunnctthb5dmf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;我们可以使用/ all标志使用ipconfig，在Windows操作系统上开始收集信息，以显示所有适配器的完整TCP / IP配置。</a>
+</h3>
+<h3 class="topic">
+<a name="52dlr0gv98ehs70bm34caqubii">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%8F%90%E6%9D%83_files/3sfgejl6ua09jgut56k2ihch2e.png"></p>
+<h3 class="topic">
+<a name="61lavi5fsmgqu85v37ilseheit">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%8F%90%E6%9D%83_files/0g3j9kchvofot8t7c6cq23fq9j.png"></p>
+<h3 class="topic">
+<a name="2d9kd9qujvn9lqkfsor94kl6cb">&nbsp;&nbsp;&nbsp;要显示网络路由表，我们将使用route命令，后跟print参数。（https://baike.baidu.com/item/route%20print/6529402）</a>
+</h3>
+<h3 class="topic">
+<a name="3nvlopjsdhl6okm4ori2ivjmom">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%8F%90%E6%9D%83_files/1o770855sdnqh7ocfirv28sptd.png"></p>
+<h3 class="topic">
+<a name="6to411m076vph1g97gj11uemr8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%8F%90%E6%9D%83_files/3io3jdqf20en9s10ru2thq8r7a.png"></p>
+<h3 class="topic">
+<a name="2q206400a17k173vobho1i254v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;最后，我们可以使用netstat455查看活动的网络连接。 指定a标志将显示所有活动的TCP连接，n标志可让我们以数字形式显示地址和端口号，而o标志将显示每个连接的所有者PID。</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%8F%90%E6%9D%83_files/6r90c59aljr98nj4qa7d1949i6.png"></p>
+<h3 class="topic">
+<a name="0lc7hogtijfukjcb1j7vk788e7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;netstat不仅为我们提供了计算机上所有侦听端口的列表，还包括有关已建立连接的信息，这些信息可能会揭示连接到该计算机的其他用户，我们以后可能希望将其作为目标。</a>
+</h3>
+<h3 class="topic">
+<a name="16ju3kvq7sgkl4var85b80sj8q">&nbsp;&nbsp;&nbsp;在基于Linux的主机上可以使用类似的命令。 根据Linux的版本，我们可以使用ifconfig或ip列出每个网络适配器的TCP / IP配置。这两个命令都接受a标志，以显示所有可用信息。根据上面的输出，Linux客户端也连接到多个网络。</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%8F%90%E6%9D%83_files/4cc4jiihg4td04e5sp141078nh.png"></p>
+<h3 class="topic">
+<a name="5ff6774o4i6g70cp441ak67tpb">&nbsp;&nbsp;&nbsp;&nbsp;根据Linux的版本和版本，我们可以使用route或routel显示网络路由表。</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%8F%90%E6%9D%83_files/44572896ovi4lqu27bi9klso3b.png"></p>
+<h3 class="topic">
+<a name="5n67psfq9lcrpgbsosmjmt1g29">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;最后，我们可以使用netstat或ss显示活动的网络连接和侦听端口，这两个端口都接受相同的参数。&#13;
+  例如，我们可以使用-a列出所有连接，使用-n避免主机名解析（这可能会使命令执行停滞），并使用-p列出连接所属的进程名称。 我们可以组合参数并只需运行ss -anp即可： </a>
+</h3>
+<p class="topicImage">
+<img src="%E6%8F%90%E6%9D%83_files/6bf5oeh4tpru58nnud335kir3d.png"></p>
+<h3 class="topic">
+<a name="5331ak1hje6m6a4h75n7bf5h8v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;输出列出了各种侦听端口和活动会话，包括我们自己的活动SSH连接</a>
+</h3>
+<h3 class="topic">
+<a name="36m80s52f8ggihsefb3ggfu05m">&nbsp;&nbsp;枚举防火墙状态和规则</a>
+</h3>
+<h3 class="topic">
+<a name="4abb7t58p9qhk8m0jequ6ommr8">&nbsp;&nbsp;&nbsp;一般来说，防火墙的状态，配置文件和规则仅在评估的远程利用阶段才有意义。 但是，此信息在特权升级期间可能很有用。 例如，如果某个网络服务由于被防火墙阻止而无法远程访问，则通常可以通过环回接口在本地访问它。 如果我们可以在本地与这些服务进行交互，则我们可以利用它们来提升我们在本地系统上的特权。&#13;
+   此外，我们可以在此阶段收集有关入站和出站端口过滤的信息，以方便在需要转向内部网络时进行端口转发和隧道化。</a>
+</h3>
+<h3 class="topic">
+<a name="050e15pu6e9jmf9d4opvcqc555">&nbsp;&nbsp;&nbsp;&nbsp;   在Windows上，我们可以使用netsh命令检查当前的防火墙配置文件。</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%8F%90%E6%9D%83_files/1k2l88me0qsq8icb6kon66930p.png"></p>
+<h3 class="topic">
+<a name="08oqq62lcur1qsj7covpsg7l8q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在这种情况下，当前的防火墙配置文件处于活动状态，因此让我们仔细看看防火墙规则。 我们可以使用以下语法通过netsh命令列出防火墙规则，根据上面列出的两个防火墙规则，允许Microsoft Photos应用程序使用任何协议建立与任何IP地址之间的入站和出站连接。 请记住，并非所有防火墙规则都有用，但是某些配置可能有助于我们扩大攻击面。</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%8F%90%E6%9D%83_files/6dove0acre7m2jvladcevt4k2t.png"></p>
+<h3 class="topic">
+<a name="19emk4717s961gq78ifsgsll49">&nbsp;&nbsp;&nbsp;  在基于Linux的系统上，我们必须具有root特权才能使用iptables列出防火墙规则。但是，根据防火墙的配置方式，我们可以以标准用户身份收集有关规则的信息</a>
+</h3>
+<h3 class="topic">
+<a name="4fo179aebrak4lmba1kcbped3g">&nbsp;&nbsp;&nbsp;&nbsp;   例如，默认情况下，Debian Linux上的iptables-persistent软件包将防火墙规则保存在/ etc / iptables目录下的特定文件中。 系统在启动时使用这些文件来还原netfilter规则。 这些文件通常只具有较弱的权限，从而允许目标系统上的任何本地用户读取它们。</a>
+</h3>
+<h3 class="topic">
+<a name="51ol854km7c0ks7o77qmgutup8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;我们还可以搜索iptables-save命令创建的文件，该命令用于将防火墙配置转储到用户指定的文件中。 然后，该文件通常用作iptables-restore命令的输入，并在引导时用于还原防火墙规则。 如果系统管理员曾经运行过此命令，我们可以搜索配置目录（/ etc）或grep文件系统中的iptables命令来查找该文件。 如果文件具有不安全的权限，我们可以使用内容推断系统上运行的防火墙配置规则。</a>
+</h3>
+<h3 class="topic">
+<a name="5a5n0eouju6gbvhukc2ko9i54f">&nbsp;&nbsp;枚举计划任务</a>
+</h3>
+<h3 class="topic">
+<a name="5va58s5ngutjf4uha4s42qjut9">&nbsp;&nbsp;&nbsp;攻击者通常在特权提升攻击中利用计划任务。&#13;
+   充当服务器的系统通常会定期执行各种自动化的计划任务。 这些服务器上的调度系统通常具有一些令人困惑的语法，该语法用于执行用户创建的可执行文件或脚本。 如果这些系统配置不正确，或者用户创建的文件具有不安全的权限，我们可以修改这些文件，这些文件将由调度系统以高特权级别执行。</a>
+</h3>
+<h3 class="topic">
+<a name="2h46pat4tncd1qm446322logqr">&nbsp;&nbsp;&nbsp;&nbsp;我们可以使用schtasks命令在Windows上创建和查看计划的任务。  / query参数显示任务，/ FO LIST将输出格式设置为简单列表。 我们也可以使用/ V请求详细输出。&#13;
+schtasks生成的输出包含许多有用的信息，例如要运行的任务，下一次应运行的时间，上次运行的时间以及运行频率的详细信息。</a>
+</h3>
+<h3 class="topic">
+<a name="7d9k22n2dhr8qs6a9jh1bs7op9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%8F%90%E6%9D%83_files/74in07f2ffba6fe27jishc6u2j.png"></p>
+<h3 class="topic">
+<a name="3n8hsoaovt1adtr94erpap1f2j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%8F%90%E6%9D%83_files/6r0dpma9j69m1tck8tqtc0955f.png"></p>
+<h3 class="topic">
+<a name="672vojkqo6n9cc8p5j7apoaeg4">&nbsp;&nbsp;&nbsp;基于Linux的作业计划程序称为Cron。计划的任务在/etc/cron.*目录下列出，其中*表示任务运行的频率。 例如，可以在/etc/cron.daily下找到每天运行的任务。 每个脚本都在其自己的子目录中列出。&#13;
+  列出目录内容后，我们注意到计划每天执行的一些任务。&#13;
+</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%8F%90%E6%9D%83_files/69ti6lv9otit3r1ko5i1pu6ksa.png"></p>
+<h3 class="topic">
+<a name="0jridi1n9029je8k0op3tul7gq">&nbsp;&nbsp;&nbsp;&nbsp;值得注意的是，系统管理员经常在/ etc / crontab文件中添加自己的计划任务。 应仔细检查这些任务的文件权限，因为该特定文件中的大多数作业将以root用户身份运行。此示例显示了以root用户身份运行的备份脚本。 如果该文件具有弱权限，我们也许可以利用它来提升我们的特权。</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%8F%90%E6%9D%83_files/12i5jbdefrigt1nvhkdim1c10q.png"></p>
+<h3 class="topic">
+<a name="0k5m4k03h5b0qu7smc7bac2sts">&nbsp;&nbsp;枚举已安装的应用程序和补丁程序级别</a>
+</h3>
+<h3 class="topic">
+<a name="3relidkl1mli8uikce0e1fuaq4">&nbsp;&nbsp;&nbsp;在某些时候，我们可能需要利用漏洞来升级我们的本地特权。 如果是这样，我们将首先枚举所有已安装的应用程序，并逐一列出每个应用程序的版本（以及基于Windows的系统上的OS补丁程序级别），以寻找可行的漏洞利用程序。 我们可以使用此信息来搜索匹配的漏洞利用。&#13;
+   手动搜索此信息可能非常耗时且无效。 但是，我们可以利用非常强大的基于Windows的实用程序wmic在Windows系统上自动执行此过程。（wmic：https://docs.microsoft.com/en-us/windows/win32/wmisdk/wmic）</a>
+</h3>
+<h3 class="topic">
+<a name="5p6lrc86e7tobrb3eb9omgp2qv">&nbsp;&nbsp;&nbsp;&nbsp;wmic实用程序提供对Windows Management Instrumentation的访问，Windows Management Instrumentation是Windows上管理数据和操作的基础结构。&#13;
+   我们可以将wmic与product WMI类参数一起使用，后跟get，顾名思义，该参数用于检索特定的属性值。 然后，我们可以选择我们感兴趣的属性，例如名称，版本和供应商。&#13;
+   要记住的一件事是product WMI类仅列出Windows Installer安装的应用程序。它不会列出不使用Windows Installer的应用程序。</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%8F%90%E6%9D%83_files/3vt5mj91d7iaundro1baojhlsk.png"></p>
+<h3 class="topic">
+<a name="5ep64ijhuviqkiksts16a70ar9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过查询Win32_QuickFixEngineering（qfe）WMI类，wmic也可以用于列出系统范围的更新。HotFixID和InstalledOn信息的组合可以为我们提供目标Windows操作系统安全状态的精确指示。 根据此输出，该系统最近尚未更新，这可能使开发更容易。</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%8F%90%E6%9D%83_files/3i48f5qtabj0u00qrbs9doit1d.png"></p>
+<h3 class="topic">
+<a name="0jh4djaf3u0niivu8qets1mbk4">&nbsp;&nbsp;&nbsp;基于Linux的系统使用各种程序包管理器。 例如，基于Debian的Linux发行版使用dpkg，而基于Red Hat的系统使用rpm。要列出在Debian系统上安装的应用程序（按dpkg），我们可以使用dpkg -l。&#13;
+这证实了我们先前的期望：Debian机器实际上正在运行Web服务器。 在这种情况下，它正在运行Apache2。</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%8F%90%E6%9D%83_files/1a65johppi0mjfmkv0eu64iqkm.png"></p>
+<h3 class="topic">
+<a name="3dqkimgj8qvkp4tl1fj6o8en5n">&nbsp;&nbsp;枚举可读/可写文件和目录</a>
+</h3>
+<h3 class="topic">
+<a name="10me0ktt0l8q02supon28l0q1g">&nbsp;&nbsp;&nbsp;如前所述，访问限制不足的文件可以创建一个漏洞，该漏洞可以授予攻击者更高的特权。 当攻击者可以修改在特权帐户的上下文下执行的脚本或二进制文件时，通常会发生这种情况。&#13;
+   此外，非特权用户可以读取的敏感文件可能包含重要信息，例如数据库或服务帐户的硬编码凭据。&#13;
+   由于手动检查每个文件和目录的权限是不可行的，因此我们需要使此任务尽可能自动化。&#13;
+   在Windows平台上，有许多实用程序和工具可以为我们自动执行此任务。  SysInternals的AccessChk可以说是为此目的最著名和最常用的工具。</a>
+</h3>
+<h3 class="topic">
+<a name="20gpiva4erhd4qgfc8p6jdfaqe">&nbsp;&nbsp;&nbsp;&nbsp;SysInternals</a>
+</h3>
+<h3 class="topic">
+<a name="7700f084eoncc4vpfmil553bfj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://docs.microsoft.com/en-us/sysinternals/downloads/accesschk</a>
+</h3>
+<h3 class="topic">
+<a name="1ee80rd4m8vfcofkghog8f55q2">&nbsp;&nbsp;&nbsp;&nbsp;AccessChk</a>
+</h3>
+<h3 class="topic">
+<a name="4cffos3ors4jftops8e3rg0c6u">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://docs.microsoft.com/en-us/windows/win32/secauthz/well-known-sids</a>
+</h3>
+<h3 class="topic">
+<a name="3id6knd5fjjg7oqakj4a7dhr15">&nbsp;&nbsp;&nbsp;演示如何使用AccessChk在Program Files目录中查找具有不安全文件权限的文件。 请注意，目标二进制文件仅是出于本练习的目的而创建的。&#13;
+  具体来说，我们将枚举Program Files目录，以搜索允许Everyone476组具有写权限的任何文件或目录。&#13;
+  我们将使用-u来抑制错误，使用-w来搜索写访问权限，并使用-s来进行递归搜索。 由于此工具非常有用，因此还值得探索其他选项。</a>
+</h3>
+<h3 class="topic">
+<a name="2m8cbcb6tfri20q6vktct5b4li">&nbsp;&nbsp;&nbsp;&nbsp;AccessChk成功识别了一个可全局写入的可执行文件。 如果此文件要由特权用户或服务帐户执行，则我们可以尝试使用我们选择的恶意文件（例如反向外壳程序）覆盖它，以提升特权。</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%8F%90%E6%9D%83_files/3rksj32lbn4rftukgjqeaakj5u.png"></p>
+<h3 class="topic">
+<a name="6c4j1266kqp90vhinip9fhlkcl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   我们还可以使用PowerShell实现相同的目标。 在我们可能无法在目标系统上传输和执行任意二进制文件的情况下，这很有用。&#13;
+   PowerShell命令本身（如清单539所示）可能看起来有些复杂，因此我们将逐步介绍这些选项。</a>
+</h3>
+<h3 class="topic">
+<a name="4qdqlc3ur9i7jrbdmng861c64a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;我们使用的主要cmdlet是Get-Acl，它将检索给定文件或目录的所有权限。 但是，由于无法递归运行Get-Acl，因此我们还使用Get-ChildItem cmdlet首先枚举Program Files目录下的所有内容。 这将有效地检索目标目录中的每个对象以及所有关联的访问权限。 带-match标志的AccessToString属性将结果缩小到我们正在寻找的特定访问属性。 在我们的情况下，我们正在搜索&ldquo;所有人&rdquo;组的成员可以修改（修改）的任何对象。</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%8F%90%E6%9D%83_files/399e6g76u95au5s26f265tqjod.png"></p>
+<h3 class="topic">
+<a name="3sgkq16kpv8j8t0terlhfso3t8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在这种情况下，输出与AccessChk的输出相同。 此命令序列允许其他格式设置选项。</a>
+</h3>
+<h3 class="topic">
+<a name="4ri8d3jg1ip8unsgkthbnnqqu0">&nbsp;&nbsp;&nbsp;在Linux操作系统上，我们可以使用find来识别具有不安全权限的文件。&#13;
+我们正在搜索当前用户在目标系统上可写的每个目录。 我们搜索整个根目录（/），并使用-writable参数指定我们感兴趣的属性。我们还使用-type d查找目录，并使用2&gt; / dev / null过滤错误</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%8F%90%E6%9D%83_files/6i14jrencpp9b6dalm6oo4u4bt.png"></p>
+<h3 class="topic">
+<a name="149judpukhe34nv680evlrmjob">&nbsp;&nbsp;&nbsp;&nbsp;如上所示，几个目录似乎是可写的，包括/ usr / local / james / bin目录。 这无疑值得进一步调查。</a>
+</h3>
+<h3 class="topic">
+<a name="7umk1om1vqnmbtaeorjr27k6gt">&nbsp;&nbsp;枚举未安装的磁盘</a>
+</h3>
+<h3 class="topic">
+<a name="6fna70gsdof1mr4h8308it8pa2">&nbsp;&nbsp;&nbsp;在大多数系统上，驱动器会在引导时自动安装。 因此，很容易忘记可能包含有价值信息的未安装驱动器。 我们应该始终寻找未安装的驱动器，如果存在，请检查安装权限。</a>
+</h3>
+<h3 class="topic">
+<a name="7afi4o1jhoiersvn5f4r0b585p">&nbsp;&nbsp;&nbsp;&nbsp;   在基于Windows的系统上，我们可以使用mountvol列出当前已安装的所有驱动器以及已物理连接但尚未安装的驱动器。&#13;
+在这种情况下，系统有两个安装点，分别映射到C：和D：驱动器。 我们还注意到，我们有一个具有全局唯一标识符（GUID）25721a7f-0000-00000000-100000000000的卷，该卷没有安装点。 这可能很有趣，我们可能需要进一步调查。</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%8F%90%E6%9D%83_files/0nruuuij0jtu3kor1rimtnkaon.png"></p>
+<h3 class="topic">
+<a name="7udldidj1fpvo37kfmtnd1pl6q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   在基于Linux的系统上，我们可以使用mount命令列出所有已挂载的文件系统。 此外，/ etc / fstab文件列出了在引导时将挂载的所有驱动器。请记住，系统管理员可能已使用自定义配置或脚本来挂载未在/ etc / fstab文件中列出的驱动器。因此，不仅要扫描/ etc / fstab，而且还要收集有关带有mount的已安装驱动器的信息，这是一个好习惯。 此时输出显示此Linux系统的交换分区和主ext4磁盘。 </a>
+</h3>
+<p class="topicImage">
+<img src="%E6%8F%90%E6%9D%83_files/430db0sp7o44almhundqks1h69.png"></p>
+<h3 class="topic">
+<a name="6p0b9fkapv3ufuv69dng6ls37f">&nbsp;&nbsp;&nbsp;我们可以使用lsblk查看所有可用磁盘。</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%8F%90%E6%9D%83_files/2dqdqf6ba0an60lnf82bt7sl6n.png"></p>
+<h3 class="topic">
+<a name="1lqhda38ki0rg4rlovm5nl98vr">&nbsp;&nbsp;&nbsp;&nbsp;我们注意到sda驱动器由三个不同的分区组成，并已编号。 在某些情况下，显示系统上所有本地磁盘的信息可能会显示未挂载的分区。 根据系统配置（或配置错误），我们也许能够挂载那些分区并搜索有趣的文档，凭据或其他信息，这些信息，信息或其他信息可以使我们升级特权或在网络中立足。</a>
+</h3>
+<h3 class="topic">
+<a name="6lv3r84es294c12d1fsrv2t4lc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;即磁盘中部分分区没有被挂载到系统中，所以系统中看不见该分区，如果将其挂载，就可以查看该分区中的内容</a>
+</h3>
+<h3 class="topic">
+<a name="5el59ovfltgrelb2intmuef8qo">&nbsp;&nbsp;枚举设备驱动程序和内核模块</a>
+</h3>
+<h3 class="topic">
+<a name="2vgh0rlgqed9cuspt3n3rioc35">&nbsp;&nbsp;&nbsp;特权升级常涉及利用设备驱动程序和内核模块。此时着重了解枚举技术。 由于此技术依赖于将漏洞与相应的漏洞进行匹配，因此我们需要编译目标上已加载的驱动程序和内核模块</a>
+</h3>
+<h3 class="topic">
+<a name="30ul067u9esbhjphpoc413hvjs">&nbsp;&nbsp;&nbsp;&nbsp;在Windows上，我们可以使用driverquery命令开始搜索。 我们将为详细输出提供/ v参数，并为/ fo csv提供以CSV格式请求输出。&#13;
+   为了过滤输出，我们将在powershell会话中运行此命令。 在PowerShell中，我们会将输出通过管道传输到ConvertFrom-Csv cmdlet以及Select-Object，这将使我们能够选择特定的对象属性或对象集，包括显示名称，开始模式和路径。</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%8F%90%E6%9D%83_files/0gk0olkv1765iill0pgjqddviq.png"></p>
+<h3 class="topic">
+<a name="0vk2jv0ffofoln0jcnps4qet13">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;虽然产生了已加载驱动程序的列表，但我们必须采取另一步骤来请求每个已加载驱动程序的版本号。 我们将使用Get-WmiObject cmdlet获取Win32_PnPSignedDriver WMI实例，该实例提供有关驱动程序的数字签名信息。 通过将输出传递给Select-Object，我们可以枚举特定属性，包括DriverVersion。 此外，我们可以通过将输出传递到Where-Object.来基于驱动程序的名称来专门针对驱动程序。</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%8F%90%E6%9D%83_files/7klv1gq77j1vt0c9fmo7mn0avl.png"></p>
+<h3 class="topic">
+<a name="71u5vhp2g3odv7mb0vfu65jfog">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;现在我们有了所有已加载的VMware设备驱动程序的列表以及相应的版本号，我们可以搜索这些特定驱动程序的漏洞利用程序。</a>
+</h3>
+<h3 class="topic">
+<a name="4t1je03uf06bvhnr7u6obllktn">&nbsp;&nbsp;&nbsp;在Linux上，我们可以使用lsmod枚举已加载的内核模块，而无需任何其他参数。</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%8F%90%E6%9D%83_files/0atfe24eqg4sku59g12bm2nmia.png"></p>
+<h3 class="topic">
+<a name="7ihqdmonke3pl0q5nh708955bv">&nbsp;&nbsp;&nbsp;&nbsp;一旦有了已加载模块的列表并确定了我们想要了解的信息，例如上面的示例中的libata，我们就可以使用modinfo来查找有关特定模块的更多信息。 请注意，此工具需要完整的路径名才能运行。</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%8F%90%E6%9D%83_files/7mebfju8scn72mhmjvm6c7irmd.png"></p>
+<h3 class="topic">
+<a name="6bb8jeujvjcg3lu0b42lngpol8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;与上述Windows案例相似，在获取驱动程序及其版本列表之后，我们可以更好地找到相关的漏洞利用程序（如果存在）。</a>
+</h3>
+<h3 class="topic">
+<a name="47t81tsecme3cjjd8bqlsobabu">&nbsp;&nbsp;枚举自动提权的二进制文件</a>
+</h3>
+<h3 class="topic">
+<a name="265ve4se9jvu2pvd1sn5krorjg">&nbsp;&nbsp;&nbsp;Windows系统上，我们应该检查AlwaysInstallElevated注册表设置的状态。 如果在HKEY_CURRENT_USER或HKEY_LOCAL_MACHINE中启用（设置为1）此键，则任何用户都可以使用提升的特权来运行Windows Installer程序包。</a>
+</h3>
+<h3 class="topic">
+<a name="6qsvlu7t3aef7hu0v3j2qp9e5m">&nbsp;&nbsp;&nbsp;&nbsp;我们可以使用reg查询来检查以下设置，如果启用此设置，我们可以制作一个MSI文件并运行它以提升我们的特权。</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%8F%90%E6%9D%83_files/531ija55l1d0d2ssv99r42sh7v.png"></p>
+<h3 class="topic">
+<a name="6r1i64soo20d7rk7rmt4vb1tu1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  同样，在基于Linux的系统上，我们可以搜索SUID文件。&#13;
+  通常，运行可执行文件时，它会继承运行该文件的用户的权限。 但是，如果设置了SUID权限，则二进制文件将以文件所有者的权限运行。 这意味着，如果二进制文件的SUID位置1，并且文件由root拥有，则任何本地用户都将能够以提升的特权执行该二进制文件。</a>
+</h3>
+<h3 class="topic">
+<a name="0vekqf3s3iiqi09frvqm7frnii">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;我们可以使用find命令来搜索带有SUID标记的二进制文件。 在这种情况下，我们从根目录（/）开始搜索，查找设置了SUID位（-perm -u = s）的文件（-f），并丢弃所有错误消息（2&gt; / dev / 空值）&#13;
+该命令找到了几个SUID二进制文件。 对SUID二进制文件的利用将因多种因素而异。 例如，如果/ bin / cp（复制命令）是SUID，我们可以复制和覆盖敏感文件，例如/ etc / passwd。</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%8F%90%E6%9D%83_files/6mrom3ser490h43e3escilh4un.png"></p>
+<h3 class="topic">
+<a name="1qjqc845k4ihqv9lfgioi61egu">&nbsp;自动枚举</a>
+</h3>
+<h3 class="topic">
+<a name="6appf4a39rq79f3br26omupf2l">&nbsp;&nbsp;显然，每个操作系统都包含大量可用于进一步攻击的信息。 无论使用哪种目标操作系统，手动收集这些详细信息都可能非常耗时。 幸运的是，我们可以使用各种脚本来自动化此过程。&#13;
+ 在Windows上，这样的脚本是windows-privesc-check，可以在windowsprivesc-check Github存储库中找到。存储库已经包含由PyInstaller生成的Windows可执行文件，但是也可以根据需要进行重建</a>
+</h3>
+<h3 class="topic">
+<a name="4llqd8ged7vt4s4gr7972r5973">&nbsp;&nbsp;&nbsp;windows-privesc-check</a>
+</h3>
+<h3 class="topic">
+<a href="https://github.com/pentestmonkey/windows-privesc-check" name="7j71pgvkjh3irnb6rb05m1m1hi">&nbsp;&nbsp;&nbsp;&nbsp;https://github.com/pentestmonkey/windows-privesc-check</a>
+</h3>
+<h3 class="topic">
+<a name="50f7l2vkmedpen1vvqgrg3o5qu">&nbsp;&nbsp;使用-h标志运行可执行文件会为我们提供以下帮助菜单：</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%8F%90%E6%9D%83_files/717bjbdo0qhsko4rppt4pmbv52.png"></p>
+<h3 class="topic">
+<a name="6dtoi44o0dei9j2v2qelc7e2mt">&nbsp;&nbsp;&nbsp;列出有关系统上用户组的信息。 我们将使用不言自明的--dump查看输出，并指定-G列出组。</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%8F%90%E6%9D%83_files/2b1nhic2rplquit1vn0eg14ou9.png"></p>
+<h3 class="topic">
+<a name="2o2pvcak594qitersrjms4mkq4">&nbsp;&nbsp;&nbsp;&nbsp;与Windows目标上的Windows-privesc-check类似，我们也可以在UNIX派生版本（例如Linux）上使用unix_privesc_check。（http://pentestmonkey.net/tools/audit/unix-privesc-check） 我们可以通过运行不带任何参数的脚本来查看工具帮助。</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%8F%90%E6%9D%83_files/62lspa6a3jvepefuj8cdgqtivs.png"></p>
+<h3 class="topic">
+<a name="37t53a5bhpgn2856rdo8frsqk1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如上面清单所示，该脚本支持&ldquo;标准&rdquo;和&ldquo;详细&rdquo;模式。 根据提供的信息，标准模式似乎可以执行速度优化的过程，并应减少误报次数。 因此，在下面的示例中，我们将使用标准模式并将整个输出重定向到名为output.txt的文件。</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%8F%90%E6%9D%83_files/7s3acq60asfi2ceqs60hnlpen9.png"></p>
+<h3 class="topic">
+<a name="5muisqdbu4tk1r4vasdmdm8lq4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该脚本对公用文件执行许多权限检查。 例如，以下摘录显示了非root用户可写的配置文件：此输出表明系统上的任何人都可以编辑/ etc / passwd文件！ 这非常重要，因为它使攻击者可以轻松地提升其权限或在目标上创建用户帐户。 我们将在稍后的模块中对此进行演示。</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%8F%90%E6%9D%83_files/6lpoueu6nseprl69rhfe7radgm.png"></p>
+<h3 class="topic">
+<a name="2j64mlu4ultbkrs1emddkcf26j">&nbsp;&nbsp;尽管这些工具执行许多自动检查，但是请记住，每个系统都是不同的，并且这些类型的工具经常会遗漏唯一的一次性系统更改。 因此，请务必注意只有通过手动检查才能发现的独特配置。</a>
+</h3>
+<h2 class="topic">
+<a name="7q9ok2n5f42qm4so4hf29b1h1u">Windows特权升级示例</a>
+</h2>
+<h3 class="topic">
+<a name="0sshif780gkdf4i4ja7do5vhfh">&nbsp;在本节中，我们将讨论Windows特权，完整性机制和用户帐户控制（UAC）。 我们将演示UAC绕过技术，并利用内核驱动程序漏洞，不安全的文件权限和未引用服务路径来提升我们对目标的特权。</a>
+</h3>
+<h3 class="topic">
+<a name="2ehuqoij3j2v7i58844vhsjv5l">&nbsp;了解Windows特权和完整性级别</a>
+</h3>
+<h3 class="topic">
+<a name="58non75i4dq2tqc14sfsdfirqi">&nbsp;&nbsp;Windows操作系统上的权限495是指特定帐户执行系统相关本地操作的权限。 这包括修改文件系统，添加用户，关闭系统等操作。</a>
+</h3>
+<h3 class="topic">
+<a name="0d7ppl4innqlnbdpm5j7e9h8q1">&nbsp;&nbsp;&nbsp;为了使这些特权有效，Windows操作系统使用称为访问令牌的对象。在对用户进行身份验证之后，Windows会生成一个访问令牌，该访问令牌为分配给该用户。 令牌本身包含各种信息，可有效描述给定用户的安全上下文，包括用户权限。</a>
+</h3>
+<h3 class="topic">
+<a name="0h6j09p4a4b3h17v7eq5uj1pho">&nbsp;&nbsp;&nbsp;&nbsp;最后，给定它们包含的信息，这些令牌需要是唯一可识别的。 使用安全标识符或SID 可以完成此操作，安全标识符或SID是分配给每个对象（包括令牌）（例如用户或组帐户）的唯一值，这些SID由Windows本地安全机构生成和维护</a>
+</h3>
+<h3 class="topic">
+<a name="3fjq91do8l417kk7jhqke7btn4">&nbsp;&nbsp;除了特权外，Windows还实现了所谓的完整性机制。这是Windows安全体系结构的核心组件，通过将完整性级别分配给应用程序进程和安全对象来起作用。简单地说，这描述了信任级别。 操作系统具有正在运行的应用程序或安全对象。 例如，配置的完整性级别指示应用程序可以执行哪些操作，包括从本地文件系统读取或写入本地文件系统的能力。 也可以从特定的完整性级别阻止API。</a>
+</h3>
+<h3 class="topic">
+<a name="63813gsi20gs5ho2v6g4ln9nfo">&nbsp;&nbsp;&nbsp;从Windows Vista开始，进程在四个完整性级别上运行：&#13;
+1、系统完整性进程：SYSTEM权限&#13;
+2、高完整性进程：管理权限&#13;
+3、中等完整性进程：标准用户权限&#13;
+4、低完整性进程：沙盒进程中经常使用的非常受限制的权限</a>
+</h3>
+<h3 class="topic">
+<a name="5povafnnm4uokdpvjbef80v4tg">&nbsp;用户帐户控制（UAC）简介</a>
+</h3>
+<h3 class="topic">
+<a name="7sjo6il4bqspmcl7f0k274podh">&nbsp;&nbsp;用户帐户控制（UAC）503是Microsoft随Windows Vista和Windows Server 2008引入的一种访问控制系统。尽管UAC已被讨论和研究了很长时间，但必须强调的是Microsoft并不认为它是 安全边界。 而是，UAC会强制应用程序和任务在非管理帐户的上下文中运行，直到管理员授权提升的访问权限为止。 它将在没有管理帐户许可的情况下阻止安装程序和未经授权的应用程序运行，并且还阻止对系统设置的更改。 通常，UAC的作用是任何希望执行可能会对整个系统产生影响的操作的应用程序都不能默默地执行。 至少在理论上。</a>
+</h3>
+<h3 class="topic">
+<a name="773b38ds1gh6kfd4ko81mljuoi">&nbsp;&nbsp;&nbsp;同样重要的是要强调以下事实：UAC具有两种不同的模式：凭据提示和同意提示。 区别很简单。 当标准用户希望执行管理任务（例如安装新应用程序）并启用UAC时，用户将看到凭据提示。 换句话说，将需要管理用户的凭据才能完成任务。 但是，当管理用户尝试执行此操作时，就会出现同意提示。 在这种情况下，用户只需要确认该任务应该完成即可，不需要重新输入用户凭据。</a>
+</h3>
+<h3 class="topic">
+<a name="6881c1gq5439p7m7q47la6q88g">&nbsp;&nbsp;&nbsp;&nbsp;凭据提示：以标准用户帐户运行的Windows命令处理器正尝试执行特权操作。  UAC根据其通知设置（在这种情况下始终通知）采取行动，暂停目标进程cmd.exe并提示输入管理员用户名和密码以执行请求的特权操作。</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%8F%90%E6%9D%83_files/782qfb4stiqm8pvrg9qsbc563e.png"></p>
+<h3 class="topic">
+<a name="0npd6ingd2gh6valvr785qjqv6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;即使以管理用户身份登录，该帐户也将具有两个安全令牌，一个以中等完整性级别运行，另一个以高完整性级别运行。  UAC充当这两个完整性级别之间的分离机制。</a>
+</h3>
+<h3 class="topic">
+<a name="7ee8probrf67buofgt030hk9nf">&nbsp;&nbsp;要查看实际的完整性级别，请首先以管理员用户身份登录，打开命令提示符，然后运行whoami / groups命令，如输出的最后一行所报告，该命令提示符当前正在中等完整性级别上运行。</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%8F%90%E6%9D%83_files/24jgbhsgbb6o2err8atci2g1b8.png"></p>
+<h3 class="topic">
+<a name="4767bckot4ve73sumllncgekn6">&nbsp;&nbsp;&nbsp;让我们尝试通过以下命令提示符更改管理员用户的密码，即使我们以管理用户身份登录，该请求也被拒绝。&#13;
+  为了更改管理员用户的密码，即使我们以管理员用户身份登录，也必须切换到较高的完整性级别</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%8F%90%E6%9D%83_files/486j0cfrng5pvt1g1jiuphabmj.png"></p>
+<h3 class="topic">
+<a name="5tv2jjditf2b8j7c1aecsm8hqd">&nbsp;&nbsp;&nbsp;&nbsp;切换到较高的完整性级别。 一种方法是通过powershell.exe使用Start-Process cmdlet指定&ldquo;以管理员身份运行&rdquo;选项： 提交此命令并接受UAC提示后，我们将看到一个新的高完整性cmd.exe进程。</a>
+</h3>
+<p class="topicImage">
+<img height="35" src="%E6%8F%90%E6%9D%83_files/7eiu8n4hiavs956ia4bm2j60ar.png" width="897"></p>
+<h3 class="topic">
+<a name="12npvjlm70m549c1q9ng5bc528">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用whoami实用程序并使用/ groups参数检查我们的完整性级别，然后尝试再次更改密码：这次，我们以较高的完整性级别运行，并且密码更改成功</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%8F%90%E6%9D%83_files/7kl5nihes16257is1lrvstohg5.png"></p>
+<h3 class="topic">
+<a name="7asja6bu6felerrggtfs92fn8b">&nbsp;&nbsp;综上：该技术允许管理员用户通过将我们的完整性级别从中级无提示地提高到高级来绕过UAC。</a>
+</h3>
+<h3 class="topic">
+<a name="0sqemc9gvmck0rbl3dqito96ji">&nbsp;用户帐户控制（UAC）绕过：fodhelper.exe案例研究</a>
+</h3>
+<h3 class="topic">
+<a name="5lmnvleipr5ucrqv51lhfasqob">&nbsp;&nbsp;   大多数公知的UAC绕过技术都针对特定的操作系统版本。 在这种情况下，目标是运行Windows 10 build 1709的我们的实验室客户端。我们将利用基于fodhelper.exe的有趣的UAC绕过，该应用程序负责管理操作系统中的语言更改。 具体来说，只要本地用户在&ldquo;应用程序和功能&rdquo; Windows设置屏幕中选择&ldquo;管理可选功能&rdquo;选项，就会启动此应用程序。</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%8F%90%E6%9D%83_files/25vt9orel9s1mkhn8hue6bvh9n.png"></p>
+<h3 class="topic">
+<a name="2r13nvk9vv4md656jbjngdeoaq">&nbsp;&nbsp;&nbsp;fodhelper.exe二进制文件在Windows 10 1709上以高度完整性运行。由于fodhelper与Windows注册表进行交互的方式，我们可以利用它来绕过UAC。 更具体地说，它可以在没有管理特权的情况下与注册表项进行交互。 我们将尝试查找和修改这些注册表项，以便以较高的完整性运行我们选择的命令。</a>
+</h3>
+<h3 class="topic">
+<a name="47i3uljqfgb22pullve5h8hoko">&nbsp;&nbsp;&nbsp;&nbsp;Windows注册表是一个分层数据库，存储有关操作系统以及选择使用该操作系统的应用程序的关键信息。 注册表在配置单元，键，子键和值的层次树结构中存储设置，选项和其他杂项信息。</a>
+</h3>
+<h3 class="topic">
+<a name="6sn8kbbs4h0719dlhghjtja3ca">&nbsp;&nbsp;我们将通过运行C：\ Windows \ System32 \ fodhelper.exe二进制文件开始分析，该文件显示&ldquo;管理可选功能&rdquo;设置窗格</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%8F%90%E6%9D%83_files/67n10nh4k5nd9kirvccd0d8g82.png"></p>
+<h3 class="topic">
+<a name="3dqs7umqep00anu97482nqlehg">&nbsp;&nbsp;&nbsp;为了收集有关fodhelper完整性级别和运行此过程所需的权限的详细信息，我们将检查其应用程序清单。应用程序清单是一个XML文件，其中包含让操作系统知道如何在程序执行时处理程序的信息。 开始。 我们将使用Sysinternals的sigcheck实用工具检查清单，513传递-a参数以获得扩展信息，并传递-m来转储清单</a>
+</h3>
+<h3 class="topic">
+<a name="5550bkrnuiassqkol423dk6jl8">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%8F%90%E6%9D%83_files/0umthmsienlc6dgddvte5vd0ct.png"></p>
+<h3 class="topic">
+<a name="6fbnb3grvc15vt14r8nrouqfvc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;应用程序清单</a>
+</h3>
+<h3 class="topic">
+<a name="33pp4qf64d71daoike4tgp7apm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://msdn.microsoft.com/en-us/library/windows/desktop/aa374191(v=vs.85).aspx</a>
+</h3>
+<h3 class="topic">
+<a name="6p73cvu86q7q39ikj569gsrmpi">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Sysinternals的sigcheck实用工具</a>
+</h3>
+<h3 class="topic">
+<a href="https://docs.microsoft.com/en-us/sysinternals/" name="508frnpn848sn89eubk4a5end0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://docs.microsoft.com/en-us/sysinternals/</a>
+</h3>
+<h3 class="topic">
+<a name="5gk82rm0fovirvres6l4k5kph3">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%8F%90%E6%9D%83_files/639vi6ugftrtprjlettu5akcq0.png"></p>
+<h3 class="topic">
+<a name="35vl291qpsvpocq5t5a4jlpmpu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;快速浏览结果表明该应用程序应由管理用户运行，因此需要完整的Administrator访问令牌。 此外，autoelevate标志设置为true，这使可执行文件可以自动提升为高完整性，而无需提示管理员用户同意。</a>
+</h3>
+<h3 class="topic">
+<a name="77vi71oel3g3kljepeqfich9dp">&nbsp;&nbsp;  我们可以使用Sysinternals套件中的Process Monitor（ttps://docs.microsoft.com/en-us/sysinternals/downloads/procmon）来收集有关该工具执行的更多信息。Process Monitor常用于了解特定进程如何与文件系统和Windows注册表进行交互，常用于识别注册表劫持和dll劫持</a>
+</h3>
+<h3 class="topic">
+<a name="2rbvn0sk03bea4r7aq1oakj3uh">&nbsp;&nbsp;&nbsp;启动procmon.exe之后，我们将再次运行fodhelper.exe并设置过滤器以专门关注目标进程执行的活动。</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%8F%90%E6%9D%83_files/43ofs8jgnu9euk8lg0n6ngjiu9.png"></p>
+<h3 class="topic">
+<a name="37b4ah981t6lh86mhmrt66c268">&nbsp;&nbsp;&nbsp;&nbsp;该过滤器显着减少了输出，但是对于此特定漏洞，我们仅对此应用程序如何与当前用户可以修改的注册表项进行交互感兴趣。 为了缩小结果范围，我们将通过搜索&ldquo; Reg&rdquo;来调整过滤器，Procmon用来标记注册表操作。</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%8F%90%E6%9D%83_files/3v9b4ssqco43otel4h7h70vvit.png"></p>
+<h3 class="topic">
+<a name="1nfhejt9cm3m14d2h7rau50enj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;添加新的过滤器后，我们应该只看到注册表操作的结果。 上图显示了由于使用了两个过滤器，Process Monitor的输出减少了。</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%8F%90%E6%9D%83_files/217ogsviek6bi71h049ir45b7k.png"></p>
+<h3 class="topic">
+<a name="50abckskk0f9fqjd1lvjotmkc3">&nbsp;&nbsp;进一步缩小重点。 查看fodhelper应用程序是否正在尝试访问不存在的注册表项。 如果是这种情况，并且这些注册表项的权限允许，我们也许可以篡改这些条目，并有可能干扰目标高完整性进程正在尝试执行的操作。&#13;
+   为了再次缩小搜索范围，重新运行该应用程序，并为&ldquo; NAME NOT FOUND&rdquo;添加一个&ldquo; Result&rdquo;过滤器，这是一条错误消息，指示该应用程序正在尝试访问不存在的注册表项。</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%8F%90%E6%9D%83_files/0av3bdhemd9mls1aq8hva6r4ur.png"></p>
+<h3 class="topic">
+<a name="2dn5fr0r7odbur985p4f5j22vf">&nbsp;&nbsp;&nbsp;输出显示fodhelper.exe实际上确实会产生&ldquo; NAME NOT FOUND&rdquo;（未找到名称）错误，该错误表明注册表项可能被利用。</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%8F%90%E6%9D%83_files/2fqsbaoqsupni2997v8dakid5t.png"></p>
+<h3 class="topic">
+<a name="51uihqsal3i33l9mtuum4p19dr">&nbsp;&nbsp;&nbsp;&nbsp;但是，由于我们不能随意修改每个配置单元中的注册表项，因此我们需要集中精力于我们可以控制的注册表配置单元。 在这种情况下，我们将专注于HKEY_CURRENT_USER（HKCU）配置单元，我们当前的用户对该单元具有读写访问权限：</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%8F%90%E6%9D%83_files/5bnmq4mho6q73fumuooidb3nav.png"></p>
+<h3 class="topic">
+<a name="2rruu87jd7s73fdb6e5q8h0cor">&nbsp;&nbsp;应用此附加过滤器将产生以下结果</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%8F%90%E6%9D%83_files/044v8ok4880lehbh3695u3p4f8.png"></p>
+<h3 class="topic">
+<a name="02d8ui7j4p1dold1bsru1mekp5">&nbsp;&nbsp;&nbsp;此输出包含一个有趣的结果。 当fodhelper在HKCU中找不到mssettings \ shell \ open \ command注册表项时，它将立即尝试访问HKEY_CLASSES_ROOT（HKCR）配置单元中的相同项。由于该条目确实存在，因此访问成功。</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%8F%90%E6%9D%83_files/6kc42tlcnu4jak0pdbkpdajl05.png"></p>
+<h3 class="topic">
+<a name="7klsv38ftr6nsb66g1ugq79g64">&nbsp;&nbsp;&nbsp;&nbsp;如果在注册表中搜索HKCR：ms-settings \ shell \ open \ command，则会找到有效条目： </a>
+</h3>
+<p class="topicImage">
+<img src="%E6%8F%90%E6%9D%83_files/5asks9in78i881jercbbcve565.png"></p>
+<h3 class="topic">
+<a name="0t5tklasj1glnnh3m8pfa4qbkc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;基于此观察，并在MSDN文档中搜索了此注册表项格式（应用程序名称\ shell \ open）之后。我们可以通过ms-settings：应用程序协议推断出fodhelper正在打开Windows设置应用程序的一部分（可能是启动fodhelper时向用户显示的管理可选功能）。Windows上的应用程序协议定义了在程序使用特定URL时启动的可执行文件。可以通过注册表项定义这些URLApplication映射，类似于我们在HKCR中找到的ms-setting项（上面的图286）。在这种特定情况下，用于mssettings的应用程序协议架构将执行传递给COM521对象，而不是程序。 可以通过将DelegateExecute键值522设置为特定的COM类ID来完成，如MSDN文档中所述</a>
+</h3>
+<h3 class="topic">
+<a name="3rhvskb8u7402fvaigp8imqccc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这绝对很有趣，因为fodhelper会尝试首先访问HKCU配置单元中的ms设置注册表项。  Process Monitor先前的结果清楚地表明，HKCU中不存在此密钥，但是我们应该具有创建它的必要权限。 这可以使我们通过格式正确的协议处理程序劫持执行。 让我们尝试使用REG（https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/reg-add）实用程序添加此密钥：（即创建了fodhelper尝试访问的首个注册表键值，以此劫持程序执行流）</a>
+</h3>
+<p class="topicImage">
+<img height="63" src="%E6%8F%90%E6%9D%83_files/07ntvgo33ln3kuucmgvoll80rl.png" width="560"></p>
+<h3 class="topic">
+<a name="2ku3vt5afd89ummmallt4a3av3">&nbsp;&nbsp;添加注册表项后，我们将清除&ldquo;流程监视器&rdquo;中的所有结果（使用图287中突出显示的图标），重新启动fodhelper.exe，并监视流程活动，请注意，清除输出显示不会清除我们创建的过滤器。 它们已保存，我们不需要重新创建它们。</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%8F%90%E6%9D%83_files/0quel0scu50bmnt5t927ao6sou.png"></p>
+<h3 class="topic">
+<a name="6qnakeq88ablki8a0iskm034qm">&nbsp;&nbsp;&nbsp;上图显示，这次，fodhelper.exe尝试查询存储在我们新创建的命令键中的值（DelegateExecute）。 在创建伪造的应用程序协议密钥之前，这没有发生。 但是，由于我们不想通过COM对象劫持执行，因此我们将添加DelegateExecute条目，将其值保留为空。 我们的希望是，当fodhelper发现此空值时，它将遵循MSDN的应用程序协议规范，并寻找要在Shell \ Open \ command \ Default键条目中指定的启动程序。</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%8F%90%E6%9D%83_files/0bs7fll4nm5bop7mcnlsusql29.png"></p>
+<h3 class="topic">
+<a name="2gn4d888i0ruikefk6g7q1rpds">&nbsp;&nbsp;&nbsp;&nbsp;我们将使用带有/ v参数的REG ADD来指定值名称，并使用/ t来指定类型：</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%8F%90%E6%9D%83_files/2c9vpq2m2588h8670fts6pokb1.png"></p>
+<h3 class="topic">
+<a name="699mlrk5e01spegg8781v3c3eq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;为了验证fodhelper是否成功访问了我们刚刚添加的DelegateExecute项，我们将删除&ldquo; NAME FOUND&rdquo;过滤器，并将其替换为&ldquo; SUCCESS&rdquo;以仅显示成功的操作，然后再次重新启动该过程：</a>
+</h3>
+<h3 class="topic">
+<a name="09uj01spl9giuvk2fbv4h2cr27">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;与预期的一样，fodhelper会找到我们添加的新DelegateExecute条目，但是由于其值为空，因此它还会查找Shell \ open \ command注册表项的（默认）条目值。加任何注册表项时，条目值将自动创建为null。 我们将遵循应用程序协议规范，并将空（默认）值替换为我们选择的可执行文件cmd.exe。 这应该迫使fodhelper使用我们自己的可执行文件来处理ms-settings: protocol</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%8F%90%E6%9D%83_files/7kpa8m5k0mdf4e1aufe4hrhq1g.png"></p>
+<h3 class="topic">
+<a name="7lilo92o6vmprsvdf1579v22vj">&nbsp;&nbsp;为了检验这一理论，我们将设置新的注册表值。 我们还将用/ d&ldquo; cmd.exe&rdquo;和/ f指定新的注册表值，以静默添加该值。</a>
+</h3>
+<p class="topicImage">
+<img height="44" src="%E6%8F%90%E6%9D%83_files/4kp52q8edutoe9idp1aloddcr3.png" width="567"></p>
+<h3 class="topic">
+<a name="0ipoivbpvp3jn46ig28o8vftq8">&nbsp;&nbsp;&nbsp;设置该值并再次运行fodhelper.exe之后，我们将看到一个命令外壳：</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%8F%90%E6%9D%83_files/1bmq78q7evsik7agcid61ge9n9.png"></p>
+<h3 class="topic">
+<a name="5drcnd32h0rjnnisllkfk9vi6l">&nbsp;&nbsp;&nbsp;&nbsp;whoami / groups命令的输出表明这是一个高完整性命令外壳程序。 接下来，我们将尝试更改管理员密码，以查看是否可以成功绕过UAC：</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%8F%90%E6%9D%83_files/7mflf5d7ankett3qbcu2dikfa6.png"></p>
+<h3 class="topic">
+<a name="0on6fdp60d439e2cb80k370jjm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   这次攻击不仅证明了UAC的bypass，而且还揭示了我们可以用来发现类似旁路的过程。</a>
+</h3>
+<h3 class="topic">
+<a name="4s0u9tb2udgbp24b7p9bh2hq0e">&nbsp;不安全的文件权限：Serviio案例研究</a>
+</h3>
+<h3 class="topic">
+<a name="23a9t5d1e1ovd679g2jh2t8g27">&nbsp;&nbsp;如前所述，在Windows系统上提升特权的一种常见方法是在以nt权限\ system运行的服务上利用不安全的文件权限。&#13;
+   例如，考虑一种方案，其中软件开发人员创建了一个作为Windows服务运行的程序。 在安装过程中，开发人员不会保护程序的权限，从而允许对Everyone组的所有成员进行完全的读取和写入访问。 结果，特权较低的用户可以用恶意程序替换该程序。 重新启动服务或重新启动计算机时，将以SYSTEM特权执行恶意文件。&#13;
+   我们的Windows客户端上存在这种类型的漏洞。 让我们验证漏洞并加以利用。</a>
+</h3>
+<h3 class="topic">
+<a name="3vbpu05ns9euti750tclrj41li">&nbsp;&nbsp;&nbsp;之前我们展示了如何使用任务列表列出正在运行的服务。 或者，我们可以将PowerShell Get-WmiObject cmdlet与win32_service WMI类一起使用。 在此示例中，我们将输出输出到Select-Object以显示我们感兴趣的字段，并使用Where-Object显示正在运行的服务（{$ _。State -like'Running'}）：基于此输出，由于Serviio服务已安装在Program Files目录中，因此脱颖而出。 这意味着该服务是用户安装的，软件开发人员负责目录结构以及软件许可。 这些情况使它更容易出现此类漏洞。</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%8F%90%E6%9D%83_files/2b1dtl72435n49n4b9e3ppb3pu.png"></p>
+<h3 class="topic">
+<a name="66j91ot73cs6kh5k40oa4ne5pp">&nbsp;&nbsp;&nbsp;&nbsp;下一步，我们将使用icacls（https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/icacls） Windows实用工具枚举目标服务的权限。 此实用程序将输出服务的安全标识符（或SIDs），后跟一个许可掩码，该许可掩码在icacls文档中定义（https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/icacls#remarks）。最相关的掩码和许可如下所示：</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%8F%90%E6%9D%83_files/7hfc4dpgajp47igj126ltnsfcs.png"></p>
+<h3 class="topic">
+<a name="5vhadkum3ddami9ht2nnokf4j5">&nbsp;&nbsp;我们可以运行icacls，将完整的服务名称作为参数传递。 命令输出将枚举关联的权限：令人怀疑的是，与ServiioService.exe可执行文件相关的权限非常有趣。 具体来说，似乎系统上的任何用户（BUILTIN \ Users）都具有对该文件的完全读取和写入权限。 这是一个严重的漏洞。为了利用这种漏洞，我们可以使用自己的恶意二进制文件替换ServiioService.exe，然后通过重新启动服务或重新启动计算机来触发它。</a>
+</h3>
+<p class="topicImage">
+<img height="96" src="%E6%8F%90%E6%9D%83_files/61qjl580f47gm715chtrpikqul.png" width="486"></p>
+<h3 class="topic">
+<a name="20hqo7i9bnofi1631jdk5056pi">&nbsp;&nbsp;&nbsp;   我们将通过一个示例来演示这种攻击。 以下C代码将创建一个名为&ldquo; evil&rdquo;的用户，并使用system529函数将该用户添加到本地Administrators组。 此代码的编译版本将用作我们的恶意二进制文件：</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%8F%90%E6%9D%83_files/2k2mdaqa5a3r05qb0rj4hie34m.png"></p>
+<h3 class="topic">
+<a name="2hfaq7726obv4uv7jj8j1rlf45">&nbsp;&nbsp;&nbsp;&nbsp;接下来，我们将使用-o来指定已编译的可执行文件的名称，从而在iMac-i86-w64-mingw32-gcc上在Kali机器上交叉编译代码</a>
+</h3>
+<p class="topicImage">
+<img height="25" src="%E6%8F%90%E6%9D%83_files/7ep099nahn4a3ip89kjjqk2s8p.png" width="565"></p>
+<h3 class="topic">
+<a name="129ormeamo17unq51922e0qaj0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;我们可以将其转移到目标服务器，并用恶意副本替换原始的ServiioService.exe二进制文件：</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%8F%90%E6%9D%83_files/5d63tjkqps35i8fn3vrkrkvdeg.png"></p>
+<h3 class="topic">
+<a name="00v3n1boaob2lutu39a1hpobuq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;为了执行二进制文件，我们可以尝试重新启动服务</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%8F%90%E6%9D%83_files/7f6u70s2tcc03on01icfk4kc9m.png"></p>
+<h3 class="topic">
+<a name="5558qvso950kpg5n2ihfhe3tv9">&nbsp;&nbsp;不幸的是，似乎我们没有足够的特权来停止Serviio服务。 这是预期的，因为大多数服务是由管理用户管理的。&#13;
+   由于我们无权手动重新启动服务，因此我们必须考虑另一种方法。 如果服务设置为&ldquo;自动&rdquo;，我们可以通过重启机器来重启服务，让我们借助Windows Management Instrumentation命令行检查Serviio服务的启动选项。</a>
+</h3>
+<p class="topicImage">
+<img height="49" src="%E6%8F%90%E6%9D%83_files/10uh4ph09ds6b5ef36vt6mq4b8.png" width="490"></p>
+<h3 class="topic">
+<a name="03f5p2ln74be1l67hudvafbob6">&nbsp;&nbsp;&nbsp;重新启动后，该服务将自动启动。 现在，让我们使用whoami命令来确定当前用户是否有权重新启动系统，显示，我们的用户已被授予关机特权（SeShutdownPrivilege）532（除其他外），因此我们应该能够启动系统关机或重新启动。 请注意，&ldquo;禁用&rdquo;状态仅指示当前是否为正在运行的进程启用了特权。 在我们的情况下，这意味着whoami尚未请求SeShutdownPrivilege特权，因此当前未使用。&#13;
+ 如果没有SeShutdownPrivilege，我们将不得不等待受害者手动启动服务，这对我们来说不那么方便。</a>
+</h3>
+<p class="topicImage">
+<img height="159" src="%E6%8F%90%E6%9D%83_files/5s3sff56k62ocmp1olmhnahjc6.png" width="481"></p>
+<h3 class="topic">
+<a name="4bgqv3523kv19h2m4scphsbh86">&nbsp;&nbsp;&nbsp;&nbsp;   让我们继续并在零秒（/ t 0）中重新启动（/ r）</a>
+</h3>
+<p class="topicImage">
+<img height="31" src="%E6%8F%90%E6%9D%83_files/0aupnjso2cvjut9514ef46kb06.png" width="620"></p>
+<h3 class="topic">
+<a name="01284l57n0ot7dsbp0ot8v413h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;现在重新启动已完成，我们应该能够使用用户名&ldquo; evil&rdquo;和密码&ldquo; Ev！lpass&rdquo;登录到目标计算机了。 之后，我们可以使用net localgroup命令确认evil用户是否是本地Administrators组的一部分。</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%8F%90%E6%9D%83_files/2hvfti0b6g24opt8t4vuk68sle.png"></p>
+<h3 class="topic">
+<a name="5dcf65p25cfm53q2s88el6df5f">&nbsp;利用未引用的服务路径</a>
+</h3>
+<h3 class="topic">
+<a name="0s4mlu3fql3um5sm7rds0rerrj">&nbsp;&nbsp;另一个可能导致Windows操作系统上的特权升级的有趣攻击媒介围绕未引用的服务路径。当我们对服务的主目录和子目录具有写权限但不能替换其中的文件时，可以使用此攻击。。&#13;
+  每个Windows服务都映射到一个可执行文件，该文件将在服务启动时运行。 大多数情况下，第三方软件随附的服务存储在C：\ Program Files目录下，该目录的名称中包含空格字符。 这有可能变成特权升级攻击的机会。</a>
+</h3>
+<h3 class="topic">
+<a name="01splhoihbuqg6mvmbdmiuc5ha">&nbsp;&nbsp;&nbsp;使用包含空格的文件或目录路径时，开发人员应始终确保将其用引号引起来。这样可确保明确声明它们。 但是，如果不是这种情况，并且路径名未加引号，则可以解释。 具体来说，对于可执行文件路径，每个空格字符之后的所有内容都将被视为可执行文件的潜在参数或选项。&#13;
+   例如，假设我们有一个存储在路径中的服务，例如C：\ Program Files \ My Program \ My Service \ service.exe。 如果服务路径未加引号，则Windows启动该服务时，它将尝试从以下路径运行可执行文件：</a>
+</h3>
+<p class="topicImage">
+<img height="80" src="%E6%8F%90%E6%9D%83_files/589q8kq88bmbkdg6o3mi4cuo15.png" width="457"></p>
+<h3 class="topic">
+<a name="71iicpne6573hc6giq4n2cj7hk">&nbsp;&nbsp;&nbsp;&nbsp;在此示例中，Windows将搜索每个&ldquo;解释的位置&rdquo;，以尝试找到有效的可执行路径。 为了利用这一点并颠覆原始的未引用服务调用，我们必须创建一个恶意可执行文件，将其放置在与解释路径之一相对应的目录中，并对其进行命名，使其也与解释文件名匹配。 然后，当服务运行时，它应该以与服务启动时相同的特权执行我们的文件。 通常，这恰好是NT \ SYSTEM帐户，这导致成功的特权升级攻击。</a>
+</h3>
+<h3 class="topic">
+<a name="60oal9lu2vvep7ed8li54gt6j8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;例如，我们可以将可执行文件命名为Program.exe，并放在C：\目录下，或者将可执行文件命名为My.exe并放在C：\ Program Files目录下。 &#13;
+  但是，这将需要一些不太可能的写入权限，因为默认情况下标准用户没有对这些目录的写入权限。&#13;
+  该软件的主目录（在我们的示例中为C：\ Program Files \ My Program）或子目录（C：\ Program Files \ My Program \ My service）很可能配置错误，从而使我们可以植入恶意的My.exe二进制文件。</a>
+</h3>
+<h3 class="topic">
+<a name="7q858h7bm72l8e49eenoei1c59">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;尽管此漏洞需要特定的要求组合，但它易于利用，值得考虑的特权提升攻击媒介。</a>
+</h3>
+<h3 class="topic">
+<a name="2opm7qj0561m6dh1dmhncdc3gd">&nbsp;Windows内核漏洞：USBPcap案例研究</a>
+</h3>
+<h3 class="topic">
+<a name="0vshpfflspimsingav5pge881a">&nbsp;&nbsp;在前面的fodhelper.exe示例中，我们利用了基于应用程序的漏洞绕过UAC。 在本节中，我们将演示依赖于内核驱动程序漏洞的特权升级。 &#13;
+   在尝试利用系统级软件（例如驱动程序或内核本身）时，我们必须仔细注意几个因素，包括目标的操作系统，版本和体系结构。 无法准确识别这些因素可能会在运行漏洞利用程序时触发蓝屏死机（BSOD）。 这可能会对客户的生产系统产生不利影响，并拒绝我们获得潜在有价值的目标。</a>
+</h3>
+<h3 class="topic">
+<a name="6t96j334mdiv02s75dqe07desh">&nbsp;&nbsp;&nbsp;   考虑到必须采取的谨慎级别，在以下示例中，我们将首先确定目标操作系统的版本和体系结构。  此时，我们可以尝试查找Windows 7 SP1 x86的本机内核漏洞，并使用它来提升我们的特权。 但是，第三方驱动程序漏洞利用更为普遍。 因此，在诉诸更困难的攻击之前，我们应始终首先尝试调查此攻击面。</a>
+</h3>
+<p class="topicImage">
+<img height="64" src="%E6%8F%90%E6%9D%83_files/3t0cat8nmtn2c71s3kl8h8vk84.png" width="574"></p>
+<h3 class="topic">
+<a name="0ci6n80ldhcd0oalser0sjvjed">&nbsp;&nbsp;&nbsp;&nbsp;枚举系统上安装的驱动程序，输出主要包括典型的Microsoft安装的驱动程序和数量非常有限的第三方驱动程序，例如USBPcap。 重要的是要注意，即使此驱动程序被标记为已停止，我们仍然可以与它进行交互，因为它仍然加载在内核内存空间中。</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%8F%90%E6%9D%83_files/2lsvfhftk00047b1muloa1i2vu.png"></p>
+<h3 class="topic">
+<a name="4412t19prlrt9jrav41ejkd1t9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;由于Microsoft安装的驱动程序具有相当严格的补丁程序周期，因此第三方驱动程序通常会呈现出更诱人的攻击面。 例如，让我们在漏洞利用数据库中搜索USBPcap：</a>
+</h3>
+<p class="topicImage">
+<img height="78" src="%E6%8F%90%E6%9D%83_files/177h7vg6kn0d51mf11jgavlvos.png" width="445"></p>
+<h3 class="topic">
+<a name="4l8n8cd689s4o36irdiesuihej">&nbsp;&nbsp;输出报告USBPcap有一种漏洞利用。此特定漏洞利用程序针对我们的操作系统版本，补丁程序级别和体系结构。 但是，它取决于驱动程序的特定版本，即USBPcap版本1.1.0.0，该版本与Wireshark 2.2.5一起安装。</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%8F%90%E6%9D%83_files/5t1254bjtq074cvi4n9mb6u4hp.png"></p>
+<h3 class="topic">
+<a name="3moeqqucsacgj86m7l82ph7fsc">&nbsp;&nbsp;&nbsp;让我们看一下目标系统，看看是否安装了该特定版本的驱动程序。 首先，我们将列出Program Files目录的内容，以搜索USBPcap目录</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%8F%90%E6%9D%83_files/17ehcq8dfn8akjdkl0os2g28ts.png"></p>
+<h3 class="topic">
+<a name="5p5pc0kelfrrnrntghvqbd0cu9">&nbsp;&nbsp;&nbsp;&nbsp;如我们所见，在C：\ Program Files中有一个USBPcap目录。 但是，请记住，驱动程序目录通常位于C：\ Windows \ System32 \ DRIVERS下。 让我们检查USBPcap.inf的内容，以了解有关驱动程序版本的更多信息：</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%8F%90%E6%9D%83_files/6tk9cug7gddu1ufo9gmejmeg3a.png"></p>
+<h3 class="topic">
+<a name="172gtdvopajq59i3uug2uafb48">&nbsp;&nbsp;在Windows上编译C / C ++代码</a>
+</h3>
+<h3 class="topic">
+<a name="4u42mpdlm69bv1ktjoshedg8t7">&nbsp;&nbsp;&nbsp;针对内核级漏洞（包括我们选择的漏洞）的绝大多数漏洞利用低级编程语言（例如C或C ++）编写，因此需要进行编译。 理想情况下，我们将在打算运行的平台版本上编译代码。 在这种情况下，我们只需要创建一个与目标匹配的虚拟机并在那里编译代码即可。 但是，我们也可以在与我们所针对的操作系统完全不同的操作系统上交叉编译代码。 例如，我们可以在Kali系统上编译Windows二进制文件</a>
+</h3>
+<h3 class="topic">
+<a name="7ujquer8ig0ue8gj983l4sjq8n">&nbsp;&nbsp;&nbsp;&nbsp;但是，出于本模块的目的，我们将使用Mingw-w64,（https://mingw-w64.org/doku.php），它为我们提供了Windows上的GCC编译器。&#13;
+  由于我们的Windows客户端已预安装Mingw-w64，因此我们可以运行mingw-w64.bat脚本，该脚本为gcc可执行文件设置PATH环境变量。 脚本完成后，我们可以执行gcc.exe来确认一切工作正常： </a>
+</h3>
+<p class="topicImage">
+<img src="%E6%8F%90%E6%9D%83_files/4rn431l5n3afdbs9ln29mb61ps.png"></p>
+<h3 class="topic">
+<a name="1fjmuin0fo3vpk0h00d0jji88m">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;编译器似乎正在工作。 现在，将漏洞利用代码转移到我们的Windows客户端，然后尝试对其进行编译。 由于作者没有提及任何特定的编译选项，因此我们将尝试在不使用任何参数的情况下运行gcc，除了使用-o指定输出文件名之外，尽管有两条警告消息，该漏洞利用程序已成功编译，gcc创建了exploit.exe可执行文件。 如果进程生成了错误消息，则编译将中止，我们将不得不尝试修复漏洞利用代码并重新编译它</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%8F%90%E6%9D%83_files/6tr89tt39dsd079v57ak3m0up8.png"></p>
+<h3 class="topic">
+<a name="6nuu2ejmnf8votece8bps2a0na">&nbsp;&nbsp;&nbsp;   现在，我们已经编译了漏洞利用程序，可以将其传输到目标计算机并尝试运行它。 为了确定特权升级是否成功，我们可以在运行漏洞利用程序之前和之后使用whoami命令：我们已成功将特权从admin-pc \ n00b提升到nt Authority \ system，这是特权级别最高的Windows帐户。</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%8F%90%E6%9D%83_files/4h6aq1e0ailn4o0jbq4q0skb4n.png"></p>
+<h2 class="topic">
+<a name="2r3g1tpbdhgaq15282eio7cck5">Linux特权升级示例</a>
+</h2>
+<h3 class="topic">
+<a name="5mmac7bi116naqi88vpsfir9jc">&nbsp;了解Linux特权</a>
+</h3>
+<h3 class="topic">
+<a name="0pv6k4mijfoc1qbim6u7t7adge">&nbsp;&nbsp;Linux和其他UNIX派生工具的定义功能之一是，大多数资源（包括文件，目录，设备甚至网络通信）都在文件系统中表示。 每个文件（以及扩展名，Linux系统的每个元素）都基于以下三个主要功能遵守用户权限和组权限：读取，写入和执行。</a>
+</h3>
+<h3 class="topic">
+<a name="4dlukknria99j6ihb7vhgqgr1a">&nbsp;不安全的文件权限：Cron案例研究</a>
+</h3>
+<h3 class="topic">
+<a name="4eoisvvrtvf3r408ef14b56rbm">&nbsp;&nbsp;当我们将注意力转向特权升级技术时，我们将首先利用不安全的文件权限。 与我们的Windows示例一样，我们将假定我们已经以非特权用户身份访问了Linux目标计算机。&#13;
+   为了利用不安全的文件权限，我们必须找到一个可执行文件，该文件不仅允许我们进行写访问，而且还以提升的特权级别运行。 在Linux系统上，基于cron543时间的作业计划程序是主要目标，因为系统级计划的作业是使用root用户特权执行的，并且系统管理员经常为具有不安全权限的cron作业创建脚本。</a>
+</h3>
+<h3 class="topic">
+<a name="7ulkgi4ccqt7kun03afall21cm">&nbsp;&nbsp;&nbsp;我们将SSH到专用的Debian客户端。 在上一节中，我们显示了在目标系统的文件系统上已安装的cron作业的查找位置。 我们还可以检查cron日志文件（/var/log/cron.log）中正在运行的cron作业：</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%8F%90%E6%9D%83_files/526oeof3pljsaos6kve2ijsm7h.png"></p>
+<h3 class="topic">
+<a name="6i7nv464hd6vne0kgmbvkf6t0q">&nbsp;&nbsp;&nbsp;&nbsp;看来，在/ var / scripts /下的一个名为user_backups.sh的脚本是在root用户的上下文中执行的。 从时间戳来看，似乎此作业每五分钟运行一次。&#13;
+  由于我们知道脚本的位置，因此我们可以检查其内容和权限。&#13;
+该脚本本身非常简单：只需将学生用户的主目录复制到备份子目录即可。 脚本的权限544表明，每个本地用户都可以写入文件。</a>
+</h3>
+<p class="topicImage">
+<img height="100" src="%E6%8F%90%E6%9D%83_files/2ncc2e4kp7ibag42s1m3tv38h9.png" width="465"></p>
+<h3 class="topic">
+<a name="3305ahes5ihqo8ei67p1gvergb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;由于无特权的用户可以修改备份脚本的内容，因此我们可以对其进行编辑并添加一个反向shell单行代码。如果我们的计划有效，那么最多5分钟应该在攻击计算机上收到一个root反向shell。</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%8F%90%E6%9D%83_files/1efikrkbqtkq6da4krdcc2vhne.png"></p>
+<h3 class="topic">
+<a name="0tsgepu75fjc8bjrma88ksgah4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;现在我们要做的就是在我们的Kali Linux机器上设置一个侦听器，然后等待cron作业执行：</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%8F%90%E6%9D%83_files/57h3hk32f0ckpac7rsi0fp6ctm.png"></p>
+<h3 class="topic">
+<a name="6bl85vn3ufkk08htafth4e9857">&nbsp;不安全的文件权限：/ etc / passwd案例研究</a>
+</h3>
+<h3 class="topic">
+<a name="465nc96ppjscqck1f4qnt26gdo">&nbsp;&nbsp;除非使用集中式凭据系统（例如Active Directory或LDAP），否则Linux密码通常存储在/ etc / shadow中，普通用户无法读取。 但是，从历史上看，密码散列以及其他帐户信息都存储在世界可读的文件/ etc / passwd中。 为了向后兼容，如果/ etc / passwd用户记录的第二列中存在密码散列，则该密码散列被认为对身份验证有效，并且优先于/ etc / shadow中的相应条目（如果有）。 这意味着，如果我们可以写入/ etc / passwd文件，则可以有效地为任何帐户设置任意密码。</a>
+</h3>
+<h3 class="topic">
+<a name="2br7rqkt3j1i5bj2arsk120v9p">&nbsp;&nbsp;&nbsp;让我们演示一下。 在上一节中，我们显示了由于/ etc / passwd权限设置不正确的事实，我们的Debian客户端可能容易受到特权升级的影响。 为了提升特权，我们将向/ etc / passwd文件添加另一个超级用户（root2）和相应的密码哈希。 我们将首先借助openssl和passwd参数生成密码哈希。 默认情况下，如果未指定其他选项，则openssl将使用crypt算法546生成哈希，这是Linux身份验证支持的哈希机制。 生成散列后，将使用适当的格式在/ etc / passwd中添加一行：</a>
+</h3>
+<h3 class="topic">
+<a name="0skq1a0t09mkmsvfcisg23buia">&nbsp;&nbsp;&nbsp;&nbsp;如清单586所示，&ldquo; root2&rdquo;用户和/ etc / passwd记录中的密码哈希后面是用户ID（UID）零和组ID（GID）零。 这些零值指定我们创建的帐户是Linux上的超级用户帐户。 最后，为了验证我们的修改是否有效，我们使用su命令将标准用户切换到新创建的root2帐户，并发出id命令以表明我们确实具有root特权。</a>
+</h3>
+<p class="topicImage">
+<img height="134" src="%E6%8F%90%E6%9D%83_files/7gj0727r2tl1lm28occ5q9f3tu.png" width="558"></p>
+<h3 class="topic">
+<a name="224ngufhlo4tddjnfjuucnf20k">&nbsp;内核漏洞：CVE-2017-1000112案例研究</a>
+</h3>
+<h3 class="topic">
+<a name="2nfb84aq0a7q1h0fa22qpg326j">&nbsp;&nbsp;内核漏洞利用是提升特权的绝佳方法，但成功与否不仅取决于目标主机的内核版本，还取决于是否匹配操作系统风格，包括Debian，Redhat，Gentoo等。</a>
+</h3>
+<h3 class="topic">
+<a name="07hl7nrb3g2kuja395rbphhgs2">&nbsp;&nbsp;&nbsp;为了演示此攻击媒介，我们将首先通过检查/ etc / issue文件来收集有关目标的信息。 如本模块前面所述，这是一个系统文本文件，其中包含要在Linux机器上的登录提示之前打印的消息或系统标识。</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%8F%90%E6%9D%83_files/4prd46akvnek3cpfl3ogoufc60.png"></p>
+<h3 class="topic">
+<a name="4h0li92s96e4p6tb115ev2rpi2">&nbsp;&nbsp;&nbsp;&nbsp;接下来，我们将使用标准系统命令检查内核版本和系统架构</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%8F%90%E6%9D%83_files/5f2epkhp53frfeo8ooq99vtiko.png"></p>
+<h3 class="topic">
+<a name="3lnkv1i83c7qkntpahd1tk64kp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;我们的目标系统似乎在x86_64体系结构上运行Ubuntu 16.04.3 LTS（内核4.8.0-58-通用）。 有了这些信息，我们可以在本地Kali系统上使用searchsploit查找与目标版本匹配的内核漏洞利用。&#13;
+最后一个漏洞利用（exploits / linux / local / 43418.c）似乎直接对应于我们的目标正在运行的内核版本。 我们将尝试通过在目标上运行此漏洞利用来提升特权。</a>
+</h3>
+<p class="topicImage">
+<img height="158" src="%E6%8F%90%E6%9D%83_files/54r09mg1ikqn7441to7c19dk3u.png" width="468"></p>
+<h3 class="topic">
+<a name="6f820ig9ld3r3pkterjp0nge3e">&nbsp;&nbsp;在Linux上编译C / C ++代码</a>
+</h3>
+<h3 class="topic">
+<a name="1ptcd59pho17jkm492rc06c2ef">&nbsp;&nbsp;&nbsp;我们将在Linux上使用gcc（https://gcc.gnu.org）来编译我们的漏洞利用程序。 请记住，在编译代码时，我们必须匹配目标的体系结构。 这在目标计算机没有编译器并且我们被迫在攻击计算机或可复制目标OS和体系结构的沙盒环境中编译漏洞的情况下尤其重要。&#13;
+ 在此示例中，我们很幸运，目标计算机具有正常工作的编译器，但这在现场很少见。</a>
+</h3>
+<h3 class="topic">
+<a name="6nktnh1ata8smpos7aic817vp1">&nbsp;&nbsp;&nbsp;&nbsp;让我们将漏洞利用文件复制到目标并进行编译，仅传递源代码文件和-o来指定输出文件名（漏洞利用）：</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%8F%90%E6%9D%83_files/6fvonodhcj7a45s1ba7rm9iof9.png"></p>
+<h3 class="topic">
+<a name="75qolkvh600acchrnu5tfjhnum">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在目标计算机上编译了漏洞利用程序之后，我们可以运行它并使用whoami检查我们的特权级别：</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%8F%90%E6%9D%83_files/1cngfjviihcm9rqpa9p2vmaig9.png"></p>
+</body>
+</html>

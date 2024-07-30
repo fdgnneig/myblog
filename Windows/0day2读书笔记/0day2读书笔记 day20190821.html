@@ -1,0 +1,1362 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>0day2读书笔记&#13;
+day20190821</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="0o3gotfq0sas6madfa0jh01jjr">0day2读书笔记&#13;
+day20190821</a>
+<p class="topicImage">
+	<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/2024-07-29_185708.png"></p>
+</h1>
+<h2 class="topic">
+<a name="1qkvm2dv92dfv6b4ejat7rc407">第十二章 数据与程序的分水岭：DEF</a>
+</h2>
+<h3 class="topic">
+<a name="1ekvvrh5dp14runhqkvpd45t3h">&nbsp;基本原理</a>
+</h3>
+<h3 class="topic">
+<a name="4tdvlfoph8cj8v3q2hqjjbs3uk">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/37oaat3hn2tr58hdkmk39ei94q.png"></p>
+<h3 class="topic">
+<a name="081mmirj7a6ntg8m97u4eur81d">&nbsp;从windows xp sp2开始支持该项技术，根据实现机制不同分为</a>
+</h3>
+<h3 class="topic">
+<a name="7ghra63p116f5a85e0iit6a5h5">&nbsp;&nbsp;软件DEP</a>
+</h3>
+<h3 class="topic">
+<a name="77ajf43vq9k1mhf34h7a7e21uq">&nbsp;&nbsp;&nbsp;即SafeSEH</a>
+</h3>
+<h3 class="topic">
+<a name="0le5dicpifdl8o1ijm8q1k5g45">&nbsp;&nbsp;硬件DEP</a>
+</h3>
+<h3 class="topic">
+<a name="1gao9gvphssg4rbp17doomdfql">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/4f3jva6k80r3qvob5kegrv8lrs.png"></p>
+<h3 class="topic">
+<a name="56d83c8vrfvijhfusotbko0429">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/5joembu6oiujc53mk9njmpub94.png"></p>
+<h3 class="topic">
+<a name="3eul5fgbiagqcibgr2n15ls4u0">&nbsp;查看当前计算机是否支持DEP</a>
+</h3>
+<h3 class="topic">
+<a name="3je48un6fdif26c0867cmdkus7">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/6ralaho1avlo4fi6saaivte96m.png"></p>
+<h3 class="topic">
+<a name="6h1il0rpr7mi4ov8n8gk8or6ru">&nbsp;DEP工作模式</a>
+</h3>
+<h3 class="topic">
+<a name="4pr7colg6u3idhpqs2gd2fqbho">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/3h1bi9avkb70cbgmgiioejmg3t.png"></p>
+<h3 class="topic">
+<a name="2gj9j1l80470a20cvv0phagirb">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/3luq1da2vjea1b60uu114rj9c6.png"></p>
+<h3 class="topic">
+<a name="1ski8srat7qlrgm57lhs6dap2t">&nbsp;编译选项 /NXCOMPAT</a>
+</h3>
+<h3 class="topic">
+<a name="56fo2tttnnd27ctp7ufnf0qukh">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/1sh2rjrom6337hevglp097hbei.png"></p>
+<h3 class="topic">
+<a name="158jukog6p2e035v0ei6lj8ou2">&nbsp;DEP的局限性</a>
+</h3>
+<h3 class="topic">
+<a name="08p3d5kf5ut8p264g0j2ag7s5d">&nbsp;&nbsp;需要硬件支持，部分比较老的硬件不支持DEP</a>
+</h3>
+<h3 class="topic">
+<a name="6biemv3lfv05c226n6ho7o3gb8">&nbsp;&nbsp;windows中不能对所有进程强制开启DEP，否则会造成异常、</a>
+</h3>
+<h3 class="topic">
+<a name="0gtdfda7birl8tdfj329euij5d">&nbsp;&nbsp;&nbsp;64位的AlwaysOn除外</a>
+</h3>
+<h3 class="topic">
+<a name="5husscvtfv6q0o5ven3m49mp8l">&nbsp;&nbsp;编译选项/NXCOMPAT 只在windows vista之后的系统中起作用</a>
+</h3>
+<h3 class="topic">
+<a name="0o2kov5lak2n6pj6he26rbt9no">&nbsp;&nbsp;optin optout状态下的DEP是可以调用API进行动态关闭的</a>
+</h3>
+<h3 class="topic">
+<a name="5uus9nlfmj80pd8e5motet9hn8">&nbsp;攻击未启用DEP的程序</a>
+</h3>
+<h3 class="topic">
+<a name="6rlk93tgvcfrhaui3gmodkaa5n">&nbsp;&nbsp;DEP的保护是进程级的，某个进程中只要一个加载模块不支持DEP，该进程就不能贸然开启dep</a>
+</h3>
+<h3 class="topic">
+<a name="77glij0acbrha9u37lg570ajil">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/3jf4789prtd4j4q0cq4smntt6d.png"></p>
+<h3 class="topic">
+<a name="2eblfvmu1nf55t4n6n0svgi1bn">&nbsp;利用Ret2Libc挑战DEP</a>
+</h3>
+<h3 class="topic">
+<a name="3duegp1kq0poss4qo01b6tlqka">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/3a02qk4ab6ribjidr68m23n24r.png"></p>
+<h3 class="topic">
+<a name="7hgo0ro29ma6bkafgfifvv3hoa">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/0ijsj7oa397gg7m0ugq8cjerhi.png"></p>
+<h3 class="topic">
+<a name="7npj2q91rb9tadrbqgs77fkphs">&nbsp;&nbsp;通过Ret2libc调用3种函数绕过DEP</a>
+</h3>
+<h3 class="topic">
+<a name="13d3qqr8te6t8t0922pdm6tv50">&nbsp;&nbsp;&nbsp;调用ZwSetInformationProcess 函数将 DEP 关闭</a>
+</h3>
+<h3 class="topic">
+<a name="3lf2uds1gs5sp7btqhp1drgqp7">&nbsp;&nbsp;&nbsp;&nbsp;进程的DEP标志保存在KPEOCESS结构体中的_KEXECUTE_OPTIONS ，该标识可以通过ZwQueryInformationProcess 和 ZwSetInformationProcess 进行查询和 修改</a>
+</h3>
+<h3 class="topic">
+<a name="42f9mj8ccihp3i9393d7v0pg27">&nbsp;&nbsp;&nbsp;&nbsp;能够关闭DEP的函数调用</a>
+</h3>
+<h3 class="topic">
+<a name="2hqi64ib49d2u23m77h2upors3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/3jn17aqu9ieeckcpdsg9evdnbp.png"></p>
+<h3 class="topic">
+<a name="7ejqg1f048ja19bc88vd84402t">&nbsp;&nbsp;&nbsp;&nbsp;问题是该函数调用中参数包含0x00截断字符，故尝试寻找系统中是否存在关闭DEP的ZwSetInformationProcess函数调用</a>
+</h3>
+<h3 class="topic">
+<a name="7m3ovnttgp0qep4d9ge9so66bq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;存在，微软兼容性检查函数LdrpCheckNXCompatibility函数，当dll加载时，该函数被执行，当被加载的dll符合以下三个条件之一时，该函数会调用ZwSetInformationProcess函数关闭该进程的DEP</a>
+</h3>
+<h3 class="topic">
+<a name="4h8s6seu1f29tci5hkq1v2aso4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/36niali699dmomho9ssclhs568.png"></p>
+<h3 class="topic">
+<a name="6o5j149vf22kin34ho8tg3f608">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/561l7gsthig6sqk179u11rsp7s.png"></p>
+<h3 class="topic">
+<a name="4tjc7o12hbpfifkti2m9b1hnhr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当满足第一个条件时</a>
+</h3>
+<h3 class="topic">
+<a name="7eftbmqa3r6ldmloe2l9tekk49">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/4ld0g4ci9jo1cjgeg5a4tlq7mr.png"></p>
+<h3 class="topic">
+<a name="6pe8fkai0ug83rq2ekvlh7k7ha">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;主要利用思路，将al的值置为1，然后让程序跳转到0x7c93cd24执行指令关闭dep，并在地址0x7c93cd6f处执行retn 4指令，返回shellcode执行代码</a>
+</h3>
+<h3 class="topic">
+<a name="1kjfbgc9299io6ln7af01nr84t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过OllyFindAddr插件中的Disable DEP来获取地址0x7c93cd24</a>
+</h3>
+<h3 class="topic">
+<a name="4k34r3kmq22vuh80l9bqdbtf4d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/1me1tm4kvpr3m5vn0jd1e6r0cu.png"></p>
+<h3 class="topic">
+<a name="70ukjg1u66h5jle2ioi2lav1r6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;示例代码</a>
+</h3>
+<h3 class="topic">
+<a name="0t88t8j7b1s4f1r6mb0gmq0c84">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/7n9fjv7o9c0168n9dcdcc84g97.png"></p>
+<h3 class="topic">
+<a name="4f2emjff26cgbeogfs4djbnu4t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/73cj496uoo9qdqrb540af2bfnb.png"></p>
+<h3 class="topic">
+<a name="381d98j2c73d1o29fvcbd1sqt9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;实验思路</a>
+</h3>
+<h3 class="topic">
+<a name="1eglciuq1g3u7ufrni4hu7qngh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/7skc4m8p6fv70fssjjgdfdjd6q.png"></p>
+<h3 class="topic">
+<a name="05309lomrkf1t6jhcbsc77hqka">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;实验环境</a>
+</h3>
+<h3 class="topic">
+<a name="1p4o6ob422f1d526rptfo5sfah">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/11c8neaot1ivi0deephgbtjfe5.png"></p>
+<h3 class="topic">
+<a name="3ea525m9loid165a6vml8aq0dm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;实验过程</a>
+</h3>
+<h3 class="topic">
+<a name="3f06li88dbjvge5dreb9k40l9k">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;寻找类似 mov al,1 retn的指令，可以通过OllyFindAddr插件的 Disable DEP&rarr;Disable DEP &lt;=XP SP3 搜索结果的 Step2 部分就是符合要求的指令</a>
+</h3>
+<h3 class="topic">
+<a name="5uh0unpdcumep597a3odeotumb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/5fqjck2aarhapat1vae9n5vijs.png"></p>
+<h3 class="topic">
+<a name="0o88ulau612t0n1q3fiv914q9d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/2cm1hto5ls24inuukbf5bdfm7l.png"></p>
+<h3 class="topic">
+<a name="3o2e61m0lup9q7ni4f8e424nin">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;执行mov al,1 retn指令之后，程序将从当前栈顶取出数据当作执行地址继续执行，此时可以将0x7c93cd24设置在栈顶，让程序执行关闭DEP的指令</a>
+</h3>
+<h3 class="topic">
+<a name="7ikop85pattlur4q8jq1jl53up">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/4blblqrs0givrn2mi4rl6ng6lq.png"></p>
+<h3 class="topic">
+<a name="7btu2ok4jolccu7psf9t4evcat">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/76jgvia96g7et1thii7jc2kor0.png"></p>
+<h3 class="topic">
+<a name="5st2lf462crrvbtffncr3n2e39">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这样做的结果是程序无法正常执行关闭DEP的代码，关闭DEP的代码中需要向EBP-4的位置写入数据，因为ebp的值已经由于之前的栈溢而修改，此时指向不可写的内存位置</a>
+</h3>
+<h3 class="topic">
+<a name="1egunvqld1tnla88hefjktpv6j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/76l2j5bq8okqubm7s9bb70n8er.png"></p>
+<h3 class="topic">
+<a name="63bhhdr2os5uqathgfgu7fpqf2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;以上情况中，只有esp寄存器中的值指向栈中，即指向可以写入数据的地址，所以在调用关闭DEP函数之前，尝试将esp的值赋值给ebp</a>
+</h3>
+<h3 class="topic">
+<a name="5o6vvglo5b2c4vu4b9qtm5omac">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用插件OllyFindAddr插件， Disable DEP &lt;=XP SP3 搜索结果的 Setp3 部分查看 当前内存中所有符合条件的指令</a>
+</h3>
+<h3 class="topic">
+<a name="08rah891utiseic3de9g1h1hp1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/2inc0p1bvtdbjv7mgo044js6ol.png"></p>
+<h3 class="topic">
+<a name="6b33u7t70nsp7lm5l5s9di4uv2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;选择0x5D1D8B85 处的 PUSH ESP POP EBP RETN 04 指令来修正 EBP</a>
+</h3>
+<h3 class="topic">
+<a name="3isur409boca563aa3em05sld2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;示例代码如下</a>
+</h3>
+<h3 class="topic">
+<a name="5f63ihsul90h1tfknni6t4bsqd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/4a7kdc6c88amfo6s4arofeq7l1.png"></p>
+<h3 class="topic">
+<a name="1q60qislpjnecph1sb6h49qkkp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这样做的结果是关闭DEP的代码可以正常执行，但是执行结束后，失去了程序控制权</a>
+</h3>
+<h3 class="topic">
+<a name="2rdir84e6oarvhd1dmormh3do9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;调用ZwSetInformationProcess函数</a>
+</h3>
+<h3 class="topic">
+<a name="1h2kbm8i883hijt8amlt29bgn4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/5v7s5pn6955p1gr00fu0m387a4.png"></p>
+<h3 class="topic">
+<a name="12ok83tr4luj4s29s50a0d3ff3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;调用ZwSetInformationProcess函数结束</a>
+</h3>
+<h3 class="topic">
+<a name="067ak67d208gqrbii978fcrr6c">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/0rio3bt89649f0cobrbdteghft.png"></p>
+<h3 class="topic">
+<a name="2eqmknc6v0dmqmg1orosp0pich">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;分析，当shellcode如示例代码是，栈中情况如</a>
+</h3>
+<h3 class="topic">
+<a name="12kfkk8sgti1151c3o526ke09a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0x0012feb0	mov eax,1的地址&#13;
+0x0012feb4	修正ebp的代码的地址&#13;
+0x0012feb8	关闭dep函数的地址&#13;
+0x0012febc&#13;
+0x0012fec0</a>
+</h3>
+<h3 class="topic">
+<a name="7f0upqo5e620544cb727jeicf0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当修正ebp的代码执行时</a>
+</h3>
+<h3 class="topic">
+<a name="53k1mgsjid8nn7vcvi5foqg4u5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;push esp</a>
+</h3>
+<h3 class="topic">
+<a name="2q53cu5ql1jmo1i3d053otf38m">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将0x0012feb8的值保存在地址0x0012feb4上，esp的值也减少为0x0012feb4</a>
+</h3>
+<h3 class="topic">
+<a name="45prha6h5qvj4a2hfo23llv7pq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pop ebp</a>
+</h3>
+<h3 class="topic">
+<a name="726i8fob415r4bl0lhm36a72tk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;esp de1值变为0x0012feb8， ebp也被赋值为0x0012feb8</a>
+</h3>
+<h3 class="topic">
+<a name="3r9uulvte383uahfpc89vtn7fv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;retn 4</a>
+</h3>
+<h3 class="topic">
+<a name="3u48u1pji9jai35v3ag4hg2cr9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;程序取出0x0012feb8处的内容当作函数地址执行，esp的值变为0x0012fec0（因为retn 4）</a>
+</h3>
+<h3 class="topic">
+<a name="1aqo542vp9blu7mtu7grmjfoce">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当调用关闭DEP的函数时</a>
+</h3>
+<h3 class="topic">
+<a name="0cilkhpgnse7tihbitbqvjbjne">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;因为esp的值为0x0012fec0  所以ZwSetInformationProcess函数的四个参数会被分别压入0x0012febc~0x0012feb0的栈空间</a>
+</h3>
+<h3 class="topic">
+<a name="7e7354vbi3jbkhj22c90ub7fgn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意在这个过程中，函数参数会淹没原本用于保存Ret2Libc链内存空间，造成0x0012febc处保存的下一个Ret2Libc链节点被淹没，可能造成程序失去控制权</a>
+</h3>
+<h3 class="topic">
+<a name="2apchj415ifkrqi4tr9tn2irnt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;造成这一切的根本原因在于我们是从LdrpCheckNXCompatibility(微软兼容性检查函数)中间进入该函数，并视图调用ZwSetInformationProcess关闭DEP，所以程序没有为LdrpCheckNXCompatibility函数开辟栈帧，所以会造成数据淹没</a>
+</h3>
+<h3 class="topic">
+<a name="1mvag4i8qnbrcakaldnoj5vc19">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当从关闭DEP的函数中返回时</a>
+</h3>
+<h3 class="topic">
+<a name="3o3m7nk6ip88lho9h1hikoboob">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意返回前最后两条指令 leave  retn4</a>
+</h3>
+<h3 class="topic">
+<a name="5ojkjjojmuiat26hjss44kubam">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;leave指令相当于mov esp,ebp  pop ebp</a>
+</h3>
+<h3 class="topic">
+<a name="1irbrdrcmo3lfm179p34p2i6pr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在ZwSetInformationProcess函数执行前,ebp被置为0x0012feb8，ebp在函数ZwSetInformationProcess调用前后是不变的（因为ZwSetInformationProcess函数中一定有保存peb 开辟栈帧的操作），所以mov esp,ebp将esp置为0x0012feb8，之后pop ebp将esp修改为0x0012febc</a>
+</h3>
+<h3 class="topic">
+<a name="1gh7k04aubevp9e3unntrc0115">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;此时0x0012febc处是函数ZwSetInformationProcess的第一个参数，函数无法返回执行shellcode</a>
+</h3>
+<h3 class="topic">
+<a name="0hu7bdvmrlc2b9s9c8kh7gmo8s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;为解决失去程序执行流程的问题，如下思路</a>
+</h3>
+<h3 class="topic">
+<a name="6dm1flvr9l7m84e9flggofptob">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;修正ebp的值之后，将esp减小，避免入站的函数淹没构造的Ret2Libc链</a>
+</h3>
+<h3 class="topic">
+<a name="5bi4r34d22lhlc3islrn5q7l7c">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;本例中，因为shellcode关键代码保存在内存低地址，所以若esp减小，入栈数据可能会损坏关键代码，故不采用</a>
+</h3>
+<h3 class="topic">
+<a name="1agps2en50oh3go0mm922nvrhr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;修正ebp的值之后，将ebp增大，然后再执行关闭dep的函数，这样就可以在关闭dep的函数执行完成之后，执行leave指令时，将esp的值赋值为一个比0x0012febc更大的地址，然后可以再该地址处设置shellcode的首地址，使得shellcode执行</a>
+</h3>
+<h3 class="topic">
+<a name="76lb92ge03m74mprs9hgn34snh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;本次实验中没有找到而合适的增大ebp的Ret2Libc的链节点，故无法使用</a>
+</h3>
+<h3 class="topic">
+<a name="6u0mmjri19d12dhtks0rfk2ami">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;修正ebp的值之后，将esp的值增大，然后执行关闭dep的函数，这样就可以避免函数参数淹没Ret2libc链，而最后的leave指令正好可以在最后将esp的值修改为0x0012feb8，从而将回到Ret2Libc附近，继续其中的指令</a>
+</h3>
+<h3 class="topic">
+<a name="73iqmhmflns1kfue7v6pkdcch5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;查找增大esp的指令</a>
+</h3>
+<h3 class="topic">
+<a name="455vn7olu9o53ln2v41r8pktoj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过OllyFinAddr插件-》Overflow return address-》POP RETRN+N选项查找相关指令</a>
+</h3>
+<h3 class="topic">
+<a name="1m2uojeepq0iurme5q1s8b5c5h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/3du9o3grcv14tt415bre4702di.png"></p>
+<h3 class="topic">
+<a name="1j521ic6p7jeiok47e65raq617">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意所选择的指令，不能直接对esp和ebp有直接操作，否则会失去程序的控制权，在这我们选择 0x7C974A19 处的 RETN 0x28 指令来增大 ESP</a>
+</h3>
+<h3 class="topic">
+<a name="7cggr0usgulf8qn3o0megdqoqo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;示例代码</a>
+</h3>
+<h3 class="topic">
+<a name="5jvhvcg0tbd1oo4rbnd0sv48ha">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/25jj1bgdbspo79t07mnt261vu5.png"></p>
+<h3 class="topic">
+<a name="1q4vjjudrlbts257i2r8hofsqc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当程序执行时，栈中数据如图</a>
+</h3>
+<h3 class="topic">
+<a name="6htk8rbc9auemcj7p0ibnsajdd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0x0012feb0	mov eax,1的地址&#13;
+0x0012feb4	修正ebp的代码的地址&#13;
+0x0012feb8	增大esp的代码的地址&#13;
+0x0012febc	jmp esp指令的地址&#13;
+0x0012fec0	关闭dep函数的地址&#13;
+0x0012fec4	远跳指令跳，转回shellcode起始位置开始执行</a>
+</h3>
+<h3 class="topic">
+<a name="1ep5jcgmfllbcn66usv0aehqq2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;寻找jmp esp指令的地址</a>
+</h3>
+<h3 class="topic">
+<a name="1fr0qapkmb6dorgqb8pc2l9drf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过 OllyFindAddr 插件中的 Overflow return address&rarr;Find CALL/JMP ESP 来搜索符合要求的指令</a>
+</h3>
+<h3 class="topic">
+<a name="07iu3gqusdjmruvr62vaq8l2pv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/0mqfooghaduq93k4sib6vlo40k.png"></p>
+<h3 class="topic">
+<a name="3o5ao78iatv3m3lnuolp63p7qf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意因为修正ebp的指令为 push esp pop ebp retn4，所以当retn4执行之后，程序会执行增大esp的指令，同时esp的值将变为0x0012fec0</a>
+</h3>
+<h3 class="topic">
+<a name="00cm1tqam4r9hur4shor9027vs">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关闭ebp的函数执行过程中，因为esp已经被增大了28个字节，所以参数入栈的操作不会影响0x0012fec0之上的内存空间</a>
+</h3>
+<h3 class="topic">
+<a name="4oitfgeqo1q2fkvrajovt4brtg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当ZwSetInformationProcess函数执行完成后</a>
+</h3>
+<h3 class="topic">
+<a name="2dd4gqttnhj79j85gu6td5u54m">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/579b80haipvuolql76rm0us1th.png"></p>
+<h3 class="topic">
+<a name="5678l1aorg9356vfg9h1b9qu1o">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;leave 将esp的值修改为0x0012febc，然后执行retn 4指令，retn4将esp修改为0x0012fec4，之后执行jmp esp指令，所以程序会在地址0x0012fec4上继续执行指令</a>
+</h3>
+<h3 class="topic">
+<a name="2i1nipatok8l3j98osphkesc4f">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;此时如果在0x0012fec4地址上设置远跳指令，将程序执行流程跳转回shellcode的其实位置，就可以执行shellcode的关键代码</a>
+</h3>
+<h3 class="topic">
+<a name="1opmbct0r7j5uaem0b5sk2gemd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;故最终shellcode结构如图</a>
+</h3>
+<h3 class="topic">
+<a name="0oiltnj9m4t359tkfhgvmh00u4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/7c1mt50nduk0t4kqge4qo4j30s.png"></p>
+<h3 class="topic">
+<a name="2urtfsruuiim0sft8b834svlmj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;shellcode结构为</a>
+</h3>
+<h3 class="topic">
+<a name="1at3i5rfo8elrh5dtdtvvrvdj1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/6kn086850c2e7l1kibqssbbu8f.png"></p>
+<h3 class="topic">
+<a name="4qv5t20i8vn872t5v99mdd8s6j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/0njo10eel9o3qvtqdvav2ehoqj.png"></p>
+<h3 class="topic">
+<a name="1o23tpr1csjmj9ehr2m1u61oea">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/1cionqlbaos2scji99a2s0g55h.png"></p>
+<h3 class="topic">
+<a name="69rhs1ds8q393tc49snqplvgu9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;成功转入shellcode开始执行</a>
+</h3>
+<h3 class="topic">
+<a name="6pm7127ari2kgq48sg14c033dq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/45d13clu2imnhkr7si1cbubg3r.png"></p>
+<h3 class="topic">
+<a name="6u1nnvk9eadqbejv9c56qg7sss">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/1hsunru728jjrrhiac9u68f1cp.png"></p>
+<h3 class="topic">
+<a name="7i5fmae1n056sh1r58lj6su8d2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;微软在 Windows 2003 SP2 以后对 LdrpCheckNXCompatibility 函数进行了少许 修改，对我们影响大的是该函数在执行过程中会对 ESI 指向的内存附近进写行操作</a>
+</h3>
+<h3 class="topic">
+<a name="796u1lagdo0c53ddpse64lvtt3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/4g8atk9hk3jf0mumr19db417gm.png"></p>
+<h3 class="topic">
+<a name="43nsq82nc111k0mlc0gl9p5f96">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;所以如果要在该环境下成功漏洞利用，就需要将esi也指向一个可写的内存空间</a>
+</h3>
+<h3 class="topic">
+<a name="2tbcim52gtuqvb0okelch4riqm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;根据上面的思路，可以通过push esp pop esi retn来讲esi指向可写的内存</a>
+</h3>
+<h3 class="topic">
+<a name="2kttrdul2tvl1ep4on5uuee0t1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;此类指令的地址显示在 OllyFindAddr 插件中 Disable DEP&rarr;Disable DEP &gt;=2003 SP2 搜索结果的 step4 部分</a>
+</h3>
+<h3 class="topic">
+<a name="1fa0acaikbai6qlkq4a6g76bo4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;有时上面的指令难以寻找，也可以通过以下三条指令对其进行替代</a>
+</h3>
+<h3 class="topic">
+<a name="37sshgn9l6odd2p5nfcoaa1f4j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pop eax retn</a>
+</h3>
+<h3 class="topic">
+<a name="03rhgu0rl6gef9oceisiao95uh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当执行该语句时，esp中必须指向pop esi retn指令，这样在pop eax时，才可以将pop esi retn指令的地址保存在eax中，pop eax执行完成后，esp也会增加，指向push esp jmp eax，之后retn返回执行push esp jmp eax，其中push esp是将当前esp的值把保存在栈顶，然后jmp eax是执行pop esi retn指令，pop esi是将esp的值保存到esi中，从而完成将esi指向可写位置</a>
+</h3>
+<h3 class="topic">
+<a name="430b8i0qvtkq0m2q6maqchjobr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pop esi retn</a>
+</h3>
+<h3 class="topic">
+<a name="2m24qie0vlr95kb23qu67aene2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;push esp jmp eax</a>
+</h3>
+<h3 class="topic">
+<a name="74po1eicsqfilblipnq5utqodd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;示例代码</a>
+</h3>
+<h3 class="topic">
+<a name="0mfagv015b054ukimvdjhouo7q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/3rno37hi0s13jls02887o2hmbd.png"></p>
+<h3 class="topic">
+<a name="5rd1qiti5rp6hqrl6h48a7s71f">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/39tca34mh3kjdl667lpusosd41.png"></p>
+<h3 class="topic">
+<a name="6pnn7kc0se7vn8di843cunf8jf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意该示例代码中可能由于关闭DEP的函数地址寻选取的不同，所以利用代码中不需要mov eax,1 retn的代码</a>
+</h3>
+<h3 class="topic">
+<a name="1924mcjga8pdksptafv3fesqv1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;漏洞利用过程中栈中数据为方便起见，将栈中的地址以1~9进行替代</a>
+</h3>
+<h3 class="topic">
+<a name="6617l93s0oqn0rajorhmlomh34">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/6i08b5rejstf7382h3lm081t2d.png"></p>
+<h3 class="topic">
+<a name="17utfap4rs71iduqm2mnokuteo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;修正ebp的指令和之前一样，为&#13;
+push esp &#13;
+pop ebp &#13;
+retn4</a>
+</h3>
+<h3 class="topic">
+<a name="0ejp76re81c9tarj82phvid1h3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pop pop pop retn指令中，三次pop的目标操作数只要不影响esp，就可以为任意的寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="39cmuuv2d4s9bj1vt3lntfue0c">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这里修正ebp的指令是用于淹没函数返回地址的，所以当修正ebp的指令执行时，esp指向2，修正ebp的指令执行中，pop ebp之后，ebp被赋值为2，retn4执行之后，esp指向4   下一步pop eax retn准备执行</a>
+</h3>
+<h3 class="topic">
+<a name="6p3p1avs48ie9ncobopdukhbca">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pop eax执行时，因为esp指向4，所以将栈4中的内容赋值给eax，，之后esp指向5，retn执行之后，&#13;
+push esp &#13;
+jmp eax将执行</a>
+</h3>
+<h3 class="topic">
+<a name="039uomt8mohe2768h0lknnipt8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当push esp jmp eax准备执行时， esp指向6&#13;
+push esp执行时，将esp的值入栈，保存在5的位置，此时 esp也指向5，jmp eax执行，则程序转而执行&#13;
+pop esi &#13;
+retn</a>
+</h3>
+<h3 class="topic">
+<a name="11skum9skslmbg9is1fghfd0p4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pop esi执行之前 esp指向5，pop esi执行之后，esi被赋值为之前的esp，指向可写位置，之后esp指向6，retn执行之后，开始执行retn 0x30，用于增大esp</a>
+</h3>
+<h3 class="topic">
+<a name="6tvaetl9ir8po9ufr99hfbj7sp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;retn 0x30开始执行时，esp指向7，retn 0x30执行完成之后 关闭dep的代码开始执行</a>
+</h3>
+<h3 class="topic">
+<a name="7ue062d52d18ct3cvkepoandf7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关闭dep代码的最后，有leave 和retn 4，leave将ebp赋值给esp，则esp为2，leave还会执行pop ebp ，则此时esp为3，之后执行retn4，pop pop pop retn将会被执行</a>
+</h3>
+<h3 class="topic">
+<a name="3ekuptsr8aiugi7ketb6meqoh4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pop pop pop retn执行时，esp指向5（因为之前有个retn4），经过三个pop，esp指向8，retn时，执行jmp esp</a>
+</h3>
+<h3 class="topic">
+<a name="7gcrbeh7jeu759u4rgj1a3ldd9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当jmp esp执行时 esp指向9，所以程序转而去9处执行指令，此时9中保存的是远跳指令，将程序跳转到shellcode起始位置执行关键代码</a>
+</h3>
+<h3 class="topic">
+<a name="1pnl67norvj1lavedkj6ksblko">&nbsp;&nbsp;&nbsp;&nbsp;重要指令理解</a>
+</h3>
+<h3 class="topic">
+<a name="31b3brtd1em7m2h528ainqd2gg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;push esp是将esp当前的值保存在[esp-4]的内存空间中，执行完该条指令之后，esp=esp-4</a>
+</h3>
+<h3 class="topic">
+<a name="3q0es4hbfk7enhf8gnbttn3v3b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;retn 操作等同于 pop eip，即将当前栈顶的数据出栈，并保存到eip寄存器中</a>
+</h3>
+<h3 class="topic">
+<a name="0tc68urs7klur8o27cumjlofie">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;retn N操作等同于 pop eip  sub esp-N，该指令执行完毕，esp的值减小了4+N</a>
+</h3>
+<h3 class="topic">
+<a name="3no2j75joo77g7otbchnltu7fk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意这里的N就是字节数，而不是参数的个数</a>
+</h3>
+<h3 class="topic">
+<a name="1phc019dgouind9g6o1udk372v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;leave指令香相当于 mov esp,ebp  pop ebp,看到这一点对理解整个过程很关键</a>
+</h3>
+<h3 class="topic">
+<a name="1db7m4aj2huu2c563oag2tkhfi">&nbsp;&nbsp;&nbsp;调用VirtualProtect 函数来将 shellcode 所在内存页设置为可执行状态</a>
+</h3>
+<h3 class="topic">
+<a name="55jk3nbg01rdslqd0h5nbdie2q">&nbsp;&nbsp;&nbsp;&nbsp;微软提供了 修改内存属性的 VirtualProtect 函数，该函数位于 kernel32.dll 中，通过该函数用户可以修改指定内存的属性，包括是否可执行属性。</a>
+</h3>
+<h3 class="topic">
+<a name="22n7qse85vv2ou61v6fnu95qvu">&nbsp;&nbsp;&nbsp;&nbsp;关于VirtualProtect函数</a>
+</h3>
+<h3 class="topic">
+<a name="3hptdad0oa3umtl016012omasp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/2v2fpbo9mh96lsgm5djuvqrjir.png"></p>
+<h3 class="topic">
+<a name="682uhst96fbkbia52443hvsd7m">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;需要注意，如果参数中存在0x00等截断字符(0x40 0x00 0x00 0x00)，要想办法将其转换为其他字符，从而保证在溢出strcpy等函数时，shellcode不被截断</a>
+</h3>
+<h3 class="topic">
+<a name="4vq4t71l4doel9i947m400nq29">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果溢出的函数是memcpy，则不需要考虑0x00等截断字符</a>
+</h3>
+<h3 class="topic">
+<a name="6bndf5967vmdldb92pi5t0st5c">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意shellcode的起始地址根据不同的机器，可能有所不同，所以需要动态确定</a>
+</h3>
+<h3 class="topic">
+<a name="7pcamovmjm09ka2bo25lm5onsj">&nbsp;&nbsp;&nbsp;&nbsp;示例函数</a>
+</h3>
+<h3 class="topic">
+<a name="1r0ko0n8hnnmvbaf13efokv5r4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/3bdekb07udinkm711h28dladhn.png"></p>
+<h3 class="topic">
+<a name="0dpbvvkdgun6gbmrvj9b6pcd5v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/31uc2cnv032siduv9ujglo0ss9.png"></p>
+<h3 class="topic">
+<a name="5iisfbk22vvuivuomm40ouefps">&nbsp;&nbsp;&nbsp;&nbsp;实验思路</a>
+</h3>
+<h3 class="topic">
+<a name="57eel1aold8msmdqs1p0qj9tck">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/268qjidfr4e90vmlcnjbpld410.png"></p>
+<h3 class="topic">
+<a name="3tqv9erldfqlm8ellconj318tl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/5cuib72tas5thvqh9tivv9l2c7.png"></p>
+<h3 class="topic">
+<a name="4u7io1gu7un01o21il0jka8fi2">&nbsp;&nbsp;&nbsp;&nbsp;实验环境</a>
+</h3>
+<h3 class="topic">
+<a name="2e8bf97adae25qtrso2vuaa0c0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/3cao1iumjrg8jsg4ghuf3ne3f8.png"></p>
+<h3 class="topic">
+<a name="209dvkaeaeoecsptp8d6jsnqqh">&nbsp;&nbsp;&nbsp;&nbsp;VirtualProtect函数内部实际上调用了VirtualProtectEx函数，前者将参数传递给后者，后者实际发挥作用，则我们可以将VirtualProtect函数内部的指令地址作为程序执行指令的地址，直接调用VirtualProtectEx</a>
+</h3>
+<h3 class="topic">
+<a name="38ujaslird3knl725cie8mvjh2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/1aicpqkdk6ln3jv7ios244liav.png"></p>
+<h3 class="topic">
+<a name="6eljc91lc35v429mlrfet6okrh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将0x7C801FE8 作为切入点</a>
+</h3>
+<h3 class="topic">
+<a name="4pbku7j7da0ktfjrdntl13abjq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在栈中构造参数的过程中，注意[ebp+c] [ebp+10]的参数内容可以确定，但是[ebp+8]和[ebp+14]的内容必须动态确定，故漏洞利用的关键就是设置该两个参数</a>
+</h3>
+<h3 class="topic">
+<a name="364slassmfb82qru25l6kheemh">&nbsp;&nbsp;&nbsp;&nbsp;实验过程</a>
+</h3>
+<h3 class="topic">
+<a name="3mrnq7lpltkvgs0kv1ghc79tsn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;首先发现溢出过程中，ebp的值被破坏，所以使用 修复ebp的指令的地址，覆盖test函数的返回地址，修复ebp的指令为 push esp pop ebp retn4</a>
+</h3>
+<h3 class="topic">
+<a name="40jv7kkue53n61m95ipe5oo9ft">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/7trm4b2qihs0upbr0r8bdm80v8.png"></p>
+<h3 class="topic">
+<a name="54d6kg2foc2fbu1dme0go6uhf7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/5fme5m2boftfj444ckskqh6go1.png"></p>
+<h3 class="topic">
+<a name="67rnb35b8e4id7gkfcaderd7ie">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/3dq205gahdlprtgcpoe2ojpmt0.png"></p>
+<h3 class="topic">
+<a name="1cnk1osulm5272654p78fq7khu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意此时当ebp修复之后，ebp为0x0012feb4,执行完retn4之后，esp为0x0012febc，则此时esp正好指向ebp+8，此处的参数为需要修改属性的内存空间的首地址</a>
+</h3>
+<h3 class="topic">
+<a name="38q98up5go87drai0t3i4nstv4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;此时如果存在mov[esp],** pop** pop** pop** retn指令或者mov[esp],**  jmp** 指令，就可以将esp指向的内存修改为当前堆栈中某个地址，从完成函数第一个参数的设置，但是没有这种指令，所以采取变通的方法</a>
+</h3>
+<h3 class="topic">
+<a name="4opaab66ionlgj4v81rgqqo4ej">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;变通的方法就是将esp+4，然后执行push esp jmp eax指令</a>
+</h3>
+<h3 class="topic">
+<a name="24pds2rf5trucbul8vril3jlec">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/6pe37jes049f7ts5fn7br9sn3h.png"></p>
+<h3 class="topic">
+<a name="5k4abkil6oktu9ih58tgtm0fuf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/5febj7dfp0v3snfnpkck9e3mrf.png"></p>
+<h3 class="topic">
+<a name="6843ujeks5m0kvec8p1ceed4gj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;执行修正ebp指令中的retn4之前，ebp指向2，esp指向2，执行retn4之后，esp指向4，程序准备执行retn指令，retn指令执行后，esp指向4之后的四个字节，程序执行push esp jmp eax指令，则将esp的值保存到4中，同时esp的值也变成4</a>
+</h3>
+<h3 class="topic">
+<a name="2uaakc7chtl6tu4tk3q0uqs486">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这样就将ebp+8处的内容改写为栈中的地址</a>
+</h3>
+<h3 class="topic">
+<a name="28begebhqk3ue9814tqi79tuh4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;此时已经成功将ebp+8处的参数修改为栈中地址，接下来只要将ebp+14处的内容修改为一个可写的内存地址，即可完成VirtualProtect函数参数设置</a>
+</h3>
+<h3 class="topic">
+<a name="07jv7vdu9lk1kc1n1mtd0p2fa2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;此时esp值为0x0012febc，如果esp加16个字节，即esp值为0x0012fecc（ebp+18），然后调用&#13;
+push esp jmp eax指令，就可以将可写内存的地址写入到ebp+14中，从而完成参数设置</a>
+</h3>
+<h3 class="topic">
+<a name="5octlk4m8hude3o1k2oms09l0i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果要将esp的值增加16字节，可以执行&#13;
+pop** pop** pop** retn指令，单此时将要执行的指令是jmp eax，这就需要将eax的值修改为&#13;
+pop** pop** pop** retn指令的地址</a>
+</h3>
+<h3 class="topic">
+<a name="2seal6qhcs5gqfpro413ff6rkr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以采取pop eax retn指令将栈顶的数据保存到eax中，故新的shellshellcode布局如下</a>
+</h3>
+<h3 class="topic">
+<a name="3bvfkvgfppvg7mjvfge2vdl1jf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如何得到pop** pop** pop** retn指令的地址OllyFindAddr插件中的Overflow returnaddress-》Find POP RETN功能</a>
+</h3>
+<h3 class="topic">
+<a name="7a0mum7ooa6r6qn216pbq37q8v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/4g53o6hto4ohf6d23b0o2fabg2.png"></p>
+<h3 class="topic">
+<a name="6hl15he0ia33n881s8334l417l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意该指令不能修改eax esp ebp寄存器的值，因为以上指令需要在后面的执行过程中用到</a>
+</h3>
+<h3 class="topic">
+<a name="5bpkv3ipidegakk8kdom8abhb0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;综上新的shellcode结构如下</a>
+</h3>
+<h3 class="topic">
+<a name="2iso3hj3l492agr8lsbm7mek6f">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/0b48fikg8tkkpf1p1rjbrj3vtr.png"></p>
+<h3 class="topic">
+<a name="5caemgnohbha4fgup3793afasf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1的位置是test函数的返回地址，使用pop eax retn指令的地址覆盖，当pop eax retn指令执行时，esp指向2，pop eax将指令 pop pop pop retn的地址保存到eax中，同时esp将指向3，当retn执行执行后，程序会指向修正ebp的代码</a>
+</h3>
+<h3 class="topic">
+<a name="3rc9r40fem8dc1j0knrd51krji">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;之后的部分指令与上面的饭分析相同，不进行赘述，当jmp eax执行之前，esp指向6，当jmp eax执行后，会执行pop pop pop retn，三个pop会使esp指向9，之后retn esp指向9下面的四个字节，程序执行push esp，将可写内存的地址设置在ebp+14上，之后继续执行jmp eax ，即pop pop pop retn,经过三个pop，esp指向10，即指向VirtualProtect函数中的地址，，retn会使得修改内存属性的函数执行，4~4+0xff范围内的内存均被修改为可执行</a>
+</h3>
+<h3 class="topic">
+<a name="2k62n4ouuvq3vsto1o7atgrqn9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;修改内存属性的函数返回前，堆栈中情况如下</a>
+</h3>
+<h3 class="topic">
+<a name="0kevdjf0u3aam70kdnlgb0ad6p">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/3f6qfh28n3brcrrsiu6n4kdt07.png"></p>
+<h3 class="topic">
+<a name="6hjg4i2edh2ik2jt1fk2sloort">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如图在VirtualProtect函数执行完毕之后，有pop ebp retn10两条指令，执行retn10之前，esp咨询指向上图中10+8的位置，所以如果在放置 jmp esp指令的地址，然后在retn10之后的位置放置shellcode关键代码，就可以执行弹出对话框的指令</a>
+</h3>
+<h3 class="topic">
+<a name="3ucesocmdusq74hncvqgr4vlh2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;最终shellcode如图</a>
+</h3>
+<h3 class="topic">
+<a name="6mf3u8vddis5cffvbfk7j2o563">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/6bmmb6q3pap9nc127uof3vmnjr.png"></p>
+<h3 class="topic">
+<a name="1hljs8vkpe0n1c5p1brkvj44k9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/749gnkufp7qeqm07km7u7rp27k.png"></p>
+<h3 class="topic">
+<a name="66btg7i1mk1l2bg0ou3mgvc8o3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/17sccud9o7ednbhe7okk132vkc.png"></p>
+<h3 class="topic">
+<a name="0l8hcf45sntirkmbumjfvmlk29">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;执行shellcode关键代码</a>
+</h3>
+<h3 class="topic">
+<a name="391h3vl0dg6d95uq4jagg2hdfo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/3mqmbp78nfhkfjob3uks7jpu6b.png"></p>
+<h3 class="topic">
+<a name="4f2lrm0m5cdq33ims29ekkt0cj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/38knis97qai07skfboo2u0s5l1.png"></p>
+<h3 class="topic">
+<a name="6hn8j9q5biep1m4cec4f4qii8m">&nbsp;&nbsp;&nbsp;VIrtualAlloc 函数开辟一段具有执行权限的内存空间，然后将 shellcode 复 制到这段内存中执行。 </a>
+</h3>
+<h3 class="topic">
+<a name="44783rqjjrhcgf2lm3024vrvt3">&nbsp;&nbsp;&nbsp;&nbsp;VirtualAlloc函数位于kernel32中</a>
+</h3>
+<h3 class="topic">
+<a name="1trdalqvcs100mhsc9jrqsi9sh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/44lm666jva967okt460dpm7ebo.png"></p>
+<h3 class="topic">
+<a name="41ukssvbe5090b53irgv58fu3f">&nbsp;&nbsp;&nbsp;&nbsp;示例代码</a>
+</h3>
+<h3 class="topic">
+<a name="45a5t83b17q8rp6p4m0hhbjrdv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/59phlpb9so9gg1ujl0n3fjgeco.png"></p>
+<h3 class="topic">
+<a name="7upr7irtvk4vol7nisbgtsli2k">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/10ls97tlo8piuokrpcbaq25916.png"></p>
+<h3 class="topic">
+<a name="2vs0ngcvrn9bav055bi5sv8tl3">&nbsp;&nbsp;&nbsp;&nbsp;实验思路</a>
+</h3>
+<h3 class="topic">
+<a name="5imaobcmvdoi75vrilfj6a239v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/64hv215g994t2k0mclupd2aee7.png"></p>
+<h3 class="topic">
+<a name="5lddnclsepkr84q0gg9qavce3h">&nbsp;&nbsp;&nbsp;&nbsp;实验环境</a>
+</h3>
+<h3 class="topic">
+<a name="4vrlsu186hpi7s24skebh6b1n9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/4iscerbpamg8l914rvh9s6s9ve.png"></p>
+<h3 class="topic">
+<a name="764763rsct59cc223sj54algeh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/0asg3unkdglpdedrhg59oe2mrs.png"></p>
+<h3 class="topic">
+<a name="2h77072d6rmd8qrh6ek73nq1el">&nbsp;&nbsp;&nbsp;&nbsp;VirtualAlloc的具体实现</a>
+</h3>
+<h3 class="topic">
+<a name="139j93s84olktomh68tiv3ec3e">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/1rjoipt5lkohflfjm45jda7kke.png"></p>
+<h3 class="topic">
+<a name="07r85vro8jjalgcji78v4hdn7j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;与VirtualProtect函数类似，且四个参数均无需动态确定，可直接写道shellcode中</a>
+</h3>
+<h3 class="topic">
+<a name="2mleg5m11jacls6vi0h1srtqbh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;四个参数的具体取值</a>
+</h3>
+<h3 class="topic">
+<a name="29cvs5cu1b31b93ojafh6pqfjb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/2nomqqqrelu4b8d44ho6jpa8hu.png"></p>
+<h3 class="topic">
+<a name="0p458g0c3jcelg4q6pg9mmi8jh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;本实验中直接在栈中构造参数，然后执行0x7c8245bc</a>
+</h3>
+<h3 class="topic">
+<a name="5fp7k2mg7mdau327ifrptefglg">&nbsp;&nbsp;&nbsp;&nbsp;实验过程</a>
+</h3>
+<h3 class="topic">
+<a name="547ukhj229gieghi5h35ui2c2q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;由于 EBP 在溢出过程中被破坏，所以第一步依然是修复 EBP，我们用 PUSH ESP POP EBP RETN 4 指令的地址覆盖 test 函数的返回地址，然后按照以上参数布置一个能够申请可执行内 存空间的 shellcode，shellcode 如下所示。 </a>
+</h3>
+<h3 class="topic">
+<a name="360fhr50mfcfor7s108piclkp7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/1gr7rffqvdvt9q6l2lkg14llks.png"></p>
+<h3 class="topic">
+<a name="02rua8dp5ipdoqogb80oumbr3u">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意call VirtualAllocEx与-1之间的0x90是因为修正EBP指令中最后一条是retn4，所以需要占位</a>
+</h3>
+<h3 class="topic">
+<a name="1nci2r3l4pu8ak5s5htua0a0qv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当VirtualAllocEx函数执行完毕返回之前，栈中数据如图</a>
+</h3>
+<h3 class="topic">
+<a name="2pdmcsgvogh1aqnkiukb4sgk4s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/4es8ed5nm2itplo28vqdjtksgl.png"></p>
+<h3 class="topic">
+<a name="3uis6tnk3ihi90dtmlcjuh69k5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;此时eax指向申请到的内存空间首地址，而ebp又被破坏了，所以接下来也需要修复ebp</a>
+</h3>
+<h3 class="topic">
+<a name="0qd30plr2qgogt3q8q03gh46eo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;VirtualAllocEx函数返回之前有 pop ebp指令和 retn10指令</a>
+</h3>
+<h3 class="topic">
+<a name="3dk7qalb8qf6msj1lne2h4pvpa">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意在call VirtuallAllocEx指令执行之前，esp指向0x12febc，即第一个参数-1，当call VirtuallAllocEx执行结束之后，很明esp指向0x12fed0，说明VirtuallAllocEx在内部平衡参数的堆栈，就如同VirtuallAlloc函数也以 retn 0x10返回一样，&#13;
+所以推测VirtuallAllocEx内部也使用retn 0x10返回</a>
+</h3>
+<h3 class="topic">
+<a name="0dtbs0lbq8khcu7ht6m3eibpt6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;内存空间申请完毕，下面将shellcode关键代码复制到申请的内存空间中</a>
+</h3>
+<h3 class="topic">
+<a name="2v8bf9bk7nggmafuovfvmhgab3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用memcpy复制shellcode关键代码到申请的内存中</a>
+</h3>
+<h3 class="topic">
+<a name="0a8apm637geu56ks28qlsem67r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;memcpy有三个参数目的地址、源地址、复制长度，其中目的地址与长度均可以已知，这里需要确定源地址，之这里需要知道源地址不需要精确的定位，只要能够位于shellcode关键位置之前即可</a>
+</h3>
+<h3 class="topic">
+<a name="1sc453rak2aulopu29nh6s1eil">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对于源地址的填充，可以使用指令push esp jmp eax进行，暂时不讨论eax指向哪个指令，修复ebp，指令如图</a>
+</h3>
+<h3 class="topic">
+<a name="728f3jn1hj7a487e8tdk3ls1hp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/3hpvj79vse56sbr2447d992vv5.png"></p>
+<h3 class="topic">
+<a name="2382d1i3jno53gq43cvjmeavpn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当VirtualAllocEx执行完成，准备执行retn 0x10返回时，esp指向1</a>
+</h3>
+<h3 class="topic">
+<a name="7i2j0lk8nt4geivq6dguphm27v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;retn0x10执行完成后，esp指向2，程序开始执行pop eax  retn，将2处的内容保存到eax中，pop eax执行之后，esp指向3，retn执行之后，程序开始执行修正ebp的指令 push esp pop ebp retn 4</a>
+</h3>
+<h3 class="topic">
+<a name="0dosq9sc1v7eg30q2539eo4ab3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ebp修复完成后</a>
+</h3>
+<h3 class="topic">
+<a name="6qu770se96n07gtj5hnccrufej">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/3comc82q86bb73vbd1t413der7.png"></p>
+<h3 class="topic">
+<a name="4tkrofh9uiko912g30hsgli4i6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当retn4执行之前，esp和ebp均指向0x0012fef0，根据memcpy函数的内部，[ebp+c]位置为保存源内存地址，如果要使用push esp的方式为源内存地址赋值，就需要esp指向[ebp+0x10]</a>
+</h3>
+<h3 class="topic">
+<a name="5cnr51ictesmllgmqvkb6ek47h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这就带来两个问题，</a>
+</h3>
+<h3 class="topic">
+<a name="0si076tvsb5ejkfdrp1cu538nh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1、如何将esp指向[ebp+0x10]</a>
+</h3>
+<h3 class="topic">
+<a name="7f27g7bb9c8s9hgp09h3mg3f24">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当前执行第二次修复ebp的指令的retn4的时候，esp指向0x12fef0，当retn4执行完成后 esp指向[ebp+8]，所以只要在0x12fef0放置pop retn指令，retn4执行完成后会执行pop retn，pop指令将esp指向[ebp+c],ret指令会将esp指向[ebp+0x10]，同时执行[ebp+c]处的指令</a>
+</h3>
+<h3 class="topic">
+<a name="7nb2qn5vvqegf9jad0ac97onj5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意这里的pop retn不能对shellcode的继续执行产生影响。本次实验中选择 POP ECX RETN，地址为 0x7CA6785F。</a>
+</h3>
+<h3 class="topic">
+<a name="0avmi9buhgjbgtmv5gnqa1459m">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;所以此时只要在[ebp+c]的位置保存 push esp jmp eax指令的地址，就可以将当前esp的值写进[ebp+c]中</a>
+</h3>
+<h3 class="topic">
+<a name="1dpkv2caqeb2dsm67gde4t79in">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2、push esp之后的程序执行流程如何回收</a>
+</h3>
+<h3 class="topic">
+<a name="2l63hdgm6hrcjvqjnmrvenb4ds">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当执行完成push esp之后，esp指向[ebp+c],之后执行jmp eax，如果eax指向POP POP RETN 指令，两个pop就可以时使sp指向[ebp+0x14]，即0x12ff04，然后如果在[ebp+0x14]的位置保存memcpy 函数的切入点 0x7C94AFAC，就可以在retn的时候执行memcpy函数，完成shellcode的复制</a>
+</h3>
+<h3 class="topic">
+<a name="5i0t67f7r1jupn3sfk11s4icfp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;所以理想的shellcode结构如下</a>
+</h3>
+<h3 class="topic">
+<a name="6tcgbpqfqnniltb0s4h518bl82">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/0tmbin3ibp9itpejtu1hf2c3s5.png"></p>
+<h3 class="topic">
+<a name="05ta535p5rhqkboahe9441u8tj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1的更改目的是在执行pop eax retn的时候将pop pop retn指令的地址保存在eax中</a>
+</h3>
+<h3 class="topic">
+<a name="4sseb7eiiv2kap990bsjtnk8up">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2中的pop指令目的是将esp指向3，然后由retn调用push esp jmp eax指令，其中jmp eax即pop pop retn 会将esp指向4，然后执行memcpy函数，完成sehllcode关键代码的复制</a>
+</h3>
+<h3 class="topic">
+<a name="1mb2dkfo1if9l4ndkjitas1p7g">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;执行所申请的内存空间中的shllcode关键函数</a>
+</h3>
+<h3 class="topic">
+<a name="1nlsmrsq4n4pq3bp771a6e8avb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;memcpy函数将要返回的时候，堆栈如图</a>
+</h3>
+<h3 class="topic">
+<a name="3s9dd15e0e0og0cirjp35esl40">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/25rsk5pdfell3uk8g2mbo5ia7h.png"></p>
+<h3 class="topic">
+<a name="2pp0ajbo6hc6qlku1d0t9v2k77">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;memcpy函数返回前会执行leave，即&#13;
+mov esp,ebp pop ebp&#13;
+而第二次修正ebp的过程将ebp置为0x0012fef0，故leava指令执行之后，esp指向0x0012fef4，内存0x0012fef4正好位于 shellcode 中 POP POP RETN 指令地址和 memcpy 参数之间，之前该片内存空间没有被使用过，所以此时只要将该地址处的内存修改为可执行内存空间的起始地址，就可以转换到申请的内存中执行代码</a>
+</h3>
+<h3 class="topic">
+<a name="125oubuv6iudi3uthu7r9ls863">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;根据栈中数据可知，memcpy的源内存地址为0x0012ff00，即从该地址开始的内存数据被拷贝到申请的可执行内存空间中当作代码执行</a>
+</h3>
+<h3 class="topic">
+<a name="0m6c5f70dc416hlkjm6qq0oaml">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;地址0x0012ff00中保存memcpy函数中拷贝长度的参数，其后面四个字节保存memcpy函数切入点地址，如果将其作为指令执行，可能存在问题，所以对shellcode中memcpy函数切入点之后的内存进行的设计，并且将弹出对话框的shellcode加在了最后，实际的shellcode结构为</a>
+</h3>
+<h3 class="topic">
+<a name="6hnqv1hjkp1vfafqqc5br2a8g4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/7jd90jcfincaa0e2lj2qjmc2j2.png"></p>
+<h3 class="topic">
+<a name="329of0jthsebpnkee7gjpdcaiq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/53hbqeoqi8i0oi45e8g37n9l8d.png"></p>
+<h3 class="topic">
+<a name="2volve0qgct88qvla8181ek5qp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;此时看一下程序执行0x30000时的情况</a>
+</h3>
+<h3 class="topic">
+<a name="5sh2kv4tubh94e3lqk3nrlm7nl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/3ltlulc0aootor0u5j9jb42jq1.png"></p>
+<h3 class="topic">
+<a name="6mtaa4gkl9aaan6jut6p3prvqg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;首先0x30004和0x30005中的ac ae对应lods 和 scas指令，以上两个指令会对esi和edi指向的内存进行读取，所以执行指令时要保证 esi和edi指向可读的内存</a>
+</h3>
+<h3 class="topic">
+<a name="1p6i7hkui41gst1aaeac0f8mjc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;esi和edi的值来源于memcpy函数返回的过程，该过程中的pop esi pop edi指令会将esi edi赋值，当memcpy函数开始执行时，esp指向栈中保存着memcpy函数切入点的内存地址的后四个字节，当memcpy函数执行到pop esi pop edi时，esp仍然指向此处，（推测是因为memcpy函数执行过程中没有修改esp或esp已经被平衡），所以只要在栈中 memcpy函数切入点后面加上可读内存的地址，就可以将其赋值给esi edi，本例中，使用0x30000作为可读地址</a>
+</h3>
+<h3 class="topic">
+<a name="7codasgq0dkh5ikvhbi76hom0b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/7a48onukf349t1gphv43d9f9hg.png"></p>
+<h3 class="topic">
+<a name="5c1m3cmqv3gooavmt9eava610g">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;其次参数中的0x94会被解析成xchg eax,esp，该指令破坏了esp寄存器的值，因为填出对话框的shellcode中存在push指令，所以需要在执行弹对话框的指令之前再次执行xchg eax,esp，将esp寄存器恢复</a>
+</h3>
+<h3 class="topic">
+<a name="41nrrdsig8pilpejp25nded4ua">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;谈对话框的指令之前的94之前的三个字节如果都使用0x90填充，则会导致指令解析出错</a>
+</h3>
+<h3 class="topic">
+<a name="1vqv9446tbbpmqd7b25od3jja3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/7vj18j23q88q5unhohn8t3e73u.png"></p>
+<h3 class="topic">
+<a name="4ipqlro01a54kph8jhjm4th023">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;而如果要想正常执行，就需要使用 0x00 填充 0x00030010，从而避免指令被错误解析</a>
+</h3>
+<h3 class="topic">
+<a name="4shrktjprek2347g4uskdlvmpv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/6gk1op31hdn8l8auq0ltpkb2i3.png"></p>
+<h3 class="topic">
+<a name="63k9a1eai1gekes04vhk47qfqu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;简单处理0x30000之后的垃圾指令的方法是直接使用0x00030014(弹出对话框的机器码起始地址 )来覆盖0x0012fef4空间，就可以在memcpy函数返回之后直接执行弹出对话框的指令，而跳过垃圾指令</a>
+</h3>
+<h3 class="topic">
+<a name="2e7uh5ak93l0564ehf4ck22e80">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这里主要是为了体现处理垃圾指令的方法与思路</a>
+</h3>
+<h3 class="topic">
+<a name="3ge4bbhilh7iodiesfati69ib1">&nbsp;&nbsp;利用可执行内存绕过DEP</a>
+</h3>
+<h3 class="topic">
+<a name="5bmf0g633r2jufoqqku1f5i77q">&nbsp;&nbsp;&nbsp;有时进程中存在一块可读可写可执行的内存，如果可以将shellcode复制到该段内存中，之后劫持进程，就可以执行shellcode</a>
+</h3>
+<h3 class="topic">
+<a name="1lokgpd93mbpn4u8fr5m9jv68l">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/3fl9svncvnq87f9kb5ndtot5vu.png"></p>
+<h3 class="topic">
+<a name="6215cbd4vc8jc0dq29quuq0etp">&nbsp;&nbsp;&nbsp;示例代码</a>
+</h3>
+<h3 class="topic">
+<a name="52s9lu54ces8mu5ivbqcu079jn">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/6uf7166feviugnatm7rek6cier.png"></p>
+<h3 class="topic">
+<a name="2ebh97vqkb7cgfqu8gik9sqdq0">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/4np02hrabtn6v9e4pvnhlcjfuj.png"></p>
+<h3 class="topic">
+<a name="5mp56pdq09msqg78qfrt2kflsp">&nbsp;&nbsp;&nbsp;实验思路及实验环境</a>
+</h3>
+<h3 class="topic">
+<a name="533jjedto7vm47985i2mamacqc">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/1oead8sutj166gam990mjp34n4.png"></p>
+<h3 class="topic">
+<a name="0isogqqim2uk3f6cmrp8js840d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/0g581amsidldvkpm1ap2vu82ms.png"></p>
+<h3 class="topic">
+<a name="289lmomrj15ok7suqu59k120up">&nbsp;&nbsp;&nbsp;本次实验与使用VirtuallAlloc绕过DEP的区别主要在于可以执行代码的内存空间不需要已经存在，不需要进行申请，直接调用memcpy函数将shellcode复制到可执行的内存空间</a>
+</h3>
+<h3 class="topic">
+<a name="7tud6fu0a7nvl4dvii8skdsg1a">&nbsp;&nbsp;&nbsp;&nbsp;本实验中调用memcpy赋值shellcode的过程与上个实验类似，不再赘述，本次实验中，被复制的shellcode开头也存在垃圾指令，但本次实验未对垃圾指令进行修正，而是直接将弹出对话框的代码的起始地址作为函数指针保存在栈中，直接跳过垃圾指令，运行关键代码</a>
+</h3>
+<h3 class="topic">
+<a name="00et4klnu1s903uclv25s8an3o">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/2s5au69j4me1n08vtq4knqc2g5.png"></p>
+<h3 class="topic">
+<a name="7k06h89mcuoh1m2h0mtsoeak3k">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/3u1r48a8o9ij8q3miuo5sreekn.png"></p>
+<h3 class="topic">
+<a name="7519gup9scaunq084mlvvt7hcv">&nbsp;&nbsp;利用.NET挑战DEP</a>
+</h3>
+<h3 class="topic">
+<a name="2mcje1f6hh6vio3mnjnbik6p17">&nbsp;&nbsp;&nbsp;微软在ie6之后的浏览器中允许用户使用.NET控件来实现一些功能，此类.NET控件最终会执行在浏览器的进程空间中，.NET控件格式与PE文件类似，也具有.text段，此类文件区段映射到内存中，具有可以执行的属性，如果将shellcode保存.NET段具有可执行的段内，之后让程序跳转到该区域执行，即可执行shellcode</a>
+</h3>
+<h3 class="topic">
+<a name="2n0fdk67s51lchh0f05b6q8st2">&nbsp;&nbsp;&nbsp;实验所需的支持</a>
+</h3>
+<h3 class="topic">
+<a name="2gnvt6lo3trg7npv40p80e3ekt">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/3rv5mcmqq4hnbrad35tn4j3dmi.png"></p>
+<h3 class="topic">
+<a name="2omn2poc46g2j58ha913ukp63d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ActiveX控件提供有漏洞的函数</a>
+</h3>
+<h3 class="topic">
+<a name="2dr5n99c95strulrq6rce5n7j4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;类似于浏览器所需的、安装在本地的运行环境</a>
+</h3>
+<h3 class="topic">
+<a name="78o493djq6ldb349briotopo2f">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;存在于被攻击的主机中，并且需要在被攻击的主机中注册</a>
+</h3>
+<h3 class="topic">
+<a name="7eo9odauupu0i4dufrh1c211vk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.NET控件提供shellcode和具有执行权限的内存</a>
+</h3>
+<h3 class="topic">
+<a name="0nlf7i83npfj4sc126dk53luap">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;类似于浏览器的一个dll，需要加载</a>
+</h3>
+<h3 class="topic">
+<a name="6osd11qlejfcihda78p3rbt8ed">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;存在于服务端,当页面执行时，被加载客户端服务器的内存空间中</a>
+</h3>
+<h3 class="topic">
+<a name="0650egg77pmgoa6uulfuqb9qsr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;poc页面用于将指定的ActiveX、.NET控件加载到浏览器的进程控件运行</a>
+</h3>
+<h3 class="topic">
+<a name="4pmqnn29n79j0b94pkb0jbisc5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用于服务器返回给浏览器，在浏览器上执行代码</a>
+</h3>
+<h3 class="topic">
+<a name="4ecfjm3aq73q4bai6c96vpf9es">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;存在于服务端</a>
+</h3>
+<h3 class="topic">
+<a name="3jd9sm7srqqq7ghdtknejf8k7d">&nbsp;&nbsp;&nbsp;ActiveX控件的生成</a>
+</h3>
+<h3 class="topic">
+<a name="6ml397sgv5lq847uppo1qbt32i">&nbsp;&nbsp;&nbsp;&nbsp;通过vs2008创建基于MFC的ActiveX控件，在利用 Adobe Flash Player ActiveX 控件绕过 SafeSEH中有所介绍</a>
+</h3>
+<h3 class="topic">
+<a name="3eumjjblhhsggorpe3il5ulcto">&nbsp;&nbsp;&nbsp;&nbsp;ActiveX控件中的代码</a>
+</h3>
+<h3 class="topic">
+<a name="6a0p6152oej31v2n21f2j6uk97">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/4q3l21cuto2urumkkdqnp8a3qj.png"></p>
+<h3 class="topic">
+<a name="23nbjil70d2hk66o2f39k5use6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/2vfu98338bhk6a1u6igu05u8jq.png"></p>
+<h3 class="topic">
+<a name="5e4klqb9p0kko0t904ptm81dmq">&nbsp;&nbsp;&nbsp;&nbsp;编译环境</a>
+</h3>
+<h3 class="topic">
+<a name="4d2srhqbl0cbkflka0nnku7hk2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/519feeclfilcbp1t09h7l0qgk9.png"></p>
+<h3 class="topic">
+<a name="086o0jce1f5s554l6ee1eejn52">&nbsp;&nbsp;&nbsp;&nbsp;在被攻击主机上注册该控件</a>
+</h3>
+<h3 class="topic">
+<a name="3k2gtf5tc5pqdelb7oudfqtmpd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;编译好控件后，我们在实验机器上注册这个 ActiveX 控件。在命令行下输入：Regsvr32 路 径\ VulnerAX.ocx 即可</a>
+</h3>
+<h3 class="topic">
+<a name="7ek3s15vrklv6k57mj9t71eqf1">&nbsp;&nbsp;&nbsp;&nbsp;在web页面中调用test函数</a>
+</h3>
+<h3 class="topic">
+<a name="4ol2vdf05164ffpttrl3ak7uv1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/0jp3fq29aao5grnifr7gf0cq6a.png"></p>
+<h3 class="topic">
+<a name="5cutenpqpi20v6f76na529jatj">&nbsp;&nbsp;&nbsp;.NET控件的生成</a>
+</h3>
+<h3 class="topic">
+<a name="2b5j73v64n3j95md8htu3q53q8">&nbsp;&nbsp;&nbsp;&nbsp;在c#下创建dll解决方案，使用.NET框架</a>
+</h3>
+<h3 class="topic">
+<a name="3qe5o1mi22s7mab3jmlcgrfchi">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/2pv3mjr838h47389darsdh6nhl.png"></p>
+<h3 class="topic">
+<a name="7r6ad5ck649cs8v4recuavci44">&nbsp;&nbsp;&nbsp;&nbsp;将shellcode设置在dll中，注意shellcode要指示位tect段，而且shellcode需要使用unicode编码</a>
+</h3>
+<h3 class="topic">
+<a name="7l8kp3vv7pq5m1e4rlcp9n4lb6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/15cmpij8natu7048ppobldd2g8.png"></p>
+<h3 class="topic">
+<a name="7r8but4scem0t4vo0gpsg0oqmv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/0i14sppk8ii4jvp0spjov1vtoq.png"></p>
+<h3 class="topic">
+<a name="4tp4ontlhm9uhkuigagpshi37v">&nbsp;&nbsp;&nbsp;&nbsp;.NET控件编译环境</a>
+</h3>
+<h3 class="topic">
+<a name="0gtapdjtrbthaq15no9sjkc888">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/7md9a3397lfsv8ck3cbrlc0rfk.png"></p>
+<h3 class="topic">
+<a name="4g5s6bgadi6oeu1f8huue323l3">&nbsp;&nbsp;&nbsp;&nbsp;设置.NET控件的基址</a>
+</h3>
+<h3 class="topic">
+<a name="317lba53fdb4arveo1tpl7bbp0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/6c69tih9fas8tl2okb5kp4rlk0.png"></p>
+<h3 class="topic">
+<a name="12aoq3mlg015ka0nlm23n4o1o7">&nbsp;&nbsp;&nbsp;&nbsp;.NET控件和触发漏洞的poc页面保存在同一个目录下，均保存到服务器中，poc页面中使用.NET控件可以使用如下代码</a>
+</h3>
+<h3 class="topic">
+<a name="7r9sog57vav3breqji4a8kopoa">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/6v1qrpkk5djmeuinpi2dglbkb5.png"></p>
+<h3 class="topic">
+<a name="5tf3ohrtiq5qjj8rqkahnprvtv">&nbsp;&nbsp;&nbsp;POC页面的生成</a>
+</h3>
+<h3 class="topic">
+<a name="5pds10446daprriiltnobouvsq">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/46ino0bj5476e5c4111l2ouash.png"></p>
+<h3 class="topic">
+<a name="5ak84ojlvtb7faluillkrhe1vg">&nbsp;&nbsp;&nbsp;&nbsp;被攻击主机访问该页面，触发ActiveX漏洞，通过.net控件绕过DEP执行shellcode</a>
+</h3>
+<h3 class="topic">
+<a name="3alo8immg38asg0br58k2io2k2">&nbsp;&nbsp;&nbsp;实验思路与环境</a>
+</h3>
+<h3 class="topic">
+<a name="24v5f6duh3lhptf4f0uksdcp1i">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/330lqbo6m4p42j62v83fu5691k.png"></p>
+<h3 class="topic">
+<a name="4bujsa1s6j5k262v2bch5vqvqj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/0u8ak95ve6idf02odjab7995m9.png"></p>
+<h3 class="topic">
+<a name="17us4hdjhebr8te0ftcqqe65h1">&nbsp;&nbsp;&nbsp;实验过程</a>
+</h3>
+<h3 class="topic">
+<a name="1vrcmkkpbli9kkm4o6dr48jq66">&nbsp;&nbsp;&nbsp;&nbsp;当被攻击主机访问poc页面时，将浏览器附加到od中，查看进程中 DEP_NETDLL.dll 模块的内存空间，找到其中shellcode的起始地址</a>
+</h3>
+<h3 class="topic">
+<a name="4ihnifr9rp00k9kh80mnrg375c">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/681j9h4e526mbrq2akhe3lcp56.png"></p>
+<h3 class="topic">
+<a name="5tluf82j9507il4c2p5oijjt7e">&nbsp;&nbsp;&nbsp;&nbsp;计算淹没test函数返回地址需要多长的字符串</a>
+</h3>
+<h3 class="topic">
+<a name="5ntfcmrvv18ah4c9vnqjn4jmb6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/3bgf815ad1uo72cgs1t9kvsr5c.png"></p>
+<h3 class="topic">
+<a name="75hp0rv06eg3e1kgvnuloqtk96">&nbsp;&nbsp;&nbsp;&nbsp;成功执行shellcode</a>
+</h3>
+<h3 class="topic">
+<a name="1766oijf1eai0oq8j7rdhm7rlu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/1u0sc0r0og4gj7h5jjr4egf757.png"></p>
+<h3 class="topic">
+<a name="7j8q3oqd56lgp7499lb9m5sve7">&nbsp;&nbsp;利用Java applet挑战DEP</a>
+</h3>
+<h3 class="topic">
+<a name="14tvqi12mfkp0m77lclkcjc82l">&nbsp;&nbsp;&nbsp;Java applet 与.NET 控件类似，都可以被 IE 浏览器加载到客户端，而且加载到 IE 进程 的内存空间后这些控件所在内存空间都具有可执行属性，所以我们也可以将 shellcode 放置在 Java applet 里边来获得执行的机会</a>
+</h3>
+<h3 class="topic">
+<a name="6krgq8brcjs6lb0gljjtvktfhf">&nbsp;&nbsp;&nbsp;poc页面和Java applet均放在服务器端，存在漏洞的ActiveX控件被安装在被攻击端，并且需要在被攻击的主机中注册</a>
+</h3>
+<h3 class="topic">
+<a name="3pdl2aa8vgpjlmqs9c2879craf">&nbsp;&nbsp;&nbsp;所需支持</a>
+</h3>
+<h3 class="topic">
+<a name="3c75m2hgguuublo44tjk4fg2kn">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/5umhrio2p0gojhmh7bktg27s43.png"></p>
+<h3 class="topic">
+<a name="4dbaf7dv6nba8gfhve0ke4bisk">&nbsp;&nbsp;&nbsp;Java applet控件的生成</a>
+</h3>
+<h3 class="topic">
+<a name="42km6ksa2lhd2pto16rs094avg">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/1iobm18n5589jho3dilj5eatei.png"></p>
+<h3 class="topic">
+<a name="6o3fn500odalpop03uuo3qeaf2">&nbsp;&nbsp;&nbsp;&nbsp;Java applet的源代码</a>
+</h3>
+<h3 class="topic">
+<a name="6dcaid0ujfhlcups9id1spatl7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/2876bk77ms6sfgcs6gnn7vsheq.png"></p>
+<h3 class="topic">
+<a name="07v413ai8runc6qkhrtm2tgo83">&nbsp;&nbsp;&nbsp;&nbsp;poc页面中调用Java applet</a>
+</h3>
+<h3 class="topic">
+<a name="1gc5q7ejf2knum4od0782v9dqf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/7qlvvadtr89ivogmrkf1a7uht0.png"></p>
+<h3 class="topic">
+<a name="2uu6k0t879qimkkbo5vmi728fa">&nbsp;&nbsp;&nbsp;&nbsp;编译环境（脱离了JRE仍然可以运行）</a>
+</h3>
+<h3 class="topic">
+<a name="0knojmtnic4h8bsenf379ibo0r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/601bkkvnaga61p7342um9kjdc8.png"></p>
+<h3 class="topic">
+<a name="6npj23gv4ivf7766t6sgng42ih">&nbsp;&nbsp;&nbsp;&nbsp;为浏览器启用jre</a>
+</h3>
+<h3 class="topic">
+<a name="5vsgpgm8iadj9kgmf2fa9k803f">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/1pdovkm00dbvod2url8u0fgmcj.png"></p>
+<h3 class="topic">
+<a name="50amtktilnqmp947ckceliman1">&nbsp;&nbsp;&nbsp;poc页面</a>
+</h3>
+<h3 class="topic">
+<a name="3g6m4rnaqdu6tqvqufs6j4mdus">&nbsp;&nbsp;&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="03c658uicdpssnbv5rrv4t0fdq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/5a5t53ir0brqo6csg4cqttvr6c.png"></p>
+<h3 class="topic">
+<a name="3la59i2llmjku35sp75ivpfvs7">&nbsp;&nbsp;&nbsp;实验思路与编译环境</a>
+</h3>
+<h3 class="topic">
+<a name="2ud8ong7ge06e00htph90vlhd2">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/0glgpr2t6kk014fjjrte3bi4hf.png"></p>
+<h3 class="topic">
+<a name="1fk8tcalrclh24ht8dmub23utv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/0u6cgh1gam9uqvl07vfl91ckgk.png"></p>
+<h3 class="topic">
+<a name="1jciukqgsd64557r652ca8pel7">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/7tm258ockqideh82rvmh0067vd.png"></p>
+<h3 class="topic">
+<a name="34jn8anm6hgg9u80erdkksknna">&nbsp;&nbsp;&nbsp;实验过程</a>
+</h3>
+<h3 class="topic">
+<a name="3n9aeohdnq3hohf87h1kn7ieej">&nbsp;&nbsp;&nbsp;&nbsp;为确定shellcode在浏览器进程中的地址，需要使用控件OllyFindAddr</a>
+</h3>
+<h3 class="topic">
+<a name="5vo42ks63of6n8n0q76f8tqhjv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;我们可以通过 OllyFindAddr 插件中的 Custom-search 搜索弹出对话框 机器码的前 4 个字节&ldquo;FC686A0A&rdquo;来定位 shellcode。 </a>
+</h3>
+<h3 class="topic">
+<a name="41a96qke061lbtidf4949cpidn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/6vtlqr5f0n07hhbj1aav7obnnc.png"></p>
+<h3 class="topic">
+<a name="5s564c23pq26hafpgmkl5ohhf2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;搜索到两个位置均存在shellcode，可能是因为一个是将Java applet中buff变量赋值的字符串，另一个是已经被赋值的buff字符串本身</a>
+</h3>
+<h3 class="topic">
+<a name="3esbtdf3kaic434bup1utn93av">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;第二个地址为 buffer 字符串的位置，它是在程序运行时申请的空间，每次空间地址都会有轻微 变化，所以本次实验选择第一个位置即 0x100104EC 开始的 shellcode。 </a>
+</h3>
+<h3 class="topic">
+<a name="7kool0h6aldc6ipjp71gcj4q4r">&nbsp;&nbsp;&nbsp;&nbsp;将得到的shllcode地址（ 0x100104EC，转换为 Unicode 编码后为&ldquo;\u04EC\u1001）设置到poc页面中用于覆盖test函数返回地址，当poc被执行时，程序就会去执行shellcode</a>
+</h3>
+<h3 class="topic">
+<a name="3pdoi6uj6lb5o66nhq4qr4l8g0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190821_files/1347jn437g4ppur09441dohhja.png"></p>
+</body>
+</html>

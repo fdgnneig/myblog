@@ -1,0 +1,343 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>查找公共漏洞</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="4l0sshfs4vekpq78n51ajn1vgg">查找公共漏洞</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="%E6%9F%A5%E6%89%BE%E5%85%AC%E5%85%B1%E6%BC%8F%E6%B4%9E_files/images/%E6%9F%A5%E6%89%BE%E5%85%AC%E5%85%B1%E6%BC%8F%E6%B4%9E.jpg"></div>
+<h2 class="topic">
+<a name="2ejjssa6kjieb001vc3uv5384j">使用公共exp告诫</a>
+</h2>
+<h3 class="topic">
+<a name="468k8704uf3lcjci9ijg3sugap">&nbsp;需要在执行漏洞利用程序之前仔细阅读和理解代码，以确保没有负面影响。</a>
+</h3>
+<h3 class="topic">
+<a name="6gif7uuhtedknatdg0j86mvmho">&nbsp;以0pen0wn的公开exp为例，在阅读源代码时，我们注意到它正在请求root特权，这立即引起了怀疑。</a>
+</h3>
+<h3 class="topic">
+<a name="0mjrupe8sa00rfbfdfmtrl2d8j">&nbsp;&nbsp;exp源码中请求了root权限，从而引发怀疑</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%9F%A5%E6%89%BE%E5%85%AC%E5%85%B1%E6%BC%8F%E6%B4%9E_files/0kvfvodg04hf2tf6f61biv6v71.png"></p>
+<h3 class="topic">
+<a name="7hhnrm9f26h0b488mgf7cih3tr">&nbsp;&nbsp;&nbsp;进一步检查payload，发现一个数组</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%9F%A5%E6%89%BE%E5%85%AC%E5%85%B1%E6%BC%8F%E6%B4%9E_files/1alcj01e3ea47495eu3h4574o6.png"></p>
+<h3 class="topic">
+<a name="3ivdp9bdajfmi24ilts7f2kbqj">&nbsp;&nbsp;&nbsp;&nbsp;尽管jmpcode字符数组被掩盖为shellcode，但实际上是包含恶意shell命令的十六进制编码字符串</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%9F%A5%E6%89%BE%E5%85%AC%E5%85%B1%E6%BC%8F%E6%B4%9E_files/307mnsnapceqifs3gdc9a8bqmo.png"></p>
+<h3 class="topic">
+<a name="045jlhn4j7j1jevrdc5g7c243l">&nbsp;&nbsp;此命令将有效清除攻击者基于UNIX的文件系统。 在接下来的几行中，该程序将连接到公共IRC服务器，以宣布用户对世界的痴迷，从而使该过程极为危险，并且可能使您遭受恶意攻击！</a>
+</h3>
+<h3 class="topic">
+<a name="1ir2gbqu2uie46fjannulh115u">&nbsp;&nbsp;&nbsp;考虑到这种危险，我们将在此模块中依赖更可信赖的漏洞利用库。&#13;
+   使用该模块中提到的在线资源中的漏洞利用代码之前需要先对齐源码进行分析。 但是，即使使用这些受信任的资源，正确读取代码并大致了解执行后的操作也很重要。 即使您不认为自己是程序员，这也是提高代码阅读技能的一种好方法，甚至有一天可以为您省去一些尴尬。</a>
+</h3>
+<h3 class="topic">
+<a name="0ifqbupsotqb6t2l4d5brefdk7">&nbsp;&nbsp;&nbsp;&nbsp;用低级编程语言编写并需要编译的漏洞通常以源代码和二进制格式托管。 源代码更易于检查，但编译起来却很麻烦。 二进制文件更难检查（没有专门的技能和工具），并且运行更简单。&#13;
+   如果代码检查或编译太复杂，则将具有干净快照的虚拟机设置为漏洞测试场或&ldquo;沙盒&rdquo;</a>
+</h3>
+<h2 class="topic">
+<a name="35s00duq38k4migcv1qjihjofr">搜索exp</a>
+</h2>
+<h3 class="topic">
+<a name="3er4vb1nr9u0lkk19ubt3s9dqs">&nbsp;在渗透测试的信息收集和枚举阶段之后，我们可以交叉检查已发现的软件中是否存在已知漏洞，以尝试查找针对这些漏洞的已发布漏洞。</a>
+</h3>
+<h3 class="topic">
+<a name="04dknap6mf84rjsubo4v9db916">&nbsp;在线exp资源</a>
+</h3>
+<h3 class="topic">
+<a name="05nl2ifudp02dhqjg8n9nbmrdm">&nbsp;&nbsp;以下线上资源通常会对提交的漏洞利用代码进行测试，并删除任何被视为伪造或恶意的代码。</a>
+</h3>
+<h3 class="topic">
+<a name="5r5675clgplrd0kks1sthc4mdj">&nbsp;&nbsp;The Exploit Database</a>
+</h3>
+<h3 class="topic">
+<a name="646sr6p09m9g1ian5ft5ft7eku">&nbsp;&nbsp;&nbsp;The Exploit Database是由Offensive Security维护的一个项目，是免费的公共漏洞利用的存档，可以通过提交，邮件列表和公共资源来收集。</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%9F%A5%E6%89%BE%E5%85%AC%E5%85%B1%E6%BC%8F%E6%B4%9E_files/4la5qi8thlit7lhb5oivm3f4an.png"></p>
+<h3 class="topic">
+<a name="0sussrru6lme51um45a6r9lg0j">&nbsp;&nbsp;&nbsp;&nbsp;https://www.exploit-db.com</a>
+</h3>
+<h3 class="topic">
+<a name="3lqtojmjmllrsvsb16obt1fb14">&nbsp;&nbsp;&nbsp;&nbsp;https://www.offensive-security.com</a>
+</h3>
+<h3 class="topic">
+<a name="3vulqnplqoura1o5ml06ncb0kf">&nbsp;&nbsp;&nbsp;&nbsp;更新是通过Twitter feed宣布的，还提供了RSS feed。</a>
+</h3>
+<h3 class="topic">
+<a name="5od15ev6657hrpk5igs6msambj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Twitter feed</a>
+</h3>
+<h3 class="topic">
+<a name="0795ftml130cnqt0rt1bqlqmgp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://twitter.com/exploitdb</a>
+</h3>
+<h3 class="topic">
+<a name="104dtj27k35rdqbad1ppat72kb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RSS feed</a>
+</h3>
+<h3 class="topic">
+<a name="1cpumuibtregnikferv1ibmfb4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://www.exploit-db.com/rss.xml</a>
+</h3>
+<h3 class="topic">
+<a name="096phvalpcaanrrc5ejesekjjb">&nbsp;&nbsp;SecurityFocus漏洞利用档案</a>
+</h3>
+<h3 class="topic">
+<a name="4rcnee2jebf7pfqu26od4v8q8h">&nbsp;&nbsp;&nbsp;SecurityFocus Exploit Archives(https://www.securityfocus.com)网站创建于1999年，专注于对安全社区重要的几个关键领域：</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%9F%A5%E6%89%BE%E5%85%AC%E5%85%B1%E6%BC%8F%E6%B4%9E_files/020saaume3e57l36fci7je8rou.png"></p>
+<h3 class="topic">
+<a name="3qm72u1nepbln0jt4jojkv1ql9">&nbsp;&nbsp;&nbsp;&nbsp;BugTraq：完整的披露邮件列表，旨在讨论和宣布安全漏洞。</a>
+</h3>
+<h3 class="topic">
+<a name="72pdg6mnupqge47ql7d0eg1pb5">&nbsp;&nbsp;&nbsp;&nbsp;SecurityFocus漏洞数据库：提供有关所有平台和服务的漏洞的最新信息。</a>
+</h3>
+<h3 class="topic">
+<a name="0ps8mbpnqj90fom8c50fjlrpgc">&nbsp;&nbsp;&nbsp;&nbsp;SecurityFocus邮件列表：基于主题的邮件列表使世界各地的研究人员可以讨论各种安全问题。</a>
+</h3>
+<h3 class="topic">
+<a name="78pala9p4sjhblrticdpr1747t">&nbsp;&nbsp;&nbsp;&nbsp;SecurityFocus通过其Twitter feed宣布更新，同时还提供RSS feed。</a>
+</h3>
+<h3 class="topic">
+<a name="0vp13ohkegfk1eg4gvu4sj2hc4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://twitter.com/securityfocus?lang=en</a>
+</h3>
+<h3 class="topic">
+<a name="7t0hg20v3t5mj1abkfeq8rn6gt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://www.securityfocus.com/rss/index.shtml</a>
+</h3>
+<h3 class="topic">
+<a name="0b62qt5cnu2f31hb8j5980stc6">&nbsp;&nbsp;Packet Storm</a>
+</h3>
+<h3 class="topic">
+<a name="3q5123rvej9hbpun52dk5sd3bh">&nbsp;&nbsp;&nbsp;Packet Storm(https://packetstormsecurity.com)成立于1998年。它提供有关安全新闻和漏洞的最新信息，以及由安全厂商发布的最新工具。</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%9F%A5%E6%89%BE%E5%85%AC%E5%85%B1%E6%BC%8F%E6%B4%9E_files/2t4rf14l9lt26069230om40tuv.png"></p>
+<h3 class="topic">
+<a name="7dqo6nc9hm5pt9vhqrob0sio6k">&nbsp;&nbsp;&nbsp;&nbsp;与前面提到的在线资源一样，PacketStorm将更新发布到Twitter上，并且还托管一个RSSfeed.</a>
+</h3>
+<h3 class="topic">
+<a name="3cjn7vju6ljdefs7v7s80h4cjq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://twitter.com/packet_storm</a>
+</h3>
+<h3 class="topic">
+<a name="3h8f6jhmkaodjuicump14pief3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://packetstormsecurity.com/feeds</a>
+</h3>
+<h3 class="topic">
+<a name="5eg6kd9hr1rgpdgdge04gud3j5">&nbsp;&nbsp;Google Search Operators</a>
+</h3>
+<h3 class="topic">
+<a name="79b4j3raaup61ehhtql89skecd">&nbsp;&nbsp;&nbsp;使用传统搜索引擎搜索其他漏洞利用托管网站。我们可以开始搜索特定的软件和版本，后跟exploit关键字，并包括各种搜索运算符（例如Google搜索引擎373使用的运算符）以缩小搜索范围。 掌握这些高级运算符可以帮助我们定制搜索结果，以准确找到所需的内容。&#13;
+</a>
+</h3>
+<h3 class="topic">
+<a name="43ns78s3gdfamdui7vorshv4ij">&nbsp;&nbsp;&nbsp;&nbsp;https://ahrefs.com/blog/google-advanced-search-operators/</a>
+</h3>
+<h3 class="topic">
+<a name="5401odgd8rqdk3p23tji5mpsbs">&nbsp;&nbsp;&nbsp;可以使用以下搜索查询来查找影响Microsoft Edge浏览器的漏洞，并将结果限制为仅利用Exploit Database网站上托管的那些漏洞，以下参数可用于微调我们搜索的其他一些搜索运算符包括&ldquo; inurl&rdquo;，&ldquo; intext&rdquo;和&ldquo; intitle&rdquo;</a>
+</h3>
+<h3 class="topic">
+<a name="7o2g1ppav8jov9a6rk309vn4op">&nbsp;&nbsp;&nbsp;&nbsp;kali@kali:~$ firefox --search "Microsoft Edge site:exploit-db.com"</a>
+</h3>
+<h3 class="topic">
+<a name="45th7phl7nljra1rj75c538opm">&nbsp;&nbsp;&nbsp;注意使用此类来源的exp是需要小心exp中是否存在恶意代码</a>
+</h3>
+<h3 class="topic">
+<a name="0fl8lfg5g4q5794eobeq70mjv6">&nbsp;离线exp资源</a>
+</h3>
+<h3 class="topic">
+<a name="7m6li6hgv6ijf38pag47drqv93">&nbsp;&nbsp;渗透测试期间并不能始终保证可以访问Internet。 如果评估是在隔离的环境中进行的，则Kali Linux发行版附带了各种工具，可提供对漏洞利用的离线访问。</a>
+</h3>
+<h3 class="topic">
+<a name="4nsbmern4j6nuc8m3dicburad3">&nbsp;&nbsp;SearchSploit</a>
+</h3>
+<h3 class="topic">
+<a name="711vohugs1umjs9oe0fmdl1hqb">&nbsp;&nbsp;&nbsp;exploitdb提供了所有托管漏洞利用代码的可下载存档副本。进行任何评估之前先更新软件包，以确保您拥有最新的漏洞利用程序。 可以使用以下命令更新软件包：</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%9F%A5%E6%89%BE%E5%85%AC%E5%85%B1%E6%BC%8F%E6%B4%9E_files/7sgiateh0smg0nsh2m4v0o41qg.png"></p>
+<h3 class="topic">
+<a name="29p73gt32cpcu2so6sibeqtst5">&nbsp;&nbsp;&nbsp;&nbsp;之前的命令在/ usr / share / exploitdb /下更新Exploit Database存档的本地副本。 该目录分为两大部分，exploit和shellcode</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%9F%A5%E6%89%BE%E5%85%AC%E5%85%B1%E6%BC%8F%E6%B4%9E_files/0d3gbamm2n5ob06sppsfs24boh.png"></p>
+<h3 class="topic">
+<a name="06nfk43s1gqvr0ppkmp1quo6g4">&nbsp;&nbsp;&nbsp;从命令行运行searchsploit而不使用任何参数来显示其用法</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%9F%A5%E6%89%BE%E5%85%AC%E5%85%B1%E6%BC%8F%E6%B4%9E_files/3jev7aagt7e9qda3k44b5sbnsu.png"></p>
+<h3 class="topic">
+<a name="0aaop2tgar5e1qb1ort8b1fmgm">&nbsp;&nbsp;&nbsp;&nbsp;searchsploit允许我们搜索整个档案，并根据作为参数提供的各种搜索词显示结果</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%9F%A5%E6%89%BE%E5%85%AC%E5%85%B1%E6%BC%8F%E6%B4%9E_files/57bqvktcc9pi42vlem3vf7h8fq.png"></p>
+<h3 class="topic">
+<a name="6a4htpcfmka5811r1rgcns8hlh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;以上选项使我们能够缩小搜索范围，更改输出格式，更新数据库等等：</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%9F%A5%E6%89%BE%E5%85%AC%E5%85%B1%E6%BC%8F%E6%B4%9E_files/76fjbctihh4t0m7latfdu9iob0.png"></p>
+<h3 class="topic">
+<a name="7edd30jhj5kvae1qo95q9gh9i6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;帮助菜单的&ldquo;注释&rdquo;部分提供了有用的搜索提示：</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%9F%A5%E6%89%BE%E5%85%AC%E5%85%B1%E6%BC%8F%E6%B4%9E_files/1f8h6d18n55hnd7qh2s8mufdo5.png"></p>
+<h3 class="topic">
+<a name="20ptd9kv1ad0kj60b9c8ekqmkh">&nbsp;&nbsp;&nbsp;使用以下语法在Windows操作系统上搜索所有针对SMB服务的可用远程利用</a>
+</h3>
+<h3 class="topic">
+<a name="7mgn2ieisfns0nvdj819km0m6k">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%9F%A5%E6%89%BE%E5%85%AC%E5%85%B1%E6%BC%8F%E6%B4%9E_files/19k2o0cmgl4m6o2iduqjqpavg5.png"></p>
+<h3 class="topic">
+<a name="74lq736qs1o2iod3b0rtsjj23u">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%9F%A5%E6%89%BE%E5%85%AC%E5%85%B1%E6%BC%8F%E6%B4%9E_files/5dig4ra99nkripkr35btlodivj.png"></p>
+<h3 class="topic">
+<a name="7d9uvhcselcs3lqd4iv3eblh59">&nbsp;&nbsp;Nmap NSE Scripts</a>
+</h3>
+<h3 class="topic">
+<a name="6dnuegej1rs1vv7kd5s71khj0l">&nbsp;&nbsp;&nbsp;Nmap是最受欢迎的枚举工具之一。 该工具的一个非常强大的功能是Nmap脚本引擎，顾名思义，它引入了使用脚本自动执行各种任务的功能。&#13;
+   Nmap脚本引擎附带了多种脚本，用于枚举，蛮力，模糊，检测和利用服务。  Nmap脚本引擎提供的脚本的完整列表可以在/ usr / share / nmap / scripts下找到。 使用grep快速在NSE脚本中搜索单词&ldquo; Exploits&rdquo;会返回许多结果：</a>
+</h3>
+<h3 class="topic">
+<a name="1463mai454hp95stppgp512lfd">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%9F%A5%E6%89%BE%E5%85%AC%E5%85%B1%E6%BC%8F%E6%B4%9E_files/7jkf4rir6go57nbel75fdtnjq8.png"></p>
+<h3 class="topic">
+<a name="652vgmipqdup72ktplnhnq9l5e">&nbsp;&nbsp;&nbsp;我们可以通过使用--script-help选项和脚本文件名运行nmap来列出有关特定NSE脚本的信息：这提供了有关漏洞和外部信息资源的信息。</a>
+</h3>
+<h3 class="topic">
+<a name="1g5roisorj1fdmdma0b4503poo">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%9F%A5%E6%89%BE%E5%85%AC%E5%85%B1%E6%BC%8F%E6%B4%9E_files/5po8t74nlmfvoeito0ocgaj79a.png"></p>
+<h3 class="topic">
+<a name="67v7gsiont86t3dgs097alcuqa">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%9F%A5%E6%89%BE%E5%85%AC%E5%85%B1%E6%BC%8F%E6%B4%9E_files/06gmnhnpjjg65hrn18mjqev0kc.png"></p>
+<h3 class="topic">
+<a name="5m3aubk3tbtclsap0r6b7u0b02">&nbsp;&nbsp;The Browser Exploitation Framework (BeEF)浏览器利用框架（BeEF）375是一种渗透测试工具，专注于在Web浏览器中执行的客户端攻击。 不用说，它包括许多漏洞利用。</a>
+</h3>
+<h3 class="topic">
+<a name="3hnfq4efk2f483ee2nt28dhtor">&nbsp;&nbsp;&nbsp;   要列出可用的漏洞利用，我们必须首先启动所需的服务。 这可以在Kali Linux中使用Beef-xss命令自动完成：</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%9F%A5%E6%89%BE%E5%85%AC%E5%85%B1%E6%BC%8F%E6%B4%9E_files/14hb4buo998vekmrdqcqnd4iqq.png"></p>
+<h3 class="topic">
+<a name="72911nmtfvurnr0q4onod6ccv9">&nbsp;&nbsp;&nbsp;&nbsp;我们可以使用默认登陆凭据Beef / Beef浏览到http://127.0.0.1:3000/ui/panel，以登录到框架的主界面</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%9F%A5%E6%89%BE%E5%85%AC%E5%85%B1%E6%BC%8F%E6%B4%9E_files/153il7snbivd17kjnvrgj0t00d.png"></p>
+<h3 class="topic">
+<a name="6cg8ueoi3m68b4qur7ras7a823">&nbsp;&nbsp;&nbsp;登录后，我们将需要hook受害者浏览器。 由于高级hook不在此特定模块的范围内，因此我们仅需通过单击突出显示的演示页面链接来使用框架提供的演示页面。 这将使BeEF能够钩住我们的浏览器：</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%9F%A5%E6%89%BE%E5%85%AC%E5%85%B1%E6%BC%8F%E6%B4%9E_files/1nct3i63jphq2j5tcgu3t1pqu3.png"></p>
+<h3 class="topic">
+<a name="1no40cs4lu07fim5ffnmtb4gtl">&nbsp;&nbsp;&nbsp;&nbsp;挂钩浏览器后，它将在BeEF控制台的&ldquo;挂钩浏览器&rdquo;面板中显示为localhost IP 127.0.0.1。 单击我们的IP（现在称为僵尸）将为我们提供一个新页面，其中包含有关受害者浏览器的详细信息。 然后，我们可以进入&ldquo;命令&rdquo;选项卡，在其中可以找到各种枚举脚本和漏洞利用：</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%9F%A5%E6%89%BE%E5%85%AC%E5%85%B1%E6%BC%8F%E6%B4%9E_files/7mevjmfi8mml7f1gneafn8ah13.png"></p>
+<h3 class="topic">
+<a name="27juakcvp28adplt14uliposmd">&nbsp;&nbsp;Metasploit框架</a>
+</h3>
+<h3 class="topic">
+<a name="10u8lgrsa49peusp6jlthfm1kq">&nbsp;&nbsp;&nbsp;Metasploit（https://www.metasploit.com）是一个出色的框架，旨在帮助开发和执行漏洞利用程序。 默认情况下，该框架在Kali Linux中可用，并且可以使用msfconsole命令启动：</a>
+</h3>
+<h3 class="topic">
+<a name="3q5h8dudi6k0dhc3crlrpnjm31">&nbsp;&nbsp;&nbsp;&nbsp;启动msf</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%9F%A5%E6%89%BE%E5%85%AC%E5%85%B1%E6%BC%8F%E6%B4%9E_files/62auennokrkfv4qeflqh8hiuj0.png"></p>
+<h3 class="topic">
+<a name="0sjp9rj7a8a6pgf1a78ghg7e61">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用search命令列出该框架中可用的漏洞利用。</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%9F%A5%E6%89%BE%E5%85%AC%E5%85%B1%E6%BC%8F%E6%B4%9E_files/2ib6ugjii7dnvgur0aa93o2n75.png"></p>
+<h3 class="topic">
+<a name="0g9sbjo28tedsmlti6g5ofsqe9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用-h选项获得search命令可用的关键字</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%9F%A5%E6%89%BE%E5%85%AC%E5%85%B1%E6%BC%8F%E6%B4%9E_files/5kbhsp16ilu6fc6295d42blkf2.png"></p>
+<h2 class="topic">
+<a name="4d05vf0mphmb2dikbnlhhpo097">综合运用</a>
+</h2>
+<h3 class="topic">
+<a name="7iqkl7ltom6up3ps7v7sggefnf">&nbsp;演示一下实际情况下的攻击。 我们将攻击我们专用的Linux客户端，该客户端托管了容易受到公共漏洞利用程序攻击的应用程序。</a>
+</h3>
+<h3 class="topic">
+<a name="16eagda6k63226i8b2e8ad1usn">&nbsp;&nbsp;我们通过运行nmap来开始枚举过程，以确定计算机向网络公开了哪些服务，根据扫描的输出，系统似乎在TCP端口22上运行SSH服务器，在TCP端口3389上运行XRDP，并在各种服务上标为&ldquo; JAMES&rdquo;。 使用Google获得有关JAMES服务的更多信息，使我们相信我们的目标是运行Apache James。</a>
+</h3>
+<h3 class="topic">
+<a name="6l8e2d1ellq1ho586ost4464gn">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%9F%A5%E6%89%BE%E5%85%AC%E5%85%B1%E6%BC%8F%E6%B4%9E_files/55vhvtrkjarubi67g4v2sdhbnl.png"></p>
+<h3 class="topic">
+<a name="2skhqd3em2bc4t9ihunh3ao9g9">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%9F%A5%E6%89%BE%E5%85%AC%E5%85%B1%E6%BC%8F%E6%B4%9E_files/2jbbritaghsb1nq3spftf8135j.png"></p>
+<h3 class="topic">
+<a name="5nn5j0u7tdf4mh0v6a56i4jpet">&nbsp;&nbsp;  为了找到任何可用的漏洞利用，我们将使用searchsploit工具： </a>
+</h3>
+<h3 class="topic">
+<a name="6hbgbhuc23jhnlo9j6op2sdfib">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%9F%A5%E6%89%BE%E5%85%AC%E5%85%B1%E6%BC%8F%E6%B4%9E_files/4s3r76q610s6afo7ukqr66kdmt.png"></p>
+<h3 class="topic">
+<a name="4161ksdsk3imhgu9g2rp9bqfhj">&nbsp;&nbsp;在结果中，其中一个漏洞利用似乎针对特定的Apache James Server版本2.3.2.378。快速浏览一下该漏洞利用表明，它将IP地址作为参数并以payload变量中定义的root权限执行特定命令 ：</a>
+</h3>
+<h3 class="topic">
+<a name="6qr02il94gmf620s7rij8j57an">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%9F%A5%E6%89%BE%E5%85%AC%E5%85%B1%E6%BC%8F%E6%B4%9E_files/1576kemfoguih2nb6l597d52oe.png"></p>
+<h3 class="topic">
+<a name="7guht8r4qth90o70c45a4bss8t">&nbsp;&nbsp;尝试在没有任何修改的情况下针对专用Linux客户端运行exp。</a>
+</h3>
+<h3 class="topic">
+<a name="0mh56jun5c3gb442lh1jqk995n">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%9F%A5%E6%89%BE%E5%85%AC%E5%85%B1%E6%BC%8F%E6%B4%9E_files/1t6hgqtfsccfo7ph50mgpk1fb5.png"></p>
+<h3 class="topic">
+<a name="0nnpht60d91hn5eq2rvnog40el">&nbsp;&nbsp;我们连接到专用的Linux客户端以模拟通常由受害者进行的登录，并注意到我们（从漏洞利用程序中）得到了在标准登录会话期间不会发生的其他混乱情况：</a>
+</h3>
+<h3 class="topic">
+<a name="39mrr4rdhf250u0tbha1bds10d">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%9F%A5%E6%89%BE%E5%85%AC%E5%85%B1%E6%BC%8F%E6%B4%9E_files/28g7uk3hdjd7cim77u0ta0qu2v.png"></p>
+<h3 class="topic">
+<a name="19ek1d1nma03cj5ecu42227g6k">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%9F%A5%E6%89%BE%E5%85%AC%E5%85%B1%E6%BC%8F%E6%B4%9E_files/4asahn9v4osm761f8kmvamd3ai.png"></p>
+<h3 class="topic">
+<a name="29ofjtg5sfomh2e1uf8bgmhoor">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%9F%A5%E6%89%BE%E5%85%AC%E5%85%B1%E6%BC%8F%E6%B4%9E_files/1q0irc57v4mjqlk49ndouncfuf.png"></p>
+<h3 class="topic">
+<a name="3o5irdregonnoq69fhibh1999e">&nbsp;&nbsp;如果一切按计划进行，我们应该在/ root目录下看到一个proof.txt文件，该文件存在，说明漏洞利用成功，可以利用该漏洞利用程序在目标机器上个创建新的账户/密码从而远程登陆</a>
+</h3>
+<h3 class="topic">
+<a name="55dcs076qk5jsg8v01h1chngkn">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%9F%A5%E6%89%BE%E5%85%AC%E5%85%B1%E6%BC%8F%E6%B4%9E_files/1sbb6be1vbrs89tj8eacomc7nn.png"></p>
+</body>
+</html>

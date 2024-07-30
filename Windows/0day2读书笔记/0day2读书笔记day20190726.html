@@ -1,0 +1,1137 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>0day2读书笔记day20190726</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="02319tg2frg0dinj7b5du0u9vb">0day2读书笔记day20190726</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190726_files/images/0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190726.jpg"></div>
+<h2 class="topic">
+<a name="79rqishjomq36oconsg5193034">第一章基础基础知识</a>
+</h2>
+<h3 class="topic">
+<a name="5h7psuo4m1ppsacbv9fpudlnnj">&nbsp;漏洞</a>
+</h3>
+<h3 class="topic">
+<a name="6kpd4nkjedc6do0ac8f0pp74b9">&nbsp;&nbsp;功能性逻辑缺陷</a>
+</h3>
+<h3 class="topic">
+<a name="4n42ce1dka39kdnprkj4d7m647">&nbsp;&nbsp;安全性逻辑缺陷</a>
+</h3>
+<h3 class="topic">
+<a name="5lt0luqau7e248phfues47ec3p">&nbsp;RPC（Remote Procedure Call）&mdash;远程过程调用</a>
+</h3>
+<h3 class="topic">
+<a name="6d1irvevd632khatvar8hm31su">&nbsp;漏洞挖掘、漏洞分析、漏洞利用</a>
+</h3>
+<h3 class="topic">
+<a name="6bkvd2rh2undoglgepdcbsolos">&nbsp;&nbsp;使用paimei更方便的找到漏洞触发点</a>
+</h3>
+<h3 class="topic">
+<a name="22o79fst9537a4j87r7fjfljtj">&nbsp;&nbsp;使用补丁比较器比较patch前后可执行文件的更改，获得漏洞可能的触发位置</a>
+</h3>
+<h3 class="topic">
+<a name="4bvq8n99eqnc9b3htg12ddo3dk">&nbsp;漏洞公布权威机构</a>
+</h3>
+<h3 class="topic">
+<a name="36pcfpujv607fm5omt7ddtkhtr">&nbsp;&nbsp;CVE</a>
+</h3>
+<h3 class="topic">
+<a name="4n1put21lvf8kl1v00g1va5ho5">&nbsp;&nbsp;CERT</a>
+</h3>
+<h3 class="topic">
+<a name="396i4rfdisetdcpquhnfnam3fl">&nbsp;微软每个月第二周的星期二发布补丁，这一天通常被称为&ldquo;Black Tuesday&rdquo;，因为会有许多攻击者 通宵达旦地去研究这些补丁 patch 了哪些漏洞，并写出 exploit。因为在补丁刚刚发布的一段时 间内，并非所有用户都能及时修复，故这种新公布的漏洞也有一定利用价值。</a>
+</h3>
+<h3 class="topic">
+<a name="4475qpsbihqmlkkj2v1aimgd3j">&nbsp;两种虚拟内存</a>
+</h3>
+<h3 class="topic">
+<a name="365jhgd64nq3nk2n4h5lfcb6jm">&nbsp;&nbsp;1、每个进程拥有的4gb虚拟地址空间</a>
+</h3>
+<h3 class="topic">
+<a name="4bbd2infr7la8tbl0a3fpju0tr">&nbsp;&nbsp;2、操作系统中将部分内存数据交换到硬盘上的内存数据</a>
+</h3>
+<h3 class="topic">
+<a name="3nc3s1r84n6bi5utjenoall51t">&nbsp;VA=imagebase+RVA</a>
+</h3>
+<h3 class="topic">
+<a name="4ijdremetnhnnnuhmb2q5ivoje">&nbsp;文件对齐粒度</a>
+</h3>
+<h3 class="topic">
+<a name="2sco3673lvj1ni253qe6941gm6">&nbsp;&nbsp;0x200</a>
+</h3>
+<h3 class="topic">
+<a name="2neiikhg8ebken1sf2f3o5h6mg">&nbsp;内存对齐粒度</a>
+</h3>
+<h3 class="topic">
+<a name="5trhti6s5d1k8p3ob7ccq8fp88">&nbsp;&nbsp;0x1000</a>
+</h3>
+<h3 class="topic">
+<a name="6usse91vikcq4ba9e9eq6cu5qf">&nbsp;文件偏移和内存偏移间的转换</a>
+</h3>
+<h3 class="topic">
+<a name="271erqd43uid1d2edfs964n2bd">&nbsp;&nbsp;1、与数据所在的区段相关</a>
+</h3>
+<h3 class="topic">
+<a name="0m6i90ur59av0c59i41onmmhr4">&nbsp;&nbsp;2、同一个数据在文件中和内存中针对去区段段首的偏移不变</a>
+</h3>
+<h3 class="topic">
+<a name="4sklnf118ulgblhc8mftj8vfi4">&nbsp;&nbsp;数据va-数据所在区段的va =数据foa-数据所在区段的foa</a>
+</h3>
+<h3 class="topic">
+<a name="6k9dd8tuf59nn880utn8arqoub">&nbsp;&nbsp;则四个便变量中若三个已知，第四个可求解</a>
+</h3>
+<h3 class="topic">
+<a name="638be6rmhfpqkn6f6t1k6i4i54">&nbsp;&nbsp;另一种计算va与foa的方法</a>
+</h3>
+<h3 class="topic">
+<a name="6ufq42nkaomvliqkl00fp0lpq6">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190726_files/14nk4ms7vqojvsi2m2g72db5p4.png"></p>
+<h3 class="topic">
+<a name="78se80evkmaf0q3q0go1t4su9a">&nbsp;&nbsp;&nbsp;这里的节偏移就是数据所在的区段的段首rva-段首foa</a>
+</h3>
+<h3 class="topic">
+<a name="0r22fvugl220gqv0pspdrhiv4h">&nbsp;&nbsp;&nbsp;表示一个区段的段首在文件和内存中距离文件或内存起始位置的差值</a>
+</h3>
+<h3 class="topic">
+<a name="6oo4kfahonjrk8f2qo0cjqobjp">&nbsp;&nbsp;&nbsp;即该区段中的同一数据在文件和内存中的偏移就是节偏移</a>
+</h3>
+<h3 class="topic">
+<a name="056mcvqo2gbjdgjsaosde365db">&nbsp;SoftICE</a>
+</h3>
+<h3 class="topic">
+<a name="6qitmgsb4fc9u5q7oie359ud0n">&nbsp;&nbsp;ICE：实体电路模拟器</a>
+</h3>
+<h3 class="topic">
+<a name="3aukqvem7ctud799es4flvduj2">&nbsp;&nbsp;看雪学院（http://www.pediy.com/）找到 SoftICE 的命令手册和 使用教程。 </a>
+</h3>
+<h3 class="topic">
+<a name="13qehtt5rjat7iob0bgoukpjd4">&nbsp;windbg</a>
+</h3>
+<h3 class="topic">
+<a name="7ltofcloa1bkj6lge0pk8g6sb7">&nbsp;&nbsp;t：单步步入</a>
+</h3>
+<h3 class="topic">
+<a name="70sap4rmfcvlq1i4du8074v03l">&nbsp;&nbsp;p：单步步过</a>
+</h3>
+<h3 class="topic">
+<a name="0egpa61c37q4cfp3bqb85ble78">&nbsp;ida</a>
+</h3>
+<h3 class="topic">
+<a name="4j8n4ec7g000qvvfgt4tsu027t">&nbsp;&nbsp;什么是逆向</a>
+</h3>
+<h3 class="topic">
+<a name="5q12emdtisjjstkndlrsg6tv7t">&nbsp;&nbsp;&nbsp;大牛也无法直接阅读大量汇编，需要将汇编分割为不同的层次、模块、函数、逐一研究，为代码单元做标注</a>
+</h3>
+<h3 class="topic">
+<a name="7844j4e2jlr02538n50eop53q7">&nbsp;&nbsp;能够自动识别和标注常见编译器的库函数</a>
+</h3>
+<h3 class="topic">
+<a name="3gpbcthn0da3lq53npf1pa53nb">&nbsp;虚拟机</a>
+</h3>
+<h3 class="topic">
+<a name="2ppfua45k0opqtgsrbicp7uci3">&nbsp;&nbsp;安装VMware tool</a>
+</h3>
+<h3 class="topic">
+<a name="573k670vv7llo0cbktcfjk4v7k">&nbsp;&nbsp;&nbsp;虚拟机-》安装vmwaretool</a>
+</h3>
+<h3 class="topic">
+<a name="047upv5l5n0g5q1466am6eb114">&nbsp;软件破解的关键</a>
+</h3>
+<h3 class="topic">
+<a name="48tvf7127tkhp7dr4qtjeimrb6">&nbsp;&nbsp;调试时巧妙设置断点，寻找关键代码段</a>
+</h3>
+<h3 class="topic">
+<a name="4r0f29qtm4vqaep6kh67i1722t">&nbsp;OllyDbg 在默认情况下将程序中断在 PE 装载器开始处，而不是 main 函数的开始</a>
+</h3>
+<h2 class="topic">
+<a name="0g4e4n8npq1ohp14h776u4qkcc">第二章栈溢出原理与实践</a>
+</h2>
+<h3 class="topic">
+<a name="4kfuqbcfial0un94egb9ffpj2t">&nbsp;计算机中内存种类</a>
+</h3>
+<h3 class="topic">
+<a name="60v3s54krch0m2k1s77651g7n9">&nbsp;&nbsp;代码区</a>
+</h3>
+<h3 class="topic">
+<a name="7ab8gatdjtpdobdffmnbqru0rp">&nbsp;&nbsp;数据区</a>
+</h3>
+<h3 class="topic">
+<a name="4858ed36hqfutci4jvr6c9h5p0">&nbsp;&nbsp;堆区</a>
+</h3>
+<h3 class="topic">
+<a name="4s8917hbndnm35eve07mqag0lv">&nbsp;&nbsp;栈区</a>
+</h3>
+<h3 class="topic">
+<a name="1a8v7o6slbfg6se8vkl20q3e9g">&nbsp;相关书目</a>
+</h3>
+<h3 class="topic">
+<a name="10gaje3rmob70a0qdtke7bn19p">&nbsp;&nbsp;深入理解计算机系统</a>
+</h3>
+<h3 class="topic">
+<a name="6u8848hki0vdtid9o9mkfge5lo">&nbsp;缓冲区</a>
+</h3>
+<h3 class="topic">
+<a name="65gdkhp8kfu3mk1b603r2719bv">&nbsp;&nbsp;堆区</a>
+</h3>
+<h3 class="topic">
+<a name="385j01qd00gg669i66mnsi4n4v">&nbsp;&nbsp;栈区</a>
+</h3>
+<h3 class="topic">
+<a name="1kjnf6c9bkucksiiclmqbjqcfk">&nbsp;&nbsp;存放静态变量的数据区</a>
+</h3>
+<h3 class="topic">
+<a name="0rms5o29adthol29jk09rs8n4o">&nbsp;缓冲区溢出利用方法与缓冲区种类相关</a>
+</h3>
+<h3 class="topic">
+<a name="11rpqa4gmbmja6g3e9shejj9gq">&nbsp;函数栈帧</a>
+</h3>
+<h3 class="topic">
+<a name="3smgs7oa9kr5qunktfrtkcvuno">&nbsp;&nbsp;esp和ebp之间的内存空间为当前栈帧</a>
+</h3>
+<h3 class="topic">
+<a name="41esdef4kkcu5qmlaksfpip71c">&nbsp;&nbsp;&nbsp;ebp为栈帧底部</a>
+</h3>
+<h3 class="topic">
+<a name="6enagr985ef907s9b0gub5c0el">&nbsp;&nbsp;&nbsp;esp为栈帧顶部</a>
+</h3>
+<h3 class="topic">
+<a name="4v2evcpb6mhtn0ae16t040l1aj">&nbsp;&nbsp;不同的资料对栈帧的规定不尽相同，只要不影响理解即可</a>
+</h3>
+<h3 class="topic">
+<a name="4a4nm5ie1oipov4a361p38n0s0">&nbsp;windows平台中this指针使用ecx寄存器传递，如果使用GCC编译器，则该指针会作为最后一个参数入栈传递</a>
+</h3>
+<h3 class="topic">
+<a name="57e13tg2jcu7fsbmdr7530m3hr">&nbsp;局部变量在栈中的分布可能是相邻的，可能是不相邻，根据程序的编译情况而定</a>
+</h3>
+<h3 class="topic">
+<a name="597hio0nuihlhf5eqobikgqfe0">&nbsp;注意在od中为了显示数据方便，在栈区栏显示数据时已经将内存中保存的数据（数据高位保存在高地址、数据低位保存在低地址）转换为数值数据（从左到右，为数据从高位到低位）</a>
+</h3>
+<h3 class="topic">
+<a name="4eovvd89hmdf4h39852gu08986">&nbsp;&nbsp;比如内存数据 0x 01 00 00 00 在栈区中显示的就是00 00 00 01，已经转换为数值数据</a>
+</h3>
+<h3 class="topic">
+<a name="0s1gsj790hlevoi14j4rnopvp1">&nbsp;&nbsp;所以栈内看数据，数据从左到右对于左边地址的偏移依次为3、2、1、0</a>
+</h3>
+<h3 class="topic">
+<a name="4560nll02oiujkv3gp55e53vm2">&nbsp;栈溢出</a>
+</h3>
+<h3 class="topic">
+<a name="6c2p6udur3ngr0b9dsc6g4m5f5">&nbsp;&nbsp;修改邻接变量</a>
+</h3>
+<h3 class="topic">
+<a name="4fi5gtqnf5f3oenamhjg483a1c">&nbsp;&nbsp;修改函数返回地址</a>
+</h3>
+<h3 class="topic">
+<a name="2mahrujv3vvfc6fh1uhcfmm152">&nbsp;代码植入</a>
+</h3>
+<h3 class="topic">
+<a name="19rbgl4jqt2qh6g341f86bcba9">&nbsp;&nbsp;通过栈溢出让进程执行输入数据中植入的代码</a>
+</h3>
+<h3 class="topic">
+<a name="3idbsvfqkgk5gp1lj42f4dur1e">&nbsp;&nbsp;当需要输入程序的数据保存在文件中时，程序可能是使用fscanf(fp,%s,password)等方式将数据从文件中读取出来，可能通过strcpy等函数将得到的字符串填充到程序栈空间，以上两个过程中数据的传输是以'\00' '\0a' '\0d' 为截断</a>
+</h3>
+<h3 class="topic">
+<a name="4kg6crvs5v0adbianedmchfbkf">&nbsp;&nbsp;MessageBox函数参数</a>
+</h3>
+<h3 class="topic">
+<a name="6fn5v2450ofvf9bi1lja6tbdq0">&nbsp;&nbsp;&nbsp;消息框窗口局句柄</a>
+</h3>
+<h3 class="topic">
+<a name="3tbiliq4ma0glfgke2a4fghn5j">&nbsp;&nbsp;&nbsp;&nbsp;可以为null</a>
+</h3>
+<h3 class="topic">
+<a name="569i1c63o6635hlvb0d5ue6k0a">&nbsp;&nbsp;&nbsp;字符串指针</a>
+</h3>
+<h3 class="topic">
+<a name="70nav7u64lpvt0r9l8bosajc68">&nbsp;&nbsp;&nbsp;&nbsp;窗口内容</a>
+</h3>
+<h3 class="topic">
+<a name="521hmaseq44qs2sq6cuk4ui67f">&nbsp;&nbsp;&nbsp;字符串指针</a>
+</h3>
+<h3 class="topic">
+<a name="29hjj9mgvt8a72cegfm85ae3vo">&nbsp;&nbsp;&nbsp;&nbsp;标题内容</a>
+</h3>
+<h3 class="topic">
+<a name="1mpqkcmfkp1ckttu4gjnrpa4kk">&nbsp;&nbsp;&nbsp;消息框风格</a>
+</h3>
+<h3 class="topic">
+<a name="2gr1hcvjjhmv6uda6pse2e97je">&nbsp;&nbsp;&nbsp;&nbsp;可以为null</a>
+</h3>
+<h3 class="topic">
+<a name="4n2rsj7lb52q4lov19fku50oo5">&nbsp;&nbsp;模块</a>
+</h3>
+<h3 class="topic">
+<a name="0jmc24i2uonll3n35oitot2s73">&nbsp;&nbsp;&nbsp;user32.dll</a>
+</h3>
+<h3 class="topic">
+<a name="5fpsp4k5vi0hk38guq7tr8kli0">&nbsp;&nbsp;&nbsp;&nbsp;界面相关</a>
+</h3>
+<h3 class="topic">
+<a name="5gmte8jdpd9cttc8p794ikpsud">&nbsp;&nbsp;&nbsp;&nbsp;API：</a>
+</h3>
+<h3 class="topic">
+<a name="5g6qubnevcn3m7tht4nj4m974t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;子主题 2</a>
+</h3>
+<h3 class="topic">
+<a name="7fm33cg92ira27vrbe6t84pmmc">&nbsp;&nbsp;&nbsp;MessageBox</a>
+</h3>
+<h3 class="topic">
+<a name="6i3k6b3pfis2ab1rb3q84ukgc8">&nbsp;&nbsp;&nbsp;kernel32.dll</a>
+</h3>
+<h3 class="topic">
+<a name="3mupjipje1g7t1p4sd093l2lnd">&nbsp;&nbsp;&nbsp;&nbsp;内核相关</a>
+</h3>
+<h3 class="topic">
+<a name="7uo9ap6a6nvn35vle54siit3ib">&nbsp;&nbsp;&nbsp;GDI32.dll</a>
+</h3>
+<h3 class="topic">
+<a name="3sl3vtl541kc1scl5herqj1j8l">&nbsp;&nbsp;&nbsp;&nbsp;图形相关</a>
+</h3>
+<h2 class="topic">
+<a name="0cih4c7pqcqjj4m0obpg8q42io">第三章开发shellcode的艺术</a>
+</h2>
+<h3 class="topic">
+<a name="4p7v58eb65og718m1mqjifkv3l">&nbsp;概念</a>
+</h3>
+<h3 class="topic">
+<a name="281i4s3teumuqjukvqp22shrrf">&nbsp;&nbsp;shellcoed</a>
+</h3>
+<h3 class="topic">
+<a name="0e0uerdi4b7rpds5fp0tghf3l0">&nbsp;&nbsp;&nbsp;用于执行恶意行为的代码，其中包含着payload</a>
+</h3>
+<h3 class="topic">
+<a name="6t5k9o67ssep0n5efldrm9bger">&nbsp;&nbsp;payload</a>
+</h3>
+<h3 class="topic">
+<a name="0ko78t1hod22dt8laci7qegtvu">&nbsp;&nbsp;&nbsp;shellcode中真正执行恶意行为的代码</a>
+</h3>
+<h3 class="topic">
+<a name="4rch7upvl2df1fmkj0vm25ud9r">&nbsp;&nbsp;exploit</a>
+</h3>
+<h3 class="topic">
+<a name="7b0le49a3kapd70809k0o0qv1j">&nbsp;&nbsp;&nbsp;用于获得程序执行权限的一系列操作，通常以代码形式给出</a>
+</h3>
+<h3 class="topic">
+<a name="2g2ea4jokg0nb98916ebhgvu6g">&nbsp;通用漏洞利用平台</a>
+</h3>
+<h3 class="topic">
+<a name="3t5ja1d3nlpb30s5rhvvvm9s7j">&nbsp;&nbsp;Metasploit</a>
+</h3>
+<h3 class="topic">
+<a name="7u4mc2a15n52nlbrn4niquusv5">&nbsp;&nbsp;&nbsp;将shellcode与exploit之间的接口规范化，将两者分别封装成模块，两类模块相组合，可以快速形成攻击所需代码</a>
+</h3>
+<h3 class="topic">
+<a name="6bbot0jdlqtlvja14i68hbfbh5">&nbsp;&nbsp;体现代码模块化、结构化、重用的特点</a>
+</h3>
+<h3 class="topic">
+<a name="6bos6i1b8c48cj214l20lls6ra">&nbsp;&nbsp;在msf中，shellcode也被称之为payload，与exploit组合使用</a>
+</h3>
+<h3 class="topic">
+<a name="1o26agfirt2r1sl0vfa3t09gq1">&nbsp;编写通用的shellcode</a>
+</h3>
+<h3 class="topic">
+<a name="5huqc177b8ra9ppp9pftamqcve">&nbsp;&nbsp;需要解决的问题</a>
+</h3>
+<h3 class="topic">
+<a name="58b2km8bpdfst9992dhlg7f0rt">&nbsp;&nbsp;&nbsp;动态定位shellcode在栈中的地址</a>
+</h3>
+<h3 class="topic">
+<a name="5ja3drejg28eo7p0a07qs15mvt">&nbsp;&nbsp;&nbsp;&nbsp;程序漏洞可能出现在动态连接库中，由于动态链接库的载入和卸载可能会导致函数栈的内存地址发生变化，所以需要动态确定当前函数的栈顶地址，从而找到shellcode</a>
+</h3>
+<h3 class="topic">
+<a name="6ojvbm05fe7lfe58n63gcqrg4n">&nbsp;&nbsp;&nbsp;&nbsp;通过跳板指令 jmp esp</a>
+</h3>
+<h3 class="topic">
+<a name="3039bj9lnup41asl645hg5ksbn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当函数返回之后，esp指向返回地址之之下的栈空间，此时如果将返回地址设置为代码空间中jmp esp指令的地址，函数返回后会执行jmp esp 继续将栈空间中的数据作为函数执行，此时只要在返回地址之后设置shellcode，就可以执行shellcode</a>
+</h3>
+<h3 class="topic">
+<a name="5jrog7f8lm9rnhtgo3f75p58qt">&nbsp;&nbsp;&nbsp;&nbsp;注意函数返回后，esp并不一定指向返回地址之后的紧邻返回地址栈空间，可能指向返回地址后向下若干个字节处的栈空间，这与函数调用方式与参数个数有关</a>
+</h3>
+<h3 class="topic">
+<a name="0ammiub5dfso0o681vs5bop18k">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用c语言标准函数调用时，函数参数的堆栈平衡在被调用函数外部完成，此时esp指向的地址紧邻返回地址</a>
+</h3>
+<h3 class="topic">
+<a name="2rhaaruuiketunnp41pi7v8rd8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;若使用stfcall fastcall thiscall x64call等方式，函数参数堆栈平衡在被调用函数内部粗=完成，即此类函数中使用"retn 参数个数" 指令进行结束，对于32位程序该指令相当于&#13;
+pop eip   sub esp 参数个数*4，故esp会指向返回地址之后的若干个字节处</a>
+</h3>
+<h3 class="topic">
+<a name="5uf0ecq0d4oh6bnnnbqoamg0bg">&nbsp;&nbsp;&nbsp;&nbsp;使用跳板指令的流程</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190726_files/0sq814rf8vf1n7fr0kb69udgko.png"></p>
+<h3 class="topic">
+<a name="634thfm6m6hvi98ic13k33pj11">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;shellcode的组成</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190726_files/6bn5nd7f0abekaob807egbevhq.png"></p>
+<h3 class="topic">
+<a name="03vjc3pq73ml0o3dd05pqs9jq1">&nbsp;&nbsp;&nbsp;&nbsp;寻找跳板指令</a>
+</h3>
+<h3 class="topic">
+<a name="0pl9pt2ofjgp2rfgpfb1kuhvgh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;kernel32.dll和user32.dll会被几乎所有进程加载，且加载基址始终相同，可以在此类模块的代码空间中寻找跳板指令</a>
+</h3>
+<h3 class="topic">
+<a name="2b09h0au85m6i3gg4d5995shnh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;即使kernel32的基址会变，也可以使用一些方法获取到该模块的基地址</a>
+</h3>
+<h3 class="topic">
+<a name="76r7thkigipp221v40ts0vbocp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;方法1</a>
+</h3>
+<h3 class="topic">
+<a name="124kek1uso92i0c0ishutit4ja">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fs 30</a>
+</h3>
+<h3 class="topic">
+<a name="4etjcv1lpmmi26phj7s7mqav5u">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0x0c</a>
+</h3>
+<h3 class="topic">
+<a name="64fnm4qadjes68q4oci8itv6uk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0x0c</a>
+</h3>
+<h3 class="topic">
+<a name="3hvuicbg5g55opptq0ggfl5f3k">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;eax</a>
+</h3>
+<h3 class="topic">
+<a name="0ipmg8ct1l11m8goch4914ga63">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;eax</a>
+</h3>
+<h3 class="topic">
+<a name="6qp4dbmdedqj3o826a7f60fka0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0x18</a>
+</h3>
+<h3 class="topic">
+<a name="2a16o7bd477m7cula6k6pqtift">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;方法二</a>
+</h3>
+<h3 class="topic">
+<a name="40la3kutk38dl1o836q22cmaik">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fs 30</a>
+</h3>
+<h3 class="topic">
+<a name="2um1lg8nc37igh059l9ps7mpi2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0x0c</a>
+</h3>
+<h3 class="topic">
+<a name="7fni51qfcjcn8pnbjrd71r4fep">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0x1c</a>
+</h3>
+<h3 class="topic">
+<a name="4u6gvesfhfulfoho8mgudkpdfq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;eax</a>
+</h3>
+<h3 class="topic">
+<a name="2kqlc798v4cpkj00kb4as3pab9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0x08</a>
+</h3>
+<h3 class="topic">
+<a name="32m4hbajs4368nkkf379jbe7dt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过遍历user32模块内存获得跳板指令地址</a>
+</h3>
+<h3 class="topic">
+<a name="0us83qo128htc39vtank4eu7lt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190726_files/5ncneae7ugusidbn007tsq8ncp.png"></p>
+<h3 class="topic">
+<a name="18sop9krp9f8eqag61b2fkag4e">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190726_files/6sgivggol0jlfg26mcl2fvacb7.png"></p>
+<h3 class="topic">
+<a name="5n3akq31vdhkuc2glhrjp411e0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过od中的插件获取跳板指令地址</a>
+</h3>
+<h3 class="topic">
+<a name="0vp1775ebppkc6g6nt0j6lmdpi">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;跳转指令的地址最好不要包括00，以防出出现截断</a>
+</h3>
+<h3 class="topic">
+<a name="4un1i8g8tej49s87oakid6vae3">&nbsp;&nbsp;&nbsp;&nbsp;漏洞函数返回时，观察其他寄存器，可能其他寄存器中也保存有栈顶附近的地址，所以跳板指令不仅仅是 &#13;
+jmp esp  类似 mov eax,esp jmp eax   或 jmp ebx等也可以作为跳板指令,同样可用搜索内存的方式找到对应指令</a>
+</h3>
+<h3 class="topic">
+<a name="53nc98lud9d8cl64rvb7kdoitl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190726_files/5c96a4qa2cf7h8o1snb3e5cb06.png"></p>
+<h3 class="topic">
+<a name="0aqm7pvg7uq9nfmkhjh3nvvfvv">&nbsp;&nbsp;&nbsp;&nbsp;当不允许精确定位shellcode的内存地址时</a>
+</h3>
+<h3 class="topic">
+<a name="7h275tt2k1093l7aggc0l7q90v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以在shellcode前加上大量滑板指令（90909090  0c0c0c0c），只要可以命中一条滑板指令的，就可以顺序执行到shellcode</a>
+</h3>
+<h3 class="topic">
+<a name="07tu08h1nr81iegvk0etpio6qn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190726_files/5mcgc8tjhsrafu8hi7a5qldsfq.png"></p>
+<h3 class="topic">
+<a name="45jkfqhhca74d5jsrpulojts05">&nbsp;&nbsp;&nbsp;&nbsp;当不能精确定位存储函数返回地址的内存的地址时</a>
+</h3>
+<h3 class="topic">
+<a name="4fuiquo5v6po32k8cofcr12obv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果函数的返回地址相对于被溢出栈空间首地址的偏移（按双字对齐）确定，可以使用一片连续的返回地址覆盖函数的返回的地址，此时只要有一个命中即可成更改程序执行流程</a>
+</h3>
+<h3 class="topic">
+<a name="1tkoo13bmgpeafpvbadfpvi17i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190726_files/3jov331hpp92qras33tru74fde.png"></p>
+<h3 class="topic">
+<a name="5rn82rotfmfgk5tmkjr06o7tds">&nbsp;&nbsp;&nbsp;&nbsp;在某些函数中触发漏洞时，根据不同的计算机环境，函数返回值的地址可能出现偏差</a>
+</h3>
+<h3 class="topic">
+<a name="2r88ejfb2ktirebg7udenqan7b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;比如strcat函数</a>
+</h3>
+<h3 class="topic">
+<a name="13unm0eefrd869spk60188gb22">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190726_files/0t9bh8o4u00lv9r77jkqfolhrt.png"></p>
+<h3 class="topic">
+<a name="6gshni7f6v8lsfiht872ej178u">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190726_files/48g55c5a5r27gpocem3etfigbu.png"></p>
+<h3 class="topic">
+<a name="5tvsggp1nm99bs624i8m90qigv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该函数第一个参数"程序安装目录"根据不同系统环境而不同，就导致程序栈中保存的参数长度是不定长的，此时如果使用大量返回地址覆盖栈空间，函数的返回地址可能出现0~3个字节的偏移差错</a>
+</h3>
+<h3 class="topic">
+<a name="3g7ac7no7k95kfss5f1pj9cf46">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;解决方法是将进行覆盖的返回地址设置为每个字节相同，比如0c0c0c0c，并通过堆喷射在修改地址0c0c0c0c上的内容为shellcode，让程序在对堆空间中执行代码</a>
+</h3>
+<h3 class="topic">
+<a name="2r20t7ck5qcpghffjg93l2kfdv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190726_files/6r009cigs3d48dq6co2gnh2lm0.png"></p>
+<h3 class="topic">
+<a name="7kdvoiangf55f2gtmpa04uhkmr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;常用于浏览器漏洞利用</a>
+</h3>
+<h3 class="topic">
+<a name="2ufnmc05o0gerhj3bn6tubkkpi">&nbsp;&nbsp;&nbsp;shellocde、返回地址、填充数据在缓冲区中布局</a>
+</h3>
+<h3 class="topic">
+<a name="38updianjbkrmo0i9qo6i8p68s">&nbsp;&nbsp;&nbsp;&nbsp;当不使用跳板指令时</a>
+</h3>
+<h3 class="topic">
+<a name="6bmrmc4kodgeic5cs8lp2f7c92">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190726_files/6faaai9kaes5nqn70io4n8i463.png"></p>
+<h3 class="topic">
+<a name="5daecni3hha99d5osi2l7306bh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;shellcode保存在返回地址之前</a>
+</h3>
+<h3 class="topic">
+<a name="3hncsfmpi1mml7spemj1a7t5o6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;优点</a>
+</h3>
+<h3 class="topic">
+<a name="5rl9m17dmb8ira0sp45p2u7j24">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;此种操作不会影响前栈帧数据（调用被溢出函数的函数）</a>
+</h3>
+<h3 class="topic">
+<a name="6aavt85kh4acvj0pn0fkk5kr4u">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;缺点</a>
+</h3>
+<h3 class="topic">
+<a name="5dpjuan6usf0221q6ogcitosah">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;能用于保存shellcode的内存有限</a>
+</h3>
+<h3 class="topic">
+<a name="4jt75hjcj4lpum4i88stucp4ro">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;shellcode中入栈的操作可能会导致esp上移，入栈数据可能覆部分shellcode</a>
+</h3>
+<h3 class="topic">
+<a name="3n3hdmdkuepqd6a694432h04ja">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;解决此类问题的方法，在shellcode的一开始将栈顶上抬（即sub esp,x），从而将整个shellcode包裹在栈空间中（即栈顶之下），这样shellcode中入栈的操作不会影响shellcode本身（一般shellcode是正常函数，所以堆栈平衡，如果入栈不会影响sehllcode，则出栈亦不会影响）</a>
+</h3>
+<h3 class="topic">
+<a name="2s6udds5qe9dngi86fakraoj90">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190726_files/25t7ancljduru4rd56un3en9s3.png"></p>
+<h3 class="topic">
+<a name="19l4aj1lj70g1a2q52132dah3e">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当缓冲区身比较大时，推荐使用这种布局，因为shellcode体积较小，且对程序破坏较小</a>
+</h3>
+<h3 class="topic">
+<a name="6cgesp8hm01hc8ljimfhi00edc">&nbsp;&nbsp;&nbsp;&nbsp;使用跳板指令时</a>
+</h3>
+<h3 class="topic">
+<a name="18hr0it4cvmsseerr97038f4nk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190726_files/429eanjcp7cqshkhpnn0db61u8.png"></p>
+<h3 class="topic">
+<a name="3qof2mok3e8pkgeto3olsphpq4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;shellcode保存在返回地址之后</a>
+</h3>
+<h3 class="topic">
+<a name="73sep1dubgrken45ipq9l1vil6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意如果函数使用retn 3等类似指令返回，需要在返回地址与shellcode之间加上滑板指令，滑板指令保证esp下降后，不会指向shellcode中间位置</a>
+</h3>
+<h3 class="topic">
+<a name="3t7fq9bgk89rs82q2vuaft6fqs">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;优点</a>
+</h3>
+<h3 class="topic">
+<a name="4qdk4rmjr9bmil8ggvk2plt1fk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;shellcode中的入栈操作不会影响shellcode执行</a>
+</h3>
+<h3 class="topic">
+<a name="15ee9686bgtugmpv0t8so9o60c">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以保存较长的shellcode</a>
+</h3>
+<h3 class="topic">
+<a name="17c01tfge5ps7fuetj15jqp9or">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;缺点</a>
+</h3>
+<h3 class="topic">
+<a name="47engi3bv41gr9i7583h2h4j26">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;shellcode中出栈的操作可能影响到shellcode</a>
+</h3>
+<h3 class="topic">
+<a name="33u6bhd6hvlfl4p1m9nnhg5inb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这种情况较为少见，一般shellcode是正常函数，所以堆栈平衡，如果入栈不会影响sehllcode，则出栈亦不会影响</a>
+</h3>
+<h3 class="topic">
+<a name="51v6idog3a4h2eks3968dr2e6h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;不过也不是不可能嘛</a>
+</h3>
+<h3 class="topic">
+<a name="43kvcng1e7pu1056dggl7afbnn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;会毁坏前栈帧数据，导致shellcode执行后无法恢复原程序执行流程</a>
+</h3>
+<h3 class="topic">
+<a name="384ph2sh8kfh75ddbbbc8sahpc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果函数使用retn 3登类似指令返回，需要在shellcode与返回地址之间加上若干个nop</a>
+</h3>
+<h3 class="topic">
+<a name="4s1afd5ddj6u6a77ktamb30vbj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;基于跳板指令的另一种方法</a>
+</h3>
+<h3 class="topic">
+<a name="2dvf0057hl5oil56j2sc43iaar">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190726_files/28k1slrg80cudds7sd6kv6544p.png"></p>
+<h3 class="topic">
+<a name="2tq9g49pcdlas6noeg891m7akn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在返回地址中填写跳板指令地址</a>
+</h3>
+<h3 class="topic">
+<a name="5ou394rs8ch3fgkrbvi4ccv4p9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;返回地址之后保存 jmp esp - x指令，让程序去返回地址之前的栈空间执行代码</a>
+</h3>
+<h3 class="topic">
+<a name="105l7n2rk4cqq4h0hj9rbn6pk0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将shellcode保存到返回地址之前的栈空间中</a>
+</h3>
+<h3 class="topic">
+<a name="09p6b2alsq35mm6mekmqn9qn51">&nbsp;&nbsp;&nbsp;在进程中动态获取api</a>
+</h3>
+<h3 class="topic">
+<a name="73op4ucumi5lvj9phdubmjcdmt">&nbsp;&nbsp;&nbsp;&nbsp;不同计算机中同一api地址不同的原因</a>
+</h3>
+<h3 class="topic">
+<a name="0d81t288gejm482kagnpi8sm6n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;不同操作系统版本会影响动态链接库的加载基址</a>
+</h3>
+<h3 class="topic">
+<a name="178cglqi2v49ih8o02ff5vk1rm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;不同版本的补丁可能对动态链接库进行修改，包括</a>
+</h3>
+<h3 class="topic">
+<a name="54edhl87tld7tpu9mhh4cgqfs1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;动态链接库的大小</a>
+</h3>
+<h3 class="topic">
+<a name="47ndu82lltvfgh6gqfr286citm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;导出函数的偏移地址</a>
+</h3>
+<h3 class="topic">
+<a name="57s1kblf5ofcvlselnp41gtdu6">&nbsp;&nbsp;&nbsp;&nbsp;方法</a>
+</h3>
+<h3 class="topic">
+<a name="2lnmfltogtqf1kkb6d8rcjoe44">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过进程环境块找到动态链接库的导出表，搜索所需的api的地址</a>
+</h3>
+<h3 class="topic">
+<a name="4eakksums75fsauc0fsd253ljj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;获得kernel32（或kernelbase）模块的基址一般有两种方法</a>
+</h3>
+<h3 class="topic">
+<a name="5c2nbr0303h70kc7gcj6o8v9uu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;方法一</a>
+</h3>
+<h3 class="topic">
+<a name="5pbk1f7l4ftf2p428fp4r98ggp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fs 0x30</a>
+</h3>
+<h3 class="topic">
+<a name="67s6lgamun7f2cvk62jh1nmf1p">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0x0c</a>
+</h3>
+<h3 class="topic">
+<a name="2mv6fivg76i6t6joad2n9maepv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0x0c</a>
+</h3>
+<h3 class="topic">
+<a name="447pvv1fl2rjavg2lou2keihol">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[eax]</a>
+</h3>
+<h3 class="topic">
+<a name="3qagkr03bviidtgr7mod533h5p">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[eax]</a>
+</h3>
+<h3 class="topic">
+<a name="1945kgo1u8qs0via2goh7pgphb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0x18</a>
+</h3>
+<h3 class="topic">
+<a name="00s1je8fa2lmg6o1svjo9s1kaj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;方法二</a>
+</h3>
+<h3 class="topic">
+<a name="1mdqv833r2ptmf7ruqpne4f2sc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fs 0x30</a>
+</h3>
+<h3 class="topic">
+<a name="1i4lm8ibh6one5pehbd5lpep07">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0x0c</a>
+</h3>
+<h3 class="topic">
+<a name="0ejeomavhl8e1lqgq9kv73bil6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0x1c</a>
+</h3>
+<h3 class="topic">
+<a name="6djq4dhivo4nso665jilpltos4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;eax</a>
+</h3>
+<h3 class="topic">
+<a name="3r7ukg1tku039d4kh9qrk9tq6h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0x08</a>
+</h3>
+<h3 class="topic">
+<a name="2tfkntv728pra1uj8etigv1vbt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;获得kernerl32（或kernelbase）中导出表的方法</a>
+</h3>
+<h3 class="topic">
+<a name="39b975au21t2i9vqvs0jsilrnp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;加载j基址偏移0x3c得到pe头基址</a>
+</h3>
+<h3 class="topic">
+<a name="5prt8o2pq385cibmsqlt8855fk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pe头偏移0x78得到指向导出表的指针</a>
+</h3>
+<h3 class="topic">
+<a name="795npq72onbmo2uqbkp4q8ircr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;导出表首地址偏移0x1c得到导出地址表</a>
+</h3>
+<h3 class="topic">
+<a name="5nme8peqh95cjtdthlsbd88gr4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;导出地址表中存储导出函数的rva，加上动态链接库加载基址得到对应api地址</a>
+</h3>
+<h3 class="topic">
+<a name="67i1ns74tl36nkfmubj2n93n52">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;导出表首地址偏移0x20得到导出名称表</a>
+</h3>
+<h3 class="topic">
+<a name="0gvqvgq2omsplj9gfkqdd7qtur">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;找到LoadLibrary GetProcAddress从而定位所有其他函数</a>
+</h3>
+<h3 class="topic">
+<a name="293brrsl6mqjd5erasvtrs9gra">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190726_files/60tdhbbtdbjcuf78trvm2rdpf7.png"></p>
+<h3 class="topic">
+<a name="0fp4h7e42s1ducutmd7pn44mop">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这张图有问题，导出地址表与导出名称表不是一一对应的，需要从导出名称表中找到对应函数名称，在对应的导出序号表中找到函数在导出地址表的下标，最后找到对应的函数地址</a>
+</h3>
+<h3 class="topic">
+<a name="76k7air489up6c8p7icu557p54">&nbsp;&nbsp;&nbsp;&nbsp;以上过程中需要遍历程序导出名称表，并把得到的函数名称与shellcode中所需的函数名称进行比较，这要求在shellcode中存储其所使用的shellcode的字符串，这会导致shellocde体积变大，所以一般求导出名称表中函数名信息摘要，并于shellcode中已有函数名信息摘要做对比，从而判读是否遍历到指定函数</a>
+</h3>
+<h3 class="topic">
+<a name="7vg0274j1lls3tkahod9fk46b2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;常见信息摘要（hash）算法</a>
+</h3>
+<h3 class="topic">
+<a name="0l349e35o68cgvqui24crmmtfo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190726_files/1pn0v69i68st9bqvn67255s507.png"></p>
+<h3 class="topic">
+<a name="2p9f00p9m8kdck9u8rb21o44cu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;此hash算法将函数名转换为32位的信息摘要</a>
+</h3>
+<h3 class="topic">
+<a name="1emigp0nc0kfdvtjno09nvr3c0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;部分优秀的hash算法可以将函数名压缩为8位的信息摘要</a>
+</h3>
+<h3 class="topic">
+<a name="3b7cvlbjcdoc9mhjvn19gj8044">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;shellcdoe中指定函数名的消息摘要可以以立即数形式保存，使用时通过push入栈，从而保存在栈中</a>
+</h3>
+<h3 class="topic">
+<a name="071ofsv622apc2odubm2r1pflq">&nbsp;&nbsp;&nbsp;&nbsp;动态定位api的流程图</a>
+</h3>
+<h3 class="topic">
+<a name="3ieejg572oor0abmg2ht9kdrq4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190726_files/50s55iq6n368j1g37j53i5dutr.png"></p>
+<h3 class="topic">
+<a name="491sthat0gule56vj0t76hpdo5">&nbsp;&nbsp;&nbsp;&nbsp;详细汇编见书92页</a>
+</h3>
+<h3 class="topic">
+<a name="063tpfs24aiqm1dop31t9dp2dd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;已经理解完毕</a>
+</h3>
+<h3 class="topic">
+<a name="11ecfm6em1kvc2snp94r3rp7mq">&nbsp;&nbsp;&nbsp;绕过软件对缓冲区的限制和IDS等检查</a>
+</h3>
+<h3 class="topic">
+<a name="2s1hgjl8d54dgnpqk6gulevru4">&nbsp;&nbsp;&nbsp;&nbsp;解决方案</a>
+</h3>
+<h3 class="topic">
+<a name="11kekt08hj3nf29t8d1en75oda">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对shellcode进行编码解码</a>
+</h3>
+<h3 class="topic">
+<a name="78psg34mn1ill5sqb6mrv91shc">&nbsp;&nbsp;&nbsp;&nbsp;shellocde编码技术</a>
+</h3>
+<h3 class="topic">
+<a name="777v7fisn9q80kn25qet53i5sq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对shellcode编码的必要性</a>
+</h3>
+<h3 class="topic">
+<a name="06tnt2p3albc517u5tn1487l8n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;所有的字符串处理函数均会对NULL字节进行限制</a>
+</h3>
+<h3 class="topic">
+<a name="73mimm5opahn1ui7kg77p5uuuq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ascii函数限制null字节</a>
+</h3>
+<h3 class="topic">
+<a name="63ui1oud2gv6kteir3k652sfig">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unicode函数限制null字</a>
+</h3>
+<h3 class="topic">
+<a name="33ar3elfqaj3bgfbpr3s8ibsol">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;部分函数要求shellcode必须是可见字符的ascii值和unicod值</a>
+</h3>
+<h3 class="topic">
+<a name="23vbe87bnt9hhqb2vht9gifmso">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;思路</a>
+</h3>
+<h3 class="topic">
+<a name="38545vqotusbso4gmi28c2fr78">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用编码技术对shelllcode进行编码，在构造符合执行环境限制要求的解码程序，将其放在shellcode开始的地方，实际运行时会先运行解码程序将shellcode恢复，之后运行shellcode</a>
+</h3>
+<h3 class="topic">
+<a name="0gpp0865i3ptqtsi7aa316ne6n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;类似于病毒通过的加壳逃避杀毒软件的查杀</a>
+</h3>
+<h3 class="topic">
+<a name="68257hogreavp3tnh1mkfirk87">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190726_files/351s81jt6ft5992ham9so55a17.png"></p>
+<h3 class="topic">
+<a name="3rnum8f2rlb2245emavm0qt6jo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190726_files/0ec4t3k815i03mc37an0hnnd05.png"></p>
+<h3 class="topic">
+<a name="1gl63a9g1kfhqt7ug41irkclmd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意点</a>
+</h3>
+<h3 class="topic">
+<a name="57ujpk25qi3umqo5qlge322i46">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果使用异或运算，则密钥不能与shellcode已有的字节相同，否则会产生NULL字节</a>
+</h3>
+<h3 class="topic">
+<a name="2m28a6foovfqnljmlm94b0hbp5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以使用多个密钥对shellcode不同部分进行加密，但是会增加解码的复杂性</a>
+</h3>
+<h3 class="topic">
+<a name="7hkor25l2uofopm5rnd2gpi874">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以对shellcode进行多轮编码运算</a>
+</h3>
+<h3 class="topic">
+<a name="01jdbbr88bbvqlllbrt5v8kht0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;解码器编写的注意事项</a>
+</h3>
+<h3 class="topic">
+<a name="7m20cs4p5qg0erlp72sq18t08g">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;解码器不能的单独运行，需要联合被编码的shellcode一起执行</a>
+</h3>
+<h3 class="topic">
+<a name="6s9ho7a0k6la28s558nee6l376">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;解码器中需要能够定位shellcode的起始位置，通常shlellcode紧跟在解码器后面，所以可以根据解码器所占字节数的大小以及当前eip推算shellcode的起始位置</a>
+</h3>
+<h3 class="topic">
+<a name="5mu8rh8o9h7cuaj7ccse7oc0ig">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以在shellcode开头和结尾添加特定语句，用于标识shellcode的开始于结尾，通常使用'90'</a>
+</h3>
+<h3 class="topic">
+<a name="6cces411mde06e46hqbte5bu4c">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用异或的编码器</a>
+</h3>
+<h3 class="topic">
+<a name="5crrvjrkh17p6fnn5122qlnrao">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190726_files/5vq2eoufvp3rttsgkevugcn23l.png"></p>
+<h3 class="topic">
+<a name="7mrq8dhs62ob98601rcfig77vl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190726_files/150svadf44hli2mkekltvfu3b6.png"></p>
+<h3 class="topic">
+<a name="16pemus5h0h06ksdvira1kuckd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用异或的解码器</a>
+</h3>
+<h3 class="topic">
+<a name="5b9rp40vd8uq4j675f65kpbmg6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190726_files/45qq096mt1m814s6r1dvdget1g.png"></p>
+<h3 class="topic">
+<a name="0pgtfvd08j9s6i7a1ka2fkpith">&nbsp;&nbsp;&nbsp;使shellcode尽量小巧</a>
+</h3>
+<h3 class="topic">
+<a name="5spfgpkj5mgh6t83tqoltmufk3">&nbsp;&nbsp;&nbsp;&nbsp;较短的shellcode具有较强的通用性</a>
+</h3>
+<h3 class="topic">
+<a name="2m7q0lqkhplf082cli4bi1c8ff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;方法</a>
+</h3>
+<h3 class="topic">
+<a name="2akj957q4ch0bvack44sd76ppr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用单字节指令</a>
+</h3>
+<h3 class="topic">
+<a name="34ra2pm721svioenbo9d9ndmjg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xchg eax,reg</a>
+</h3>
+<h3 class="topic">
+<a name="7q5hm6dm54hjlqaipkip3qccnn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lodsd</a>
+</h3>
+<h3 class="topic">
+<a name="0mepmijc1lk4npqs9do6gu25fn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将esi指向的一个dword存入eax，并增加esi</a>
+</h3>
+<h3 class="topic">
+<a name="4o440elr217h03reprnishrqum">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lodsb</a>
+</h3>
+<h3 class="topic">
+<a name="0ai8rvordn1b3g4j7m9knugrii">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将esi指向的一个byte存入al，并增加esi</a>
+</h3>
+<h3 class="topic">
+<a name="1crt62lvu3tguih07ml2tcdita">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;stosd</a>
+</h3>
+<h3 class="topic">
+<a name="4qrfcfbe51j73rmqp5pvtft2l2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将eax中的值存储到es:edi中</a>
+</h3>
+<h3 class="topic">
+<a name="1ovklbg27rsv8nmbv21h78h5av">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;stosb</a>
+</h3>
+<h3 class="topic">
+<a name="3h1fa7ujfhhbkcjuumel0n3ma7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将al中的值存储到es:edi中</a>
+</h3>
+<h3 class="topic">
+<a name="1jekpu697tvamopj3aod8bdo38">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pushad/popad</a>
+</h3>
+<h3 class="topic">
+<a name="7jil6tqbkfelia24rrmrhl66k6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将所有的寄存器入栈/出栈</a>
+</h3>
+<h3 class="topic">
+<a name="5sk5lc50pf1mpflf0peoov1r8m">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cdq</a>
+</h3>
+<h3 class="topic">
+<a name="6g6qv4ean476opgajvcg43cfkj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将eax中的最高位（31bit）复制到edx每一位上</a>
+</h3>
+<h3 class="topic">
+<a name="5kkkqetlm4ce3ule347ulpi4jv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当eax&lt;80000000时，edx为00000000</a>
+</h3>
+<h3 class="topic">
+<a name="3k2pqv9cdvm8bh7l9eelcmhdoo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当eax&gt;=80000000，edx为ffffffff</a>
+</h3>
+<h3 class="topic">
+<a name="7qt5ue2hff30j77c9tri77jpn7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;常用于将edx置为0</a>
+</h3>
+<h3 class="topic">
+<a name="2e9cedukrj6grvhhpd4kopmfk6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用复合指令</a>
+</h3>
+<h3 class="topic">
+<a name="4bsapma2jkjtvofr0bjb1e65dk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用一条指令完成两个功能，例如stos、lods、stos</a>
+</h3>
+<h3 class="topic">
+<a name="47nl3hpftq3maj7apemnebll2p">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;优化api调用方式</a>
+</h3>
+<h3 class="topic">
+<a name="7bjh0si7nakolj83riknquer8o">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果一个api中有很多参数均为null，可以考虑先将大片栈空间赋值为null，函数调用时仅仅需要将非null参数压栈，以此减小shellcodetiji</a>
+</h3>
+<h3 class="topic">
+<a name="71f7aijdbfb25f64f06cbddq65">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当api需要使用大型结构体作为参数时，运行作为参数的两个结构体重叠</a>
+</h3>
+<h3 class="topic">
+<a name="5b1lgdqcgedku6uir55sb2fq3l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;比如一个输入参数结构体，和一个输出参数结构体，两个均为同一api的两个参数，如果让两个参数指向同一个结构体，函数也能运行，此时使用push esp即可用于传参</a>
+</h3>
+<h3 class="topic">
+<a name="76i4bskba3fack36ut9hnlbard">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190726_files/00l1qdtckvop35nmrg09tmlnf7.png"></p>
+<h3 class="topic">
+<a name="1oeeldbpqi9epnkkce79ftkicj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将shellcode中的代码当作数据使用</a>
+</h3>
+<h3 class="topic">
+<a name="53svp958lpmbb7ckueu9d9h3q1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;为保护api健壮性，api接收参数时会对非法参数进行正确处理，从而保证api运行正常，说明api对参数具有一定容忍性，比如只要某个参数大于某一范围，api均可正常执行，则可以使用栈中已有的指令码作为数据，进行传参，从而省去一条参数压栈的指令</a>
+</h3>
+<h3 class="topic">
+<a name="4hcc3mq65b4v3u36r4b8ru5hon">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;抬高栈顶回收数据</a>
+</h3>
+<h3 class="topic">
+<a name="12fmn5tgrvulpg5amgid6al0np">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;栈顶以上的数据编译器逻辑上视为废弃数据，但是其数据内容往往还没有被破坏，可以通过抬高栈顶，将此类数据保护并使用起来，可以节省很多用于数据初始化的指令</a>
+</h3>
+<h3 class="topic">
+<a name="7ej7htjghod4gnri3d036j500t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用寄存器传递函数调用信息，而不是栈</a>
+</h3>
+<h3 class="topic">
+<a name="2jfq7ue4mpi7qtu1jlm1br4a9s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;多数函数运行过程中不会使用ebp寄存器，则ebp寄存器可以用于保存函数调用时的信息，相当于使用ebp寄存器传递参数</a>
+</h3>
+<h3 class="topic">
+<a name="28a4rq7ds7ssjjao76veealjmp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;有的指令只能使用特定寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="41tuoh56o4bgp4o0vahroch5fq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;有的指令使用特定寄存器会比使用其他寄存器更短</a>
+</h3>
+<h3 class="topic">
+<a name="19le0ppb5rqcbvngjhnfke1tq3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果寄存器中有调用函数时需要使用的数值，则可以将其先压入栈以备后用，避免之后另外使用指令进行获取，即使该函数并不被立即调用</a>
+</h3>
+<h3 class="topic">
+<a name="243d9edkf53sbl9s1aaep5rbdb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用hash压缩shellcode中使用到api的名称</a>
+</h3>
+<h3 class="topic">
+<a name="19ee3jvs34jtl8hh1hupe6qdn5">&nbsp;&nbsp;&nbsp;让程序执行完shellcode之后可以正确退出</a>
+</h3>
+<h3 class="topic">
+<a name="1lrdr5m0hfd5rnttjiia2sf676">&nbsp;&nbsp;&nbsp;&nbsp;使用ExitProcess函数</a>
+</h3>
+<h3 class="topic">
+<a name="048ock8st3kggkd6j169bqj7f4">&nbsp;&nbsp;实现一个通用版的bindshell</a>
+</h3>
+<h3 class="topic">
+<a name="5rmkf6p0vp0db1t3dss73qg3ja">&nbsp;&nbsp;&nbsp;需要使用的api</a>
+</h3>
+<h3 class="topic">
+<a name="61ebqk47sfoguhor2g9o0lf4dt">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190726_files/2eteqe3h79o23astln19rb7199.png"></p>
+<h3 class="topic">
+<a name="31rl107v66ac6d2umpn71c0qg5">&nbsp;&nbsp;&nbsp;缩短shellcode长度的关键</a>
+</h3>
+<h3 class="topic">
+<a name="58mntcrq4bdc9b9g0s0afmgjq4">&nbsp;&nbsp;&nbsp;&nbsp;将需要使用的api计算hash</a>
+</h3>
+<h3 class="topic">
+<a name="50qoi7gf1be2gjrdesvcuqgp9o">&nbsp;&nbsp;&nbsp;注意内存中的数据</a>
+</h3>
+<h3 class="topic">
+<a name="1e1na311941qqcn12ore15fj4u">&nbsp;&nbsp;&nbsp;&nbsp;如果是字符串，则解释该字符串时是从内存低地址到高地址，依次将内存中数据视为ascii或unicode，并输出对应字符</a>
+</h3>
+<h3 class="topic">
+<a name="1tr30me9ipdrg5gn0utpd0acrc">&nbsp;&nbsp;&nbsp;&nbsp;如果是数据，由于计算机采用小端存储，数据高位保存在内存高地址，数据低位保存在内存低地址，所以将内存中数据解释为实际数据是，是从内存高地址到内存低地址，逐个字节进行解释</a>
+</h3>
+<h3 class="topic">
+<a name="2l4i7fmrgnb442ubtd50ts25jn">&nbsp;&nbsp;&nbsp;&nbsp;如果要将数据输入内存并以将该数据以字符串形式解释，例如如果需要保存字符串"123"则其对应的数据在内存中从低地址到高地址应该为0x313233</a>
+</h3>
+<h3 class="topic">
+<a name="0f4oo76mc0maj8ge1fbdqm43og">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果想要以数据的形式将0x313233保存到内存，&#13;
+则需要push 0x333231</a>
+</h3>
+<h3 class="topic">
+<a name="5le5a03a29k2df3jhghht2k8uk">&nbsp;&nbsp;&nbsp;选择合适的hash算法</a>
+</h3>
+<h3 class="topic">
+<a name="658pinvk0ho9onf62g5n2lci9k">&nbsp;&nbsp;&nbsp;&nbsp;需要考虑的因素</a>
+</h3>
+<h3 class="topic">
+<a name="1ff2bbdsrgunc2ob7havgqut7j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;每个库文件导出的所有函数计算的hash值不能有碰撞，有些情况下即使存在碰撞，被搜索的函数排在碰撞函数第一个时，也是可以容忍的</a>
+</h3>
+<h3 class="topic">
+<a name="6udp83r3b6of20p7rscfevljpc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果由于windows系统版本变化导致动态库中导出了新的函数，导致碰撞超出了容忍范围，就需要重新设计hash算法</a>
+</h3>
+<h3 class="topic">
+<a name="5rfl5obhkq278bppp9s5r01vmb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;函数名求得的hash值需要尽量短</a>
+</h3>
+<h3 class="topic">
+<a name="1rgljaatpldrf8b1iusoc0e7s7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;最理想的情况是8位的消息摘要，能够表示256中可能，考虑到部分碰撞可以容忍，只要精心选择hash算法，可以实现该长度的hash值</a>
+</h3>
+<h3 class="topic">
+<a name="35ehtt9hbr8eltu0qrtqo9nnpg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果消息摘要长度小于8位，就需要使用其他指令处理字节对齐问题，会增加指令长度，得不偿失</a>
+</h3>
+<h3 class="topic">
+<a name="5gdcrtkmpcjq5u2fa3e8a5le3u">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;实现hash算法的指令应该尽量短</a>
+</h3>
+<h3 class="topic">
+<a name="3vl0a1f9405vkmbbhid45r3nk5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;实现相似功能的指令之间长度差距可能很大，可以精心挑选指令从而组成shellcode</a>
+</h3>
+<h3 class="topic">
+<a name="7085748ga7ostpni7430or0d2v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;数据可以当作代码使用</a>
+</h3>
+<h3 class="topic">
+<a name="0l46un33l7ghmff6psa7rvvu95">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果计算出的hash值解释为指令之后，该指令的执行不会对shellcode产生巨大影响（即类似于nop指令）则可以将得到的hash值保存在shellcode首部，从而避免在程序中出现跳过摘要数据的跳转指令，从而节约空间</a>
+</h3>
+<h3 class="topic">
+<a name="0gr5l85j1ffu3p94c0n4n73gvr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cpu可以将消息摘要视为指令，顺序执行过去，并执行shellcode</a>
+</h3>
+<h3 class="topic">
+<a name="49gjkc53002ej4v66i3dudsa5d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;同样如果某些api的参数为字符串，而该字符串对应ascii翻译为指令不会对shellcode产生重大影响，也可以将此类数据保存在shellcode开头，甚至可以保存在对应api地址的附近，从而该api调用时方便作为参数使用</a>
+</h3>
+<h3 class="topic">
+<a name="54kjrhhn2hcfftisai1qkb001s">&nbsp;&nbsp;&nbsp;&nbsp;得到8位hash的hash算法</a>
+</h3>
+<h3 class="topic">
+<a name="0uabth6cr1k8eio7lbrlqau4jj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190726_files/4gpti2uct4f223k4f7s8rqggkc.png"></p>
+<h3 class="topic">
+<a name="050pp3914f2o4vfp12oe8la0mt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190726_files/3jolvgr4qb4sgf14roiuuh6jt2.png"></p>
+<h3 class="topic">
+<a name="10patv26p9vb2itjmcf3m469en">&nbsp;&nbsp;&nbsp;完整的191个字节的shellcode</a>
+</h3>
+<h3 class="topic">
+<a name="6150jjfmmv7qa9gkq3ljp74r7e">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190726_files/02ilgq9958adheavp236c9n20g.png"></p>
+<h3 class="topic">
+<a name="1plbnhqckn51olfsr16kd7qbhf">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190726_files/2nlejdrrqjth9oqg4vs00e1huv.png"></p>
+<h3 class="topic">
+<a name="5363hruvu1ais9hs0je6lgft34">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190726_files/4gu7iggkrvamsvfkcrea8li24l.png"></p>
+<h3 class="topic">
+<a name="0431ja6s194ph6lc41nelj2e4p">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190726_files/50pesj67sgdbnffffscl6dpk8f.png"></p>
+<h3 class="topic">
+<a name="4m9uk7co9g4fsrfatoc8emi0j3">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190726_files/1vfdmagkpr5jli8fokjp4q3n5b.png"></p>
+<h3 class="topic">
+<a name="5cek1negr69qk74nmqgjnrpfgs">&nbsp;&nbsp;部分shellcode开发技巧</a>
+</h3>
+<h3 class="topic">
+<a name="0gom72k9p487p90sp5n5s9g1kj">&nbsp;&nbsp;&nbsp;如果调用的api需要传入参数0，为避免shellcode中出现截断字符，可以使用&#13;
+xor ebx,ebx&#13;
+push ebx&#13;
+的方式为函数传参</a>
+</h3>
+<h3 class="topic">
+<a name="4op40l0ea068drt9f9mth74vv9">&nbsp;&nbsp;&nbsp;提取shellcode可以通过x64dbg中的右键-》二进制-》编辑功能，获得字符串格式的shellcode</a>
+</h3>
+<h3 class="topic">
+<a name="71ld2bcat1h8saf01avgkpjggc">&nbsp;&nbsp;&nbsp;&nbsp;也可以通过od中右键-》copy-》to file，将shellcode保存到文件中</a>
+</h3>
+<h3 class="topic">
+<a name="6c1logbs1ekp2i6uvv2olcr289">&nbsp;&nbsp;&nbsp;shellcode一般以转义字符将机器码保存在一个字符数中</a>
+</h3>
+<h3 class="topic">
+<a name="4gt29nbltvmjl1ml2t461grlpd">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190726_files/2aqs29jov5d410su00loddae5k.png"></p>
+<h3 class="topic">
+<a name="7r2cl2cppf2140s8l821jlt4nm">&nbsp;&nbsp;&nbsp;一般shellcode的调试方法</a>
+</h3>
+<h3 class="topic">
+<a name="2a9nvn0kesriuv9rr70rm5p5to">&nbsp;&nbsp;&nbsp;&nbsp;lea</a>
+</h3>
+<h3 class="topic">
+<a name="6orq5gt46raag7m5udm8esutp8">&nbsp;&nbsp;&nbsp;&nbsp;push</a>
+</h3>
+<h3 class="topic">
+<a name="6ruduagnosvlu4vumhur98sh94">&nbsp;&nbsp;&nbsp;&nbsp;rat</a>
+</h3>
+<h3 class="topic">
+<a name="32u1eqmonrsgm6cellesros614">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190726_files/07jaleb5jae84u2l8pjv9of7aj.png"></p>
+<h3 class="topic">
+<a name="4tshjq2p082tfmklruhi82hmth">&nbsp;&nbsp;&nbsp;如果shellcode利用异常进行植入，异常可能会导致标志寄存器被修改，特别是DF方向标志位，此时会对shellcode中相关串操作指令产生影响	（LODSD）,故在shellcode运行之前可以使用CLD指令将DF清零或在shellcode中使用串操作之前使用CLD，由此可以增强shellcode的通用性</a>
+</h3>
+<h3 class="topic">
+<a name="0chdv192qeac2jqc6v8noqmjfs">&nbsp;&nbsp;&nbsp;在shellcode中动态获得api地址时，可以将api地址保存在shellcode所在的栈空间指向，甚至填充api地址时可以覆盖部分用于存储对应api的hash值的栈空间</a>
+</h3>
+<h3 class="topic">
+<a name="3iria2ko50q6sung9niqbag91f">&nbsp;&nbsp;&nbsp;&nbsp;当edi指向函数地址存储的位置时，可以使用stosd将eax中的函数地址填充到es:edi中</a>
+</h3>
+<h3 class="topic">
+<a name="50a1djenkfltfpern25mpscuq2">&nbsp;&nbsp;&nbsp;&nbsp;当esi指向存储api名称hash值的内存空间时，可以使用lodsd将hash值取得，并保存在eax寄存器中</a>
+</h3>
+<h3 class="topic">
+<a name="4iur1b6cje358pjee6grlst5bk">&nbsp;&nbsp;&nbsp;&nbsp;当eax&lt;0x80000000时可以使用cdq将ed置为0</a>
+</h3>
+<h3 class="topic">
+<a name="7qcrnq0ifro17farnf3oqj35ui">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190726_files/00e2jfpti89q9uhn1sfbnfcdqf.png"></p>
+<h3 class="topic">
+<a name="2lho393sgdioas6vsqju0khm9s">&nbsp;&nbsp;&nbsp;&nbsp;第一条指令用于保存eax的值，最后一条指令有两个目的</a>
+</h3>
+<h3 class="topic">
+<a name="47rcbmfhlbvg9m3khh0pgp2qmo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1、恢复eax得知用于后续指令执行</a>
+</h3>
+<h3 class="topic">
+<a name="066gk8eq81nummagmsr0tr2377">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2、将函数返回值保存在ebp中</a>
+</h3>
+<h3 class="topic">
+<a name="3ksrfjp9r0dakos32fobfh3it7">&nbsp;&nbsp;&nbsp;当有的函数返回值为0时，此时eax为0，可以利用此时的eax的值，结合stosd，将栈空间中大量内存初始化为0，从而当有的函数需要传参null时可以免去push 0的操作，仅仅压栈其他参数即可</a>
+</h3>
+<h3 class="topic">
+<a name="4ijbbimluhurghudkgkbure363">&nbsp;&nbsp;&nbsp;&nbsp;此方法也可以用于初始化栈中的结构体，此类结构体多用作参数，比如WSAStartup函数中的WSADATA参数结构体</a>
+</h3>
+<h3 class="topic">
+<a name="6r60p890l56rv7g6esoheedt35">&nbsp;&nbsp;&nbsp;当多个api会在shellcode中被依次调用时，可以将其函数地址按照调用顺序保存在栈空间中，如果此类函数关键参数类似（比如listen accept函数主要参数均是socket对象），可以使用循环的方法调用多个函数</a>
+</h3>
+<h3 class="topic">
+<a name="49o6c38db41hj2ohl6sk8qq8vo">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190726_files/4l0arnt869eutjgpdodqd1ipn7.png"></p>
+</body>
+</html>

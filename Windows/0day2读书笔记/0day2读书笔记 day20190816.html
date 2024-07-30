@@ -1,0 +1,1132 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>0day2读书笔记&#13;
+day20190816</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="2f41v209eao4jg74of1dti8of3">0day2读书笔记&#13;
+day20190816</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190816_files/images/0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190816.jpg"></div>
+<h2 class="topic">
+<a name="4hilehnccsru1tmo2onsejn9ll">第八章 其他类型的软件漏洞</a>
+</h2>
+<h3 class="topic">
+<a name="2un8sr1h8v5ac9f8lnkmdc3qd8">&nbsp;格式化串漏洞（即常说的格式化字符串漏洞）</a>
+</h3>
+<h3 class="topic">
+<a name="1tusemlsl4kg5l9nafpq5js6mb">&nbsp;&nbsp;相关资料</a>
+</h3>
+<h3 class="topic">
+<a name="1eancr5etvhofl1n2oecpkc7s2">&nbsp;&nbsp;&nbsp;https://veritas501.space/2017/04/28/格式化字符串漏洞学习/#more</a>
+</h3>
+<h3 class="topic">
+<a name="0mqbopib640artk7eic11kotsv">&nbsp;&nbsp;&nbsp;https://www.cnblogs.com/ichunqiu/p/9329387.html</a>
+</h3>
+<h3 class="topic">
+<a name="5eso690kk4l0uu1vv88k27bbfa">&nbsp;&nbsp;&nbsp;https://blog.csdn.net/qq_43394612/article/details/84900668</a>
+</h3>
+<h3 class="topic">
+<a name="72qaa03va738s5mli08v0dps05">&nbsp;&nbsp;工具：pwntools</a>
+</h3>
+<h3 class="topic">
+<a name="2rrdqhrhns7820otbm1pg73jk0">&nbsp;&nbsp;&nbsp;是一个二进制利用框架，是做pwn题必背的exp编写框架</a>
+</h3>
+<h3 class="topic">
+<a name="2q9jsq4kv2e2rmh84lspb44v5i">&nbsp;&nbsp;&nbsp;相关工具使用教程</a>
+</h3>
+<h3 class="topic">
+<a name="67an6tnm9m53fd06b65uu6lbv2">&nbsp;&nbsp;&nbsp;&nbsp;https://bbs.pediy.com/thread-247217.htm</a>
+</h3>
+<h3 class="topic">
+<a name="492ij41ol76mq08eqonmuvjoqr">&nbsp;&nbsp;&nbsp;其中包含格式化字符串漏洞利用相关模块</a>
+</h3>
+<h3 class="topic">
+<a name="0obnat0jsbt3kdil1gngpnr45u">&nbsp;&nbsp;&nbsp;&nbsp;fmtstr</a>
+</h3>
+<h3 class="topic">
+<a name="2f3fud98143482kh85eu8h4ddo">&nbsp;&nbsp;漏洞成因</a>
+</h3>
+<h3 class="topic">
+<a name="46bf8q6srqfvpgpu5t9c1i5k55">&nbsp;&nbsp;&nbsp;printf函数存在一定缺陷，该函数本质上是一个变参函数，即参数的个数是不确定的，一个printf函数具体有多少个参数以及以什么形式输出参数主要取决于该函数的格式化字符串，例如 printf("hello %d %s",1,"world");该函数有两个参数，分别以十进制数以及字符串都形式输出</a>
+</h3>
+<h3 class="topic">
+<a name="70a0k6mik0cd0kai29pb9iegcl">&nbsp;&nbsp;&nbsp;&nbsp;子主题 1</a>
+</h3>
+<h3 class="topic">
+<a name="70tgfuh4cofv7vrske0c731h0u">&nbsp;&nbsp;&nbsp;问题是当上面的函数没有1 和"world"两个参数时，即printf("hello %d %s");时，函数仍可以正常执行，只不过而输出的数据是堆栈中位于位于格式化字符串参数之后的内存内容，即该函数会根据格式化字符串中规定的参数个数和参数类型输出栈中对应位置的数据，而不论该位置处的数据是否真正是函数的参数</a>
+</h3>
+<h3 class="topic">
+<a name="22rjti9nliv97bb4mfo1jugdh5">&nbsp;&nbsp;&nbsp;&nbsp;栈中</a>
+</h3>
+<h3 class="topic">
+<a name="08vn7pkukatvg7jl8kbld6p0ib">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;格式化字符串的指针（参数1）</a>
+</h3>
+<h3 class="topic">
+<a name="6ik4iac7u998v52oliaqa2v4ul">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;其他数据1</a>
+</h3>
+<h3 class="topic">
+<a name="3i6p5ti0oi4bhfo8fb568qluit">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果是正常调用该位置应该为%d对应的数据</a>
+</h3>
+<h3 class="topic">
+<a name="60360f459p8bju1nmlaq3qrr6c">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;其他数据2</a>
+</h3>
+<h3 class="topic">
+<a name="5ao1ns119aqeg3ms6ngq17q17s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果是正常调用该位置应该为%s对应的数据的指针</a>
+</h3>
+<h3 class="topic">
+<a name="4eeq10l2i6qir9vp5nv381un3q">&nbsp;&nbsp;&nbsp;&nbsp;所以如果使用printf("hello %d %s");则会将其他数据1以%d形式输出，将其他数据2当作字符串的地址，将该地址上数据以字符串形式输出</a>
+</h3>
+<h3 class="topic">
+<a name="6b9qpj8npl3g99ontro2f7egl8">&nbsp;&nbsp;漏洞危害</a>
+</h3>
+<h3 class="topic">
+<a name="4l3fm3b3bnmf2bt7ju1fh1j0rn">&nbsp;&nbsp;&nbsp;可以读取任意内存数据</a>
+</h3>
+<h3 class="topic">
+<a name="08fokgqs1m25trimf2l5ufnv1u">&nbsp;&nbsp;&nbsp;&nbsp;在上面的例子中如果将其printf("hello %d %s")中的"hello %d %s"不是写死的，而是可以自己输入的，就可以造成一个格式化字符串漏洞</a>
+</h3>
+<h3 class="topic">
+<a name="3vcd3vlsoo6r2u5safd6blqsqs">&nbsp;&nbsp;&nbsp;&nbsp;在上面的基础上如果我们可以控制栈中的某些位置的数据，然后给printf函数输入指定的格式化字符串，就可以将栈中的数据对应的地址中的内存内容输出出来</a>
+</h3>
+<h3 class="topic">
+<a name="16gi3rp79036ae292lg5apolko">&nbsp;&nbsp;&nbsp;&nbsp;为实现任意内存读取，也可以使用printf函数格式化字符串的另一个特性"$"操作符，该操作符可以输出指定位置的参数</a>
+</h3>
+<h3 class="topic">
+<a name="6emrk2vkeiir6abdhr0mls7u0a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该方法在linux下有用，在windows下无用</a>
+</h3>
+<h3 class="topic">
+<a name="005pvhok9iadupehgtb640sv3b">&nbsp;&nbsp;&nbsp;&nbsp;详情见格式化字符串漏洞资料1</a>
+</h3>
+<h3 class="topic">
+<a name="2ku9l8a0qd0e6h5h224kub81r5">&nbsp;&nbsp;&nbsp;可以在任意内存地址写入数据</a>
+</h3>
+<h3 class="topic">
+<a name="025o5n3u31jc912dl2rccahcd0">&nbsp;&nbsp;&nbsp;&nbsp;主要用到格式化字符%n ,该格式化字符对应的参数是一个指针，该指针指向一片可写的内存空间，当printf函数执行完毕后，%n会将本次输出的字符的个数写对应参数指针指定的内存空间中，通过这一特点，我们可以向任意内存中写入数据</a>
+</h3>
+<h3 class="topic">
+<a name="5p3nh0daf35aqijii4858iukio">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;例如 &#13;
+int count=0；&#13;
+printf("aaaa%n",&amp;count)；&#13;
+该printf程序执行结束后，count会被赋值为4，因为printf函数输出了4个a</a>
+</h3>
+<h3 class="topic">
+<a name="5fna3150uqvumrknkadckn2o2q">&nbsp;&nbsp;&nbsp;&nbsp;因此只要能够控制栈中的数据，将其修改为需要修改的内存的内存地址，然后执行有%n格式化字符的printf函数，让%n对应的参数为栈中的内存地址，就可以将本次从输出的字符的数量修改到对应内存中</a>
+</h3>
+<h3 class="topic">
+<a name="7pe4ven9bb7tcm3v6uhp86ahd7">&nbsp;&nbsp;&nbsp;&nbsp;详情见格式化字符串漏洞资料1</a>
+</h3>
+<h3 class="topic">
+<a name="0sfml6tps7n6nr1sm9ri3c910v">&nbsp;&nbsp;格式化串漏洞的防范与检测</a>
+</h3>
+<h3 class="topic">
+<a name="73lucvu7g7jbe23345f62tvset">&nbsp;&nbsp;&nbsp;当输入输出函数的格式化控制符能够被外界影响时，攻击者可能使用之前提到的任意内存位置写数据的方法，将函数返回地址修改，从而劫持进程</a>
+</h3>
+<h3 class="topic">
+<a name="3ipv43j7djv4p4d3e9e0f8085s">&nbsp;&nbsp;&nbsp;UNIX中使用大量命令和脚本，从而存在更多命令解析和文本解析的操作，更容易发生此类漏洞</a>
+</h3>
+<h3 class="topic">
+<a name="4ropk8bvo9eqj4bsr14mh3h83f">&nbsp;&nbsp;&nbsp;windows中命令解析和文本解析的操作较少，且此类漏洞发生的条件比较苛刻，使得格式化串漏洞的实际案例比较少见</a>
+</h3>
+<h3 class="topic">
+<a name="3f9fhrk95h3ono99eeaa1sb4ku">&nbsp;&nbsp;&nbsp;检测格式化串漏洞比较简单，只要检测相关函数的参数配置是否合适，需要关注重点函数包括</a>
+</h3>
+<h3 class="topic">
+<a name="0opb5jqu7eec49u3m0k8sma50g">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190816_files/76l1phcusq47iq5k0fhlkkltti.png"></p>
+<h3 class="topic">
+<a name="5775raiv2pqogn820kkt28pgfp">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190816_files/1qtg0lr9os9vgp3l0ua8mjjrvv.png"></p>
+<h3 class="topic">
+<a name="36irkjighflcrfm4n3euf6us7o">&nbsp;&nbsp;&nbsp;通过静态代码扫描可以快速发现此类漏洞，vs编译器也默认禁用了"%n"控制符的使用</a>
+</h3>
+<h3 class="topic">
+<a name="77sjgumcqkjk4n52kig56a2tci">&nbsp;SQL注入攻击</a>
+</h3>
+<h3 class="topic">
+<a name="6a97u4rhdnabje5sgo6e4686lu">&nbsp;XSS攻击</a>
+</h3>
+<h3 class="topic">
+<a name="7qveolvatp60khp48qgbjnf8co">&nbsp;&nbsp;XSS 漏洞产生于 Web 服务器把用户输入数据直接返回给客户端</a>
+</h3>
+<h3 class="topic">
+<a name="0prjj5gh6j2rksgmckositpuht">&nbsp;&nbsp;XSS Reflection攻击场景</a>
+</h3>
+<h3 class="topic">
+<a name="4ka9qv280us8kpljr6sp32gtv5">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190816_files/7hf98o1ghuoi0c847knvunm6c8.png"></p>
+<h3 class="topic">
+<a name="3a61hph9tnquqanhscql8r8arq">&nbsp;&nbsp;&nbsp;常发生于搜索引擎、错误提示页面等对用户输入的直接反馈中</a>
+</h3>
+<h3 class="topic">
+<a name="5vpsdl71v8euadrsnef1vcdjn5">&nbsp;&nbsp;Stored XSS攻击场景</a>
+</h3>
+<h3 class="topic">
+<a name="28ob2r7mhtgd1k3e6kr8cmauor">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190816_files/294rcvf7ak2a28vdu0fdr561e6.png"></p>
+<h3 class="topic">
+<a name="4952152l8miv10540oih6gntjb">&nbsp;&nbsp;&nbsp;如果攻击者将含有xss的文章存储到论坛或blog中，则其他访问该文章的用户就会触发xss漏洞</a>
+</h3>
+<h3 class="topic">
+<a name="15sct5ekoh0ce4p3blfidpgeau">&nbsp;&nbsp;攻击案例XSS蠕虫</a>
+</h3>
+<h3 class="topic">
+<a name="51qkhluekhoj4clboum72suoju">&nbsp;&nbsp;XSS检测与防范</a>
+</h3>
+<h3 class="topic">
+<a name="1v9bhl7fhrbqrfj0outc1k4um3">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190816_files/4k7i2j9bhlak5ievcqr7tp77al.png"></p>
+<h3 class="topic">
+<a name="2nild1ccokdq16rhpo3qm1lqt4">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190816_files/3sptnv0m8uu4ldph5sba6u53qh.png"></p>
+<h3 class="topic">
+<a name="40b8gd3jt268gfbaehrfqo935v">&nbsp;路径回溯漏洞</a>
+</h3>
+<h3 class="topic">
+<a name="069r6h1qj54glltrbtu2umu9or">&nbsp;&nbsp;产生漏洞的原因是网站没有对url中的../  ..\路径回溯符号进行有效过滤，导致通过构造特殊url，可以访问到服务器根目录下的任何文件</a>
+</h3>
+<h3 class="topic">
+<a name="53889idrrbg4st6vhhdoho6icp">&nbsp;&nbsp;范式化与路径回溯</a>
+</h3>
+<h3 class="topic">
+<a name="7lcd28j4d3enjllu8bjboiir1r">&nbsp;&nbsp;&nbsp;用户可以以不同形式的url访问网站的相同资源，即同一个URL，本地路径，管道路径， 环境变量路径等均可以有不同的表示方法</a>
+</h3>
+<h3 class="topic">
+<a name="7q1uko7e1kmu3bkh0ng3ekv3gf">&nbsp;&nbsp;&nbsp;如果要进行网站的访问控制，首先需要将所有的资源描述范式化，即一个资源，只有一种资源描述，而非多种资源描述</a>
+</h3>
+<h2 class="topic">
+<a name="6o72d658p8t0crp9ld8u6toudv">第九章 windows安全机制概述</a>
+</h2>
+<h3 class="topic">
+<a name="3tvav6rnpodf14oc1ce64at2lp">&nbsp;漏洞的根源在于冯诺伊曼结构的现在电子计算机在实现图灵机模型的时候，没有将程序和数据进行根本性的区分，一段二进制既可以当作指令，也可以当作数据</a>
+</h3>
+<h3 class="topic">
+<a name="14vf7u72u22dfe4is43c9mdb1o">&nbsp;微软添加的内存安全机制</a>
+</h3>
+<h3 class="topic">
+<a name="5kdpluustdaetgbsgk5nj3minl">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190816_files/76i6jkkl7cq0f4h68tua71s7r5.png"></p>
+<h3 class="topic">
+<a name="75qalhbq259vnfkf4htuf349p7">&nbsp;&nbsp;&nbsp;GS编译技术=安全cookie</a>
+</h3>
+<h3 class="topic">
+<a name="17dfidi2nstudl0ac97k4cntps">&nbsp;&nbsp;windows安全机制汇总</a>
+</h3>
+<h3 class="topic">
+<a name="2si2q62p5573om56lk63aaumo0">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190816_files/5ic2lebk1a37pddsrratc34700.png"></p>
+<h3 class="topic">
+<a name="3d4qfpkl7tao4pokn28siefipv">&nbsp;&nbsp;&nbsp;s</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190816_files/5kq1leu65h3qahagl1gshmpnpn.png"></p>
+<h2 class="topic">
+<a name="2f3jnhlq4smpgbk73pb8up5fcs">第十章 栈中的守护天使：GS</a>
+</h2>
+<h3 class="topic">
+<a name="4rq9ojsfb9e0d8l32h64ldjdv3">&nbsp;用于对抗栈溢出中淹没函数返回地址的攻击，在vs2003之后默认启用</a>
+</h3>
+<h3 class="topic">
+<a name="6brgm5pr621iu1sctguob275s3">&nbsp;GS原理</a>
+</h3>
+<h3 class="topic">
+<a name="4touaqvoahq0ohppc85ip0e7hi">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190816_files/1398v0kfvrb660lpng5d3hjdoh.png"></p>
+<h3 class="topic">
+<a name="5qbjnjvoh8batbnh7huopdnq0j">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190816_files/3u3hlbl6fdnsmhg7vm4v4iinvm.png"></p>
+<h3 class="topic">
+<a name="4fa3t4felu7kppe2odkm33ccot">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190816_files/4mbl9ljekj5bpfr1oa56s9ue4e.png"></p>
+<h3 class="topic">
+<a name="6rbsg02d9bjg8bnitu072jh872">&nbsp;额外的数据操作会使性能降低，以下情况，编译器不不会使用GS</a>
+</h3>
+<h3 class="topic">
+<a name="0iv3fi7f4g7fesp1o3tf1l598e">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190816_files/3imgsbbl99g2es9u23tq4dnp9j.png"></p>
+<h3 class="topic">
+<a name="01l4c0ei2ijqolg2pe26p94ram">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190816_files/5fv948ru6fknhlh81ru4tkvsod.png"></p>
+<h3 class="topic">
+<a name="7u2ilb1al6eng9o6ag85k7h4cr">&nbsp;为任意函数添加GS保护</a>
+</h3>
+<h3 class="topic">
+<a name="56jlisfsapvohrn9ijrvhjr2j7">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190816_files/0spba3ap14uqd4nm1scsi4u885.png"></p>
+<h3 class="topic">
+<a name="1nhvbnkim8s8hoto1008pmg3i7">&nbsp;变量重排技术</a>
+</h3>
+<h3 class="topic">
+<a name="37vdkg6afm098ipt5k5lgdk9j2">&nbsp;&nbsp;vs2005之后加入</a>
+</h3>
+<h3 class="topic">
+<a name="5uv9fp5br6jcov9alkidicbgkl">&nbsp;&nbsp;根据函数局部变量类型，将局部变量在栈帧中的位置进行调整</a>
+</h3>
+<h3 class="topic">
+<a name="77qdgqqi1qbnsgn36ua7skkaig">&nbsp;&nbsp;&nbsp;字符串变量移动到栈帧高地址</a>
+</h3>
+<h3 class="topic">
+<a name="5rv59ei6lg099s2omboe1ph2ng">&nbsp;&nbsp;&nbsp;指针参数和字符串参数复制到内存低地址，防止被溢出破坏</a>
+</h3>
+<h3 class="topic">
+<a name="1479svrl5bh80qt46rnuu7q70h">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190816_files/7rms0833bcfck8el5a96k9hsdi.png"></p>
+<h3 class="topic">
+<a name="7ba9vi196lnjma9nfa1hojir4m">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190816_files/6cvs1q12ahjplhntatlusuj8lc.png"></p>
+<h3 class="topic">
+<a name="1ed4jpnblma44pn3r4vbp6rq3r">&nbsp;安全cookie的生成</a>
+</h3>
+<h3 class="topic">
+<a name="7fmpjcevvlqi7sq30obb97j0hr">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190816_files/6r44gmifi98slikqmt501g0det.png"></p>
+<h3 class="topic">
+<a name="00f5oh45jd0f2nu9r7s48gdhjd">&nbsp;&nbsp;&nbsp;安全cookie=.data中的cookie种子 异或 esp</a>
+</h3>
+<h3 class="topic">
+<a name="3leeo1gfh1idarbai2hl24mjik">&nbsp;&nbsp;&nbsp;函数返回验证安全cookie时，使用安全cookie再次异或esp，将结果与.data中的cookie种子进行对比，如果相同，说明栈未被溢出</a>
+</h3>
+<h3 class="topic">
+<a name="261r7s68fpuuqcovgn6e5evb7e">&nbsp;对GS机制的评价</a>
+</h3>
+<h3 class="topic">
+<a name="4mc1q83p7pauksth4ae314mjft">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190816_files/635cm05ea3j3nnjecaa8lli5ja.png"></p>
+<h3 class="topic">
+<a name="42437a2hl38lij282o6om1m6ob">&nbsp;突破GS</a>
+</h3>
+<h3 class="topic">
+<a name="4bl5srfd2jsrjlk992ncfj2oiv">&nbsp;&nbsp;利用未保护的内存突破GS</a>
+</h3>
+<h3 class="topic">
+<a name="0d2o4bn3osfbi3kfef9blu5ohp">&nbsp;&nbsp;&nbsp;为了程序运行效率，部分函数即使在编译选项开启了GS的情况下，也没有使用安全cookie机制，可以攻击此类函数</a>
+</h3>
+<h3 class="topic">
+<a name="13s3bpa3s7filv8jen37tb9050">&nbsp;&nbsp;&nbsp;当一个函数中包括不大于4字节的缓冲区时，即使编译选项开启了GS，该函数的调用也没有使用GS</a>
+</h3>
+<h3 class="topic">
+<a name="68r5su7f620sukrsbvhh9k2g9r">&nbsp;&nbsp;&nbsp;&nbsp;示例代码</a>
+</h3>
+<h3 class="topic">
+<a name="52r5lk1007fl673ledd7o165m8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190816_files/5fojcq18p7tefeql91asbmbtie.png"></p>
+<h3 class="topic">
+<a name="2vrt0jsrna0llfapfocut4c312">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190816_files/57tmrncs7tvnbv6trbd5e7qvga.png"></p>
+<h3 class="topic">
+<a name="4gok50ltcnn38p328o4lj82pou">&nbsp;&nbsp;覆盖虚函数突破GS</a>
+</h3>
+<h3 class="topic">
+<a name="3o3u7llo8ng0n6errsp6rbavkq">&nbsp;&nbsp;&nbsp;gs只有在函数返回的时候才进行安全cookie的检查，如果对虚函数的地址进行溢出覆盖，而在函数中调用了该虚函数，就可以在函数返回之前劫持程序流程</a>
+</h3>
+<h3 class="topic">
+<a name="6ui7onec4ql1s3vc4kgidh9ogb">&nbsp;&nbsp;&nbsp;&nbsp;具体覆盖虚函数劫持进程可以查看书6.3</a>
+</h3>
+<h3 class="topic">
+<a name="0ggo0njhs1nvlc7lmrqggm27ac">&nbsp;&nbsp;&nbsp;示例代码与实验环境</a>
+</h3>
+<h3 class="topic">
+<a name="2o454m3931o41sgum54acb84r0">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190816_files/281c9cbkc03ui3ekm9pgpd8t21.png"></p>
+<h3 class="topic">
+<a name="22j8c0ep14e9q2nfoiuq9dktve">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190816_files/78s328rigti4b6p0ckeno4b2lg.png"></p>
+<h3 class="topic">
+<a name="3rre629470s2vhlnvod0bvcfou">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190816_files/7i1sif2hjgjpp7vvipat4jv1i5.png"></p>
+<h3 class="topic">
+<a name="1pgnk0gegmo0d9hgbeqevbuc66">&nbsp;&nbsp;&nbsp;漏洞利用主要流程</a>
+</h3>
+<h3 class="topic">
+<a name="251er7e4tf2pa9s6qpf0a3imi4">&nbsp;&nbsp;&nbsp;&nbsp;经调试，当gsv函数被调用时，如果函数字符串大于200字节，则会发生栈溢出，而通过栈溢出，可以修改程序中类对象的虚函数表</a>
+</h3>
+<h3 class="topic">
+<a name="221b0paig5gh7h3h7ufou1tusd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190816_files/7c5h161b8pn2qln6ah1lkkik3s.png"></p>
+<h3 class="topic">
+<a name="3egbfqktud3vs6m52ku7n53etp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1号部分用于保存局部变量buf，局部变量buf之后20个字节，即为虚表指针，其值未虚函数表的地址</a>
+</h3>
+<h3 class="topic">
+<a name="5tc48edotkq29hhf4fithm6sge">&nbsp;&nbsp;&nbsp;&nbsp;现在的问题就是需要将虚函数表指针覆盖未我们可控的内存的地址，我们可控内存分为两部分，buf 和 函数参数</a>
+</h3>
+<h3 class="topic">
+<a name="2l9jsbm3nkcuj7fvmkg9d296c2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;buf由于是栈中的局部变量，所以其内存首地址胡发生变化，不方便定位</a>
+</h3>
+<h3 class="topic">
+<a name="7r28qfec7mgv1eln6j04477074">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果可以确定此时栈顶的位置，算出栈顶距离栈中buf局部变量的首地址的偏移，就使用jmp esp-x等指令的地址淹没虚函数表指针的内容，这样当调用虚函数时，程序就会执行jmp esp-x指令，从而执行栈中的shellcode</a>
+</h3>
+<h3 class="topic">
+<a name="7mft1h74bcq32cubjbq7qn4s8n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;经过上图分析函数参数的指针为0x00402100，而虚函数表指针为0x004021E4，如果将虚函数表指针的最后一字节覆盖为0，就可以使虚函数表指针指向函数参数，即我们的shellcode</a>
+</h3>
+<h3 class="topic">
+<a name="0hqiiqqnnkmqmtpdnk99j5mf15">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;以下演示此种方法</a>
+</h3>
+<h3 class="topic">
+<a name="48nih7cl13q96odfdecnm9dj9b">&nbsp;&nbsp;&nbsp;&nbsp;当调用虚函数时，会使用如下几条指令</a>
+</h3>
+<h3 class="topic">
+<a name="36b2otbp3sjl9a6pbdafe0scdk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190816_files/0vb9irdr5hc98ka7hur6g503a2.png"></p>
+<h3 class="topic">
+<a name="1182kk9otkl43kfk3bgi2ra4b3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;即系统会将shellcode前四个字节作为指令地址，并从该地址处开始执行指令，此时我们需要在call的过程中将程序执行流程转移到我们的shellcode中</a>
+</h3>
+<h3 class="topic">
+<a name="2q0mjikcqlhtptdqpc76nfgl2t">&nbsp;&nbsp;&nbsp;&nbsp;如何设置shellcode前四个字节，从而让程序执行流程转移到shellcode中呢？</a>
+</h3>
+<h3 class="topic">
+<a name="1g66u6miq5o7ieu57aja6u0d74">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;此时程序中shellcode保存的位置只有函数参数和buf局部变量，但是此时所有的寄存器均不指向这两个shellcode的内存空间首地址，所以很难通过跳转指令jmp esp将程序执行流程转移到shellcode中</a>
+</h3>
+<h3 class="topic">
+<a name="5imnflj25bq2qnq8701pge0mfg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190816_files/00kkqa7cj9bfu2qb19mgohvjem.png"></p>
+<h3 class="topic">
+<a name="0vmei7e3filffmnodte51d70q9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;但是据观察，此时栈顶为0x0012fe88，栈中buf的首地址为0x0012fe9c，两者之间的差值应该是固定的，所以可以采用jmp esp+0x14   （0x14=0x9c-0x88）作为跳板指令，将该跳板指令的地址保存到shellcode首地址，程序会将该指令当作虚函数执行，之后跳转到shellcode中执行</a>
+</h3>
+<h3 class="topic">
+<a name="0hs0pfcom6b0q0q6hulop0tccr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当然这样做的前提是跳板指令的地址解释为指令之后，该指令的执行不会影响shellcode执行</a>
+</h3>
+<h3 class="topic">
+<a name="7qu53f13m4ul3jd3vnj621cpd7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;分析上图的栈中情况，发现栈中esp+4的位置存在buf局部变量的指针，所以，如果我们将 "pop pop retn"指令的地址保存到shellcode的首地址，调用虚函数的过程中，就会将"pop pop retn"指令执行官，通过两个pop，可以将buf指针的位置调整到栈顶（第一个pop将虚函数调用的call指令的返回地址弹出栈，第二个pop将内存地址0x12fe88的内容弹出栈），之后执行retn，从而执行shellcode</a>
+</h3>
+<h3 class="topic">
+<a name="67dgca4j7jdg7gif01o4tveua1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当然要保证"pop pop retn"指令的地址解析为指令后不能影响shellcode的执行</a>
+</h3>
+<h3 class="topic">
+<a name="4ek1c0h1n0m04vh9s5f5qg27vo">&nbsp;&nbsp;&nbsp;&nbsp;sehllcode的布局</a>
+</h3>
+<h3 class="topic">
+<a name="4dnp8mdfq4go2n2f9447qr59ef">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190816_files/2t67eie4jdj8aod7vq1sop7hko.png"></p>
+<h3 class="topic">
+<a name="3p8lmd8v76avb4utmqs1j4u07k">&nbsp;&nbsp;&nbsp;&nbsp;利用结果</a>
+</h3>
+<h3 class="topic">
+<a name="5hr8chd2gm3l6spfslmbs37e0o">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190816_files/01dgbl3opf1ak4b73rngccfmhb.png"></p>
+<h3 class="topic">
+<a name="12inb676122lnrhm5unk6nkbei">&nbsp;&nbsp;攻击异常处理突破GS</a>
+</h3>
+<h3 class="topic">
+<a name="04cge1soagq50oed7vb63k4mcv">&nbsp;&nbsp;&nbsp;GS并没有对SEH提供保护，可以通过超长字符串覆盖异常处理函数的指针，进而触发异常，执行shellcode</a>
+</h3>
+<h3 class="topic">
+<a name="3pe36drg2k71f84jrdiqaa11v0">&nbsp;&nbsp;&nbsp;&nbsp;主要思路还是在函数返回之前就劫持程序执行流程</a>
+</h3>
+<h3 class="topic">
+<a name="4sb2jubgesougq26h9nj85maqd">&nbsp;&nbsp;&nbsp;示例代码</a>
+</h3>
+<h3 class="topic">
+<a name="5n9brmo83u7ricurf9tl0ngd3l">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190816_files/18c4iioorq37kia8qja256l09v.png"></p>
+<h3 class="topic">
+<a name="7kh6hbejgeuup8k90s23uotnkh">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190816_files/3av59s9m1aev042ngvl4h18d0d.png"></p>
+<h3 class="topic">
+<a name="3jq27rheeti0h74up1k6ad7msa">&nbsp;&nbsp;&nbsp;实验环境</a>
+</h3>
+<h3 class="topic">
+<a name="0ehsls5bqm5ltr5bv492p8jfqk">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190816_files/0pn4n4v4njgburtcopse7kkpva.png"></p>
+<h3 class="topic">
+<a name="7it9qacrft4h6uv9fs8hgcguhu">&nbsp;&nbsp;&nbsp;漏洞利用原理</a>
+</h3>
+<h3 class="topic">
+<a name="7llhtpjgqfd5av3ggtepdoo0kk">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190816_files/4ti12gsbv7ip3dau5hpsnfdh4d.png"></p>
+<h3 class="topic">
+<a name="0jmnvicsjt69g6sqig6e34lde6">&nbsp;&nbsp;&nbsp;首先将shellcode设置为"\x90"字符串，并且不溢出，执行完strcpy之后找到buf的首地址，然后在od中找到SEH链的首地址，计算出淹没第一个异常处理函数指针需要多长的字符串，然后将shellcode的首地址覆盖到异常处理函数指针，异常触发后，shellcode被执行</a>
+</h3>
+<h3 class="topic">
+<a name="73to9c55lsl94gmp9m389hpkr3">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190816_files/1j5h0up42ubvb689r19ou7qdh8.png"></p>
+<h3 class="topic">
+<a name="1qicm45av7ucp00vnura4lgfj2">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190816_files/04ns4hn98pk12i1564113v34ll.png"></p>
+<h3 class="topic">
+<a name="6vvfd3t36f8d2kdr026hmmkrij">&nbsp;&nbsp;&nbsp;shellcode结构</a>
+</h3>
+<h3 class="topic">
+<a name="7r330081284i13s95i70c39cs0">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190816_files/1qnp3gf424jjv28877j3gahvhf.png"></p>
+<h3 class="topic">
+<a name="2q9ipjr5doqbr6m2q5q86poboh">&nbsp;&nbsp;&nbsp;利用成功</a>
+</h3>
+<h3 class="topic">
+<a name="145orkgiq7tbprsjeb5gs48nag">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190816_files/3v03k0roe2b06brlu11kjta174.png"></p>
+<h3 class="topic">
+<a name="2mkhhqa21rk3cjje0ld5mn2spa">&nbsp;&nbsp;同时替换栈中和.data中的cookie突破GS</a>
+</h3>
+<h3 class="topic">
+<a name="69t3kbnhg41v03jg8rsgtgunva">&nbsp;&nbsp;&nbsp;示例代码</a>
+</h3>
+<h3 class="topic">
+<a name="65hos2rhe7i29qdbsjq48kmpjm">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190816_files/1e42gf0098bf46hv51jfp7j23e.png"></p>
+<h3 class="topic">
+<a name="1223sub4hrd8iu1gv43qov6rg6">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190816_files/62cpsi15hc7hgblrnv30hdv3nv.png"></p>
+<h3 class="topic">
+<a name="2434k2ls8eeuqfhfo2lonlhp53">&nbsp;&nbsp;&nbsp;实验环境</a>
+</h3>
+<h3 class="topic">
+<a name="2i9ak7m7q7f7f4u3qe6lv17ebi">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190816_files/5cftg76f6166cqemqioifvt6l0.png"></p>
+<h3 class="topic">
+<a name="6mdpair944fmfbjmq5eomj0lji">&nbsp;&nbsp;&nbsp;利用思路</a>
+</h3>
+<h3 class="topic">
+<a name="1khqqua9dk1i3on9ihu664guto">&nbsp;&nbsp;&nbsp;&nbsp;本次漏洞利用中，因为需要修改.data中的cookie种子，所以main函数中一开始就通过malloc函数在堆中申请空间，则我们可以获得对应堆空间的首地址</a>
+</h3>
+<h3 class="topic">
+<a name="7pemsam8cc0skqt0gk1lkkh3uc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意堆空间的数据也保存在.data中</a>
+</h3>
+<h3 class="topic">
+<a name="28ttmsdr6k9lv2e6ks7cquhfmn">&nbsp;&nbsp;&nbsp;&nbsp;来到函数test中初始化安全cookie的位置，我们发现安全cookie种子保存在地址0x403000中</a>
+</h3>
+<h3 class="topic">
+<a name="31jv5f2jomu3umfvbv0i4d27dd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190816_files/25vc7o3dodd662p5sjttrg5d29.png"></p>
+<h3 class="topic">
+<a name="5t3bfag0sjihcai4dg1784hcvo">&nbsp;&nbsp;&nbsp;&nbsp;拥有安全cookie种子保存地址以及堆空间首地址，可以既计算出两者偏移，通过堆空间首地址+偏移寻址到保存安全cookie种子的内存地址，然后在test函数中将安全cookie种子进行更改</a>
+</h3>
+<h3 class="topic">
+<a name="174br5g2t06gn55qs7aehb0jpg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;保存安全cookie种子的地址为0x403000，malloc申请的堆空间首地址为 0x00410048，后者加上 0xFFFF2FB8（-53320） 可以得到前者，故将 0xFFFF2FB8设置为函数第二个参数i，从而在函数test中将安全cookie种子修改为0x90909090</a>
+</h3>
+<h3 class="topic">
+<a name="3ir3v9ucqdl2bk09m9c8ld6aqr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190816_files/2b3s44enr0kvkdpbgr0m2np2i6.png"></p>
+<h3 class="topic">
+<a name="0tqpm810dtf1vh7umti5qfvli1">&nbsp;&nbsp;&nbsp;&nbsp;之后只要&#13;
+将栈中的初始化安全cookie覆盖为0x90909090异或ebp &#13;
+将函数返回地址覆盖为shellcode首地址，就可以通过GS机制的验证，并在test函数返回后执行shellcode</a>
+</h3>
+<h3 class="topic">
+<a name="54lnq83rk2hc721oi3hndp2l96">&nbsp;&nbsp;&nbsp;shellcode结构</a>
+</h3>
+<h3 class="topic">
+<a name="2abtvkhsi8c5gutps0b7c2p4tb">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190816_files/0oimvd8b0upbk510ag5j60kknj.png"></p>
+<h3 class="topic">
+<a name="0mvc6gier9cqc2klsleludmson">&nbsp;&nbsp;&nbsp;这种漏洞利用过程建立在漏洞函数存在可以操作堆内存以及该堆内存在函数中存在连续四个字节写入的过程，总之，此种对漏洞利用的条件比较苛刻</a>
+</h3>
+<h2 class="topic">
+<a name="08opv8ou60djk426pbiabc7qjp">第十一章 亡羊补牢：SafeSeh</a>
+</h2>
+<h3 class="topic">
+<a name="75gqeh9jm85bbitodi8sp157do">&nbsp;windows XP sp2以及后续版本中引入SEH校验机制，即SafeSEH</a>
+</h3>
+<h3 class="topic">
+<a name="0d930p4b33dg2lsno0ond5jdl9">&nbsp;&nbsp;即在程序调用异常处理函数之前会对异常处理函数进行有效性检验，若异常处理函数不可靠，则终止异常处理函数的调用</a>
+</h3>
+<h3 class="topic">
+<a name="1q2pm7ve6o3cqivqakl3vafh0t">&nbsp;&nbsp;该机制需要操作系统与编译器的双重支持</a>
+</h3>
+<h3 class="topic">
+<a name="535daju19mod9hq57erh7cnhav">&nbsp;&nbsp;&nbsp;编译器堆该机制的支持</a>
+</h3>
+<h3 class="topic">
+<a name="0hcqmn432raccpjm2uo4k5h37t">&nbsp;&nbsp;&nbsp;&nbsp;vs2003之后的编译器默认开启</a>
+</h3>
+<h3 class="topic">
+<a name="3ms2ikbibu2elfnpnv12s3tn6v">&nbsp;&nbsp;&nbsp;&nbsp;程序编译过程中会将程序所有的异常处理函数编入一张安全SEH表，该表保存在程序映像中，当程序调用异常处理函数，会将异常函数地址与安全SEH表进行匹配，确定调用的异常处理函数位于安全SEH表中</a>
+</h3>
+<h3 class="topic">
+<a name="4t0sgg8l2kno1upc4jcav0lgmq">&nbsp;&nbsp;&nbsp;&nbsp;查看安全SEH表</a>
+</h3>
+<h3 class="topic">
+<a name="5q7110au9ejfuv2e3qa6rbpp0l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190816_files/52khdha0ddlpnjbsmspn1l35us.png"></p>
+<h3 class="topic">
+<a name="34j65p1ci8kccg3ejmaklsasba">&nbsp;&nbsp;&nbsp;操作系统对该机制的支持</a>
+</h3>
+<h3 class="topic">
+<a name="15flfbkvdb42q66h38vu1fi9tr">&nbsp;&nbsp;&nbsp;&nbsp;异常处理函数的调用是从RtlDispatchException()函数处理实现的</a>
+</h3>
+<h3 class="topic">
+<a name="29i4in33kg0jk2tp5a5fp1r2l1">&nbsp;&nbsp;&nbsp;&nbsp;相关保护措施</a>
+</h3>
+<h3 class="topic">
+<a name="61ftnheqp32vkqskod0pl5mh7p">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;检查异常处理链是否在当前程序栈中，如果不在，程序终止异常处理函数的调用</a>
+</h3>
+<h3 class="topic">
+<a name="0q4be734j90r05rghd3sr1dja1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;检查异常处理函数的指针是否指向当前程序的栈中，如果是，程序终止异常</a>
+</h3>
+<h3 class="topic">
+<a name="3id70deibn3cand6pimgn3kvt5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果以上检验均通过，程序调用RtlIsValidHandler()函数对异常处理函数的有效性进行检验</a>
+</h3>
+<h3 class="topic">
+<a name="0bdula56dab0ab9htndkm27s30">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RtlIsValidHandler()函数检验流程</a>
+</h3>
+<h3 class="topic">
+<a name="0dni8ujlmehh7osbqafikaukje">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190816_files/3ktsb8cmse2a19rlbag9m627ur.png"></p>
+<h3 class="topic">
+<a name="04l2e28bdbrh4nt65uiqqep5cv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190816_files/4i8cpuhm2ihqleaihb3vmei35i.png"></p>
+<h3 class="topic">
+<a name="0japel7g9bun4954d4id4fhe4b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190816_files/47h7utgspnbre4abbrjtd6h0qb.png"></p>
+<h3 class="topic">
+<a name="3hu0fi1jti5k0ppd7f2m6c3ufr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RtlIsValidHandler()函数伪代码</a>
+</h3>
+<h3 class="topic">
+<a name="4hp0o912c4fl1uv7tsvcle5u7h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190816_files/0a80e1c9mj8tlbrfq23fl2vqb3.png"></p>
+<h3 class="topic">
+<a name="7ecjpcqer03dq9698l0r9vra1d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190816_files/238j7vcgrs06jkmha7cgj4op5u.png"></p>
+<h3 class="topic">
+<a name="4ig81nkjgufo4gobs9pthflm81">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RtlIsValidHandler()函数允许异常处理函数运行的情况</a>
+</h3>
+<h3 class="topic">
+<a name="5tn6nc8r5ec51o0h1d9j9ou8o2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190816_files/61tjhdkou4icjbb8tmhfues4m4.png"></p>
+<h3 class="topic">
+<a name="0g1uilh1j46ct143svqtk8le06">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在不考虑DEP情况下（默认DEP关闭）突破SafeSEH的思路</a>
+</h3>
+<h3 class="topic">
+<a name="13pukf68p2u457a2360r9vj6p8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190816_files/6h1ipoumqkq7tocsnbitdedvd9.png"></p>
+<h3 class="topic">
+<a name="0q47qsavfhjqbvk643i4kv5dhq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这里的加载模块内存范围之外指的是程序所占的内存中除了EXE DLL之外的内存</a>
+</h3>
+<h3 class="topic">
+<a name="4cg5n7f8v73mne6bc7pv79tb6d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190816_files/0gp3fmdsc8d1ptsqkfa1uo981l.png"></p>
+<h3 class="topic">
+<a name="5dd6bqgd53i5b9r5qtlnq2edod">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190816_files/20f8kctveh74hn7pv1is0fs7dk.png"></p>
+<h3 class="topic">
+<a name="1vts7a6v2rm5mfc2p3nfbar1o8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对于异常处理函数指向堆，即使安全校验机制发现了异常处理函数的异常，也会执行被修改的异常处理函数，具体的原理没有懂</a>
+</h3>
+<h3 class="topic">
+<a name="722spefgt3mah0rpjk09mlhi8c">&nbsp;&nbsp;突破SafeSEH实战</a>
+</h3>
+<h3 class="topic">
+<a name="1ma2phbm9nhfktnq0jicf07elt">&nbsp;&nbsp;&nbsp;攻击返回地址绕过SafeSEH</a>
+</h3>
+<h3 class="topic">
+<a name="5gqijgp0ci4acft3q93jpa9tfp">&nbsp;&nbsp;&nbsp;&nbsp;启用了SafeSEH，但是没有启用GS 或启用了GS但是对应函数没有被GS保护，或是函数已经被GS保护，但是有方法绕过GS保护，总之因为攻击返回函数地址不涉及异常，所以可以用于绕过SafeSEH</a>
+</h3>
+<h3 class="topic">
+<a name="57m063j8litrb49g6rtjk2vqqj">&nbsp;&nbsp;&nbsp;利用虚函数绕过SafeSEH</a>
+</h3>
+<h3 class="topic">
+<a name="4rl6crsmhvit7ivtqsvfdrdo2r">&nbsp;&nbsp;&nbsp;&nbsp;使用虚函数劫持程序执行流程因为不涉及异常，可以无视SafeSEH保护</a>
+</h3>
+<h3 class="topic">
+<a name="79to8qdg12pggcfmvur714il9j">&nbsp;&nbsp;&nbsp;从堆中绕过SafeSEH</a>
+</h3>
+<h3 class="topic">
+<a name="1ndoau55nhq7kvmgj4v6n5bhdj">&nbsp;&nbsp;&nbsp;&nbsp;示例代码</a>
+</h3>
+<h3 class="topic">
+<a name="21lbm95cla11hr4m8oj357441q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190816_files/5culimfdsj2fkaig0oju6mrchv.png"></p>
+<h3 class="topic">
+<a name="2gm726h9f055vmsiitcm300tdi">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190816_files/1i7ggdeh85ocef9al2vsg1285q.png"></p>
+<h3 class="topic">
+<a name="4ssogkkh1s8idntv783r7s1c36">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190816_files/1i0cqjjclcjpmkafdqe50s6k1n.png"></p>
+<h3 class="topic">
+<a name="2lj6pbvj900vbp4hraqv2rp6uj">&nbsp;&nbsp;&nbsp;&nbsp;实验环境</a>
+</h3>
+<h3 class="topic">
+<a name="17esp2pskrrh2hev3ild7e9qa6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190816_files/34qrgt79u32se2ifqshmi5l0u8.png"></p>
+<h3 class="topic">
+<a name="7dj2dhhk1kviuuctet1efovpmk">&nbsp;&nbsp;&nbsp;&nbsp;主要利用思路</a>
+</h3>
+<h3 class="topic">
+<a name="3q3t28ilaggutjfaj6gd3dmebm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将shellcode保存在堆中，然后通过栈溢出将SEH异常处理函数的地址覆盖为堆中shellcode的首地址，触发除零异常，因为异常处理函数地址为堆中的地址，所以即使SafeSEH机制判断出异常处理函数被修改，该函数也会被执行</a>
+</h3>
+<h3 class="topic">
+<a name="78plf3ho60blfkhfujdpndvouf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以看作是普通的利用SEH劫持用户进程，只不过是shellcode保存在堆中，而非栈中</a>
+</h3>
+<h3 class="topic">
+<a name="7npcfuf0nna85cab6ufkff3bkk">&nbsp;&nbsp;&nbsp;&nbsp;利用截图</a>
+</h3>
+<h3 class="topic">
+<a name="17chdrsg3fi5c0l7d34jba5q9b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;得到堆堆空间的首地址</a>
+</h3>
+<h3 class="topic">
+<a name="4u8fvrlqguld94s5noniptd7a8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190816_files/7nd49it1skaov9fah94slgh24m.png"></p>
+<h3 class="topic">
+<a name="0d8kmo552kj5pcf1pu63g8tr0s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;确定栈中溢出变量的首地址以及seh异常处理函数的指针地址，从而确定需要多长字符串才能淹没异常处理函数指针</a>
+</h3>
+<h3 class="topic">
+<a name="39mhe4h6mkorj8h7vc5ui2gte4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190816_files/3kkhd9e44ummi1isill5tjfdpq.png"></p>
+<h3 class="topic">
+<a name="7dddke1c9d6u8t8opo61qdeovj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;shellcode结构</a>
+</h3>
+<h3 class="topic">
+<a name="6u8gr44d35u0ddj2eg7uds3uv5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190816_files/1uvdgsmki33708nj1s5hf0k7fb.png"></p>
+<h3 class="topic">
+<a name="0j9qnofnjrpkf6pn62crl6vkut">&nbsp;&nbsp;&nbsp;利用未启用SafeSEH的模块绕过SafeSEH</a>
+</h3>
+<h3 class="topic">
+<a name="1rrb2qq36lm8d06qa81hatufp3">&nbsp;&nbsp;&nbsp;&nbsp;如果程序中某个模块没有开启SafeSEH，则只要该模块不是仅包含中间语言（IL）且只要DEF未被开启，则该模块中的异常处理函数就可以执行</a>
+</h3>
+<h3 class="topic">
+<a name="5bb21s252uvvd9fltto93qga2s">&nbsp;&nbsp;&nbsp;&nbsp;上面的基础上，只要在这种模块中找到一条跳板指令，将该指令地址作为seh异常处理函数的地址，异常发生时，执行跳板指令，程序将转而执行shellcode</a>
+</h3>
+<h3 class="topic">
+<a name="4llj1q0eg1l9vfh9q6q1t8v1h8">&nbsp;&nbsp;&nbsp;&nbsp;示例代码</a>
+</h3>
+<h3 class="topic">
+<a name="3tsg2smqbj0k2ug1s1qr5lnl7h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190816_files/302erikmjpkb6u913t7bj2cvoh.png"></p>
+<h3 class="topic">
+<a name="7co5nb4ob9kf38ht6l79dv539i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190816_files/07d0gfvqbecae2klm58ob0k16r.png"></p>
+<h3 class="topic">
+<a name="6a0pctl3mdpbcr6n271mo1ou3q">&nbsp;&nbsp;&nbsp;&nbsp;实验思路</a>
+</h3>
+<h3 class="topic">
+<a name="7bm22v5sv9sc23a7h6hcev0mfo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190816_files/1sgpt6b3khjck4mgto2gge8udg.png"></p>
+<h3 class="topic">
+<a name="16c5mjji0kbe3ku3thc8l9l754">&nbsp;&nbsp;&nbsp;&nbsp;实验环境</a>
+</h3>
+<h3 class="topic">
+<a name="57vbomjkcqm4icgl6sk0f7aeff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190816_files/4akilunpjl0jjh0ki6e0genstt.png"></p>
+<h3 class="topic">
+<a name="4n91b4qrqbmujngo6sa6lqa5m7">&nbsp;&nbsp;&nbsp;&nbsp;注意shellcode中不饿能出现0x00，因为溢出是strcpy函数造成的，如果有0x00，会造成shellcode被截断</a>
+</h3>
+<h3 class="topic">
+<a name="4dlab6mt03uddck7bmb7kn894s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;包括另一个模块中的跳板指令的地址也不能出现0x00</a>
+</h3>
+<h3 class="topic">
+<a name="19u3bnvt30uh8m60qj6f9m4n7i">&nbsp;&nbsp;&nbsp;&nbsp;通过od查看当前程序中各个模块是否开启或者支持SafeSEH</a>
+</h3>
+<h3 class="topic">
+<a name="41e3dtbp8atsmmbcmmq3a1fs0s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190816_files/0qjoq9lcppobfl9q9vacr4h5eg.png"></p>
+<h3 class="topic">
+<a name="3dmbma9r2c9qdn9ondha1eb4lc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190816_files/4gnebh21rnlmi5gltkv1bs5aap.png"></p>
+<h3 class="topic">
+<a name="51tk7tah1kjgdjee2vakosm32i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190816_files/4gvkm9klcuqhirq3nqb5upmc8s.png"></p>
+<h3 class="topic">
+<a name="5ev8at6qvffd1o0dcsbinuqcu4">&nbsp;&nbsp;&nbsp;&nbsp;在未开启SafeSEH的模块中找pop pop retn指令作为跳板指令，选用该指令的原因可能是当调用异常处理函数时之前，栈中esp+4的位置可能保存着指向溢出数据的指针，通过ret 该指针，可以将程序执行流程转移到溢出的数据中</a>
+</h3>
+<h3 class="topic">
+<a name="06u6j33jcjkol5jegd3bq03k6a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190816_files/6sl708jj6d9hlngh4rllfai4hs.png"></p>
+<h3 class="topic">
+<a name="05jgpdct1nu1dufda3f7jqc521">&nbsp;&nbsp;&nbsp;&nbsp;计算溢出发生时，溢出变量的首地址以及SEH异常处理函数指针的地址，从而确定用于溢出的字符串的长度</a>
+</h3>
+<h3 class="topic">
+<a name="3117o4gslb7btuqcqvtu2b3o3j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190816_files/69ue9039cg81ihvp97t6it8e60.png"></p>
+<h3 class="topic">
+<a name="40en0glumka38jcr8vvd2itdfb">&nbsp;&nbsp;&nbsp;&nbsp;vs2008编译器编译的程序在执行 __try{ }__excecpt()的过程中，会向栈中压入数据，可能造成栈中shellcode被修改，所以需要更改shellcode的结构</a>
+</h3>
+<h3 class="topic">
+<a name="4d0ku6a3nh0tqauuuq7pjo4n6t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当程序进入有__try{}的函数时会在 Security Cookie+4 的位置压入&minus;2（VC++ 6.0 下为&minus;1）</a>
+</h3>
+<h3 class="topic">
+<a name="0chspe26dpmohj4i3h3lbebh2s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在程序进入__try{}区域时程序会根据该__try{}块在函数中的位置而修改成不同的值</a>
+</h3>
+<h3 class="topic">
+<a name="0419aj8ladk4jsofc19f6uuimq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;，函数中有两 个__try{}块，在进入第一个__try{}块时这个值会被修改成 0，进入第二个的时候被修改为 1。 </a>
+</h3>
+<h3 class="topic">
+<a name="6vh567dre2omgr21skudi2r1gb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果在__try{}块中出现了异常，程序会根据这个值调用相应的__except()处理，处理结束后这 个位置的值会重新修改为&minus;2；如里没有发生异常，程序在离开__try{}块时这个值也会被修改回 &minus;2。</a>
+</h3>
+<h3 class="topic">
+<a name="59r56pglmuj5h084fr6ruc0hmb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;而本例中，触发异常的除零指令在__try{}中，且test函数中只有一个__try{},所以在执行除零指令之前，栈中Security Cookie+4位置的数据会被赋值为0，此时栈溢出已经完成，该次赋值会影响shellcode</a>
+</h3>
+<h3 class="topic">
+<a name="018nbescnk2115r1plkt9tmk6k">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190816_files/0sbossd6m6toci26ri5kshr61o.png"></p>
+<h3 class="topic">
+<a name="0idml13b3nqur8eavqbf18ofvj">&nbsp;&nbsp;&nbsp;&nbsp;为了消除影响，将shellcode的格式设置为</a>
+</h3>
+<h3 class="topic">
+<a name="5dn3pnbudbutab71c4u3apta9p">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190816_files/4dam47e66hkq7elcslv97erp8s.png"></p>
+<h3 class="topic">
+<a name="19hdhb5nj9cc99kvvf84phrqi6">&nbsp;&nbsp;&nbsp;&nbsp;当触发异常，程序执行dll中的跳板指令时</a>
+</h3>
+<h3 class="topic">
+<a name="7nv6i98e986hlrkj0alaagua08">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190816_files/1m1lme388a5b8cbmtgs681prkb.png"></p>
+<h3 class="topic">
+<a name="2se8m16j7p8cgmek2nehfmuol6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;esp+8的位置0x0012fe90，指向溢出的数据，所以同通过pop pop retn ,可以将程序执行流程转移到溢出的数据中</a>
+</h3>
+<h3 class="topic">
+<a name="2rtjhlt7ldd66suqako760b2jn">&nbsp;&nbsp;&nbsp;&nbsp;在地址0x0012fe90上，指令如下，该地址是被溢出覆盖的内存，且正好在弹出窗口的指令之前，该地址之后还包括用于覆盖SEH异常处理函数的数据和__try{}写入的0x00，但是此类数据当作指令指针不会影响到弹出窗口的指令，故shellcode正常执行</a>
+</h3>
+<h3 class="topic">
+<a name="70ivjlatvsfacuag273o0qh7pu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190816_files/1893cboh4ud4uutgk8j30m6n4o.png"></p>
+<h3 class="topic">
+<a name="0oqvacp0ja4d7768fa6mt84u7k">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190816_files/64rqgj8p83a6u5s1r5rompftk8.png"></p>
+<h3 class="topic">
+<a name="1b2kadia937en5b9gv82glf2hb">&nbsp;&nbsp;&nbsp;利用加载模块之外的地址绕过SafeSEH</a>
+</h3>
+<h3 class="topic">
+<a name="5pavsice6lksb2k6vgqg1cluko">&nbsp;&nbsp;&nbsp;&nbsp;程序加载到内存之后，在其所占的内存空间中，除了pe文件模块（EXE和DLL）还有其他映射文件，当异常处理函数指针指向此类映射文件的内存，调用异常处理函数时，SafeSEH不进行有效性检验，即在此类文件中找到跳板指令即可绕过SafeSEH</a>
+</h3>
+<h3 class="topic">
+<a name="089fhg0a5irvbbso2s2nr3g4oe">&nbsp;&nbsp;&nbsp;&nbsp;通过OD -》view-》memory即可查看内存的映射状态，内存为Map即为映射文件</a>
+</h3>
+<h3 class="topic">
+<a name="1v18431be2cm19odkit0frhkgo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190816_files/12dae34nqptj5htngjko5jol4u.png"></p>
+<h3 class="topic">
+<a name="2mi9to9qqj8fdmpal1b3m4mc7d">&nbsp;&nbsp;&nbsp;&nbsp;这种情况下可以使用的跳板指令</a>
+</h3>
+<h3 class="topic">
+<a name="6l82fc0lq23df4oovbfcm0bj5j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190816_files/32jmccdckg2iiol6ag9f7hvhmq.png"></p>
+<h3 class="topic">
+<a name="5qbcad1no5n8qtqg19h8d1hst7">&nbsp;&nbsp;&nbsp;&nbsp;示例代码</a>
+</h3>
+<h3 class="topic">
+<a name="6qeib51brqftafhqpu65bglpoh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190816_files/34mhrq39v37800fr7306jlf8qq.png"></p>
+<h3 class="topic">
+<a name="4qbrif8mgd8a6bvd91k3aki6p0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190816_files/3s18b643o6v1qsoal4qac1avqi.png"></p>
+<h3 class="topic">
+<a name="2c8hmkgr9helcbb1lc1mipldoq">&nbsp;&nbsp;&nbsp;&nbsp;实验思路</a>
+</h3>
+<h3 class="topic">
+<a name="1eq6intd8eh95s1th1lh6g4see">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190816_files/3p3jpjk0v2silhkdaameth35l5.png"></p>
+<h3 class="topic">
+<a name="7o8cfp16c624hv3hf8ksutkjfb">&nbsp;&nbsp;&nbsp;&nbsp;实验环境</a>
+</h3>
+<h3 class="topic">
+<a name="3q8hv07lmga448tir81mqbbnjb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190816_files/2rf361fnjqocmhg3mcc7b4jati.png"></p>
+<h3 class="topic">
+<a name="58437ci5540b220r2lepj399n7">&nbsp;&nbsp;&nbsp;&nbsp;搜索加载模块之外的跳板指令</a>
+</h3>
+<h3 class="topic">
+<a name="1hodfue4d39s5q2mgkb1qsnqut">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;od插件OllyFindAddr，可以在整个程序的内存空间中搜索指令</a>
+</h3>
+<h3 class="topic">
+<a name="37au5s81cva6u3a84iv37t8ib1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;搜索跳板指令&#13;
+&ldquo;Plugins&rarr;OllyFindAddr&rarr;Overflow return address&rarr;Find CALL/JMP [EBP+N]&rdquo;</a>
+</h3>
+<h3 class="topic">
+<a name="496eqkp9a77a4gbbouhncb7gdo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190816_files/6glegc8hjv6kp6084u0e55ohc3.png"></p>
+<h3 class="topic">
+<a name="4csk23flrsqn5hbk94q7ravav2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;搜索到合适的跳板指令  0x00290B0B ：call [ ebp+0x30]</a>
+</h3>
+<h3 class="topic">
+<a name="11bvhgovnh2ddsajfoodlf4j8s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190816_files/04hmh0ai6bp5lsp40pj9r8nfoq.png"></p>
+<h3 class="topic">
+<a name="3h1ocblndcaas577d6e0l92l21">&nbsp;&nbsp;&nbsp;&nbsp;当前跳板指令地址中存在0x00，则字符串复制过程中，0x00之后的内容均会被截断，故不能将shellcode关键部分放在跳板指令地址之后</a>
+</h3>
+<h3 class="topic">
+<a name="2rkv950lqmcd557k607svjqtka">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对于unicode对应的wcspy()函数则不会截断，因为该函数截断0x0000，而非0x00</a>
+</h3>
+<h3 class="topic">
+<a name="1mf2mp93ggngj86mvmvqb584ns">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在这里可以将跳板指令的地址放在整个shellcode的最后，将关键代码设置在跳板指令的地址之前</a>
+</h3>
+<h3 class="topic">
+<a name="43c9bjp4jrklh08aust6vf15v3">&nbsp;&nbsp;&nbsp;&nbsp;根据上面的讨论，我们选定了跳板指令call [b ebp+0x30]，并且将其地址保存到shellcode的最后，则当异常被触发，跳板指令被执行时</a>
+</h3>
+<h3 class="topic">
+<a name="5huj02i3ckodjnl3han9b6pcce">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190816_files/1gslcvgd83sid4aiagvj745slq.png"></p>
+<h3 class="topic">
+<a name="335njn4cfc8im0igerq5u8qdal">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;跳板指令被执行之后，程序跳转到1的位置继续执行，此时因为shellcode的关键代码位于1位置之上，所以需要使用向上跳转的指令</a>
+</h3>
+<h3 class="topic">
+<a name="0cmm06tjp5l7g3ojdd491i7mf4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1处的至指令不宜过长，否则会影响后面的跳板指令的内存地址，所以使用0xEBF6作为指令，先进行短跳，因为该指令只有两个字节，所以指令后面用两个0x90填充</a>
+</h3>
+<h3 class="topic">
+<a name="4og62fgorl84ad9ddq98tok16l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;短跳完成后，程序跳转到长跳指令，通过该指令，程序跳转到shellcode起始位置开始执行代码，该长跳指令长5个字节</a>
+</h3>
+<h3 class="topic">
+<a name="3hookgifgdbgu74m3ar1o7ochf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;为确定长跳指令，需要计算长跳指令所在地址距离shellcode起始地址的偏移</a>
+</h3>
+<h3 class="topic">
+<a name="4ejml1475biqq8iklsape70rrv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意如果jmp指令向内存地址增长的方向跳转，则跳转偏移不包括跳转指令自身的长度，即等于目的地址-跳转指令首地址-跳转指令的长度</a>
+</h3>
+<h3 class="topic">
+<a name="3r5tpkejbh7ftvu1ud598rdnh6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果jmp指令向内存地址减小的方向跳转，则跳转偏移需要包括跳转指令自身的长度 ，即等于跳转指令首地址-目的地址+跳转指令长度</a>
+</h3>
+<h3 class="topic">
+<a name="140blunn5fu75esv8klobt9ujb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;造成这种情况的原因在于，跳转指令执行跳转时，跳转指令自身一定已经执行完毕，所以此时eip指向下一条指令的首地址</a>
+</h3>
+<h3 class="topic">
+<a name="7oukgm4039uqnu6r8fc0kmmj1t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190816_files/7g2d96o1qvek0qn7ev46uah7k5.png"></p>
+<h3 class="topic">
+<a name="08oflmerh6qoqu6jci3v7t1f8e">&nbsp;&nbsp;&nbsp;&nbsp;shellcode的布局</a>
+</h3>
+<h3 class="topic">
+<a name="450vsttcueak21l4ck8fhs9a5c">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190816_files/6v18f1ir6ul1bbnjkotg6o7lsp.png"></p>
+<h3 class="topic">
+<a name="3vk8fqmdc4geuv4ps7v3b77rv1">&nbsp;&nbsp;&nbsp;利用Adobe Flash Player ActiveX控件绕过SafeSEH </a>
+</h3>
+<h3 class="topic">
+<a name="4muq4fjek4o48hirv9iesas10c">&nbsp;&nbsp;&nbsp;&nbsp;本质上是利用未启用SafeSEH的模块绕过SafeSEH的浏览器版</a>
+</h3>
+<h3 class="topic">
+<a name="0a8q8kaete63cnqt6vg7ar4m7t">&nbsp;&nbsp;&nbsp;&nbsp;三方面的支持</a>
+</h3>
+<h3 class="topic">
+<a name="0rlck20879b9od4nrus4c8hbb4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190816_files/6ljcndm7uoe3nh3ui3f2vdnjr0.png"></p>
+<h3 class="topic">
+<a name="0umdt4c64g44q5lco432749ai7">&nbsp;&nbsp;&nbsp;&nbsp;利用漏洞的html页面代码</a>
+</h3>
+<h3 class="topic">
+<a name="689ql2huu07l0nob052jo5k2l9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190816_files/2ug47km2hag5f3g424232uc4r4.png"></p>
+<h3 class="topic">
+<a name="7u7uqh22qjlmsu4e0nhjtcek67">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190816_files/6gj4rjrrof856qgcg6bkjbhuhk.png"></p>
+<h3 class="topic">
+<a name="2rjksstlup26f1j6quilkttnda">&nbsp;&nbsp;&nbsp;&nbsp;实验思路</a>
+</h3>
+<h3 class="topic">
+<a name="3t83o1ftns5o3uso0ptomfiff7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190816_files/2941uqdrb013j7inrbrikhcejc.png"></p>
+<h3 class="topic">
+<a name="0p6u7qmihd17fcgr9hfv6cas9j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190816_files/79boiaee3cr6ablkb5jcok5ogq.png"></p>
+<h3 class="topic">
+<a name="214s7esatk24atdllar1pke9id">&nbsp;&nbsp;&nbsp;&nbsp;计算多少个字节的字符串能够淹没异常处理函数句柄</a>
+</h3>
+<h3 class="topic">
+<a name="7hcm9igq064bc139sbb61cgin5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190816_files/1qq5l3cn2p4k4pt8hoj4r9ipin.png"></p>
+<h3 class="topic">
+<a name="4r3qf5ed5t3oehpkfck4thcjpt">&nbsp;&nbsp;&nbsp;&nbsp;搜索用于替代异常处理函数的跳板制指令</a>
+</h3>
+<h3 class="topic">
+<a name="7mflgm4oublkbrs04q2em3a2l6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190816_files/5psjo1pfshu2tnt2tflmt23clu.png"></p>
+<h3 class="topic">
+<a name="4aqo86kpk45evajao9hb2ec3kf">&nbsp;&nbsp;&nbsp;&nbsp;当触发异常，执行跳板指令之后，程序执行流程到来到0x01F6F54C 地址处，该处的内存数据已经被淹没，如果从这里继续执行指令，存在两个问题</a>
+</h3>
+<h3 class="topic">
+<a name="0na2dnf7eu6uefamq7o65gkcid">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190816_files/3fqeklt6m8coktpb47f0phslk2.png"></p>
+<h3 class="topic">
+<a name="6nnkog68hal30vb2af6eal50bj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;为什么是该地址没有看明白，按照图11.7.6所示被淹没的异常处理函数指针的地址应该是0x01F0F550，但是本图种显示此地址为0x01F6F570，且该地址附近的内存已经被修改，说明此地址附近的数据已经被淹没，但是实际栈溢出的数据不应该淹没到0x01F6F570附近，怀疑是书本有问题</a>
+</h3>
+<h3 class="topic">
+<a name="5bblrosbogf7oufgvmr3ememl8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1，shellcode中跳板指令的地址解释为指令后会影响shellcode的执行，需要在其之前设置跳转指令跳过此处，直接执行后面弹出窗口的指令</a>
+</h3>
+<h3 class="topic">
+<a name="7lc88ajb46nmt6iiv28va4uc3j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2、仍然会出现进入__try{}之后，将栈中不部分数据赋值为0的问题，所以需要在shellcode关键代码（弹出窗口）之前加上足够的nop，以防止关键代码被0x00截断</a>
+</h3>
+<h3 class="topic">
+<a name="51qa9q6rl7t0eufpg3r9rkdeu6">&nbsp;&nbsp;&nbsp;&nbsp;shellcode结构</a>
+</h3>
+<h3 class="topic">
+<a name="3tha6jomderl29fcdelduge0n5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190816_files/43hnfo3q8qkjfffhlgcb0numat.png"></p>
+</body>
+</html>

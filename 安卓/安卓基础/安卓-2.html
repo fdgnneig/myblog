@@ -1,0 +1,474 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>安卓-2</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="2no7lq732tctp52ir2ahe39vvq">安卓-2</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="%E5%AE%89%E5%8D%93-2_files/images/%E5%AE%89%E5%8D%93-2.jpg"></div>
+<h2 class="topic">
+<a name="3u5frqbl7eu5bckn5htageehnd">apk文件和分析工具</a>
+</h2>
+<h3 class="topic">
+<a name="0h21m77cf93sk0ekq03nb2fjt4">&nbsp;APK包结构</a>
+</h3>
+<h3 class="topic">
+<a name="1hr1ec2fh3es4l8568unurk5b0">&nbsp;&nbsp;实际上就是一个未加密的zip文件</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-2_files/45herm68nq97ps0d3c39g5m4oi.png"></p>
+<h3 class="topic">
+<a name="5pqv1fp9pruhu5tuitpoen1e10">&nbsp;&nbsp;&nbsp;lib目录中保存了针对不同硬件平台，app要使用到的库文件</a>
+</h3>
+<h3 class="topic">
+<a name="0215u6jt804fhpjea9j2g5r3op">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-2_files/6kmiupepa45f5er41rfq05lvvg.png"></p>
+<h3 class="topic">
+<a name="63r8iavbaqnomutkdk23c8qtt1">&nbsp;&nbsp;&nbsp;对于加固的app还可能存在assert文件夹</a>
+</h3>
+<h3 class="topic">
+<a name="222enp4hk47u296rkfsiojmno6">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-2_files/74vtp7di78nj6apnipnnotsqlr.png"></p>
+<h3 class="topic">
+<a name="72pu9tr3cqifgnh1m5kbtjn6ae">&nbsp;&nbsp;&nbsp;apk中的AndroidManifest.xml文件是一个二进制文件，不能直接打开的，需要反编译</a>
+</h3>
+<h3 class="topic">
+<a name="6uh24pmnpira0vviukf2vgdq5o">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-2_files/49gfkrs6vfc38fvlccf67a1p6i.png"></p>
+<h3 class="topic">
+<a name="3ebacv4fi915er02ffr8sbfvaf">&nbsp;&nbsp;&nbsp;AnroidManifest.xml 文件中指定了app中所有的四大组件以及app申请的权限</a>
+</h3>
+<h3 class="topic">
+<a name="46aeeifsmhqosb3n3cvlkknjd4">&nbsp;&nbsp;&nbsp;armabi即arm平台的硬件接口，如果该app要兼容其他平台，则lib目录中需要保存其他平台的库文件</a>
+</h3>
+<h3 class="topic">
+<a name="293vfbs6oj97tkq73f8poffui1">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-2_files/4b652ul2somd4ekuos9irq3b9u.png"></p>
+<h3 class="topic">
+<a name="1ugq7dhir9d4b62loic87rs14o">&nbsp;&nbsp;&nbsp;assets目录是可有可无的</a>
+</h3>
+<h3 class="topic">
+<a name="5ta9ko54ukit9j0g0jao9sfi1c">&nbsp;apk解包打包工具</a>
+</h3>
+<h3 class="topic">
+<a name="5elr4sbc37o4v8tqcdl1lihpe6">&nbsp;&nbsp;直接将整个apk文件解包或打包起来，&#13;
+-d参数与解包出来的smali文件的调试相关，会将smali文件后缀设置为java，方便后期结合各种IDE调试smali（具体见apk调试节）</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-2_files/6vr6n7s34apkupgb326jbn5lcm.png"></p>
+<h3 class="topic">
+<a name="3qfg6h77jgg7f02cgmimc2p7ij">&nbsp;&nbsp;&nbsp;单独解包打包dex文件，如果app资源文件做了对抗，无法将整个apk文件全部解包，则可以将apk文件中的dex单独拿出来解包，然后查看其中的smali汇编</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-2_files/69dbhappmn4g2nru4nurl0ge4q.png"></p>
+<h3 class="topic">
+<a name="0n8cracrqsoe6gf3onq2ce4gpt">&nbsp;&nbsp;&nbsp;&nbsp;针对app的解包打包有相应的对抗，使得部分app无法被解包和打包</a>
+</h3>
+<h3 class="topic">
+<a name="35vjkh6mp4ioe8k3iqmaq37g6k">&nbsp;&nbsp;将要解包的apk与指定工具放在同一个目录，然后cmd执行以上指令， -o xxx用于指定解包后的数据存放在哪个文件夹</a>
+</h3>
+<h3 class="topic">
+<a name="2451ub3q592qoic7jiomuoapjd">&nbsp;apk分析工具</a>
+</h3>
+<h3 class="topic">
+<a name="577gqo9sotsdujuc9a8eglpnd3">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-2_files/0vfmqf408tiuk49u9nj1iotgvq.png"></p>
+<h3 class="topic">
+<a name="4o98ru7qjd5ujp9i0bvi953m9d">&nbsp;&nbsp;&nbsp;apk中的AndroidManifest.xml文件是一个二进制文件，不能直接打开的，需要反编译，针对xml文件也存在对抗，使得整个xml文件无法被反编译出来</a>
+</h3>
+<h3 class="topic">
+<a name="270npsjkbgbqne0koofq2vecgg">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-2_files/7n5rqhur6m1ebs4p6j4oct8ms2.png"></p>
+<h3 class="topic">
+<a name="2kndqru0v7j0liqv6gaprb3h6a">&nbsp;&nbsp;&nbsp;ShakaApktool工具仍在更新</a>
+</h3>
+<h3 class="topic">
+<a name="5vm30v9ud6q8hjt2vq0bs38ivj">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-2_files/3la233g8nnokhnjcvrms3hughc.png"></p>
+<h3 class="topic">
+<a name="4jtce8nepk8njaljft08ps1u6v">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-2_files/7p7cs09ee4agottamasnv062v3.png"></p>
+<h3 class="topic">
+<a name="4adi9uchv9h62jtc0jggctau89">&nbsp;&nbsp;&nbsp;分析dex文件时推荐使用，可以将baksmali工具无法解包的dex文件解包</a>
+</h3>
+<h3 class="topic">
+<a name="5lurotghuql05e6satgdo2nv97">&nbsp;&nbsp;&nbsp;2.0之后的版本按q将smali转换为java代码</a>
+</h3>
+<h3 class="topic">
+<a name="69qtslpju0u5svari1p8kj3tu9">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-2_files/2eccilnks4b9sq968o2fqfufbd.png"></p>
+<h3 class="topic">
+<a name="60pv44ht183jq8ive0tuso1mgo">&nbsp;注意ida不支持多线程切换调试，GDB调试需要有很好的掌握</a>
+</h3>
+<h2 class="topic">
+<a name="6sfnogrud726j3uiv3snceu973">smali汇编</a>
+</h2>
+<h3 class="topic">
+<a name="3bbgurjesoq1e74a3j0198i0po">&nbsp;介绍</a>
+</h3>
+<h3 class="topic">
+<a name="5v8k95oiu7509h6j11e574khro">&nbsp;&nbsp;smali类似于伪代码</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-2_files/7crlrjdveqrru6fhphl3heb34d.png"></p>
+<h3 class="topic">
+<a name="7vh60fivu4dbirnk80stllcjj0">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-2_files/30e9nqp7cq3e2rkkfhn0co3jp0.png"></p>
+<h3 class="topic">
+<a name="5jg9vqva86rn3j70oi58pkb875">&nbsp;特点</a>
+</h3>
+<h3 class="topic">
+<a name="1p9in68trcifuifnvjpc9i3dvb">&nbsp;&nbsp;针对字节码，会在后面加后缀用于表示操作的数据类型和大小，比如64位数据会增加wide，即使用long类型数据时，会使用wide</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-2_files/4qit332kinsouasue29iclb4v5.png"></p>
+<h3 class="topic">
+<a name="697fltqif99atqb5cb3hgrqp1u">&nbsp;smali中的数据表示方法</a>
+</h3>
+<h3 class="topic">
+<a name="4esuqdg4i2pmf6rhhjbt3m7si3">&nbsp;&nbsp;该特点与JNI中针对natieve函数参数类型的描述是一致的</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-2_files/2ujga9l1b0kd54ps2l7rv4hvit.png"></p>
+<h3 class="topic">
+<a name="750obieqna26u6iuruj5imuq33">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-2_files/1pkkj04c1b5vforlr5acvau38j.png"></p>
+<h3 class="topic">
+<a name="7hqc89suo20er4ck6c85helmvt">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-2_files/3bm0mmvkl5k931m1chcu756h7a.png"></p>
+<h3 class="topic">
+<a name="0snlkutdqtuureooef8fk1jhrg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;类中成员变量和成员函数的表示方法</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-2_files/3beoc54tdn7s5bnliariob327h.png"></p>
+<h3 class="topic">
+<a name="3b3fonbnvqn8ln07li06r3qrum">&nbsp;samli中的寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="4351fp6lqu1cek7ph0n6snv0j6">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-2_files/68u04nr95si7v691gkv7uk9p6t.png"></p>
+<h3 class="topic">
+<a name="3kh9d3dnmtt72k0sskemg3l53k">&nbsp;&nbsp;&nbsp;寄存器命名方法</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-2_files/6lkthfhj3bspdpqdff66tmnt81.png"></p>
+<h3 class="topic">
+<a name="37tv80epe0d5e5lldhu7cjhqj1">&nbsp;&nbsp;&nbsp;&nbsp;64位数据需要两个寄存器传参，所以当参数或返回值为64位数据(long double)时，注意会使用两个连续的寄存器传参，其中一个寄存器属于隐式传参，也无法在smali中修改隐式传参的寄存器的值</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-2_files/6i8b4s768r24eekqov1549dacc.png"></p>
+<h3 class="topic">
+<a name="2d47iluqrafcbogc2pk1a2f8ln">&nbsp;smali文件内容</a>
+</h3>
+<h3 class="topic">
+<a name="7ca552fic578bm05n9gmjhmlk3">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-2_files/6j59d11c8ef6q9pt99e5p9kf70.png"></p>
+<h3 class="topic">
+<a name="032rn39vuvhupf770r8vmsd61t">&nbsp;&nbsp;&nbsp;类中成员变量和成员函数的表示方法</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-2_files/09asuishrl5qm8aah4de46vrs6.png"></p>
+<h3 class="topic">
+<a name="49j8tmlu23n3gg9505ide5hlrm">&nbsp;&nbsp;&nbsp;&nbsp;staic方法无论是公有、私有、保护都使用invoke-static调用</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-2_files/1sa6kbt3le7vs10eiblitimpmg.png"></p>
+<h3 class="topic">
+<a name="7hh50700qhuqq9omjibfu3suau">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;调用public protected函数：invoke-virtual</a>
+</h3>
+<h3 class="topic">
+<a name="03k5j9a5rn7ccrs73f66vuvhsa">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;因为对于public和protect函数，子类可以继承自父类，并且重载父类中对应的函数，所以在子类中调用这两类函数一律使用invoke-virtual,以保证调用到子类中的函数</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-2_files/4sahdarcs4rabrh268diu48isn.png"></p>
+<h3 class="topic">
+<a name="18ppahatcstjram4onev4ljrni">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;调用静态函数：invoke-static</a>
+</h3>
+<h3 class="topic">
+<a name="0ltpfc0pcb3as7m2p1p440grkd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这里调用了System类中的loadLibrary函数，参数为v0</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-2_files/0ppe8jmmrg86gp87pn8lmbahhc.png"></p>
+<h3 class="topic">
+<a name="0mq6s1pvabjlqn9apuoti84m08">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;调用私有函数：invoke-direct</a>
+</h3>
+<h3 class="topic">
+<a name="2026mq5q01b7fmk5tabn1ovuem">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;调用非静态方法，需要传递p0，即类对象的this指针</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-2_files/3cft6kohgvrs4u4b8o0gnjt1kb.png"></p>
+<h3 class="topic">
+<a name="3dj63r4nctk50an7brih9tucj3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;调用父类方法：invoke-super</a>
+</h3>
+<h3 class="topic">
+<a name="36vg285m20tjsg7jk50k9rbkau">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-2_files/0ss090eebkf73epv3qgtumpjgq.png"></p>
+<h3 class="topic">
+<a name="0no4c2uuqe2s2nn6ffp0j9i438">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在修改smali汇编时，必须要弄清被修改的函数属于以上那种调用方式，从而在调用对应函数时使用正确的方法调用</a>
+</h3>
+<h3 class="topic">
+<a name="0fshdo8gg066gotf35m9fj5s06">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;同一个函数写成静态与非静态的区别</a>
+</h3>
+<h3 class="topic">
+<a name="4lauobheed1dd1jiqm6akdqudt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-2_files/6iq5ck9k7bjv0vvsfln8urdgiu.png"></p>
+<h3 class="topic">
+<a name="004ognjsq0ohkpv75mjn82tne5">&nbsp;smali与java代码的对应</a>
+</h3>
+<h3 class="topic">
+<a name="2ird02ecc2ib45br4geptka3jv">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-2_files/28ohemn0vklin71k9iujca2h95.png"></p>
+<h3 class="topic">
+<a name="711n9ee62oi3cfqrekrh2glo4k">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-2_files/4ogio4l45mppv9q6ce4jv8hgmc.png"></p>
+<h3 class="topic">
+<a name="6pcnf81435oej2rdompgf9lt5q">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-2_files/6jp99uofr4tjdet5e293vlj4s2.png"></p>
+<h3 class="topic">
+<a name="1g87q5nas2dbj679qf2ufq4v27">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-2_files/06i1r19ac9i5k3ccpb6uh4m0cn.png"></p>
+<h3 class="topic">
+<a name="2g78t91h2i12vch3fgfqlr9vjg">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-2_files/6rftrtm1njb15rutkhjdkr0ei0.png"></p>
+<h3 class="topic">
+<a name="3qvcge6q0ifv0d80e136a8vpn1">&nbsp;&nbsp;调用public的方法：使用invoke-virtual</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-2_files/4iod9buajdoef4ho8nsf8a6e8d.png"></p>
+<h3 class="topic">
+<a name="2dpvbeohhq15e5jfdo26qthbst">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-2_files/2ngcldcos3l7qalvli2utu8bju.png"></p>
+<h3 class="topic">
+<a name="5gn4m42gjs19o0pn6u82dobtf5">&nbsp;&nbsp;调用protect方法：使用invoke-virtual</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-2_files/6ius8mlo0d0fmsrippmhjvpjn8.png"></p>
+<h3 class="topic">
+<a name="0f6iho63ufi17i0ehcto70m75k">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-2_files/7p0eqeijb8vp20eep267j8gkrn.png"></p>
+<h3 class="topic">
+<a name="0o1smnqbfcklpul4sscvvu0g2p">&nbsp;&nbsp;调用private方法：使用invoke-direct</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-2_files/1693f86onlr3rtpi40bnueme4m.png"></p>
+<h3 class="topic">
+<a name="625a4fusi3dnh24qdit4bjj7ru">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-2_files/3ht386gk63ce21nc6gdm7lrf5p.png"></p>
+<h3 class="topic">
+<a name="0u2c1b6colf1f9u5nt59dq7440">&nbsp;&nbsp;调用static方法：使用invoke-static</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-2_files/0hp2bom3onpismk7d3nfivqjpb.png"></p>
+<h3 class="topic">
+<a name="0q6sgi0dt5u50s29gnijrfd2q8">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-2_files/7f625eqjc51ap6tgdtvrljatr9.png"></p>
+<h3 class="topic">
+<a name="7e0ri93mgna1bsub8258dmp53i">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-2_files/11r6vuq6fu3kjbafjdjqoq4oc7.png"></p>
+<h3 class="topic">
+<a name="6i7qlki8ab280d95qgb7sg00ia">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-2_files/4lcsl8e5q6bsit8pb9nmiiisdk.png"></p>
+<h3 class="topic">
+<a name="2fm0u2i68jpr6kdb00nai4bpi8">&nbsp;&nbsp;&nbsp;&nbsp;20保存到int类型的成员变量b中</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-2_files/2c9pu4c6fdi0u0vnvm22gh7c71.png"></p>
+<h3 class="topic">
+<a name="56dgb61a82kf1kst8t0t24d0p7">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-2_files/23bq1ltk28l2ard91gru7ajt4q.png"></p>
+<h3 class="topic">
+<a name="0f881jb1bprahmmk6qfmf6q8th">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-2_files/4qjj0j33k9ib209pa4lke4g1ek.png"></p>
+<h3 class="topic">
+<a name="1g2u1e552mlr8tukp83i9a3itb">&nbsp;&nbsp;&nbsp;&nbsp;将30.0f保存到float类型成员变量aa中</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-2_files/5du2n09gllr2qugjg9dpprrn6b.png"></p>
+<h3 class="topic">
+<a name="3cna498cgrpvos4nkguop7um76">&nbsp;&nbsp;&nbsp;&nbsp;将40保存到double类型成员变量bb中</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-2_files/4bjp8hdtc5al1n0j58c8dmq5ak.png"></p>
+<h3 class="topic">
+<a name="5pr8hfasnmqesg0e4tqnq84oa5">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-2_files/12t4cu0stvtjrd6aso3c0haqll.png"></p>
+<h3 class="topic">
+<a name="53k970tlfm9ocqjn6fbk3agfh9">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-2_files/5ther9mm17aagvqlif78j2dpmc.png"></p>
+<h3 class="topic">
+<a name="4pjl2nsegi2rnkcnvbdku23jjn">&nbsp;&nbsp;.method public pub_method(ILjava/lang/String;)V&#13;
+    .locals 4&#13;
+    .param p1, "n"    # I&#13;
+    .param p2, "tag"    # Ljava/lang/String;&#13;
+&#13;
+    .prologue&#13;
+    .line 16&#13;
+    mul-int/lit8 v0, p1, 0x2&#13;
+&#13;
+    .line 17&#13;
+    .local v0, "m":I&#13;
+    const-string v1, "MF"&#13;
+&#13;
+    new-instance v2, Ljava/lang/StringBuilder;&#13;
+&#13;
+    invoke-static {p2}, Ljava/lang/String;-&gt;valueOf(Ljava/lang/Object;)Ljava/lang/String;&#13;
+&#13;
+    move-result-object v3&#13;
+&#13;
+    invoke-direct {v2, v3}, Ljava/lang/StringBuilder;-&gt;&lt;init&gt;(Ljava/lang/String;)V&#13;
+&#13;
+    const-string v3, ": "&#13;
+&#13;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;-&gt;append(Ljava/lang/String;)Ljava/lang/StringBuilder;&#13;
+&#13;
+    move-result-object v2&#13;
+&#13;
+    invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;-&gt;append(I)Ljava/lang/StringBuilder;&#13;
+&#13;
+    move-result-object v2&#13;
+&#13;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;-&gt;toString()Ljava/lang/String;&#13;
+&#13;
+    move-result-object v2&#13;
+&#13;
+    invoke-static {v1, v2}, Landroid/util/Log;-&gt;i(Ljava/lang/String;Ljava/lang/String;)I&#13;
+&#13;
+    .line 18&#13;
+    return-void&#13;
+.end method&#13;
+</a>
+</h3>
+<h3 class="topic">
+<a name="6bmgfajmi7th31p5vv3304hl1s">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-2_files/42p2h689jfnj1dq3rirj5287st.png"></p>
+<h3 class="topic">
+<a name="0ptojt3p8788njstkgmhadv97k">&nbsp;&nbsp;同一个函数写成静态与非静态的区别</a>
+</h3>
+<h3 class="topic">
+<a name="3bk7lb0jgu4uq6q1muoublvfbk">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-2_files/6djuduks1hi0nm684p9g7d3m5p.png"></p>
+<h3 class="topic">
+<a name="57eu1ao2m0gu63n5sfuicpjtcl">&nbsp;&nbsp;如果app中有proguard-project.txt文件，则可能将类中的各种类名、方法名、变量名等修改为无意义字符串，从而防止被逆向</a>
+</h3>
+<h3 class="topic">
+<a name="73alkl8vgsh5n2bd730ndqqbup">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-2_files/2qc72dipsj9eknmpsposs7s0hu.png"></p>
+<h3 class="topic">
+<a name="3q3e9vjuvollgh6nqiv3oiomk4">&nbsp;&nbsp;&nbsp;&nbsp;网上针对proguard-project混淆有反混淆工具，用于恢复被proguard-project修改的各种类名、方法名、变量名</a>
+</h3>
+<h3 class="topic">
+<a name="3v7eajh06mp2k2lkon46l1na6t">&nbsp;&nbsp;&nbsp;&nbsp;proguard-project不能修改JNI中的内容，否则会造成java函数与antive函数无法耦合</a>
+</h3>
+<h3 class="topic">
+<a name="4lm3t5qov5abpkkvf22u29mem0">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-2_files/0jcbmeakklse4hmn67d8p5oal8.png"></p>
+<h3 class="topic">
+<a name="7p1mkl66e35v08m9muu9jb0egg">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-2_files/071ornjqr4t4rnv1hc6mu0vfs0.png"></p>
+<h3 class="topic">
+<a name="4b2cpf7kbr646suv5d45kt72et">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-2_files/2io0c4mql5bfhnocec9daufq72.png"></p>
+<h3 class="topic">
+<a name="2260jhtevclmefpn4qoqc1eobh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;jeb中经过proguaed保护的apk，其文件名称均被修改</a>
+</h3>
+<h3 class="topic">
+<a name="1g257se4fol53em2683k47qchv">&nbsp;&nbsp;以上smali与java代码的对比来源于demo：TestType</a>
+</h3>
+<h3 class="topic">
+<a name="28c4h35kts9vaiuce78ih917pd">&nbsp;dalvik虚拟机，java代码生成smali，然后放在dalvik虚拟机中解释执行，效率低&#13;
+art虚拟机 将java代码直接生成arm汇编，在cpu直接执行效率高</a>
+</h3>
+<h3 class="topic">
+<a name="1512rft0kgq6f1lhipfif3tunf">&nbsp;使用smali汇编编程</a>
+</h3>
+<h3 class="topic">
+<a name="14u7m86gbtjqfj0duvrn7ic0ar">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-2_files/3aelfg68ndpvaeghhmuhkdh91o.png"></p>
+<h3 class="topic">
+<a name="20006ti75iasecsdfe4eoavoor">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-2_files/4oit6rtaht2sb4ju9mv3r7vn0t.png"></p>
+</body>
+</html>

@@ -1,0 +1,139 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>物联网安全-硬件识别</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="2onf1rlnrganm8he2agbcekk9f">物联网安全-硬件识别</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E7%A1%AC%E4%BB%B6%E8%AF%86%E5%88%AB_files/images/%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E7%A1%AC%E4%BB%B6%E8%AF%86%E5%88%AB.jpg"></div>
+<h2 class="topic">
+<a name="3r2hc8n5t03hrnn9q5sml2g8tj">注意</a>
+</h2>
+<h3 class="topic">
+<a name="6tgjccbupvj0ecl309tlk2tmoh">&nbsp;获取固件、内存数据、芯片版本型号，如果不认识硬件，拆解过程中可能会对硬件产生损害，提取数据时若没有按照特定要求，也可能会对芯片造成损害，从而导致数据提取失败</a>
+</h3>
+<h2 class="topic">
+<a name="545ds7jg4o8bbcgr9l7cekf65a">路由器主板</a>
+</h2>
+<h3 class="topic">
+<a name="2prauc8lfckikcivb2mvv1tbtv">&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E7%A1%AC%E4%BB%B6%E8%AF%86%E5%88%AB_files/1cetfrgvuvqe6bn5bvqmdse0it.png"></p>
+<h2 class="topic">
+<a name="1etepeh4o9emu888k5r0nmdrlf">光猫主板</a>
+</h2>
+<h3 class="topic">
+<a name="6rgemrs9snt7i6vp82edupje89">&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E7%A1%AC%E4%BB%B6%E8%AF%86%E5%88%AB_files/7p1li1cujjg74m1601nbfvi5ar.png"></p>
+<h3 class="topic">
+<a name="2tfiadlf599d03j9lbvfjjfk5h">&nbsp;&nbsp;光纤接口中包含网络变压器&#13;
+flash芯片与路由器主板上的不一样，不是八脚的&#13;
+调试接口以裸露的引脚的形式存在，可以使用杜邦线连接&#13;
+根据观察该pcb板正反面均存在走线，故其是一个双面板，正反面均可以布置芯片等电子元器件</a>
+</h3>
+<h2 class="topic">
+<a name="4rprap2vrefaluntd17191dmj9">PCB电路板</a>
+</h2>
+<h3 class="topic">
+<a name="1trud5ilo3beg2bjke2hifroks">&nbsp;单面板：只有一面进行了布线&#13;
+双面板：两面都能进行走线，功能大大提高&#13;
+多层板：层之间使用绝缘材料进行隔离，从而优化每层的布线，提高PCB板的功能</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E7%A1%AC%E4%BB%B6%E8%AF%86%E5%88%AB_files/1m8vn1ltbu7t3dsv5n742l7fem.png"></p>
+<h3 class="topic">
+<a name="5hbt40nj1it88jj3ns46k7u6qj">&nbsp;&nbsp;注意拆解时不要破坏pcb板上的线，否则会使整个板子报废</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E7%A1%AC%E4%BB%B6%E8%AF%86%E5%88%AB_files/3vjtui8dk7p0k1cdjo8ptkuf4u.png"></p>
+<h2 class="topic">
+<a name="6dstpi6llsatp5s5kkmpdh624r">flash</a>
+</h2>
+<h3 class="topic">
+<a name="047e8tnn30nhlu9c2roo97r673">&nbsp;会从flash中提取出需要的数据、系统、固件&#13;
+实战时，常需要在PCB板上诸多元器件中判断出哪一个是flash芯片，一般作分析最关注flash芯片</a>
+</h3>
+<h3 class="topic">
+<a name="371ce289tmvfmloh82m9rkusss">&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E7%A1%AC%E4%BB%B6%E8%AF%86%E5%88%AB_files/1sdpk2vr3nb67qded935796bk6.png"></p>
+<h3 class="topic">
+<a name="60t3upbtbbqitivur3slpv679c">&nbsp;&nbsp;NOR Flash</a>
+</h3>
+<h3 class="topic">
+<a name="26l1eo7otm0bc8og9p5bp48jum">&nbsp;&nbsp;&nbsp;CFI Flash是一种并行的接口，也称为公共闪存接口，是一个并行传输的flash，其操作比较简单</a>
+</h3>
+<h3 class="topic">
+<a name="7fkdvb10mk7qakguvs5hjilfdq">&nbsp;&nbsp;&nbsp;SPI Flash是一种串行的外围设备接口，是一种比较常见的使用同步串行的接口&#13;
+SPI FLash不同的引脚有不同的功能，例如图中的clk引脚是时钟相关的，GND引脚与GND连接，以及读写操作的引脚/WP&#13;
+如果要从flash中读取数据时，需要把指定的引脚进行连接，从而连接到对应的编程器上，从而将flash成功读取，引脚连接错误，数据读取会失败</a>
+</h3>
+<h3 class="topic">
+<a name="72kk45qsbi0pvcfetmi647u2im">&nbsp;&nbsp;NAND Flash</a>
+</h3>
+<h3 class="topic">
+<a name="0m8hkct9hcvfhtb9sc84esiban">&nbsp;&nbsp;&nbsp;SLC 具有更高的可用度和耐用度，同时也是NAND Flash最初的设计体系结构，其存储单元仅存储两类数据：0和1（即高低电平）</a>
+</h3>
+<h3 class="topic">
+<a name="26jiaouijnk5g0lpln69mu8um2">&nbsp;&nbsp;&nbsp;MLC即双层单元闪存，每个单元存储两位的数据，从而存储数量上升，但是耐用度和可靠性会下降</a>
+</h3>
+<h3 class="topic">
+<a name="3gf7hnipuivd0kg2ud7ll30p9q">&nbsp;&nbsp;&nbsp;TLC即多层单元存储或三层单元存储，是MLC的一个扩展，每个单元存储三位，从而极大提高了NAND Flash的容量，但是降低了性能和耐用度</a>
+</h3>
+<h3 class="topic">
+<a name="0r9lpit07ign4b7bkmqme0hln0">&nbsp;芯片识别，判断哪些是NOR Flash 哪些是NAND Flash，可以去以上网站找芯片手册，甚至可以找到每个芯片引脚功能</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E7%A1%AC%E4%BB%B6%E8%AF%86%E5%88%AB_files/1mp9cn4cjc4k02273cb2lhdgj1.png"></p>
+<h3 class="topic">
+<a name="1m2ibcbvg1onj8i04qv7oprk5m">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E7%A1%AC%E4%BB%B6%E8%AF%86%E5%88%AB_files/3r3equtpim47b7sgtq2lnvm0te.png"></p>
+<h2 class="topic">
+<a name="784j853jres5h8cqef8euqoqfs">内存</a>
+</h2>
+<h3 class="topic">
+<a name="7l172kvo3sfmlos7petclh37qc">&nbsp;内存芯片一般体积较小，如果调试过程中能够进入内存，查看内存数据，结合flash中提取的固件代码，可以实现很好的调试效果（实施查看内存数据）</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E7%A1%AC%E4%BB%B6%E8%AF%86%E5%88%AB_files/5or88qemqnptjsrn8q8565e7km.png"></p>
+<h2 class="topic">
+<a name="4m08vvem6iplpestkfgbdbv8tm">通信接口</a>
+</h2>
+<h3 class="topic">
+<a name="0evod3hlm6fr9lf94nngnfhsli">&nbsp;通过通讯接口进行调试，大多数板子会预留通讯接口，从而允许我们查看内存数据，甚至查看flash数据</a>
+</h3>
+<h3 class="topic">
+<a name="5p2vuvllf4vv5nq1ep162l1lku">&nbsp;路由器使用UART接口居多，COM口主要在windows中使用，外设连接时常用com进行串行的传输</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E7%A1%AC%E4%BB%B6%E8%AF%86%E5%88%AB_files/4fh9vpd65lbppkaag30bon4uri.png"></p>
+<h3 class="topic">
+<a name="7hajc3muv3gn0esnpem8su7199">&nbsp;&nbsp;UART：通用的异步串行数据总线，其总线是双向通讯传输，可以实现全双工数据的接收与传输&#13;
+该接口最重要的引脚是 VCC GND（接地） RX（读） TX（写）,重点关注后三个引脚，该三个引脚可以完成接口调试&#13;
+JTAG：是常用的在线仿真、编程、测试的接口，标准JTAG接口是4线的，可以称为4口的，除此之外还有10针、14针、20针&#13;
+JTAG中的重点接口：CLK（时钟接口） TDI TDO(读写接口) TMS，读写接口是重点，只有通过这种接口才能调试、读写&#13;
+SPI: 与SPI Flash含义一样，是一种同步的串行的接口，其使用标准的4线同步&#13;
+CAN：可以称为总线或接口，一般使用在汽车上&#13;
+I2C：同步线性串行数据传输总线，一般有两根总线，其中一根能进行双向数据传输，另一根是时钟的&#13;
+RS-232：现代主流通讯接口，传输速度较低，总共有九针，通过不同引脚的不同功能达到数据传输效果&#13;
+COM:算是RS232的一个子集，串网调试时使用UART进行调试时，在windows上可以看到是一个COM口的类型&#13;
+ISP:在线的可编程的，内部存储器可能使用到了ISP接口，如果要往单片机中写入数据时，数据会从UART-》ISP最终保存到了单片机内部存储器中</a>
+</h3>
+<h3 class="topic">
+<a name="7029ctra6gprllsv50ud7o979n">&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E7%A1%AC%E4%BB%B6%E8%AF%86%E5%88%AB_files/0qft7ierearvfaaenti9qjkpm1.png"></p>
+</body>
+</html>

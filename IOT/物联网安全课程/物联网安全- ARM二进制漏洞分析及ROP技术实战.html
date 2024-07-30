@@ -1,0 +1,183 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>物联网安全- ARM二进制漏洞分析及ROP技术实战</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="5elrtpncb2kdp758m8rsokg1i0">物联网安全- ARM二进制漏洞分析及ROP技术实战</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8- ARM%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8AROP%E6%8A%80%E6%9C%AF%E5%AE%9E%E6%88%98_files/images/%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8- ARM%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8AROP%E6%8A%80%E6%9C%AF%E5%AE%9E%E6%88%98.jpg"></div>
+<h2 class="topic">
+<a name="15hdm7735nfdq295m6d07gufsf">其他获得gadget的工具</a>
+</h2>
+<h3 class="topic">
+<a name="20kere45cp1tc7hvhfunfjhc0a">&nbsp;ROPgadget</a>
+</h3>
+<h2 class="topic">
+<a name="1d0tu79mutpj51mj70r3mj7cmm">目标文件</a>
+</h2>
+<h3 class="topic">
+<a name="6q7d10190dc0a25t9vkrn2unn3">&nbsp;arm架构的elf文件</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8- ARM%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8AROP%E6%8A%80%E6%9C%AF%E5%AE%9E%E6%88%98_files/0gdmrighc4e0i6hcufd20u9uir.png"></p>
+<h3 class="topic">
+<a name="7i6tn1otaa6gjgrqrdvfkqq15s">&nbsp;&nbsp;程序是动态链接的，所以运行时需要指定动态连接库路径，通过运行程序，确定程序仅有一个输入点</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8- ARM%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8AROP%E6%8A%80%E6%9C%AF%E5%AE%9E%E6%88%98_files/60fta2nga7qvn4pbhdg7eu4h0h.png"></p>
+<h3 class="topic">
+<a name="4cj2e227l38aacvrie452hm7if">&nbsp;&nbsp;&nbsp;输入较长的字符串，报段错误，说明存在溢出</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8- ARM%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8AROP%E6%8A%80%E6%9C%AF%E5%AE%9E%E6%88%98_files/6ftda9k9an4ip8v6tt00uqibqk.png"></p>
+<h2 class="topic">
+<a name="5dh3o8hn852qevm7tavt3oum3o">使用gdb进行动态调试</a>
+</h2>
+<h3 class="topic">
+<a name="5mkkqs73b8dq7o3dnsout3vd1s">&nbsp;尝试在1000端口上运行程序，但是由于之前调试时1000端口被占用，所以改为在9999端口上运行程序</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8- ARM%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8AROP%E6%8A%80%E6%9C%AF%E5%AE%9E%E6%88%98_files/5q2nr3818saio8nv11lprq9eai.png"></p>
+<h3 class="topic">
+<a name="2aetrvf1n0holmia3qhpfm62a6">&nbsp;&nbsp;使用gdb-multiarch调试目标程序</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8- ARM%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8AROP%E6%8A%80%E6%9C%AF%E5%AE%9E%E6%88%98_files/2j4535hndejk38oec4ibo18cnp.png"></p>
+<h3 class="topic">
+<a name="6ouqrufv6ka4nf52ctjsm5eo4h">&nbsp;&nbsp;&nbsp;程序开始被调试，输入info functions查看函数信息，看到程序中存在system函数</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8- ARM%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8AROP%E6%8A%80%E6%9C%AF%E5%AE%9E%E6%88%98_files/4mv47sik66nh3hfdv7kts5rb2q.png"></p>
+<h3 class="topic">
+<a name="1h1anoa0704nbs8guven9ubuke">&nbsp;显示main函数的汇编代码</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8- ARM%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8AROP%E6%8A%80%E6%9C%AF%E5%AE%9E%E6%88%98_files/5ehbq4lon3ik42a7t3f87nhd0l.png"></p>
+<h3 class="topic">
+<a name="6m9ac934n50i8e8u1uhpe59ove">&nbsp;&nbsp;显示winner函数的汇编代码，该函数中调用了system函数，可以将该函数调用作为pwn的目标</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8- ARM%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8AROP%E6%8A%80%E6%9C%AF%E5%AE%9E%E6%88%98_files/0im0nbg432ip16fkp8hf4usopr.png"></p>
+<h3 class="topic">
+<a name="69i69bk42eo70n4h3k5g7208k3">&nbsp;&nbsp;&nbsp;使用ROPgadget查看目标程序中与出栈相关的gadget &#13;
+其中pop {r0,pc}可以同时控制r0和pc寄存器，值得关注</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8- ARM%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8AROP%E6%8A%80%E6%9C%AF%E5%AE%9E%E6%88%98_files/5jvq6co6h3guc031dmso5qvnck.png"></p>
+<h3 class="topic">
+<a name="475nlrqp041u4ltem6kv598iac">&nbsp;可以看到之前ROPgadget找到的指令位于函数gadget中，通过该指令可以用栈上的数据同时修改r0和pc寄存器</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8- ARM%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8AROP%E6%8A%80%E6%9C%AF%E5%AE%9E%E6%88%98_files/11p3kp3psu8k1mm1seijr621op.png"></p>
+<h3 class="topic">
+<a name="170k2pbj8pb3fn893q96tffo19">&nbsp;&nbsp;将规则的长字符串输入</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8- ARM%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8AROP%E6%8A%80%E6%9C%AF%E5%AE%9E%E6%88%98_files/74f8jm0ihkut7frqeju4jn5pbu.png"></p>
+<h3 class="topic">
+<a name="2eduvn6u20o02bf3aq0p76160s">&nbsp;&nbsp;&nbsp;此时gdb显示报错信息，可以确定溢出点为ffff</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8- ARM%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8AROP%E6%8A%80%E6%9C%AF%E5%AE%9E%E6%88%98_files/7ben3msnd1nqj9bpuhti8nn73d.png"></p>
+<h3 class="topic">
+<a name="114gkipt5jjl633cq2jqur4cvq">&nbsp;此时栈帧结构为</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8- ARM%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8AROP%E6%8A%80%E6%9C%AF%E5%AE%9E%E6%88%98_files/3sqkq41gkin12k48dr422to06l.png"></p>
+<h3 class="topic">
+<a name="7hv4hq7vr1n2r9ug03so1nu78p">&nbsp;&nbsp;编写脚本</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8- ARM%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8AROP%E6%8A%80%E6%9C%AF%E5%AE%9E%E6%88%98_files/7c67a0u81dc9d702ltcesg8haf.png"></p>
+<h3 class="topic">
+<a name="6gv9g3ccue0r1iu2r7hkbfhqjt">&nbsp;&nbsp;&nbsp;使用管道符将脚本的输出作为可执行程序的输入</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8- ARM%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8AROP%E6%8A%80%E6%9C%AF%E5%AE%9E%E6%88%98_files/4man5mb59nqjaaijph6slin95l.png"></p>
+<h3 class="topic">
+<a name="7ereiuc9f69pd02ipsd1m0d1ki">&nbsp;对程序进行调试，发现其会跳转去执行gadget</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8- ARM%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8AROP%E6%8A%80%E6%9C%AF%E5%AE%9E%E6%88%98_files/4eie9nluhset1r742e977srrm7.png"></p>
+<h3 class="topic">
+<a name="0j2rscn2m97c4cntjb4og3n7ev">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8- ARM%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8AROP%E6%8A%80%E6%9C%AF%E5%AE%9E%E6%88%98_files/23qeij3hj7u9q74g2evqrv25lb.png"></p>
+<h3 class="topic">
+<a name="419vu97t26crrivpm03i8ifinp">&nbsp;&nbsp;&nbsp;通过find指令可以找到当前程序中已经存在的"bin/sh"字符串</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8- ARM%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8AROP%E6%8A%80%E6%9C%AF%E5%AE%9E%E6%88%98_files/0tnm85b8c903m6htqth9g2q6o6.png"></p>
+<h3 class="topic">
+<a name="5f45ish5d1qnq4i0gooeblfa4s">&nbsp;利用bin/sh字符串的地址和system函数的地址，我们可以构造这种栈帧，通过pop {r0,pc},从而将参数和函数传给r0和pc，从而执行system("bin/sh")获得shell</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8- ARM%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8AROP%E6%8A%80%E6%9C%AF%E5%AE%9E%E6%88%98_files/0avtmmcl06bbckjhr6rare0dad.png"></p>
+<h3 class="topic">
+<a name="0fj11ros4vi9728mq3utar1hk2">&nbsp;&nbsp;根据栈帧结构设置exp</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8- ARM%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8AROP%E6%8A%80%E6%9C%AF%E5%AE%9E%E6%88%98_files/1afqqg954p51mmppn3blemqj2l.png"></p>
+<h3 class="topic">
+<a name="30nnkufsv4c9l3ehdcfg9952eh">&nbsp;&nbsp;&nbsp;运行该脚本，发现程序的确会执行system("/bin/sh")</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8- ARM%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8AROP%E6%8A%80%E6%9C%AF%E5%AE%9E%E6%88%98_files/3op3hvku0fr7madk5d0bnhve1k.png"></p>
+<h3 class="topic">
+<a name="7fspl4ddiaejadkpqcuujbhk32">&nbsp;成功执行system("/bin/sh")之后，程序会执行exit函数，故导致刚建立起来的shell结束</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8- ARM%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8AROP%E6%8A%80%E6%9C%AF%E5%AE%9E%E6%88%98_files/017lmteg2o1utd4b8ev8vlgnvl.png"></p>
+<h3 class="topic">
+<a name="0aiqgq27o94eacerfnbppa1daa">&nbsp;&nbsp;通过在脚本后面加上cat指令，使得system("/bin/sh");执行完毕后shell不被闭合</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8- ARM%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8AROP%E6%8A%80%E6%9C%AF%E5%AE%9E%E6%88%98_files/374pfk9rqrklvjn7b1kesqi0nc.png"></p>
+<h3 class="topic">
+<a name="28l2a289uvfpj64ctavus3p929">&nbsp;有漏洞的可执行程序的源码</a>
+</h3>
+<h3 class="topic">
+<a name="69j15hsv6lsp83gghdpvl2l3mq">&nbsp;&nbsp;#include &lt;stdio.h&gt;&#13;
+#include &lt;string.h&gt;&#13;
+#include &lt;stdlib.h&gt;&#13;
+#include &lt;unistd.h&gt;&#13;
+ &#13;
+char str1[] = "uname -a";&#13;
+char str2[] = "touch pwned.txt";&#13;
+char str3[] = "ls -sail";&#13;
+ &#13;
+void winner(){&#13;
+ &#13;
+    printf("Nothing interesting here...n");&#13;
+    system("# this does nothing...");&#13;
+    exit(0);&#13;
+}&#13;
+ &#13;
+void gadget(){&#13;
+ &#13;
+    __asm__("pop {r0,pc}n");&#13;
+}&#13;
+ &#13;
+int main(){&#13;
+ &#13;
+    char buff[16];&#13;
+ &#13;
+    printf("Welcome to ROPLevel2 created by Billy Ellis (@bellis1000)n");&#13;
+    printf("The objective of this level is to execute a shell command of your choice by using a ROP gadget followed by jumping to system()n");&#13;
+    printf("Good luck: ");&#13;
+ &#13;
+    scanf("%s",buff);&#13;
+ &#13;
+    printf("Nice try ;)n");&#13;
+ &#13;
+    return 0;&#13;
+}</a>
+</h3>
+</body>
+</html>

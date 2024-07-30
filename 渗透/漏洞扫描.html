@@ -1,0 +1,461 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>漏洞扫描</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="3obkapi45h6knt7nomiserm329">漏洞扫描</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="%E6%BC%8F%E6%B4%9E%E6%89%AB%E6%8F%8F_files/images/%E6%BC%8F%E6%B4%9E%E6%89%AB%E6%8F%8F.jpg"></div>
+<h2 class="topic">
+<a name="1t8amt7ealihjgfgl607vfickp">概述</a>
+</h2>
+<h3 class="topic">
+<a name="08reujpa0hoi15c0muok88s4ir">&nbsp;一般漏洞扫描程序的工作流程</a>
+</h3>
+<h3 class="topic">
+<a name="7svgc6hrpadr82r299d6703u9p">&nbsp;&nbsp;1.检测目标是否启动并运行。  &#13;
+2.根据配置进行全部或部分端口扫描。  &#13;
+3使用常见的指纹识别技术来识别操作系统。&#13;
+4.尝试使用常用技术（例如，横幅抓取，服务行为识别或文件发现）来标识正在运行的服务。（横幅抓取即获得与应用程序交互期间应用程序标志性的字符串，该字符串常用于识别具体应用程序以及版本）&#13;
+5.执行签名匹配过程以发现漏洞（即根据漏洞签名对漏洞进行匹配）</a>
+</h3>
+<h3 class="topic">
+<a name="2rn0a0jarnki3olc37kr85d2n7">&nbsp;&nbsp;&nbsp;关于横幅抓取：即可获取与应用程序初始交互期间生成的文本字符串。 并进行分析。 一些应用程序生成非常特定的标语，例如OpenSSH，它可能返回&ldquo; SSH-2.0-OpenSSH_7.9p1 Debian-10&rdquo;，从而使我们能够精确地确定应用程序的版本，而其他应用程序，例如将Apache Tomcat版本4.1.x更改为8.0。  x，返回&ldquo; Apache-Coyote / 1.1&rdquo;的通用HTTP标头。 自然更具体的标题和横幅使扫描程序更容易确定应用程序版本，并且通过扩展，可以更准确地检测潜在的漏洞。</a>
+</h3>
+<h3 class="topic">
+<a name="0np44p46b06me1333n3onvqvq5">&nbsp;&nbsp;&nbsp;&nbsp;漏洞签名：https://ieeexplore.ieee.org/document/1623997</a>
+</h3>
+<h3 class="topic">
+<a name="69f4085gcj795uji2b4oqnue6h">&nbsp;&nbsp;某些漏洞扫描程序配置为在检测到漏洞时加以利用。 这可以减少误报的可能性，但也可以增加服务崩溃的风险。 务必仔细检查扫描仪选项。</a>
+</h3>
+<h3 class="topic">
+<a name="4enag5uv7fm56adcera30c8juh">&nbsp;&nbsp;&nbsp;可能存在误报或误签，即可能因为签名匹配所以将指定的安全软件识别为漏洞（由于向后移植的存在，所以可能出现漏洞修复，但是扫描结果仍标记为漏洞的情况），或忽略了漏洞</a>
+</h3>
+<h3 class="topic">
+<a name="63qmbupjk5hicm5hkb09t45c0c">&nbsp;&nbsp;&nbsp;&nbsp;通过在每次参与之前更新签名数据库，我们确保扫描程序有最大的机会发现最新的漏洞。</a>
+</h3>
+<h3 class="topic">
+<a name="7m4gibdv1ss3n332slsk1u2fd4">&nbsp;手动扫描与自动扫描</a>
+</h3>
+<h3 class="topic">
+<a name="5avumdtjcfa1p3t19dmsal4tno">&nbsp;&nbsp;手动扫描可以发现更隐蔽的漏洞，并且在红队行动中因为要求隐蔽性与精确度，所以自动扫描可能不是最佳方法，手动扫描效率较低</a>
+</h3>
+<h3 class="topic">
+<a name="5ssrklop4gd4ra7g1u2rne3vn1">&nbsp;&nbsp;自动扫描有助于建立整体的安全基线，但是扫描配置可能比较复杂，并且默认的到扫描器配置可能导致目标被损害</a>
+</h3>
+<h3 class="topic">
+<a name="1bkc986dcdb0pqc2sbtheu8t1n">&nbsp;外网扫描与内网扫描</a>
+</h3>
+<h3 class="topic">
+<a name="0nthh5v38qh8iirtq5c2gom28i">&nbsp;&nbsp;由于 我们相对于目标的网络位置可能会影响我们的速度阈值，访问权限，流量干扰的可能性以及目标的可见性，所以对于内网扫描和外网扫描我们需要使用不同的扫描策略</a>
+</h3>
+<h3 class="topic">
+<a name="4teq2he3sgaoeuteq32kodmqeu">&nbsp;&nbsp;&nbsp;我们与目标网络的连接速度不仅决定了扫描器可用的原始带宽，还决定了其他因素，例如到各个主机的跳数。 这意味着我们可以更快地对本地连接的主机进行更具侵入性的全面扫描。 但是，我们必须时刻注意流量，意识到较旧的设备可能会受到大量扫描的不利影响。 为了获得最佳结果，请考虑在先前模块中的端口扫描讨论中建立的准则。</a>
+</h3>
+<h3 class="topic">
+<a name="70for55psn5imlnnveuqh1cerq">&nbsp;&nbsp;&nbsp;&nbsp;为了获得更好的扫描结果，请首先考虑限制扫描速度和超时值。 一旦对结果的质量感到满意，就可以开始逐步提高速度，直到达到良好的平衡。</a>
+</h3>
+<h3 class="topic">
+<a name="1gquljdbpiaft91v49qn2eal99">&nbsp;&nbsp;我们在网络上的位置也会影响我们的访问权限和流量干扰的可能性，防火墙或入侵防御系统（IPS）可能会阻止我们访问主机或端口并生成安全警报</a>
+</h3>
+<h3 class="topic">
+<a name="1qgntn9qnor2kkkk2t4l8j8oee">&nbsp;&nbsp;&nbsp;我们的网络定位会影响目标可见性。 例如，典型的漏洞扫描程序将尝试通过ping扫描或ARP扫描发现目标。但是，与Internet连接的目标将无法接收来自外部子网的ARP流量，并且可能阻止ICMP（ping）请求，225这意味着扫描程序如果已将目标配置为仅依赖于这些发现选项，则将完全错过目标。</a>
+</h3>
+<h3 class="topic">
+<a name="1vlu422ks8se8gaf8hvmh6h25u">&nbsp;认证扫描与未认证扫描</a>
+</h3>
+<h3 class="topic">
+<a name="1jjmogljk9pddn3amba514fabc">&nbsp;&nbsp;可以将大多数扫描仪配置为运行经过身份验证的扫描，其中，扫描仪使用一组有效的凭据登录到目标。 在大多数情况下，经过身份验证的扫描使用特权用户帐户，以便对目标系统具有最佳可见性。</a>
+</h3>
+<h3 class="topic">
+<a name="7aogk9os5oet9dq7540v5nns10">&nbsp;&nbsp;&nbsp;   要针对Linux目标运行经过身份验证的扫描，我们只需在Linux目标上启用SSH服务，然后为扫描程序配置有效的用户凭据。 大多数扫描程序将使用此访问权限来查看软件包版本并验证配置，以发现潜在的漏洞。</a>
+</h3>
+<h3 class="topic">
+<a name="2ej5tbtnuj7q838orlmutqsfqg">&nbsp;&nbsp;Windows身份验证通常需要Windows Management Instrumentation（WMI）以及具有远程管理权限的域或本地帐户的凭据。 请注意，即使配置了WMI，其他因素也可能会阻止身份验证，包括UAC和防火墙设置。 但是，一旦正确配置了访问权限，大多数扫描程序就会分析系统配置，注册表设置以及应用程序和系统补丁程序级别。 他们还检查Program Files目录中的文件以及Windows文件夹中的所有支持的可执行文件和DLL，所有这些都试图检测可能存在漏洞的软件。&#13;
+   经过身份验证的扫描会产生大量其他信息，并会以更长的扫描时间为代价产生更准确的结果。 尽管可以在渗透测试期间使用经过身份验证的扫描（例如，使用发现的凭据），但在补丁程序管理过程中更常用。</a>
+</h3>
+<h2 class="topic">
+<a name="5kj8e9vkfphl93jshhi26umc2c">Nessus的漏洞扫描</a>
+</h2>
+<h3 class="topic">
+<a name="6s2fqmha5cc0a9ah8o9ntd7sj6">&nbsp;安装nessus</a>
+</h3>
+<h3 class="topic">
+<a name="61o37acifrbg6itq3schudvqui">&nbsp;&nbsp;更新kali软件包到最新版本</a>
+</h3>
+<h3 class="topic">
+<a name="18v64babfin1elk2nbfep6ol4t">&nbsp;&nbsp;&nbsp;sudo apt update &amp;&amp; sudo apt upgrade</a>
+</h3>
+<h3 class="topic">
+<a name="3ujhhicnrg5l15k7aabbjting4">&nbsp;&nbsp;官网下载nessus的deb文件，并检查文件校验和</a>
+</h3>
+<h3 class="topic">
+<a name="0q3mae3uuhk6n2bd1p6r7jeik5">&nbsp;&nbsp;&nbsp;https://www.tenable.com/downloads/nessus.</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%89%AB%E6%8F%8F_files/58e548abi8lig5phe31a7dusjs.png"></p>
+<h3 class="topic">
+<a name="05p3fomscporn7l0e9mukb8b6e">&nbsp;&nbsp;&nbsp;&nbsp;使用工具检查sha校验和</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%89%AB%E6%8F%8F_files/4oe3v3qgpdinc1jm2banvdm24g.png"></p>
+<h3 class="topic">
+<a name="1soiunorn1rmhr8e4dm4s0dlhc">&nbsp;&nbsp;使用apt install进行安装nessus</a>
+</h3>
+<h3 class="topic">
+<a name="2m84m0vhfhmjj6mlg7p46tmut5">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%89%AB%E6%8F%8F_files/4ch8qbgk9ch91bgll8bpf847vf.png"></p>
+<h3 class="topic">
+<a name="3s2p4a86tavqprb25thibcqhev">&nbsp;&nbsp;启动nessus服务</a>
+</h3>
+<h3 class="topic">
+<a name="4il9rjuevtb8idq3v1dvu82rej">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%89%AB%E6%8F%8F_files/5tk1a6qplkdlnnqgnc173d8blo.png"></p>
+<h3 class="topic">
+<a name="6i8hu7ll4ngjt67sj7hbbu3l5v">&nbsp;&nbsp;使用浏览器访问https：// localhost：8834</a>
+</h3>
+<h3 class="topic">
+<a name="0tmtlkd9gkd8nqbk14op3jifqg">&nbsp;&nbsp;&nbsp;一个证书错误，指示未知的证书颁发者，但这是由于使用了自签名证书而引起的。</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%89%AB%E6%8F%8F_files/5mm45g1hj73s1jglqncp0f0lsg.png"></p>
+<h3 class="topic">
+<a name="5r02blkcoqe9gijf7leibo151j">&nbsp;&nbsp;&nbsp;&nbsp;允许该自签名证书并添加到白名单</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%89%AB%E6%8F%8F_files/415nts95mdphqfdeep47tf3619.png"></p>
+<h3 class="topic">
+<a name="09lil8c5h03sqh45v7p24ruor9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;接受安全证书</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%89%AB%E6%8F%8F_files/37hj869c1m7rom7j4cvb7qd4f7.png"></p>
+<h3 class="topic">
+<a name="1kr9amon6n22c96pt54io5k9ul">&nbsp;&nbsp;选择产品，部署Nessus Essentials</a>
+</h3>
+<h3 class="topic">
+<a name="7mlv9me8s8lettrku4h373enia">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%89%AB%E6%8F%8F_files/7nu3stmht95al8uhmr2d7iokku.png"></p>
+<h3 class="topic">
+<a name="2f3cnq3gebp3e5o3351kr7ep7o">&nbsp;&nbsp;&nbsp;&nbsp;请求Nessus Essentials的激活码</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%89%AB%E6%8F%8F_files/10anlvqo23mk2nsb8nlgd5f3jq.png"></p>
+<h3 class="topic">
+<a name="78j6arav7kghmb5m65eeo2dgmp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;输入收到的激活码</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%89%AB%E6%8F%8F_files/141487lf7rvpp1siugvthldcp8.png"></p>
+<h3 class="topic">
+<a name="66rmt43v69j6if81mj779ct6v7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;创建nessus本地账户</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%89%AB%E6%8F%8F_files/5nmq492qgekaea82mmna87j8j8.png"></p>
+<h3 class="topic">
+<a name="46rs74d0uvvvmq07huv0g9nu0r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;下载并编译所有插件</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%89%AB%E6%8F%8F_files/01pt52bnochjlfcr9ek2sr4vjf.png"></p>
+<h3 class="topic">
+<a name="49usk6mtih5varieli9rl9bfv3">&nbsp;识别目标</a>
+</h3>
+<h3 class="topic">
+<a name="0d3h7qm5atk1mm4gb86oercsfb">&nbsp;&nbsp;新建扫描</a>
+</h3>
+<h3 class="topic">
+<a name="0t53dljtcuqpnpb8vq4qpj9r5g">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%89%AB%E6%8F%8F_files/7no0gicp0auch57u6no1j78dqj.png"></p>
+<h3 class="topic">
+<a name="2lr4h07cekkhc5trqarhkqcmul">&nbsp;&nbsp;&nbsp;&nbsp;Nessus支持多种扫描类型，&#13;
+&bull;基本网络扫描：具有各种检查的常规扫描，适用于针对各种目标类型。&#13;
+&bull;认证的补丁审核：枚举丢失的补丁的认证扫描。  &#13;
+&bull;Web应用程序测试：专门的扫描，用于发现Web应用程序中已发布的漏洞。&#13;
+&bull;Spectre和Meltdown：对Spectre和Meltdown漏洞的目标扫描。即熔断和幽灵漏洞共</a>
+</h3>
+<h3 class="topic">
+<a name="4fs3ke30as75tsih1bn9u8nf3n">&nbsp;&nbsp;使用基本网络扫描</a>
+</h3>
+<h3 class="topic">
+<a name="5afg10pj9nca91ot1i684jmb5c">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%89%AB%E6%8F%8F_files/0pl1k531b98l8q8m2n5n55k86o.png"></p>
+<h3 class="topic">
+<a name="0pnctjd06m08mk8vk8trbgf45m">&nbsp;&nbsp;设置扫描名称和目标</a>
+</h3>
+<h3 class="topic">
+<a name="17gqeoatjji2kfi26b819hrk0e">&nbsp;&nbsp;&nbsp;两个必需的参数：扫描名称和目标列表。  Nessus支持将目标添加为IP地址，IP范围或逗号分隔的FQDN或IP列表。</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%89%AB%E6%8F%8F_files/4nsi9f8nnpp5m3ch9o162ul22d.png"></p>
+<h3 class="topic">
+<a name="25sepec1jiu8eebivqqmkltp30">&nbsp;配置扫描定义</a>
+</h3>
+<h3 class="topic">
+<a name="7spnsck6eld77qr99fotmit416">&nbsp;&nbsp;任何一种扫描方式都已预先配置了默认设置。 但是，这些默认值可能与我们所寻找的不完全相同，我们必须考虑到我们的环境，时间限制以及将要扫描的目标。</a>
+</h3>
+<h3 class="topic">
+<a name="4n32j4vj5fbs13dv97ja12it93">&nbsp;&nbsp;&nbsp;配置扫描设置要考虑的问题</a>
+</h3>
+<h3 class="topic">
+<a name="4rep7ch5p1abihce4macmh6kik">&nbsp;&nbsp;&nbsp;&nbsp;1.我们的目标位于内部网络上还是可以公开访问？  &#13;
+2.扫描程序是否应尝试强行使用用户凭据？  &#13;
+3.扫描程序应扫描所有TCP和UDP端口还是仅扫描通用端口？ &#13;
+4.扫描仪应运行哪些检查，应避免哪些检查？  &#13;
+5.扫描仪应运行经过身份验证的扫描还是未经身份验证的扫描？</a>
+</h3>
+<h3 class="topic">
+<a name="55b3eckb60leg6f9o995p1ocbn">&nbsp;&nbsp;将默认的仅扫描公共端口设置为扫描所有端口</a>
+</h3>
+<h3 class="topic">
+<a name="2g8rmica1msheqjf6o3bub0clu">&nbsp;&nbsp;&nbsp;选择发现</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%89%AB%E6%8F%8F_files/7073m6rephub0ca9v2acku6nat.png"></p>
+<h3 class="topic">
+<a name="4j0r5fhnb8kj5h78sij9dm4gds">&nbsp;&nbsp;&nbsp;&nbsp;选择自定义端口</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%89%AB%E6%8F%8F_files/4bsp3l81na823p3816su6e0toe.png"></p>
+<h3 class="topic">
+<a name="4rftquesu7e3c1n1a5b9h64pnl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;配置端口范围</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%89%AB%E6%8F%8F_files/4iqdjefosc3lr4sb3pp8m40ek7.png"></p>
+<h3 class="topic">
+<a name="6lfje8ol6tbfdn8573l0gvi3nl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将端口范围设置为0~65535</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%89%AB%E6%8F%8F_files/4ijqpqmadh58c67ut6ao55n693.png"></p>
+<h3 class="topic">
+<a name="2smfirmormanti7hme08np5vbn">&nbsp;&nbsp;在这种情况下，我们选择了将扫描所有TCP端口但不扫描UDP端口的扫描定义。 尽管这将提高扫描速度，但我们可能会错过在目标服务器上运行的关键服务。 进行连接时，在配置端口扫描选项时，我们必须权衡目标网络的稳定性，目标范围，参与时间以及许多其他因素。</a>
+</h3>
+<h3 class="topic">
+<a name="0sbrp53s4s0ho34emqs6ha44du">&nbsp;&nbsp;&nbsp;在配置扫描定义期间，我们没有配置任何凭据，这意味着此扫描将未经身份验证运行。 此外，我们接受了&ldquo;基本网络扫描&rdquo;下的默认设置，这意味着将不会启用对用户凭据的强行强制。 如果我们查看&ldquo;基本网络扫描&rdquo;下的其他选项，则可以确认该扫描将针对目标运行常规检查，而与其他模板（如Spectre和Meltdown）相反，后者包括特定的漏洞检查。 请记住，像这样配置的扫描将在网络流量级别上非常引人注目，因为它会扫描所有端口并搜索所有适用的漏洞。&#13;
+   现在，我们已经全面审查了所有配置选项并至少（从高层次上）了解了扫描程序将要做什么，我们可以继续运行第一次扫描。</a>
+</h3>
+<h3 class="topic">
+<a name="1j7l5n2q55ptosc964al0i20uk">&nbsp;未经身份验证的Nessus扫描</a>
+</h3>
+<h3 class="topic">
+<a name="5kea1e480dto779fsu87hk21gh">&nbsp;&nbsp;点击启动</a>
+</h3>
+<h3 class="topic">
+<a name="6c0jhhsr4q5uk1m3ico2qdtdlr">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%89%AB%E6%8F%8F_files/7qetvu97lhls9f19lg4i7n3ini.png"></p>
+<h3 class="topic">
+<a name="4bvmrsm5duf6cac86gc9nvbh49">&nbsp;&nbsp;&nbsp;&nbsp;扫描进行中</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%89%AB%E6%8F%8F_files/42nuoko1o8sai3fcgk8fqmd946.png"></p>
+<h3 class="topic">
+<a name="0ejbtrcjlfvsfi0gdjiivvojg0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;扫描完成</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%89%AB%E6%8F%8F_files/7sbf6ljnilvf8gb9c9vt50jp7h.png"></p>
+<h3 class="topic">
+<a name="5ac9inff552104etuoho6tie3o">&nbsp;&nbsp;查看扫描结果</a>
+</h3>
+<h3 class="topic">
+<a name="13im2if0d7tksj4l0hacjv0rk2">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%89%AB%E6%8F%8F_files/3lqbt9kse0sbigvkh0k9rm4d2q.png"></p>
+<h3 class="topic">
+<a name="6a5f6mu03himhki2r3lb6ca9bl">&nbsp;&nbsp;&nbsp;&nbsp;单击ip地址或主机名，查看扫描出来的漏洞信息</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%89%AB%E6%8F%8F_files/1kt0scleqh7sr70g4g7cnpgchf.png"></p>
+<h3 class="topic">
+<a name="76lbksmpprfad7mg03scfgi40s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;筛选漏洞扫描结果，可以通过严重性，可利用性，CVE等来筛选这些漏洞。 要显示最有可能导致目标破坏的漏洞，我们可以单击&ldquo;筛选器&rdquo;，然后将结果面板上的下拉列表更改为&ldquo;利用漏洞&rdquo;，接受默认值等于&ldquo;真&rdquo;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%89%AB%E6%8F%8F_files/70skv140dfle6qmo3ibfk1kg1l.png"></p>
+<h3 class="topic">
+<a name="5q8vdqjhni88ktge5h2fol302o">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;筛选结果</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%89%AB%E6%8F%8F_files/4okt22vsabmrbf2buthtnls73g.png"></p>
+<h3 class="topic">
+<a name="466993l4gtpj6n33g8nvlinc4b">&nbsp;&nbsp;&nbsp;单击表格右上方的齿轮图标，然后单击禁用组。 这将提供一种首选的输出格式，在单个页面上列出所有漏洞，并按严重性排序</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%89%AB%E6%8F%8F_files/2q7jbdv59i6vhre86bbqn5d88p.png"></p>
+<h3 class="topic">
+<a name="3pqquusp041e52n95ntdejend5">&nbsp;&nbsp;&nbsp;&nbsp;此输出格式非常适合我们的目的，因为它显示了一种可能危害目标的路线图，并且首先显示了最高风险的漏洞：</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%89%AB%E6%8F%8F_files/3516es3mn54v7q6csotfajakkb.png"></p>
+<h3 class="topic">
+<a name="448grvaj8m31o8vqs247cbkhsg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;某些条目可能表示误报，需要查看扫描数据并手动测试扫描结果</a>
+</h3>
+<h3 class="topic">
+<a name="58ld8451uhriqm846gj7htj419">&nbsp;使用Nessus进行身份验证的扫描</a>
+</h3>
+<h3 class="topic">
+<a name="7kfjsos470b5fn4pg8npvscr1r">&nbsp;&nbsp;执行经过身份验证的扫描来生成更详细的信息，并减少误报，这需要有效的目标凭据。在大多数情况下，未经生产网络意外中断的潜在风险较高，在没有明确许可的情况下，我们不会执行目标网络管理员的明确扫描，并且无法与目标网络管理员进行清晰的通信。</a>
+</h3>
+<h3 class="topic">
+<a name="0l01dh72v3vafs8jnv01enm91e">&nbsp;&nbsp;新建扫描</a>
+</h3>
+<h3 class="topic">
+<a name="1j7t6dqid03pjtja7fdd2rn5fa">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%89%AB%E6%8F%8F_files/4dal29rpbmnt41l6g39fbu83h1.png"></p>
+<h3 class="topic">
+<a name="75rmfbpugp5f5ejc5gcudc4ad6">&nbsp;&nbsp;&nbsp;&nbsp;使用&ldquo;凭据补丁审核&rdquo;扫描模板，该模板已预先配置为针对目标执行本地安全检查。 该模板不仅将扫描缺少的操作系统级别的补丁程序，还将扫描可能易受诸如特权提升之类的引导程序影响的过时应用程序。</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%89%AB%E6%8F%8F_files/4bii36bi3cnh61hgt8jnr7opue.png"></p>
+<h3 class="topic">
+<a name="7fr9gpkdc1mokppbfv3b8v2rjq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;设置扫描名称和ip地址</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%89%AB%E6%8F%8F_files/3mc15n45fio9a7vmu08du65pil.png"></p>
+<h3 class="topic">
+<a name="4kadku1cd6fclef3vu7opukj6b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;单击&ldquo;凭据&rdquo;选项卡和&ldquo; SSH&rdquo;类别。 在&ldquo;身份验证方法&rdquo;下拉列表中，选择密码，将用户名设置为&ldquo; root&rdquo;，然后为Debian客户端提供密码，在此示例中我们仅使用SSH配置，但是我们可以通过单击类别下拉菜单并选择全部，轻松查看其他Nessus支持的身份验证机制。</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%89%AB%E6%8F%8F_files/4p53q303cq14e0mbpk11fui17c.png"></p>
+<h3 class="topic">
+<a name="6143pq2np7unifki0lnsspl14a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;启动扫描</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%89%AB%E6%8F%8F_files/0nmj01q3r7g2nik3u8rq7mpitb.png"></p>
+<h3 class="topic">
+<a name="4bldf20406glcmhqdlonv99n9o">&nbsp;&nbsp;查看扫描结果</a>
+</h3>
+<h3 class="topic">
+<a name="7nl5ag3jd7gbrij1fi4dkgr0sm">&nbsp;&nbsp;&nbsp;扫描达到&ldquo;已完成&rdquo;状态后，我们可以单击扫描名称以打开主机列表，然后单击Debian客户端的IP。 这显示了已发现的可以在Debian目标上利用的漏洞的列表：</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%89%AB%E6%8F%8F_files/3d2e5boa3doa4qv8bq9q8ga4ch.png"></p>
+<h3 class="topic">
+<a name="5c1s55551o6tjp47godl6u726v">&nbsp;&nbsp;&nbsp;&nbsp;通过身份验证的扫描成功，因为该扫描程序现在可以看到易受攻击的漏洞。且该漏洞来源于不会远程公开的应用程序，例如Firefox。</a>
+</h3>
+<h3 class="topic">
+<a name="1f902tb6mip81sspthmnmqe3ue">&nbsp;使用单个Nessus插件进行扫描</a>
+</h3>
+<h3 class="topic">
+<a name="3i73divd7r0bam4i6lnnrjqp97">&nbsp;&nbsp;默认情况下，Nessus将在运行默认模板时启用许多后台插件。 尽管这在许多情况下当然很有用，但我们还可以微调选项，例如快速运行单个插件。 我们可以使用此功能来验证先前的发现，或快速发现环境中易受特定漏洞利用的所有目标。</a>
+</h3>
+<h3 class="topic">
+<a name="6e5ai9nvltrcak490phpppjf1p">&nbsp;&nbsp;&nbsp;   对于此示例，我们将运行NFS导出的共享信息披露插件。 我们可以使用此插件从RPC服务器（端口111）收集信息，并验证目标是否正在导出任何NFS共享。</a>
+</h3>
+<h3 class="topic">
+<a name="12rsrp4s5vl4bmbeslapsnfkbk">&nbsp;&nbsp;&nbsp;&nbsp;对应插件：https://www.tenable.com/plugins/nessus/11356</a>
+</h3>
+<h3 class="topic">
+<a name="59bta6qgu8r4q90mvq69uueqgj">&nbsp;&nbsp;选择Advanced Scan选项卡并配置name和target</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%89%AB%E6%8F%8F_files/4sobqc64oq9hmgf2g11vfg9mrs.png"></p>
+<h3 class="topic">
+<a name="3bq0o7dqnijfrjt737mr1gu88q">&nbsp;&nbsp;&nbsp;单击&ldquo;设置&rdquo;选项卡下的&ldquo;发现&rdquo;&gt;&ldquo;主机发现&rdquo;并取消选择&ldquo; Ping the remote host&rdquo;从而在扫描过程中关闭主机发现，从而节省时间并更安静地扫描</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%89%AB%E6%8F%8F_files/03hummqv5a336mcd72nc1lks25.png"></p>
+<h3 class="topic">
+<a name="793trd4l7omiscqkn3b7515eej">&nbsp;&nbsp;&nbsp;&nbsp;因为已经知道RPC服务在111端口上运行，所以可以通过指定仅仅扫描111端口，从而提升扫描效率，选择&ldquo;发现&rdquo;&gt;&ldquo;端口扫描&rdquo;，在&ldquo;设置&rdquo;选项卡下，我们将在&ldquo;端口扫描范围&rdquo;字段中输入&ldquo; 111&rdquo;。 我们还将取消选中&ldquo;本地端口枚举器&rdquo;部分下的所有选项。</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%89%AB%E6%8F%8F_files/3vv99epggunvt7gha7d3q0n6g9.png"></p>
+<h3 class="topic">
+<a name="6ej0nfl8i444f4sshel1vieqqv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;转到&ldquo;插件&rdquo;标签，然后单击右上角的&ldquo;全部禁用&rdquo;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%89%AB%E6%8F%8F_files/3skrav5ruqsou94ek9sfcefud9.png"></p>
+<h3 class="topic">
+<a name="2bmbi0002k0dfm9kk66ev5vcmo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将导航至左列中的&ldquo; RPC&rdquo;，并将右列中的&ldquo; NFS导出的共享信息披露&rdquo;设置为已启用</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%89%AB%E6%8F%8F_files/71dnf9lv2mpvk7ko3pd2g6scg9.png"></p>
+<h3 class="topic">
+<a name="7mchoik5vb4bo9du05ph51rj1q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%89%AB%E6%8F%8F_files/7f9jgocgh40q2nv6rhijg2v79c.png"></p>
+<h3 class="topic">
+<a name="2esovmrr0amnb3unahbsbdjt3l">&nbsp;&nbsp;请注意，即使我们已将扫描仪配置为仅扫描端口111，但在扫描过程中运行数据包捕获将显示仍存在到其他端口的流量。 发生这种情况是因为端口扫描只是Nessus扫描配置文件的一部分，并且大多数漏洞扫描程序都运行其他服务和插件来在后台收集目标信息。 没有简单的方法可以完全控制自动扫描仪生成的所有流量。 这种控制水平只能通过人工来实现。</a>
+</h3>
+<h3 class="topic">
+<a name="3jcp5uqbpbr18dulpchpp5o9ms">&nbsp;&nbsp;&nbsp;扫描状态为&ldquo;已完成&rdquo;后，我们可以单击扫描名称，然后单击Beta的IP以打开已发现漏洞的列表。 导航到单个严重漏洞，然后单击它会显示一个详细页面，其中显示了所有导出的NFS共享：</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%89%AB%E6%8F%8F_files/2thbmu1e6s9esteomu5ogs5vot.png"></p>
+<h3 class="topic">
+<a name="2fj7bikrsfg5cvdpemadhd99ta">&nbsp;&nbsp;&nbsp;&nbsp;该扫描还生成了两个附加的信息插件输出。 其中包括有关扫描和SYN扫描结果的详细信息。</a>
+</h3>
+<h2 class="topic">
+<a name="20j2uarjpq31r28f4fphp0g4p7">Nmap的漏洞扫描</a>
+</h2>
+<h3 class="topic">
+<a name="3402n6gjm3ngrpdg7tchd35m68">&nbsp;可以使用Nmap脚本引擎（NSE）235进行自动漏洞扫描。 尽管NSE并非功能完善的漏洞扫描程序，但它确实具有可观的脚本库，可用于检测和验证漏洞。</a>
+</h3>
+<h3 class="topic">
+<a name="7ff6pcn312tksja6jmem84kjs5">&nbsp;&nbsp;nmap脚本使用Lua编写，功能范围从暴力破解和身份验证到检测和利用漏洞。 为此，我们将重点关注&ldquo;漏洞&rdquo;和&ldquo;利用&rdquo;类别中的脚本，因为前者检测到漏洞，而后者则尝试利用漏洞。</a>
+</h3>
+<h3 class="topic">
+<a name="6r3jelh9gpoj31muof0roh87ei">&nbsp;&nbsp;&nbsp;   但是，这些类别之间存在重叠，并且某些&ldquo;漏洞&rdquo;脚本实际上可能会运行简化的漏洞利用程序。 由于这个原因，脚本也被进一步分为&ldquo;安全&rdquo;或&ldquo;侵入性&rdquo;，在执行脚本时我们应格外小心，因为它们可能会使远程服务崩溃或破坏目标。</a>
+</h3>
+<h3 class="topic">
+<a name="1olejfp3qir34vd0lgka64hqcl">&nbsp;检索nmap脚本</a>
+</h3>
+<h3 class="topic">
+<a name="2vf3op97lsuk0q4rhhp48fr0nf">&nbsp;&nbsp;在Kali上，可以在/ usr / share / nmap / scripts /目录中找到NSE脚本。 在文本编辑器中打开任何* .nse文件都会以一种简单的人类可读格式显示每个脚本的来源。 花一些时间查看一些NSE脚本，以熟悉这些脚本执行的格式和检查类型。</a>
+</h3>
+<h3 class="topic">
+<a name="3ldf4qin03dbvgdtdl9pq5oobs">&nbsp;&nbsp;&nbsp;   此文件夹还包含一个script.db文件，该文件充当所有脚本的索引。 它还对每个Nmap脚本进行了分类。 例如，我们可以使用文件grep来查找&ldquo; vuln&rdquo;和&ldquo; exploit&rdquo;类别中的脚本</a>
+</h3>
+<h3 class="topic">
+<a name="698oc70ihj3p3l0mfreqbebeu8">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%89%AB%E6%8F%8F_files/13754nf30bpm6j2jbj77im8gf5.png"></p>
+<h3 class="topic">
+<a name="7g7si3recce39q745j7avcv9s7">&nbsp;针对目标运行&ldquo; vuln&rdquo;类别中的所有脚本</a>
+</h3>
+<h3 class="topic">
+<a name="5g6uuhf2ebl8qk6ddfac12o82r">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%89%AB%E6%8F%8F_files/6fosh179dnfe0gie0ocg0tpptt.png"></p>
+<h3 class="topic">
+<a name="157gh9ifa0l5srvagqtgi06dvj">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%89%AB%E6%8F%8F_files/4nqbucru2nr8r8h77to3i704et.png"></p>
+<h3 class="topic">
+<a name="30a84nttdk8kbkfscmirda0a13">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%89%AB%E6%8F%8F_files/1mvu4i9kvr2rnhf36p1lbgg2ud.png"></p>
+<h3 class="topic">
+<a name="3dup9qcbfqbv2vortmoqj1k05v">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%89%AB%E6%8F%8F_files/3cd1fvs2ug4pvm04bqr6o861vl.png"></p>
+<h3 class="topic">
+<a name="6sesl5jpqv12v6ds4n6kcb4gu5">&nbsp;&nbsp;   尽管Nmap不是传统意义上的漏洞扫描程序，但对于类似任务而言，它可能非常有用。 我们可以在渗透测试期间使用Nmap来验证漏洞扫描程序的结果，以作为专用扫描程序的备份，并帮助减少误报。&#13;
+   但是，Nmap还需要注意适用于传统漏洞扫描程序的相同警告。 我们必须了解脚本将要检查和不检查的内容，脚本将产生的流量以及每个脚本可能带来的潜在危险。</a>
+</h3>
+<h2 class="topic">
+<a name="7n98f9kdjkegfqdprs99go5nun">漏洞扫描工具可能会执行可能对某些网络或目标有害的操作，因此在使用它们时我们必须谨慎行事。</a>
+</h2>
+</body>
+</html>

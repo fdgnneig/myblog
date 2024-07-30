@@ -1,0 +1,210 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>物联网安全-ARM架构初探</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="7th5go13qv9p654o494mdr86s1">物联网安全-ARM架构初探</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-ARM%E6%9E%B6%E6%9E%84%E5%88%9D%E6%8E%A2_files/images/%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-ARM%E6%9E%B6%E6%9E%84%E5%88%9D%E6%8E%A2.jpg"></div>
+<h2 class="topic">
+<a name="6u2fam2qr225lt9n5a4olc46m7">ARM基础</a>
+</h2>
+<h3 class="topic">
+<a name="6cckdf8veg1j2ebqip48rs348o">&nbsp;ARM11之后出现了三个版本的arm处理器，主要是为了应对不同的场景，分别提升运行效率</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-ARM%E6%9E%B6%E6%9E%84%E5%88%9D%E6%8E%A2_files/5fn6onphj3l5r387k2rjsr53d7.png"></p>
+<h3 class="topic">
+<a name="1tmu5qu7tuees7p39vmc7b9ro5">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-ARM%E6%9E%B6%E6%9E%84%E5%88%9D%E6%8E%A2_files/1s8cbgivf363q19s14r1pj1c7i.png"></p>
+<h3 class="topic">
+<a name="1cst7se1j59ghlbj8cdllosnfl">&nbsp;&nbsp;&nbsp;arm处理器结构除了大小端，还有软件浮点和硬件浮点的区别</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-ARM%E6%9E%B6%E6%9E%84%E5%88%9D%E6%8E%A2_files/2l4qsqcmggg7usmq0ondnk41a9.png"></p>
+<h3 class="topic">
+<a name="2kqv69tmli1gi82haubue0f3n6">&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-ARM%E6%9E%B6%E6%9E%84%E5%88%9D%E6%8E%A2_files/3lql0b7325b355hvkulpqhs5hm.png"></p>
+<h3 class="topic">
+<a name="5nb64m32rl8veqptknbve6vrk5">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-ARM%E6%9E%B6%E6%9E%84%E5%88%9D%E6%8E%A2_files/7ichsnks2ucl7fe6b6406qntcc.png"></p>
+<h3 class="topic">
+<a name="3m8kdiddgbum6sq4idjne064ou">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-ARM%E6%9E%B6%E6%9E%84%E5%88%9D%E6%8E%A2_files/2flplakiiqamnma2tpa7c0bolg.png"></p>
+<h3 class="topic">
+<a name="3vdrjhefe84u9pispastbeq0ca">&nbsp;&nbsp;&nbsp;&nbsp;不同状态下cpu可以执行的操作不一样</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-ARM%E6%9E%B6%E6%9E%84%E5%88%9D%E6%8E%A2_files/5jf5g745vdg39orm648ktpui30.png"></p>
+<h3 class="topic">
+<a name="6om5bbg1a1urke0j7ednctmpvt">&nbsp;cpu流水线即把一条指令分为多个处理阶段</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-ARM%E6%9E%B6%E6%9E%84%E5%88%9D%E6%8E%A2_files/6ue2s9r3s8pddg4846s0nlap04.png"></p>
+<h3 class="topic">
+<a name="1ln0c5gvq0b44t5310d1oquqfv">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-ARM%E6%9E%B6%E6%9E%84%E5%88%9D%E6%8E%A2_files/362lobkkphf28aq9nsgu7c4j7c.png"></p>
+<h3 class="topic">
+<a name="3u37sgm6k53hvbj25lkv54ffap">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-ARM%E6%9E%B6%E6%9E%84%E5%88%9D%E6%8E%A2_files/11l1tf5uim0pem60b6t8hs09mu.png"></p>
+<h2 class="topic">
+<a name="1hp7smp3ge4j7n7bp2ta3u76tc">ARM环境介绍</a>
+</h2>
+<h3 class="topic">
+<a name="6sgf4in9h3vhsmml3vrc3eq5ps">&nbsp;ubuntu用于交叉编译</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-ARM%E6%9E%B6%E6%9E%84%E5%88%9D%E6%8E%A2_files/6o5vkeu3dri09hhb7bg092kegb.png"></p>
+<h2 class="topic">
+<a name="42caa0d5fgkodf8v8s9fbsnek3">ARM环境搭建</a>
+</h2>
+<h3 class="topic">
+<a name="2bc77apmft1o9rilu9ts42msut">&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-ARM%E6%9E%B6%E6%9E%84%E5%88%9D%E6%8E%A2_files/2h6c8lmdklh0g06qbaupmuej8f.png"></p>
+<h3 class="topic">
+<a name="29fplrejgi6t6ljd2k2ni0bvvh">&nbsp;&nbsp;交叉编译完成后，也会下载动态连接库到usr目录下，所以执行编译后文件时，可以指定对应动态链接库路径</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-ARM%E6%9E%B6%E6%9E%84%E5%88%9D%E6%8E%A2_files/5p2lgmqsoelel3rkcoi2r1da4o.png"></p>
+<h2 class="topic">
+<a name="0lrppg0fs17p2ck7qmva7avsg9">编译并运行ARM</a>
+</h2>
+<h3 class="topic">
+<a name="6feplr3p8jjue5f7gsmkqnbbdb">&nbsp;keli uVersion编译运行</a>
+</h3>
+<h3 class="topic">
+<a name="7ullmj1sgrvpu382rtchvoloep">&nbsp;&nbsp;源代码1</a>
+</h3>
+<h3 class="topic">
+<a name="6aoai7nf8jek7e4557f5b5m1e3">&nbsp;&nbsp;&nbsp;创建项目</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-ARM%E6%9E%B6%E6%9E%84%E5%88%9D%E6%8E%A2_files/59ima9ibbf4l7c2k6cgcd20tgr.png"></p>
+<h3 class="topic">
+<a name="1aimlj52fd69t5ertmuga4gc11">&nbsp;&nbsp;&nbsp;&nbsp;选择处理器架构，不同处理器部分指令不存在，此时选择arm7处理器架构</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-ARM%E6%9E%B6%E6%9E%84%E5%88%9D%E6%8E%A2_files/78kcheunuofa51lo5fceagt32m.png"></p>
+<h3 class="topic">
+<a name="0vm0htkg0pu2pvke4dhlb6dm5p">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-ARM%E6%9E%B6%E6%9E%84%E5%88%9D%E6%8E%A2_files/530btqd90ff666q83spo29oclb.png"></p>
+<h3 class="topic">
+<a name="0i16d962j179vcgh0eh7vhplrv">&nbsp;&nbsp;&nbsp;项目创建完成打开已有源代码文件</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-ARM%E6%9E%B6%E6%9E%84%E5%88%9D%E6%8E%A2_files/2c1t0eiop7viqd3t1bjpemdsc9.png"></p>
+<h3 class="topic">
+<a name="13jhof1c1197hp2b9ve0q61jdn">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-ARM%E6%9E%B6%E6%9E%84%E5%88%9D%E6%8E%A2_files/2fcmj2nqeanm26qcd1vscajb62.png"></p>
+<h3 class="topic">
+<a name="541qmvu8bruu4nfv31njh9b9m8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-ARM%E6%9E%B6%E6%9E%84%E5%88%9D%E6%8E%A2_files/4651tjhpnmu7n02ah2gepui8dm.png"></p>
+<h3 class="topic">
+<a name="4s444mjr8gki8767pdgks8love">&nbsp;&nbsp;&nbsp;设置项目选项</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-ARM%E6%9E%B6%E6%9E%84%E5%88%9D%E6%8E%A2_files/633ssk7rq1ia05t44aa0nb97ck.png"></p>
+<h3 class="topic">
+<a name="25uin2rjaq307t1bsrr0k797tt">&nbsp;&nbsp;&nbsp;&nbsp;debug标签下选择use simulator选项，从而使编译后程序可单步调试</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-ARM%E6%9E%B6%E6%9E%84%E5%88%9D%E6%8E%A2_files/2ajur7vulkj4muj8i9si86fv0h.png"></p>
+<h3 class="topic">
+<a name="4e2p5ok6c5r6has20g37lgj084">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-ARM%E6%9E%B6%E6%9E%84%E5%88%9D%E6%8E%A2_files/2j8cr8hp1jmethras7gdg14i17.png"></p>
+<h3 class="topic">
+<a name="4pddf82k71gipo1be2rdtaa2d6">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-ARM%E6%9E%B6%E6%9E%84%E5%88%9D%E6%8E%A2_files/4cfbi5rrjl3ho0dj0c8sm5v1bi.png"></p>
+<h3 class="topic">
+<a name="1urjssf57635not05n8oanjt15">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-ARM%E6%9E%B6%E6%9E%84%E5%88%9D%E6%8E%A2_files/4ms25vcf4envecc8636k3930c5.png"></p>
+<h3 class="topic">
+<a name="47r56ikau2afc78idjrb0d75pr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-ARM%E6%9E%B6%E6%9E%84%E5%88%9D%E6%8E%A2_files/44d251il84olj16aved00p1cvs.png"></p>
+<h3 class="topic">
+<a name="7r4903et8sftacfjdih0h93nu3">&nbsp;&nbsp;源代码2</a>
+</h3>
+<h3 class="topic">
+<a name="63kqsmo53p2mroqrqke59dstdc">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-ARM%E6%9E%B6%E6%9E%84%E5%88%9D%E6%8E%A2_files/1eutp4of3688gr8qr2igrj5ho5.png"></p>
+<h3 class="topic">
+<a name="4k7lad1rnvphq4ph77qvivhc38">&nbsp;&nbsp;&nbsp;&nbsp;源代码3</a>
+</h3>
+<h3 class="topic">
+<a name="6q2rb4lmghvvp33bjhpldf3n10">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-ARM%E6%9E%B6%E6%9E%84%E5%88%9D%E6%8E%A2_files/7kovhapvja5n69obmqe7dsmupl.png"></p>
+<h3 class="topic">
+<a name="7gk2p2ff2pltvhrp3lc3723o6b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;最后将lr寄存器中的值复制到pc寄存器中，从而返回</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-ARM%E6%9E%B6%E6%9E%84%E5%88%9D%E6%8E%A2_files/1agjofv7bbcc24smfhf2usb34v.png"></p>
+<h3 class="topic">
+<a name="65sfdeqcpoct9fsrce6n5fo90u">&nbsp;交叉编译运行arm程序</a>
+</h3>
+<h3 class="topic">
+<a name="4amrmlssiogdsanq02kolcjvpo">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-ARM%E6%9E%B6%E6%9E%84%E5%88%9D%E6%8E%A2_files/4snqt9mm0j3a83lmm426bhstqu.png"></p>
+<h3 class="topic">
+<a name="0965dt0g9hpuecki5i9pqn709v">&nbsp;&nbsp;&nbsp;使用软件浮点类型的交叉编译器以动态链接方式交叉编译，注意运行时需指定动态链接库路径</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-ARM%E6%9E%B6%E6%9E%84%E5%88%9D%E6%8E%A2_files/1hlkp7eonh9mail84r0m8morjm.png"></p>
+<h3 class="topic">
+<a name="4duvgvqi8gm3mcredocqhs9vkf">&nbsp;&nbsp;&nbsp;&nbsp;子主题 1</a>
+</h3>
+<h3 class="topic">
+<a name="1uoi7pe0ng7he0fla4me1pab25">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-ARM%E6%9E%B6%E6%9E%84%E5%88%9D%E6%8E%A2_files/3c7c6i9n7ran7362ocf9h5o887.png"></p>
+<h3 class="topic">
+<a name="3akctrruseja5bnk72vrbq26vu">&nbsp;&nbsp;&nbsp;汇编源文件hello.s</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-ARM%E6%9E%B6%E6%9E%84%E5%88%9D%E6%8E%A2_files/46smjt7fvug0v208cvorvdcvau.png"></p>
+<h3 class="topic">
+<a name="7b2fji8ktunlne8rif3hbrninq">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-ARM%E6%9E%B6%E6%9E%84%E5%88%9D%E6%8E%A2_files/20sq5hm17f94j0m4rp6ev840ug.png"></p>
+</body>
+</html>

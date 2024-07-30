@@ -1,0 +1,454 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>物联网安全-MIPS二进制漏洞分析及ROP技术实战</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="6k4nofr213rdb572pdmc4535b8">物联网安全-MIPS二进制漏洞分析及ROP技术实战</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-MIPS%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8AROP%E6%8A%80%E6%9C%AF%E5%AE%9E%E6%88%98_files/images/%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-MIPS%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8AROP%E6%8A%80%E6%9C%AF%E5%AE%9E%E6%88%98.jpg"></div>
+<h2 class="topic">
+<a name="0ab40d43m82i59v392q4nlpadd">二进制漏洞-rop</a>
+</h2>
+<h3 class="topic">
+<a name="0ujp9utjpma9ddmopl1j76cvqq">&nbsp;常见的二进制漏洞</a>
+</h3>
+<h3 class="topic">
+<a name="5a0vn50pt9d9cs1uj92cie5m6p">&nbsp;&nbsp;iot领域栈溢出和格式化字符串比较多</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-MIPS%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8AROP%E6%8A%80%E6%9C%AF%E5%AE%9E%E6%88%98_files/4ga4uk0i4n12m7989gkkbup676.png"></p>
+<h3 class="topic">
+<a name="15sgp433ledn7n831ok400kj3d">&nbsp;&nbsp;&nbsp;物联网涉笔大多都有web端，一般有两种选择，设备厂商选择已经开发完整的web服务端程序，例如BOA,厂商直接将BOA编译成自己平台架构的可执行程序，从而实现web服务，或者自己实现http服务端，例如一个httpd&#13;
+&#13;
+以上两种方案最后均要将服务端编译为可执行文件(bin),可执行文件的作用是解析浏览器传递过来的数据，例如url、token，这些数据一般比较小，所以多存储在栈上，对于栈溢出尝试用rop技术进行利用</a>
+</h3>
+<h2 class="topic">
+<a name="48q834ap7pl15v4tmg2hqbet3u">linux内存布局（x86）</a>
+</h2>
+<h3 class="topic">
+<a name="0jvnh0rpqfo82t51is3js94r4h">&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-MIPS%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8AROP%E6%8A%80%E6%9C%AF%E5%AE%9E%E6%88%98_files/7cn7vg5tgoqsvr07gfi3teiu8d.png"></p>
+<h2 class="topic">
+<a name="1td7315liai8svtkd19teghp5j">经典栈溢出（x86）</a>
+</h2>
+<h3 class="topic">
+<a name="0u8t8sg1dq7amp5j0bjc217er3">&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-MIPS%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8AROP%E6%8A%80%E6%9C%AF%E5%AE%9E%E6%88%98_files/16161qil5h5k6vqb56j4c573np.png"></p>
+<h2 class="topic">
+<a name="2dbbqvgc0a0ip9nq5rhi7fa7mk">rop</a>
+</h2>
+<h3 class="topic">
+<a name="6evj7cniv91ce4hq7pgdcfjlsn">&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-MIPS%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8AROP%E6%8A%80%E6%9C%AF%E5%AE%9E%E6%88%98_files/77svduqhf82hegeh700lveohui.png"></p>
+<h2 class="topic">
+<a name="34fujapcbcloooqf13f8ns8toc">rops实战</a>
+</h2>
+<h3 class="topic">
+<a name="15o20s2r21c81p2tsmmbel88sk">&nbsp;mips漏洞代码</a>
+</h3>
+<h3 class="topic">
+<a name="5skdup3rq7hrd4rvv3lpgf39ha">&nbsp;&nbsp;#include &lt;stdio.h&gt;&#13;
+#include &lt;stdlib.h&gt;&#13;
+#include &lt;sys/stat.h&gt;&#13;
+#include &lt;string.h&gt;&#13;
+ &#13;
+void do_system(int code,char *cmd)&#13;
+{&#13;
+    char buf[255];&#13;
+    //sleep(1);&#13;
+    system(cmd);&#13;
+}&#13;
+ &#13;
+int main()&#13;
+{&#13;
+    char buf[256]={0};&#13;
+    char ch;&#13;
+    int count = 0;&#13;
+    unsigned int fileLen = 0;&#13;
+    struct stat fileData;&#13;
+    FILE *fp;&#13;
+ &#13;
+    if(0 == stat("passwd",&amp;fileData))&#13;
+        fileLen = fileData.st_size;&#13;
+    else&#13;
+        return 1;&#13;
+ &#13;
+    if((fp = fopen("passwd","rb")) == NULL)&#13;
+    {&#13;
+        printf("Cannot open file passwd!n");&#13;
+        exit(1);&#13;
+    }&#13;
+ &#13;
+ &#13;
+    ch=fgetc(fp);&#13;
+    while(count &lt;= fileLen)&#13;
+    {&#13;
+        buf[count++] = ch;&#13;
+        ch = fgetc(fp);&#13;
+    }&#13;
+    buf[--count] = 'x00';&#13;
+ &#13;
+    if(!strcmp(buf,"adminpwd"))&#13;
+    {&#13;
+        do_system(count,"ls -l");&#13;
+    }&#13;
+    else&#13;
+    {&#13;
+        printf("you have an invalid password!n");&#13;
+    }&#13;
+    fclose(fp);&#13;
+ &#13;
+    return 0;&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="57eslbg2invot4dlmgmc94ohms">&nbsp;这里使用了ubuntu16.04下的mipsel-linux-gnu-gcc交叉编译工具，不同编译器对代码进行编译时，对代码的优化可能是不一样的，从而导致生成的二进制文件不同</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-MIPS%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8AROP%E6%8A%80%E6%9C%AF%E5%AE%9E%E6%88%98_files/7s7t97pval97vppuc927omk4rt.png"></p>
+<h3 class="topic">
+<a name="6ispjk5qcesnhuu545r6qmmu8d">&nbsp;&nbsp;将数据1111写入passwd文件中，检查可执行文件的类型，发现为对应汇编格式为mips</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-MIPS%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8AROP%E6%8A%80%E6%9C%AF%E5%AE%9E%E6%88%98_files/7128f6kse0nevbslgsr1ffpd6b.png"></p>
+<h3 class="topic">
+<a name="50kthiilf5pr8bgaoouqlinifi">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-MIPS%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8AROP%E6%8A%80%E6%9C%AF%E5%AE%9E%E6%88%98_files/4qc80r78t3a24qfrcfb9vopv67.png"></p>
+<h3 class="topic">
+<a name="2e6qlst3hv7e5v7se4ead70gp0">&nbsp;使用qemu运行程序，根据源码可知，因为passwd文件中的数据不正确，所以显示密码错误</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-MIPS%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8AROP%E6%8A%80%E6%9C%AF%E5%AE%9E%E6%88%98_files/06q5qp07t1qigqt1td811enbto.png"></p>
+<h3 class="topic">
+<a name="5s4j2q8c0bqekdgmib7pj4e86v">&nbsp;&nbsp;将passwd文件内容修改为700个A，此时运行vul发现报错，产生段错误，说明产生数据溢出，即将溢出数据作为内存地址开始执行指令，从而导致段错误</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-MIPS%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8AROP%E6%8A%80%E6%9C%AF%E5%AE%9E%E6%88%98_files/7noqgbohfq6p9cto76uscksl8f.png"></p>
+<h3 class="topic">
+<a name="3fck4c146ci6h9uf0lsgnnuotq">&nbsp;&nbsp;&nbsp;使用pattern.py脚本确定溢出点，该脚本会生成不重复字符串作为溢出数据定位溢出点</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-MIPS%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8AROP%E6%8A%80%E6%9C%AF%E5%AE%9E%E6%88%98_files/3j6oa0il8cck97251u3c597mjn.png"></p>
+<h3 class="topic">
+<a name="5giag7jfbgepjv45420l7h7b08">&nbsp;&nbsp;&nbsp;&nbsp;#!/usr/bin/env python&#13;
+#####################################################################################&#13;
+## Create pattern strings &amp; location offset&#13;
+## Tested against Ubuntu 12.04 &amp; Windows # #&#13;
+##&#13;
+## Example:&#13;
+## C:UsersLenovDesktop&gt; patterLocOffset.py -c -l 260 -f output.txt&#13;
+### [*] Create pattern string contains 260 characters ok!&#13;
+### [+] output to output.txt ok!&#13;
+##&#13;
+## C:UsersLenovDesktop&gt; patternLocOffset.py -s 0x41613141 -l 260&#13;
+### [*] Create pattern string contains 260 characters ok!&#13;
+### [*] Exact match at offset 3&#13;
+#&#13;
+## Nimdakey # 09-10-2013&#13;
+#####################################################################################&#13;
+ &#13;
+import argparse&#13;
+import struct&#13;
+import binascii&#13;
+import string&#13;
+import time&#13;
+import sys&#13;
+import re&#13;
+ &#13;
+a = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"&#13;
+b = "abcdefghijklmnopqrstuvwxyz"&#13;
+c = "0123456789"&#13;
+ &#13;
+def generate(count,output):&#13;
+    #&#13;
+    # pattern create&#13;
+    codeStr = ''&#13;
+    print '[*] Create pattern string contains %d characters'%count,&#13;
+    timeStart = time.time()&#13;
+    for i in range(0,count):&#13;
+        codeStr += a[i/(26*10)]+b[(i%(26*10))/10]+c[i%(26*10)%10]&#13;
+    print 'ok!'&#13;
+    if output:&#13;
+        print '[+] output to %s'%output,&#13;
+        fw = open(output,'w')&#13;
+        fw.write(codeStr)&#13;
+        fw.close()&#13;
+        print 'ok!'&#13;
+    else:&#13;
+        return codeStr&#13;
+    print "[+] take time: %.4f s"%(time.time()-timeStart)&#13;
+ &#13;
+def patternMatch(searchCode, length=1024):&#13;
+    #&#13;
+    # pattern search&#13;
+    offset = 0&#13;
+    pattern = None&#13;
+ &#13;
+    timeStart = time.time()&#13;
+    is0xHex = re.match('^0x[0-9a-fA-F]{8}',searchCode)&#13;
+    isHex = re.match('^[0-9a-fA-F]{8}',searchCode)&#13;
+ &#13;
+    if is0xHex:&#13;
+        #0x41613141&#13;
+        pattern = binascii.a2b_hex(searchCode[2:])&#13;
+    elif isHex:&#13;
+        #41613141&#13;
+        pattern = binascii.a2b_hex(searchCode)&#13;
+    else:&#13;
+        print '[-] seach Pattern eg:0x41613141'&#13;
+        sys.exit(1)&#13;
+ &#13;
+    source = generate(length,None)&#13;
+    offset = source.find(pattern)&#13;
+ &#13;
+    if offset != -1:&#13;
+        print "[*] Exact match at offset %d"%offset&#13;
+    else:&#13;
+        print "[*] No exact matches, looking for likely candidates..."&#13;
+        reverse = list(pattern)&#13;
+        reverse.reverse()&#13;
+        pattern = "".join(reverse)&#13;
+        offset = source.find(pattern)&#13;
+        if offset != -1:&#13;
+            print "[+] Possible match at offset %d (adjusted another-endian)"%offset&#13;
+    print "[+] take time: %.4f s"%(time.time()-timeStart)&#13;
+ &#13;
+def main():&#13;
+    ## parse argument&#13;
+    parser = argparse.ArgumentParser()&#13;
+    parser.add_argument('-s', '--search', help='search for pattern')&#13;
+    parser.add_argument('-c', '--create', help='create a pattern',&#13;
+                        action='store_true')&#13;
+    parser.add_argument('-f', '--file', help='output file name',&#13;
+                        default='patternShell.txt')&#13;
+    parser.add_argument('-l', '--length',help='length of pattern code',&#13;
+                        type=int,default=1024)&#13;
+    #parser.add_argument('-v', dest='verbose', action='store_true')&#13;
+    args = parser.parse_args()&#13;
+ &#13;
+    ## save all argument&#13;
+    length = args.length&#13;
+    output = args.file&#13;
+    #verbose = args.verbose&#13;
+    createCode = args.create&#13;
+    searchCode = args.search&#13;
+ &#13;
+    if createCode and (0 &lt; args.length &lt;= 26*26*10):&#13;
+        #eg:  -c -l 90&#13;
+        generate(length,output)&#13;
+    elif searchCode and (0 &lt; args.length &lt;= 26*26*10):&#13;
+        #eg: -s 0x474230141&#13;
+        patternMatch(searchCode,length)&#13;
+    else:&#13;
+        print '[-] You shoud chices from [-c -s]'&#13;
+        print '[-] Pattern length must be less than 6760'&#13;
+        print 'more help: pattern.py -h'&#13;
+    # ...&#13;
+ &#13;
+if __name__ == "__main__":&#13;
+    main()</a>
+</h3>
+<h3 class="topic">
+<a name="17b8f60ar36mquepgh91tnr94r">&nbsp;动态调试mips（ida或gdb）</a>
+</h3>
+<h3 class="topic">
+<a name="6vi04rv6i161cf6ugc1be2ftml">&nbsp;&nbsp;-g参数新建进程端口10000，并指定要运行的程序vul，回车后，程序暂停，显示进入侦听状态</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-MIPS%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8AROP%E6%8A%80%E6%9C%AF%E5%AE%9E%E6%88%98_files/2kiq88cii4qgcjf769lrdmj32u.png"></p>
+<h3 class="topic">
+<a name="10jsns06ir48d5j9n3a8a6ln3m">&nbsp;&nbsp;&nbsp;查看真机当前ip地址</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-MIPS%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8AROP%E6%8A%80%E6%9C%AF%E5%AE%9E%E6%88%98_files/2vm5jjec8odv5cbk6ilciug9fh.png"></p>
+<h3 class="topic">
+<a name="7lep2fd43l0n0520kn1i2ns6a4">&nbsp;&nbsp;&nbsp;&nbsp;在虚拟机中用ida打开vul程序</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-MIPS%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8AROP%E6%8A%80%E6%9C%AF%E5%AE%9E%E6%88%98_files/39l1o0sb7kibbuon62udb9uanq.png"></p>
+<h3 class="topic">
+<a name="2fkbfpqi551h703hndm59r9nrq">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-MIPS%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8AROP%E6%8A%80%E6%9C%AF%E5%AE%9E%E6%88%98_files/7qmb4rd4nei423ro1lomtiv666.png"></p>
+<h3 class="topic">
+<a name="772e240btraoiujesb0248jfs5">&nbsp;&nbsp;&nbsp;设置真机的ip地址和10000端口</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-MIPS%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8AROP%E6%8A%80%E6%9C%AF%E5%AE%9E%E6%88%98_files/3oh33divtu508g1qa0huniqosc.png"></p>
+<h3 class="topic">
+<a name="6ubne5l2edivbph9ooth3urqj9">&nbsp;&nbsp;&nbsp;&nbsp;选择附加调试</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-MIPS%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8AROP%E6%8A%80%E6%9C%AF%E5%AE%9E%E6%88%98_files/2caua6srq4mj03u47vhah77cm4.png"></p>
+<h3 class="topic">
+<a name="11coi1og5gbv74668110fu81it">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;选择要附加的进程</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-MIPS%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8AROP%E6%8A%80%E6%9C%AF%E5%AE%9E%E6%88%98_files/4i6345rf6np3qdsv0vnsaku9om.png"></p>
+<h3 class="topic">
+<a name="6tcv0giv03dte6067qqfhbhdlp">&nbsp;&nbsp;附加调试后程序会断在入口点_start函数，该函数会调用mian函数，我们下的断点就位于main函数中</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-MIPS%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8AROP%E6%8A%80%E6%9C%AF%E5%AE%9E%E6%88%98_files/58kq0o1van2c8g9m9cnj46vhcg.png"></p>
+<h3 class="topic">
+<a name="40od0nr9u3gbsa4sodd2h0pegg">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-MIPS%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8AROP%E6%8A%80%E6%9C%AF%E5%AE%9E%E6%88%98_files/1bjk6mi3dthdnhb8jk8evfejqg.png"></p>
+<h3 class="topic">
+<a name="49d25ac81sjvk9c19f5rtqohn9">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-MIPS%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8AROP%E6%8A%80%E6%9C%AF%E5%AE%9E%E6%88%98_files/0ub366bq7j7se1hp65o4vsp9q4.png"></p>
+<h3 class="topic">
+<a name="1clvt3m8kbk7lm24vvv50jjr86">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用ra寄存器的值搜索之前的脚本，发现溢出的偏移为404</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-MIPS%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8AROP%E6%8A%80%E6%9C%AF%E5%AE%9E%E6%88%98_files/575eeeik18c92q7j5o6cih4h2o.png"></p>
+<h3 class="topic">
+<a name="5vg1bqdc6aenscvrm8m62n3hhq">&nbsp;&nbsp;根据偏移设置passwd文件内容前404字节为A，后四字节为B</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-MIPS%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8AROP%E6%8A%80%E6%9C%AF%E5%AE%9E%E6%88%98_files/0td4m4of907ovspr69jok3ijjl.png"></p>
+<h3 class="topic">
+<a name="6dugttn6d54p9i3vnhnopqkhas">&nbsp;&nbsp;&nbsp;再次尝试调用vul</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-MIPS%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8AROP%E6%8A%80%E6%9C%AF%E5%AE%9E%E6%88%98_files/147ba08j1jmg5nkoe5gjpl1ori.png"></p>
+<h3 class="topic">
+<a name="3srvbmu3rf7cr2id9mp3tecj73">&nbsp;&nbsp;&nbsp;&nbsp;此时需要关闭之前的ida，重新打开ida并进行远程调试设置</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-MIPS%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8AROP%E6%8A%80%E6%9C%AF%E5%AE%9E%E6%88%98_files/2aqlkgf66q378gunjv5e732hnt.png"></p>
+<h3 class="topic">
+<a name="0u9fagho7ne3rkcopkn0ej6ff9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;继续运行发现报错，42424242</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-MIPS%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8AROP%E6%8A%80%E6%9C%AF%E5%AE%9E%E6%88%98_files/5vegg9gl3tfu7t4ebndqh2fi1d.png"></p>
+<h3 class="topic">
+<a name="0obggds4el7olt9s8a28t7i462">&nbsp;&nbsp;此时根据源码，打算通过do_system函数进行漏洞利用&#13;
+尝试使用其调用"bin/sh"命令</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-MIPS%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8AROP%E6%8A%80%E6%9C%AF%E5%AE%9E%E6%88%98_files/1hg4gh19h3uhf79r4e411o2v40.png"></p>
+<h3 class="topic">
+<a name="66kb3gi4ud8g0on0c2miqcq5ir">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-MIPS%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8AROP%E6%8A%80%E6%9C%AF%E5%AE%9E%E6%88%98_files/22ajogsf3kku5kn1nsegqabmg0.png"></p>
+<h3 class="topic">
+<a name="2gj3fklencgavgfghctqv0bbts">&nbsp;&nbsp;&nbsp;&nbsp;ida中对该两条指令下断，并重新进行附加调试</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-MIPS%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8AROP%E6%8A%80%E6%9C%AF%E5%AE%9E%E6%88%98_files/4uu26gkju8skve0dnu2138c8j4.png"></p>
+<h3 class="topic">
+<a name="03dpmb8gt8gnpgvicdteba595v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;执行mips rop finder插件</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-MIPS%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8AROP%E6%8A%80%E6%9C%AF%E5%AE%9E%E6%88%98_files/1usj6ebk51h8lhl2d10dt50bu4.png"></p>
+<h3 class="topic">
+<a name="3hcj0hp4i0sst8rsjfajqeakjg">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-MIPS%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8AROP%E6%8A%80%E6%9C%AF%E5%AE%9E%E6%88%98_files/2peea1c7e2mi80gg5a787u8fe5.png"></p>
+<h3 class="topic">
+<a name="2vmd5f437kiiks2aqq9ppooqvq">&nbsp;&nbsp;&nbsp;在python命令行中执行mipsrop.stackfinder()</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-MIPS%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8AROP%E6%8A%80%E6%9C%AF%E5%AE%9E%E6%88%98_files/6mcsf0d9o36r0s95ng7m0fgj40.png"></p>
+<h3 class="topic">
+<a name="6pgicmgovh14jv4eig4p10co0q">&nbsp;&nbsp;&nbsp;&nbsp;从而找到与栈相关的rop块，双击这里的Address列可以跳转到对应指令位置</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-MIPS%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8AROP%E6%8A%80%E6%9C%AF%E5%AE%9E%E6%88%98_files/5qk2ctais7imhr5roiqvkkch83.png"></p>
+<h3 class="topic">
+<a name="5s7jr7v6h658nro5ajhm4sui8p">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;发现可以修改$a1寄存器的指令块，通过该指令块，可以修改$a1寄存器的值，并且控制$ra寄存器，让程序跳转执行system("bin/sh")</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-MIPS%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8AROP%E6%8A%80%E6%9C%AF%E5%AE%9E%E6%88%98_files/4nrvra8da49nc95539llu86nhn.png"></p>
+<h3 class="topic">
+<a name="5ruq0eusinvhg37gb9jp35e3bj">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-MIPS%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8AROP%E6%8A%80%E6%9C%AF%E5%AE%9E%E6%88%98_files/55t9kot3djssq9rgijk08v3u2i.png"></p>
+<h3 class="topic">
+<a name="4e49ljbpn67fj2oqjitkp8dlt8">&nbsp;&nbsp;&nbsp;修改poc数据</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-MIPS%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8AROP%E6%8A%80%E6%9C%AF%E5%AE%9E%E6%88%98_files/0mk65mts53vaacs9i1pc92kt74.png"></p>
+<h3 class="topic">
+<a name="1lc1omqkkd6l6q32qp1fvim0k2">&nbsp;&nbsp;&nbsp;&nbsp;重新开启一轮调试，发现$ra被正确修改</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-MIPS%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8AROP%E6%8A%80%E6%9C%AF%E5%AE%9E%E6%88%98_files/75tl8q9l4q2fqpvera2qp7e6nk.png"></p>
+<h3 class="topic">
+<a name="134lo8ppshbjoho9r5rln5tso3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-MIPS%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8AROP%E6%8A%80%E6%9C%AF%E5%AE%9E%E6%88%98_files/79s1mp31pg7ufjbad0upjaad16.png"></p>
+<h3 class="topic">
+<a name="4s9819350a32crbbfie707s1ak">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;即此时设计的堆栈布局为这样</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-MIPS%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8AROP%E6%8A%80%E6%9C%AF%E5%AE%9E%E6%88%98_files/5sqa9rgh5dmvf8s42gq6bli3in.png"></p>
+<h3 class="topic">
+<a name="14645bou132eebjua951vmmdne">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-MIPS%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8AROP%E6%8A%80%E6%9C%AF%E5%AE%9E%E6%88%98_files/4qh8jv851ctqhp5dt29qgf2dal.png"></p>
+<h3 class="topic">
+<a name="7qdd4ig9eho05i6n4l2o7btloj">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-MIPS%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8AROP%E6%8A%80%E6%9C%AF%E5%AE%9E%E6%88%98_files/6tuivqbndv945t1rqpv6761bn8.png"></p>
+<h3 class="topic">
+<a name="49n2ld8159ntvafi32kdudgakp">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-MIPS%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8AROP%E6%8A%80%E6%9C%AF%E5%AE%9E%E6%88%98_files/10gal48u39lhlao2rvclgnj4g4.png"></p>
+<h3 class="topic">
+<a name="3v16jgbfrc2a23l2l888ec6gdl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;此时的内存布局</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-MIPS%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8AROP%E6%8A%80%E6%9C%AF%E5%AE%9E%E6%88%98_files/200ib9rvohpobcrg6oe5dt3isk.png"></p>
+<h3 class="topic">
+<a name="69aouucfkqge8h54s955v3otdc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;此时poc</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-MIPS%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8AROP%E6%8A%80%E6%9C%AF%E5%AE%9E%E6%88%98_files/2sfqmvtigqgs0heu0adfvcuhqk.png"></p>
+<h3 class="topic">
+<a name="18a024mka19g3f0hhbafm8urm6">&nbsp;&nbsp;重新调试，此时程序断在代码块第一条指令处，该指令会将sh字符串地址赋值给$a1,之前单步执行该指令时总是报错，此时将后一条指令对应的do_system函数地址也在内存中布置上，进行单步执行</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-MIPS%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8AROP%E6%8A%80%E6%9C%AF%E5%AE%9E%E6%88%98_files/4fd9nuuatslu9jfe1kla8cf5kv.png"></p>
+<h3 class="topic">
+<a name="2eo2m38rpn8ceq2poeh06cadlj">&nbsp;&nbsp;&nbsp;单步执行过后，直接跳转到do_system函数，说明之前的报错是由于未将do_system函数地址布置在内存中</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-MIPS%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8AROP%E6%8A%80%E6%9C%AF%E5%AE%9E%E6%88%98_files/1o7ljcbkcbrpofls5qo1vdlik1.png"></p>
+<h3 class="topic">
+<a name="536roaqcj0omg06b4msudn1tno">&nbsp;&nbsp;&nbsp;&nbsp;此时继续执行，ida显示程序在一直运行</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-MIPS%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8AROP%E6%8A%80%E6%9C%AF%E5%AE%9E%E6%88%98_files/3ipp9ldvgv4sv9pl21a2f60586.png"></p>
+<h3 class="topic">
+<a name="3vvmem7nc4m02fri7liqng77mn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;此时成功获得shell</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-MIPS%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8AROP%E6%8A%80%E6%9C%AF%E5%AE%9E%E6%88%98_files/4ri23uil4c9hnnp7grafla2jvv.png"></p>
+</body>
+</html>

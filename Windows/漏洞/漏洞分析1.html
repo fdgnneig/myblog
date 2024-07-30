@@ -1,0 +1,287 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>漏洞分析1</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="062ilcmbqu65lbtdrj3fm0dnrt">漏洞分析1</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%901_files/images/%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%901.jpg"></div>
+<h2 class="topic">
+<a name="4anlqij35cupv28rticl7fqpjl">漏洞的定义</a>
+</h2>
+<h3 class="topic">
+<a name="25b353l3n2ibgv5oois1qkrg60">&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%901_files/31ntgbe00v8tesklokla8fr62v.png"></p>
+<h2 class="topic">
+<a name="667en5kd0chv14jh0ffaji8qs9">栈溢出漏洞</a>
+</h2>
+<h3 class="topic">
+<a name="7on90g99dsnm84tus1ddotd273">&nbsp;栈溢出漏洞根本原理</a>
+</h3>
+<h3 class="topic">
+<a name="5o7kgjd1lf4ts3ra2s5cv136rp">&nbsp;&nbsp;哈佛结构中对数据和代码进行了区分，导致整个计算机体系比较复杂，最终没有被广泛利用</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%901_files/0f2bnjfvtcsjsrvt3kv8t1varq.png"></p>
+<h3 class="topic">
+<a name="0ljmprlqfhartm4vnerruvgqtq">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%901_files/0jnrpivfjel1akocj115aoe7sk.png"></p>
+<h3 class="topic">
+<a name="4bntn4fm1afudq2d03tu5tfqcg">&nbsp;程序内存栈结构</a>
+</h3>
+<h3 class="topic">
+<a name="797e09m29sgohc034c04m5egv5">&nbsp;&nbsp;debug版本中老ebp需要保存在栈中，release版本中老ebp可以被优化掉</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%901_files/0r30elck2uf7og9g2dhol0ho67.png"></p>
+<h3 class="topic">
+<a name="0da4ik0iap7sr5a018kbvj7qus">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%901_files/6aitfcgrrv5jvd2l12n5rugp3b.png"></p>
+<h3 class="topic">
+<a name="5ef6hlg5avbsklvidmm4ceekc6">&nbsp;shellcode的编写</a>
+</h3>
+<h3 class="topic">
+<a name="1nq5o5i2563t06i9kfs5vbvsmf">&nbsp;&nbsp;三种在栈中存放shellcode的方法</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%901_files/31u9hdbngsipm21qknu3v8j39k.png"></p>
+<h3 class="topic">
+<a name="21uvbpddvs5a7s29am8n9hv5dm">&nbsp;&nbsp;&nbsp;shellcode的组成</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%901_files/2mvifn657aftj9k2iqu7dnth33.png"></p>
+<h3 class="topic">
+<a name="4frlnq8u9ipv34r4jo3spi59jq">&nbsp;&nbsp;&nbsp;&nbsp;设计shellcode</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%901_files/6qmuukatfgl5g7kr6c6bceuu5d.png"></p>
+<h3 class="topic">
+<a name="5dduplob2t5l3eooqnqo5fa62r">&nbsp;&nbsp;即先编写c语言的代码，然后调试该程序，获得shellcode</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%901_files/4vcq7rohvav86em2s7p0977hv4.png"></p>
+<h3 class="topic">
+<a name="5f657c99skjsmrhj0fmu63r7c8">&nbsp;&nbsp;&nbsp;shellcode中获得函数的地址需要用到LoadLibrary和GetProcAddress</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%901_files/5su8dv86bh5io6plmlcfmm6j8e.png"></p>
+<h3 class="topic">
+<a name="15s1qfsg6l5au039aq2grdfvb4">&nbsp;&nbsp;&nbsp;&nbsp;在dll中寻找jmp esp等代码片段</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%901_files/2r0s4275h8dav055uoneckon30.png"></p>
+<h3 class="topic">
+<a name="5albijjdjto3sr0jog3e83e6be">&nbsp;栈溢出实例demo（对应demo在课件中）</a>
+</h3>
+<h3 class="topic">
+<a name="47a7vut8gsa7brv5pdi3dimqq3">&nbsp;&nbsp;需要使用vc6编译，并且运行在xp系统中(因为shellcode中部分数据硬编码)</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%901_files/2a3eiee695dgqrco4glqe6il51.png"></p>
+<h3 class="topic">
+<a name="2pn7nod15j1bdtcbqhq6j279jd">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%901_files/1mrmq099cp1ds18evudls5odao.png"></p>
+<h3 class="topic">
+<a name="33ppgnij2os9d6or5io5m64p69">&nbsp;&nbsp;&nbsp;&nbsp;stackoverflow</a>
+</h3>
+<h3 class="topic">
+<a name="2ebuflvqt0hf0ji9kr6r3kis6a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%901_files/4lcfjbefgf5v298c5q9v8gook3.png"></p>
+<h3 class="topic">
+<a name="2qhu07re9g5osfk98fqqn0299j">&nbsp;&nbsp;&nbsp;&nbsp;stackoverflow-true</a>
+</h3>
+<h3 class="topic">
+<a name="5im7gu24888jtuhtu3m8kfrhit">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%901_files/113kk54b1si893c60snk0fquvu.png"></p>
+<h3 class="topic">
+<a name="1osbs1493jih8c9g4433j90hs8">&nbsp;&nbsp;&nbsp;&nbsp;stackoverflow-remote</a>
+</h3>
+<h3 class="topic">
+<a name="39pvm7o3d4upsiuf0aiu0urrop">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%901_files/6ivt2tsbffho54i4lbpqapa0vc.png"></p>
+<h3 class="topic">
+<a name="3o1gb1h19ekvpq21i40abjt195">&nbsp;预防栈溢出</a>
+</h3>
+<h3 class="topic">
+<a name="2r3lmk9std4o8chlv1784ug790">&nbsp;&nbsp;从操作系统角度</a>
+</h3>
+<h3 class="topic">
+<a name="5alsbpgth69i9mhlts0gfvmuff">&nbsp;&nbsp;&nbsp;安全cookie</a>
+</h3>
+<h3 class="topic">
+<a name="1irmpe89i6rvoqksndqssc39l2">&nbsp;&nbsp;&nbsp;dep</a>
+</h3>
+<h3 class="topic">
+<a name="2hh8ldrmq0cuuu5gfkoftaht1h">&nbsp;&nbsp;&nbsp;aslr</a>
+</h3>
+<h3 class="topic">
+<a name="4rg6e9o0k3hpvei8vftnda0qvh">&nbsp;seh溢出</a>
+</h3>
+<h3 class="topic">
+<a name="2gb7hfm2fr7sa1fshnl5a0iphh">&nbsp;&nbsp;seh溢出原理</a>
+</h3>
+<h3 class="topic">
+<a name="62g3237d7csftlt78ill8a0p49">&nbsp;&nbsp;&nbsp;因为seh链保存在栈中，所以栈溢出可以覆盖seh链中异常处理函数的地址，之后触发异常，执行shellcode</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%901_files/3jntgi946ninrfbhj8vle6gi1r.png"></p>
+<h3 class="topic">
+<a name="2aev50s0e33ev7rqm15ajirv7g">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%901_files/3imockqcdg8tgnq7gqujb9s5c7.png"></p>
+<h3 class="topic">
+<a name="4l7rtffl9rhkajjqlkqqejscb4">&nbsp;&nbsp;demo实例</a>
+</h3>
+<h3 class="topic">
+<a name="0afspgumjqrb1kdrj5ubvlaobm">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%901_files/5it5j4n7r755i19kasbj3bpsq6.png"></p>
+<h2 class="topic">
+<a name="28ceat5nfa01lu2fnuljleufel">栈溢出漏洞实例</a>
+</h2>
+<h3 class="topic">
+<a name="4j8pkpc35fojelt9a4gk0dfbdp">&nbsp;冲击波漏洞</a>
+</h3>
+<h3 class="topic">
+<a name="5hdvq5r7bvoo0171he1jhp7i94">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%901_files/7okaa7n5g4n9osmb5ppol0e00c.png"></p>
+<h2 class="topic">
+<a name="16iauiiraqmkcgkoid016mgi8m">msf</a>
+</h2>
+<h3 class="topic">
+<a name="6idc9nh51630kibdnbif8u59d1">&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%901_files/66b4dttmf5oirl82vifsnqf4ku.png"></p>
+<h3 class="topic">
+<a name="2pvv9jk1a1tft2rmj40sa57m5j">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%901_files/53pmfujcosaa7kdj77k6o1n361.png"></p>
+<h3 class="topic">
+<a name="04lp8i250ro9lvqdknna1l7806">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%901_files/3ri7d583qtbbqge9r965s6a713.png"></p>
+<h3 class="topic">
+<a name="50tv73nbop7cb23plm6fetvkv9">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%901_files/2aqa96q44dgr1r769knsvd4tv4.png"></p>
+<h3 class="topic">
+<a name="5vf68m5hpn03ukic5i1eh3fftl">&nbsp;使用msf</a>
+</h3>
+<h3 class="topic">
+<a name="6l6suq2vnaag2oa6bvsk59grlr">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%901_files/5cm1c73ok4v8de72ebvochsv41.png"></p>
+<h3 class="topic">
+<a name="1efct6dc0pvbi7a21gmq89k24j">&nbsp;&nbsp;&nbsp;攻击的是stackoverflow-remote</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%901_files/0j3k2kb10effhjnsttn40411rn.png"></p>
+<h2 class="topic">
+<a name="74ntdig7dk5pl9dlb2ti4qp7e4">堆溢出漏洞</a>
+</h2>
+<h3 class="topic">
+<a name="0m5ir9fvlevg6673qpo3f91s51">&nbsp;漏洞原理</a>
+</h3>
+<h3 class="topic">
+<a name="1cvqoqjh27c68in7784hu85jid">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%901_files/1mu9gbakme064bmj98u5q2no5i.png"></p>
+<h3 class="topic">
+<a name="7lq0gv5serm50a0r30ons1ui4k">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%901_files/0n6u47dmlpr2u031oml433vq26.png"></p>
+<h3 class="topic">
+<a name="3bkdk0v0c06n5b5mql3h9usje4">&nbsp;&nbsp;&nbsp;&nbsp;利用一般将fp指针覆盖为任意值，将bp指针覆盖为任意地址，从而将任意值写入任意地址</a>
+</h3>
+<h3 class="topic">
+<a name="7v0rg06h9b9a89s7g8m92av8io">&nbsp;&nbsp;任意地址写任意数的攻击目标</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%901_files/4nlul6jtfve27tj14enspst78k.png"></p>
+<h3 class="topic">
+<a name="0durgmfae07257i1i9ivqqh214">&nbsp;漏洞实例demo</a>
+</h3>
+<h3 class="topic">
+<a name="0a20pj28not06nqgrdufqlrh7q">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%901_files/3q0vk987ee77ggm4pk4d0p9uv2.png"></p>
+<h3 class="topic">
+<a name="4kcqbld7irfgldujln327al8hr">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%901_files/4f1pisl40dlqd7sofcot3h343k.png"></p>
+<h3 class="topic">
+<a name="6hf6rse4f0rsee2thlpfjnglrt">&nbsp;堆喷射</a>
+</h3>
+<h3 class="topic">
+<a name="746uf5jkro9kpr117mlcs15q2i">&nbsp;&nbsp;将栈返回地址修改为0x0c0c0c0c，堆中分配200个1M大小的数据块，从而淹没堆中0x0c0c0c0c地址</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%901_files/1q0oq5cp6mj90lq9uusr2r4c48.png"></p>
+<h3 class="topic">
+<a name="0b70285jjg7cr58s0gth92ata9">&nbsp;&nbsp;&nbsp;本质的是一个栈溢出，只不过是在堆中保存shellcode</a>
+</h3>
+<h3 class="topic">
+<a name="2letpgd22d8atrju4agsj81lmv">&nbsp;&nbsp;堆喷射demo</a>
+</h3>
+<h3 class="topic">
+<a name="504k98bkrle618d5scbgdq40fd">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%901_files/14l9043f3klfgdhkpua1rrkjlj.png"></p>
+<h3 class="topic">
+<a name="3ttqi3scrdhun18vclq39429rv">&nbsp;&nbsp;&nbsp;&nbsp;堆喷射代码实例 注意在设置shellcode时需要将原本十六进制字符串表示的shellcode转为unicode格式（\xc6\x45-&gt;\u45c6）</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%901_files/1dd13mcv78m1f82qqf77nca9co.png"></p>
+<h3 class="topic">
+<a name="5el0gukkla90r616827a3mu8ua">&nbsp;&nbsp;堆喷射可能遇到的问题</a>
+</h3>
+<h3 class="topic">
+<a name="0qmh7th864pkcq0iipk6f4pd2a">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%901_files/46dptpmsmffjcieav3ips6uig1.png"></p>
+<h3 class="topic">
+<a name="0cjevd6afec6iri61bab7lc9hc">&nbsp;&nbsp;&nbsp;&nbsp;返回地址设置为0c0c0c0c可以提高返回地址正确被覆盖的几率</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%901_files/0p8pqt627lsn5eb589sk2834a7.png"></p>
+<h3 class="topic">
+<a name="50jiklpbk44t1l9ap3htg75pr8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%901_files/5gdohptec1t0nbrp1c6k76s6ne.png"></p>
+</body>
+</html>

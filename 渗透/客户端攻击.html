@@ -1,0 +1,433 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>客户端攻击</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="5na1di5mpn5t2c40vn822rvcdp">客户端攻击</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%94%BB%E5%87%BB_files/images/%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%94%BB%E5%87%BB.jpg"></div>
+<h2 class="topic">
+<a name="6nvt5c5q3u3gm6l6bnb6tt04lu">即攻击客户端软件</a>
+</h2>
+<h2 class="topic">
+<a name="0f3jfbncjhd6o04uhv7uh4h790">了解目标</a>
+</h2>
+<h3 class="topic">
+<a name="6uo25nmtn7t8bjutukm4uhkmqg">&nbsp;从攻击者的角度来看，客户端攻击的主要困难在于枚举受害者的客户端软件，这几乎不像枚举WWW或FTP服务器那样简单。 与大多数与渗透测试有关的事情一样，客户端攻击成功的秘诀是准确，彻底的信息收集。</a>
+</h3>
+<h3 class="topic">
+<a name="0l3ddjvfgl4ebp2oe2n9rvqqsl">&nbsp;被动客户端软件信息收集</a>
+</h3>
+<h3 class="topic">
+<a name="0hkc4joj0g7qn487o5vf6gsbbv">&nbsp;&nbsp;可以在Google上搜索各种已知的外部公司IP地址，并在托管从各个联属网站收集的用户代理数据的网站上找到相关数据</a>
+</h3>
+<h3 class="topic">
+<a name="71uvns12afen9efl686tbhkb2s">&nbsp;&nbsp;&nbsp;在社交媒体和论坛网站上可以找到此类信息。 实际上，我们甚至发现了计算机屏幕上的照片，其中显示了有关操作系统类型和版本，应用程序版本，正在使用的防病毒应用程序等信息</a>
+</h3>
+<h3 class="topic">
+<a name="3d9ctg28hpcqc2nn5k23p3ufhs">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%94%BB%E5%87%BB_files/74ad4emp57k8ktegubu8kf8j54.png"></p>
+<h3 class="topic">
+<a name="7vgiv00tjrp7fte7tpsthr2252">&nbsp;主动客户端软件信息收集</a>
+</h3>
+<h3 class="topic">
+<a name="6o10cbltlp0ac4bnpen3s211pl">&nbsp;&nbsp;主动的客户信息收集技术可以直接与目标计算机或其用户联系。这可能涉及给用户打个电话，以尝试提取有用的信息，或者向受害者发送目标电子邮件，以希望单击链接，该链接将枚举目标的操作系统版本，浏览器版本和已安装的扩展程序。</a>
+</h3>
+<h3 class="topic">
+<a name="0clsoshdjs6cnj1t0qpd4qmoql">&nbsp;&nbsp;社会工程学和客户端攻击</a>
+</h3>
+<h3 class="topic">
+<a name="79267jeo07ds2f0hp1tctiemhp">&nbsp;&nbsp;&nbsp;由于大多数客户端攻击都需要与目标进行某种形式的交互，例如要求目标单击链接，打开电子邮件，运行附件或打开文档，因此，我们应优先利用社交工程策略来提高机会成功。</a>
+</h3>
+<h3 class="topic">
+<a name="78mdun8mf17o0ju2fa38769vjv">&nbsp;&nbsp;&nbsp;&nbsp;使用设计为无法打开的格式错误的&ldquo;简历&rdquo;文档回应职位发布，从而对hr部门进行攻击，第二天，我们收到一封电子邮件回复，指出HR无法打开我们的文档也就不足为奇了。 为了帮助解决该问题，我们答复（希望通过电话，如果可能的话）询问他们使用的Microsoft Office的确切版本，并提供此问题可能是由版本不兼容引起的。 可以通过询问Office中可能启用的安全功能或正在使用的操作系统版本来继续这种类型的对话框。 这种类型的对话框必须平衡，低调，并带有说明问题理由的注释</a>
+</h3>
+<h3 class="topic">
+<a name="02cl4qa9e8ginaf3op446sbvmv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;我们发现HR代表毫不奇怪地使用了特定版本的Microsoft Office，并且允许他们执行Word宏。 掌握了这些信息之后，我们可以制作第二个简历Word文档，其中包含一个利用PowerShell来打开反向外壳的宏并将其通过电子邮件发送给他们</a>
+</h3>
+<h3 class="topic">
+<a name="39ehscm4r92i0vmf75qtau480s">&nbsp;&nbsp;客户端指纹</a>
+</h3>
+<h3 class="topic">
+<a name="77tva5b16giddeomt353umbv3j">&nbsp;&nbsp;&nbsp;客户端指纹识别的过程对于我们的攻击成功与否至关重要，但是要获得最精确的信息，我们通常必须从目标计算机本身收集信息。</a>
+</h3>
+<h3 class="topic">
+<a name="75cbp6m21fpd1tp2rttdhbupfs">&nbsp;&nbsp;&nbsp;&nbsp;假设在一个实际示例中，我们已经说服受害者访问了我们的恶意网页。 我们的目标是识别受害者的网络浏览器版本以及有关底层操作系统的信息</a>
+</h3>
+<h3 class="topic">
+<a name="4n9et027ljv625s7ugks8pitgv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;我们可以创建自己的自定义工具，但是有许多可用的开源指纹识别项目，最可靠的项目通常是那些直接利用通用客户端组件（例如JavaScript）的项目</a>
+</h3>
+<h3 class="topic">
+<a name="1s9nih82t61cdqbra67785c58r">&nbsp;&nbsp;&nbsp;使用开源指纹识别项目</a>
+</h3>
+<h3 class="topic">
+<a name="1pgs9gfnvvs01tprks9e7bfhuv">&nbsp;&nbsp;&nbsp;&nbsp;在此示例中，我们将使用Fingerprintjs2 JavaScript库，可以通过从其GitHub存储库下载并提取项目归档文件来进行安装：https://github.com/Valve/fingerprintjs2</a>
+</h3>
+<h3 class="topic">
+<a name="5b53fdkfsp7t7kh72b4kjsqr6q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%94%BB%E5%87%BB_files/1kbjiefekp5l7s3d7f0f7rqh1q.png"></p>
+<h3 class="topic">
+<a name="23075nsiosp6nilvi10mhgedah">&nbsp;&nbsp;&nbsp;&nbsp;我们可以根据项目随附的示例将此库合并到HTML文件中。 我们将从位于Kali Web服务器的/ var / www / html / fp目录中的Fingerprint2.html HTML文件中包括Fingerprint2.js库：</a>
+</h3>
+<h3 class="topic">
+<a name="7s2v98rlppfjud5oth315ridhg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%94%BB%E5%87%BB_files/4hrn31omplogsii566g365cc45.png"></p>
+<h3 class="topic">
+<a name="7aubbvve2t6jo98smrnm144u3m">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;JavaScript代码调用了Fingerprint2.get静态函数来启动指纹过程。 库返回的components变量是一个数组，其中包含从客户端提取的所有信息。 存储在components数组中的值被传递给murmur哈希函数，以创建浏览器的哈希指纹。 最后，提取相同的值并显示在HTML页面中。</a>
+</h3>
+<h3 class="topic">
+<a name="3fgrjepmu7b3povulmfs4luu3m">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%94%BB%E5%87%BB_files/3sqo8hgct6ektr4bnsisk9ds8t.png"></p>
+<h3 class="topic">
+<a name="04pfc18dl874q67vtnda0e5bod">&nbsp;&nbsp;&nbsp;&nbsp;Windows实验计算机的上面的网页显示，几行JavaScript代码提取了浏览器用户代理字符串，其本地化，已安装的浏览器插件和相对版本，有关基础Win32操作系统平台的一般信息，以及其他详情</a>
+</h3>
+<h3 class="topic">
+<a name="7p4r34cj9v8888hct1bap9aim4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%94%BB%E5%87%BB_files/7tenl42bmddcuc9u4an6crm55c.png"></p>
+<h3 class="topic">
+<a name="0lsc4jp9uiu87a6l14kohgueto">&nbsp;&nbsp;&nbsp;&nbsp;我们可以将此用户代理字符串提交到在线用户代理数据库，以标识浏览器版本和操作系统</a>
+</h3>
+<h3 class="topic">
+<a name="0k93nnelmrer6cg4kkgs849f99">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%94%BB%E5%87%BB_files/6e18vctc9cjgtoovnn3unah1nl.png"></p>
+<h3 class="topic">
+<a name="3975q99cpv332qqr2mriu4rni8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%94%BB%E5%87%BB_files/1mr2jdkjv17ttqlrvn61evb4rb.png"></p>
+<h3 class="topic">
+<a name="4e946oaa0grob8p0cvjh5qme2h">&nbsp;&nbsp;&nbsp;&nbsp;用户代理字符串隐式告诉我们Microsoft Edge 41在Windows 10的32位版本上运行。对于64位版本的Windows，该字符串将包含一些有关64位体系结构的信息</a>
+</h3>
+<h3 class="topic">
+<a name="1r4jfdh7c1q0ohnq6damghelho">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;即用户代理字符串中显示64位win10系统</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%94%BB%E5%87%BB_files/0fv82glelvdmdvpr1l4c8ro1ks.png"></p>
+<h3 class="topic">
+<a name="4aovi0vtbsec0u0cj1qsiokbbl">&nbsp;&nbsp;&nbsp;&nbsp;以上JavaScript代码将数据显示给受害者而不是攻击者，所以需要找到一种方法来将提取的信息传输到攻击的Web服务器</a>
+</h3>
+<h3 class="topic">
+<a name="2friqo516jfusv8093a9gr11dv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;几行Ajax代码（https://en.wikipedia.org/wiki/Ajax_(programming)）应该可以解决问题。 383显示了先前使用的指纹网页的修改版本。 在此代码中，我们使用XMLHttpRequest JavaScript API通过POST请求与攻击的Web服务器进行交互。  POST请求是针对存储恶意网页的同一服务器发出的，因此xmlhttp.open方法中使用的URL未指定IP地址。&#13;
+类似于前面的示例，由几行JavaScript代码处理了components数组，其中包含由Fingerprint2库提取的信息。 但是，这次，结果输出字符串是通过POST请求发送到js.php的</a>
+</h3>
+<h3 class="topic">
+<a name="4s6qak6203tb2a54hji67hk3ig">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%94%BB%E5%87%BB_files/74tqtbb06atnfmilt6p9vrbv2b.png"></p>
+<h3 class="topic">
+<a name="76a6d6f9m8lk6dkmsrnohqf2ei">&nbsp;&nbsp;&nbsp;&nbsp;PHP代码首先从$ _SERVER339数组中提取客户端IP地址，其中包含服务器和执行环境信息。 然后，将IP地址连接到从JavaScript POST请求接收的文本字符串，并将其写入/ var / www / html / fp /目录中的Fingerprint.txt文件。 请注意FILE_APPEND标志的使用，它使我们可以将多个指纹存储到同一文件中。</a>
+</h3>
+<h3 class="topic">
+<a name="4bj5834appiufaknkglsslv8rm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%94%BB%E5%87%BB_files/0n87s1nvk5po398bj19rcnbdkd.png"></p>
+<h3 class="topic">
+<a name="1o5o44sq1em9dj9lm8j8up2inb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;为了使此代码起作用，我们需要允许Apache www-data用户写入fp目录</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%94%BB%E5%87%BB_files/12jupn9hird4b8c7oq0h50frum.png"></p>
+<h3 class="topic">
+<a name="58fa4g19s02cbc6jsppbsa6b1v">&nbsp;&nbsp;&nbsp;&nbsp;一旦受害者浏览了fingerprint2server.html网页（图​​242），我们就可以在攻击服务器上检查fingerprint.txt的内容：</a>
+</h3>
+<h3 class="topic">
+<a name="08rtvqe15634n6pj449g814a1j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%94%BB%E5%87%BB_files/1asoqpunug6kmmlc1sr96brgk6.png"></p>
+<h3 class="topic">
+<a name="2n6bmfe11offeaj89pm2bkqb6h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;进行此修改后，受害者的浏览器中将不会显示任何信息。  XMLHttpRequest静默地将数据传输到我们的攻击服务器，而无需受害者的任何交互。 受害者看到的唯一输出是我们选择的文本：</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%94%BB%E5%87%BB_files/1r4huqdth4b0smeat6ovog2ghh.png"></p>
+<h2 class="topic">
+<a name="2lmp2nf6re3uj04ovuq4n10rgu">利用HTML应用程序</a>
+</h2>
+<h3 class="topic">
+<a name="0cqna6jck7711hm60lv90jd5rm">&nbsp;关于html应用程序</a>
+</h3>
+<h3 class="topic">
+<a name="56mflad32cqvlepm1260c98gv1">&nbsp;&nbsp;如果创建的文件扩展名为.hta而不是.html，则Internet Explorer会自动将其解释为HTML应用程序并提供使用mshta.exe程序执行该文件的功能。</a>
+</h3>
+<h3 class="topic">
+<a name="38b1esq9489tgfmseegp9cbq7i">&nbsp;&nbsp;&nbsp;   HTML应用程序的目的是允许直接从Internet Explorer直接执行应用程序，而不是下载并手动运行可执行文件。 由于这与Internet Explorer中的安全性边界冲突，因此HTML应用程序始终由Microsoft签名的二进制mshta.exe在浏览器的安全上下文之外执行。 如果用户允许这种情况发生，攻击者可以在该用户的权限下执行任意代码，从而避免了Internet Explorer通常施加的安全限制。</a>
+</h3>
+<h3 class="topic">
+<a name="1j00pih7gkkv2pf2cpk6h90ggi">&nbsp;&nbsp;&nbsp;&nbsp;尽管此攻击媒介仅对Internet Explorer起作用，并且在一定程度上对Microsoft Edge起作用，但由于许多公司都将Internet Explorer用作其主要浏览器，因此它仍然有用。 此外，此矢量杠杆功能直接内置于Windows操作系统中，更重要的是，它与安全性较差的Microsoft旧式Web技术（例如ActiveX.34）兼容。</a>
+</h3>
+<h3 class="topic">
+<a name="6tbb1kh173mmtvmo3h2a8iuv5q">&nbsp;探索HTML应用程序</a>
+</h3>
+<h3 class="topic">
+<a name="6bf5u1o5jej27t153ltjq53nsi">&nbsp;&nbsp;与HTML页面类似，典型的HTML应用程序包括html，body和script标签，后跟JavaScript或VBScript代码。 但是，由于HTML应用程序是在浏览器外部执行的，因此我们可以自由使用通常在浏览器中被阻止的旧版和危险功能。</a>
+</h3>
+<h3 class="topic">
+<a name="5a2ag52ntst9v9bbr387rg8po4">&nbsp;&nbsp;&nbsp;   在此示例中，我们将利用ActiveXObjects，它可以潜在地（危险地）提供对底层操作系统命令的访问。 这可以通过Windows Script Host功能或WScript尤其是Windows Script Host Shell对象来实现,实例化Windows Script Host Shell对象后，我们可以调用其运行方法，以便在目标客户端计算机上启动应用程序。</a>
+</h3>
+<h3 class="topic">
+<a name="65enco8jhmurp8bnk9vg7ipa35">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%94%BB%E5%87%BB_files/261a22elre6r2lbjpknvobnvb6.png"></p>
+<h3 class="topic">
+<a name="50dmms2l6ij1pl5n3ciqa5jm2r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;相关概念的参考链接</a>
+</h3>
+<h3 class="topic">
+<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Microsoft_Extensions/ActiveXObject" name="08th4p35up9u9obm675atqqu1d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://developer.mozilla.org/en-US/docs/Web/JavaScript/Microsoft_Extensions/ActiveXObject</a>
+</h3>
+<h3 class="topic">
+<a name="6udlqnfp28kavi8vjvns7obto8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/windowsscripting/at5ydy31(v=vs.84)</a>
+</h3>
+<h3 class="topic">
+<a name="46apfk7rqcerp6mcbohaomuamj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/windowsscripting/aew9yb99(v=vs.84)</a>
+</h3>
+<h3 class="topic">
+<a href="http://www.vbsedit.com/html/6f28899c-d653-4555-8a59-49640b0e32ea.asp" name="109oddpn8g0rc8qpulc30pno1v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;http://www.vbsedit.com/html/6f28899c-d653-4555-8a59-49640b0e32ea.asp</a>
+</h3>
+<h3 class="topic">
+<a name="0ppfcgfsjojqku5d2odo7eq6jo">&nbsp;&nbsp;我们可以将此代码放在我们的Kali机器（poc.hta）上的文件中，并从Apache Web服务器提供它。 一旦受害者使用Internet Explorer访问此文件，将向他们显示如图24所示的弹出对话框。</a>
+</h3>
+<h3 class="topic">
+<a name="1oobgfm90rtobuvui33b97u00n">&nbsp;&nbsp;&nbsp;该对话框是尝试执行.hta文件的结果。 选择打开将提示另一个对话框：</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%94%BB%E5%87%BB_files/7i7lrqilarrrk7llh8iopldfcs.png"></p>
+<h3 class="topic">
+<a name="35bd5hvjlpi8fj97i96buig76q">&nbsp;&nbsp;&nbsp;&nbsp;之所以显示第二个对话框，是因为默认情况下启用了Internet Explorer的沙盒保护（也称为&ldquo;保护模式&rdquo; 346）。 受害者可以选择允许以允许该操作，该操作将执行JavaScript代码并启动cmd.exe（关于ie的沙盒保护：https://technet.microsoft.com/en-us/windows/bb250462(v=vs.60)）</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%94%BB%E5%87%BB_files/402j3bt4vbk9tsoajqp7rsetee.png"></p>
+<h3 class="topic">
+<a name="5b5ocbkqakdbtf38v9t9g0eu30">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;运行cmd.exe</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%94%BB%E5%87%BB_files/6rrjoj84gmem7cem3bb0e2jnbl.png"></p>
+<h3 class="topic">
+<a name="6oecg59oa4hsafctukr7eq8vn1">&nbsp;&nbsp;在执行mshta.exe的过程中，它使我们的命令提示符后面的另一个窗口保持打开状态。 为了避免这种情况，我们可以更新概念验证以使用.close（）;关闭此窗口。 </a>
+</h3>
+<h3 class="topic">
+<a name="53ha2ea0dea6ngt4kspb7rro1k">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%94%BB%E5%87%BB_files/75i53i3lh7abia1ch72p6es31d.png"></p>
+<h3 class="topic">
+<a name="3vu4b4c3gt1d7ubdk74npmo38t">&nbsp;&nbsp;与其使用Run方法来启动cmd.exe，我们将转向功能更强大，功能更强大的PowerShell框架。</a>
+</h3>
+<h3 class="topic">
+<a name="3qo5tt4rapphrh9gicgka76hj9">&nbsp;HTA攻击行动</a>
+</h3>
+<h3 class="topic">
+<a name="25jon9evalgagdfpspqn45hcfr">&nbsp;&nbsp;使用msfvenom依靠hta-psh输出格式将基本HTML应用程序转变为攻击，从而基于PowerShell创建HTA有效负载。右图中将生成完整的反向Shell有效负载并将其保存到文件evil.hta中。</a>
+</h3>
+<h3 class="topic">
+<a name="03mva0745mrsbb9pjtb4fcb9ul">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%94%BB%E5%87%BB_files/2brqbipu67jcmj6f7t09btnikv.png"></p>
+<h3 class="topic">
+<a name="6tl863m0rr0div9pb3csvb9m35">&nbsp;&nbsp;遍历生成的.hta文件，以更好地理解一切。 首先要注意的事情之一是，为了诱骗检测和防病毒软件，已将变量名随机化。</a>
+</h3>
+<h3 class="topic">
+<a name="179rh6ce8pphusoma5jchih06d">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%94%BB%E5%87%BB_files/37o6u5pgompp7fvh8an5ckdcip.png"></p>
+<h3 class="topic">
+<a name="72v4cfl0rh4eqhrr3ddgipipko">&nbsp;&nbsp;&nbsp;&nbsp;第一个参数-nop是-NoProfile的简写，它指示PowerShell不要加载PowerShell用户配置文件。启动PowerShell时，默认情况下，它将加载任何现有用户的配置文件脚本，这可能会对我们代码的执行产生负面影响。 此选项将避免该潜在问题。</a>
+</h3>
+<h3 class="topic">
+<a name="2bi4tbep0q51hnbid108trfo35">&nbsp;&nbsp;&nbsp;&nbsp;接下来，我们的脚本使用-w隐藏（-WindowStyle隐藏的简写）来避免在用户的桌面上创建窗口。</a>
+</h3>
+<h3 class="topic">
+<a name="1vcnips4hntv4oupgfu67k2n78">&nbsp;&nbsp;&nbsp;&nbsp;最后，极其重要的-e标志（-EncodedCommand的缩写）使我们能够直接将Base64编码的PowerShell脚本作为命令行参数提供</a>
+</h3>
+<h3 class="topic">
+<a name="2p6gditqealt1ma40vnl4fkk9a">&nbsp;&nbsp;我们将在我们的Kali机器上托管这个新的HTA应用程序，并启动Netcat侦听器以测试我们的攻击。 然后，我们将通过浏览到恶意URL并接受两个安全警告来模拟受害者。 如果一切都按计划进行，那么我们应该能够捕获到反向shell：</a>
+</h3>
+<h3 class="topic">
+<a name="6oii6t8nufo6gmfio629ggb3ob">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%94%BB%E5%87%BB_files/70c9crf0im78knkon2mn3sdtbt.png"></p>
+<h3 class="topic">
+<a name="0mffp8f4pm7omvkdvhsvv0sdis">&nbsp;&nbsp;此攻击媒介使我们可以通过Internet Explorer破坏Windows客户端，而不会出现特定的软件漏洞。 由于可以通过电子邮件传递到HTML应用程序的链接，因此我们甚至可以损害NAT的内部客户端。</a>
+</h3>
+<h2 class="topic">
+<a name="7df2t0lm8vqkcpu0vvmlknf68e">利用Microsoft Office</a>
+</h2>
+<h3 class="topic">
+<a name="3eido6m1d9isatiqja4bv57u8v">&nbsp;安装Microsoft Office</a>
+</h3>
+<h3 class="topic">
+<a name="4jimf45fu3ctn5bsovj41br6gt">&nbsp;&nbsp;在Windows 10 student VM上安装office：在文件资源管理器中导航到C：\ tools \ client_side_attacks \ Office2016.img并双击它。 这会将文件作为虚拟CD加载，并允许我们从Setup.exe开始安装</a>
+</h3>
+<h3 class="topic">
+<a name="67cs8csdmghlu8lkr9bcfpt5tq">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%94%BB%E5%87%BB_files/4k6244m4cl7l0pposp8fr12f58.png"></p>
+<h3 class="topic">
+<a name="1ng2jaqa7tu6dk9v60sgqq2kfu">&nbsp;&nbsp;安装完成后，我们在启动屏幕上按关闭以退出安装程序并从开始菜单中打开Microsoft Word。  Microsoft Word打开后，将出现如图所示的弹出窗口。 我们可以通过单击右上角突出显示的十字来关闭它，以开始7天试用。</a>
+</h3>
+<h3 class="topic">
+<a name="3l5lgtj96asrub81eip4u32c3e">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%94%BB%E5%87%BB_files/4gmprc187ur6eqcdj52ivlju0t.png"></p>
+<h3 class="topic">
+<a name="2in3kc8tkp85bpfh3dl49a51fd">&nbsp;&nbsp;最后一步，显示了一个许可协议弹出窗口，必须按&ldquo;接受并启动Word&rdquo;来接受它</a>
+</h3>
+<h3 class="topic">
+<a name="12e5a0ensqlp7a3h17ijq7kq37">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%94%BB%E5%87%BB_files/73kjnps23cb116fp2cadeuphl2.png"></p>
+<h3 class="topic">
+<a name="2g6e4m66ubt4ocptaq8rt37hq1">&nbsp;Microsoft Word宏</a>
+</h3>
+<h3 class="topic">
+<a name="3th8ore4acnpetiiop8cnirgen">&nbsp;&nbsp;Microsoft Office应用程序（如Word和Excel）允许用户嵌入宏，这些宏是通过组合在一起以编程方式完成任务的一系列命令和指令。组织经常使用宏来管理动态内容并将文档与外部内容链接。 更有趣的是，可以在Visual Basic for Applications（VBA）中从头开始编写宏，VBA是一种功能齐全的脚本语言，可以完全访问ActiveX对象和Windows Script Host，类似于HTML Applications中的JavaScript。</a>
+</h3>
+<h3 class="topic">
+<a name="6437a9dn7a87tcgtk7vqmimfem">&nbsp;&nbsp;&nbsp;创建Microsoft Word宏就像选择&ldquo;视图&rdquo;功能区并选择&ldquo;宏&rdquo;一样简单。 如图249所示，我们只需为宏键入一个名称，然后在Macros in下拉列表中，选择要插入宏的文档的名称。 当我们单击创建时，一个简单的宏框架将插入到我们的文档中。</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%94%BB%E5%87%BB_files/2cdjtr6ta8vo50q31rlv7990lm.png"></p>
+<h3 class="topic">
+<a name="1mb4g2ben4ru3vejubk01qfoa6">&nbsp;&nbsp;VBA宏中使用的主要过程以关键字Sub开头，以End Sub结尾。 这实质上标志着我们宏的主体。Sub过程与VBA中的Function非常相似。 区别在于，子过程不能在表达式中使用，因为它们不返回任何值，而函数却可以。</a>
+</h3>
+<h3 class="topic">
+<a name="504hl2ahecn6hd3vovoiie2ku8">&nbsp;&nbsp;&nbsp;至此，我们的新宏MyMacro（）只是一个空过程，几行以撇号开头，这标志着VBA中注释的开始。</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%94%BB%E5%87%BB_files/0iugha0hmqs990tnfj3e3823lh.png"></p>
+<h3 class="topic">
+<a name="0b3auvp263r8l7m1ufq4kbi1hm">&nbsp;&nbsp;&nbsp;&nbsp;要像之前一样通过ActiveX调用Windows脚本宿主，我们可以将CreateObject函数与Wscript.Shell Run方法一起使用。</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%94%BB%E5%87%BB_files/47cjm15adaqpdrj5tmes4njnrp.png"></p>
+<h3 class="topic">
+<a name="17ukm5s367bj6lsq1gp6q19nf5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;由于Office宏不会自动执行，因此我们必须使用两个预定义的过程，即在打开新文档时执行的AutoOpen过程和在重新打开已经打开的文档时执行的Document_Open过程。 这两个过程都可以调用我们的自定义过程，因此可以运行我们的代码，代码功能为打开cmd窗口</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%94%BB%E5%87%BB_files/6ah8dnie7peidmbmhasd511kif.png"></p>
+<h3 class="topic">
+<a name="3ifgrp55eg5scs2cgk8oguv5d1">&nbsp;&nbsp;&nbsp;必须将包含文档另存为.docm或更旧的.doc格式，该格式支持嵌入式宏，但必须避免使用不支持它们的.docx格式。当我们重新打开包含宏的文档时，将看到一个安全警告，表明宏已被禁用。 我们必须单击启用内容以运行宏。 这是Microsoft Office的默认安全设置，虽然可以完全禁用使用宏来防御此攻击，但由于在大多数环境中通常使用它们，因此通常会启用它们。一旦点击启用内容，cmd窗口会被打开，否则攻击会失效，所以受害者需要不了解潜在威胁或有足够动机单击该按钮</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%94%BB%E5%87%BB_files/0f9mte0fr3rbcr1i7sni8dtkd0.png"></p>
+<h3 class="topic">
+<a name="3t1jn4fc3b60unrkt97vlmh2f7">&nbsp;&nbsp;&nbsp;&nbsp;使用PowerShell，并重新使用Base64编码的字符串执行Metasploit shellcode的功能。为此，我们将声明一个String类型的变量，其中包含我们要执行的PowerShell命令。 我们将在宏中添加一行以为字符串变量保留空间：</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%94%BB%E5%87%BB_files/1470l0gr86aainncmf9ajg8t2v.png"></p>
+<h3 class="topic">
+<a name="3vfpvtkc110om4mjh18qr2riuh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以将base64编码的PowerShell脚本嵌入为单个字符串，但是VBA对于文字字符串的限制为255个字符。 此限制不适用于存储在变量中的字符串，因此我们可以将命令分成多行并将它们连接起来。使用一个简单的Python脚本来拆分命令： </a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%94%BB%E5%87%BB_files/6vu5ihl56rut35sne8jl0j6paa.png"></p>
+<h3 class="topic">
+<a name="61l7qnir1i12lqicd7aoovhhnk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;重新编写宏，让其执行powershell脚本，从而获得反弹shell</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%94%BB%E5%87%BB_files/20entohlblfcopesfuj805mrv6.png"></p>
+<h3 class="topic">
+<a name="17tg16vujsmb8jme2phakqiqai">&nbsp;&nbsp;&nbsp;打开更新的文档之前启动了Netcat侦听器，我们将看到该宏可以正常工作（只有在更改文档名称的情况下，宏安全警告才会再次出现）</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%94%BB%E5%87%BB_files/3il27h864fan5nj8imorrp6489.png"></p>
+<h3 class="topic">
+<a name="7stn7ahdjcqoojo9n7qtot5j6j">&nbsp;对象链接和嵌入</a>
+</h3>
+<h3 class="topic">
+<a name="67t0mqhpq6c4aren8h8f11qfit">&nbsp;&nbsp;即利用动态数据交换（DDE）从Office文档中执行任意应用程序，但此问题自2017年12月以来已得到修复.但是，我们仍然可以利用对象链接和嵌入（OLE） 滥用Microsoft Office的文档嵌入功能。在这种攻击情况下，我们将在Microsoft Word文档中嵌入Windows批处理文件</a>
+</h3>
+<h3 class="topic">
+<a name="3a8bva3fkt1jet1ap9unf8ctqd">&nbsp;&nbsp;&nbsp;Windows批处理文件是一种较旧的格式，通常被更现代的Windows本机脚本语言（例如VBScript和PowerShell）取代。 但是，即使在Windows 10上，批处理脚本仍可以完全正常运行，并且可以执行应用程序。</a>
+</h3>
+<h3 class="topic">
+<a name="4oe1v3ha5dv47o5l84acrad87u">&nbsp;&nbsp;启动cmd窗口的批处理脚本</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%94%BB%E5%87%BB_files/6tmba5re07jjm7tlpbg4fehj12.png"></p>
+<h3 class="topic">
+<a name="262e5h8a7mn9qj83bltjgnd59h">&nbsp;&nbsp;&nbsp;将上述脚本包含在Microsoft Word文档中。 我们将打开Microsoft Word，创建一个新文档，导航到&ldquo;插入&rdquo;功能区，然后单击&ldquo;对象&rdquo;菜单。 在这里，我们将选择&ldquo;从文件创建&rdquo;选项卡，然后选择我们新创建的批处理脚本launch.bat：</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%94%BB%E5%87%BB_files/24bakrqf8qmgq95q83t8obkfuv.png"></p>
+<h3 class="topic">
+<a name="1kq4sg77f6hqt1qlf21bhpqr4c">&nbsp;&nbsp;&nbsp;&nbsp;可以更改Word文档中批处理文件的外观，以使其看起来更好。 为此，我们只需选中&ldquo;显示为图标&rdquo;复选框，然后选择&ldquo;更改图标&rdquo;，将弹出如图所示的菜单框，使我们可以进行更改，将该嵌入式批处理文件图标修改为excel，文件名修改为ReadMe.xls，从而降低受害者警觉，接受菜单选项后，批处理文件将嵌入到Microsoft Word文档中。</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%94%BB%E5%87%BB_files/385mrnpgecojdr3d9th85fb6aj.png"></p>
+<h3 class="topic">
+<a name="5fdu1vbkaia23uhi6si8i5dfm1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;双击批处理文件，并接受安全警告并启动cmd.exe。</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%94%BB%E5%87%BB_files/7eev1s9fbds8p1m5u8stucib4b.png"></p>
+<h3 class="topic">
+<a name="1fvtj7mu0mp5vs6iu6852bdum3">&nbsp;&nbsp;同样，我们可以执行任意程序，并且必须使用Base64编码命令将其转换为PowerShell的执行。（即通过powershell启动反弹shell的批处理文件）</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%94%BB%E5%87%BB_files/0q96ic8cpk4tabaijqgo7h94bu.png"></p>
+<h3 class="topic">
+<a name="0n73mtntp684jgfna14uaa58uj">&nbsp;&nbsp;&nbsp;嵌入更新的批处理文件后，双击该文件将生成反向外壳程序</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%94%BB%E5%87%BB_files/0flvglpv9dcn24ni3tg6pnqfe2.png"></p>
+<h3 class="topic">
+<a name="26u7310qnfjo8h28eiggg35hvt">&nbsp;&nbsp;实例尝试</a>
+</h3>
+<h3 class="topic">
+<a name="1q7ih2s4dlk6btsndf154445ad">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%94%BB%E5%87%BB_files/7j9cgbig70lobdopc63v554gh2.png"></p>
+<h3 class="topic">
+<a name="4uosvuas8amqb6isu9a4hp0qnn">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%94%BB%E5%87%BB_files/39i0ff0oq1u7brvdsioicjf8sa.png"></p>
+<h3 class="topic">
+<a name="2a49dns5glopb2hp13n3kn2k9h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%94%BB%E5%87%BB_files/55j01brlrbh19uj59n8sv59rql.png"></p>
+<h3 class="topic">
+<a name="1549p8r3bga658dqfh3m2ihc0g">&nbsp;避开受保护的视图</a>
+</h3>
+<h3 class="topic">
+<a name="5dqv8vo2oeural5d61qbrknbck">&nbsp;&nbsp;当文档来自于电子邮件或网络下载时，文档会开启受保护视图的保护机制，该机制会禁用文档中的所有编辑和修改，并阻止宏或嵌入式对象的执行，所以需要绕过该机制</a>
+</h3>
+<h3 class="topic">
+<a name="0b5h2j70bmb6232qneoaif1hqq">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%94%BB%E5%87%BB_files/4fkla352vg7b8m273g8na6cpv5.png"></p>
+<h3 class="topic">
+<a name="52ltvihl81oac94fsfif1334rb">&nbsp;&nbsp;尽管受害者可以单击&ldquo;启用编辑&rdquo;并退出&ldquo;受保护的视图&rdquo;，但这不太可能。 理想情况下，我们宁愿完全绕开受保护的视图，一种简单的方法是使用另一个Office应用程序。&#13;
+   与Microsoft Word一样，Microsoft Publisher允许嵌入对象并最终以与Word和Excel完全相同的方式执行代码，但不会为Internet交付的文档启用受保护的视图。 我们可以使用以前应用于Word的策略来绕过这些限制，但是缺点是与Word或Excel相比，Publisher的安装频率较低。 不过，如果您的指纹检测到安装了Publisher，则这可能是一个可行且更好的选择</a>
+</h3>
+<h3 class="topic">
+<a name="2g7s76d5bsemakj9j9p9iu56ge">&nbsp;&nbsp;&nbsp;即对于网络下载的Microsoft Publisher文件不会默认开启受保护的视图，可以使用与word相同的方法嵌入对象并进行代码执行</a>
+</h3>
+</body>
+</html>

@@ -1,0 +1,474 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>物联网安全-通信接口调试</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="5tbsiapu0vd28ctt5mkgmoglp8">物联网安全-通信接口调试</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E9%80%9A%E4%BF%A1%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95_files/images/%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E9%80%9A%E4%BF%A1%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95.jpg"></div>
+<h2 class="topic">
+<a name="29a81dfk6k18p22g6lmmjhvr3l">UART接口（路由器中最常见）</a>
+</h2>
+<h3 class="topic">
+<a name="5mgtmejjj4qic4oohjesi8372d">&nbsp;除了图上的三个引脚，uart还有一个vcc引脚，但是该引脚对于接口调试没有用，注意路由器的RX TX与编程器的RX TX要交叉连接</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E9%80%9A%E4%BF%A1%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95_files/1lki1qvn4qql31j41tatpeg1fo.png"></p>
+<h3 class="topic">
+<a name="32l0rekrq61v63p517vhqpnetn">&nbsp;&nbsp;TTL装USB工具上有GND TX RX等引脚，可以通过杜邦线与路由器上的UART接口连接，从而调试</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E9%80%9A%E4%BF%A1%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95_files/43m6t3fd5j9lqt1una4j8qik3u.png"></p>
+<h3 class="topic">
+<a name="7jfpqp0pcl2nau1houh1tiejkl">&nbsp;&nbsp;&nbsp;minicom功能包括屏幕输出捕获、基础调试功能&#13;
+当使用TTL转USB将路由器连接到计算机之后，计算机上使用相关接口调试工具对uart接口进行调试</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E9%80%9A%E4%BF%A1%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95_files/1hls41a25f53bf34k3qbab76s0.png"></p>
+<h3 class="topic">
+<a name="3j0otbckgaf4p5fb0hfk9bgbn9">&nbsp;当路由器与计算机连接完毕，打开接口调试工具后，有可能能够直接获得想要的数据，此时接口调试工具处于默认配置，如果设备符合默认配置的要求，则可以正常调试，并查看输入输出，而有的时候需要更改配置后，才能使设备与计算机正常调试，此时配置涉及相关概念波特率、时钟频率、波特率因子&#13;
+相关资料&#13;
+https://www.cnblogs.com/sunnywh/p/3957527.html</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E9%80%9A%E4%BF%A1%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95_files/4b76ce6nctpcvr7oef66ue7b3r.png"></p>
+<h3 class="topic">
+<a name="2rkvj9vdorre5ei1qb6kh2ju36">&nbsp;&nbsp;可以在该网站上查看到部分设备的接口和波特率的信息</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E9%80%9A%E4%BF%A1%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95_files/1lkatoeo2l8k9211f7ujd91tan.png"></p>
+<h3 class="topic">
+<a name="230hku167idh3oduofckhjqjv4">&nbsp;串口通讯主要分为两种，同步通讯和异步通讯，&#13;
+&#13;
+前者主要以数据块形式进行传输，数据块头尾会加上字符或bit序列作为开头或结尾，同步传输时时钟时间是固定的，即每个数据块之间传输间隔是固定的&#13;
+&#13;
+异步通讯以字符形式进行传输，每个字符都要加一位起始位，结尾存在奇偶位和停止位，异步通讯数据帧之间的传输间隔可以更改，异步通讯的起始位为低电平0，而数据位可以是5-8位，之后有1位的校验位，1-2位的停止位，校验位和停止位均为电平1</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E9%80%9A%E4%BF%A1%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95_files/62jiatvi7dn62qd2qikgen7r1l.png"></p>
+<h2 class="topic">
+<a name="2j7fs34r5ol7iei5pljc1kh2cq">UART实战</a>
+</h2>
+<h3 class="topic">
+<a name="0h8kf6l3p24t7dpidpvasmun5t">&nbsp;实际拿到板子后，可能无法直接分别哪个为UART接口，或者即使确定了UART接口，也无法确定具体的引脚，所以需要测试</a>
+</h3>
+<h3 class="topic">
+<a name="4s4m2gksivp0a3nlolus8pngrk">&nbsp;&nbsp;未标注具体引脚信息的UART接口</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E9%80%9A%E4%BF%A1%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95_files/66okaat85jmimfsku5ou3q5aj9.png"></p>
+<h3 class="topic">
+<a name="3qj68rshnlduo4brj5b1uk428m">&nbsp;&nbsp;&nbsp;标识了UART接口的主板</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E9%80%9A%E4%BF%A1%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95_files/7b72q6vhuf6smtp0f6onkrkhhv.png"></p>
+<h3 class="topic">
+<a name="51nk84ai3gfuitu51hnna2hi30">&nbsp;使用万用表测试UART接口</a>
+</h3>
+<h3 class="topic">
+<a name="4q5c8770bhbl09urln81nf1fcn">&nbsp;&nbsp;将万用表设置到用于测试直流的位置</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E9%80%9A%E4%BF%A1%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95_files/1fboo42vqcpigigq31j744a5fu.png"></p>
+<h3 class="topic">
+<a name="3couipdhr90nr3focgretteu19">&nbsp;&nbsp;&nbsp;电笔相交，万用表发出响铃，说明万用表正常，可以用于测试联通</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E9%80%9A%E4%BF%A1%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95_files/4empl9cdoidadn3t119mse9h1g.png"></p>
+<h3 class="topic">
+<a name="219cmcrnk39247q222ladbug8c">&nbsp;&nbsp;&nbsp;&nbsp;将黑表笔连接到电源处，将红表笔分别连接到四个uart接口的引脚处进行测试，当测试到右起第二个时，万用表响铃，说明该引脚为GND引脚，除了该引脚，其他引脚均不会响铃 （实际测试过程中，不同设备中万用表连接到vcc时也会响铃，说明该方法可以用于判断gnd和vcc）</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E9%80%9A%E4%BF%A1%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95_files/47amhrfrk8b2di8h1fjao2ij2j.png"></p>
+<h3 class="topic">
+<a name="7q5facklnmenugatd7tr52vslv">&nbsp;&nbsp;vcc引脚普遍电压都是3.3v，但是实际测量时，很多引脚的电压均为3.3v左右，所以不好分辨，故通过另一种技巧测量vcc</a>
+</h3>
+<h3 class="topic">
+<a name="103cg2u6nrpef09p24iq1nan1f">&nbsp;&nbsp;&nbsp;给板子接电</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E9%80%9A%E4%BF%A1%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95_files/0hbvi7p6nq9hktujdu7cmeodvl.png"></p>
+<h3 class="topic">
+<a name="6hvsjqtjqil4bdfk9elghkf861">&nbsp;&nbsp;&nbsp;&nbsp;使用两头均为公接口的杜邦线，一头连接GND引脚，另一头尝试连接其他引脚，当该头连接到VCC时，板子上的等会熄灭，以此我们可判断VCC引脚(因为VCC和GND相连时会发生短路)，所以剩下的两个引脚即为RX TX&#13;
+&#13;
+为了测试读引脚，可以将剩下两个引脚中的任意一个连接到计算机上，尝试读操作，看是否能读取数据，即使波特率不对，如果此时为读引脚，计算机也可以接受到乱码的数据</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E9%80%9A%E4%BF%A1%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95_files/2pabjjuuot7ovqvajsk3f40rq6.png"></p>
+<h3 class="topic">
+<a name="50fblj9shf7su71m5i4ft8o9ov">&nbsp;&nbsp;部分板子的UART接口呈孔洞状，此时可以将独立引脚插入孔洞，再用焊锡将引脚焊住，之后使用母接口的杜邦线即可稳点连接UART引脚</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E9%80%9A%E4%BF%A1%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95_files/5k9i6e8jbavvkdj80ui5hv9ckl.png"></p>
+<h3 class="topic">
+<a name="5d5e22kp70gdn3kvo72j92ldsa">&nbsp;&nbsp;&nbsp;也有部分UART接口被焊锡封死，此时需要使用较细的电烙铁将焊锡熔化，露出孔洞，之后再使用独立引脚焊接</a>
+</h3>
+<h3 class="topic">
+<a name="20qcejd6abahqhr3dm2rjen33t">&nbsp;调试设备（光猫）</a>
+</h3>
+<h3 class="topic">
+<a name="0hjhm7b1c16md0e25rv2fo7733">&nbsp;&nbsp;进入busybox的shell</a>
+</h3>
+<h3 class="topic">
+<a name="46h3fgubcpl1d22137fq774n4n">&nbsp;&nbsp;&nbsp;将ttl转usb设备连接到电脑上，在设备目录下过滤ttyUSB0通讯接口，该接口即为串口调试时和设备通讯的接口</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E9%80%9A%E4%BF%A1%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95_files/456o6a6e2h46ldhkc53u9agpku.png"></p>
+<h3 class="topic">
+<a name="6f11v49ru4m0a9lr5jr3uq1gq1">&nbsp;&nbsp;&nbsp;&nbsp;以root权限启动minicom进行端口调试</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E9%80%9A%E4%BF%A1%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95_files/192uhejjecsr4pqiddnuh8d08a.png"></p>
+<h3 class="topic">
+<a name="6rjtvkdme56hq9tdb0dqs34spn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;进入minicom</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E9%80%9A%E4%BF%A1%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95_files/41cqdltor9btqcs0b6u6uohl3q.png"></p>
+<h3 class="topic">
+<a name="0uliolo3b8vvd0j33ljqbiovin">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ctrl A+Z查看帮助信息  minicom所有操作均以键盘快捷键形式进行</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E9%80%9A%E4%BF%A1%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95_files/3m2i7th3c1ah2kr5mj8buvc6sc.png"></p>
+<h3 class="topic">
+<a name="4fvh9t5dl9v0j8ad3lv3l9nptf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;shift+p查看波特率，此时波特率为默认值115200，大多数设备均为该波特率</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E9%80%9A%E4%BF%A1%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95_files/1nt4ojledh50de2h076n0gpncf.png"></p>
+<h3 class="topic">
+<a name="3rh7976l954utthte0sn0tp96v">&nbsp;&nbsp;&nbsp;对光猫板进行供电，minicom输出启动加载信息&#13;
+U-Boot用于引导系统启动</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E9%80%9A%E4%BF%A1%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95_files/1ks7vajfuefj7ao30vg61gr1ad.png"></p>
+<h3 class="topic">
+<a name="23gai3eloev9s4t6gg2oajetvh">&nbsp;&nbsp;&nbsp;&nbsp;启动信息中有不少有用的信息可以关注</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E9%80%9A%E4%BF%A1%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95_files/5kitik7see1f83s81vr0oo4dc7.png"></p>
+<h3 class="topic">
+<a name="4bpfd8beck45q5q6is5agka855">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E9%80%9A%E4%BF%A1%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95_files/3065h2sbqmv1tptvd8ifgj1qqr.png"></p>
+<h3 class="topic">
+<a name="0o37dksbto0mepnhk34i171cau">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;进入busybox，执行指令查看系统内容</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E9%80%9A%E4%BF%A1%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95_files/6nq0q8vh9edbrckgpfmm9kdad9.png"></p>
+<h3 class="topic">
+<a name="2oljblmu8j8shopsk2hnug59s6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ctrl A+X 退出minicom，同时将光猫断电</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E9%80%9A%E4%BF%A1%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95_files/15bu78iu9sp1fbcpetflhtl91b.png"></p>
+<h3 class="topic">
+<a name="2ik7rq3h6l6m9oo2gfmdu8pnd1">&nbsp;&nbsp;进入U-Boot</a>
+</h3>
+<h3 class="topic">
+<a name="3ekq951600msvj12homfnobhiv">&nbsp;&nbsp;&nbsp;此时目标是进入U-Boot，而不是shell，第一步使用相同的命令，回车，进行监听</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E9%80%9A%E4%BF%A1%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95_files/2dgm6u7vlodldi3jk2o8pfgqeu.png"></p>
+<h3 class="topic">
+<a name="79v1qikch9n0gmes5p576n2r93">&nbsp;&nbsp;&nbsp;&nbsp;光猫进行接电，启动过程中按回车键，打断程序解压内核的操作，即可进入如图所示的U-Boot，U-Boot中的信息很有用，甚至可以用于辅助固件提取，当然如果进入shell，也可以使用shell打包整个系统</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E9%80%9A%E4%BF%A1%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95_files/696382nc2pe1pj5dl61e8c1d3j.png"></p>
+<h3 class="topic">
+<a name="37pkifjvlf3gilumgjvh35vv9h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;输入？可以查看U-Boot中包含的一些指令（通过此类指令可以提取固件或者看内存信息等），比如此时和tftp有关的指令，如果想要将设备烧录为其他固件，则可以使用tftp进行下载，然后下载的数据拷贝到flash芯片指定位置，从而进一步对固件进行修改（相当于修改了整个系统）</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E9%80%9A%E4%BF%A1%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95_files/4639r01r889qv4b4qesvkmiq8v.png"></p>
+<h3 class="topic">
+<a name="3f9bvjb2sttu05f6tv7v7mnl8u">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;输入printenv指令可以查看当前环境变量，其中有有用的信息</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E9%80%9A%E4%BF%A1%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95_files/2fslubk54pqpou1afjqnmu7sfv.png"></p>
+<h3 class="topic">
+<a name="1majfd5il7ubvcraoqu549mrtt">&nbsp;调试设备（路由器）</a>
+</h3>
+<h3 class="topic">
+<a name="7kj8v0ah9gv1g8jikgujs7oe1d">&nbsp;&nbsp;查看设备接口，使用命令进入minicom的监听模式</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E9%80%9A%E4%BF%A1%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95_files/78vl5s2n58dc6pj0dhponvj7cd.png"></p>
+<h3 class="topic">
+<a name="4v0tmnit6r8o01cden2cthgjft">&nbsp;&nbsp;&nbsp;minicom开始监听</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E9%80%9A%E4%BF%A1%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95_files/72pnegu6v0funm5qa5b7jo9udg.png"></p>
+<h3 class="topic">
+<a name="1h1d5jnsl51adu3gn9c0tf6b0j">&nbsp;&nbsp;&nbsp;&nbsp;对设备进行供电，查看到接收数据为乱码，其原因可能是TX RX接口接反了或者是波特率设置错误</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E9%80%9A%E4%BF%A1%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95_files/1f4k42ltjojtrbba6j49dev26h.png"></p>
+<h3 class="topic">
+<a name="7plgfqbov851kg2ko2qirvqkko">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;先退出minicom</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E9%80%9A%E4%BF%A1%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95_files/3vni40cp2numdgqtnt8k9u0d8o.png"></p>
+<h3 class="topic">
+<a name="7pkds7re4886hut1i0ajljheb3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;重新开始监听</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E9%80%9A%E4%BF%A1%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95_files/76bvrioon35j40l8246gl76l5o.png"></p>
+<h3 class="topic">
+<a name="0ksqoo22csnqifa22dh2sspmqt">&nbsp;&nbsp;ctrl a+z进入帮助，选择参数P，进入comm设置界面</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E9%80%9A%E4%BF%A1%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95_files/112aq6teu46o1aho7ot90l24qe.png"></p>
+<h3 class="topic">
+<a name="6ucpmjmb5v32vjbmkt2c60rjhv">&nbsp;&nbsp;&nbsp;此时波特率为默认的115200，使用快捷键A B可以对波特率进行加或减的操作</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E9%80%9A%E4%BF%A1%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95_files/3kg3kefm3odbh029q11ffbpd6o.png"></p>
+<h3 class="topic">
+<a name="1a0nh6vgcek2i8ae7bm9rm8qa3">&nbsp;&nbsp;&nbsp;&nbsp;按B将波特率降为57600，然后回车确认</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E9%80%9A%E4%BF%A1%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95_files/76o923d9rmldhnc0pnijg3o2eg.png"></p>
+<h3 class="topic">
+<a name="0vgio249ler07gd8vr4lid53i0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对设备进行供电，可以看到数据读取正常，说明波特率设置成功</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E9%80%9A%E4%BF%A1%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95_files/0h0uqp2kvut63r91uve75dis8q.png"></p>
+<h3 class="topic">
+<a name="2gvb3ec8ecrgbq8724jham8711">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;根据命令行输出的信息，说明该路由器完成连接后自动进入U-Boot中，而不是进入shell中&#13;
+此时U-Boot中显示的命令与光猫中的不同，因为不同的设备根据要求的功能不同，会将不同的命令编译到U-Boot中</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E9%80%9A%E4%BF%A1%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95_files/5a5ne2lnipe6r80a9b6j042t3k.png"></p>
+<h3 class="topic">
+<a name="1tss0bmn2ollgodfpcndm8f8gk">&nbsp;&nbsp;设备提供的重要的U-Boot指令</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E9%80%9A%E4%BF%A1%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95_files/7j9ucuftfs510rmo6regvv8gcn.png"></p>
+<h3 class="topic">
+<a name="4bmkq5552rohfe9oojenln9o9v">&nbsp;&nbsp;&nbsp;启动过程中输出的有用信息</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E9%80%9A%E4%BF%A1%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95_files/66bp2jjm0p4r0mv2tkvqaouaa0.png"></p>
+<h3 class="topic">
+<a name="6u8o950pm5mjdpta4kah7hqbvo">&nbsp;&nbsp;&nbsp;&nbsp;启动过程中输出的有用信息</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E9%80%9A%E4%BF%A1%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95_files/75maalpg9p81t39li6nohrugd9.png"></p>
+<h3 class="topic">
+<a name="777q95v7j3cch4i387jmf29npj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;此时情况是调试设备时直接进入U-Boot中，而没有进入shell中，一般调试目的是获取固件或获取程序内部执行情况，而一般情况下进入U-boot或进入shell均可以满足以上目的</a>
+</h3>
+<h3 class="topic">
+<a name="1bl8g108otpfgp6nch9f5nivaj">&nbsp;调试设备（某华为设备）</a>
+</h3>
+<h3 class="topic">
+<a name="5e42ap32nje2ab3k0q0eqgo6qb">&nbsp;&nbsp;输入命令，并回车</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E9%80%9A%E4%BF%A1%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95_files/45o5f8jgaiphckv15kvbgh2rv3.png"></p>
+<h3 class="topic">
+<a name="6iocit6elsk60k3e8lnf8hf822">&nbsp;&nbsp;&nbsp;开始监听</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E9%80%9A%E4%BF%A1%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95_files/2us6buo0dgrdaheh7ctf0suahs.png"></p>
+<h3 class="topic">
+<a name="38335sgbtdgnv75qgoamprvmek">&nbsp;&nbsp;&nbsp;&nbsp;设备通电，开始启动</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E9%80%9A%E4%BF%A1%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95_files/64pdo54p3bg9egi0c7v96858lv.png"></p>
+<h3 class="topic">
+<a name="1b4ifnunvmds2basn4atp00d7j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;要求输入设备的用户名和密码，可以直接去设备官网查询，或进行猜测，此时用户名与密码是调试过程中使用的，与外部访问的用户名密码不相同</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E9%80%9A%E4%BF%A1%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95_files/22vnlieiqoj09i8s5e18gblmc3.png"></p>
+<h3 class="topic">
+<a name="7eigqoa7gg4sdii1tn0n0l1ngh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;输入？显示大量可执行的指令</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E9%80%9A%E4%BF%A1%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95_files/41n6vab6tbj8tbbcu73fk87gh0.png"></p>
+<h3 class="topic">
+<a name="6r1gi8qn4sprbmpmg7l359bikm">&nbsp;&nbsp;尝试执行上面的指令，输出关于系统的信息，此时程序相当于进入了一个阉割版的shell，仅能执行特定指令</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E9%80%9A%E4%BF%A1%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95_files/4on8nt2afqe3sdqkoahp5s8a12.png"></p>
+<h3 class="topic">
+<a name="11rhshhl3lc7ic7o78sgnqn5tp">&nbsp;&nbsp;&nbsp;重新启动minicom尝试进入U-Boot中</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E9%80%9A%E4%BF%A1%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95_files/0p5imr6ue7kc3kin6qecfv5ros.png"></p>
+<h3 class="topic">
+<a name="3o4gfs37v3t4tu1q59u3dplotv">&nbsp;&nbsp;&nbsp;&nbsp;设备通电后，一直按回车键，但是程序仍然继续运行，并未在U-Boot处断下，说明此时无法进入U-Boot中，而能进入的shell功能比较有限，所以只能采取其他方法获取固件</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E9%80%9A%E4%BF%A1%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95_files/0vcqtg9998ni2auo4forrek4t7.png"></p>
+<h3 class="topic">
+<a name="66462a1uort1oarb7mg9e6tmni">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;此时可选择使用编程器获取固件等数据</a>
+</h3>
+<h3 class="topic">
+<a name="34ou911vl5slap3mae92p0aqa3">&nbsp;调试设备（未知某设备）</a>
+</h3>
+<h3 class="topic">
+<a name="3p7ci2d0g13iqmgo6u94pp0gcn">&nbsp;&nbsp;以root权限启动SecureCRT</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E9%80%9A%E4%BF%A1%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95_files/1bgifr5vpp4mbnif9laqd313s1.png"></p>
+<h3 class="topic">
+<a name="7gp7jqsljcfq9rhjd45d24qd39">&nbsp;&nbsp;&nbsp;快速建立连接</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E9%80%9A%E4%BF%A1%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95_files/0ipr4tnebn1q2ekkra1hvhb4r5.png"></p>
+<h3 class="topic">
+<a name="1voguot9ke6bdt8gltqbted1o7">&nbsp;&nbsp;&nbsp;&nbsp;设置连接的属性</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E9%80%9A%E4%BF%A1%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95_files/3pf6lnal8n1q7vq9md0aj3vni9.png"></p>
+<h3 class="topic">
+<a name="6ktcbslrsk02fqg0ip73ntf2a3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;点击connect之后，工具处于监听状态</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E9%80%9A%E4%BF%A1%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95_files/0gvmc1gcbfutd16nt2nah7ge3q.png"></p>
+<h3 class="topic">
+<a name="7rbaqs3jl0gre5cmdipas6jma9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对设备进行供电，显示设备启动</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E9%80%9A%E4%BF%A1%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95_files/2mnapsdsmg9qhed446k893vut9.png"></p>
+<h3 class="topic">
+<a name="16f709v875je208kqqbku5ckf3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该设备固件已经被刷成了SuperWRT系统，此时要求输入用户名和密码</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E9%80%9A%E4%BF%A1%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95_files/6ho3p1kf3h0jck6dflulvpm6p9.png"></p>
+<h3 class="topic">
+<a name="0p80e9orn1oom312bvb4r38gln">&nbsp;&nbsp;SecureCRT可以查看所有输出的日志信息，但是默认情况下minicom中后输出的启动日志信息会覆盖掉之前输出的日志信息，从而导致minicom不能查看完整的日志信息</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E9%80%9A%E4%BF%A1%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95_files/58lqm0kdqkab2crobtachpkghr.png"></p>
+<h3 class="topic">
+<a name="2k6cldhhfrn27o89db0dl7cfb1">&nbsp;&nbsp;&nbsp;日志中有用的信息</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E9%80%9A%E4%BF%A1%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95_files/6no9h249ri5kh324msteka9eqt.png"></p>
+<h3 class="topic">
+<a name="1rqdrgs6pq604m27vedos4uls8">&nbsp;&nbsp;&nbsp;&nbsp;日志中显示内存相关信息</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E9%80%9A%E4%BF%A1%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95_files/7q0pu8q1q8avi6b61dfeqp9nq7.png"></p>
+<h3 class="topic">
+<a name="159fe3aqg4frk7dvb9rcbt2gc6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;日志中显示flash内存布局情况，此时如果能提取数据，就可以根据内存布局情况提取一些数据</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E9%80%9A%E4%BF%A1%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95_files/6lguf0437s9p2hjb5nea9bis2o.png"></p>
+<h3 class="topic">
+<a name="4mvbdlela1qgi6lj1458bs6cf5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关闭调试窗口，设备断电，重新开启调试监听，并给设备通电，启动日志输出过程中按回车键，使系统进入U-Boot</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E9%80%9A%E4%BF%A1%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95_files/7l6orsns0au63gesfort4ib90b.png"></p>
+<h3 class="topic">
+<a name="39qjcdfe8eptqkbbutpcsmt7kp">&nbsp;&nbsp;输入？查看当前U-Boot中可以用命令</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E9%80%9A%E4%BF%A1%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95_files/48cdbhao4jkqotqv8p9tmeic4k.png"></p>
+<h3 class="topic">
+<a name="5rnfaa6as6q9i95tjcrefai04b">&nbsp;&nbsp;&nbsp;使用printenv指令输出当前环境变量</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E9%80%9A%E4%BF%A1%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95_files/2tr2inbvk0q2kpogub5vhtacmk.png"></p>
+<h3 class="topic">
+<a name="2239rlrcb107ufpqlsg9b8r318">&nbsp;&nbsp;&nbsp;&nbsp;minicom若要保存所有输出的日志，需要执行L参数，从而开启屏幕捕获</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E9%80%9A%E4%BF%A1%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95_files/68ud6kckm2nq241ej9rsb1tqtl.png"></p>
+<h3 class="topic">
+<a name="6dp7jqdugvet85h523n79trflu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;执行L参数后，minicom会要求指定日志文件的名称，之后所有输出的启动日志均保存在该文件中，该文件默认位于minicom相同目录下</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E9%80%9A%E4%BF%A1%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95_files/4mi276ao4230qc1fop4j18vrom.png"></p>
+<h3 class="topic">
+<a name="0gl18l2oitefvh2q0gk8h0tvna">&nbsp;调试设备（智能摄像头）</a>
+</h3>
+<h3 class="topic">
+<a name="7i1aj0bo9kmiu3glerlk7eajno">&nbsp;&nbsp;以root权限启动SecureCRT</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E9%80%9A%E4%BF%A1%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95_files/0lf74p8v8mdn51ejkav2n08q12.png"></p>
+<h3 class="topic">
+<a name="268l229jl45hi9u8oapfun7qrv">&nbsp;&nbsp;&nbsp;快速创建连接</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E9%80%9A%E4%BF%A1%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95_files/1umrkv6vcm1m19hkc6orgirdab.png"></p>
+<h3 class="topic">
+<a name="1i1fv36b33orpul6379h131d07">&nbsp;&nbsp;&nbsp;&nbsp;设置选项，创建连接</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E9%80%9A%E4%BF%A1%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95_files/0cd77kdiobplivapj4serum1sj.png"></p>
+<h3 class="topic">
+<a name="4hftede0migft05num0898m099">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;创建连接后，进入侦听状态，给设备通电，发现无法进入shell模式，设备直接开始运行固件，无法做任何操作</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E9%80%9A%E4%BF%A1%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95_files/4ns1bv5qpaebe1oh4fhamcjf68.png"></p>
+<h3 class="topic">
+<a name="4vvnku5s0bol0d5re53s8he0u9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该摄像头设备第一次进行调试时可能处于充电状态，如果进行调试监听时，设备仍处于充电状态，就可能无法接收到设备的数据，并且当设备进行TX串口输出时，我们就很难介入并进入U-Boot</a>
+</h3>
+<h3 class="topic">
+<a name="0r44gotlfoilqadn9jikah322t">&nbsp;&nbsp;此时重新开始调试，进入监听</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E9%80%9A%E4%BF%A1%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95_files/0gejfu97dj5qpvrhqumfckir8b.png"></p>
+<h3 class="topic">
+<a name="3dmamij0eota3pahc4dd7uqn8k">&nbsp;&nbsp;&nbsp;将电源插入，按下电源按钮，开启供电，并立刻将TX插入，同时一直按回车，从而获得U-Boot</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E9%80%9A%E4%BF%A1%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95_files/5vfl18ebnrjbn5h5e6qiei6amp.png"></p>
+<h3 class="topic">
+<a name="59tjkah900m5vujikb4cd2o715">&nbsp;&nbsp;&nbsp;&nbsp;输入？查看可用命令</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E9%80%9A%E4%BF%A1%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95_files/7a9tedflgo6k1333b2dnfclnu2.png"></p>
+<h3 class="topic">
+<a name="6nm0c8b89u6f269h2a760p3il4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;输入printenv查看环境变量</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E9%80%9A%E4%BF%A1%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95_files/5uhafuicdmta25vhj0jc093d79.png"></p>
+<h3 class="topic">
+<a name="3hi8qfnd7knvauokt7kahk9ag4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将原始系统变量保存，并将系统变量中用于初始化执行的程序修改为/bin/sh，尝试以此获得shell</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E9%80%9A%E4%BF%A1%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95_files/6tepk3osfe8g4mva555v4g5jgp.png"></p>
+<h3 class="topic">
+<a name="5i53nnd4svp6q3insl51fbo6q0">&nbsp;&nbsp;使用setenv设置环境变量，之后执行printenv，看到环境变量中的init参数被设置为/bin/sh</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E9%80%9A%E4%BF%A1%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95_files/3107lq96e0gquicktpt5gvikpe.png"></p>
+<h3 class="topic">
+<a name="71d6bi83joma4nci2c23kaumu5">&nbsp;&nbsp;&nbsp;保存环境变量</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E9%80%9A%E4%BF%A1%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95_files/1hjjvq1gqp7aii518ce1fqcun9.png"></p>
+<h3 class="topic">
+<a name="1qnn0h9q9b63g0g3jf4dav7hb9">&nbsp;&nbsp;&nbsp;&nbsp;关闭调试接口，将设备断电进行放电，将tx线断开，放电大约30秒</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E9%80%9A%E4%BF%A1%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95_files/1jgd3gjhvcrgvp3dhrvltkr1al.png"></p>
+<h3 class="topic">
+<a name="2o3au5553vj3rnsfisfkeaepct">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;重新开启监听</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E9%80%9A%E4%BF%A1%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95_files/125rabu8f731b9s62kpresotpi.png"></p>
+<h3 class="topic">
+<a name="2ke83kvsvcnung8uas8anna0bk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将电源接通，设备初始化完成后进入/bin/shell</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E9%80%9A%E4%BF%A1%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95_files/3u2ln4e3d2g0pmvr8le8du7lus.png"></p>
+<h3 class="topic">
+<a name="63glfsmjcehcr7s081jcphulgu">&nbsp;&nbsp;查看sbin中提供的命令</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E9%80%9A%E4%BF%A1%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95_files/27i11jilupqg3hmibpjl5pm9rf.png"></p>
+<h3 class="topic">
+<a name="53v57hhc7vdk0fc0t3q7t2f5au">&nbsp;&nbsp;&nbsp;可以使用tftp，此时可以通过tftp从设备中下载数据，进行调试、监听</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E9%80%9A%E4%BF%A1%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95_files/0g2geu8b9f07q8csnhdrnt0sfv.png"></p>
+</body>
+</html>

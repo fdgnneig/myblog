@@ -1,0 +1,739 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>Metasploit框架</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="3e7ei8n901jmd83e08h5gogqad">Metasploit框架</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="Metasploit%E6%A1%86%E6%9E%B6_files/images/Metasploit%E6%A1%86%E6%9E%B6.jpg"></div>
+<h2 class="topic">
+<a name="6f1r9jf215sfcpb6m5b7olpfs6">介绍</a>
+</h2>
+<h3 class="topic">
+<a name="02iiomqb9nc40bcq4d8bp492c0">&nbsp;当我们通过上述模块进行工作时，应该很清楚，利用公共漏洞利用是困难的。 必须修改它们以适合每种情况，必须对它们进行恶意代码测试，每种都使用唯一的命令行语法，并且编码实践或语言没有标准化。 有些漏洞是用Perl编写的，有些是用C编写的，另一些是用PowerShell编写的，我们甚至已经看到了需要通过复制和粘贴到Netcat连接中来部署的漏洞有效载荷。&#13;
+   此外，即使在最基本的攻击情形中，也必须考虑各种后开发工具，辅助工具和无数攻击技术。&#13;
+   漏洞利用框架旨在解决部分或全部这些问题。 尽管它们在形式和功能上有所不同，但每个目标都是通过提供各种漏洞利用，简化这些漏洞利用的使用，简化横向移动并协助管理受损的基础结构来巩固和简化漏洞利用过程。 这些框架大多数都提供动态有效负载功能。 这意味着对于框架中的每个漏洞利用，我们可以选择各种有效载荷进行部署。</a>
+</h3>
+<h3 class="topic">
+<a name="0it03nafvujdqnqap1om6faqfe">&nbsp;&nbsp;在过去的几年中，已经开发了几种利用和利用后的框架，包括Metasploit，705Core Impact，706Immunity Canvas,，707 Cobalt Strike，708和PowerShell Empire，709，它们都提供了部分或全部这些功能。&#13;
+   尽管其中许多框架是商业产品，但Metasploit框架（MSF，或简称为Metasploit）是开源的，经常更新，并且是该模块的重点。&#13;
+   如其作者所述，由Rapid7,710维护的Metasploit框架是&ldquo;用于开发，测试和使用漏洞利用代码的高级平台&rdquo;。 该项目最初是作为便携式网络游戏711开始的，现已发展成为用于渗透测试，漏洞利用开发和漏洞研究的强大工具。 该框架已经缓慢但肯定地成为安全审核员的领先免费漏洞收集和开发框架。  Metasploit经常使用新的漏洞进行更新，并由Rapid7和安全社区不断加以改进和进一步开发。&#13;
+</a>
+</h3>
+<h3 class="topic">
+<a name="0p8n0f0dms50gsiecn9h8p3vka">&nbsp;&nbsp;&nbsp;Kali Linux包含metasploit-framework软件包，其中包含Metasploit项目的开源元素。  Metasploit框架（MSF）的新手经常被该工具的众多功能和不同用例所淹没。  Metasploit框架在渗透测试的几乎每个阶段都非常有价值，包括信息收集，漏洞研究与开发，客户端攻击，后期利用等。&#13;
+借助如此强大的功能，很容易在Metasploit中迷失方向。 幸运的是，该框架经过深思熟虑，并提供了一个统一而合理的界面。&#13;
+  在本模块中，我们将提供Metasploit框架的演练，包括功能和用法以及其内部工作原理的一些解释。</a>
+</h3>
+<h3 class="topic">
+<a name="3ur7nd4jaoeh3b5ccjn3bq5jus">&nbsp;&nbsp;&nbsp;&nbsp;msf：https://www.metasploit.com/&#13;
+Core Impact：https://www.coresecurity.com/core-impact&#13;
+Immunity Canvas：https://www.immunityinc.com/products/canvas/&#13;
+Cobalt Strike：https://blog.cobaltstrike.com/category/cobalt-strike-2/&#13;
+PowerShell Empire：https://www.powershellempire.com/</a>
+</h3>
+<h2 class="topic">
+<a name="5f3e8gcr9q5jv4rrjc68m030t3">Metasploit用户界面和设置</a>
+</h2>
+<h3 class="topic">
+<a name="7duneni9pjfmsn7fcqb480mtjd">&nbsp;尽管Metasploit框架已预先安装在Kali Linux中，但Metasploit所依赖的postgresql服务在启动时既未激活也未启用。 我们可以使用以下命令启动所需的服务：</a>
+</h3>
+<p class="topicImage">
+<img height="27" src="Metasploit%E6%A1%86%E6%9E%B6_files/46p05s4849fa20ppmnel2m7qg5.png" width="490"></p>
+<h3 class="topic">
+<a name="05herdtfjpv1ri3p1ftr4r8p17">&nbsp;&nbsp;接下来，我们可以在启动时使用systemctl启用服务，如下所示：</a>
+</h3>
+<p class="topicImage">
+<img height="35" src="Metasploit%E6%A1%86%E6%9E%B6_files/1fs9teml73vti7cgvod4a09mhu.png" width="543"></p>
+<h3 class="topic">
+<a name="5sjplkld5qukgjjjmtnjcte4g6">&nbsp;&nbsp;&nbsp;启动数据库后，我们需要使用msfdb init创建和初始化MSF数据库，如下所示。</a>
+</h3>
+<p class="topicImage">
+<img height="72" src="Metasploit%E6%A1%86%E6%9E%B6_files/6q43tdil2t6rlqevfsmvppqmsh.png" width="479"></p>
+<h3 class="topic">
+<a name="4k7nf4tjvivfuel318nmi0oq8f">&nbsp;由于Metasploit处于不断发展中，因此我们应尽可能经常地对其进行更新。 在Kali中，我们可以使用apt更新Metasploit。</a>
+</h3>
+<p class="topicImage">
+<img height="17" src="Metasploit%E6%A1%86%E6%9E%B6_files/0gn6qfc0e0kgle3vrfh3999jln.png" width="485"></p>
+<h3 class="topic">
+<a name="1oa5d31pki68nqbuvslf0lnjdl">&nbsp;&nbsp;我们可以使用msfconsole启动Metasploit命令行界面。  -q选项隐藏ASCII艺术标语和Metasploit Framework版本输出，如清单733所示：</a>
+</h3>
+<p class="topicImage">
+<img height="82" src="Metasploit%E6%A1%86%E6%9E%B6_files/1hab6mn8239md34stnb8e5u2gk.png" width="443"></p>
+<h3 class="topic">
+<a name="1fcs9p9gj5f5lrb149tnom4qjl">&nbsp;熟悉MSF语法</a>
+</h3>
+<h3 class="topic">
+<a name="1aeais78t6cdc20pfa4lan0pv0">&nbsp;&nbsp;Metasploit框架包含数千个模块，分为多个类别。 类别显示在初始屏幕摘要上，但是我们也可以使用show -h命令查看它们</a>
+</h3>
+<p class="topicImage">
+<img src="Metasploit%E6%A1%86%E6%9E%B6_files/5g104715j6fhvmn3oe5migi9jq.png"></p>
+<h3 class="topic">
+<a name="0vfdolh3uk6b1hv3qn0ojkasre">&nbsp;&nbsp;&nbsp;要激活模块，请输入use，然后输入模块名称（在下面的示例中为auxiliary/scanner/portscan/ tcp）。 此时，提示将指示活动模块。 我们可以使用back移出当前上下文并返回到主msf5提示符：</a>
+</h3>
+<p class="topicImage">
+<img src="Metasploit%E6%A1%86%E6%9E%B6_files/5fpn74tgugpt04u7fnlker0vdf.png"></p>
+<h3 class="topic">
+<a name="1ic93ar97n4r0easi5h76911pf">&nbsp;&nbsp;&nbsp;&nbsp;previous是bacl指令的变异体，它将使我们切换回先前选择的模块，而不是主提示符：</a>
+</h3>
+<p class="topicImage">
+<img src="Metasploit%E6%A1%86%E6%9E%B6_files/6f90gmm8gjg27ncjjkav7pmi00.png"></p>
+<h3 class="topic">
+<a name="3nn4rnp74tb194rlk8h3n0o32j">&nbsp;&nbsp;大多数模块在运行之前都需要选项（show options）。 我们可以使用set和unset配置这些选项，也可以分别使用setg或unsetg设置和删除全局选项。</a>
+</h3>
+<p class="topicImage">
+<img src="Metasploit%E6%A1%86%E6%9E%B6_files/0r82ggb1kl96qlqu40nqfqj1h9.png"></p>
+<h3 class="topic">
+<a name="056fq0nhfilok26ttdn270r8ni">&nbsp;&nbsp;&nbsp;例如，要使用scanner / portscan / tcp模块对Windows工作站进行扫描，我们必须首先使用set命令设置远程主机IP地址（RHOSTS）。</a>
+</h3>
+<p class="topicImage">
+<img height="37" src="Metasploit%E6%A1%86%E6%9E%B6_files/0817vcn85dl29phr72o5bf9oja.png" width="492"></p>
+<h3 class="topic">
+<a name="2rb5aacrfjf0vo54set92u5ma2">&nbsp;&nbsp;&nbsp;&nbsp;配置模块后，我们可以运行它：</a>
+</h3>
+<p class="topicImage">
+<img src="Metasploit%E6%A1%86%E6%9E%B6_files/4387st2589b4enkmed33havdjr.png"></p>
+<h3 class="topic">
+<a name="3o4cq5lqijv5efqa31mjvpofdp">&nbsp;Metasploit数据库访问</a>
+</h3>
+<h3 class="topic">
+<a name="3kgs104c7tkdjhto4rhnbetl6i">&nbsp;&nbsp;如果postgresql服务正在运行，Metasploit将在便利的可访问数据库中记录发现的结果以及有关已发现主机，服务或凭据的信息。&#13;
+  在下面的清单中，数据库已经填充了我们在上一节中运行的TCP扫描结果。 我们可以使用services命令显示这些结果： </a>
+</h3>
+<p class="topicImage">
+<img src="Metasploit%E6%A1%86%E6%9E%B6_files/094r2d9e1kfh0bu9s8b6r0sdbr.png"></p>
+<h3 class="topic">
+<a name="3ti1u1s0nilmah87tnp0r1u6fg">&nbsp;&nbsp;&nbsp;基本services命令显示所有结果，但是我们也可以按端口号（-p），服务名称（-s）等进行过滤，如services -h的帮助输出所示：</a>
+</h3>
+<p class="topicImage">
+<img src="Metasploit%E6%A1%86%E6%9E%B6_files/4chrve7u2q2afm7fm2bsftc2bk.png"></p>
+<h3 class="topic">
+<a name="7l3pfo3f0f2u3sjhdlamd9sdnr">&nbsp;&nbsp;&nbsp;&nbsp;除了简单的TCP端口扫描程序外，我们还可以使用db_nmap包装器在Metasploit中执行Nmap并将结果保存到数据库中，以便于访问。  db_nmap命令具有与Nmap相同的语法，如下所示：</a>
+</h3>
+<p class="topicImage">
+<img src="Metasploit%E6%A1%86%E6%9E%B6_files/055jvjvpvbtgc4ri78a1gstthc.png"></p>
+<h3 class="topic">
+<a name="6ak2o9971gobqk9f5t8nb07uno">&nbsp;&nbsp;要显示到目前为止所有发现的主机，我们可以发出hosts命令。 作为另一个示例，我们还可以使用services -p 445命令列出在端口445上运行的所有服务。</a>
+</h3>
+<p class="topicImage">
+<img src="Metasploit%E6%A1%86%E6%9E%B6_files/6bps0fgc6s5571dkor0b81r689.png"></p>
+<h3 class="topic">
+<a name="1k63enhh2kloq8acht65he21rh">&nbsp;&nbsp;&nbsp;为了帮助组织数据库中的内容，Metasploit允许我们将信息存储在单独的工作区中。 指定工作空间时，我们只会看到与该工作空间相关的数据库条目，这有助于我们轻松地管理来自各种枚举工作和分配的数据。 我们可以使用工作区列出可用的工作区，或者提供工作区的名称作为参数以更改为其他工作区</a>
+</h3>
+<p class="topicImage">
+<img src="Metasploit%E6%A1%86%E6%9E%B6_files/62amngtri7v58uts8v8eflujp9.png"></p>
+<h3 class="topic">
+<a name="1tq0ajfqjc88jvo0juljbvbfev">&nbsp;&nbsp;&nbsp;&nbsp;要添加或删除工作空间，我们可以分别使用-a或-d，后跟工作空间名称。</a>
+</h3>
+<h3 class="topic">
+<a name="6b5quj4r5oa4jgglmr8fb68at0">&nbsp;辅助模块</a>
+</h3>
+<h3 class="topic">
+<a name="1fe7fcco8slscn6c85qj5qh3mg">&nbsp;&nbsp;Metasploit框架包括数百个辅助模块，这些辅助模块提供了诸如协议枚举，端口扫描，模糊测试，嗅探等功能。 所有模块均遵循通用的以斜杠分隔的分层语法（module type/os, vendor, app, or protocol/module name），这使得探索和使用模块变得容易。 辅助模块对许多任务很有用，包括信息收集（在gather/ hierarchy下），扫描和枚举各种服务（在the scanner/ hierarchy下）等。</a>
+</h3>
+<h3 class="topic">
+<a name="3ksng6qhmomm27p2apbcn3k413">&nbsp;&nbsp;&nbsp;这里有太多要讨论的内容，但是我们将演示一些最常见的辅助模块的语法和操作。 作为练习，探索一些其他辅助模块，因为它们是Metasploit框架的重要组成部分。&#13;
+   要列出所有辅助模块，我们运行show auxiliary命令。 这将显示所有辅助模块的非常长的列表，如以下截断的输出所示：</a>
+</h3>
+<p class="topicImage">
+<img src="Metasploit%E6%A1%86%E6%9E%B6_files/48qq7i60hnlm84llsh0utl2cs0.png"></p>
+<h3 class="topic">
+<a name="5r611sphov2j0qhue0ija4hctv">&nbsp;&nbsp;&nbsp;&nbsp;我们可以使用search来减少此可观的输出，并按应用，类型，平台等进行过滤。 例如，我们可以使用search type:auxiliary name:smb搜索SMB辅助模块</a>
+</h3>
+<h3 class="topic">
+<a name="3kvab7os363lt7r9sq7bdch3c0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="Metasploit%E6%A1%86%E6%9E%B6_files/6l5764m1at7r6m2h7ur2djp294.png"></p>
+<h3 class="topic">
+<a name="17q7u0h951cag6kiqt2on6ffpf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="Metasploit%E6%A1%86%E6%9E%B6_files/4mrlsh5rrsbikc5brhsh41kgbn.png"></p>
+<h3 class="topic">
+<a name="08sn9nvnhdjmf7i91tmmdlb0on">&nbsp;&nbsp;&ldquo;use 模块名&rdquo;命令后，通过info指令请求更多信息，如下所示：</a>
+</h3>
+<p class="topicImage">
+<img src="Metasploit%E6%A1%86%E6%9E%B6_files/0ne9v6k441nkceeeme22ad1jhp.png"></p>
+<h3 class="topic">
+<a name="73ouida1f527r2otqbfbhm9750">&nbsp;&nbsp;&nbsp;info输出的模块描述告诉我们smb2模块的目的是检测远程计算机是否支持SMB 2.0协议。 可以通过执行show options命令来检查模块的基本选项参数。 对于此特定模块，我们只需要设置目标的IP地址即可，在本例中为学生的Windows 10计算机。&#13;
+   另外，由于我们已经扫描了Windows 10计算机，因此我们可以在Metasploit数据库中搜索TCP端口445打开（services -p 445）的主机，然后自动将结果添加到RHOSTS（-rhosts）：</a>
+</h3>
+<p class="topicImage">
+<img src="Metasploit%E6%A1%86%E6%9E%B6_files/44th52k21vofbct38gfb61b6la.png"></p>
+<h3 class="topic">
+<a name="151edpgj06p3sr8gfbi44jfg26">&nbsp;&nbsp;&nbsp;&nbsp;配置了必需的参数后，我们可以利用run或exploit启动模块：</a>
+</h3>
+<p class="topicImage">
+<img src="Metasploit%E6%A1%86%E6%9E%B6_files/2qd4n9s3njhvvtlb2d34eprao5.png"></p>
+<h3 class="topic">
+<a name="6us8vvtkjga6oa8ab96p9tj4f5">&nbsp;&nbsp;根据模块的输出，远程计算机确实支持SMB版本2。要利用此功能，我们可以使用scan / smb / smb_login模块尝试对计算机进行暴力登录。 加载模块并列出选项会产生以下输出</a>
+</h3>
+<p class="topicImage">
+<img src="Metasploit%E6%A1%86%E6%9E%B6_files/7t1poboh1j42u2o7pm7pef37sr.png"></p>
+<h3 class="topic">
+<a name="28qiimfe6bl5heil18un041i94">&nbsp;&nbsp;&nbsp;输出显示此模块既接受必需参数（如RHOSTS）又接受可选参数（如SMBDomain）。 但是，我们注意到，即使我们在使用先前的smb2模块时进行了设置，也没有设置RHOSTS。 这是因为set仅在运行模块的范围内定义了一个参数。 相反，我们可以使用setg设置一个全局参数，该参数在所有模块中都可用。</a>
+</h3>
+<h3 class="topic">
+<a name="495rr634gkur0gj24me12r2kvp">&nbsp;&nbsp;&nbsp;&nbsp;我们经常为辅助模块更改的一个参数是THREADS。 此参数告诉框架在运行模块时要启动多少个线程，从而提高并发性和速度。 我们不希望这个数字太疯狂，但是稍有增加将大大减少运行时间。</a>
+</h3>
+<h3 class="topic">
+<a name="4ilpd514u178e0pshrnq3locrd">&nbsp;&nbsp;为了便于演示，我们假设我们在评估过程中发现了有效的域凭据。 我们想确定这些凭据是否可以在其他已打开TCP端口445的服务器上重用。 为了使事情变得简单，我们将在Windows客户端上尝试这种方法，以无效的密码开头。&#13;
+   我们将从提供corp.com的有效域名，有效的用户名（Offsec），无效的密码（ABCDEFG123！）和Windows 10目标的IP地址开始：</a>
+</h3>
+<p class="topicImage">
+<img src="Metasploit%E6%A1%86%E6%9E%B6_files/1gh3n38f6b4frng8h4184boga7.png"></p>
+<h3 class="topic">
+<a name="02n0khgvon2na1k5pglml76780">&nbsp;&nbsp;&nbsp;由于我们知道我们提供的密码无效，因此登录无法按预期进行。 现在，让我们尝试提供一个有效的密码，然后重新运行该模块。</a>
+</h3>
+<p class="topicImage">
+<img height="124" src="Metasploit%E6%A1%86%E6%9E%B6_files/36ib6d5rengkql7p2bkus05fg2.png" width="459"></p>
+<h3 class="topic">
+<a name="500j6tq4kjlihk2m250q110grc">&nbsp;&nbsp;&nbsp;&nbsp;这次，身份验证成功。 我们可以使用creds从数据库中检索有关成功登录尝试的信息。</a>
+</h3>
+<p class="topicImage">
+<img src="Metasploit%E6%A1%86%E6%9E%B6_files/030i2f8gvg969t3cf1el85h08b.png"></p>
+<h3 class="topic">
+<a name="7jqfet1j4j5nj37v5o592sm85c">&nbsp;&nbsp;尽管此运行成功，但此方法无法很好地扩展。 为了使用各种密码测试更大的用户群，我们可以改用USERPASS_FILE参数，该参数指示模块使用包含用户和密码（以空格分隔）的文件，每行一对。</a>
+</h3>
+<p class="topicImage">
+<img src="Metasploit%E6%A1%86%E6%9E%B6_files/708nb68d9rs660d0p6hpsmn6uq.png"></p>
+<h3 class="topic">
+<a name="3g32bkrtdgrhkoik3639v8lo0g">&nbsp;&nbsp;&nbsp;让我们尝试另一个模块。 在此示例中，我们将尝试识别在TCP端口3389上侦听的计算机，这表明它们可能正在接受远程桌面协议（RDP）连接。 为此，我们将调用scanner / rdp / rdp_scanner模块。</a>
+</h3>
+<p class="topicImage">
+<img src="Metasploit%E6%A1%86%E6%9E%B6_files/746drt1ofhmt1ipqavpnk7mi5e.png"></p>
+<h3 class="topic">
+<a name="5va1173rtdqb3gpht4ubp90fuu">&nbsp;&nbsp;&nbsp;&nbsp;该模块成功检测到在一台主机上运行的RDP，并将结果自动添加到数据库中。</a>
+</h3>
+<h2 class="topic">
+<a name="2ekstqiiedmefhdie2v138jmf2">漏洞利用模块</a>
+</h2>
+<h3 class="topic">
+<a name="0037k27l371in8qq1ctcnhlho8">&nbsp;现在我们已经熟悉了MSF的基本用法和几个辅助模块，下面让我们更深入地研究MSF的业务端：利用模块。&#13;
+   漏洞利用模块通常包含针对易受攻击的应用程序和服务的漏洞利用代码。 在撰写本文时，Metasploit包含1700多个漏洞利用程序，每个漏洞利用程序都经过精心开发和测试，可以成功利用各种易受攻击的服务。 这些漏洞利用程序与辅助模块的调用方式几乎相同。</a>
+</h3>
+<h3 class="topic">
+<a name="6oe9fi6ptks5bcnq34rmee5jon">&nbsp;SyncBreeze Enterprise</a>
+</h3>
+<h3 class="topic">
+<a name="6r7lhef7b33t0dqunm0tkhan3u">&nbsp;&nbsp;为了开始探索漏洞利用模块，我们将专注于一次又一次滥用的服务：SyncBreeze。 在本节中，我们将搜索与Windows 10工作站上安装的SyncBreeze Enterprise应用程序相关的漏洞，然后使用MSF对其进行利用。 首先，我们将使用搜索命令：</a>
+</h3>
+<p class="topicImage">
+<img src="Metasploit%E6%A1%86%E6%9E%B6_files/4madk4uiej66bj6lqglp6eou97.png"></p>
+<h3 class="topic">
+<a name="2ao4bkbqps7lt1a06iscf7bjb5">&nbsp;&nbsp;&nbsp;输出显示了两个特定的利用模块。 我们将专注于10.0.28并请求有关该特定模块的信息：</a>
+</h3>
+<h3 class="topic">
+<a name="67vqngvnhgkotjuclos9kfife0">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="Metasploit%E6%A1%86%E6%9E%B6_files/6les947ps99qufutoai5ldpgm5.png"></p>
+<h3 class="topic">
+<a name="4ujeasol0addem0ac0eepqo4o3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="Metasploit%E6%A1%86%E6%9E%B6_files/6co17e31phm8hqlf58ebctcq6r.png"></p>
+<h3 class="topic">
+<a name="43svmme0bb3mqg3iu0fjd5n66l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 根据模块说明和可用的目标，实际上，这似乎是与Windows 10实验室计算机上的目标匹配的攻击。 漏洞利用模块需要有效负载规范。 如果我们未设置此项，则模块将选择默认有效负载。 默认有效负载可能不是我们想要的或期望的，因此最好始终明确设置我们的选项以保持对开发过程的严格控制。&#13;
+   要检索与当前所选漏洞利用模块兼容的所有有效载荷的列表，我们运行show payloads，如清单758所示。</a>
+</h3>
+<p class="topicImage">
+<img height="167" src="Metasploit%E6%A1%86%E6%9E%B6_files/5h97el6dmv52f5fgnrfsgk5nvj.png" width="444"></p>
+<h3 class="topic">
+<a name="6jj3v219iks21fribvfg49fosg">&nbsp;&nbsp;例如，我们可以使用set payload指定标准的反向外壳有效负载（windows / shell_reverse_tcp）并列出带有show options的选项：</a>
+</h3>
+<p class="topicImage">
+<img src="Metasploit%E6%A1%86%E6%9E%B6_files/7n2f78r34aq020idoumsnkgj73.png"></p>
+<h3 class="topic">
+<a name="00tkd26pr0f6fdt8dtet72jul4">&nbsp;&nbsp;&nbsp;有效负载设置下方的&ldquo;exploit target&rdquo;部分列出了容易受到此漏洞利用的操作系统或软件版本。 如果像Syncbreeze中那样出现普通堆栈溢出的情况，这些设置本质上等同于适用于不同OS版本或受影响软件环境的不同返回地址。 在此漏洞利用模块中，我们版本的SyncBreeze的单个静态返回地址将适用于多个Windows版本。 在其他漏洞利用中，我们通常需要设置目标（使用set target）以匹配我们正在利用的环境。&#13;
+   通过为我们的漏洞利用设置反向外壳有效负载，Metasploit自动添加了一些新的&ldquo;有效负载选项&rdquo;，包括LHOST（侦听主机）和LPORT（侦听端口），它们对应于反向外壳将连接到的主机IP地址和端口。 请注意，LPORT设置为默认值4444，这对于我们来说是很好的。 继续设置LHOST和RHOST分别定义攻击主机和目标主机。</a>
+</h3>
+<p class="topicImage">
+<img src="Metasploit%E6%A1%86%E6%9E%B6_files/3f98rriounqnp4rl23jf7a5v05.png"></p>
+<h3 class="topic">
+<a name="0t2ild5d0df0kim9snmkjmq0gl">&nbsp;&nbsp;&nbsp;&nbsp;将LHOST设置为我们的Kali IP地址并将RHOST设置为Windows主机IP地址之后，我们可以使用check来验证目标主机和应用程序是否容易受到攻击。 请注意，只有在目标应用程序暴露了某种横幅或其他可识别数据的情况下，此检查才有效</a>
+</h3>
+<p class="topicImage">
+<img height="41" src="Metasploit%E6%A1%86%E6%9E%B6_files/6b9n908ffjvg3pbmkn41golve9.png" width="503"></p>
+<h3 class="topic">
+<a name="6h62vgn2dgbacpvpofo3ve2v65">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;确认目标是易受攻击的对象之后，现在剩下的就是使用exploit命令运行该漏洞利用程序，如下所示。</a>
+</h3>
+<p class="topicImage">
+<img src="Metasploit%E6%A1%86%E6%9E%B6_files/4ettn69skj5lpqvuale1hke6lu.png"></p>
+<h3 class="topic">
+<a name="713t87h5bkfa0hi3l415mopqrd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;请注意，执行漏洞利用程序时，Metasploit自动创建有效负载侦听器，从而无需使用Netcat。 执行完成后，将创建一个会话，并使反向外壳对我们可用。</a>
+</h3>
+<h2 class="topic">
+<a name="0kds9inh11n9d078dqhgrp66sr">Metasploit有效载荷</a>
+</h2>
+<h3 class="topic">
+<a name="16897rqfkpm6uue223q7qrhbe6">&nbsp;到目前为止，我们仅利用了windows / shell_reverse_tcp，这是一个简单而独立的反向shell。  Metasploit包含除基本Shell之外的许多其他类型的有效负载。 现在让我们来看一些</a>
+</h3>
+<h3 class="topic">
+<a name="5fqho75m5rk4930akhc984ar8f">&nbsp;分段与非分段负载</a>
+</h3>
+<h3 class="topic">
+<a name="2f1e041gaennmeksf37ceog50h">&nbsp;&nbsp;在进入特定的Shellcode功能之前，我们必须讨论分段式和非分段式Shellcode之间的区别，如以下两个有效负载的描述所证明的那样：</a>
+</h3>
+<p class="topicImage">
+<img height="32" src="Metasploit%E6%A1%86%E6%9E%B6_files/3chlhkb58sbu7l36bld54okia2.png" width="565"></p>
+<h3 class="topic">
+<a name="1tshlvo4bqk6tupoguugovqk54">&nbsp;&nbsp;&nbsp;这些有效负载之间的差异很小但很重要。 未分段的有效负载会与漏洞利用程序一起完整发送。 相反，分段的有效负载通常分为两部分发送。 第一部分包含一个小的主要有效负载，该有效负载使受害机器重新连接到攻击者，传输包含其余shellcode的较大的次要有效负载，然后执行它。</a>
+</h3>
+<h3 class="topic">
+<a name="4peflu82mci54mifecro5bu29a">&nbsp;&nbsp;&nbsp;&nbsp;在某些情况下，我们宁愿使用分段的shellcode而不是非分段的。 如果我们正在利用的漏洞没有足够的缓冲区空间来容纳完整的有效负载，则分段有效负载可能是合适的。 由于分段有效负载的第一部分通常小于完整有效负载，因此这些较小的初始有效负载可能会在空间受限的情况下为我们提供帮助。 此外，我们需要记住，防病毒软件通常会在漏洞利用程序中检测嵌入式shellcode。 通过使用分阶段的有效负载替换该代码，我们可以删除大量的shellcode恶意部分，这可能会增加我们获得成功的机会。 利用漏洞执行初始阶段后，将检索剩余的有效负载并将其直接注入受害者计算机的内存中</a>
+</h3>
+<h3 class="topic">
+<a name="1kv33o0bu5hn4n19165lclgtld">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;请注意，在Metasploit中，&ldquo; /&rdquo;字符用于表示是否已分段有效负载，因此未分段：&ldquo; shell_reverse_tcp&rdquo;，而分段：&ldquo; shell / reverse_tcp&rdquo;。</a>
+</h3>
+<h3 class="topic">
+<a name="14pa099j43ni0ehif2n1e1b2pr">&nbsp;Meterpreter有效负载</a>
+</h3>
+<h3 class="topic">
+<a name="4o7vih5g0r8n6kos3mm8je7257">&nbsp;&nbsp;如Metasploit网站上所述，Meterpreter（https://github.com/rapid7/metasploit-framework/wiki/Meterpreter）是一种多功能有效负载，可以在运行时动态扩展。 实际上，这意味着Meterpreter Shell比常规命令Shell提供更多的功能，提供诸如文件传输，按键记录以及与受害机器交互的各种其他方法的功能。 这些工具在后渗透阶段特别有用。 由于Meterpreter的灵活性和功能性，它是最受欢迎和最常用的Metasploit有效负载。</a>
+</h3>
+<h3 class="topic">
+<a name="7iom6osb26pvo419e5lrr0iqnf">&nbsp;&nbsp;&nbsp;搜索&ldquo; meterpreter&rdquo;关键字将返回一长串结果，但是将搜索范围缩小到有效载荷类别后，将显示适用于多种操作系统和体系结构（包括Windows，Linux，Android，Apple iOS，FreeBSD和Apple OS X / macOS）的meterpreter版本。  。</a>
+</h3>
+<p class="topicImage">
+<img src="Metasploit%E6%A1%86%E6%9E%B6_files/055aqhi6beom3epvg8njcbuosb.png"></p>
+<h3 class="topic">
+<a name="1egomvklagt5inktcss531c7lj">&nbsp;&nbsp;&nbsp;&nbsp;根据特定的编程语言（Python，PHP，Java），协议和传输（UDP，HTTPS，IPv6等）以及其他各种规范（32位与64位，分段与非分段等），存在多种Meterpreter版本。  。&#13;
+   例如，下面显示了Meterpreter的Windows反向shell有效负载的一小部分选择：</a>
+</h3>
+<p class="topicImage">
+<img height="61" src="Metasploit%E6%A1%86%E6%9E%B6_files/343it1udbng0jufupgs787maff.png" width="504"></p>
+<h3 class="topic">
+<a name="3fko62gu8862acjpujf1nu6api">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;我们可以使用set来选择特定的meterpreter有效负载并对其进行配置，就像我们使用标准反向shell有效负载一样：</a>
+</h3>
+<p class="topicImage">
+<img src="Metasploit%E6%A1%86%E6%9E%B6_files/3dsn3qlqm4ueidnut8jj9tnf1u.png"></p>
+<h3 class="topic">
+<a name="7u7c9evmjf96mepkr5jqalk105">&nbsp;&nbsp;让我们针对Syncbreeze尝试此有效负载。 一切配置正确后，我们就可以启动漏洞利用并建立反向的meterpreter连接：</a>
+</h3>
+<p class="topicImage">
+<img src="Metasploit%E6%A1%86%E6%9E%B6_files/1jodfjfid0oo0tmgok3hf1t9d4.png"></p>
+<h3 class="topic">
+<a name="3o792ft8dfglsrmioijo1bhnrg">&nbsp;&nbsp;&nbsp;如图所示，meterpreter有效负载的语法与我们已经看到的其他有效负载的语法匹配。 让我们进一步深入了解Meterpreter，以突出显示与标准有效载荷的一些显着差异。</a>
+</h3>
+<h3 class="topic">
+<a name="50oa0nas3k5q08mhh1a9is79bv">&nbsp;使用Meterpreter进行实验</a>
+</h3>
+<h3 class="topic">
+<a name="415382396n2tr54ql7pjqilaiq">&nbsp;&nbsp;我们可以使用help命令来检索Meterpreter内置的所有模块和命令的列表：</a>
+</h3>
+<p class="topicImage">
+<img src="Metasploit%E6%A1%86%E6%9E%B6_files/54iaea3rdqegul0rqpoisa23p2.png"></p>
+<h3 class="topic">
+<a name="4bfhbmn4idsepunt6thdmrkr7t">&nbsp;&nbsp;&nbsp;了解Meterpreter功能的最好方法是对其进行测试。 让我们从一些简单的命令开始，例如sysinfo和getuid：</a>
+</h3>
+<p class="topicImage">
+<img src="Metasploit%E6%A1%86%E6%9E%B6_files/170rr7ihu7abssg61d3rcsi99o.png"></p>
+<h3 class="topic">
+<a name="1nht2pjoko0ergionj20gb6htl">&nbsp;&nbsp;&nbsp;&nbsp;图中发出的命令为我们提供了有关目标计算机，操作系统和当前用户的信息。&#13;
+  接下来，让我们尝试使用内置的Meterpreter命令进行一些上传和下载。 请注意，由于外壳转义，我们必须对目标路径使用两个&ldquo; \&rdquo;字符，如下所示： </a>
+</h3>
+<p class="topicImage">
+<img src="Metasploit%E6%A1%86%E6%9E%B6_files/7l15ck1hkqtcd0gpfn76t9pc1s.png"></p>
+<h3 class="topic">
+<a name="6jm8luqd79qpejbamg11k50qs8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;meterpreter包含基本文件系统命令，例如pwd，ls和cd，用于浏览目标文件系统。 即使命令的命名与Linux上的命名相同，它们（通过Meterpreter）也可以在Windows主机上使用。 从Meterpreter内生成系统shell的最大好处是，如果由于某种原因我们的shell应该死了（例如，我们在shell中发出了一个交互式命令，并且它不会超时），我们可以退出shell返回 到Meterpreter会话，并在新通道中重新生成shell，如清单771所示。</a>
+</h3>
+<p class="topicImage">
+<img src="Metasploit%E6%A1%86%E6%9E%B6_files/38mq68059u334pahd68pac6sch.png"></p>
+<h3 class="topic">
+<a name="4j2k23h0r5s9houh9kmfvcu8do">&nbsp;&nbsp;尽管可以从通过shell命令打开的命令提示符中执行应用程序，但也可以使用内置的meterpreter命令。 例如，execute命令启动一个应用程序，ps列出所有正在运行的进程，而kill终止给定的进程。</a>
+</h3>
+<h3 class="topic">
+<a name="2m3b8lrf8crbkq2s8m8p0f69nq">&nbsp;&nbsp;&nbsp;Meterpreter是Metasploit的签名有效负载，并且具有许多出色的功能，但它并不是唯一可用的有效负载。 还有一些在特定情况下具有用例的有效负载，例如vncinject / reverse_http（可创建反向VNC图形连接）或php / reverse_php（这是完全用PHP编写的反向外壳），可用于开发PHP Web应用程序。 还存在更多特殊负载，例如mainframe / reverse_shell_jcl，它是Z / OS主机的反向Shellcode.</a>
+</h3>
+<h3 class="topic">
+<a name="76bc8h3deeuglji8beo989i4du">&nbsp;可执行负载</a>
+</h3>
+<h3 class="topic">
+<a name="6i83b2jbbb8s6ru9ghaji3d192">&nbsp;&nbsp;Metasploit框架的有效负载也可以导出为各种文件类型和格式，例如ASP，VBScript，Jar，War，Windows DLL和EXE等。</a>
+</h3>
+<h3 class="topic">
+<a name="7hi39qnujt5jj5n02lf37c4k8c">&nbsp;&nbsp;&nbsp;例如，让我们使用msfvenom（https://github.com/rapid7/metasploit-framework/wiki/How-to-use-msfvenom）实用工具生成原始的Windows PE反向Shell可执行文件。 我们将使用-p标志设置有效负载，设置LHOST和LPORT分配监听主机和端口，-f设置输出格式（在这种情况下为exe），以及-o指定输出文件名</a>
+</h3>
+<p class="topicImage">
+<img src="Metasploit%E6%A1%86%E6%9E%B6_files/4vdm2oe00rnqt3odavtf33v3nd.png"></p>
+<h3 class="topic">
+<a name="6dlk0j4ftbdl8iev18ui1qsfdq">&nbsp;&nbsp;&nbsp;&nbsp;可以使用许多MSF编码器中的任何一种对PE文件中嵌入的shellcode进行编码。 从历史上看，这有助于逃避防病毒，尽管现代AV引擎已不再如此。 使用-e配置编码以指定编码器类型，使用-i配置编码以设置所需的编码迭代次数。 我们可以使用多次编码迭代来进一步模糊二进制文件，从而可以有效地逃避基本的签名检测</a>
+</h3>
+<h3 class="topic">
+<a name="2iv3klgblcv7264vk3qvtmutu7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="Metasploit%E6%A1%86%E6%9E%B6_files/0ptj0emi1j06d17csic8es92gv.png"></p>
+<h3 class="topic">
+<a name="3n62u6gpl3q7rr8v3u2edu5o56">&nbsp;&nbsp;Metasploit的另一个有用功能是能够将有效载荷注入现有的PE文件中，这可以进一步减少AV检测的机会。 注入使用-x标志完成，该标志指定要注入的文件。</a>
+</h3>
+<p class="topicImage">
+<img src="Metasploit%E6%A1%86%E6%9E%B6_files/50csj7rlfcdaunbrd6psnocn7c.png"></p>
+<h3 class="topic">
+<a name="5fqt7qkjr81ovori96c6r2t7ta">&nbsp;&nbsp;&nbsp;这些有效负载可以用作客户端攻击的一部分，用作后门，也可以作为将有效负载从一台计算机获取到另一台计算机的简便方法而独立使用。&#13;
+   当毫无戒心的用户使用我们注入的有效负载执行二进制文件时，从用户的角度来看，它将正常运行。 但是，在幕后，注入的有效负载将尝试连接回我们等待的侦听器 </a>
+</h3>
+<h3 class="topic">
+<a name="30h36jtg5nf3lam146ipl8626j">&nbsp;&nbsp;&nbsp;&nbsp;一个鲜为人知的秘密是，此过程也可以在msfconsole中使用generate命令完成。 例如，我们可以执行以下操作来重新创建前面的msfvenom示例：</a>
+</h3>
+<p class="topicImage">
+<img src="Metasploit%E6%A1%86%E6%9E%B6_files/6jaegds7o80kria1h9de9llpf8.png"></p>
+<h3 class="topic">
+<a name="3473coop1v3ehfpplvgqclfaoq">&nbsp;多处理器Metasploit漏洞利用</a>
+</h3>
+<h3 class="topic">
+<a name="08u64lf2k53vorfpjla8h5kqb7">&nbsp;&nbsp;在以前的模块中，我们使用Netcat捕获标准的反向shell，例如由windows / shell_reverse_tcp有效负载生成的反向shell。 但是，这很不雅致，可能不适用于更高级的Metasploit有效负载。 相反，我们应该使用多处理器模块框架，该模块适用于所有单阶段和多阶段有效负载。</a>
+</h3>
+<h3 class="topic">
+<a name="57j68th192qbfph7olqmg5uak9">&nbsp;&nbsp;&nbsp;使用multi / handler模​​块（侦听器模块）时，我们必须指定传入的有效负载类型。&#13;
+     在下面的示例中，我们将指示multi / handler并接受传入的windows / meterpreter / reverse_https Meterpreter有效负载，它将在我们所需的端口TCP 443上启动第一阶段侦听器。一旦multi-handler接受了第一阶段payload，有效负载的第二阶段将反馈给目标计算机。&#13;
+     设置完参数后，我们将运行exploit以指示multi / handler侦听连接</a>
+</h3>
+<p class="topicImage">
+<img src="Metasploit%E6%A1%86%E6%9E%B6_files/3ee1q3k2nq02vdi1th7okq6e5p.png"></p>
+<h3 class="topic">
+<a name="5dblkvo2jddgh61qedkrajeijj">&nbsp;&nbsp;&nbsp;&nbsp;请注意，使用不带参数的exploit命令将阻塞命令提示符，直到执行完成。 在大多数情况下，包含-j标志以使模块作为后台作业运行会更有用，这允许我们在等待连接时继续其他工作。  jobs命令允许我们查看正在运行的后台作业。</a>
+</h3>
+<p class="topicImage">
+<img src="Metasploit%E6%A1%86%E6%9E%B6_files/4s1rq9ik39kiirgqev843ejmfc.png"></p>
+<h3 class="topic">
+<a name="35f5ilkd8obo2tdhrdna9n2q74">&nbsp;&nbsp;在侦听器作为作业运行时，我们可以使用-i标志和作业ID来显示有关侦听器的信息。 另外，我们可以终止一个带有kill的作业，后跟该作业ID。&#13;
+   此时，Multi / Handler正在运行，并且正在侦听HTTPS反向有效负载连接。 现在，我们可以生成一个包含Windows / meterpreter / reverse_https有效负载的新可执行文件，在我们的Windows目标上执行它，并且我们的处理程序应该可以使用：&#13;
+此时输入指令shell即可连接到受害计算机</a>
+</h3>
+<p class="topicImage">
+<img height="69" src="Metasploit%E6%A1%86%E6%9E%B6_files/641ukj5tpue1b370tkltuj0dia.png" width="552"></p>
+<h3 class="topic">
+<a name="5mdjldn8sdh81skp1hbrbvtfe0">&nbsp;&nbsp;&nbsp;也可以使用session相关指令连接到被害计算机</a>
+</h3>
+<p class="topicImage">
+<img src="Metasploit%E6%A1%86%E6%9E%B6_files/4if8ddmufarvs50tm3lbem2s39.png"></p>
+<h3 class="topic">
+<a name="6cvhav8koirhdnn8sjmb7e77kn">&nbsp;&nbsp;&nbsp;&nbsp;如果我们在建立连接时监视其网络流量，则会发现它看起来像其他任何HTTPS连接一样，因此可能会逃避基本检测。</a>
+</h3>
+<p class="topicImage">
+<img src="Metasploit%E6%A1%86%E6%9E%B6_files/1men81qisf2qjqcerd968ms4tl.png"></p>
+<h3 class="topic">
+<a name="4kteeamhodl87v5v1ktp7a8oql">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;本模块主要的意义在于可以在后台持续监听受害计算机上发起的反弹shell，受害计算机长通过执行恶意可执行文件来发器反弹shell</a>
+</h3>
+<h3 class="topic">
+<a name="2t08uf2up789s0n5cnnv710tfh">&nbsp;客户端攻击</a>
+</h3>
+<h3 class="topic">
+<a name="7f00h7hidlfeoa1j9qq02n6fo9">&nbsp;&nbsp;Metasploit框架还提供了许多有助于客户端攻击的功能，其中包括我们已经探讨过的各种可执行格式。 我们可以使用msfvenom的-l format选项来查看其中一些可执行格式：</a>
+</h3>
+<p class="topicImage">
+<img src="Metasploit%E6%A1%86%E6%9E%B6_files/6oldssmr9v3kba7k9clrrqoia2.png"></p>
+<h3 class="topic">
+<a name="3aieu6gapbrpsofjvmvb6jdh1h">&nbsp;&nbsp;&nbsp;通过分别创建恶意的HTML应用程序或Office宏以用于Word或Excel文档中，将hta-psh，vba和vba-psh格式设计用于客户端攻击。&#13;
+  MSF还包含许多浏览器漏洞。 例如，我们可以搜索&ldquo; flash&rdquo;以显示多个基于Flash的漏洞，如清单780所示。</a>
+</h3>
+<p class="topicImage">
+<img src="Metasploit%E6%A1%86%E6%9E%B6_files/01rgd8t0a6vv7b55nr8s887sa5.png"></p>
+<h3 class="topic">
+<a name="50i2acoq7k6c980lo5poqrtdt2">&nbsp;&nbsp;&nbsp;&nbsp;尽管漏洞利用程序已经过验证并且大多数都是稳定的，但由于开发浏览器漏洞利用的挑战越来越大，它们也有些过时。 如果我们发现一个目标运行的是带有未修补浏览器的较旧操作系统（例如Windows 7），则这种类型的引导程序可能会为我们提供所需的机会。</a>
+</h3>
+<h3 class="topic">
+<a name="2mn2r9j6idtfq2n2vr903ei064">&nbsp;先进的功能和传输</a>
+</h3>
+<h3 class="topic">
+<a name="59jhrc0v56a4tshiu054570h4t">&nbsp;&nbsp;了解了Metasploit框架的基本功能和meterpreter有效负载后，我们可以继续使用更高级的选项，可以使用show advanced命令显示这些选项。 让我们研究一些更有趣的选项</a>
+</h3>
+<p class="topicImage">
+<img src="Metasploit%E6%A1%86%E6%9E%B6_files/38dobkqrorrkujollhu14894fe.png"></p>
+<h3 class="topic">
+<a name="5t3ktph5u89917g728pdicmmd7">&nbsp;&nbsp;&nbsp;首先，让我们看一些高级编码选项。 在前面的示例中，我们选择对放入漏洞利用程序的shellcode的第一阶段进行编码。 由于Meterpreter有效负载的第二阶段要大得多，并且包含更多潜在签名，因此它可能会被各种防病毒解决方案标记，因此我们也可以选择对第二阶段进行编码。&#13;
+   我们可以将EnableStageEncoding与StageEncoder一起使用来对第二阶段进行编码，并可能绕过检测。 为此，我们将EnableStageEncoding设置为&ldquo; true&rdquo;，并将StageEncoder设置为所需的编码器，在这种情况下为&ldquo; x86 / shikata_ga_nai&rdquo;：</a>
+</h3>
+<p class="topicImage">
+<img src="Metasploit%E6%A1%86%E6%9E%B6_files/3bjol2iv739dmat1cj5p3jt253.png"></p>
+<h3 class="topic">
+<a name="2l4c9f8rsohd6e3t4mog3geuer">&nbsp;&nbsp;&nbsp;&nbsp;AutoRunScript选项也非常有用，因为它会在建立meterpreter连接后自动运行脚本。 这在客户端攻击期间非常有用，因为当用户执行有效负载时我们可能不可用，这意味着会话可能处于空闲状态或丢失。 例如，我们可以将collect / enum_logged_on_users模块配置为在meterpreter连接时自动枚举已登录的用户：</a>
+</h3>
+<p class="topicImage">
+<img src="Metasploit%E6%A1%86%E6%9E%B6_files/24pu10kqgiho1nqjtdn6r4qfrq.png"></p>
+<h3 class="topic">
+<a name="2ut8lsccfmc7b7fgri76gilep3">&nbsp;&nbsp;到目前为止，我们已经使用各种内置命令在meterpreter会话中进行了导航，但是我们也可以临时退出meterpreter外壳以在Metasploit Framework中执行其他操作，而无需关闭连接。 我们可以使用background返回到msfconsole提示符，在该提示符下我们可以在框架内执行其他操作。 当准备好返回到Meterpreter会话时，我们可以列出带有会话-l的所有可用会话，然后跳回到带有会话-i（交互）以及相应ID的会话，如清单784所示。</a>
+</h3>
+<p class="topicImage">
+<img src="Metasploit%E6%A1%86%E6%9E%B6_files/2v0382ceo3bkvkedjs5p0opm22.png"></p>
+<h3 class="topic">
+<a name="1m06ftks9surbfqo4uco0jeo7f">&nbsp;&nbsp;&nbsp;使用这些命令，我​​们可以在不同的受感染主机上的可用外壳之间切换，而无需关闭我们的任何连接。&#13;
+   在前面的示例中，我们使用了预定义的通信协议（例如TCP或HTTPS）来利用我们的目标，该目标是在生成有效负载时选择的。 但是，我们可以在最初的妥协之后使用Meterpreter有效负载传输716来切换协议。 我们可以使用transport list列出meterpreter连接的当前可用传输。</a>
+</h3>
+<p class="topicImage">
+<img src="Metasploit%E6%A1%86%E6%9E%B6_files/6h1s2karff4trmbjedh8chporj.png"></p>
+<h3 class="topic">
+<a name="5tp6vlsdj1k5eic7ffpud6mm0a">&nbsp;&nbsp;&nbsp;&nbsp;我们还可以使用transport add将新的传输协议添加到当前会话，使用-t设置所需的传输类型。&#13;
+  在下面的示例中，我们将添加reverse_tcp传输，等效于选择windows / meterpreter / reverse_tcp有效负载。 我们将为指定的传输类型应用选项，包括本地主机IP地址（-l）和本地端口（-p）： </a>
+</h3>
+<p class="topicImage">
+<img src="Metasploit%E6%A1%86%E6%9E%B6_files/64dtkgsr2vkchoailus3fi8lkv.png"></p>
+<h3 class="topic">
+<a name="1qhauubaem7ektnrt47s881214">&nbsp;&nbsp;在利用新的传输方式之前，我们必须建立一个侦听器以接受连接。 为此，我们再次选择multi / handler模​​块并指定我们之前选择的相同参数。&#13;
+   配置了侦听器后，我们可以返回到meterpreter会话，然后运行transport next以更改为新创建的传输模式。 这将创建一个新会话并关闭旧会话。&#13;
+我们成功地交换了传输，创建了一个新的meterpreter会话，并关闭了旧的会话。</a>
+</h3>
+<h3 class="topic">
+<a name="54a4jv1uoodpeqtflufd5gkpc7">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="Metasploit%E6%A1%86%E6%9E%B6_files/6q1mqfs50vs6kecp3tss9d0o5v.png"></p>
+<h3 class="topic">
+<a name="0qagb7tuf30665q234bj3lctgp">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="Metasploit%E6%A1%86%E6%9E%B6_files/5ljp7af0jajhgnsrqjibusq058.png"></p>
+<h2 class="topic">
+<a name="7docb5ee1pt2c2kki1cv252tbo">构建我们自己的MSF模块</a>
+</h2>
+<h3 class="topic">
+<a name="23ml1bg2lvqjmftlasgfh65ur1">&nbsp;即使是最不熟练的程序员也可以构建自定义MSF模块。  Ruby语言和漏洞利用结构清晰，直接，并且与Python非常相似。 为了说明它是如何工作的，我们将SyncBreeze Python漏洞利用移植到Metasploit格式，使用框架中的现有漏洞利用作为模板，并将其复制到root用户主目录下的已建立文件夹结构中。</a>
+</h3>
+<p class="topicImage">
+<img height="89" src="Metasploit%E6%A1%86%E6%9E%B6_files/5jtafu6jc51pd52sj1ho369sn9.png" width="515"></p>
+<h3 class="topic">
+<a name="00ckjb0ue907tc5vf8lu3r647f">&nbsp;&nbsp;首先，我们将更新标题信息，包括模块名称，其描述，作者和外部引用。</a>
+</h3>
+<p class="topicImage">
+<img height="126" src="Metasploit%E6%A1%86%E6%9E%B6_files/3vbrnv7f4p2r14g2baiilg9fvd.png" width="458"></p>
+<h3 class="topic">
+<a name="25f20m61ndik6hotom4sengu8r">&nbsp;&nbsp;&nbsp;在下一部分中，我们将选择默认选项。 在这种情况下，我们将EXITFUNC设置为&ldquo; thread&rdquo;并指定发现的坏字符，即\ x00 \ x0a \ x0d \ x25 \ x26 \ x2b \ x3d。 最后，在&ldquo;目标&rdquo;部分中，我们将指定SyncBreeze的版本以及JMP ESP指令的地址以及用于覆盖EIP的偏移量</a>
+</h3>
+<p class="topicImage">
+<img src="Metasploit%E6%A1%86%E6%9E%B6_files/152m0se9obfdje2ppuj47cpa7i.png"></p>
+<h3 class="topic">
+<a name="7bbuuh6bb22dfm8aun5i7fqlgv">&nbsp;&nbsp;&nbsp;&nbsp;接下来，我们将更新check功能，这是通过对URL/.进行HTTP GET请求来完成的。 在易受攻击的系统上，结果包含文本&ldquo; Sync Breeze Enterprise v10.0.28&rdquo;。</a>
+</h3>
+<p class="topicImage">
+<img src="Metasploit%E6%A1%86%E6%9E%B6_files/6n8qovvsfjavgha9pufaj5qeno.png"></p>
+<h3 class="topic">
+<a name="5eeuahn76lov3irgg1hc2tgdks">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;最后一部分是漏洞利用程序本身。 首先，我们将创建漏洞利用字符串，该漏洞利用JMP ESP指令的偏移量和内存地址以及NOP底座和有效负载，我们将像原始漏洞利用一样，使用/ login URL通过HTTP POST请求发送精心制作的恶意字符串。 我们将使用漏洞利用字符串填充HTTP POST用户名变量：</a>
+</h3>
+<p class="topicImage">
+<img src="Metasploit%E6%A1%86%E6%9E%B6_files/074sj1096fegobgrfjpbgrv477.png"></p>
+<h3 class="topic">
+<a name="305jqajq03hfaa3j7am897funt">&nbsp;将所有部分放在一起可以为我们提供针对SyncBreeze Enterprise漏洞的完整的Metasploit利用模块：</a>
+</h3>
+<h3 class="topic">
+<a name="7dikblo8kbq5nhpcd5bo6fvl73">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="Metasploit%E6%A1%86%E6%9E%B6_files/652rftts16jtlplbkoi7m7jbpg.png"></p>
+<h3 class="topic">
+<a name="456atr1sguutuf9kuv87numlrq">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="Metasploit%E6%A1%86%E6%9E%B6_files/7a0k07g8ni2mhlffr17ek4h7qu.png"></p>
+<h3 class="topic">
+<a name="4m9ovc5hi715tm3li7kivnbk28">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="Metasploit%E6%A1%86%E6%9E%B6_files/4m250a5ed3qh3otbek4tpdsg04.png"></p>
+<h3 class="topic">
+<a name="51vackj38252osp3e6eegscah0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="Metasploit%E6%A1%86%E6%9E%B6_files/3ife3n7kq90de41sp0s57jreu2.png"></p>
+<h3 class="topic">
+<a name="3pvm8kuo8svubdre54tb2bgh89">&nbsp;漏洞利用完成后，我们可以启动Metasploit并进行搜索。</a>
+</h3>
+<p class="topicImage">
+<img src="Metasploit%E6%A1%86%E6%9E%B6_files/2t86dbeh2aan5rqisssj657h21.png"></p>
+<h3 class="topic">
+<a name="6bn3b7m5db8e540sle8bslm446">&nbsp;&nbsp;我们注意到，搜索syncbreeze现在包含三个结果，第二个结果是我们的自定义利用。 接下来，我们将选择有效负载，设置必需的参数，然后执行漏洞检查。</a>
+</h3>
+<p class="topicImage">
+<img src="Metasploit%E6%A1%86%E6%9E%B6_files/3i9s50e5uec8ats67jhv214evh.png"></p>
+<h3 class="topic">
+<a name="30miia9ncbihabu6rvaaenrld5">&nbsp;&nbsp;&nbsp;最后，我们启动漏洞利用程序以获得反向外壳。</a>
+</h3>
+<p class="topicImage">
+<img src="Metasploit%E6%A1%86%E6%9E%B6_files/50apk5dubnvrk27qkvn9ro9567.png"></p>
+<h2 class="topic">
+<a name="5plvkghq9kvlhulu8m4opcgltc">利用Metasploit进行后期开发</a>
+</h2>
+<h3 class="topic">
+<a name="31p3lubuned675kgdkbri4ho89">&nbsp;一旦获得对目标计算机的访问权限，就可以进入后渗透阶段，在该阶段我们收集信息，采取步骤维护访问权限，转向其他计算机等。&#13;
+   Metasploit框架具有一些有趣的后渗透特性和模块，可以简化后渗透过程的许多方面。 除了内置的Meterpreter命令外，还编写了许多利用活动会话作为参数的后渗透MSF模块。</a>
+</h3>
+<h3 class="topic">
+<a name="3c427th0smirtdh886nhgapf6l">&nbsp;&nbsp;养成从Meterpreter会话中调用help命令并探究可能采取的措施的习惯。 确保定期执行此操作，因为该框架始终处于繁重的开发过程中，并且会定期添加新的选项。</a>
+</h3>
+<h3 class="topic">
+<a name="62msvscuvhltsgklbeb4t1rn1n">&nbsp;核心后渗透功能</a>
+</h3>
+<h3 class="topic">
+<a name="2409uk1ofhpmv15o3cqokml4al">&nbsp;&nbsp;如前所述，我们可以浏览文件系统，并列出操作系统和用户信息以及受感染主机上正在运行的进程。 我们还可以直接从Meterpreter命令提示符上载和下载文件。&#13;
+  meterpreter提供了其他基本的后渗透功能，其中包括可以通过screenshot命令获取受感染桌面的屏幕截图的选项： </a>
+</h3>
+<p class="topicImage">
+<img height="39" src="Metasploit%E6%A1%86%E6%9E%B6_files/2f7ibtdp0vfsr19eqhgnou1r18.png" width="495"></p>
+<h3 class="topic">
+<a name="319ctcubu50kom8auaj0ub9h99">&nbsp;&nbsp;&nbsp;屏幕截图的截短版本如图</a>
+</h3>
+<p class="topicImage">
+<img height="155" src="Metasploit%E6%A1%86%E6%9E%B6_files/57a7cpu8mif06nkvcc369rneb4.png" width="314"></p>
+<h3 class="topic">
+<a name="0jtpkrl6setoujhntb6ns8k96m">&nbsp;&nbsp;&nbsp;&nbsp;这样的功能可以使我们捕获敏感的用户操作的图片，否则可能很难发现它们。  Meterpreter还允许我们启动键盘记录器并使用keyscan_start，keyscan_dump和keyscan_stop检测活动的用户击键。</a>
+</h3>
+<p class="topicImage">
+<img src="Metasploit%E6%A1%86%E6%9E%B6_files/5er9clf6irfmn3li13lk88954g.png"></p>
+<h3 class="topic">
+<a name="4mirjipgqa3kocrhoems75pjlo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;后渗透的其他基本功能包括列出当前用户的空闲时间并打开麦克风或网络摄像头，这就是大多数安全人员始终保持网络摄像头覆盖的原因。&#13;
+  当执行诸如键盘记录之类的操作时，重要的是要考虑当前的Meterpreter会话的上下文。 当我们利用SyncBreeze应用程序时，我们获得了在NT SYSTEM用户上下文中运行的反向外壳程序。 为了捕获普通用户的按键，我们将必须将Shell进程迁移到我们所针对的用户上下文中。&#13;
+  让我们讨论一下更改上下文的过程。</a>
+</h3>
+<h3 class="topic">
+<a name="2lpa4fmo9cm0nppook4u11v38t">&nbsp;迁移过程</a>
+</h3>
+<h3 class="topic">
+<a name="0o2tvvpc45c9de9igtpp6ohoqj">&nbsp;&nbsp;当我们入侵主机时，我们的meterpreter有效负载将在我们攻击的应用程序内部执行。 如果受害者关闭了该进程，我们对机器的访问也将关闭&#13;
+使用migration命令，我们可以将Meterpreter的执行移至不同的进程。&#13;
+     为此，我们首先运行ps来查看所有正在运行的进程，然后选择其中一个（例如explorer.exe），然后发出migration命令。</a>
+</h3>
+<p class="topicImage">
+<img src="Metasploit%E6%A1%86%E6%9E%B6_files/5ka0i97vr8hje9fl5lps7h7fuv.png"></p>
+<h3 class="topic">
+<a name="0movucoqeso7kbtdssn8kt95ja">&nbsp;&nbsp;&nbsp;请注意，我们只能迁移到以相同特权或完整性级别或低于当前进程的特权和完整性级别执行的进程。 对于Sync Breeze，由于我们正在以最大特权（NT SYSTEM）运行Meterpreter有效负载，因此我们的选择很多，并且可以通过相应地选择目标进程将shell迁移到不同的用户上下文。</a>
+</h3>
+<h3 class="topic">
+<a name="2modm3nnhlr7h0d9gs8ountrdk">&nbsp;后渗透模块</a>
+</h3>
+<h3 class="topic">
+<a name="1hdlrhku4bde4a9gjischu4jb9">&nbsp;&nbsp;除了Meterpreter核心API中存在的本机命令和操作外，我们还可以针对活动会话部署几个后渗透模块。 通过执行客户端攻击而创建的会话可能只会为我们提供无特权的Shell。 但是，如果目标用户是本地管理员组的成员，则如果绕过用户帐户控制（UAC），则可以将Shell提升到较高的完整性级别。 在前面的示例中，我们将Meterpreter Shell迁移到了以中等完整性运行的explorer.exe进程。 在以下步骤中，我们将假定我们已通过客户端攻击收集了此Shell。</a>
+</h3>
+<h3 class="topic">
+<a name="64nk9vq0a7moqr7tba0tu023o2">&nbsp;&nbsp;&nbsp;搜索UAC bypass 模块会产生很多结果。 但是，由于在我们的示例中，受感染的主机是我们的Windows 10 Fall Creators Update客户端计算机，因此我们将重点关注bypassuac_injection_winsxs模块，因为它在此版本的Windows上运行良好。 我们将选择模块并列出其选项。 这显示了一个名为SESSION的参数，它是目标Meterpreter会话。 通过set SESSION 10将会话设置为活动的Meterpreter会话并运行漏洞利用程序，将实质上通过活动会话将漏洞利用管道传递给易受攻击的主机：</a>
+</h3>
+<p class="topicImage">
+<img src="Metasploit%E6%A1%86%E6%9E%B6_files/636bkr0r3h4hfii2h2n4pmeb34.png"></p>
+<h3 class="topic">
+<a name="5qcr016c9nvonp09phhqma16bk">&nbsp;&nbsp;&nbsp;&nbsp;除了能够使活动会话后台运行并通过它执行模块之外，我们还可以使用load命令直接在活动会话内部加载扩展。&#13;
+   一个很好的例子是PowerShell扩展，它允许使用PowerShell。 使用此模块，我们可以执行PowerShell命令和脚本，或启动交互式PowerShell命令提示符。 在上图中，我们加载powershell并列出可用的子命令。</a>
+</h3>
+<p class="topicImage">
+<img src="Metasploit%E6%A1%86%E6%9E%B6_files/6k7s5sh8kk2pi18cdeprmebenh.png"></p>
+<h3 class="topic">
+<a name="607ei6nji5iskfd7gvmebb487k">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;举例来说，让我们使用powershell_execute命令通过$ PSVersionTable.PSVersion全局变量检索PowerShell版本。</a>
+</h3>
+<p class="topicImage">
+<img src="Metasploit%E6%A1%86%E6%9E%B6_files/1ur6rsnjfehhqiha2m844r49ul.png"></p>
+<h3 class="topic">
+<a name="3cm8m5p93ia6o6tpmnmvv1ov4h">&nbsp;&nbsp;Mimikatz也非常有用，幸运的是，它的实现可以作为Meterpreter扩展使用。 在此示例中，我们将使用load kiwi运行扩展。 由于mimikatz要求拥有SYSTEM权限，因此我们将运行getsystem以从当前的高完整性外壳程序（在offsec用户的上下文中）自动获取SYSTEM特权。 最后，我们将使用creds_msv转储系统凭据：</a>
+</h3>
+<p class="topicImage">
+<img src="Metasploit%E6%A1%86%E6%9E%B6_files/1rm41r0fqad551mlpqoo3nluul.png"></p>
+<h3 class="topic">
+<a name="4mmbckomqc48v7g8tj4lh9r93s">&nbsp;透视Metasploit框架</a>
+</h3>
+<h3 class="topic">
+<a name="3bmlvr5r04m1u159o3afbl1uj4">&nbsp;&nbsp;破坏目标之后，我们可以从该系统转向其他目标。 我们可以从MSF内部进行枢转，这很方便，但缺乏手动枢转技术的灵活性。&#13;
+   例如，让我们利用现有的Meterpreter会话来枚举内部网络的Active Directory基础结构，并转移到其他计算机。&#13;
+   首先，我们注意到受感染的Windows客户端具有两个网络接口。</a>
+</h3>
+<p class="topicImage">
+<img src="Metasploit%E6%A1%86%E6%9E%B6_files/61ipebkg493d9o2lam59ptajf4.png"></p>
+<h3 class="topic">
+<a name="4smifh9uipdrimj4t464bck08g">&nbsp;&nbsp;&nbsp;我们将使用route和add来创建到我们发现的备用内部网络子网的路径。 我们还将指定该路由将应用于的会话ID：</a>
+</h3>
+<p class="topicImage">
+<img src="Metasploit%E6%A1%86%E6%9E%B6_files/0jip9o011rjve343g68oaicfek.png"></p>
+<h3 class="topic">
+<a name="23ui40jlifpd068jcgsc5iapcc">&nbsp;&nbsp;&nbsp;&nbsp;通过创建到内部网络的路径，我们现在可以枚举该子网。 由于我们已经知道域控制器的IP地址，因此我们将使用portscan / tcp模块对其进行有限的端口扫描。</a>
+</h3>
+<p class="topicImage">
+<img src="Metasploit%E6%A1%86%E6%9E%B6_files/4n637b34n10jg9arm25unb4ake.png"></p>
+<h3 class="topic">
+<a name="4vann8pha5q6lttrvkvtokd03t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;由于我们先前发现了域控制器的有效管理凭据，因此我们现在可以尝试通过使用smb / psexec模块转向域控制器。 我们需要通过指定SMBDomain，SMBUser和SMBPass的值来指定凭据，如下所示。</a>
+</h3>
+<h3 class="topic">
+<a name="0tngkgnq7td2dak74vur99pi8q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="Metasploit%E6%A1%86%E6%9E%B6_files/6l21huqlasc4q85bosdd152pag.png"></p>
+<h3 class="topic">
+<a name="5in6v25egj1pejs0kvcmkoimdf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="Metasploit%E6%A1%86%E6%9E%B6_files/17v9boccjuqh020g1672pusmcb.png"></p>
+<h3 class="topic">
+<a name="5gmtojiin426r4fd11vfsf4t86">&nbsp;&nbsp;请务必注意，添加的路由仅适用于已建立的连接。 因此，域控制器上的新外壳程序必须是绑定外壳程序，从而使我们能够使用设置的路由连接到它。 反向Shell有效负载将无法找到返回我们攻击系统的方式，因为域控制器没有为我们的网络定义路由。 通过这种方式，我们能够从内部网络上的域控制器获得一个meterpreter外壳，否则我们将无法直接到达该外壳。&#13;
+   作为手动添加路由的替代方法，我们可以使用自动路由后渗透模块，该模块可以通过现有的merterpreter会话自动设置枢纽路由。 右图演示了如何调用该模块。</a>
+</h3>
+<p class="topicImage">
+<img src="Metasploit%E6%A1%86%E6%9E%B6_files/03v7qf7l4vfemcsbca66e9ascv.png"></p>
+<h3 class="topic">
+<a name="7s95sod9fa7sihkgm1dkmd4okm">&nbsp;&nbsp;&nbsp;我们还可以将路由与server / socks4a模块结合以配置SOCKS代理。 这允许Metasploit框架外部的应用程序通过枢纽建立隧道。 为此，我们首先将模块设置为使用本地主机作为代理：</a>
+</h3>
+<p class="topicImage">
+<img src="Metasploit%E6%A1%86%E6%9E%B6_files/2pa3rcvng2rerofpplgg6q27an.png"></p>
+<h3 class="topic">
+<a name="1rlncgqnu46a94ekfim3hl0g2g">&nbsp;&nbsp;&nbsp;&nbsp;现在，我们可以更新ProxyChains配置文件（/etc/proxychains.conf），以利用SOCKS代理。 这可以通过添加配置行来完成，如下面的清单810所示。</a>
+</h3>
+<p class="topicImage">
+<img height="17" src="Metasploit%E6%A1%86%E6%9E%B6_files/37dghbrbouo3ucleao0viuv8aq.png" width="544"></p>
+<h3 class="topic">
+<a name="2h07tq9q9ktuqj8lbo5s3fgig1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;最后，我们可以使用proxychains运行rdesktop之类的应用程序，以从我们的Kali Linux系统获取对内部网络中的域控制器的GUI访问。</a>
+</h3>
+<p class="topicImage">
+<img src="Metasploit%E6%A1%86%E6%9E%B6_files/201u3jv5angc5skenl879qkssu.png"></p>
+<h3 class="topic">
+<a name="07l4pkbu6ol4akq64scpa86aqm">&nbsp;&nbsp;接下来，rdesktop客户端打开，并允许我们登录到域控制器，如图所示。</a>
+</h3>
+<p class="topicImage">
+<img src="Metasploit%E6%A1%86%E6%9E%B6_files/7mrnk5ae80t9jucjr23f8v160v.png"></p>
+<h3 class="topic">
+<a name="424r9u4jlq6e3e71blaqgedlei">&nbsp;&nbsp;&nbsp;我们还可以使用类似的技术，通过在Meterpreter会话内部使用portfwd命令进行端口转发，它将特定的端口转发到内部网络。</a>
+</h3>
+<p class="topicImage">
+<img src="Metasploit%E6%A1%86%E6%9E%B6_files/3gulgc3b2a980igcgbeugqhq34.png"></p>
+<h3 class="topic">
+<a name="24aigkjmqu61k0ji1s669jniql">&nbsp;&nbsp;&nbsp;&nbsp;我们可以创建从本地主机端口3389到受感染主机（192.168.1.110）端口3389的端口转发</a>
+</h3>
+<p class="topicImage">
+<img height="35" src="Metasploit%E6%A1%86%E6%9E%B6_files/5ua9gsbavd2q5hpm6a0lcoaq7o.png" width="451"></p>
+<h3 class="topic">
+<a name="5ok5ajgusrjqkj1mdp3be19mb2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;让我们通过通过rdesktop连接到127.0.0.1:3389来访问内部网络中受到感染的主机来进行测试。</a>
+</h3>
+<p class="topicImage">
+<img src="Metasploit%E6%A1%86%E6%9E%B6_files/1hgv147dsu2igns31uo8o09ii7.png"></p>
+<h3 class="topic">
+<a name="6a0osohekna0vofpc65kjqqajc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用这种技术，我们可以在主机上获得远程桌面会话，否则我们将无法从我们的Kali系统访问该主机。 同样，如果将域控制器连接到其他网络，则可以创建一系列枢纽来访问任何主机。</a>
+</h3>
+<h2 class="topic">
+<a name="486dju124dseuvpg8r2fhojcre">Metasploit自动化</a>
+</h2>
+<h3 class="topic">
+<a name="41gicc37k2paavlhg0vpc8gbgh">&nbsp;尽管Metasploit框架为我们实现了相当多的自动化，但我们可以进一步自动化框架本身内部的重复命令。&#13;
+   当我们使用有效负载创建独立的可执行文件或客户端攻击向量（如HTML应用程序）时，我们会选择有效负载类型，本地主机和本地端口等选项。 然后必须在multi / handler模​​块中设置相同的选项。 为了简化此过程，我们可以利用Metasploit资源脚本。 我们可以在资源脚本中使用任意数量的Metasploit命令。</a>
+</h3>
+<h3 class="topic">
+<a name="4p0nk62fv3fq9ir8g1e15db6pe">&nbsp;&nbsp;例如，使用标准编辑器，我们将在home目录中创建名为setup.rc的脚本。 在此脚本中，我们将有效负载设置为windows / meterpreter / reverse_https并配置相关的LHOST和LPORT参数。 我们还使用x86 / shikata_ga_nai编码器启用了分解阶段编码，并使用AutoRunScript选项将post / windows / manage / migrate模块配置为自动执行。 这将导致生成的merterpreter自动启动后台notepad.exe进程并迁移到该进程。 最后，将ExitOnSession参数设置为&ldquo; false&rdquo;，以确保侦听器继续接受新的连接，并使用-j和-z标志执行该模块，以阻止我们自动与会话进行交互。 用于此的命令如下：</a>
+</h3>
+<p class="topicImage">
+<img src="Metasploit%E6%A1%86%E6%9E%B6_files/3ledhimfv6dp20sdtu9o30lep9.png"></p>
+<h3 class="topic">
+<a name="4bgg1uc51l2sngcvn1kapbjvas">&nbsp;&nbsp;&nbsp;保存脚本后，可以通过将-r标志传递给msfconsole来执行脚本，</a>
+</h3>
+<p class="topicImage">
+<img src="Metasploit%E6%A1%86%E6%9E%B6_files/57osnnpv9cjaqvgvnov6u30qls.png"></p>
+<h3 class="topic">
+<a name="7vpddd73f7lrj732cfdvthkuuv">&nbsp;&nbsp;&nbsp;&nbsp;配置并运行侦听器后，我们可以从Windows VM启动包含merterpreter有效负载的可执行文件。 我们可以使用msfvenom创建此可执行文件：</a>
+</h3>
+<p class="topicImage">
+<img height="101" src="Metasploit%E6%A1%86%E6%9E%B6_files/4makak72psid1mrsnb8crd3vsj.png" width="511"></p>
+<h3 class="topic">
+<a name="4erl64otdutbav248257qfj0cg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当执行时，我们的侦听器接受连接，使用已编码的第二阶段有效负载产生了该会话，并成功地将其成功自动迁移到notepad.exe进程中。</a>
+</h3>
+<p class="topicImage">
+<img src="Metasploit%E6%A1%86%E6%9E%B6_files/0dj6opma6rdhhsed5b9kp7rof7.png"></p>
+</body>
+</html>

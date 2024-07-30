@@ -1,0 +1,292 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>文件传输</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="154iqu779ng6vju2etoquasgor">文件传输</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="%E6%96%87%E4%BB%B6%E4%BC%A0%E8%BE%93_files/images/%E6%96%87%E4%BB%B6%E4%BC%A0%E8%BE%93.jpg"></div>
+<h2 class="topic">
+<a name="3u0ur3ul09vq7631htook1fb35">后渗透一词是指攻击者一旦获得对目标的某种控制权后所采取的行动。 后渗透的行为包括提升特权，将控制扩展到其他计算机，安装后门，清理攻击证据，将文件和工具上传到目标计算机等。</a>
+</h2>
+<h2 class="topic">
+<a name="5vj79gmqe579r4bmpviuemoi4i">注意事项和准备</a>
+</h2>
+<h3 class="topic">
+<a name="5883kg72rr7096esg2pbd3iure">&nbsp;本模块中讨论的文件传输方法可能会危及我们的合作成功，因此应谨慎使用并仅在特定条件下使用。</a>
+</h3>
+<h3 class="topic">
+<a name="3qgdct4v2a8vsbb82bic0n2t4q">&nbsp;文件传输攻击工具的危险性</a>
+</h3>
+<h3 class="topic">
+<a name="13qditfn9vfdi86d450u6baasc">&nbsp;&nbsp;在某些情况下，我们可能需要将攻击工具和实用程序转移到我们的目标。 但是，由于多种原因，转移这些工具可能很危险。</a>
+</h3>
+<h3 class="topic">
+<a name="4ji34jq0uq79610ctaim2ocfkb">&nbsp;&nbsp;&nbsp;首先，我们的后渗透攻击工具可能会被恶意团体滥用，从而使客户的资源处于危险之中。 评估完成后，记录上传文件并将其删除非常重要。</a>
+</h3>
+<h3 class="topic">
+<a name="7ssvm10ppj6d65iqnahi6quch7">&nbsp;&nbsp;&nbsp;其次，在此阶段，防病毒软件会扫描端点文件系统以搜索预定义的文件签名，这使我们感到非常沮丧。 该软件在大多数公司环境中无处不在，它将检测我们的攻击工具，将其隔离（使它们无用），并提醒系统管理员</a>
+</h3>
+<h3 class="topic">
+<a name="526le6m9mnavei96u5bk3r6g41">&nbsp;&nbsp;&nbsp;如果系统管理员勤奋工作，这将使我们损失一个宝贵的内部远程外壳，或者在极端情况下，这表明我们参与的有效结束。</a>
+</h3>
+<h3 class="topic">
+<a name="1gsgpret8isf2iqpv823tg3anr">&nbsp;&nbsp;&nbsp;作为一般经验法则，我们应该始终尝试在受感染的系统上使用本地工具。 另外，当本地工具不足，确定检测风险最小化或我们的需求超过检测风险时，我们可以上载其他工具。</a>
+</h3>
+<h3 class="topic">
+<a name="2cp1h6bsmdsno40dv5lm0l1rkb">&nbsp;安装Pure-FTPd</a>
+</h3>
+<h3 class="topic">
+<a name="0qs2hu4ri6986kfun2hd0fqvfi">&nbsp;&nbsp;快速在我们的Kali攻击机器上安装Pure-FTPd服务器：sudo apt update &amp;&amp; sudo apt install pure-ftpd</a>
+</h3>
+<h3 class="topic">
+<a name="62rjf6bjptc1rcn2li0tsbufqv">&nbsp;&nbsp;&nbsp;任何客户端可以连接到我们的FTP服务器之前，我们需要为Pure-FTPd创建一个新用户。 以下Bash脚本将为我们自动创建用户：</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%96%87%E4%BB%B6%E4%BC%A0%E8%BE%93_files/3vf4e7teod02rgo7a0iumljef5.png"></p>
+<h3 class="topic">
+<a name="3jfmj2dvbl10m8iqgbihsqu6lv">&nbsp;&nbsp;&nbsp;&nbsp;我们将使脚本可执行，然后运行它，并在出现提示时输入&ldquo; lab&rdquo;作为offsec用户的密码</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%96%87%E4%BB%B6%E4%BC%A0%E8%BE%93_files/6t7dnjibrl90dv8dggpqodfi7s.png"></p>
+<h3 class="topic">
+<a name="0p1e2qvfk2jiufvmejiuplftu9">&nbsp;非交互式shell</a>
+</h3>
+<h3 class="topic">
+<a name="6f8949p1f99o2j3dnidujkio7i">&nbsp;&nbsp;大多数类似于Netcat的工具都提供了非交互式外壳程序，这意味着需要用户输入的程序（例如许多文件传输程序或su和sudo）可能无法正常工作。 非交互式外壳还缺少有用的功能，例如制表符完成和作业控制。 一个示例将有助于说明此问题。&#13;
+   希望您熟悉ls命令。 该命令是非交互式的，因为它无需用户交互即可完成。&#13;
+   相比之下，请考虑从我们的Debian实验室客户端到我们的Kali系统的典型FTP登录会话：</a>
+</h3>
+<h3 class="topic">
+<a name="3a84drpds59cef4cqvs6odbb4i">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%96%87%E4%BB%B6%E4%BC%A0%E8%BE%93_files/1bo7t3ur9ti68i1a6rlcg75325.png"></p>
+<h3 class="topic">
+<a name="7h2d19q2ffhluomv999uh9ckk3">&nbsp;&nbsp;&nbsp;&nbsp;在此会话中，我们输入用户名和密码，并且仅在输入bye命令后退出该过程。 这是一个交互式程序； 它需要用户干预才能完成。而ls等程序是非交互式程序</a>
+</h3>
+<h3 class="topic">
+<a name="36di43ahq2hjpn7hbqodje9j6p">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%96%87%E4%BB%B6%E4%BC%A0%E8%BE%93_files/6phrvp1cav53ha3ak8hvtd40ae.png"></p>
+<h3 class="topic">
+<a name="1hheh72gjfukhmlhdrr3chrkqp">&nbsp;&nbsp;  尽管此时问题可能很明显，但让我们尝试通过非交互式shell（在本例中为Netcat）进行FTP会话。&#13;
+  首先，假设我们已经破坏了Debian客户端并获得了对Netcat bind shell的访问权限。 我们将在监听端口4444的Debian客户端上启动Netcat，以模拟以下情况： </a>
+</h3>
+<h3 class="topic">
+<a name="7aoee1a5l5ticka616ol04vupt">&nbsp;&nbsp;&nbsp;在debian上监听4444端口，等待kali连接</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%96%87%E4%BB%B6%E4%BC%A0%E8%BE%93_files/6ksbep6iaegljbjlkgc8i8kmk5.png"></p>
+<h3 class="topic">
+<a name="41dnek6931nv7mb7934aa4mi0t">&nbsp;&nbsp;&nbsp;&nbsp;在Kali系统中，我们将使用netcat连接到debian对应ip端口，并再次尝试进行FTP会话：</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%96%87%E4%BB%B6%E4%BC%A0%E8%BE%93_files/29q1ags6ikn0nib7cpk1f0a7ns.png"></p>
+<h3 class="topic">
+<a name="76c73kjtck0c46o18pdq9l581v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在幕后，我们正在与FTP服务器交互，但是在shell中没有收到任何反馈。 这是因为在基本的绑定或反向外壳程序中，FTP会话（交互式程序）的标准输出未正确重定向。 这导致失去对我们外壳的控制，我们被迫完全退出外壳（使用ctrl+c）</a>
+</h3>
+<h3 class="topic">
+<a name="3tgfhght3aobidkj08hfuidtrh">&nbsp;升级非交互式shell</a>
+</h3>
+<h3 class="topic">
+<a name="0uc7m3o3qvue1ipf3e0rqa58bi">&nbsp;&nbsp; Python解释器通常安装在Linux系统上，带有一个名为pty的标准模块，该模块允许创建伪终端。 通过使用此模块，我们可以从远程外壳程序中生成一个单独的进程，并获得完全交互的外壳程序</a>
+</h3>
+<h3 class="topic">
+<a name="4qndvb52e1lbia9hkaovkd29p0">&nbsp;&nbsp;&nbsp;重新连接到侦听的Netcat shell，并生成我们的pty shell</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%96%87%E4%BB%B6%E4%BC%A0%E8%BE%93_files/3do91g7au87n2rl02hmndenvic.png"></p>
+<h3 class="topic">
+<a name="55hp25jrin1keh1kh2ieftntfo">&nbsp;&nbsp;&nbsp;&nbsp;在运行我们的Python命令后，我们立即收到熟悉的Bash提示。 让我们尝试再次通过pty shell连接到本地FTP服务器，并查看其行为</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%96%87%E4%BB%B6%E4%BC%A0%E8%BE%93_files/6g6mbe4gcijdtf7n4o5bttlo81.png"></p>
+<h3 class="topic">
+<a name="3gmeqsf8lf3okl9903kqagsbfg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这次，我们与FTP服务器的交互式连接成功，并且当我们退出时，我们返回到升级的Bash提示符。 该技术通过传统的非交互式渠道有效地提供了一个交互式Shell，并且是Linux上标准非交互式Shell最受欢迎的升级之一。</a>
+</h3>
+<h2 class="topic">
+<a name="2671b9vq3u7urigq62a2cj87te">使用Windows主机传输文件</a>
+</h2>
+<h3 class="topic">
+<a name="7js6d493gsognchi19ltvvcavu">&nbsp;在类似Unix的环境中，我们经常会发现与操作系统一起预装的诸如Netcat，curl或wget之类的工具，这些工具使从远程计算机下载文件变得相对简单。 但是，在Windows计算机上，该过程通常并不那么简单。 在本节中，我们将探讨基于Windows的计算机上的文件传输选项。</a>
+</h3>
+<h3 class="topic">
+<a name="4cqje927mdsusvpjk5a17h80u7">&nbsp;非交互式FTP下载</a>
+</h3>
+<h3 class="topic">
+<a name="6nhb17fg2a62toeelsi0pe7nmt">&nbsp;&nbsp;Windows操作系统附带默认的FTP客户端，该客户端可用于文件传输，FTP客户端是一个交互式程序，需要输入才能完成，因此我们需要一个创造性的解决方案才能使用FTP进行文件传输。</a>
+</h3>
+<h3 class="topic">
+<a name="6t6k9afq0rab81jvmsf3f63png">&nbsp;&nbsp;&nbsp;  ftp帮助选项（-h）可能会为我们提供一些帮助： ftp -s选项接受一个基于文本的命令列表，该列表有效地使客户端成为非交互式。 在我们的攻击机器上，我们将设置一个FTP服务器，并会从受感染的Windows主机启动对Netcat二进制文件的下载请求。(即被感染的windows主机运行ftp客户端主动从kali上的ftp服务端下载netcat)</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%96%87%E4%BB%B6%E4%BC%A0%E8%BE%93_files/6jbtrpntdg7ecd3f4sg1q7sfoo.png"></p>
+<h3 class="topic">
+<a name="759sk1i1kgt8dknst90i9kttc7">&nbsp;&nbsp;&nbsp;&nbsp;我们将nc.exe的副本放置在/ ftphome目录中： </a>
+</h3>
+<p class="topicImage">
+<img src="%E6%96%87%E4%BB%B6%E4%BC%A0%E8%BE%93_files/1vmo1ninb57iktvcanktp694pu.png"></p>
+<h3 class="topic">
+<a name="3mb5dv6etm5rjpmqf6cu3vo261">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Kali机器上安装并配置了Pure-FTPd，但是我们将重新启动它以确保该服务可用：</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%96%87%E4%BB%B6%E4%BC%A0%E8%BE%93_files/27s4a2lhe4k01rbrlsvdueu76b.png"></p>
+<h3 class="topic">
+<a name="15pteq27jr762vdkel2g41nk90">&nbsp;&nbsp;&nbsp;使用echo命令构建要执行的FTP命令的文本文件.&#13;
+   命令文件以open命令开头，该命令将启动FTP连接到指定的IP地址。 接下来，脚本将使用USER命令以offsec身份进行身份验证，并提供密码lab。 此时，我们应该已经成功验证了FTP连接，并且可以编写传输文件所需的命令脚本。脚本使用bin进行二进制文件传输，并发出nc.exe的GET请求。 最后，我们将使用bye命令关闭连接：</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%96%87%E4%BB%B6%E4%BC%A0%E8%BE%93_files/7acut9arm4tf1v8sbc6077nves.png"></p>
+<h3 class="topic">
+<a name="7tgvog67fagjmmo8aa0nn2ffvn">&nbsp;&nbsp;&nbsp;&nbsp;使用命令列表来启动FTP会话，该列表将有效地使交互式会话变为非交互式。 为此，我们将发出以下FTP命令：使用-v禁止返回任何输出，-n禁止自动登录，而-s指示命令文件的名称。</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%96%87%E4%BB%B6%E4%BC%A0%E8%BE%93_files/60t369q9vqje9e7rgfejlhiuci.png"></p>
+<h3 class="topic">
+<a name="4cjd5c5jg1r21t5i6mrmsmud0h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#13;
+   当ftp命令运行时，我们的下载应该已经执行，并且nc.exe的工作副本应该出现在当前目录中：</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%96%87%E4%BB%B6%E4%BC%A0%E8%BE%93_files/4t2qlk0u37a8kopbolbpgni2s2.png"></p>
+<h3 class="topic">
+<a name="3a60ivfiif81om67bekh6mhsn3">&nbsp;使用脚本语言的Windows下载</a>
+</h3>
+<h3 class="topic">
+<a name="4abh85bimeki73dqmam0c6de9v">&nbsp;&nbsp;可以利用脚本引擎（例如VBScript397（在Windows XP，2003中）和PowerShell（在Windows 7、2008及更高版本中）将文件下载到受害计算机上</a>
+</h3>
+<h3 class="topic">
+<a name="0gistptautln9u1tmjosl369eo">&nbsp;&nbsp;&nbsp;一组非交互式echo命令，当粘贴到远程shell中时，将写出一个wget.vbs脚本，该脚本充当简单的HTTP下载程序：</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%96%87%E4%BB%B6%E4%BC%A0%E8%BE%93_files/1gv017dhku13fifg9imbnl9s7b.png"></p>
+<h3 class="topic">
+<a name="25si2e9j6o6vi6kqlfvf8r9u1r">&nbsp;&nbsp;&nbsp;&nbsp;我们可以运行此命令脚本（使用cscript）从我们的Kali机器下载文件</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%96%87%E4%BB%B6%E4%BC%A0%E8%BE%93_files/2cfbiu5ckbklcg5vjig9tphd53.png"></p>
+<h3 class="topic">
+<a name="3kjvigoffc5dlag82bfafl0954">&nbsp;&nbsp;&nbsp;对于Windows的最新版本，我们可以使用PowerShell作为更简单的下载替代方案。 下面的示例显示了使用System.Net.WebClient PowerShell类的下载程序脚本的实现</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%96%87%E4%BB%B6%E4%BC%A0%E8%BE%93_files/6r5kpkt6mg6rcnnq987ehmills.png"></p>
+<h3 class="topic">
+<a name="5hghsuc2h0j5ec7sukdo7bu6fe">&nbsp;&nbsp;&nbsp;&nbsp;我们必须允许使用ExecutionPolicy关键字和Bypass值执行PowerShell脚本（默认情况下受限制）。 接下来，我们将分别使用-NoLogo和-NonInteractive隐藏PowerShell徽标标语并取消显示交互式PowerShell提示。  -NoProfile关键字将阻止PowerShell加载默认配置文件（不需要），最后，我们使用-File指定脚本文件：</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%96%87%E4%BB%B6%E4%BC%A0%E8%BE%93_files/0nk7fnf05hra86n2m0nr5deglo.png"></p>
+<h3 class="topic">
+<a name="1cjllf57o5vd9o6eah95nfvtf2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;我们还可以单行执行脚本命令，而无需脚本文件</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%96%87%E4%BB%B6%E4%BC%A0%E8%BE%93_files/4muqk4jiu7giu4r7r20qug378u.png"></p>
+<h3 class="topic">
+<a name="7hb2i5pdq723ejui4anjsgfovn">&nbsp;&nbsp;&nbsp;如果要下载并执行PowerShell脚本而不将其保存到磁盘，则可以再次使用System.Net.Webclient类。 这是通过将DownloadString方法与Invoke-Expression cmdlet（IEX）组合而成的。为了演示这一点，我们将在我们的Kali机器上创建一个简单的PowerShell脚本</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%96%87%E4%BB%B6%E4%BC%A0%E8%BE%93_files/03uq6pr8abo43kaul93h5tq3ee.png"></p>
+<h3 class="topic">
+<a name="2uhfs6desuc3r3fl55fr2j6hm0">&nbsp;&nbsp;&nbsp;&nbsp;在受感染的Windows计算机上使用以下命令运行脚本，PowerShell脚本的内容已从我们的Kali机器下载并成功执行，而没有将其保存到受害硬盘上。</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%96%87%E4%BB%B6%E4%BC%A0%E8%BE%93_files/7q9tqjk49ip259974cljddpe0r.png"></p>
+<h3 class="topic">
+<a name="2q8csob91get5lq839qbahiovv">&nbsp;使用exe2hex和PowerShell的Windows下载</a>
+</h3>
+<h3 class="topic">
+<a name="3uo8ke3p4ft73f2kicv484q7pf">&nbsp;&nbsp;从我们的Kali机器开始，我们将压缩要传输的二进制文件，将其转换为十六进制字符串，并将其嵌入Windows脚本中。&#13;
+   在Windows计算机上，我们将此脚本粘贴到我们的shell中并运行它。 它将十六进制数据重定向到powershell.exe，后者会将其重新组合成二进制文件。 这将通过一系列非交互式命令来完成。</a>
+</h3>
+<h3 class="topic">
+<a name="3laeq92mj1rfu6mll37arcp63v">&nbsp;&nbsp;使用powershell.exe通过远程Shell将Netcat从我们的Kali Linux计算机传输到我们的Windows客户端。</a>
+</h3>
+<h3 class="topic">
+<a name="6ait2ps4a7o30egc8686ett5sn">&nbsp;&nbsp;&nbsp;我们将从在Kali Linux上查找并检查nc.exe文件开始。</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%96%87%E4%BB%B6%E4%BC%A0%E8%BE%93_files/0tu1qrk94jes5b6fqge6bs3n31.png"></p>
+<h3 class="topic">
+<a name="4gnp4ipi2csvcia0thj3cme5u6">&nbsp;&nbsp;&nbsp;&nbsp;使用upx压缩壳对nc.exe进行压缩</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%96%87%E4%BB%B6%E4%BC%A0%E8%BE%93_files/2vm4qmuq5ok961m5lvid14bad3.png"></p>
+<h3 class="topic">
+<a name="2u1ruevvq2p9v2gl1fitp6gv48">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将nc.exe转换为Windows脚本（.cmd）以在Windows机器上运行，它将文件转换为十六进制并指示powershell.exe将其重新组装为二进制文件 。 我们将使用出色的exe2hex工具进行转换：</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%96%87%E4%BB%B6%E4%BC%A0%E8%BE%93_files/73580uivhn7u16suvb4nibbqi2.png"></p>
+<h3 class="topic">
+<a name="4v6i4287l7tqtngbhdeu6m6qm9">&nbsp;&nbsp;&nbsp;这将创建一个名为nc.cmd的脚本</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%96%87%E4%BB%B6%E4%BC%A0%E8%BE%93_files/3ns9ic7ahf4774ljfbdll9bf3c.png"></p>
+<h3 class="topic">
+<a name="30th3tt0h0ak9tbp3v1bcvia2s">&nbsp;&nbsp;&nbsp;&nbsp;此脚本中的大多数命令是非交互式的，主要由echo命令组成。 在脚本结尾处，我们找到在目标计算机上重建nc.exe可执行文件的命令</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%96%87%E4%BB%B6%E4%BC%A0%E8%BE%93_files/322c9n5vcb63dj3qqhpfdaf7r0.png"></p>
+<h3 class="topic">
+<a name="0pcr534ceg99o16urq9qsm6u3c">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将此脚本复制并粘贴到Windows计算机上的外壳程序中并运行它时，我们可以看到它确实创建了原始nc.exe的完美副本。</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%96%87%E4%BB%B6%E4%BC%A0%E8%BE%93_files/4lplndrs0q0dcko84ij6t31qfs.png"></p>
+<h3 class="topic">
+<a name="45j9vq1pvmhhshka5gjuame3io">&nbsp;Windows使用Windows脚本语言上传数据</a>
+</h3>
+<h3 class="topic">
+<a name="35vtbdv15c44vifvs4roipep80">&nbsp;&nbsp;在某些情况下，我们可能需要使用Windows客户端从目标网络中窃取数据。 这可能很复杂，因为默认情况下，很少在Windows上启用标准TFTP，FTP和HTTP服务器。幸运的是，如果允许出站HTTP通信，则可以使用System.Net.WebClient PowerShell类通过HTTP POST请求将数据上传到我们的Kali计算机。</a>
+</h3>
+<h3 class="topic">
+<a name="37mcnq819o22ammcolnmvibkur">&nbsp;&nbsp;可以创建以下PHP脚本并将其另存为我们的Kali webroot目录/ var / www / html中的upload.php： PHP代码将处理传入的文件上传请求，并将传输的数据保存到/ var / www / uploads /目录。</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%96%87%E4%BB%B6%E4%BC%A0%E8%BE%93_files/4moqt7rh0ge3qkimkbh7e84b5f.png"></p>
+<h3 class="topic">
+<a name="2di2flmtbmtarof3a05l623l4s">&nbsp;&nbsp;&nbsp;接下来，我们必须创建上载文件夹并修改其权限，授予www-data用户所有权和后续的写权限：这将允许任何与uploads.php进行交互的人将文件上传到我们的Kali虚拟机。</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%96%87%E4%BB%B6%E4%BC%A0%E8%BE%93_files/1aq613smr1q8drutq5i8u7kj1d.png"></p>
+<h3 class="topic">
+<a name="2b9jdvdr9hg32fk1qia6sk6sij">&nbsp;&nbsp;&nbsp;&nbsp;在准备好Apache和PHP脚本来接收我们的文件的情况下，我们移到受到感染的Windows主机上，并从System.Net.WebClient类调用UploadFile方法以上载我们要泄露的文档，在这种情况下，该文件名为important.docx</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%96%87%E4%BB%B6%E4%BC%A0%E8%BE%93_files/0qiu1hhtefpca2g5ppm6388uuq.png"></p>
+<h3 class="topic">
+<a name="3ph7flnldljf2ad02kfv1u3j6t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在执行powershell命令之后，我们可以验证文件的成功传输：</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%96%87%E4%BB%B6%E4%BC%A0%E8%BE%93_files/1d06n046qlr2opctqc7er68t3d.png"></p>
+<h3 class="topic">
+<a name="1lrpnfhj0qme65gij6sf7r69j2">&nbsp;用TFTP上传文件</a>
+</h3>
+<h3 class="topic">
+<a name="2vnmghr4jstnlnu7igu7k4gmb5">&nbsp;&nbsp;前面显示的基于Windows的文件传输方法适用于Windows 7和Windows Server 2008 R2之后的所有Windows版本，但遇到较旧的操作系统时，我们可能会遇到问题。 部分Windows XP和Windows Server 2003等操作系统上未安装PowerShell。 虽然VBScript和FTP客户端都存在并且可以使用，但在本节中，我们将讨论另一种可能在现场有效的文件传输方法。</a>
+</h3>
+<h3 class="topic">
+<a name="4m2icgejieg0n24iq7slj27f8n">&nbsp;&nbsp;&nbsp;TFTP是基于UDP的文件传输协议，通常受公司出口防火墙规则的限制。&#13;
+   在渗透测试期间，我们可以使用TFTP从较早的Windows操作系统（直到Windows XP和2003）传输文件。这是非交互式文件传输的绝妙工具，但默认情况下未在运行Windows 7，Windows 2008及以后的系统上安装该工具。</a>
+</h3>
+<h3 class="topic">
+<a name="237f1d87rifjj6ehrrq3nadhnq">&nbsp;&nbsp;&nbsp;&nbsp;首先需要在Kali中安装和配置TFTP服务器，并创建一个目录来存储和提供文件。 接下来，我们更新目录的所有权，以便可以向其中写入文件。 我们将atftpd作为守护程序在UDP端口69上运行，并指示它使用新创建的/ tftp目录：</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%96%87%E4%BB%B6%E4%BC%A0%E8%BE%93_files/2f3asqcohac6ps299s71i3sqir.png"></p>
+<h3 class="topic">
+<a name="3ml3dtbuu0nmd5d1nlmenaq70v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在Windows系统上，我们将使用-i运行tftp客户端，以指定二进制映像传输，Kali系统的IP地址，启动上传的put命令以及最后上传文件的文件名。</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%96%87%E4%BB%B6%E4%BC%A0%E8%BE%93_files/6vork25ddpu69b19rij168sdqm.png"></p>
+<h3 class="topic">
+<a name="7q830l2lbvouaol5h89f0epna6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;有关使用常见Windows实用程序进行文件操作，程序执行，UAC旁路等等的一些非常有趣的方法，请参阅由Oddvar Moe和几位贡献者共同维护的Living Bin the Land Binaries and Scripts（LOLBAS）项目401。  &ldquo;记录每个二进制文件，脚本和可用于[这些]技术的库。&rdquo; 例如，certutil.exe402程序可以轻松下载任意文件以及更多内容。</a>
+</h3>
+<h3 class="topic">
+<a href="https://github.com/LOLBAS-Project/LOLBAS" name="28okq2j9goqvb5jcpk5441a6fi">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://github.com/LOLBAS-Project/LOLBAS</a>
+</h3>
+</body>
+</html>

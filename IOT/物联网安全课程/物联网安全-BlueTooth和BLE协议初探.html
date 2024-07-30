@@ -1,0 +1,71 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>物联网安全-BlueTooth和BLE协议初探</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="224hffpavqf3hptb40ocoddml1">物联网安全-BlueTooth和BLE协议初探</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-BlueTooth%E5%92%8CBLE%E5%8D%8F%E8%AE%AE%E5%88%9D%E6%8E%A2_files/images/%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-BlueTooth%E5%92%8CBLE%E5%8D%8F%E8%AE%AE%E5%88%9D%E6%8E%A2.jpg"></div>
+<h2 class="topic">
+<a name="510eft5m279irr946kkbapbvvs">蓝牙&amp;BLE协议简介</a>
+</h2>
+<h3 class="topic">
+<a name="36uahar8pff42rqfqufgpvg7c0">&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-BlueTooth%E5%92%8CBLE%E5%8D%8F%E8%AE%AE%E5%88%9D%E6%8E%A2_files/3734igh049oir5kv31e7bvcuvi.png"></p>
+<h3 class="topic">
+<a name="6srrvoettelfd29t6c6772mej9">&nbsp;&nbsp;所有黄色协议均为重要协议，是必须的，而其他白色协议是可选的</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-BlueTooth%E5%92%8CBLE%E5%8D%8F%E8%AE%AE%E5%88%9D%E6%8E%A2_files/78akhctunlvbau6jelg0dka0ri.png"></p>
+<h3 class="topic">
+<a name="2n0mt2kn1p2ge6gfs70r7ebcij">&nbsp;可以传输数据的血压计，可以传输心率的手环和运动手表，智能门锁和智能灯泡</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-BlueTooth%E5%92%8CBLE%E5%8D%8F%E8%AE%AE%E5%88%9D%E6%8E%A2_files/1nfpgmtlq507jt4061bmfks2eq.png"></p>
+<h3 class="topic">
+<a name="2rqntqbbm5v6ol3eg9ui7hs3qf">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-BlueTooth%E5%92%8CBLE%E5%8D%8F%E8%AE%AE%E5%88%9D%E6%8E%A2_files/4q4rs11al9pi3s6bdankq19b4f.png"></p>
+<h3 class="topic">
+<a name="7rq0v6j4ln25a9h58pmma83vf7">&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-BlueTooth%E5%92%8CBLE%E5%8D%8F%E8%AE%AE%E5%88%9D%E6%8E%A2_files/67i18doglaffp61i3f239opjd5.png"></p>
+<h3 class="topic">
+<a name="24g75n13beu1vkrfilhp2a2s4h">&nbsp;&nbsp;传统蓝牙的发现连接方式：会在79个信道上进行查询，当有设备想要发起连接时，会在该79个信道上以很快的速度进行跳频（即切换查询）被连接的设备会在79个信道上以较慢的方式进行切换，当两者在同一个信道相遇，则此时可以进行连接，并传输数据</a>
+</h3>
+<h3 class="topic">
+<a name="4mhlgcsa5bsv7pfhfg2gi9rd00">&nbsp;&nbsp;BLE的发现连接方式：在一个或多个广播信道发送指定类型的广播，当被连接设备收到广播后，就可以发起连接</a>
+</h3>
+<h2 class="topic">
+<a name="0ttghimbg22fk7pudus1iijmvo">连接过程</a>
+</h2>
+<h3 class="topic">
+<a name="0kf09jo9j7mlpjp9d1mkq2ga7j">&nbsp;BLE连接过程</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-BlueTooth%E5%92%8CBLE%E5%8D%8F%E8%AE%AE%E5%88%9D%E6%8E%A2_files/33snec9eig4r39t1q8tbmkh67v.png"></p>
+<h3 class="topic">
+<a name="2l8cf1q9cdtmgtiln11jiblvfb">&nbsp;&nbsp;主设备与从设备产生密钥的三种方式&#13;
+just work、输入密钥、OOB</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-BlueTooth%E5%92%8CBLE%E5%8D%8F%E8%AE%AE%E5%88%9D%E6%8E%A2_files/4ns0hrsrhqcl2lf3kgmkoq14i1.png"></p>
+<h2 class="topic">
+<a name="35l4ngtj7qvfg6qtq49kv0glhl">GATT</a>
+</h2>
+<h3 class="topic">
+<a name="6hho0bers15um8phdkv2jo4ovt">&nbsp;两个设备要完成双方通讯，只能通过建立GATT连接的方式</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-BlueTooth%E5%92%8CBLE%E5%8D%8F%E8%AE%AE%E5%88%9D%E6%8E%A2_files/3gasbeoe103a3jji2bolskvuam.png"></p>
+</body>
+</html>

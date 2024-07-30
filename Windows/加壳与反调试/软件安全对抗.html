@@ -1,0 +1,1205 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>软件安全对抗</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="2q0sqahacfg3pptojitckh91f2">软件安全对抗</a>
+<p class="topicImage">
+	<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/2024-07-29_160250.png"></p>
+</h1>
+<h2 class="topic">
+<a name="1csi3e4601c6cihbilb3hv6n3g">windows反调试</a>
+</h2>
+<h3 class="topic">
+<a name="23qb46kediiu5tvho48f4irkgl">&nbsp;不同系统平台开发反调试模块的方法：对比调试状态和非调试状态下系统中的可读的结构体字段、状态、文件信息的不同之处，以此作为反调试的检测目标。或者分析调试模型和通讯原理用到的结构，并以此作为检测目标</a>
+</h3>
+<h3 class="topic">
+<a name="4mgi9gegijrp9cg3vhq751avmr">&nbsp;分类</a>
+</h3>
+<h3 class="topic">
+<a name="3sr56valf6v1jvho7vqoqkjkp7">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/7phmn5so2ihr2u7cisqj5bitbo.png"></p>
+<h3 class="topic">
+<a name="229qpnidap6fis8stn55l8p148">&nbsp;检测断点</a>
+</h3>
+<h3 class="topic">
+<a name="6d6unp2lnuss99mrcdedc7ti3r">&nbsp;&nbsp;通过检测软件断点反调试</a>
+</h3>
+<h3 class="topic">
+<a name="6c2ti6587irqpuj5n8e9cbo88o">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/5a0ldcunm8hucgclhmkk5d5cpr.png"></p>
+<h3 class="topic">
+<a name="2mg38ppf4tq8qb759rgm5lmhl7">&nbsp;&nbsp;&nbsp;&nbsp;tls回调函数检测程序入口是否存在int 3断点</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/62o50ltigsa7ao45dm3122noho.png"></p>
+<h3 class="topic">
+<a name="6okdsi0mpf5d8f1mabdhnflpbp">&nbsp;&nbsp;&nbsp;OD可以在tls回调函数执行前下断点，通过设置od的配置文件</a>
+</h3>
+<h3 class="topic">
+<a name="5ec2qr0bsdr0bbi2bp73bhr5re">&nbsp;&nbsp;&nbsp;将tls回调函数入口地址修改为非法地址，此时若od下断则会一直显示崩溃</a>
+</h3>
+<h3 class="topic">
+<a name="7nk59pol482ad6hj7d63ik50hv">&nbsp;&nbsp;通过调用API反调试</a>
+</h3>
+<h3 class="topic">
+<a name="5sie3v1i5rcctirvmi5jdnhf5n">&nbsp;&nbsp;&nbsp;注意对于不同的系统版本，内核结构体中字段顺序可能不同，图中寻找BeingDebugged字段的方法针对xp系统</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/2cto6eqos0m7kv5j45opdgklft.png"></p>
+<h3 class="topic">
+<a name="3h5evd7sqbtmdqv4m7s4lumj6f">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/74b8uc1a2ub9fvr030t4trss3e.png"></p>
+<h3 class="topic">
+<a name="029bdr3cj2mpnejs88hrjbffn0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/5uubtlaa72b5tgmsimf5se1kdp.png"></p>
+<h3 class="topic">
+<a name="6pckl8aatn9v9tdlt65no7ko02">&nbsp;&nbsp;通过检测硬件断点反调试</a>
+</h3>
+<h3 class="topic">
+<a name="2hkjphgiuqm2ej1v6k60398sq5">&nbsp;&nbsp;&nbsp;目前很多反调试通过seh异常处理函数进行实现</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/0m3itsca9jgjhk9q17f1nfrmbv.png"></p>
+<h3 class="topic">
+<a name="03ngffon2f716pf356o5f3jebt">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/0bqfpnt613ot6lil87at71kgtf.png"></p>
+<h3 class="topic">
+<a name="5j5rb6o39ru8pfqbokebv1lfq0">&nbsp;&nbsp;通过内存保护页异常反调试</a>
+</h3>
+<h3 class="topic">
+<a name="5v5jj7e37p0so0nlmgoqur50h7">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/1gmjkits6gh3638s9q9rjiip1t.png"></p>
+<h3 class="topic">
+<a name="02r9mlqvhqneo4mvdf9hd2abg5">&nbsp;检测标记位</a>
+</h3>
+<h3 class="topic">
+<a name="2i76p233u8bkk5bo1o08a0k2eb">&nbsp;&nbsp;检测NtGlobalFlags</a>
+</h3>
+<h3 class="topic">
+<a name="0077pkpo48hd63kq72egvpkqet">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/1ejuem0as523pc44au3tchg249.png"></p>
+<h3 class="topic">
+<a name="3rqs528573r68dv9jqfd4lq3bb">&nbsp;&nbsp;检测HeapFlags</a>
+</h3>
+<h3 class="topic">
+<a name="7hku4jvkm0637ud23opfp57t4u">&nbsp;&nbsp;&nbsp;非调试时HeapFlags应该为2</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/63d3ujq1ll219q24u0h7c4ibuc.png"></p>
+<h3 class="topic">
+<a name="409eufa7etm3fa5j9bc5bagrcb">&nbsp;&nbsp;检测ForceFlags</a>
+</h3>
+<h3 class="topic">
+<a name="4br8es4ro817rv5hgufp5294p3">&nbsp;&nbsp;&nbsp;正常情况该字段为0</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/4v5c07n9v99u19h0uj2jq8mps4.png"></p>
+<h3 class="topic">
+<a name="69etsn4r1i1arev2uaeenlk53i">&nbsp;&nbsp;检测Heap_Tail</a>
+</h3>
+<h3 class="topic">
+<a name="11e7a51hkm11cjd9qgrsqnpsca">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/1t9dn92plv7idro9sr0vc7kodg.png"></p>
+<h3 class="topic">
+<a name="4f72aiern12nbia0gnegdm9co4">&nbsp;&nbsp;检测StartupInfo结构体</a>
+</h3>
+<h3 class="topic">
+<a name="2rfusoqofirajjgcgkbib2vqmq">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/4vkhev0tbfb45bv7ufarcds09p.png"></p>
+<h3 class="topic">
+<a name="52scieeo52hi5bg87ukfufiupb">&nbsp;&nbsp;调用api:CheckRemoteDebugPresent，该api内部会调用NtQueryInformationProcess</a>
+</h3>
+<h3 class="topic">
+<a name="7l37no4g96d0d6kppiuftbq161">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/2d28rpnd20kr4scc194ie1kv6o.png"></p>
+<h3 class="topic">
+<a name="4fne6obll3jf7ccoanp4mpk0qq">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/0irrd7ffuiqhn52ddlruas847u.png"></p>
+<h3 class="topic">
+<a name="7qjclvh8ba67guhoi3tr2danvl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/5f03uvq5mctmnue0qctotq46ra.png"></p>
+<h3 class="topic">
+<a name="7qoatj4oku511upo2jvitavnn5">&nbsp;&nbsp;检测本进程是否能打开CSRSS.EXE进程</a>
+</h3>
+<h3 class="topic">
+<a name="4616nre3heq30i0pspu8loua1l">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/058a17a8bh61orj6oi1n88jc6l.png"></p>
+<h3 class="topic">
+<a name="1878afe3kfm2oo91s3nsttg9m7">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/38s5cfkr89ftcitn44vaehns6j.png"></p>
+<h3 class="topic">
+<a name="6o62364flnuh5kejl1ps3jep6v">&nbsp;&nbsp;检测DebugObject</a>
+</h3>
+<h3 class="topic">
+<a name="2qrgt8ld9meen11cnmp2ckun2j">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/10loh26fi61vpmp96rqvfvcj8a.png"></p>
+<h3 class="topic">
+<a name="2vk8v6q9b8sn889apq9til543l">&nbsp;&nbsp;以无效参数调用Closehandle函数，看是否触发异常</a>
+</h3>
+<h3 class="topic">
+<a name="6vst195ng89fbhl21f03no2mso">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/1hjdn8qd4emv0tfp1798dsrvtn.png"></p>
+<h3 class="topic">
+<a name="75fusm0n0uo6pihc9d1iapmcql">&nbsp;&nbsp;通过检测标志寄存器中的陷阱标志位tf从而反单步调试</a>
+</h3>
+<h3 class="topic">
+<a name="1o90gp635i3hdd37lcjt9bm0sa">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/0m3vb3svfm3tltnsivurt09u58.png"></p>
+<h3 class="topic">
+<a name="51994snj6anj7au0dvqm72rc9u">&nbsp;&nbsp;通过主动执行int3，观察程序本身的异常处理函数是否被执行判断当前进程是否被调试</a>
+</h3>
+<h3 class="topic">
+<a name="0lmfv6djk2nqe9t3shmrqr90cu">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/3hjiifpc9maiojl9kuoadncesm.png"></p>
+<h3 class="topic">
+<a name="0e4jm0os458krugp0agqjuuacq">&nbsp;&nbsp;通过执行OutputDebugString判断是否有调试器存在</a>
+</h3>
+<h3 class="topic">
+<a name="4dfnqbfnvabpgsvir2i77isskf">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/5pejq2jajv2sn9sapaa09571iq.png"></p>
+<h3 class="topic">
+<a name="28n67k86k54g1fq951399kpt1c">&nbsp;&nbsp;执行int 0x2d根据执行结果判断是否被调试或被跟踪</a>
+</h3>
+<h3 class="topic">
+<a name="5hlnaddjrjj6gsfpqostdp1j8r">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/1fuemgjpc77ih2t16chdbpoej5.png"></p>
+<h3 class="topic">
+<a name="0h8fhql3ea8o385e6cnpfc922g">&nbsp;&nbsp;执行ZwYieldExecution函数根据返回值判断</a>
+</h3>
+<h3 class="topic">
+<a name="371dhn4pldepq8cnhgttfhd9dh">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/5934gdificerqv0qej40gr05vg.png"></p>
+<h3 class="topic">
+<a name="43sbo7kddnuadpo4hb6qvhlvj3">&nbsp;窗口及进程检测</a>
+</h3>
+<h3 class="topic">
+<a name="0ipocudrpkf7rmjvhre1to59kk">&nbsp;&nbsp;遍历窗口名或进程名或尝试打开指定设备</a>
+</h3>
+<h3 class="topic">
+<a name="1ogbob4ufc0en4joir98j4vl8i">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/1djdq47lrokldgl3k1k95g1npq.png"></p>
+<h3 class="topic">
+<a name="3t9t35on890rn7mv2smnavnmjp">&nbsp;&nbsp;以指定参数调用NtSetInformationThread，可以避免调试事件被发送到调试器，从而使得调试器无法调试该程序</a>
+</h3>
+<h3 class="topic">
+<a name="35uuu58n5hnk3ig69u1h9lmnn4">&nbsp;&nbsp;&nbsp;该函数经常被用在反调试中，想要过掉该函数，需要在内核层对该函数进行hook</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/54o16qfqjlh1b5g9g1c3vd9aho.png"></p>
+<h3 class="topic">
+<a name="55s8j7jgh8fmse46h044en60rp">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/0c9gtutlb529egd19t2j03bigd.png"></p>
+<h3 class="topic">
+<a name="2r5ph77qnuak3904576b4h6qdu">&nbsp;&nbsp;通过OD_Int3_Pushfd机制</a>
+</h3>
+<h3 class="topic">
+<a name="7i6a2lmgqfmig6dsk0c36b1hde">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/4c9u42mfqg4le6kiki8djis3u1.png"></p>
+<h3 class="topic">
+<a name="4vgioumt5cbfb4rhl2v0t3rss2">&nbsp;&nbsp;通过使用pushf将标志寄存器入栈，检测陷阱标志位判断是否被单步调试</a>
+</h3>
+<h3 class="topic">
+<a name="75jjg3sp6u3t67oj2apm9jhm0n">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/141dsvnu9mhi782rdvffs5smp5.png"></p>
+<h3 class="topic">
+<a name="2pcv9rnusn4v82hcp5fq9k3265">&nbsp;&nbsp;通过RDTSC等指令计算指令执行的时间长度</a>
+</h3>
+<h3 class="topic">
+<a name="07eljf22bepc7vl6quum7qrml1">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/7f91t3ua2dh60gmtbe1lor9j40.png"></p>
+<h3 class="topic">
+<a name="58m692o3oo7i94qobo7a2tflid">&nbsp;文件完整性检测</a>
+</h3>
+<h3 class="topic">
+<a name="5vkonedkivubkia15qo5a13l7o">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/3krrimgj983o5c3l9tu9ssrrbu.png"></p>
+<h3 class="topic">
+<a name="51iefkjs4fc7m4tii8h0opthob">&nbsp;&nbsp;&nbsp;即在被调试进程的内存中设置int3等软件断点会导致内存中的数据的hash变化，从而检测到被调试</a>
+</h3>
+<h3 class="topic">
+<a name="7tte7312eua3bdt99lmst56n93">&nbsp;&nbsp;&nbsp;一般原则是尽量在程序变动最小的情况下进行调试，比如使用硬件断点等</a>
+</h3>
+<h3 class="topic">
+<a name="5nvee832tqmi94ndsjg7vibb07">&nbsp;demo</a>
+</h3>
+<h3 class="topic">
+<a name="14hus1vnodsuocekrr25lnk24r">&nbsp;&nbsp;检测od</a>
+</h3>
+<h3 class="topic">
+<a name="057dj54qj3gj6ip20409nue66o">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/5jcgsirk6lcq9f7ck6btimfbng.png"></p>
+<h3 class="topic">
+<a name="0f6b7odmp0dk1pe47v1rs0bomp">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/7qf68dppjf17mqduvulks9qav3.png"></p>
+<h3 class="topic">
+<a name="3eidiv7qvjb7dnbs1qu18dlts2">&nbsp;&nbsp;枚举od</a>
+</h3>
+<h3 class="topic">
+<a name="2njb2609oumag33utveqgk55ke">&nbsp;&nbsp;&nbsp;通过GetWindowText枚举每一个窗口的标题，看是否有指定字符串</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/4pqb24i13m9vnf92d1qsf3n19g.png"></p>
+<h3 class="topic">
+<a name="07ruklf3cvs07gth1e64bmcrdh">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/1gir8a9t4ru925l78rbeo7964m.png"></p>
+<h3 class="topic">
+<a name="355tsk3nhh6q0prt44bei8c5i7">&nbsp;调试断点</a>
+</h3>
+<h3 class="topic">
+<a name="35jtjvecg2emo4hod8hmj6di4l">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/1cs5m4l4bunvsf9k8425igoeeh.png"></p>
+<h3 class="topic">
+<a name="2r7sgg9bkq36ap56nu1qs6g846">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/0ni2h3ag5hobhammdmg8pf2hcr.png"></p>
+<h3 class="topic">
+<a name="6s5kt0bdlcisdcj0n77ino646u">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/5pfgt64iu0r758dn3fgrnc91op.png"></p>
+<h3 class="topic">
+<a name="6dh7vbvsd3fu9gd4rp0rhg1ba6">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/3e1fvene8kbu7coso8vp8jsbdm.png"></p>
+<h3 class="topic">
+<a name="71tusribhk6slsm2ijcsfaqvn1">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/7u30ok1d3f8t7gd15h7ir52cb5.png"></p>
+<h3 class="topic">
+<a name="3vkinqtnpg6ajn3uli0pobf5dq">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/56qo91vjdvbb2l77buldsnish3.png"></p>
+<h3 class="topic">
+<a name="21aou4n62t27eq62fbcum3akkv">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/4nci05au797r6u7m8v6tuf5spt.png"></p>
+<h3 class="topic">
+<a name="6odcg6fiebpk8vkfmjadd77soc">&nbsp;异常</a>
+</h3>
+<h3 class="topic">
+<a name="2nvakds5t3r5b6e1f2tekdgcl7">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/7p36018uckihca6pshqsamcb37.png"></p>
+<h3 class="topic">
+<a name="78orpan5m00isev4kb4kjnpvad">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/77ulveb1v9aivsltpl7g3j70si.png"></p>
+<h3 class="topic">
+<a name="79tavtk57quseoig5vrs0evkk0">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/4bt32rua1kseg47jq103ve754n.png"></p>
+<h3 class="topic">
+<a name="1n6nc3ig8roguv3161deo9q5r4">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/1mi98bmj3jb3c35ql80nj5aoql.png"></p>
+<h3 class="topic">
+<a name="52eutnfcb9daovn57dn0tdm53d">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/7h1pprb189hrk8u2fvgvmqmfda.png"></p>
+<h2 class="topic">
+<a name="7k7319r20do6qa9uajl83l9odv">windows脱壳</a>
+</h2>
+<h3 class="topic">
+<a name="6oh5sca7l97oe9m206rpnak854">&nbsp;相同的壳对于操作系统不同版本有着兼容性问题</a>
+</h3>
+<h3 class="topic">
+<a name="4ekpbg42rooq8prmqgod109e64">&nbsp;查壳工具</a>
+</h3>
+<h3 class="topic">
+<a name="1019ihvjctial8dkgi2rse33o7">&nbsp;&nbsp;Detect it easy</a>
+</h3>
+<h3 class="topic">
+<a name="3a8d2vvdvabr1gbluvbla6qp8i">&nbsp;&nbsp;&nbsp;已下载</a>
+</h3>
+<h3 class="topic">
+<a name="4hftbp59da7sbpo3r7frr3891e">&nbsp;&nbsp;FFI</a>
+</h3>
+<h3 class="topic">
+<a name="4fcmfsgddcc32jifqvrdsjp0vq">&nbsp;&nbsp;&nbsp;未下载</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/5leqoe8phvvi4bga1ur7crash8.png"></p>
+<h3 class="topic">
+<a name="76bn5vlpm5ksfhf3n1lkdjdbom">&nbsp;加壳工具</a>
+</h3>
+<h3 class="topic">
+<a name="2ugk12sfako7rdt2chtucr324n">&nbsp;&nbsp;upx压缩壳</a>
+</h3>
+<h3 class="topic">
+<a name="7kn6ci13ln5s0uijsusj3gn9dq">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/6hr0d9ng2mkvipt37a81nmg3ds.png"></p>
+<h3 class="topic">
+<a name="29h2673nb6n8cji5f8jb9bavsn">&nbsp;&nbsp;ASP压缩壳</a>
+</h3>
+<h3 class="topic">
+<a name="4ch8a4m4ukvtmm11uktarp44m3">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/3frvr7pkgkpk755ppotu87d9rt.png"></p>
+<h3 class="topic">
+<a name="2hotc056s4n0kvk7lnlq95f2e5">&nbsp;&nbsp;upack加密壳</a>
+</h3>
+<h3 class="topic">
+<a name="3v9nkh38oj4tvcegqf2dlqih1q">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/7qhbqa9usnvuqp6tsrcsmn9554.png"></p>
+<h3 class="topic">
+<a name="6goo9ki82d50ek7sggo2m6bt5f">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/4gn01f6907pblg8prc8fd1b6va.png"></p>
+<h3 class="topic">
+<a name="6cr7ubmd2lgl0d2ijev0canmeq">&nbsp;&nbsp;krypton加密壳</a>
+</h3>
+<h3 class="topic">
+<a name="3uusjurvm2mab63ctic99v0aek">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/23ns2catj7lf55gm9osqd2dd2b.png"></p>
+<h3 class="topic">
+<a name="789cuvanms146sl46lgsnsor3u">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/0mdo3q71helmrhpsg1ubn50kkj.png"></p>
+<h3 class="topic">
+<a name="6h8fcmtev7dp7sl9fqt4213fmh">&nbsp;&nbsp;IrStartPt加密壳</a>
+</h3>
+<h3 class="topic">
+<a name="7ig6plogio8engvgmlhockpgvq">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/5jlq7smb07m54qen51ugt7er05.png"></p>
+<h3 class="topic">
+<a name="2qppbpr8gl4l0s08c0b1viqe41">&nbsp;pe分析工具使用</a>
+</h3>
+<h3 class="topic">
+<a name="2kt6lgrbi43s8i3os41cdiuk5a">&nbsp;&nbsp;LordPE</a>
+</h3>
+<h3 class="topic">
+<a name="0rji7oikk83srnu7a01av7ngoq">&nbsp;&nbsp;&nbsp;查看pe文件各区段的读写执行权限</a>
+</h3>
+<h3 class="topic">
+<a name="2o6qiulshufqgjnem3r0jutcfp">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/2raktgh0ncfjh05bipsk8djnkl.png"></p>
+<h3 class="topic">
+<a name="6p51qrvha8i84qdc00qvs4h1qu">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/42equmus4qrdpcsahpgmhstsje.png"></p>
+<h3 class="topic">
+<a name="64bh3dvjiqlo0b7d1bpuf3i3a8">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/1k2ldddu3bt2pnk5kcot9ktf9r.png"></p>
+<h3 class="topic">
+<a name="5o0o0ms5ckf0q9dpmv34k6impv">&nbsp;调试工具</a>
+</h3>
+<h3 class="topic">
+<a name="2utv9tlje9kfmnepqk5fltbk5a">&nbsp;&nbsp;od</a>
+</h3>
+<h3 class="topic">
+<a name="4ubsqf4dnt2h95fgcvtnt19smu">&nbsp;&nbsp;&nbsp;将od添加到鼠标右键</a>
+</h3>
+<h3 class="topic">
+<a name="3inrlf5vg9tqfhif9ni6qs9sbk">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/3anchdbuvjadg69s3tnjklmbd3.png"></p>
+<h3 class="topic">
+<a name="4bokppg3pd44fq4kb3r0cd4d4o">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/4iehbc5h1ia9ld5atsm6vseuen.png"></p>
+<h3 class="topic">
+<a name="7lgvt27j6cr9u698hvfjvnmffo">&nbsp;&nbsp;&nbsp;查看硬件断点</a>
+</h3>
+<h3 class="topic">
+<a name="19dbj4s73d5f34uspfhcuf1v9u">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/3k9v60abrvve0h034v72ji67g6.png"></p>
+<h3 class="topic">
+<a name="5ni4hir86bfl6to4mbnq8sr8n2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/3co4ot5i6va94l0pa9a4k82r2n.png"></p>
+<h3 class="topic">
+<a name="4gno3aug0udjis9022oo00q73b">&nbsp;壳的实现</a>
+</h3>
+<h3 class="topic">
+<a name="2a60ljhjbk12q0oqlpn3kid9o2">&nbsp;&nbsp;给被加壳程序添加壳代码区段，将被加壳程序原始的区段进行压缩或加密</a>
+</h3>
+<h3 class="topic">
+<a name="4pqikhnpfv2ap864ddcol0k3pd">&nbsp;&nbsp;将被加壳程序运行起始地址设置为壳代码起始地址，壳代码一般完成如下功能</a>
+</h3>
+<h3 class="topic">
+<a name="7v98lrnr97skpd32sdhnfgrucm">&nbsp;&nbsp;&nbsp;设置反调试</a>
+</h3>
+<h3 class="topic">
+<a name="6c28ne6lpqr3v7ja3ptjbe1i81">&nbsp;&nbsp;&nbsp;解密或解压缩原始区段</a>
+</h3>
+<h3 class="topic">
+<a name="4fugfog0s8olt73ei9tmcuho9d">&nbsp;&nbsp;&nbsp;修复iat表和重定位表</a>
+</h3>
+<h3 class="topic">
+<a name="6a1ogcvok5vu3v9l954im0p4g0">&nbsp;&nbsp;&nbsp;跳转到程序原始oep处执行</a>
+</h3>
+<h3 class="topic">
+<a name="2qc28lva4bvfio0t09hl3hu6an">&nbsp;&nbsp;对于虚拟机壳会将被加壳程序整块代码进行替换，执行过程中程序会在壳代码和原始代码之间来回跳转执行指令</a>
+</h3>
+<h3 class="topic">
+<a name="058v8c4guu7mg2rah4ppol0rse">&nbsp;脱壳思路</a>
+</h3>
+<h3 class="topic">
+<a name="654eosupu68i86jnuoltt7kjqg">&nbsp;&nbsp;压缩壳脱壳思路</a>
+</h3>
+<h3 class="topic">
+<a name="4qmf1sstuv0hbdvc2p1lan9hdf">&nbsp;&nbsp;&nbsp;即直接运行，f12暂停，堆栈回溯法找oep</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/1747fenb10d6ukq3ekpqe91mvj.png"></p>
+<h3 class="topic">
+<a name="2n141f1lfejjjnbuf9c3puc73f">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/5kerb2sg6lr50un43qscbksrdm.png"></p>
+<h3 class="topic">
+<a name="2nhqm54pvigmh131vt5bua52dq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/7rsesvr5e153ubgcjm118f9imr.png"></p>
+<h3 class="topic">
+<a name="25rskj97mvrjjmtq7urhqg6itj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/4lm0avhhc2n8baa45tp12ctirq.png"></p>
+<h3 class="topic">
+<a name="2ks97s37ji6bq705kbtkolbn1o">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;push 7.0是vc7编译器默认编译的入口特征</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/626eln03o68ou447bsml835qrl.png"></p>
+<h3 class="topic">
+<a name="1a31cbclvkgvndt9t71p81trn6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/13g2eo8dgepvlsd29590rtg6r2.png"></p>
+<h3 class="topic">
+<a name="339gdgeib29m446s55pbudpgcg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/2l26d5hdo8opv9oen8uliqh4hm.png"></p>
+<h3 class="topic">
+<a name="6flv7ee5jkgp68qhsco3ur2nk8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/45qkobq5of4jj374t7v50isqd9.png"></p>
+<h3 class="topic">
+<a name="064upe9bbpjefhm586ro43jgmh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/5l4rorqrhlpm2ad2fcnv0721ic.png"></p>
+<h3 class="topic">
+<a name="7btiseo0nq4d47ujmq8kef5b1t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/63u0t3u9cnv4kh0f51uqn0stnj.png"></p>
+<h3 class="topic">
+<a name="4ji1qaki1db2gnl7r3ilkrec1a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/3td6hra035ms1jlq3sbtf1mom6.png"></p>
+<h3 class="topic">
+<a name="2ajmrj179c8gq9eeesjreevlas">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/6i8qkf5tktc55jir0va9ido254.png"></p>
+<h3 class="topic">
+<a name="7vrnpmvf7knini3hgimqjn6n5h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/22k92e9r9tkgb2jb518ftgtupq.png"></p>
+<h3 class="topic">
+<a name="09elgkllmfcfejag6qa3a1lcka">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/2sdhgr8lsm54ephltt7mgtkdlv.png"></p>
+<h3 class="topic">
+<a name="779ugbl59ss24v0iv0v8j753ns">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/1v3bg3m6s0tt895frhohrl20a3.png"></p>
+<h3 class="topic">
+<a name="6dj6u2t2hu1p513d5ip0a9lcnn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/6enkdj3f2ntgugbbdatdimsopi.png"></p>
+<h3 class="topic">
+<a name="1gmkji91mvgmfp8r4bpdcc6f1m">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/1flgdp7ukrrai1pvkth2argbgv.png"></p>
+<h3 class="topic">
+<a name="00ugs3snhhhr2b5t4lt2b79f8p">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/0uk1ag5fbp0nvn62g29emd5f6c.png"></p>
+<h3 class="topic">
+<a name="7moehe8mao8t65vfbtd8gsaks5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/2s7iqljn4qk2nf71bj49bs2upn.png"></p>
+<h3 class="topic">
+<a name="41rr3si6d5arsfcj4lts38sr4d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/1strh893rgfj72t3l4nmegt6os.png"></p>
+<h3 class="topic">
+<a name="4qinuav44c7o50suvu58gv5v1e">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/3h1im4la9p4e7s6goth83vdtc6.png"></p>
+<h3 class="topic">
+<a name="4421uffktormkfr9dr83rfppeh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/4clanhpp0060kj3qiup7bu3e04.png"></p>
+<h3 class="topic">
+<a name="47u1l1di296l3gmi9g8f8r1ibm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/6fet4gk20tdg1jepinv0tl917s.png"></p>
+<h3 class="topic">
+<a name="3bihlup17d7frhv93d60bs9032">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/1kt353nq7bm9t01sf9thgri2uo.png"></p>
+<h3 class="topic">
+<a name="7nfovnem0m4ga30a1pd81kv8nt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/5493r4v0n1n8p19lktm49q1mqv.png"></p>
+<h3 class="topic">
+<a name="4qetajjv3qosg05o8saq0vs4ha">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/6o6e677uisfv0k7klbjltp93ll.png"></p>
+<h3 class="topic">
+<a name="6lef4skrv0vr29nsu66ch41vcn">&nbsp;&nbsp;&nbsp;堆栈平衡法脱壳</a>
+</h3>
+<h3 class="topic">
+<a name="6l67m6t6apdkdupmq82ukl4dkv">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/2qklvmpjkivi8c2rn391temibp.png"></p>
+<h3 class="topic">
+<a name="00v19nnqi005els6u18nlbcctg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/7d8lk1ih11dvv5kqkuqa16i24f.png"></p>
+<h3 class="topic">
+<a name="42ab8hh4s2849fol4c9pk8riju">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/069at2fnovmh4juif0pd5pvvp2.png"></p>
+<h3 class="topic">
+<a name="6bjedbg33ll5ft96ld6cctm4js">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;找到oep之后进行内存dump，步骤于之前类似</a>
+</h3>
+<h3 class="topic">
+<a name="6o0g4r14ko5p0cu55a4gld5tdt">&nbsp;&nbsp;加密壳脱壳思路</a>
+</h3>
+<h3 class="topic">
+<a name="6m73i4rs11ejp1nt8ajsg2o01p">&nbsp;&nbsp;&nbsp;通过堆栈回溯法找oep脱加密壳（通过在被调试进程中申请内存执行代码修复iat）</a>
+</h3>
+<h3 class="topic">
+<a name="5dkc2aj9ku16aqhrepgi7s9e4k">&nbsp;&nbsp;&nbsp;&nbsp;程序加载到od，直接运行起来</a>
+</h3>
+<h3 class="topic">
+<a name="1h2esac1ulsfcoucj1nhf12j64">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;设置trongOD插件的属性</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/5uvl7lki1d7eqm2a2eh5p02kcr.png"></p>
+<h3 class="topic">
+<a name="7v70nsfjv6ss9uh6doj79g5ete">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/31c3qoqd7qs5ohm19n6vhotd39.png"></p>
+<h3 class="topic">
+<a name="7n8r8lcn3frrjq6ed2425k0110">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/4u4dn0hhk04e6pnmsl6ar9js66.png"></p>
+<h3 class="topic">
+<a name="31rd2c69105f79fjhfro12p5ku">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/0u1r6g2bdg209efj1camqhhaok.png"></p>
+<h3 class="topic">
+<a name="39p6flfc8783lhrbt0lvmhnpm9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/5g0lcbtr8hl4ccm9rdeodpfri3.png"></p>
+<h3 class="topic">
+<a name="4ua4djq8503hep1ts18qoks7ka">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/649trr2na0lg7ldn8t90dcvd5q.png"></p>
+<h3 class="topic">
+<a name="3mtbj2n8pd62tt9hnn3blap9ub">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/7jc4e6kaldmfslk1dcg1b18eml.png"></p>
+<h3 class="topic">
+<a name="68j1dpnvrcn59sr2i1cbj5meeo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/3l8818lktn9q0eusinv1k8soq5.png"></p>
+<h3 class="topic">
+<a name="2gr08ie3kivkte6n6bhsk20m1a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/59f1kh6agk3eev0m5d29ek7gmh.png"></p>
+<h3 class="topic">
+<a name="1e2ie4ofsmu2oo8riujvioursb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/4hhkomnmc02ff7pvg2p8qv5v6s.png"></p>
+<h3 class="topic">
+<a name="37lvjpm4en531q51a2su51brr7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/2j3hp8fmudhrrnd0v2upibrald.png"></p>
+<h3 class="topic">
+<a name="33jm3f56o470r332b2f4qc4548">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/5pebqu9vhil5lgddcrv59qbq55.png"></p>
+<h3 class="topic">
+<a name="3dh9hm01r0ochak7e658rf0ju7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/5io4r0gq7m2661fsjao3gd4crp.png"></p>
+<h3 class="topic">
+<a name="1niihe44qauluomkfi62brapfn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/6frn2o03r3es0dc7v883db2knm.png"></p>
+<h3 class="topic">
+<a name="2jiao3f3p14brdam83sm8idgen">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/66hspa0fof1d4jjblfru3dmlha.png"></p>
+<h3 class="topic">
+<a name="5qtr1arobhn98oqnkhkg9mh6fc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/7jejgle63jr1kndb3ntket20bp.png"></p>
+<h3 class="topic">
+<a name="291p5f713hsh7jmltiv1095loc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/6idtmfm3mfss48fr82al5oc5m6.png"></p>
+<h3 class="topic">
+<a name="2094c9v16gaqt6ttta4fn65plg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/46l1ofepr2cv7aqf54q6pbmofi.png"></p>
+<h3 class="topic">
+<a name="61ecvlo0un9rojbap0uokc1lb7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/2m3nmedg7haj1ul8a3h9iij0tu.png"></p>
+<h3 class="topic">
+<a name="303p293repngsc0m3v8v77m2gs">&nbsp;&nbsp;&nbsp;通过堆栈平衡法找oep（未修复iat）</a>
+</h3>
+<h3 class="topic">
+<a name="0pqihsrj9htrdm3o4bb3u5560d">&nbsp;&nbsp;&nbsp;&nbsp;通过堆栈平衡法找到oep</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/2t5puu1v11hesubfbid1gigvsf.png"></p>
+<h3 class="topic">
+<a name="6kh1kevqkf77aelrvojd5c071a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/19f4rlnlkcuqi099b8skt5aifl.png"></p>
+<h3 class="topic">
+<a name="1cu666givrevm8nt9ktm0im6bc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/1lvqdq7d78hpf1ppvk8jsf5nmr.png"></p>
+<h3 class="topic">
+<a name="66f7dfl5d5p5o6iqi1pbu4ogum">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/7munu5p0l8k38no7976h834nh4.png"></p>
+<h3 class="topic">
+<a name="6mslml2ua9e3e0upmaftdd96v9">&nbsp;&nbsp;&nbsp;修复iat加密的思路</a>
+</h3>
+<h3 class="topic">
+<a name="4hsf01t6q7ve9igl38t6skr96s">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/7u4ktqu2pvpuks4gohc13eknfs.png"></p>
+<h3 class="topic">
+<a name="6f4uvoubhu2iea989375o7dilm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/43rip5an7spa3tfreqditcls1b.png"></p>
+<h3 class="topic">
+<a name="505724lvs7q6ucisjbjvcgmp04">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/3apnd0pt04sfl8bn4slnrvs3a4.png"></p>
+<h3 class="topic">
+<a name="789abb098ugqr8isnaoks7pffn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/178524cou0vg5h09sbjq7q17qg.png"></p>
+<h3 class="topic">
+<a name="7ifbskjb6tl5m4amahh9qorcjd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/14l34emp0ph12i7hpninq7sv79.png"></p>
+<h3 class="topic">
+<a name="2nvuvtq57idlbb4eufd8q6a8q8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/2s93jhjjj3p7tf29hbqkj1hf6k.png"></p>
+<h3 class="topic">
+<a name="6e5urhot4rrpdvaa42r1rgold7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;脚本运行过程中可能因为栈空间不够大，所以会产生崩溃，此时可以将已经解密出来的api保存起来，修改脚本中部分数据，让脚本从上次解密结束的位置开始继续解密</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/4ge1t508p85q1t7b1p5qfo4br2.png"></p>
+<h3 class="topic">
+<a name="108g2gagmtvd4pf7foh8oq0pr1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;脚本执行完成后重新修复iat</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/39i4034tjdm82gba8g3d4vab9p.png"></p>
+<h3 class="topic">
+<a name="2eg4dkuc49rfj2b5rh9i2l2g8k">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;修复iat所用的脚本</a>
+</h3>
+<h3 class="topic">
+<a name="7vg2vvcfs2hedpuprjlmelsiet">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/460o2u58tf1ab0gjgajbl39lts.png"></p>
+<h3 class="topic">
+<a name="2sgav0tp1kk3h19am0dn8j4ota">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/5dl3tvrs1d9qqh15lueitopgcd.png"></p>
+<h3 class="topic">
+<a name="1qq9fu4b68qn4ml340u98lsiq1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/400s1mbiqonfi7co8k5bj1lqok.png"></p>
+<h3 class="topic">
+<a name="6h1rgkoumimn9f7ekgh0aeursq">&nbsp;&nbsp;&nbsp;IrStartPt加密壳脱壳</a>
+</h3>
+<h3 class="topic">
+<a name="0899d1jhi954ud2flqjqktbrhr">&nbsp;&nbsp;&nbsp;&nbsp;具体脱壳过程见视频，主要反调试和自校验</a>
+</h3>
+<h3 class="topic">
+<a name="3j4jeo5nkc07vu7ugoesnmb0vk">&nbsp;脚本解密</a>
+</h3>
+<h3 class="topic">
+<a name="42g765g7uaugjutaej12d2g560">&nbsp;&nbsp;即使用od脚本加壳程序从而得到程序未加壳时的源码</a>
+</h3>
+<h3 class="topic">
+<a name="3toa5ejemk960jlt2slamrtv5v">&nbsp;&nbsp;具体见视频教程</a>
+</h3>
+<h2 class="topic">
+<a name="0hhdnod0nbkm36cs1gke9sl0q4">windowsu虚拟机检测（判断当前进程是否运行在虚拟机中）</a>
+</h2>
+<h3 class="topic">
+<a name="3c6390gfk8rtoj8m0g4reoq18p">&nbsp;通过执行in指令检测当前程序是否运行在vmware中</a>
+</h3>
+<h3 class="topic">
+<a name="6v6dqg5m8dcm9su2ppvcoq8rno">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/6b3lk51dgkli5fht53u9fua9sp.png"></p>
+<h3 class="topic">
+<a name="4ft2tipiim47sa8bjrn49mq82h">&nbsp;通过时间戳检验当前程序是否运行在虚拟机中</a>
+</h3>
+<h3 class="topic">
+<a name="7e53821842dudekq2ego0r3l18">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/2ok3u1kmhi2nnit3be6umhib3g.png"></p>
+<h3 class="topic">
+<a name="17pv9kd0dp9bb15o1stc0ps9ko">&nbsp;通过检测当前环境的mac地址判断是否运行在虚拟机中</a>
+</h3>
+<h3 class="topic">
+<a name="00i3ma49m3kptrd15njs3hnk0e">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/6nghhnm9ql1vu2j8683j4bft47.png"></p>
+<h3 class="topic">
+<a name="23q69t8g2ov5qfu6bcvikuj7rr">&nbsp;通过查询特征进程是否存在判断当前是否在虚拟机中</a>
+</h3>
+<h3 class="topic">
+<a name="4ctoa3a2gphcuq5un5u2mi30r4">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/217p2gdkt8hr875iklc5atplqh.png"></p>
+<h3 class="topic">
+<a name="30cmfnere9lspb7k34ul1otddl">&nbsp;通过检测vmware特征文件检测当前是否运行在虚拟机中</a>
+</h3>
+<h3 class="topic">
+<a name="65sob2ople2ttcrjd6b8pqa02c">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/037rfm802s04ls8mcvtcfmfall.png"></p>
+<h3 class="topic">
+<a name="3n8ed4hcnjopnrrgs40h4424gq">&nbsp;检测注册表中的内容</a>
+</h3>
+<h3 class="topic">
+<a name="746lqjr0ectp1milbl092el5kr">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/5d50qf2oh8q1869qr72sihgquq.png"></p>
+<h3 class="topic">
+<a name="2raktddr9mpk70qotb5itm6bpk">&nbsp;检测当前环境中的设备名称是否存在"vmware"等特征字段</a>
+</h3>
+<h3 class="topic">
+<a name="0a09sv0e2nd80qaot0thail1qr">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/6q9t8ivjkonequa363v19r2mq9.png"></p>
+<h3 class="topic">
+<a name="62vkedoqlcoq1p7aum7glf1aor">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/3n2o609f1oehdibuq6r8sthtqr.png"></p>
+<h3 class="topic">
+<a name="7c7f035jhfmjlsnks437cg6i59">&nbsp;&nbsp;&nbsp;&nbsp;检测磁盘设备名称</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/6n0hc3elpu8vf75av4njkv0699.png"></p>
+<h3 class="topic">
+<a name="7og4q69r9sqgfbkr4rtq3ru08a">&nbsp;&nbsp;&nbsp;&nbsp;检测显卡名称</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/41ljmun4o8b63fl9efkb3ctq44.png"></p>
+<h3 class="topic">
+<a name="048glolr4leqahmms0f7t2oajp">&nbsp;判断IDT表的基址（不同版本的虚拟机可能特征不同）</a>
+</h3>
+<h3 class="topic">
+<a name="43iss8fqesdpdqe5m435luq0vp">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/29hojgk983a5p9qmc2ek416k97.png"></p>
+<h3 class="topic">
+<a name="44djpetlau191bd7qlgaapm3go">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/71f60erbird9n0dddfrs1gnp2o.png"></p>
+<h3 class="topic">
+<a name="43g6qfsd35k57ah7l5ka0rbabp">&nbsp;检测LDT表、GDT表的基址（局部描述符表、全局描述符表）</a>
+</h3>
+<h3 class="topic">
+<a name="56tck1erh1u279l2ttnh8f1nv6">&nbsp;&nbsp;两张表的基址分别保存在GDTR LDTR两个寄存器中</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/7l0467odu439fmd7tef8v2s6ia.png"></p>
+<h3 class="topic">
+<a name="3g7mal9ngv3esvqbocf98qsgvj">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/2pi136h3dthu9r2avdljsqlq34.png"></p>
+<h3 class="topic">
+<a name="274urus6j9rvgesnuu33gg5tgj">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/4t5n3sj0eo8er41lsmmarkjpk2.png"></p>
+<h3 class="topic">
+<a name="74ff0advlkl5ddm324bd6ev644">&nbsp;通过str指令获得TSS段选择器，检测该tss段选择器</a>
+</h3>
+<h3 class="topic">
+<a name="7cpspld3rcjbi9c3neh4v30kha">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/06442vgg625t68jt6d411gdjnf.png"></p>
+<h3 class="topic">
+<a name="12q6n70aaenuqhqd4lt045dodf">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/4t143p9fpqj5fik25jdrm41sko.png"></p>
+<h3 class="topic">
+<a name="0mmlj12gsmu3sb8djs3hktefuh">&nbsp;vmp壳实例</a>
+</h3>
+<h3 class="topic">
+<a name="6mqithdrhktq257dhd58cb9o3o">&nbsp;&nbsp;vmp壳实现原理</a>
+</h3>
+<h3 class="topic">
+<a name="1pm0hquvesb9f1cr5j3aspko8q">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/1ev2j0fmplks5d4eal1gkernr9.png"></p>
+<h3 class="topic">
+<a name="1ntpbiiii6cj9v2sk5f4mmbv17">&nbsp;&nbsp;vmp壳分析插件</a>
+</h3>
+<h3 class="topic">
+<a name="7t99jd6juv3fdvk73dbui38cfv">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/007rklucmp1gqlvoopenlo63s4.png"></p>
+<h3 class="topic">
+<a name="3b2bqebue4a594d01hj33lqh4p">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/1md1ke35hekm567nnshvc21a7v.png"></p>
+<h3 class="topic">
+<a name="2jcjr87769sgnc791f36hvkj9k">&nbsp;&nbsp;&nbsp;原理</a>
+</h3>
+<h3 class="topic">
+<a name="6s3p5rh52vao2qu7c2o19uae6t">&nbsp;&nbsp;&nbsp;&nbsp;通过解析vmp壳特征码，从而解析handle，进行标注</a>
+</h3>
+<h3 class="topic">
+<a name="2ll1oqpelcohfjri2fe9ohvh1e">&nbsp;&nbsp;vmp2.x壳虚拟机检测手段</a>
+</h3>
+<h3 class="topic">
+<a name="66uvi6gdhl0539q19b9sv3i36q">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/6p7j3ti77rj7hl6cf567hq93ss.png"></p>
+<h3 class="topic">
+<a name="6tsmsk4sc0uthdc6rrrei6h566">&nbsp;&nbsp;vmp3.x壳虚拟机检测手段</a>
+</h3>
+<h3 class="topic">
+<a name="21mej9af6v4g8dbjh0t4gt9ujj">&nbsp;&nbsp;&nbsp;整体思路</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/7j1a27abnl5h78m16f96jk6096.png"></p>
+<h3 class="topic">
+<a name="44umaf3edv04uk33161q3areu4">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/5ggmvj09kli6bfi6fik6suh4h6.png"></p>
+<h3 class="topic">
+<a name="31tp8017vd618tth58eo48orbg">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/639gjabfr0cf4kp99kob8p32vs.png"></p>
+<h3 class="topic">
+<a name="1b455a84nfakmuj3t65gk4k1i7">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/6a2riasg0s9mmlclgtjpetbi7h.png"></p>
+<h3 class="topic">
+<a name="4rd533i8b6of8s79rhtjrkpp99">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/5vfpiouudlbm7st5jrj0p4icuo.png"></p>
+<h3 class="topic">
+<a name="3o5vaujsbptvbm31svffkvl4p5">&nbsp;&nbsp;vmp2.x分析</a>
+</h3>
+<h3 class="topic">
+<a name="46cpdvi8iim4m84ekoqvd3lubo">&nbsp;&nbsp;&nbsp;使用Zeus插件分析过后，打开log窗口</a>
+</h3>
+<h3 class="topic">
+<a name="6k351dbd2iki1ik1t5r2le53f4">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/1hekutidd3s24lumjso1vdcg6m.png"></p>
+<h3 class="topic">
+<a name="6e10v42d822998svg78agldon6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/3se2plgi6tiuihpl6shcqfs912.png"></p>
+<h3 class="topic">
+<a name="7jae0p4rfolfid6aelcqe0gnbt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/339olb74sbmi660be2tuavk5sk.png"></p>
+<h3 class="topic">
+<a name="6cma4h5trdtgoqje95kiel8tei">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/0vitdsn7mdkguvredt3f1q2f33.png"></p>
+<h3 class="topic">
+<a name="5r3ho5jv633vb6862bao3mnc24">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/0j27eh3jgj6nou625jgla5m2kt.png"></p>
+<h3 class="topic">
+<a name="30fco24v3n226hj484lp1983i1">&nbsp;&nbsp;&nbsp;绕过vmp2.x的虚拟机环境检验</a>
+</h3>
+<h3 class="topic">
+<a name="7kgven609oopgn2c9kbsv04752">&nbsp;&nbsp;&nbsp;&nbsp;注意vmp壳中的伪指令无法模拟特权指令，执行特全指令时必须将寄存器原始值恢复，退出虚拟机，执行原始的无法被模拟的指令，在退出虚拟机时，会执行return伪指令</a>
+</h3>
+<h3 class="topic">
+<a name="3c00luusgce4nbnh2vtld9qb2b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/2hfv147d6m11fba2uauui260de.png"></p>
+<h3 class="topic">
+<a name="0p5vkcrakiv44nb82mn5n4skm3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;定位到return伪指令在内存中的地址后，往后单步执行可以看到执行特权指令进行虚拟机环境检验</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/2ohtu4rp8dd2gl42pjoaf9njqm.png"></p>
+<h3 class="topic">
+<a name="0tgicreead2kmuvuir55crvmv8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/4sevj8n31nj9qneu7fobvfoceh.png"></p>
+<h3 class="topic">
+<a name="0cebdbnscp6ad2j75nqhapnkst">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/6i9cmq9t6o5dl1f1gdts3uhmt3.png"></p>
+<h3 class="topic">
+<a name="3g0vu5718um837iji76hodeom8">&nbsp;&nbsp;&nbsp;&nbsp;过了虚拟机环境检验之后，在调试器中让程序运行起来，通过栈回溯的方法，可以定位到程序原始oep，即对于加了vmp壳的程序只有壳代码是复杂的vmp伪指令，壳代码执行完毕后，仍然执行程序原有的指令</a>
+</h3>
+<h3 class="topic">
+<a name="01g8j8vqcqn7oq844qdu3pma15">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/53fopenmi7197mcrohuho4tstc.png"></p>
+<h3 class="topic">
+<a name="2dndqtr10et6c2kk9fjs6tqcre">&nbsp;&nbsp;vmp3.x分析</a>
+</h3>
+<h3 class="topic">
+<a name="0mjc1e43aqhlgdfrkm4u0r6k75">&nbsp;&nbsp;&nbsp;绕过vmp3.x的虚拟机环境检验</a>
+</h3>
+<h3 class="topic">
+<a name="6omrnv37b9f87jlc888t6357p3">&nbsp;&nbsp;&nbsp;&nbsp;主要思路与vmp2.x相同，找到return的为伪指令-》找到用于检验虚拟机环境的特权指令-》破环特权指令的执行与检验，从而绕过虚拟机环境检验</a>
+</h3>
+<h3 class="topic">
+<a name="7e34dvd7vfk8b7paegbc28sife">&nbsp;&nbsp;&nbsp;&nbsp;另一种思路</a>
+</h3>
+<h3 class="topic">
+<a name="13dggpp9cu5fkmt7i8cibfd1de">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当没有过虚拟机环境检测直接在虚拟机中运行加壳过的程序时会跳出报错的对话框，可以在此时暂停程序，分析对话框跳出的堆栈</a>
+</h3>
+<h3 class="topic">
+<a name="3g2apepabtd0vhhadb6k9n5d8v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/3b9fd76gi8tipjvp4lorr62c9c.png"></p>
+<h3 class="topic">
+<a name="1kqlk266mtgpqbp3uc8to27p55">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/1gm1rc1ch9b100k8aqb47vbafj.png"></p>
+<h3 class="topic">
+<a name="330qdpuertbtoisvblivmgqcsh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/1to4maaep74590k96m0nl59sld.png"></p>
+<h3 class="topic">
+<a name="39nia7t68tcbk6bko6vo6lbbtn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;因为vmp3.x中是通过调用api的方式进行虚拟机环境检验的，所以定位到vmp call api的伪指令并下断点，当然也可以直接给用于检验的原始api下断</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/2070i10cgs80dq8fc8naija844.png"></p>
+<h3 class="topic">
+<a name="73i7pkusutcki2ripm4gl2v6ce">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当调用到用于检验虚拟机环境的api时，就可以跟进去，修改运行时数据，绕过检验</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/4la14t5inmmbftnjqnb4fq4251.png"></p>
+<h3 class="topic">
+<a name="6nmhp08g60aaf11kn2a5fmqhrp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/26tu3g9tnusf2kb5tsjl70229h.png"></p>
+<h3 class="topic">
+<a name="64egbnpibdbvp1sp1gmq7amcbf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/5od49hdqt74qj1omfct931fnk5.png"></p>
+<h3 class="topic">
+<a name="17ip07qlupr4bljp8s7c32eji0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/2j9hruautfqmnh2bga2mu6pa6j.png"></p>
+<h3 class="topic">
+<a name="26a8fj1is6tabun5nvh6biedoa">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%97_files/0ntmil4ldcnvegbptguu68jlcc.png"></p>
+<h3 class="topic">
+<a name="0pmsn4e5vv7h3pqf6uscto5n99">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;同理修改其他几个用于监测虚拟机运行状态的api的返回结果</a>
+</h3>
+</body>
+</html>

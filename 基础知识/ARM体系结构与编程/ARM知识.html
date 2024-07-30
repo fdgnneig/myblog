@@ -1,0 +1,1229 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>ARM知识</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a href="https://www.cnblogs.com/fanzhidongyzby/p/5250116.html" name="5ooe6u7pp11avqc7ude9gp5nf9">ARM知识</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="ARM%E7%9F%A5%E8%AF%86_files/images/ARM%E7%9F%A5%E8%AF%86.jpg"></div>
+<h2 class="topic">
+<a name="39m77p1okb26hf8lomljqjqoku">寄存器</a>
+</h2>
+<h3 class="topic">
+<a name="38oick92qqjhg0knm28893m3hj">&nbsp;不分组寄存器(R0-R7)</a>
+</h3>
+<h3 class="topic">
+<a name="3tjsi6rvbltktg69f0gg7o1sa6">&nbsp;分组寄存器(R8-R14)</a>
+</h3>
+<h3 class="topic">
+<a name="75vdpphum812v2v2m2e9seke5u">&nbsp;程序计数器 R15</a>
+</h3>
+<h2 class="topic">
+<a name="0h0p4kuk8nr9i22vb2lkjq4841">ARM处理器有两种工作状态</a>
+</h2>
+<h3 class="topic">
+<a name="2k77nufp6cp7jultojr5g3ls4a">&nbsp;ARM指令格式：&lt;opcode&gt;{&lt;cond&gt;}{S}{.W|.N} &lt;Rd&gt;, &lt;Rn&gt; {, &lt;operand2&gt;}&#13;
+	指令助记符  执行条件  指令是否影响CPSR寄存器的值  指令宽度说明符  目标寄存器  第一个操作数寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="34k8gnpv57fpm1g9hnb2rjvrs4">&nbsp;指令长度</a>
+</h3>
+<h3 class="topic">
+<a name="141iujs4qo3ufv04n6e5s27dbm">&nbsp;&nbsp;ARM状态</a>
+</h3>
+<h3 class="topic">
+<a name="3ueisf7fl8m8bt64qvnkohj8cv">&nbsp;&nbsp;&nbsp;执行32位字对齐的ARM指令</a>
+</h3>
+<h3 class="topic">
+<a name="1fl964m0h6srm1auv3hut4st27">&nbsp;&nbsp;Thumb状态</a>
+</h3>
+<h3 class="topic">
+<a name="28p1bc3tad6doupmsq5h6115ru">&nbsp;&nbsp;&nbsp;执行16位字对齐的Thumb指令</a>
+</h3>
+<h3 class="topic">
+<a name="0ouo2immbd022qhbg6l3vvo9kf">&nbsp;寄存器命名差异</a>
+</h3>
+<h3 class="topic">
+<a name="7mjuj9mt7d4ilvhabqdm2h29ta">&nbsp;&nbsp;命名相同的寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="3dn0jv3f4j9i1s3lbi18n87bv8">&nbsp;&nbsp;&nbsp;R0-R7</a>
+</h3>
+<h3 class="topic">
+<a name="5t09940ssce8858iqtrc9971ps">&nbsp;&nbsp;&nbsp;CPSR</a>
+</h3>
+<h3 class="topic">
+<a name="2ahdub9sfctoi8uudnhlvv194u">&nbsp;&nbsp;命名不同的寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="3stsrg7dp75e1lr2ctgsmhqe0t">&nbsp;&nbsp;&nbsp;Thumb状态下：FP  、 IP  、 SP  、 LR  、PC</a>
+</h3>
+<h3 class="topic">
+<a name="0q1jl5nk9sdjhl964oji5qe83e">&nbsp;&nbsp;&nbsp;对应ARM状态：R11、R12、R13、R14、R15</a>
+</h3>
+<h2 class="topic">
+<a name="553nbhnr8ukjp62maq4kv1g6kq">ARM指令</a>
+</h2>
+<h3 class="topic">
+<a name="7r5ma2mj7tjd05dqjniimi2mku">&nbsp;ARM的栈指令</a>
+</h3>
+<h3 class="topic">
+<a name="31lpfbaboskcjvjuk864qkmc4v">&nbsp;&nbsp;栈的类型</a>
+</h3>
+<h3 class="topic">
+<a name="1lgk958du4umdmdjunapdml1e0">&nbsp;&nbsp;&nbsp;栈地址的增长方向：ARM将向高地址增长的栈称为递增栈（Descendent Stack），将向低地址增长的栈称为递减栈（Acendant Stack）&#13;
+栈指针的指向位置：ARM将栈指针指向栈顶元素位置的栈称为满栈（Full Stack），将栈指针指向即将入栈的元素位置的栈称为空栈（Empty Stack）</a>
+</h3>
+<h3 class="topic">
+<a name="2sqsr3f4di7htptofmemvu04n8">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img height="476" src="ARM%E7%9F%A5%E8%AF%86_files/5u8nvlldi6ao3vc64s14k5rl2r.png" width="550"></p>
+<h3 class="topic">
+<a name="1og1bgr4m0t2rh33d9ne9kmjd2">&nbsp;&nbsp;栈存取指令</a>
+</h3>
+<h3 class="topic">
+<a name="42t6qv2jp67lt1191t6lnl92gt">&nbsp;&nbsp;&nbsp;STMFD</a>
+</h3>
+<h3 class="topic">
+<a name="5t9cmr0t501017l2trjd0kfah5">&nbsp;&nbsp;&nbsp;LDMFD</a>
+</h3>
+<h3 class="topic">
+<a name="7ejb29k80d3uulh0trc1l3ulrj">&nbsp;&nbsp;栈操作指令分解为两步微指令：数据存取和栈指针移动。这两步操作的先后顺序和栈指针的移动方式由栈的类型决定。</a>
+</h3>
+<h3 class="topic">
+<a name="79clke48cqek275m2mfqbq81oj">&nbsp;&nbsp;&nbsp;栈操作指令分解为两步微指令</a>
+</h3>
+<p class="topicImage">
+<img height="371" src="ARM%E7%9F%A5%E8%AF%86_files/68f6r2m24qi1nlrs38jejmj8hv.png" width="312"></p>
+<h3 class="topic">
+<a name="1b2cu1gc9hree4pvg0ltrsvmf7">&nbsp;&nbsp;使用举例</a>
+</h3>
+<h3 class="topic">
+<a name="50e9gc2qsqkn3h8vsirem8mgnt">&nbsp;&nbsp;&nbsp;虽然ARM的栈类型和相关的操作指令比较繁琐，但是实际上最常用的还是和x86指令集相同的栈类型：栈向低地址方向增长，且栈指针指向栈顶元素的位置，即ARM的FD栈。因此最常见的ARM栈指令操作是STMFD和LDMFD。</a>
+</h3>
+<h3 class="topic">
+<a name="7kh2igcrkacdffvsppcoh971r6">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img height="128" src="ARM%E7%9F%A5%E8%AF%86_files/1lrlj3cccj34je1shc20scjujg.png" width="256"></p>
+<h3 class="topic">
+<a name="5148dfip1c6h4dpb3m0nriaojn">&nbsp;&nbsp;&nbsp;子主题 3</a>
+</h3>
+<p class="topicImage">
+<img height="848" src="ARM%E7%9F%A5%E8%AF%86_files/13n7dlmg66q8bs5lis1k9ado2c.png" width="992"></p>
+<h3 class="topic">
+<a name="2d6ptjd49lhsvofe7elq6127d3">&nbsp;缓冲区读写指令</a>
+</h3>
+<h3 class="topic">
+<a name="14d25k8nenkbbdcls1e34q3801">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img height="133" src="ARM%E7%9F%A5%E8%AF%86_files/2m318d2fm6oska7tdlvcf9k9df.png" width="532"></p>
+<h3 class="topic">
+<a name="72h8erqu6luun7evg8n6f5gvrv">&nbsp;&nbsp;ARM中存在一组缓冲区操作指令和栈指令是一一对应的，他们完成相同的功能。这些指令含义的区别来源于对存取操作的缓冲区指针地址增长方向，以及存取操作和缓冲区指针移动的先后顺序决定的。这个和前面描述的栈类型的分类原则十分相似。</a>
+</h3>
+<h3 class="topic">
+<a name="60b1uul6padhu73ue2hhrrhu93">&nbsp;跳转指令</a>
+</h3>
+<h3 class="topic">
+<a name="1m2utf67pjni8sm5cf394t1g9l">&nbsp;&nbsp;跳转指令，又称分支指令，它可以改变指令序列的执行流程。</a>
+</h3>
+<h3 class="topic">
+<a name="0psbk68u8q2aj4g393bs8i3nm2">&nbsp;&nbsp;ARM中有两种方式可以实现程序跳转</a>
+</h3>
+<h3 class="topic">
+<a name="7iau2gkjs4a6tu0t7vpbhp917d">&nbsp;&nbsp;&nbsp;一种是使用跳转指令直接跳转</a>
+</h3>
+<h3 class="topic">
+<a name="502qkgdo7bqno2rq84ac0l38o5">&nbsp;&nbsp;&nbsp;另一种是给PC寄存器直接赋值实现跳转</a>
+</h3>
+<h3 class="topic">
+<a name="3lfj4h0n6c6iqodtb8c3rj3cls">&nbsp;&nbsp;跳转指令有4条</a>
+</h3>
+<h3 class="topic">
+<a name="4helio5tudlq9cd26ug9bhqbqr">&nbsp;&nbsp;&nbsp;B跳转指令</a>
+</h3>
+<h3 class="topic">
+<a name="27357gih9t2kdujhijeh9rrlqt">&nbsp;&nbsp;&nbsp;BL 带链接的跳转指令</a>
+</h3>
+<h3 class="topic">
+<a name="4s9r7esif2dgjm8im8ar7fbrm4">&nbsp;&nbsp;&nbsp;&nbsp;BL{cond} label	：当执行BL指令时，如果条件满足，ARM处理器会首先将当前指令的下一条指令的地址拷贝到R14(LR)寄存器中，然后再跳转到label指定的地址处继续执行。</a>
+</h3>
+<h3 class="topic">
+<a name="50buhpk6d4vu225l37f8702fr7">&nbsp;&nbsp;&nbsp;&nbsp;BL指令，通常用于调用子程序，在子程序的尾部，可以通过MOV PC, LR 返回到主程序中。</a>
+</h3>
+<h3 class="topic">
+<a name="61qnd0a5l5f4l54gkq35nvvuos">&nbsp;&nbsp;&nbsp;&nbsp;示例：BNE LABEL	---&gt; 表示条件码Z=0时跳转到LABEL处执行。</a>
+</h3>
+<h3 class="topic">
+<a name="2htta9lv7evove6k93lqn2v3h6">&nbsp;&nbsp;&nbsp;BX带状态切换的跳转指令</a>
+</h3>
+<h3 class="topic">
+<a name="11vk07hrkrp3m02nlb8clefnlb">&nbsp;&nbsp;&nbsp;&nbsp;BX{cond} Rm	：当执行BX指令时，如果条件满足，ARM处理器会判断Rm的[0]位是否为1，如果为1则跳转时自动将CPSR寄存器的T标志位置位，并将目标地址处的代码解释为Thumb代码来执行，即处理器会切换到Thumb状态；&#13;
+                       反之，如果Rm的[0]位为0，则跳转时自动将CPSR寄存器的T标志位复位，并将目标地址处的代码解释为ARM代码来执行，即处理器切换到ARM状态。</a>
+</h3>
+<h3 class="topic">
+<a name="7qe0li620qcj2o7o0in5e6k9t5">&nbsp;&nbsp;&nbsp;&nbsp;示例：&#13;
+       ......&#13;
+       ADR R0, thumbcode+1&#13;
+       BX R0            @跳转到thumbcode处执行，并将处理器切换为Thumb状态&#13;
+   thumbcode:&#13;
+   .code 16&#13;
+   .......</a>
+</h3>
+<h3 class="topic">
+<a name="47p0d3bm6lsfg2dd3j5itdivuv">&nbsp;&nbsp;&nbsp;BLX带链接和状态切换的跳转指令</a>
+</h3>
+<h3 class="topic">
+<a name="06b8gtbvpjkcon7lq7r5psvitc">&nbsp;&nbsp;&nbsp;&nbsp;BLX{cond} Rm	：BLX指令集合了BL和BX的功能，如果条件满足，ARM处理器除了设置链接寄存器LR外，还根据Rm的[0]位的值来切换处理器状态。</a>
+</h3>
+<h3 class="topic">
+<a name="5v7hd0lqgn67hmkg83f563dv43">&nbsp;存储器访问指令[内存地址]</a>
+</h3>
+<h3 class="topic">
+<a name="3glurtgfreouibiu4ae5hkmu7b">&nbsp;&nbsp;单寄存器-存储单元</a>
+</h3>
+<h3 class="topic">
+<a name="2gvobll7il9t0bvhvvnrt881tr">&nbsp;&nbsp;&nbsp;LDR</a>
+</h3>
+<h3 class="topic">
+<a name="1bnn8mq0dsn7kf49266qahln21">&nbsp;&nbsp;&nbsp;&nbsp;LDR，用于从存储器中加载数据到寄存器中</a>
+</h3>
+<h3 class="topic">
+<a name="6r0me8c2llonjmubbu80n74nfm">&nbsp;&nbsp;&nbsp;&nbsp;指令格式：&#13;
+	LDR{type}{cond} Rd, label&#13;
+	LDRD{cond} Rd, Rd2, label</a>
+</h3>
+<h3 class="topic">
+<a name="1ucossoj27rurvpgea6h6k4keu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type：指明了操作的数据大小，它的取值如表6-3所示。</a>
+</h3>
+<h3 class="topic">
+<a name="77kpv0lcg5s043kvinii1hdcr9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img height="130" src="ARM%E7%9F%A5%E8%AF%86_files/21l5qqto23v21amlgjt2ssjisj.png" width="514"></p>
+<h3 class="topic">
+<a name="0up81dnbv8nsp78d67co9vncd4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cond：为执行条件，其取值如表6-2所示。</a>
+</h3>
+<h3 class="topic">
+<a name="5to4r9pqlsqak4nu9dn5h7u2jq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img height="322" src="ARM%E7%9F%A5%E8%AF%86_files/62mjl0jet87f1ejf8hij0lirbe.png" width="489"></p>
+<p class="relationships">参见: <a href="#673jaqj4l9apohg83dh35tt82d">cond：为6-2所示的执行条件</a>
+</p>
+<h3 class="topic">
+<a name="2v77hblfpbat5gd9oroosvv9rj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Rd：目标寄存器，把存储器中数据存到的寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="15j7m0v4v0fs8rlj000s407pme">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;label：为要读取的内存地址。它的表示方法有三种：</a>
+</h3>
+<h3 class="topic">
+<a name="6d4ps1fj9ebkkc1oqehm2mg5vi">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;直接偏移量，如 LDR R8，[R9, #04]、LDR R8，[R9], #04</a>
+</h3>
+<h3 class="topic">
+<a name="1tb5319oovp4v62t9l3nn2o922">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;寄存器偏移，如 LDR R8，[R9, R10, #04]</a>
+</h3>
+<h3 class="topic">
+<a name="3tqoqq4qa4fv36uc75l3g3t0nd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;相对PC的偏移，如 LDR R8, label1</a>
+</h3>
+<h3 class="topic">
+<a name="0qfkpor202mks21gsvt4p9992a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LDRD：一次加载双字的数据，将数据加载到Rd与Rd2寄存器中。&#13;
+示例：&#13;
+	LDRD R0, R1, label2	---&gt; 从标号label2指向的内存地址中加载两个字的数据到R0与R1寄存器中。</a>
+</h3>
+<h3 class="topic">
+<a name="55jcqkrjqqjma9lds8lfrdeupo">&nbsp;&nbsp;&nbsp;STR</a>
+</h3>
+<h3 class="topic">
+<a name="2mqsrto12645up45m0s34j57q4">&nbsp;&nbsp;&nbsp;&nbsp;STR，将寄存器中的数据存储到指定内存地址的存储单元中。</a>
+</h3>
+<h3 class="topic">
+<a name="4mhrmg5rc4u34c5av9evrjjsoo">&nbsp;&nbsp;&nbsp;&nbsp;指令格式：&#13;
+	STR{type}{cond} Rd, label&#13;
+	STRD{cond} Rd, Rd2, label</a>
+</h3>
+<h3 class="topic">
+<a name="6h2uiel63ndnjto705rtcpnr4i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注：STR和LDR指令格式相同，只是type中SB也SH对STR无效。</a>
+</h3>
+<h3 class="topic">
+<a name="0a7k5efm0aqs861rndtmb7j7qc">&nbsp;&nbsp;&nbsp;&nbsp;示例：&#13;
+	STR R0, [R2, #04]	---&gt; 将R0寄存器的数据存储到R2+4所指向的存储单元。</a>
+</h3>
+<h3 class="topic">
+<a name="5tn2rq3d3bnn5bkpb75liugaed">&nbsp;&nbsp;寄存器列表-存储单元</a>
+</h3>
+<h3 class="topic">
+<a name="35nedgooshm9grs5mb663vni98">&nbsp;&nbsp;&nbsp;LDM</a>
+</h3>
+<h3 class="topic">
+<a name="6ddk9f8nufplbd3to2gb2em73l">&nbsp;&nbsp;&nbsp;&nbsp;LDM，可以从指定的存储单元加载多个数据到一个寄存器列表。</a>
+</h3>
+<h3 class="topic">
+<a name="7r5bg6escmq72687rl7l6ls15j">&nbsp;&nbsp;&nbsp;&nbsp;指令格式：&#13;
+	LDM{addr_mode}{cond} Rn{!} reglist</a>
+</h3>
+<h3 class="topic">
+<a name="6n4dkkq34is7038rge988ajt5l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;addr_mode：取值如表6-4所示。</a>
+</h3>
+<h3 class="topic">
+<a name="2e7749qg1i7fnrflhj7c5f6a14">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img height="251" src="ARM%E7%9F%A5%E8%AF%86_files/0tsknbq9mub97hoc2virfugjep.png" width="579"></p>
+<h3 class="topic">
+<a name="673jaqj4l9apohg83dh35tt82d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cond：为6-2所示的执行条件</a>
+</h3>
+<p class="relationships">参见: <a href="#5to4r9pqlsqak4nu9dn5h7u2jq"></a>
+</p>
+<h3 class="topic">
+<a name="1r10tn91iq2tts72t59d38r4vl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Rn：为基地址寄存器，用于存储初始地址。</a>
+</h3>
+<h3 class="topic">
+<a name="2visdttrcm5sf5son7ijkldesa">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;！：为可选后缀。如果有！，则最终地址将写回到Rn寄存器中。</a>
+</h3>
+<h3 class="topic">
+<a name="72n029bf1rlgt6mgigv3muqqco">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;reglist：为用来存储数据的寄存器列表，用大括号括起来。</a>
+</h3>
+<h3 class="topic">
+<a name="7d38h9ct4d74tgcerfmc20n07u">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;寄存器列表可以是多个连续的寄存器，多个连续的寄存器用&ldquo;-&rdquo;连接，如R0-R3表示连续的寄存器R0至R3寄存器列表；</a>
+</h3>
+<h3 class="topic">
+<a name="1fifphf7q3h15nicsh186nuofi">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果多个寄存器不是连续的，则用&ldquo;，&rdquo;逗号将它们分割开来，如｛R0, R1, R7｝</a>
+</h3>
+<h3 class="topic">
+<a name="7sbrjn99jiv62vt0e332kkrurr">&nbsp;&nbsp;&nbsp;&nbsp;示例：&#13;
+	LDMIA R0!, {R1-R3}	---&gt; 依次加载R0指向的存储单元的数据到R1，R2，R3寄存器。</a>
+</h3>
+<h3 class="topic">
+<a name="6815damlqg1nrjh17gs0g09js4">&nbsp;&nbsp;&nbsp;STM</a>
+</h3>
+<h3 class="topic">
+<a name="1org014q3ep4ae2vosgv4v887m">&nbsp;&nbsp;&nbsp;&nbsp;STM，将一个寄存器列表的数据存储到指定的存储单元。</a>
+</h3>
+<h3 class="topic">
+<a name="5utd27h0v9f82oq08kp269r7m9">&nbsp;&nbsp;&nbsp;&nbsp;指令格式：&#13;
+	STM{addr_mode}{cond} Rn{!} reglist</a>
+</h3>
+<h3 class="topic">
+<a name="7m7jdp03lavtdjvisqcfg9on4i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;addr_mode：取值如表6-4所示。</a>
+</h3>
+<h3 class="topic">
+<a name="3jct1gubefrhpeaclfb3qa7mqs">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img height="251" src="ARM%E7%9F%A5%E8%AF%86_files/1jh3hsgtqlo862l5ra3nkq6jq7.png" width="579"></p>
+<h3 class="topic">
+<a name="28gajkrhnkjgpquiipvr4127ni">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cond：为6-2所示的执行条件</a>
+</h3>
+<h3 class="topic">
+<a name="5q4n0nmjs7gtb9mrqf3uqvapvd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Rn：为基地址寄存器，用于存储初始地址。</a>
+</h3>
+<h3 class="topic">
+<a name="5bc04kjsadgfflb1thjli3ji83">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;！：为可选后缀。如果有！，则最终地址将写回到Rn寄存器中。</a>
+</h3>
+<h3 class="topic">
+<a name="5srrg63kd5ft891eifir6ei6cn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;reglist：为用来存储数据的寄存器列表，用大括号括起来。</a>
+</h3>
+<h3 class="topic">
+<a name="5fn9of49g3ls78e7av4kdm15bn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;寄存器列表可以是多个连续的寄存器，多个连续的寄存器用&ldquo;-&rdquo;连接，如R0-R3表示连续的寄存器R0至R3寄存器列表；</a>
+</h3>
+<h3 class="topic">
+<a name="2d4o9ckka5m0a8it0c7rkob5hb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果多个寄存器不是连续的，则用&ldquo;，&rdquo;逗号将它们分割开来，如｛R0, R1, R7｝</a>
+</h3>
+<h3 class="topic">
+<a name="4a5in06c5ou3ebgf6oiinqglrl">&nbsp;&nbsp;&nbsp;&nbsp;示例：&#13;
+	STMDB R0!, {R3-R6，R11}	---&gt; 依次将R11，R6-R3寄存器的内容存储到R0指向的存储单元。&#13;
+	STMFD SP!, {R3-R7}	---&gt; 依次将R7-R3寄存器的内容压入栈，功能等价于STMDB SP!, {R3-R7}。</a>
+</h3>
+<h3 class="topic">
+<a name="01f9s056580dudi89uj8qurajs">&nbsp;&nbsp;寄存器-满递减栈</a>
+</h3>
+<h3 class="topic">
+<a name="6qse2ttb7u7ojrqulskue9ub6u">&nbsp;&nbsp;&nbsp;PUSH</a>
+</h3>
+<h3 class="topic">
+<a name="27ackbuv4bcmu7ee50dqslqk7s">&nbsp;&nbsp;&nbsp;&nbsp;PUSH，将寄存器数据推入满递减栈。</a>
+</h3>
+<h3 class="topic">
+<a name="6i3u45t996p0d99pff140bmmtv">&nbsp;&nbsp;&nbsp;&nbsp;PUSH指令格式：&#13;
+	PUSH{cond} reglist</a>
+</h3>
+<h3 class="topic">
+<a name="5io6ta3fi1vmk7bapo2nsu3kvd">&nbsp;&nbsp;&nbsp;&nbsp;示例：&#13;
+	PUSH {R0, R4-R7}	---&gt; 将R7-R4，R0寄存器中的数据依次入栈</a>
+</h3>
+<h3 class="topic">
+<a name="7754ca0isscdgs2v5c4p19cgmu">&nbsp;&nbsp;&nbsp;POP</a>
+</h3>
+<h3 class="topic">
+<a name="7bpguk1nm74e6lsp9adncquqk6">&nbsp;&nbsp;&nbsp;&nbsp;POP，从满递减栈中弹出数据到寄存器。</a>
+</h3>
+<h3 class="topic">
+<a name="2ctj3drpfcur3qtbpc4g9452kd">&nbsp;&nbsp;&nbsp;&nbsp;POP指令格式：&#13;
+	POP{cond} reglist</a>
+</h3>
+<h3 class="topic">
+<a name="2jm4366cbo7pnqs93fgh2j1h1m">&nbsp;&nbsp;&nbsp;&nbsp;示例：&#13;
+	POP {R0, R4-R7}	---&gt; 将数据弹出栈依次放到R0，R4-R7寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="3t4fsu03mvhk43gjbu5bkaepj6">&nbsp;&nbsp;寄存器与存储器间数据交换</a>
+</h3>
+<h3 class="topic">
+<a name="0ghrj2ff8sb77vpak39locmoto">&nbsp;&nbsp;&nbsp;SWP</a>
+</h3>
+<h3 class="topic">
+<a name="4orqs7r0dno73u77rkgtup3jsm">&nbsp;&nbsp;&nbsp;&nbsp;SWP，寄存器与存储器间数据交换。</a>
+</h3>
+<h3 class="topic">
+<a name="514tqa4b5ill62hgohp5hvib65">&nbsp;&nbsp;&nbsp;&nbsp;SWP指令格式：&#13;
+	SWP{B}{cond} Rd, Rm, [Rn]</a>
+</h3>
+<h3 class="topic">
+<a name="1gn13l5n11ikhlupv2uc8fagm6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;B，是可选的字节，若有B，则交换字节，否则交换32位的字。</a>
+</h3>
+<h3 class="topic">
+<a name="7bsughflgm85cjnt6kl8b5c1at">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cond为表6-2所示的执行条件</a>
+</h3>
+<h3 class="topic">
+<a name="1nomikragk7i9rem0n72onoek6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img height="322" src="ARM%E7%9F%A5%E8%AF%86_files/37e3ftv9c1p2i167ja48h364ia.png" width="489"></p>
+<h3 class="topic">
+<a name="4ag48u0a1o3auv48en3ca8m1kj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Rd：要从存储器中加载数据的寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="3ehkm71maj7mfnio4u4mv250s2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Rm：要写入数据到存储器的寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="7u7c7cl5ntuash26qrg0hotrvg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Rn：为需要进行数据交换的存储器地址。</a>
+</h3>
+<h3 class="topic">
+<a name="636qi3in9tuucm82srikteuamb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Rn不能与Rd和Rm相同。</a>
+</h3>
+<h3 class="topic">
+<a name="04asbv0k5d1ckd9r90ii4gla8j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果Rd与Rm相同，可实现单个寄存器与存储器的数据交换。</a>
+</h3>
+<h3 class="topic">
+<a name="05t77gn6pqfp5ph9kbchh20iek">&nbsp;&nbsp;&nbsp;&nbsp;示例：&#13;
+	SWP R1, R1, [R0]	---&gt; 将R1寄存器与R0指向的存储单元的内容进行交换。&#13;
+	SWP R1, R2, [R0]	---&gt; 从R0指向的存储单元读取一个字节存入R1(高24位清零)，然后将R2寄存器的字节内容存储到该存储单元。</a>
+</h3>
+<h3 class="topic">
+<a name="48f9eu40h7q1oi1los3gc39u1d">&nbsp;数据处理指令</a>
+</h3>
+<h3 class="topic">
+<a name="24f7tj2fqoakqkf67smrfpvaua">&nbsp;&nbsp;数据处理指令，主要是对寄存器与寄存器之间数据进行操作。&#13;
+比较指令不需要S后缀，它们会直接影响状态标志，其它3类数据处理指令可选择使用S后缀，来决定是否影响状态标志。</a>
+</h3>
+<h3 class="topic">
+<a name="2g154f45pi23d23vvcdinhikke">&nbsp;&nbsp;数据处理指令包括4类</a>
+</h3>
+<h3 class="topic">
+<a name="08buki5hti9kt6ljk4oq9safst">&nbsp;&nbsp;&nbsp;数据传输指令</a>
+</h3>
+<h3 class="topic">
+<a name="3oe5ngsdh9odcie14ffilamkpk">&nbsp;&nbsp;&nbsp;&nbsp;MOV</a>
+</h3>
+<h3 class="topic">
+<a name="05sk3uvee4pgm93er335ksice8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOV指令是ARM指令集中使用最频繁的指令，功能是将8位的立即数或源寄存器的内容传送到目标寄存器中。</a>
+</h3>
+<h3 class="topic">
+<a name="2f00tc0brk1vjqdf4mop5sjopf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;指令格式：&#13;
+	MOV{cond}{S} Rd,operand2</a>
+</h3>
+<h3 class="topic">
+<a name="3avadofe780jmn3dfnsdnlg3v7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;示例：&#13;
+	MOV R0, #8	---&gt; R0=8&#13;
+	MOV R0, R1	---&gt; R0 = R1&#13;
+	MOVS R2, R1, LSL #2	---&gt; R2=R1*4	影响标志位</a>
+</h3>
+<h3 class="topic">
+<a name="501p0qdgn29veocuopuopt0k7n">&nbsp;&nbsp;&nbsp;&nbsp;MVN</a>
+</h3>
+<h3 class="topic">
+<a name="6jp7ndopnf2hhe47hog5420dii">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MVN为数据非传输指令，功能是将8位的立即数或源寄存器的内容按位取反后传送到目标寄存器中。</a>
+</h3>
+<h3 class="topic">
+<a name="3j241ai81n8o2d6u7jf73o8mds">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;指令格式：&#13;
+	MVN{cond}{S} Rd,operand2</a>
+</h3>
+<h3 class="topic">
+<a name="0g3e47i1qvi5bjl9oiiis0ltta">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;示例：&#13;
+	MVN R0, #0xFF	---&gt; R0=0xFFFFFF00&#13;
+	MVN R1, R2		---&gt; 将R2寄存器数据取反后存入R1寄存器中</a>
+</h3>
+<h3 class="topic">
+<a name="66kg9kue21j80ppgo4bet0tss3">&nbsp;&nbsp;&nbsp;算术运算指令</a>
+</h3>
+<h3 class="topic">
+<a name="2l9q5rvofdcgq6863a64vi3luu">&nbsp;&nbsp;&nbsp;&nbsp;加</a>
+</h3>
+<h3 class="topic">
+<a name="1ljmjiujk739v530daeob1r0u0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ADD</a>
+</h3>
+<h3 class="topic">
+<a name="4o0ip0lb1o4vv72te0pe60lpe5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;加法指令的功能：是将Rn寄存器与operand2的值相加，结果保存到Rd寄存器。</a>
+</h3>
+<h3 class="topic">
+<a name="17scebeep8idoc83odgq96vh94">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;指令格式：&#13;
+	ADD{cond}{S} Rd, Rn, operand2</a>
+</h3>
+<h3 class="topic">
+<a name="3fo6fg3sp96rnsj99hsa4nl4ch">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;示例：&#13;
+	ADD R0, R1, #2		---&gt; R0=R1+#2&#13;
+	ADDS R0, R1, R2	---&gt; R0=R1+R2,	影响标志位&#13;
+	ADD R0, R1, LSL #3	---&gt; R0=R1*8</a>
+</h3>
+<h3 class="topic">
+<a name="52p219b3k4en3kf7cco7q0an6i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ADC</a>
+</h3>
+<h3 class="topic">
+<a name="4b8fkn0koi5qter1uorg6bhm7f">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;带进位加法指令的功能：是将Rn寄存器加上operand2的值，再加上CPSR寄存器的条件标志位C的值，最后将结果保存到Rd寄存器。</a>
+</h3>
+<h3 class="topic">
+<a name="0en4uocg7m2ph0rc41lav1a9vs">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;指令格式：&#13;
+	ADC{cond}{S} Rd, Rn, operand2</a>
+</h3>
+<h3 class="topic">
+<a name="2l72pekfumi06kqobcc92hotub">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;示例：&#13;
+	ADDS R0, R0, R2	&#13;
+	ADC R1, R1, R3		---&gt; 两条指令完成64位加法，(R1, R0) = (R1, R0) + (R3, R2)</a>
+</h3>
+<p class="labelsAndMarkers">
+<img class="marker" src="ARM%E7%9F%A5%E8%AF%86_files/images/symbol_attention.png"></p>
+<h3 class="topic">
+<a name="1jrhu74le9arsha247tq5hnfes">&nbsp;&nbsp;&nbsp;&nbsp;减</a>
+</h3>
+<h3 class="topic">
+<a name="46vpijsetudr6hiqr8jpat4c1e">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SUB</a>
+</h3>
+<h3 class="topic">
+<a name="77iqs9nnuei12frv6dai1oqa7f">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;指令格式：&#13;
+	SUB{cond}{S} Rd, Rn, operand2</a>
+</h3>
+<h3 class="topic">
+<a name="02b5e3prir7p50nt6qd56vgp7d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;示例：&#13;
+	SUB R0, R1, #4		---&gt; R0=R1-4	&#13;
+	SUBS R0, R1, R2	---&gt; R0=R1-R2, 影响标志位</a>
+</h3>
+<h3 class="topic">
+<a name="2gcu2smdglgd4gc79h15a6b402">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RSB</a>
+</h3>
+<h3 class="topic">
+<a name="4pv8ubtjouu665hi93jpibljsv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;功能：逆向减法指令，用operand2减去Rn寄存器的值，将结果保存到Rd寄存器。</a>
+</h3>
+<h3 class="topic">
+<a name="4jtb1deoc08ljt1uopnqu20ote">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;指令格式：&#13;
+	RSB{cond}{S} Rd, Rn, operand2</a>
+</h3>
+<h3 class="topic">
+<a name="3or41vshl0kfen9hqtpsbsrqvb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;示例：&#13;
+	RSB R0, R1, #1234	---&gt; R0=#1234-R1	&#13;
+	RSB R0, R1		---&gt; R0=-R1</a>
+</h3>
+<h3 class="topic">
+<a name="074l2flsnub04m74494phg7746">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SBC</a>
+</h3>
+<h3 class="topic">
+<a name="61tds0pcpvnunr36p7em4096mh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;带进位减法指令的功能：是将Rn寄存器减去operand2的值，再减去CPSR寄存器的条件标志位C的值，最后将结果保存到Rd寄存器。</a>
+</h3>
+<h3 class="topic">
+<a name="7r9a3drh293sd16nbv0no2e9ku">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;指令格式：&#13;
+	SBC{cond}{S} Rd, Rn, operand2</a>
+</h3>
+<h3 class="topic">
+<a name="5q3outt62n9qqshbtu4su66qb5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;示例：&#13;
+	SUBS R0, R0, R2	&#13;
+	SBC R1, R1, R3		---&gt; 两条指令完成64位减法，(R1, R0) = (R1, R0) - (R3, R2)</a>
+</h3>
+<p class="labelsAndMarkers">
+<img class="marker" src="ARM%E7%9F%A5%E8%AF%86_files/images/symbol_attention.png"></p>
+<h3 class="topic">
+<a name="4ghe91jqh58tcndjhg2hg9ud20">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RSC</a>
+</h3>
+<h3 class="topic">
+<a name="37hjqcoa7arg50mgt5n3je3og2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;带进位逆向减法指令的功能：是用operand2减去Rn寄存器的值，再减去CPSR寄存器的条件标志位C的值，最后将结果保存到Rd寄存器。</a>
+</h3>
+<h3 class="topic">
+<a name="7e3h892sg8ql9ldqche27nct9u">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;指令格式：&#13;
+	RSC{cond}{S} Rd, Rn, operand2</a>
+</h3>
+<h3 class="topic">
+<a name="0hiho7rtcqoktkbitgtp11lg5g">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;示例：&#13;
+	RSBC R2, R0, #0&#13;
+	RSC R3, R1, #0		---&gt; 两条指令完成64位数取反，(R3, R2) = -(R1, R0)</a>
+</h3>
+<p class="labelsAndMarkers">
+<img class="marker" src="ARM%E7%9F%A5%E8%AF%86_files/images/symbol_attention.png"></p>
+<h3 class="topic">
+<a name="7alj0k4qg5ia0l8gb3jou8sgu6">&nbsp;&nbsp;&nbsp;&nbsp;乘</a>
+</h3>
+<h3 class="topic">
+<a name="3fecug4iq2ek6epc9v9i6iioju">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MUL</a>
+</h3>
+<h3 class="topic">
+<a name="677p4qknhnpli8377icc81t2qc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;32位乘法指令：是将Rm寄存器与Rn寄存器的值相乘，结果的低32位保存到Rd寄存器。</a>
+</h3>
+<h3 class="topic">
+<a name="7udg22shoo0c7kpnav5ggj1o16">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;指令格式：&#13;
+	MUL{cond}{S} Rd, Rm, Rn</a>
+</h3>
+<h3 class="topic">
+<a name="1jii4noj668ii005jjkdcd435k">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;示例：&#13;
+	MUL R0, R1, R2		---&gt; R0=R1*R2&#13;
+	MULS R0, R2, R3		---&gt; R0=R2*R3	影响CPSR的N位和Z位</a>
+</h3>
+<h3 class="topic">
+<a name="4g5b2r6peq0d4lmvsbb24iekb1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MLS</a>
+</h3>
+<h3 class="topic">
+<a name="2jn3q9br0g31knlicd341hjaum">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MLS指令：是将Rm寄存器与Rn寄存器的值相乘，然后再用Ra寄存器的值减去乘积，最后将所得结果的低32位保存到Rd寄存器。</a>
+</h3>
+<h3 class="topic">
+<a name="69heq3b49t9450qm8aup60d364">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;指令格式：&#13;
+	MLS{cond}{S} Rd, Rm, Rn, Ra		---&gt; Rd=Ra-(Rm*Rn)</a>
+</h3>
+<h3 class="topic">
+<a name="1mdp9tsrv61j33k5hgqbrpkro5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;示例：&#13;
+	MLS R0, R1, R2, R3		---&gt; R0=(R3-R1*R2)的结果的低32</a>
+</h3>
+<h3 class="topic">
+<a name="56l9g5rmi7bf9b1agnid3rifq7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MLA</a>
+</h3>
+<h3 class="topic">
+<a name="1u5fmoio476hh0j7u941mdb1n0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MLA指令：是将Rm寄存器与Rn寄存器的值相乘，然后再用Ra寄存器的值加上乘积，最后将所得结果的低32位保存到Rd寄存器。</a>
+</h3>
+<h3 class="topic">
+<a name="4d55rn184oberplvqa2pnl3vnt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;指令格式：&#13;
+	MLA{cond}{S} Rd, Rm, Rn, Ra		---&gt; Rd=Ra+(Rm*Rn)</a>
+</h3>
+<h3 class="topic">
+<a name="68cta35imiaqdiaaojt7njigql">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;示例：&#13;
+	MLA R0, R1, R2, R3		---&gt; R0=(R3-R1*R2)的结果的低32</a>
+</h3>
+<h3 class="topic">
+<a name="0p535ugs2548mghvqd73oqt6pf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;UMULL</a>
+</h3>
+<h3 class="topic">
+<a name="6abcslq3hed0mm47bup28a172t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;UMULL指令：是将Rm寄存器与Rn寄存器的值作为无符号数相乘，然后将结果的低32位存入RdLo寄存器，高32位存入RdHi寄存器。</a>
+</h3>
+<h3 class="topic">
+<a name="6nngcr6n86hjm7vvk1csganv9f">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;指令格式：&#13;
+	UMULL{cond}{S} RdLo, ,RdHi, Rm, Rn		---&gt; (RdHi, RdLo)=Rm*Rn</a>
+</h3>
+<h3 class="topic">
+<a name="6n6tb9h2024ait2jnboi081ihi">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;示例：&#13;
+	UMULL R0, R1, R2, R3		---&gt; (R0, R1)=R2*R3</a>
+</h3>
+<h3 class="topic">
+<a name="1cbm2qhqm3gu2p5980dsk4abk0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;UMLAL</a>
+</h3>
+<h3 class="topic">
+<a name="17pq9k3jv8q9kv27u8e4nkqnbp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;UMLAL指令：是将Rm寄存器与Rn寄存器的值作为无符号数相乘，然后将64位的结果与RdHi、RdLo组成的64位数相加，结果的低32位存入RdLo寄存器，高32位存入RdHi寄存器。</a>
+</h3>
+<h3 class="topic">
+<a name="6b01ds134o2srdgq16ut7l3p10">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;指令格式：&#13;
+	UMLAL{cond}{S} RdLo, ,RdHi, Rm, Rn		---&gt; (RdHi, RdLo)=Rm*Rn + (RdHi, RdLo)</a>
+</h3>
+<h3 class="topic">
+<a name="6n091u2d2snj6oic081hs2jd5t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;示例：&#13;
+	UMLAL R0, R1, R2, R3		---&gt; (R0, R1)=R2*R3 + (R0, R1)</a>
+</h3>
+<h3 class="topic">
+<a name="4sec9l7l8airusgfilq6fo1dqa">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SMULL</a>
+</h3>
+<h3 class="topic">
+<a name="512vlf813dci1qf8r337okdj1f">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SMULL指令：是将Rm寄存器与Rn寄存器的值作为有符号数相乘，然后将结果的低32位存入RdLo寄存器，高32位存入RdHi寄存器。</a>
+</h3>
+<h3 class="topic">
+<a name="3p9vc1dto8o8nsk3k2th47f3ll">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;指令格式：&#13;
+	SMULL{cond}{S} RdLo, ,RdHi, Rm, Rn		---&gt; (RdHi, RdLo)=Rm*Rn</a>
+</h3>
+<h3 class="topic">
+<a name="1k5h0nv4eac7liqi0iq96huloj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;示例：&#13;
+	SMULL R0, R1, R2, R3		---&gt; (R0, R1)=R2*R3</a>
+</h3>
+<h3 class="topic">
+<a name="1nboei64id2tt6dn4v81k71aiv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SMLAL</a>
+</h3>
+<h3 class="topic">
+<a name="09als98gpb2ltl3ofprdal6dte">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SMLAL指令：是将Rm寄存器与Rn寄存器的值作为有符号数相乘，然后将64位的结果与RdHi、RdLo组成的64位数相加，结果的低32位存入RdLo寄存器，高32位存入RdHi寄存器。</a>
+</h3>
+<h3 class="topic">
+<a name="1nrfbcjnqapoae3dr8ie1l87am">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;指令格式：&#13;
+	SMLAL{cond}{S} RdLo, ,RdHi, Rm, Rn		---&gt; (RdHi, RdLo)=Rm*Rn + (RdHi, RdLo)</a>
+</h3>
+<h3 class="topic">
+<a name="62ebgc0j6jk1cp19c1misvg9kd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;示例：&#13;
+	SMLAL R0, R1, R2, R3		---&gt; (R0, R1)=R2*R3 + (R0, R1)</a>
+</h3>
+<h3 class="topic">
+<a name="5b8m0tkkvkcp37f033fe6va9ee">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SMLAD</a>
+</h3>
+<h3 class="topic">
+<a name="4gks7eft4qgpem0287j8lq0fdo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SMLAD指令：是将Rm寄存器的低半字与Rn寄存器的低半字相乘，然后将Rm寄存器的高半字与Rn寄存器的高半字相乘，最后将两个乘积与Ra寄存器的值相加并将结果存入Rd寄存器。</a>
+</h3>
+<h3 class="topic">
+<a name="3ma8bu4dj83j5hj058ba0isimh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;指令格式：&#13;
+	SMLAD{cond}{S} Rd, Rm, Rn, Ra		---&gt; (RdHi, RdLo)=Ra + [(RmLo*RnLo) + (RmHi*RnHi)]</a>
+</h3>
+<h3 class="topic">
+<a name="3drhc84dhh8mnd4ra8r92a7mqm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SMLSD</a>
+</h3>
+<h3 class="topic">
+<a name="5pvfjv8uo8tpppki1v9pcg4hq3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SMLSD指令：是将Rm寄存器的低半字与Rn寄存器的低半字相乘，然后将Rm寄存器的高半字与Rn寄存器的高半字相乘，接着使用第一个乘积减去第二个乘积，最后将所得的差值与Ra寄存器的值相加并将结果存入Rd寄存器。</a>
+</h3>
+<h3 class="topic">
+<a name="7e74jqkqb54igpuapnq8e6o6o1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;指令格式：&#13;
+	SMLSD{cond}{S} Rd, Rm, Rn, Ra		---&gt; (RdHi, RdLo)=Ra + [(RmLo*RnLo) - (RmHi*RnHi)]</a>
+</h3>
+<h3 class="topic">
+<a name="0if8d242uielrpobcj7r4vbiut">&nbsp;&nbsp;&nbsp;&nbsp;除</a>
+</h3>
+<h3 class="topic">
+<a name="6shiiop5fopb3eev08etgut1rf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SDIV</a>
+</h3>
+<h3 class="topic">
+<a name="3uohap5qqqcmjv5jrpvba4evo7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SDIV指令：为有符号除法指令</a>
+</h3>
+<h3 class="topic">
+<a name="3q9jnjusbtrih8pc9km3du16li">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;指令格式：&#13;
+	SDIV{cond}{S} Rd, Rm, Rn		---&gt; Rd=Rm/Rn</a>
+</h3>
+<h3 class="topic">
+<a name="6g1ak1qvg60hv8fceiv3cjo1dm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;示例：&#13;
+	SDIV R0, R1, R2		---&gt; R0=R1/R2</a>
+</h3>
+<h3 class="topic">
+<a name="55sk7a06o223kbmu254c5m0u9b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;UDIV</a>
+</h3>
+<h3 class="topic">
+<a name="1lgseppdnuejigosimfta8fs10">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;UDIV指令：为无符号除法指令</a>
+</h3>
+<h3 class="topic">
+<a name="7ghieuoulqagq65nrk7pgb5f6a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;指令格式：&#13;
+	UDIV{cond}{S} Rd, Rm, Rn		---&gt; Rd=Rm/Rn</a>
+</h3>
+<h3 class="topic">
+<a name="4d00gkafhp4obfjub6464r5d6j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;示例：&#13;
+	UDIV R0, R1, R2		---&gt; R0=R1/R2</a>
+</h3>
+<h3 class="topic">
+<a name="4s7m2gvm3pu5r4vj3idl2c1q4c">&nbsp;&nbsp;&nbsp;逻辑运算指令</a>
+</h3>
+<h3 class="topic">
+<a name="7a60m19f41rmktn6jd54799hic">&nbsp;&nbsp;&nbsp;&nbsp;逻辑与</a>
+</h3>
+<h3 class="topic">
+<a name="700umcr7q9e1np8lfdobs69fio">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AND</a>
+</h3>
+<h3 class="topic">
+<a name="4idnjo9akeaceid5og166kta42">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AND 逻辑与指令：。</a>
+</h3>
+<h3 class="topic">
+<a name="4hqgdb30vmct03r2g7ku0n66c7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;指令格式：&#13;
+	AND{cond}{S} Rd, Rn, operand2</a>
+</h3>
+<h3 class="topic">
+<a name="66eev2lj28rball21u33b1ocju">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;示例：&#13;
+	AND R0, R0, #1		---&gt; 用来检测R0的最低位</a>
+</h3>
+<h3 class="topic">
+<a name="5fj09ibe2nn022stmhbe73p92n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BIC</a>
+</h3>
+<h3 class="topic">
+<a name="30mksbkoksfbj47ocmslmfs8cu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BIC 位清除指令：将operand2的值取反，然后将结果与Rn寄存器的值做与操作，结果保存到Rd寄存器中。</a>
+</h3>
+<h3 class="topic">
+<a name="1a1gkpci86gkk83p1qdbs45s46">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;指令格式：&#13;
+	BIC{cond}{S} Rd, Rn, operand2</a>
+</h3>
+<h3 class="topic">
+<a name="75hi4dp7vvvgglonbd43vb97ne">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;示例：&#13;
+	BIC R0, R0, #0x0F		---&gt; 将R0的低四位清0，其余位保持不变</a>
+</h3>
+<h3 class="topic">
+<a name="42eqgu1b81pvk01lva7h3icd6e">&nbsp;&nbsp;&nbsp;&nbsp;逻辑或</a>
+</h3>
+<h3 class="topic">
+<a name="38t3oec6ss37k31i7p66pbuipr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ORR</a>
+</h3>
+<h3 class="topic">
+<a name="4hflkji9u5fhia7bd6facf99mo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ORR 逻辑或指令：。</a>
+</h3>
+<h3 class="topic">
+<a name="5j2nvne46kqg71muvjp0o5bd3r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;指令格式：&#13;
+	ORR{cond}{S} Rd, Rn, operand2</a>
+</h3>
+<h3 class="topic">
+<a name="0orliujrcnjhhso8f10imn1rr7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;示例：&#13;
+	ORR R0, R0, #0x0F		---&gt; 保留R0的低四位，其余位清0</a>
+</h3>
+<h3 class="topic">
+<a name="7c94o43lpfv6mljh3r0pue9mhk">&nbsp;&nbsp;&nbsp;&nbsp;异或</a>
+</h3>
+<h3 class="topic">
+<a name="4s3qn5t738oacolprjb906hlvu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;EOR</a>
+</h3>
+<h3 class="topic">
+<a name="4gcfn40fke8ft3op3qmk9cm2ml">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;EOR 异或指令：相同为0，相异为1。</a>
+</h3>
+<h3 class="topic">
+<a name="0lo7sqlj5gk6c74ofrtql8ecrs">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;指令格式：&#13;
+	EOR{cond}{S} Rd, Rn, operand2</a>
+</h3>
+<h3 class="topic">
+<a name="65t4u49qgetqnhghfgugnkmnoo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;示例：&#13;
+	EOR R0, R0, R0		---&gt; R0的值置0</a>
+</h3>
+<h3 class="topic">
+<a name="18uc865mbnqa096scjpuoppg44">&nbsp;&nbsp;&nbsp;&nbsp;移位</a>
+</h3>
+<h3 class="topic">
+<a name="2ud0pqq90j51mm7smtagev6j9d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ASR</a>
+</h3>
+<h3 class="topic">
+<a name="6905b5pqeq0lpnojdvu6rlb7im">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ASR 算术右移指令：将Rm寄存器中的值算术右移operand2位，并使用符号位填充空位，移位的结果保存到Rd寄存器中。</a>
+</h3>
+<h3 class="topic">
+<a name="7a2tl3g1blvap7ei35g4b4ndnf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;指令格式：&#13;
+	ASR{cond}{S} Rd, Rm, operand2</a>
+</h3>
+<h3 class="topic">
+<a name="6r51hqto49hbnki2fm937g30ks">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;示例：&#13;
+	ASR R0, R1, #2		---&gt; 将R1寄存器中的值作为有符号数右移2位后赋值给R0寄存器。</a>
+</h3>
+<h3 class="topic">
+<a name="3g7fdkq9bjltnqnn7mvccuuchr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LSL</a>
+</h3>
+<h3 class="topic">
+<a name="7m0gk10i28jtlol1f7vvdlaekk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LSL 逻辑左移指令：将Rm寄存器中的值逻辑左移operand2位，并空位补0，移位的结果保存到Rd寄存器中。</a>
+</h3>
+<h3 class="topic">
+<a name="2qe6oi59ncc6rpa24m3tfmebbn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;指令格式：&#13;
+	LSL{cond}{S} Rd, Rm, operand2</a>
+</h3>
+<h3 class="topic">
+<a name="7nuu3drr63dgal4otufd9lvcgr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;示例：&#13;
+	LSL R0, R1, #2		---&gt; R0=R1*4</a>
+</h3>
+<h3 class="topic">
+<a name="5hvst3852fnmoftjic87qp0pkq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LSR</a>
+</h3>
+<h3 class="topic">
+<a name="2tqdnj237358trlfago9et2meo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LSR 逻辑右移指令：将Rm寄存器中的值逻辑右移operand2位，空位补0，移位的结果保存到Rd寄存器中。</a>
+</h3>
+<h3 class="topic">
+<a name="74gu54doc29g6s7i4m6hiv7d6l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;指令格式：&#13;
+	LSR{cond}{S} Rd, Rm, operand2</a>
+</h3>
+<h3 class="topic">
+<a name="0hr7s16corhjqc8onclalu9f6f">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;示例：&#13;
+	LSR R0, R1, #2		---&gt; R0=R1/4</a>
+</h3>
+<h3 class="topic">
+<a name="1710r3ke9kn9h12bqtjc09p0v9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ROR</a>
+</h3>
+<h3 class="topic">
+<a name="4jk77ik463tfj0un8k1dch790d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ROR 循环右移指令：将Rm寄存器中的值循环右移operand2位，寄存器右边移出的位补到左边空位，移位的结果保存到Rd寄存器中。</a>
+</h3>
+<h3 class="topic">
+<a name="0lp2586j97jfqeovtivopi6nta">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;指令格式：&#13;
+	ROR{cond}{S} Rd, Rm, operand2</a>
+</h3>
+<h3 class="topic">
+<a name="0a7a0ivqikvild3pg39qn8u9da">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;示例：&#13;
+	ROR R0, R1, #1		---&gt; 将R1寄存器中的值的最低位移动到最高位</a>
+</h3>
+<h3 class="topic">
+<a name="4lm5756aino838a4vt2tdupm5p">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RRX</a>
+</h3>
+<h3 class="topic">
+<a name="564k168n6rrle2o45ba9ktn4kd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RRX 带扩展的循环右移指令：将Rm寄存器中的值循环右移1位，寄存器最高位用标志位的值填充，移位的结果保存到Rd寄存器中。</a>
+</h3>
+<h3 class="topic">
+<a name="321vh3uv0r2kh4shoeiahbufrt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;指令格式：&#13;
+	RRX{cond}{S} Rd, Rm, operand2</a>
+</h3>
+<h3 class="topic">
+<a name="1a7vbs4nehp5kev452dnq6v6cg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;示例：&#13;
+	RRX R1, R1		---&gt; 将R1寄存器中的值右移移位，最高位用标志位填充</a>
+</h3>
+<h3 class="topic">
+<a name="65g33i7lp5qqtvs2967m0r8pl4">&nbsp;&nbsp;&nbsp;比较指令</a>
+</h3>
+<h3 class="topic">
+<a name="0nu65asjinrunfbgenpkhpqngs">&nbsp;&nbsp;&nbsp;&nbsp;CMP</a>
+</h3>
+<h3 class="topic">
+<a name="6fuhosk4n1nce43dcocmtmaq3n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CMP 使用Rn寄存器减去operand2的值，这与SUBS指令功能相同，但是CMP指令不保存计算结果，仅根据比较结果设置标志位。</a>
+</h3>
+<h3 class="topic">
+<a name="78c4esesbndmrk17i45i0onqr6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;指令格式：&#13;
+	CMP{cond} Rn, operand2</a>
+</h3>
+<h3 class="topic">
+<a name="1ar0jt6krvfahini5k4lg5qd6s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;示例：&#13;
+	CMP R0, #0		---&gt; 判断R0寄存器的值是否为0</a>
+</h3>
+<h3 class="topic">
+<a name="6uilqvkgnhpjtdff187jl14jmp">&nbsp;&nbsp;&nbsp;&nbsp;CMN</a>
+</h3>
+<h3 class="topic">
+<a name="33g1odg6eabq2479sg3ns7dufs">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CMN 将operand2的值加到Rn寄存器上，这与ADDS指令功能相同，但是CMN指令不保存计算结果，仅根据比较结果设置标志位。</a>
+</h3>
+<h3 class="topic">
+<a name="6798sii9l9drc1mk9is9topvbn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;指令格式：&#13;
+	CMN{cond} Rn, operand2</a>
+</h3>
+<h3 class="topic">
+<a name="59c70e90ho598rab0l46gvvedm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;示例：&#13;
+	CMN R0, R1		---&gt; 判断R0寄存器的值是否为0</a>
+</h3>
+<h3 class="topic">
+<a name="2higrku6lr3bghaijor8ujc685">&nbsp;&nbsp;&nbsp;&nbsp;TST</a>
+</h3>
+<h3 class="topic">
+<a name="2ql7219u961kjo6rgoongg6bp7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TST 位测试指令：将Rn寄存器的值和operand2的值进行与操作，这与ANDS指令功能相同，但是TST指令不保存计算结果，仅根据比较结果设置标志位。</a>
+</h3>
+<h3 class="topic">
+<a name="17ts9jrtp8od3duqk8npm8en24">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;指令格式：&#13;
+	TST{cond} Rn, operand2</a>
+</h3>
+<h3 class="topic">
+<a name="32c0mi1ll7ocbm5p3e001p29du">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;示例：&#13;
+	TST R0, #1		---&gt; 判断R0寄存器最低位的值是否为0</a>
+</h3>
+<h3 class="topic">
+<a name="52bor6orjl41586h81pb3t91bs">&nbsp;&nbsp;&nbsp;&nbsp;TEQ</a>
+</h3>
+<h3 class="topic">
+<a name="0rhf5laloovrsmk4562umrmg8s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TEQ 将Rn寄存器的值和operand2的值进行异或操作，这与EORS指令功能相同，但是TEQ指令不保存计算结果，仅根据比较结果设置标志位。</a>
+</h3>
+<h3 class="topic">
+<a name="4e9m12jqq5ab3ie35p73ae0lb5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;指令格式：&#13;
+	TEQ{cond} Rn, operand2</a>
+</h3>
+<h3 class="topic">
+<a name="74l7suoavuv014cmrc09ai0ata">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;示例：&#13;
+	TEQ R0, R1		---&gt; 判断R0寄存器的值和R1寄存器的值是否相等。</a>
+</h3>
+<h3 class="topic">
+<a name="58bg3dk3uihfc3iol5rpjv77v4">&nbsp;&nbsp;其它指令</a>
+</h3>
+<h3 class="topic">
+<a name="2sd8lgdj269ms3a4ln4uiou6ao">&nbsp;&nbsp;&nbsp;SWI</a>
+</h3>
+<h3 class="topic">
+<a name="5ugc22t354tshlhshl1fpeoc26">&nbsp;&nbsp;&nbsp;&nbsp;SWI 软中断指令：用于产生软中断，从而实现从用户模式到管理模式的切换。</a>
+</h3>
+<h3 class="topic">
+<a name="1gn1uktq95sj5aiq9aq6ogcmv3">&nbsp;&nbsp;&nbsp;&nbsp;指令格式：&#13;
+	SWI{cond}, immed_24</a>
+</h3>
+<h3 class="topic">
+<a name="7lr1uvgpgd63noadm26vrddfqo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;immed_24：为24位的中断号</a>
+</h3>
+<h3 class="topic">
+<a name="3fq9ltn6fiomdmt2gchbtu4eam">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注释：在Android的系统中，系统功能调用为0号中断，使用R7寄存器存放系统调用号。&#13;
+	使用R0-R3寄存器来传递系统调用的前4个参数，对于大于4个参数的调用，剩余参数采用堆栈来传递。</a>
+</h3>
+<h3 class="topic">
+<a name="6p8efpf1737lm1o99tpb2rvv55">&nbsp;&nbsp;&nbsp;&nbsp;示例：调用exit(0)的汇编代码如下&#13;
+	MOV R0, #0		---&gt; 参数0&#13;
+	MOV R7, #1		---&gt; 系统功能号1为exit&#13;
+	SWI #0			---&gt; 执行exit(0)</a>
+</h3>
+<h3 class="topic">
+<a name="72lv5v3t5ca3e4havbrnl5j6u0">&nbsp;&nbsp;&nbsp;NOP</a>
+</h3>
+<h3 class="topic">
+<a name="19bl687ivfi78pmu5o0kqg377i">&nbsp;&nbsp;&nbsp;&nbsp;NOP 空操作指令：该指令仅用于空操作或字符对齐。</a>
+</h3>
+<h3 class="topic">
+<a name="0uhspd63pp0hs0gju5uvcj2pod">&nbsp;&nbsp;&nbsp;&nbsp;指令格式：只有一个操作码NOP</a>
+</h3>
+<h3 class="topic">
+<a name="7a24di3pvjcn51qq2g7opbpbsn">&nbsp;&nbsp;&nbsp;MRS</a>
+</h3>
+<h3 class="topic">
+<a name="53q1u7npdiib2b71aif0mn2rqf">&nbsp;&nbsp;&nbsp;&nbsp;MRS 为读取状态寄存器指令</a>
+</h3>
+<h3 class="topic">
+<a name="1eg4tu2l74pfbg5dmri0fn2cab">&nbsp;&nbsp;&nbsp;&nbsp;指令格式：&#13;
+	MRS Rd, psr</a>
+</h3>
+<h3 class="topic">
+<a name="4feuf82s32fr09ol4l1uv8vpna">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;psr的取值可以是</a>
+</h3>
+<h3 class="topic">
+<a name="7co12ir5k9l9v175ljdk55mjlm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CPSR</a>
+</h3>
+<h3 class="topic">
+<a name="7t9fcm387k4qvbmco5hk3lk788">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SPSR</a>
+</h3>
+<h3 class="topic">
+<a name="27fe9cjm6143t00taaj1itcl5m">&nbsp;&nbsp;&nbsp;&nbsp;示例：&#13;
+	MRS R0, CPSR		---&gt; 读取CPSR寄存器到R0寄存器中 </a>
+</h3>
+<h3 class="topic">
+<a name="2oohh2rqn8d7unjtcv1001hiu0">&nbsp;&nbsp;&nbsp;MSR</a>
+</h3>
+<h3 class="topic">
+<a name="4trt71170545cq3lm061c0bffm">&nbsp;&nbsp;&nbsp;&nbsp;MSR 为写状态寄存器指令</a>
+</h3>
+<h3 class="topic">
+<a name="3b0f5j55a6obggkvtjd9eoff8u">&nbsp;&nbsp;&nbsp;&nbsp;指令格式：&#13;
+	MSR Rd, psr_fields, operand2</a>
+</h3>
+<h3 class="topic">
+<a name="7kiibkkptsboss1jhdhaea3eej">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;psr的取值可以是</a>
+</h3>
+<h3 class="topic">
+<a name="29sj6tdd8kmae37i3f8717e8rs">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CPSR</a>
+</h3>
+<h3 class="topic">
+<a name="7apq0775i2tk88pfnie9ohbdfm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SPSR</a>
+</h3>
+<h3 class="topic">
+<a name="2a35fkvkg2afovtt9umals05ok">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;field：指定传送的区域，它的取值如表6-5所示</a>
+</h3>
+<h3 class="topic">
+<a name="24nshmpj17n6j8jd2v6aood046">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img height="136" src="ARM%E7%9F%A5%E8%AF%86_files/6193f2q9brfbv36ap0chrfm9un.png" width="538"></p>
+<h3 class="topic">
+<a name="37g2296ous0r2etg2tnspj54bu">&nbsp;&nbsp;&nbsp;&nbsp;示例：&#13;
+	MSR R0, CPSR		---&gt; 读取CPSR寄存器到R0寄存器中 &#13;
+	BIC R0, R0, #0x80	---&gt; 清楚R0寄存器第7位&#13;
+	MSR CPSR_c, R0	---&gt; 开启IRQ中断&#13;
+	MOV PC, LR		---&gt; 子程序返回</a>
+</h3>
+<h2 class="topic">
+<a name="666buk1cmu1p9meae74as31iqa">原生程序的生成过程</a>
+</h2>
+<h3 class="topic">
+<a name="2qfj0nho4756vu1r6mv7fe3tva">&nbsp;预处理:</a>
+</h3>
+<h3 class="topic">
+<a name="70gjifprn7sk1p8ravligafngu">&nbsp;&nbsp;预处理：编译器将C代码中的预处理指令如包含头文件等，全部编译进来。</a>
+</h3>
+<h3 class="topic">
+<a name="7ug5al2kgghmorg51v1d1ov39u">&nbsp;&nbsp;&nbsp;#include包含的头文件</a>
+</h3>
+<h3 class="topic">
+<a name="6rumbf4gk2kf4iikhji8dd4027">&nbsp;&nbsp;&nbsp;#define 预定义</a>
+</h3>
+<h3 class="topic">
+<a name="3ndojunf43ci57piobpkjksnq1">&nbsp;&nbsp;&nbsp;#if 预条件处理等</a>
+</h3>
+<h3 class="topic">
+<a name="5d28235odeetki47gefsmq00lq">&nbsp;&nbsp;&nbsp;...</a>
+</h3>
+<h3 class="topic">
+<a name="2pqvgi69gssd537eivv9us4ge8">&nbsp;&nbsp;查看指令：gcc -E hello.c hello.i</a>
+</h3>
+<h3 class="topic">
+<a name="6mlklpj9fqk7vv8bh1qj99jp4h">&nbsp;编译</a>
+</h3>
+<h3 class="topic">
+<a name="3q9hul6errfc3dpa7641s4je4j">&nbsp;&nbsp;编译，这个阶段中gcc首先检查代码规范性，然后把代码翻译成ARM汇编语言的代码</a>
+</h3>
+<h3 class="topic">
+<a name="3kq8brvahe2f996u82eul8s80a">&nbsp;&nbsp;查看指令：gcc -S hello.i -o hello.s</a>
+</h3>
+<h3 class="topic">
+<a name="5utf81etbolbb0ta6s8btkdj37">&nbsp;汇编</a>
+</h3>
+<h3 class="topic">
+<a name="07ldgnedddaqnjkc7jalkn2u5t">&nbsp;&nbsp;汇编，这个阶段gcc编译器会调用汇编器，将汇编代码汇编成二进制目标文件。</a>
+</h3>
+<h3 class="topic">
+<a name="5jrd3i5k2uu5cjbnf4mme626q7">&nbsp;&nbsp;查看指令：gcc -c hello.s -o hello.o</a>
+</h3>
+<h3 class="topic">
+<a name="2pjbocii2k3ar2b979cp215hc3">&nbsp;链接</a>
+</h3>
+<h3 class="topic">
+<a name="2drqjfgchi5ka9b3q3dcdjdeko">&nbsp;&nbsp;链接：这个阶段编译器调用链接器将二进制目标文件链接成Android平台可执行的ARM原生程序</a>
+</h3>
+<h3 class="topic">
+<a name="53ivg2e8bpb7i236jk3t1l7oeo">&nbsp;&nbsp;查看指令：gcc hello.o -o hello</a>
+</h3>
+<h2 class="topic">
+<a name="0ib3s6brl0topetdf8sumtqm42">ARM处理器寻址方式</a>
+</h2>
+<h3 class="topic">
+<a name="56tqk6ijnkhe54l322r7fsu99n">&nbsp;处理器寻址方式：是指通过指令中给出的地址码字段来寻找真是操作数地址的方式。</a>
+</h3>
+<h3 class="topic">
+<a name="4jg0cbo16gngrrpm23b34hd0jb">&nbsp;ARM处理器支持的9种寻址方式</a>
+</h3>
+<h3 class="topic">
+<a name="5pk4tuu1i9s5kpvbu51bioj6fq">&nbsp;&nbsp;立即寻址</a>
+</h3>
+<h3 class="topic">
+<a name="1mutvlt220ing5ilqs2o1fs5p1">&nbsp;&nbsp;&nbsp;直接寻址：指令中后面的地址码部分为立即数(即常量或常数)。</a>
+</h3>
+<h3 class="topic">
+<a name="5fl1fm75dsmd2pfs4i49bd6pk4">&nbsp;&nbsp;&nbsp;立即寻址多用于给寄存器赋值，并且立即数只能用于源操作数字段。</a>
+</h3>
+<h3 class="topic">
+<a name="3lfs32jmm7hb1ddk13qc0tv14q">&nbsp;&nbsp;&nbsp;立即数以&ldquo;#&rdquo;作为前缀</a>
+</h3>
+<h3 class="topic">
+<a name="6bc6h7ninh49kc841ce6g4um4e">&nbsp;&nbsp;&nbsp;示例：mov R0, #123		---&gt; R0=123</a>
+</h3>
+<h3 class="topic">
+<a name="5tbampa7q0jpq96eaquqd56v78">&nbsp;&nbsp;寄存器寻址</a>
+</h3>
+<h3 class="topic">
+<a name="27m7f5i66og5bgta41l52gnaqd">&nbsp;&nbsp;&nbsp;寄存器寻址中，操作数的值在寄存器中，指令执行时直接从寄存器中取值进行操作。</a>
+</h3>
+<h3 class="topic">
+<a name="619bvpkeoipsdo7uieaslgn94q">&nbsp;&nbsp;&nbsp;示例：mov R0, R1		---&gt; R0=R1</a>
+</h3>
+<h3 class="topic">
+<a name="0r0ablrr66gmd4nk85qhg0reri">&nbsp;&nbsp;寄存器移位寻址</a>
+</h3>
+<h3 class="topic">
+<a name="2hbm3239fr814g9momksv9a06v">&nbsp;&nbsp;&nbsp;ARM指令集特有的寻址方式，和寄存器寻址类似，只是在操作前需要对源寄存器操作数进行移位操作。</a>
+</h3>
+<h3 class="topic">
+<a name="0b6mbcj2ccftj9u8rbdj6sklr7">&nbsp;&nbsp;&nbsp;寄存器移位寻址支持五种移位操作</a>
+</h3>
+<h3 class="topic">
+<a name="3jq2l428btoea2gjar2oej5pnm">&nbsp;&nbsp;&nbsp;&nbsp;LSL：逻辑左移，移位后寄存器空出的低位补0。</a>
+</h3>
+<h3 class="topic">
+<a name="2fladp7pi8l376q8u3rcumie7n">&nbsp;&nbsp;&nbsp;&nbsp;LSR：逻辑右移，移位后寄存器空出的高位补0。</a>
+</h3>
+<h3 class="topic">
+<a name="79jvoasan2ot50fp4li46jj65e">&nbsp;&nbsp;&nbsp;&nbsp;ASR：算术右移，移位过程中符号位保持不变，如果源操作数为正数，移位后寄存器空出的高位补0，否则补1。</a>
+</h3>
+<h3 class="topic">
+<a name="1sn2uqepgameftsom0n8iq6p5f">&nbsp;&nbsp;&nbsp;&nbsp;ROR：循环右移，移位后移出的低位填补到空出的高位。</a>
+</h3>
+<h3 class="topic">
+<a name="7jlhjic8e575g5phikd0p1ra13">&nbsp;&nbsp;&nbsp;&nbsp;RRX：带扩展的循环右移，操作数右移一位，移位空出的高位用C标志的值填充。</a>
+</h3>
+<h3 class="topic">
+<a name="4uec9lq7vcreqbn520r4coaish">&nbsp;&nbsp;&nbsp;&nbsp;示例：MOV R0, R1, LSL #2		---&gt; R0=R1&lt;&lt;2 =R1*2*2</a>
+</h3>
+<h3 class="topic">
+<a name="4ifd0o32rs2jrtup3qg232gqpk">&nbsp;&nbsp;寄存器间接寻址</a>
+</h3>
+<h3 class="topic">
+<a name="07lbrl8shtfdh2629dqs2qb0ba">&nbsp;&nbsp;&nbsp;寄存器间接寻址中，地址码给出的寄存器是操作数的地址指针，所需要的操作数保存在寄存器指定地址的存储单元中</a>
+</h3>
+<h3 class="topic">
+<a name="78tfhe4t8s2nvhjts7htg1c5q1">&nbsp;&nbsp;&nbsp;示例：LDR R0, [R1]	---&gt; 将R1寄存器的数值作为地址，取出此地址中的值赋给R0寄存器。</a>
+</h3>
+<h3 class="topic">
+<a name="59fjqj8eh6pgtiqhq2u26fte24">&nbsp;&nbsp;基址寻址</a>
+</h3>
+<h3 class="topic">
+<a name="4vo2fc6bmuviccvvuccti2ovcf">&nbsp;&nbsp;&nbsp;基址寻址，是将地址码给出的基址寄存器与偏移量相加，形成操作数的有效地址，所需要的操作数保存在有效地址指向的存储单元中。</a>
+</h3>
+<h3 class="topic">
+<a name="7knbb8b5bv8s4j9jm0buac1nf0">&nbsp;&nbsp;&nbsp;基址寻址，多用于查表、数组访问等操作</a>
+</h3>
+<h3 class="topic">
+<a name="4grjuhsjg3iao6ghsumu013lvg">&nbsp;&nbsp;&nbsp;示例：LDR R0, [R1, #-4]	---&gt; 将R1寄存器中的值减4作为地址，取出此地址的值赋给R0寄存器。</a>
+</h3>
+<h3 class="topic">
+<a name="4rualvbo53ebid19arop19q29j">&nbsp;&nbsp;多寄存器寻址</a>
+</h3>
+<h3 class="topic">
+<a name="32bbkpm1oisviifvbrj8mk2vu0">&nbsp;&nbsp;&nbsp;多寄存器寻址，一条指令最多可以完成16个通用寄存器值的传送。</a>
+</h3>
+<h3 class="topic">
+<a name="1dhebpjoth44lugfvrtvbtkvpr">&nbsp;&nbsp;&nbsp;示例：LDMIA R0, {R1, R2, R3, R4}	---&gt;LDM是数据加载指令，指令的后缀IA表示每次执行完加载操作后R0寄存器的值自增1个字，ARM指令集中，一个字表示的是一个32位的数值。&#13;
+					R1=[R0],	R2=[R0+#4],	R3=[R0+#8],	R4=[R0+#12]</a>
+</h3>
+<h3 class="topic">
+<a name="2716frfm8otpeivuunba2ej6lb">&nbsp;&nbsp;栈寻址</a>
+</h3>
+<h3 class="topic">
+<a name="2ne13ijgfs5beds9sc2th0i2ba">&nbsp;&nbsp;&nbsp;栈寻址，是ARM处理器特有的第二种寻址方式，栈寻址需要使用特定的指令来完成。</a>
+</h3>
+<h3 class="topic">
+<a name="4o8hpmhm0mua7f17u9n5p3koio">&nbsp;&nbsp;&nbsp;栈寻址指令</a>
+</h3>
+<h3 class="topic">
+<a name="2i4c9qcratte2sjog64kd7f12s">&nbsp;&nbsp;&nbsp;&nbsp;LDMFA/STMFA</a>
+</h3>
+<h3 class="topic">
+<a name="27trchaaek4as8qcaqrtoep2d1">&nbsp;&nbsp;&nbsp;&nbsp;LDMEA/STMEA</a>
+</h3>
+<h3 class="topic">
+<a name="6oc1nqvr8cu28qtaimiglsk5s8">&nbsp;&nbsp;&nbsp;&nbsp;LDMFD/STMFD</a>
+</h3>
+<h3 class="topic">
+<a name="47s66f5cps0g32ft2lm4sfhr94">&nbsp;&nbsp;&nbsp;&nbsp;LDMED/STMED</a>
+</h3>
+<h3 class="topic">
+<a name="6st4u0p6ifu3f0fg08djohkbk5">&nbsp;&nbsp;&nbsp;&nbsp;注：LDM和STM为指令前缀，表示多寄存器寻址，即一次可以传送多个寄存器值；&#13;
+FA、EA、FD、ED为指令后缀，表示栈的类型。</a>
+</h3>
+<h3 class="topic">
+<a name="1jqbc3kti8vnolr4c1d0lpgs18">&nbsp;&nbsp;&nbsp;示例：&#13;
+	STMFD SP!, {R1-R7, LR}	将LR，R7-R1依次入栈，多用于子进程中保存现场。&#13;
+	LDMFD SP!, {R1-R7, LR}	数据出栈，依次存入LR，R7-R1，多用于子进程中恢复现场。</a>
+</h3>
+<h3 class="topic">
+<a name="0sgi5j24ec47p2u7ts64eq4dre">&nbsp;&nbsp;块拷贝寻址</a>
+</h3>
+<h3 class="topic">
+<a name="4nmudu6t6325g09qo5dqfp3rac">&nbsp;&nbsp;&nbsp;块拷贝寻址，实现连续地址数据，从存储器的某个位置拷贝到另一个位置。</a>
+</h3>
+<h3 class="topic">
+<a name="7gdano3s6itq66h6amfjc39nd8">&nbsp;&nbsp;&nbsp;块拷贝寻址的指令有</a>
+</h3>
+<h3 class="topic">
+<a name="3cn0dib401orq17f8o3cggh2oi">&nbsp;&nbsp;&nbsp;&nbsp;LDMIA/STMIA</a>
+</h3>
+<h3 class="topic">
+<a name="3lg6hdv822jifbsn8lifd3t1u8">&nbsp;&nbsp;&nbsp;&nbsp;LDMDA/STMDA</a>
+</h3>
+<h3 class="topic">
+<a name="0klcre5vuqlcniulpcagbleq4b">&nbsp;&nbsp;&nbsp;&nbsp;LDMIB/STMIB</a>
+</h3>
+<h3 class="topic">
+<a name="6rhk46odutcqvbm9adofdsaa6q">&nbsp;&nbsp;&nbsp;&nbsp;LDMDB/STMDB</a>
+</h3>
+<h3 class="topic">
+<a name="6rbka35mp6853i90r97i57bvt6">&nbsp;&nbsp;&nbsp;&nbsp;注：LDM和STM为指令前缀，表示多寄存器寻址，即一次可以传送多个寄存器值；&#13;
+IA、DA、IB、DB为指令后缀，表示栈的类型。</a>
+</h3>
+<h3 class="topic">
+<a name="2c8b9komthj4aqilrhgog6jegh">&nbsp;&nbsp;&nbsp;示例：&#13;
+	LDMIA R0!, {R1-R3}	@从R0寄存器指向的存储单元中读取3个字到R1-R3寄存器。&#13;
+	STMIA R0!, {R1-R3}	@将寄存器R3-R1的内容依次存入到R0存储器指向的存储单元。</a>
+</h3>
+<h3 class="topic">
+<a name="2m1aghmpddc98os3t4dkv9n2a4">&nbsp;&nbsp;相对寻址</a>
+</h3>
+<h3 class="topic">
+<a name="1cfucg2lnjv7mb4m75607q799o">&nbsp;&nbsp;&nbsp;相对寻址，是基址寻址的一种变通，由程序计数器 PC 提供基准地址，指令中的地址符号作为偏移量，将两者相加以后得到操作数的有效地址。</a>
+</h3>
+<h3 class="topic">
+<a name="0ae1vposgobmgs9lakmp794l0n">&nbsp;&nbsp;&nbsp;示例：&#13;
+	BL NEXT&#13;
+	......&#13;
+NEXT:&#13;
+	......&#13;
+注释：BL NEXT是跳到NEXT标号处执行。这里的BL采用的就是相对寻址，标号NEXT就是偏移量。</a>
+</h3>
+</body>
+</html>

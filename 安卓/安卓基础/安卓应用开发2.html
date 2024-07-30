@@ -1,0 +1,781 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>安卓应用开发2</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="5lk9o0uiisjgs93h8pfc9ioc40">安卓应用开发2</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/images/%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912.jpg"></div>
+<h2 class="topic">
+<a name="6klopknmsd14ki49efmdft670f">broadcastreceiver</a>
+</h2>
+<h3 class="topic">
+<a name="34u2fgrf75ubgaes41krm0m2o2">&nbsp;定义</a>
+</h3>
+<h3 class="topic">
+<a name="0dfh2u6tj5ocpnta92of5srqd6">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/64sfrvqo7aupjrdi9uujvct7v8.png"></p>
+<h3 class="topic">
+<a name="2rqg94s6t3l4n38qmph8ve9ea4">&nbsp;广播相关</a>
+</h3>
+<h3 class="topic">
+<a name="05fu7apfskomhdkcbclpaanilv">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/0pispbgllvcooeb4hq1qj0cqni.png"></p>
+<h3 class="topic">
+<a name="0mt3a2n3clv15pcuipoga3su5u">&nbsp;&nbsp;&nbsp;这里提到耗时的操作应该使用intentservice而不是新开线程，线程无活动组件就会被kill</a>
+</h3>
+<h3 class="topic">
+<a name="77ove7da5rgr4h9lsfls2dicbi">&nbsp;广播分类</a>
+</h3>
+<h3 class="topic">
+<a name="37t4aebdi1srep05ovnitobni1">&nbsp;&nbsp;无序广播（普通广播）</a>
+</h3>
+<h3 class="topic">
+<a name="16adkqm1mdvelqk2mhsbna3dgi">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/3dfr3s9mb4mqth5fsquec3gg37.png"></p>
+<h3 class="topic">
+<a name="3vs8pfim6mjn6n4inqac78i7e0">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/11e2083hv39pc8n6hfjd86ml1h.png"></p>
+<h3 class="topic">
+<a name="2to57h1uti5ou9td6emmgibdok">&nbsp;&nbsp;有序广播</a>
+</h3>
+<h3 class="topic">
+<a name="42040ja29f88o0o1pct5c8f32b">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/3eq79emg2hllg41c89gjs5o7h5.png"></p>
+<h3 class="topic">
+<a name="0elh1hum4554jsppfm7pv93cma">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/16hu30dqks06ft5ii0kbt91p54.png"></p>
+<h3 class="topic">
+<a name="2dti9d68o62muaav367dgs16fv">&nbsp;发送广播</a>
+</h3>
+<h3 class="topic">
+<a name="1r4pa7bd1p9cbau5nosqg1s9ea">&nbsp;&nbsp;这里通过内部类实现按钮响应函数，发送有序广播和无序广播</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/273ruju34kve9p9pn2vvq65msd.png"></p>
+<h3 class="topic">
+<a name="1air4cli8dbn2pebdba1s2p6g7">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/08darveqs7ag63o51m83vhdmjt.png"></p>
+<h3 class="topic">
+<a name="5hspku6iks5tv2vd6cr0ici32e">&nbsp;广播与广播接收者的数据传递</a>
+</h3>
+<h3 class="topic">
+<a name="13o10uji9g8nhm8n1b1uf4v1fe">&nbsp;&nbsp;广播发送时可以在intent或bundle中存放数据，广播接收者接收到广播后调用onReceive()回调函数，该函数的参数intent可以用于接收、调用广播传来的数据</a>
+</h3>
+<h3 class="topic">
+<a name="2jdj73tj1fajh7ssvuirc5ieg7">&nbsp;注册receiver</a>
+</h3>
+<h3 class="topic">
+<a name="1cspej2ppb1i379730nj02n5r0">&nbsp;&nbsp;静态注册：实现一个BroadcastReceiver的子类，并且在AndrodiManifest.xml文件中注册</a>
+</h3>
+<h3 class="topic">
+<a name="6n3ik5blukm8cn40845nflh2b5">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/1ticlgpdbvih0vpq7ag6kpohii.png"></p>
+<h3 class="topic">
+<a name="69ucqn2q143ka5ju9h88am89vl">&nbsp;&nbsp;&nbsp;&nbsp;实现一个BroadcastReceiver的子类</a>
+</h3>
+<h3 class="topic">
+<a name="3ijjtvrmslb9i2tjlg69odp9o7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/7ocr6u8ruufvmmhh2r5dn9mqkk.png"></p>
+<h3 class="topic">
+<a name="3d66m2qcvo1he5u84sii138df9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;onReceiver()函数作为回调函数会在接收到广播后被调用，该函数的intent对象参数可以用于接收广播传来的数据</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/7mt9miskiknltjhsk1n9nkv40q.png"></p>
+<h3 class="topic">
+<a name="6i52g95j75ibu8kn05igeh8emn">&nbsp;&nbsp;&nbsp;&nbsp;AndroidManifest.xml文件中注册</a>
+</h3>
+<h3 class="topic">
+<a name="4rgu86uqd3f8i468e3iuofucnt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/6cbihghqdkc9ksr67q0vb7c6he.png"></p>
+<h3 class="topic">
+<a name="43fiiu6vtvd7c6otqhedgai49m">&nbsp;&nbsp;动态注册：部分receiver不能静态注册，只能动态注册，此类receiver用于接收一些特定的广播</a>
+</h3>
+<h3 class="topic">
+<a name="472t799005aa6ui124a4a9nc7s">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/4bunonalqdr9s79ajeqr06a0k4.png"></p>
+<h3 class="topic">
+<a name="5jhusi5f6396kcdui7n290geor">&nbsp;&nbsp;&nbsp;&nbsp;实现一个BroadcastReceiver的子类</a>
+</h3>
+<h3 class="topic">
+<a name="2opuvlo9adjftod65gaujlgan3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/08embtev7qgsuur7hg23gud536.png"></p>
+<h3 class="topic">
+<a name="6gdc8qo4cletcaos0gfnuetl61">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;因为该Receiver接收电池相关的广播消息，所以只能动态注册</a>
+</h3>
+<h3 class="topic">
+<a name="5shjv8pkblb6c0o4flpvhq7cj0">&nbsp;&nbsp;&nbsp;&nbsp;在MainActivity中动态注册Receiver</a>
+</h3>
+<h3 class="topic">
+<a name="4uip5ide0rqul5eqs6kh06r108">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/0ebpv8111leko7cb18gh8ul76s.png"></p>
+<h3 class="topic">
+<a name="5if63iragi9vstm4hks81cs5c5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/5vtp5kj3dfcdpa1m5e6orugop9.png"></p>
+<h3 class="topic">
+<a name="5vk5v9preg5b2f06qvs5kf04da">&nbsp;receiver的优先级</a>
+</h3>
+<h3 class="topic">
+<a name="4khuchn7f2jf9qbqdv5dpubh34">&nbsp;&nbsp;对于有序广播，同一时间只有一个接收者可以接收到该广播，接收到后可以选择修改广播传输的数据内容，截断该广播，将该广播继续传下去，receiver优先级越高，越早接收到有序广播</a>
+</h3>
+<h3 class="topic">
+<a name="5s291nku4d6v9j5jlufem1d1ms">&nbsp;&nbsp;&nbsp;优先级声明在&lt;intent-filter.../&gt;元素的android:priority属性中，数字越大优先级越高．取值范围为-1000~1000，先可以在代码中调用IntentFilter对象的setPriority()进行设置．</a>
+</h3>
+<h3 class="topic">
+<a name="6mn1lgr59o82is746f3ksikv1r">&nbsp;&nbsp;&nbsp;&nbsp;因为优先级FirstReceiver先接受到广播SecondReceiver后接收到广播</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/34dgqv1ef9bita5v6tt2er9vdr.png"></p>
+<h3 class="topic">
+<a name="6hupu8i39pkn5ton28ui8javb2">&nbsp;&nbsp;Receiver动态注册的优先级总是高于静态注册</a>
+</h3>
+<h3 class="topic">
+<a name="5m3rlqa42cpgpi93kj3kd8stv9">&nbsp;有序广播中广播在receiver中传播与数据传递</a>
+</h3>
+<h3 class="topic">
+<a name="2oso15rjgb1hefdihjpfbk72s1">&nbsp;&nbsp;优先接收到Broadcast的接收者可以通过setResultExtras(Bundle)方法将处理结果存入Broadcast中，然后传给下一个接收者，&#13;
+下一个接收者通过Bundle bundle = new getResultExtras(true)可以获取上一个接收者存入的数据</a>
+</h3>
+<h3 class="topic">
+<a name="3llrrakkgaq6uvv5ej66dias6j">&nbsp;&nbsp;&nbsp;因为优先级FirstReceiver先接受到广播SecondReceiver后接收到广播</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/1v85jdam6b78irmphk0gtibr0s.png"></p>
+<h3 class="topic">
+<a name="5817264hr4hfgm1v2qd6k7kmvm">&nbsp;&nbsp;&nbsp;&nbsp;FirstReceiver接收到广播中的数据并处理，并传递到下一个广播接收者</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/70v8vj6nd7rh9fkujj0cvm8bq9.png"></p>
+<h3 class="topic">
+<a name="0rtjt7kaqe40jtfdnnp5fhga6i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SecondReceiver接收到广播，接收到广播本身数据和前一个receiver数据处理结果，截断广播，不再继续传递</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/4ndgml0h6nqen28kj45kubogsp.png"></p>
+<h3 class="topic">
+<a name="6tacct2c8b501tf43f03p779ce">&nbsp;注册一个开机即启动的service</a>
+</h3>
+<h3 class="topic">
+<a name="26i96rb9qsstvd01jvmjetul64">&nbsp;&nbsp;注册一个receiver，一个service</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/600ks51usncns3l127mcjpnpv9.png"></p>
+<h3 class="topic">
+<a name="6iapsohlcleqg3fp2kp2gouavm">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/6t44ljo8v5230bp8fd93b340kl.png"></p>
+<h3 class="topic">
+<a name="53u24ackd03h7rgll0o5eg02kq">&nbsp;&nbsp;&nbsp;&nbsp;接收到开机广播后启动BootService，这里需要注意context.startService()，而正常启动服务为startService()</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/0dp1o17dn17m57n287ilnsbd4k.png"></p>
+<h3 class="topic">
+<a name="189osfikcbdnr5ar1iv6s92fll">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;推测启动service时也可以利用intent给service传递数据，因为onStartCommand()或onBind()函数均有intent参数</a>
+</h3>
+<h3 class="topic">
+<a name="3gpifird2l597nssv7qpom3okk">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/2hi9u9efqq6u53bpev26nd9pkj.png"></p>
+<h3 class="topic">
+<a name="7afd4814ccfisili39u7q8friu">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/0jk5e8ef6nu0hi1l6fjs7e574v.png"></p>
+<h3 class="topic">
+<a name="51e1so1dufnhkcsi5tp8g6mmec">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/78nef0h61l807gdjud87u002dl.png"></p>
+<h3 class="topic">
+<a name="41epdem0lhicl1ji6na2q7odd0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BootService启动后onStartCommand会被调用（因为receiver中直接启动了BootService，而非绑定启动）</a>
+</h3>
+<h3 class="topic">
+<a name="2c5reiems4oc17hbs1ednpr49i">&nbsp;发送本地广播</a>
+</h3>
+<h3 class="topic">
+<a name="5ofu7logh5it89sskpmm04ok5b">&nbsp;&nbsp;本地广播与全局广播的区别</a>
+</h3>
+<h3 class="topic">
+<a name="211bafjg7ggjuirotej6q8t8q7">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/1ql5avrfbem1rlf9v02flrca40.png"></p>
+<h3 class="topic">
+<a name="6cujskdd6oogi7uj6t1fkqqj61">&nbsp;&nbsp;发送本地广播</a>
+</h3>
+<h3 class="topic">
+<a name="1u9u647amncjmhuo0gqlmm6365">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/3l0ar9umtd0c4upcgd561ro8le.png"></p>
+<h3 class="topic">
+<a name="5u64eapdhshdf3eambrgb97tn3">&nbsp;&nbsp;&nbsp;&nbsp;在MainActivity中创建本地广播</a>
+</h3>
+<h3 class="topic">
+<a name="6bkf2cj355enm9bgqrqv4plc5o">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/7rl1n9h0r772hc5bn4mo33u2jh.png"></p>
+<h3 class="topic">
+<a name="7jo93i6ing3qatlt66gdsnf4qs">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/55tvs7g71d476ni5k00ad9o3dn.png"></p>
+<h3 class="topic">
+<a name="635bms4psne48lm1v182dlgd5i">&nbsp;&nbsp;&nbsp;&nbsp;接收本地广播（与全局广播接收方式相同）</a>
+</h3>
+<h3 class="topic">
+<a name="7qba7kl8t497fjeenfimj6ub4o">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/0ktpoj7gk1p7473tfd0dddr071.png"></p>
+<h3 class="topic">
+<a name="0ev1m4kv3psed5riuun1vf3m4m">&nbsp;一些系统广播</a>
+</h3>
+<h3 class="topic">
+<a name="3d979362k6rhqr7t16gkm1jma2">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/43osl8q7vusuf70b1b07llcfjb.png"></p>
+<h3 class="topic">
+<a name="7gggt3c64tjhbfjpbilbuafc5s">&nbsp;demo</a>
+</h3>
+<h3 class="topic">
+<a name="3bbo7k4saqmkcocga6trqelhbt">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/623vb74uu4odorqogcv651md5j.png"></p>
+<h2 class="topic">
+<a name="3u6mg3s1rjcka8msmct9pt5i37">contentprovider</a>
+</h2>
+<h3 class="topic">
+<a name="42qut6v8uoi23gje2b97jdbh5v">&nbsp;定义</a>
+</h3>
+<h3 class="topic">
+<a name="3cfemrb1i3fertovv4kfgidotn">&nbsp;&nbsp;用于在不同app之间共享数据，并提供了统一的接口，contentprovider对内使用SQLite等方式存储数据，对外提供统一的接口操作该数据</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/7ogohqbd6537b1m35l4fb7h5fc.png"></p>
+<h3 class="topic">
+<a name="3uc4cu44seetap4hne74c2erku">&nbsp;&nbsp;&nbsp;一个app(进程中)实现了provider，并实现了增删改查的接口，则其他app(进程)可以通过该接口访问对应数据</a>
+</h3>
+<h3 class="topic">
+<a name="06tmp81uf5hm1a3d23u7e5j3gt">&nbsp;&nbsp;&nbsp;默认的contentprovider即由操作系统提供的provider</a>
+</h3>
+<h3 class="topic">
+<a name="78d92nj7pfsvviepuv2kjak0cf">&nbsp;&nbsp;&nbsp;接口类型：增删改查</a>
+</h3>
+<h3 class="topic">
+<a name="2lp2qp3b0b7407mnp12fb10nk5">&nbsp;URI</a>
+</h3>
+<h3 class="topic">
+<a name="3lkocecclts2s2k5tkm8p773rr">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/14jq9ua8qser4rcqvi112ilabl.png"></p>
+<h3 class="topic">
+<a name="2avjcris49sotvgipo7qu4peqt">&nbsp;ContentProvider与ContentResolver</a>
+</h3>
+<h3 class="topic">
+<a name="7envpe7vaf5pnctgo4e73lvkkt">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/3ir0brur536tdpo8ljd1dktqeh.png"></p>
+<h3 class="topic">
+<a name="2cultb4m6ntdgaqtj3v6ogn0jr">&nbsp;&nbsp;&nbsp;ContentProvider：数据提供者用于向外提供数据共享</a>
+</h3>
+<h3 class="topic">
+<a name="4f2oi6teleb320a72cqrsrgitq">&nbsp;&nbsp;&nbsp;&nbsp;ContentProvider中使用URI标识具体要共享的数据，</a>
+</h3>
+<h3 class="topic">
+<a name="14ag0i0g3us5tt2atkah54th5b">&nbsp;&nbsp;&nbsp;ContentResolver：数据使用者用于使用其他app共享的数据，即使用ContentResolver调用ContentProvider中的函数从而对ContentProvider中的数据进行增删改查</a>
+</h3>
+<h3 class="topic">
+<a name="5g4ce9thaeqv5elm6685g7g55f">&nbsp;&nbsp;&nbsp;&nbsp;ContentResolver通过提供给ContentProvider一个URI，从而指定要获得的数据</a>
+</h3>
+<h3 class="topic">
+<a name="5587r3l6mf4ujmkmj0ahgd7ne9">&nbsp;&nbsp;&nbsp;URL的示例</a>
+</h3>
+<h3 class="topic">
+<a name="64t4n0pfnu5j8dkgc7jgmv0u63">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/72icifsj50q9r8v3t2fftdkvfe.png"></p>
+<h3 class="topic">
+<a name="1pavll47d1q2clqnepk754j6fl">&nbsp;&nbsp;使用ContentResolver访问ContentProvider中的数据</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/1oi33i858mrfvn9ch4e6ce9jbv.png"></p>
+<h3 class="topic">
+<a name="21qi8aj380s36vvehh3p189962">&nbsp;开发注册contentProvider</a>
+</h3>
+<h3 class="topic">
+<a name="4kpaetjjc6g7tkoqocuovgnurp">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/6lsdaem11p9aludaqouf6oejt2.png"></p>
+<h3 class="topic">
+<a name="13hfopilm2o6d120e4t6s4c4n0">&nbsp;&nbsp;&nbsp;示例demo</a>
+</h3>
+<h3 class="topic">
+<a name="1sq17cckd7u04obcet0u8sbq8d">&nbsp;&nbsp;&nbsp;&nbsp;AndroidManifest.xml中注册provider</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/4ou7v91k4sqkldhvnrbamivmjk.png"></p>
+<h3 class="topic">
+<a name="3pk9bqktntueu2l6jkh2b0ea2f">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/4jer17vqtm99bh760e9k1pnque.png"></p>
+<h3 class="topic">
+<a name="15l31a043k3fo97g2g9uoh3ba3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/7m3j330l590rneqqtm4geq9kuk.png"></p>
+<h3 class="topic">
+<a name="35fvr9d2614gj8r3p5rhbov1lb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/18n5bq8lc1c674ctjhi2j993ie.png"></p>
+<h3 class="topic">
+<a name="2gclcvcfe2almqdvhseup9nd86">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/2kum268k3d2hjk0rj2pqmbngcv.png"></p>
+<h3 class="topic">
+<a name="1ocijq49if4pimrtvje54447cc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该函数也是父类的抽象函数，在子类中实现了</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/5a87m5ioqi571dleu0e5qjpp8q.png"></p>
+<h3 class="topic">
+<a name="3jtl0r3sh9ckn23s0jqfv77jf0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该类中实现了增删改查四个函数</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/5i8uiah41qol6dg2c6f2jck27o.png"></p>
+<h3 class="topic">
+<a name="2ah9m3hl5r0j0td71dolj1gb6m">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;查询函数</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/0qj2da70978rk2iqldqjjspebu.png"></p>
+<h3 class="topic">
+<a name="4l208feidk2197b2083fv02iqt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;插入数据</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/6n182jf0n36mrr9pvice13tcph.png"></p>
+<h3 class="topic">
+<a name="7qr6ngn40mb9gufjpf443ppr4b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;删除数据</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/10anhti7pi0kr4ohum63av9717.png"></p>
+<h3 class="topic">
+<a name="6tqjoh9u0tkomg9ank89fh7uta">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;更新数据（与删除数据类似）</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/1ijc509mo07vlnkt71b2t9d0as.png"></p>
+<h3 class="topic">
+<a name="2ddtp22rfan4v8b6sc1rujf3lg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/574j2l555vvb47mqq5ovvkus16.png"></p>
+<h3 class="topic">
+<a name="0jgbesmmsm4ftq1ljodkglvgtq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/76e19ag6enbevaruk3rk0uvi8f.png"></p>
+<h3 class="topic">
+<a name="4j4p28fq6rr33pl0suchumk8l7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;图中红字应该是"创建provider中的数据库dict.db3"</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/7sep33n8kcr0e08bsf0vdt549f.png"></p>
+<h3 class="topic">
+<a name="36b0bg9mr7bgq140or9i9fimt1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;其中通过内部类设置了增删改查四个功能的按键响应函数</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/5t4fccvgts0pe738fb1a72o2sp.png"></p>
+<h3 class="topic">
+<a name="0m90svlv4v1rgiptjiblhh86vc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/31nt2hsph6q1v72ud56kbahi0a.png"></p>
+<h3 class="topic">
+<a name="0vjsb343camiorkoemrh7td6e0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/4uvdvj67898ddq50v7i7js62br.png"></p>
+<h3 class="topic">
+<a name="1krj1rcct2e3tbk4lbrm625dov">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/7b900tbr2162mlc88hohikv1if.png"></p>
+<h3 class="topic">
+<a name="133sg3nr4n55u8t0onclp2sq8l">&nbsp;开发contentResolver：就是在activity中通过按钮响应调用增删改查四个函数，从而使用contentprovider中的数据</a>
+</h3>
+<h3 class="topic">
+<a name="7d7bsm1c326t3pk51v0dc70ubb">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/3ij0ncg6i9tef2kao8r1tc3r1p.png"></p>
+<h3 class="topic">
+<a name="7oqs7187a6dp1qn479bum8iauk">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/0d8vpsgi5m5poneq1obkrhi9h1.png"></p>
+<h3 class="topic">
+<a name="5nfbf289enehrv0c1ming54u1j">&nbsp;&nbsp;&nbsp;&nbsp;重写onCreate函数</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/5nh7ht8oib6if9g4m738c80n38.png"></p>
+<h3 class="topic">
+<a name="5nl9acf6cdtjidjl2hefsmgj7t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过内部类实现增删改查按扭事件响应</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/0i4kblfp7rdhf5rs1hfthd46ti.png"></p>
+<h3 class="topic">
+<a name="43hdqva7e05uc32tu1m67ommic">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/5td8la63u441vhoiei1l7vktof.png"></p>
+<h3 class="topic">
+<a name="5kn1eirlp48gbblotk2n7e3tpq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/61bof2debhlbcoc7krbkubd696.png"></p>
+<h3 class="topic">
+<a name="37358s7tvh6ts8mg3npj31aukr">&nbsp;&nbsp;contentResolver不需要自己实现，使用系统提供的即可</a>
+</h3>
+<h3 class="topic">
+<a name="32t9d66v6uv36sdrem282b3jvp">&nbsp;sql编程</a>
+</h3>
+<h3 class="topic">
+<a name="12map3h02q65qpqlc0uaknc4ej">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/60scdgve092admltvtdbpnhjc7.png"></p>
+<h3 class="topic">
+<a name="0v94dtdjbqr3o3cc1jl4e6c8ns">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/1cpbplas7r0mhuu3v8v4592ock.png"></p>
+<h2 class="topic">
+<a name="5tme4gal2vkso1flt57eos8b72">网络通讯</a>
+</h2>
+<h3 class="topic">
+<a name="4a9bq10cbupntp1rjm9upss2c2">&nbsp;使用httpclient发送get、post包使得客户端与服务器进行通讯（目前httpclient过时，安卓中有新的实现网络通讯的方法，但是部分app仍使用httpclient进行网络通讯）&#13;
+Json：一种轻量级数据交换格式的标准&#13;
+关系型数数据库：即由二维表所组成的数据库</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/3blt9mg8ue1bhuisjqmi3bu0ds.png"></p>
+<h3 class="topic">
+<a name="3prpia5qfqob99m9nhhk7e13nf">&nbsp;json</a>
+</h3>
+<h3 class="topic">
+<a name="460ithkf7m1v7uumki4gu05ih0">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/38hnb986krp1a782u89u0tnh29.png"></p>
+<h3 class="topic">
+<a name="31ij14hm87sgh7i1mmbvf43m67">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/7c2fp9osuclpi75ct47ofbiq60.png"></p>
+<h3 class="topic">
+<a name="4s5v5t5j84edci7pfiigu2qcu6">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/4f079ng08v77o9flso730qg6tk.png"></p>
+<h3 class="topic">
+<a name="6bneailm5mhne697og4nis7kov">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;php和java中json对象的转换</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/4f8dbnhgcmks9sld19gf03uos3.png"></p>
+<h3 class="topic">
+<a name="6k80sdlofnv4a8n7gvcjvogn7h">&nbsp;http协议</a>
+</h3>
+<h3 class="topic">
+<a name="1cbr7in6v8umn3b6ffrc7m2u9a">&nbsp;&nbsp;应用层协议，用于定义服务端和客户端之间的数据传输方法</a>
+</h3>
+<h3 class="topic">
+<a name="4t26kvipr1jhq8kb01mqb63f9h">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/47bjrmgl7i80rhhct5lqtd28gq.png"></p>
+<h3 class="topic">
+<a name="366pqkt34h25j9bdqj2a4vbd24">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/7j7lpnfbq93api8fr9e96dmtsj.png"></p>
+<h3 class="topic">
+<a name="4f6bvjjl3fdcadvjv8duvpmemh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;相关http库</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/3ska48p7dl3u8l2ks41ak6sg6k.png"></p>
+<h3 class="topic">
+<a name="7a4n9hrjbdph0gno8i3vkoivn4">&nbsp;php程序</a>
+</h3>
+<h3 class="topic">
+<a name="66gklsu53i8tkk7d8rn81s3sj6">&nbsp;&nbsp;服务器程序，用于接收客户端数据请求，处理客户端数据并返回结果</a>
+</h3>
+<h3 class="topic">
+<a name="3uv9tjsutimd8vmi8c3rhajunn">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/6j6v4ivu71rvin8bglskcocla7.png"></p>
+<h3 class="topic">
+<a name="4bpn1a9c5pc5lvfsioth5cl1q3">&nbsp;客户端注册</a>
+</h3>
+<h3 class="topic">
+<a name="38q1tat6ubga5m9bu1ml7vv9v5">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/799usim6lf7bsn2fdmbce06tru.png"></p>
+<h3 class="topic">
+<a name="3shiih0qr9vmas6j73gvpb4g9d">&nbsp;&nbsp;&nbsp;客户端注册核心代码，这里HttpUtil.postRequest返回的是一个符合json格式的字符串（类似于{"res":0}或{"res":1}），将该字符串传给JSONObject()，从而将其转化为json对象</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/4cgdl09m0s59uj30pbq204mkpi.png"></p>
+<h3 class="topic">
+<a name="3sphvs357kthp13i98qq430kqr">&nbsp;&nbsp;&nbsp;&nbsp;自己实现的HttpUtil类</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/69bfv8kro3jhvp3h7nuk2s1m5h.png"></p>
+<h3 class="topic">
+<a name="47khhl27p60bj6hs4md3h2b7b4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;类中定义了 HttpClient类对象，并指定了服务器端的ip地址</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/4lka9a8pojtee2nkppuivm43ro.png"></p>
+<h3 class="topic">
+<a name="0hqif1ateajneu1lu727qnkmtk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;类中实现getResquest用于发送get请求</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/0eqr4d72o34lvd16ongbbh21of.png"></p>
+<h3 class="topic">
+<a name="44j1dn5ok63dla3h9g4ktvb98n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;因为post请求其参数不位于url中，所以postRequest函数需要一个hashmapu作为参数传递post的数据</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/47bma7pikdlhjq7efbuss5qjc6.png"></p>
+<h3 class="topic">
+<a name="5suun6g5ciqqv6lfv774oe9547">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;与getRequest类似，都是创建新线程执行网络访问，只是线程回调函数不同</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/07vj9etd9f050por25hg87mo51.png"></p>
+<h3 class="topic">
+<a name="2o1rfji4jbo344vmbk7tnom6n5">&nbsp;服务端注册</a>
+</h3>
+<h3 class="topic">
+<a name="0qe4a9ov8bst7airr5g56nn5jv">&nbsp;&nbsp;reglog.php</a>
+</h3>
+<h3 class="topic">
+<a name="4r7it10ss9orb141n2nq1epmpp">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/5r616epa64lb636vu85kt97lbs.png"></p>
+<h3 class="topic">
+<a name="6se2gnfk689j58u7i3nt4qupm4">&nbsp;客户端登陆</a>
+</h3>
+<h3 class="topic">
+<a name="4suutb95uab9p9lltj5qdvduid">&nbsp;&nbsp;在MainActivity中实现了doLogin函数用于实现网络登陆</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/3sp67d9vck020k65i8mmp2e35i.png"></p>
+<h3 class="topic">
+<a name="0h861vts1ov3g6c22btfd5es44">&nbsp;&nbsp;&nbsp;MainActivity的登陆按钮的按键响应函数中调用了doLogin()函数</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/6bi3iokg861b1pv21fajo8j78m.png"></p>
+<h3 class="topic">
+<a name="704ktg788n84hkt7s6fsgj217o">&nbsp;服务器端登陆部分</a>
+</h3>
+<h3 class="topic">
+<a name="771gi9kj8kdk7kiod744o018pb">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/51kbq9fcjipjl6i8bjr2p6fpfu.png"></p>
+<h3 class="topic">
+<a name="3enhbld9j7dtfeedb0tdv2sivu">&nbsp;客户端拉取好友信息</a>
+</h3>
+<h3 class="topic">
+<a name="6ngs0m0jouc8dsvpe372acv13m">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/65mv190qfkkt2euggfu05mpvp8.png"></p>
+<h3 class="topic">
+<a name="6v6q3dhhi1023gd2pfj1muuld9">&nbsp;服务端拉取好友信息</a>
+</h3>
+<h3 class="topic">
+<a name="166jqavuv29ksn2ho3uvd7bv9c">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/72cdpflbutm4343ebjifpbu2lf.png"></p>
+<h3 class="topic">
+<a name="2qfsqootb7koiqo39sn1amd7m0">&nbsp;服务端的配置</a>
+</h3>
+<h3 class="topic">
+<a name="3juk0vudq8k543g4d4smkqhvr3">&nbsp;&nbsp;安装XAMPP，其中默认安装了apache和mysql组件，将两个组件启动，其中apache地址指向了本地php源码所在地址</a>
+</h3>
+<h3 class="topic">
+<a name="5ki12jbrir6d7l9si0pi94vc1q">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/22phrgmo3lco5m9bupfb1oevgi.png"></p>
+<h3 class="topic">
+<a name="2pobn4p31lmfg4scpks4t328qk">&nbsp;&nbsp;本地也存放着网站所需的php源码，结合XAMPP可以在本地运行一个php的服务端</a>
+</h3>
+<h3 class="topic">
+<a name="4aoq7880i8vtcec2fqab5v9q0r">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/0jh2gpgsaibcqusflcctv4dm0e.png"></p>
+<h3 class="topic">
+<a name="7b3gtrlq5hvltqh3tt2gscncf9">&nbsp;&nbsp;mysql数据库本身时没有界面的，但是可以通过sqllog工具登陆，并以图形化界面操作masql</a>
+</h3>
+<h3 class="topic">
+<a name="2ntuqvj4gmgc1heov8vlmerdb4">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/07m99csle3neeupjk7dq5vg793.png"></p>
+<h3 class="topic">
+<a name="26h5s82jkth4haqo876kh2nnr4">&nbsp;&nbsp;&nbsp;&nbsp;使用sqllog登陆数据库</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/01m0roed5tor5dnt1rgf4blgbn.png"></p>
+<h3 class="topic">
+<a name="01oqh81744k24op9p6cie0qk03">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sqllog创建数据库</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/0vet12sa6us76o1ua62in5p2qn.png"></p>
+<h3 class="topic">
+<a name="7tmk6b9vbcfo34kuu6pcupe50l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;本次app登陆所用到的数据表</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/6otelmokh11cnbrhimdjia521u.png"></p>
+<h3 class="topic">
+<a name="7clhmu6q022iphbu6gfig8u5um">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;查看数据库中的数据</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/3ui0amhr5kv9jfmnllc5t9pb6o.png"></p>
+<h3 class="topic">
+<a name="3c1bai5bjckh5pa8qigq66dlm7">&nbsp;&nbsp;服务器访问</a>
+</h3>
+<h3 class="topic">
+<a name="362jthqgjs4tf8bol3655uktlj">&nbsp;&nbsp;&nbsp;配置完成后访问127.0.0.1，输出helloworld</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/2oabt2bhigifb6vklpcj63sil3.png"></p>
+<h3 class="topic">
+<a name="18p6arp7aomlhueejmnqfe0q5g">&nbsp;&nbsp;如何配置服务端环境</a>
+</h3>
+<h3 class="topic">
+<a name="31r7iuega71mcf14l0p8994hb2">&nbsp;&nbsp;&nbsp;参考文档：后台环境搭建的常见问题</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/05g65mqqhe44creiakpsssgvji.png"></p>
+<h3 class="topic">
+<a name="4ka77ujijqm3ujcgk7mvnaq18a">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/3spkukpei9jun0qib3qvm7b37u.png"></p>
+<h3 class="topic">
+<a name="5u8gia5c8ci410nh23v0sm65kg">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/6eeri5r58posi38278ltorba7a.png"></p>
+<h3 class="topic">
+<a name="1fkh6emkniud8uk2o70v0cea1u">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/3ttbrsd0rv5nmv6af1jd15huq5.png"></p>
+<h3 class="topic">
+<a name="7gn1g3l95mq84oamro499u20ac">&nbsp;&nbsp;&nbsp;&nbsp;启动apache和mysql</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/0ljcgsrats9vk9bq4dfofg5bs3.png"></p>
+<h3 class="topic">
+<a name="1817jkqpll2nj0ian208edpp7r">&nbsp;&nbsp;&nbsp;&nbsp;使用sql语句创建数据库和表</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/3c4r88ffb2e2k7ekin7ah5s8ih.png"></p>
+<h3 class="topic">
+<a name="1qtrbjn6lsstge64rvt2241j09">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用sqllog创建数据库</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/4n97cinauhpksjdhpag2h322ki.png"></p>
+<h3 class="topic">
+<a name="7o9d9thre4jk054pdms6f2f5kn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用sqllog创建表</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/3dto4r7hg3hm1v2hdar3bteedg.png"></p>
+<h3 class="topic">
+<a name="7c72isimnek8ptb77jdli0o2d7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;为数据表添加列</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/0pc4hhircah4edt7vqi4se6hpu.png"></p>
+<h3 class="topic">
+<a name="3g9f5724v84gurglkul5jtphf2">&nbsp;&nbsp;&nbsp;&nbsp;sqllog中导出指定数据库</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/05a8smo8rhnm52fh3cb3762qn0.png"></p>
+<h3 class="topic">
+<a name="28ipbu9uld2m3cbtrmvnob0gri">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/56c7vp9dp7l6jco56i258lk3aa.png"></p>
+<h3 class="topic">
+<a name="3qcu8aabvmq4cgpcg4224oe1gu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;导出的数据库文件是对当前数据库的一个备份</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/5h6tbaaf5kfhq0erds06tv6vqd.png"></p>
+<h3 class="topic">
+<a name="2hf6ajkk8c7dm8he7jr6htn1s6">&nbsp;&nbsp;&nbsp;&nbsp;sqllog中导入其他数据库</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/2dt3rovi2tvnlpl3ntk4lf8ffo.png"></p>
+<h3 class="topic">
+<a name="49lmrk81fe9stcip157o2gtijb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/6uj8v0rktlb61g69oqdufcl1hc.png"></p>
+<h3 class="topic">
+<a name="657du81bn8j1qrdhllijdka0mk">&nbsp;demo</a>
+</h3>
+<h3 class="topic">
+<a name="2lfg7ua9ups46cc4d19jdk6r5s">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%912_files/26ob06fq8m10mso4itrb193012.png"></p>
+</body>
+</html>

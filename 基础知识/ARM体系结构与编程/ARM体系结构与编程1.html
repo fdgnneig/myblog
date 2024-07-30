@@ -1,0 +1,1854 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>ARM体系结构与编程1</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="74s5pp6pbnq12hk0lh3in4v05u">ARM体系结构与编程1</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/images/ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1.jpg"></div>
+<h2 class="topic">
+<a name="37vr3amhbl0lt6b6v6e7r4mmeg">X86中字为16个bit位，双字为32bit位&#13;
+ARM中字为32个bit位</a>
+</h2>
+<h3 class="topic">
+<a name="550popdrnk9qknm6pdmcnjgsfh">&nbsp;在计算机领域, 对于某种特定的计算机设计而言，字是用于表示其自然的数据单位的术语。在这个特定计算机中，字是其用来一次性处理事务的一个固定长度的位（bit）组。一个字的位数（即字长）是计算机系统结构中的一个重要特性。&rdquo;</a>
+</h3>
+<h2 class="topic">
+<a name="3drr33k9qb2co3mciu838enls5">ARM指令长度</a>
+</h2>
+<h3 class="topic">
+<a name="1h9k7ahq3jsl3hsg7e76qtpnkr">&nbsp;ARM指令长度为32位，四字节</a>
+</h3>
+<h3 class="topic">
+<a name="7ecu5andnpevuluva8gjfle3pn">&nbsp;&nbsp;字对齐</a>
+</h3>
+<h3 class="topic">
+<a name="4cjhaau15ifp3h35v2ur3jf3pe">&nbsp;Thumb指令长度为16位，两字节</a>
+</h3>
+<h3 class="topic">
+<a name="17q4sguuouadj9gcurt7dlolop">&nbsp;&nbsp;半字对齐</a>
+</h3>
+<h2 class="topic">
+<a name="0e3e5cdkm07cp6v5jnl1hd6m4v">ARM处理器运行模式</a>
+</h2>
+<h3 class="topic">
+<a name="1cqb52oln8696lh820pn4hf9kv">&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/2rv0clil9j9kgb67dbcv650t6j.png"></p>
+<h3 class="topic">
+<a name="4l9bren5f5kklg3lhvfia3vdta">&nbsp;分类</a>
+</h3>
+<h3 class="topic">
+<a name="7con0hjd5pnlf49iftpd5i6c8t">&nbsp;&nbsp;用户模式</a>
+</h3>
+<h3 class="topic">
+<a name="09sq8feo0csvghpak7tk1qlma6">&nbsp;&nbsp;&nbsp;即用户模式</a>
+</h3>
+<h3 class="topic">
+<a name="2eliqtdeb4l3qhhond7flotkhv">&nbsp;&nbsp;&nbsp;不能进行处理器模式的切换</a>
+</h3>
+<h3 class="topic">
+<a name="6019s18n3854hu7tdi34d5p9ig">&nbsp;&nbsp;特权模式</a>
+</h3>
+<h3 class="topic">
+<a name="51bo9di8noq2mjvafkprgi8p11">&nbsp;&nbsp;&nbsp;除了用户模式之外的其他模式</a>
+</h3>
+<h3 class="topic">
+<a name="7j5c6r6dfo64383oviv2kvj7g8">&nbsp;&nbsp;&nbsp;除了系统模式，另外5个特权模式也称为异常模式</a>
+</h3>
+<h3 class="topic">
+<a name="6tn9sq700vg25e4rsvj1ejvips">&nbsp;&nbsp;&nbsp;可以访问系统所有资源，可以进行任意处理器模式切换</a>
+</h3>
+<h3 class="topic">
+<a name="6lpkc1cighca3idbeqif91koe1">&nbsp;处理模式的切换</a>
+</h3>
+<h3 class="topic">
+<a name="3tb5p0agc24q7qfmsp2e10k29b">&nbsp;&nbsp;处理器模式可以通过软件控制、外部中断、异常过程进行切换</a>
+</h3>
+<h3 class="topic">
+<a name="6hvpqgb5qugdbgl1oo4cjpcg74">&nbsp;&nbsp;用户模式下，通过产生异常处理，进行处理器模式的切换</a>
+</h3>
+<h3 class="topic">
+<a name="7i4tokru9d5j6qubim0qci8hso">&nbsp;&nbsp;每种异常模式均有对应的一组寄存器，保证进入用户模式进入异常模式，用户模式中寄存器不被破坏</a>
+</h3>
+<h3 class="topic">
+<a name="7td8na2r43b5psfhvkvnl42842">&nbsp;&nbsp;系统模式与用户模式寄存器相同，不适用异常模式下相应寄存器组，从而保证异常中断的任务状态不被破坏</a>
+</h3>
+<h2 class="topic">
+<a name="3sv0knuk7v2p6et9h7vcdp0pqh">ARM寄存器</a>
+</h2>
+<h3 class="topic">
+<a name="6aan5msb6dmeb8ll0jknggm87m">&nbsp;一共37个寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="0q5376qcs140p7uibtmbi7n3f5">&nbsp;&nbsp;31个通用寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="1qkt5ao5n6ipjsgdor7okqv59a">&nbsp;&nbsp;&nbsp;都是32位寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="7smm2kcliie6dck81p89nkepck">&nbsp;&nbsp;6个状态寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="4ud7vsq7osj36p880hka9lv2si">&nbsp;&nbsp;&nbsp;都是32位寄存器，目前仅仅使用了其中12位</a>
+</h3>
+<h3 class="topic">
+<a name="4u986gb3qgu4e49853ae551l60">&nbsp;七种不同的处理器模式，分别对应一组寄存器，分为15个通用寄存器、一或两个状态寄存器、程序计数器（PC）</a>
+</h3>
+<h3 class="topic">
+<a name="1ilnqu4ehhuj9nef1bdvmi7vn6">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/3i473rjnkf14ccvubg35upj24d.png"></p>
+<h3 class="topic">
+<a name="1akvq3o9hdr182q0slnu018sg4">&nbsp;通用寄存器（R0~R14 PC）</a>
+</h3>
+<h3 class="topic">
+<a name="56cbejgrr0gs80i2dssmb1hdv7">&nbsp;&nbsp;未备份寄存器R0~R7</a>
+</h3>
+<h3 class="topic">
+<a name="0uhuhch6ekhokfv4ruhfqogd29">&nbsp;&nbsp;&nbsp;系统没有指定专门的用途</a>
+</h3>
+<h3 class="topic">
+<a name="6dfr3m8od7vko5b599vruk2ns5">&nbsp;&nbsp;&nbsp;所有处理器模式下均指同一个物理寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="4j83bksilfag5bk8uslle24e0h">&nbsp;&nbsp;&nbsp;可以用于任何使用通用寄存器的场景下</a>
+</h3>
+<h3 class="topic">
+<a name="2kmsmq382oeamljfgpdeu0qaa5">&nbsp;&nbsp;&nbsp;不同处理器模式下使用可能会造成数据破坏</a>
+</h3>
+<h3 class="topic">
+<a name="6ubchb3caa5m9c9sgq8lac9fqq">&nbsp;&nbsp;备份寄存器R8~R14</a>
+</h3>
+<h3 class="topic">
+<a name="4d6l76d7p0l1aola7nnpu7ucop">&nbsp;&nbsp;&nbsp;R8~r12</a>
+</h3>
+<h3 class="topic">
+<a name="7b36erg3lfdur2vkubjv9rq2uv">&nbsp;&nbsp;&nbsp;&nbsp;每个寄存器对应两个不同的物理寄存器，不同的处理器模式，使用不同的物理寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="7h9gd503thgobbmd5co0q1pr35">&nbsp;&nbsp;&nbsp;&nbsp;系统不做特殊用途要求</a>
+</h3>
+<h3 class="topic">
+<a name="73cfavuvqkgd2rifq64s813bab">&nbsp;&nbsp;&nbsp;&nbsp;中断处理时使用R8~R14，可以加快程序处理</a>
+</h3>
+<h3 class="topic">
+<a name="1c6g2n0e1d4n7itprvfi3jj8cv">&nbsp;&nbsp;&nbsp;R13 R14</a>
+</h3>
+<h3 class="topic">
+<a name="2f4cr4e0ltpda4tib8shgqhsj5">&nbsp;&nbsp;&nbsp;&nbsp;每个寄存器对应6个物理寄存器，用户和系统模式共用一个，其他五种处理器模式对应其专门的物理寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="6ikonsisftg0lq08dsevi2kgg2">&nbsp;&nbsp;&nbsp;&nbsp;命名格式</a>
+</h3>
+<h3 class="topic">
+<a name="1s44rgisljs64316otinggdm0i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/7v7jabei3njom3nctflml7cujb.png"></p>
+<h3 class="topic">
+<a name="6pm56rdo7rq6l8ob0t845n1j7t">&nbsp;&nbsp;&nbsp;&nbsp;R13</a>
+</h3>
+<h3 class="topic">
+<a name="4dckrs15d353esc7q6qlhsrela">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ARM中使用R13作为栈指针，不强制，也可以使用其他寄存器作为栈指针</a>
+</h3>
+<h3 class="topic">
+<a name="0t5j6npu7hcep35ph925ck3pgi">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Thunb强制使用R13作为栈指针</a>
+</h3>
+<h3 class="topic">
+<a name="5deljbstd30ka2c8mom0j49hie">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;应用程序初始化R13，使其指向不同处理器模式对应的栈，处理器模式切换时，将使用到的寄存器保存在R13指向的栈空间中，之后可以出栈恢复数据，从而保证不同处理器模式下运行环境不被破坏</a>
+</h3>
+<h3 class="topic">
+<a name="3s8m3tovtqrtlnj195f4hoo4md">&nbsp;&nbsp;&nbsp;&nbsp;R14</a>
+</h3>
+<h3 class="topic">
+<a name="77att2u2242kpkuplnpa9tma9u">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;链接寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="02v388756df55rkfoeifnvmolj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;特殊作用</a>
+</h3>
+<h3 class="topic">
+<a name="6qn694759knavf6l8ukckp1jjq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用于保存当前子程序返回地址</a>
+</h3>
+<h3 class="topic">
+<a name="79ngmspcft8qlaseaj0dpg2q9r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;异常中断发生时，对应的R14被设置为该异常模式将要返回的地址</a>
+</h3>
+<h3 class="topic">
+<a name="3na2ov7jtjjkg1nl7rb47dpaau">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以作为通用寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="4bqpuo99i5d68iu2ouht5cmhp5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意实际arm汇编函数中，函数返回地址可能存放在LR链接寄存器中，可能存放在堆栈中（比如该函数需要用到比较多的寄存器，所以占用lr寄存器），甚至可以自己开辟一块内存存放返回地址，根据函数实现的不同而不同</a>
+</h3>
+<h3 class="topic">
+<a name="51e6hesugsmilfnf9ac4rfqt22">&nbsp;&nbsp;程序计数器 PC也称R15</a>
+</h3>
+<h3 class="topic">
+<a name="2gft07bjji4trbffgff0m4o3j5">&nbsp;&nbsp;&nbsp;一般可以作用通用寄存器，但那时部分指令使用R15有限制</a>
+</h3>
+<h3 class="topic">
+<a name="23ikqitdpvbmk38sha38vregvp">&nbsp;&nbsp;&nbsp;执行arm指令时，当正确读取R15值时，寄存器值为当前指令地址+8字节</a>
+</h3>
+<h3 class="topic">
+<a name="4kpc531apud3de64a5a8bjb62p">&nbsp;&nbsp;&nbsp;&nbsp;相当于指向当前指令下两条指令的地址</a>
+</h3>
+<h3 class="topic">
+<a name="7cpba32fbg319v7hg556jh3nsm">&nbsp;&nbsp;&nbsp;执行thumb指令时，当正确读取R15值时，寄存器值为当前指令地址+4字节</a>
+</h3>
+<h3 class="topic">
+<a name="63duaaovndtegai9b17auspemp">&nbsp;&nbsp;&nbsp;&nbsp;相当于指向当前指令下两条指令的地址</a>
+</h3>
+<h3 class="topic">
+<a name="38pf7n6dvr0lg344j2lh7mtjbb">&nbsp;&nbsp;&nbsp;当成功向R15中写入值时，程序跳转到该地址执行指令</a>
+</h3>
+<h3 class="topic">
+<a name="7v1vm2q9o899gau99v3tqq4dns">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/10tqnvtoun1qbmnacl87g522rn.png"></p>
+<h3 class="topic">
+<a name="32m1714fv7r2rjj3sgar5vtc7k">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/4hp48jnm4tqi52du74tm89rn24.png"></p>
+<h3 class="topic">
+<a name="5db17qjhqa39lo6649qg6ec5ln">&nbsp;程序状态寄存器（CPSR SPSR）</a>
+</h3>
+<h3 class="topic">
+<a name="415ur8b0fgqj3utomgns3ahsde">&nbsp;&nbsp;两者结构一致</a>
+</h3>
+<h3 class="topic">
+<a name="6hbdcopqhjubj16r321varolqt">&nbsp;&nbsp;CPSR</a>
+</h3>
+<h3 class="topic">
+<a name="5aehhd0an72mhm71577p2etbue">&nbsp;&nbsp;&nbsp;当前程序状态寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="669n1ccr14ko7r6g7k39u8jo9p">&nbsp;&nbsp;&nbsp;所有处理器模式中都对应同一个物理寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="3kt3bup5heekqdk66vh86v8lnk">&nbsp;&nbsp;SPSR</a>
+</h3>
+<h3 class="topic">
+<a name="4b69bcv5v31ll4se9oqm2cju3o">&nbsp;&nbsp;&nbsp;备份程序状态寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="2c60dt3iic0kl3m76a2ntalv4v">&nbsp;&nbsp;&nbsp;除了用户模式和系统模式，其他处理器模式均对应一个特定物理寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="146lc4njl7bt7voo4kmbcgns20">&nbsp;&nbsp;&nbsp;&nbsp;用户模式和系统模式访问SPSR，会造成不可预知的问题</a>
+</h3>
+<h3 class="topic">
+<a name="0vcdbj9lsre775gj7m2mltmr1b">&nbsp;&nbsp;&nbsp;异常中断发生时，用于保存当前程序状态寄存器内容</a>
+</h3>
+<h3 class="topic">
+<a name="7agi7ju8r7m128jv80ojojroht">&nbsp;&nbsp;&nbsp;异常中断程序退出时，用于恢复当前程序状态寄存器内容</a>
+</h3>
+<h3 class="topic">
+<a name="446e0ih56e2q43v7ejc4p5ncqr">&nbsp;&nbsp;结构</a>
+</h3>
+<h3 class="topic">
+<a name="4tvr5o2a6trqqkc320sv64ep6l">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/4j9javfen1o2iu63ko2f216jhc.png"></p>
+<h3 class="topic">
+<a name="1urltcin8q67vatbl12lrund73">&nbsp;&nbsp;&nbsp;&nbsp;条件标志位</a>
+</h3>
+<h3 class="topic">
+<a name="37p82k0so7qdb47b1ujcrd0q3l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/4jp6ecbgnhj2i8vub6h0pkk5ko.png"></p>
+<h3 class="topic">
+<a name="03o0qg8jvujisi28d42ssek9s9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/2cndeofmrk8ou885avpmpf32ob.png"></p>
+<h3 class="topic">
+<a name="0pl8oaekmjao0eefb76hhgh676">&nbsp;&nbsp;&nbsp;&nbsp;Q标志位</a>
+</h3>
+<h3 class="topic">
+<a name="4ajkv3npcfhvft2e1eam59kerk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/3vafp0f6odfk1r4bj5afv8ee8n.png"></p>
+<h3 class="topic">
+<a name="0ndsahnfe1umup3hjinlos1trj">&nbsp;&nbsp;&nbsp;&nbsp;CPSR中的控制位</a>
+</h3>
+<h3 class="topic">
+<a name="2hce0lbneg5brja53b82vbqkmi">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/4jj79ipocbe6i1q8ahovlv2htt.png"></p>
+<h3 class="topic">
+<a name="225pbr1ra7pfbji853c2u3hu06">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/1d4u6rtva3p0qlfem47j5j411v.png"></p>
+<h3 class="topic">
+<a name="5uej4kkn9s3to65ciekj7jttf2">&nbsp;&nbsp;&nbsp;&nbsp;其他位用于将来ARM版本的扩展，应用程序中不应该使用</a>
+</h3>
+<h2 class="topic">
+<a name="46c1el5iqagb43aa8vrn5pgghk">ARM体系程序执行流程</a>
+</h2>
+<h3 class="topic">
+<a name="2q32hs69lnu3vf9825t3k40pqn">&nbsp;正常执行</a>
+</h3>
+<h3 class="topic">
+<a name="2pqasf4prokao6vnaroomcv78h">&nbsp;&nbsp;ARM PC+4字节</a>
+</h3>
+<h3 class="topic">
+<a name="2bgde5mcimbmtoap5atqd51gs7">&nbsp;&nbsp;Thumb PC+2字节</a>
+</h3>
+<h3 class="topic">
+<a name="613dakgqtf2dp2a3acua1k8p9p">&nbsp;通过跳转指令该改变执行流程</a>
+</h3>
+<h3 class="topic">
+<a name="6le23od80al01t9qlqmc3gubmt">&nbsp;&nbsp;B</a>
+</h3>
+<h3 class="topic">
+<a name="5nvp8p5ooeubmgef2ggtaat6j1">&nbsp;&nbsp;&nbsp;跳转</a>
+</h3>
+<h3 class="topic">
+<a name="1snlkrpus1hhssejoe4tnv86nt">&nbsp;&nbsp;BL</a>
+</h3>
+<h3 class="topic">
+<a name="7llqec5octphp6iqp5tn44agin">&nbsp;&nbsp;&nbsp;跳转并保存返回地址</a>
+</h3>
+<h3 class="topic">
+<a name="1e9g3rm48j0eptrfuq3pd3u3gk">&nbsp;&nbsp;BX</a>
+</h3>
+<h3 class="topic">
+<a name="6hro7vrqhr1vennpr7qa2ce470">&nbsp;&nbsp;&nbsp;跳转，切换程序状态为Thumb</a>
+</h3>
+<h3 class="topic">
+<a name="0bkrkpk8lepe97fk1ll9m535bo">&nbsp;&nbsp;BLX</a>
+</h3>
+<h3 class="topic">
+<a name="7bnm3rnk0l841pr2br648uek7u">&nbsp;&nbsp;&nbsp;跳转，保存返回地址，切换程序状态为Thumb</a>
+</h3>
+<h3 class="topic">
+<a name="1mr2f06olb5hgf99p4eqphgei3">&nbsp;通过异常中断改变程序执行流程</a>
+</h3>
+<h3 class="topic">
+<a name="5shupotp56699nmpdjs6elks7u">&nbsp;&nbsp;发生异常中断，程序跳转到中断异常处理函数执行</a>
+</h3>
+<h3 class="topic">
+<a name="635na5mhlm8dr9v55jt5tstmm6">&nbsp;&nbsp;进入异常处理函数前-》保存被中断程序执行现场&#13;
+退出异常处理函数前-》恢复被中断程序执行现场</a>
+</h3>
+<h2 class="topic">
+<a name="79n0e79stfdjbu060f1s49ae2v">ARM体系的异常中断</a>
+</h2>
+<h3 class="topic">
+<a name="6l59b0nt8nl60sjisis19kuoae">&nbsp;异常中断按优先级被先后处理</a>
+</h3>
+<h3 class="topic">
+<a name="5962sqdvtcmnonvopnpng9o6ph">&nbsp;异常中断类型和含义</a>
+</h3>
+<h3 class="topic">
+<a name="4o9rmihlkt1s8ctetp8oi4tpph">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/3fra5b97pj5s78huttrgbvpeq7.png"></p>
+<h3 class="topic">
+<a name="0dv70hvlqlduqhduis1q19math">&nbsp;ARM处理器对异常中断的响应过程</a>
+</h3>
+<h3 class="topic">
+<a name="6hn4g07u2psi1gm73hmnb249mn">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/5h2gijsb6p8tsjljnmie8sod7l.png"></p>
+<h3 class="topic">
+<a name="1j81pt4t0rbq610ltuh7ot091l">&nbsp;ARM处理器从中断程序中返回</a>
+</h3>
+<h3 class="topic">
+<a name="6042se938edlks52ptlbq9m0ci">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/2sn1hflqrji1vait3ctbreq3lc.png"></p>
+<h2 class="topic">
+<a name="752pbphmo519fbovgd5eouaoij">ARM体系中的存储系统</a>
+</h2>
+<h3 class="topic">
+<a name="4v8409m802e7m2qml2go192qc4">&nbsp;存储空间</a>
+</h3>
+<h3 class="topic">
+<a name="74m9h1h3gpict32vpg3gcgvhif">&nbsp;&nbsp;地址空间可以为2^32个8位字节</a>
+</h3>
+<h3 class="topic">
+<a name="7dlnq1v05mo56vrqf45ltedelc">&nbsp;&nbsp;地址空间可以为2^30个32位字单元</a>
+</h3>
+<h3 class="topic">
+<a name="780conn7dbf4b4br701pmkv3gp">&nbsp;&nbsp;&nbsp;地址的低两位为0x0b00，地址为A的字单元包括地址为A A+1 A+2 A+3四个字节单元的内容</a>
+</h3>
+<h3 class="topic">
+<a name="7naagbqu87kcuj2fohbirl1d7o">&nbsp;&nbsp;ARMv4以上版本中，地址空间可以为2^31个16位半字单元</a>
+</h3>
+<h3 class="topic">
+<a name="281jc581epuvpg53ql0atfj453">&nbsp;&nbsp;&nbsp;地址的最低位为0x0b0，地址为A的半字单元包括地址为A A+1两个字节单元的内容</a>
+</h3>
+<h3 class="topic">
+<a name="4cu02kcq6hu04s2pseo2othqus">&nbsp;&nbsp;存储空间的内存地址均为32位无符号整数，可以进行常规整数运算，运算结果出现上溢或下溢时，地址会发生卷绕</a>
+</h3>
+<h3 class="topic">
+<a name="6ao7enbo1hljdeuvg83ajfoauc">&nbsp;存储器格式</a>
+</h3>
+<h3 class="topic">
+<a name="2cb37vbf4lghrd30squg6e79ke">&nbsp;&nbsp;x86中的大小端</a>
+</h3>
+<h3 class="topic">
+<a name="0uvv880vipa0ki4ol2888q9siq">&nbsp;&nbsp;&nbsp;大端</a>
+</h3>
+<h3 class="topic">
+<a name="3t7kl7hf0ahvjp331l9ql5igo4">&nbsp;&nbsp;&nbsp;&nbsp;数据高位保存在内存低地址，数据低位保存在内存高地址</a>
+</h3>
+<h3 class="topic">
+<a name="7t5r7ikea616v2j1gogghnbt42">&nbsp;&nbsp;&nbsp;小端</a>
+</h3>
+<h3 class="topic">
+<a name="0av76agtp9b4tjpkhjebdpfirn">&nbsp;&nbsp;&nbsp;&nbsp;数据高位保存在内存高地址，数据低位保存在内存低地址</a>
+</h3>
+<h3 class="topic">
+<a name="04abrpcasm5e4lv991sh3jid3s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x86采用小端存储</a>
+</h3>
+<h3 class="topic">
+<a name="652tdrj0rd3dunoo9gp1etf9da">&nbsp;&nbsp;ARM中存储方法与之类似，分大小端</a>
+</h3>
+<h3 class="topic">
+<a name="4r30v4cr2t4ckn4ng0onhjhh52">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/5ib0a7knp2irr4ts3sg8hc05gf.png"></p>
+<h3 class="topic">
+<a name="0j6fn4uvqb3epfatd82frsqsk7">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/7fu24afod69lumj823qlt6e5db.png"></p>
+<h3 class="topic">
+<a name="552dh2rr8evvfibjgugm5age12">&nbsp;非对齐的存储访问操作</a>
+</h3>
+<h3 class="topic">
+<a name="2b2b98ghv8lge2a5crbcdb5m2n">&nbsp;&nbsp;通常字单元的地址是字对齐的，地址低两位为0x0b00，半字单元的地址是半字对齐的，地址低两位为0xb0，如果没有遵守以上规则，称为非对齐存储访问操作</a>
+</h3>
+<h3 class="topic">
+<a name="13mch7gh8cvtf4gii1tp1s199r">&nbsp;&nbsp;非对齐的指令预取操作</a>
+</h3>
+<h3 class="topic">
+<a name="1p9flf5uek8grrr6d7igjfkuhv">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/13l1osm43a7229omv09ebe5f6s.png"></p>
+<h3 class="topic">
+<a name="5kdpfokqvrqern4m7j4scamje7">&nbsp;&nbsp;非对齐数据的访问操作</a>
+</h3>
+<h3 class="topic">
+<a name="3vjcrsev4i56e65b77rv6svh41">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/74rlj0nt99uha2r84lsmtc8thf.png"></p>
+<h3 class="topic">
+<a name="4ruvqe8r6sijknlp2tbur7m0g2">&nbsp;指令预取和自修改代码</a>
+</h3>
+<h3 class="topic">
+<a name="64cmlopq8gpjerrmm8ta8tigtb">&nbsp;&nbsp;指令预取</a>
+</h3>
+<h3 class="topic">
+<a name="4215qqbr8euetq0l78baq9euv4">&nbsp;&nbsp;&nbsp;cpu执行当前指令的同时，可以从存储器中预取其后若干条指令，具体预取多少条指令，取决于不同ARM的实现方式</a>
+</h3>
+<h3 class="topic">
+<a name="6mfpd6pdsmkdeklenakus936mp">&nbsp;&nbsp;&nbsp;预期的指令不一定会被执行，当当前指令发生异常中断或执行跳转时，预取指令会被抛弃</a>
+</h3>
+<h3 class="topic">
+<a name="2lsfiaodmtcevf7cstgq1stlo2">&nbsp;&nbsp;&nbsp;&nbsp;程序跳转的预测算法根据不同ARM实现的不同而不同</a>
+</h3>
+<h3 class="topic">
+<a name="4fcabftj922o0c3bhut7u1g5pi">&nbsp;&nbsp;自修改代码</a>
+</h3>
+<h3 class="topic">
+<a name="519ubmoj37aj353qhli49mvj99">&nbsp;&nbsp;&nbsp;代码执行过程中可能修改自身</a>
+</h3>
+<h3 class="topic">
+<a name="0flpe2e49jms14khjs2ku65qpn">&nbsp;&nbsp;以上两者结合可能出现问题</a>
+</h3>
+<h3 class="topic">
+<a name="3g8fci3dc2uoaktgpmdv7lmp6l">&nbsp;&nbsp;&nbsp;当指令自修改将已经预取的指令进行修改，可能造成执行错误</a>
+</h3>
+<h2 class="topic">
+<a name="2nr1o375dvi9t3l9e2t19imon0">ARM指令分类及其寻址方式</a>
+</h2>
+<h3 class="topic">
+<a name="1dpqki73g5ke7vf2gd8aqh3svv">&nbsp;ARM指令集概要</a>
+</h3>
+<h3 class="topic">
+<a name="429vqsh7709usu8c12n25q2sl7">&nbsp;&nbsp;分类</a>
+</h3>
+<h3 class="topic">
+<a name="4abq73g06rpmaa758thpo0u7qn">&nbsp;&nbsp;&nbsp;跳转指令</a>
+</h3>
+<h3 class="topic">
+<a name="456r8mfpcsce1gt0ojjfvhmocd">&nbsp;&nbsp;&nbsp;数据处理指令</a>
+</h3>
+<h3 class="topic">
+<a name="605tgqvecaiu37a87v1rrel61g">&nbsp;&nbsp;&nbsp;程序状态寄存器传输指令</a>
+</h3>
+<h3 class="topic">
+<a name="2h9oju7lfprhtrs0qq2rnjbk6m">&nbsp;&nbsp;&nbsp;Load/Store指令</a>
+</h3>
+<h3 class="topic">
+<a name="0ccauv8ctv0gpne9oihifj15ag">&nbsp;&nbsp;&nbsp;协处理器指令</a>
+</h3>
+<h3 class="topic">
+<a name="38k65kjt1svmdee65327c70373">&nbsp;&nbsp;&nbsp;异常中断指令</a>
+</h3>
+<h3 class="topic">
+<a name="7v55hg01gcqslqh4nelfvcqsht">&nbsp;指令一般格式</a>
+</h3>
+<h3 class="topic">
+<a name="1o14gm1c9fav41su2ahlv751t7">&nbsp;&nbsp;内存结构</a>
+</h3>
+<h3 class="topic">
+<a name="256g4bt209gp8t48gv4cfmpt9g">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/1tet107deeijgnoh6meblg2jti.png"></p>
+<h3 class="topic">
+<a name="6elkbvm1fg23fqoqt5pggj74ih">&nbsp;&nbsp;指令结构</a>
+</h3>
+<h3 class="topic">
+<a name="1kom3tg8s0bvf41svonud1n72r">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/1d91d35avccjo9lpmv85530g20.png"></p>
+<h3 class="topic">
+<a name="1fqm89ior50g2qoihehmm214ks">&nbsp;指令条件码域cond</a>
+</h3>
+<h3 class="topic">
+<a name="6p8f703d1bliepmiclvh6bkji4">&nbsp;&nbsp;ARM中大部分指令都是有条件执行的，根据CPSR寄存器中的数据决定是否执行特定指令，条件满足时执行指令，条件不满足时该指令被当作NOP，处理器进行判断中断请求等操作，之后执行下一条指令</a>
+</h3>
+<h3 class="topic">
+<a name="0e2e8t3d4m0daobifkpt45mhpv">&nbsp;&nbsp;条件码域在内存中共4位，可以标识16种不同的特定条件</a>
+</h3>
+<h3 class="topic">
+<a name="44rkc1k1f106dbvrbshd6k56l8">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/19n5rh5pto3b9k5rc5vvpnvcjv.png"></p>
+<h3 class="topic">
+<a name="6oin7v9ivn3pfvdpc19o210g6u">&nbsp;ARM指令的寻址方式</a>
+</h3>
+<h3 class="topic">
+<a name="4numrvfchf6r8qjoprrootvnv2">&nbsp;&nbsp;ARM指令寻址方式分类</a>
+</h3>
+<h3 class="topic">
+<a name="4ha8qhhiuimdtqfvsg6kvs62a6">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/0u7qv0hl8qut8rmrkm8781o46d.png"></p>
+<h3 class="topic">
+<a name="6h88c58f0fkgthuf1dtpi8s5pg">&nbsp;&nbsp;数据处理指令操作数的寻址方式</a>
+</h3>
+<h3 class="topic">
+<a name="7jjs3k58ijmvp5r8inkf0ttrkg">&nbsp;&nbsp;&nbsp;常见数据处理指令的格式</a>
+</h3>
+<h3 class="topic">
+<a name="2haq2f35raevrmp5jjhg60fnvm">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/3q40ign8bcklgbgdk8c4khmkm3.png"></p>
+<h3 class="topic">
+<a name="7vae1llaerklsnret2fbu09i2p">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;其中shifter_operand通常三种格式</a>
+</h3>
+<h3 class="topic">
+<a name="7co0l9tvo16b1mgt55j50ui4gd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;立即数方式</a>
+</h3>
+<h3 class="topic">
+<a name="2eel843469g7nsc8b1bfgn6q3i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;每一个立即数必须满足指定构造条件</a>
+</h3>
+<h3 class="topic">
+<a name="7kmgpnkm2irt8dqes86231airr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/3q54ofo5fs72v9lj44tpogck8t.png"></p>
+<h3 class="topic">
+<a name="43hpqaef6nbl4mpfsvdm525m2o">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;按照该构造方式，一个立即数可以有不同的编码方法，即immed_8   rotate_imm可以不同，但是立即数相同</a>
+</h3>
+<h3 class="topic">
+<a name="25br0jac5hree6tiriausf44k9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;由于构造方法涉及循环右移，所以会影响cpsr寄存器中的c位，不同的构造方法会影响条件指令的执行，所以必须为每一个立即数从多种构造方法种指定一种构造方案</a>
+</h3>
+<h3 class="topic">
+<a name="298b3nfc9f6nhsmmsc3hpnfj1h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;总原则是选择使得rotate_imm最小的那种</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/3j9jqv34lfj7clq6lvgib8g1ff.png"></p>
+<h3 class="topic">
+<a name="207g1ndbmqlsu9e00dr5stspu9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;寄存器方式</a>
+</h3>
+<h3 class="topic">
+<a name="2fai22g719jtgqa4lop8vhhe2t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;即寄存器的值即为操作数的值</a>
+</h3>
+<h3 class="topic">
+<a name="12gi9mn8e1id3t2a01stll6cfe">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/15t9oq2pjdncoigqtv5isigij0.png"></p>
+<h3 class="topic">
+<a name="7eu7u1vqkie575qos1loli431h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;寄存器位移方式</a>
+</h3>
+<h3 class="topic">
+<a name="65i9og0ebc7eoupi4ildgvs8tr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;操作数为寄存器的值进行指定方式的位移的结果</a>
+</h3>
+<h3 class="topic">
+<a name="37e937knncig0o4qqg68mlaok5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;位移的方式</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/07u0vf8588k9tpnnv5q1j73iab.png"></p>
+<h3 class="topic">
+<a name="6h8e7sp8s0b9ucniigdpiojgs4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;算数左右移与逻辑左右移的关系</a>
+</h3>
+<h3 class="topic">
+<a name="1lvhdc6imvpfqsogc3i5vn5669">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;逻辑左移=算数左移，右边统一添0 &#13;
+逻辑右移，左边统一添0 &#13;
+算数右移，左边添加的数和符号有关&#13;
+e.g:1010101010，其中[]是添加的位&#13;
+逻辑左移一位：010101010[0]&#13;
+算数左移一位：010101010[0]&#13;
+逻辑右移一位：[0]101010101&#13;
+算数右移一位：[1]101010101</a>
+</h3>
+<h3 class="topic">
+<a name="0phbrn6mitvtf9lc8rnhltevb6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;算术左移和算术右移主要用来进行有符号数的倍增、减半；&#13;
+逻辑左移和逻辑右移主要用来进行无符号数的倍增、减半。</a>
+</h3>
+<h3 class="topic">
+<a name="4pl5osc8iqvuteiv2jcqoc1f5b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;循环右移</a>
+</h3>
+<h3 class="topic">
+<a name="59umk0lu15jgq8k67ajhkog97e">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;进行右移，使用数据的最低位填充数据的最高位，循环进行</a>
+</h3>
+<h3 class="topic">
+<a name="4lbdqvhhalrvo6rk96jnu77flp">&nbsp;&nbsp;&nbsp;数据处理指令的操作数的寻址方式（十一种）</a>
+</h3>
+<h3 class="topic">
+<a name="14unlu7gvgkc35uco78919peg4">&nbsp;&nbsp;&nbsp;&nbsp;十一种寻址方式</a>
+</h3>
+<h3 class="topic">
+<a name="0f6ue1hs85jpn27b8dnudp0dq6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/3ds5829s9rvn3gic9bi1bqhvvr.png"></p>
+<h3 class="topic">
+<a name="21rkt4vb1o514g88ngj96h9gam">&nbsp;&nbsp;&nbsp;&nbsp;#&lt;immediate&gt;</a>
+</h3>
+<h3 class="topic">
+<a name="22q67gamob33rqqckra2r92rk9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;此时数据处理指令的内存分布</a>
+</h3>
+<h3 class="topic">
+<a name="4r9rrsibm8v8hfki0k756vqtbj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/7dlndpcq6mbidullli2pphcov2.png"></p>
+<h3 class="topic">
+<a name="4eegoiaes4cinnm5956l4dmtms">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;操作数的生成方法</a>
+</h3>
+<h3 class="topic">
+<a name="5bduv6n2bv1tu50uftv95epq22">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/5c0btdmbi1ku7vr94rkmbr8hin.png"></p>
+<h3 class="topic">
+<a name="3nea3i9gg4hhek1fu068d5f6te">&nbsp;&nbsp;&nbsp;&nbsp;&lt;Rm&gt;</a>
+</h3>
+<h3 class="topic">
+<a name="5vvq73s1dp0be834j6qk855tn8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;即使用寄存器的值作为操作数</a>
+</h3>
+<h3 class="topic">
+<a name="6knmg9qvav1sq9lbktmorbjqro">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;内存分布</a>
+</h3>
+<h3 class="topic">
+<a name="4agd0pskegn8t6mvoioeik0as3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/7b145rhmq30415fl6tfjvr0vfq.png"></p>
+<h3 class="topic">
+<a name="0lmg8msclu9e3hkefgf64fqbes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;操作数生成方法</a>
+</h3>
+<h3 class="topic">
+<a name="29613eqisr5gfsed9jsdu5mb4d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/6lbbmorj3jfl4t8381svqbo3b1.png"></p>
+<h3 class="topic">
+<a name="761no2sqojfbhbf9rvjin6t2s7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意r15作为源操作数时，实际操作数为当前指令地址+8</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/637plf0oacnclf161p46i09vmh.png"></p>
+<h3 class="topic">
+<a name="2gtdkfiuefv5etc7eilnusr5iv">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/67m8po11jkqtrnrjgsa9u3lh7h.png"></p>
+<h3 class="topic">
+<a name="7p8vjl1at3t68k85s20ln4er83">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;操作数生成方法</a>
+</h3>
+<h3 class="topic">
+<a name="0999m07ie7qnh07ojhbo40eoq8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/3r92sikt209g0qleil8l4f5v9r.png"></p>
+<h3 class="topic">
+<a name="4akkqdr0a9ughv7697nc65o2fq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;根据立即数进行左移</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/1ole3evq92rv6s6se43bpu8fip.png"></p>
+<h3 class="topic">
+<a name="0fcvodgbndqjuequ7pcj8gm80l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意r15作为源操作数时，实际操作数为当前指令地址+8</a>
+</h3>
+<h3 class="topic">
+<a name="60c97kb3t4qahn92nf455k8omi">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/0ec3gbd43iodghti2kh6p3mgrf.png"></p>
+<h3 class="topic">
+<a name="01a0otvudck3d3l1k2gmpubfoa">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;操作数生成方法</a>
+</h3>
+<h3 class="topic">
+<a name="4623693mj88pans0os36mq0as0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/32aima9al3ck712oadssml7qaj.png"></p>
+<h3 class="topic">
+<a name="634q5de6eph396ncioj6lv4dmk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;此时r15用作操作数是会产生不可预料的后果</a>
+</h3>
+<h3 class="topic">
+<a name="1sq30tlpsttmvrm80al2cpdf4o">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/0t0quf87qr98622a1tq3fsbqav.png"></p>
+<h3 class="topic">
+<a name="66hpsj7u4d4m7md1nbbaaga63d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;操作数生成方法</a>
+</h3>
+<h3 class="topic">
+<a name="280v6hobg743tf1foe2865qfma">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/6um2bp8l5hgcf3o4dcvjo2j2il.png"></p>
+<h3 class="topic">
+<a name="05bq31l0kr8t13rqs194fnl3o2">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/4vvmj3eudsjg2g7salkl44i1ek.png"></p>
+<h3 class="topic">
+<a name="70ea06t0a667s41q105bcd7ntg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;操作数生成方法</a>
+</h3>
+<h3 class="topic">
+<a name="3prvq3q7f2805lknofv5776in2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/7qcu3f6fmqv559qtduottqhmrl.png"></p>
+<h3 class="topic">
+<a name="72kdctj6nbi4209jbddrgoeqip">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;此时r15用作操作数时会产生不可预料的后果</a>
+</h3>
+<h3 class="topic">
+<a name="16710kt3d5ph9ope2iab7326hr">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/6c16rjmtemep2npm80nc6jd4cm.png"></p>
+<h3 class="topic">
+<a name="56pkd36h1q99323qate11uljku">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;操作数生方法</a>
+</h3>
+<h3 class="topic">
+<a name="2hr9n6a9afoen7ihfk0o28dhch">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/4uorb25h6q218jur1pdo1pmqvi.png"></p>
+<h3 class="topic">
+<a name="2khbrdgho7cja472d3fi41dqil">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意r15作为源操作数时，实际操作数为当前指令地址+8</a>
+</h3>
+<h3 class="topic">
+<a name="7g7qksf2e66tjl2toddu14oltu">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/719qtb324tlthhscop1c35pfrn.png"></p>
+<h3 class="topic">
+<a name="0chnevdsjea6d1r2j5d7a222ad">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;操作数的生成方法</a>
+</h3>
+<h3 class="topic">
+<a name="22indrnupvdlr3d19qeos9fjp9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/1kuqhb6c0cumdb6c83n6iebvbr.png"></p>
+<h3 class="topic">
+<a name="14d2eui6dkurf652slasps0k1d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;此时r15用作操作数时会产生不可预料的后果</a>
+</h3>
+<h3 class="topic">
+<a name="7o294lc87iemv30f25o2sh5q0g">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/46onvjfpcp684i81nk1jt61vm3.png"></p>
+<h3 class="topic">
+<a name="58aj4hnkmrhvk2t0l1vqvukabl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;操作数的生成方法</a>
+</h3>
+<h3 class="topic">
+<a name="5heubpg58uv9algpvd425ahc0d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/495jhsj88p0ro72uvofeebm06p.png"></p>
+<h3 class="topic">
+<a name="3kutdaiddvohvc08fbb1tlbuaq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意r15作为源操作数时，实际操作数为当前指令地址+8</a>
+</h3>
+<h3 class="topic">
+<a name="7ovtkfpuctdu80m898204vsm12">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/7na9mpuh7e9ob9u9e7ecr9nr0a.png"></p>
+<h3 class="topic">
+<a name="59lgltif6958omvroavg9smvfj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;操作数的生成方法</a>
+</h3>
+<h3 class="topic">
+<a name="6ftao0qv063cjpqkd5910fti6v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/43d2ttvhl9nq7j09mgo4h76req.png"></p>
+<h3 class="topic">
+<a name="7ugl1u51l03lrd0ip81r4nmu79">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意r15作为源操作数时，实际操作数为当前指令地址+8</a>
+</h3>
+<h3 class="topic">
+<a name="36gmd94mifdvdem0mstr34358h">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/383m7tjt8jc3bkl47g0r9etodp.png"></p>
+<h3 class="topic">
+<a name="10sq09h7buk05e7fp66m8nk075">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;操作数的生成方法</a>
+</h3>
+<h3 class="topic">
+<a name="157i3737halacufplla1cmpmpf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/621skvhbig5inqqdoclar4u48r.png"></p>
+<h3 class="topic">
+<a name="24t0bqvs0kbpn7rpek42e7k5gt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意r15作为源操作数时，实际操作数为当前指令地址+8</a>
+</h3>
+<h3 class="topic">
+<a name="2u484m1agi44099p5ctlspt09b">&nbsp;&nbsp;字及无符号字节的Load/Store指令的寻址方式</a>
+</h3>
+<h3 class="topic">
+<a name="12d36073t976uaca88qm064ip7">&nbsp;&nbsp;&nbsp;Load指令用于从内存中读取数据存入寄存器，Store指令用于将数据从寄存器保存到内存</a>
+</h3>
+<h3 class="topic">
+<a name="36ap8iki26nc8adpmk6qno156m">&nbsp;&nbsp;&nbsp;两类Load/Store指令</a>
+</h3>
+<h3 class="topic">
+<a name="58hih445ch8jesromn1esevmrf">&nbsp;&nbsp;&nbsp;&nbsp;用于操作32位字类型数据、8位无符号字节类型数据</a>
+</h3>
+<h3 class="topic">
+<a name="77o14ujovjmiar00licug3up0m">&nbsp;&nbsp;&nbsp;&nbsp;用于操作16位半字类型数据、8位有符号字节类型数据</a>
+</h3>
+<h3 class="topic">
+<a name="3p2hgfbasn4fvm164splq7uupp">&nbsp;&nbsp;&nbsp;两种Load/Store指令的寻址方式 基址寄存器+地址偏移量</a>
+</h3>
+<h3 class="topic">
+<a name="0cj6i6sdoa9c2dp01hm93mutr6">&nbsp;&nbsp;&nbsp;&nbsp;基址寄存器可以是任意一个通用寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="7sbnkd4io2nfgch5fftr00uq5o">&nbsp;&nbsp;&nbsp;&nbsp;地址偏移量可以为</a>
+</h3>
+<h3 class="topic">
+<a name="2ogp3a4r7a6fqicfp2jp7b584h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;立即数</a>
+</h3>
+<h3 class="topic">
+<a name="54prni2atk96tbnv3qnlvcgc5s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="1pr8qon6tf3fmsjfd8keclkh7s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;寄存器和一个移位常数</a>
+</h3>
+<h3 class="topic">
+<a name="1e1c12n86butrs8iojvrg83k3g">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/3gnmp5m8j00o2c83sd3ogb9psc.png"></p>
+<h3 class="topic">
+<a name="7j3ts4ighjcrnt5pu217h2he53">&nbsp;&nbsp;&nbsp;两种Load/Stroe指令的地址计算方法</a>
+</h3>
+<h3 class="topic">
+<a name="2tstmav52gbj4em5afhr72as7g">&nbsp;&nbsp;&nbsp;&nbsp;偏移量方法</a>
+</h3>
+<h3 class="topic">
+<a name="5a5n29mlmapuc931b62fa0cldu">&nbsp;&nbsp;&nbsp;&nbsp;事前更新方法</a>
+</h3>
+<h3 class="topic">
+<a name="31dhjn1nmqd2g3o6grlvvarohk">&nbsp;&nbsp;&nbsp;&nbsp;事后更新方法</a>
+</h3>
+<h3 class="topic">
+<a name="79hnbo81rm7uqa5o61k22mrbmn">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/5utjhstl4qcded82ddbjqgp19q.png"></p>
+<h3 class="topic">
+<a name="4q7s33err19rsamqo9vm0r7o6v">&nbsp;&nbsp;&nbsp;LDR指令</a>
+</h3>
+<h3 class="topic">
+<a name="4srb2eovkehpv3l1q8epchgpnp">&nbsp;&nbsp;&nbsp;&nbsp;用于从内存中将一个字的数据传输到寄存器中</a>
+</h3>
+<h3 class="topic">
+<a name="74ehloi7jid5omf22e4brfncn8">&nbsp;&nbsp;&nbsp;&nbsp;内存结构</a>
+</h3>
+<h3 class="topic">
+<a name="0i7j4i9110ctbekevua8babhql">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/5i8aoq51t2114mbjts5f3ik3lb.png"></p>
+<h3 class="topic">
+<a name="566p7nva2b813cb50jrhdst9jq">&nbsp;&nbsp;&nbsp;&nbsp;语法结构</a>
+</h3>
+<h3 class="topic">
+<a name="5pp5ib6fi5kkmiim36h0gdlrd8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/5d2mva8tph4bu047qvfl7f69dm.png"></p>
+<h3 class="topic">
+<a name="5sjk5k1rok9luu9ch8ipkcltkc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/27b776cm0ohinf2cqelgpak3sk.png"></p>
+<h3 class="topic">
+<a name="3llme1rgei612vjookjfi3h8oo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/26clhqp11busgedq456pmb2io5.png"></p>
+<h3 class="topic">
+<a name="3g9tbhe9r30h46c8gcji5icsg1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;详细内容书目36页起</a>
+</h3>
+<h3 class="topic">
+<a name="5up5gb4pq64vgtuhor53tog5f9">&nbsp;&nbsp;杂类Load/Store指令的寻址方式</a>
+</h3>
+<h3 class="topic">
+<a name="7bvf4oph54rv1nad9f5cpqc36a">&nbsp;&nbsp;&nbsp;这里是指&#13;
+操作数为半字（无符号数或带符号数）数据的Load/Store指令&#13;
+操作数为带符号的字节数据的Load指令&#13;
+双字的Load/Store指令</a>
+</h3>
+<h3 class="topic">
+<a name="3i295j9sjv6hoo828ektpgotft">&nbsp;&nbsp;&nbsp;语法格式</a>
+</h3>
+<h3 class="topic">
+<a name="49nvfqo2po6bgmnlhl8oqg5m3r">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/376famkv0c9o8dpvmm5k8hn94g.png"></p>
+<h3 class="topic">
+<a name="3ht34jgnec5t25in8bktn3u4vb">&nbsp;&nbsp;&nbsp;指令中内存单元的寻址方式（六种）</a>
+</h3>
+<h3 class="topic">
+<a name="76bjmhcspldn61jotmvl89algf">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/01q9bijvq6c5f2ktu2iigh5d2g.png"></p>
+<h3 class="topic">
+<a name="5lb87qdhde5cvb87fcnfv3ru9i">&nbsp;&nbsp;&nbsp;具体见书目46页</a>
+</h3>
+<h3 class="topic">
+<a name="7v8lr9j1k4hcfhqthpv4s2c0gm">&nbsp;&nbsp;批量Load/Store指令的寻址方式</a>
+</h3>
+<h3 class="topic">
+<a name="27j2vdmevmdp5kved1a2f5g2dc">&nbsp;&nbsp;&nbsp;批量的Load/Store指令用于实现在一组寄存器和一块连续的内存之间传输数据</a>
+</h3>
+<h3 class="topic">
+<a name="48rfb8cgdu79pv4etiqt275c3c">&nbsp;&nbsp;&nbsp;语法格式</a>
+</h3>
+<h3 class="topic">
+<a name="7oceaogc7ckk5p1kvcfpvrkj1h">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/2i99a3oam711psvoa64o4e5736.png"></p>
+<h3 class="topic">
+<a name="7d5kr83lbi119lh1hlf7ev8n8h">&nbsp;&nbsp;&nbsp;&nbsp;其中addressing_mode表示地址的变化方式，有四种方式</a>
+</h3>
+<h3 class="topic">
+<a name="6jj3m9o05f18gsk28ia3kt133m">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/2atpqsqol0s5mqjcv74j6jhcm5.png"></p>
+<h3 class="topic">
+<a name="0558aqumluc10dskmsrn44kgvl">&nbsp;&nbsp;&nbsp;指令中的寄存器和内存单元应该满足如下关系</a>
+</h3>
+<h3 class="topic">
+<a name="67notdq71leq3l2g87cki3hek2">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/57v2k9fk7l454001lma2g4k9i5.png"></p>
+<h3 class="topic">
+<a name="26gerh25q9bqa73u17r0of31sq">&nbsp;&nbsp;&nbsp;对应于栈操作的寻址方式</a>
+</h3>
+<h3 class="topic">
+<a name="4kl6ifgu8e5ag035o1rgddko9b">&nbsp;&nbsp;&nbsp;&nbsp;对于通常的数据传输（寄存器和内存单元之间），由于Load/Store可以使用相同的寻址方式，所以数据像内存种存放于将数据从内存种读出的方式相同</a>
+</h3>
+<h3 class="topic">
+<a name="1o6dhd09dvkov58540hgdla4ah">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;但是对于数据栈的操作，数据写入内存和从内存中读出数据的顺序不同，所以其寻址方式需要单独考虑</a>
+</h3>
+<h3 class="topic">
+<a name="6t59lom2got71knbv30i9ma9ib">&nbsp;&nbsp;&nbsp;ARM中栈的分类</a>
+</h3>
+<h3 class="topic">
+<a name="230auvo13ca1bn9gvfor0fpihh">&nbsp;&nbsp;&nbsp;&nbsp;按照栈指针是否指向栈顶元素</a>
+</h3>
+<h3 class="topic">
+<a name="6s83kuf301n4j3di3iaqoru995">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;栈指针指向栈顶元素，为Full栈</a>
+</h3>
+<h3 class="topic">
+<a name="6nfrefnklbfi1pit3qjg0alga1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;栈指针指向与栈顶元素相邻的可用数据的单元称为Empty栈</a>
+</h3>
+<h3 class="topic">
+<a name="4u4dlh072b1mcvdd8hfuhimec5">&nbsp;&nbsp;&nbsp;&nbsp;按栈的生长方向</a>
+</h3>
+<h3 class="topic">
+<a name="2togcmml9l44o81qkfth1qlumq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;数据向内存地址减小的方向增长-Descending栈</a>
+</h3>
+<h3 class="topic">
+<a name="50q201qjt536t7ngp45c6lpubc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;数据向内存地址增加的方向增长-Ascending栈</a>
+</h3>
+<h3 class="topic">
+<a name="7l4rtq1ajaf3dkh9l32iam8ske">&nbsp;&nbsp;&nbsp;&nbsp;综合可以产生四种栈</a>
+</h3>
+<h3 class="topic">
+<a name="1elijrj40cq6eaofpdjfkm96pa">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/2ojgcp11gopkvmofcl94l3s265.png"></p>
+<h3 class="topic">
+<a name="1md2iepqb7a8a9gfnlnbuj33f1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;特定种类栈对应Load指令的寻址方式</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/40o2nqbvj6sso77k5smak1psvc.png"></p>
+<h3 class="topic">
+<a name="5ml48t7gek8ttbpvavgr1oehcd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;特定种类栈对应Store指令的寻址方式</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/6cct865m5cvfgsf5nupmfp5thj.png"></p>
+<h3 class="topic">
+<a name="1ns8nehtjocqm26d2i1ofc3um1">&nbsp;&nbsp;&nbsp;详细信息见书目52页</a>
+</h3>
+<h3 class="topic">
+<a name="19fapv228e7h9de9qeogbotlrg">&nbsp;&nbsp;协处理器Load/Store指令的寻址方式</a>
+</h3>
+<h3 class="topic">
+<a name="5dd3tkl7tbe0rt0t5imekop9md">&nbsp;&nbsp;&nbsp;用于在ARM处理器和协处理器之间批量传输数据</a>
+</h3>
+<h3 class="topic">
+<a name="2d7s8p8n7452dekoequs6q8gcq">&nbsp;&nbsp;&nbsp;语法格式</a>
+</h3>
+<h3 class="topic">
+<a name="6o0t9h59367dthe12305mf9g0r">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/7fuh2qraid19pld82um0et44bd.png"></p>
+<h3 class="topic">
+<a name="2624v05ii44ig2h5nl3f7gmdod">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_mode表示地址变化的方式，有四种格式</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/19trtgt4rvtp2ph5rr1s74f9kd.png"></p>
+<h2 class="topic">
+<a name="4alr2fubq4fobno7ah3ftj8k11">ARM指令集介绍</a>
+</h2>
+<h3 class="topic">
+<a name="1flpa2br228g333lrhmkle7rrd">&nbsp;ARM指令集</a>
+</h3>
+<h3 class="topic">
+<a name="0ub409etdn98s85r3rpdffuqg3">&nbsp;&nbsp;分类</a>
+</h3>
+<h3 class="topic">
+<a name="1i0ekkj7rovfsr66jaibh31eev">&nbsp;&nbsp;&nbsp;跳转指令</a>
+</h3>
+<h3 class="topic">
+<a name="6uhc5b0savp1lqd0m0cv0vsvm2">&nbsp;&nbsp;&nbsp;数据处理指令</a>
+</h3>
+<h3 class="topic">
+<a name="0u3kqpliqf35ui1avr1f8hlo88">&nbsp;&nbsp;&nbsp;程序状态寄存器传输指令</a>
+</h3>
+<h3 class="topic">
+<a name="0a3l1i508d5ff67por42appapg">&nbsp;&nbsp;&nbsp;Load/Store指令</a>
+</h3>
+<h3 class="topic">
+<a name="3bp89cenmv6fae8lr44fh0adpr">&nbsp;&nbsp;&nbsp;协处理器指令</a>
+</h3>
+<h3 class="topic">
+<a name="4hhoiciquu034k1ghsv726r1i3">&nbsp;&nbsp;&nbsp;异常中断指令</a>
+</h3>
+<h3 class="topic">
+<a name="3230m74s3lg9o72t244qgvaog3">&nbsp;&nbsp;ARM体系与指令状态切换（从ARM指令切换到Thumb指令）主要是看PC寄存器的低两位</a>
+</h3>
+<h3 class="topic">
+<a name="5mignq5euk4aojp9uj36fupllo">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/72ivons7qu54keq4octd1kbbd6.png"></p>
+<h3 class="topic">
+<a name="4ihgblifqd3934dcbgeld43g2t">&nbsp;&nbsp;跳转指令</a>
+</h3>
+<h3 class="topic">
+<a name="6snd3ru31068sb9io7egdngb2k">&nbsp;&nbsp;&nbsp;ARM中程序跳转的实现方式</a>
+</h3>
+<h3 class="topic">
+<a name="4h8abpf2s3224c9r499a6pkat9">&nbsp;&nbsp;&nbsp;&nbsp;跳转指令</a>
+</h3>
+<h3 class="topic">
+<a name="6lgt8t9mu8jrot8hajfkj9lb4i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以从当前指令向前后向后32MB的地址空间跳转</a>
+</h3>
+<h3 class="topic">
+<a name="7h12kaeth6f8agr4nk86q1btfq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;分类</a>
+</h3>
+<h3 class="topic">
+<a name="37hppc7dq9ta9p18sr3q031ski">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;B</a>
+</h3>
+<h3 class="topic">
+<a name="263oal96vsu2quu3qrnmo3f7dv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;跳转指令</a>
+</h3>
+<h3 class="topic">
+<a name="607shb3iv3gs7ttbur3jmriel0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BL</a>
+</h3>
+<h3 class="topic">
+<a name="7pceirhmcotmpijpjp952vb01e">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;带返回的跳转指令</a>
+</h3>
+<h3 class="topic">
+<a name="11h1l0pil46dlujobr4d8ru743">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BLX</a>
+</h3>
+<h3 class="topic">
+<a name="64chau1l0uaddv4jpd72d4nmim">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;带返回和状态切换的跳转指令</a>
+</h3>
+<h3 class="topic">
+<a name="30noljeq7j4l7oubs0rss78aad">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BX</a>
+</h3>
+<h3 class="topic">
+<a name="1nlddqas8nvvv73fkp3mu6g2tm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;带状态切换的跳转指令</a>
+</h3>
+<h3 class="topic">
+<a name="36s9vm1nhbfj4u7btds97ufsdd">&nbsp;&nbsp;&nbsp;&nbsp;直接向PC寄存器中写入目标地址值</a>
+</h3>
+<h3 class="topic">
+<a name="1nd3ok6nilpstk48vp98d69tkv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以实现4gb地址空间任意跳转</a>
+</h3>
+<h3 class="topic">
+<a name="5i5fbteqicd2rqo3ei8vks4kd4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;被称为长跳转</a>
+</h3>
+<h3 class="topic">
+<a name="3pd4cnd279pv5ve2mnd058eoqo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以在长跳转指令之前使用 MOV LR,PC，从而保存函数返回地址，从而实现子程序调用</a>
+</h3>
+<h3 class="topic">
+<a name="6lsujphj5hv5febicm9htpq88p">&nbsp;&nbsp;&nbsp;B和BL</a>
+</h3>
+<h3 class="topic">
+<a name="0bc3frn8h7gcg9b1u5051ibe6q">&nbsp;&nbsp;&nbsp;&nbsp;不同点：前者仅仅实现跳转，后者在此基础上还将PC寄存器的值保存到LR寄存器中（这里的RL一般就是R14，该寄存器常用于保存返回地址）</a>
+</h3>
+<h3 class="topic">
+<a name="7kl35iviv3i2mjmjkaf0gdlcli">&nbsp;&nbsp;&nbsp;&nbsp;语法结构</a>
+</h3>
+<h3 class="topic">
+<a name="6cer4qh9dqekjh7quk4lggb07j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/29ojhm9bjha0vp5jq8egahjdvq.png"></p>
+<h3 class="topic">
+<a name="7f71raoim9i08dskao9pilj2rt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/5241fk7h6u3j68007fcov3gte2.png"></p>
+<h3 class="topic">
+<a name="3sp2gd34hariklhve0a0p4f8qa">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意指令中跳转的24位目标地址还需要扩展和位移运算才能加到PC寄存器中</a>
+</h3>
+<h3 class="topic">
+<a name="71ajtjfn4uvnbd34q0hege6rcb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意指令中的立即数经过计算是加到PC寄存器中而不是直接赋值给PC寄存器，所以该立即数是一个偏移</a>
+</h3>
+<h3 class="topic">
+<a name="6fcg2loftakbk58vkqfo8g25ru">&nbsp;&nbsp;&nbsp;&nbsp;BL指令通常用于实现子程序调用，当程序返回时需要将LR寄存器中的返回地址重新赋值给PC寄存器，可以使用三种方法实现</a>
+</h3>
+<h3 class="topic">
+<a name="3q2rdvhj92u62033pcm7irbkcs">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/0n87g04m2t5a29pbvh0sn6t8v5.png"></p>
+<h3 class="topic">
+<a name="7ouu5tfs7kgl8car4phfdugqio">&nbsp;&nbsp;&nbsp;&nbsp;ARM汇编器对指令中的24位寄存器的计算方法</a>
+</h3>
+<h3 class="topic">
+<a name="6ol80c7a86ecd6p05gagc66tpb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/3oeuaur8f5pbjo43t3vnqpbn2j.png"></p>
+<h3 class="topic">
+<a name="3ag2legg4blgpv93loa12mklki">&nbsp;&nbsp;&nbsp;&nbsp;程序示例</a>
+</h3>
+<h3 class="topic">
+<a name="1cbllkrga7d3hd90tk2n48cmdl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/3nuuvvtsbmauetj4m6im61o72b.png"></p>
+<h3 class="topic">
+<a name="6pd7eg4dptugigj4p7127pad2l">&nbsp;&nbsp;&nbsp;BLX(1)</a>
+</h3>
+<h3 class="topic">
+<a name="41mfmsbksg841b95r8umkgi8ip">&nbsp;&nbsp;&nbsp;&nbsp;第一种BLX指令，用于从ARM指令集跳转到目标地址，并将程序切换位Thumb状态，同时将PC寄存器赋值给LR</a>
+</h3>
+<h3 class="topic">
+<a name="2palf3eqgjqiva89ak8qk9rr1f">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;是一条无条件执行的指令</a>
+</h3>
+<h3 class="topic">
+<a name="2q5j9j7gbvq1c921sh4iu30ij9">&nbsp;&nbsp;&nbsp;&nbsp;语法格式</a>
+</h3>
+<h3 class="topic">
+<a name="0q3mu3vidf7imdkt9po8avp5e6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/59chgrvmru9iun51cg6750hc7l.png"></p>
+<h3 class="topic">
+<a name="4uk8hr4goc4if1g4hbhbu9vgp5">&nbsp;&nbsp;&nbsp;&nbsp;通常用于在ARM指令中调用Thumb指令的子程序，子程序的返回可以通过将LR寄存器赋值给PC寄存器进行</a>
+</h3>
+<h3 class="topic">
+<a name="3cu3kuo0h23m9cl5s0vgthigke">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/7pj64u9ju36nm7nbpb5cjqmkbd.png"></p>
+<h3 class="topic">
+<a name="3h9ec22npa596068r945d25hh4">&nbsp;&nbsp;&nbsp;&nbsp;ARM汇编器计算指令中24位立即数的方法（立即数是一个偏移而不是目的地址）</a>
+</h3>
+<h3 class="topic">
+<a name="2mp395pple3geldj6vme2q5cut">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/6rft7k7n3aq8ivhctakbcta2e9.png"></p>
+<h3 class="topic">
+<a name="3ii9asq14gmcmr08i2omjita51">&nbsp;&nbsp;&nbsp;BLX(2)</a>
+</h3>
+<h3 class="topic">
+<a name="533gj8vads587nn6jn5551ugio">&nbsp;&nbsp;&nbsp;&nbsp;与第一中BLX指令不同，可以从ARM指令跳转到ARM或Thumb子函数，跳转目的地址保存在寄存器中（注意此时不保存偏移，保存的是目的地址），且可以有条件执行</a>
+</h3>
+<h3 class="topic">
+<a name="0vre732amgtpjs7qk3r526ot65">&nbsp;&nbsp;&nbsp;&nbsp;语法格式</a>
+</h3>
+<h3 class="topic">
+<a name="0lfjt5re83eubd1kr5s6jfpmi0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/6364i80nqbi40ntre2piqso20f.png"></p>
+<h3 class="topic">
+<a name="2fbbck6gi31so31hb3pf5eced2">&nbsp;&nbsp;&nbsp;BX</a>
+</h3>
+<h3 class="topic">
+<a name="6ma26j0ahdvrl08prvnpsodcdk">&nbsp;&nbsp;&nbsp;&nbsp;跳转到指令中的目标地址，目标地址处可以为ARM指令或Thumb指令</a>
+</h3>
+<h3 class="topic">
+<a name="65nco18ge248skhhkpsfqsid5u">&nbsp;&nbsp;&nbsp;&nbsp;语法格式</a>
+</h3>
+<h3 class="topic">
+<a name="38tjv866mtn4n2nefrimppad22">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/604c4tlt1v1d6reuo2jl68sfv8.png"></p>
+<h3 class="topic">
+<a name="4oq1o1kfnrdc1ftrffpqjkovqm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/6q3avs0nho484p60e40hbj14ms.png"></p>
+<h3 class="topic">
+<a name="0ua3ctrbbcegp3o2hrmt0n8ha6">&nbsp;&nbsp;&nbsp;&nbsp;指令的使用</a>
+</h3>
+<h3 class="topic">
+<a name="430nrjthho98jubpcjaq0mjidf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/620bsbc03ocngtcbrsu66vocoq.png"></p>
+<h3 class="topic">
+<a name="3v9b2p4e24jrlihstftaduhgql">&nbsp;&nbsp;数据处理指令</a>
+</h3>
+<h3 class="topic">
+<a name="72qd4t1kvhuim7b45tsd03r6eh">&nbsp;&nbsp;&nbsp;分类</a>
+</h3>
+<h3 class="topic">
+<a name="36p52c60i8v4ustihl5lchlfgk">&nbsp;&nbsp;&nbsp;&nbsp;数据传输指令</a>
+</h3>
+<h3 class="topic">
+<a name="7gc006ai3p6olf2bsrmgncd92c">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/13k4auied08tmbmjv3nn9o3rgn.png"></p>
+<h3 class="topic">
+<a name="7iksb3n0u4619tmtkfjj8rv863">&nbsp;&nbsp;&nbsp;&nbsp;算数逻辑指令</a>
+</h3>
+<h3 class="topic">
+<a name="3m8pv78clcqhvcho49to3a295r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/010rev0bvt3vof952fjj4tnhhq.png"></p>
+<h3 class="topic">
+<a name="3it8k8a2bj0ou42otuil8n2b0n">&nbsp;&nbsp;&nbsp;&nbsp;比较指令</a>
+</h3>
+<h3 class="topic">
+<a name="6agmb3ftpcusvb9cr13hbtb4nk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/7v62rio7ao75qmg7cgibs6nu6c.png"></p>
+<h3 class="topic">
+<a name="0gfo0us3lqu8ds9u2ming83d3u">&nbsp;&nbsp;&nbsp;具体数据处理指令</a>
+</h3>
+<h3 class="topic">
+<a name="2p6uja54evlntf0o2gdmii5l0b">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/18g3ista7j9mr88m2j4do720so.png"></p>
+<h3 class="topic">
+<a name="4ft8u0bjc2nag841dl73h6e8al">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/3rio012vledlm8ce6dq8q1u5mo.png"></p>
+<h3 class="topic">
+<a name="05lpv41v4kmca3ncuv6mg0eoke">&nbsp;&nbsp;&nbsp;注意按位异或可以用于将指定二进制按位取反</a>
+</h3>
+<h3 class="topic">
+<a name="07qfmucjnh271h3olegvvr2nlj">&nbsp;&nbsp;&nbsp;&nbsp;异或：相同为0，不同为1</a>
+</h3>
+<h3 class="topic">
+<a name="7ia5e1j31n7fe2pv8jompgv448">&nbsp;&nbsp;&nbsp;&nbsp;所以某一位与0做异或，该位不变，某一位与1做异或，该位值将被取反</a>
+</h3>
+<h3 class="topic">
+<a name="6v5nfkcmdhc25pvh23jf34prpg">&nbsp;&nbsp;&nbsp;详见书目65页</a>
+</h3>
+<h3 class="topic">
+<a name="73b6eihc2uteutiip6rh9qg1i2">&nbsp;&nbsp;乘法指令</a>
+</h3>
+<h3 class="topic">
+<a name="56md2c7p4urcplv24rm0ieuhr9">&nbsp;&nbsp;&nbsp;分类</a>
+</h3>
+<h3 class="topic">
+<a name="1mictsdof5hfvbn5vdiae7ovee">&nbsp;&nbsp;&nbsp;&nbsp;乘法操作的结果为32位</a>
+</h3>
+<h3 class="topic">
+<a name="0o0itoddo1ifob7s2cpbbubjtf">&nbsp;&nbsp;&nbsp;&nbsp;乘法操作的结果为64位</a>
+</h3>
+<h3 class="topic">
+<a name="50vcl86mdk8p9btsq1ak7r7m7u">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/4243drd8d54vfr73m2bt0snn0q.png"></p>
+<h3 class="topic">
+<a name="58uv3t95nhhces7pqhu47ndjso">&nbsp;&nbsp;&nbsp;详见书目78页</a>
+</h3>
+<h3 class="topic">
+<a name="25hb2plsemdm5qigrr1fjheqfo">&nbsp;&nbsp;杂类的算数指令</a>
+</h3>
+<h3 class="topic">
+<a name="19r5ig5ni9j2ihv6qo11igpapc">&nbsp;&nbsp;&nbsp;ARMv5及以上版本中存在指令CLZ，用于计算寄存器中操作数最高端0的个数</a>
+</h3>
+<h3 class="topic">
+<a name="2nm61e7vreod0p74v8drr45n4v">&nbsp;&nbsp;&nbsp;该指令主要用于</a>
+</h3>
+<h3 class="topic">
+<a name="6kmmrjlda2pse1ljvubquo382t">&nbsp;&nbsp;&nbsp;&nbsp;计算操作数规范化时所需要左移的位数</a>
+</h3>
+<h3 class="topic">
+<a name="61ma95r8fgd9mabhuk2esn51nr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;操作数规范化：使操作数最高位为1</a>
+</h3>
+<h3 class="topic">
+<a name="5chk6v8q4vbc5n5afg54jdv1lv">&nbsp;&nbsp;&nbsp;&nbsp;确定一个优先级掩码中最高优先级</a>
+</h3>
+<h3 class="topic">
+<a name="12ct329dlkfn8s9o3qcoibrc8m">&nbsp;&nbsp;&nbsp;语法格式</a>
+</h3>
+<h3 class="topic">
+<a name="48o6flv1elotodajjinabf7qq2">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/1ao6tih7p68vjgmmlqbp6fgqnn.png"></p>
+<h3 class="topic">
+<a name="4kr5hcaochg0fmkjftrliapic6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/10fibnvg8g3eekleog2bmhkp0d.png"></p>
+<h3 class="topic">
+<a name="6gjceh74aaecvkjlpgrf6fqnad">&nbsp;&nbsp;状态寄存器访问指令</a>
+</h3>
+<h3 class="topic">
+<a name="2t3bb7217pv3j85uq26fhip4k9">&nbsp;&nbsp;&nbsp;关于状态寄存器的注意点</a>
+</h3>
+<h3 class="topic">
+<a name="4featscsf87acvtj4u6lnlnptv">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/6f6d7bslsdho96lcv0euoseq04.png"></p>
+<h3 class="topic">
+<a name="7q48aq383mhh3gl61v978c0hp3">&nbsp;&nbsp;&nbsp;状态寄存器访问指令</a>
+</h3>
+<h3 class="topic">
+<a name="3n2ivd4a90ddmeq7obuvuidlfi">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/4bqekjn0n9qmo65lcmbnc4jk0t.png"></p>
+<h3 class="topic">
+<a name="7bl9v09shkeo2alt19r08simkc">&nbsp;&nbsp;&nbsp;MRS</a>
+</h3>
+<h3 class="topic">
+<a name="4ic81b3ffi80rutjui0t95ndtk">&nbsp;&nbsp;&nbsp;&nbsp;语法格式</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/6looqvla0svdo77vjn2de9vsve.png"></p>
+<h3 class="topic">
+<a name="5j1isg9f75hfggnirgi9o5nutl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MRS指令的使用</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/3hksgoiil2rd3st5chj7nst5bv.png"></p>
+<h3 class="topic">
+<a name="36cdftqbtcd9dgk79gl12flcqp">&nbsp;&nbsp;&nbsp;MSR</a>
+</h3>
+<h3 class="topic">
+<a name="0jrbbk2me7neinfobeu80g30e0">&nbsp;&nbsp;&nbsp;&nbsp;语法格式</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/3mieu6v2eac48au6ault40k544.png"></p>
+<h3 class="topic">
+<a name="4vd28simkg721tpq3j8tm47d8o">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/43vcej10bk9n8b5j6437buh79n.png"></p>
+<h3 class="topic">
+<a name="0fb1feclf1ff4a0tk0qsmnidai">&nbsp;&nbsp;&nbsp;&nbsp;指令使用</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/402aqfn4dh0pgk3166dioncj3l.png"></p>
+<h3 class="topic">
+<a name="7herddambans3hhip90vjlltv6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/1ljoqv2ukhr2e7oargthtq1cnu.png"></p>
+<h3 class="topic">
+<a name="76fcuhvtl3i23t27k8j9ggf8se">&nbsp;&nbsp;Load/Store内存访问指令</a>
+</h3>
+<h3 class="topic">
+<a name="5u751hrfjgmt0vgt4ckcu7ekpc">&nbsp;&nbsp;&nbsp;用于操作32位字类型数据和8位无符号字节类型数据</a>
+</h3>
+<h3 class="topic">
+<a name="15ejg95gersv6ghta154229171">&nbsp;&nbsp;&nbsp;用于操作16位半字类型数据和8位有符号字节类型数据</a>
+</h3>
+<h3 class="topic">
+<a name="0a5h2n89addhgjrl81vbhdhd2g">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/7lg6995kqgcgmj0flvh1f8qjif.png"></p>
+<h3 class="topic">
+<a name="2thqul0e9a4prkgj855atqhrne">&nbsp;&nbsp;&nbsp;&nbsp;基本的指令只有LDR STR,分别表示字数据的读取和写入</a>
+</h3>
+<h3 class="topic">
+<a name="1mtdb0uij07vn70ilenegpf60q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+B</a>
+</h3>
+<h3 class="topic">
+<a name="6eo94d5ic54e1gk1fclfu9fe31">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;操作8位字节</a>
+</h3>
+<h3 class="topic">
+<a name="6petje5hu1p2625324u4idub44">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+H</a>
+</h3>
+<h3 class="topic">
+<a name="6a7b30cqmsckouddd53sv7se3e">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;操作16位的半字 </a>
+</h3>
+<h3 class="topic">
+<a name="334274hrujfknlcan587gqh5ej">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+S</a>
+</h3>
+<h3 class="topic">
+<a name="4fhlhrps9tk7u3fp99abtk24t4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;操作有符号数据，空位使用符号位补齐</a>
+</h3>
+<h3 class="topic">
+<a name="3f1h2l1qno1njkooon4brd50rk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+T</a>
+</h3>
+<h3 class="topic">
+<a name="5irq1jhunhr5pchrj1ngb530iq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用户模式下，通常用以在异常模式下以用户模式访问内存</a>
+</h3>
+<h3 class="topic">
+<a name="19s49vppo2rq1ftfnmusi5bsvi">&nbsp;&nbsp;&nbsp;详见书目88页</a>
+</h3>
+<h3 class="topic">
+<a name="4piiut8p9cc8ullnqp818airsg">&nbsp;&nbsp;批量Load/Store内存访问指令</a>
+</h3>
+<h3 class="topic">
+<a name="6jbsjr95lgrj2984c7r99l2bpq">&nbsp;&nbsp;&nbsp;批量内存Load</a>
+</h3>
+<h3 class="topic">
+<a name="02btkb1kuh559227u2v3a71mnj">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/23agk67b1pna3uqjcm8k6b85ot.png"></p>
+<h3 class="topic">
+<a name="3rhlqjkbacib04fr0bkqm1s1mr">&nbsp;&nbsp;&nbsp;批量内存Store</a>
+</h3>
+<h3 class="topic">
+<a name="33qep46ovbqjt1qa0mf3um8imo">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/77mm6587jf73g6h9dakd4j6dg8.png"></p>
+<h3 class="topic">
+<a name="5gp43fbtukdhnuj1on8psge4nh">&nbsp;&nbsp;&nbsp;语法格式</a>
+</h3>
+<h3 class="topic">
+<a name="7vlaj3b53ccp21bp23avvo1u56">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/5sr75ucak4u194riuhcbqkkf4e.png"></p>
+<h3 class="topic">
+<a name="6eoagfugup3utl2puona308g0g">&nbsp;&nbsp;&nbsp;主要指令</a>
+</h3>
+<h3 class="topic">
+<a name="5dh818rg6hejdfdm2vha6cme9a">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/1kdm1308e1v751fjhfv9t4rkk8.png"></p>
+<h3 class="topic">
+<a name="5ropu1c15ul69si0gtfpu84aa8">&nbsp;&nbsp;&nbsp;详见书目97</a>
+</h3>
+<h3 class="topic">
+<a name="3539nrbqub62bt488h3fe7diar">&nbsp;&nbsp;信号量操作指令</a>
+</h3>
+<h3 class="topic">
+<a name="5ll5rp2gitrq3lle6bf6jsdcd7">&nbsp;&nbsp;&nbsp;信号量用于完成进程之间的同步和互斥，操作信号量的指令必须是原子操作</a>
+</h3>
+<h3 class="topic">
+<a name="37e5v6l7rhlv6u4c0i9u8aub39">&nbsp;&nbsp;&nbsp;ARM中提供的信号量操作指令</a>
+</h3>
+<h3 class="topic">
+<a name="3tjso86iuksnenc2fgk89tri2d">&nbsp;&nbsp;&nbsp;&nbsp;SWP</a>
+</h3>
+<h3 class="topic">
+<a name="4nqrq3u01vup31te87rnel5obu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;交换指令</a>
+</h3>
+<h3 class="topic">
+<a name="47qa7vht34tvnpju07utl1jjsq">&nbsp;&nbsp;&nbsp;&nbsp;SWPB</a>
+</h3>
+<h3 class="topic">
+<a name="158ab145ha3164qoj0gvo90tko">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;字节交换指令</a>
+</h3>
+<h3 class="topic">
+<a name="2vt90vv5kaked7h7cbd1tot74g">&nbsp;&nbsp;&nbsp;SWP</a>
+</h3>
+<h3 class="topic">
+<a name="4jco6o5avm7g5qp27kudcqf3bg">&nbsp;&nbsp;&nbsp;&nbsp;功能</a>
+</h3>
+<h3 class="topic">
+<a name="103bdkf41630hni5uv5mrksp2t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/1q4ugrbjlabefmnloks65qjo54.png"></p>
+<h3 class="topic">
+<a name="7tfremlgdsdlojck50o2qjp3pq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;主要用作实现信号量的操作</a>
+</h3>
+<h3 class="topic">
+<a name="64bqp0ol0j3sq2vcv1s9gdia8c">&nbsp;&nbsp;&nbsp;&nbsp;语法格式</a>
+</h3>
+<h3 class="topic">
+<a name="5rpquem3m04u3ft3fqlqn6ns5g">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/5jumtiqkio4otp4t1lvea8ure3.png"></p>
+<h3 class="topic">
+<a name="1laosptonei4059ln95c0h1tat">&nbsp;&nbsp;&nbsp;&nbsp;示例</a>
+</h3>
+<h3 class="topic">
+<a name="6p937s79512de9uslbjl2r8q76">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/6n8um87advoh26s84o7qovvcb7.png"></p>
+<h3 class="topic">
+<a name="6urv37uqmb3b2ldncdj1tce9et">&nbsp;&nbsp;&nbsp;SWPB</a>
+</h3>
+<h3 class="topic">
+<a name="14b8foul6t398belpuhjhc5s77">&nbsp;&nbsp;&nbsp;&nbsp;功能</a>
+</h3>
+<h3 class="topic">
+<a name="5ueekpv1ha0b32sq5ktacnjul6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/1hmp4g1m5j569kqbhjvdfj97lo.png"></p>
+<h3 class="topic">
+<a name="288nrl67r1osloth4tonnd6rsh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;主要用作实现信号量的操作</a>
+</h3>
+<h3 class="topic">
+<a name="176r62tbgchss87fohr4br4f1m">&nbsp;&nbsp;&nbsp;&nbsp;语法格式与SWP类似</a>
+</h3>
+<h3 class="topic">
+<a name="50ofdte823bajl5r2dr8lv3lin">&nbsp;&nbsp;&nbsp;&nbsp;示例</a>
+</h3>
+<h3 class="topic">
+<a name="64ud3b0ldr4kc620h2o6edqetv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/5tg9uvdeea3uj4of5rirh4b35u.png"></p>
+<h3 class="topic">
+<a name="6r4ohbrj2pecr1u33d7eheolvh">&nbsp;&nbsp;异常中断产生指令</a>
+</h3>
+<h3 class="topic">
+<a name="7cg7j09n8s5tjs2nmk506niaqr">&nbsp;&nbsp;&nbsp;用于产生异常中断</a>
+</h3>
+<h3 class="topic">
+<a name="6faci9i60lc4cas8h7u238ion8">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/2bo8v0rgstfb2eg1b9ue3sodb1.png"></p>
+<h3 class="topic">
+<a name="0sp8noth49i5hiv7qpar2k65oc">&nbsp;&nbsp;&nbsp;SWI</a>
+</h3>
+<h3 class="topic">
+<a name="2f5l9gapglasdmutjvk28hbrfo">&nbsp;&nbsp;&nbsp;&nbsp;软中断指令，系统通过此机制实现用户模式中调用特权模式的程序</a>
+</h3>
+<h3 class="topic">
+<a name="6feb0rgn5gsktnj87muu091nac">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;即操作系统在SWI的异常中断处理程序中提供了相关的系统服务，并提供对应的参数传递方式</a>
+</h3>
+<h3 class="topic">
+<a name="1upeh6u1f42bufbof04d74apes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/09ts57vsep0a7pf3e0o3vll6g9.png"></p>
+<h3 class="topic">
+<a name="5m95mb78q6hv6934f6pt3823ll">&nbsp;&nbsp;&nbsp;&nbsp;语法格式</a>
+</h3>
+<h3 class="topic">
+<a name="3v0r10p65stc34gq5fa0l2bspq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/14q9qsr25b1lb4lo6h2njsmefq.png"></p>
+<h3 class="topic">
+<a name="7tcnvpdqsfvqm7trttuk9bh97a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/2e624rhfgmkd59o19plbvjommv.png"></p>
+<h3 class="topic">
+<a name="6uln37p1hpt9fdv4a8ohj69jrf">&nbsp;&nbsp;&nbsp;BKPT</a>
+</h3>
+<h3 class="topic">
+<a name="6a93f1354m0clvjbqihl2ck11n">&nbsp;&nbsp;&nbsp;&nbsp;产生软件断点中断，可以用于软件调试程序</a>
+</h3>
+<h3 class="topic">
+<a name="4mq08p52s9dgbkec3883vd4mj3">&nbsp;&nbsp;&nbsp;&nbsp;语法格式</a>
+</h3>
+<h3 class="topic">
+<a name="44rvmgk7u8iuckcrpasr69vs0d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/19o5sg87s7teq49c7i5la6bku1.png"></p>
+<h3 class="topic">
+<a name="1slpjavd3b1oa5lro7muagguh7">&nbsp;&nbsp;ARM协处理器指令</a>
+</h3>
+<h3 class="topic">
+<a name="5he7b53qmc7dc9ingbd032copq">&nbsp;&nbsp;&nbsp;协处理器相关</a>
+</h3>
+<h3 class="topic">
+<a name="05pcve6s09rh0840kj63vecqbj">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/6r45obl6vl4mnbm8bd2hb4ji1s.png"></p>
+<h3 class="topic">
+<a name="68bodk5c55b9t00v3uq16bq0ob">&nbsp;&nbsp;&nbsp;分类</a>
+</h3>
+<h3 class="topic">
+<a name="3avmdn2ogoflr5ev6o46l3qqvi">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/5vle43d6c5fc2ofmm3gsj4d721.png"></p>
+<h3 class="topic">
+<a name="5j1bf90t2lr1hsknqfog64ptng">&nbsp;&nbsp;&nbsp;具体指令</a>
+</h3>
+<h3 class="topic">
+<a name="2k80iak2jmolfrnfs42c2astdl">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/2bmi30d2bct37rq0dcv1u0u53p.png"></p>
+<h3 class="topic">
+<a name="6t9ve03h3jarcciicfagbfe1ca">&nbsp;&nbsp;&nbsp;详见书目106页</a>
+</h3>
+<h3 class="topic">
+<a name="3endaneflq7h1uubbl7o4qgbg6">&nbsp;一些基本的ARM指令功能段</a>
+</h3>
+<h3 class="topic">
+<a name="66qju8kpmsvk52fnku27uofhqr">&nbsp;&nbsp;算数逻辑运算指令的应用</a>
+</h3>
+<h3 class="topic">
+<a name="167fd3v4r0sksm0r5aleur2135">&nbsp;&nbsp;&nbsp;位操作运算示例</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/2jbs8lam7j95htjioadtvvcfaf.png"></p>
+<h3 class="topic">
+<a name="0e7o433u9om4eutm0pfsmf6vs7">&nbsp;&nbsp;&nbsp;&nbsp;乘法运算示例</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/5g4sthlu6jg9m2cv35lstlkaqv.png"></p>
+<h3 class="topic">
+<a name="71445k1suo3urdtoolhlcoh3pl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;64位数据运算示例</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/5lrn9v9hmul0h83vfqne4hll6s.png"></p>
+<h3 class="topic">
+<a name="0l21ks2jeppk4fpufcgulrmg5n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;数据存储大小端转换</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/42s71lnopuu1ass8oesd1e4ce1.png"></p>
+<h3 class="topic">
+<a name="7eeg8brtnh93kc8sg9upeqvvo5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意大小端存储是以字节为单位的，并且通过算数逻辑指令可以将数据存储方式转换为大端或小端</a>
+</h3>
+<h3 class="topic">
+<a name="49ch611q1607ujcd9rlkhk7uts">&nbsp;&nbsp;跳转指令的运用</a>
+</h3>
+<h3 class="topic">
+<a name="5ovf4els0qc1revfhvpkjj7l1p">&nbsp;&nbsp;&nbsp;子程序的调用和返回</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/305fdgk6ap8urm3jeaqe31d7tj.png"></p>
+<h3 class="topic">
+<a name="76t4cg8vcgm1nkmf9kci8ghf9v">&nbsp;&nbsp;&nbsp;&nbsp;条件执行</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/17hd9grmmkieuut4261s5mvh4k.png"></p>
+<h3 class="topic">
+<a name="5i5q1lirnnkb8iiuvlaaga1n56">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;条件判断</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/4n018eul0obgn70ja8hra7hpcg.png"></p>
+<h3 class="topic">
+<a name="69dijrvcpdvojg0pa30nj0ov74">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;循环语句</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/0dfn5bo9mcj18g98r8jrfodvee.png"></p>
+<h3 class="topic">
+<a name="48jifohpk08dpfaunfksj1m33v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;多路分支语句</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/0mrlcrumc6l2f7t2855jeno54e.png"></p>
+<h3 class="topic">
+<a name="4e0k8m8sks3sjhkrm1m2nsnbnc">&nbsp;&nbsp;Load/Store指令的运用</a>
+</h3>
+<h3 class="topic">
+<a name="0llio77hjr9tnrl1qga81qrni7">&nbsp;&nbsp;&nbsp;链表操作</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/71cqk28ku7ognmh1dlt8oaidhl.png"></p>
+<h3 class="topic">
+<a name="2dc0gdod4gj2mguhodjvdrtmpl">&nbsp;&nbsp;&nbsp;&nbsp;字符串比较</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/4uf5f63h0le7sgetaua6uehiop.png"></p>
+<h3 class="topic">
+<a name="5ov752lruotponasbe8gfarr5o">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;长跳转</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/09n1dq04bu4gtv5p5jsrscukpu.png"></p>
+<h3 class="topic">
+<a name="28jn5affe8165gfulv6cpsnmf3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;多路跳转</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/1bnvnj7ettdnik85a51ketuflp.png"></p>
+<h3 class="topic">
+<a name="1ai5rvo5qal7u8vfq9ovvssaec">&nbsp;&nbsp;批量Load/Store指令的运用</a>
+</h3>
+<h3 class="topic">
+<a name="0ifid38r71mhk692ipoogvb69d">&nbsp;&nbsp;&nbsp;简单的块复制</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/2p4lcgp05vds754el8cseii25t.png"></p>
+<h3 class="topic">
+<a name="6es3ee2hl6v28be1su8knau008">&nbsp;&nbsp;&nbsp;&nbsp;子程序调用时，保存和恢复寄存器环境</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/3duecd1fja6f6mu4nu3d39ni8m.png"></p>
+<h3 class="topic">
+<a name="035omdpnsnin3n7v9sml7l626o">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;子程序调用时，使用R0~R3传递参数和返回结果，并在子程序调用前，调用放保存在子程序中会用到的寄存器，并在子程序返回后恢复此类寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="71r19qq1458pnhk1g1t825eroo">&nbsp;&nbsp;信号量指令的运用</a>
+</h3>
+<h3 class="topic">
+<a name="6urjuaj8cijsejdq2co84mp7ch">&nbsp;&nbsp;&nbsp;进程间同步</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/5ct76q7s36mt0p0hk7g0v54rg5.png"></p>
+<h3 class="topic">
+<a name="2lnpvgkt88qq6bk15n69opl41e">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/1v7slv19kj0qkgkbmirgii3tms.png"></p>
+<h3 class="topic">
+<a name="66dj9i2q6qbbtvp6fi62dn9bcb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/6epcv2iuc5qjsg0b1v3rd7j1o3.png"></p>
+<h3 class="topic">
+<a name="1nfv3okn1rtcmn6i54qt04ne99">&nbsp;&nbsp;与系统相关的一些指令的运用</a>
+</h3>
+<h3 class="topic">
+<a name="731mkulf0frj18o3k7d4qm967c">&nbsp;&nbsp;&nbsp;使用SWI指令将处理器切换到特权级执行</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/0tk7f2tiv2h4lhuaoqc8v8r5os.png"></p>
+<h3 class="topic">
+<a name="3ra5agn1bur9227db6hlqvhccb">&nbsp;&nbsp;&nbsp;&nbsp;根据不同的系统服务号，通过SWI中断调用不同的系统服务代码</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/2m0ddpj2cnv7kjtrs0j9kam5d2.png"></p>
+<h3 class="topic">
+<a name="6e43ncohvqhhrdcatfa0f50p4f">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/2a4fli4p2ibguepjpah0caini3.png"></p>
+<h3 class="topic">
+<a name="1p49rv9k4hr3dkoolgoioscjf7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通常将SWI中断向量（即一条跳转指令）保存在地址空间0x8中</a>
+</h3>
+<h3 class="topic">
+<a name="57rkko67b1r0t7lpif55rigbgo">&nbsp;&nbsp;&nbsp;IRQ中断通常用于响应激计算机外设，处理器响应IRQ中断的过程如上</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/466umb4fhhibqrgt9j3t9l80d0.png"></p>
+<h3 class="topic">
+<a name="5v7bju3rangcnkl82tuumlf5fg">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/5q5jjar7f559nnnlhsuqkktdsn.png"></p>
+<h3 class="topic">
+<a name="54tp562m5h66nqnag57estpf9n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/76qk1epkm4jem2sklvr295hvnc.png"></p>
+<h3 class="topic">
+<a name="1vbckmm3uj63i4ev23c2sjcov5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通常将IRQ中断向量（即一条跳转指令）保存在内存地址0x18中</a>
+</h3>
+<h3 class="topic">
+<a name="4flc9qutii5bs0ojoijso6e1ui">&nbsp;&nbsp;&nbsp;使用IRQ中断进行进程切换</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/57loav4tgpa0sd8010jllgfmvk.png"></p>
+<h3 class="topic">
+<a name="7qp2u1j3qd30o6fjuhie2cdj01">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/4r4r7pdu9n7bs085nm5m4r0cj8.png"></p>
+<h3 class="topic">
+<a name="558eju5gmjroin829h4alo651r">&nbsp;&nbsp;详细见书目111页</a>
+</h3>
+<h3 class="topic">
+<a name="2h5es0alhk7nbmso1r6uhm444b">&nbsp;Thumb指令集</a>
+</h3>
+<h3 class="topic">
+<a name="7m20ucm6uamgst696hsqmq07n5">&nbsp;&nbsp;Thumb指令集适用于数据总线为16位的系统</a>
+</h3>
+<h3 class="topic">
+<a name="3unr5f2kg9fcoi6mu8ce8ho9s3">&nbsp;&nbsp;Thumb指令中数据处理指令还是32位的，指令寻址地址也是32位的</a>
+</h3>
+<h3 class="topic">
+<a name="4gvqvf3k2icnsfun2btq9qj203">&nbsp;&nbsp;Thumb中通常可以使用的寄存器位</a>
+</h3>
+<h3 class="topic">
+<a name="2prvaajes50hif9a5m3lu1q0kr">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ARM%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8E%E7%BC%96%E7%A8%8B1_files/4ip8lk7bjkegbegudhtshc0eup.png"></p>
+<h3 class="topic">
+<a name="73t3kft6gt2bqpnsj7n5ncl8i7">&nbsp;&nbsp;没有提供访问程序状态寄存器的指令</a>
+</h3>
+</body>
+</html>

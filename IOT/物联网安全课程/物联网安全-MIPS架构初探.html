@@ -1,0 +1,392 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>物联网安全-MIPS架构初探</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="21n4ibcn86a3m91poohjkrtrh3">物联网安全-MIPS架构初探</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-MIPS%E6%9E%B6%E6%9E%84%E5%88%9D%E6%8E%A2_files/images/%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-MIPS%E6%9E%B6%E6%9E%84%E5%88%9D%E6%8E%A2.jpg"></div>
+<h2 class="topic">
+<a name="4gfto2dn00urebuf2cjv80h7g6">MIPS基础</a>
+</h2>
+<h3 class="topic">
+<a name="4kuim95tit6079fts7nisfomh3">&nbsp;什么是MIPS</a>
+</h3>
+<h3 class="topic">
+<a name="5lquk3gg9fcb6staunjgcehc9o">&nbsp;&nbsp;MIPS-3D就是在3D处理时的可扩展选项</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-MIPS%E6%9E%B6%E6%9E%84%E5%88%9D%E6%8E%A2_files/2imfathu8s5f6rrt9fv1didaph.png"></p>
+<h3 class="topic">
+<a name="7fr5ub3qbdro95ssakq8pggeou">&nbsp;&nbsp;&nbsp;复杂指令集：指令数量较多，一条指令执行时可能会被分为多条指令，指令效率较低，但是开发周期短&#13;
+精简指令集：指令数量少，开发周期较长，指令执行该效率高</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-MIPS%E6%9E%B6%E6%9E%84%E5%88%9D%E6%8E%A2_files/4ges2817fp1slre41doat165sp.png"></p>
+<h3 class="topic">
+<a name="6r3i1qseb9f1ojt7bd7t0b2mfa">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-MIPS%E6%9E%B6%E6%9E%84%E5%88%9D%E6%8E%A2_files/4ecj3gdughlpfaqk625537gtmn.png"></p>
+<h3 class="topic">
+<a name="6e0svadqpe40orddcobvitul6d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mips就是大端架构</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-MIPS%E6%9E%B6%E6%9E%84%E5%88%9D%E6%8E%A2_files/178fntjolgvbdu871k2acemdla.png"></p>
+<h3 class="topic">
+<a name="44q7qfbf25pnqlsfjjthnq622h">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-MIPS%E6%9E%B6%E6%9E%84%E5%88%9D%E6%8E%A2_files/6a82hu202jagthsrrtgod0th8r.png"></p>
+<h3 class="topic">
+<a name="4ignkatl82uprn4cnbosl0o5us">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-MIPS%E6%9E%B6%E6%9E%84%E5%88%9D%E6%8E%A2_files/2pvalahsoh17r80m456u4tdk1l.png"></p>
+<h3 class="topic">
+<a name="6r7n683a17e30ji0kv0jcep15h">&nbsp;&nbsp;&nbsp;&nbsp;一共有32个寄存器&#13;
+r0（$zero）寄存器始终为0，如果需要将立即数移动到某个寄存器，可以直接和0进行相加，或者当数据需要和0比较时，而可以直接跟r0进行比较&#13;
+r1($at)主要留给编译器使用&#13;
+r2-r3($v0-$v1)存储表达式或者是函数的返回值（反汇编中对应$v0 $v1,syscall指令根据$v0值的不同调用不同函数）&#13;
+r4-r7($a0-$a3)用于存放函数参数，当函数参数数量大于4个，才使用栈传参&#13;
+r8-r15($t0-$t7)以及r24-r25($t8-$t9)：临时寄存器，使用之后不会保存相应执行结果&#13;
+r16-r23($s0-$s7)：也是临时寄存器，但是可以用于保存执行结果，比如将r8-r15中的数据保存到r16-r23中进行保存&#13;
+r26-r27($k0-$k1)：系统相关寄存器，例如中断相关&#13;
+r28($gp)：全局指针寄存器&#13;
+r29($sp)：指向栈顶&#13;
+r30($fp)：指向栈底&#13;
+r31($ra)：保存返回地址，返回地址数据也会保存在栈中</a>
+</h3>
+<h3 class="topic">
+<a name="1m8df8rsanoj1jerbvuie2uq21">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;浮点数寄存器（为加快浮点数运算）&#13;
+f0~f31</a>
+</h3>
+<h3 class="topic">
+<a name="5lbik4fg40rs7ah5vrpogeio4l">&nbsp;&nbsp;流水线主要是为了加快指针速度</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-MIPS%E6%9E%B6%E6%9E%84%E5%88%9D%E6%8E%A2_files/34st0hbmur8ihus8e6fiklcbum.png"></p>
+<h3 class="topic">
+<a name="3vthib3caeluq61d5kktp31qjc">&nbsp;&nbsp;&nbsp;mips指令集共有三种格式</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-MIPS%E6%9E%B6%E6%9E%84%E5%88%9D%E6%8E%A2_files/228q8lf3umnrjq6f4o2jnkmdes.png"></p>
+<h3 class="topic">
+<a name="0h83t753gmiid9r0l7f0hojijd">&nbsp;&nbsp;&nbsp;&nbsp;三种指令格式，即mips指令格式固定，均为32位前六位均为opcode rs rt td均为寄存器，分为源寄存器、临时寄存器、目的寄存器，每个寄存器使用5位表示 即2的5次方的等于32，刚好可以表示32位寄存器</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-MIPS%E6%9E%B6%E6%9E%84%E5%88%9D%E6%8E%A2_files/68oidlmfethd69cg5hohj6e1sf.png"></p>
+<h2 class="topic">
+<a name="638oe406675dtns5eom42loq1o">MIPS环境搭建</a>
+</h2>
+<h3 class="topic">
+<a name="1vurp16pqu0v75vpe330r72ucc">&nbsp;MIPS环境介绍</a>
+</h3>
+<h3 class="topic">
+<a name="1pr2sq97102plk17g28j00o2i8">&nbsp;&nbsp;图中在线网站也可以完成mips编译、测试、调试&#13;
+交叉编译用于编译出符合对应平台要求的文件</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-MIPS%E6%9E%B6%E6%9E%84%E5%88%9D%E6%8E%A2_files/06i5u9onp4ofnf91na1ckl8drq.png"></p>
+<h3 class="topic">
+<a name="4bka000h419ctnjf65lupbgm5o">&nbsp;MIPS环境搭建</a>
+</h3>
+<h3 class="topic">
+<a name="5dj6onnk889hm2dqlpreh222nk">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-MIPS%E6%9E%B6%E6%9E%84%E5%88%9D%E6%8E%A2_files/50n2g6j17fnu72kol0es8nec8d.png"></p>
+<h3 class="topic">
+<a name="7np3tgb0ga2uq8uu8r4npot4lt">&nbsp;&nbsp;&nbsp;网站下载得到jar包，使用java运行</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-MIPS%E6%9E%B6%E6%9E%84%E5%88%9D%E6%8E%A2_files/77gfgj1tbuf7cfrdak0pebr985.png"></p>
+<h3 class="topic">
+<a name="0bvcpthvr5cep0i21mhc1k5tvf">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-MIPS%E6%9E%B6%E6%9E%84%E5%88%9D%E6%8E%A2_files/5rmj8s6r09ihpi5sdieb7mr1r8.png"></p>
+<h3 class="topic">
+<a name="4nuk4mo9lkoacls1t6tr3s6mj2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用户模式：当执行某种架构的程序时，qume会短暂切换到该架构体系执行，执行完毕后返回自己的系统&#13;
+系统模式：完全模拟出某个架构环境的系统，类似于vmware</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-MIPS%E6%9E%B6%E6%9E%84%E5%88%9D%E6%8E%A2_files/3kuhphkrfkljn2ib8fb5um1ago.png"></p>
+<h3 class="topic">
+<a name="5bgghgtv3eb81pbdu6sn3279vn">&nbsp;&nbsp;qemu的安装&#13;
+源码安装：官网下载源码并使用make进行编译&#13;
+命令安装：在ubuntu上使用apt-get install进行安装，可以安装用户模式和系统模式，也可以进安装用户模式</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-MIPS%E6%9E%B6%E6%9E%84%E5%88%9D%E6%8E%A2_files/7dd122rhc0l1ntk2729q36of5d.png"></p>
+<h3 class="topic">
+<a name="54bm1f0vsa7ipkco77emupgk1d">&nbsp;&nbsp;&nbsp;gcc-mips-linux-gnu和gcc-mipsel-linux-gnu用于交叉编译c语言&#13;
+g++-mips-linux-gnu和g++-mipsel-linux-gnu用于交叉编译c++&#13;
+还有其他很多mips交叉编译工具</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-MIPS%E6%9E%B6%E6%9E%84%E5%88%9D%E6%8E%A2_files/2n3i65elfe69qt9vljdirhkgdf.png"></p>
+<h2 class="topic">
+<a name="15dlk1l3tdb3r4ldslojjthr9c">编译并运行MIPS</a>
+</h2>
+<h3 class="topic">
+<a name="4m4r092mskv852i0sqt5anl2no">&nbsp;使用Mars IDE编译并运行</a>
+</h3>
+<h3 class="topic">
+<a name="0pg1asq5dd3d8as6591imsefs9">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-MIPS%E6%9E%B6%E6%9E%84%E5%88%9D%E6%8E%A2_files/0199o5ul9js01j840to6pnbh17.png"></p>
+<h3 class="topic">
+<a name="3bbru1p23181s9ln1pgrtd7v49">&nbsp;&nbsp;.data&#13;
+    myStr: .asciiz "hello\n"&#13;
+ &#13;
+.text&#13;
+    li $v0, 4&#13;
+    la $a0, myStr&#13;
+    syscall</a>
+</h3>
+<h3 class="topic">
+<a name="6j4ovq97lolbi5j4jfpeirros0">&nbsp;&nbsp;&nbsp;.asciiz表示变量为ascii字符串&#13;
+li指令用于将立即数保存到寄存器&#13;
+la指令用于取变量地址保存到寄存器&#13;
+syscall用于系统调用了，具体调用类型取决于$v0&#13;
+$v0为4时表示输出字符串</a>
+</h3>
+<h3 class="topic">
+<a name="15a903mcv8unfb7c9oaib628pu">&nbsp;&nbsp;&nbsp;&nbsp;系统调用码</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-MIPS%E6%9E%B6%E6%9E%84%E5%88%9D%E6%8E%A2_files/78lj1dp5jpj1gjsrch9bqa3tdk.png"></p>
+<h3 class="topic">
+<a name="7kevf29or9hnj161ukv6q4d965">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;系统调用码为4时表示打印字符串</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-MIPS%E6%9E%B6%E6%9E%84%E5%88%9D%E6%8E%A2_files/2lbj2l0bptd1sj8r7uvutbphui.png"></p>
+<h3 class="topic">
+<a name="0lttjnk5686j0nklai0a5n7or8">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-MIPS%E6%9E%B6%E6%9E%84%E5%88%9D%E6%8E%A2_files/307lkj5ikhmo1ak5sfrdhfm61g.png"></p>
+<h3 class="topic">
+<a name="3fv77ql0f55hg0driaqmm85mid">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-MIPS%E6%9E%B6%E6%9E%84%E5%88%9D%E6%8E%A2_files/7qdn45drnt5g0i4pgelp36qk32.png"></p>
+<h3 class="topic">
+<a name="2im9v689po4ng8csr22ekl9iq0">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-MIPS%E6%9E%B6%E6%9E%84%E5%88%9D%E6%8E%A2_files/5lvpkutcbsf6shqc28vgp869rh.png"></p>
+<h3 class="topic">
+<a name="3sefl8e6gjg4rhuu83faevco5u">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-MIPS%E6%9E%B6%E6%9E%84%E5%88%9D%E6%8E%A2_files/59vjdqhk826fnjcnubp6d2gkcb.png"></p>
+<h3 class="topic">
+<a name="47okpd0e9f4qdq794t1vtm3vt6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-MIPS%E6%9E%B6%E6%9E%84%E5%88%9D%E6%8E%A2_files/50hgp3vdnnspkmith5r26u51cf.png"></p>
+<h3 class="topic">
+<a name="7duc1pakhqpaiih1aelqikv381">&nbsp;&nbsp;.data&#13;
+    message: .asciiz "Hi, everybody.nMy name is MIPS\n"&#13;
+.text&#13;
+    main:&#13;
+        jal displayMessage&#13;
+ &#13;
+        addi $s0, $zero, 5&#13;
+ &#13;
+        li $v0, 1&#13;
+        add $a0, $zero, $s0&#13;
+        syscall&#13;
+ &#13;
+    li $v0, 10&#13;
+    syscall&#13;
+ &#13;
+    displayMessage:&#13;
+        li $v0, 4&#13;
+        la $a0, message&#13;
+        syscall&#13;
+ &#13;
+        jr $ra</a>
+</h3>
+<h3 class="topic">
+<a name="7eggdfociv0vcflkvrnmrf0nb0">&nbsp;&nbsp;&nbsp;jal指令用于跳转，首先将displayMessage的地址赋值给pc寄存器，然后将跳转指令下一条指令地址保存到$ra寄存器&#13;
+&#13;
+addi $s0,$zero,5指令为加法指令，将$s0赋值为5&#13;
+&#13;
+系统调用号为1表示输出int类型数据&#13;
+&#13;
+add $a0, $zero, $s0 加法运算，将$a0的值赋值为$s0的值，即5&#13;
+&#13;
+系统调用号为10表示exit函数，退出&#13;
+&#13;
+displayMessage函数末尾的jr $ra指令用于跳转到返回地址继续执行</a>
+</h3>
+<h3 class="topic">
+<a name="46hc7u3pqie8s15b3cd4t1g4hd">&nbsp;&nbsp;&nbsp;&nbsp;.data&#13;
+ &#13;
+.text&#13;
+    main:&#13;
+        addi $a1, $zero, 50&#13;
+        addi $a2, $zero, 100&#13;
+ &#13;
+        jal addNumbers&#13;
+ &#13;
+        li $v0, 1&#13;
+        addi $a0, $v1, 0&#13;
+        syscall&#13;
+ &#13;
+    # Tell the program that the program is done&#13;
+    li $v0, 10&#13;
+    syscall&#13;
+ &#13;
+    addNumbers:&#13;
+        add $v1, $a1, $a2&#13;
+ &#13;
+        jr $ra</a>
+</h3>
+<h3 class="topic">
+<a name="2ugu1l2hcrcaqk35pq9nvo20gi">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;调用子函数时使用寄存器传参</a>
+</h3>
+<h3 class="topic">
+<a name="2uk34mp8fi581e456prmts4o2g">&nbsp;&nbsp;.data&#13;
+    newline: .asciiz "\n"&#13;
+ &#13;
+.text&#13;
+    main:&#13;
+        addi $s0, $zero, 10&#13;
+ &#13;
+        jal increaseMyRegister&#13;
+ &#13;
+        # print a new line&#13;
+        li $v0, 4&#13;
+        la $a0, newline&#13;
+        syscall&#13;
+ &#13;
+        # print value&#13;
+        li $v0, 1&#13;
+        move $a0, $s0&#13;
+        syscall&#13;
+ &#13;
+    li $v0, 10&#13;
+    syscall&#13;
+ &#13;
+    increaseMyRegister:&#13;
+        addi $sp, $sp, -4&#13;
+        sw $s0, 0($sp)&#13;
+ &#13;
+ &#13;
+        addi  $s0, $s0, 30&#13;
+ &#13;
+        # print new value in function&#13;
+        li $v0, 1&#13;
+        move $a0, $s0&#13;
+        syscall&#13;
+ &#13;
+        lw $s0, 0($sp)&#13;
+        addi $sp, $sp, 4&#13;
+ &#13;
+        jr $ra</a>
+</h3>
+<h3 class="topic">
+<a name="7k3ucham5ni6eajip24il9eaha">&nbsp;&nbsp;&nbsp;         addi $sp, $sp, -4  表示$sp寄存器中的值减4，即栈顶抬高&#13;
+        sw $s0, 0($sp)       将$s0寄存器中的值入栈到距栈顶偏移为0的位置，即栈顶&#13;
+        addi  $s0, $s0, 30 $s0寄存器增加30，此时为40&#13;
+        # print new value in function&#13;
+        li $v0, 1&#13;
+        move $a0, $s0       输出$s0中的值&#13;
+        syscall&#13;
+        lw $s0, 0($sp)        将距离栈顶偏移为0的内存数据保存到$s0中，即出栈&#13;
+        addi $sp, $sp, 4    将栈顶下降&#13;
+         jr $ra                     函数返回</a>
+</h3>
+<h3 class="topic">
+<a name="4q5277rb3afmch604h78b0qjmh">&nbsp;交叉编译MIPS程序</a>
+</h3>
+<h3 class="topic">
+<a name="1spusl4fio0j7sq1l1ip1gdt6f">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-MIPS%E6%9E%B6%E6%9E%84%E5%88%9D%E6%8E%A2_files/41dtamca315f3ksgf724ilr4b2.png"></p>
+<h3 class="topic">
+<a name="6pjab93ujeshj5ndjbu5cp3i57">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-MIPS%E6%9E%B6%E6%9E%84%E5%88%9D%E6%8E%A2_files/31qtpvqis1ogoisuh9mbdhmfo9.png"></p>
+<h3 class="topic">
+<a name="0otdpp9s8jh31usaeo7f8bocoi">&nbsp;&nbsp;&nbsp;&nbsp;注意如果使用大端模式交叉编译（mips-linux-gnu-gcc）执行编译结果时也需要使用qemu-mips的大端模式</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-MIPS%E6%9E%B6%E6%9E%84%E5%88%9D%E6%8E%A2_files/5sfb3khej3iku953i2dj3318vu.png"></p>
+<h3 class="topic">
+<a name="1tjkl4nn4oie8vvse411e5m238">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;或者交叉编译时使用--static参数，直接进行静态编译，则运行时不用指定动态链接库</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-MIPS%E6%9E%B6%E6%9E%84%E5%88%9D%E6%8E%A2_files/68v05eqhn98jcgddpvm3mka4j0.png"></p>
+<h2 class="topic">
+<a name="6d8ibjgm725q3u7cv2edkad8e8">资料</a>
+</h2>
+<h3 class="topic">
+<a name="641hr5e9dhm4g0pad2cl1btl40">&nbsp;https://www.cnblogs.com/thoupin/p/4018455.html</a>
+</h3>
+<h2 class="topic">
+<a name="3epuvvrcoglklrfi6nlbsnio6s">环境搭建</a>
+</h2>
+<h3 class="topic">
+<a name="3lejo45853tfulefehhksi3rtf">&nbsp;MIPS环境搭建&#13;
+操作系统 : Ubuntu x64&#13;
+MISP IDE : MARS 4.5 （运行方式 java -jar mars.jar）&#13;
+在线网站 : https://rivoire.cs.sonoma.edu/cs351/wemips/&#13;
+交叉编译 : misp-linux-gnu*&#13;
+模拟环境 : qemu （最好是到github搜索qemu，通过官方文档给定的步骤进行安装）&#13;
+MISP交叉编译链接工具&#13;
+gcc-mips-linux-gnu&#13;
+​&#13;
+sudo apt-get install linux-libc-dev-mips-cross&#13;
+sudo apt-get install libc6-mips-cross libc6-dev-mips-cross&#13;
+sudo apt-get install binutils-mips-linux-gnu gcc-mips-linux-gnu&#13;
+sudo apt-get install g++-mips-linux-gnu&#13;
+​&#13;
+gcc-mipsel-linux-gnu&#13;
+​&#13;
+sudo apt-get install linux-libc-dev-mipsel-cross&#13;
+sudo apt-get install libc6-mipsel-cross libc6-dev-mipsel-cross&#13;
+sudo apt-get install binutils-mipsel-linux-gnu gcc-mipsel-linux-gnu&#13;
+sudo apt-get install g++-mipsel-linux-gnuQemu安装&#13;
+安装系统模式&#13;
+sudo apt-get install qemu安装用户模式&#13;
+sudo apt-get install qemu-user-static&#13;
+编译并运行MIPS&#13;
+通过 MARS 编译并运行 mips程序&#13;
+.data&#13;
+    myStr: .asciiz "hello\n"&#13;
+​&#13;
+.text&#13;
+    li $v0,4        ;载入立即数&#13;
+    la $a0,myStr ;载入地址&#13;
+    syscall &nbsp;;系统调用，$v0中存储的就是系统调用值</a>
+</h3>
+<h3 class="topic">
+<a name="4clhf3o0igcv9o6gohvoao8alt">&nbsp;&nbsp;静态交叉编译MIPS程序&#13;
+编写C源代码 hello.c&#13;
+#include&lt;stdio.h&gt;&#13;
+int main(void)&#13;
+{&#13;
+    printf("hello\n");&#13;
+    return 0;&#13;
+}静态链接编译 (这里使用大端的进行编译)&#13;
+mipsel-linux-gnu-gcc hello.c -o hello --staticqemu模拟运行 （使用大端的进行运行）&#13;
+qemu-mipsel ./hello&#13;
+动态链接编译 (小端编译)&#13;
+mips-linux-gnu-gcc hello.c -o helloqemu模拟运行，需要指定动态链接库 （小端运行）&#13;
+qemu-mips -L /usr/mips-linux-gnu ./hello</a>
+</h3>
+</body>
+</html>

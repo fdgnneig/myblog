@@ -1,0 +1,910 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>c基础</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="534ti92b7p4f5ufpklltoeao0v">c基础</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="c%E5%9F%BA%E7%A1%80_files/images/c%E5%9F%BA%E7%A1%80.jpg"></div>
+<h2 class="topic">
+<a name="27upprqp08fi3iqsk4nsugoumm">字符输出</a>
+</h2>
+<h3 class="topic">
+<a name="1tmtbttvnfjes10rt4f89ovj09">&nbsp;uicode</a>
+</h3>
+<h3 class="topic">
+<a name="2cq547imlsm9qtf4s5mmiqsj1g">&nbsp;&nbsp;utf-8</a>
+</h3>
+<h3 class="topic">
+<a name="5ep4eqpd565eh7o2a5kbtvrug1">&nbsp;&nbsp;&nbsp;可变长，不同的语言一个字符占用字节数可能为1-4字节</a>
+</h3>
+<h3 class="topic">
+<a name="3j725r814bghgcufcr879emlak">&nbsp;&nbsp;&nbsp;常用于网络传输</a>
+</h3>
+<h3 class="topic">
+<a name="5bnnoktedj7vjgnvnnqpvcjt9r">&nbsp;&nbsp;utf-16</a>
+</h3>
+<h3 class="topic">
+<a name="2dasta9i231uhln6dsj0f1a04q">&nbsp;&nbsp;&nbsp;一个字符两个字节</a>
+</h3>
+<h3 class="topic">
+<a name="2qm63pg25eggfq09sn848r6i1m">&nbsp;&nbsp;&nbsp;windows平台上的unicode使用utf-16</a>
+</h3>
+<h3 class="topic">
+<a name="21qjkl7f6ddsj73u44rikcli4r">&nbsp;&nbsp;utf-32</a>
+</h3>
+<h3 class="topic">
+<a name="45qkpnisbknoi66rmu50e3kmjj">&nbsp;&nbsp;&nbsp;一个字符四个字节</a>
+</h3>
+<h3 class="topic">
+<a name="4sdrkqs2k1cqvojiheu71da8bk">&nbsp;&nbsp;&nbsp;linux平台和mac os平台的unicode使用utf-32</a>
+</h3>
+<h3 class="topic">
+<a name="0qjoqcq6eku7c3tb5u79uec0eh">&nbsp;&nbsp;内核中使用的都是unicode</a>
+</h3>
+<h3 class="topic">
+<a name="0t8k2fipkn6o8cl6imvdjlsbal">&nbsp;char c</a>
+</h3>
+<h3 class="topic">
+<a name="1a610mttu9dejcs63j2gsnc9mn">&nbsp;&nbsp;char类型的数据可能是有符号的，可能是无符号的，由编译器决定，vc的编译器看作有符号的</a>
+</h3>
+<h3 class="topic">
+<a name="56bv5c7lbmp5ur5m8n3ssq50o5">&nbsp;&nbsp;为了提高代码可移植性，可以显示声明signed或unsigned</a>
+</h3>
+<h3 class="topic">
+<a name="2rsmou21p9iul7q5nt67vlrvhc">&nbsp;字符'1'与整数1的转换</a>
+</h3>
+<h3 class="topic">
+<a name="6065dek0or5lh6ekuf9dhdk8ak">&nbsp;&nbsp;1='1'-'0'&#13;
+'1'=1+'0'</a>
+</h3>
+<h3 class="topic">
+<a name="2f7tna319h3jp9thrq1l6p7ahv">&nbsp;字符字母大小写转换</a>
+</h3>
+<h3 class="topic">
+<a name="0n8manbbhb6ra2lf2chgkhibh2">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="c%E5%9F%BA%E7%A1%80_files/7ogkb06a4hql4ooslemc9j4h8k.png"></p>
+<h3 class="topic">
+<a name="04sj4vu0794q4lkt7b97brr5nc">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="c%E5%9F%BA%E7%A1%80_files/0bvcgpsm6t6la5u65gbsbk6oue.png"></p>
+<h3 class="topic">
+<a name="3qpkqqt0d8ejlso7sbfqh9hk4b">&nbsp;%Z与%wZ打印的内容</a>
+</h3>
+<h3 class="topic">
+<a name="50j7mpnurcvedvtg9sf6f74169">&nbsp;&nbsp;ANSII_STING字符串不是以0结尾，而实给定一个起始指针和字符串长度</a>
+</h3>
+<h3 class="topic">
+<a name="5n6ec9fj5r7r57r96ajl4s3t9u">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="c%E5%9F%BA%E7%A1%80_files/20s0laongv2hcr2lm55rmumsvh.png"></p>
+<h2 class="topic">
+<a name="1mhjqg479nt8kglpu5gs95r5cl">main函数执行</a>
+</h2>
+<h3 class="topic">
+<a name="6nd7k13hpplucuptt5v7of1l8q">&nbsp;mian函数之前执行的函数</a>
+</h3>
+<h3 class="topic">
+<a name="1lmaetu0brrovlqj7oja3ellqs">&nbsp;&nbsp;不同类型windows程序的进入点函数和启动函数</a>
+</h3>
+<p class="topicImage">
+<img src="c%E5%9F%BA%E7%A1%80_files/53mtc3rcfoul2s2b2qotkbr5go.png"></p>
+<h3 class="topic">
+<a name="5pn8gn0klqivdkkuc1omjd2kcb">&nbsp;&nbsp;&nbsp;windows在执行进入点函数前会执行c/c++运行期启动函数，该函数负责对C / C + +运行期库进行初始化，它还能够确 保已经声明的任何全局对象和静态C + +对象能够在代码执行以前正确地创建</a>
+</h3>
+<h3 class="topic">
+<a name="2j3iesjid24707g3e8k3vqins5">&nbsp;&nbsp;&nbsp;由链接器编译到程序中</a>
+</h3>
+<h3 class="topic">
+<a name="5peed5be9llpbu4f1phl6hnd0u">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="c%E5%9F%BA%E7%A1%80_files/7vcbu065eupd7jdm3j3d10ejnm.png"></p>
+<h3 class="topic">
+<a name="5fpkf7dtk99607rvho8da8tef3">&nbsp;&nbsp;如何在main函数之前执行函数</a>
+</h3>
+<h3 class="topic">
+<a name="54akbj3blf20dq6fi0lbreobgj">&nbsp;&nbsp;&nbsp;gcc中</a>
+</h3>
+<h3 class="topic">
+<a name="1o8a35a70gubm3djbd5s47h9c8">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="c%E5%9F%BA%E7%A1%80_files/516lmd0geapccmtkgfk67mpd9f.png"></p>
+<h3 class="topic">
+<a name="4oajdp04skojimq54krek8d6gk">&nbsp;&nbsp;&nbsp;vc中</a>
+</h3>
+<h3 class="topic">
+<a name="1roige549co5ecd0bn3msp6l41">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="c%E5%9F%BA%E7%A1%80_files/1jk9mvg5qrurmk6o25l7l760ig.png"></p>
+<h3 class="topic">
+<a name="0prfaatsgfpfee48skbv9jspqk">&nbsp;&nbsp;&nbsp;c++中</a>
+</h3>
+<h3 class="topic">
+<a name="0lgfigcdrqcc7i2ciajlr7uk61">&nbsp;&nbsp;&nbsp;&nbsp;1、定义一个全局类对象，全局类对象的构造函数将会先于main函数执行&#13;
+2、定义一个全局变量，该全局变量使用func()初始化，则func会在main函数之前执行</a>
+</h3>
+<p class="topicImage">
+<img src="c%E5%9F%BA%E7%A1%80_files/68ihvgjk16cunnm5allpnrn3se.png"></p>
+<h3 class="topic">
+<a name="3b7bthrlrs44033pd1jplbja20">&nbsp;&nbsp;&nbsp;具体代码查看第一节课的mian_demo</a>
+</h3>
+<h2 class="topic">
+<a name="61n4seqbgifi3v42fjje7o99ac">系统内存布局</a>
+</h2>
+<h3 class="topic">
+<a name="6cvlt8utiu22igk4pm54qbl6nj">&nbsp;2^10=1kb  2^20=1mb 2^30=1gb</a>
+</h3>
+<p class="topicImage">
+<img src="c%E5%9F%BA%E7%A1%80_files/0ftob6nesc2sihls6umnp22ov2.png"></p>
+<h3 class="topic">
+<a name="1k5vnvtfcto66gqg4ptp5g0a0p">&nbsp;&nbsp;x86中0x80000000及以上的内存是内核层空间</a>
+</h3>
+<h3 class="topic">
+<a name="2olvo5h9pg6oo6glovhuicsqg9">&nbsp;&nbsp;PAE :使得地址总线从32-》36 虚拟地址空间从4gb-》64gb</a>
+</h3>
+<h3 class="topic">
+<a name="12o3gbh54l6c47nei71lnvmv26">&nbsp;&nbsp;对于x64 windows系统最大支持44位寻址空间16TB linux系统最大支持48位寻址空间256TB</a>
+</h3>
+<h3 class="topic">
+<a name="0n7ola6l845okd71hj4a60hsbf">&nbsp;进程内存空间</a>
+</h3>
+<h3 class="topic">
+<a name="1db62h0sfrcg1f4vrl5fman53i">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="c%E5%9F%BA%E7%A1%80_files/4tqbt20r0b85h43cqgutrtcmc3.png"></p>
+<h3 class="topic">
+<a name="7todu5uj4ilhakbpt85kocb3jd">&nbsp;&nbsp;&nbsp;静态区存放：全局变量、全局、局部静态变量、字符串常量</a>
+</h3>
+<h3 class="topic">
+<a name="4d8de78m1b7oo12ihepaao08q1">&nbsp;&nbsp;&nbsp;bss存放未初始化的数据</a>
+</h3>
+<h3 class="topic">
+<a name="6gf62f28mn6f9fm4nhap5mtf8g">&nbsp;&nbsp;&nbsp;&nbsp;会被统一设置为0</a>
+</h3>
+<h3 class="topic">
+<a name="2uvjc51i0vl97p42p123tdgfoo">&nbsp;&nbsp;&nbsp;data存放初始化过的数据</a>
+</h3>
+<h3 class="topic">
+<a name="7og6f08tltd9csucs89lr94uid">&nbsp;&nbsp;&nbsp;注意全局变量与静态变量在作用域方面，前者作用域在程序所有源文件中，后者作用域为定义该静态变量的源文件中，即静态变量不能跨文件访问</a>
+</h3>
+<h3 class="topic">
+<a name="6t8epagbjvca28jtcedcf187j4">&nbsp;&nbsp;&nbsp;c语言中之所以出现全局静态变量是因为如果的单纯使用全局变量，则不同源文件中相同的变量名或函数名可能出现冲突，所以使用全局静态变量或全局静态函数而可以定义仅仅在本源文件中使用的全局变量和全局函数</a>
+</h3>
+<h3 class="topic">
+<a name="2rk32plirrgrjit6sbiu4s29lm">&nbsp;&nbsp;&nbsp;&nbsp;c++中通过命名空间解决了该问题</a>
+</h3>
+<h3 class="topic">
+<a name="58q8cfagmftjmqvv85u5f33ppg">&nbsp;&nbsp;&nbsp;不同源文件中的全局变量在mian函数之前被初始化的先后顺序是不能控制的</a>
+</h3>
+<h3 class="topic">
+<a name="7iqe4a6ar8bmebp7dj5q1a1sr6">&nbsp;&nbsp;&nbsp;&nbsp;同一个源文件中的全局变量自上到下逐个初始化</a>
+</h3>
+<h3 class="topic">
+<a name="5jn5oumvt9sed3373vk5sv7bl6">&nbsp;&nbsp;&nbsp;局部变量char s[]="123";中"123"字符串是保存在静态数据区rdata段中，程序编译时会将字符串拷贝到栈中s变量的内存中，占据4字节内存空间</a>
+</h3>
+<h3 class="topic">
+<a name="2a4kkbb8v4676cuh9lvk2ukms6">&nbsp;栈的大小</a>
+</h3>
+<h3 class="topic">
+<a name="67j3gnd9ff6cd2u9krkg9mj6tf">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="c%E5%9F%BA%E7%A1%80_files/06ok62dh2r7rgv5l9ne7bvsqnf.png"></p>
+<h3 class="topic">
+<a name="7u4icbkd8g3h73ru6ojgqgah9b">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="c%E5%9F%BA%E7%A1%80_files/2qfardg92d2hfm86s8qth0cdnq.png"></p>
+<h3 class="topic">
+<a name="29vuajdu2q3u8u8s10sv5kfka7">&nbsp;&nbsp;&nbsp;&nbsp;内核栈大小有限，所以内核数代码中一般不使用递归算法</a>
+</h3>
+<h3 class="topic">
+<a name="4ic5s7bmr942kpf43jr4qpua61">&nbsp;栈中数据</a>
+</h3>
+<h3 class="topic">
+<a name="7arbjeaub5bt8i5eoqmoivd2b7">&nbsp;&nbsp;函数栈帧中的ebp一般在debug版本的程序中存在，在release版主中可能不存在</a>
+</h3>
+<h2 class="topic">
+<a name="7vtmq8l1span2cisnns90t0b77">内存寻址</a>
+</h2>
+<h3 class="topic">
+<a name="4gsi8ucu3pf42ses5qn8jilcfi">&nbsp;逻辑地址、线性地址、物理地址</a>
+</h3>
+<p class="topicImage">
+<img src="c%E5%9F%BA%E7%A1%80_files/45eg2pjone0n3ibe06d6kiun66.png"></p>
+<h3 class="topic">
+<a name="649ddnl53vmumtk23u4j5g2ja3">&nbsp;&nbsp;逻辑地址到线性地址的转换</a>
+</h3>
+<h3 class="topic">
+<a name="6gba59041dta0j52ijfcuj59jk">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="c%E5%9F%BA%E7%A1%80_files/0bfgcg3cs6ghnbtkqknuap6duq.png"></p>
+<h3 class="topic">
+<a name="3c0s7hhllv5ret067r1l63eu9r">&nbsp;&nbsp;当前扁平模式下，段寄存器的值都是常量，在应用层，段寄存器没有用到，所以逻辑地址和线性地址基本上可以等同，即段寄存器中的值可以看作是没有用到</a>
+</h3>
+<h3 class="topic">
+<a name="3rlneveaq1lircp30t1a784ed0">&nbsp;&nbsp;&nbsp;但是实际上段寄存器中的值保存的是段选择子，要根据段选择子寻找段描述符从而填充描述符高速缓冲区（即段寄存器不可见部分）</a>
+</h3>
+<h3 class="topic">
+<a name="7q0e9l8q6r08fee6jm32t1oh22">&nbsp;实模式分段模型</a>
+</h3>
+<h3 class="topic">
+<a name="3tg5f12g87kos5mvem4uj4ibd6">&nbsp;&nbsp;十六位系统中使用，寄存器是16位的，地址总线是20位的，最终导致分段模型</a>
+</h3>
+<h3 class="topic">
+<a name="2rqpempr33ii9cu1js0cprkq23">&nbsp;&nbsp;&nbsp;线性地址=cs*0x10+ip</a>
+</h3>
+<h3 class="topic">
+<a name="5rl20udl8q72gth56ggbh57hn6">&nbsp;&nbsp;段寄存器中的值一定是变化的，才能用于标识不同的段</a>
+</h3>
+<h3 class="topic">
+<a name="40o2of29k4te6d4ag41l40acio">&nbsp;保护模式扁平模型</a>
+</h3>
+<h3 class="topic">
+<a name="7h19nn8j6c8liq4e1qtoum1ns7">&nbsp;&nbsp;x86 x64系统中使用 地址总线位数=寄存器位数，使用一个寄存器就可以寻址整个内存，段寄存器不再需要使用</a>
+</h3>
+<h3 class="topic">
+<a name="5g7ai8ub1cg37ebtf1ah0qjchi">&nbsp;&nbsp;x86保护模式中32位线性地址分为3部分（非pae）或4部分（pae），cr3寄存器存放页目录表基址</a>
+</h3>
+<h3 class="topic">
+<a name="04dn3ltdvn6lsfg0movkq7cjev">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="c%E5%9F%BA%E7%A1%80_files/5ighvl3ohamspl21asaicmvvre.png"></p>
+<h3 class="topic">
+<a name="6fiil1cofsp9glgaashimquf7m">&nbsp;&nbsp;x64保护模式中有64位线性地址，其中64位linxu使用了第48位标识内存地址，可以将其分为5部分9 9 9 9 12</a>
+</h3>
+<h3 class="topic">
+<a name="212l1kqq3ugs9in73qkppnno0h">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="c%E5%9F%BA%E7%A1%80_files/14ke9ti7m8pd2tlann4jt9ritb.png"></p>
+<h3 class="topic">
+<a name="31b4nuj71pm2ea9l5ml2e6md2d">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="c%E5%9F%BA%E7%A1%80_files/6l7l9ahcfg3k4t5dr473ggu8vs.png"></p>
+<h2 class="topic">
+<a name="7phu85i0mobjn864eic7ju5td6">pe文件结构</a>
+</h2>
+<h3 class="topic">
+<a name="7o5au0lcejpbuk8mh23bcn61av">&nbsp;release版本的pe文件中没有pe文件最后的调试信息</a>
+</h3>
+<h2 class="topic">
+<a name="1qigje0f9ghld2k6414elk3mj7">整数</a>
+</h2>
+<h3 class="topic">
+<a name="1jth99kpcgikcdrlsd0ktjh6k6">&nbsp;整数进制转换</a>
+</h3>
+<h3 class="topic">
+<a name="005r8l4e8hp0p1osu2lf9d4q7c">&nbsp;&nbsp;二、八、十、十六</a>
+</h3>
+<h3 class="topic">
+<a name="2f53or7a2fjbq3skfgjoli4h26">&nbsp;&nbsp;进制表示</a>
+</h3>
+<h3 class="topic">
+<a name="0f7b3va0ck8sbadfabmijogfb5">&nbsp;&nbsp;&nbsp;c语言中没有二进制的表示方法</a>
+</h3>
+<h3 class="topic">
+<a name="2o5sti4chqlom14iq7eq6q11o2">&nbsp;&nbsp;&nbsp;八进制数用0开头</a>
+</h3>
+<h3 class="topic">
+<a name="4i1094684q2be97dv3jbntnkm4">&nbsp;&nbsp;&nbsp;十六j进制数用0x开头</a>
+</h3>
+<h3 class="topic">
+<a name="2st81u3ac5pa1uon56jqjfp5es">&nbsp;&nbsp;进制转换</a>
+</h3>
+<h3 class="topic">
+<a name="2qmha71rh5v2lgsvv5k85aqa84">&nbsp;&nbsp;&nbsp;其他进制转十进制</a>
+</h3>
+<h3 class="topic">
+<a name="3it4av95q58c3cj23d0d91pgpa">&nbsp;&nbsp;&nbsp;&nbsp;权位相加法</a>
+</h3>
+<h3 class="topic">
+<a name="29sfn3i84a2uoc760qh9hj3saj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="c%E5%9F%BA%E7%A1%80_files/75td6vor3q17ulvtn2r5ukl689.png"></p>
+<h3 class="topic">
+<a name="3cqmibn5n7po0s5miv67jn6r89">&nbsp;&nbsp;&nbsp;&nbsp;对于小数位，0.12B=1*2^(-1)+2*2^(-2)</a>
+</h3>
+<h3 class="topic">
+<a name="3k01m56udtfalq73sv0f79a0e2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;八进制、十六进制类似</a>
+</h3>
+<h3 class="topic">
+<a name="1gh13n3rgc2npl7jfk1r16e50l">&nbsp;&nbsp;&nbsp;十进制转其他进制</a>
+</h3>
+<h3 class="topic">
+<a name="0keqmnv2n9gqb6etbnnie2pn0a">&nbsp;&nbsp;&nbsp;&nbsp;辗转相除法</a>
+</h3>
+<h3 class="topic">
+<a name="7kkrabbhe6scpdfq0fjrtovhov">&nbsp;&nbsp;&nbsp;&nbsp;例子</a>
+</h3>
+<h3 class="topic">
+<a name="6q2ulbmid6a4hf9kkj48g4g1s4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// 1000D -&gt; 八进制 -&gt; 1750&#13;
+  1000 / 8 = 125 &hellip;&hellip; 0&#13;
+  125 / 8 = 15 &hellip;&hellip; 5&#13;
+  15 / 8 = 1 &hellip;&hellip; 7&#13;
+  1 / 8 = 0 &hellip;&hellip; 1&#13;
+  不断的用结果除以8，直到商为0，最后将计算出的余数倒序</a>
+</h3>
+<h3 class="topic">
+<a name="0plg6laqr69vopibvgh0cn5t9l">&nbsp;&nbsp;&nbsp;&nbsp;对于小数位，0.12d转成二进制采用提2法</a>
+</h3>
+<h3 class="topic">
+<a name="52o36abufk68da201hrcggol5g">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0.12*2=0.24</a>
+</h3>
+<h3 class="topic">
+<a name="4l41h10dja24hpgpiai93343hh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0.24*2=0.48</a>
+</h3>
+<h3 class="topic">
+<a name="0r5vk128igrsub844e05603fm9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0.48*2=0.96</a>
+</h3>
+<h3 class="topic">
+<a name="3ib8hnfvcpmul0ae7jmv8k7sp2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0.96*2=1.92</a>
+</h3>
+<h3 class="topic">
+<a name="295hcdc3gg3jden6860mokql9c">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;所以0.12d约等于0.0001b</a>
+</h3>
+<h3 class="topic">
+<a name="2dhc0v381jta4ci9drqalqiv4g">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对于转换成8进制，采用提8法</a>
+</h3>
+<h3 class="topic">
+<a name="27askgt4d9ok4s1qrr4jajrtd4">&nbsp;&nbsp;&nbsp;十进制和二进制相互转换</a>
+</h3>
+<h3 class="topic">
+<a name="27fpnj8352aeip0dpnda42cne6">&nbsp;&nbsp;&nbsp;&nbsp;使用表格法</a>
+</h3>
+<p class="topicImage">
+<img src="c%E5%9F%BA%E7%A1%80_files/6qinkppbgta8vrq6bqajm7t3t0.png"></p>
+<h3 class="topic">
+<a name="122uhs24hsucge4ei1a42v9am5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="c%E5%9F%BA%E7%A1%80_files/6rajm4od1ciqh2gjr6iti7ad5c.png"></p>
+<h3 class="topic">
+<a name="030aou8j6vtcrvekdb2d27q1q2">&nbsp;&nbsp;&nbsp;十六进制八进制 二进制间转换</a>
+</h3>
+<h3 class="topic">
+<a name="6o3qm5ovh7jecvoiv6b7lscdci">&nbsp;&nbsp;&nbsp;&nbsp;每个十六进制位表示4个二进制位</a>
+</h3>
+<h3 class="topic">
+<a name="3l85rh6c9v4m8fqtr3ehetl20m">&nbsp;&nbsp;&nbsp;&nbsp;每个八进制位表示3个二进制位</a>
+</h3>
+<h3 class="topic">
+<a name="0ph23p0pup8l1btgg7u8egesko">&nbsp;&nbsp;将一个字节的数据扩充为2字节数据或4字节数据，高位使用数据符号位进行填充</a>
+</h3>
+<h3 class="topic">
+<a name="7joo9uict6aqb4itqfcc8kles8">&nbsp;整数编码</a>
+</h3>
+<h3 class="topic">
+<a name="4dptkqr4c9th3dcppq4m2e5upo">&nbsp;&nbsp;原码反码补码</a>
+</h3>
+<h3 class="topic">
+<a name="6h5elrkdpsfpjb82bej0pdbrl9">&nbsp;&nbsp;&nbsp;正数的补码就是其本身</a>
+</h3>
+<h3 class="topic">
+<a name="0tdd9247lfs4gtc9gqkj0pu8g0">&nbsp;&nbsp;&nbsp;负数的补码就是负数绝对值的补码取反+1，注意需要所有的二进制位均取反，包括符号位</a>
+</h3>
+<h3 class="topic">
+<a name="0i6e5jmmv2im5cros8ollr15t2">&nbsp;&nbsp;补码的好处</a>
+</h3>
+<h3 class="topic">
+<a name="4r9mj89s0pg4alr1d0g74md5ka">&nbsp;&nbsp;&nbsp;符号位可以参与计算</a>
+</h3>
+<h3 class="topic">
+<a name="5cjl65qb5oa3i6oqin3n44ilcs">&nbsp;&nbsp;&nbsp;0只有一个</a>
+</h3>
+<h3 class="topic">
+<a name="4mm8s7gbn54r4ti3mlps131d3f">&nbsp;整数存储方法</a>
+</h3>
+<h3 class="topic">
+<a name="1vkfmp9329qj3kq5896dm1vhtc">&nbsp;&nbsp;大端、小端</a>
+</h3>
+<h3 class="topic">
+<a name="7kucb60jn5vfb74lo994l1otpi">&nbsp;&nbsp;&nbsp;小端</a>
+</h3>
+<h3 class="topic">
+<a name="4i0i7kpfrrbtebn89tr88468gh">&nbsp;&nbsp;&nbsp;&nbsp;数据的高位存放在内存高地址、数据的低位存放在内存低地址</a>
+</h3>
+<h3 class="topic">
+<a name="45rj0f7hkjnv93cku770l56i5e">&nbsp;&nbsp;&nbsp;大端</a>
+</h3>
+<h3 class="topic">
+<a name="6n9bsg15gg1im4hv8pi5tp7ddb">&nbsp;&nbsp;&nbsp;&nbsp;数据的高位存放在内存低地址、数据的低位存放在内存高地址</a>
+</h3>
+<h3 class="topic">
+<a name="4alpkrqhrf8vbaetv5cbbmj0g1">&nbsp;&nbsp;如何判断当前系统是大端还是小端</a>
+</h3>
+<h3 class="topic">
+<a name="17gdb290aecfoueuiq9t7l33lv">&nbsp;&nbsp;&nbsp;通过定义一个int类型的数据，将该数据赋值为1，然后将该数据强转为char*类型，从而获得int四字节数据的低内存地址的一字节数据，从而判断当前系统是大端或小端</a>
+</h3>
+<p class="topicImage">
+<img src="c%E5%9F%BA%E7%A1%80_files/7t85vk2273dmqgqeh3716leecr.png"></p>
+<h3 class="topic">
+<a name="7995ke2qfpaa6ptqeomf0b9ug7">&nbsp;&nbsp;&nbsp;&nbsp;当前也可以通过联合体的方法判断</a>
+</h3>
+<h3 class="topic">
+<a name="04ud380cltcig6mcd2vr03djgp">&nbsp;&nbsp;如何实现大端系统和小端系统之间的数据传输</a>
+</h3>
+<h3 class="topic">
+<a name="6k5qavsmg4rrso02q44h89fmde">&nbsp;&nbsp;&nbsp;数据发送方将数据修改为网络字节序发送</a>
+</h3>
+<h3 class="topic">
+<a name="5v6ptqn2rpdisgra8dm55t1a97">&nbsp;&nbsp;&nbsp;&nbsp;使用函数htons()传输short类型数据</a>
+</h3>
+<h3 class="topic">
+<a name="4v169ifd8ct9ik9r99mkd6j8s3">&nbsp;&nbsp;&nbsp;&nbsp;如果传输long类型数据使用函数 htonl()</a>
+</h3>
+<h3 class="topic">
+<a name="6qqb5oj09qsagkmq0b166u31u6">&nbsp;&nbsp;&nbsp;数据接收方将数据从网络字节序转换为本机字节序</a>
+</h3>
+<h3 class="topic">
+<a name="7l2ppgkn9s9l7dcc8hde8bf8oj">&nbsp;&nbsp;&nbsp;&nbsp;使用函数ntohs()传输short类型数据</a>
+</h3>
+<h3 class="topic">
+<a name="5pr31aijl49llgo1jirg4i4pte">&nbsp;&nbsp;&nbsp;&nbsp;如果传输long类型数据使用函数 ntohl()</a>
+</h3>
+<h3 class="topic">
+<a name="4pagnpa830t6tv04cdgop3kmqe">&nbsp;&nbsp;&nbsp;网络字节序是大端传输</a>
+</h3>
+<h3 class="topic">
+<a name="4o2m0k34at019oe8olvc94lba2">&nbsp;整数的位运算</a>
+</h3>
+<h3 class="topic">
+<a name="3u0s9v9alsuds03r4lqfppkfen">&nbsp;&nbsp;(char)(127&lt;&lt;1)+1 注意(char)(127&lt;&lt;1)占1字节 1占4字节，最终是结果是4字节，即32个1，则最后结果为-1</a>
+</h3>
+<h3 class="topic">
+<a name="672o5u4ant0clttbrs1offgb8g">&nbsp;&nbsp;算数右移，最高为使用符号填充&#13;
+逻辑右移，最高位使用0填充，&#13;
+c语言中的&gt;&gt;是算数右移</a>
+</h3>
+<h3 class="topic">
+<a name="02p281k5n3s1n1q9dvjnq58hh3">&nbsp;&nbsp;算数运算符的优先级高于位移运算符，即+-运算符的优先级高于&lt;&lt; &gt;&gt;优先级</a>
+</h3>
+<h3 class="topic">
+<a name="4t87shqbl2ke08tkptm6rqcdjc">&nbsp;&nbsp;x&amp;(x-1)的目的是将数据x最右边的二进制位的1去掉，如果连续执行可以将一个数从从右到左依次将二进制的1改为0，以此可以判断该数据中有几个二进制1</a>
+</h3>
+<h3 class="topic">
+<a name="6h0efdr6vg2uhp5d651nef46vn">&nbsp;整数的逻辑运算</a>
+</h3>
+<h3 class="topic">
+<a name="43e20s9tscp571i9r9d8m04dk0">&nbsp;&nbsp;&amp;可以用于求指定数据的某一部分，即网络掩码的原理</a>
+</h3>
+<h3 class="topic">
+<a name="4ru7pgsalta0uhumhnt8bkejra">&nbsp;&nbsp;xor</a>
+</h3>
+<h3 class="topic">
+<a name="32ehkmf6cjk9pkh3ng3via69tf">&nbsp;&nbsp;&nbsp;任何数异或自己=0</a>
+</h3>
+<h3 class="topic">
+<a name="7oohasa5hgkve4l0pta9k57jkp">&nbsp;&nbsp;&nbsp;&nbsp;任何数异或0=自己</a>
+</h3>
+<h3 class="topic">
+<a name="7t4lubrjbhc00bsrkfm2ebia85">&nbsp;&nbsp;&nbsp;使用异或将两个数进行交换</a>
+</h3>
+<h3 class="topic">
+<a name="3mob374v9mngt9nde0oebngfe6">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="c%E5%9F%BA%E7%A1%80_files/4fuc94piti88reu7r1n4oc71pu.png"></p>
+<h3 class="topic">
+<a name="09uun7kbtd06ve4uogmc844lft">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;异或运算是其本身的逆运算&#13;
+所以具有逆运算的运算符号均可以通过这种方式交换两个数</a>
+</h3>
+<h3 class="topic">
+<a name="7adpevp9d1mrn7vu1e0c6p3fbr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="c%E5%9F%BA%E7%A1%80_files/7qpl4humt8d15lba8vpl5moppr.png"></p>
+<h3 class="topic">
+<a name="72arv415cssl66jtflh077ggg6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="c%E5%9F%BA%E7%A1%80_files/1tlrbedc7u03go3nqtmctn4oo0.png"></p>
+<h3 class="topic">
+<a name="44b4fdvf757p95ki1nepv4o5ut">&nbsp;&nbsp;&nbsp;使用异或，用单链表实现双链表结构</a>
+</h3>
+<h3 class="topic">
+<a name="6abesduv72fqqo14975qlfnte0">&nbsp;&nbsp;&nbsp;&nbsp;通过将中间节点的指针设置为左边节点的指针和右边节点的指针的异或，从而实现链表中的节点只有一个指针域，但是可以从左往右和从右往左遍历</a>
+</h3>
+<h3 class="topic">
+<a name="0ull05c7h2pbs4q5tvnsaubrkb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="c%E5%9F%BA%E7%A1%80_files/3egiovk90gc07imq1jbq6fccl9.png"></p>
+<h3 class="topic">
+<a name="15f4femut1lovpcofki3vsallh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="c%E5%9F%BA%E7%A1%80_files/084b84glrcm0iejupajbq77okj.png"></p>
+<h2 class="topic">
+<a name="05efki018t524hohnbnpueu4ik">函数的传参</a>
+</h2>
+<h3 class="topic">
+<a name="1egenm8bnaojc4ps8f3ujbnan9">&nbsp;数组做函数的参数，在函数内部被退化为指针 例如void func(char a[]);</a>
+</h3>
+<h3 class="topic">
+<a name="5iobm77a05c5cmn5o148o64nrc">&nbsp;当形参中存在&amp;时，说明此函数是进行传引用</a>
+</h3>
+<h3 class="topic">
+<a name="4ai884cbq4v3ija8ccno7vgv87">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="c%E5%9F%BA%E7%A1%80_files/6tvlr0c9c9glrga1imcdl32tnr.png"></p>
+<h3 class="topic">
+<a name="02flrpdn9ee9te7etlbf7kklub">&nbsp;&nbsp;&nbsp;使用数组的引用作为参数，可以用于检测数组的溢出，因为数组引用会严格规定所引用的数组的元素个数，如果不符合则会报错</a>
+</h3>
+<h3 class="topic">
+<a name="755tfhf8piod3hk5um0djiekcs">&nbsp;三种传参方法</a>
+</h3>
+<h3 class="topic">
+<a name="0j5el3t7qebivm50u5p1rcc9e2">&nbsp;&nbsp;传值不能改变实参，传指针和传引用可以改变实参，后面两个是将实参的地址进行传递</a>
+</h3>
+<p class="topicImage">
+<img src="c%E5%9F%BA%E7%A1%80_files/5qt1hanur9n5eifk6f0rtmakq4.png"></p>
+<h3 class="topic">
+<a name="1ifiap0s9au1k4l1kr6toqskis">&nbsp;&nbsp;&nbsp;传指针比传值效率高</a>
+</h3>
+<h3 class="topic">
+<a name="3umqa5p1pakbv6p1pdb7bplq0o">&nbsp;&nbsp;&nbsp;传引用比传指针安全</a>
+</h3>
+<h3 class="topic">
+<a name="3bah09lcrqvjsp388269usk8vh">&nbsp;&nbsp;&nbsp;&nbsp;引用必须初始化，且初始化之后不能被改变</a>
+</h3>
+<h3 class="topic">
+<a name="7s2vfgqe0ud6c8mbsefn2i0if9">&nbsp;&nbsp;传指针引用，实际上是一种传引用</a>
+</h3>
+<p class="topicImage">
+<img src="c%E5%9F%BA%E7%A1%80_files/4ragl1dfhj9977lplgjmuojcee.png"></p>
+<h3 class="topic">
+<a name="24f96juk6o54abso5unbnvv95v">&nbsp;&nbsp;&nbsp;传指针的指针</a>
+</h3>
+<p class="topicImage">
+<img src="c%E5%9F%BA%E7%A1%80_files/3gadn2mkpnp3etpjahdv6d2g7g.png"></p>
+<h3 class="topic">
+<a name="62haeiflbi0i96k6de3puo4ldo">&nbsp;&nbsp;&nbsp;&nbsp;如果指针做实参，而函数中要修改指针的值，需要以指针的指针或指针的引用作为参数</a>
+</h3>
+<h3 class="topic">
+<a name="5au3cvjh8c3gs9nf72ma3fh3st">&nbsp;&nbsp;三种传参方法是以传递的实参为标准的，如果传递的是实参本身，则就是一个传值，有时实参就是一个指针，直接将该指针传给函数，就是一个传值，如果是将实参的地址或引用传给函数，就是传参或传引用</a>
+</h3>
+<h3 class="topic">
+<a name="02ouhvc1srqqra6c0crd9fl1jm">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="c%E5%9F%BA%E7%A1%80_files/0gfpm1mrgvbruahfo3h20nduj9.png"></p>
+<h2 class="topic">
+<a name="6rjics7kg04gr6jcp8vuedijfo">算法</a>
+</h2>
+<h3 class="topic">
+<a name="7asdg893f8i5umtj6skchngmov">&nbsp;步骤</a>
+</h3>
+<h3 class="topic">
+<a name="1uen8aamt476hufg4pcpv1sell">&nbsp;&nbsp;理解题意、明确输入输出，明确算法原型</a>
+</h3>
+<h3 class="topic">
+<a name="4ea1nbotibqpm82djpg7oci3fo">&nbsp;&nbsp;&nbsp;注意要设置合理的接口，有利于问题的解决</a>
+</h3>
+<h3 class="topic">
+<a name="0q2rhvq4pvdoff2kecpeh2cj8p">&nbsp;&nbsp;对算法参数进行校验</a>
+</h3>
+<h3 class="topic">
+<a name="6i1ohd1g8hrjckstg7s5h5dacg">&nbsp;&nbsp;&nbsp;如果参数为指针、判断是否为null</a>
+</h3>
+<h3 class="topic">
+<a name="1qr99me5c39dpc0lfld3625m0o">&nbsp;&nbsp;&nbsp;如果为长度，判断是否合理</a>
+</h3>
+<h3 class="topic">
+<a name="3cd5tvinlc3cbviqll4fepk8fp">&nbsp;&nbsp;&nbsp;参数类型是否合理</a>
+</h3>
+<h3 class="topic">
+<a name="4jdi3j0m4o7ddbqfocahdk6sqg">&nbsp;&nbsp;考虑各种特殊情况</a>
+</h3>
+<h3 class="topic">
+<a name="1q6009p59ita2niu1aridv2tik">&nbsp;&nbsp;&nbsp;溢出，边界问题、内存区域是否重叠</a>
+</h3>
+<h3 class="topic">
+<a name="2ik0k5vtshihrenlbajoklvk49">&nbsp;算法的复杂度</a>
+</h3>
+<h3 class="topic">
+<a name="7plgfja8nne7l8cta0bhmhnj7d">&nbsp;&nbsp;时间复杂度</a>
+</h3>
+<h3 class="topic">
+<a name="6lno1iiattks276rm32fp727lf">&nbsp;&nbsp;&nbsp;一重循环-》O(n) </a>
+</h3>
+<h3 class="topic">
+<a name="5o0a0qo1m0ksruqm1oo0fcb6bn">&nbsp;&nbsp;&nbsp;折半查找-》O(logN)</a>
+</h3>
+<h3 class="topic">
+<a name="5an2a3njeh693v77q26oshcv7q">&nbsp;&nbsp;&nbsp;双重循环-》O(n^2)</a>
+</h3>
+<h3 class="topic">
+<a name="2buvqurpddg7ourt6d8ajnuuil">&nbsp;&nbsp;&nbsp;三重循环-》O(n^3)</a>
+</h3>
+<h3 class="topic">
+<a name="1i4kr3b6k7b2gi3p2394s31kse">&nbsp;&nbsp;空间复杂度</a>
+</h3>
+<h3 class="topic">
+<a name="4ch71tl42s616bg4uvvsf21cl0">&nbsp;&nbsp;&nbsp;空间复杂度为O(1)</a>
+</h3>
+<p class="topicImage">
+<img src="c%E5%9F%BA%E7%A1%80_files/42ujr5pfolc23oe1kugg83fqcl.png"></p>
+<h3 class="topic">
+<a name="52qkjee6pq3jt08hh7cm35ff3m">&nbsp;&nbsp;&nbsp;&nbsp;内存不会因为问题的规模的增大而增大，是一个常数所以为O(1)</a>
+</h3>
+<h3 class="topic">
+<a name="20fccv1e8hrack3ri4aejkjllm">&nbsp;断言assert()</a>
+</h3>
+<h3 class="topic">
+<a name="2rvgjkoii7ncbjcak887df3l81">&nbsp;&nbsp;该函数只在程序调试版本有效，程序运行过程中必须保证()中的表达式为true，否则会抛出异常</a>
+</h3>
+<h3 class="topic">
+<a name="23anrio9pjunhfv3h2j0r3ae7r">&nbsp;&nbsp;发行版本中的断言自动失效</a>
+</h3>
+<h3 class="topic">
+<a name="0qvc2lr8ep4t5967s9ar7d1bg6">&nbsp;将字符串按照字母进行逆序放置</a>
+</h3>
+<h3 class="topic">
+<a name="66367vv58bq8p6a2i6babf279j">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="c%E5%9F%BA%E7%A1%80_files/5002outhv6p7khlsek0kqf2bkq.png"></p>
+<h3 class="topic">
+<a name="33odct6i50t4naqv0ktis061vt">&nbsp;将字符串按照单词进行逆序</a>
+</h3>
+<h3 class="topic">
+<a name="260nolt1cnfdm2nnab7334fidh">&nbsp;&nbsp;思路：&#13;
+1、将整个字符串按照字符进行逆序&#13;
+2、以空格作为标志，分别对两个单词进行逆序</a>
+</h3>
+<h3 class="topic">
+<a name="4o8oid32i1kflpdqnoj652javt">&nbsp;将字符串起始指定位数的内容放置到字符串后面</a>
+</h3>
+<h3 class="topic">
+<a name="7m7dmovl0fhf06996ob2rbh3q0">&nbsp;&nbsp;以指定的位数作为作为标记，将一个字符串看成两个字符串，然后将两个字符串分别逆序，最后将整个字符串进行逆序，从而完成要求</a>
+</h3>
+<h3 class="topic">
+<a name="4jfuul8q6j2ioqf2mgdj77jlhh">&nbsp;&nbsp;&nbsp;hello world转化为lo worldhel</a>
+</h3>
+<h3 class="topic">
+<a name="0pl1ifirb181hm9c3r9ov61adt">&nbsp;&nbsp;&nbsp;&nbsp;hello world&#13;
+lehdlorw ol&#13;
+ol worldhe</a>
+</h3>
+<h2 class="topic">
+<a name="0airsra4s1jlq0f624nho794i7">调用约定</a>
+</h2>
+<h3 class="topic">
+<a name="175siooqjvecv34qn9pq65abjc">&nbsp;cdecl调用约定</a>
+</h3>
+<h3 class="topic">
+<a name="7tnul8gf7rjjjc70sgk9m9bi3c">&nbsp;&nbsp;c语言默认的调用约定</a>
+</h3>
+<h3 class="topic">
+<a name="0iq3k9acu8p4qhoelqppc2cfdl">&nbsp;&nbsp;&nbsp;参数从右到左入栈，调用方平衡堆栈</a>
+</h3>
+<h3 class="topic">
+<a name="62aj955o1u82ogtjp7qim1rfdi">&nbsp;&nbsp;printf等变参函数必须使用cdecl调用约定</a>
+</h3>
+<h3 class="topic">
+<a name="4sce85apusjktkredetp7hopd2">&nbsp;stdcall调用约定</a>
+</h3>
+<h3 class="topic">
+<a name="6otdch1af2clcard01pi8csp4d">&nbsp;&nbsp;标准调用约定：windows编程或windows内核编程使用的调用约定</a>
+</h3>
+<h3 class="topic">
+<a name="15be0jhjeuuhtmfoqqgodl1cfj">&nbsp;&nbsp;&nbsp;参数从右到左入栈，被调用方平衡堆栈</a>
+</h3>
+<h3 class="topic">
+<a name="65jastmkpfrau8c0vqdgt67hk4">&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="c%E5%9F%BA%E7%A1%80_files/4m7t5vnindnen1u7746tpn5f63.png"></p>
+<h3 class="topic">
+<a name="1oot1rbm603ppcpdlntegd9noj">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="c%E5%9F%BA%E7%A1%80_files/799d72p99g1vac0t9i63mcb5mo.png"></p>
+<h3 class="topic">
+<a name="154h4r93nhhgaugg4enkref4ph">&nbsp;&nbsp;&nbsp;x86中的fastcall前两个参数使用ecx edx传参</a>
+</h3>
+<h3 class="topic">
+<a name="5g369gsfgep6vffl6ucu2p7tpn">&nbsp;&nbsp;&nbsp;&nbsp;x86的fastcall中调用者负责栈平衡</a>
+</h3>
+<h3 class="topic">
+<a name="3hfh95vlsnrcoh4nb297bv05kq">&nbsp;&nbsp;&nbsp;x64平台默认是fastcall，并且传参的时候前四个参数使用rcx rdx r8 r9寄存器进行传参</a>
+</h3>
+<h3 class="topic">
+<a name="7h544d6n90tle1eur09psnbr91">&nbsp;&nbsp;&nbsp;&nbsp;x64调用约定虽然前四个参数通过寄存器传递，但是栈中仍然为该四个参数留下了内存空间，称为shadow space</a>
+</h3>
+<h3 class="topic">
+<a name="5235vp70f0dkpvo2mefloji3it">&nbsp;&nbsp;&nbsp;&nbsp;x64的fastcall中调用者负责栈平衡</a>
+</h3>
+<h2 class="topic">
+<a name="5cd6o1uipusg7c2tas3rn5t407">缓冲区溢出</a>
+</h2>
+<h3 class="topic">
+<a name="7rhceinc2de3o5nparkjeh0ubm">&nbsp;如何尽量避免缓冲区溢出</a>
+</h3>
+<h3 class="topic">
+<a name="32tefd0s1glr8s5novt90kc9pm">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="c%E5%9F%BA%E7%A1%80_files/2kehu84q9gl0cb0l4g10e31lc4.png"></p>
+<h2 class="topic">
+<a name="1j3io2f2pel71tf7kngksjq09p">内存分配</a>
+</h2>
+<h3 class="topic">
+<a name="4ori2di66smn9fll0moulptv6k">&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="c%E5%9F%BA%E7%A1%80_files/3gsshhun0abuvn5p0cehu0cg47.png"></p>
+<h3 class="topic">
+<a name="60vtmqrb23bsetbd90bhkamipc">&nbsp;&nbsp;变量声明时需要将其初始化，特别是指针</a>
+</h3>
+<h3 class="topic">
+<a name="1fq4oo5jfd0770eq2qvoh7gdtv">&nbsp;&nbsp;内存通过malloc分配完成后，需要将其初始化，使用memset(),否则内存中的垃圾内容会影响正常使用</a>
+</h3>
+<h3 class="topic">
+<a name="1vm468280mioogr1aprde3j7hg">&nbsp;&nbsp;释放内存后将指针置为NULL防止野指针</a>
+</h3>
+<h2 class="topic">
+<a name="7mit6ibogf5ta6j2lgnk96flor">内存泄漏</a>
+</h2>
+<h3 class="topic">
+<a name="3io8bv6fjcln74pvmrb5undb40">&nbsp;定义</a>
+</h3>
+<h3 class="topic">
+<a name="6h173mof7tt2or02vhfnhjqrej">&nbsp;&nbsp;通过malloc申请堆内存之后没有使用free进行释放，从而会造成内存泄露</a>
+</h3>
+<h3 class="topic">
+<a name="0467bkh43obgj1vf2hr0imvqq5">&nbsp;如何防止内存泄露</a>
+</h3>
+<h3 class="topic">
+<a name="2bkv5pdpktlfgsd2034ultutnu">&nbsp;&nbsp;malloc free配对使用</a>
+</h3>
+<h3 class="topic">
+<a name="30u3abjejhi8j31kkinloscht6">&nbsp;&nbsp;谁分配谁释放</a>
+</h3>
+<h3 class="topic">
+<a name="10j4kofdjp1ktpiumo3jmi6e6r">&nbsp;&nbsp;错误处理时需要针对已经分配成功的内存进行释放</a>
+</h3>
+<h3 class="topic">
+<a name="4308cc5gaaaebo009o4k9uruer">&nbsp;&nbsp;如果多个模块要使用同一块堆内存，为保证内存的正常释放，可以为使用引用计数标识该内存被引用的情况</a>
+</h3>
+<h3 class="topic">
+<a name="775r84n2bnoasem546ujfo252d">&nbsp;&nbsp;使用c++的智能指针</a>
+</h3>
+<h3 class="topic">
+<a name="56vqoagb9b7gd8uu95s4bn7lsl">&nbsp;如何检测内存泄露</a>
+</h3>
+<h3 class="topic">
+<a name="1mdjetpv9caap95bu0mj18dku1">&nbsp;&nbsp;自己定义mallloc和free，当申请一个堆块的时候，将堆块指针访放入vertor数组，堆块释放的时候，将该指针从vector数组删除，当程序退出前，可以检测该vector是否为空，即可判断是否存在没释放的堆块</a>
+</h3>
+<p class="topicImage">
+<img src="c%E5%9F%BA%E7%A1%80_files/1ivr5q6fmelk6p1qqelpo5ehbl.png"></p>
+<h2 class="topic">
+<a name="1bt3s1nj3p49o1g619crftr7he">其他</a>
+</h2>
+<h3 class="topic">
+<a name="1jtdifopjcl9catjkuopf5pnjt">&nbsp;long数据类型</a>
+</h3>
+<h3 class="topic">
+<a name="400dnhnjeah3hqrhqcf5o0tjn6">&nbsp;&nbsp;windows中 无论是x86还是x64都占4个字节</a>
+</h3>
+<h3 class="topic">
+<a name="2f3dckd4e2kjocbsan1pbrb3gs">&nbsp;&nbsp;&nbsp;windows中使用8字节数据最好用long long或_int64</a>
+</h3>
+<h3 class="topic">
+<a name="5tb56ra4tjhkfuq2ivtd7de9t1">&nbsp;&nbsp;linux平台中占8字节</a>
+</h3>
+<h3 class="topic">
+<a name="5gsoe4n8rdseiuvo6vl6ssuin0">&nbsp;sizeof new delete是运算符</a>
+</h3>
+<h3 class="topic">
+<a name="7oh3645in2f65il5khc6eiseie">&nbsp;&nbsp;对于运算符，其结果可以在程序编译阶段确定</a>
+</h3>
+<h3 class="topic">
+<a name="5ggb5ctougf6u97rkn0l8hn0t5">&nbsp;malloc free是函数</a>
+</h3>
+<h3 class="topic">
+<a name="7a9ttgbs27oklvpq1fmtqqtnbe">&nbsp;&nbsp;结果必须在运行期间确定</a>
+</h3>
+<h3 class="topic">
+<a name="4a5e0t3agm02epia5m8chnep1a">&nbsp;sizeof用法</a>
+</h3>
+<h3 class="topic">
+<a name="3ifru47mbk14trvsnbc9i9v8ln">&nbsp;&nbsp;sizeof("hello world")的值为12</a>
+</h3>
+<p class="topicImage">
+<img src="c%E5%9F%BA%E7%A1%80_files/6vjh0slpjumk7erh375nim7utd.png"></p>
+<h3 class="topic">
+<a name="3g795dfq9rtur56og35bu4r45s">&nbsp;strlen计算的字符串长度不包括最后的'\0'</a>
+</h3>
+<h3 class="topic">
+<a name="6on3ucoefivukvl0qtsgmseome">&nbsp;结构体对齐</a>
+</h3>
+<h3 class="topic">
+<a name="5ah7gd3hmjrgve3et2sfupiv0q">&nbsp;&nbsp;结构体的自然对齐（为了保证cpu能在一个时钟周期中将数据成员读出来）</a>
+</h3>
+<h3 class="topic">
+<a name="7u8jvaujv2rbvnqq68ec1id6ad">&nbsp;&nbsp;&nbsp;结构体中的成员存放的内存首地址必须是该成员大小的整数倍</a>
+</h3>
+<h3 class="topic">
+<a name="6q51hi0msr9iv9uliun6745l59">&nbsp;&nbsp;&nbsp;按照上条计算出的大小的基础上，结构体实际大小必须是其成员中最大成员大小的整数倍</a>
+</h3>
+<h3 class="topic">
+<a name="55ebj7rreojncv8k76h7d2nbsg">&nbsp;&nbsp;强制对齐</a>
+</h3>
+<h3 class="topic">
+<a name="11hd8023of75cjajfffrmaue83">&nbsp;&nbsp;&nbsp;该范围内定义的结构体均以1字节进行内存对齐</a>
+</h3>
+<p class="topicImage">
+<img src="c%E5%9F%BA%E7%A1%80_files/62pbunkuplmtpimo30kruoc8re.png"></p>
+<h3 class="topic">
+<a name="428a3ngo158vvs65mvs5n4hn6j">&nbsp;栈数据对齐</a>
+</h3>
+<h3 class="topic">
+<a name="5rlj6957rvrs36j5l9oakeg342">&nbsp;&nbsp;x86中栈中数据以4字节对齐</a>
+</h3>
+<h3 class="topic">
+<a name="7sde9i1f4m3rigga4dj52j8kvr">&nbsp;&nbsp;x64 形参按照8字节对齐，整个栈的大小按照16字节对齐</a>
+</h3>
+<h3 class="topic">
+<a name="62i7vrmbu1nnjlk49trr1gl4d0">&nbsp;strtok()</a>
+</h3>
+<h3 class="topic">
+<a name="3q9bgt4e5q7g58rlk966b51m4h">&nbsp;&nbsp;根据某个标志，将字符串进行拆分</a>
+</h3>
+<h3 class="topic">
+<a name="33475qkim3je98gdpkjufmi6k5">&nbsp;关于数组地址</a>
+</h3>
+<h3 class="topic">
+<a name="2212netocavbtbc6h3gtu0m25k">&nbsp;&nbsp;对于一维数组</a>
+</h3>
+<h3 class="topic">
+<a name="0t7ujalqbsntd7uvfau7japllk">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="c%E5%9F%BA%E7%A1%80_files/4887ectk40uuo8rgir15hrmjns.png"></p>
+<h3 class="topic">
+<a name="27cpco7q8hqqc8rdemetjgqc8i">&nbsp;&nbsp;对于高维数组</a>
+</h3>
+<h3 class="topic">
+<a name="3ggq9hgooji0bq3qemb87p2092">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="c%E5%9F%BA%E7%A1%80_files/04grabb0rmvli0q14qqqv3gbku.png"></p>
+<h3 class="topic">
+<a name="3j9q1apf1r0ip733qr95g77lv3">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="c%E5%9F%BA%E7%A1%80_files/4aleospu82f4038uc82o6uodkq.png"></p>
+<h3 class="topic">
+<a name="7da9el7d4387e5p542uai9n45d">&nbsp;debug版本和release版本中对于循环变量的不同处理</a>
+</h3>
+<h3 class="topic">
+<a name="142eic4i0rp2j9mq7ij4bas5tf">&nbsp;&nbsp;如果程序中有循环，debug版本的程序中会将循环使用的循环变量i保存在栈中，如果溢出修改了i的值可能会导致死循环，在release版本中，循环变量不会保存在栈中编译器会将其优化掉，只计算执行循环的次数，并保证程序执行时执行相应的次数</a>
+</h3>
+<h3 class="topic">
+<a name="0bvk3es7pamhud5esbeel8dl77">&nbsp;性能优化</a>
+</h3>
+<h3 class="topic">
+<a name="5o4j82ghgcn935tgrv7qrgga3b">&nbsp;&nbsp;遍历二维数组时按行遍历的效率要高于按列遍历的效率，因为内存中二维数组数据是按行进行存放的，同一行的数据相邻，如果数组过大，按行遍历可以不用跨越内存页，效率较高</a>
+</h3>
+</body>
+</html>

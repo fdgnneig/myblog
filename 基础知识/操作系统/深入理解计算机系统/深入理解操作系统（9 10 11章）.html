@@ -1,0 +1,724 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>深入理解操作系统</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="092kmpat6khldkkokqfgg2gm70">深入理解操作系统</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/images/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F.jpg"></div>
+<h2 class="topic">
+<a name="03ag3nhr7rqp4d507j87ogrd7o">第九章虚拟内存</a>
+</h2>
+<h3 class="topic">
+<a name="4kc8fcbg89uoj95mpnhfaf1avu">&nbsp;虚拟内存与物理内存</a>
+</h3>
+<h3 class="topic">
+<a name="6tbscvn48r6bu3ehoikme1ig7g">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/5fk5vlcaa7bu17080nmhhfdh94.png"></p>
+<h3 class="topic">
+<a name="189fdp17ups86fihsf3js7kuqe">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/6b6cnp7mnciap0p9mb5rvua2bq.png"></p>
+<h3 class="topic">
+<a name="63s24c6mfuqn14es03b65rankj">&nbsp;虚拟内存的三状态</a>
+</h3>
+<h3 class="topic">
+<a name="4ch2n0e9a1pf30qip28tuhk547">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/2qlsoph50c9djjn2hbjkdmqvlv.png"></p>
+<h3 class="topic">
+<a name="5kldkk6oobv0kif2hhqn0chlon">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/7hf1cbjv9cfjti78cg85gp5vi1.png"></p>
+<h3 class="topic">
+<a name="21v0f3ugkojv74pk9fi5ikh0br">&nbsp;虚拟页一般大小</a>
+</h3>
+<h3 class="topic">
+<a name="35hogrvgff8hcjcj9gv4s2u95o">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/0ele0s7ajg5io4n39n6cqnj691.png"></p>
+<h3 class="topic">
+<a name="4ccacnrv8pkiun7f9ntruncc70">&nbsp;页表</a>
+</h3>
+<h3 class="topic">
+<a name="7lqhm9ht5ceoev8dctom81oo62">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/2dgkns4isdhp9qrrivh0cjjjua.png"></p>
+<h3 class="topic">
+<a name="7ekophib6flaapckv6aj61hoja">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/18mr5b6sn5hm2vqklcg3mftj34.png"></p>
+<h3 class="topic">
+<a name="1vgla87mcrm0qbb71s68s36lp4">&nbsp;页命中</a>
+</h3>
+<h3 class="topic">
+<a name="0j6n2qa9eop5en87v8blma8vdg">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/15llnh0ncfeuqioe1ub5k8lsmb.png"></p>
+<h3 class="topic">
+<a name="1ftargsgf09ldon6kv9hv5teu1">&nbsp;缺页</a>
+</h3>
+<h3 class="topic">
+<a name="0ptkr5r7uevtukgs0p1lc7gorm">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/741l1fftvkcve1blld6prv9pho.png"></p>
+<h3 class="topic">
+<a name="5q87j5nomj3026jvdfh2v2360t">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/1r0b0ikimrm789263f14jlkemo.png"></p>
+<h3 class="topic">
+<a name="153tr4st6c9h84aqapoakgjtea">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/37r5h42oji837dd3cg857l8pfu.png"></p>
+<h3 class="topic">
+<a name="4h714ijdfm3i8j7nc454o2b3db">&nbsp;分配页面</a>
+</h3>
+<h3 class="topic">
+<a name="2tq7kbhlbi03nvl7qh343843li">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/4n3e4e287k7gfd1pnhg8sqsaio.png"></p>
+<h3 class="topic">
+<a name="4ahcuasqgk2tcgh6en66ki4g8h">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/7lr2g3kh5q0ud7cdtk4k9odcah.png"></p>
+<h3 class="topic">
+<a name="03v4h8fgntjqlg6pq6a1vsbkgk">&nbsp;虚拟内存机制提供进程间内存的独立性</a>
+</h3>
+<h3 class="topic">
+<a name="0t2m0ii9n5ekf010vuthe7nmbj">&nbsp;&nbsp;通过每个进程维护一个页表</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/3q7pnm22r53tum7frs8hto663p.png"></p>
+<h3 class="topic">
+<a name="57vaq88co6vlakdj3d0sq887j1">&nbsp;虚拟内存机制提供内存保护</a>
+</h3>
+<h3 class="topic">
+<a name="1qq30l5tjvoah2ko35ksqm5pip">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/1qdt6s2t5ar27r6u4pst69tp3a.png"></p>
+<h3 class="topic">
+<a name="30etvfo0snscp0nomm907184am">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/7d28kendc00f3votloiqd0hql3.png"></p>
+<h3 class="topic">
+<a name="3vo3bqn6a1liksh64085pnj0i6">&nbsp;地址翻译</a>
+</h3>
+<h3 class="topic">
+<a name="0emf7ehdod2etts82jqqia7sfr">&nbsp;&nbsp;相关概念</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/79nems14p9i2nlktfv99gp7iqt.png"></p>
+<h3 class="topic">
+<a name="387r9jjgt7uk7qihqpdhsugep1">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/61c2vvb4um88dis888o22ddj53.png"></p>
+<h3 class="topic">
+<a name="6liea8ujlm9ppvf4ke93fni7ic">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/0tl1nlh5jcffq467sugfnk1sji.png"></p>
+<h3 class="topic">
+<a name="0rtskleetaa4jpae5gvsfmsupe">&nbsp;&nbsp;页面命中</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/3jpc9iqr40vp99d4mko1egc3fr.png"></p>
+<h3 class="topic">
+<a name="1u0sqmfavesfjp0uoo271fvuhf">&nbsp;&nbsp;&nbsp;缺页</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/3m9f3609rtiebmalrh932rktmi.png"></p>
+<h3 class="topic">
+<a name="43bprl1vfo1sg38v0sp691rneo">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/0t813os5lkcr3ipkodahge5qa5.png"></p>
+<h3 class="topic">
+<a name="4sl283nj3c1v2ahh0bieko37kf">&nbsp;物理寻址结合高速缓存</a>
+</h3>
+<h3 class="topic">
+<a name="39ncfea67l778tc4qujpbqraie">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/43ke22tkh0eggvp3h97fc0ceh7.png"></p>
+<h3 class="topic">
+<a name="6aldp4o4e80piuoqfhjsc9sh3j">&nbsp;利用 TLB 加速地址翻译</a>
+</h3>
+<h3 class="topic">
+<a name="51l2cj8kqdv9rknsfkeaudekfc">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/26pa007qqlqti2900h0qvtrfgs.png"></p>
+<h3 class="topic">
+<a name="7dg5la8r8ln17qk2r60vt1472u">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/0eoav0a6358dfbc2n1ajvq1528.png"></p>
+<h3 class="topic">
+<a name="7tlkhbnupaksfns692ng4qt5pn">&nbsp;多级页表</a>
+</h3>
+<h3 class="topic">
+<a name="7frpvbksp3jpc35fnm8mv0q602">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/54e3utehh0942ege96m1ugqbvt.png"></p>
+<h3 class="topic">
+<a name="0k7t2fk5fpqshrt17du3bvk8f0">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/6jh35pvcbu4sjltph014mbhcuj.png"></p>
+<h3 class="topic">
+<a name="6l76k5gq000qv80oqlb2rce1vo">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/7vge9t6djh3t97c98tfp8v50r2.png"></p>
+<h3 class="topic">
+<a name="5dioavic44l68vd59iomcig45s">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/70j8ma3bm6ciab3s1p47mlpka9.png"></p>
+<h3 class="topic">
+<a name="5o3cp1biilv9ijt3kb16fknv9r">&nbsp;端到端的地址翻译（p573）</a>
+</h3>
+<h3 class="topic">
+<a name="1tu6q93i7imfhmg7n1m53p75ho">&nbsp;&nbsp;物理地址和虚拟内存地址翻译实例</a>
+</h3>
+<h3 class="topic">
+<a name="322sgi5ua26p3iipp6p6hdf6su">&nbsp;案例研究：丨ntel Core i7/Linux 内存系统（p576）</a>
+</h3>
+<h3 class="topic">
+<a name="1eho0k2b99h4b45fco28mej2ks">&nbsp;Linux 虚拟内存系统</a>
+</h3>
+<h3 class="topic">
+<a name="3f6gb56is4l5q2f6fi4mk7iakv">&nbsp;&nbsp;注意内核虚拟内存的结构</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/1pbjlv6h12q7mv6suo6sc7lojm.png"></p>
+<h3 class="topic">
+<a name="6khqtc0b3afrpha76e6u0skjrg">&nbsp;&nbsp;&nbsp;linux虚拟内存区域</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/5khpfil4ts6il3i1a94sejnd5g.png"></p>
+<h3 class="topic">
+<a name="2ntij942inqs3u9u1o6mhq2f3d">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/6aku4iku2aiunj9niqv9ka5pmr.png"></p>
+<h3 class="topic">
+<a name="35ci37c4kl06ngdfhocc2hu5o0">&nbsp;&nbsp;linux缺页异常处理</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/1pf0tskubogc90og9hq0km5713.png"></p>
+<h3 class="topic">
+<a name="2k93ebvk5irat8f727u7emi7cu">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/4mss3led8dn4o13rr6evonoa5h.png"></p>
+<h3 class="topic">
+<a name="29tjdf1ufn7tjf5ba4k8j8mlio">&nbsp;内存映射</a>
+</h3>
+<h3 class="topic">
+<a name="28p4j1lvm6sqsi5inr0vpg5efn">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/674a0vn977207blr0maoblpu9c.png"></p>
+<h3 class="topic">
+<a name="1srlloar2d7vq0749gfjqt8jfb">&nbsp;&nbsp;&nbsp;两个进程通过内存映射使用同一个共享对象</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/7295in7vp9nbgmbesk3rvpl205.png"></p>
+<h3 class="topic">
+<a name="0oo9f6haegi84pv88afv4elhp1">&nbsp;&nbsp;&nbsp;&nbsp;两个进程通过内存映射+写时复制，使用同一个私有对象的相同部分以及各进程独有的部分</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/0u0tte6pbo46mihpfmdogrqnnp.png"></p>
+<h3 class="topic">
+<a name="17aglhrilhocjucbs2m83uharg">&nbsp;&nbsp;虚拟内存+内存映射机制实现了fork函数创建新进程</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/1kuhkp36rsia2e9c4n7l5hc1ju.png"></p>
+<h3 class="topic">
+<a name="7g2f0h2961iabgkjho228924gr">&nbsp;&nbsp;&nbsp;虚拟内存+内存映射机制实现了execve函数</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/0she6ol9urrbprnnv4964oeaap.png"></p>
+<h3 class="topic">
+<a name="1tmo2aqise36d7pv3ara09rsrf">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/0gmohohjc5nutgrf9itkkkvkna.png"></p>
+<h3 class="topic">
+<a name="4er9cgppgh573gn8idp9nq69rd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/32a483ap5aefrn13h7162jqd4u.png"></p>
+<h3 class="topic">
+<a name="7ahqahljk82sd0bdpm0vlquise">&nbsp;&nbsp;内存映射机制实现 mmap函数</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/1k8l9utfee3fpuo1a4l6496qtg.png"></p>
+<h3 class="topic">
+<a name="7okhq6slhbvhk8nad8er343h9u">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/7li21o4bb16g3on6gkbkjc6kq5.png"></p>
+<h3 class="topic">
+<a name="6fk044llbql98nec2891rvemu5">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/5vo31o4eh8gsdjd29rqmm2h5ee.png"></p>
+<h3 class="topic">
+<a name="4oamp5pghlruqpl0bb6rt81im7">&nbsp;动态内存分配</a>
+</h3>
+<h3 class="topic">
+<a name="5rm90vtkd10u6gbq8l0268eure">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/0f5u2nhvtb25nvak88lpie6mpd.png"></p>
+<h3 class="topic">
+<a name="71afqvbture7t0jmb90elnquj1">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/479dhepgaksptkla67reomodg5.png"></p>
+<h3 class="topic">
+<a name="2g76p59g1sktgbma67m8t5v3ot">&nbsp;&nbsp;malloc和free</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/7d6tc3jc2fmob5g5uucpelveks.png"></p>
+<h3 class="topic">
+<a name="3imtt2i4i3v1mqn07230a69v66">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/3clha5t3aq8lujbar218cfrpk7.png"></p>
+<h3 class="topic">
+<a name="4a8ccrln17fg3eogj7amvc28et">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/356c7db804vtpjjdmbbeo3eoc0.png"></p>
+<h3 class="topic">
+<a name="6cku0890tgkc36remlrku49g2l">&nbsp;malloc中空闲块组织结构</a>
+</h3>
+<h3 class="topic">
+<a name="6lh8967mds1gm7odi7a7dfcvfb">&nbsp;&nbsp;分离适配+显式空闲链表</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/74m07adhbgcnoi6gav67pr4bsh.png"></p>
+<h3 class="topic">
+<a name="19883dfd8o72va09ugql5u7bn2">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/0udr8o30sgigd4eb3j5hbi97kb.png"></p>
+<h3 class="topic">
+<a name="5hphmbbnbi3vajp39gph3q124j">&nbsp;c程序中常见的与内存有关的错误</a>
+</h3>
+<h3 class="topic">
+<a name="6olc61j7qchsatnrfdna9hqiif">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/7op474eaj82ocb6jd3mvl5sq6m.png"></p>
+<h3 class="topic">
+<a name="644t8q0qpuc6h9g9l7jtpg9om0">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/7fkk9rj96rmheun5n9okj7u3km.png"></p>
+<h3 class="topic">
+<a name="4lpiv5qls04ksj6jjohdn1vsmb">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/1o0fb8i2foh3g33co6u933tk79.png"></p>
+<h3 class="topic">
+<a name="6g8lb44ee49ul1uj7j6f5470fb">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/03p2aapfajdo81gokfdi8dn8r4.png"></p>
+<h3 class="topic">
+<a name="17ohr1nftn18l402c2ekvr7961">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/3tua7p6gcd7ij7gcru54koptlv.png"></p>
+<h3 class="topic">
+<a name="042ru521dbf6ffc33clpvjebkf">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/3u9ds4lkg91pbar8r9hc4276lu.png"></p>
+<h3 class="topic">
+<a name="5d2jheh1sc00h02ov3lsrcq56p">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/5lsajs2jdmoovkj6kdbdsefm24.png"></p>
+<h3 class="topic">
+<a name="5ccvm1gdv6ehtmlouhcgu1vju2">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/7f3t0t0rgg226v5vfm1tt1m453.png"></p>
+<h3 class="topic">
+<a name="2d3r8dnf7o1fnmnopt09t77as2">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/261e8lkqudci70alakuohmcvfd.png"></p>
+<h3 class="topic">
+<a name="514enoo4bu5csprf7p2ji373c5">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/2butr9i0vpg99ml55lvdekke10.png"></p>
+<h2 class="topic">
+<a name="2rmsnedv9o5uju64o07d5ag9qg">第十章系统级IO</a>
+</h2>
+<h3 class="topic">
+<a name="22io62ohaccdlefkmgb4pvp7it">&nbsp;UNIX IO</a>
+</h3>
+<h3 class="topic">
+<a name="2nbbf9sgaobibergcci08jnosf">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/3m9grgpggip952odulu4u4rpej.png"></p>
+<h3 class="topic">
+<a name="5m0m2hgatrlnakdujtmfdueopj">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/1msjbi7a3p0ctrphqsvdbpncst.png"></p>
+<h3 class="topic">
+<a name="45c1geigei2t5l0ckggrt8n0p9">&nbsp;文件</a>
+</h3>
+<h3 class="topic">
+<a name="412qiv1ubrj7eunpl3i3mna0q9">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/4pq1klehkr6c355hau47g6ditu.png"></p>
+<h3 class="topic">
+<a name="2dqgd13grvb947mkneanhe2i38">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/4f4li89067804oe9svh0vto7t5.png"></p>
+<h3 class="topic">
+<a name="2ga4qqchgr729opd9r4t1r0dgl">&nbsp;&nbsp;打开和关闭文件</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/3pee4606hqchmb51g2vilci2fr.png"></p>
+<h3 class="topic">
+<a name="7dbeqvnovs10id6iqvvl9bk498">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/0ems7mcqa41njkhj6g0k4pu6l1.png"></p>
+<h3 class="topic">
+<a name="72im93u9f4nocf8cg6lfrg6q4i">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/2j0h3deeh20n6j8nh42g4c7nhk.png"></p>
+<h3 class="topic">
+<a name="2ms8o19ruc14p0bt6uv7enkupt">&nbsp;&nbsp;读写文件</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/5qvqvmmme2asbhqbavphe2uhho.png"></p>
+<h3 class="topic">
+<a name="4d093hpvvhpb881kme85jqurnr">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/3b6o0djc8moih9jekrag6qc40q.png"></p>
+<h3 class="topic">
+<a name="7sqqq52d5tnoq7mml5tmm71k7g">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/3g4fqeq5d8jcvu9miiu6paeggr.png"></p>
+<h3 class="topic">
+<a name="42up74mfrhjk7n226gopaknvu1">&nbsp;用 RIO包健壮地读写(即自动处理不足值（p626）</a>
+</h3>
+<h3 class="topic">
+<a name="3pi0u1vdf15jquf5tin538te89">&nbsp;读取文件元数据</a>
+</h3>
+<h3 class="topic">
+<a name="6i9jmq9sjlk2ro4ooff541prak">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/5fsevvkjr89u3rfue8uldboduu.png"></p>
+<h3 class="topic">
+<a name="7dhh68kbso27iaenfgunhokp4f">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/5bcs4u7c9jo64lpok26dk0mvj9.png"></p>
+<h3 class="topic">
+<a name="37c09re4ksfjtrqbiil109u0l8">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/4o3h1s2sprfeb7uj7okeh8tnfu.png"></p>
+<h3 class="topic">
+<a name="2rmtlob22gt8o2rmkd21l4dc4o">&nbsp;读取目录内容</a>
+</h3>
+<h3 class="topic">
+<a name="0d5afov5ntg8uqbkceb5mo43bq">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/7636rfv190e586f1t3m78uu9a5.png"></p>
+<h3 class="topic">
+<a name="073sn95060mlcml2oo7qcdfouk">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/5ojquco6rrttvb6k8a1pg504h0.png"></p>
+<h3 class="topic">
+<a name="73h0u0ar2qq95jn0m3v4cf0l4f">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/50lb83mf7bciksdlflave73g8k.png"></p>
+<h3 class="topic">
+<a name="75vhjglv3o3fl90okatng7dgcr">&nbsp;共享文件</a>
+</h3>
+<h3 class="topic">
+<a name="0in7t4ncarec5k5peh4d5674ns">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/0vs3uo20g1rv80rpa2qarct2mb.png"></p>
+<h3 class="topic">
+<a name="6jnrsvhjf73o52habc3d0jagg8">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/729qdik7i8sjrkg7fppg65tg6j.png"></p>
+<h3 class="topic">
+<a name="3svenvnddi3heujgio9hmfh9r5">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/09i05ouplkvcomrp53oo7p449o.png"></p>
+<h3 class="topic">
+<a name="5jhbltsi9vcr0l8afcmt3p4tg6">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/5lnvudbc4v7aeparj8sc4gu2rr.png"></p>
+<h3 class="topic">
+<a name="0h0m8muat9bggkkf9d33lt5lo9">&nbsp;IO重定向</a>
+</h3>
+<h3 class="topic">
+<a name="3tfh3ra0f0i7koq9a2f5e30e40">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/6246ngr01c605c05mjj7993f85.png"></p>
+<h3 class="topic">
+<a name="7f3s2n5kcpiscjto2pn2i88ltj">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/1uj1mv0gnm2ktvknlo4bk00fss.png"></p>
+<h3 class="topic">
+<a name="5cs6b4i6ts5hhgefavj41vqqqh">&nbsp;标准 I/O</a>
+</h3>
+<h3 class="topic">
+<a name="2dken3h6rpatdsa1aac8d1h54e">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/52ppunlo0n3k9rudajsc9kf14a.png"></p>
+<h3 class="topic">
+<a name="0dl3nrrcjmd1qr3i23d4q5ovac">&nbsp;选用不同的io函数</a>
+</h3>
+<h3 class="topic">
+<a name="4v992j1sa8kqsa7lq4r91u0t63">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/7efc5b08ksianhbi1phvsmauqb.png"></p>
+<h3 class="topic">
+<a name="0e188utndsp6f7eambsvaedbiv">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/6qvn9hth829cruinaigsujgo4g.png"></p>
+<h3 class="topic">
+<a name="7km6213pba3cda8v8rrd44o8gb">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/7sdoon89gdc7jlgdhek2v6i7ut.png"></p>
+<h3 class="topic">
+<a name="5imsvg25jvj9to4uc6cds5tsn1">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/5ggf1lgfg6o4c4i0qmsns2f3sm.png"></p>
+<h2 class="topic">
+<a name="6ql1bpihf989l8ihknvhslkqol">第十一章网络编程</a>
+</h2>
+<h3 class="topic">
+<a name="05hug2mnlqfntsd7108p5toqp3">&nbsp;客户端服务端编程模型</a>
+</h3>
+<h3 class="topic">
+<a name="7sljj29iqdm1jun0pbv9dlah8s">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/6phdp9d93pat6aqb7aaoi421ir.png"></p>
+<h3 class="topic">
+<a name="098gmjtpugqoc780tuahhe2rm4">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/48ru335b5bl3hdhb52qq2d92be.png"></p>
+<h3 class="topic">
+<a name="50e711e3ma7lfg2ohuej43qbbk">&nbsp;网络</a>
+</h3>
+<h3 class="topic">
+<a name="7k66dfp9bsqh5p61jint5sftl1">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/5buagfnrvihd7m0b32bb41s74v.png"></p>
+<h3 class="topic">
+<a name="3jaltsto643uc558eqasth33e2">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/5pir5c3s0lh8uifd3nbhngmg3o.png"></p>
+<h3 class="topic">
+<a name="50apno9u5688luov2e1kus52pp">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/4rhrqmla5gsq16i976r8hrvvtt.png"></p>
+<h3 class="topic">
+<a name="71sb0au7pcbur9oq4pm5csd0on">&nbsp;全球 IP 因特网</a>
+</h3>
+<h3 class="topic">
+<a name="1rb56kue2or0kgr08go3rnrtc5">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/4q5tpl2at747pgv56o74kn0eev.png"></p>
+<h3 class="topic">
+<a name="1qcqk40tebu0pvacasr24rjqc7">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/414bjfdsv43j9dtsrrimh2u08b.png"></p>
+<h3 class="topic">
+<a name="5tq7e14jukm9sb8pe5ohg9mlb8">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/72fbiaed6o4lfcp4p43a9mcqqr.png"></p>
+<h3 class="topic">
+<a name="6b9aagbu4jdc1am2jtcb06nj6v">&nbsp;ip</a>
+</h3>
+<h3 class="topic">
+<a name="152mbeuli764irelj472rm2ftb">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/0ljbuvt1jn4i6f1bjs03pls9li.png"></p>
+<h3 class="topic">
+<a name="45eu2s045i0j3jf5e19ltjsj8o">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/5l533c609jmpd5kkk5i4h5d8kp.png"></p>
+<h3 class="topic">
+<a name="668td2clq1tk2gbpaqlf6t3g0j">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/72efceiiefnpqv9i8b55rq28ho.png"></p>
+<h3 class="topic">
+<a name="3vhtukjpb7brosnlm6a1lilq5l">&nbsp;因特网域名</a>
+</h3>
+<h3 class="topic">
+<a name="7ct5591aiipdg1ohq95e1oejeq">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/3unguupck4j97ograp4rvf9otd.png"></p>
+<h3 class="topic">
+<a name="6p7b2f7pjbosujml21s1e3mk72">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/6mn79fcgtcm4sile53qa8tu756.png"></p>
+<h3 class="topic">
+<a name="744la4d5kvtneb5tfcf6ea8ieq">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/6rvsic58veja66dftj7du9f4kt.png"></p>
+<h3 class="topic">
+<a name="099rqo8bd6c42f38075lpms7fv">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/1proijrlci4ass8qm9h9sdjvrc.png"></p>
+<h3 class="topic">
+<a name="5u3ipdfoh9hfgf2aifr8ig88jl">&nbsp;因特网连接（通过套接字）</a>
+</h3>
+<h3 class="topic">
+<a name="4pfaaaoc150h7nurvfq18id1i7">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/2j2crmmomk53pt0pnt4mii3pa5.png"></p>
+<h3 class="topic">
+<a name="5494fclth276io7u5pts3kctkq">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/0stj1sq0k6vfqj9b5bv7s9k4sd.png"></p>
+<h3 class="topic">
+<a name="2eqc1g828l6iu3d0ll6ctef1fs">&nbsp;socket接口以及相关函数</a>
+</h3>
+<h3 class="topic">
+<a name="50apb15drngrfematc1bi0bq29">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/77o1ohnrg27hr0mh1n362vlkoa.png"></p>
+<h3 class="topic">
+<a name="2si084m83l31l46iuuom970ntv">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/4dp0rrl9opiraol4p65jk04c85.png"></p>
+<h3 class="topic">
+<a name="0cnsb8j6m3icb71o5qrohk51rm">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/5tnkf473dg8ig9mf5omlse9kuo.png"></p>
+<h3 class="topic">
+<a name="3nqnmtteio01ce4md5fqp0c6pi">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/5ht2er9pltg1ea260bsu0l765a.png"></p>
+<h3 class="topic">
+<a name="0mfruvkjafnkd4l9sditkolass">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/7oj578su0nj4pjsu29jh3p74ld.png"></p>
+<h3 class="topic">
+<a name="7gb3r7g5e5eb4vin9t97jo999f">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/2rldctbp8qliromq2qusl6pj5t.png"></p>
+<h3 class="topic">
+<a name="4f6hlbpr547652ee30rfhpjjhr">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/1pav580hcgundc1hk3jjb4tano.png"></p>
+<h3 class="topic">
+<a name="42686jb157lmed0e6r7a250ts4">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/0rsrm6p5v85kjc7p9a3bn899bo.png"></p>
+<h3 class="topic">
+<a name="7r3q2o1v7j3ld8th7fs0184fee">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/4pdpsgevcr8ljtcgcqt1b2bjr9.png"></p>
+<h3 class="topic">
+<a name="3u6eatat3tp7eerr5e6v8j5eji">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/3b64vb46vuujhjccar55vjl3na.png"></p>
+<h3 class="topic">
+<a name="04as3rq0550ikjicqiq7k95q4c">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F_files/6m49fnu79b7tn1kru2sf9s4hrf.png"></p>
+<h3 class="topic">
+<a name="2ovngjh2leuh26c9g5703sb7on">&nbsp;echo 客户端和服务器的示例 p662</a>
+</h3>
+<h3 class="topic">
+<a name="2db9r808n3d2i6gd6jdefqj0qc">&nbsp;web基础</a>
+</h3>
+<h2 class="topic">
+<a name="13ertd6n1nb79edc04b5tkvprf">第十二章并发编程</a>
+</h2>
+</body>
+</html>

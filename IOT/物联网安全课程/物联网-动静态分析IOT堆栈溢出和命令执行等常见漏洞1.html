@@ -1,0 +1,416 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>物联网-动静态分析IOT堆栈溢出和命令执行等常见漏洞1</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="524k7qsfft1h4cd1c572livibc">物联网-动静态分析IOT堆栈溢出和命令执行等常见漏洞1</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E1_files/images/%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E1.jpg"></div>
+<h2 class="topic">
+<a name="200vdc4oh8re7jsumpe4eesnre">常见漏洞</a>
+</h2>
+<h3 class="topic">
+<a name="1scfbvcio3nu1jhb1ascm1i0it">&nbsp;前五种漏洞在web中均存在，iot中主要出现在设备的web服务端，会涉及设备的web接口，从而实现远距离攻击，对于堆栈溢出漏洞，要想利用，需要与web接口相关联，从而实现对设备内部二进制程序的访问，否则即使有漏洞也无法访问（常见服务端应用程序包括goahead boa openwrt等）</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E1_files/1je9kllbrtp5tckp8cn9f01qgp.png"></p>
+<h2 class="topic">
+<a name="14vghbspuu6bgihb5l85ve9jf3">实战</a>
+</h2>
+<h3 class="topic">
+<a name="1anuknrqscrm3qu0fvg8u93lfv">&nbsp;binwalk提取固件，获得的固件文件系统</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E1_files/4epugmbhm9r7c2jo0786lhv087.png"></p>
+<h3 class="topic">
+<a name="2erq5ilc27t46286912t089nr3">&nbsp;&nbsp;查看固件文件系统，为linux文件系统</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E1_files/2hhcfmdqdff0pu8hb17ble6j1t.png"></p>
+<h3 class="topic">
+<a name="72oi13tifv5kla5g9vn8436rfn">&nbsp;&nbsp;&nbsp;查询固件架构，mips小端</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E1_files/4r406pggep1r9lis80m9am04rb.png"></p>
+<h3 class="topic">
+<a name="7a8c0a91hfkembckhmm0m52lob">&nbsp;将对应架构的qemu复制到文件系统中</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E1_files/4eoad0eoacedlese2und0cp27i.png"></p>
+<h3 class="topic">
+<a name="7nrpllt72jb5afg7l1j5b31m5o">&nbsp;&nbsp;固件文件系统的var目录下创建run目录，该目录下创建hash和password两个文件，存在溢出漏洞的程序会读取该两个文件的数据，从而产生溢出（存在溢出漏洞的程序是usr/sbin/widget）</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E1_files/7mg85k1o8brptvq7b3l7rgbj5k.png"></p>
+<h3 class="topic">
+<a name="3trb9rmmik14kieuv6h9shhkms">&nbsp;&nbsp;&nbsp;将pattern.py拷贝到固件文件系统中，该脚本用于生成随机字符串，用于作为溢出数据</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E1_files/55f5j4u89qo7if91k9apv578kf.png"></p>
+<h3 class="topic">
+<a name="3aphih1kpo1bs9f4ocseefb95c">&nbsp;生成长度为300的字符串，写入hash文件</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E1_files/7pqoc44sss1nhckrrrhulglsbn.png"></p>
+<h3 class="topic">
+<a name="3alpqqqpjfh5lh5pdofmjni8ic">&nbsp;&nbsp;此时hash文件中的数据</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E1_files/25230mso3vucf9gh1q7qk8ag82.png"></p>
+<h3 class="topic">
+<a name="7ieul2ovcfs1uqfch1fh71hnu7">&nbsp;&nbsp;&nbsp;生成长度为20的随机数据到password文件中</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E1_files/0mc8qu5k8ug5iokifr4kk93nvd.png"></p>
+<h3 class="topic">
+<a name="1jphf0rrv9idgtu6nh86aq6bo6">&nbsp;qemu固件模拟执行widget -h 查看帮助信息，其中-a会读取登陆时的hash文件，从而触发漏洞</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E1_files/4govpm0fufiop8dlis5go0tmpj.png"></p>
+<h3 class="topic">
+<a name="0430lcjbgec151qe08qqjtkhc2">&nbsp;&nbsp;开启端口调试监听，-a参数指定password文件，模拟执行widget</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E1_files/50sohrors0rs0gsl0pmf1nuo2a.png"></p>
+<h3 class="topic">
+<a name="34hep2toaklt6o8826mgblbd4h">&nbsp;&nbsp;&nbsp;ida分析widget函数，发现其代码中引用了/var/run/hash路径，之后会读取该文件</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E1_files/0q5inp72aa7mani5i13vq0rsfo.png"></p>
+<h3 class="topic">
+<a name="1rij1g9n061pmihoecmlm2shru">&nbsp;main函数末尾会跳转到ra寄存器指向的地址执行，这里就是最终漏洞利用劫持程序流程的位置</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E1_files/0uia7jjdhk0n1tuuvnp5de1rk9.png"></p>
+<h3 class="topic">
+<a name="1hntt2lt89bl5fcfvskj30b0ut">&nbsp;&nbsp;main函数起始位置下断点，同时可以判断栈有多大</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E1_files/3trbi1isqt8rtp8c4gf65i8tpj.png"></p>
+<h3 class="topic">
+<a name="3pkouedf5i5luj5glem0crqtf9">&nbsp;&nbsp;&nbsp;设置ip和端口进行远程调试</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E1_files/6fg7jtj27cvs77h28epqkkopk8.png"></p>
+<h3 class="topic">
+<a name="627p4ij8be5c9asb3kmqk08gd7">&nbsp;开始附加调试</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E1_files/1ce9lvijal8hipj6djqdr9aefq.png"></p>
+<h3 class="topic">
+<a name="52ibhuak6cserpdp2hks3qt6ns">&nbsp;&nbsp;程序在main函数中断下，当前的sw指令会将ra寄存器的值存放到栈中，且main函数结束后会从栈中恢复ra的值，并执行ra指向的代码</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E1_files/593oqejgtloqctpaaftvkeqs5f.png"></p>
+<h3 class="topic">
+<a name="2mmjq2cv64tn6cf0s8a8piter4">&nbsp;&nbsp;&nbsp;sw指令执行完毕，ra的值被存入栈中</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E1_files/1hildln0ob8rap9g86vgunng3m.png"></p>
+<h3 class="topic">
+<a name="4m9gn02b0pctcpcislclmbdqsu">&nbsp;&nbsp;&nbsp;&nbsp;单步调试，当读取hash文件的指令执行后，hash中随机字符串被写入到栈中，从而覆盖栈中保存的ra寄存器的值</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E1_files/1cpcsiqrqg6upghttbjhh2c45u.png"></p>
+<h3 class="topic">
+<a name="7n9guoh5evl2rnvcunj8vskj8e">&nbsp;pattern.py计算覆盖ra寄存器的值位于溢出数据的偏移</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E1_files/4oa9o4p57rb99hnfoev726omff.png"></p>
+<h3 class="topic">
+<a name="657qkmarocrmu9ddblhqrb9hv9">&nbsp;&nbsp;重新设置hash文件内容，验证偏移是否正确</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E1_files/1vcn31pu5jb4guuumlagmmlffr.png"></p>
+<h3 class="topic">
+<a name="488f0pdji2fsk2q6g57o5cq8m6">&nbsp;&nbsp;&nbsp;重新调试，发现数据正确覆盖，说明偏移正确</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E1_files/78tfrooa1natobmil2cf1g35p6.png"></p>
+<h3 class="topic">
+<a name="547gofscoi1u7a2q71bqvs3aqn">&nbsp;&nbsp;&nbsp;&nbsp;main函数末尾，ra被栈中数据赋值为BBBB，且最终程序会跳转到ra指向的位置执行代码</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E1_files/4ghme5igtrbjclc2fh4mhulctn.png"></p>
+<h3 class="topic">
+<a name="120n6v9s97h527hk17gh9p4g4u">&nbsp;使用readelf分析widget，查找其中是否有system函数可以利用，发现没有</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E1_files/7g9ak9cclj3h4sipa2s32qenn8.png"></p>
+<h3 class="topic">
+<a name="3gj7ssbtejt7c8snmrn4plif8p">&nbsp;&nbsp;查找固件文件系统lib目录下有哪些so可以利用</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E1_files/5d7dmujs3oimfhrqdeb4bits0d.png"></p>
+<h3 class="topic">
+<a name="3g7jnfavulno833lcgqn7crhrd">&nbsp;&nbsp;&nbsp;查找libc库，其中libc.so.0是linux程序都会用的，图中显示libc.so.0会链接到libuClibc-0.9.30.1.so  -&gt;表示软链接，即libc.so.0是符号链接文件，而libuClibc-0.9.30.1.so才是实际文件</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E1_files/6kgqjbmqo4nd748789c4808lsd.png"></p>
+<h3 class="topic">
+<a name="5qe4tvuiqr074li1msprfcvf37">&nbsp;&nbsp;&nbsp;&nbsp;libuClibc-0.9.30.1.so中存在system函数，其中00053200是system函数相对于so文件首地址的偏移</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E1_files/0pcqc9bluhm6mt38ltc47anugr.png"></p>
+<h3 class="topic">
+<a name="5t2flnerhjbupjm7rt6g5ketnj">&nbsp;为了获得system函数地址，有很多方法，可以使用gdb调试，调试过程中查看so文件加载基址，加上函数偏移即得到函数地址，这里用另一种方法</a>
+</h3>
+<h3 class="topic">
+<a name="6bvqc34anvego5vspc3lpt9c01">&nbsp;&nbsp;用ida附加调试widget，在调用memset函数的位置断下</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E1_files/467jpugpi22be9cceiuveh68ed.png"></p>
+<h3 class="topic">
+<a name="5c7acr4kf8ekcue976bb6qmhk6">&nbsp;&nbsp;&nbsp;jalr $t9执行完毕后 t9寄存器中的值即为memset函数的内存地址（？？？）因为mips存在分支延迟特性，执行jalr指令时，其下一条指令会被优先执行，所以jalr $t9执行完毕后，直接开始执行lui $a0,0x40</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E1_files/5qe5bm8irjcab6e954r21fvt9i.png"></p>
+<h3 class="topic">
+<a name="7k9p6pl336uvb2os8db4rl6ecj">&nbsp;&nbsp;&nbsp;&nbsp;查找libc.so中memset函数的偏移</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E1_files/0hfmaa383ju56n90go9b3qnmkg.png"></p>
+<h3 class="topic">
+<a name="59um8v35glv6rilkmdtel5elsk">&nbsp;&nbsp;通过memset地址-memset偏移，得到libc模块加载基址</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E1_files/442qaem11k8rursuiekpsgscn5.png"></p>
+<h3 class="topic">
+<a name="45q4s9tf8n4vrc3e00fsn7e5ef">&nbsp;&nbsp;&nbsp;进一步可以算出libc中system函数的地址</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E1_files/3rqj614t62dhh7nfcovjnk5n1n.png"></p>
+<h3 class="topic">
+<a name="5dmnpgcrb4aohi9uavr3buv2ic">&nbsp;漏洞发现者的漏洞利用思路</a>
+</h3>
+<h3 class="topic">
+<a name="43iunkar7s2sf62gpnachncq5i">&nbsp;&nbsp;漏洞发现者使用的第一个gadget（0x158c8），此处move指令将s5赋值给t9，之后执行t9指向的指令，并且根据mips的分支延迟特性，jalr $t9指令执行时，会优先执行其后的addiu $s0,1指令，该指令是有意义的，因为之前计算出system函数地址为0x7f78b200，地址最后一字节为00，可能在拷贝过程中产生截断&#13;
+&#13;
+该gadget位于libuClibc-0.9.30.1.so中&#13;
+&#13;
+ida中可以得到该gadget距离模块首地址的偏移</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E1_files/3s0g7jcgrrua91v7rqhlqr1g6i.png"></p>
+<h3 class="topic">
+<a name="2bacds5fu39q7dm6u43t8pc95d">&nbsp;&nbsp;&nbsp;在main函数最后，会使用栈中数据给s5赋值，即s5是可以被控制的，即在左侧的gadget中，t9也可以被控制</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E1_files/4qo5e6sgqauj74s4shg5fag3t3.png"></p>
+<h3 class="topic">
+<a name="7crohkvmvbobun8j4pso6qn16l">&nbsp;&nbsp;&nbsp;&nbsp;第二个gadget（0x159cc）会影响a1、t9寄存器&#13;
+该gadget也位于libuClibc-0.9.30.1.so中&#13;
+ida中可以得到该gadget距离模块首地址的偏移</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E1_files/1j1ukuelqrjmo39dm5e50orh0t.png"></p>
+<h3 class="topic">
+<a name="4k3vt5ehcq0qr3cilton6tagkg">&nbsp;通过main函数结尾的指令，可以使用栈中数据控制寄存器，被控制的寄存器和栈中数据的位置如上图</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E1_files/7c91kttbcdva8pl1krnq1usego.png"></p>
+<h3 class="topic">
+<a name="11vvh9nu2ssjgfc324g4q3k7kn">&nbsp;&nbsp;在gadget1中，因为可以控制s5寄存器，所以将栈中对应数据设置为gadget2的地址，则gadget1运行后即可跳转运行gadget2</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E1_files/7oun46kcahef38j1e3u9p5tnmk.png"></p>
+<h3 class="topic">
+<a name="3mf3iu3u8r3atf94jv5tpmbob2">&nbsp;&nbsp;&nbsp;计算出两个gadget的地址以及lib_syetem地址</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E1_files/4d4sa4ao4j6fm14ggpr3bcibvs.png"></p>
+<h3 class="topic">
+<a name="35m742h0hq3eh049566emfbfr7">&nbsp;&nbsp;&nbsp;&nbsp;根据当前情况配置poc，注意这里poc中还需要一句print shellcode</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E1_files/0iqli7jcgbh84csiqr0ncp61c6.png"></p>
+<h3 class="topic">
+<a name="45r6onvp7ffegnd0dqk9fc3h73">&nbsp;将shellcode保存到hash文件中</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E1_files/6v779hjt3qibdj5926j8gu5dr8.png"></p>
+<h3 class="topic">
+<a name="4j25b9d3ll6agoehu2cjle9gb1">&nbsp;&nbsp;重新调试，溢出发生时，构造的数据被写入栈中</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E1_files/7h782p23c9m03tl2oaom55jde6.png"></p>
+<h3 class="topic">
+<a name="0tvial4pb2j8q57r26kd729tkk">&nbsp;&nbsp;&nbsp;main函数末尾，s5寄存器和ra寄存器均被按计划修改</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E1_files/1vioq7u390ab8mkf17hl4u2v1r.png"></p>
+<h3 class="topic">
+<a name="3ipeeto414g3o9hl6n01lri6n0">&nbsp;&nbsp;&nbsp;&nbsp;gadget1执行正常，执行jalr t9跳转到gadget2时，后一条指令addiu s0也会执行，从而将s0寄存器+1，此时s0为42424242</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E1_files/0f5ppkhr6cmkucspdm2jg89201.png"></p>
+<h3 class="topic">
+<a name="3iliq3m61o7uvus3imq40oc1c3">&nbsp;跳转到gadget2之后，s0寄存器变成42424243，说明mpis分支延迟特性起作用了，gadget2最后一个jalr t9是跳转去执行system地址， t9的值来源于s0，而s0在从gadget1到gadget2的过程中会加1，所以将system-1通过栈溢出传递给s0即可，这样也可以绕过system函数地址中存在0x00的问题</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E1_files/281d5bj2vmoceprctd9safg43o.png"></p>
+<h3 class="topic">
+<a name="3v7lbdll42cmo67st8u00bb1fn">&nbsp;&nbsp;修改poc，这里加上"D"*0x10，之后保存system函数的参数字符串，这是为了在gadget2中，让s5指向参数字符串，并由s5将参数字符串指针赋值给a0，从而完成参数赋值</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E1_files/5lm3ev93uovmoom825qdqjut9o.png"></p>
+<h3 class="topic">
+<a name="5kpvdt76g35om4acanqab5gmso">&nbsp;&nbsp;&nbsp;将新poc写入文件中</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E1_files/77uj1r0h60j4kvb32cf2kcuu8b.png"></p>
+<h3 class="topic">
+<a name="2l2qvjb88lkgnnrfnhk9gj7kj7">&nbsp;&nbsp;&nbsp;&nbsp;重新调试，数据被成功设置</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E1_files/7drsti9647qo5h76819rfqqfii.png"></p>
+<h3 class="topic">
+<a name="6qti1julvvo2gabequ3vme5ndc">&nbsp;跳转到第一个gadget</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E1_files/7qb7ikpq00hjue25aog5kdv6am.png"></p>
+<h3 class="topic">
+<a name="2i69no4r3k41dobdffg709merr">&nbsp;&nbsp;gadget2中 s5=sp+0x10，此时s5指向栈中存放的system函数的参数，执行jalr t9之前，由于mips分支延迟,会执行move a0,s5，从而将system的参数设置完成</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E1_files/5gsv7norgedqe1rijtjc7nes5l.png"></p>
+<h3 class="topic">
+<a name="5rqe1s0i2u9ec0rpt44njmhl5u">&nbsp;&nbsp;&nbsp;继续执行，system("ls")执行成功，最后漏洞利用栈布局如图</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E1_files/1jnkokjngmuk1ik67krpsg6qt1.png"></p>
+<h2 class="topic">
+<a name="04r37a0vo6ococe0cgt5t39gso">pattern.py脚本</a>
+</h2>
+<h3 class="topic">
+<a name="4bnpdjbalul8tmnvphg7cjju6d">&nbsp;#!/usr/bin/env python&#13;
+#####################################################################################&#13;
+## Create pattern strings &amp; location offset&#13;
+## Tested against Ubuntu 12.04 &amp; Windows # #&#13;
+##&#13;
+## Example:&#13;
+## C:UsersLenovDesktop&gt; patterLocOffset.py -c -l 260 -f output.txt&#13;
+### [*] Create pattern string contains 260 characters ok!&#13;
+### [+] output to output.txt ok!&#13;
+##&#13;
+## C:UsersLenovDesktop&gt; patternLocOffset.py -s 0x41613141 -l 260&#13;
+### [*] Create pattern string contains 260 characters ok!&#13;
+### [*] Exact match at offset 3&#13;
+#&#13;
+## Nimdakey # 09-10-2013&#13;
+#####################################################################################&#13;
+ &#13;
+import argparse&#13;
+import struct&#13;
+import binascii&#13;
+import string&#13;
+import time&#13;
+import sys&#13;
+import re&#13;
+ &#13;
+a = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"&#13;
+b = "abcdefghijklmnopqrstuvwxyz"&#13;
+c = "0123456789"&#13;
+ &#13;
+def generate(count,output):&#13;
+    #&#13;
+    # pattern create&#13;
+    codeStr = ''&#13;
+    print '[*] Create pattern string contains %d characters'%count,&#13;
+    timeStart = time.time()&#13;
+    for i in range(0,count):&#13;
+        codeStr += a[i/(26*10)]+b[(i%(26*10))/10]+c[i%(26*10)%10]&#13;
+    print 'ok!'&#13;
+    if output:&#13;
+        print '[+] output to %s'%output,&#13;
+        fw = open(output,'w')&#13;
+        fw.write(codeStr)&#13;
+        fw.close()&#13;
+        print 'ok!'&#13;
+    else:&#13;
+        return codeStr&#13;
+    print "[+] take time: %.4f s"%(time.time()-timeStart)&#13;
+ &#13;
+def patternMatch(searchCode, length=1024):&#13;
+    #&#13;
+    # pattern search&#13;
+    offset = 0&#13;
+    pattern = None&#13;
+ &#13;
+    timeStart = time.time()&#13;
+    is0xHex = re.match('^0x[0-9a-fA-F]{8}',searchCode)&#13;
+    isHex = re.match('^[0-9a-fA-F]{8}',searchCode)&#13;
+ &#13;
+    if is0xHex:&#13;
+        #0x41613141&#13;
+        pattern = binascii.a2b_hex(searchCode[2:])&#13;
+    elif isHex:&#13;
+        #41613141&#13;
+        pattern = binascii.a2b_hex(searchCode)&#13;
+    else:&#13;
+        print '[-] seach Pattern eg:0x41613141'&#13;
+        sys.exit(1)&#13;
+ &#13;
+    source = generate(length,None)&#13;
+    offset = source.find(pattern)&#13;
+ &#13;
+    if offset != -1:&#13;
+        print "[*] Exact match at offset %d"%offset&#13;
+    else:&#13;
+        print "[*] No exact matches, looking for likely candidates..."&#13;
+        reverse = list(pattern)&#13;
+        reverse.reverse()&#13;
+        pattern = "".join(reverse)&#13;
+        offset = source.find(pattern)&#13;
+        if offset != -1:&#13;
+            print "[+] Possible match at offset %d (adjusted another-endian)"%offset&#13;
+    print "[+] take time: %.4f s"%(time.time()-timeStart)&#13;
+ &#13;
+def main():&#13;
+    ## parse argument&#13;
+    parser = argparse.ArgumentParser()&#13;
+    parser.add_argument('-s', '--search', help='search for pattern')&#13;
+    parser.add_argument('-c', '--create', help='create a pattern',&#13;
+                        action='store_true')&#13;
+    parser.add_argument('-f', '--file', help='output file name',&#13;
+                        default='patternShell.txt')&#13;
+    parser.add_argument('-l', '--length',help='length of pattern code',&#13;
+                        type=int,default=1024)&#13;
+    #parser.add_argument('-v', dest='verbose', action='store_true')&#13;
+    args = parser.parse_args()&#13;
+ &#13;
+    ## save all argument&#13;
+    length = args.length&#13;
+    output = args.file&#13;
+    #verbose = args.verbose&#13;
+    createCode = args.create&#13;
+    searchCode = args.search&#13;
+ &#13;
+    if createCode and (0 &lt; args.length &lt;= 26*26*10):&#13;
+        #eg:  -c -l 90&#13;
+        generate(length,output)&#13;
+    elif searchCode and (0 &lt; args.length &lt;= 26*26*10):&#13;
+        #eg: -s 0x474230141&#13;
+        patternMatch(searchCode,length)&#13;
+    else:&#13;
+        print '[-] You shoud chices from [-c -s]'&#13;
+        print '[-] Pattern length must be less than 6760'&#13;
+        print 'more help: pattern.py -h'&#13;
+    # ...&#13;
+ &#13;
+if __name__ == "__main__":&#13;
+    main()</a>
+</h3>
+<h2 class="topic">
+<a name="0t2s7mkklvq49lu2ip2fbtc14n">生成偏移</a>
+</h2>
+<h3 class="topic">
+<a name="5a1aba5s8iiqc1oevlki4kh55v">&nbsp;python -c -l 500 -f pattern_offset</a>
+</h3>
+</body>
+</html>

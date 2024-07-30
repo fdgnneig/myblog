@@ -1,0 +1,202 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>介绍缓冲器溢出</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="3rbp0nvadtkv0qnijhcu2jfl86">介绍缓冲器溢出</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="%E4%BB%8B%E7%BB%8D%E7%BC%93%E5%86%B2%E5%99%A8%E6%BA%A2%E5%87%BA_files/images/%E4%BB%8B%E7%BB%8D%E7%BC%93%E5%86%B2%E5%99%A8%E6%BA%A2%E5%87%BA.jpg"></div>
+<h2 class="topic">
+<a name="21mou6bhopblh6gv3q870fptof">x86体系结构简介</a>
+</h2>
+<h3 class="topic">
+<a name="7ge6rd33sclg6d06rlrmj1qeid">&nbsp;程序内存空间</a>
+</h3>
+<h3 class="topic">
+<a name="1i7cl13krr9ck0ntk4p54bpp9h">&nbsp;&nbsp;windows进程内存空间（最低内存地址（0x00000000）和最高内存地址（0x7FFFFFFF））</a>
+</h3>
+<h3 class="topic">
+<a name="4bo05su4fh9qm733mhcjpq8j74">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%BB%8B%E7%BB%8D%E7%BC%93%E5%86%B2%E5%99%A8%E6%BA%A2%E5%87%BA_files/0ne19u97n3tb29n5sg0s5n5vpj.png"></p>
+<h3 class="topic">
+<a name="04t5dvhkfgvtmvaiuc5v6b5hlr">&nbsp;&nbsp;栈</a>
+</h3>
+<h3 class="topic">
+<a name="7g4efq18a7lp5nnibgj17umraj">&nbsp;&nbsp;&nbsp;每个线程均有自己的栈</a>
+</h3>
+<h3 class="topic">
+<a name="0ngd2nclecpius3lml3mui9evg">&nbsp;&nbsp;函数返回机制</a>
+</h3>
+<h3 class="topic">
+<a name="4k8n2ndoauj6b8glum16rveutl">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%BB%8B%E7%BB%8D%E7%BC%93%E5%86%B2%E5%99%A8%E6%BA%A2%E5%87%BA_files/68e4jbm2kmv7db06m1gqimftdh.png"></p>
+<h3 class="topic">
+<a name="7m2jeqje598aseh5rashftuvl3">&nbsp;cpu寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="5eevt76qflkddcb29arprjjdeo">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%BB%8B%E7%BB%8D%E7%BC%93%E5%86%B2%E5%99%A8%E6%BA%A2%E5%87%BA_files/4n29bhvp20h5egk27e1oqu8nka.png"></p>
+<h3 class="topic">
+<a name="44l3h2tfs52ltejnk80s2p6kbt">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%BB%8B%E7%BB%8D%E7%BC%93%E5%86%B2%E5%99%A8%E6%BA%A2%E5%87%BA_files/4fhidpdacre66fjgegn71m89gv.png"></p>
+<h3 class="topic">
+<a name="20ob6qg2mn0u0qoi2ifuisnn9l">&nbsp;&nbsp;通用寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="3a63ljskhl7vhsr8seng3dkp55">&nbsp;&nbsp;&nbsp;EAX，EBX，ECX，EDX，ESI和EDI</a>
+</h3>
+<h3 class="topic">
+<a name="5009urp89dlk4l7t6g2et6se6p">&nbsp;&nbsp;&nbsp;EAX（累加器）：算术和逻辑指令。&#13;
+EBX（基本）：内存地址的基本指针&#13;
+ECX（计数器）：循环，移位和旋转计数器&#13;
+EDX（数据）：I / O端口寻址，乘法和除法&#13;
+ESI（源索引）：指针寻址 字符串复制操作中数据和源的标识&#13;
+EDI（目标索引）：字符串复制操作中数据和目标的指针寻址</a>
+</h3>
+<h3 class="topic">
+<a name="2oo8aedn4bofqfmc2proq75khk">&nbsp;&nbsp;ESP-堆栈指针</a>
+</h3>
+<h3 class="topic">
+<a name="5m8m5kfmq5o4mr4rcndj94i7vj">&nbsp;&nbsp;EBP-基础指针</a>
+</h3>
+<h3 class="topic">
+<a name="09bb1b5o0tfoofn812vu2k2k2u">&nbsp;&nbsp;EIP-指令指针</a>
+</h3>
+<h2 class="topic">
+<a name="700hnieqlbr9soebbg0anvlikv">缓冲区溢出演练</a>
+</h2>
+<h3 class="topic">
+<a name="3g1cvtdbr3g3a256hg53p28mfa">&nbsp;Sample Vulnerable Code</a>
+</h3>
+<h3 class="topic">
+<a name="3sk5roov8kdc1jqovpadgd8ksb">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%BB%8B%E7%BB%8D%E7%BC%93%E5%86%B2%E5%99%A8%E6%BA%A2%E5%87%BA_files/6gb221jmlb4i4q1o15rcogu4hf.png"></p>
+<h3 class="topic">
+<a name="55sg4mur4sjomg48d4s0l03hku">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%BB%8B%E7%BB%8D%E7%BC%93%E5%86%B2%E5%99%A8%E6%BA%A2%E5%87%BA_files/2412o70fvdur4ln650a60g2ieg.png"></p>
+<h3 class="topic">
+<a name="1icnil901u9p0omg3ee35su0i7">&nbsp;关于Immunity Debugger</a>
+</h3>
+<h3 class="topic">
+<a href="https://www.immunityinc.com/products/debugger/" name="2asqspa9sqv4afgl1etnr6rs20">&nbsp;&nbsp;https://www.immunityinc.com/products/debugger/ </a>
+</h3>
+<h3 class="topic">
+<a name="7nbb6m3188n85mavb7t0e42po7">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%BB%8B%E7%BB%8D%E7%BC%93%E5%86%B2%E5%99%A8%E6%BA%A2%E5%87%BA_files/3rn01i4e9et1i1l96fuvplk3qa.png"></p>
+<h3 class="topic">
+<a name="2qhjg8g033av4h6miobb616pgl">&nbsp;&nbsp;&nbsp;immunitydbg可以在打开程序时指定传给程序的参数</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%BB%8B%E7%BB%8D%E7%BC%93%E5%86%B2%E5%99%A8%E6%BA%A2%E5%87%BA_files/6lih67bhbb84tokpmhqita1ai9.png"></p>
+<h3 class="topic">
+<a name="3pit6sntuge9gk0l36tdgvpsth">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%BB%8B%E7%BB%8D%E7%BC%93%E5%86%B2%E5%99%A8%E6%BA%A2%E5%87%BA_files/4d0c34jd70en3c2mefnk1o7odv.png"></p>
+<h3 class="topic">
+<a name="2q2j1gq4mfs4e8gtl7ji2ukcbs">&nbsp;正常调用</a>
+</h3>
+<h3 class="topic">
+<a name="5hkdtpmburbkvqtpaafreon63t">&nbsp;&nbsp;源码中存在错误代码字符串，通过搜索该字符串，从而定位main函数</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%BB%8B%E7%BB%8D%E7%BC%93%E5%86%B2%E5%99%A8%E6%BA%A2%E5%87%BA_files/699orcoq75h9vnj5uivf53dima.png"></p>
+<h3 class="topic">
+<a name="2a864k4c7f78morqf34hlle3pe">&nbsp;&nbsp;&nbsp;搜索所有引用字符串</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%BB%8B%E7%BB%8D%E7%BC%93%E5%86%B2%E5%99%A8%E6%BA%A2%E5%87%BA_files/38c6mhtf3dr1j8nevj51mreok9.png"></p>
+<h3 class="topic">
+<a name="0hh1vd5941bkqtbs5l19252a08">&nbsp;&nbsp;&nbsp;&nbsp;找到指定字符串</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%BB%8B%E7%BB%8D%E7%BC%93%E5%86%B2%E5%99%A8%E6%BA%A2%E5%87%BA_files/431s41stmunj4l93tu3553ft4l.png"></p>
+<h3 class="topic">
+<a name="77mnm0k6lrrsq33ndg40q6gq1u">&nbsp;&nbsp;双击该字符串，找到main函数</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%BB%8B%E7%BB%8D%E7%BC%93%E5%86%B2%E5%99%A8%E6%BA%A2%E5%87%BA_files/2m3pbat32vgljufhfmke88ngbo.png"></p>
+<h3 class="topic">
+<a name="5j7qb945dip16ooaftroiu3u1g">&nbsp;&nbsp;&nbsp;在strcpy函数上下断点</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%BB%8B%E7%BB%8D%E7%BC%93%E5%86%B2%E5%99%A8%E6%BA%A2%E5%87%BA_files/3onlh74rohq4o61dde32ampcto.png"></p>
+<h3 class="topic">
+<a name="4ob63ail0vgr21bphrlh00qshm">&nbsp;&nbsp;&nbsp;&nbsp;继续运行程序断在strcpy函数处</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%BB%8B%E7%BB%8D%E7%BC%93%E5%86%B2%E5%99%A8%E6%BA%A2%E5%87%BA_files/5s5ekcbkgifi7hstau2vq5l9ag.png"></p>
+<h3 class="topic">
+<a name="7ta348bmbdr7ljh26m1nmtjdl2">&nbsp;&nbsp;进入函数</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%BB%8B%E7%BB%8D%E7%BC%93%E5%86%B2%E5%99%A8%E6%BA%A2%E5%87%BA_files/1n0sp2v94grdibrbemge22va2e.png"></p>
+<h3 class="topic">
+<a name="45qa98ppea50ja3en2pfam1l3r">&nbsp;&nbsp;&nbsp;双击栈中的地址</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%BB%8B%E7%BB%8D%E7%BC%93%E5%86%B2%E5%99%A8%E6%BA%A2%E5%87%BA_files/20jmpp25mm3l7hiqc73pgqm209.png"></p>
+<h3 class="topic">
+<a name="1elp39g3qs3cggd6ftrin9au0i">&nbsp;&nbsp;&nbsp;&nbsp;栈中地址变为相对偏移地址</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%BB%8B%E7%BB%8D%E7%BC%93%E5%86%B2%E5%99%A8%E6%BA%A2%E5%87%BA_files/7vp053qofsq6lqm3squ5a1l313.png"></p>
+<h3 class="topic">
+<a name="6mvai61lcg5q8jspb6ucu43uke">&nbsp;&nbsp;ctrl+f9，将strcpy函数执行完毕</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%BB%8B%E7%BB%8D%E7%BC%93%E5%86%B2%E5%99%A8%E6%BA%A2%E5%87%BA_files/4bfahsnoerfnirulb4b6fodh6j.png"></p>
+<h3 class="topic">
+<a name="4bcrqrba2st4t80ljm5f2cbiqj">&nbsp;&nbsp;&nbsp;strcpy函数返回</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%BB%8B%E7%BB%8D%E7%BC%93%E5%86%B2%E5%99%A8%E6%BA%A2%E5%87%BA_files/6407c0b3ecvkj3rp9lre50qinh.png"></p>
+<h3 class="topic">
+<a name="4jef6ehj4904eumv42pcc5054g">&nbsp;&nbsp;&nbsp;&nbsp;返回到main函数</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%BB%8B%E7%BB%8D%E7%BC%93%E5%86%B2%E5%99%A8%E6%BA%A2%E5%87%BA_files/05tke08hei7kdm53u499htl8dq.png"></p>
+<h3 class="topic">
+<a name="73a80fn4r10a9iob9j870s6ql1">&nbsp;&nbsp;main函数返回</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%BB%8B%E7%BB%8D%E7%BC%93%E5%86%B2%E5%99%A8%E6%BA%A2%E5%87%BA_files/5v4sbujossvqptq0rf844ee61c.png"></p>
+<h3 class="topic">
+<a name="0lbefo4avdp8aqqj4fh6n9grmr">&nbsp;缓冲区溢出</a>
+</h3>
+<h3 class="topic">
+<a name="5fhgmrmlfe8itgd1bkojed4qm4">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%BB%8B%E7%BB%8D%E7%BC%93%E5%86%B2%E5%99%A8%E6%BA%A2%E5%87%BA_files/6i7ln6rjfuppsp1sik8qj0e8gc.png"></p>
+<h3 class="topic">
+<a name="4fb5cdj33jsa9mvrfah4utpj5b">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%BB%8B%E7%BB%8D%E7%BC%93%E5%86%B2%E5%99%A8%E6%BA%A2%E5%87%BA_files/5e44slqd6req5odf9s8knlkcc2.png"></p>
+<h3 class="topic">
+<a name="1rbdl0qr6qn0va2tr96j7pise6">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%BB%8B%E7%BB%8D%E7%BC%93%E5%86%B2%E5%99%A8%E6%BA%A2%E5%87%BA_files/5rlh7p3aui8c11j1cvr4iebj5p.png"></p>
+</body>
+</html>

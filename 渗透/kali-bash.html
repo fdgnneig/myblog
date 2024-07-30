@@ -1,0 +1,634 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>kali</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="6qiol77qqn50f8j22j9svrqbj3">kali</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="kali_files/images/kali.jpg"></div>
+<h2 class="topic">
+<a name="1i394okudhtm4rgn2pbqdu3afp">bash脚本</a>
+</h2>
+<h3 class="topic">
+<a name="1ocaajc72g1eh88v2lff32065s">&nbsp;介绍</a>
+</h3>
+<h3 class="topic">
+<a name="0crskinho0knsvnb54qjd6fbgs">&nbsp;&nbsp;Bash脚本是纯文本文件，其中包含一系列命令，这些命令的执行就像在终端提示符下键入的一样。 通常，Bash脚本具有.sh的可选扩展名（为了便于识别），以＃！/ bin / bash开头，并且必须具有可执行权限才能执行。</a>
+</h3>
+<h3 class="topic">
+<a name="2g9qsk5af21ercmt80jt74c404">&nbsp;helloworld</a>
+</h3>
+<h3 class="topic">
+<a name="3icskajvoge52rheqn6iemuj4a">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="kali_files/5o370reaiq3923des8hak1sc25.png"></p>
+<h3 class="topic">
+<a name="5a8mro1po4hhva72dvbibsldv5">&nbsp;&nbsp;&nbsp;  ./表示法似乎令人困惑，但这只是一个路径表示法，指示该脚本在当前目录中。 每当我们键入命令时，Bash都会尝试在存储在名为PATH的变量中的一系列目录中找到它。 由于我们的主目录没有包含在该变量中，我们必须使用相对于我们的Bash脚本的相对路径，以便Bash&ldquo;找到它&rdquo;并运行它。</a>
+</h3>
+<p class="topicImage">
+<img src="kali_files/7sir2odat3psishm79ehnr4u0h.png"></p>
+<h3 class="topic">
+<a name="1n7adh3slkrkod7bg0vvm68j03">&nbsp;变量</a>
+</h3>
+<h3 class="topic">
+<a name="7isir5t5unh0hbgbdhfe4g08kc">&nbsp;&nbsp;声明变量</a>
+</h3>
+<h3 class="topic">
+<a name="0t66k1sc44cke9g2c0vaqdj51e">&nbsp;&nbsp;&nbsp;注意=前后没有空格，变量会区分大小写</a>
+</h3>
+<p class="topicImage">
+<img src="kali_files/1i7t2sp4koksesh76mjku5v52l.png"></p>
+<h3 class="topic">
+<a name="7mckgqio18tgn5fg5vnau4nuig">&nbsp;&nbsp;引用变量</a>
+</h3>
+<h3 class="topic">
+<a name="4vms93qho0t6jnceh88299rvog">&nbsp;&nbsp;&nbsp;使用$符号引用变量</a>
+</h3>
+<p class="topicImage">
+<img src="kali_files/2ask2pb74gbt5e7a2l6npdse34.png"></p>
+<h3 class="topic">
+<a name="4bs9q88sq3ln8t7sifih2dkoga">&nbsp;&nbsp;声明复杂变量</a>
+</h3>
+<h3 class="topic">
+<a name="46je7auisqqqc3hqa8acmtp1sg">&nbsp;&nbsp;&nbsp;如果要将带有空格的变量进行赋值，直接赋值会报错</a>
+</h3>
+<p class="topicImage">
+<img src="kali_files/3q49r8cbghmmshn6c7ipr6m95o.png"></p>
+<h3 class="topic">
+<a name="4c214ikam5j21gs8cicjosrnea">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="kali_files/0mlibc9er7ron2kshq6u390bll.png"></p>
+<h3 class="topic">
+<a name="29m9a76i3fik7gbaf7gim9ctl2">&nbsp;&nbsp;&nbsp;&nbsp;若要定义带空格的变量值，需要是使用''或""将变量值括起来</a>
+</h3>
+<h3 class="topic">
+<a name="43tmjos98f6og9lnf195vldn3h">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="kali_files/59t71mu77ah4d4cg34mtaju3n2.png"></p>
+<h3 class="topic">
+<a name="42jrns30n7ktq5nnd6leq8purg">&nbsp;&nbsp;&nbsp;&nbsp;Bash对待单引号和双引号的方式有所不同。当遇到单引号时，Bash会逐字解释每个封闭的字符。 用引号引起来，所有字符都按字面意义查看，但&ldquo; $&rdquo;，&ldquo;`&rdquo;和&ldquo; \&rdquo;除外，这意味着变量将在所附文本的初始替换过程中扩展。</a>
+</h3>
+<h3 class="topic">
+<a name="4n5pkrom3vhhoalf05ar5sipeg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;单引号会将其内内容全部解析为单个字符，双引号会保留$`\三个符号的实际含义</a>
+</h3>
+<h3 class="topic">
+<a name="1d8h1m02m71pcfuhp0aropolor">&nbsp;&nbsp;&nbsp;&nbsp;在此示例中，单引号引起的问候声明准确地保留了文本的值，并且没有将空格解释为命令定界符。 但是，在双引号封闭的greeting2声明中，Bash将$ greeting扩展为它的值（&ldquo; Hello World&rdquo;），以尊重&ldquo; $&rdquo;字符的特殊含义。</a>
+</h3>
+<h3 class="topic">
+<a name="2ja72bl3afjkummi51ogtc8e9v">&nbsp;&nbsp;将程序执行结果声明为变量</a>
+</h3>
+<h3 class="topic">
+<a name="7arr2e9e3f6n4qmfp5jf66culd">&nbsp;&nbsp;&nbsp;使用=$()</a>
+</h3>
+<p class="topicImage">
+<img src="kali_files/6fepo3bhjdn6usln49vn3lk7ab.png"></p>
+<h3 class="topic">
+<a name="2emehfltf9sp55nesog3d2749r">&nbsp;&nbsp;&nbsp;&nbsp;使用=``  不建议使用这种，与前面对变量解析的方法不同，且版本较老</a>
+</h3>
+<p class="topicImage">
+<img src="kali_files/4i4p5pgafiopc63a8paumeb8ad.png"></p>
+<h3 class="topic">
+<a name="5f7aaoa2uqu70a563mha8r4ajt">&nbsp;&nbsp;子shell中的变量替换不会影响主shell中的变量值</a>
+</h3>
+<h3 class="topic">
+<a name="3uur4tbgg2c0pdd28efrngm2d6">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="kali_files/2mim0dvnvnfojijv80287n5clr.png"></p>
+<h3 class="topic">
+<a name="4dnhpvod6jj63l1kvu4knjvlrk">&nbsp;&nbsp;&nbsp;命令替换发生在子shell中，并且对子shell中的变量所做的更改不会更改主命令中的变量 处理</a>
+</h3>
+<p class="topicImage">
+<img src="kali_files/1jh619pet5b8f11faqpegrfsni.png"></p>
+<h3 class="topic">
+<a name="3h0ofm7kdi9jhlpseoe2qfol43">&nbsp;&nbsp;参数</a>
+</h3>
+<h3 class="topic">
+<a name="7rf7mtt7onjdvcvqppu1im6tse">&nbsp;&nbsp;&nbsp;bash中使用$1 $2分别代表第一个和第二个参数</a>
+</h3>
+<p class="topicImage">
+<img src="kali_files/494lhvlcq7fpu2gatgu1850gmp.png"></p>
+<h3 class="topic">
+<a name="4mpit8i5gt67sjb5ik9urc7v1a">&nbsp;&nbsp;&nbsp;&nbsp;脚本中固定的有其他含义的变量名</a>
+</h3>
+<p class="topicImage">
+<img src="kali_files/3pmeqqv9j0svg746higmhqbkbb.png"></p>
+<h3 class="topic">
+<a name="0g8f99e5rop3h33e700n0skr7g">&nbsp;&nbsp;获取用户输入</a>
+</h3>
+<h3 class="topic">
+<a name="7mb8o35utppneb9mb4n4jlii8h">&nbsp;&nbsp;&nbsp;使用read将用户输入赋值到answer变量中</a>
+</h3>
+<p class="topicImage">
+<img src="kali_files/7jidgl40gk8vgiemvqg5rpalou.png"></p>
+<h3 class="topic">
+<a name="79k2rj7agup8pophpo8vt2hepl">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="kali_files/4lnfaicca1g1e8vn2upg0adm05.png"></p>
+<h3 class="topic">
+<a name="1v40g6s9umapghdhnh1bpdp4rv">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="kali_files/60hor248bvnlcjbol7nhn0l7lc.png"></p>
+<h3 class="topic">
+<a name="7nmqhsut6qk78pqc2ug7ofnbvu">&nbsp;&nbsp;&nbsp;&nbsp;-p（允许我们指定提示）和-s（使用户输入保持静音）。 后者是捕获用户凭据的理想选择：</a>
+</h3>
+<h3 class="topic">
+<a name="19fkft29o37kqnmpvqn92golkq">&nbsp;条件判断</a>
+</h3>
+<h3 class="topic">
+<a name="0ihu58ogm0fdo33352m3p8abhb">&nbsp;&nbsp;if</a>
+</h3>
+<h3 class="topic">
+<a name="78oq98hdgakrev3r0hntfhbtpc">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="kali_files/2tonhch36ql7j390crohdp061p.png"></p>
+<h3 class="topic">
+<a name="0fdurbba6k80605emchedvi52g">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="kali_files/3okfecr07s5han37o4lo2cit7i.png"></p>
+<h3 class="topic">
+<a name="0g8vp2f7b4n0jf027sj44sk1li">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="kali_files/47ldkqgotomkf5p5510nr2i1bb.png"></p>
+<h3 class="topic">
+<a name="44tinlkcge6qb0p5m3ahqacg2q">&nbsp;&nbsp;&nbsp;[]中可以使用的条件判断指令</a>
+</h3>
+<p class="topicImage">
+<img src="kali_files/0f2ul4ceu6nakb7612eebs06bc.png"></p>
+<h3 class="topic">
+<a name="7cdt12bvk0ljscge83ee2vagtb">&nbsp;&nbsp;if-else</a>
+</h3>
+<h3 class="topic">
+<a name="4hugbs1oqmf8vbh6h8qsl1vdkf">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="kali_files/00fa39tbta6f8d4tbj3c1fdv8o.png"></p>
+<h3 class="topic">
+<a name="1sng0io3lm5v73s15lo05es76p">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="kali_files/3tcui40mmna60oucasldh364nl.png"></p>
+<h3 class="topic">
+<a name="7s34hp5u80mloc0kucbso7m15q">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="kali_files/3v5rgdbmoccrpprmebs86eocui.png"></p>
+<h3 class="topic">
+<a name="1rhr6gkmpqt0k4sji0r3df8tij">&nbsp;&nbsp;if-elif-else</a>
+</h3>
+<h3 class="topic">
+<a name="52gl3vaa3s663ji7sii62942nh">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="kali_files/5ms2u0ecjrpkhev23dpgn9ckvu.png"></p>
+<h3 class="topic">
+<a name="0pt7fqn5i76ukh4q4oqrlm9tnk">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="kali_files/2upg0cb4qg0puvcchvi90i0n2r.png"></p>
+<h3 class="topic">
+<a name="7uqth2u4d37vqvap1arqtfp648">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="kali_files/00s3l2tijmhorbh5kfqoalsmnv.png"></p>
+<h3 class="topic">
+<a name="5pj8vm3lf38ov8j8p8rq8o7pan">&nbsp;布尔逻辑运算</a>
+</h3>
+<h3 class="topic">
+<a name="3lktb5otj1tr4mpl7be8244d3j">&nbsp;&nbsp;&amp;&amp;（与运算）</a>
+</h3>
+<h3 class="topic">
+<a name="43pts8hk68uct67fhdg0roikc4">&nbsp;&nbsp;&nbsp;使用grep搜索kali是否在passwd文件中，只有存在，才会执行&amp;&amp;后面的指令，否则不执行</a>
+</h3>
+<p class="topicImage">
+<img src="kali_files/5vs2je9mkmjcs9e9q521fqipcp.png"></p>
+<h3 class="topic">
+<a name="3ipv39o1h291d8oudtd3elru8i">&nbsp;&nbsp;&nbsp;&nbsp;可以用在if判断中</a>
+</h3>
+<p class="topicImage">
+<img src="kali_files/2nmsdm279rdkb6c9l29c0usbpp.png"></p>
+<h3 class="topic">
+<a name="4ots132oon77bevueasct34ooj">&nbsp;&nbsp;||（或运算）</a>
+</h3>
+<h3 class="topic">
+<a name="3eua5v0pp5erf29ch2ov5670pd">&nbsp;&nbsp;&nbsp;只有||之前的指令执行失败，才会执行||之后的指令</a>
+</h3>
+<p class="topicImage">
+<img src="kali_files/57ddckgd7ubqk0av8l2qb1918g.png"></p>
+<h3 class="topic">
+<a name="1e2dib3c2sr7f2jhgc43g8gcdt">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="kali_files/7c1oe09q7ska4pf694fkr1gnc3.png"></p>
+<h3 class="topic">
+<a name="6o3i0dbsrp747mhj5et6qbefmv">&nbsp;&nbsp;&nbsp;&nbsp;同样可以用在if判断中</a>
+</h3>
+<p class="topicImage">
+<img src="kali_files/2lv18l52p2hjj5p2vcqi56bj58.png"></p>
+<h3 class="topic">
+<a name="5ittu246alql0oppl1edu97f5b">&nbsp;循环</a>
+</h3>
+<h3 class="topic">
+<a name="078oq8m2o3rtegi1bm7a8ic42n">&nbsp;&nbsp;for</a>
+</h3>
+<h3 class="topic">
+<a name="235jifu87vrsmjl6keblno5kpk">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="kali_files/3qn6h9nunu6ekvu5d3pj29hk3k.png"></p>
+<h3 class="topic">
+<a name="1o7o9brm6ev5p54ll319m46njn">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="kali_files/5qvh40dnejc6bp6glksf07h0f9.png"></p>
+<h3 class="topic">
+<a name="3929d0217j9k4a94qo7h56tdve">&nbsp;&nbsp;&nbsp;使用范围的括号扩展被写入，给出范围的第一个和最后一个值，并且可以是数字或字符的序列。 这称为&ldquo;序列表达式&rdquo;：</a>
+</h3>
+<p class="topicImage">
+<img src="kali_files/18q50iqgmf8ne5uf57vctrps2a.png"></p>
+<h3 class="topic">
+<a name="2gko1r5lchupqfo28v1qo6645f">&nbsp;&nbsp;while</a>
+</h3>
+<h3 class="topic">
+<a name="3nh5talisaas68s40727fbim8h">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="kali_files/0imr74r1s1q6dnjdrkc094vr9q.png"></p>
+<h3 class="topic">
+<a name="46p56pumd9arnqfhrj0m0ur6q2">&nbsp;&nbsp;&nbsp;&nbsp;此时判断条件为-lt即小于，则只能输出1-9，如果想要输出1-10，则需要使用判断条件-le</a>
+</h3>
+<p class="topicImage">
+<img src="kali_files/4c1selvesraql8h91r45hl10kq.png"></p>
+<h3 class="topic">
+<a name="2fi9jfmbok7k9kdojtb9uqt96e">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;（（counter ++））行使用双括号（（）)构造同时执行算术扩展和求值。 在这种特殊情况下，我们使用它来将我们的计数器变量增加一</a>
+</h3>
+<h3 class="topic">
+<a name="02cirv6pirevfnuubam96tflcd">&nbsp;函数</a>
+</h3>
+<h3 class="topic">
+<a name="5re1cjl3qs8ii56ao0m8tae7hc">&nbsp;&nbsp;函数的格式</a>
+</h3>
+<h3 class="topic">
+<a name="3v4cm15culf3nogmr71i1iloc8">&nbsp;&nbsp;&nbsp;bash格式</a>
+</h3>
+<p class="topicImage">
+<img src="kali_files/3e2d50mgiruk077a4pif6j97h3.png"></p>
+<h3 class="topic">
+<a name="72feo8lkundurnv5j3ctvbjo11">&nbsp;&nbsp;&nbsp;&nbsp;c语言格式</a>
+</h3>
+<p class="topicImage">
+<img src="kali_files/1uo426rglljpq2m9hme6hjbs8a.png"></p>
+<h3 class="topic">
+<a name="0tksongjq0b131ue16becke5vs">&nbsp;&nbsp;helloworld</a>
+</h3>
+<h3 class="topic">
+<a name="23bad5n552docakkgrsuevfncg">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="kali_files/5e897454uqokouqodpp4g6rql5.png"></p>
+<h3 class="topic">
+<a name="2n49rq0h0u3u2rthl5ai283t9q">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="kali_files/45jk7unf2e89f0ccibt60q2u7p.png"></p>
+<h3 class="topic">
+<a name="7ue382hc3qmk4qd11ueg6ipvjq">&nbsp;&nbsp;带参函数</a>
+</h3>
+<h3 class="topic">
+<a name="23kgtk89kl1jo1sfele7b6n4si">&nbsp;&nbsp;&nbsp;函数参数使用bash的表示方法</a>
+</h3>
+<p class="topicImage">
+<img src="kali_files/6ovvb1v8uafh8lkvickljjt2u9.png"></p>
+<h3 class="topic">
+<a name="3pq8us4upec56bsn5t6deg18k8">&nbsp;&nbsp;&nbsp;&nbsp;函数定义（pass_arg（））包含括号。 在其他编程语言（例如C）中，这些将包含预期的参数，但是在Bash中，括号仅用作修饰。 他们从未使用过。 还要注意，函数定义（函数本身）必须在调用之前出现在脚本中。 从逻辑上讲，我们无法调用未定义的内容。</a>
+</h3>
+<h3 class="topic">
+<a name="00ucpa6j06df012299c8eg3hgs">&nbsp;&nbsp;函数返回值</a>
+</h3>
+<h3 class="topic">
+<a name="5hq8poraaeecjvglu4qp4j7qjb">&nbsp;&nbsp;&nbsp;此时之所以可以返回数据是因为$RANDOM是一个全局变量，并将该全局变量转换为了$?</a>
+</h3>
+<p class="topicImage">
+<img src="kali_files/24d53vs76ji0v8pqfens0ppcnf.png"></p>
+<h3 class="topic">
+<a name="7tnru5avtp87f4sagn3b10dgrs">&nbsp;&nbsp;&nbsp;&nbsp;Bash函数实际上不允许您返回传统意义上的任意值。 取而代之的是，Bash函数可以返回退出状态（成功时为零，失败时为非零）或其他一些任意值，以后我们可以从$?全局变量中访问它们。 或者，我们可以在函数内部设置全局变量，或使用命令替换来模拟传统返回。</a>
+</h3>
+<h3 class="topic">
+<a name="3pg6jlp8sf06kda25cd41b8d0j">&nbsp;&nbsp;&nbsp;&nbsp;我们返回了特殊的全局变量$ RANDOM（转换为$？）。 如果我们使用不带$ RANDOM参数的return语句，则将返回函数的退出状态（在本例中为0）。</a>
+</h3>
+<h3 class="topic">
+<a name="0ne6g4e6rj012nb88g163hmkrd">&nbsp;&nbsp;全局变量与局部变量</a>
+</h3>
+<h3 class="topic">
+<a name="3ouboa9ekgfav7ggt03plo0rq2">&nbsp;&nbsp;&nbsp; 默认情况下，变量具有全局作用域，这意味着可以在整个脚本中对其进行访问。 相反，局部变量只能在定义它的函数，代码块或子外壳中看到。 我们可以通过在声明之前加上local关键字来&ldquo;覆盖&rdquo;全局变量，为其提供局部上下文，而保持全局变量不变。 通用语法为：</a>
+</h3>
+<h3 class="topic">
+<a name="1qion00q00vll7lbd67imupbl4">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="kali_files/7bl2p7hqg1qv6geo774d4a5rnv.png"></p>
+<h3 class="topic">
+<a name="6iv14prhtqo4adt0hop71lba86">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="kali_files/6kf46a1c9mev9ceh18e6kmgbh0.png"></p>
+<h3 class="topic">
+<a name="3li8nei2tk074ojn41ubgf3c72">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="kali_files/2t4l08dh8eahcej2lvqa4ag0ac.png"></p>
+<h3 class="topic">
+<a name="2dc43kvek63p9dp6qim01srfbj">&nbsp;&nbsp;&nbsp;&nbsp;更改与全局变量同名的局部变量的值不会影响其全局值。&#13;
+   在函数内部更改全局变量的值（而无需声明具有相同名称的局部变量）将影响其全局值。</a>
+</h3>
+<h3 class="topic">
+<a name="735s01v0uppfrmcv6e6on3d1cq">&nbsp;bash脚本编程实例1</a>
+</h3>
+<h3 class="topic">
+<a name="466n3jbbgamk6lnklbk7nh6rj9">&nbsp;&nbsp;查找megacorpone.com主网页上列出的所有子域，并找到其对应的IP地址。</a>
+</h3>
+<h3 class="topic">
+<a name="0vn47eg1n2o6h9gdja6g8il9ln">&nbsp;&nbsp;获得指定域名的所有子域名</a>
+</h3>
+<h3 class="topic">
+<a name="2tqlguujohk3u2aifqcc6mbbbr">&nbsp;&nbsp;&nbsp;使用wget下载网站首页文件index.html</a>
+</h3>
+<h3 class="topic">
+<a name="3a3tf5cgab0n77fb4fevpi4doa">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="kali_files/2teh1evhb6ojhkl8pd4pileivd.png"></p>
+<h3 class="topic">
+<a name="0957nllccdrcarhco0m1s02pvf">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="kali_files/1aoocg2fld9npptg66v9q29l99.png"></p>
+<h3 class="topic">
+<a name="57eq73rus0ntn7tqrjr7msq1cv">&nbsp;&nbsp;&nbsp;使用grep&ldquo; href =&rdquo;提取index.html中包含HTML链接的所有行：</a>
+</h3>
+<h3 class="topic">
+<a name="0niohji16psnkqcc19pkaei1gt">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="kali_files/454dsost4fqkg948dmtd576pjs.png"></p>
+<h3 class="topic">
+<a name="3n3jr1m5v1b298sochqvreaakk">&nbsp;&nbsp;&nbsp;使用grep抓取包含&ldquo; .megacorpone&rdquo;的行（表示存在子域），使用grep -v剥离包含我们已经知道的无聊&ldquo; www.megacorpone.com&rdquo;域的行：</a>
+</h3>
+<h3 class="topic">
+<a name="1d0g97mp0tek29vi692mbui1qp">&nbsp;&nbsp;&nbsp;&nbsp;grep -v用于过滤不包含指定文本的所有行</a>
+</h3>
+<p class="topicImage">
+<img src="kali_files/163cch3af1gqbq6k1c78eadgkh.png"></p>
+<h3 class="topic">
+<a name="7719ve71qj1bfbec7pcppk86n6">&nbsp;&nbsp;&nbsp;以上结果的基础上，使用"http://"对每行数据进行分割，打印分割结果的第二部分</a>
+</h3>
+<h3 class="topic">
+<a name="7u16qa388eh2rdhii45pfnbfhl">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="kali_files/25nis4p45peorsoju7im7129sj.png"></p>
+<h3 class="topic">
+<a name="33aciqi6bmdgak4fd8hjl2dfdv">&nbsp;&nbsp;&nbsp;使用'/'对字符串进行分割，仅显示子域名信息</a>
+</h3>
+<h3 class="topic">
+<a name="4omc9218l0v8sjg6g1lgn0ftvs">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="kali_files/5ok2acbo4i84k9o5d5c2uim3l6.png"></p>
+<h3 class="topic">
+<a name="3bh7vm7n80i13b856h3jt753jc">&nbsp;&nbsp;&nbsp;以上效果可以使用正则表达式简单获得</a>
+</h3>
+<h3 class="topic">
+<a name="2qn6ii9ptt2gckt39o1bs1jhce">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="kali_files/4g0d5tjk8iqv0t3cq6579gjrnr.png"></p>
+<h3 class="topic">
+<a name="6ck105iin3r2l8hcicq5mv0vri">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;grep -o该选项仅返回在正则表达式中定义的字符串</a>
+</h3>
+<h3 class="topic">
+<a name="6r84ejoqub166eb572bsh51nk1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;（'[^ /] * \.megacorpone \ .com'）使用单引号括起来，所以该字符串将不允许变量扩展，并且将按字面意义处理所有封闭的字符。</a>
+</h3>
+<h3 class="topic">
+<a name="2uj0mpcb3jo77ei1v705hk4i7q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;表达式（[^ /] *）中的第一个块是一个否定的集（^表示否定）（[]表示集），它搜索不包括正斜杠的任意数量的字符（*）。 请注意，句号以反斜杠（\.）进行转义，以加强我们在寻找文字周期的信息。 接下来，字符串必须以&ldquo; .megacorpone.com&rdquo;结尾。 当grep找到匹配的字符串时，它将从行中分割出该字符串并将其返回。</a>
+</h3>
+<h3 class="topic">
+<a name="6f4tfdo695ov8sif0gga2kum1j">&nbsp;&nbsp;&nbsp;&nbsp;grep -o '[^/]*\.megacorpone\.com' index.html | sort -u &gt; list.txt</a>
+</h3>
+<h3 class="topic">
+<a name="3nb1fpsv9tens7ppclufoojogp">&nbsp;&nbsp;获得每个子域名对应的ip地址</a>
+</h3>
+<h3 class="topic">
+<a name="4nfqqcju6fqlrfof8v21aqh80l">&nbsp;&nbsp;&nbsp;循环+host指令，从而获得子域名对应ip</a>
+</h3>
+<p class="topicImage">
+<img src="kali_files/26maa4pg7r3vrgcjgd15tsmj5u.png"></p>
+<h3 class="topic">
+<a name="7kmenkbqlug1aefe2q6jphh4bl">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="kali_files/6kdln540fvo9gi9e53t5sght0p.png"></p>
+<h3 class="topic">
+<a name="6t4e9s7ambeksqr286gbfesu21">&nbsp;&nbsp;&nbsp;筛选出存在ip地址的程序，仅将ip地址筛选出来</a>
+</h3>
+<p class="topicImage">
+<img src="kali_files/07f0aftv4pds4vcnpm2f6apbeh.png"></p>
+<h3 class="topic">
+<a name="05qgts03fk4kpqjbttof0fltjq">&nbsp;bash脚本编程实例2</a>
+</h3>
+<h3 class="topic">
+<a name="7lfmctt8eh69sdp0p2obnuabnj">&nbsp;&nbsp;需要利用windows上的一个漏洞，该漏洞名称包括afd字符，则需要在https://www.exploit-db.com中搜索&ldquo; afd windows&rdquo;，下载符合我们搜索条件的漏洞利用程序，并对其进行检查，直到找到合适的漏洞利用程序为止。</a>
+</h3>
+<h3 class="topic">
+<a name="5vspml98g6jgg3gt8r76dn2ten">&nbsp;&nbsp;SearchSploit是Exploit-DB的命令行搜索工具，它使我们无论身在何处都可以随身携带Exploit数据库的脱机副本。 我们将&ldquo; afd windows&rdquo;作为搜索字符串传递，使用-w返回https://www.exploitdb.com的URL而不是本地路径，并使用-t搜索漏洞利用标题：</a>
+</h3>
+<h3 class="topic">
+<a name="7dkqg0qoa3ildluavbpc12s59g">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="kali_files/1pr3stue35qfkred5u6iccg194.png"></p>
+<h3 class="topic">
+<a name="0k369r7n5msvcbrs4vue1nfl8i">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="kali_files/52u6tacsji686qg599l61ca6g2.png"></p>
+<h3 class="topic">
+<a name="38g97uoq1e9apoladbq3dbmsva">&nbsp;&nbsp;使用grep和cut仅显示exp的url</a>
+</h3>
+<h3 class="topic">
+<a name="6gnt2jnrg5sk0i7r89ftksij3t">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="kali_files/52qo371mcpjpm22rhrc14j1s6l.png"></p>
+<h3 class="topic">
+<a name="03n1v00vr36vvmoum43ih7hvc9">&nbsp;&nbsp;下载漏洞的原始利用代码</a>
+</h3>
+<h3 class="topic">
+<a name="7bkskp8rud015nahrhcfduu0km">&nbsp;&nbsp;&nbsp;在exploit-db界面中找到原始漏洞利用代码</a>
+</h3>
+<p class="topicImage">
+<img src="kali_files/5tkk12eourne5pnos17f63dqm9.png"></p>
+<h3 class="topic">
+<a name="6u66t4l90fccocote26cc296qk">&nbsp;&nbsp;&nbsp;for循环遍历之前得到的exp下载链接，循环中exp_name将exp下载链接中的漏洞序号作为exp名称，url将exp下载链接中的exploit替换为raw，从而下载原始漏洞利用程序，最后使用wget下载，并将下载结果名称保存为exp_name</a>
+</h3>
+<p class="topicImage">
+<img src="kali_files/40bn8b14kl0dire3vovatpmsb7.png"></p>
+<h3 class="topic">
+<a name="29sgb2gkd8i2v12ivlrdqhtcqm">&nbsp;&nbsp;&nbsp;&nbsp;wget的参数表示在没有证书检查的安静模式下进行下载</a>
+</h3>
+<h3 class="topic">
+<a name="057vgr9c4pau9de8r3an564f40">&nbsp;&nbsp;下载完成后</a>
+</h3>
+<h3 class="topic">
+<a name="63fav6te99ql78gcq00rfe44l3">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="kali_files/48k9rkhm59h8jcqs4u1eujteke.png"></p>
+<h3 class="topic">
+<a name="62h397f8b4jrpisvt5isiodebo">&nbsp;&nbsp;&nbsp;通过file命令确定对应exp文件已经下载完毕</a>
+</h3>
+<p class="topicImage">
+<img src="kali_files/7hghreqlke1p567cg14tpk9moi.png"></p>
+<h3 class="topic">
+<a name="6f687es2gm9pll5vc2nf3717oh">&nbsp;&nbsp;查看exp</a>
+</h3>
+<h3 class="topic">
+<a name="7iddlo1nsao8icj9ijgl5v12n6">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="kali_files/22qi91ct0ghkdnnl0boeip19ql.png"></p>
+<h3 class="topic">
+<a name="0mpv3aak3bjrsfb3al2un9dfik">&nbsp;&nbsp;使用脚本完成以上功能</a>
+</h3>
+<h3 class="topic">
+<a name="2vri0mlm5eprn6c3l9nir9i9l5">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="kali_files/4jck131hhb6umva9lve2g0obrq.png"></p>
+<h3 class="topic">
+<a name="0l3rak8iavv0csgg42rhseuu5i">&nbsp;&nbsp;&nbsp;&nbsp;#!/bin/bash&#13;
+# Bash script to search for a given exploit and download all matches. for e in $(searchsploit afd windows -w -t | grep http | cut -f 2 -d "|") do&#13;
+exp_name=$(echo $e | cut -d "/" -f 5) url=$(echo $e | sed 's/exploits/raw/') wget -q --no-check-certificate $url -O $exp_name&#13;
+done</a>
+</h3>
+<h3 class="topic">
+<a name="62eb4mmtmhi0t9cg184ckce9bn">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="kali_files/4rgemjgd31f7qdtgaor8o2akpk.png"></p>
+<h3 class="topic">
+<a name="1lhmugmhvpq1to02r055v822kf">&nbsp;&nbsp;之后需要在测试机中测试exp，然后再使用exp攻击目标主机</a>
+</h3>
+<h3 class="topic">
+<a name="6u73opfn8heo34gr6euiumtbms">&nbsp;bash脚本编程实例3</a>
+</h3>
+<h3 class="topic">
+<a name="1b1d3ea4ovk9seihr1mqprunh5">&nbsp;&nbsp;假设我们的任务是扫描C类子网以识别Web服务器并确定它们是否呈现出有趣的攻击面。 端口扫描是检查远程计算机上的TCP或UDP端口的过程，目的是检测目标上正在运行的服务以及可能存在的攻击媒介.</a>
+</h3>
+<h3 class="topic">
+<a name="5cfqtji7de8ohp6aanufh6e7hr">&nbsp;&nbsp;创建临时文件夹</a>
+</h3>
+<h3 class="topic">
+<a name="72nullbb2vdd61j7rn4lbb3su4">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="kali_files/0mpoll7hsgihm4obd6tvdpc6jb.png"></p>
+<h3 class="topic">
+<a name="36h19qhc0ik8bd4qfe7s3n56lp">&nbsp;&nbsp;使用nmap进行扫描</a>
+</h3>
+<h3 class="topic">
+<a name="7iif4ib441kppc8pup49klleq4">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="kali_files/6q7h5ep4t900hmeq2h787sfi31.png"></p>
+<h3 class="topic">
+<a name="4m3tn6dm9oc4e5h4obiqhbnf3f">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="kali_files/5b0n1ck8ttrqf7ukr78ub23h30.png"></p>
+<h3 class="topic">
+<a name="0m12fkah3r9fjr9von4rq8jcg3">&nbsp;&nbsp;&nbsp;-A用于主动扫描，-p用于指定端口或端口范围，-open用于仅返回具有打开端口的计算机，而-oG以可伸缩格式保存扫描结果，后面给扫描结果文件名</a>
+</h3>
+<h3 class="topic">
+<a name="01mknaoo34nimd5lasu5dcn7sq">&nbsp;&nbsp;查看扫描结果文件</a>
+</h3>
+<h3 class="topic">
+<a name="49dv5j3ftanqmfvj98299r5d6l">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="kali_files/1ug2i1l53g6ngk67qbl9q64b30.png"></p>
+<h3 class="topic">
+<a name="2ggvck15gblcjrvihlgh1mim7i">&nbsp;&nbsp;仅显示开放80端口的ip地址，并且不显示第一行无用数据</a>
+</h3>
+<h3 class="topic">
+<a name="70gvugorma616qqgfudguhokk0">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="kali_files/61kkjlfa8q5m78ndb88k4v8e5o.png"></p>
+<h3 class="topic">
+<a name="3ur5skej7asr82hcac1pijon4g">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="kali_files/341h7hrpipbkg0sh4mqolfm5ft.png"></p>
+<h3 class="topic">
+<a name="747c8b3gbvfsao5hlo64gk80a6">&nbsp;&nbsp;使用空格作为分割依据，仅显示开放了80端口的IP地址</a>
+</h3>
+<h3 class="topic">
+<a name="16f7m7134cqvje0aq1ni54cft3">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="kali_files/3rfovqiuari2lihhkaaac6343n.png"></p>
+<h3 class="topic">
+<a name="3n3bq2jil76icsg0dubpnvq1b9">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="kali_files/6ecimpf3is9t219qremm8olpdf.png"></p>
+<h3 class="topic">
+<a name="7p9ja42vo3biel702ha7kts7mh">&nbsp;&nbsp;使用已有ip循环调用cutycapt，用于将网站页面转为图片</a>
+</h3>
+<h3 class="topic">
+<a name="21auq6klgq5sd2cijtbhr7g2fd">&nbsp;&nbsp;&nbsp;cutycapt：使用&ndash;url指定目标网站，并使用&ndash;out指定输出文件的名称：</a>
+</h3>
+<p class="topicImage">
+<img src="kali_files/5lbrc2jjod63mjb2a4m6b5u4nm.png"></p>
+<h3 class="topic">
+<a name="1ctiih2vrts4vimol92se88036">&nbsp;&nbsp;查看下载的网站图片</a>
+</h3>
+<h3 class="topic">
+<a name="3qbrreh82tvigp79nje9qnft55">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="kali_files/1inve4vcq9snork2uo3o1l0ue5.png"></p>
+<h3 class="topic">
+<a name="776cda81o2t60pqsogf73mpj85">&nbsp;&nbsp;使用脚本将下载的图片插入到网页中，然后打开网页显示图片</a>
+</h3>
+<h3 class="topic">
+<a name="2iqn2a776bta0e2vvffdqlncf6">&nbsp;&nbsp;&nbsp;该脚本从最基本的标记开始构建一个HTML文件（web.html）。 然后，ls和awk语句将每个.PNG文件名插入HTML IMG标记中，并将其附加到我们的web.html文件中。最后，我们将HTML结束标记附加到文件中，使脚本可执行，然后在浏览器中查看它。 结果很简单，但很有效，使我们可以查看每个Web服务器的主页：</a>
+</h3>
+<p class="topicImage">
+<img src="kali_files/56tec1oa4u4g6pnqh2u1pie84t.png"></p>
+<h3 class="topic">
+<a name="0qt4orv5lpdues6san8dkk2agr">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="kali_files/4a5hem0gpseo4dsm0ltpo3foi9.png"></p>
+<h3 class="topic">
+<a name="16p7udjsda9le70kuuml4r837l">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="kali_files/2bqgt8t5urcpgqc160nef73r6o.png"></p>
+</body>
+</html>

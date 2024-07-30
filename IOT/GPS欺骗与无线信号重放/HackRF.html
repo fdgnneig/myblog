@@ -1,0 +1,203 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>HackRF</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="3pta3r3rdbi0u028vu2d0d9od9">HackRF</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="HackRF_files/images/HackRF.jpg"></div>
+<h2 class="topic">
+<a name="28cdobpm8nitgoeoi6eovqjoo4">GPS欺骗</a>
+</h2>
+<h3 class="topic">
+<a name="33v3evqbc0ovrpgp6mv498icmd">&nbsp;安装hackrf</a>
+</h3>
+<h3 class="topic">
+<a name="5m0bhmfl47fircrl5amn95c7km">&nbsp;&nbsp;安装gnuradio,gqrx,hackrf&#13;
+sudo apt-get update&#13;
+sudo apt-get install gnuradio&#13;
+sudo apt-get install gqrx-sdr&#13;
+sudo apt-get install hackrf&#13;
+sudo apt-get install libhackrf-dev</a>
+</h3>
+<h3 class="topic">
+<a name="32ie6lsat50636qshv6i5ie1e0">&nbsp;&nbsp;&nbsp;连接上HackRF，运行 &#13;
+$ hackrf_info&#13;
+显示信息，说明找到设备，安装成功</a>
+</h3>
+<h3 class="topic">
+<a name="37lk76n1osblng463t9pbf32r4">&nbsp;&nbsp;&nbsp;&nbsp;运行&#13;
+gqrx&#13;
+接收FM广播，测试设备接收功能正常&#13;
+恭喜，基本环境配置成功，准备开始你的无线之旅！</a>
+</h3>
+<h3 class="topic">
+<a name="773bf4sukudd192upqgmh1ak25">&nbsp;下载编译gps-sdr-sim</a>
+</h3>
+<h3 class="topic">
+<a name="42g9abaphe2ahbu21rkekvto4o">&nbsp;&nbsp;git clone https://github.com/osqzss/gps-sdr-sim.git&#13;
+cd gps-sdr-sim&#13;
+gcc-mp-5 gpssim.c -lm -O3 -o gps-sdr-sim</a>
+</h3>
+<h3 class="topic">
+<a name="7te6mnoffqa484qpcb3midef0a">&nbsp;&nbsp;gcc gpssim.c -lm -O3 -o gps-sdr-sim</a>
+</h3>
+<h3 class="topic">
+<a name="2mp8nmq8to5hs59iode0gs0t94">&nbsp;&nbsp;最后一步也可以不用gcc-mp-5</a>
+</h3>
+<h3 class="topic">
+<a name="7iqi38te67hc0ap5posmjhqpqq">&nbsp;下载星历数据</a>
+</h3>
+<h3 class="topic">
+<a name="6c7aavctf2c00kb1esj7a1gci8">&nbsp;&nbsp;ftp://cddis.gsfc.nasa.gov/pub/gps/data/daily/2014/brdc</a>
+</h3>
+<h3 class="topic">
+<a name="4el43rffn1aqaae2eb1ccno2f2">&nbsp;&nbsp;找brdc0050.16n.Z 这样的文件，解压出来brdc0050.16n</a>
+</h3>
+<h3 class="topic">
+<a name="6pkttvijd9oo7l3ugklhhvkkss">&nbsp;生成gps仿真数据</a>
+</h3>
+<h3 class="topic">
+<a name="64f5qmd6l5vp1tctqlmf6futp0">&nbsp;&nbsp;./gps-sdr-sim -e brdc3540.14n -l 29.643598,91.101319,100 -b 8</a>
+</h3>
+<h3 class="topic">
+<a name="2jj3v1ah2vr0monlv51tp9ul1h">&nbsp;&nbsp;./gps-sdr-sim -e brdc3540.14n -l 31.603202,120.466576,100 -b 8 -d 100</a>
+</h3>
+<h3 class="topic">
+<a name="2uku6g8enl3dgot9tnonhqne92">&nbsp;&nbsp;&nbsp;多了个-d 100参数，从而生成100s的gps信号文件</a>
+</h3>
+<h3 class="topic">
+<a name="0i4738cs66kjh7p20hrlamtr14">&nbsp;发射gps数据</a>
+</h3>
+<h3 class="topic">
+<a name="5mepeq8m61u7l3ps1uibkthhae">&nbsp;&nbsp;hackrf_transfer -t gpssim.bin -f 1575420000 -s 2600000 -a 1 -x 0</a>
+</h3>
+<h3 class="topic">
+<a name="7cq82vtnmie57pi775il6aps3s">&nbsp;相关资料</a>
+</h3>
+<h3 class="topic">
+<a href="https://blog.csdn.net/opensourcesdr/article/details/51968678" name="4e59m82vnfv5ah3vveociu2g1e">&nbsp;&nbsp;https://blog.csdn.net/opensourcesdr/article/details/51968678</a>
+</h3>
+<h3 class="topic">
+<a href="https://www.cnblogs.com/k1two2/p/5164172.html" name="7e22b36spl4tq2cnc4dqpd62fk">&nbsp;&nbsp;https://www.cnblogs.com/k1two2/p/5164172.html</a>
+</h3>
+<h3 class="topic">
+<a name="7k1mnadgjf63kn1o7u0926us4l">&nbsp;&nbsp;http://s1nh.org/post/hackrf-quick-start/</a>
+</h3>
+<h3 class="topic">
+<a href="https://www.jianshu.com/p/c45c4628c8a6" name="0gi92oitjhccgh2ielumlhi5k9">&nbsp;&nbsp;https://www.jianshu.com/p/c45c4628c8a6</a>
+</h3>
+<h3 class="topic">
+<a name="5iij8eaoeinr6gbo6tf2hs1oug">&nbsp;ubuntu上安装hackrf</a>
+</h3>
+<h3 class="topic">
+<a name="1kcs5nvp7bp0ngk3f25gt2obj9">&nbsp;&nbsp;http://www.hackrf.com.cn/post/12.html</a>
+</h3>
+<h3 class="topic">
+<a name="1a46kuu3gm9i3c0lte51n4ll3u">&nbsp;经纬度查询</a>
+</h3>
+<h3 class="topic">
+<a href="http://map.jiqrxx.com/jingweidu/" name="0q6smbn6t2f5ngdunigd7chjs4">&nbsp;&nbsp;http://map.jiqrxx.com/jingweidu/</a>
+</h3>
+<h2 class="topic">
+<a name="7mgop3eqotk7inicqr1t5pmgsq">汽车钥匙无线电中间人攻击</a>
+</h2>
+<h3 class="topic">
+<a name="41alfin8o7bcrra3d7nrg6e8cp">&nbsp;windows端无线电工具</a>
+</h3>
+<h3 class="topic">
+<a name="78udbt8lae0e4uar3389hlq70a">&nbsp;&nbsp;airspy</a>
+</h3>
+<h3 class="topic">
+<a name="2d9a2337v1jc1efbdqa41979fm">&nbsp;钥匙大师论坛</a>
+</h3>
+<h3 class="topic">
+<a name="1q2ntohb8lrd3fr3doimncl089">&nbsp;&nbsp;http://www.ysdslt.com/</a>
+</h3>
+<h3 class="topic">
+<a name="4vr65a623g9pt5gf5ef9093h6i">&nbsp;实现功能：录制汽车钥匙开车门的无线电信号，然后重放，实现开车门（因为滚动码的存在所以该信号只能开车门一次，再次重放因为滚动码变化，所以无法起作用）</a>
+</h3>
+<h3 class="topic">
+<a name="0phgk41nv1gcuo23h78oi7im6m">&nbsp;&nbsp;当车钥匙距离车很远的时候，有人不小心按了几次车钥匙，车钥匙的随机码就会前进好几步，此时跟车内的码就不同步了。为了解决这个问题，汽车允许接收当前码之后的几百个码。只要车钥匙发送的码在这个窗口之内，汽车都认为是有效的；</a>
+</h3>
+<h3 class="topic">
+<a name="5ciqv560vklb0oup2insujit5j">&nbsp;&nbsp;&nbsp;如果车钥匙被误按超过设定的几百次，车钥匙和车就会彻底失去同步，这时候你就只能找办法恢复同步了。</a>
+</h3>
+<h3 class="topic">
+<a name="5as4fitoku6qa9qknt55nf3ggd">&nbsp;流程</a>
+</h3>
+<h3 class="topic">
+<a name="7b5he6uard6dqrvb24006k0rm4">&nbsp;&nbsp;确定信号频率</a>
+</h3>
+<h3 class="topic">
+<a name="708sdvo4kpm5ks8jtfc645g11q">&nbsp;&nbsp;&nbsp;使用gqrx等工具确定开车信号的频率，当信号发送给时找到波峰对应的频率</a>
+</h3>
+<p class="topicImage">
+<img src="HackRF_files/6iua1v3m85as9058li60bq7v9k.png"></p>
+<h3 class="topic">
+<a name="4nq5nb51ki38fditb73bileari">&nbsp;&nbsp;&nbsp;&nbsp;常见的汽车无线钥匙一般工作在两个频点：315MHz和433MHz。调制方式比较常见的有两种，ASK和FSK。复杂一点的有双频点FSK，还有多频点ASK的。</a>
+</h3>
+<h3 class="topic">
+<a name="00g3baln5gk3s4933evkc7bgtk">&nbsp;&nbsp;使用hackrf录制信号，重放信号（破解威马汽车）</a>
+</h3>
+<h3 class="topic">
+<a name="089uuf9n6oop75lsa3j0n64mm9">&nbsp;&nbsp;&nbsp;录制信号</a>
+</h3>
+<h3 class="topic">
+<a name="5c2r51mvh778hm46or5c60riu0">&nbsp;&nbsp;&nbsp;&nbsp; hackrf_transfer -r WMsignal.raw -f 434400000 -g 16 -l 32 -a 1 -s 8000000 -b 4000000</a>
+</h3>
+<h3 class="topic">
+<a name="1u3th0n8gci01u5a8nh0v044c1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-f 参数指定当前信号的频率，一般车钥匙频率为315MHz或433MHz，即315000000或434000000，生成的信号文件为signal.raw，后面的参数不知道具体含义需要进一步学习</a>
+</h3>
+<h3 class="topic">
+<a name="3tu7itaj0brrmgtadqd3nmste0">&nbsp;&nbsp;&nbsp;重放信号</a>
+</h3>
+<h3 class="topic">
+<a name="4faq5jttn3bv18bvhlhsfn87v9">&nbsp;&nbsp;&nbsp;&nbsp; hackrf_transfer -t WMsignal.raw -f 434400000 -x 47 -a 1 -s 8000000 -b 4000000</a>
+</h3>
+<h3 class="topic">
+<a name="7v8biqamo1ofa4is45gh67ls12">&nbsp;&nbsp;使用hackrf录制信号，重放信号（破解无线门铃）</a>
+</h3>
+<h3 class="topic">
+<a name="0asb05unorhir07qp4rldv1b2l">&nbsp;&nbsp;&nbsp;录制信号</a>
+</h3>
+<h3 class="topic">
+<a name="3mqslactijhqvc634frmot1d52">&nbsp;&nbsp;&nbsp;&nbsp;hackrf_transfer -r hell.iq -f 315100000 -s 8000000 -n 40000000</a>
+</h3>
+<h3 class="topic">
+<a name="5u1od71lu9qlf5uran625g6lr9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;解释：记录数据到文件hell.iq、指定工作频率为315.1Mhz，指定采样率8Msps/s，指定采样样本数为40M，采样时间也就是5秒</a>
+</h3>
+<h3 class="topic">
+<a name="35lgrne5aag8qtn2603lk7rpaa">&nbsp;&nbsp;&nbsp;重放信号</a>
+</h3>
+<h3 class="topic">
+<a name="0ite1ob012suk6m1tah9ua2koc">&nbsp;&nbsp;&nbsp;&nbsp;hackrf_transfer -t hell.iq -f 315100000 -s 8000000 -a 1 -l 40 -x 47</a>
+</h3>
+<h3 class="topic">
+<a name="0soflk606htcs6vv64gr1n604q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;解释：指定发射信号源文件，指定工作频率315.1Mhz，指定采样率8Msps，开启天线增益控制，指定RX LNA(IF)增益为40，指定TX VGA(IF)增益为47</a>
+</h3>
+<h2 class="topic">
+<a name="7ojm96ggh1r5lr2i2q4eqkiqhk">hackrf官网</a>
+</h2>
+<h3 class="topic">
+<a name="3a1smtevq5timah4fgqcaavhim">&nbsp;https://greatscottgadgets.com/hackrf/</a>
+</h3>
+<h2 class="topic">
+<a name="53ncg88coll1b2579cfe5tkib0">emmc芯片</a>
+</h2>
+<h3 class="topic">
+<a name="0u2arn892gg4825c2chiej2797">&nbsp;回字形状的针脚是其特征，从版上取下后可以使用编程器读取，不过需要额外芯片托承载emmc芯片</a>
+</h3>
+<h2 class="topic">
+<a name="560i3qku82vkqhcjlbd3s542p3">芯片手册查询关键字</a>
+</h2>
+<h3 class="topic">
+<a name="5s9h3s7ue6cjgg9c9fnhffqm78">&nbsp;芯片型号 datasheet</a>
+</h3>
+</body>
+</html>

@@ -1,0 +1,1850 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>安卓-3</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="11pf5q19chdlfjem0h02fftch4">安卓-3</a>
+<p class="topicImage">
+	<img src="%E5%AE%89%E5%8D%93-3_files/2024-07-29_152513.png"></p>
+</h1>
+<h2 class="topic">
+<a name="37k2cuiumfjf9stlopujhfgtof">arm32位汇编</a>
+</h2>
+<h3 class="topic">
+<a name="412451b283mvibl18k6olc61od">&nbsp;简介</a>
+</h3>
+<h3 class="topic">
+<a name="09bbokaiu0n6h509o3mnulaovs">&nbsp;&nbsp;atm体系简介</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/6qr0amf285p29p3ndm06liclve.png"></p>
+<h3 class="topic">
+<a name="11qord05bvtkroqrtu4m56a3ec">&nbsp;&nbsp;&nbsp;cpu架构：armv7a之前-》使用32位arm汇编，分为A32(ARM) T32(Thumb)两种，两者可以在编程值时混用</a>
+</h3>
+<h3 class="topic">
+<a name="6ddp29ga6ohbkkt74961lpcve9">&nbsp;&nbsp;&nbsp;cpu架构：armv8-》使用64位汇编 A64，该汇编兼容32位汇编，但是两者不能混用</a>
+</h3>
+<h3 class="topic">
+<a name="72ji3t9j0kh9uvcvnspufh6e1i">&nbsp;&nbsp;&nbsp;arm指令是定长的，x86指令是变长的</a>
+</h3>
+<h3 class="topic">
+<a name="7ucqnjseoroug6ckfavbqku79d">&nbsp;X86中字为16个bit位，双字为32bit位&#13;
+ARM中字为32个bit位</a>
+</h3>
+<h3 class="topic">
+<a name="7bgs8171csi87l4tmfgnhn9npn">&nbsp;&nbsp;在计算机领域, 对于某种特定的计算机设计而言，字是用于表示其自然的数据单位的术语。在这个特定计算机中，字是其用来一次性处理事务的一个固定长度的位（bit）组。一个字的位数（即字长）是计算机系统结构中的一个重要特性。&rdquo;</a>
+</h3>
+<h3 class="topic">
+<a name="24gdlv1luetdos6idou0ank5em">&nbsp;ARM指令长度</a>
+</h3>
+<h3 class="topic">
+<a name="75s7h661atgtj3btasr21jsj9m">&nbsp;&nbsp;ARM指令长度为32位，四字节</a>
+</h3>
+<h3 class="topic">
+<a name="39um7n66fi3q64t42tv1vcm6q0">&nbsp;&nbsp;&nbsp;字对齐</a>
+</h3>
+<h3 class="topic">
+<a name="0kfa94upnvnfj6errudjglk1b3">&nbsp;&nbsp;Thumb指令长度为16位，两字节</a>
+</h3>
+<h3 class="topic">
+<a name="7ju9er1nafk2o4kljs8630o8tb">&nbsp;&nbsp;&nbsp;半字对齐</a>
+</h3>
+<h3 class="topic">
+<a name="77brou6jcudlb9f4k5i7n05lvv">&nbsp;armv7的处理器模式</a>
+</h3>
+<h3 class="topic">
+<a name="33vd3fh7d54bb3pguhmau50fir">&nbsp;&nbsp;从用户模式中进入内核需要调用svc，从而陷入内核</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/3vf7b4fgf0uqr1hgblrtg81ej0.png"></p>
+<h3 class="topic">
+<a name="740q4j1dbhq6j2bjre50cn3q4b">&nbsp;&nbsp;&nbsp;ARM处理器运行模式</a>
+</h3>
+<h3 class="topic">
+<a name="3bof35o8h9mhcbf805rlrrf4kc">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/1qbuvfcqsan6mhl9uvm9ok0j0r.png"></p>
+<h3 class="topic">
+<a name="2pceqa98010lgk9ujoc69mkb27">&nbsp;&nbsp;&nbsp;&nbsp;分类</a>
+</h3>
+<h3 class="topic">
+<a name="0eomvl46r5o5v90n5e0qe34t6j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用户模式</a>
+</h3>
+<h3 class="topic">
+<a name="1r8veh662524hs257u1om9vemi">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;即用户模式</a>
+</h3>
+<h3 class="topic">
+<a name="041q6nt2h0vj74dp3d0utr7hsv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;不能进行处理器模式的切换</a>
+</h3>
+<h3 class="topic">
+<a name="5k911uib4j76prv7f3qf6hsdui">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;特权模式</a>
+</h3>
+<h3 class="topic">
+<a name="712kfmpleg712ru7siclhhfmvo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;除了用户模式之外的其他模式</a>
+</h3>
+<h3 class="topic">
+<a name="6d0nkss402qgkt7dvkfqq1qqt6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;除了系统模式，另外5个特权模式也称为异常模式</a>
+</h3>
+<h3 class="topic">
+<a name="0eru6atqql0g8c6cffs4ep74fd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以访问系统所有资源，可以进行任意处理器模式切换</a>
+</h3>
+<h3 class="topic">
+<a name="3hh5c343utsiihe5q9g5alq9hj">&nbsp;&nbsp;&nbsp;&nbsp;处理模式的切换</a>
+</h3>
+<h3 class="topic">
+<a name="0s8e2ci4c2jvgdpogupni0h50v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;处理器模式可以通过软件控制、外部中断、异常过程进行切换</a>
+</h3>
+<h3 class="topic">
+<a name="7igcj2m1ljo1mqebacpbahsi06">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用户模式下，通过产生异常处理，进行处理器模式的切换</a>
+</h3>
+<h3 class="topic">
+<a name="1q6fs6en4g4crtk5bueela3pmq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;每种异常模式均有对应的一组寄存器，保证进入用户模式进入异常模式，用户模式中寄存器不被破坏</a>
+</h3>
+<h3 class="topic">
+<a name="422dq5pptke5hiaq6dgu7ua0rr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;系统模式与用户模式寄存器相同，不适用异常模式下相应寄存器组，从而保证异常中断的任务状态不被破坏</a>
+</h3>
+<h3 class="topic">
+<a name="3aain70qlsoe58hvf4u98g0f1n">&nbsp;armv7中寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="059ad94viado5slgu66jgkifa6">&nbsp;&nbsp;注意虽然arm支持小端、大端模式，但是安卓中都是小端&#13;
+&#13;
+注意实际arm汇编函数中，函数返回地址可能存放在LR链接寄存器中，可能存放在堆栈中（比如该函数需要用到比较多的寄存器，所以占用lr寄存器），根据函数实现的不同而不同</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/2dtq6iqupclnc221i9chhbptq8.png"></p>
+<h3 class="topic">
+<a name="664jgk5tt700h62afskpanc98t">&nbsp;&nbsp;&nbsp;cpsr状态寄存器，该寄存器中的控制位是不能直接修改的&#13;
+控制位t用于指定当前执行的是Thumb指令还是ARM指令&#13;
+&#13;
+注意c表示无符号数是否进位，v表示有符号数是否溢出</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/0iecch9hj69ldp112ra1b8jul3.png"></p>
+<h3 class="topic">
+<a name="7jaqsc3gk1f61haqj2upmf1uif">&nbsp;&nbsp;&nbsp;&nbsp;条件标志</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/3kiu3if3n1jb8skdpi4vfup37d.png"></p>
+<h3 class="topic">
+<a name="66rpi4n84ivuol4nu0tt1mvf1d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;条件标志</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/4fmo4mss9piv1job9nuhtcivs2.png"></p>
+<h3 class="topic">
+<a name="6607kqb5k75r4d5997e9267gck">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ARM寄存器详解</a>
+</h3>
+<h3 class="topic">
+<a name="6ecobhdsb021ga4r74lukt03mo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;一共37个寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="73jj841btmardbvlvenjbq0msq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;31个通用寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="0r91673f5dsmkd4v2vq2eqjuqa">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;都是32位寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="17ut8uhpbt2nfeummon2lkm4p7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6个状态寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="7tgotk1b1mdjtda874kq4nbudr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;都是32位寄存器，目前仅仅使用了其中12位</a>
+</h3>
+<h3 class="topic">
+<a name="5njh3l0mrtdrj7a4odl35m3gms">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;七种不同的处理器模式，分别对应一组寄存器，分为15个通用寄存器、一或两个状态寄存器、程序计数器（PC）</a>
+</h3>
+<h3 class="topic">
+<a name="5rb5vsumsoenrr0m4t9m189uq9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/0rlo01dharhan6bami23qlmd2e.png"></p>
+<h3 class="topic">
+<a name="1ttmo2oeeb54caldbbpa8hgtrj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通用寄存器（R0~R14 PC）</a>
+</h3>
+<h3 class="topic">
+<a name="5uh1oubrk4q5u5hagl2kel13t0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;未备份寄存器R0~R7</a>
+</h3>
+<h3 class="topic">
+<a name="4j2kli62iafvksrfl4gkoj0b20">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;系统没有指定专门的用途</a>
+</h3>
+<h3 class="topic">
+<a name="3hvug5ed1o607epara47ke7jh2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;所有处理器模式下均指同一个物理寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="3ehp1bupk847m6gpdafra20j8u">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以用于任何使用通用寄存器的场景下</a>
+</h3>
+<h3 class="topic">
+<a name="7849a1u1v7bn3k54io4kp0vett">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;不同处理器模式下使用可能会造成数据破坏</a>
+</h3>
+<h3 class="topic">
+<a name="55pcavme5p7sa8v2acfdf023ui">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;备份寄存器R8~R14</a>
+</h3>
+<h3 class="topic">
+<a name="1rj8tferf3865ntlvt5q4qs122">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;R8~r12</a>
+</h3>
+<h3 class="topic">
+<a name="5ib5bbkg75vng9j3h6beke9r7d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;每个寄存器对应两个不同的物理寄存器，不同的处理器模式，使用不同的物理寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="37hcein0aupuf4nqb2minuasf5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;系统不做特殊用途要求</a>
+</h3>
+<h3 class="topic">
+<a name="1jpqms94ahg9fq5vratjve69o9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;中断处理时使用R8~R14，可以加快程序处理</a>
+</h3>
+<h3 class="topic">
+<a name="6b2f9o7s5mubpl958b1kdl4h5j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;R13 R14</a>
+</h3>
+<h3 class="topic">
+<a name="3992g004pmr4p0eh6f3ehfijah">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;每个寄存器对应6个物理寄存器，用户和系统模式共用一个，其他五种处理器模式对应其专门的物理寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="5ca3sd6ugnd87cp1cpjpsgqgqf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;命名格式</a>
+</h3>
+<h3 class="topic">
+<a name="5sg47cm0m453juoos93l3qnk92">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/5huupm2tr5kdrefjch0sj804he.png"></p>
+<h3 class="topic">
+<a name="1kdqsuirbsttlrjn4h76b89v0b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;R13</a>
+</h3>
+<h3 class="topic">
+<a name="37fs1v0jrvv5blv1kn4eqg7h2g">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ARM中使用R13作为栈指针，不强制，也可以使用其他寄存器作为栈指针</a>
+</h3>
+<h3 class="topic">
+<a name="02dlkk3e6m8q79h1cr76m63hns">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Thunb强制使用R13作为栈指针</a>
+</h3>
+<h3 class="topic">
+<a name="5uqta3g0ebt9sf0udd3hm5bht4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;应用程序初始化R13，使其指向不同处理器模式对应的栈，处理器模式切换时，将使用到的寄存器保存在R13指向的栈空间中，之后可以出栈恢复数据，从而保证不同处理器模式下运行环境不被破坏</a>
+</h3>
+<h3 class="topic">
+<a name="7l12dik6hnciovj0rj2ed8imrd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;R14</a>
+</h3>
+<h3 class="topic">
+<a name="4am9n3n78k4cqtnoagrn3th9r4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;链接寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="06979vi81lqb80uk5r9ri9gmvk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;特殊作用</a>
+</h3>
+<h3 class="topic">
+<a name="03bjkutilsea16ecjv3vqaifpp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用于保存当前子程序返回地址</a>
+</h3>
+<h3 class="topic">
+<a name="6ci3uh4a1i3g6l3i9eq41jo6ot">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;异常中断发生时，对应的R14被设置为该异常模式将要返回的地址</a>
+</h3>
+<h3 class="topic">
+<a name="254et74g9n1l9lntvo0hb80ij6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以作为通用寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="6haa9igjupl3c8dg2jjk1m30g0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意实际arm汇编函数中，函数返回地址可能存放在LR链接寄存器中，可能存放在堆栈中（比如该函数需要用到比较多的寄存器，所以占用lr寄存器），甚至可以自己开辟一块内存存放返回地址，根据函数实现的不同而不同</a>
+</h3>
+<h3 class="topic">
+<a name="0rp2di1p2mlcgogc2ld1iktoph">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;程序计数器 PC也称R15</a>
+</h3>
+<h3 class="topic">
+<a name="0an4dbqlvob52jg7ldvp323c06">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;一般可以作用通用寄存器，但那时部分指令使用R15有限制</a>
+</h3>
+<h3 class="topic">
+<a name="4b28gtnumsjde40umbpff587bm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;执行arm指令时，当正确读取R15值时，寄存器值为当前指令地址+8字节</a>
+</h3>
+<h3 class="topic">
+<a name="5po0s72jio8ekcdb8gjoerim9q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;相当于指向当前指令下两条指令的地址</a>
+</h3>
+<h3 class="topic">
+<a name="42pdcijmjrarqqjgfkdibk4cc7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;执行thumb指令时，当正确读取R15值时，寄存器值为当前指令地址+4字节</a>
+</h3>
+<h3 class="topic">
+<a name="4a341bgfnaelmgidn3citmbu5v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;相当于指向当前指令下两条指令的地址</a>
+</h3>
+<h3 class="topic">
+<a name="2fvl5v31i7ekkgqjjulh5n3tdr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当成功向R15中写入值时，程序跳转到该地址执行指令</a>
+</h3>
+<h3 class="topic">
+<a name="4du3uonguqj7ctvkv4j03ppo71">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/724589rm1k570vn661iqlriqk7.png"></p>
+<h3 class="topic">
+<a name="5ln35b94fg7a9qidks1gecmhec">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/2kudkthuevbl1cfkimpjetqaa8.png"></p>
+<h3 class="topic">
+<a name="2sgdhp9r1qqbmcpr1s6r3us0ts">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;程序状态寄存器（CPSR SPSR）</a>
+</h3>
+<h3 class="topic">
+<a name="2tpita3ql23vogitu34fss68uv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;两者结构一致</a>
+</h3>
+<h3 class="topic">
+<a name="5tt23vibggsslj1g2qnc6f4675">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CPSR</a>
+</h3>
+<h3 class="topic">
+<a name="6sj2nklvnr7k2hlsdmsm5o0fjn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当前程序状态寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="3pg04e6h2ss5tc88nsmuhe3tq8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;所有处理器模式中都对应同一个物理寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="2jar60ani4cj19kk47g4a336ee">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SPSR</a>
+</h3>
+<h3 class="topic">
+<a name="0jtbshac9vcu6fhamtgtpes7ug">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;备份程序状态寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="394grsd15m4b6uq3f0re4qd071">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;除了用户模式和系统模式，其他处理器模式均对应一个特定物理寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="3kck8ef2nrbss4387o40e4189t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用户模式和系统模式访问SPSR，会造成不可预知的问题</a>
+</h3>
+<h3 class="topic">
+<a name="36sli55g64k4mbjnmksn9dunge">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;异常中断发生时，用于保存当前程序状态寄存器内容</a>
+</h3>
+<h3 class="topic">
+<a name="37veipru9kuq1ph5su3popeufu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;异常中断程序退出时，用于恢复当前程序状态寄存器内容</a>
+</h3>
+<h3 class="topic">
+<a name="5qdq4pddlvv7imj6mavp658bt9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;结构</a>
+</h3>
+<h3 class="topic">
+<a name="0u6ommberu6ebvm7tsejtc1sj9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/3m96mnbnmcd01qqbn8nt40sgjs.png"></p>
+<h3 class="topic">
+<a name="5bd49dg89q1seemvgkcdoder63">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;条件标志位</a>
+</h3>
+<h3 class="topic">
+<a name="6h0a5p40pds4jfh8o16i59alv3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/48hh6sq4u519ieqv48l115cfhh.png"></p>
+<h3 class="topic">
+<a name="541ibcnheil5u02chf5f5aino5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/0gk0j3h27omht0iglq4o9fp4v7.png"></p>
+<h3 class="topic">
+<a name="7f5n6mu5q91c044p429krcqp1g">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Q标志位</a>
+</h3>
+<h3 class="topic">
+<a name="03l7n9e3vnlru4sgl03os7qunp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/2igct89gf98a4nojkbpjn9srk2.png"></p>
+<h3 class="topic">
+<a name="0672nqmiab1gi4oemptougcv4t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CPSR中的控制位</a>
+</h3>
+<h3 class="topic">
+<a name="4k1t1spnr36o4j3kcv2u3gapep">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;尤其注意t控制位，用于表示当前执行thumb指令还是arm指令</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/11g89dor2m53u9geujohh8supm.png"></p>
+<h3 class="topic">
+<a name="10rgjqio4ik6m2jrgmoe4iifjr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/1v14319gge9cc4pi8n08bvldos.png"></p>
+<h3 class="topic">
+<a name="43l5d4v252n1eusb7asroju087">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;其他位用于将来ARM版本的扩展，应用程序中不应该使用</a>
+</h3>
+<h3 class="topic">
+<a name="78ls9gf54djjbvpbpqbhmu9ksc">&nbsp;armv7中的两种类型的指令 ARM Thumb</a>
+</h3>
+<h3 class="topic">
+<a name="20mkr9hleqk2g50kisrh7ihfu3">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/2otrn8sbdoqsq3e3ta53d33lfa.png"></p>
+<h3 class="topic">
+<a name="4vd1a0o6eth6c3oa0l7eqlokvl">&nbsp;&nbsp;&nbsp;执行arm指令时，当正确读取R15值时，寄存器值为当前指令地址+8字节</a>
+</h3>
+<h3 class="topic">
+<a name="06a29sm4p9d08l4e7c3k6tq19t">&nbsp;&nbsp;&nbsp;&nbsp;相当于指向当前指令下两条指令的地址</a>
+</h3>
+<h3 class="topic">
+<a name="4erue14k8v9k8qlmj71a44md1k">&nbsp;&nbsp;&nbsp;执行thumb指令时，当正确读取R15值时，寄存器值为当前指令地址+4字节</a>
+</h3>
+<h3 class="topic">
+<a name="0o3e2vef2gepn3jtuhe8v91on6">&nbsp;&nbsp;&nbsp;&nbsp;相当于指向当前指令下两条指令的地址</a>
+</h3>
+<h3 class="topic">
+<a name="3s60anj6j7f9976ilu61i4eage">&nbsp;&nbsp;&nbsp;无论是arm指令还是thumb指令，指令长度一定义2字节的倍数，这就导致指令的地址，即pc寄存器取出的地址值一定时偶数的，即地址的最低bit位为0</a>
+</h3>
+<h3 class="topic">
+<a name="5b77f7h3vgva5e5q6b6o1iuq38">&nbsp;&nbsp;&nbsp;如果给pc寄存器赋值，则程序会跳转执行对应地址中的指令，如果跳转后要执行的指令为arm指令，则可以直接给pc指令赋值为偶数地址，即目标arm指令的实际地址，如果跳转后要执行的指令为thumb指令，则赋值给pc寄存器的地址需要为奇数，等于对应thumb指令地址+1，只有这样才能保证跳转后，程序执行thumb指令</a>
+</h3>
+<h3 class="topic">
+<a name="71i4olrucsh58njl408irlkdpq">&nbsp;&nbsp;&nbsp;&nbsp;具体实例为后面IDA远程调试并bin文件</a>
+</h3>
+<h3 class="topic">
+<a name="4qisq9vdhor5q1r4fe9ub3h1gr">&nbsp;&nbsp;arm指令</a>
+</h3>
+<h3 class="topic">
+<a name="55bh4ugpb6vles4cf2m5desjdi">&nbsp;&nbsp;&nbsp;A32指令高4bit均为条件标志位，用于指定该指令什么情况下执行，因为cond一般均为无条件执行，即条件标志位为al (1110),所以顺序执行的arm指令均已0xe开头</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/6lur10rdrnhvagncde8bfiuutr.png"></p>
+<h3 class="topic">
+<a name="2hqaicn71t3j88737ggqtgen2l">&nbsp;&nbsp;&nbsp;&nbsp;指令一般格式</a>
+</h3>
+<h3 class="topic">
+<a name="0gqilucprdq8lug9suc2l2d3um">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;内存结构</a>
+</h3>
+<h3 class="topic">
+<a name="00di1fbb6m1od6d75ne0921udi">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/6d4eqnuvem5pd6j9bvlfn45dve.png"></p>
+<h3 class="topic">
+<a name="2ki0nds6gqp7sdcokj8vmas0hb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;指令结构</a>
+</h3>
+<h3 class="topic">
+<a name="225rom5j787fakmg24b5he9rlr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/7qshvhrsdmum4qn30irhvdur7r.png"></p>
+<h3 class="topic">
+<a name="5sae8iim2m9ddtj1dr730j526c">&nbsp;&nbsp;&nbsp;&nbsp;指令条件码域cond</a>
+</h3>
+<h3 class="topic">
+<a name="039n471jin23lc5n1lgind8djn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ARM中大部分指令都是有条件执行的，根据CPSR寄存器中的数据决定是否执行特定指令，条件满足时执行指令，条件不满足时该指令被当作NOP，处理器进行判断中断请求等操作，之后执行下一条指令</a>
+</h3>
+<h3 class="topic">
+<a name="1d4jnatu3hbcmq3t93u2v98qr5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;条件码域在内存中共4位，可以标识16种不同的特定条件</a>
+</h3>
+<h3 class="topic">
+<a name="31m78v0oo158hnsq7j9ub6n9gg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/5c5us6lmfl6a3vf1al2dthkfab.png"></p>
+<h3 class="topic">
+<a name="3k7cprp0kp84ln4msihmd9u84b">&nbsp;&nbsp;thumb指令</a>
+</h3>
+<h3 class="topic">
+<a name="478eepcr8tanooa1gar2934t9g">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/1ou3uj9ikhlmou768a7u6ot1lr.png"></p>
+<h3 class="topic">
+<a name="6fd6hrd0a24bovibhu2c40trdv">&nbsp;常见指令</a>
+</h3>
+<h3 class="topic">
+<a name="6qretsp65e53jhq20ehnhb4gpc">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/7ruabu0ebonruoc3acfh8fravt.png"></p>
+<h3 class="topic">
+<a name="2vkp0ikss4oeh7u7iu7q96pg36">&nbsp;&nbsp;&nbsp;跳转指令（该跳转为armv7上的，armv8有些区别）</a>
+</h3>
+<h3 class="topic">
+<a name="7eaogomo5v6h7n8uc1jppc9spj">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/2lnqbtgbukrqai4k0th5nrpjv9.png"></p>
+<h3 class="topic">
+<a name="5re8s7kv2qgpfe63pn5mmfhc00">&nbsp;&nbsp;&nbsp;LDM STM</a>
+</h3>
+<h3 class="topic">
+<a name="2333rq3j54frm625g7pdeo0uu0">&nbsp;&nbsp;&nbsp;&nbsp;注意sp!表示sp会因为入栈出栈操作修改其中的值，保证始终指向栈顶</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/2pqgt9thmb8lpc34l9eeqqt4ul.png"></p>
+<h3 class="topic">
+<a name="2u1qvnglnrkcsbop2lk5trp2qd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/4chqulrjajbuhcetmthar8hq97.png"></p>
+<h3 class="topic">
+<a name="7ov66e76eqllgrq66oh5gm6tnv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;所有加减乘除的计算均需要通过寄存器进行，需要将参数从内存加载到寄存器，然后在寄存器之间进行运算，再将最终结果存储到内存中</a>
+</h3>
+<h3 class="topic">
+<a name="56ielec8oas84uj3g8ahaghhgv">&nbsp;&nbsp;&nbsp;LDR STR</a>
+</h3>
+<h3 class="topic">
+<a name="1b9dfdsfkijratir9962muq9kv">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/64cio94mhtppoo74oot25cnt63.png"></p>
+<h3 class="topic">
+<a name="01vcme4rna3h9g3umikddfqpe9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;实际汇编代码中会出现LDR R1,[PC,#12]等类似指令，在取got表时会出现此类汇编，&#13;
+如果存在此类汇编，在进行inline hook时，因为在函数刚开始需要让程序跳转到我们的代码中执行，所以pc寄存器的值与非hook时不同，如果原始代码中存在LDR R1,[PC,#12]等指令，hook函数中就要注意要修复该指令中的[PC,#12]的偏移，从而寻址到正确的数据</a>
+</h3>
+<h3 class="topic">
+<a name="205nfpnknmbr6krkpr1eglrotm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;即当前取出的数据是否正确取决于pc寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="236m6i513kiegshab36c5hsus1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;因为arm指令最长四字节，所以在寻址整个虚拟地址空间时，指令中不足以保存一个绝对地址进行寻址，所以通常是通过当前pc寄存器的值+偏移来寻址整个虚拟地址空间，这就导致指令执行正确与否与该指令执行时的pc寄存器值有关，从而为inline hook带来了一些问题</a>
+</h3>
+<h3 class="topic">
+<a name="4i8qa9htkdtvs38bnntrvs6e4l">&nbsp;&nbsp;&nbsp;从用户模式中进入内核需要调用svc，从而陷入内核</a>
+</h3>
+<h3 class="topic">
+<a name="00uembuctg8ii0mlia40nlrdn4">&nbsp;&nbsp;&nbsp;LDM STM LDR STR四条指令中</a>
+</h3>
+<h3 class="topic">
+<a name="7g1ulf7u2vuegjjqk3jvu2odrp">&nbsp;&nbsp;&nbsp;&nbsp;带LD 即load 即数据从内存加载到寄存器中</a>
+</h3>
+<h3 class="topic">
+<a name="2hctbkjm36kq066ac5lrlit1p0">&nbsp;&nbsp;&nbsp;&nbsp;带ST 即store 即数据从寄存器保存到内存中</a>
+</h3>
+<h3 class="topic">
+<a name="2le96e5atqs8cs3elsorub332p">&nbsp;&nbsp;&nbsp;&nbsp;无论是load还是store，主语都是寄存器，load为寄存器加载数据，store为寄存器保存数据</a>
+</h3>
+<h3 class="topic">
+<a name="2d4h8jsk7ce4j2q5jd3n0u2nrg">&nbsp;arm函数的调用约定 ：fastcall</a>
+</h3>
+<h3 class="topic">
+<a name="6h0vk1el75bg8mrmi9uu384g4o">&nbsp;&nbsp;r0用于保存函数返回值</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/67d3tasgq0i5atu00s7q9flvlr.png"></p>
+<h3 class="topic">
+<a name="3d3e9mslv3ssb11ro0krqic8t0">&nbsp;&nbsp;在进行系统调用时（陷入linux内核），所有的的参数通过r0~r6直接传递，r7中保存系统调用号</a>
+</h3>
+<h3 class="topic">
+<a name="6lv9jfos0nhon9g0co9t0plsc8">&nbsp;实际demo调试</a>
+</h3>
+<h3 class="topic">
+<a name="3k1ljr3j00v2qla7657j7ornd9">&nbsp;&nbsp;这里是在jni文件夹目录下使用ndk-build，将.c .cpp文件编译成使用与不同平台的so文件</a>
+</h3>
+<h3 class="topic">
+<a name="2lokv3dr73n6baodhp5h3d62n6">&nbsp;&nbsp;&nbsp;编译前</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/5hbpo1tlkkd2cafqs3u1e4m4tt.png"></p>
+<h3 class="topic">
+<a name="4g2p87l22esdu2cvfe88cmdck1">&nbsp;&nbsp;&nbsp;&nbsp;执行编译</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/6hbn887lc0svhrho7t1hmt0pug.png"></p>
+<h3 class="topic">
+<a name="05gquv2h2onv9p01i2fkh31g6f">&nbsp;&nbsp;编译完成后会生成libs和obj文件夹</a>
+</h3>
+<h3 class="topic">
+<a name="1m1g8leva8qgnu6o4sp7obk014">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/66krgent09147jvrroniuvriub.png"></p>
+<h3 class="topic">
+<a name="5cb54ta61eco2qef5630fnji4c">&nbsp;&nbsp;&nbsp;&nbsp;libs文件夹中保存不同硬件平台的release版的so文件，其中没有符号</a>
+</h3>
+<h3 class="topic">
+<a name="239eq2473q949m51so76ff6va6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/4vg5sg18os0mltu127ud7juudm.png"></p>
+<h3 class="topic">
+<a name="3i6mp2abd3ruetpdv5lg2r8sdi">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/2kkgk6khr5fpcas8vjm3fftsie.png"></p>
+<h3 class="topic">
+<a name="7vpj0223i5b723jj47tspg4gvj">&nbsp;&nbsp;&nbsp;&nbsp;obj文件夹中保存各平台debug版的.so文件(带符号)以及中间文件.o</a>
+</h3>
+<h3 class="topic">
+<a name="5eku34dhgt90v2fgsaaqhueve3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/2cg2gtk5anusko7uloqnug27p4.png"></p>
+<h3 class="topic">
+<a name="2eg0m21pltmh1do2fp0st5gvk3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/76i4haokvbg1vhn30nl440q6bs.png"></p>
+<h3 class="topic">
+<a name="7i7r10r3ei4pq95ppf2g511fki">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/4q0s6cgtot2tb4e1lm80v444cr.png"></p>
+<h3 class="topic">
+<a name="02nc2emhkddbv8jknadpe56u8f">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/1jn6q5urrhtn2v7p09kesesnkp.png"></p>
+<h3 class="topic">
+<a name="6n3pvnrb8bu732jvm64pphmcq4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/6c2dqfoalh6m6nf1ggt75n86s3.png"></p>
+<h3 class="topic">
+<a name="1n88iralg33e5dej8vcj9ght3d">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/1ug8lbssaduu45qu6uial8jghv.png"></p>
+<h3 class="topic">
+<a name="6jpc98fkv4vaj7aro83fgvupcb">&nbsp;&nbsp;&nbsp;使用ida加载libhello_arm.so</a>
+</h3>
+<h3 class="topic">
+<a name="1861kna0q539hsaab40ebhstam">&nbsp;&nbsp;&nbsp;&nbsp;四字节的arm指令</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/5hb7cj8jilqehjsdoo2lk553id.png"></p>
+<h3 class="topic">
+<a name="51o3kg1456jfq9i0i5doi29a71">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/0mfko2itnmumvsdcs6sgbhvp73.png"></p>
+<h3 class="topic">
+<a name="5ipnvv80bvtpdf1d5ic7bt60fr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;指令"BL mmap"是调用linux的mmap函数，该函数一定是libc导入到本程序中的</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/6j9kosm5joviivvv4rd1i8u6er.png"></p>
+<h3 class="topic">
+<a name="2iamu8rrgr4sdo22jta9j5dje1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/3kfgcph0tp31690h3q9vrh7bju.png"></p>
+<h3 class="topic">
+<a name="7rtf8hrn93qjd5pk20n7k12sn9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/09gp8s9epfmcbsnhangqeom600.png"></p>
+<h3 class="topic">
+<a name="1lqtfadrfk05b5v1qtpk6fjo46">&nbsp;&nbsp;&nbsp;使用ida加载libhello_thumb.so</a>
+</h3>
+<h3 class="topic">
+<a name="341imopeq95q6ou5p2hr70the7">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/5ek1vs3tnfemnfh349rhev4veq.png"></p>
+<h3 class="topic">
+<a name="6l9l1svab68uv65optfbikgj6c">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/2cqrgdkleoohemfmagbjs2bctr.png"></p>
+<h3 class="topic">
+<a name="7ng6dgmh4moq0o4et5ubfve4s0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;thumb中使用blx mmap调用外部函数mmap，因为调用的目的函数是arm实现的，此时在thumb指令中需要使用BLX切换状态，并跳转到目的地址中执行函数</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/154kc8fkrqvv423p4oa7f23jhb.png"></p>
+<h3 class="topic">
+<a name="5cclsk9d22v9s2nhvbv99660lp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/53r4eughfemosen9ibjd8e98um.png"></p>
+<h3 class="topic">
+<a name="1kn68jnrrvr8ojhj928p8l408k">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;程序执行blx mmap时会将返回地址保存到lr寄存器中，此时lr寄存器中保存的是什么值？</a>
+</h3>
+<h3 class="topic">
+<a name="0v2rqu27k4j8vab9f4lj83ufdh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当执行完mmap函数后，程序返回，继续执行blx mmap的下一条指令，即cmp r0，#0xffffffff，此时lr pc寄存器中的值为奇数还是偶数？</a>
+</h3>
+<h2 class="topic">
+<a name="1rfcfjlbv4jkah9cdcf36pgl9r">ARM64位汇编</a>
+</h2>
+<h3 class="topic">
+<a name="69udg91qklppehd8sn67do8r3h">&nbsp;armv8中兼容32位程序和64位程序，系统中有不同而libs和进程兼容32、64位程序</a>
+</h3>
+<h3 class="topic">
+<a name="19jc0n2oalkqsr8ei200nkem4b">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/33j6r07uqr27j75g716ru3bh2f.png"></p>
+<h3 class="topic">
+<a name="7je3gajrn649unpdp889vdqea1">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/2645c29f0au8mhvlo7duuhvem2.png"></p>
+<h3 class="topic">
+<a name="7lo2f7acnlds3kbgisktil14lc">&nbsp;armv8a架构</a>
+</h3>
+<h3 class="topic">
+<a name="7ks2bu02rbv20b9v83jj5u5dqa">&nbsp;&nbsp;整体分为el0~el3</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/7p91t73l6g9tntqlhrp2ps70nf.png"></p>
+<h3 class="topic">
+<a name="6opo19452g1rvcfe6qmkk8a8s9">&nbsp;&nbsp;&nbsp;从用户模式中进入内核需要调用svc，但是不能直接调用到最底层，需要从上到下一层一层调用下来，实践中hvp可以不同实现，所以可以从el1直接调用到el3</a>
+</h3>
+<h3 class="topic">
+<a name="25fbh1m90e6bmn3nov873jd8fv">&nbsp;寄存器、指令特点、调用约定</a>
+</h3>
+<h3 class="topic">
+<a name="6tf4mguurcrd7huli5ecnhenhq">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/0n47mlrin885t2k389m1kjf8f6.png"></p>
+<h3 class="topic">
+<a name="6sg8l7ti9173ptmp7v351u2kpu">&nbsp;&nbsp;&nbsp;64位中普通函数调用方法和系统函数调用方法是一致的，均使用x0-x7传参，这一点与32位arm不同</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/3ohm2mu9rklmh3l3jg98e9j2tb.png"></p>
+<h3 class="topic">
+<a name="7p82qpvbj9g5l2d0ql1gm7qnm0">&nbsp;&nbsp;&nbsp;&nbsp;之所以系统调用时多使用寄存器传递参数而不是用栈传递参数是因为用户层与内核层各自有其对应的堆栈，也有各自的sp指针</a>
+</h3>
+<h3 class="topic">
+<a name="0a99tjtuvm4fau059ut47hu2ol">&nbsp;指令</a>
+</h3>
+<h3 class="topic">
+<a name="46coveegetocd8pqagqhmoh5q7">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/0ih3fl9q2dsccdl72q6ffp3g72.png"></p>
+<h3 class="topic">
+<a name="5lgbj0k385na0b6sjb7uobdm05">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/1t3hps90sja12mgatj9heb4p81.png"></p>
+<h3 class="topic">
+<a name="13kgsvrgtun787egdgeoarp0fn">&nbsp;&nbsp;&nbsp;&nbsp;BR BLR指令常在got表跳转的汇编中看到</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/079sqqji52uit4g65vav3pou0a.png"></p>
+<h3 class="topic">
+<a name="6eh7km82ik5ublplc9brqihgaf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;从用户模式中进入内核需要调用svc，但是不能直接调用到最底层，需要从上到下一层一层调用下来，实践中hvp可以不同实现，所以可以从el1直接调用到el3</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/5daagdq0o4vvcjt4dn9ubm4stb.png"></p>
+<h3 class="topic">
+<a name="5uua1f5i74d1kshgm9k3e1ehq4">&nbsp;指令手册</a>
+</h3>
+<h3 class="topic">
+<a name="1k372be0k1gvateu3bed37b1j0">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/0qh4datbri7mtvusumic2s8n5e.png"></p>
+<h3 class="topic">
+<a name="778aer48mlif7244smjj17v6cn">&nbsp;demo实例分析</a>
+</h3>
+<h3 class="topic">
+<a name="7if0uc9nth37t70e3m703efoa4">&nbsp;&nbsp;64位arm中编译出来的两个so文件实际上是一样的，因为64位arm指令没有thumb和arm之分</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/28ri1ump58up3q332p9opqgp7k.png"></p>
+<h3 class="topic">
+<a name="0i5nelkde8ge9bmado1q81kcvp">&nbsp;&nbsp;&nbsp;函数开头</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/39aoj8rljiti682v7umctsfshi.png"></p>
+<h3 class="topic">
+<a name="2d6r8of4c5bnqrkhji56d5c0ns">&nbsp;&nbsp;&nbsp;&nbsp;函数结尾</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/38qrlgc0a1vkup9283kqu4k5nv.png"></p>
+<h3 class="topic">
+<a name="33lv8n514duecosuskt60j02kb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;调用函数</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/1ge9g9ardhia80g1q42rd5jjp2.png"></p>
+<h3 class="topic">
+<a name="35ijoteas6a41j7cko9fuk2r21">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/03cn1qc96f41t6kafskh5ug9fn.png"></p>
+<h3 class="topic">
+<a name="2tc79ucheptl9s6gv358dh0kbt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;条件跳转指令B.cond</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/7deqelrgnlvrb36bv9p7o8797k.png"></p>
+<h2 class="topic">
+<a name="7re12ap6beu7nd0m1bmu1nblur">apk调试方法</a>
+</h2>
+<h3 class="topic">
+<a name="1rt259gqmlg591ht96h2bvm7sm">&nbsp;创建模拟器</a>
+</h3>
+<h3 class="topic">
+<a name="16g4gvrthe47p1lqlg9969s2kk">&nbsp;&nbsp;需要在as中的sdk manager中下载sdk镜像（x86镜像模拟器在pc中运行比较快，因为是pc原生的）</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/4c71eho06urlgt7es2n3gi0caa.png"></p>
+<h3 class="topic">
+<a name="5tqh64l2toc358m1liudjv9dr6">&nbsp;&nbsp;&nbsp;创建arm模拟器</a>
+</h3>
+<h3 class="topic">
+<a name="09otddu64esan1g0m9qrbv4eus">&nbsp;&nbsp;&nbsp;&nbsp;选择模拟器尺寸</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/6isjb7h60jr21f2bjd0m7r8tup.png"></p>
+<h3 class="topic">
+<a name="29d728q5io6jrj2drh3k5lnr6q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/6fk6lve639qbsa89rapebhiivp.png"></p>
+<h3 class="topic">
+<a name="6bavh43nmpprkc27o5scs5htge">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/5sgc88jpvqbdntd37jeb6a1dos.png"></p>
+<h3 class="topic">
+<a name="4hjnia9e454cho8p4339obk17r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/1o3p6b3nu0623ms4is5ogpfs7l.png"></p>
+<h3 class="topic">
+<a name="621iasjdrrs24tqhkcr5fleo91">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;点击finish</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/4odvgb2ft74b5jn2olodkp8gbg.png"></p>
+<h3 class="topic">
+<a name="3k0qt38dj0hbbiq39gpiivf2l4">&nbsp;&nbsp;&nbsp;创建x86模拟器</a>
+</h3>
+<h3 class="topic">
+<a name="7jfp78up55afgochlu2mluieur">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/4vsl7u1ac4o2ddvqjt34oo9lh1.png"></p>
+<h3 class="topic">
+<a name="1jrib8bmehk10uq8o2qoiods2r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/0i5iafha5p0agr5kmajd7rngnq.png"></p>
+<h3 class="topic">
+<a name="2jieo5ua8bllnqct0icdmknc75">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;选择x86镜像</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/10pspkt40l6rr39a3oeuflfkbn.png"></p>
+<h3 class="topic">
+<a name="20evgh2fougj66e13cqk2olfqf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/7hfp7pjvtiq0vuadpdcij7nafh.png"></p>
+<h3 class="topic">
+<a name="7rdrhoj3as30a1n8rgmq9h971s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;新建完毕</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/01lmgfamblejdbjoa2f95kkfth.png"></p>
+<h3 class="topic">
+<a name="4eg6bbu24sijvmjl23rhfit3f6">&nbsp;调试分类</a>
+</h3>
+<h3 class="topic">
+<a name="7erjvosljt65l8lkc9jfh4mvc4">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/05mlpibiop7rd4f14d3jae7dj6.png"></p>
+<h3 class="topic">
+<a name="2ev1587i52l6bcqauaj1u4pqht">&nbsp;smali动态调试</a>
+</h3>
+<h3 class="topic">
+<a name="73bl4jnqd396klam6gkhpn3sis">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/10its81671n3t4u9ab5i89gd1i.png"></p>
+<h3 class="topic">
+<a name="7824rpet1s4naci13e1tvkpa04">&nbsp;&nbsp;&nbsp;ida调试smali</a>
+</h3>
+<h3 class="topic">
+<a name="0ddf3306rnrcl86uabn93nuqrn">&nbsp;&nbsp;&nbsp;&nbsp;注意无论哪种调试方法，调试app时均需要将app设置为debug模式</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/2enhqhuej98dvj9uc9imt55f7p.png"></p>
+<h3 class="topic">
+<a name="0bvpbdsporse0tcdgq988gcfed">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/37p9k8qevcf3b6f1ug3t3od870.png"></p>
+<h3 class="topic">
+<a name="3fbh545u2li2iur774d04hbd6i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;查看变量值是不太方便</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/564g8odgtiifpepoqk2abrdeeq.png"></p>
+<h3 class="topic">
+<a name="28tkvg1r7bkhdvo3h3am1erner">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/2nlb72puaj267a3mg84dnn2l4h.png"></p>
+<h3 class="topic">
+<a name="64dlct20pd0d0srsqtkeutjkv7">&nbsp;&nbsp;&nbsp;&nbsp;setpropex详细例子在后面</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/3eit7iaa9826kvnu2o79uchods.png"></p>
+<h3 class="topic">
+<a name="6puq2c8phb3698jgs0o2dbogpd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/7eoa5cihku423mucrcfivnkkcc.png"></p>
+<h3 class="topic">
+<a name="0itkph197agghvsv4gdicqqksr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;设置完成后使用getprop检查是否设置成功，部分手机即使有root权限也无法使用setpropex设置调试权限</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/5gf32f84ppm3e6pf78icejs61f.png"></p>
+<h3 class="topic">
+<a name="2t0evo42uhajr73t1nu17b2ht0">&nbsp;&nbsp;&nbsp;IDE+apktool进行调试</a>
+</h3>
+<h3 class="topic">
+<a name="52jrmo1ip05lnqov67kplv4qqu">&nbsp;&nbsp;&nbsp;&nbsp;必须以debug模式反编译apk，否则无法在IDE中调入smali文件</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/5l15ogmv7nck384vskum3g1pmd.png"></p>
+<h3 class="topic">
+<a name="1k1me38ljoqk9tg1hqkaf4mp76">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/06b0q3ai5juibcevjdla0til2s.png"></p>
+<h3 class="topic">
+<a name="2k3q9j2tn5mlr3gobbbie4siom">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IDE+apktool调试的缺点</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/73mv9kn53t53i0s61gkfnr0iul.png"></p>
+<h3 class="topic">
+<a name="1dhi931akq25p9rinckmobushr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;eclipes中</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/0qcbok8fu9hngcc75gohhf00ib.png"></p>
+<h3 class="topic">
+<a name="4vgpgbkaqqldghknqdgvo2rr4h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/0cbh6sb3qig9onp7rum6etbu8v.png"></p>
+<h3 class="topic">
+<a name="6p38ujh69ndh3c8ajd1mha9tv0">&nbsp;&nbsp;&nbsp;jeb调试</a>
+</h3>
+<h3 class="topic">
+<a name="5h4ee0jcerrh5pci78f1arqgij">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/10vtct5shp280t0pvhif84v642.png"></p>
+<h3 class="topic">
+<a name="4o2ink3qoqav7rthf8gjtjdrcq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;设置android sdk</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/6mr7ss05naaplhu0tun8e2mrms.png"></p>
+<h3 class="topic">
+<a name="29ge1ero5dosg09o1k9m8n33t9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;实体机调试</a>
+</h3>
+<h3 class="topic">
+<a name="4o58o0gmu5o2nuprubt4bt8h61">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;调试的apk为一个creakme，目的是输入检查成功的弹窗</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/5989osr4p06a4bo43ueggjq3a6.png"></p>
+<h3 class="topic">
+<a name="2qam36bl75nd09prshgesdhn3p">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/73f13t7hfp7loa4mpa1hk6o50d.png"></p>
+<h3 class="topic">
+<a name="2au8gibij2nb268rp6rp2g7fne">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;jeb中分析程序</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/0s1ckqrafudsecsfv2voptc68h.png"></p>
+<h3 class="topic">
+<a name="2p1pp60rre7273c92jp5gv9mi8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/5fk3v3952sfpcqrqon7oan0pvl.png"></p>
+<h3 class="topic">
+<a name="7bsvrqinc1ps1ph4u6hqn16q6b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/5c6ko7n089c2u7skq6cbju4bsl.png"></p>
+<h3 class="topic">
+<a name="2p544as3q31edi44kublceogpm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/2kfknrd3lkmv1d95sc8912vk5c.png"></p>
+<h3 class="topic">
+<a name="3fue4e6p82oe2064m14i5pinh5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/4u2jud4va6fin1ff6vag3m5sdm.png"></p>
+<h3 class="topic">
+<a name="7emtr6295uv5g7rgf78rs45sm7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/5mgg5vsd7i028g7bacqnc5gv7j.png"></p>
+<h3 class="topic">
+<a name="0bsgsvqt5tgp76bub6ahaqj7gi">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/3o2kvjufelnqdid5o492e9d4cq.png"></p>
+<h3 class="topic">
+<a name="7eb8boqo5o10oq8uork3dc5e8v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/7pdv8ishp8g9rmd39dsvviftsh.png"></p>
+<h3 class="topic">
+<a name="1ko12oimcgskarh08e2r26epu9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/7v21jdp8vvrga7kvthubnpfbkn.png"></p>
+<h3 class="topic">
+<a name="3ei9okrd4ob0rj76td6fagsil9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/44hei3phsr04hmp045kkgf995o.png"></p>
+<h3 class="topic">
+<a name="502mtem9rfq4t3nn5fcb99jnkh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/1njc4tbjq9coe1qn93p64u3bgm.png"></p>
+<h3 class="topic">
+<a name="6282n7234pnub2h9609c7vmhrf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;设置完成后使用getprop检查是否设置成功</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/542fp6hcl8khc1481ihr7d630g.png"></p>
+<h3 class="topic">
+<a name="3s9sku1tm93ov50vsdcq988j25">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/3ilr41dspcjebcaab7gsjb8f9a.png"></p>
+<h3 class="topic">
+<a name="22ec68cvf8ga016m1v19p8lsfd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/54nmjnrc6cr60spcfmkqg0t7pt.png"></p>
+<h3 class="topic">
+<a name="28fkh3o9vj7bgh1v8e0a032g9g">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/2ilp1hullkag41ssgqta3ln16o.png"></p>
+<h3 class="topic">
+<a name="04d5v9edofciriqd4kskd5fs31">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/5sn3piia371h47o0s78c61mk3e.png"></p>
+<h3 class="topic">
+<a name="11dp39u4tsab6agv14v9ijirfo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;调试过程中若app长时间未响应则会被强制关闭，此时需要restart app</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/4pc2egfju0a6sjoue0flivcj0m.png"></p>
+<h3 class="topic">
+<a name="7tq81g3hbjlpj8spe9mn44muar">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;之后可以单步调试，在JEB中调试如果遇到了native函数的调用，JEB使用gdb-server进行调试，但是部分版本的jeb还不支持arm调试，所以需要用到高版本的jeb</a>
+</h3>
+<h3 class="topic">
+<a name="7ps9ge40uacm82sn8a8oef7nj5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;模拟器调试</a>
+</h3>
+<h3 class="topic">
+<a name="6e8i3ot0gkc758tvp77pv022mm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;调试的apk为之前的demo：ApplicationAndJNI，该demo针对不同平台编译了相应版本的jni，所以可以在x86的模拟器中运行</a>
+</h3>
+<h3 class="topic">
+<a name="0neqgc9qcimup1osvedhhjedq0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/686usjh17t4m5a9q2tt1pb4lko.png"></p>
+<h3 class="topic">
+<a name="1904qu74jpc8c9d6au34mbdfos">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/6897ojoaqegj01r9ct29qcain7.png"></p>
+<h3 class="topic">
+<a name="5gvrv7enk36tlmualiip850dfu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/6qipgmf6efd196cd69qvoviqva.png"></p>
+<h3 class="topic">
+<a name="73f933mjbnv2el0inc8vobk917">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/7vmcf0vkg2p7c05emv1nd670ht.png"></p>
+<h3 class="topic">
+<a name="1d2oo5v1ved1lj7rui9jn473oi">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/5cb7924fdpsitgcr7eckifgt6u.png"></p>
+<h3 class="topic">
+<a name="5cqvfo5lfk80pugdjggtoqdctt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/29rokeg9ptubv9pke04p4iiut0.png"></p>
+<h3 class="topic">
+<a name="2tju0hn1dnre0mn8h4v3f65q5d">&nbsp;arm动态调试</a>
+</h3>
+<h3 class="topic">
+<a name="4vgib833dlrjirkuq02l6kiv52">&nbsp;&nbsp;gdb调试常用于调试android frame work源码或者多线程程序</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/4pbdqacttr4emtnh0qvodk1hgd.png"></p>
+<h3 class="topic">
+<a name="5kglfhh7pnbl6tbee4gqrf8uhq">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/6jhd09m36aahj62hkknh4bk7lu.png"></p>
+<h3 class="topic">
+<a name="6dma0nvbdtbvoea7vsvm9ju8s8">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/2t2gqsoup1d07sd32l2slteov1.png"></p>
+<h3 class="topic">
+<a name="2mv17h51h13odh9j9cmrksju3a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/0sqdkb0o4md5a2404vj7n0tp8e.png"></p>
+<h3 class="topic">
+<a name="2m6up7net6b8rlejposbjvv67f">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/71lp34uk2va0u4csg9na98qdb8.png"></p>
+<h3 class="topic">
+<a name="2aemoj6fki4a8u69mar0mu259t">&nbsp;&nbsp;&nbsp;&nbsp;实例</a>
+</h3>
+<h3 class="topic">
+<a name="5s87mhhb37rlibeq709l45293l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;被调试的app的项目目录结构</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/5s0m11uuop0m3veoj1ij9p0j29.png"></p>
+<h3 class="topic">
+<a name="5p2u3bgbavkr0fdbcfgccscd00">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;被调试的bin文件的源码文件为test.c</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/4kfcosggu3vofh2injqi7m9v36.png"></p>
+<h3 class="topic">
+<a name="6dr5eduk67qmu5r0f2ptl1qadb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该文件中的代码</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/74onblb6hnm96nci3fksvv911c.png"></p>
+<h3 class="topic">
+<a name="6j2tim2oe4aje02uqndv1j8m13">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;被调试的bin文件位于工程的libs目录中，一般该目录也保存.so文件</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/43u13gmgovmerkeds8i3b6g3g5.png"></p>
+<h3 class="topic">
+<a name="10kfak1m6gp47r9huv1tbrgulo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;调试要用到的gdbserver程序在ndk中有，可以使用其进行动态调试，并且针对同一平台的32位和64位分别有两个版本的gdbserver，针对被调试的进程是32位还是64位，选用不同的gdbserver</a>
+</h3>
+<h3 class="topic">
+<a name="0lg04n9c5gd5j1d9ab8e6il4f5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/3cncsj2s6dtu62fg722hnd8uh4.png"></p>
+<h3 class="topic">
+<a name="0fboo2f5ei0pbqpct8im1q2m2b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/2o750nvfr95esocgumegie6dqe.png"></p>
+<h3 class="topic">
+<a name="7nd2a2mdo96qi0td3acedifk9b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用arm平台的真机进行调试</a>
+</h3>
+<h3 class="topic">
+<a name="4oihandlmv3roceokkjh9380gf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/5n78mqfni3rmg3aa30b93rjq9b.png"></p>
+<h3 class="topic">
+<a name="0raas4curkdukjted3dvp6h0ga">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;手机中的gdbserver默认没有执行权限，需要使用chmod赋予去执行权限</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/43ac5l4bplmktkq1a9k08ue62a.png"></p>
+<h3 class="topic">
+<a name="003oivqq9onu0h9k4q2n4hdaqr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将带符号的bin文件push到手机中</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/3ri7j2mgqhhhmitm623ehar5oc.png"></p>
+<h3 class="topic">
+<a name="5jodk0pht98i8052rd556igqtj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;切换到root权限</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/378goa15ik63frml45ua6t14hu.png"></p>
+<h3 class="topic">
+<a name="1u2ptadou1co1q43s8l2e8gt7p">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用gdb将待调试文件启动</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/33bui78kdiu9mc371gedh99dje.png"></p>
+<h3 class="topic">
+<a name="25h42evvnr4v3q2fl191f4vv7v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将手机端口映射为本地端口，从而保证连接成功</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/64il57n913ilrhr46e2ctdg4u4.png"></p>
+<h3 class="topic">
+<a name="5doctp5615ig3eovad95ut0g59">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/0u3813k08gtpeunfu461n761e3.png"></p>
+<h3 class="topic">
+<a name="4qtt730t3en52r123a0sgioka9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/27tpfjg6cte0g8ifh3liccb7lg.png"></p>
+<h3 class="topic">
+<a name="3j198cp4bo0km5mfovgeqdtm28">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/2k6f0s3ndur0r9arq77q84dnne.png"></p>
+<h3 class="topic">
+<a name="0qdpdjfpvn0pgqg64gusgr1e3u">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;只有非pie编译的才能直接使用ida中的地址进行下断，或者尝试关闭地址随机化</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/62ptjvm3t3alj8mog1g0fev36a.png"></p>
+<h3 class="topic">
+<a name="386m9abh3j15rpoasrs1ndt95h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果bin文件没有符号信息</a>
+</h3>
+<h3 class="topic">
+<a name="57v2pucrnkg4a4bsbde12e6fja">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;start函数是arm汇编</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/6h1ceqkcumgvl0b44sp4p4pfrd.png"></p>
+<h3 class="topic">
+<a name="1snfnu8p71c0h5prjpejteut63">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mian函数为thumb汇编</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/447pb66edgt8t6sbe95t8ukj49.png"></p>
+<h3 class="topic">
+<a name="7q9gvrj3g9l1ncs07p76d07kbf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;从start函数执行到main函数涉及模式切换，如果bin文件没有符号信息，则使用b*0x80e0给main函数下断点，则所下断点是针对arm指令的，而实际上main函数为thumb指令，这就导致该断点不能发挥作用，程序断不下来，一般在32位arm中会遇到该问题，因为arm和thumb混合使用</a>
+</h3>
+<h3 class="topic">
+<a name="0q2b8l7eddfu5a1m0n726mgp9g">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在下断点时设置gdb的模式识别可以解决该问题，即针对thumb指令去下断点，使用set mode指令</a>
+</h3>
+<h3 class="topic">
+<a name="0220b25mnbmnucd40q3njcvqhg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该问题可能的解决思路：&#13;
+自己重新编译gdb和gdbserver？&#13;
+使用set mode设置gdb环境，将断点强制下为thumb汇编？&#13;
+下硬件或内存断点（不会直接修改指令）？</a>
+</h3>
+<h3 class="topic">
+<a name="58i9rppb1mavske9sj2s6fdjkk">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/7f9sqioi3ps3aanphrm21evul9.png"></p>
+<h3 class="topic">
+<a name="03v2hhdp3jmoae3adiufmrfaan">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/6es8m7ns7flvj049nv0mpcubti.png"></p>
+<h3 class="topic">
+<a name="19o3djqeorqfbcauf67dg9159h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/4hrs2a9567fkc5h7jb9nqas5bj.png"></p>
+<h3 class="topic">
+<a name="2apgfere58vs201nnocn4k220o">&nbsp;&nbsp;&nbsp;&nbsp;实例</a>
+</h3>
+<h3 class="topic">
+<a name="31dujqh6nr4bssp36ihfgodp1i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;待调试的apk进程，具体调试的目标时该app中的native函数</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/137m3kl4rgg5speve7q8mrhbbe.png"></p>
+<h3 class="topic">
+<a name="21a76mcbik7dfk8psvqnto95j8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/3gejlmvn2g444nud5b83dlhc2c.png"></p>
+<h3 class="topic">
+<a name="7lci6bu3m2ni0tf8hadlp1hkq8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/2bqohqf87rkapai7nfi6p73lmm.png"></p>
+<h3 class="topic">
+<a name="0i3972msauekiphbgrtcd5u03n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/13djf8vf72vvb87hrdarjk7qfm.png"></p>
+<h3 class="topic">
+<a name="0l40h0kv9stbb1lv8vrdaj4h3p">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果apk中so文件开启了pie编译，则会产生随机基址，此时需要查看被调试进程的map文件，该文件中会显示进程各个模块的加载基址，通过加载基址结合ida找到的函数偏移，从而确定目标函数的地址，图中是找到了对应so文件的加载基址为75215000</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/76scfak3iv4hlq0spjhnd8mv5s.png"></p>
+<h3 class="topic">
+<a name="3qldfmm55auep1okjl063bnnvj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过so文件加载基址+函数偏移得到要下断点的地址，但此时被调试的so文件没有符号，且要下断点的函数为thumb指令，gdb下断点是以arm指令的模式下的，所以可能造成断点无效或即使断下，后面继续执行也会出错</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/2hdnr8rpv27hg6v5guvaiak3rv.png"></p>
+<h3 class="topic">
+<a name="10nmesms1sve3jm1nn7i8pg14s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;尝试以奇数地址对thumb指令进行下断，从而使得gdb自动识别，也不成功</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/01s27iu7jtn7kpb5afl491kmc6.png"></p>
+<h3 class="topic">
+<a name="18ce0r164kd9lv0pal0hh4k3ig">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该问题可能的解决思路：&#13;
+自己重新编译gdb和gdbserver？&#13;
+使用set mode设置gdb环境，将断点强制下为thumb汇编？&#13;
+下硬件或内存断点（不会直接修改指令）？</a>
+</h3>
+<h3 class="topic">
+<a name="4e1k9v46drcqk13su1bbinsrd5">&nbsp;&nbsp;&nbsp;重点</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/7hpla2f7r5itn4qsm9buqenpj1.png"></p>
+<h3 class="topic">
+<a name="5thc7itphim9csh9sdn0h7ge8c">&nbsp;&nbsp;&nbsp;&nbsp;注意android server启动后默认会开启23946端口，所以反调试时常会检测系统是否开启23946端口&#13;
+ida调试不会出现之前gdbserver调试不带符号文件的问题</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/04tbuia5atbo52m9gusq9eqokb.png"></p>
+<h3 class="topic">
+<a name="4rmhemgqad1q5c0rfr9q68d9jr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ida中定位bin文件的main函数&#13;
+找main函数可以在start函数中f5，然后看哪个符合main函数调用特征</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/01lutvnei9avmtjilc29j0h0jq.png"></p>
+<h3 class="topic">
+<a name="78icbrmc709lg8noeat3c9jhnk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将ida中的android_server拷贝进手机中，并且需要加上可执行权限</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/65mu3i1l2f0c7mo62qeoch7bub.png"></p>
+<h3 class="topic">
+<a name="6r5nanfq3dg0mqsepput9uvs87">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;启动android_server</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/3l35k1u34mktkb0396cpk5vasd.png"></p>
+<h3 class="topic">
+<a name="1mk7l2pk698kepf7vpig7dj5bl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;进行端口转发</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/7dpuc97nj4494kfv9msec4mpbs.png"></p>
+<h3 class="topic">
+<a name="56qv3ontff3k7ehm43a125k541">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ida中在main函数入口下断点（快捷键f2）</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/0k6shqc3j1qe39ne4u04ae5jl4.png"></p>
+<h3 class="topic">
+<a name="4fbbn6o26s01krsgrtkunpojb8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;选择调试器</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/76jqhq5uhgcjr843jjcft4l2fq.png"></p>
+<h3 class="topic">
+<a name="038h2apivngq76o3dud7qauddb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;选择远程linx/android调试器</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/586sn1hkcmqcgi7gd17jrr28tu.png"></p>
+<h3 class="topic">
+<a name="2ratrmnekfk41oniv8o8uspj9i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;设置进程选项</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/4vblj69bpmnug12gi2p2ip8uo1.png"></p>
+<h3 class="topic">
+<a name="34tpo3bdhnnnnkgkbhaurljsbi">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;设置被调试程序的路径，设置好后开始调试时会将被调试程序启动</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/5veqksclsek9ara1cr9rihor93.png"></p>
+<h3 class="topic">
+<a name="6tqfvf50mjullecjb74o9mq0lm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;开始调试</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/1luld5dbo5eficj2b729cuaulu.png"></p>
+<h3 class="topic">
+<a name="4mppm1slksr3bfr607o8uqb9ff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;点ok</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/69u68q4sgbet9mgll1gp548bb8.png"></p>
+<h3 class="topic">
+<a name="7alli1bnriqk693uj7phogqlth">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;点cancel</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/6c8pd8rlosfpga7ov04avk84m6.png"></p>
+<h3 class="topic">
+<a name="7au0ed2i0tcbcr22p1puv5couc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;点cancel</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/6n1josmgk1ftou2ieu8u17sikk.png"></p>
+<h3 class="topic">
+<a name="7bl2aq387i2t88b4o8aklg1fj7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;启动后mian函数中的断点断下，f7f8可以开始单步调试</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/66sp0k0b50j2c26cp9n8uo153o.png"></p>
+<h3 class="topic">
+<a name="25ho72j1f8qk5npvabuhlue6a0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/3ia37rp8rq918rai7ekiu4fhfi.png"></p>
+<h3 class="topic">
+<a name="6imfqoegvo987ev9h1kskjtf2n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/5819g6dus5btd33d2ekj14ktji.png"></p>
+<h3 class="topic">
+<a name="01c07un8rp8eetu6h2ia5qa8t3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/6g8hv82lifaogbqc2nujicv9dp.png"></p>
+<h3 class="topic">
+<a name="5l3ik518hstolg4qbupfakm776">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/3vf0jdp59v0nb84r0ga0o97muv.png"></p>
+<h3 class="topic">
+<a name="7a7m60oq9jl6og0komj8oet58o">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/32rca9nt92sep90n5peihkr2hc.png"></p>
+<h3 class="topic">
+<a name="3fg6pn0vrj44iunke0b8hca0ku">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/3j3cits0t0cvngfvekb27qgu3m.png"></p>
+<h3 class="topic">
+<a name="3en45710r7g2ijr8ia2nmoppg5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/47eq2fit5hdtpk075indl63sqo.png"></p>
+<h3 class="topic">
+<a name="6cpv7qrs4325nmp9q26tq0aljm">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/2evdnauhlg15b3cbes1cg60u5t.png"></p>
+<h3 class="topic">
+<a name="2r6o2tovmt0963sbnskci4276i">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/2htcmdehll2org53m359b8s1l8.png"></p>
+<h3 class="topic">
+<a name="12qgjqrqse9b2vvqu40j3c8bss">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/2726raamj7ebhrv3h3mp406tvm.png"></p>
+<h3 class="topic">
+<a name="0eijh4j8nlkcp61lrcthluhba7">&nbsp;&nbsp;&nbsp;&nbsp;步骤1234与之前一样，注意实体机中打开待调试的app</a>
+</h3>
+<h3 class="topic">
+<a name="2c59ucekhms2ohmb7lmd17hbp1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;第五步打开ida不要加载任何东西，直接Debug-》attach-》remote linux android debugger</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/286jlr7lno1ieof7q8hkl6f5au.png"></p>
+<h3 class="topic">
+<a name="7ilo2b2mo1e1763invs50mf705">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/1s6bfcnrnvij73tujo17ns1fet.png"></p>
+<h3 class="topic">
+<a name="0gqqm12pa4r0gpn8dlf1ng66jc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/44u9sev02chr734d8mli7bifp3.png"></p>
+<h3 class="topic">
+<a name="2b5t8ncikgieeou2j6fapid8nh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/3eipd6jh9gs9eu22te1kf50k10.png"></p>
+<h3 class="topic">
+<a name="1sjr10dhbcg6mhalau1pqdcf1t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/3vbppl6700vl0203mc7lt66qoi.png"></p>
+<h3 class="topic">
+<a name="7gcisl5tugq029o5g2vsgr0o75">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/7brg6r51sf2ua9cllo4n16cvh4.png"></p>
+<h3 class="topic">
+<a name="36vonbbopbi69qbi1etikmbh42">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/0vv3dn4b2601h3v4f6irbia1ai.png"></p>
+<h3 class="topic">
+<a name="0kp4k0dsfs5dukfdo4281kkcto">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/1onmojtldtonbuikefhjh9iiji.png"></p>
+<h3 class="topic">
+<a name="3sf7rlci8e0h0tveusuf0o79mq">&nbsp;参考资料</a>
+</h3>
+<h3 class="topic">
+<a name="732hvl71qbn0h3sl5j38spefnm">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/25o5c0r732q6gh8egadnfoqrvo.png"></p>
+<h2 class="topic">
+<a name="6hdqor7cgl9ilo38apkkv6ui01">apk逆向</a>
+</h2>
+<h3 class="topic">
+<a name="6kfnmqkafrbhs2fl112tu0ks2l">&nbsp;步骤</a>
+</h3>
+<h3 class="topic">
+<a name="678tcjdu2qmepdq5eu4ujstgam">&nbsp;&nbsp;关注AndriodManifest中申请的权限，service、broadcast</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/60e6he1pucg1r8pa5mhk183re4.png"></p>
+<h3 class="topic">
+<a name="78d6inat16mje1lev89ukqiab1">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/4bv21mh89hj9tqa4t1sipg278d.png"></p>
+<h3 class="topic">
+<a name="1teqmkbnc2rpi1pj3753q2oa69">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/5ojrf46acth5vcnfk6cobbpcps.png"></p>
+<h3 class="topic">
+<a name="3fc7uqvok1ah1f2d2thee1nnc8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/4ss0g2bolf2bnpdkc0hnu6umjj.png"></p>
+<h3 class="topic">
+<a name="1rtke0bokmevjqc19tll3m00bi">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/0sa65n2qfroalh34kbahnv733o.png"></p>
+<h3 class="topic">
+<a name="5le31lnr604a8htfes2obmedtr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/5u9vs41a0rmoejuto0797te95j.png"></p>
+<h3 class="topic">
+<a name="2ijr6gjlochgpml5rbbdugktuj">&nbsp;调用有5个参数的函数，其传参方式</a>
+</h3>
+<h3 class="topic">
+<a name="6qh9kuc8nppeoo4fob93mec3k5">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/758e3cfgdc1u8ujaeam60jinmo.png"></p>
+<h3 class="topic">
+<a name="3dltu06229akcb2grvuavj72lh">&nbsp;ida中部分函数的首位没有被识别，无法使用f5反编译，此时使用p，使ida重新识别，然后f5反编译</a>
+</h3>
+<h3 class="topic">
+<a name="3n5l9a5t1c1p1fveg271ae9fbp">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/6a0ekvst0599s390b25k1q5f60.png"></p>
+<h3 class="topic">
+<a name="7takakhcop3ru6fjci3e1u1i9s">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/3b93j798tom79tfd5b9emavq0d.png"></p>
+<h3 class="topic">
+<a name="4iff7129c5vg0rg9fqnoq30vc6">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/1udvsnmqf4mev7r12ms4f83gim.png"></p>
+<h3 class="topic">
+<a name="6ho985mskaq4qj9hqsp62p4hm4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/437hb497u1aca7tqn4kvacq013.png"></p>
+<h3 class="topic">
+<a name="44dva6o1uv71vbp38idlog9emu">&nbsp;设置ida显示代码的模式 alt+j</a>
+</h3>
+<h3 class="topic">
+<a name="33cldkrf197cnuqi9jsd2l9vvv">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/0kff4e3mgrv9qrr1bjpgprpvcj.png"></p>
+<h3 class="topic">
+<a name="7rfr2ovp6jo2p69fs0ugqqomd6">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/1fif43smtgsglt84u5ak0f92d6.png"></p>
+<h3 class="topic">
+<a name="1fjshogarqdanbtod0sqpvqsop">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/1293f8h10os2oiiglgv97f1nt6.png"></p>
+<h3 class="topic">
+<a name="4q0gejght3ovndni3g2vbf76rk">&nbsp;当ida没有将一个函数的头部或尾部识别在函数范围内时，使用edit function方法，指定当前函数的起始和终止内存地址</a>
+</h3>
+<h3 class="topic">
+<a name="6m9us20q1uk3ee43s15mhag34t">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/4t2k6fn559hvgd4b3tcg46ae3n.png"></p>
+<h3 class="topic">
+<a name="5l5kgcn2ijercmmhp3avi39fh4">&nbsp;&nbsp;&nbsp;首先需要将地址0x81ac处的数据修改为指令形式，使用快捷键c（注意如果要将指令转换为数据格式用快捷键d）</a>
+</h3>
+<h3 class="topic">
+<a name="6rdn8c291vu1liq218k0o2qknk">&nbsp;&nbsp;&nbsp;&nbsp;使用editor function方法指定当前函数的起始和终止地址</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/0bmkes5jjhrlmsvm906qaripqo.png"></p>
+<h3 class="topic">
+<a name="6j184pi4mn7o2srt6jpp77pctl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/6p4ai93v2qtup7au6j9v3a03c2.png"></p>
+<h3 class="topic">
+<a name="3j39mjpl4ur82gss1q3oae9p22">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/4rqaq6rk8jgq9np9qumfcj7fv3.png"></p>
+<h3 class="topic">
+<a name="015b280ohpc07kme0r84d2744k">&nbsp;逆向jni参数接口</a>
+</h3>
+<h3 class="topic">
+<a name="5a3ld3f8stbj2rmfsoni7gabna">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/5hds9j4kbltlmt97423jue25nv.png"></p>
+<h3 class="topic">
+<a name="71d9orogv15bodspccme60klbu">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/4pe59462chiq015tckfa8h73d6.png"></p>
+<h3 class="topic">
+<a name="5ip9fhr8ruj1bm5orprciubaoc">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/28oalmgg7m5hb81rdl531i8a9b.png"></p>
+<h3 class="topic">
+<a name="5d9n22u3o6gp2t2dna5b5nclil">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在structures种添加结构体</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/2l0u9kkkqhcnipffjf60j9shtj.png"></p>
+<h3 class="topic">
+<a name="27creef7892r7ms5ostgqdfq1t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对于显式注册</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/3c1ju1u9v9rjuk6h2jtnoieubr.png"></p>
+<h3 class="topic">
+<a name="4kq86es9re8lfantorbpq6l4an">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/64i23aur0k4t9m57jbfs700ebs.png"></p>
+<h3 class="topic">
+<a name="75qilghprke4jt1quevoqojtg3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/2unaitovjeuis4ld61vlqeo05n.png"></p>
+<h3 class="topic">
+<a name="7v2u9mg84886jp39pj92hlg1fb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/10531906f0f0tprbpvjtcbc3j7.png"></p>
+<h3 class="topic">
+<a name="091sd0j9hs4k4a1tpj46ejprmk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果IDA中没有该两个结构体，可以将jni.h加载进ida，从而获得两结构体</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/4kscls5j0he3b4bnr47nh1oj2j.png"></p>
+<h3 class="topic">
+<a name="0h3qsj2pcg5t0jgnh5j4qnl0ii">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;逆向JNI_Onload</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/39i7rh2ugirodul6v3sunhvl19.png"></p>
+<h3 class="topic">
+<a name="45aastpm3olf29bfog2coqlcsl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该操作也可以使用快捷键t</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/7g64ggjnadprl7sf37gd81jpqp.png"></p>
+<h3 class="topic">
+<a name="5qlfp434m18df7i7kjpi6vn7ke">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/4ve4be5vmihasr46jk1b4qilot.png"></p>
+<h3 class="topic">
+<a name="39ufde5e9qr10qiq39ijrkbjm4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/4ih458tfva0km7t9sj6c9n3elp.png"></p>
+<h3 class="topic">
+<a name="1d4pjhn1hnbaamskvp6h9ep67f">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/05m2qmukfudt69r3pumid9jog0.png"></p>
+<h3 class="topic">
+<a name="06di0mjhis9bohai39hspovjg3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/6r31h1ffmd6f0gts1m2ivj4tdv.png"></p>
+<h3 class="topic">
+<a name="6ok0al6n5vm5m6uo0pkhjou5a8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/0qgpk2co7mqb4996i415bln78n.png"></p>
+<h3 class="topic">
+<a name="7ddjr11f2im3554ssfpllm19o4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/3dd1v64q69bicjeqk5jsl3oatt.png"></p>
+<h3 class="topic">
+<a name="3ftkeemsl7v941cc988fpakl4e">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/51htrumm3if7vc59u30pqt59t7.png"></p>
+<h3 class="topic">
+<a name="7ftg2836fps1fhgk0vi5hjvutv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/18ddenh2bd8er44vk4n5k8k9om.png"></p>
+<h3 class="topic">
+<a name="71lcjgupcfn5ujlie02dcthlrg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/4prbunl9ied4d8qvu0qqkqjpdf.png"></p>
+<h3 class="topic">
+<a name="2irqdbitt0i913cpupvj0auuhh">&nbsp;函数参数分析</a>
+</h3>
+<h3 class="topic">
+<a name="5v7uudr7uf8g75u5k02u16fbu0">&nbsp;&nbsp;分析的目标同上</a>
+</h3>
+<h3 class="topic">
+<a name="5oi1ipf0fjarakhe1ec4bmhgjp">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/07h9727a63b4q3hqf2t0q0gj25.png"></p>
+<h3 class="topic">
+<a name="2ece5mp2nm5d8pv923guph76q2">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/42buc9llako5r2op2d50d2d5eh.png"></p>
+<h3 class="topic">
+<a name="5rogrg35blgsi5co6bvd41jfep">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/2bs4hnncuv66hour8eiiaepepc.png"></p>
+<h3 class="topic">
+<a name="0hpopqnfhvd32rju0nvkqnkril">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/0eg9cmdrdlvepdjlgjhbhpsjgn.png"></p>
+<h3 class="topic">
+<a name="1o1cqj0p402hq0jn3i1mvbel7m">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/4e01h77dk5340r6rd3ppnplm49.png"></p>
+<h3 class="topic">
+<a name="3cg5gu7as34tkfn0s4kq66nhur">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过ida中的f5也可以识别出指定函数参数的数量，结合函数调用标准，可以确定汇编中寄存器与参数的对应关系</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/10apac2gn60ml7rjk2nh0fft8a.png"></p>
+<h3 class="topic">
+<a name="5s0nfe7u4asc93hs0ms4ln1b8p">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/1dun1csink0lbsi1in4a3rg2lb.png"></p>
+<h3 class="topic">
+<a name="4csdg9audh76qtns5s2e5pj9i0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/5kat10b37ufbkdq1r65o9oqvu0.png"></p>
+<h3 class="topic">
+<a name="0kqc1d36v074ifcg18ea0fr0vv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/65rn160ia21m9jbq930nehv9hp.png"></p>
+<h3 class="topic">
+<a name="6u7v41j4mkrht0qs9ocp1cok53">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/07vjbnnhlno7lg1upl09uvh9gr.png"></p>
+<h3 class="topic">
+<a name="4j7ebu6ajhijfug2o8l238j2hu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/5hmeu1crgvko7rap69jniqif2j.png"></p>
+<h3 class="topic">
+<a name="718vg0o7oe9qqv5ecm2dpup44o">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/3p9hh0g94c8vveve38a9q12lks.png"></p>
+<h3 class="topic">
+<a name="28vf2r1a00i18bqokdfb6rf5nn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/5l0noo8517c6p7eeq8nsn8ts4j.png"></p>
+<h3 class="topic">
+<a name="6j21vsg1tq1m1kp8tqiiqmpl2l">&nbsp;非标准结构体逆向</a>
+</h3>
+<h3 class="topic">
+<a name="2spt7t9mbjfbeo8ulfar7i8ci1">&nbsp;&nbsp;创建非标准结构体的方法</a>
+</h3>
+<h3 class="topic">
+<a name="6qsf5bc9jm7ufboc5ivuka02vq">&nbsp;&nbsp;&nbsp;创建一个结构体，不使用标准结构体</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/2khtt7tf7eaftiq77ka404lmcb.png"></p>
+<h3 class="topic">
+<a name="2rk47i84khu689g3bcreuapphl">&nbsp;&nbsp;&nbsp;&nbsp;设置创捷的结构体的属性</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/4f577im6vjkn03odj903gjvisl.png"></p>
+<h3 class="topic">
+<a name="2ba160qa51nhfda9tigdn4lg6l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/7mk06o1c9rqsp0n6dnbb2c1bil.png"></p>
+<h3 class="topic">
+<a name="4o4m6bml9docn2mvea9d0h8ssj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/5g4v8em7ptsq2hgorf84mtj6td.png"></p>
+<h3 class="topic">
+<a name="24lbccm2k1dd2o6jokg7cmdkig">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/1ou4rp9hjktojlj1gdeo2tcqkh.png"></p>
+<h3 class="topic">
+<a name="797ljdttt840sir6tkli930mca">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/1obhbrq0cmv65l8esol5gapu03.png"></p>
+<h3 class="topic">
+<a name="4gidu9mdtck63lnqo2su3234ec">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/3tmm7884mqhi7n5g188vfaoqbg.png"></p>
+<h3 class="topic">
+<a name="6s0iojn78pgr7d1o8c9r6nc7b2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/6ksd2ho7a8erlb8glat3ugcu4h.png"></p>
+<h3 class="topic">
+<a name="61qkep78q1c7vrho8rlsk04ev2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/1nt4hi8artes6rqkecq6tnt6s4.png"></p>
+<h3 class="topic">
+<a name="0577o6m2str3bj92oh48tc3apm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/1l65f3si8280fu74i7hassr6d2.png"></p>
+<h3 class="topic">
+<a name="3p6rmg5b2fj6ncqjk5iaf90b4i">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/1n944q92crcqobcm9n7rur4mh5.png"></p>
+<h3 class="topic">
+<a name="1cu14fqqu86t60s16ut62lqsgq">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/1fg1alns6qbomqi1jgk4m85ubu.png"></p>
+<h3 class="topic">
+<a name="1pnue7vs8rfpvhb24npceq9i0j">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/01bfvoh5o1hvb6h0d4edbm2u6g.png"></p>
+<h3 class="topic">
+<a name="410ugpkttq1s7i5rd5t690jvut">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/500ipi24d3mqbm1jsl3lh0mr5v.png"></p>
+<h3 class="topic">
+<a name="2i2g3puch6e361701g3u71vni2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/39moh812gos19scivih6sdsjeo.png"></p>
+<h2 class="topic">
+<a name="2gntu7ge0fbi7au6esfmrm9feq">注意事项</a>
+</h2>
+<h3 class="topic">
+<a name="03s1m46i19kdkqhghj7k9duaij">&nbsp;使用adb在模拟器或真机中安装app 使用abd install </a>
+</h3>
+<h3 class="topic">
+<a name="3kaetafvul63lfcodv62p6kvql">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/2urqjnqn0hiiqagko2mk298fnd.png"></p>
+<h3 class="topic">
+<a name="494t2dj9srjvvogshgnk10kf5d">&nbsp;&nbsp;注意如果要将app安装在指定真机或模拟器中，app的libs中一定要有对应平台的so文件支持</a>
+</h3>
+<h3 class="topic">
+<a name="23c8gjtnp40a7ou0mfp6q1759q">&nbsp;&nbsp;如果指定app没有对应平台的so文件，需要在该app项目中使用cmd，运行ndk-build，从而编译全平台的so文件，然后在IDE中运行一次该项目，或重新编译一次，或在IDE中导出apk文件，从而完成打包，最终要保证要安装的apk文件中有支持各个平台的so文件</a>
+</h3>
+<h3 class="topic">
+<a name="6uqp8k64qggp8egk78tek0n9k7">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/6v6dbcsrak2thufb5ksi9p3rak.png"></p>
+<h3 class="topic">
+<a name="2o1h1ovd3ntkvgu02u3ltll7h4">&nbsp;&nbsp;对于android stdio可以在编译程序的同时完成ndk程序的编译于打包，不需要单独使用ndk-build编译ndk文件</a>
+</h3>
+<h3 class="topic">
+<a name="4qrklksequplmtahqs0mu481e1">&nbsp;jeb</a>
+</h3>
+<h3 class="topic">
+<a name="510ut1tvbpj296hof3ako8nun1">&nbsp;&nbsp;右键可以显示函数被引用的情况（或快捷键x）</a>
+</h3>
+<h3 class="topic">
+<a name="58jt9ils7lqpaja9qddle1v346">&nbsp;smali插桩：即在smali代码关键的位置插入log函数输出相关重要信息，主要涉及到smali中invoke-virtual、invoke-direct、invoke-static、invoke-super四种函数的调用方式</a>
+</h3>
+<h3 class="topic">
+<a name="3epvs0pkr3skl1a0213j9ukb1r">&nbsp;&nbsp;实际实现的过程中常常时将一个文件a加入到包结构中，然后重新打包，而并不直接修改源代码，当源代码中的指令调用到文件a中的函数时，在文件a中才会设置log函数输出相关信息</a>
+</h3>
+<h3 class="topic">
+<a name="41bhploha3k0ibgpcq6hp8jbsr">&nbsp;&nbsp;插桩实例分析</a>
+</h3>
+<h3 class="topic">
+<a name="0qrr4nr6m8atg0laelp7qvat2h">&nbsp;&nbsp;&nbsp;一个crackme关键函数为test函数，其返回值决定了是否能够正常crack，test函数中有大量smali汇编，且汇编经过了混淆，无法直接分析或转为java代码，此时需要在test函数返回的位置插桩，从而分析是什么决定了test函数的返回值</a>
+</h3>
+<h3 class="topic">
+<a name="73sfqs344tlpu8a3kanslnlhqn">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/4787cqhqu9b0ntjors784775u3.png"></p>
+<h3 class="topic">
+<a name="4eoldl50gntpemsm3gb3mrpi9l">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/5ovcbjao8s5ke7t511isghc5n4.png"></p>
+<h3 class="topic">
+<a name="6deo8sajbevhnfd7mmeaq2k9ph">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-3_files/6tn01oihlkq04rarefs8q00ibf.png"></p>
+</body>
+</html>

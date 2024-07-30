@@ -1,0 +1,458 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>修改EXP</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="7e7505r78gjg5cto6sisjsn7qv">修改EXP</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="%E4%BF%AE%E6%94%B9EXP_files/images/%E4%BF%AE%E6%94%B9EXP.jpg"></div>
+<h2 class="topic">
+<a name="7kundjcbpm0qs03fkm7ntupqgl">修改公共漏洞利用程序以满足我们的特定需求。这种解决方案存在挑战。 </a>
+</h2>
+<h3 class="topic">
+<a name="7frj0j6v5fc2h35uc3aktpto2v">&nbsp;对于诸如缓冲区溢出之类的内存破坏漏洞利用，我们可能需要修改基本目标参数，例如套接字信息，返回地址，有效负载和偏移量。不同版本软件的安全机制的不同也会产生影响（DEP ASLR等）</a>
+</h3>
+<h3 class="topic">
+<a name="741vtes5jp2tcv23nttfmftud6">&nbsp;&nbsp;  考虑到这一点，我们应该始终仔细阅读漏洞利用代码，根据需要进行修改，并在可能的情况下针对我们自己的沙盒目标进行测试，而不是进行不匹配的漏洞利用 </a>
+</h3>
+<h3 class="topic">
+<a name="4eathf6etiv456du3eung13k8v">&nbsp;我们还可以从将漏洞利用移植到其他语言中受益，以便包括其他预先编写的库，并通过将其导入攻击框架来扩展漏洞利用功能。</a>
+</h3>
+<h3 class="topic">
+<a name="3kgf6no7jnr5dbsg4vkn0b4fof">&nbsp;&nbsp;最后，可能需要将编码为运行在特定操作系统和体系结构上的漏洞利用程序移植到其他平台。 例如，我们经常遇到需要在Windows上编译漏洞利用程序但要在Kali上运行漏洞利用程序的情况。</a>
+</h3>
+<h2 class="topic">
+<a name="2m8jtl4c92i3e6ub3j87q6n5ft">修改内存损坏漏洞的exp</a>
+</h2>
+<h3 class="topic">
+<a name="1c24p2eamuhvrp45tb73kc4mgc">&nbsp;概述和注意事项</a>
+</h3>
+<h3 class="topic">
+<a name="7oj69c348c4bptt9bc0sf6ehi4">&nbsp;&nbsp;标准堆栈溢出的一般流程（在没有缓解措施的用户模式下运行的应用程序中，例如DEP和ASLR）非常简单。 该漏洞利用将：</a>
+</h3>
+<h3 class="topic">
+<a name="7c8cplckd9fa72fca5049fs37o">&nbsp;&nbsp;&nbsp;   1.创建一个大缓冲区以触发溢出。&#13;
+   2.通过将大缓冲区填充适当的偏移量来覆盖堆栈上的返回地址，从而控制EIP。&#13;
+   3.在可选的NOP底座之前的缓冲区中包括选定的有效负载。&#13;
+   4.选择正确的返回地址指令，例如JMP ESP（或其他寄存器），以将执行流重定向到我们的有效负载中。</a>
+</h3>
+<h3 class="topic">
+<a name="3h5fdkoff9501u1g6tdgf6go64">&nbsp;&nbsp;重新部署缓冲区结构</a>
+</h3>
+<h3 class="topic">
+<a name="0o09314o0akfql4lhs5p950pf7">&nbsp;&nbsp;&nbsp;此外，在修复漏洞利用程序时，根据漏洞的性质，我们可能需要修改已部署缓冲区的元素以适合我们的目标，例如文件路径，IP地址和端口，URL等。如果这些修改更改了我们的偏移量 ，我们必须调整缓冲区长度，以确保我们用所需的字节覆盖返回地址。</a>
+</h3>
+<h3 class="topic">
+<a name="7kc0ucl2mjlre3kl1mk65jfm1l">&nbsp;&nbsp;重新获取用于覆盖返回地址的指令的地址</a>
+</h3>
+<h3 class="topic">
+<a name="34dgunbeq4gakh52gr32krmkhq">&nbsp;&nbsp;&nbsp;尽管我们可以相信漏洞利用程序中使用的返回地址是正确的，但更负责任的选择是自己找到返回地址，尤其是如果使用的返回地址不是易受攻击的应用程序或其DLL的一部分时。 最可靠的方法之一是在虚拟机中本地克隆目标环境，然后在易受攻击的软件上使用调试器来获取返回地址指令的内存地址。</a>
+</h3>
+<h3 class="topic">
+<a name="0sv49fj23sbbriocabuj1jdpj0">&nbsp;&nbsp;重新考虑exp所使用的payload</a>
+</h3>
+<h3 class="topic">
+<a name="7f5tplj1g582rattvmv2cpsbss">&nbsp;&nbsp;&nbsp;如前一个模块中所述，公共漏洞利用存在固有的危险，因为它们通常包含十六进制编码的有效载荷，必须对其进行逆向工程才能确定其功能。 因此，我们必须始终检查公共攻击中使用的有效负载，或者更好的做法是插入我们自己的负载。</a>
+</h3>
+<h3 class="topic">
+<a name="4c841qcuptaa3cbud3rlbctgoi">&nbsp;&nbsp;&nbsp;&nbsp;当我们这样做时，显然我们将包括我们自己的IP地址和端口号，并可能排除某些不良字符，我们可以自行决定或从漏洞注释中确定这些不良字符。</a>
+</h3>
+<h3 class="topic">
+<a name="6fltmdc84m995g5v6bu14coif3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;虽然建议尽可能生成自己的有效负载，但仍有一些利用自定义有效负载的漏洞，这些漏洞对于成功攻陷易受攻击的应用程序至关重要。 如果是这种情况，我们唯一的选择是对有效负载进行反向工程，以确定其功能以及是否可以安全执行。 这很困难，并且超出了本模块的范围，因此我们将重点放在Shellcode替换上。</a>
+</h3>
+<h3 class="topic">
+<a name="53cebj7l8aj7c4efgsk3gcmbtj">&nbsp;导入和验证exp</a>
+</h3>
+<h3 class="topic">
+<a name="0ulc735app6gmuib5ceis22jlg">&nbsp;&nbsp;目标漏洞软件：Sync Breeze Enterprise 10.0.28，此时将专注于修改已有exp从而适配不同的漏洞利用环境</a>
+</h3>
+<h3 class="topic">
+<a name="3v7p8sq82650pv9a60o3fi09g7">&nbsp;&nbsp;&nbsp;在按产品和版本进行搜索时，我们注意到针对此特定漏洞有两种可用的exp，其中一种利用C编码，另一种使用python编码</a>
+</h3>
+<h3 class="topic">
+<a name="02lato9n8nqd0cu69b3uhd2sjg">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%BF%AE%E6%94%B9EXP_files/5h62epcnqganpf6gdtvq25k3iv.png"></p>
+<h3 class="topic">
+<a name="7319ctvuhs7udrmngm84s27tvt">&nbsp;&nbsp;&nbsp;尽管这两种语言之间存在很多差异，但我们将重点关注会影响我们的两个主要差异，包括内存管理和字符串操作。</a>
+</h3>
+<h3 class="topic">
+<a name="2fr8jd908k1hv4r0lcj61vl0ko">&nbsp;&nbsp;&nbsp;&nbsp; 第一个主要区别是脚本语言是通过解释器执行的，而不是编译为创建独立可执行文件的语言。 由于脚本语言需要解释器，因此这意味着我们无法在未安装Python的环境中运行Python脚本。 这可能会限制我们的工作，特别是如果我们需要独立的漏洞利用程序（例如本地特权升级），并且该漏洞利用程序必须在未预先安装Python的环境中运行时。</a>
+</h3>
+<h3 class="topic">
+<a name="0im54gposs4bl7j8tcs6easg9q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;python的exp的执行依赖于python环境，而c语言致力于生成独立的可执行文件作为exp</a>
+</h3>
+<h3 class="topic">
+<a name="71ps7efkm818jchpn9pcuig4q9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以考虑使用PyInstaller（https://www.pyinstaller.org），它将Python应用程序打包为适用于各种目标操作系统的独立可执行文件。 但是，鉴于漏洞利用代码的细微差别，我们建议手动移植代码以充分了解漏洞利用将如何针对目标进行工作。</a>
+</h3>
+<h3 class="topic">
+<a name="6npc6vmrkv5cke2dnnfdvimaev">&nbsp;&nbsp;&nbsp;&nbsp;两种语言之间的另一个区别是，在像Python这样的脚本语言中，连接字符串非常容易，并且通常采用两个字符串之间加法的形式，在诸如C的编程语言中，不允许以这种方式连接字符串。</a>
+</h3>
+<h3 class="topic">
+<a name="5tarc213sqef5srrcil8vc0d8g">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%BF%AE%E6%94%B9EXP_files/49n9o5uid0ubvgpohvoiltjiec.png"></p>
+<h3 class="topic">
+<a name="5pe0gn51n0l2i0bo1d45tk3g4l">&nbsp;&nbsp;&nbsp; 要开始修改漏洞利用程序，我们将使用SearchSploit方便的-m镜像（复制）选项将目标exploit移至当前工作目录：</a>
+</h3>
+<h3 class="topic">
+<a name="79hr5t5u6aldaug1hk7kvofal7">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%BF%AE%E6%94%B9EXP_files/02a61qcjkgb4d4gg8td8ig0eob.png"></p>
+<h3 class="topic">
+<a name="44ngb8lm4eq315fr8g89je3b35">&nbsp;&nbsp;&nbsp;现在，漏洞利用已镜像到我们的主目录，我们可以对其进行检查，以确定需要进行哪些修改（如果有）才能编译该漏洞并使其在我们的目标环境中工作。&#13;
+  但是，甚至在考虑编译之前，我们都注意到标头（例如winsock2.h381）表明此代码应在Windows上编译： </a>
+</h3>
+<h3 class="topic">
+<a name="3b99ids0lkbapnub92f4aks6to">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%BF%AE%E6%94%B9EXP_files/09mop0ap1vbkm82di891hb3c9l.png"></p>
+<h3 class="topic">
+<a name="7f9ba721l3pbgh4qi7v49h8s2c">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;尽管我们可以尝试在Windows上进行编译，但是我们将在Kali上交叉编译此漏洞。</a>
+</h3>
+<h3 class="topic">
+<a name="5j5guh20igovae4f48tarj2hq3">&nbsp;交叉编译exp</a>
+</h3>
+<h3 class="topic">
+<a name="5cl2pq86m74htc4sekohgboba3">&nbsp;&nbsp;为了避免编译问题，通常建议针对代码所针对的特定操作系统使用本机编译器。 但是，这可能并不总是一种选择。&#13;
+  在某些情况下，我们只能访问单个攻击环境（例如Kali），但需要利用针对不同平台编写的漏洞利用。 这是交叉编译器非常有用的地方。&#13;
+  在本节中，我们将使用非常流行的mingw-64交叉编译器。 如果尚不存在，我们可以使用apt安装：&#13;
+sudo apt install mingw-w64 </a>
+</h3>
+<h3 class="topic">
+<a name="1e6gunubbnvfvp0onvibl4u403">&nbsp;&nbsp;&nbsp;安装完成后，我们可以使用mingw-64将代码编译为Windows PE文件。383第一步是查看利用代码是否正确编译：</a>
+</h3>
+<h3 class="topic">
+<a name="3lblv0rmc4jghbdd3ahq3lfv7l">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%BF%AE%E6%94%B9EXP_files/1kdi1fc6i17b1vfafm12d2e0i4.png"></p>
+<h3 class="topic">
+<a name="672tado4oifq96log2i626rl95">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以看到第一个错误是WSAStartup函数未定义</a>
+</h3>
+<h3 class="topic">
+<a name="4113d27eusqga0o8gld2r3io65">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%BF%AE%E6%94%B9EXP_files/6lemk5qsl30pep461gpg47pq1i.png"></p>
+<h3 class="topic">
+<a name="6rvus2l83joa1ag468sta062fl">&nbsp;&nbsp;&nbsp;Google搜索&ldquo; WSAStartup&rdquo;显示这是在winsock.h中找到的函数。 进一步的研究表明，当链接器找不到winsock库时，就会发生这些错误，并且将-lws2_32参数添加到i686-w64-mingw32-gcc命令应该可以解决此问题：</a>
+</h3>
+<h3 class="topic">
+<a name="7bgquo2fm2ne76hmutpvpbk2r4">&nbsp;&nbsp;&nbsp;&nbsp;修改后成功编译</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%BF%AE%E6%94%B9EXP_files/0br9tu2laot087ag5do5rqs9bd.png"></p>
+<h3 class="topic">
+<a name="34ovqqeluacsne1urt6kn6rjb9">&nbsp;更改exp中的套接字信息</a>
+</h3>
+<h3 class="topic">
+<a name="7enb8i7nnh4fa4ugqm44v8ns8m">&nbsp;&nbsp;我们已经知道此漏洞利用的目标是一个可远程访问的漏洞，这意味着我们的代码需要在某个时候与目标建立连接。&#13;
+   检查C代码时，我们注意到它使用IP地址和for端口的硬编码值，这些将是我们在利用中需要调整的第一个值。</a>
+</h3>
+<h3 class="topic">
+<a name="61tf671rmpcga9m5372qjmgiup">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%BF%AE%E6%94%B9EXP_files/5fprvgjadtj6dpp1t9eqh67ika.png"></p>
+<h3 class="topic">
+<a name="1f8bi89p24vsggnu2lhvtvi3l0">&nbsp;修改返回地址</a>
+</h3>
+<h3 class="topic">
+<a name="3qn00cje7adifc9l4glracel3f">&nbsp;&nbsp;对代码的进一步检查显示，使用了msvbvm60.dll中的返回地址，该地址不是易受攻击的软件的一部分。 在Windows客户端上的调试器中查看加载的模块，我们注意到该DLL不存在，这意味着返回地址对我们的目标无效。&#13;
+  鉴于我们先前的模块已经具有有效的利用功能，因此可以使用我们自己的有效地址替换目标返回地址。</a>
+</h3>
+<h3 class="topic">
+<a name="7fgve2ap91mu61n5u1hcbptfmt">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%BF%AE%E6%94%B9EXP_files/5bjeag65bebn8npielcqc2keal.png"></p>
+<h3 class="topic">
+<a name="2eqdka3jjcf62tbp7dpgvcngnq">&nbsp;&nbsp;&nbsp;&nbsp;如果我们没有以前开发的漏洞利用的返回地址，则可以选择几种方法。 第一个也是最推荐的选择是在本地重新创建目标环境，并使用调试器确定该地址。 这是我们开发原始漏洞利用程序的过程。</a>
+</h3>
+<h3 class="topic">
+<a name="12dpc0rgutkrkbk3eg6p8hv0lh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;搭建目标环境测试返回地址</a>
+</h3>
+<h3 class="topic">
+<a name="2s3t7jvgckqgdqcqb4qlk0n5m1">&nbsp;&nbsp;&nbsp;&nbsp;   如果这不是一种选择，那么我们可以使用来自其他可公开利用的漏洞的信息来获得与目标环境相匹配的可靠返回地址。 例如，如果我们需要Windows Server 2003 SP2上的JMP ESP指令的返回地址，则可以利用针对该操作系统的各种漏洞，在公共利用中寻找它。 此方法不太可靠，并且可能会因操作系统安装的保护而异。</a>
+</h3>
+<h3 class="topic">
+<a name="1f4d2h4tbu0m5dvjqrlhro4j6l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;从公开的漏洞利用信息中获得指定环境的返回地址</a>
+</h3>
+<h3 class="topic">
+<a name="0j6v0hbvmd7kskr1utvhfcmoir">&nbsp;&nbsp;&nbsp;&nbsp;   或者，我们可以直接从目标计算机获取返回地址。 如果我们能够以非特权用户身份访问目标并希望运行可提升特权的攻击，则可以将感兴趣的DLL复制到攻击机中，并使用各种工具，例如反汇编程序，甚至是Metasploit框架中的msfpescan384 获得可靠的返回地址。</a>
+</h3>
+<h3 class="topic">
+<a name="13sldeqjhpqnii9bs82jfhm0b1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过在目标环境中加载指定dll，从而确定返回地址</a>
+</h3>
+<h3 class="topic">
+<a name="2g36kns634c0vv8imml2jdp9pa">&nbsp;修改payload</a>
+</h3>
+<h3 class="topic">
+<a name="4s5rgmglco6rrgu5er1r8bcqmm">&nbsp;&nbsp;继续分析C漏洞利用程序，我们注意到shellcode变量似乎包含有效负载。 由于将其存储为十六进制字节，因此我们无法轻松确定其用途。 作者给出的唯一提示是NOP滑板，它是shellcode变量的一部分：</a>
+</h3>
+<h3 class="topic">
+<a name="45m8vmk32g56jp0c367niidnip">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%BF%AE%E6%94%B9EXP_files/3t9ir7a2d2kq45ej6pdchf8l8f.png"></p>
+<h3 class="topic">
+<a name="12eqlvgd7mh5tc5st2latk7k38">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%BF%AE%E6%94%B9EXP_files/2ofb1vi4ga35ch3ac6pthoq668.png"></p>
+<h3 class="topic">
+<a name="1t3m2bs2089qumbvoqsgiuid09">&nbsp;&nbsp;由于我们已经在先前的漏洞利用中通过研究确定了不良字符，因此可以使用msfvenom生成自己的有效负载：</a>
+</h3>
+<h3 class="topic">
+<a name="7klpds09hib31dmb6aso3in7i8">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%BF%AE%E6%94%B9EXP_files/1k3rropu0mv9hcquu6jf34rnd2.png"></p>
+<h3 class="topic">
+<a name="70723eas1vveq6pg550jl50dl7">&nbsp;修改后的payload</a>
+</h3>
+<h3 class="topic">
+<a name="4qd2uvnaiqpta2tqmjf802gk8o">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%BF%AE%E6%94%B9EXP_files/3f4sj84ef0u0qqfc4csdreesju.png"></p>
+<h3 class="topic">
+<a name="3tv63pmgplbuq9np7jl15vshgf">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%BF%AE%E6%94%B9EXP_files/2ahke11aa38imttok04edb243s.png"></p>
+<h3 class="topic">
+<a name="1cq1p717o04rh5vmbdnl9hff8n">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%BF%AE%E6%94%B9EXP_files/7ach2agvi8i7emhm37a0mog3ed.png"></p>
+<h3 class="topic">
+<a name="53c3cpbm13erf26d2o93drp8hp">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%BF%AE%E6%94%B9EXP_files/7ee7o8rje9bbh5vul3phugl06a.png"></p>
+<h3 class="topic">
+<a name="2enequ3i9il18diebu0r45sphk">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%BF%AE%E6%94%B9EXP_files/2e3jiu5b2g7qmu7pn38psfffn1.png"></p>
+<h3 class="topic">
+<a name="0qo4stvgdoj43eam6v74ggsds7">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%BF%AE%E6%94%B9EXP_files/3ferus2nsm6hskde1g5qb1ljcc.png"></p>
+<h3 class="topic">
+<a name="7pd1724r9tud7mjfj2bfmdud0h">&nbsp;让我们使用mingw-64编译漏洞利用代码，看看它是否产生任何错误：</a>
+</h3>
+<h3 class="topic">
+<a name="2kvg5uuh0qtbsi97ji7kdsndu6">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%BF%AE%E6%94%B9EXP_files/3gh4qd3tq5962pn528m4cru4m9.png"></p>
+<h3 class="topic">
+<a name="423k9d598sup9fk3eb376ife6v">&nbsp;对其进行测试。 我们将调试器附加到沙盒测试目标上的SyncBreeze服务上，并在JMP ESP指令的内存地址处设置一个断点：</a>
+</h3>
+<h3 class="topic">
+<a name="1h9aru4nepbbj01fhekn8cp1na">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%BF%AE%E6%94%B9EXP_files/2di0qa907sok74vd4ak2be3aid.png"></p>
+<h3 class="topic">
+<a name="1q4puli7t0toh2u77qjhau1ml0">&nbsp;在kali中远程运行编译好的exp（此时exp位于目标的windows主机中）</a>
+</h3>
+<h3 class="topic">
+<a name="4v04anl8vlcjt5cor6kuh5kekl">&nbsp;&nbsp;在调试器中设置断点后，我们可以让应用程序正常运行，并尝试从Kali Linux执行我们的漏洞利用。&#13;
+  由于此二进制文件是交叉编译的，因此可以在Windows上运行，因此我们不能简单地从我们的Kali Linux计算机上运行它。 为了运行此Windows二进制文件，我们将使用wine（https://www.winehq.org/），它是一个兼容层，能够在多种操作系统（例如Linux，BSD和MacOS）上运行Windows应用程序： </a>
+</h3>
+<h3 class="topic">
+<a name="5jk39ev60c8glunuun52r7jeoc">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%BF%AE%E6%94%B9EXP_files/5radpvbaab027t5hdjvimo7fsv.png"></p>
+<h3 class="topic">
+<a name="21ega6r7c262b7qeq83jd852dq">&nbsp;令人惊讶的是，我们根本没有达到断点。 而是，应用程序崩溃了，EIP寄存器似乎被0x9010090c覆盖</a>
+</h3>
+<h3 class="topic">
+<a name="6g2ic6f7qgm3jhu6697eao6djn">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%BF%AE%E6%94%B9EXP_files/5g3itnkv1acfcind9pi56ainuk.png"></p>
+<h3 class="topic">
+<a name="16iin2oo6hj9ktmolhu6f26ro9">&nbsp;&nbsp;&nbsp;通过分析存储在EIP（0x9010090c）中的值和发送到目标应用程序的缓冲区，我们注意到覆盖堆栈上的返回地址的偏移量似乎偏移了一个字节。 错误的偏移量会迫使CPU从堆栈中弹出一个不同的返回地址，而不是从目标地址中弹出0x10090c83。</a>
+</h3>
+<h3 class="topic">
+<a name="267ife1veghd0lbtejtqrj4d6a">&nbsp;更改溢出缓冲区</a>
+</h3>
+<h3 class="topic">
+<a name="5sm59crn6vvpbedcgmbhsdfget">&nbsp;&nbsp;让我们尝试了解我们的偏差。 查看我们的大填充缓冲区&ldquo; A&rdquo;字符的第一部分是在哪里创建的，我们注意到它始于对大小为780的malloc的调用：</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%BF%AE%E6%94%B9EXP_files/6qoamupvebe86387oheamst306.png"></p>
+<h3 class="topic">
+<a name="2p6vupboe1ibq2oteob70c4l2t">&nbsp;&nbsp;&nbsp;这个数字对您来说应该很熟悉。 如果您还记得，根据我们在Windows缓冲区溢出模块期间的研究，我们确定780是覆盖堆栈上的返回地址并控制EIP寄存器所需的字节偏移量。&#13;
+   malloc函数仅根据请求的大小分配一块内存。 该缓冲区需要正确初始化，这是在调用malloc之后使用memset函数完成的：</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%BF%AE%E6%94%B9EXP_files/56sb7m2usikqlnfak554ii4kkl.png"></p>
+<h3 class="topic">
+<a name="6ae9fbukruja9gj05m25ouu3aj">&nbsp;&nbsp;&nbsp;&nbsp;乍一看这似乎令人困惑，但是，继续阅读代码，我们到达创建最终缓冲区的行。该代码首先使用malloc为缓冲区字符数组分配一个内存块，然后用NULL字节填充该数组。 接下来，代码通过各种字符串操作函数（例如strcpy和strcat）复制其他变量的内容来填充缓冲区字符数组。</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%BF%AE%E6%94%B9EXP_files/5r3jrbto54hmsossr80abmj3l4.png"></p>
+<h3 class="topic">
+<a name="4rdlrat7vt0bi5atod7psiaml8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将最终缓冲区构造为字符串是非常重要的信息。  C编程语言使用以Null结尾的字符串390，这意味着诸如strcpy和strcat之类的功能通过搜索目标字符数组中首次出现的NULL字节来确定字符串的结尾和大小。 由于我们的初始填充缓冲区(即padding)的分配大小为780，因此通过将最后一个字节设置为0x00（清单442），我们最终将字符串（长度为779字节）的&ldquo; A&rdquo; ASCII字符连接起来（strcat）。 这解释了EIP寄存器未对齐的覆盖。</a>
+</h3>
+<h3 class="topic">
+<a name="707o7d607as2qt8pv9ag0hc6nc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;即padding中实际上是779个"A"和一个0x90，当进行strcat时，仅仅会将779个"A"拼接进来，从而导致缺少一字节，返回地址未对齐</a>
+</h3>
+<h3 class="topic">
+<a name="6hs7o0f8rfurofo360koauf77n">&nbsp;&nbsp;我们可以通过将initial_buffer_size变量定义的请求内存大小增加1来快速解决此问题。</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%BF%AE%E6%94%B9EXP_files/0ughvmchltaq3g27k5d457710o.png"></p>
+<h3 class="topic">
+<a name="2bc4stm05pplked2lsqtfei4ci">&nbsp;&nbsp;&nbsp;作为最终测试，我们将再次编译代码，在端口443上设置Netcat侦听器以捕获反向外壳，然后启动漏洞利用：</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%BF%AE%E6%94%B9EXP_files/6210j699sshaslg9bquqlqgatd.png"></p>
+<h3 class="topic">
+<a name="1okg63ljstp1v038m1gg041pnp">&nbsp;&nbsp;&nbsp;&nbsp;kali中使用wine运行exp</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%BF%AE%E6%94%B9EXP_files/48g5hq8of0kdba5tqc4k4cfnh8.png"></p>
+<h3 class="topic">
+<a name="7944kd7i2268866p24h5o00r49">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;最终切换到我们的netcat侦听器，获得shell，此外，这种漏洞利用不再需要在现场访问基于Windows的攻击平台，因为我们可以从Kali Linux运行它</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%BF%AE%E6%94%B9EXP_files/1q6c1jsq7fohqe3ndnm97dltm0.png"></p>
+<h2 class="topic">
+<a name="4m5h1eu0gqjhqr04j1t8r3uurp">修改web漏洞的exp</a>
+</h2>
+<h3 class="topic">
+<a name="2ktohmoukcft7fcif1ahu7a16v">&nbsp;Web应用程序漏洞通常不会导致内存损坏。 这意味着它们不受操作系统（如DEP和ASLR）提供的保护的影响，并且它们的重新使用非常容易。</a>
+</h3>
+<h3 class="topic">
+<a name="0p4l8s7jmdtui88bfts29h7ahl">&nbsp;注意事项和概述</a>
+</h3>
+<h3 class="topic">
+<a name="366j1ettqvbkb33g1d7v0p3aic">&nbsp;&nbsp;&bull;是否启动HTTP或HTTPS连接？  &#13;
+&bull;它是否访问Web应用程序特定的路径或路由？ 漏洞利用是否利用了预身份验证漏洞？ 如果不是，该漏洞利用程序如何向Web应用程序进行身份验证？&#13;
+&bull;如何精心设计GET或POST请求以触发和利用此漏洞&#13;
+&bull;它是否依赖于安装后可能已更改的默认应用程序设置（例如应用程序的Web路径）&#13;
+&bull;诸如自签名证书之类的怪事会破坏漏洞利用吗？</a>
+</h3>
+<h3 class="topic">
+<a name="06b1qu2887emi4p31ggsln669s">&nbsp;&nbsp;&nbsp;公共Web应用程序的exp可能未考虑绕过其他保护措施，例如.htaccess。 这主要是因为exp作者在开发过程中可能不了解这些保护，所以这些保护措施的绕过不在漏洞利用程序的范围内。</a>
+</h3>
+<h3 class="topic">
+<a name="1d8pqtj1nd3eijbagj71331sr2">&nbsp;选择漏洞</a>
+</h3>
+<h3 class="topic">
+<a name="6tjktv8i4ar9fhaov8ebcabn30">&nbsp;&nbsp;发现一台公开了apache2服务器的Linux主机。 枚举Web服务器后，我们发现在TCP端口443上侦听的CMS Made Simple版本2.2.5的安装。此版本似乎容易受到远程代码执行的攻击，并且Exploit-DB.39上存在公共漏洞利用。</a>
+</h3>
+<h3 class="topic">
+<a name="77fskg74ci0acburiuo88atang">&nbsp;&nbsp;&nbsp;此漏洞是通过身份验证后才能利用的，但是，我们在枚举过程中在另一台计算机上发现了有效的应用程序凭据（admin / HUYfaw763）。</a>
+</h3>
+<h3 class="topic">
+<a name="5ol3hjoed3ajh07q27sd3pti7e">&nbsp;更改连接信息</a>
+</h3>
+<h3 class="topic">
+<a name="25pdt2qa1v359o4h6d4vg3caq3">&nbsp;&nbsp;在检查代码时，我们意识到需要更改base_url变量以匹配我们的环境：</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%BF%AE%E6%94%B9EXP_files/4kp8hf2qhfhhghat6gksamq245.png"></p>
+<h3 class="topic">
+<a name="4dmvhfs4h5gngh968hjq5laeih">&nbsp;&nbsp;&nbsp;我们必须将IP地址和协议修改为HTTPS</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%BF%AE%E6%94%B9EXP_files/44l5ii0dagtkldq350snra80f8.png"></p>
+<h3 class="topic">
+<a name="7hkfun225fn8eu6v72189i0rup">&nbsp;&nbsp;&nbsp;&nbsp;我们还注意到，在浏览目标网站时，我们会看到SEC_ERROR_UNKNOWN_ISSUER393错误。 此错误表明无法验证远程主机上的证书。 我们需要在利用代码中对此进行说明。&#13;
+   具体而言，该漏洞利用请求Python库与目标进行通信。 该代码在第34、55和80行上发出三个发布请求：</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%BF%AE%E6%94%B9EXP_files/5je58c2mf3rl4let0idpdv3ja4.png"></p>
+<h3 class="topic">
+<a name="7m2esj1u93fm24abdtgsdhvqsv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;官方文档（http://docs.python-requests.org/en/master/user/advanced/#ssl-cert-verification）表明，如果我们将verify参数设置为False，则将忽略SSL证书：</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%BF%AE%E6%94%B9EXP_files/24o2ajo5ns32d2s7tlu2g5f21a.png"></p>
+<h3 class="topic">
+<a name="1594p2v9pjjh51dch9son472rq">&nbsp;&nbsp;最后，我们还需要更改原始漏洞利用中使用的凭据，以匹配在枚举过程中找到的凭据。 这些分别在第15行和第16行的username和password变量中定义：</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%BF%AE%E6%94%B9EXP_files/69b4kt6lr8hceifur9gnhsh118.png"></p>
+<h3 class="topic">
+<a name="49sm96hv92r5o63v4ff7kqbuef">&nbsp;&nbsp;&nbsp;我们可以轻松替换以下凭据：</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%BF%AE%E6%94%B9EXP_files/50mm1q2jjcrsjaqmsd590mhgod.png"></p>
+<h3 class="topic">
+<a name="4hk645aha3gtg2u3m162rm9esh">&nbsp;&nbsp;&nbsp;&nbsp;请注意，在这种情况下，我们不需要更新简单的有效负载，因为它仅执行GET请求中以明文形式传递的系统命令。&#13;
+   完成所有编辑后，最终利用应如下所示（p472）</a>
+</h3>
+<h3 class="topic">
+<a name="3ilv36m8073vlt75s4sd1dhgl9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;运行漏洞利用会产生意外错误，显示了在代码的第24行执行parse_csrf_token函数期间触发了异常。 该错误告诉我们，代码尝试通过访问Python列表的第二个元素（location.split（csrf_param +&ldquo; =&rdquo;）[1]）来访问Python列表中不存在的元素。</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%BF%AE%E6%94%B9EXP_files/0pc3b1nhn2044kf2k74iifh61h.png"></p>
+<h3 class="topic">
+<a name="3sqcja5j0i45i0644r4crb4ia6">&nbsp;解决&ldquo;索引超出范围&rdquo;错误</a>
+</h3>
+<h3 class="topic">
+<a name="7m01n3p9hure6kralrjon7hm10">&nbsp;&nbsp;在漏洞利用的第24行中，我们注意到它使用split方法来对存储location参数中的字符串进行切片，location参数会传递给parse_csrf_token。  Python的split文档指出，此方法使用作为第一个参数传递的可选分隔符对输入字符串进行切片。 然后，由split返回的字符串切片将存储在Python List对象中，该对象可以通过索引进行访问：</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%BF%AE%E6%94%B9EXP_files/2lf8glc60het2llnblbb7u9vnq.png"></p>
+<h3 class="topic">
+<a name="4h9u3as3rffilot0ap6bs04t5m">&nbsp;&nbsp;&nbsp;在我们的利用代码中，字符串分隔符定义为csrf_param变量（&ldquo; __c&rdquo;），后跟等号：</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%BF%AE%E6%94%B9EXP_files/1jn91o0fet61oh42u1st2muld8.png"></p>
+<h3 class="topic">
+<a name="64cm52tm09rfafrfvq2fui3uel">&nbsp;&nbsp;&nbsp;&nbsp;为了更好地理解IndexError，我们可以在return指令之前的parse_csrf_token函数中添加一条print语句：</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%BF%AE%E6%94%B9EXP_files/3u8o41mq20jicei7ssura87apq.png"></p>
+<h3 class="topic">
+<a name="3q40fguv0b0i3qfppejtek5sp1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该漏洞利用现在显示在调用split方法之前的完整字符串：</a>
+</h3>
+<h3 class="topic">
+<a name="49tc9qaib4a0qt3jqjh203qh85">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%BF%AE%E6%94%B9EXP_files/37212itenka8eq2m0uagel3cnn.png"></p>
+<h3 class="topic">
+<a name="35ho8gh7o5et7ho3uu9feimvgb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%BF%AE%E6%94%B9EXP_files/382r390t4r9j02g7tg69310sng.png"></p>
+<h3 class="topic">
+<a name="43eghrm36eruqn6a2d9u9ioru9">&nbsp;&nbsp;漏洞利用代码希望输入字符串包含__c（在csrf_param变量中定义），但我们从Web应用程序收到了_sk_。&#13;
+  在这一点上，我们还不完全理解为什么会这样。 漏洞利用开发人员的软件和我们的软件之间可能存在版本不匹配，或者CMS配置不匹配。 无论哪种方式，利用开发都绝非易事。&#13;
+  不过，我们可以尝试将csrf_param变量从__c更改为_sk_，以匹配CMS响应并查看漏洞利用是否有效： </a>
+</h3>
+<p class="topicImage">
+<img src="%E4%BF%AE%E6%94%B9EXP_files/53m1k4canu3qf7nek9qs5tc7ko.png"></p>
+<h3 class="topic">
+<a name="1dnigmrfpgbjjakq9q4qafng39">&nbsp;&nbsp;&nbsp;执行exp成功，显示成功上传了shell</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%BF%AE%E6%94%B9EXP_files/3a5q7n121ihnoq70a879b9gjsn.png"></p>
+<h3 class="topic">
+<a name="49tbbegfcupalr51vpjl4okbu4">&nbsp;&nbsp;&nbsp;&nbsp;通过使用curl等工具将其附加到php shell并提供系统命令作为有效负载来验证漏洞利用：</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%BF%AE%E6%94%B9EXP_files/5hut93g12j23ubo5uemk86gndj.png"></p>
+</body>
+</html>

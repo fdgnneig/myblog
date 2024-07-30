@@ -1,0 +1,100 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>物联网-openwrt架构讲解</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="5gl63r9j2akomf0vb6cqfm4dcc">物联网-openwrt架构讲解</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-openwrt%E6%9E%B6%E6%9E%84%E8%AE%B2%E8%A7%A3_files/images/%E7%89%A9%E8%81%94%E7%BD%91-openwrt%E6%9E%B6%E6%9E%84%E8%AE%B2%E8%A7%A3.jpg"></div>
+<h2 class="topic">
+<a name="07h21i02f0l8s1f67ir3jfks1b">openwrt</a>
+</h2>
+<h3 class="topic">
+<a name="4daab038efugl7sq078bt6veu2">&nbsp;openwrt是一个开源的路由器固件系统（基于linux的嵌入式路由器），硬件路由器厂商多基于openwrt框架开发自己的固件系统，openwrt和硬件路由器系统两者类似linux和ubuntu的关系，可以将openwrt刷到路由器固件上作为系统使用</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-openwrt%E6%9E%B6%E6%9E%84%E8%AE%B2%E8%A7%A3_files/4d037det6qruhsl172fsi434n4.png"></p>
+<h3 class="topic">
+<a name="10din1davg3v6311e9sskml8jr">&nbsp;&nbsp;script：包含bash、python、prel等脚本，第三方软件&#13;
+tools：编译相关工具&#13;
+config：openwrt相关系统配置&#13;
+toolchain：交叉编译相关（arm mips x86）&#13;
+target：编译生成的不同架构的kernel和image&#13;
+package：openwrt所使用的软件包，可以自己添加所需软件，使用feeds命令（位于script）更新的软件也放在package中&#13;
+include：存放openwrt的makefile</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-openwrt%E6%9E%B6%E6%9E%84%E8%AE%B2%E8%A7%A3_files/1n7534fumnk6pagego1rohe1lt.png"></p>
+<h3 class="topic">
+<a name="6f2vsm3anh5jm36s3gvftgk0vn">&nbsp;在原始目录基础上可能会生成的目录</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-openwrt%E6%9E%B6%E6%9E%84%E8%AE%B2%E8%A7%A3_files/10bn04slci9b4up98rd3087ctc.png"></p>
+<h3 class="topic">
+<a name="5e1hcrjqcduiruajlcljjnulqb">&nbsp;&nbsp;编译openwrt</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-openwrt%E6%9E%B6%E6%9E%84%E8%AE%B2%E8%A7%A3_files/1jnnckemosv0kg3s3od8afh0r5.png"></p>
+<h2 class="topic">
+<a name="260dbsj85450sa8s7f41qi4k3m">openwrt实战</a>
+</h2>
+<h3 class="topic">
+<a name="50mda41d9t337rmd6kajp9g6i1">&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-openwrt%E6%9E%B6%E6%9E%84%E8%AE%B2%E8%A7%A3_files/5gs875mgob6h918uh53js1r2qc.png"></p>
+<h3 class="topic">
+<a name="385akfpig2prvebt7t59chehcb">&nbsp;&nbsp;qemu模拟执行编译好的openwrt镜像</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-openwrt%E6%9E%B6%E6%9E%84%E8%AE%B2%E8%A7%A3_files/3a9ep5tikkj5bperept7fic35d.png"></p>
+<h3 class="topic">
+<a name="69j2qk9gvsgjhpur1gafpe6h3h">&nbsp;进入openwrt中，可以看到相关输出信息</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-openwrt%E6%9E%B6%E6%9E%84%E8%AE%B2%E8%A7%A3_files/7650kft3n1uk8dgvpbuveget33.png"></p>
+<h3 class="topic">
+<a name="3tc47kvj3s5u5gpo31h5gp6ojs">&nbsp;&nbsp;查看openwrt的ip信息</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-openwrt%E6%9E%B6%E6%9E%84%E8%AE%B2%E8%A7%A3_files/3m6h0k463d3gqg4nj6odmhk9ra.png"></p>
+<h3 class="topic">
+<a name="5pl37hi9c5eqeeb7pi28j8fdfk">&nbsp;经测试可以ping通</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-openwrt%E6%9E%B6%E6%9E%84%E8%AE%B2%E8%A7%A3_files/50m027s0os32mitfdakaudg8dj.png"></p>
+<h3 class="topic">
+<a name="25s4vfrrg5lkguaadhdbtuq309">&nbsp;&nbsp;重置openwrt密码</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-openwrt%E6%9E%B6%E6%9E%84%E8%AE%B2%E8%A7%A3_files/0ts02m665noh056qnmv0rhnf6q.png"></p>
+<h3 class="topic">
+<a name="45mpikd4ng5sj0mbc8vraavmlj">&nbsp;浏览器中访问openwrtIP地址，并登陆</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-openwrt%E6%9E%B6%E6%9E%84%E8%AE%B2%E8%A7%A3_files/0983vo7n31kt5fnf2di3it8ehf.png"></p>
+<h3 class="topic">
+<a name="0fdpb44qn36s4bajn93ermna47">&nbsp;&nbsp;可以查看openwrt目录结构，并发现其中可执行程序，类似于uhttp等，大部分设备均有web访问页面，部分厂商使用第三方框架（比如boa）作为服务端程序，而openwrt自己实现了小型的HTTP服务，即uhttp</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-openwrt%E6%9E%B6%E6%9E%84%E8%AE%B2%E8%A7%A3_files/40fk3le3jm2b9jcur0nua72nn7.png"></p>
+<h3 class="topic">
+<a name="2k1nnvea3521nsv7fo47181mq1">&nbsp;安全研究时为了能做到rce，需要针对该http服务端程序进行漏洞挖掘，可以查看openwrt的http服务端程序的源码，一般此类设备的服务端程序均是通过c语言编写的，从而实现解析url、接收http数据包等功能</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-openwrt%E6%9E%B6%E6%9E%84%E8%AE%B2%E8%A7%A3_files/3tkhkbauaq6n8sqgtk5b1kfh3s.png"></p>
+<h3 class="topic">
+<a name="214q3khp3ldnqh5gg5q0qi0k09">&nbsp;&nbsp;http服务端程序的所有代码，此时可以进行白盒审计</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-openwrt%E6%9E%B6%E6%9E%84%E8%AE%B2%E8%A7%A3_files/0njgk4r5u716979e44vgeofbsd.png"></p>
+<h3 class="topic">
+<a name="41jp0ssiu6hnhg3ef7s9lr4cvj">&nbsp;除了HTTP服务端，一般还会对设备的私有二进制应用进行分析，不过此类二进制应用一般与网络传输有关，这样才有研究意义（即能够触发漏洞）</a>
+</h3>
+</body>
+</html>

@@ -1,0 +1,363 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>物联网-基于Hook和Patch的模拟</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="4s0o3aipihnmkkng2ps5ttkcd2">物联网-基于Hook和Patch的模拟</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%9F%BA%E4%BA%8EHook%E5%92%8CPatch%E7%9A%84%E6%A8%A1%E6%8B%9F_files/images/%E7%89%A9%E8%81%94%E7%BD%91-%E5%9F%BA%E4%BA%8EHook%E5%92%8CPatch%E7%9A%84%E6%A8%A1%E6%8B%9F.jpg"></div>
+<h2 class="topic">
+<a name="3mqergg557rnreme1lv53j8g1u">固件模拟时由于硬件的缺失常常会走造成模拟的失败，使用patch和hook可以完成固件模拟</a>
+</h2>
+<h2 class="topic">
+<a name="38flbvvjnrs2pldvnifq4l6fc9">patch</a>
+</h2>
+<h3 class="topic">
+<a name="4ihom7ol68128ugo1ovin75ieq">&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%9F%BA%E4%BA%8EHook%E5%92%8CPatch%E7%9A%84%E6%A8%A1%E6%8B%9F_files/3hq6f7f7tik0052n21jgha155j.png"></p>
+<h3 class="topic">
+<a name="4vkc99jfsof7rb7knu3jeklm9u">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%9F%BA%E4%BA%8EHook%E5%92%8CPatch%E7%9A%84%E6%A8%A1%E6%8B%9F_files/0gmlguui98fh346lghnkpluvov.png"></p>
+<h2 class="topic">
+<a name="59ac84fivj4a759ed1dhu1fvg2">patch实战</a>
+</h2>
+<h3 class="topic">
+<a name="28ml4lc90gbevhb4p21sndmi05">&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%9F%BA%E4%BA%8EHook%E5%92%8CPatch%E7%9A%84%E6%A8%A1%E6%8B%9F_files/65qumcslvt4fq8edpsm3kgqkgv.png"></p>
+<h3 class="topic">
+<a name="0o1r1gqpp0bqg3fkj7u84fp7q4">&nbsp;&nbsp;根据文件系统，判断固件为linux系统，使用qemu模拟执行boa（一个linux下web服务器），发现报错，复制报错信息</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%9F%BA%E4%BA%8EHook%E5%92%8CPatch%E7%9A%84%E6%A8%A1%E6%8B%9F_files/6uvbcogl7nv5jcgldc3pvu03e5.png"></p>
+<h3 class="topic">
+<a name="3lshne5hjs7tajbvdm6buob7v8">&nbsp;&nbsp;&nbsp;将boa程序放入ida中分析，搜索报错信息</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%9F%BA%E4%BA%8EHook%E5%92%8CPatch%E7%9A%84%E6%A8%A1%E6%8B%9F_files/1u5agsb0a0tjtht48dti3ocl3r.png"></p>
+<h3 class="topic">
+<a name="2fkirnui3e0pbrc4p75vmh36b3">&nbsp;找到报错信息字符串，使用x寻找哪里引用了该字符串</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%9F%BA%E4%BA%8EHook%E5%92%8CPatch%E7%9A%84%E6%A8%A1%E6%8B%9F_files/0m72p7jibgq7i421bo8qpdmo1a.png"></p>
+<h3 class="topic">
+<a name="795kfn9n2uhr8ulv4dcj9u1j62">&nbsp;&nbsp;找到跳转到异常的分支，在这里下断点，准备动态调试</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%9F%BA%E4%BA%8EHook%E5%92%8CPatch%E7%9A%84%E6%A8%A1%E6%8B%9F_files/1978vgfa4o9bb10nferqvbho85.png"></p>
+<h3 class="topic">
+<a name="5v1ki0bsnd0c53dqvr7lokos3t">&nbsp;&nbsp;&nbsp;qemu使用-g指定监听端口</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%9F%BA%E4%BA%8EHook%E5%92%8CPatch%E7%9A%84%E6%A8%A1%E6%8B%9F_files/2p3uq10kf0e0l6jcq1vlaok6l6.png"></p>
+<h3 class="topic">
+<a name="0nnau4j0u14rmj37qu9072sd9r">&nbsp;选择远程gdb调试，点击Debugger -&gt; Process Options进行配置IP和端口</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%9F%BA%E4%BA%8EHook%E5%92%8CPatch%E7%9A%84%E6%A8%A1%E6%8B%9F_files/7597a8tqa9lgrkkjmos7qu1l8m.png"></p>
+<h3 class="topic">
+<a name="3k79692nf0fpm79henhfmdpklu">&nbsp;&nbsp;开始调试</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%9F%BA%E4%BA%8EHook%E5%92%8CPatch%E7%9A%84%E6%A8%A1%E6%8B%9F_files/7qimf6anojirmmhq5vcatom1lu.png"></p>
+<h3 class="topic">
+<a name="7lf9i4adjn2rfg5hg8vpvuekl6">&nbsp;&nbsp;&nbsp;确定attach上该进程</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%9F%BA%E4%BA%8EHook%E5%92%8CPatch%E7%9A%84%E6%A8%A1%E6%8B%9F_files/55f66hd7ufsqsn6rvqtijoshku.png"></p>
+<h3 class="topic">
+<a name="3jvgrh3cp6q6u7jfu8v5r7fjs9">&nbsp;&nbsp;&nbsp;&nbsp;点击直接执行，在断点处断下</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%9F%BA%E4%BA%8EHook%E5%92%8CPatch%E7%9A%84%E6%A8%A1%E6%8B%9F_files/2h5u8arjevsomhlj32kedol05g.png"></p>
+<h3 class="topic">
+<a name="3rt3rr735lrib0k22ptrvmm3vi">&nbsp;断点处断下</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%9F%BA%E4%BA%8EHook%E5%92%8CPatch%E7%9A%84%E6%A8%A1%E6%8B%9F_files/689jl0v75q7r8ei46hsgv27iai.png"></p>
+<h3 class="topic">
+<a name="5stgm4c3ttnn72u3l0g3kko7gs">&nbsp;&nbsp;如果直接执行，会执行到输出错误信息的位置</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%9F%BA%E4%BA%8EHook%E5%92%8CPatch%E7%9A%84%E6%A8%A1%E6%8B%9F_files/5lobjm1v875rau0out0n41dpit.png"></p>
+<h3 class="topic">
+<a name="2imeu7d14e2cjd0gsodh8822to">&nbsp;&nbsp;&nbsp;重启一轮调试，断点断下时，修改v0寄存器值不为0，从而不跳转执行输出错误信息的命令</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%9F%BA%E4%BA%8EHook%E5%92%8CPatch%E7%9A%84%E6%A8%A1%E6%8B%9F_files/6e3f8p27e840m7qg97bjov2u44.png"></p>
+<h3 class="topic">
+<a name="2luctq8j5meo83cef7obeh3rgm">&nbsp;&nbsp;&nbsp;&nbsp;修改后程序跳转到另一个分支</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%9F%BA%E4%BA%8EHook%E5%92%8CPatch%E7%9A%84%E6%A8%A1%E6%8B%9F_files/22nqqjjbgetec9g5q7ud3qhjva.png"></p>
+<h3 class="topic">
+<a name="0t7ao5lr0vk6gja6rpi8na2pkr">&nbsp;找到关键跳转指令的地址为8e04</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%9F%BA%E4%BA%8EHook%E5%92%8CPatch%E7%9A%84%E6%A8%A1%E6%8B%9F_files/54fuatdja9mgv5crp3lqdqtto2.png"></p>
+<h3 class="topic">
+<a name="25q2ieifu4r7oj9l14hd2rlaf5">&nbsp;&nbsp;查看十六进制视图</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%9F%BA%E4%BA%8EHook%E5%92%8CPatch%E7%9A%84%E6%A8%A1%E6%8B%9F_files/62108k3gc6h0acp1gp3rfl3hv8.png"></p>
+<h3 class="topic">
+<a name="5cbsm62nc4dfdtdc8k2phql638">&nbsp;&nbsp;&nbsp;找到指令的十六进制，其中0x14表示bnez，而mips汇编中0x10表示beqz，入宫将0x14改为0x10，则程序表示当v0为0时，程序跳转到正确运行的分支</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%9F%BA%E4%BA%8EHook%E5%92%8CPatch%E7%9A%84%E6%A8%A1%E6%8B%9F_files/59psk1g5dnkl8ksiumst2fqtcn.png"></p>
+<h3 class="topic">
+<a name="0g5tcosr6hebaqdkbqk8a9htnl">&nbsp;&nbsp;&nbsp;&nbsp;复制ida中的数据</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%9F%BA%E4%BA%8EHook%E5%92%8CPatch%E7%9A%84%E6%A8%A1%E6%8B%9F_files/23n9h6vhbh9r58mn3k6baicu1v.png"></p>
+<h3 class="topic">
+<a name="6casfq8m5n1s5shaa7bfid038b">&nbsp;使用010editor打开boa，使用ctrl+F查找之前复制的数据</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%9F%BA%E4%BA%8EHook%E5%92%8CPatch%E7%9A%84%E6%A8%A1%E6%8B%9F_files/7cb7rkp0gqibivanr4m1igt0lo.png"></p>
+<h3 class="topic">
+<a name="13vnuqlnl82ofeebidbnalfse0">&nbsp;&nbsp;将14改为10，完成对boa二进制文件的修改</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%9F%BA%E4%BA%8EHook%E5%92%8CPatch%E7%9A%84%E6%A8%A1%E6%8B%9F_files/734v5igt8gl772rrj4m5t44v57.png"></p>
+<h3 class="topic">
+<a name="6npg491nuvml9n71649ridv9vt">&nbsp;&nbsp;&nbsp;运行完成patch的boa，没有报之前的错误，但是产生新错误，其中前两个创建文件失败错误没有影响，最后一个段错误，导致web服务未开启</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%9F%BA%E4%BA%8EHook%E5%92%8CPatch%E7%9A%84%E6%A8%A1%E6%8B%9F_files/5fia4ctogasco1q4njh6q6me2k.png"></p>
+<h3 class="topic">
+<a name="7eln0t930erd5ij2ug3a1nk8hn">&nbsp;&nbsp;&nbsp;&nbsp;加上监听端口，开始调试boa</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%9F%BA%E4%BA%8EHook%E5%92%8CPatch%E7%9A%84%E6%A8%A1%E6%8B%9F_files/4u9pt4orl9cjanqrecfctkd37s.png"></p>
+<h3 class="topic">
+<a name="0k34918e1rh58n0ipokt4rc4hp">&nbsp;在ida中调试固件，发现patch的指令已经被修改</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%9F%BA%E4%BA%8EHook%E5%92%8CPatch%E7%9A%84%E6%A8%A1%E6%8B%9F_files/0f2s3mglf9d6dg0vsios55hr1e.png"></p>
+<h3 class="topic">
+<a name="63u18hpbs3mftgfc9ra85gajic">&nbsp;&nbsp;继续单步调试，发现出现段错误的指令</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%9F%BA%E4%BA%8EHook%E5%92%8CPatch%E7%9A%84%E6%A8%A1%E6%8B%9F_files/3c4l0o25vonhs82nqvsc2i3i8p.png"></p>
+<h3 class="topic">
+<a name="05bp6alb8avpfq3ph1nq506crk">&nbsp;&nbsp;&nbsp;根据.extern信息可知，该函数在另一个动态链接库中，可以针对该动态链接库继续进行patch</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%9F%BA%E4%BA%8EHook%E5%92%8CPatch%E7%9A%84%E6%A8%A1%E6%8B%9F_files/3i6i20s163eoqijbjg4e9uua0i.png"></p>
+<h3 class="topic">
+<a name="7qub7fmjgcrhbpdtdj8dbug91v">&nbsp;&nbsp;&nbsp;&nbsp;有时需要patch的位置很多，可以考虑使用hook方式</a>
+</h3>
+<h2 class="topic">
+<a name="2iftd5fughckcn1he0pkrdocrg">hook</a>
+</h2>
+<h3 class="topic">
+<a name="47vl23v87v0urffq0kuj9g6n98">&nbsp;此时hook的主要目的是改变程序执行流程</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%9F%BA%E4%BA%8EHook%E5%92%8CPatch%E7%9A%84%E6%A8%A1%E6%8B%9F_files/3triqrc05tjgb40bf114go63gp.png"></p>
+<h3 class="topic">
+<a name="4daq589lsqj2mcgfj7i35mquo0">&nbsp;&nbsp;hook可以解决固件模拟时由于硬件缺失所致的模拟失败</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%9F%BA%E4%BA%8EHook%E5%92%8CPatch%E7%9A%84%E6%A8%A1%E6%8B%9F_files/7ukvtq7fqv7m7rk6f8mmce8nop.png"></p>
+<h3 class="topic">
+<a name="0g4qkv06e8lt7oo1uo2gl0kn4n">&nbsp;&nbsp;&nbsp;由于嵌入式设备常基于linux平台，所以其hook也常为linux hook</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%9F%BA%E4%BA%8EHook%E5%92%8CPatch%E7%9A%84%E6%A8%A1%E6%8B%9F_files/7ed1106jj8psps6h9sol3h26gf.png"></p>
+<h3 class="topic">
+<a name="13rp9p1aac2hrjdpvmbpqbpadf">&nbsp;&nbsp;&nbsp;&nbsp;关键是提供一个与被hook函数原型一致的hook函数，从而使得被hook的程序调用hook函数，从而完成指定功能</a>
+</h3>
+<h2 class="topic">
+<a name="12in44ik5qruth32lra18mbud1">linux平台hook</a>
+</h2>
+<h3 class="topic">
+<a name="5csn8b58v7lvdm0nqf8bth8het">&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%9F%BA%E4%BA%8EHook%E5%92%8CPatch%E7%9A%84%E6%A8%A1%E6%8B%9F_files/21iege6gbt117kb5rs684491dr.png"></p>
+<h3 class="topic">
+<a name="6gdmkm7tk5df1h54ld5qcpgbej">&nbsp;&nbsp;linux_hook.c，即只要输入password，即输出正确信息</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%9F%BA%E4%BA%8EHook%E5%92%8CPatch%E7%9A%84%E6%A8%A1%E6%8B%9F_files/2bn406pvqdhnsjh96ioss43oid.png"></p>
+<h3 class="topic">
+<a name="3222ttcnjqusbfgeicmkphtnhg">&nbsp;&nbsp;&nbsp;编译并运行linux_hook.c</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%9F%BA%E4%BA%8EHook%E5%92%8CPatch%E7%9A%84%E6%A8%A1%E6%8B%9F_files/2af69mgt11ptcu30o3nq457sm8.png"></p>
+<h3 class="topic">
+<a name="30qequk9khl8oav2rftdguohqn">&nbsp;&nbsp;&nbsp;&nbsp;payload.c内容，文件中定义的strcmp函数原型与libc中的strcmp函数相同，将会使用该函数替换libc中的函数</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%9F%BA%E4%BA%8EHook%E5%92%8CPatch%E7%9A%84%E6%A8%A1%E6%8B%9F_files/64ehcj4a238o4lm6hnaqgljej9.png"></p>
+<h3 class="topic">
+<a name="1t19nnidds2ug6bikgnkh1o4mk">&nbsp;将payload.c编译为so文件，-fPIC -shared用于指定编译为动态连接库文件  -ldl参数使payload.c文件中可以使用dlsym函数获得strcmp函数地址</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%9F%BA%E4%BA%8EHook%E5%92%8CPatch%E7%9A%84%E6%A8%A1%E6%8B%9F_files/0apuhb6882or8qqenv7j8ovcqk.png"></p>
+<h3 class="topic">
+<a name="5p6t67rtljksbktibttmbuam2i">&nbsp;&nbsp;通过指定环境变量参数LD_PRELAOD,让程序去payload.so动态链接库中查找关键函数，之后运行linux_hook函数，根据输出看到针对strcmp函数的hook是成功的</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%9F%BA%E4%BA%8EHook%E5%92%8CPatch%E7%9A%84%E6%A8%A1%E6%8B%9F_files/4b5avnuto8he57jv7jta816drv.png"></p>
+<h2 class="topic">
+<a name="004tg3trnv7t3ftictbhpikpv9">hookz实战</a>
+</h2>
+<h3 class="topic">
+<a name="0cnjmlpi3e7pli52uhd4jbtl7h">&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%9F%BA%E4%BA%8EHook%E5%92%8CPatch%E7%9A%84%E6%A8%A1%E6%8B%9F_files/1pt3mhdd33pfnh1mp4a8sljt6r.png"></p>
+<h3 class="topic">
+<a name="174asorltl71gtlg7v7ae63av3">&nbsp;&nbsp;根据报错信息，出现问题的是某个api的执行</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%9F%BA%E4%BA%8EHook%E5%92%8CPatch%E7%9A%84%E6%A8%A1%E6%8B%9F_files/03b6gt0g0p5a43ubuhh4hem3d2.png"></p>
+<h3 class="topic">
+<a name="7s4jfjf7mvlsca52oqmsanqfdd">&nbsp;&nbsp;&nbsp;ida中分析boa，发现因为执行了apmib_init函数，故v0为0，导致了跳转到错误分支，所以hook的目标就是apmib_init函数，该函数为动态链接库apmib.so导入&#13;
+该函数真正作用是从flash芯片中获取数据到内存中，但是当使用qemu模拟，则不可能存在flash芯片</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%9F%BA%E4%BA%8EHook%E5%92%8CPatch%E7%9A%84%E6%A8%A1%E6%8B%9F_files/721d4cgc1rj1evuo0ngs0idc3a.png"></p>
+<h3 class="topic">
+<a name="027rkn07prkrhskd0jbtsbgldv">&nbsp;&nbsp;&nbsp;&nbsp;加载apmib.so文件，搜索apmib_init函数，查看该函数发现很复杂，此时目标是hook该函数，让其返回值不为0</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%9F%BA%E4%BA%8EHook%E5%92%8CPatch%E7%9A%84%E6%A8%A1%E6%8B%9F_files/13nhdcem93jkmb7b9odr9htft6.png"></p>
+<h3 class="topic">
+<a name="1aibae916e30f839a1kje4km5v">&nbsp;apmib_hook.c文件代码，将其编译为so文件，用于hook</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%9F%BA%E4%BA%8EHook%E5%92%8CPatch%E7%9A%84%E6%A8%A1%E6%8B%9F_files/5grtsvj2gm1ph7mnm33k7jeims.png"></p>
+<h3 class="topic">
+<a name="5t6l0oslr1de8htd1bhmckrkj0">&nbsp;&nbsp;使用交叉编译，将apmib_hook.c编译为so文件 -Wall用于提示警告信息  -fPIC -shared用于编译成动态链接库</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%9F%BA%E4%BA%8EHook%E5%92%8CPatch%E7%9A%84%E6%A8%A1%E6%8B%9F_files/1qe3jjptisi321lrbmai1d7scp.png"></p>
+<h3 class="topic">
+<a name="3vq5oiih582dkeugeps1gq02vj">&nbsp;&nbsp;&nbsp;使用qemu模拟执行时用-E指定环境变量，从而hook，从输出看，成功hook该函数，但程序依然报错</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%9F%BA%E4%BA%8EHook%E5%92%8CPatch%E7%9A%84%E6%A8%A1%E6%8B%9F_files/2fg7hboir08fk0d3cs5ahm4k8l.png"></p>
+<h3 class="topic">
+<a name="0ndbfg5g3qp8rasbrsktda2220">&nbsp;&nbsp;&nbsp;&nbsp;报错的原因为apmib_get函数，故hook该函数</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%9F%BA%E4%BA%8EHook%E5%92%8CPatch%E7%9A%84%E6%A8%A1%E6%8B%9F_files/3nvu01d764j4ps8qlall0icggk.png"></p>
+<h3 class="topic">
+<a name="6bdfcbir30sv0828r32l31ud1i">&nbsp;分析apmib_get函数，发现该函数复杂，最终会返回一些flash中的数据</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%9F%BA%E4%BA%8EHook%E5%92%8CPatch%E7%9A%84%E6%A8%A1%E6%8B%9F_files/43jatttu3l8ij2qludasf0157h.png"></p>
+<h3 class="topic">
+<a name="63fm2g098pic628iaos8b0g8g4">&nbsp;&nbsp;success.c文件，即最终成功hook的so文件源码</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%9F%BA%E4%BA%8EHook%E5%92%8CPatch%E7%9A%84%E6%A8%A1%E6%8B%9F_files/6vkpvls7j6a9er1hvvmvpdnhpt.png"></p>
+<h3 class="topic">
+<a name="1l30rtqtcphbnov00grakpqdjh">&nbsp;&nbsp;&nbsp;将success.c文件编译为so文件</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%9F%BA%E4%BA%8EHook%E5%92%8CPatch%E7%9A%84%E6%A8%A1%E6%8B%9F_files/6sg1nd68iacuo0p9envqhfsfd5.png"></p>
+<h3 class="topic">
+<a name="61dqavvdisv2ads02mdhfblac5">&nbsp;&nbsp;&nbsp;&nbsp;使用得到的so文件进行hook，可见boa程序在80端口正常启动</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%9F%BA%E4%BA%8EHook%E5%92%8CPatch%E7%9A%84%E6%A8%A1%E6%8B%9F_files/7grg407l2i5ltg8h789vd4v2mt.png"></p>
+<h3 class="topic">
+<a name="5697562o1jk75vf58l4jfhd1j2">&nbsp;访问对应ip的80端口，发现访问失败</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%9F%BA%E4%BA%8EHook%E5%92%8CPatch%E7%9A%84%E6%A8%A1%E6%8B%9F_files/7jp3gctob7vk5tsjuvbe463r07.png"></p>
+<h3 class="topic">
+<a name="0uceojgn6l1js96fmaihojh9dp">&nbsp;&nbsp;并且boa服务强制退出</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%9F%BA%E4%BA%8EHook%E5%92%8CPatch%E7%9A%84%E6%A8%A1%E6%8B%9F_files/659vpt5ofsff7m77dnc45voo7k.png"></p>
+<h3 class="topic">
+<a name="4r6qcpt4e3bct6o19pctbo1m57">&nbsp;&nbsp;&nbsp;进入固件文件系统的web目录，查看first.asp页面</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%9F%BA%E4%BA%8EHook%E5%92%8CPatch%E7%9A%84%E6%A8%A1%E6%8B%9F_files/6m7te0i4ddp17f54ehhrr2pnsv.png"></p>
+<h3 class="topic">
+<a name="3faljep7hr7gtrjoma8n3plshb">&nbsp;&nbsp;&nbsp;&nbsp;first.asp页面中会根据从硬件中获得的数据进行条件判断，此时没有硬件，所以判断失败</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%9F%BA%E4%BA%8EHook%E5%92%8CPatch%E7%9A%84%E6%A8%A1%E6%8B%9F_files/35db436sfctcnh5bahcnlttr1j.png"></p>
+<h3 class="topic">
+<a name="2tfmsfdhv1dhj3351h8acteis3">&nbsp;将分支跳转的三个页面均修改为跳转成功的欢迎页面</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%9F%BA%E4%BA%8EHook%E5%92%8CPatch%E7%9A%84%E6%A8%A1%E6%8B%9F_files/3dgalb13qhepkaroc1er56kvg2.png"></p>
+<h3 class="topic">
+<a name="15a1sjrar97ljh51fql3fqhsbj">&nbsp;&nbsp;重新运行boa</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%9F%BA%E4%BA%8EHook%E5%92%8CPatch%E7%9A%84%E6%A8%A1%E6%8B%9F_files/00rvg44r91l28jkq6ilig8nfmj.png"></p>
+<h3 class="topic">
+<a name="0v6evtaplbs5acr99263eob45m">&nbsp;&nbsp;&nbsp;成功进入boa</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%9F%BA%E4%BA%8EHook%E5%92%8CPatch%E7%9A%84%E6%A8%A1%E6%8B%9F_files/6frfs5kmrfkesb0fqp77q8ro04.png"></p>
+<h2 class="topic">
+<a name="0ecf0a7ucnnbbhoikpo0qqj456">hook代码（success.c）</a>
+</h2>
+<h3 class="topic">
+<a name="6s55ceial5mguj77tukkd8d8hu">&nbsp;#include &lt;stdio.h&gt;&#13;
+#include &lt;stdlib.h&gt;&#13;
+#define MIB_IP_ADDR 170&#13;
+#define MIB_HW_VER 0x250&#13;
+#define MIB_CAPTCHA 0x2C1&#13;
+int apmib_init(void)&#13;
+{&#13;
+    return 1;&#13;
+}&#13;
+ &#13;
+int fork(void)&#13;
+{&#13;
+    return 0;&#13;
+}&#13;
+ &#13;
+void apmib_get(int code, int *value)&#13;
+{&#13;
+    switch(code)&#13;
+    {&#13;
+        case MIB_HW_VER:&#13;
+            *value = 0xF1;&#13;
+            break;&#13;
+        case MIB_IP_ADDR:&#13;
+            *value = 0x7F000001;&#13;
+            break;&#13;
+        case MIB_CAPTCHA:&#13;
+            *value = 1;&#13;
+            break;&#13;
+    }&#13;
+    return;&#13;
+}</a>
+</h3>
+<h2 class="topic">
+<a name="24c6big69r4gakb98mvc07pqh1">交叉编译成mips</a>
+</h2>
+<h3 class="topic">
+<a name="79pgl6da8ggikbh541malut9bd">&nbsp;mips-linux-gnu-gcc -fPIC -shared success.c -o success.so</a>
+</h3>
+<h2 class="topic">
+<a name="4cql26pqaecju5i01st31mhjvl">Qemu加载hook代码模拟固件</a>
+</h2>
+<h3 class="topic">
+<a name="654rtms6ivdlfc59vgldkfev3o">&nbsp;sudo chroot . ./qemu-mips-static -E LD_PRELOAD="./success.so" ./bin/boa</a>
+</h3>
+</body>
+</html>

@@ -1,0 +1,95 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>物联网安全-ZigBee协议初探</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="68t3j78hu7bblq8fj2cq6ad68m">物联网安全-ZigBee协议初探</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-ZigBee%E5%8D%8F%E8%AE%AE%E5%88%9D%E6%8E%A2_files/images/%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-ZigBee%E5%8D%8F%E8%AE%AE%E5%88%9D%E6%8E%A2.jpg"></div>
+<h2 class="topic">
+<a name="6bh92lr3fqsq8vttf0tk8tphom">zigbee协议简介</a>
+</h2>
+<h3 class="topic">
+<a name="1un3mfg4enqjaas2d7selei5le">&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-ZigBee%E5%8D%8F%E8%AE%AE%E5%88%9D%E6%8E%A2_files/73vsqiulphmfhgigqn092kvh62.png"></p>
+<h3 class="topic">
+<a name="4qdumgpbl6ha6rg900ht6oljg2">&nbsp;&nbsp;协调器类似于网关，一个zigbee网络内只有一个协调器&#13;
+路由器进行数据转发和传递&#13;
+终端设备只能进行数据接受和发送，不能数据转发，一般处于传感器上，将传感器获得的数据发送给出来&#13;
+zigbee设备可分为全功能设备和精简功能设备，前者可以作为三种节点中的任意一种，后者只能作为终端设备</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-ZigBee%E5%8D%8F%E8%AE%AE%E5%88%9D%E6%8E%A2_files/1q415eupejrfo264theil3jt9q.png"></p>
+<h3 class="topic">
+<a name="0u0juqr6u8n1t3n7v6ersq9l02">&nbsp;应用层：由应用框架层（AF）zigbee设备对象层（ZDO）应用支持子层（APS）组成&#13;
+网络层：启动网络，分配网络地址，增加或删除网络设备，并进行路由的发现&#13;
+mac层：负责一个节点和其相邻节点之间提供可靠数据，并且提高通讯效率，避免碰撞，负责将上层数据打包并传递，基于820.1.5.4协议&#13;
+物理层:提供无线物理传输的接口，定义了工作频率（2.4GHz）可以在十六个信道上数据传输，与蓝牙不同，传输数据时仅使用一个信道，基于820.1.5.4协议</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-ZigBee%E5%8D%8F%E8%AE%AE%E5%88%9D%E6%8E%A2_files/1mlkuohik8nba0b3phjq8cj6j5.png"></p>
+<h3 class="topic">
+<a name="1p4d5ok37tq1g8hdhlpb78b34n">&nbsp;&nbsp;AF：规范一系列标准的数据类型和传输数据帧格式&#13;
+&#13;
+ZDO定义设备在zigbee网络中的角色（协调器、路由器、终端设备），同时会发起应答或连接请求&#13;
+&#13;
+APS:提供数据服务和管理服务</a>
+</h3>
+<h2 class="topic">
+<a name="4d4etmemhpoauoh98l08so29ba">连接过程</a>
+</h2>
+<h3 class="topic">
+<a name="6df7cqi63paiacoqnr8aco4roq">&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-ZigBee%E5%8D%8F%E8%AE%AE%E5%88%9D%E6%8E%A2_files/1kqv3s9jc0aiqqvofvtt3g4udu.png"></p>
+<h3 class="topic">
+<a name="6rv31soie2icvrmsr8cl7fvqi3">&nbsp;&nbsp;  协调器需要初始化一个网络，之后其他设备才能进入&#13;
+  协调器初始化网络需要寻找较为稳定的信道，最好是没有其他的zigbee网络，这样不会产生信号干扰，之后协调器会设置一个PAN ID和自己的协调器短地址，PAN ID是zigbee网络的唯一标识，同一个信道内不允许有重复的PAN ID</a>
+</h3>
+<h3 class="topic">
+<a name="22t596g62is1rkuaboe4g76r4g">&nbsp;&nbsp;&nbsp;zigbee网络中有两种地址模式，其一为拓展地址，其二为短地址，前者由IEE组织分配，用于唯一设备标识，后者用于本地网络中的设备标识，类似于公网ip和私有ip的区别</a>
+</h3>
+<h3 class="topic">
+<a name="7suri0rnkgh4bnijaq9mtjmgqf">&nbsp;&nbsp;同一zigbee网络内每个设备的短地址必须是唯一的，当新节点加入zigbee网络时，父节点会分配短地址给子节点，并通过短地址进行通信，协调器通常作为网络的网关，地址通常为0000，协调器设置好PAN ID和自己的短地址之后，协调器会等待其他节点加入网络</a>
+</h3>
+<h3 class="topic">
+<a name="3asmdqhlgdq89trk4b1mf1keqi">&nbsp;&nbsp;&nbsp;  其他设备加入zigbee网络一般有两种方式：关联方式、直接方式&#13;
+  关联方式：在信道内进行扫描，发起连接请求，若协调器资源足够并允许进入，则会加入成功并获得一个短地址，该方式是最常用的连接方式&#13;
+  直接方式：通过父节点进行连接</a>
+</h3>
+<h2 class="topic">
+<a name="1cc01as7ga1651obeq616nsir5">zigbee安全性</a>
+</h2>
+<h3 class="topic">
+<a name="37bf6gn6i3ugpi9noebgbogl1u">&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-ZigBee%E5%8D%8F%E8%AE%AE%E5%88%9D%E6%8E%A2_files/2e6pl695grqe837lup0fqlt6gj.png"></p>
+<h3 class="topic">
+<a name="79vtt9keuu4k36527iuk7m7h7e">&nbsp;&nbsp;主密钥：构成两个设备之间安全性的基础，仅由APS使用&#13;
+网络密钥：使用在广播通讯，每个节点只有拥有网络密钥，才能与其他节点安全通讯，一般由网络中的信任中心随机生成，并发送个其他设备，制造商可以将网络密钥固化到设备中</a>
+</h3>
+<h3 class="topic">
+<a name="6uik1armlfmier643m4rniu52h">&nbsp;&nbsp;&nbsp;链接密钥主要应用在单播通信中，信任中心通过链接密钥将网络密钥发送给其他设备，部分厂商为了兼容性，使用了默认的密钥，从而产生安全隐患，如果获取到链接密钥，通过监听数据，可以用链接密钥解出传输的网络密钥，通过网络密钥可以解出zigbee设备之间所有的通讯内容</a>
+</h3>
+<h3 class="topic">
+<a name="3vn7tb93oklim393h6at37282m">&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-ZigBee%E5%8D%8F%E8%AE%AE%E5%88%9D%E6%8E%A2_files/1oaguoc6m29l6783h9m71ocseu.png"></p>
+<h3 class="topic">
+<a name="44kgn3o92hbp47f1qn45mq0hig">&nbsp;&nbsp;数据传输之前，设备将明文数据分块，每块128bit，通过算法加密后生辰一个校验值，接收者将收到数据后用算法解密，同样也生成一个校验值，用改校验值和对方发来的校验值进行比对，若相同则表示数据完整，不相同表示数据被修改或丢失</a>
+</h3>
+<h3 class="topic">
+<a name="12q7evt8pv61789ivekbus02kl">&nbsp;&nbsp;&nbsp;zigbee每个节点均维护一个32位的帧记录器，数据包每次传递时就会自增，同时其也会跟踪自己连接设备的帧记录器	，当发过来的数据包，上一个帧记录器和自己的相同甚至比自己的还小，说明该数据帧有异常，就会将改数据包丢弃，从而预防重放攻击</a>
+</h3>
+</body>
+</html>

@@ -1,0 +1,465 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>端口重定向和隧道</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="69jee1i17is1s2689185ngjrin">端口重定向和隧道</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="%E7%AB%AF%E5%8F%A3%E9%87%8D%E5%AE%9A%E5%90%91%E5%92%8C%E9%9A%A7%E9%81%93_files/images/%E7%AB%AF%E5%8F%A3%E9%87%8D%E5%AE%9A%E5%90%91%E5%92%8C%E9%9A%A7%E9%81%93.jpg"></div>
+<h2 class="topic">
+<a name="5p0qormd5q24jllpbtfi7adq3l">简介</a>
+</h2>
+<h3 class="topic">
+<a name="6urnrfft91iq8056e6cv04odsg">&nbsp;在本模块中，我们将演示端口重定向，隧道和流量封装的各种形式。 了解和掌握这些技术将为我们提供操纵目标流量的定向流所需的外科工具，这在受限的网络环境中通常很有用。 但是，这将需要极度集中，因为该模块一定有点儿令人费解。</a>
+</h3>
+<h3 class="topic">
+<a name="0rq88mofi3n5duh0t9oek9d5v5">&nbsp;&nbsp;   隧道传输协议588涉及将其封装在其他协议中。 通过使用各种隧道技术，我们可以在不兼容的传输网络上承载给定的协议，或者通过不可信的网络提供安全的路径。&#13;
+   端口转发589和隧道概念可能很难理解，因此我们将在几种假设的情况下进行工作，以使您对过程有更清晰的了解。 在前进到下一个场景之前，请花一些时间来理解每个场景。</a>
+</h3>
+<h3 class="topic">
+<a name="4ag1sddn628gklk8hq74ome8p3">&nbsp;&nbsp;&nbsp;隧道传输</a>
+</h3>
+<h3 class="topic">
+<a href="https://en.wikipedia.org/wiki/Tunneling_protocol" name="7nmrnfce2qcrqmka1jc5sgl0tc">&nbsp;&nbsp;&nbsp;&nbsp;https://en.wikipedia.org/wiki/Tunneling_protocol</a>
+</h3>
+<h3 class="topic">
+<a name="6kbv6u12njo8g82avbi9o68cb2">&nbsp;&nbsp;&nbsp;端口转发</a>
+</h3>
+<h3 class="topic">
+<a href="https://zh.wikipedia.org/wiki/Port_forwarding" name="3akib46pogos4s3ifmqn6keifq">&nbsp;&nbsp;&nbsp;&nbsp;https://zh.wikipedia.org/wiki/Port_forwarding</a>
+</h3>
+<h2 class="topic">
+<a name="3l03js1doeqs3c1j4ha23iitnf">转发端口</a>
+</h2>
+<h3 class="topic">
+<a name="7poqk2dd5gf8i56vnrd3elksbu">&nbsp;端口转发是我们将研究的最简单的流量操纵技术，在该技术中，我们将发往一个IP地址和端口的流量重定向到另一个IP地址和端口。</a>
+</h3>
+<h3 class="topic">
+<a name="3kgj3v9edm3ne0kfhm45l0sfih">&nbsp;RINETD</a>
+</h3>
+<h3 class="topic">
+<a name="7fvffchgu0r5la1nhbv0hljk40">&nbsp;&nbsp;   在评估过程中，我们获得了对连接Internet的Linux Web服务器的root访问权限。 从那里，我们发现并破坏了内部网络上的Linux客户端，从而可以访问SSH凭据。&#13;
+   在这种相当普遍的情况下，我们的第一个目标Linux Web服务器具有Internet连接，而第二个目标Linux客户端则没有。 我们只能通过连接Internet的服务器来访问此客户端。 为了这次再次从Linux客户端进行数据透视，并开始评估内部网络上的其他计算机，我们必须能够从攻击机器中转移工具，并根据需要将数据泄漏到该机器上。 由于此客户端无法直接访问Internet，因此我们必须使用受损的Linux Web服务器作为中间设备，两次移动数据并创建非常繁琐的数据传输过程。</a>
+</h3>
+<h3 class="topic">
+<a name="06vor5ek68qj5k5pput1t67rlo">&nbsp;&nbsp;&nbsp;我们可以使用端口转发技术来简化此过程。 为了重新创建此方案，我们的Internet连接的Kali Linux虚拟机将作为受感染的Linux Web服务器，而我们专用的Debian Linux机箱将作为内部的，与Internet断开连接的Linux客户端。 我们的环境将如下所示：</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%AB%AF%E5%8F%A3%E9%87%8D%E5%AE%9A%E5%90%91%E5%92%8C%E9%9A%A7%E9%81%93_files/0sj6du935smq9cqjibj2agpcbi.png"></p>
+<h3 class="topic">
+<a name="1isp33158eejgoi18ckfuq2u9q">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<h3 class="topic">
+<a name="4nmmtg6jk7tkjica09eugf80gs">&nbsp;&nbsp;按照配置，我们的Kali机器可以访问Internet，而客户端则不能。 我们可以通过ping google.com并使用nc -nvv 216.58.207.142 80连接到该IP来验证来自Kali计算机的连接性：</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%AB%AF%E5%8F%A3%E9%87%8D%E5%AE%9A%E5%90%91%E5%92%8C%E9%9A%A7%E9%81%93_files/31mhdpgrqd9rta4lhrtg48af5b.png"></p>
+<h3 class="topic">
+<a name="75u0prtlb769e3e5ei0r4iomj6">&nbsp;&nbsp;&nbsp; 接下来，我们将再次使用Netcat SSH到受感染的Linux客户端，并从那里测试Internet连接。 请注意，我们再次使用IP地址，因为实际的，与Internet断开连接的内部网络可能没有可用的外部DNS。</a>
+</h3>
+<p class="topicImage">
+<img height="141" src="%E7%AB%AF%E5%8F%A3%E9%87%8D%E5%AE%9A%E5%90%91%E5%92%8C%E9%9A%A7%E9%81%93_files/4ulkghspb1aco5c7mch1pm2d4p.png" width="542"></p>
+<h3 class="topic">
+<a name="04901i0sr1qsjn1c55vvti9idh">&nbsp;&nbsp;&nbsp;&nbsp;这次，Internet连接测试失败，表明我们的Linux客户端确实与Internet断开连接。 为了将文件传输到连接了Internet的主机，我们必须首先将它们传输到Linux Web服务器，然后再次将它们传输到我们的预期目标。</a>
+</h3>
+<h3 class="topic">
+<a name="2fhmm2h3md0a6hfisnbtteor2g">&nbsp;&nbsp;相反，我们将使用名为rinetd（https://boutell.com/rinetd/）的端口转发工具重定向Kali Linux服务器上的流量。 该工具易于配置，可以在Kali Linux存储库中找到，并且可以通过apt轻松安装：</a>
+</h3>
+<p class="topicImage">
+<img height="31" src="%E7%AB%AF%E5%8F%A3%E9%87%8D%E5%AE%9A%E5%90%91%E5%92%8C%E9%9A%A7%E9%81%93_files/2pimclp30dk9dq2pqbs6u82j51.png" width="652"></p>
+<h3 class="topic">
+<a name="5tgd6h4tmecm5stiegqg9gdhjg">&nbsp;&nbsp;&nbsp;rinetd配置文件/etc/rinetd.conf列出了需要四个参数的转发规则，其中包括bindaddress和bindport（用于定义绑定（&ldquo;监听&rdquo;）IP地址和端口）以及connectaddress和connectport（用于定义流量的目标地址 和端口）：</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%AB%AF%E5%8F%A3%E9%87%8D%E5%AE%9A%E5%90%91%E5%92%8C%E9%9A%A7%E9%81%93_files/1cujgugiuocrccjjb5tn3q4a2c.png"></p>
+<h3 class="topic">
+<a name="3bb6lkfup92h8cojisalcds9v2">&nbsp;&nbsp;&nbsp;&nbsp;例如，我们可以使用rinetd将Kali网络服务器在端口80上收到的所有流量重定向到我们在测试中使用的google.com IP地址。 为此，我们将编辑rinetd配置文件并指定以下转发规则：</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%AB%AF%E5%8F%A3%E9%87%8D%E5%AE%9A%E5%90%91%E5%92%8C%E9%9A%A7%E9%81%93_files/09ncge9e7htcrr2f5mc1draq5l.png"></p>
+<h3 class="topic">
+<a name="55lu7f102pj999okunfrjbbuvc">&nbsp;&nbsp;该规则规定，无论目的地地址如何，我们在Kali Linux服务器的端口80上侦听所有接口（0.0.0.0）的所有流量都将重定向到216.58.207.142:80。 这正是我们想要的。 我们可以使用service重新启动rinetd服务，并确认该服务正在使用ss（套接字统计信息）侦听TCP端口80：</a>
+</h3>
+<p class="topicImage">
+<img height="67" src="%E7%AB%AF%E5%8F%A3%E9%87%8D%E5%AE%9A%E5%90%91%E5%92%8C%E9%9A%A7%E9%81%93_files/34tppaq651j75hsti8sn4ibdda.png" width="609"></p>
+<h3 class="topic">
+<a name="53ir9eaqiem30rmdcoqgn08go1">&nbsp;&nbsp;&nbsp;端口正在监听。 为了进行验证，我们可以连接到我们的Kali Linux虚拟机上的端口80：与我们的Linux服务器的连接成功，并且我们对Web服务器执行了成功的GET请求。 如Set-Cookie字段所示，该连接已正确转发，实际上，我们已连接到Google的网络服务器。</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%AB%AF%E5%8F%A3%E9%87%8D%E5%AE%9A%E5%90%91%E5%92%8C%E9%9A%A7%E9%81%93_files/7n3q7utjch5nf8mi9apu7hfunf.png"></p>
+<h3 class="topic">
+<a name="645265to0fv24ddtdi2jp01196">&nbsp;&nbsp;&nbsp;&nbsp;现在，我们只需更改Web服务器的/etc/rinetd.conf文件中的connectaddress和connectport字段，就可以使用此技术通过Linux Web服务器从以前与Internet断开连接的Linux客户端连接到任何与Internet连接的主机。</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%AB%AF%E5%8F%A3%E9%87%8D%E5%AE%9A%E5%90%91%E5%92%8C%E9%9A%A7%E9%81%93_files/0mo4nc16mravjsqbugl9l74jc1.png"></p>
+<h2 class="topic">
+<a name="3ifjkfeir0m5fr4h5qovomp00j">SSH隧道</a>
+</h2>
+<h3 class="topic">
+<a name="7k0qu2n5c20rlrs6rd3t0u2n6s">&nbsp;SSH协议是最流行的隧道和端口转发协议之一。这是由于它具有在SSH协议中创建加密隧道的能力，该协议支持双向通信通道。  SSH协议的这种晦涩的功能对渗透测试人员和系统都具有深远的影响</a>
+</h3>
+<h3 class="topic">
+<a name="4kcg2sa4v8l5khf4hc7v2v7osq">&nbsp;&nbsp;ssh协议</a>
+</h3>
+<h3 class="topic">
+<a href="https://www.ssh.com/ssh/protocol/" name="2or5dmjqot64n5ahqthnjfjqc1">&nbsp;&nbsp;&nbsp;https://www.ssh.com/ssh/protocol/</a>
+</h3>
+<h3 class="topic">
+<a name="7au7v6fdl1g2c7olamnqfs5ge6">&nbsp;&nbsp;ssh端口转发协议</a>
+</h3>
+<h3 class="topic">
+<a href="https://blog.trackets.com/2014/05/17/ssh-tunnel-local-and-remote-port-forwarding-explained-withexamples.html" name="2l7asq68s07rcnoph0okhq3f7a">&nbsp;&nbsp;&nbsp;https://blog.trackets.com/2014/05/17/ssh-tunnel-local-and-remote-port-forwarding-explained-withexamples.html</a>
+</h3>
+<h3 class="topic">
+<a name="1nku30siv62crjhcqovffa8ffm">&nbsp;SSH本地端口转发</a>
+</h3>
+<h3 class="topic">
+<a name="46b55v74m767o9phi51aekv1hb">&nbsp;&nbsp;SSH本地端口转发使我们能够使用SSH作为传输协议将本地端口隧道传输到远程服务器。 此技术的效果类似于rinetd端口转发，但有一些曲折。</a>
+</h3>
+<h3 class="topic">
+<a name="54qmt4vds5rn3vqj6ogp1aaej3">&nbsp;&nbsp;&nbsp;让我们考虑另一种情况。 在评估过程中，我们通过远程漏洞破坏了基于Linux的目标，将我们的特权提升为root，并获得了计算机上root用户和学生用户的密码访问权限。 这台受感染的计算机似乎没有任何出站流量筛选功能，它仅公开SSH（端口22），RDP（端口3389）和易受攻击的服务端口，防火墙也允许这些端口。</a>
+</h3>
+<h3 class="topic">
+<a name="0u0qevdbjcmv80ocdkaafvjgda">&nbsp;&nbsp;&nbsp;&nbsp;在枚举了受感染的Linux客户端之后，我们发现除了连接到当前网络（10.11.0.x）外，它还具有另一个似乎已连接到其他网络（192.168.1.x）的网络接口。 在此内部子网中，我们确定具有网络共享可用的Windows Server 2016计算机。</a>
+</h3>
+<h3 class="topic">
+<a name="1gd6ln03eu2tbvi14pos6dk3a4">&nbsp;&nbsp;为了在实验室环境中模拟此配置，我们将从专用的Linux客户端运行ssh_local_port_forwarding.sh脚本：</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%AB%AF%E5%8F%A3%E9%87%8D%E5%AE%9A%E5%90%91%E5%92%8C%E9%9A%A7%E9%81%93_files/0f3bo4hv62medrl6t5c5nicqii.png"></p>
+<h3 class="topic">
+<a name="63i1vlh4cfdopk5qqkqngcorbi">&nbsp;&nbsp;&nbsp;在这种情况下，我们可以将所需的攻击和枚举工具移到受感染的Linux机器上，然后尝试与2016服务器上的共享进行交互，但这既不优雅也不具有可扩展性。 相反，我们希望通过基于Internet的Kali攻击机与这个新目标进行交互，以通过受感染的Linux客户端进行数据透视。 这样，当我们与目标进行交互时，我们将可以访问Kali攻击机上的所有工具。&#13;
+ 这将需要一些端口转发功能，并且我们将使用ssh客户端的本地端口转发功能（由ssh -L调用）来帮助解决此问题。</a>
+</h3>
+<p class="topicImage">
+<img height="23" src="%E7%AB%AF%E5%8F%A3%E9%87%8D%E5%AE%9A%E5%90%91%E5%92%8C%E9%9A%A7%E9%81%93_files/1gseb3ul2o5dtmakugj3ceqj6m.png" width="541"></p>
+<h3 class="topic">
+<a name="4t5sa7mbr3icv7roepanrqbj9r">&nbsp;&nbsp;&nbsp;&nbsp;在检查ssh客户端（man ssh）的手册时，我们注意到-L参数指定了本地主机上的端口，该端口将被转发到远程地址和端口。</a>
+</h3>
+<h3 class="topic">
+<a name="1t3pet4eflh856iq3ti1k6ah3o">&nbsp;&nbsp;在我们的方案中，我们想将Kali计算机上的端口445（没有NetBIOS的Microsoft网络）转发到Windows Server 2016目标上的端口445。 当我们执行此操作时，任何针对我们的Kali计算机的Microsoft文件共享查询都将转发到我们的Windows Server 2016目标。&#13;
+  鉴于防火墙正在阻止TCP端口445上的流量，这似乎是不可能的，但是此端口转发是通过SSH会话通过端口22通过隧道传输到我们的Linux目标的，而该目标已通过防火墙。 总而言之，该请求将在端口445上到达我们的Kali计算机，将通过SSH会话转发，然后将其传递到Windows Server 2016目标上的端口445。</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%AB%AF%E5%8F%A3%E9%87%8D%E5%AE%9A%E5%90%91%E5%92%8C%E9%9A%A7%E9%81%93_files/38dpufn76175qalptlhrpahdo8.png"></p>
+<h3 class="topic">
+<a name="6h35sp7bc0rdjq89h0o4qe18lq">&nbsp;&nbsp;&nbsp;为了实现这一目标，我们将从Kali Linux攻击机执行ssh命令。 从技术上讲，我们不会发出任何ssh命令（-N），但会设置端口转发（使用-L），将本地计算机上的端口445（0.0.0.0:445）绑定到Windows Server（192.168.1.110：  445），然后通过与我们原始的Linux目标的会话来完成此操作，并以学生身份登录（student@10.11.0.128）：</a>
+</h3>
+<p class="topicImage">
+<img height="35" src="%E7%AB%AF%E5%8F%A3%E9%87%8D%E5%AE%9A%E5%90%91%E5%92%8C%E9%9A%A7%E9%81%93_files/6ecgre0ku429uaka0mept5ii27.png" width="583"></p>
+<h3 class="topic">
+<a name="00kbehm0ciim83rdnujd8p447r">&nbsp;&nbsp;&nbsp;&nbsp;在ssh本地端口转发中，ssh指令在本地主机中执行，-L参数后跟任意ip地址（0.0.0.0）和对应端口号，之后跟远程主机的ip和端口号，最后写作为中转的主机的ip和账户，从而进行密码验证</a>
+</h3>
+<h3 class="topic">
+<a name="2i53ukr27gm87vdenk0odbm81o">&nbsp;&nbsp;此时，在Kali Linux上TCP端口445上的任何传入连接都将通过我们已经拿下的Linux客户端转发到192.168.1.110 IP地址上的TCP端口445。&#13;
+  在测试之前，我们需要对Samba配置文件进行较小的更改，以便通过在文件末尾添加&ldquo; min protocol = SMB2&rdquo;来将最低SMB版本设置为SMBv2，如清单635所示。这是因为Windows Server 2016 默认情况下不再支持SMBv1。</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%AB%AF%E5%8F%A3%E9%87%8D%E5%AE%9A%E5%90%91%E5%92%8C%E9%9A%A7%E9%81%93_files/20q40gpqn2u7nod6lr1o93ehm5.png"></p>
+<h3 class="topic">
+<a name="5nld3nua28dicr2l55q3dibc04">&nbsp;&nbsp;&nbsp;最后，我们可以通过将请求指向我们的Kali计算机来尝试列出Windows Server 2016计算机上的远程共享。&#13;
+  我们将使用smbclient实用程序，提供IP地址或NetBIOS名称，在本例中为我们的本地计算机（-L 127.0.0.1）和远程用户名称（-U Administrator）。 如果一切都按计划进行，那么在我们输入远程密码之后，该端口上的所有流量将被重定向到Windows计算机，并且将为我们提供可用的共享： &#13;
+即请求-&gt;本地kali445端口-&gt;ssh会话转发-&gt;远程windows主机445端口-&gt;ssh会话转发-&gt;本地kali445端口&#13;
+此时访问本地的445端口等同于访问远程windows server2016主机的445端口</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%AB%AF%E5%8F%A3%E9%87%8D%E5%AE%9A%E5%90%91%E5%92%8C%E9%9A%A7%E9%81%93_files/2tf9b0amv5lf0h364hjmp6905h.png"></p>
+<h3 class="topic">
+<a name="3lgh7f068ikn7retmggqbk5nn5">&nbsp;&nbsp;该命令不仅成功，而且由于此流量是通过SSH传输的，因此整个事务都已加密。 我们可以使用此端口转发设置继续通过端口445分析目标服务器，或者转发其他端口以进行其他侦察。</a>
+</h3>
+<h3 class="topic">
+<a name="2s79vdprh49gjslbkrlrtlgnhl">&nbsp;SSH远程端口转发</a>
+</h3>
+<h3 class="topic">
+<a name="1qt69ujo5sa9k0vr3n5hl0qmog">&nbsp;&nbsp;可以将SSH中的远程端口转发功能视为本地端口转发的反向操作，因为在连接的远程端打开了一个端口，并且发送到该端口的流量被转发到了本机（该计算机）上的端口。 启动SSH客户端）。&#13;
+   简而言之，与远程主机上指定TCP端口的连接将被转发到本地计算机上的指定端口。 这可以在新场景中得到最好的证明。</a>
+</h3>
+<h3 class="topic">
+<a name="1jtdl4mppsbg16lthcokdeqq07">&nbsp;&nbsp;&nbsp;在这种情况下，我们可以访问内部网络上Linux客户端上的非root shell。 在这台受感染的计算机上，我们发现一个MySQL服务器正在TCP端口3306上运行。与以前的情况不同，防火墙阻止了入站TCP端口22（SSH）连接，因此我们无法从已连接Internet的kali的SSH进入该服务器。 </a>
+</h3>
+<h3 class="topic">
+<a name="6kqq06a05id9g06viti72sj98t">&nbsp;&nbsp;&nbsp;&nbsp;但是，我们可以将SSH从该服务器发送到我们的Kali攻击机器，因为出站TCP端口22是允许通过防火墙的。 我们可以利用SSH远程端口转发（由ssh -R调用）在Kali机器上打开一个端口，该端口将流量转发到内部服务器上的MySQL端口（TCP 3306）。 所有转发的流量将直接穿过防火墙穿越SSH隧道。</a>
+</h3>
+<h3 class="topic">
+<a name="5lm0l9t5hdupl6ehet3a33qai1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SSH端口转发可以以非root用户身份运行，只要我们仅绑定未使用的非特权本地端口（1024以上）即可。</a>
+</h3>
+<h3 class="topic">
+<a name="7lk91hmk9cbjsihieralp58o4i">&nbsp;&nbsp;为了模拟这种情况，我们将在专用的Linux客户端上运行ssh_remote_port_forwarding.sh脚本：</a>
+</h3>
+<p class="topicImage">
+<img height="237" src="%E7%AB%AF%E5%8F%A3%E9%87%8D%E5%AE%9A%E5%90%91%E5%92%8C%E9%9A%A7%E9%81%93_files/27tt4n5enn7mgarjl55u71vtqm.png" width="477"></p>
+<h3 class="topic">
+<a name="1klfmm2s499e6a66i73jm6e336">&nbsp;&nbsp;&nbsp;用于创建此隧道的ssh命令语法将包括本地IP和端口，远程IP和端口以及-R以指定远程转发：</a>
+</h3>
+<p class="topicImage">
+<img height="27" src="%E7%AB%AF%E5%8F%A3%E9%87%8D%E5%AE%9A%E5%90%91%E5%92%8C%E9%9A%A7%E9%81%93_files/08s177k5ufjmr3tic19i535dvg.png" width="653"></p>
+<h3 class="topic">
+<a name="75fmsotb9bik2alunlomicke4k">&nbsp;&nbsp;&nbsp;&nbsp;在这种情况下，我们将以kali用户（kali@10.11.0.4）的身份进入我们的Kali机器，不指定任何命令（-N），并指定远程转发（-R）。 我们将在Kali机器上的TCP端口2221（10.11.0.4:2221）上打开一个侦听器，并将连接转发到内部Linux机器的TCP端口3306（127.0.0.1:3306）：</a>
+</h3>
+<p class="topicImage">
+<img height="32" src="%E7%AB%AF%E5%8F%A3%E9%87%8D%E5%AE%9A%E5%90%91%E5%92%8C%E9%9A%A7%E9%81%93_files/203uuqjlaaq6u3ost2qumd6tqo.png" width="512"></p>
+<h3 class="topic">
+<a name="6a28bdus2r0lpid5ldml41ven9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在ssh远程端口转发中，ssh指令在本地主机想要连接的远程主机中执行，参数-R之后填写远程主机的ip和端口号，之后才填写本机的ip和端口号，从而将两台主机间对应端口流量相连接，指令最后验证远程的登陆密码</a>
+</h3>
+<h3 class="topic">
+<a name="4n31jna9ufq2irmd5a05stihu0">&nbsp;&nbsp;这将通过SSH隧道（TCP 22）将Kali系统本地端口2221上的所有传入流量转发到受感染设备上的端口3306，从而使我们能够访问MySQL端口，即使该端口已在防火墙处被过滤。&#13;
+   我们的连接可以如图299所示：</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%AB%AF%E5%8F%A3%E9%87%8D%E5%AE%9A%E5%90%91%E5%92%8C%E9%9A%A7%E9%81%93_files/1mpuq1o69tan88mpgqa1svrbb5.png"></p>
+<h3 class="topic">
+<a name="05tkfomv64ehk97d9s269buob4">&nbsp;&nbsp;&nbsp;随着隧道的建立，我们可以切换到我们的Kali机器，验证TCP端口2221是否正在侦听，并使用nmap扫描该端口上的本地主机，这将为目标的MySQL服务提供指纹：</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%AB%AF%E5%8F%A3%E9%87%8D%E5%AE%9A%E5%90%91%E5%92%8C%E9%9A%A7%E9%81%93_files/4fqgqesn3rqpn3tuvbl6qo1v9f.png"></p>
+<h3 class="topic">
+<a name="5mmd6ct6djm9qtjde9jkt6b1l3">&nbsp;&nbsp;&nbsp;&nbsp;知道我们可以扫描端口后，我们可以使用任何适当的Kali安装工具通过SSH隧道与MySQL服务进行交互都没有问题。</a>
+</h3>
+<h3 class="topic">
+<a name="2fkmodei2ci7d3kufmivi939vp">&nbsp;ssh本地端口转发和远程端口转发的区别</a>
+</h3>
+<h3 class="topic">
+<a href="https://blog.csdn.net/sunansheng/article/details/50927687" name="5qjnq37cg53p8vrlrasq8vou1r">&nbsp;&nbsp;https://blog.csdn.net/sunansheng/article/details/50927687</a>
+</h3>
+<h3 class="topic">
+<a href="https://www.fujieace.com/linux/ssh-port-forwarding.html" name="2nimvrpf2q3fp5ao21abddqpq2">&nbsp;&nbsp;https://www.fujieace.com/linux/ssh-port-forwarding.html</a>
+</h3>
+<h3 class="topic">
+<a name="437hokl2s5v8tu74tqn59obb7i">&nbsp;SSH动态端口转发</a>
+</h3>
+<h3 class="topic">
+<a name="705eg9cmihd163v8u6jo3v9tks">&nbsp;&nbsp;现在是真正有趣的部分。  SSH动态端口转发使我们能够设置本地侦听端口，并使其通过使用代理将进入的流量隧道传输到任何远程目标。&#13;
+   在这种情况下（类似于SSH本地端口转发部分中使用的情况），我们已经破坏了基于Linux的目标并提高了特权。 防火墙上似乎没有任何入站或出站流量限制。&#13;
+   进一步枚举受感染的Linux客户端后，我们发现除了连接到当前网络（10.11.0.x）外，它还有一个似乎连接到其他网络（192.168.1.x）的附加网络接口。 在此内部子网中，我们确定了具有网络共享可用的Windows Server 2016计算机。</a>
+</h3>
+<h3 class="topic">
+<a name="5lbuov1ugcr270n9odimfpvhae">&nbsp;&nbsp;&nbsp;在本地端口转发部分，我们设法与Windows Server 2016计算机上的可用共享进行交互； 但是，该技术仅限于特定的IP地址和端口。 在此示例中，我们希望将Windows Server 2016计算机上的其他端口或内部网络上的主机作为目标，而不必为每个感兴趣的端口或主机建立不同的隧道。</a>
+</h3>
+<h3 class="topic">
+<a name="5bjk11gbhlasc175c55t7b58pj">&nbsp;&nbsp;&nbsp;&nbsp;为了在实验室环境中模拟这种情况，我们将再次从专用的Linux客户端运行ssh_local_port_forwarding.sh脚本。&#13;
+   设置好环境后，我们可以使用ssh -D通过以下语法指定本地动态SOCKS4应用程序级别的端口转发（再次在SSH中进行隧道传输）：</a>
+</h3>
+<p class="topicImage">
+<img height="20" src="%E7%AB%AF%E5%8F%A3%E9%87%8D%E5%AE%9A%E5%90%91%E5%92%8C%E9%9A%A7%E9%81%93_files/1qgj51csirqpscd6m5todjrdet.png" width="666"></p>
+<h3 class="topic">
+<a name="04gcdj8f5go81fqoetciahunrv">&nbsp;&nbsp;  考虑到以上语法，我们可以在我们的Kali Linux机器上的TCP端口8080（127.0.0.1:8080）上创建本地SOCKS4应用程序代理（-N -D），它将所有传入流量隧道传输到目标中的任何主机 网络，通过受感染的Linux机器，我们以学生身份登录（student@10.11.0.128）：</a>
+</h3>
+<p class="topicImage">
+<img height="39" src="%E7%AB%AF%E5%8F%A3%E9%87%8D%E5%AE%9A%E5%90%91%E5%92%8C%E9%9A%A7%E9%81%93_files/7r02krgl613cvu5njhcpn4mssv.png" width="520"></p>
+<h3 class="topic">
+<a name="1kkvvvk4e9mtmgtslt02hik2vv">&nbsp;&nbsp;&nbsp;尽管我们已经启动了可以通过SSH隧道将应用程序流量路由到目标网络的应用程序代理，但是我们必须以某种方式指导侦察和攻击工具使用此代理。 我们可以在ProxyChains的帮助下通过HTTP，SOCKS4和SOCKS5代理运行任何网络应用程序。593要配置ProxyChains，我们只需编辑主配置文件（/etc/proxychains.conf）并将SOCKS4代理添加到其中：</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%AB%AF%E5%8F%A3%E9%87%8D%E5%AE%9A%E5%90%91%E5%92%8C%E9%9A%A7%E9%81%93_files/52u0upvoukpk1fjumeb1vhhipk.png"></p>
+<h3 class="topic">
+<a name="3jbceie4436f24k9fkspme2kgv">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%AB%AF%E5%8F%A3%E9%87%8D%E5%AE%9A%E5%90%91%E5%92%8C%E9%9A%A7%E9%81%93_files/4s4ap3dl113du8dr1j2bem1eia.png"></p>
+<h3 class="topic">
+<a name="3as4s069050r9ug3h3f5v3mdku">&nbsp;&nbsp;为了通过SOCKS4代理运行我们的工具，我们在每个命令前添加了代理链。&#13;
+   例如，让我们尝试使用nmap扫描内部目标网络上的Windows Server 2016计算机。 在此示例中，除了nmap命令及其参数之外，我们没有为代理链提供任何选项： </a>
+</h3>
+<h3 class="topic">
+<a name="7ttrrh1in4odbdauhrf8cpak90">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%AB%AF%E5%8F%A3%E9%87%8D%E5%AE%9A%E5%90%91%E5%92%8C%E9%9A%A7%E9%81%93_files/4uqku8gho62m9ikd49sdm6cbmu.png"></p>
+<h3 class="topic">
+<a name="197mfmkepkbbs2epdd01648jja">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%AB%AF%E5%8F%A3%E9%87%8D%E5%AE%9A%E5%90%91%E5%92%8C%E9%9A%A7%E9%81%93_files/2k3ogv3fv6l7eml9c9tfc4gmv5.png"></p>
+<h3 class="topic">
+<a name="1ohvloh6p6ffam6l1qb948aa88">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在清单644中，ProxyChains按预期工作，将所有流量动态路由到各个端口，而不必提供单个端口转发。&#13;
+默认情况下，ProxyChains会尝试首先从当前目录中读取其配置文件，然后从用户的$(HOME)/.proxychains目录中读取，最后从/etc/proxychains.conf中读取。 这使我们可以根据需要通过多个动态通道运行工具。</a>
+</h3>
+<h2 class="topic">
+<a name="30aanfq1o6bk72m58b9sa57r6f">PLINK.exe</a>
+</h2>
+<h3 class="topic">
+<a name="0g7hhv1seppoo6882p5n1n2dq5">&nbsp;到目前为止，我们使用的所有端口转发和隧道方法都以* NIX系统上常见的工具为中心。 接下来，让我们研究如何在基于Windows的操作系统上执行端口转发和隧道。&#13;
+  为了证明这一点，假设我们在评估过程中通过Sync Breeze软件中的漏洞获得了对Windows 10计算机的访问权限，并获得了SYSTEM级的反弹shell程序。</a>
+</h3>
+<p class="topicImage">
+<img height="116" src="%E7%AB%AF%E5%8F%A3%E9%87%8D%E5%AE%9A%E5%90%91%E5%92%8C%E9%9A%A7%E9%81%93_files/6p7k26bdn43lm28j7pomvsj7s8.png" width="441"></p>
+<h3 class="topic">
+<a name="6uni2r5q8clkav2rrl05jifage">&nbsp;&nbsp;在枚举和信息收集过程中，我们发现在TCP端口3306上运行的MySQL服务。</a>
+</h3>
+<p class="topicImage">
+<img height="211" src="%E7%AB%AF%E5%8F%A3%E9%87%8D%E5%AE%9A%E5%90%91%E5%92%8C%E9%9A%A7%E9%81%93_files/27bbhrbporiiq226vhr230fggq.png" width="435"></p>
+<h3 class="topic">
+<a name="0j9lkhas69ea82pac25r2ef4ms">&nbsp;&nbsp;&nbsp;我们想扫描该数据库或与服务进行交互。 但是，由于存在防火墙，我们无法从我们的Kali机器直接与该服务进行交互。&#13;
+   我们将基于Windows的命令行SSH客户端（PuTTY项目的一部分）中的plink.exe，594转移到目标中，以克服此限制。 程序语法类似于基于UNIX的ssh客户端：</a>
+</h3>
+<h3 class="topic">
+<a name="26ahhglfiursnc7ce3delvn85p">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%AB%AF%E5%8F%A3%E9%87%8D%E5%AE%9A%E5%90%91%E5%92%8C%E9%9A%A7%E9%81%93_files/325herjdhb7sdoj9it1ids8iut.png"></p>
+<h3 class="topic">
+<a name="2pqqmlokvknrc19gcvaoal5qv2">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%AB%AF%E5%8F%A3%E9%87%8D%E5%AE%9A%E5%90%91%E5%92%8C%E9%9A%A7%E9%81%93_files/530idpcsctqjeforv4586j82ha.png"></p>
+<h3 class="topic">
+<a name="4hp4816kejbt7hfq23bqquhkqn">&nbsp;我们可以使用plink.exe通过SSH（-ssh）以kali用户（-l kali）的身份通过密码（ilak）（-pw ilak）通过SSH（-ssh）连接到我们的Kali机器（10.11.0.4），以创建远程端口转发 使用以下命令将端口1234（10.11.0.4:1234）的（-R）连接到Windows目标（127.0.0.1:3306）上的MySQL端口：</a>
+</h3>
+<p class="topicImage">
+<img height="26" src="%E7%AB%AF%E5%8F%A3%E9%87%8D%E5%AE%9A%E5%90%91%E5%92%8C%E9%9A%A7%E9%81%93_files/2pckbolf3nhl5vehh1ughtru9m.png" width="495"></p>
+<h3 class="topic">
+<a name="3jnhg835bicj9nl8fhn2si0i3r">&nbsp;&nbsp;plink第一次连接到主机时，它将尝试将主机密钥缓存在注册表中。 如果通过与Windows客户端的rdesktop连接运行命令，则可以看到以下交互式步骤：</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%AB%AF%E5%8F%A3%E9%87%8D%E5%AE%9A%E5%90%91%E5%92%8C%E9%9A%A7%E9%81%93_files/3add7qi2uf2jkna6rsrkeqb105.png"></p>
+<h3 class="topic">
+<a name="75set3kgctfiq3kpluiqgut7kf">&nbsp;&nbsp;&nbsp;但是，由于这很可能不适用于典型的反向外壳程序中的交互级别，因此我们应使用cmd.exe / c echo y命令将提示的答案传递给命令。 然后，从我们的反向外壳，此命令将成功建立正向的远程端口，而无需任何交互：</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%AB%AF%E5%8F%A3%E9%87%8D%E5%AE%9A%E5%90%91%E5%92%8C%E9%9A%A7%E9%81%93_files/1vj4ct6kv5j6aktkbmr3megql2.png"></p>
+<h3 class="topic">
+<a name="2ms942v6i6v93lucjifvcu2884">&nbsp;&nbsp;&nbsp;&nbsp;现在，我们的隧道已处于活动状态，我们可以尝试通过TCP端口1234上的本地主机端口启动对目标MySQL端口的Nmap扫描：</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%AB%AF%E5%8F%A3%E9%87%8D%E5%AE%9A%E5%90%91%E5%92%8C%E9%9A%A7%E9%81%93_files/7iaq9c6f6fvd3oss1s9rja6g6c.png"></p>
+<h2 class="topic">
+<a name="5qetrrnp9j550ur9hl3iuq4ng2">NETSH</a>
+</h2>
+<h3 class="topic">
+<a name="4t7utu7pnj0to5eoe93512rb7v">&nbsp;在本节中，我们将考虑以下情形：在评估期间，我们已通过远程漏洞破坏了Windows 10目标，并能够成功地将特权提升到SYSTEM。 枚举受感染的计算机后，我们发现除了连接到当前网络（10.11.0.x）外，它还具有一个似乎连接到其他网络（192.168.1.x）的附加网络接口。 在此内部子网中，我们确定Windows Server 2016计算机（192.168.1.110）的TCP端口445已打开。</a>
+</h3>
+<h3 class="topic">
+<a name="70arfl0g3v551745ike2dvcjch">&nbsp;&nbsp;为了继续该场景，我们现在可以寻找从Windows 10计算机上的SYSTEM级外壳在受害网络内部进行透视的方法。 由于我们的特权级别，我们不必处理用户帐户控制（UAC），这意味着我们可以使用netsh（https://docs.microsoft.com/zh-cn/windows-server/networking/technologies/netsh/netsh-contexts）实用程序（默认在每个现代Windows版本上安装）来进行端口转发和数据透视。</a>
+</h3>
+<h3 class="topic">
+<a name="0ngotlfenun27406t874otef0b">&nbsp;&nbsp;&nbsp;但是，要使其正常工作，Windows系统必须运行IP Helper服务，并且必须为要使用的接口启用IPv6支持。 幸运的是，在Windows操作系统上，默认情况下两者均处于启用状态。&#13;
+  我们可以从Windows服务程序中检查IP Helper服务是否正在运行，以确认这一点： </a>
+</h3>
+<p class="topicImage">
+<img height="90" src="%E7%AB%AF%E5%8F%A3%E9%87%8D%E5%AE%9A%E5%90%91%E5%92%8C%E9%9A%A7%E9%81%93_files/34sgst40ehq68kb5dh0gjo7rme.png" width="444"></p>
+<h3 class="topic">
+<a name="5e2pjdgtlabtv6es0lkga77hk3">&nbsp;&nbsp;&nbsp;&nbsp;我们可以在网络界面的设置中确认对IPv6的支持：</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%AB%AF%E5%8F%A3%E9%87%8D%E5%AE%9A%E5%90%91%E5%92%8C%E9%9A%A7%E9%81%93_files/5a31g68dpbunrhb04m9ehdt0nh.png"></p>
+<h3 class="topic">
+<a name="0ppqr218tv285ijjf7qe9jkc37">&nbsp;与SSH本地端口转发示例类似，我们将尝试将TCP端口4455上发往受感染Windows 10计算机的流量重定向到端口445上的Windows Server 2016计算机。</a>
+</h3>
+<h3 class="topic">
+<a name="3sevlpc6nadlqrgshpj8rtpnep">&nbsp;&nbsp;在此示例中，我们将使用netsh（接口）上下文添加侦听10.11.0.22（listenaddress = 10.11.0.22），端口4455（listenport = 4455）的IPv4-to-IPv4（v4tov4）代理（portproxy）。 在端口445（connectport = 445）上转发到Windows 2016 Server（connectaddress = 192.168.1.110）：&#13;
+（10.11.0.22应该就是受感染的win10的ip，netsh就执行在该主机上）</a>
+</h3>
+<p class="topicImage">
+<img height="29" src="%E7%AB%AF%E5%8F%A3%E9%87%8D%E5%AE%9A%E5%90%91%E5%92%8C%E9%9A%A7%E9%81%93_files/601r1g4eu492i91dsvd00uvo2r.png" width="552"></p>
+<h3 class="topic">
+<a name="2pq5p06tat0qtnp0betgndbst7">&nbsp;&nbsp;&nbsp;使用netstat，我们可以确认端口4455正在监听受感染的Windows主机：</a>
+</h3>
+<p class="topicImage">
+<img height="39" src="%E7%AB%AF%E5%8F%A3%E9%87%8D%E5%AE%9A%E5%90%91%E5%92%8C%E9%9A%A7%E9%81%93_files/79klnrrupij2km9i9ts4ooeod4.png" width="503"></p>
+<h3 class="topic">
+<a name="1i7eerf5me0b9tqiejeo4u10bg">&nbsp;&nbsp;&nbsp;&nbsp;默认情况下，Windows防火墙将禁止TCP端口4455上的入站连接，这将阻止我们与隧道进行交互。 鉴于我们使用SYSTEM特权运行，我们可以通过添加防火墙规则以允许该端口上的入站连接来轻松地对此进行补救。&#13;
+  这些netsh选项是不言自明的，但是请注意，我们允许（action = allow）特定的入站（dir = in）连接，并利用netsh的防火墙（advfirewall）上下文。</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%AB%AF%E5%8F%A3%E9%87%8D%E5%AE%9A%E5%90%91%E5%92%8C%E9%9A%A7%E9%81%93_files/0i0hucnqe1e18919s2p08r90ch.png"></p>
+<h3 class="topic">
+<a name="6cr0quuac4pg3ifip2tjl1bqkd">&nbsp;最后，我们可以尝试使用smbclient在端口4455上连接到受感染的Windows计算机。 如果一切都按计划进行，则应重定向流量，并应返回内部Windows Server 2016计算机上的可用网络共享。&#13;
+   与我们之前的方案一样，需要为Samba配置最低的SMBv2 SMB版本。 这是多余的，但是为了完整起见，我们将在此处包括以下命令：</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%AB%AF%E5%8F%A3%E9%87%8D%E5%AE%9A%E5%90%91%E5%92%8C%E9%9A%A7%E9%81%93_files/0i409ju2srq13qcndhsjpef858.png"></p>
+<h3 class="topic">
+<a name="6g7dma96qbn55suori38d0akjp">&nbsp;&nbsp;我们成功列出了这些文件共享，但是smbclient生成了一个错误。 此超时问题通常是由端口转发错误引起的，但让我们对其进行测试并确定是否可以与共享进行交互。如上述命令所示，此错误禁止我们列出工作组，但不会影响我们安装共享的能力。 端口转发成功。</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%AB%AF%E5%8F%A3%E9%87%8D%E5%AE%9A%E5%90%91%E5%92%8C%E9%9A%A7%E9%81%93_files/4gg2gdc3nkahpgnugtff9ncpms.png"></p>
+<h2 class="topic">
+<a name="04p9p8823i8gt35ruvui1ts0n4">通过深度包检查进行HTTP隧道</a>
+</h2>
+<h3 class="topic">
+<a name="5mook18nv0egup9nbiag8hmric">&nbsp;到目前为止，我们已经遍历了基于端口筛选器和状态检查的防火墙。 但是，某些深包内容检查设备可能仅允许特定协议。 例如，如果不允许使用SSH协议，则依赖该协议的所有隧道都将失败。&#13;
+   为了证明这一点，我们将考虑一个新的场景。 与我们的* NIX场景类似，假设我们已经通过一个漏洞破坏了Linux服务器，提高了我们对root用户的特权，并获得了计算机上root用户和学生用户的密码访问权限。</a>
+</h3>
+<h3 class="topic">
+<a name="4ahaet5aoorm6ep1grgooce6bt">&nbsp;&nbsp;即使我们受损的Linux服务器实际上未实现深度数据包检查，但出于本节的目的，我们仍将假定已实现了仅允许HTTP协议的深度数据包内容检查功能。 与以前的方案不同，基于SSH的隧道在这里不起作用。&#13;
+   另外，在这种情况下，防火墙仅允许端口80、443和1234入站和出站。 允许使用端口80和443，因为该计算机是Web服务器，但是1234显然是一个疏忽，因为它当前未映射到内部网络中的任何侦听端口。</a>
+</h3>
+<h3 class="topic">
+<a name="0gplbv9omm3r0594upn6f9pi1e">&nbsp;&nbsp;&nbsp;为了模拟这种情况，我们将在专用的Linux客户端上运行http_tunneling.sh脚本：</a>
+</h3>
+<p class="topicImage">
+<img height="276" src="%E7%AB%AF%E5%8F%A3%E9%87%8D%E5%AE%9A%E5%90%91%E5%92%8C%E9%9A%A7%E9%81%93_files/45lnpvpqc0g0l135t7m7r4bk67.png" width="434"></p>
+<h3 class="topic">
+<a name="72d9g82gnmmomof7jhqic2m71b">&nbsp;&nbsp;&nbsp;&nbsp;在这种情况下，我们的目标是仅使用HTTP协议通过受感染的Linux服务器启动从Kali Linux计算机到Windows Server 2016的远程桌面连接。</a>
+</h3>
+<h3 class="topic">
+<a name="7chtuqv5dejete4qseso50jh9c">&nbsp;我们将依靠HTTPTunnel（http://http-tunnel.sourceforge.net/）将流量封装在HTTP请求中，从而创建&ldquo; HTTP隧道&rdquo;。  HTTPTunnel使用客户端/服务器模型，我们需要先安装该工具，然后再运行客户端和服务器。</a>
+</h3>
+<h3 class="topic">
+<a name="6rcm71knuvvnciggbsqg81f03k">&nbsp;&nbsp;stunnel（https://www.stunnel.org/）工具类似于HTTPTunnel，并且可以类似的方式使用。 它是多平台GNU / GPL许可的代理，可使用SSL / TLS加密任意TCP连接。</a>
+</h3>
+<h3 class="topic">
+<a name="09rufgui4tej1n4rehg6st2r1m">&nbsp;&nbsp;&nbsp;我们可以从Kali Linux存储库中安装HTTPtunnel，如下所示：</a>
+</h3>
+<p class="topicImage">
+<img height="97" src="%E7%AB%AF%E5%8F%A3%E9%87%8D%E5%AE%9A%E5%90%91%E5%92%8C%E9%9A%A7%E9%81%93_files/3dte5da7uqesr7r4pfngavr836.png" width="479"></p>
+<h3 class="topic">
+<a name="0e41ag0airrckp98lbopqr0oj7">&nbsp;&nbsp;&nbsp;&nbsp;  在深入探讨之前，我们将描述我们要实现的流量。&#13;
+  首先，请记住，我们在内部Linux服务器上有一个外壳。 该外壳基于HTTP（这是防火墙允许的唯一协议），我们通过TCP端口443（易受攻击的服务端口）连接到它。</a>
+</h3>
+<h3 class="topic">
+<a name="40bhnbokiq2bq99kqvvcl36a1d">&nbsp;我们将在此计算机上创建绑定到端口8888的本地转发端口，该端口会将所有连接转发到端口3389（远程桌面端口）上的Windows Server。 请注意，此端口转发不受HTTP协议限制的影响，因为两台计算机都位于同一网络上，并且流量不会通过深度数据包检查设备。 但是，当我们尝试将隧道从Linux服务器连接到基于Internet的Kali Linux计算机时，协议限制将为我们带来问题。 这是我们基于SSH的隧道由于不允许的协议而被阻止的地方。</a>
+</h3>
+<h3 class="topic">
+<a name="6i1d21o1mh3fp9h8kknsdgjibv">&nbsp;&nbsp;为了解决这个问题，我们将使用HTTPTunnel在计算机之间创建基于HTTP的隧道（允许的协议）。 该HTTP隧道的&ldquo;输入&rdquo;将在我们的Kali Linux计算机上（本地主机端口8080），并且该隧道将在侦听端口1234（跨防火墙）&ldquo;输出&rdquo;到受感染的Linux计算机。 在这里，HTTP请求将被解封装，并将流量传递到侦听端口8888（仍在受感染的Linux服务器上），由于我们基于SSH的本地转发，该端口被重定向到Windows目标的远程桌面端口。</a>
+</h3>
+<h3 class="topic">
+<a name="5qpucre7de02vus8qkvvapl062">&nbsp;&nbsp;&nbsp;设置好此设置后，我们将启动与Kali Linux计算机的本地主机端口8080的远程桌面会话。请求将进行HTTP封装，通过HTTPTunnel作为HTTP流量发送到Linux服务器上的端口1234，进行解封装，最后发送 Windows目标的远程桌面端口。</a>
+</h3>
+<h3 class="topic">
+<a name="51qq5ftpih6a91e3eaf3ojopva">&nbsp;&nbsp;&nbsp;&nbsp;在继续之前，花一点时间来了解这种公认的复杂流量。 带封装的端口转发可能很复杂，因为我们必须考虑防火墙规则，协议限制以及入站和出站端口分配。 在执行实际命令之前，它通常有助于暂停和编写如下图304所示的映射或流程图。 此过程非常复杂，无需尝试同时找出逻辑流和语法。</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%AB%AF%E5%8F%A3%E9%87%8D%E5%AE%9A%E5%90%91%E5%92%8C%E9%9A%A7%E9%81%93_files/40e60pd7n145bjll32gkr0rast.png"></p>
+<h3 class="topic">
+<a name="1d5gbeki1bpqobluua4v6m8pp8">&nbsp;为了开始构建隧道，我们将在受感染的Linux机器和Windows远程桌面目标之间创建一个基于SSH的本地转发端口。 请记住，此处的协议无关紧要（允许使用SSH），因为此流量不受内部网络上深度数据包检查的影响。</a>
+</h3>
+<h3 class="topic">
+<a name="6fkjq9j057p5na81c05rmi1v2v">&nbsp;&nbsp;为此，我们将在此计算机（127.0.0.1）上创建本地转发（-L），并使用我们在漏洞利用后创建的新密码以学生身份登录。 我们会将端口8888（0.0.0.0:8888）上的所有请求转发到Windows Server的远程桌面端口（192.168.1.110:3389）：</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%AB%AF%E5%8F%A3%E9%87%8D%E5%AE%9A%E5%90%91%E5%92%8C%E9%9A%A7%E9%81%93_files/16dttu1a1bnmbel1iivpunf3l9.png"></p>
+<h3 class="topic">
+<a name="7g2suig1jm3225hbiiqa1tg6eg">&nbsp;&nbsp;&nbsp;接下来，我们必须为我们的Kali Linux机器创建一个HTTPTunnel，以使我们的流量通过仅HTTP协议限制。 如上所述，HTTPTunnel同时使用客户端（htc）和服务器（hts）。&#13;
+  我们将设置服务器（hts），该服务器将侦听localhost端口1234，将来自传入HTTP流的流量解封装，并将其重定向到localhost端口8888（--forward-port localhost：8888），这要归功于先前的 命令，重定向到Windows目标的远程桌面端口： </a>
+</h3>
+<p class="topicImage">
+<img src="%E7%AB%AF%E5%8F%A3%E9%87%8D%E5%AE%9A%E5%90%91%E5%92%8C%E9%9A%A7%E9%81%93_files/7235gcc2mbjldo2b2a5t32lnuo.png"></p>
+<h3 class="topic">
+<a name="080pq60tp8kulvdtpc3hlfafjc">&nbsp;ps和ss命令显示HTTPTunnel服务器已启动并正在运行。&#13;
+  接下来，我们需要一个HTTPTunnel客户端，它将接收我们的远程桌面流量，将其封装到HTTP流中，并将其发送到侦听的HTTPTunnel服务器。 此（htc）命令将在本地主机端口8080（--forward-port 8080）上侦听，对流量进行HTTP封装，并将其通过防火墙转发到端口1234（10.11.0.128:1234）上的侦听HTTPTunnel服务器： </a>
+</h3>
+<p class="topicImage">
+<img src="%E7%AB%AF%E5%8F%A3%E9%87%8D%E5%AE%9A%E5%90%91%E5%92%8C%E9%9A%A7%E9%81%93_files/3gp91bvo35tn9ev0qmbbuj87e1.png"></p>
+<h3 class="topic">
+<a name="3njtlorcfp6ls5tmcleb1na591">&nbsp;&nbsp;再次，ps和ss命令显示HTTPTunnel客户端已启动并正在运行。&#13;
+   现在，所有发送到我们的Kali Linux计算机上的TCP端口8080的流量都将被重定向到我们的HTTPTunnel（在此处进行HTTP封装，通过防火墙发送到受感染的Linux服务器并解封装），然后再次重定向到Windows Server的远程桌面服务 。</a>
+</h3>
+<h3 class="topic">
+<a name="2n9ekric6eam9rfgnkgdi4n53t">&nbsp;&nbsp;&nbsp;我们可以通过启动Wireshark嗅探流量并验证其是否被HTTP封装，然后在针对我们Kali Linux计算机的监听端口8080发起远程桌面连接之前，验证其是否有效：</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%AB%AF%E5%8F%A3%E9%87%8D%E5%AE%9A%E5%90%91%E5%92%8C%E9%9A%A7%E9%81%93_files/5qe69tspebj6kmb1m6ikkgv4eb.png"></p>
+<h3 class="topic">
+<a name="7unqi38ggqtg1nu5c4fg263i93">&nbsp;&nbsp;&nbsp;&nbsp;优秀的！ 远程桌面连接成功。&#13;
+  检查Wireshark中的流量，我们确认它确实是HTTP封装的，并且会绕过深度包内容检查设备。</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%AB%AF%E5%8F%A3%E9%87%8D%E5%AE%9A%E5%90%91%E5%92%8C%E9%9A%A7%E9%81%93_files/0fuhuj347ku1738rkvprr8cin0.png"></p>
+</body>
+</html>

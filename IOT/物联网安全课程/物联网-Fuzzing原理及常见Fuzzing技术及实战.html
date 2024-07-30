@@ -1,0 +1,731 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>物联网-Fuzzing原理及常见Fuzzing技术及实战</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="5n6njpvho9mro25pp6go2m4srm">物联网-Fuzzing原理及常见Fuzzing技术及实战</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-Fuzzing%E5%8E%9F%E7%90%86%E5%8F%8A%E5%B8%B8%E8%A7%81Fuzzing%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%AE%9E%E6%88%98_files/images/%E7%89%A9%E8%81%94%E7%BD%91-Fuzzing%E5%8E%9F%E7%90%86%E5%8F%8A%E5%B8%B8%E8%A7%81Fuzzing%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%AE%9E%E6%88%98.jpg"></div>
+<h2 class="topic">
+<a name="5vkr5tph64magpjssue7hqa7in">介绍fuzzing</a>
+</h2>
+<h3 class="topic">
+<a name="2hpd3ti42odm985gs71dd820uk">&nbsp;变异测试是根据已有的样本生成其他测试样本&#13;
+生成测试是对程序输入进行建模，从而直接生成测试样本</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-Fuzzing%E5%8E%9F%E7%90%86%E5%8F%8A%E5%B8%B8%E8%A7%81Fuzzing%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%AE%9E%E6%88%98_files/6nmfolc88jrgehs0a8bifsu37c.png"></p>
+<h3 class="topic">
+<a name="1hlemihtjvqkbef1irjlepegf2">&nbsp;&nbsp;fuzzing用途</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-Fuzzing%E5%8E%9F%E7%90%86%E5%8F%8A%E5%B8%B8%E8%A7%81Fuzzing%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%AE%9E%E6%88%98_files/5csf6s53ki8812mpcne354il1p.png"></p>
+<h3 class="topic">
+<a name="47ehcj28gsqovh9j9mnbmftqtg">&nbsp;&nbsp;&nbsp;fuzzing工具</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-Fuzzing%E5%8E%9F%E7%90%86%E5%8F%8A%E5%B8%B8%E8%A7%81Fuzzing%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%AE%9E%E6%88%98_files/6dl3dhp94j7r2hau1v92slmnnb.png"></p>
+<h3 class="topic">
+<a name="7c1unle8aol2c2kivlkpj0p9vg">&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-Fuzzing%E5%8E%9F%E7%90%86%E5%8F%8A%E5%B8%B8%E8%A7%81Fuzzing%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%AE%9E%E6%88%98_files/0nr5s7k1bph5ae3lk4j4v8i18j.png"></p>
+<h3 class="topic">
+<a name="5jeohbp6cgoavrrqnfseua08ee">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-Fuzzing%E5%8E%9F%E7%90%86%E5%8F%8A%E5%B8%B8%E8%A7%81Fuzzing%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%AE%9E%E6%88%98_files/51veq2g3b7o9dfdvjvtr21jd1j.png"></p>
+<h3 class="topic">
+<a name="2is1ts126d8gps3bsfqbugto74">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-Fuzzing%E5%8E%9F%E7%90%86%E5%8F%8A%E5%B8%B8%E8%A7%81Fuzzing%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%AE%9E%E6%88%98_files/150qm0ise1980fi1h207p4lhqq.png"></p>
+<h3 class="topic">
+<a name="6t7rrh02jkujl1qjmp1075v256">&nbsp;一般fuzzing的对象都是设备与外界通讯的接口</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-Fuzzing%E5%8E%9F%E7%90%86%E5%8F%8A%E5%B8%B8%E8%A7%81Fuzzing%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%AE%9E%E6%88%98_files/0e0aoj44ii14j5ln7r7rqhaquq.png"></p>
+<h3 class="topic">
+<a name="1dlnh5hn76c9j8nrrb33spg2lm">&nbsp;&nbsp;二进制fuzzing主要针对固件中的二进制应用&#13;
+协议的fuzzing主要针对服务端对指定协议的接口的实现进行测试</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-Fuzzing%E5%8E%9F%E7%90%86%E5%8F%8A%E5%B8%B8%E8%A7%81Fuzzing%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%AE%9E%E6%88%98_files/197udtvjqbso5u7uheus5c9hs2.png"></p>
+<h2 class="topic">
+<a name="3jiirfnge0c69lbkcs1g103ook">boofuzz</a>
+</h2>
+<h3 class="topic">
+<a name="6oqibbpo7t8k2of4mo12b38kme">&nbsp;常用于测试物联网设备的协议接口，该协议接口测试以设备web服务端为目标，boofuzz是sulley的继承版，后者已经不再维护</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-Fuzzing%E5%8E%9F%E7%90%86%E5%8F%8A%E5%B8%B8%E8%A7%81Fuzzing%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%AE%9E%E6%88%98_files/5n1rftnl4056q44uh8ovb4vef9.png"></p>
+<h3 class="topic">
+<a name="4ped534qsa1f8c9on46jv4t8qi">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-Fuzzing%E5%8E%9F%E7%90%86%E5%8F%8A%E5%B8%B8%E8%A7%81Fuzzing%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%AE%9E%E6%88%98_files/3cp7gm2343vonll7oacqp02rve.png"></p>
+<h3 class="topic">
+<a name="5fbujq0rturh9cqhlst2vkme35">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-Fuzzing%E5%8E%9F%E7%90%86%E5%8F%8A%E5%B8%B8%E8%A7%81Fuzzing%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%AE%9E%E6%88%98_files/5ip55qee683tp89knpgc0bfejp.png"></p>
+<h3 class="topic">
+<a name="706m22fs2r3k5nieo9ohtv6e81">&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-Fuzzing%E5%8E%9F%E7%90%86%E5%8F%8A%E5%B8%B8%E8%A7%81Fuzzing%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%AE%9E%E6%88%98_files/5f1lbfnckc1kpb6r4b3lkj3guk.png"></p>
+<h3 class="topic">
+<a name="34g988od2dqfpigvj6oq10s75l">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-Fuzzing%E5%8E%9F%E7%90%86%E5%8F%8A%E5%B8%B8%E8%A7%81Fuzzing%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%AE%9E%E6%88%98_files/5h0to959bq1b1a2cd3470g98ur.png"></p>
+<h3 class="topic">
+<a name="63fqb2t0tql366tko7tsq1h0lj">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-Fuzzing%E5%8E%9F%E7%90%86%E5%8F%8A%E5%B8%B8%E8%A7%81Fuzzing%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%AE%9E%E6%88%98_files/4co1hqqm5cic6latgesjgf2lsb.png"></p>
+<h2 class="topic">
+<a name="1etismgif5p3tqmdlpmpidket7">boofuzz实战windows服务端程序</a>
+</h2>
+<h3 class="topic">
+<a name="3257gccvop3ra9374eqv180egs">&nbsp;windows中运行存在漏洞的服务端应用vulnserver.exe</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-Fuzzing%E5%8E%9F%E7%90%86%E5%8F%8A%E5%B8%B8%E8%A7%81Fuzzing%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%AE%9E%E6%88%98_files/20rjh7005hf4r31nh5l06dtlpo.png"></p>
+<h3 class="topic">
+<a name="5jvnjknnal5akp42daueisahv7">&nbsp;&nbsp;查看服务端ip</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-Fuzzing%E5%8E%9F%E7%90%86%E5%8F%8A%E5%B8%B8%E8%A7%81Fuzzing%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%AE%9E%E6%88%98_files/562k29mn621lc3b16d1l5a529p.png"></p>
+<h3 class="topic">
+<a name="08iveg4ppct8qc54cafjgc8mql">&nbsp;&nbsp;&nbsp;boofuzz源码目录</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-Fuzzing%E5%8E%9F%E7%90%86%E5%8F%8A%E5%B8%B8%E8%A7%81Fuzzing%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%AE%9E%E6%88%98_files/5bm7g8t20u64l4792v24ku5ict.png"></p>
+<h3 class="topic">
+<a name="016epucojo4i839q4qhv83f9i4">&nbsp;使用nc连接存在漏洞的服务端</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-Fuzzing%E5%8E%9F%E7%90%86%E5%8F%8A%E5%B8%B8%E8%A7%81Fuzzing%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%AE%9E%E6%88%98_files/609b89ut57bqc41uemt2qfe4j8.png"></p>
+<h3 class="topic">
+<a name="1n224ajiubkaer8i8dsfoqdtbs">&nbsp;&nbsp;服务端接收到连接</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-Fuzzing%E5%8E%9F%E7%90%86%E5%8F%8A%E5%B8%B8%E8%A7%81Fuzzing%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%AE%9E%E6%88%98_files/1t9o4a0ners97jobatsuft1puu.png"></p>
+<h3 class="topic">
+<a name="3pp80pk30hli3vn6j6l46b6ul4">&nbsp;&nbsp;&nbsp;查看nc提供的命令，使用以上命令与服务端程序交互时，就可能产生异常</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-Fuzzing%E5%8E%9F%E7%90%86%E5%8F%8A%E5%B8%B8%E8%A7%81Fuzzing%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%AE%9E%E6%88%98_files/4g0tah1nr3gmo1si53smigqooe.png"></p>
+<h3 class="topic">
+<a name="6shbmt02vqed4e8kj6ivsfj57j">&nbsp;查看针对vulnserver.exe服务端的fuzz脚本</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-Fuzzing%E5%8E%9F%E7%90%86%E5%8F%8A%E5%B8%B8%E8%A7%81Fuzzing%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%AE%9E%E6%88%98_files/514ou6fcapfjo5gjqsdojeni9s.png"></p>
+<h3 class="topic">
+<a name="1rrb3p12oppi9eq2huft82bonc">&nbsp;&nbsp;本fuzz脚本中没有添加监控，直接使用构造好的数据结构进行fuzzing</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-Fuzzing%E5%8E%9F%E7%90%86%E5%8F%8A%E5%B8%B8%E8%A7%81Fuzzing%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%AE%9E%E6%88%98_files/2ekkeistfgaru7lc0dj4tqpkv4.png"></p>
+<h3 class="topic">
+<a name="6fhbi44879oa5kijqgskqh9fll">&nbsp;使用python虚拟环境安装boofuzz</a>
+</h3>
+<h3 class="topic">
+<a name="3itdcd4j85ukqlrqqnhnlkl5pa">&nbsp;&nbsp;python虚拟环境主要用于保证不同的python项目拥有独立的运行环境，从而使不同python项目的依赖库不会相互干扰</a>
+</h3>
+<h3 class="topic">
+<a href="https://www.cnblogs.com/chjxbt/p/10517952.html" name="574id9anj1ov7ll2349n1rgrj5">&nbsp;&nbsp;&nbsp;https://www.cnblogs.com/chjxbt/p/10517952.html&#13;
+https://www.jianshu.com/p/e17263be54ea</a>
+</h3>
+<h3 class="topic">
+<a name="7e1lmpsrrqphd2k3edlb3k6tlk">&nbsp;查看当前虚拟环境，存在虚拟环境boofuzz3</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-Fuzzing%E5%8E%9F%E7%90%86%E5%8F%8A%E5%B8%B8%E8%A7%81Fuzzing%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%AE%9E%E6%88%98_files/7p0nrv654t1mhmpg1vt3appjbe.png"></p>
+<h3 class="topic">
+<a name="3vlgk9p7bss15m7i2apm0v518p">&nbsp;&nbsp;进入boofuzz3虚拟环境，pip list查看当前已经安装的包，flask即boofuzz的web端应用</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-Fuzzing%E5%8E%9F%E7%90%86%E5%8F%8A%E5%B8%B8%E8%A7%81Fuzzing%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%AE%9E%E6%88%98_files/2gsksl76rqt2430dmoussmssvn.png"></p>
+<h3 class="topic">
+<a name="59f1t978r2cq3k6443cqktvdkh">&nbsp;&nbsp;&nbsp;如果是第一次安装，则使用pip install .安装整个boofuzz</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-Fuzzing%E5%8E%9F%E7%90%86%E5%8F%8A%E5%B8%B8%E8%A7%81Fuzzing%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%AE%9E%E6%88%98_files/69sgdi0kcus5i0u40ettfjlb6g.png"></p>
+<h3 class="topic">
+<a name="636j7f53p5c8jvo1kseepcj47o">&nbsp;运行fuzz脚本</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-Fuzzing%E5%8E%9F%E7%90%86%E5%8F%8A%E5%B8%B8%E8%A7%81Fuzzing%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%AE%9E%E6%88%98_files/4mu19au5tf4agq47ml3rg3tvg4.png"></p>
+<h3 class="topic">
+<a name="3qfb36cdf52ph36q13d9rfr1cg">&nbsp;&nbsp;查看boofuzz的web端情况，其web端默认监听26000端口</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-Fuzzing%E5%8E%9F%E7%90%86%E5%8F%8A%E5%B8%B8%E8%A7%81Fuzzing%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%AE%9E%E6%88%98_files/3sdm8tvkd236ujerv4ijq4j2jk.png"></p>
+<h3 class="topic">
+<a name="2cq7sfnb3saegnvgokquo3sa9v">&nbsp;&nbsp;&nbsp;存在漏洞的服务器端程序崩溃，因为没有给fuzz脚本设置回调函数，所以即使服务器端崩溃，fuzzing仍在继续</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-Fuzzing%E5%8E%9F%E7%90%86%E5%8F%8A%E5%B8%B8%E8%A7%81Fuzzing%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%AE%9E%E6%88%98_files/2l6teo3qgql9557bmlh3talpqb.png"></p>
+<h3 class="topic">
+<a name="0e2mj0ljp61k5er1jsm6040276">&nbsp;fuzzing停止后，web端不再显示，此时fuzzing结果的保存在db文件中，可以使用相关工具查看db文件，或用boofuzzweb端查看db文件</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-Fuzzing%E5%8E%9F%E7%90%86%E5%8F%8A%E5%B8%B8%E8%A7%81Fuzzing%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%AE%9E%E6%88%98_files/4fttboljegfkc2mmmukvqb4n9j.png"></p>
+<h3 class="topic">
+<a name="375ikn3fhiv94nvmc197lqqb3i">&nbsp;&nbsp;web端可以查看发送的fuzzing日志信息</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-Fuzzing%E5%8E%9F%E7%90%86%E5%8F%8A%E5%B8%B8%E8%A7%81Fuzzing%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%AE%9E%E6%88%98_files/5cjf974r8i8r42jhccl84cb71e.png"></p>
+<h2 class="topic">
+<a name="5trk12fsd041tug79achkevmrm">学习boofuzz提供的示例</a>
+</h2>
+<h3 class="topic">
+<a name="1b5vu524oor1655ohosulhoc2t">&nbsp;boofuzz提供了针对不同fuzzing目标的脚本示例</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-Fuzzing%E5%8E%9F%E7%90%86%E5%8F%8A%E5%B8%B8%E8%A7%81Fuzzing%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%AE%9E%E6%88%98_files/38h5sh3bf2sse1alj11ettgntl.png"></p>
+<h3 class="topic">
+<a name="7mv4nmdpcramc1t4okra3aq65f">&nbsp;&nbsp;查看针对http协议的fuzz示例</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-Fuzzing%E5%8E%9F%E7%90%86%E5%8F%8A%E5%B8%B8%E8%A7%81Fuzzing%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%AE%9E%E6%88%98_files/2rtgsvd6ku3tig2u7r3eo2694j.png"></p>
+<h3 class="topic">
+<a name="1pvnrllr6s18rj00vc96rkvg7n">&nbsp;&nbsp;&nbsp;s_block是以块的形式组织fuzzing的数据</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-Fuzzing%E5%8E%9F%E7%90%86%E5%8F%8A%E5%B8%B8%E8%A7%81Fuzzing%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%AE%9E%E6%88%98_files/4sdb1ks0hcv3t6jbfse9boq48l.png"></p>
+<h3 class="topic">
+<a name="4jmnj4e1o8bi070tqe58ngqqi6">&nbsp;查看针对http body的fuzz用例</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-Fuzzing%E5%8E%9F%E7%90%86%E5%8F%8A%E5%B8%B8%E8%A7%81Fuzzing%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%AE%9E%E6%88%98_files/019639gt0kk2sft7jtaehhhim1.png"></p>
+<h3 class="topic">
+<a name="5k75m1n56ssn1fibhk1s231hg7">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-Fuzzing%E5%8E%9F%E7%90%86%E5%8F%8A%E5%B8%B8%E8%A7%81Fuzzing%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%AE%9E%E6%88%98_files/5med3pihco2pme9niop7n6cbl1.png"></p>
+<h2 class="topic">
+<a name="73t0fsluvokdrpht87sfoq591f">DIR-818LW Boofuzzing</a>
+</h2>
+<h3 class="topic">
+<a name="5rij35g2i338cj88pbvdpq01a9">&nbsp;若有实体设备，可以使用实体设备测试，否则需要固件模拟从而进行fuzz测试</a>
+</h3>
+<h3 class="topic">
+<a name="3pd4gu68pnsgol31j0vjae2oml">&nbsp;执行reset.sh脚本，将数据firmadyne历史模拟情况清空</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-Fuzzing%E5%8E%9F%E7%90%86%E5%8F%8A%E5%B8%B8%E8%A7%81Fuzzing%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%AE%9E%E6%88%98_files/34fag3e7sgkmenkk1gqn9up2f2.png"></p>
+<h3 class="topic">
+<a name="34usl3fuooj69dlfcjpco7ltv8">&nbsp;&nbsp;将固件的bin以及启动脚本拷贝到fiemadyne工具目录下，运行启动脚本，进行固件模拟运行</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-Fuzzing%E5%8E%9F%E7%90%86%E5%8F%8A%E5%B8%B8%E8%A7%81Fuzzing%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%AE%9E%E6%88%98_files/6npmjt08svleb3el67bm8nnmoa.png"></p>
+<h3 class="topic">
+<a name="5508npjsq4rk2hv7cdeekhnfe0">&nbsp;&nbsp;&nbsp;固件模拟成功，访问设备web页面</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-Fuzzing%E5%8E%9F%E7%90%86%E5%8F%8A%E5%B8%B8%E8%A7%81Fuzzing%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%AE%9E%E6%88%98_files/4h34nfuuno0qjm1jt6ieb1p77e.png"></p>
+<h3 class="topic">
+<a name="6i3mdg100in9cro6slsi53gnr2">&nbsp;打开system admin，对设备进行一些配置</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-Fuzzing%E5%8E%9F%E7%90%86%E5%8F%8A%E5%B8%B8%E8%A7%81Fuzzing%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%AE%9E%E6%88%98_files/723vrnjij1pj7dr40ctmmmgd87.png"></p>
+<h3 class="topic">
+<a name="4l7id7t6p6gd6odin8f913d2kj">&nbsp;&nbsp;开启并配置验证码，点击保存</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-Fuzzing%E5%8E%9F%E7%90%86%E5%8F%8A%E5%B8%B8%E8%A7%81Fuzzing%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%AE%9E%E6%88%98_files/3cg78euvm2edagno3hdo47l2re.png"></p>
+<h3 class="topic">
+<a name="1a8bo8ggp0b48g6hitmrh2qgfh">&nbsp;&nbsp;&nbsp;设备配置完毕</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-Fuzzing%E5%8E%9F%E7%90%86%E5%8F%8A%E5%B8%B8%E8%A7%81Fuzzing%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%AE%9E%E6%88%98_files/58mc3nghgoh7ijn5seqqsj87mk.png"></p>
+<h3 class="topic">
+<a name="75rt41dtikkl6uou37begjpus6">&nbsp;使用burp抓取设备login时请求数据包，抓取到get数据包，不是我们想要的，故点击forward</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-Fuzzing%E5%8E%9F%E7%90%86%E5%8F%8A%E5%B8%B8%E8%A7%81Fuzzing%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%AE%9E%E6%88%98_files/318ss7d5brqve303llhgt1vmts.png"></p>
+<h3 class="topic">
+<a name="5aoc9uif4tk2pb5bhs65c69ql0">&nbsp;&nbsp;抓取到想要的hnep数据包请求，该请求用于登录，其中有验证码等信息，将以该请求作为模板进行fuzzing，根据之前的分析，漏洞出现于该数据包中的验证码字段（数据包报头部分有的数据段是必须的，有的数据段在可以在构造fuzz数据包时忽略）</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-Fuzzing%E5%8E%9F%E7%90%86%E5%8F%8A%E5%B8%B8%E8%A7%81Fuzzing%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%AE%9E%E6%88%98_files/1mfsmcc8hk820abl6gqnjck8et.png"></p>
+<h3 class="topic">
+<a name="3j2p42u79h6t0fetfijc3vo3ev">&nbsp;&nbsp;&nbsp;执行不带回调函数的模糊测试脚本boofuzz_soap.py &#13;
+该脚本的分析在后面</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-Fuzzing%E5%8E%9F%E7%90%86%E5%8F%8A%E5%B8%B8%E8%A7%81Fuzzing%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%AE%9E%E6%88%98_files/0s6r522putlurcaf4iaduspf0a.png"></p>
+<h3 class="topic">
+<a name="6e9akkt9ckrdn12ku8gh7b1sn0">&nbsp;停止fuzz，使用boo open打开fuzz的结果，因为boofzz的web端对数据显示不全，所以查看boofuzz运行过程中输出的数据</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-Fuzzing%E5%8E%9F%E7%90%86%E5%8F%8A%E5%B8%B8%E8%A7%81Fuzzing%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%AE%9E%E6%88%98_files/6r2l33g9crsclb3dcgv2i49kbq.png"></p>
+<h3 class="topic">
+<a name="2s7djkspsk38h8kgg5brq16ghs">&nbsp;&nbsp;拷贝疑似导致异常的数据</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-Fuzzing%E5%8E%9F%E7%90%86%E5%8F%8A%E5%B8%B8%E8%A7%81Fuzzing%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%AE%9E%E6%88%98_files/4c3kbtnnitu0rvttbdddhvg1lu.png"></p>
+<h3 class="topic">
+<a name="2kj4pt1tqh0bba42ojidic10ui">&nbsp;&nbsp;&nbsp;将&middot;疑似导致异常的数据拷贝到数据包验证码的位置，将其发送给服务端，通过模拟返回的数据包和固件模拟执行输出的信息看，服务端程序发生了异常，此时创建回调，从而使出现异常时fuzz停止</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-Fuzzing%E5%8E%9F%E7%90%86%E5%8F%8A%E5%B8%B8%E8%A7%81Fuzzing%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%AE%9E%E6%88%98_files/11f1ifkmhnnr839ti39aiviqhj.png"></p>
+<h3 class="topic">
+<a name="7tl8jf8rr0lr4cmom1c0lgdcg4">&nbsp;在fuzz脚本中设置回调函数，回调函数中target是从服务端接收到的数据， 本回调函数中如果接收到的数据中存在指定字符串，则回调函数调用exit结束fuzz，也可以有其他方法实现该回调函数，从而实现不同功能</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-Fuzzing%E5%8E%9F%E7%90%86%E5%8F%8A%E5%B8%B8%E8%A7%81Fuzzing%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%AE%9E%E6%88%98_files/6tkbjue8tvt6j51ev7rqttvjjo.png"></p>
+<h2 class="topic">
+<a name="5vg3o2gj0ak88l3mgdfkflqjst">boofuzz使用</a>
+</h2>
+<h3 class="topic">
+<a name="13u6v55fmjaj2ouhl4uvso3ed5">&nbsp;Boofuzz虚拟环境创建</a>
+</h3>
+<h3 class="topic">
+<a name="1p5vbqail3id1hruanmppcpfle">&nbsp;&nbsp;mkvirtualenv boofuzz3 -p python3</a>
+</h3>
+<h3 class="topic">
+<a name="3e5523kn3d49ho4vvcjnshlb6e">&nbsp;Boofuzz安装</a>
+</h3>
+<h3 class="topic">
+<a name="3bjt2s5rq46pcu77fjd95q3vfn">&nbsp;&nbsp;workon boofuzz3&#13;
+git clone --depth=1 https://github.com/jtpereyda/boofuzz.git&#13;
+pip install .</a>
+</h3>
+<h3 class="topic">
+<a name="5eu24vd6i83e3bbk8krsc4ebom">&nbsp;Boofuzz框架主要层</a>
+</h3>
+<h3 class="topic">
+<a name="2mo0eofk6rrkrrjiptdvjcpoea">&nbsp;&nbsp;数据生成：根据协议格式利用原语来构造请求&#13;
+&#13;
+会话管理/驱动：将请求以图的形式链接起来形成会话，同时管理待测目标、代理、请求，还提供一个web界面用于监视和控制&#13;
+&#13;
+代理：与目标进行交互以实现日志记录、对网络流量进行监控等&#13;
+通常，代理是运行在目标设备上。但是，对于IoT设备而言，大部分情况下都无法在目标设备上运行代理程序。&#13;
+&#13;
+实用工具：独立的命令行工具，完成一些其他的功能</a>
+</h3>
+<h3 class="topic">
+<a name="1tga8rqotgevbik58c6grdmcgp">&nbsp;Boofuzz测试的主要步骤</a>
+</h3>
+<h3 class="topic">
+<a name="2b8l1boij40mf2ul0fkri5up6a">&nbsp;&nbsp;根据网络数据包构造请求&#13;
+&#13;
+设置会话信息(包括测试目标的ip地址和端口等)，然后按照请求的先后顺序将其链接起来&#13;
+&#13;
+添加对目标设备的监控和设备重启机制等&#13;
+&#13;
+开始fuzz</a>
+</h3>
+<h3 class="topic">
+<a name="099uq8f8tni6u9dos6cn9trke1">&nbsp;Boofuzz常用语法</a>
+</h3>
+<h3 class="topic">
+<a name="3kbj1stuku9u7c7c9kj34p5u44">&nbsp;&nbsp;session():建立会话模块</a>
+</h3>
+<h3 class="topic">
+<a name="0jjhastitltgted6ga4eb9ege9">&nbsp;&nbsp;&nbsp;session = Session(&#13;
+        target=Target(&#13;
+            #　建立Socket连接目标&#13;
+            connection=SocketConnection("127.0.0.1", 21, proto='tcp')))&#13;
+session.connect(s_get("xxx"))&#13;
+ &#13;
+session.fuzz()</a>
+</h3>
+<h3 class="topic">
+<a name="2bmlti4hel74gmncgmg1u5t2p2">&nbsp;&nbsp;s_initialize:初始化模块</a>
+</h3>
+<h3 class="topic">
+<a name="7ie2stkk6jvu0rcbr65r536oml">&nbsp;&nbsp;&nbsp;    s_initialize(name="Request") ＃初始化块请求并命名&#13;
+with s_block("Request-Line"):&#13;
+    # LINE 1&#13;
+    s_static("POST", name="Method") ＃始终发送此信息&#13;
+    s_static(" ", name='space-1')&#13;
+    s_static("/HNAP1/")&#13;
+    s_static(" ", name='space-2')&#13;
+    s_static('HTTP/1.1', name='HTTP-Version')&#13;
+    s_static("rn")&#13;
+ &#13;
+with s_block('hnapbody'):&#13;
+    s_static('&lt;?xml version="1.0" encoding="UTF-8"?&gt;')&#13;
+    s_static('rn')&#13;
+    s_static('&lt;soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"&gt;')&#13;
+    s_static('&lt;soap:Body&gt;')&#13;
+    s_static('&lt;Login xmlns="http://purenetworks.com/HNAP1/"&gt;')&#13;
+    s_static('&lt;Action&gt;request&lt;/Action&gt;')&#13;
+    s_static('&lt;Username&gt;Admin&lt;/Username&gt;')&#13;
+    s_static('&lt;LoginPassword&gt;123456&lt;/LoginPassword&gt;')&#13;
+    s_static('&lt;Captcha&gt;')&#13;
+    s_string("s", max_len=3000) # 这是我们的fuzz字符串&#13;
+    s_static('&lt;/Captcha&gt;')&#13;
+    s_static('&lt;/Login&gt;')&#13;
+    s_static('&lt;/soap:Body&gt;&lt;/soap:Envelope&gt;')</a>
+</h3>
+<h3 class="topic">
+<a name="11qvbotkddm9th1smtm34q9b8s">&nbsp;&nbsp;&nbsp;&nbsp;s_static() # 不进行变异&#13;
+s_string() # 需要进行变异的字符串&#13;
+s_delim()  # 使用s_delim原语代替分隔符</a>
+</h3>
+<h3 class="topic">
+<a name="2dqpd6cb562l5dnjs2tnef14me">&nbsp;&nbsp;call_back:回调函数</a>
+</h3>
+<h3 class="topic">
+<a name="4oov0k62gh0tugq9cr3vhehak5">&nbsp;&nbsp;&nbsp;# 根据每个节点进行操作，定义回调函数以实现根据相应结果执行制定操作&#13;
+def post_test_callback(target, fuzz_data_logger,　session, *args, **kwargs):&#13;
+    target = target.recv(1000)&#13;
+    buffer_overflow = "500 Internal Server Error"&#13;
+ &#13;
+    if buffer_overflow in target.decode():&#13;
+        exit()</a>
+</h3>
+<h3 class="topic">
+<a name="35chdlun6uq87tml5movfe1aps">&nbsp;DIR-818LW Boofuzzing</a>
+</h3>
+<h3 class="topic">
+<a name="1907ljh7gtqv9b8chubjd9f3jp">&nbsp;&nbsp;#!/usr/bin/env python&#13;
+# Designed for use with boofuzz v0.0.9&#13;
+# coding=utf-8&#13;
+from boofuzz import *&#13;
+ &#13;
+ &#13;
+def post_test_callback(target, fuzz_data_logger, session, *args, **kwargs):&#13;
+    target = target.recv(1000)&#13;
+    buffer_overflow = "500 Internal Server Error"&#13;
+ &#13;
+    if buffer_overflow in target.decode():&#13;
+        exit()&#13;
+ &#13;
+def main():&#13;
+    session = Session(&#13;
+        post_test_case_callbacks=[post_test_callback],&#13;
+        target=Target(&#13;
+            connection=SocketConnection("192.168.0.1", 80, proto='tcp'),&#13;
+        ),&#13;
+    )&#13;
+ &#13;
+    s_initialize(name="Request")&#13;
+    with s_block("Request-Line"):&#13;
+        # LINE 1&#13;
+        s_static("POST", name="Method")&#13;
+        # s_group("Method", ['POST'])&#13;
+        s_static(" ", name='space-1')&#13;
+        s_static("/HNAP1/")&#13;
+        s_static(" ", name='space-2')&#13;
+        s_static('HTTP/1.1', name='HTTP-Version')&#13;
+        s_static("rn")&#13;
+ &#13;
+        # LINE 2&#13;
+        s_static("Host", name="Host")&#13;
+        s_static(":")&#13;
+        s_static("192.168.0.1", name="ip")&#13;
+        s_static("rn")&#13;
+ &#13;
+        s_static('Content-Length:',name="Content-Length-Header")&#13;
+        s_size('hnapbody', output_format='ascii',fuzzable=False )&#13;
+        s_static('rn')&#13;
+ &#13;
+        s_static("Content-Type:")&#13;
+        s_static("text/xml")&#13;
+        s_static("rn")&#13;
+ &#13;
+        # LINE 3&#13;
+        s_static("SOAPACTION:")&#13;
+        s_static("http://purenetworks.com/HNAP1/Login")&#13;
+        s_static("rn")&#13;
+ &#13;
+        s_static('rn')&#13;
+ &#13;
+ &#13;
+    with s_block('hnapbody'):&#13;
+        s_static('&lt;?xml version="1.0" encoding="UTF-8"?&gt;')&#13;
+        s_static('rn')&#13;
+        s_static('&lt;soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"&gt;')&#13;
+        s_static('&lt;soap:Body&gt;')&#13;
+        s_static('&lt;Login xmlns="http://purenetworks.com/HNAP1/"&gt;')&#13;
+        s_static('&lt;Action&gt;request&lt;/Action&gt;')&#13;
+        s_static('&lt;Username&gt;Admin&lt;/Username&gt;')&#13;
+        s_static('&lt;LoginPassword&gt;123456&lt;/LoginPassword&gt;')&#13;
+        s_static('&lt;Captcha&gt;')&#13;
+        s_string("s", max_len=3000)&#13;
+        s_static('&lt;/Captcha&gt;')&#13;
+        s_static('&lt;/Login&gt;')&#13;
+        s_static('&lt;/soap:Body&gt;&lt;/soap:Envelope&gt;')&#13;
+ &#13;
+    session.connect(s_get("Request"))&#13;
+ &#13;
+    session.fuzz()&#13;
+ &#13;
+ &#13;
+if __name__ == "__main__":&#13;
+    main()</a>
+</h3>
+<h3 class="topic">
+<a name="4847j9oo026ra711g1ds3jkftk">&nbsp;查看日志并进行数据测试</a>
+</h3>
+<h3 class="topic">
+<a name="50n7n9c09d0m3ci7r6esku2mfi">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-Fuzzing%E5%8E%9F%E7%90%86%E5%8F%8A%E5%B8%B8%E8%A7%81Fuzzing%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%AE%9E%E6%88%98_files/4vm2fj1fhr49ogibf430ojf14v.png"></p>
+<h2 class="topic">
+<a name="4rf033vqn7q2vgbiaj54lhvr2u">afl-fuzz</a>
+</h2>
+<h3 class="topic">
+<a name="51ptusmvhjov14jt5gmld8h3fo">&nbsp;介绍</a>
+</h3>
+<h3 class="topic">
+<a name="0evp5b7l3ai1t98rc91mgcunoa">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-Fuzzing%E5%8E%9F%E7%90%86%E5%8F%8A%E5%B8%B8%E8%A7%81Fuzzing%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%AE%9E%E6%88%98_files/0t4qg5rbvuevf8c7cbd0hl7bes.png"></p>
+<h3 class="topic">
+<a name="61f2ticvjqn46pe2f1tkn1pnkn">&nbsp;&nbsp;&nbsp;afl最初用于测试图片处理软件，一般原始文件不宜过大否则会影响执行效率，对于开源软件，afl会使用afl-gcc在源码编译过程中插桩</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-Fuzzing%E5%8E%9F%E7%90%86%E5%8F%8A%E5%B8%B8%E8%A7%81Fuzzing%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%AE%9E%E6%88%98_files/5lcc2b5o8qod7km0jorlac6a1r.png"></p>
+<h3 class="topic">
+<a name="6g1i2mir685g4q7013svdf4akl">&nbsp;afl实战</a>
+</h3>
+<h3 class="topic">
+<a name="4tlonkhajqrnedcphejpb2n7a3">&nbsp;&nbsp;afl源码和编译后得到的工具，具体的afl安装见后文</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-Fuzzing%E5%8E%9F%E7%90%86%E5%8F%8A%E5%B8%B8%E8%A7%81Fuzzing%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%AE%9E%E6%88%98_files/1bl92bmoq7umfk363al29qsqrc.png"></p>
+<h3 class="topic">
+<a name="10c8jhe8l2mahpn74d66rr9e52">&nbsp;&nbsp;&nbsp;查看示例，其中afl为afl-gcc编译的程序，afl.c为漏洞源码，afl_gcc为直接使用gcc编译的程序</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-Fuzzing%E5%8E%9F%E7%90%86%E5%8F%8A%E5%B8%B8%E8%A7%81Fuzzing%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%AE%9E%E6%88%98_files/0k6cuklscftnr6pgmn5mjkvqmb.png"></p>
+<h3 class="topic">
+<a name="0r3l9jcpmj5dsrut76kila0a0e">&nbsp;&nbsp;&nbsp;&nbsp;in目录下保存fuzz的输入文件，一般该文件推荐不超过1kb大小，此时输入文件仅有一个A字符</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-Fuzzing%E5%8E%9F%E7%90%86%E5%8F%8A%E5%B8%B8%E8%A7%81Fuzzing%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%AE%9E%E6%88%98_files/53uatknoqkvk3hde393p649lvg.png"></p>
+<h3 class="topic">
+<a name="4040ha462bg1a9q0k03621hnoq">&nbsp;&nbsp;out文件下保存fuzz输出的结果，其中crashes保存被测试程序的崩溃信息，使用afl进行fuzz时一般会用root全权限，而进入crashes目录也需要root权限</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-Fuzzing%E5%8E%9F%E7%90%86%E5%8F%8A%E5%B8%B8%E8%A7%81Fuzzing%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%AE%9E%E6%88%98_files/25cciifj77s1na7ovqcccs2ip0.png"></p>
+<h3 class="topic">
+<a name="6lvm6n7ncck0s4abg22h08s4mr">&nbsp;&nbsp;&nbsp;fuzz前将out目录清空，注意隐藏文件需要单独删除</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-Fuzzing%E5%8E%9F%E7%90%86%E5%8F%8A%E5%B8%B8%E8%A7%81Fuzzing%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%AE%9E%E6%88%98_files/1p8li251edlhg6n6tile5ai3g0.png"></p>
+<h3 class="topic">
+<a name="5jinaelnlv1pvfg5lgiruap62b">&nbsp;&nbsp;&nbsp;&nbsp;使用afl-gcc编译源码，生成插装编译后的可执行文件</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-Fuzzing%E5%8E%9F%E7%90%86%E5%8F%8A%E5%B8%B8%E8%A7%81Fuzzing%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%AE%9E%E6%88%98_files/0i5k9id86o6d6i1e356n55pqb7.png"></p>
+<h3 class="topic">
+<a name="27co1pui0rmqbqshcsg9tdivha">&nbsp;&nbsp;指定afl参数，对程序进行fuzz，程序运行错误，显示报错信息</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-Fuzzing%E5%8E%9F%E7%90%86%E5%8F%8A%E5%B8%B8%E8%A7%81Fuzzing%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%AE%9E%E6%88%98_files/1oe83q44sg2bcdfcoev2uhgfvi.png"></p>
+<h3 class="topic">
+<a name="6j54nfrj32idmp1bq0aug440jb">&nbsp;&nbsp;&nbsp;根据输出进行设置后，重新运行aflfuzz，发现afl启动成功</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-Fuzzing%E5%8E%9F%E7%90%86%E5%8F%8A%E5%B8%B8%E8%A7%81Fuzzing%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%AE%9E%E6%88%98_files/36oloekqsf3ulmviqcddltq5me.png"></p>
+<h3 class="topic">
+<a name="1eoll067rj80o7r2145fs82i8t">&nbsp;&nbsp;&nbsp;&nbsp;afl显示运行面板信息</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-Fuzzing%E5%8E%9F%E7%90%86%E5%8F%8A%E5%B8%B8%E8%A7%81Fuzzing%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%AE%9E%E6%88%98_files/1dutjrd5lvoq82q0gbh2bkl3b0.png"></p>
+<h3 class="topic">
+<a name="20grmcouuumgc8jpbpkcosp0aa">&nbsp;&nbsp;停止运行，查看crashes目录，发现的确存在崩溃信息文件，</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-Fuzzing%E5%8E%9F%E7%90%86%E5%8F%8A%E5%B8%B8%E8%A7%81Fuzzing%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%AE%9E%E6%88%98_files/3gcr3bmg49dl0as9o20invrv3a.png"></p>
+<h3 class="topic">
+<a name="48mbc1a74ppnfnkbutoeeb2gfo">&nbsp;&nbsp;&nbsp;使用cat查看崩溃文件信息，并使用mv将崩溃文件重命名为crashes1，使用xxd 文件名可以查看崩溃文件信息</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-Fuzzing%E5%8E%9F%E7%90%86%E5%8F%8A%E5%B8%B8%E8%A7%81Fuzzing%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%AE%9E%E6%88%98_files/76pr388lqjoj1o6pnqbk48dsc6.png"></p>
+<h3 class="topic">
+<a name="4mcmn5dhdldnckkpd0lao6skq0">&nbsp;&nbsp;&nbsp;&nbsp;使用gdb加载插装编译生成的可执行文件</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-Fuzzing%E5%8E%9F%E7%90%86%E5%8F%8A%E5%B8%B8%E8%A7%81Fuzzing%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%AE%9E%E6%88%98_files/4shtu8n3s7sp7r0bjo79djqth4.png"></p>
+<h3 class="topic">
+<a name="4gntdnge1i9a3qgbicm63coi1c">&nbsp;&nbsp;将out文件夹下崩溃信息文件作为输入</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-Fuzzing%E5%8E%9F%E7%90%86%E5%8F%8A%E5%B8%B8%E8%A7%81Fuzzing%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%AE%9E%E6%88%98_files/3g85uojnt6op5irs1b411r0dol.png"></p>
+<h3 class="topic">
+<a name="5hcdd6ngejm8jndfi0uhep2ume">&nbsp;&nbsp;&nbsp;gdb显示程序尝试访问0内存地址，从而导致崩溃，且栈中数据被覆盖，说明存在漏洞</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-Fuzzing%E5%8E%9F%E7%90%86%E5%8F%8A%E5%B8%B8%E8%A7%81Fuzzing%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%AE%9E%E6%88%98_files/4njmr520jeb2tmh9dejf09ceem.png"></p>
+<h3 class="topic">
+<a name="668pmhrb0jt8u4p1d0usbo2lf4">&nbsp;&nbsp;&nbsp;&nbsp;使用wc c命令统计崩溃文件的内容，输出信息表明在第十三次进行测试时，程序发生了溢出</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-Fuzzing%E5%8E%9F%E7%90%86%E5%8F%8A%E5%B8%B8%E8%A7%81Fuzzing%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%AE%9E%E6%88%98_files/0nmil8vto95c1s2balf6r5o8s0.png"></p>
+<h3 class="topic">
+<a name="5fpncm5igrrp4v9cvevatuq5h8">&nbsp;&nbsp;在windows主机上使用ida打开被插桩编译的可执行程序afl</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-Fuzzing%E5%8E%9F%E7%90%86%E5%8F%8A%E5%B8%B8%E8%A7%81Fuzzing%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%AE%9E%E6%88%98_files/2eea6390iscnu0qu142dnjkpc4.png"></p>
+<h3 class="topic">
+<a name="747cr6jseiag4up38bi3otemiq">&nbsp;&nbsp;&nbsp;linux主机ip为1.101，使用linux_server 将插桩编译的afl文件作为参数执行，从而开始监听</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-Fuzzing%E5%8E%9F%E7%90%86%E5%8F%8A%E5%B8%B8%E8%A7%81Fuzzing%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%AE%9E%E6%88%98_files/39f7r2va2gaqeh8v9gl0atrdp3.png"></p>
+<h3 class="topic">
+<a name="7de4jj6ufprgqef2ro6m4pu7fm">&nbsp;&nbsp;&nbsp;&nbsp;ida中启动远程linux调试</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-Fuzzing%E5%8E%9F%E7%90%86%E5%8F%8A%E5%B8%B8%E8%A7%81Fuzzing%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%AE%9E%E6%88%98_files/7e8gr4udpv1c7h62nga4spve6o.png"></p>
+<h3 class="topic">
+<a name="79vejmrfql2q4kojge0vq464rk">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-Fuzzing%E5%8E%9F%E7%90%86%E5%8F%8A%E5%B8%B8%E8%A7%81Fuzzing%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%AE%9E%E6%88%98_files/1jk5is6f33jri3mmqfed7l3967.png"></p>
+<h3 class="topic">
+<a name="08e2pah9fg48aranse2f4j8tns">&nbsp;&nbsp;&nbsp;配置远程调试的ip地址和端口</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-Fuzzing%E5%8E%9F%E7%90%86%E5%8F%8A%E5%B8%B8%E8%A7%81Fuzzing%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%AE%9E%E6%88%98_files/74e76dn2iu5t6j11kbdgnp4sl2.png"></p>
+<h3 class="topic">
+<a name="0h3lkps432ac5n5htqh11b5br8">&nbsp;&nbsp;&nbsp;&nbsp;ida中下断点，然后选择附加调试</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-Fuzzing%E5%8E%9F%E7%90%86%E5%8F%8A%E5%B8%B8%E8%A7%81Fuzzing%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%AE%9E%E6%88%98_files/41p12feememu2old10uqbbfkqm.png"></p>
+<h3 class="topic">
+<a name="6t10arqq9dc0sg8r6tmaubqus0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-Fuzzing%E5%8E%9F%E7%90%86%E5%8F%8A%E5%B8%B8%E8%A7%81Fuzzing%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%AE%9E%E6%88%98_files/6t9adoo9ff5m25ebiloihkdkq9.png"></p>
+<h3 class="topic">
+<a name="6q7qb9i79eo83a4hf9nstpkqjg">&nbsp;&nbsp;开启调试</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-Fuzzing%E5%8E%9F%E7%90%86%E5%8F%8A%E5%B8%B8%E8%A7%81Fuzzing%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%AE%9E%E6%88%98_files/50t4imur2ikv8ped1bvhdfo86r.png"></p>
+<h3 class="topic">
+<a name="49dofki78kvhbreo4va7htpoch">&nbsp;&nbsp;&nbsp;程序成功断下，该程序main函数中会调用漏洞函数</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-Fuzzing%E5%8E%9F%E7%90%86%E5%8F%8A%E5%B8%B8%E8%A7%81Fuzzing%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%AE%9E%E6%88%98_files/66so525sd1dn6rvau3i4i6cgj8.png"></p>
+<h3 class="topic">
+<a name="7vr5be4nvgsrum5c315m00rvtu">&nbsp;&nbsp;&nbsp;&nbsp;进入漏洞函数，该漏洞函数中会调用gets函数</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-Fuzzing%E5%8E%9F%E7%90%86%E5%8F%8A%E5%B8%B8%E8%A7%81Fuzzing%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%AE%9E%E6%88%98_files/0v5jp23mrk6sfjf5jrrt6gkboe.png"></p>
+<h3 class="topic">
+<a name="38igr8umuhadkf9c4tofvtdvcm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;执行gets函数，linux中输入字符串A，回车后程序继续执行，并正常返回，说明此时输入的数据长度还是不够</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-Fuzzing%E5%8E%9F%E7%90%86%E5%8F%8A%E5%B8%B8%E8%A7%81Fuzzing%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%AE%9E%E6%88%98_files/6du4d8k5hkuvpdonieki2i06fm.png"></p>
+<h3 class="topic">
+<a name="40213al3jfiglndmnorfpse0qa">&nbsp;&nbsp;使用pattern.py脚本生成较长的不规则字符串，重新调试将该字符串作为输入</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-Fuzzing%E5%8E%9F%E7%90%86%E5%8F%8A%E5%B8%B8%E8%A7%81Fuzzing%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%AE%9E%E6%88%98_files/68mg7lvk0euaq7vsq63tgdkp0g.png"></p>
+<h3 class="topic">
+<a name="0ovs35nun9ni421ot8do8q6stt">&nbsp;&nbsp;&nbsp;由于栈溢出，漏洞在return的时候会异常</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-Fuzzing%E5%8E%9F%E7%90%86%E5%8F%8A%E5%B8%B8%E8%A7%81Fuzzing%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%AE%9E%E6%88%98_files/2tflp1dvnu21km7bo95nb3m45v.png"></p>
+<h3 class="topic">
+<a name="4nfmngd94im28e7kd1iqq3uags">&nbsp;&nbsp;&nbsp;&nbsp;程序中存在sucess函数，只要在栈溢出中将该函数地址布置到栈中，即可跳转执行该函数</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-Fuzzing%E5%8E%9F%E7%90%86%E5%8F%8A%E5%B8%B8%E8%A7%81Fuzzing%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%AE%9E%E6%88%98_files/5bemdqhletjlic65e14f1o638n.png"></p>
+<h3 class="topic">
+<a name="3mii5r65eb9ele1o43idcvkhhg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用pwntools编写exp</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-Fuzzing%E5%8E%9F%E7%90%86%E5%8F%8A%E5%B8%B8%E8%A7%81Fuzzing%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%AE%9E%E6%88%98_files/15q01pckc8roikkn7nl1k28kge.png"></p>
+<h2 class="topic">
+<a name="0ft3t8c08hdhaf92avi8lpjikv">AFL使用</a>
+</h2>
+<h3 class="topic">
+<a name="733h8v0j95kbhe9iuto6dbtv5e">&nbsp;AFL安装</a>
+</h3>
+<h3 class="topic">
+<a name="5j4h5kq08ffb0rno3g1it94a81">&nbsp;&nbsp;wget https://lcamtuf.coredump.cx/afl/releases/afl-latest.tgz　# 下载afl源码&#13;
+tar -zxvf afl-latest.tgz&#13;
+cd afl-latest/afl-2.52b&#13;
+make &amp;&amp; sudo make install　＃ 编译并安装</a>
+</h3>
+<h3 class="topic">
+<a name="2atud8diquqircb8qh92mrmf6e">&nbsp;AFL Fuzzing</a>
+</h3>
+<h3 class="topic">
+<a name="7grf722ugbre3ogpfl9h7gakmq">&nbsp;&nbsp;afl-gcc -fno-stack-protector afl.c -o afl # afl-gcc插桩编译&#13;
+mkdir in # 创建输入文件夹&#13;
+mkdir out　# 创建输出文件夹&#13;
+echo "***" &gt; ./in/1&#13;
+sudo afl-fuzz -i in/ -o out/ ./afl</a>
+</h3>
+<h3 class="topic">
+<a name="5ols6i5gebp1qjgf25suctkun6">&nbsp;AFL报错</a>
+</h3>
+<h3 class="topic">
+<a name="0l3llheee84k5mupolb15725uf">&nbsp;&nbsp;AFL在启动时可能产生如下报错:</a>
+</h3>
+<h3 class="topic">
+<a name="5jm129nb79hqrhreo2qv1om933">&nbsp;&nbsp;&nbsp;[-] Hmm, your system is configured to send core dump notifications to an&#13;
+    external utility. This will cause issues: there will be an extended delay&#13;
+    between stumbling upon a crash and having this information relayed to the&#13;
+    fuzzer via the standard waitpid() API.&#13;
+ &#13;
+    To avoid having crashes misinterpreted as timeouts, please log in as root&#13;
+    and temporarily modify /proc/sys/kernel/core_pattern, like so:&#13;
+ &#13;
+    echo core &gt;/proc/sys/kernel/core_pattern&#13;
+ &#13;
+[-] PROGRAM ABORT : Pipe at the beginning of 'core_pattern'&#13;
+         Location : check_crash_handling(), afl-fuzz.c:727</a>
+</h3>
+<h3 class="topic">
+<a name="446v04t427lkmrohe77cpfb26q">&nbsp;&nbsp;根据提示信息,以root权限输入:</a>
+</h3>
+<h3 class="topic">
+<a name="0oua0o1k3qav6sh9bmcfphmv44">&nbsp;&nbsp;&nbsp;echo core &gt;/proc/sys/kernel/core_pattern</a>
+</h3>
+<h3 class="topic">
+<a name="1h551ajkmo5phmtgh5t4p6tkbk">&nbsp;成功进行AFL测试</a>
+</h3>
+<h3 class="topic">
+<a name="4mut78jdeqkoto7ms827a5p2h5">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-Fuzzing%E5%8E%9F%E7%90%86%E5%8F%8A%E5%B8%B8%E8%A7%81Fuzzing%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%AE%9E%E6%88%98_files/17bm089mhkgm0re92e8abihiur.png"></p>
+<h3 class="topic">
+<a name="1htvou79j2plpgio5actrtqr1i">&nbsp;界面重点关注的几个参数</a>
+</h3>
+<h3 class="topic">
+<a name="03n8r7d1daua27qavgat9i0a9b">&nbsp;&nbsp;last new path 如果报错那么要及时修正命令行参数，不然继续fuzz也是徒劳（因为路径是不会改变的）；&#13;
+cycles done 如果变绿就说明后面即使继续fuzz，出现crash的几率也很低了，可以选择在这个时候停止&#13;
+uniq crashes 代表的是crash的数量</a>
+</h3>
+<h3 class="topic">
+<a name="614vog8ceuau4grtj1jn8b40h8">&nbsp;查看crash</a>
+</h3>
+<h3 class="topic">
+<a name="3n001bmcqrqjetpjvp9hut2lvb">&nbsp;&nbsp;xxd id:000000,sig:11,src:000000,op:havoc,rep:128</a>
+</h3>
+<h3 class="topic">
+<a name="3gqsfata8fdb2b32f1cgsd0eak">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-Fuzzing%E5%8E%9F%E7%90%86%E5%8F%8A%E5%B8%B8%E8%A7%81Fuzzing%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%AE%9E%E6%88%98_files/68f78qkik7q02q5lo8vb7pgtu0.png"></p>
+<h2 class="topic">
+<a name="206bjlf9q46lf0uqvej3kuuvjk">使用fuzz的关键点</a>
+</h2>
+<h3 class="topic">
+<a name="2hupngvcvaq45d4dsc6kjq84nd">&nbsp;fuzz的接口，即程序的输入点</a>
+</h3>
+<h3 class="topic">
+<a name="43q3d091fqvhkb8m56r22gm4lu">&nbsp;fuzzd的payload，即输入程序的数据</a>
+</h3>
+</body>
+</html>

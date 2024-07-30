@@ -1,0 +1,510 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>android软件安全与逆向分析读书笔记</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="5k6tar2sk880i3e3gp2kd7poo8">android软件安全与逆向分析读书笔记</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="android%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E4%B8%8E%E9%80%86%E5%90%91%E5%88%86%E6%9E%90%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0_files/images/android%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E4%B8%8E%E9%80%86%E5%90%91%E5%88%86%E6%9E%90%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0.jpg"></div>
+<h2 class="topic">
+<a name="4ea2l1rnbemj9dctpkmrb55dvq">定位关键函数的方法</a>
+</h2>
+<h3 class="topic">
+<a name="5a531o9n4cu8m2jr35pf8p6e52">&nbsp;信息反馈法</a>
+</h3>
+<h3 class="topic">
+<a name="7a5t15q9lfu4jsg62l6g98curc">&nbsp;&nbsp;搜索反馈信息中的字符串</a>
+</h3>
+<p class="topicImage">
+<img src="android%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E4%B8%8E%E9%80%86%E5%90%91%E5%88%86%E6%9E%90%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0_files/60trgvrjg0jr5uflbg12k98hpe.png"></p>
+<h3 class="topic">
+<a name="1f6b4hfup44h5q5kt035j66o4m">&nbsp;特征函数法</a>
+</h3>
+<h3 class="topic">
+<a name="752dh87tb5vnbi34ggd4pc2gcg">&nbsp;&nbsp;搜索特定android SDK的API</a>
+</h3>
+<p class="topicImage">
+<img src="android%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E4%B8%8E%E9%80%86%E5%90%91%E5%88%86%E6%9E%90%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0_files/43st6t4shmvtbm7nq7bkh9a4k9.png"></p>
+<h3 class="topic">
+<a name="07pd56ivi34dl6gp7ue3vv08pi">&nbsp;顺序查看法</a>
+</h3>
+<h3 class="topic">
+<a name="4vv94fhrtpoagfc7hqgdjeqplo">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="android%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E4%B8%8E%E9%80%86%E5%90%91%E5%88%86%E6%9E%90%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0_files/0j2vqvm1j2c81r109h32597l8g.png"></p>
+<h3 class="topic">
+<a name="0f5qhfctf024mqplfeljf14pn8">&nbsp;代码注入法</a>
+</h3>
+<h3 class="topic">
+<a name="2shkju6up7bbfu56bthaqm4ide">&nbsp;&nbsp;在代码中加入log输出信息</a>
+</h3>
+<p class="topicImage">
+<img src="android%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E4%B8%8E%E9%80%86%E5%90%91%E5%88%86%E6%9E%90%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0_files/5c46bhubiap5rci20n8mtnkm53.png"></p>
+<h3 class="topic">
+<a name="6r3t34td4s8ol65303pjvkkops">&nbsp;&nbsp;&nbsp;书240页</a>
+</h3>
+<h3 class="topic">
+<a name="6nd6tu4b0911q0sfkfcisst11q">&nbsp;栈跟踪法</a>
+</h3>
+<h3 class="topic">
+<a name="458l0mac26jhb4jc5qcejcnbcr">&nbsp;&nbsp;类似栈回溯</a>
+</h3>
+<p class="topicImage">
+<img src="android%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E4%B8%8E%E9%80%86%E5%90%91%E5%88%86%E6%9E%90%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0_files/0gs49jh23ka6oi03enaibjen6k.png"></p>
+<h3 class="topic">
+<a name="0ee7oq2nhgtu19a1m0pbmakac8">&nbsp;&nbsp;&nbsp;书244页</a>
+</h3>
+<p class="topicImage">
+<img src="android%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E4%B8%8E%E9%80%86%E5%90%91%E5%88%86%E6%9E%90%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0_files/42slo85vkqpc5odfska52t5kdc.png"></p>
+<h3 class="topic">
+<a name="55ftu5jptcup53ut0k6e5lfnn2">&nbsp;method profiling</a>
+</h3>
+<h3 class="topic">
+<a name="58da4a532kpkgvrfs43qcob6gd">&nbsp;&nbsp;记录api占用cpu的执行时间以及函数调用关系</a>
+</h3>
+<p class="topicImage">
+<img src="android%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E4%B8%8E%E9%80%86%E5%90%91%E5%88%86%E6%9E%90%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0_files/0jo15h1gds27n6vdd4pku740gu.png"></p>
+<h3 class="topic">
+<a name="09de3h292d6jd8d21h0egmtu06">&nbsp;&nbsp;&nbsp;书247页</a>
+</h3>
+<p class="topicImage">
+<img src="android%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E4%B8%8E%E9%80%86%E5%90%91%E5%88%86%E6%9E%90%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0_files/5rvtsv6updr56gan770rphvop8.png"></p>
+<h2 class="topic">
+<a name="1sm9fqkbva580eefn7fu3jspn4">ida中定位关键函数的方法</a>
+</h2>
+<h3 class="topic">
+<a name="1h5hc3nog8alr5vb97t6oultaj">&nbsp;搜索特征字符串</a>
+</h3>
+<h3 class="topic">
+<a name="21patg7fr4fmrm4hp95s5h3bdu">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="android%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E4%B8%8E%E9%80%86%E5%90%91%E5%88%86%E6%9E%90%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0_files/4h44fe72u7ckvt58hrvlm769ni.png"></p>
+<h3 class="topic">
+<a name="2caj8q8in9ncv4r2ut680tm2s3">&nbsp;搜索关键api</a>
+</h3>
+<h3 class="topic">
+<a name="5gdmi4ttoa7l0k73q5r2v3b0kb">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="android%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E4%B8%8E%E9%80%86%E5%90%91%E5%88%86%E6%9E%90%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0_files/729rol8bj4tbhk7tm5a2tv0hoo.png"></p>
+<h3 class="topic">
+<a name="0odvqi6me40ik36pni2ut6rra9">&nbsp;通过方法名称判断方法功能</a>
+</h3>
+<h3 class="topic">
+<a name="1auic8i8rac75fpi4ne3qt80dd">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="android%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E4%B8%8E%E9%80%86%E5%90%91%E5%88%86%E6%9E%90%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0_files/1anu1onfmq6f3okao1h4b7jtc6.png"></p>
+<h2 class="topic">
+<a name="0du9k8g8t0uk7ktl7httec9jl0">arm</a>
+</h2>
+<h3 class="topic">
+<a name="1fe2rt2f50as5pph9r3thlltl6">&nbsp;原生程序生成过程</a>
+</h3>
+<h3 class="topic">
+<a name="49gsftv5q7lmnvhkrj4tg61ejh">&nbsp;&nbsp;预处理</a>
+</h3>
+<h3 class="topic">
+<a name="4o2jogn96autn7fs8daucnlpob">&nbsp;&nbsp;编译</a>
+</h3>
+<h3 class="topic">
+<a name="1vakgf6rrc8ad3e0e8e3h1scta">&nbsp;&nbsp;&nbsp;c语言-》arm汇编</a>
+</h3>
+<h3 class="topic">
+<a name="5vt5308bco01v23diql3crjqjp">&nbsp;&nbsp;汇编</a>
+</h3>
+<h3 class="topic">
+<a name="0o1nebs5vr2k0d0f4to1qh8br7">&nbsp;&nbsp;&nbsp;arm汇编-》二进制文件</a>
+</h3>
+<h3 class="topic">
+<a name="1leask5qnpg5tq8in8l47nikoc">&nbsp;&nbsp;链接</a>
+</h3>
+<h3 class="topic">
+<a name="7ja6ovpcl2bna4qfgjuvrpgok0">&nbsp;arm处理器其中运行模式</a>
+</h3>
+<h3 class="topic">
+<a name="4ia2bi4snoiusa8teqbspto349">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="android%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E4%B8%8E%E9%80%86%E5%90%91%E5%88%86%E6%9E%90%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0_files/3mrlmvn5jgnhk6scolbk0gmm96.png"></p>
+<h3 class="topic">
+<a name="1fbqm866u9hm0kmtiedlcts761">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="android%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E4%B8%8E%E9%80%86%E5%90%91%E5%88%86%E6%9E%90%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0_files/155sr1vk8ooksrit2gdepk7nlo.png"></p>
+<h3 class="topic">
+<a name="6fjrt8oihn5fc6mh153mhuhbla">&nbsp;arm状态与thumb状态</a>
+</h3>
+<h3 class="topic">
+<a name="5jtqsstbn7r5cipm87hj31abhd">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="android%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E4%B8%8E%E9%80%86%E5%90%91%E5%88%86%E6%9E%90%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0_files/0opendfaclqkui0s79pqa9b6lk.png"></p>
+<h3 class="topic">
+<a name="2jucdl3qka3q8ecpbr7d8stg8r">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="android%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E4%B8%8E%E9%80%86%E5%90%91%E5%88%86%E6%9E%90%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0_files/031rn63feo26b20770k9on0cku.png"></p>
+<h3 class="topic">
+<a name="15e8i12rc7unjv42adktvg8af3">&nbsp;arm汇编中两种注释方式</a>
+</h3>
+<h3 class="topic">
+<a name="1nj3uqj6uedioe4mb7p8oj0mf3">&nbsp;&nbsp;/*  */</a>
+</h3>
+<h3 class="topic">
+<a name="3ioss72gdl707nph2cievj4k7k">&nbsp;&nbsp;@</a>
+</h3>
+<h3 class="topic">
+<a name="1tnjegjejc9k49jk4drl8bisul">&nbsp;arm子程序与参数传递</a>
+</h3>
+<h3 class="topic">
+<a name="5v98bp2us4mid78718gkul0ius">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="android%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E4%B8%8E%E9%80%86%E5%90%91%E5%88%86%E6%9E%90%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0_files/5o4mi0bh7ugt65scl10am4ceka.png"></p>
+<h3 class="topic">
+<a name="70iauuj087l950krpl8pp35hur">&nbsp;arm处理器寻址方式</a>
+</h3>
+<h3 class="topic">
+<a name="69n7rgbcit3runa14qjpj9hmjs">&nbsp;&nbsp;x86支持7种寻址方法，arm支持9种寻址方法</a>
+</h3>
+<h3 class="topic">
+<a name="7qpsnflbu9ha13ljvb2ii4ctcm">&nbsp;&nbsp;立即数寻址</a>
+</h3>
+<h3 class="topic">
+<a name="2lb85egg38d6nqpj9uuuf7srdd">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="android%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E4%B8%8E%E9%80%86%E5%90%91%E5%88%86%E6%9E%90%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0_files/758c90s3bqijuuhmr0bv2va534.png"></p>
+<h3 class="topic">
+<a name="4th4kd2psip32uoaoeaiu8k077">&nbsp;&nbsp;寄存器寻址</a>
+</h3>
+<h3 class="topic">
+<a name="43jcevput7knl3e53r93k57jnp">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="android%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E4%B8%8E%E9%80%86%E5%90%91%E5%88%86%E6%9E%90%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0_files/2mtnpanoph3hhjgrbent9u94ut.png"></p>
+<h3 class="topic">
+<a name="69qs51qnci5hav7v7kiqril30i">&nbsp;&nbsp;寄存器移位寻址</a>
+</h3>
+<h3 class="topic">
+<a name="4qvsh51h076qq67ibp44dbmo9e">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="android%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E4%B8%8E%E9%80%86%E5%90%91%E5%88%86%E6%9E%90%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0_files/40cobo2i2clj2gjevk1bmca3ca.png"></p>
+<h3 class="topic">
+<a name="182gtmgdcj68lhs2gndbrbrl3e">&nbsp;&nbsp;寄存器间接寻址</a>
+</h3>
+<h3 class="topic">
+<a name="25h0mg1kejp2hi08mu8aaql35p">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="android%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E4%B8%8E%E9%80%86%E5%90%91%E5%88%86%E6%9E%90%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0_files/7bko6avn11f3mc9n7sajnbkfqj.png"></p>
+<h3 class="topic">
+<a name="1e45sf3oof5381u0u3ir7gm9h9">&nbsp;&nbsp;基址寻址</a>
+</h3>
+<h3 class="topic">
+<a name="63qgqp238fflum0qf5jjdk58tt">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="android%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E4%B8%8E%E9%80%86%E5%90%91%E5%88%86%E6%9E%90%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0_files/7tfnue4lkfo36ummfrpgm0iltg.png"></p>
+<h3 class="topic">
+<a name="6suesjeilc3einsrbmqudvv30f">&nbsp;&nbsp;多寄存器寻址</a>
+</h3>
+<h3 class="topic">
+<a name="4alqk6f4fcv7k3kj549qqjire0">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="android%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E4%B8%8E%E9%80%86%E5%90%91%E5%88%86%E6%9E%90%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0_files/47qa2j7cuci9inoikm727futdq.png"></p>
+<h3 class="topic">
+<a name="7npr2p9imssrcvhog0qnf8b4me">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="android%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E4%B8%8E%E9%80%86%E5%90%91%E5%88%86%E6%9E%90%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0_files/5c4inkcnab3mfae59gf054hfnl.png"></p>
+<h3 class="topic">
+<a name="60gkoq0o43f5085k4roih8n40i">&nbsp;&nbsp;堆栈寻址</a>
+</h3>
+<h3 class="topic">
+<a name="1biispilm05r8md2ovteg93g6u">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="android%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E4%B8%8E%E9%80%86%E5%90%91%E5%88%86%E6%9E%90%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0_files/2lij6afkbahq4t21hhaqt1bb67.png"></p>
+<h3 class="topic">
+<a name="0kdjt31gllitq1u18ds0ocsn32">&nbsp;&nbsp;块拷贝寻址</a>
+</h3>
+<h3 class="topic">
+<a name="7707rk3uutqe47kcrf2dhpf3mr">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="android%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E4%B8%8E%E9%80%86%E5%90%91%E5%88%86%E6%9E%90%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0_files/3mu1dg3p79pvkaj00rkiv9btla.png"></p>
+<h3 class="topic">
+<a name="4rd6shjfiu26b4ehllc0lrmh9l">&nbsp;&nbsp;相对寻址</a>
+</h3>
+<h3 class="topic">
+<a name="5v61a24iv4nl474hlq1b6qffr1">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="android%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E4%B8%8E%E9%80%86%E5%90%91%E5%88%86%E6%9E%90%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0_files/5s9vgd26elo1abmvu6kmtaoecf.png"></p>
+<h3 class="topic">
+<a name="67llt7pu9dc1evpvrcljcep7sh">&nbsp;arm指令格式</a>
+</h3>
+<h3 class="topic">
+<a name="3nsa2are7cc7bpb0m2lai2jv2d">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="android%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E4%B8%8E%E9%80%86%E5%90%91%E5%88%86%E6%9E%90%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0_files/0s6vhnrpl6lgck8rfhf9lrtidf.png"></p>
+<h3 class="topic">
+<a name="3t68o8jcimkd01u7gbjh0nh9bf">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="android%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E4%B8%8E%E9%80%86%E5%90%91%E5%88%86%E6%9E%90%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0_files/3r10eec3c0btu7ca5l0qkocv14.png"></p>
+<h3 class="topic">
+<a name="6ce2u251m206bn7g8he8ao39kq">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="android%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E4%B8%8E%E9%80%86%E5%90%91%E5%88%86%E6%9E%90%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0_files/5gb8qrpq0rr4g1d4fb89bqtdou.png"></p>
+<h3 class="topic">
+<a name="5k6b9bjrbd0ss8i7mvikp1ir81">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="android%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E4%B8%8E%E9%80%86%E5%90%91%E5%88%86%E6%9E%90%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0_files/4j1osd43r8g4kqlgseo72svi5o.png"></p>
+<h3 class="topic">
+<a name="235dibkqpgp101st2iikri6570">&nbsp;详细指令</a>
+</h3>
+<h3 class="topic">
+<a name="6nn969ms2ahl6i8v6tqa81uq78">&nbsp;&nbsp;书目173页</a>
+</h3>
+<h3 class="topic">
+<a name="354qif2jp4j3v5ulm29kob98s0">&nbsp;&nbsp;跳转指令</a>
+</h3>
+<h3 class="topic">
+<a name="1b8g9v2so25s5cr47fdu7vuc65">&nbsp;&nbsp;存储器访问指令</a>
+</h3>
+<h3 class="topic">
+<a name="2msatstepgjq8ig52jba0bp5dk">&nbsp;&nbsp;数据处理指令</a>
+</h3>
+<h3 class="topic">
+<a name="5qb8okq6t057rfp9qgtokgpofr">&nbsp;&nbsp;其他指令</a>
+</h3>
+<h3 class="topic">
+<a name="46at20hniah6ugkq2crcbk2gfu">&nbsp;&nbsp;&nbsp;SWI</a>
+</h3>
+<h3 class="topic">
+<a name="69sunf2ja4ub1f5tbi92ouqi1t">&nbsp;&nbsp;&nbsp;&nbsp;产生软中断，可以进行系统调用，系统调用时，r7存放系统调用号，r0-r3存放前四个参数</a>
+</h3>
+<p class="topicImage">
+<img src="android%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E4%B8%8E%E9%80%86%E5%90%91%E5%88%86%E6%9E%90%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0_files/45o3dgnupdmku2bp760abp2ket.png"></p>
+<h3 class="topic">
+<a name="69ki7jbdlp4derub5gpp53ebph">&nbsp;&nbsp;&nbsp;MRS</a>
+</h3>
+<h3 class="topic">
+<a name="5ci59m00tqgno2r416j8blvcj6">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="android%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E4%B8%8E%E9%80%86%E5%90%91%E5%88%86%E6%9E%90%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0_files/7i3bocr5fo80e7gh9nn4fl0uuq.png"></p>
+<h3 class="topic">
+<a name="6lq3865e1vg6ft932i85lp3f3s">&nbsp;&nbsp;&nbsp;MSR</a>
+</h3>
+<h3 class="topic">
+<a name="2s7jj4r44k704nmel8rokctpck">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="android%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E4%B8%8E%E9%80%86%E5%90%91%E5%88%86%E6%9E%90%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0_files/0e6an6uqbrln4bmfg4usor8fni.png"></p>
+<h3 class="topic">
+<a name="61hbr7958hmgonr7aks7dh7r0q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="android%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E4%B8%8E%E9%80%86%E5%90%91%E5%88%86%E6%9E%90%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0_files/4ltcf3v6auat4br0mjfljaoae0.png"></p>
+<h2 class="topic">
+<a name="50o74rta805hmi4lmd7stmhc8t">jni函数逆向</a>
+</h2>
+<h3 class="topic">
+<a name="108rf4ep5pk3gc1iosk4ojq8dr">&nbsp;一个典型的Android NDK程序</a>
+</h3>
+<p class="topicImage">
+<img src="android%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E4%B8%8E%E9%80%86%E5%90%91%E5%88%86%E6%9E%90%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0_files/3u2eqdabhoc1qd06o33rcei66s.png"></p>
+<h2 class="topic">
+<a name="7cvg9ngjnd6pa81ukvv5ufoj4h">安卓软件的反破解技术</a>
+</h2>
+<h3 class="topic">
+<a name="2jn9jg2v1fptp6vjd51rpends3">&nbsp;安卓破解分为4个阶段</a>
+</h3>
+<h3 class="topic">
+<a name="0v9v9e4lrb42ncqnknrqlkab5m">&nbsp;&nbsp;反编译</a>
+</h3>
+<h3 class="topic">
+<a name="17ricvmc29g8emlp1sletk0fso">&nbsp;&nbsp;静态分析</a>
+</h3>
+<h3 class="topic">
+<a name="2gp832h1uoao79ea2n9m5qgo4o">&nbsp;&nbsp;动态调试</a>
+</h3>
+<h3 class="topic">
+<a name="5orjkuajfe0iv69l6mj2msv8nb">&nbsp;&nbsp;重编译</a>
+</h3>
+<h3 class="topic">
+<a name="2oe87nvd17ts8smfo4oam0asqj">&nbsp;对抗反编译</a>
+</h3>
+<h3 class="topic">
+<a name="0t4kcd7gcbrb418h8lamv31gld">&nbsp;&nbsp;整体思路</a>
+</h3>
+<h3 class="topic">
+<a name="4dd1hf380786ti1i1ibhqicr77">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="android%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E4%B8%8E%E9%80%86%E5%90%91%E5%88%86%E6%9E%90%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0_files/1nfnnvqgeikechohl4qdh1cvpr.png"></p>
+<h3 class="topic">
+<a name="107rvftaprco5ebthpneb5gva3">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="android%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E4%B8%8E%E9%80%86%E5%90%91%E5%88%86%E6%9E%90%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0_files/1mcnm0m28ov19e9io8n993ms8j.png"></p>
+<h3 class="topic">
+<a name="49uuk08ieh5a0bgni85phtfo77">&nbsp;&nbsp;具体措施</a>
+</h3>
+<h3 class="topic">
+<a name="1g2gorfn0akaql044k41el58g6">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="android%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E4%B8%8E%E9%80%86%E5%90%91%E5%88%86%E6%9E%90%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0_files/76t7vl7nu80sudg63uc7am7nfd.png"></p>
+<h3 class="topic">
+<a name="14atp56ovtd29deivfn81illeg">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="android%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E4%B8%8E%E9%80%86%E5%90%91%E5%88%86%E6%9E%90%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0_files/4eb56h5vqpaq8kc1a9sn157bmb.png"></p>
+<h3 class="topic">
+<a name="7vefqdv3p7n8s1uuvhf89497hg">&nbsp;对抗静态分析</a>
+</h3>
+<h3 class="topic">
+<a name="0n2ub6nd2peu094k70n9sv0bc1">&nbsp;&nbsp;java代码混淆</a>
+</h3>
+<h3 class="topic">
+<a name="385qcq0l3b739rd79qq56cp9re">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="android%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E4%B8%8E%E9%80%86%E5%90%91%E5%88%86%E6%9E%90%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0_files/6585h7ouli0j629g6gheld68cs.png"></p>
+<h3 class="topic">
+<a name="2mjrfn97n5kidaa4v5jhbski86">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="android%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E4%B8%8E%E9%80%86%E5%90%91%E5%88%86%E6%9E%90%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0_files/3sm0ponlamqpflojlrktqaopk3.png"></p>
+<h3 class="topic">
+<a name="6dcto1f3ubtd3965usir5voesv">&nbsp;&nbsp;NDK保护</a>
+</h3>
+<h3 class="topic">
+<a name="4omu60nlfehlq1prp5gv9ir6rc">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="android%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E4%B8%8E%E9%80%86%E5%90%91%E5%88%86%E6%9E%90%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0_files/68h1vuih9eotba6at7h3pk6j9r.png"></p>
+<h3 class="topic">
+<a name="6o4velv16oglaen18eka8ejnrp">&nbsp;&nbsp;外壳保护</a>
+</h3>
+<h3 class="topic">
+<a name="4ogu99n6cqrprmsa5f7hh9d8bu">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="android%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E4%B8%8E%E9%80%86%E5%90%91%E5%88%86%E6%9E%90%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0_files/5r0d960rflg1of5dp2fbp222i5.png"></p>
+<h3 class="topic">
+<a name="7eishjldev1nnq01ck6uujmtsu">&nbsp;对抗动态调试</a>
+</h3>
+<h3 class="topic">
+<a name="39k3vrbf9vk7spel5hrsvdg2qb">&nbsp;&nbsp;监测调试器</a>
+</h3>
+<h3 class="topic">
+<a name="44vuer5a8ac20v2ng1ku42n3mr">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="android%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E4%B8%8E%E9%80%86%E5%90%91%E5%88%86%E6%9E%90%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0_files/292f7qfde9uqjc0o0ti4aj4u13.png"></p>
+<h3 class="topic">
+<a name="334guga9k24qbuv4u0622cvs1m">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="android%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E4%B8%8E%E9%80%86%E5%90%91%E5%88%86%E6%9E%90%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0_files/6vpoddrni9p29unnc90mb2jeic.png"></p>
+<h3 class="topic">
+<a name="31oiad56e375f5tc3pimkhih00">&nbsp;&nbsp;监测模拟器</a>
+</h3>
+<h3 class="topic">
+<a name="2gekcbl8mtshpl00fgk4cqu6nh">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="android%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E4%B8%8E%E9%80%86%E5%90%91%E5%88%86%E6%9E%90%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0_files/5mf18d51bs7lea68simq3d2bnb.png"></p>
+<h3 class="topic">
+<a name="7gcfv1kotqdfbdd7pb0rsb3efu">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="android%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E4%B8%8E%E9%80%86%E5%90%91%E5%88%86%E6%9E%90%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0_files/5o9vbvpn74kj8b1mla7q229tlh.png"></p>
+<h3 class="topic">
+<a name="55sqbrokpi02hfnm4uv5sapnjj">&nbsp;防止重编译</a>
+</h3>
+<h3 class="topic">
+<a name="0od52ee4qdrbdb70kv2a6rckfv">&nbsp;&nbsp;检查签名</a>
+</h3>
+<h3 class="topic">
+<a name="31u52s6etr104h004la08v9q0s">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="android%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E4%B8%8E%E9%80%86%E5%90%91%E5%88%86%E6%9E%90%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0_files/70sutneoon3ud3lu31i14ttruh.png"></p>
+<h3 class="topic">
+<a name="6ha6915g9s09v7ratav0rftp97">&nbsp;&nbsp;校验保护</a>
+</h3>
+<h3 class="topic">
+<a name="1ob4l92sicg1r1ke002ahb3ne9">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="android%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E4%B8%8E%E9%80%86%E5%90%91%E5%88%86%E6%9E%90%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0_files/66r2rb3ob3n7b102u9ee99bjj1.png"></p>
+<h2 class="topic">
+<a name="0dek9fuft2k90i5349hgim6vca">关于安卓手机root</a>
+</h2>
+<h3 class="topic">
+<a name="7kiq2pc0kd8nakn42r2cb0tfd4">&nbsp;原理</a>
+</h3>
+<h3 class="topic">
+<a name="65lf4vf0s2ufich6e6h71ofb3q">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="android%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E4%B8%8E%E9%80%86%E5%90%91%E5%88%86%E6%9E%90%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0_files/4qnfod721pme58psbknf50hhut.png"></p>
+<h3 class="topic">
+<a name="11q26a6u0da9dk86ffs5op9sfq">&nbsp;安卓权限机制</a>
+</h3>
+<h3 class="topic">
+<a name="5rune4vd15lqp8n0no1749ksq4">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="android%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E4%B8%8E%E9%80%86%E5%90%91%E5%88%86%E6%9E%90%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0_files/38veidokj8sugpjunj7rn5dsau.png"></p>
+<h3 class="topic">
+<a name="5oav258o9ldpkg8sm2kdjgmec0">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="android%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E4%B8%8E%E9%80%86%E5%90%91%E5%88%86%E6%9E%90%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0_files/2ligjfbpkfnk8eldup81ofep9o.png"></p>
+<h3 class="topic">
+<a name="4p6mojsfqseudh0dpc88u68dk0">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="android%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E4%B8%8E%E9%80%86%E5%90%91%E5%88%86%E6%9E%90%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0_files/4pm6l0lja174fb7suie9kd3r4i.png"></p>
+<h3 class="topic">
+<a name="1f9otmem0fi38gtq3te35g1ug0">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="android%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E4%B8%8E%E9%80%86%E5%90%91%E5%88%86%E6%9E%90%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0_files/3drk82928ukpl5ho4ua220vba9.png"></p>
+<h3 class="topic">
+<a name="4an2o97r4qdns0afupqb96l8jg">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="android%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E4%B8%8E%E9%80%86%E5%90%91%E5%88%86%E6%9E%90%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0_files/7f0kepskucoc3dj7t7qujkhms7.png"></p>
+<h3 class="topic">
+<a name="121lsmjqd931hq2eb6k8ot89q2">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="android%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E4%B8%8E%E9%80%86%E5%90%91%E5%88%86%E6%9E%90%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0_files/2fqdvbc1cq606odomgpaoe2en2.png"></p>
+<h3 class="topic">
+<a name="4tgpm01age7aetbq73r46mdqg3">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="android%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E4%B8%8E%E9%80%86%E5%90%91%E5%88%86%E6%9E%90%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0_files/35q2o5jdorq5fntq6rjvoso91f.png"></p>
+</body>
+</html>

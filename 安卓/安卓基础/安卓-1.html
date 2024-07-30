@@ -1,0 +1,756 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>安卓-1</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="0j568uqjgde8igjh0o6315eufe">安卓-1</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="%E5%AE%89%E5%8D%93-1_files/images/%E5%AE%89%E5%8D%93-1.jpg"></div>
+<h2 class="topic">
+<a name="0p6i0er2vjeffj4ur5d1c4krv1">安卓系统介绍</a>
+</h2>
+<h3 class="topic">
+<a name="1nkp7nt4deqli9r82ltg92gbtd">&nbsp;整体架构</a>
+</h3>
+<h3 class="topic">
+<a name="1fcrnvekjmb7887kl1ckfga0v3">&nbsp;&nbsp;第一层：应用层，电话、联系人、浏览器、短信等&#13;
+第二层：应用框架，包含电话管理、内容管理、活动管理、资源管理、通知管理等&#13;
+第三层：分两部分，一部分是各种库，包括标准C系统库，媒体库，SQLLite, 3D库等等。另一部分是Android运行时，每个Android应用都是由虚拟机Dalvik(ART)加载运行的&#13;
+第四层：最底层，Linux内核，包含各种硬件驱动</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-1_files/3vs38r79k1bqspfb3e60d7b8qe.png"></p>
+<h3 class="topic">
+<a name="5tn1vqkhaok3sdtfm48cs01vh7">&nbsp;&nbsp;&nbsp;applications：即安卓应用层，各种app</a>
+</h3>
+<h3 class="topic">
+<a name="464g3kvefcglh4t2lek9jfqmnb">&nbsp;&nbsp;&nbsp;&nbsp;是java开发的dex文件，其中包含smali汇编</a>
+</h3>
+<h3 class="topic">
+<a name="2fg07pg7fqvaebgg3njtevve69">&nbsp;&nbsp;&nbsp;application framework：安卓系统框架，包括四大组件等</a>
+</h3>
+<h3 class="topic">
+<a name="2b7q8sdgldhfr76embvqs5gd95">&nbsp;&nbsp;&nbsp;&nbsp;是java开发的dex文件，其中包含smali汇编</a>
+</h3>
+<h3 class="topic">
+<a name="0ge15vdorglrd3durv53900rp6">&nbsp;&nbsp;&nbsp;&nbsp;java hook反射就是针对本层的内容</a>
+</h3>
+<h3 class="topic">
+<a name="37qf4thq6m9m715f8fv6nvbpst">&nbsp;&nbsp;&nbsp;libraries：系统的基础库</a>
+</h3>
+<h3 class="topic">
+<a name="32b3v1vqdb1hqa2dieq4dlg07e">&nbsp;&nbsp;&nbsp;&nbsp;使用c c++编写，是漏洞挖掘主要目标</a>
+</h3>
+<h3 class="topic">
+<a name="5keiie4s77rmo7u477uc9qch2m">&nbsp;&nbsp;&nbsp;&nbsp;Android Runtime</a>
+</h3>
+<h3 class="topic">
+<a name="1sr0qo30k7s99fjfa9ohibeuk0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;安卓虚拟机核心库和安卓虚拟机的核心实现</a>
+</h3>
+<h3 class="topic">
+<a name="13ttjus89nbjk11uubp1tk73pa">&nbsp;&nbsp;&nbsp;&nbsp;安卓中的浏览器一般使用chrome内核</a>
+</h3>
+<h3 class="topic">
+<a name="72aqento4n3etg9bddci960rqo">&nbsp;&nbsp;&nbsp;linux内核</a>
+</h3>
+<h3 class="topic">
+<a name="563d70b2n9jq77208ldjttug5b">&nbsp;&nbsp;&nbsp;&nbsp;linux与安卓的区别主要是在application和application framework层次方法</a>
+</h3>
+<h3 class="topic">
+<a name="7mf0p6r11us4olqjv3b0t7i06o">&nbsp;&nbsp;&nbsp;&nbsp;安卓中的linux内核主要通过Binder(IPC)Driver实现安卓系统中进程间的通讯， 而不是通过linux操作系统中的共享内存等机制</a>
+</h3>
+<h3 class="topic">
+<a name="1vt939lmvdi0geq2012j8e4htk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;binder是重要的框架，在系统前三层中都有使用到</a>
+</h3>
+<h3 class="topic">
+<a name="7oo59cng02vk9q3e85cpn7m7uh">&nbsp;系统版本</a>
+</h3>
+<h3 class="topic">
+<a name="2j4u792uldb9a30i4gm9e9u42f">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-1_files/7jm928c9h112878d9c02jr3962.png"></p>
+<h3 class="topic">
+<a name="0uvea9t29p5iuei40nfe3gvhh5">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-1_files/5r6s58b74hn6g1at05908gfvif.png"></p>
+<h3 class="topic">
+<a name="5lesbbbj9k486tn2ghrgtsn2nn">&nbsp;&nbsp;&nbsp;&nbsp;安卓系统中无法在应用层中利用代码加载驱动模块到内核中，因为安卓系统使用linux内核时，没有将加载驱动的代码编译到内核中</a>
+</h3>
+<h3 class="topic">
+<a name="01qsreunf1gmo1pv7v7nblj744">&nbsp;&nbsp;&nbsp;&nbsp;不同版本的安卓系统的安全机制</a>
+</h3>
+<h3 class="topic">
+<a name="2o960lu6ukk68ngnd9a27ks7c2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Android 3.x 版本专用于平板&#13;
+Android 4.0 引入地址随机化(ASLR)，逐步加强，除Vector外，全部已随机化&#13;
+Android 4.2 引入SELinux策略机制&#13;
+Android 4.4.4  引入ART虚拟机，双虚拟机并存并可进行切换，默认SELinux Enforce模式&#13;
+Android 5.0 ART虚拟机取代Dalvik虚拟机，可执行文件强制PIE编译，全面启用SElinux控制&#13;
+Android 6.0 运行时权限管理，进一步加强SElinux策略限制访问(domain,IOCTL filtering, etc)&#13;
+Android 7.0 Mediasever安全性加固、NDK开发&#13;
+Android 8.0 WebView隔离、SECCOMP、kernel harden</a>
+</h3>
+<h3 class="topic">
+<a name="6od4enoeudsn2l8n2l3q42r5s8">&nbsp;&nbsp;Android O NDK changes，即安卓8.0&#13;
+1、链接器不会再加载可写且可执行的数据段，在elf加固方面会带来影响&#13;
+2、系统中链接器会检查更多的elf头和区段头中的数据，该特性涉及elf文件的畸形化，畸形化使得部分静态分析工具（ida）无法分析elf文件（so）</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-1_files/6k2gfb78iidvgru47u1mbto7a0.png"></p>
+<h3 class="topic">
+<a name="1ro1984efud9jar80u8ls03dsj">&nbsp;&nbsp;&nbsp;Android N NDK changes，即安卓7.0&#13;
+1、7.0中无法直接调用部分私有api，例如dlopen()，不过可以根据库的加载过程主动实现库的加载&#13;
+2、elf文件中部分区段头的数据必须存在，在链接过程中会进行检查&#13;
+3、共享对象中不在包含可重定位的代码段</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-1_files/3snp9a54ik2apm4bb356emhdd0.png"></p>
+<h3 class="topic">
+<a name="084i2rpr2cm3r3td3osbeqisqf">&nbsp;&nbsp;&nbsp;&nbsp;Android N NDK changes(cont.)</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-1_files/391bvql0jkckn0bkuo2vdo7m4g.png"></p>
+<h2 class="topic">
+<a name="2eacg4n01a2nh8g1leuvmo1pmv">ndk开发</a>
+</h2>
+<h3 class="topic">
+<a name="0eujdli7ug1ndt8soafs5umo6m">&nbsp;SDK NDK开发</a>
+</h3>
+<h3 class="topic">
+<a name="76bca66enc7assbson42qhfk6s">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-1_files/31sjf86ihj0hj0uufnv8ql1jis.png"></p>
+<h3 class="topic">
+<a name="692l3emaq18clrse6puos8s67r">&nbsp;&nbsp;因为性能问题，安卓开发中会使用c/c++直接进行开发，提高程序运行效率，所以需要在java中调用c/c++实现的函数，需要通过JNI</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-1_files/3hk1cno0eqri3fkh6ju5ijgqjl.png"></p>
+<h3 class="topic">
+<a name="3nl8rlghqi6t0ksakaeiipti2n">&nbsp;四大组件与application</a>
+</h3>
+<h3 class="topic">
+<a name="00ibbntjq54k0qupvt30813mrh">&nbsp;&nbsp;四大组件（组件的生命周期是关键）</a>
+</h3>
+<h3 class="topic">
+<a name="2l4n7210vbssdq8hpmej72qjqh">&nbsp;&nbsp;&nbsp;Activity：通常一个Activity就是一个单独的屏幕&#13;
+&#13;
+BroadcastReceive：广播接收器没有用户界面&#13;
+&#13;
+Service：具有较长的生命周期，没有用户界面，一般用于后台任务&#13;
+&#13;
+Content Provider：用于数据共享&#13;
+&#13;
+通过Intent进行数据传递和交互（本质上是使用binder进行进程间通讯）</a>
+</h3>
+<h3 class="topic">
+<a name="6c3oo4qqpm0ugii67olr6mourp">&nbsp;&nbsp;application</a>
+</h3>
+<h3 class="topic">
+<a name="1esd5mg81ofc6054cd3dtodf4k">&nbsp;&nbsp;&nbsp;Android系统自动会为每个程序运行时创建一个Application类的对象且只创建一个，即单例模式&#13;
+&#13;
+Application对象的生命周期是整个程序中最长的，它的生命周期就等于这个程序的生命周期&#13;
+&#13;
+Application onCreate方法作为程序&ldquo;真正的入口点&rdquo;(这里简单理解)&#13;
+&#13;
+自定义程序的Application只需要修改AndroidManifest.xml Application标签name即可&#13;
+</a>
+</h3>
+<h3 class="topic">
+<a name="5dtk9o9d2ft6isn8h6ll1pfomd">&nbsp;&nbsp;&nbsp;&nbsp;清单文件中application节点可以添加android:name属性，用于指定继承自application的类。&#13;
+&#13;
+该类用于初始化整个app的全局信息。&#13;
+&#13;
+继承自application的类有两个重写函数会执行， 是程序最早执行的函数。&nbsp;&nbsp;&#13;
+ ①&nbsp;attachBaseContext&nbsp;&nbsp; ②&nbsp;onCreate</a>
+</h3>
+<h3 class="topic">
+<a name="0mgsnrfjv29a9kr8qrj1b7ejln">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-1_files/227g1s4685si114qu6aen4k9lp.png"></p>
+<h3 class="topic">
+<a name="6iosin1nthuaujme4nal7ort40">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-1_files/0qcf6kls3rsm890qgkef7hut98.png"></p>
+<h3 class="topic">
+<a name="2tm865ji6neastgr2h7oc1h233">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-1_files/1ro1qk9s33r3a6knqq8pmlkul6.png"></p>
+<h3 class="topic">
+<a name="36ngm6f96j3cdg6m6nlel3sk6a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过工具扫描AndroidManifest.xml中的application类名和对应的application类文件，可以确定该app的加固渠道 360？ 梆梆？</a>
+</h3>
+<h3 class="topic">
+<a name="4se7di5davjlqtkig3377sbflc">&nbsp;&nbsp;&nbsp;另外，具体Application和四大组件的一些方法调用时机可参看资料中的&lt;&lt;Android的Proxy/Delegate Application框架&gt;&gt;&#13;
+&#13;
+http://bbs.pediy.com/showthread.php?t=189844&#13;
+</a>
+</h3>
+<h3 class="topic">
+<a name="60r39dspe2o7f4uhem9j006pe1">&nbsp;JNI开发</a>
+</h3>
+<h3 class="topic">
+<a name="0dqgn757nuprc1tcg053aeaeo9">&nbsp;&nbsp;jni的利弊</a>
+</h3>
+<h3 class="topic">
+<a name="1g1n2umjprg2q3q6j37rm7upe5">&nbsp;&nbsp;&nbsp;优点：&#13;
+提供JAVA程序与操作系统交互接口&#13;
+直接与本地交互，提高程序的性能&#13;
+&#13;
+缺点：&#13;
+程序不再跨平台，不同操作系统需要编译不同版本的库文件&#13;
+Native层的动态内存使用不当会导致内存泄露，接口的使用不当导致程序易崩溃</a>
+</h3>
+<h3 class="topic">
+<a name="6gf9hlnr4vp1jtr64521r0fr8t">&nbsp;&nbsp;ndk最终可以编译成.so或.bin文件，这两种文件均为elf格式的</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-1_files/3ckg24lgnsb1r9ogoo1fjni64d.png"></p>
+<h3 class="topic">
+<a name="6j1j4mcnqmcpk1en78maur1ifd">&nbsp;&nbsp;JNI接口</a>
+</h3>
+<h3 class="topic">
+<a name="6p9vscica3of6c71nurr0j23m3">&nbsp;&nbsp;&nbsp;使用一个数组描述java函数与c函数的映射关系</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-1_files/27ss4pir7vfodfq6j9oe6jv9du.png"></p>
+<h3 class="topic">
+<a name="0jpd074car0se5vo6ipd6utdt2">&nbsp;&nbsp;&nbsp;&nbsp;定义JNINativeMethod结构体&#13;
+注意java中函数名字需要包含包名、类名</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-1_files/6gc1i0fr76v16l9j9nkr4k0tps.png"></p>
+<h3 class="topic">
+<a name="37dra1hv81je4et6gej6h9244e">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果java函数参数为基本数据类型，则JNINativeMethod中描述函数参数时使用以上大写字母</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-1_files/070jeun6lfnc5fcganjrdspa7u.png"></p>
+<h3 class="topic">
+<a name="2qi45epsqlf5ck9dbbbedjq4o3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果java函数参数为数组，则JNINativeMethod中描述函数参数时使用[I [[I等</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-1_files/7oj66md5mboq852rbh3kof8052.png"></p>
+<h3 class="topic">
+<a name="10nn0em52nb230l68vh5bghchm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果java函数的参数为java对象，则需要使用以上方式表示，如果该类为内部类，则需要使用$标识，这一点与smali一致</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-1_files/550jdo9pc4dotec1rnoet3m0h6.png"></p>
+<h3 class="topic">
+<a name="15ls1mt27nrlcjk8a6tmss0fmv">&nbsp;&nbsp;Java代码中native方法声明</a>
+</h3>
+<h3 class="topic">
+<a name="41t6drdrkl054smv14rpm2jis4">&nbsp;&nbsp;&nbsp;Java层中使用native函数步骤&#13;
+1、声明；&#13;
+2、加载nitive库；&#13;
+3、通过函数名正常调用netive函数</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-1_files/485fj0q65s6opa9s1mubkc4tq4.png"></p>
+<h3 class="topic">
+<a name="7l5dt11vihb6l2ka66c71e1isc">&nbsp;&nbsp;natice方法注册</a>
+</h3>
+<h3 class="topic">
+<a name="4rjtnstcnclua6q65v6v8dpajv">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-1_files/6u6scplhat2pac1pelckrcvomr.png"></p>
+<h3 class="topic">
+<a name="35ij6ctqak6vtom3jp9ug4587i">&nbsp;&nbsp;&nbsp;&nbsp;如果使用隐式注册，则不需要使用JNINativeMethod结构体指定java函数与c函数的映射关系，&#13;
+如果使用隐式注册，必须使用c语言的方法编译函数，即函数前需要加extern "C"，如果按c++方式编译会导致名称粉碎&#13;
+如果使用隐式注册，而函数名本身包含字符_ 会导致找不到函数的问题</a>
+</h3>
+<h3 class="topic">
+<a name="0d3j5mrlvnhfjlvrqb5766hcjr">&nbsp;&nbsp;&nbsp;&nbsp;如果使用显示注册，则会用到JNINativeMethod结构体</a>
+</h3>
+<h3 class="topic">
+<a name="10u4lagssksbu4lt5sop5p6fr0">&nbsp;&nbsp;&nbsp;隐式注册</a>
+</h3>
+<h3 class="topic">
+<a name="66ejf9sbehjfnmo2ttge3v8g87">&nbsp;&nbsp;&nbsp;&nbsp;在java代码中加载so库，并声明native函数，之后在java代码中就可以正常使用该函数</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-1_files/5r1nm71afvruqckb73b83uq85u.png"></p>
+<h3 class="topic">
+<a name="214r7r58bl0go622t0e7omgeri">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在.c 或.cpp文件中，根据隐式注册要求的函数名格式，实现对应natice函数，注意此时方法名本身中不能包含_，否则会造成找不到函数的问题</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-1_files/2oikb6o2ggeeansguja7812v6a.png"></p>
+<h3 class="topic">
+<a name="1dsvhvgta4sglkp6ik3eblgm42">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Java中，如果某个类中的某个方法没有被调用，那么其不会被加载，在加固过程中，我们可以将dex文件中的某个类的smali函数抹除或置空，而在该函数被调用之前，初始化的时候再将其进行修复（即可以在static块中修复被抹除的函数），即第二三代smali方法保护的原理</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-1_files/6f70p9ve34rojas8gperj9m9te.png"></p>
+<h3 class="topic">
+<a name="18jc137jfoe8vksmu59u5utjub">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-1_files/1a67ru7uaibm6fd6fq495456jm.png"></p>
+<h3 class="topic">
+<a name="28fn2t2c626djhsm5vtjgvlls9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Android.mk</a>
+</h3>
+<h3 class="topic">
+<a name="17i9totdo6hs5sad274932q800">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;其中Android.mk文件类似于makefile文件，用指定.c .cpp文件的编译方式</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-1_files/4l38dnq2vd44ao9fqo30p0v2vs.png"></p>
+<h3 class="topic">
+<a name="5pdj46m09jukuduo6srbh5ldns">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;test_c.c</a>
+</h3>
+<h3 class="topic">
+<a name="4c3jts2bgrj91dtso0g0eanh8d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-1_files/47o40b122id3vdpp0nehnh6fh0.png"></p>
+<h3 class="topic">
+<a name="4usfso8j8c0929tq8j1evnhj6u">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对于静态native_cpp函数，&#13;
+其第一个参数为JNIEnv*env，是jni的环境指针，用于native函数与Java通讯&#13;
+其第二个参数即jclass thiz，即java类的this指针，因为java中static函数可以使用类直接调用，所以这里的java类指针其实就是对应类在虚拟机内部的对应表示，即类在虚拟机内存中的地址</a>
+</h3>
+<h3 class="topic">
+<a name="3c8e26c8roketad9li3s06tugu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;JNIEnv用于标识JNI环境，本质是一个结构体，所以在native函数中可以通过JNIEnv指针引用该结构体中的数据</a>
+</h3>
+<h3 class="topic">
+<a name="5eu724h07me30sjl8ai10pjjc8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;JNIEnv结构体定义在jni.h中</a>
+</h3>
+<h3 class="topic">
+<a name="7lt6rhiitf94dvvgdtm3me928n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;c++中 JNIEnv结构体等同于 JNIEnv&#13;
+c中JNINativeInterface结构体等同于 *JNIEnv</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-1_files/4n4j96tgreraenib544h5g33ua.png"></p>
+<h3 class="topic">
+<a name="76adfb77vc0r2vjrlr0d7flj9l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; JNIEnv结构体中定义了大量函数</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-1_files/54o35letv1fm25rrssia5ubmsl.png"></p>
+<h3 class="topic">
+<a name="5lv6kgiokelp7nme0hg62uosmo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该结构体中可以找到代码调用的NewStringUTF函数，可以明确该函数需要传递什么样的参数</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-1_files/0m9e1r1nsqjh538j6laco3f0rf.png"></p>
+<h3 class="topic">
+<a name="0e61pihu3cf53c60i362q7k2a7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;JNINativeInterface结构体定义了大量函数</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-1_files/526hqkf92vn18ld2vq75oj1uas.png"></p>
+<h3 class="topic">
+<a name="2dv8tiirbromfduoe2ct1rjp0i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-1_files/7gacjnskklrie2mjgghs3f3rda.png"></p>
+<h3 class="topic">
+<a name="07lnllfrfnv2uj5g1q49efcbch">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.c文件中使用env指针调用其中的函数要注意&#13;
+1、使用(*env)-&gt;函数名()的方式调用参数  (因为c中JNIEnv等同于JNINativeInterface*，即JNINativeInterface结构体的指针)&#13;
+，所以参数JNIEnv*env是二级指针，需要解引用（即*(env)）才能作为JNINativeInterface*使用&#13;
+2、函数第一个参数必须为env指针，其余参数按照jni.h中的函数原型传参（(因为c中JNINativeInterface结构体等同于 *JNIEnv)，所以要调用的函数均定义在JNINativeInterface结构体中，该结构体中的函数第一个参数均为env）</a>
+</h3>
+<h3 class="topic">
+<a name="41iqraqrq1hmsj4u9b7a6tknio">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;JNIEnv的定义</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-1_files/3n4asvp6tviad35ohbp4kmd8hj.png"></p>
+<h3 class="topic">
+<a name="05fvafv7ej1bkbiambq6nipiua">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;JNINativeInterface结构体的定义</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-1_files/3ank2mklnlj7n7gd84dp8f6m0d.png"></p>
+<h3 class="topic">
+<a name="1p0nvd0ltvcnvntm2nd6jf3n02">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_JNIEnv结构体定义</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-1_files/0achr8sgfb4p49t4v22vvtcseu.png"></p>
+<h3 class="topic">
+<a name="1baqf25tc95e7v6ked1c9cabnl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;两结构体内容基本相同，均保存大量的函数，用于在JNI函数中被env调用</a>
+</h3>
+<h3 class="topic">
+<a name="19je8asfcrcs8ttl0egkcb7k3s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;c++中，JNIEnv即为_JNIEnv，所以JNIEnv*env 可以直接调用函数 env-&gt;函数名</a>
+</h3>
+<h3 class="topic">
+<a name="4tva8uiqqn2tbsossleikft5iu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;c中，JNIEnv即为JNINativeInterface*，所以JNIEnv *env需要解引用一次，才能调用函数 即*(env)-&gt;函数名</a>
+</h3>
+<h3 class="topic">
+<a name="0t63mchm7qmdcr27bj1mmikqpg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对于testC函数，第一个参数为JNIEnv*env，第二个参数为jobject thiz(即java类对象的指针)但是testC函数中没有用到jobject thiz，所以也可以不写</a>
+</h3>
+<h3 class="topic">
+<a name="41c1m7aj9cdfcvdl4uctnqto3o">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;此处隐式注册的静态native函数返回值类型为JNIEXPORT jstring JNICALL，其实就是jstring，本质上为void*</a>
+</h3>
+<h3 class="topic">
+<a name="4tnt6i3n3061k0qpnkvuk27nck">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;根据函数可知native函数实现功能主要是通过调用env指向的结构体中的函数，该结构体中有大量函数，组合是使用可以用于实现复杂功能（比如在native函数中调用java类中的函数）</a>
+</h3>
+<h3 class="topic">
+<a name="1q3farc37hdgqfki1egujtqimi">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;test_cpp.cpp</a>
+</h3>
+<h3 class="topic">
+<a name="1n6ea290duegqr9qjd0mn9184j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-1_files/6a3jeqk9ajlrlqm4tveks2a6fj.png"></p>
+<h3 class="topic">
+<a name="2nbg2f294h165sqtfb0q9976ss">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对于非静态native_cpp函数，&#13;
+其第一个参数为JNIEnv*env，是jni的环境指针，用于native函数与Java通讯&#13;
+其第二个参数即jobject thiz，即java类对象的this指针，因为非静态cpp函数调用时，只能通过类对象，所以这里的this指针就是对应类对象在虚拟机内部的对应表示，即类对象在虚拟机内存中的地址</a>
+</h3>
+<h3 class="topic">
+<a name="28libccfuv3p07ud4vugl19cpb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.cpp文件中使用env指针调用其中的函数要注意&#13;
+1、使用env-&gt;函数名()的方式调用参数&#13;
+2、函数第一个参数不用为env指针，按照jni.h中对应函数原型传参即可</a>
+</h3>
+<h3 class="topic">
+<a name="1n5pvvhqal23vkarpkbs7f0c26">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;JNIEnv的定义</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-1_files/4k1lhu1fqa0u2p4g6c7l4t844u.png"></p>
+<h3 class="topic">
+<a name="3kojkv7atfrj9ti12jlk99sleg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;JNINativeInterface结构体的定义</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-1_files/1g32p5fk4m1k0a3els8noagqnk.png"></p>
+<h3 class="topic">
+<a name="3u92m2bkqpfcqp02t81q2qdft1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_JNIEnv结构体定义</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-1_files/5uqenk57d90c6di6nnkborqh2c.png"></p>
+<h3 class="topic">
+<a name="4klisemnqm4div4hk2l9sbqvip">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;两结构体内容基本相同，均保存大量的函数，用于在JNI函数中被env调用</a>
+</h3>
+<h3 class="topic">
+<a name="5mmh4svlgjlv48lkm87dgk4um9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;c++中，JNIEnv即为_JNIEnv，所以JNIEnv*env 可以直接调用函数 env-&gt;函数名</a>
+</h3>
+<h3 class="topic">
+<a name="06i7tv1k5tjlqrla2ebkgvnrk1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;c中，JNIEnv即为JNINativeInterface*，所以JNIEnv *env需要解引用一次，才能调用函数 即*(env)-&gt;函数名</a>
+</h3>
+<h3 class="topic">
+<a name="7q3rros5d2fr45cgelb1neg19b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;根据函数可知native函数实现功能主要是通过调用env指向的结构体中的函数，该结构体中有大量函数，组合是使用可以用于实现复杂功能（比如在native函数中调用java类中的函数）</a>
+</h3>
+<h3 class="topic">
+<a name="231rkelspjfqivbui2vda1jqms">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;隐式注册java层函数与c/c++层函数的对应</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-1_files/4v7fj8bmhe864s58pgr95a2d11.png"></p>
+<h3 class="topic">
+<a name="2frmdq8k6n3bjvk5qf08scoktg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;根据上面的代码分析，native中的函数完成其功能，主要是依赖于参数env所指向的结构体中的函数，例如代码中的env-&gt;NewStringUTF等，如果要在native函数中调用java类中的函数，也需要若干个env中的函数进行配合</a>
+</h3>
+<h3 class="topic">
+<a name="6a01gi9e4b83paca37g1umcjc4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;参考资料</a>
+</h3>
+<h3 class="topic">
+<a name="1ollkjr5ma3p6citec9mupjf9m">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://www.cnblogs.com/Free-Thinker/p/10601042.html</a>
+</h3>
+<h3 class="topic">
+<a name="3h0cngtag1qq0hc9kkh503qqan">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://www.jianshu.com/p/87ce6f565d37</a>
+</h3>
+<h3 class="topic">
+<a name="0j56uoakn4b8eb4hei3hqi87uh">&nbsp;&nbsp;&nbsp;显式注册</a>
+</h3>
+<h3 class="topic">
+<a name="5gi69j4n1vkrntfef4nfla61sd">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-1_files/0hnm847h8tbrju3rgjr8r9puh7.png"></p>
+<h3 class="topic">
+<a name="6guitqb2kan25b77doldfe09ck">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-1_files/1rblcriu5q21mj4cv42kga2rtm.png"></p>
+<h3 class="topic">
+<a name="264lns84tfk5j5u0r1cpvi9o2q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-1_files/6485cq9e53hmbae68qm9vf2s4h.png"></p>
+<h3 class="topic">
+<a name="6h4s0s81d91j2nielvf8ln9f2q">&nbsp;&nbsp;&nbsp;&nbsp;若想动态注册一个native方法，需要调用JNI_Onload函数进行注册，JNI_Onload函数会在java层中的&#13;
+System.loadLibrary(".so文件名");&#13;
+函数执行完毕后被自动调用，所以需要在.c或.cpp文件中实现JNI_Onload函数&#13;
+&#13;
+即当.so文件加载完成后会调用JNI_Onload用于初始化</a>
+</h3>
+<h3 class="topic">
+<a name="4j7ap1mu0ibtihjqlejjf5qdaq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.c中</a>
+</h3>
+<h3 class="topic">
+<a name="11s3d8ilkqor0r733plj14afb0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-1_files/62e6am9javie1b7svdkia4rpnd.png"></p>
+<h3 class="topic">
+<a name="2qff9min13g3h57r6geilst8pu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-1_files/10vqs94sj5dd07b8r6qcrl7qgl.png"></p>
+<h3 class="topic">
+<a name="4kl9e1qlab67vr5sgd1r6lvvpn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;JNINativeMethod结构体其中包含要注册的native函数的信息，该结构体实现在对应的.c或.cpp文件中</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-1_files/5g8nuuihbe8i9b5qkqrghd2fca.png"></p>
+<h3 class="topic">
+<a name="2tlk5gro7os5fbqbgvssbd46ug">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该函数中的代码流程是java中调用某个类中的某个函数的通用的流程，即找env-&gt;找class-&gt;调用class中的函数，&#13;
+&#13;
+注意此时如果修改gMethod结构体中的函数指针指向另一个函数，再次调用RegisterNatives函数，就会将上一次注册的native函数顶替为本次gMethod结构体所代表的函数，可以达到一个hook的效果&#13;
+比如java中调用debugable()函数用于判断当前app是否被调试，该函数实现是是通过jni进行耦合，所以就可以通过上述方法hook该函数，使其一直返回flase，从而过掉反调试</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-1_files/1861meji5mju895td3hfqar2sj.png"></p>
+<h3 class="topic">
+<a name="1l5h4ur0nqr3d7fgq2mrs048a1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;还可以通过构造JNI_OnUnload撤销native方法</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-1_files/3j57u058btd4sp2ca7ls8hju6u.png"></p>
+<h3 class="topic">
+<a name="0gscojs8svedc7almlkbjm1t8g">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.cpp中</a>
+</h3>
+<h3 class="topic">
+<a name="1fuj04c6l4s4vft8pl54f5vjt1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;demo中的代码不完整</a>
+</h3>
+<h3 class="topic">
+<a name="6o3fp7b3mu4vo60jl04ve8fdam">&nbsp;&nbsp;&nbsp;&nbsp;即主要动态注册的过程均在.c .cpp文件中完成，java中使用System.loadLibrary()加载完成so库，声明native函数，之后直接调用对应函数即可，</a>
+</h3>
+<h3 class="topic">
+<a name="1g9hqb78euovgnr43f7i4ct2nv">&nbsp;&nbsp;&nbsp;隐式注册和显式注册的区别</a>
+</h3>
+<h3 class="topic">
+<a name="79v0inpt0heej7eoa1c3aurkgn">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-1_files/7rb2072ibllk2ocro63nvanne0.png"></p>
+<h3 class="topic">
+<a name="4jhs4a8qhsmuogkt45dl99vau4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;静态声明（即隐式注册）时，函数名必须使用java导出，可以使用ida等工具看到&#13;
+动态注册（即显式注册）时，在逆向时关键是找到JNINativeMethod结构体，从而确定java函数与c函数的对应关系，在ida等工具中无法直接看到动态注册的native函数</a>
+</h3>
+<h3 class="topic">
+<a name="2cu3qvgi4khrke6d5n23pjdf6e">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;jni中一定有一块内存A用于存放java函数与对应的c函数的指针，&#13;
+如果是静态声明的函数，则该函数第一次调用时虚拟机才会将JNINativeMethod结构体中的c函数指针填到内存A中，&#13;
+如果是动态声明的函数，则该该函数第一次调用之前虚拟机已经将对应c函数的指针填入内存A中</a>
+</h3>
+<h3 class="topic">
+<a name="4sq9to4pn393j01hugfnd0nba4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;所以在hook过程中，要找到被hook的函数的原代码时，如果该函数是静态注册的，则需要现调用一次该函数，将c函数指针填写到位，才能在内存中找到</a>
+</h3>
+<h3 class="topic">
+<a name="4gl0c0ctpc2kkjdpgm4kert3kg">&nbsp;&nbsp;native函数的参数</a>
+</h3>
+<h3 class="topic">
+<a name="5r9gpt8hjn5s454tneptqe4kpi">&nbsp;&nbsp;&nbsp;第一个参数一定为JNIEnv*env &#13;
+第二个参数根据native函数是否为静态函数有所不同，为java类指针或java类对象指针&#13;
+之后分别为函数本身要用的参数</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-1_files/3bndl4nlb34s8n30abjnss60i1.png"></p>
+<h3 class="topic">
+<a name="561vtbjgtm5lseg5iotfos408n">&nbsp;编译NDK</a>
+</h3>
+<h3 class="topic">
+<a name="3jra1i31ffainneou7niikls6s">&nbsp;&nbsp;cmd切换到安卓项目的路径下</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-1_files/79gisvt3lqmf4heb37ektr060i.png"></p>
+<h3 class="topic">
+<a name="7at99l1886qmb2sgktu36ijabv">&nbsp;&nbsp;&nbsp;项目路径中有jni文件夹，其中保存Android.mk文件和.c .cpp源代码</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-1_files/138t13fkarkv2tc2fhharte2l4.png"></p>
+<h3 class="topic">
+<a name="4uieuk8oh7d12fs7lmlkqroda0">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-1_files/5di8npj4fane7b8ohuav45ad2t.png"></p>
+<h3 class="topic">
+<a name="0ov3ckd52brbo7nu7l2na844lb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;安卓项目路径下运行ndk-build指令（前提是将ndk-build加入到环境变量）</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-1_files/4rrbf62vo724ksfdvf25p9jl64.png"></p>
+<h3 class="topic">
+<a name="54u3lu1k59k6ggj55ngas962ji">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;编译之后会在libs目录下获得适用于各个平台的动态连接库（默认是全量编译，即针对各个平台进行编译）</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-1_files/7acbjmb22dmb3sr9o20v38jqf9.png"></p>
+<h3 class="topic">
+<a name="6pa80auikc6gs6rn9tpab3jfou">&nbsp;在native函数中调用java函数</a>
+</h3>
+<h3 class="topic">
+<a name="60un1ekh3fs1rq5c33dq6ohpsd">&nbsp;&nbsp;该函数定义在MainActivity函数中，函数中使用logWrapper方法将native函数testStaticC()、testC()、testStaticCPP()、testCPP()的返回值输出到日志中</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-1_files/7hjuead6if8aj24gjvh6eshnig.png"></p>
+<h3 class="topic">
+<a name="0cf8vbl65f77vdtk6fdh2vg8vt">&nbsp;&nbsp;&nbsp;首先需要将dotTest函数在Java层声明为native函数，然后在.c .cpp文件中实现该函数</a>
+</h3>
+<h3 class="topic">
+<a name="24s3cqep2bac8ohhj4ae3n5633">&nbsp;&nbsp;&nbsp;如果要将doTest函数改写为native函数要如何处理?该问题可以转换为，如果一个native函数中要调用其他native函数或者java类方法，如何调用？</a>
+</h3>
+<h3 class="topic">
+<a name="72jthcfk8ecn92mdcccjjg8pmj">&nbsp;&nbsp;&nbsp;&nbsp;native函数调用其他native函数</a>
+</h3>
+<h3 class="topic">
+<a name="67haoc1m0cub9ifkc2jgfht1nk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果两个native函数定义在同一个.c .cpp文件中，则一个native函数可以直接使用函数名的方法调用另一个同文件的native函数，但是如果两个native函数实现在不同的.c .cpp文件中，即编译后出于不同的.so文件中，则不能直接调用</a>
+</h3>
+<h3 class="topic">
+<a name="30f65mr3md6h6gpo7ndrigrrga">&nbsp;&nbsp;&nbsp;&nbsp;native函数中调用java类方法</a>
+</h3>
+<h3 class="topic">
+<a name="2tljpqgtpoue1o3sossm0t62pj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;需要使用多个env指向的结构体中的函数，分别获得指定java类，获得该java类中的方法，进二调用该方法，比较复杂</a>
+</h3>
+<h3 class="topic">
+<a name="72bb9uso228tidnbugp8pr31su">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;相关资料</a>
+</h3>
+<h3 class="topic">
+<a href="https://www.cnblogs.com/Free-Thinker/p/10601042.html" name="43fdl27ss3quv43o73cldkubqs">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://www.cnblogs.com/Free-Thinker/p/10601042.html</a>
+</h3>
+<h3 class="topic">
+<a name="037rbd3k79rt29fqakrs5guqo2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://www.jianshu.com/p/b71aeb4ed13d</a>
+</h3>
+<h3 class="topic">
+<a name="3ja36bmo2gpgptsjf11gtvlks1">&nbsp;&nbsp;&nbsp;&nbsp;一般native函数的编写要注重透明原则，即native函数中一般不区分所调用的函数是java层实现的还是native层实现的，而是使用同一套流程去调用所需函数，即下述流程</a>
+</h3>
+<h3 class="topic">
+<a name="3mvsftpgncnrses9berooo4h8m">&nbsp;&nbsp;&nbsp;本例中dotest函数中需要先调用testStaticC()等native函数，然后调用logWrapper()（java函数）</a>
+</h3>
+<h3 class="topic">
+<a name="31dbsl42q6lhn1re4616aohhf5">&nbsp;&nbsp;&nbsp;&nbsp;调用testStaticC()</a>
+</h3>
+<h3 class="topic">
+<a name="3b6hk6jkdibcbgirhmvgpvejcd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;获得当前的class</a>
+</h3>
+<h3 class="topic">
+<a name="7n0oe2gtmeq131j88o6l4scofi">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以执行env-&gt;FindClass()获得当前class</a>
+</h3>
+<h3 class="topic">
+<a name="73e2ql4usksogrut1n8kpl0op7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;也可以通过native函数的第二个参数jobject thiz指针获得对应的class ，即通过执行env-&gt;GetObjectClass</a>
+</h3>
+<h3 class="topic">
+<a name="419grt55r5pmg9r31s0pta9tci">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用这种方法的前提是参数jobject thiz指向的对象是我们要找的类的一个对象，这样才能获得想要的类</a>
+</h3>
+<h3 class="topic">
+<a name="7kaol8atbgn5h4j4k0ibgrjlna">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;根据class找到testStaticC方法</a>
+</h3>
+<h3 class="topic">
+<a name="47qt259tmsn47blrabn9ni7t63">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用env-&gt;GetMethodID()，GetMethodID()函数找到的方法不区分是否为static方法，该函数返回的就是具体方法在虚拟机内存中的表示</a>
+</h3>
+<h3 class="topic">
+<a name="248aqd15qrgsjp0t7q1l3gcq6o">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;调用指定方法</a>
+</h3>
+<h3 class="topic">
+<a name="3eh229ednd99uo4bok17n9kulq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;根据要调用的方法的返回值类型</a>
+</h3>
+<h3 class="topic">
+<a name="0bejt52hn19278dt93pq8ctu67">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果返回值为基本类型</a>
+</h3>
+<h3 class="topic">
+<a name="1rgco3hm70qfc5ica3fq16eqmm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果要调用的方法为非静态方法，方法返回值为Boolean类型，则需要调用CallBooleanMethod函数，以此类推env指向的结构体中有众多例如CallByteMethod、CallCharMethod等函数，根据返回值的不同，选择不同的函数调用</a>
+</h3>
+<h3 class="topic">
+<a name="5526hg5qdtp74itqshiod6jmds">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-1_files/3t4qg21jahnvs2rj2k97ktgsqc.png"></p>
+<h3 class="topic">
+<a name="7jsv2b3tv1dfv8tg2b985ke6ku">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果要调用的方法为静态方法，则需要调用CallStaticBooleanMethod等函数，即上面的CallBooleanMethod等函数对应的静态类型</a>
+</h3>
+<h3 class="topic">
+<a name="70t7dbafqs4l6q8348lj80g8rj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-1_files/4debbbl3tn4soqoo8cbq80liag.png"></p>
+<h3 class="topic">
+<a name="1puiub88b3mv7aaseumpikbqe4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;静态与非静态的区别主要在于函数的第二个参数为jclass thiz还是jobject thiz</a>
+</h3>
+<h3 class="topic">
+<a name="48mta12mojmcufs60q4r4jmbri">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;以上函数中第三个参数jmethodID是从上一步env-&gt;GetMethodID()返回得到的，用于表示调用的方法，第四个参数之后的参数存放被调用的方法所使用的参数</a>
+</h3>
+<h3 class="topic">
+<a name="7t47bnpd2na54pj86l8j6kd4el">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果返回值为非基本类型（包括返回类型为字符串类型（string））</a>
+</h3>
+<h3 class="topic">
+<a name="1fkf4rak7o1dbmaagmoqpk0o4b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用env-&gt;CallObjectMethod或env-&gt;CallStaticObjectMethod,&#13;
+&#13;
+如果要调用的方法是静态的则需用env-&gt;CallStaticObjectMethod，因为此方法第二个参数为jclass thiz，符合静态方法传参要求&#13;
+&#13;
+如果要调用的方法是非静态的则需用env-&gt;CallObjectMethod，因为此方法第二个参数为jobject thiz，符合非静态方法传参要求&#13;
+</a>
+</h3>
+<h3 class="topic">
+<a name="2qdp398sbbro9h3c92vt3s8tg4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该函数在jni.h中有三种，一般调用第一种即可</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-1_files/0castdubh6r82m4kum338h9emn.png"></p>
+<h3 class="topic">
+<a name="2gf66a9jl6hlgs6v57b2pjum5a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该函数在jni.h中也有三种，一般调用第一种即可</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-1_files/58ja09nndmledgjgr4fuev1ajq.png"></p>
+<h3 class="topic">
+<a name="33det7tae0ve7vlfohd7eaoag4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;以上函数中第三个参数jmethodID是从上一步env-&gt;GetMethodID()返回得到的，用于表示调用的方法，第四个参数之后的参数存放被调用的方法所使用的参数</a>
+</h3>
+<h3 class="topic">
+<a name="5dgomojlajg540i3nv4nqbpv1h">&nbsp;&nbsp;&nbsp;&nbsp;因为native函数编写的透明性，logWrapper()函数的调用方法与testStatic()函数调用方向相同</a>
+</h3>
+<h3 class="topic">
+<a name="069atql03mnaod2aea3lssklv6">&nbsp;&nbsp;&nbsp;&nbsp;以上调用testStaticC()函数的过程可以作为一种加固思路，即java2c，将所有的java函数调用转换为这种c代码调用，从而在c代码中进行混淆等加固措施等，</a>
+</h3>
+<h3 class="topic">
+<a name="0puk7pi37oge13giskt4ceimti">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;java层中如果做混淆会造成代码体积膨胀，稳定性也不如c代码中进行混淆</a>
+</h3>
+<h3 class="topic">
+<a name="1clhd8aog885in9easotd1q8am">&nbsp;&nbsp;实例</a>
+</h3>
+<h3 class="topic">
+<a name="7qm8ebs55sb1fmop5li5d50tri">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-1_files/7nctekbg7c5fqotnaf728arivc.png"></p>
+<h3 class="topic">
+<a name="1f4b2dn5gtemkjuk85gvls11uq">&nbsp;native函数中数组等数据类型的使用</a>
+</h3>
+<h3 class="topic">
+<a name="3o3mjc81a1u70gqorauvorga8n">&nbsp;&nbsp;根据jni.h中的内可知jarray等数据类型本质上就是void*，所以在natice中不能直接索引数组中的元素，需要使用特定的方法</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-1_files/37u4b5d2e5okora2fr2bk03k9b.png"></p>
+<h3 class="topic">
+<a name="5p6t3rdqfhflbuhj3ihkhn3tte">&nbsp;&nbsp;&nbsp;获取数组中的元素或设置数组中的元素时，需要分别使用特定的方法</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-1_files/7sqkndt5711g32qjv4ta78irjo.png"></p>
+<h3 class="topic">
+<a name="3vdvkfeip55jcn9gl24c7370hb">&nbsp;&nbsp;&nbsp;&nbsp;创建指定类型的数组也需要使用指定的方法</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-1_files/05nd70jfql3gb8mieova3ovggt.png"></p>
+<h3 class="topic">
+<a name="73vdn2sjp0iebsbmmtl300vjj1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;设置或获取java中的field，当然也有对应静态的方法</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-1_files/0brc83ncr4nb6vmsj4bv6pfo33.png"></p>
+<h3 class="topic">
+<a name="1jgijjs35674qlv3lja0ei0a88">&nbsp;&nbsp;java代码中的字符串和cc++代码中的字符串编码方式不同，使用GetStringUTFChars函数可以将java编码的字符串转换为c c++编码的字符串，&#13;
+GetStringUTFChars函数本质上相当于获得一个object，引用计数会增加，所以字符串使用完成后需要执行ReleaseStringUTFChars进行释放否则会造成内存泄露</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-1_files/6bl18iknt82p96dc7kj8stgjoe.png"></p>
+<h3 class="topic">
+<a name="7lg21umjtkuam7tj9u1f069ute">&nbsp;demo</a>
+</h3>
+<h3 class="topic">
+<a name="54mbo83o724hiauc2asub10emq">&nbsp;&nbsp;MainActivity类java中声明native函数需要在函数名前加native</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-1_files/3pcr6rth0uctidocin6dtd6d1e.png"></p>
+<h3 class="topic">
+<a name="5kll6ad7joa89fpni71vm4k5vi">&nbsp;&nbsp;当工程中使用了ndk编程时，会多出jni和libs文件夹</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-1_files/6k2518ev07les762hq1gigcirh.png"></p>
+<h3 class="topic">
+<a name="2ai5jg701p4ruuo0krk1c02t9d">&nbsp;&nbsp;&nbsp;jni中保存我们实现的jni接口和native函数的实现，其中Android.mk文件类似于makefile文件，用指定.c .cpp文件的编译方式，.c .cpp文件中保存natice函数的实现</a>
+</h3>
+<h3 class="topic">
+<a name="3g6etavggamd8mnhb7ist13e8c">&nbsp;&nbsp;&nbsp;libs中保存根据jni中.c .cpp文件编译好的.so文件</a>
+</h3>
+</body>
+</html>

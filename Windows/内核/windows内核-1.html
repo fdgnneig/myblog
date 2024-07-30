@@ -1,0 +1,1327 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>windows内核-1</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="53jnqmcbp51b675nqrd10jt2si">windows内核-1</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="windows%E5%86%85%E6%A0%B8-1_files/images/windows%E5%86%85%E6%A0%B8-1.jpg"></div>
+<h2 class="topic">
+<a name="3rjndon7jctffhb8mcq22iod16">驱动版helloworld</a>
+</h2>
+<h3 class="topic">
+<a name="7057mbd017jag3019m75fod2pj">&nbsp;编写驱动程序</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E5%86%85%E6%A0%B8-1_files/6b9dbk76ko79tqa556fqfbfg3j.png"></p>
+<h3 class="topic">
+<a name="1qnfaanpd2l72epegijttpsdll">&nbsp;&nbsp;vs2013之前驱动开发没有集成到vs中，所以一般是通过编写.c文件和Makefile文件，然后用wdk编译</a>
+</h3>
+<h3 class="topic">
+<a name="40fpg4qufk60ees6ps3h7okrmu">&nbsp;&nbsp;&nbsp;编译过程中需要三个文件:源码文件(.c)、SOURCES文件、makefile文件</a>
+</h3>
+<h3 class="topic">
+<a name="49u9h0mb65tlkcd1kssfq6lq56">&nbsp;&nbsp;&nbsp;&nbsp;helloworld的源代码</a>
+</h3>
+<h3 class="topic">
+<a name="4jf087cfrvuuu85nsj5g4dkpgp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E5%86%85%E6%A0%B8-1_files/2dnl4mrtmhnhk86fgnm5julg8p.png"></p>
+<h3 class="topic">
+<a name="34vbi8l7slhvcin7mcp78dbbrk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#include&lt;ntddk.h&gt;&#13;
+//用于释放 DriverEntry分配的资源、设备对象、符号链接&#13;
+VOID DriverUnload(PDRIVER_OBJECT driver)&#13;
+{&#13;
+	UNREFERENCED_PARAMETER(driver);//函数中没有使用到的参数需要这样处理一下&#13;
+	DbgPrint("unload");&#13;
+}&#13;
+//PDRIVER_OBJECT driver驱动对象指针&#13;
+//PUNICODE_STRING path驱动在注册表中的路径，驱动安装之后都有一个注册表路径&#13;
+NTSTATUS DriverEntry(PDRIVER_OBJECT driver,PUNICODE_STRING path)&#13;
+{&#13;
+	_asm {int 3}&#13;
+	UNREFERENCED_PARAMETER(path);//函数中没有使用到的参数需要这样处理一下&#13;
+	DbgPrint("hello ya");&#13;
+	driver-&gt;DriverUnload = DriverUnload;&#13;
+	return STATUS_SUCCESS;  //只有返回STATUS_SUCCESS驱动才能成功安装&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="2t7l8n5krb7hbtabq733461e3o">&nbsp;&nbsp;&nbsp;&nbsp;SOURCES文件</a>
+</h3>
+<h3 class="topic">
+<a name="55osj6lusv8k3gb33v7qv1h84n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E5%86%85%E6%A0%B8-1_files/76rfaf258cpnnu0cd23hnt1hik.png"></p>
+<h3 class="topic">
+<a name="4rhj78fe05m5hds282c65vthg6">&nbsp;&nbsp;&nbsp;&nbsp;makefile文件内容是固定的</a>
+</h3>
+<h3 class="topic">
+<a name="76bues0lcn3hnrrnt372ce4man">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E5%86%85%E6%A0%B8-1_files/50rhcmtfs91dirg1tj5gbp8nlu.png"></p>
+<h3 class="topic">
+<a name="3go2vicuo4mua173njbbb3ggke">&nbsp;&nbsp;&nbsp;使用wdk进行编译</a>
+</h3>
+<h3 class="topic">
+<a name="4u59gt2p70n0eg21qrvdbhsg1r">&nbsp;&nbsp;&nbsp;&nbsp;选择目标驱动的操作系统</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E5%86%85%E6%A0%B8-1_files/532ndshoqsj3u803nrbm9glegg.png"></p>
+<h3 class="topic">
+<a name="6nukmd597057lmv2jhpad1fe3u">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;相应操作系统版本中选择硬件平台，选择调试版(check build)和发行版（free build）</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E5%86%85%E6%A0%B8-1_files/09i89j8002j0n847sfh7qtpalp.png"></p>
+<h3 class="topic">
+<a name="6rrcnl8nold053i000pt6l07m9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;切换到指定目录使用bld指令进行编译</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E5%86%85%E6%A0%B8-1_files/1s6nb7lipb0q365d90tca36b4g.png"></p>
+<h3 class="topic">
+<a name="3dtgck9rtd757hedbl3im9inug">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;生成debug目录</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E5%86%85%E6%A0%B8-1_files/37pit0nuec9qi6mb9almhcq834.png"></p>
+<h3 class="topic">
+<a name="2344mkjk7nred0oopsjhmkem5v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;其中保存驱动</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E5%86%85%E6%A0%B8-1_files/4i75ldqbpe9ekkfuagjpog6qca.png"></p>
+<h3 class="topic">
+<a name="5t1tgdg9pjshvboh72ttgnbjs5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果出现错误，会直接显示在编译的cmd界面中，如果存在警告，则会在当前目录生成.wrn文件，驱动编译中不能存在警告，需要将每一个警告解决掉</a>
+</h3>
+<h3 class="topic">
+<a name="6oauu56afg9u7mdne1khfin6bk">&nbsp;&nbsp;&nbsp;使用vs2013及以上版本编译驱动</a>
+</h3>
+<h3 class="topic">
+<a name="0p2r02cqa295qm9mkdpkjjgmb0">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E5%86%85%E6%A0%B8-1_files/63h2o1vgvjg0g8ltv0blum59jd.png"></p>
+<h3 class="topic">
+<a name="0e114mrelomh6n17voo53jvd49">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vs2013中创建空白的WDM驱动</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E5%86%85%E6%A0%B8-1_files/2r7sjambis8uu91oaji8l5r2j8.png"></p>
+<h3 class="topic">
+<a name="14qulaai19id8q21ok6sa5juo6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E5%86%85%E6%A0%B8-1_files/3fcqjtflmfmebp27f6edr4pdtk.png"></p>
+<h3 class="topic">
+<a name="6pqacebjtsavkhade4kb01mvjq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意以.c文件作为后缀，.cpp文件编译成驱动比较麻烦，需要在函数名前使用 extern "C"从而关闭c++的名称粉碎</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E5%86%85%E6%A0%B8-1_files/6oeajqrtaecnn14f8656g6jofa.png"></p>
+<h3 class="topic">
+<a name="7rgr722q5h1pu9k5h72mu16qqk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;选择目标平台</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E5%86%85%E6%A0%B8-1_files/0r7a3mlp3snevofn5buoe6n2t4.png"></p>
+<h3 class="topic">
+<a name="3fd2ie3snooflo9k1gaknhfn2a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;编写代码，进行编译</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E5%86%85%E6%A0%B8-1_files/6u54cqa5578snjle7ju1eu6k4p.png"></p>
+<h3 class="topic">
+<a name="7aivmbso8j5q8ailjsc25lj0n9">&nbsp;&nbsp;&nbsp;&nbsp;在vs2017中是以下两个目录</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E5%86%85%E6%A0%B8-1_files/0nlpe0p113c2fr73jm9pig72fs.png"></p>
+<h3 class="topic">
+<a name="7v71log1enrrlfgt547176o4bs">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E5%86%85%E6%A0%B8-1_files/0uolosmsaljrverrhc9g9tfh2r.png"></p>
+<h3 class="topic">
+<a name="03k6cph21cmecu208mothkp2cd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E5%86%85%E6%A0%B8-1_files/00nq9ht19a441l45ur9leq147v.png"></p>
+<h3 class="topic">
+<a name="3ra1lbc7cbh9tkgei3un1ms80i">&nbsp;测试驱动</a>
+</h3>
+<h3 class="topic">
+<a name="6b8up84han5cfc672m4ulutgoj">&nbsp;&nbsp;使用instdrv工具加载驱动，同时打开DbgView查看驱动输出的信息，注意在win7以上的版本，两个程序均需要管理员权限启动</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E5%86%85%E6%A0%B8-1_files/6uv8bbp5v1q3314gf4bohamqgk.png"></p>
+<h3 class="topic">
+<a name="6jm42gpg1osfis2g9482215kc2">&nbsp;&nbsp;&nbsp;驱动注册成功后会在注册表中注册相应的项目</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E5%86%85%E6%A0%B8-1_files/4isjt1o88ie8p2g4i3gqfo5cpi.png"></p>
+<h3 class="topic">
+<a name="5ii8hv9f68vn5ako5o7g7e69e2">&nbsp;&nbsp;&nbsp;&nbsp;点击启动，执行DriverEntry，打印hello world</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E5%86%85%E6%A0%B8-1_files/0fp6pvpdro49leg55u02h4dn9i.png"></p>
+<h3 class="topic">
+<a name="0sikcqnsr19dnie4fjdoolnpev">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;点击停止，会执行DriverUnload函数，打印goodbye</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E5%86%85%E6%A0%B8-1_files/14qvehlm208gukqna9j52re39b.png"></p>
+<h3 class="topic">
+<a name="0sdt6iqqlv3c4mj3e4jpluc5t0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;点击卸载会删除驱动对应的注册表项</a>
+</h3>
+<h3 class="topic">
+<a name="3h4k2acchoqklptt6pmqfrbaub">&nbsp;&nbsp;如果生成的驱动要运行在win7平台则需要数字签名</a>
+</h3>
+<h3 class="topic">
+<a name="0h9rrgfjl5qv4qub6ae0nf6rd1">&nbsp;&nbsp;&nbsp;此时按F8</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E5%86%85%E6%A0%B8-1_files/5oeuiv34ecbt2871g7b2mgc10v.png"></p>
+<h3 class="topic">
+<a name="6u85bg0bfhn54g68peis9bvnfs">&nbsp;&nbsp;&nbsp;&nbsp;选择禁用数字签名，从而驱动没有数字签名也可以运行</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E5%86%85%E6%A0%B8-1_files/17g5ahah1tu6f5ig7b311rc4m2.png"></p>
+<h3 class="topic">
+<a name="6lnrq36rre2u7pb711opfiss0k">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;以管理员运行instdrv，从而加载驱动</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E5%86%85%E6%A0%B8-1_files/4lhq3hfnmlll1hfdolcab6rrdv.png"></p>
+<h3 class="topic">
+<a name="4ptg0p53jnojd5v7cmdioj1gin">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;之后与上面相同</a>
+</h3>
+<h3 class="topic">
+<a name="51j9nefh59qums1asl6qcf569n">&nbsp;调试驱动</a>
+</h3>
+<h3 class="topic">
+<a name="6b83hc5d8pjmencnjmkevtbilq">&nbsp;&nbsp;windbg调试驱动</a>
+</h3>
+<h3 class="topic">
+<a name="6tj0dtkmjo78pjq447f7gk2hp2">&nbsp;&nbsp;&nbsp;xp调试</a>
+</h3>
+<h3 class="topic">
+<a name="38uqj9es12j8e5ucgho3fifc3i">&nbsp;&nbsp;&nbsp;&nbsp;串口调试方法忽略，现在使用多的方法是用VirtualKD 创建双机调试，具体查看相关文档</a>
+</h3>
+<h3 class="topic">
+<a name="3q5ga4n2i4kk9g8pe0dsm03o5s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;创建串口调试驱动程序</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E5%86%85%E6%A0%B8-1_files/1j032qe4kshd7ugfa9hlli4osj.png"></p>
+<h3 class="topic">
+<a name="4om2bkl3e4qupkqhh9klb18k7e">&nbsp;&nbsp;&nbsp;&nbsp;调试时设置符号路径</a>
+</h3>
+<h3 class="topic">
+<a name="57ks8se8kl4hej6p4kajh1dkmo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;本地缓存符号路径+微软官方符号服务器，之后wiindbg会将符号下载到该路径下，下一次可以直接使用</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E5%86%85%E6%A0%B8-1_files/5al1dhkn2ihiqsc8hjnig34dl4.png"></p>
+<h3 class="topic">
+<a name="6g1uheablo6auhh3ko3dj7orcu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;同时需要指定自己驱动的符号，通过点击Browse 选择符号所在的文件夹</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E5%86%85%E6%A0%B8-1_files/7ouq0budp0qukh15kd9sn6vvb3.png"></p>
+<h3 class="topic">
+<a name="6gad6psi28djlq2b5rjguo10fh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;点击reload，重新加载符号</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E5%86%85%E6%A0%B8-1_files/0uce4o08jtgt3jt4orke3l2rol.png"></p>
+<h3 class="topic">
+<a name="2tunhkt0pda5h8p2peq18ic0fi">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;加载符号完成，输入lm，查看自己的驱动后是否存在符号路径，如果存在，说明此时符号加载成功，符号加载失败的原因可能是1、自己的驱动在虚拟机中没有运行起来 2、加载的符号和驱动不匹配&#13;
+也可以通过执行 .reload/i从而强行重新加载符号</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E5%86%85%E6%A0%B8-1_files/4be03p2op9nkulinrjbkc7sg77.png"></p>
+<h3 class="topic">
+<a name="21jdr1qughe43spsr696ovip58">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;加载完成后，打开源文件</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E5%86%85%E6%A0%B8-1_files/03gk1ek1lr4f7tsmrjkaousmfs.png"></p>
+<h3 class="topic">
+<a name="6p3t39vikbl150h7h1g074qvv9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;进入源码调试</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E5%86%85%E6%A0%B8-1_files/0ubt4n6m8igqv3r8dllo3bno76.png"></p>
+<h3 class="topic">
+<a name="4ntsr0v52u4sd1mtb72svgmq2r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;f9下断点</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E5%86%85%E6%A0%B8-1_files/67rgm2us6ulesloqfcg8nn2fmk.png"></p>
+<h3 class="topic">
+<a name="40mvgi5v62a5qp5a1lb2uhfohg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;继续运行，点击停止，调用DriverUnload，断点触发</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E5%86%85%E6%A0%B8-1_files/5t25egv8hhmddh6ijh8kkftatj.png"></p>
+<h3 class="topic">
+<a name="5fcedpdb65prc323tmc0k3vn5q">&nbsp;&nbsp;&nbsp;win7 x64调试</a>
+</h3>
+<h3 class="topic">
+<a name="0llrh7c2h6b0aasfshnt92c0cf">&nbsp;&nbsp;&nbsp;&nbsp;此时按f8，从而关闭数字签名</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E5%86%85%E6%A0%B8-1_files/6gdk77kkdjanr6sm9hvj0bfrs1.png"></p>
+<h3 class="topic">
+<a name="5mmhn341siriumt1qvofo8rim3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E5%86%85%E6%A0%B8-1_files/56fcvi07cl1glv84p5mfm33vhj.png"></p>
+<h3 class="topic">
+<a name="6rg5tdrf6cg5nggigpaqll3q68">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;打开windbg进行连接</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E5%86%85%E6%A0%B8-1_files/459kbleh5th7ni4uh7cqrngkak.png"></p>
+<h3 class="topic">
+<a name="4l47p3v4c2ooj285j4687iudtj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在虚拟机中加载要调试的驱动</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E5%86%85%E6%A0%B8-1_files/6ovj5j6vr3p868k643m57a5ni6.png"></p>
+<h3 class="topic">
+<a name="27uph2rc4pr8qtuanhig5jq1lq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;windbg中断下，并且设置系统调试符号和驱动程序的调试符号</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E5%86%85%E6%A0%B8-1_files/4shb1l532hm2sn4ftkda1t13g1.png"></p>
+<h3 class="topic">
+<a name="18lvkd7216vc0kl4if9lqj8msi">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;运行lm确认符号加载成功</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E5%86%85%E6%A0%B8-1_files/73nn4u5asvr3i5ch9ioh6o3br8.png"></p>
+<h3 class="topic">
+<a name="64hp93cjjgl20eg2vnne24ghsm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;打开源文件进行源码调试</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E5%86%85%E6%A0%B8-1_files/2jaapj88s1rnb6969e0t36vr0t.png"></p>
+<h3 class="topic">
+<a name="3s04ts4to5t0739hulnla8vjij">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果有多个源文件的话，可以指定源文件路径，从而源码调试</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E5%86%85%E6%A0%B8-1_files/55er4d3ep0ak4vt99jbolg4taj.png"></p>
+<h3 class="topic">
+<a name="01gg5p0g700ip1jrnaghjfk8qd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;按f9下断点，并让程序继续执行，并触发断点</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E5%86%85%E6%A0%B8-1_files/16je84ogcd3u3jp0udrpg4ubo7.png"></p>
+<h3 class="topic">
+<a name="6tr4je09krfu6nhvtn0getuera">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;windbg在x64中调试驱动程序时无法显示函数DbgPrint的输出</a>
+</h3>
+<h3 class="topic">
+<a name="1oi3chg1tmqll6eud6rdkqk6n4">&nbsp;&nbsp;vs调试驱动</a>
+</h3>
+<h3 class="topic">
+<a name="7aieptarll41fabucit10gvtup">&nbsp;&nbsp;&nbsp;调试win7</a>
+</h3>
+<h3 class="topic">
+<a name="6iug9rio3ndcc7uku1hdpcagva">&nbsp;&nbsp;&nbsp;&nbsp;在win7虚拟机中创建串口</a>
+</h3>
+<h3 class="topic">
+<a name="6osr0497n7bobekl1306082q77">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;然后执行ppt中针对win7的四条命令</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E5%86%85%E6%A0%B8-1_files/7suhf7ga5naqfrf0dr7r4m3r77.png"></p>
+<h3 class="topic">
+<a name="5cq6vqc0k8hd607jkjmnk8jtsl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;启动win7选择启用调试程序，如果是win7x64的需要禁用数字签名 win7x86不用</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E5%86%85%E6%A0%B8-1_files/2lb3eriechpl5f62q1l5f91i60.png"></p>
+<h3 class="topic">
+<a name="1rii5eqa7veo3q20239hnq4o5d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;配置vs2013</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E5%86%85%E6%A0%B8-1_files/4ds0mpvtsjtn2l2l0sa14o4srq.png"></p>
+<h3 class="topic">
+<a name="5jelqfkp2cfudefkfsplls7lhs">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E5%86%85%E6%A0%B8-1_files/7busg6jh8crpgpracbnd2eiv87.png"></p>
+<h3 class="topic">
+<a name="0jrcdv8jcq7anf1ag6rod4phs2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E5%86%85%E6%A0%B8-1_files/67ls2nv3j47vudnae6ssmuhduk.png"></p>
+<h3 class="topic">
+<a name="5elns94fn35t3kf0s840e7m0kl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E5%86%85%E6%A0%B8-1_files/0h1sk7kfccf6uc2t6tba39761e.png"></p>
+<h3 class="topic">
+<a name="5d27gs3ll59uc6reosm3q7cigr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E5%86%85%E6%A0%B8-1_files/69m1deoh3pndf3lbircfqg3pde.png"></p>
+<h3 class="topic">
+<a name="49djv9ou593qpldhsgma5ed2nc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在vs2013中下断点</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E5%86%85%E6%A0%B8-1_files/44maiti6dink5u8k2p8r2epu04.png"></p>
+<h3 class="topic">
+<a name="4lnfmetj6ioipupa10ailhier5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;按f5，选择继续调试</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E5%86%85%E6%A0%B8-1_files/7eu9q0ddfaj7696k73hphe0kkl.png"></p>
+<h3 class="topic">
+<a name="3i7bvcgf08ebdomeln9u4c3b6r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;编译成功后，选中之前创建的调试计算机 next</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E5%86%85%E6%A0%B8-1_files/22k3fko4th961co3768fgfohcv.png"></p>
+<h3 class="topic">
+<a name="4ob7ergu16pcjo6iftm4pjiidd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;一路next 最后finish，等待连接</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E5%86%85%E6%A0%B8-1_files/6k2rhi9dp9jrk4n4o3glq4dsuh.png"></p>
+<h3 class="topic">
+<a name="6k0g3mnso4a5d9l021mgiltvvt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;点击ctrl break</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E5%86%85%E6%A0%B8-1_files/481ulmo96soaa7rcnvu7sobr3r.png"></p>
+<h3 class="topic">
+<a name="6477bjsosauc78e8k3cetvgor9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;完成与虚拟机的连接 f5让虚拟机继续运行</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E5%86%85%E6%A0%B8-1_files/2n3p0kepcfjk7gdn5b9dnbi8mb.png"></p>
+<h3 class="topic">
+<a name="2ttogmsh6h89qnh5198uqb8hkj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将要调试的驱动拷贝到虚拟机中</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E5%86%85%E6%A0%B8-1_files/6hg0upj19mjki3rlrsu1ph80n5.png"></p>
+<h3 class="topic">
+<a name="368u9eulisu1tore1icaqqjfdr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;加载驱动并安装</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E5%86%85%E6%A0%B8-1_files/4m7h9k85vdp4uqmgpk6b7p1nfo.png"></p>
+<h3 class="topic">
+<a name="7q3p52g6qrib15k672n32n7q9o">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;程序在vs中断下</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E5%86%85%E6%A0%B8-1_files/6shn8s7bo350n91qq70nm0s36h.png"></p>
+<h3 class="topic">
+<a name="0ardttcmnur9omjnpqvj8tnsvu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;调试时可以查看各种信息</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E5%86%85%E6%A0%B8-1_files/7dklq3apgso0dltpng6lcgcmeh.png"></p>
+<h3 class="topic">
+<a name="6ev1oh9udf3usjl6upf9r9is1d">&nbsp;&nbsp;使用virtualKD调试驱动</a>
+</h3>
+<h3 class="topic">
+<a name="2d96a4h4scmc6erti4mtnf681r">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E5%86%85%E6%A0%B8-1_files/4l24lfj06v8tac2ff3s0m7tlf9.png"></p>
+<h3 class="topic">
+<a name="2j3a49m5fq599v2uqbr4ub5m8g">&nbsp;在WDK文档中可以查找内核中的结构体相关信息</a>
+</h3>
+<h3 class="topic">
+<a name="4oncjcrpqor9o2rmj84ve45fo3">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E5%86%85%E6%A0%B8-1_files/6578omao1edt3ha1es3260eme4.png"></p>
+<h3 class="topic">
+<a name="19g01d6qj5a4hofjuk2djpug22">&nbsp;&nbsp;&nbsp;查找驱动对象结构体的定义</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E5%86%85%E6%A0%B8-1_files/2cu2li5201iv0if2lj5auu3q20.png"></p>
+<h2 class="topic">
+<a name="67mb76l589545h7prrh7hdo345">NT驱动框架</a>
+</h2>
+<h3 class="topic">
+<a name="3acscioum8k6n31f9q856c02e3">&nbsp;API被调用的流程</a>
+</h3>
+<h3 class="topic">
+<a name="3t0t7lntldemkts3c0d6qfm0sg">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E5%86%85%E6%A0%B8-1_files/2qvuh4u6govlfrkjqu3r035o12.png"></p>
+<h3 class="topic">
+<a name="1c6rnjmno3f5hc7b5ava6srtnn">&nbsp;&nbsp;&nbsp;ntdll中的api一般是以nt或zw开头&#13;
+ntdll中的api通过sysenter或syscall或int 0x2e从应用层进入内核层 （int 0x2e用在xp及其之前的系统），进入内核之后会调用ntoskrnl.exe中的ssdt表中的ssdt函数，之后io管理器将io请求封装为irp包，irp中包含应用层中传输过来的数据，irp包会传递给不同的驱动（比如ntfs.sys即文件系统驱动）（disk.sys即磁盘驱动），最终将传递给硬件抽象层，由硬件抽象层调用硬件驱动，完成io操作</a>
+</h3>
+<h3 class="topic">
+<a name="0ne0s0dhtpgvj9oecs2joia2q7">&nbsp;驱动框架</a>
+</h3>
+<h3 class="topic">
+<a name="3g4fq6898lk0lsclhkl925g1jl">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E5%86%85%E6%A0%B8-1_files/512oglbdap3503t9rnj2d4830f.png"></p>
+<h3 class="topic">
+<a name="0kma5lhp1mflvu2aik69ap8dt8">&nbsp;&nbsp;&nbsp;应用层的每一个api在驱动程序中都有一个对应的分发函数 ，两者的对应关系是基于IRP的，分发函数会接收处理对应应用层api发到内核中的irp数据包，就像上面的CreateFile函数对应驱动中的DispatchCreate函数，分发函数是自己实现的并在DriverEntry函数中将分发函数指针设置到驱动对象的分发函数数组中</a>
+</h3>
+<h3 class="topic">
+<a name="054pobliqop22gb0loq6ev37oj">&nbsp;&nbsp;安全主要用nt驱动，wdm驱动主要支持了热插拔，主要用于硬件驱动，如网卡等</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E5%86%85%E6%A0%B8-1_files/7r3mffqfb6mn3o7ekpv1559nlb.png"></p>
+<h3 class="topic">
+<a name="5gcqn6fd3332g8q9f5ll0ovc6d">&nbsp;&nbsp;&nbsp;IRP_MJ_CLEANUP主要用于将内核对象的句柄清处为零&#13;
+IRP_MJ_CLOSE主要用于将文件内核对象清除为零</a>
+</h3>
+<h3 class="topic">
+<a name="1mao6agnpuif3tffhn7u8cd3u1">&nbsp;&nbsp;&nbsp;针对应用层中的每一个api，会对应一种操作，对应一个irp消息，每个irp消息在驱动程序中对应一个分发函数进行处理，所以这里没有列举出所有的分发函数</a>
+</h3>
+<h3 class="topic">
+<a name="6evf8o72cbqocm55jee1pmdqgu">&nbsp;&nbsp;&nbsp;系统最多支持0x1b个irp消息</a>
+</h3>
+<h3 class="topic">
+<a name="2c20r7d3vg9ii99nkd9897shi1">&nbsp;实现一个nr驱动模型</a>
+</h3>
+<h3 class="topic">
+<a name="1qt6a37idd0ssob8hcgh8ih4nq">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E5%86%85%E6%A0%B8-1_files/6cbm4bhq25a45ri02umjp5sktc.png"></p>
+<h3 class="topic">
+<a name="3rgu3kvveqt6r9c2fi42grq15q">&nbsp;&nbsp;&nbsp;内核层为了让应用层可以访问，内核层必须创建设备对象和符号链接，irp最终发送给设备对象，然后设备对象将irp发送给分发函数进行处理</a>
+</h3>
+<h3 class="topic">
+<a name="3q9o7ruk2pjkj2nhep6e9tcoqr">&nbsp;&nbsp;&nbsp;r3r0通过read、write进行通讯的三种方式</a>
+</h3>
+<h3 class="topic">
+<a name="31ir5eavu92bio53oqaa5o1j6t">&nbsp;&nbsp;&nbsp;&nbsp;缓冲区设备读写方式</a>
+</h3>
+<h3 class="topic">
+<a name="0ib5iv09rtg55ibmu1i2qpf34d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在内核态中申请堆空间，将用户态缓冲区拷贝到内核态，内核态处理完毕后，在拷贝回用户态</a>
+</h3>
+<h3 class="topic">
+<a name="0lgd3j530806e2v4rem3nobm12">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用于不追求效率的情况下</a>
+</h3>
+<h3 class="topic">
+<a name="37n1kraqgm2lbnao6pkvnibh72">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过irp获取缓冲区</a>
+</h3>
+<h3 class="topic">
+<a name="7p2gpiq889s53qj54hhiq1i2nq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;irp-》AssociatedIrp.SystemBuffer</a>
+</h3>
+<h3 class="topic">
+<a name="4fi538bj67e2adsstca2squqnq">&nbsp;&nbsp;&nbsp;&nbsp;直接读写方式</a>
+</h3>
+<h3 class="topic">
+<a name="7bab3uh4e831h4m4j1cpk6ftvl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过MDL对用户态内存进行重新映射，得到一个内核空间的地址，对该地址的内容进行修改，改变的是对应内核态内存中的数据</a>
+</h3>
+<h3 class="topic">
+<a name="1a8toeqenc3cr4tiitlr6cgb85">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;需要创建MDL,如果需要获取缓冲区地址需要调用api</a>
+</h3>
+<h3 class="topic">
+<a name="5di8j6plsdeddilg8haavbm82e">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;找一块物理内核，将r3中的虚拟内存映射到该物理内存中（通过mdl）然后将该物理内核上锁，即不允许切换，然后再通过mdl将该块物理内存重新映射到r0中的虚拟地址</a>
+</h3>
+<h3 class="topic">
+<a name="13b7orqiuf5g23e2kftchu4q8m">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E5%86%85%E6%A0%B8-1_files/236ulaqu4nmlfrg2ov8fplcc0t.png"></p>
+<h3 class="topic">
+<a name="3dmmuro17vj9rb93ng4q5o7ev3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过irp+api获得缓冲区的指针及其数据</a>
+</h3>
+<h3 class="topic">
+<a name="5rkcmihdvina5jf7fb8c90jseu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;irp-》MdlAddress</a>
+</h3>
+<h3 class="topic">
+<a name="156u36dth55i54ele4lk8hd1uv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果要使用其中的数据，需要使用api 才能获得其中的数据</a>
+</h3>
+<h3 class="topic">
+<a name="1ae9fgbm2c1o40qdo2d8ldvbn9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MmGetSystemAddressForMdlSafe(irp-&gt;MdlAddress,NormalPagePriority)</a>
+</h3>
+<h3 class="topic">
+<a name="2tukfkddmeq6caojngdfid9avp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该函数返回指定数据的指针</a>
+</h3>
+<h3 class="topic">
+<a name="394j8qr3ho99m18co8jobrglnn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;主要用于大规模数据交换</a>
+</h3>
+<h3 class="topic">
+<a name="24kpp6shlde1asj3v32bij5cej">&nbsp;&nbsp;&nbsp;&nbsp;其他方式</a>
+</h3>
+<h3 class="topic">
+<a name="43c0qn9q28co4krpccntgctb6i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过irp获得缓冲区地址</a>
+</h3>
+<h3 class="topic">
+<a name="1q2kvikg4mdrlmjufl0f6deiqe">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;irp-》UserBuffer</a>
+</h3>
+<h3 class="topic">
+<a name="7m17hheeemndfn8c248dumuqko">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E5%86%85%E6%A0%B8-1_files/7nsgifo7veel9bvqivauiqejjm.png"></p>
+<h3 class="topic">
+<a name="5avheq014phbcdlu9jrrb8678s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意此种方法得到的缓冲度地址是用户层的地址，当cpu发生进程切换的时候，该地址中的数据会变成另一个进程中的数据，会发生地址错误</a>
+</h3>
+<h3 class="topic">
+<a name="32plm7nf0raec66011enchdda3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果要使用这种方法，需要保证r3与r0处于同一个进程上下文（即r3不进行进程切换） 需要在进行内存读写之前使用ProbeForRead()、ProbeForWrite()以及try{}except，从而保证r3传给r0的内存地址是r3中内存，而不是r0中的地址</a>
+</h3>
+<h3 class="topic">
+<a name="0unra9m5hoa68mrn6b9ibsv0jl">&nbsp;&nbsp;&nbsp;&nbsp;使用哪种方法取决于设备对象结构体中Flags的值，一般在设备对象创建完成之后，进行Flags的指定</a>
+</h3>
+<h3 class="topic">
+<a name="08maju1ldue25cbprng44t8m8r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;objDev-&gt;Flags |= DO_BUFFERED_IO ;</a>
+</h3>
+<h3 class="topic">
+<a name="39k9stbbsvmod5p15m5erlohkc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;缓冲区读写方式</a>
+</h3>
+<h3 class="topic">
+<a name="3mln4truib72kcf6c66iprao12">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;objDev-&gt;Flags |= DO_DIRECT_IO ;</a>
+</h3>
+<h3 class="topic">
+<a name="3o5pd7u11li5q3rv1lo36u8bls">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;直接读写方式</a>
+</h3>
+<h3 class="topic">
+<a name="7jq2h12q2aqul5jbja2o0s4mri">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;objDev-&gt;Flags |= 0</a>
+</h3>
+<h3 class="topic">
+<a name="0a6anbv8s95351tuunscoa7olq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;其他读写方式</a>
+</h3>
+<h3 class="topic">
+<a name="2uil4nbn0hjb2ijn94sm5rc0dn">&nbsp;&nbsp;&nbsp;irp结构</a>
+</h3>
+<h3 class="topic">
+<a name="7s066urj8qafsc5bln7cbe20nc">&nbsp;&nbsp;&nbsp;&nbsp;irp分为头部和栈，rip可以在不同层次的驱动对象间传递，rip栈中的每一层对应一个驱动对象，响应的对应驱动对象只能访问对应层</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E5%86%85%E6%A0%B8-1_files/4c8sdj5gkobr6ug6e7sncsur5n.png"></p>
+<h3 class="topic">
+<a name="5ef8hb3tfrc834pgfvcccj9llo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;irp中关键字段的使用</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E5%86%85%E6%A0%B8-1_files/2t81r63dehi6ahkbj0fr65pvid.png"></p>
+<h3 class="topic">
+<a name="7ble1ikhkmef403f0v4e1or3at">&nbsp;&nbsp;&nbsp;驱动是如何在系统中加载运行的</a>
+</h3>
+<h3 class="topic">
+<a name="04oqn1eo0emmjtc2o09a7h4ee2">&nbsp;&nbsp;&nbsp;&nbsp;通过在注册表中创建服务，注册表中的值决定了该驱动何时运行（开机就运行等）</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E5%86%85%E6%A0%B8-1_files/7e5791no2h0p52ltud4kifcbun.png"></p>
+<h3 class="topic">
+<a name="5a2bnsk1ausgn2grl795cholap">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;驱动与应用层交互</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E5%86%85%E6%A0%B8-1_files/5qs6cl38tgl9id54ue0m0v8p2a.png"></p>
+<h3 class="topic">
+<a name="186q1rndjrdo7ete5hrnah4922">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;客户端安装驱动和卸载驱动</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E5%86%85%E6%A0%B8-1_files/59ier24cnbgo44118kbeivbgnn.png"></p>
+<h3 class="topic">
+<a name="7th72a2bqmmgjbjltsu7bqvt1v">&nbsp;&nbsp;&nbsp;&nbsp;实际上就是写注册表，在注册表中添加服务项，驱动就是通过该服务在注册表中被描述的</a>
+</h3>
+<h3 class="topic">
+<a name="1ink9fsd0b17tt5kh7veg3n5nf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在注册表中找到驱动对应的服务项</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E5%86%85%E6%A0%B8-1_files/7q4cd66th8oaajk59enk7mceoc.png"></p>
+<h3 class="topic">
+<a name="7ou8rkhq8cjlu7206mbahiptds">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;services中就是系统中所有注册的服务，包括驱动，也是以同名服务的形式保存在里面</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E5%86%85%E6%A0%B8-1_files/1qkm931t11ejcaq9uciv6k37lt.png"></p>
+<h3 class="topic">
+<a name="27lqk3aomo6o4i6964f6uuj452">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;一个驱动键值中的数据项，其中的start和GroupOrder决定了驱动启动的时间点&#13;
+start=0或1是驱动在系统启动之前启动&#13;
+start=2是在系统显示登陆框之后驱动才启动&#13;
+start=3表示手动启动，不随系统启动而启动&#13;
+start=4表示禁用&#13;
+GroupOrder位于HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\GroupOrderList</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E5%86%85%E6%A0%B8-1_files/1fec28s502od4c50an7205rskr.png"></p>
+<h3 class="topic">
+<a name="6gfr4mdmpo7r6df8bijvqr47cs">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E5%86%85%E6%A0%B8-1_files/4hirhvm5fm4hvks4cqnn0eq9ql.png"></p>
+<h3 class="topic">
+<a name="0ripe513s82g5g6e0ug8bdekc8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;start的四种值</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E5%86%85%E6%A0%B8-1_files/4ksbotukm531avc10m1m3m7vpu.png"></p>
+<h3 class="topic">
+<a name="65784fquigc6ijdnmsmpsoqs5i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E5%86%85%E6%A0%B8-1_files/1o4hgg4nvn5nrbjaqu26s4vkjf.png"></p>
+<h3 class="topic">
+<a name="4b2t6jogtgvclj6up23stvqn32">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;GroupOrder位于HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\GroupOrderList</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E5%86%85%E6%A0%B8-1_files/1ut2kjk7evjd5os1n5ta6g1070.png"></p>
+<h3 class="topic">
+<a name="4sl1nf819h7jqotg8c89666nth">&nbsp;&nbsp;&nbsp;内核中申请堆空间（详细代码可见驱动模型代码）</a>
+</h3>
+<h3 class="topic">
+<a name="0lqfdckcua3bqblv41ogqhg189">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E5%86%85%E6%A0%B8-1_files/6vup038fud943qvk500q4onfil.png"></p>
+<h3 class="topic">
+<a name="1st7p4td20s4hgsv882fqb9jaq">&nbsp;&nbsp;&nbsp;注意DeviceIOControl()函数本身也是通过将irp消息传输到内核中，调用对应的驱动对象的分发函数(派遣函数)，从而完成功能的，其过程和ReadFile WriteFile差不多</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E5%86%85%E6%A0%B8-1_files/530sd56rn47e5d5qit8h9jliv6.png"></p>
+<h3 class="topic">
+<a name="0j1brbsa9vfdcinuusci43n6d3">&nbsp;&nbsp;&nbsp;ro r3通讯</a>
+</h3>
+<h3 class="topic">
+<a name="0g0ndtff7d4b3p1irbd28693on">&nbsp;&nbsp;&nbsp;&nbsp;针对DeviceIOControl()进行r0 r3通讯的方式&#13;
+缓冲区通讯、直接通讯、其他通讯（与readfile writefile的三种通讯方式实际类似，只不过对于direct_io DeviceIOControl分为两种方式）</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E5%86%85%E6%A0%B8-1_files/2795vqjjag2j6pf4odt3e93pd5.png"></p>
+<h3 class="topic">
+<a name="48u29ktbi4tft78g0njgbf4t1v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;针对ReadFile WriteFile函数进行r3 r0通讯的三种方式</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E5%86%85%E6%A0%B8-1_files/2vq3r9gic5ojvq48me9s0m0ork.png"></p>
+<h3 class="topic">
+<a name="55unahu6otmvslklp5p0ndoio3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;客户端代码(用于与r0通讯)</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E5%86%85%E6%A0%B8-1_files/10up37ntifnilc1e2369nj1krg.png"></p>
+<h3 class="topic">
+<a name="37627lsghr4c0c72chtvdn4opq">&nbsp;&nbsp;&nbsp;驱动模型代码</a>
+</h3>
+<h3 class="topic">
+<a name="4ckes3p6dktmp1ksa8re2sv9fu">&nbsp;&nbsp;&nbsp;&nbsp;#include &lt;ntddk.h&gt;&#13;
+&#13;
+#define DEVICE_NAME L"\\device\\ntmodeldrv"    //设备对象名，"\\device\\"是固定的&#13;
+#define LINK_NAME L"\\dosdevices\\ntmodeldrv"  //符号链接名，"\\dosdevices\\"是固定的&#13;
+&#13;
+//注意定义控制码的代码在r3和r0中要保持一致&#13;
+#define IOCTRL_BASE 0x800//控制码基值，windows中用户自定义的控制码从0x800开始&#13;
+&#13;
+//使用CTL_CODE定义DeviceIOControl的控制码&#13;
+//控制码是一个32位整数&#13;
+//CTL_CODE的参数：&#13;
+//设备对象类型、&#13;
+//控制码的值、&#13;
+//DeviceIOControl的通讯方法，类比于read write函数的三种通讯方式，METHOD_BUFFERED表示通过缓冲区通讯，即指定了DeviceIOControl函数的输入缓冲区和输出缓冲区的实现方式&#13;
+//FILE_ANY_ACCESS表示返回方式，既能读也能写&#13;
+#define MYIOCTRL_CODE(i) \&#13;
+	CTL_CODE(FILE_DEVICE_UNKNOWN, IOCTRL_BASE+i, METHOD_BUFFERED,FILE_ANY_ACCESS)&#13;
+&#13;
+#define CTL_HELLO MYIOCTRL_CODE(0) //定义控制码&#13;
+#define CTL_PRINT MYIOCTRL_CODE(1) //定义控制码&#13;
+#define CTL_BYE MYIOCTRL_CODE(2)   //定义控制码&#13;
+&#13;
+//公共分发函数，什么都不做 第一个参数是设备对象，第二个参数为irp&#13;
+NTSTATUS DispatchCommon(PDEVICE_OBJECT pObject, PIRP pIrp)&#13;
+{&#13;
+	pIrp-&gt;IoStatus.Status=STATUS_SUCCESS;//设置irp中的字段，表示本次io成功，返回给应用层&#13;
+	pIrp-&gt;IoStatus.Information = 0;//irp中的该字段表示本次io的额外信息&#13;
+&#13;
+	IoCompleteRequest(pIrp, IO_NO_INCREMENT);//结束irp ，针对irp还有其他处理方法，比如更改irp，继续下发irp等&#13;
+	return STATUS_SUCCESS;//返回给io管理器&#13;
+}&#13;
+//因为应用层一般使用CreateFile的方式打开驱动对象的设备驱动，所以驱动对象中要实现一个分发函数专门对应CreateFile函数&#13;
+//只要返回成功，操作系统就会为打开该设备对象的进程分配文件句柄，从而在r3进程中可以使用设备对象与驱动对象进行通讯&#13;
+NTSTATUS DispatchCreate(PDEVICE_OBJECT pObject, PIRP pIrp)&#13;
+{&#13;
+	pIrp-&gt;IoStatus.Status=STATUS_SUCCESS;&#13;
+	pIrp-&gt;IoStatus.Information = 0;&#13;
+&#13;
+	IoCompleteRequest(pIrp, IO_NO_INCREMENT);&#13;
+&#13;
+	return STATUS_SUCCESS;&#13;
+}&#13;
+//用于响应ReadFile函数，所以数据从r0传递到r3，ReadFile函数的相关参数保存在irp结构体中&#13;
+NTSTATUS DispatchRead(PDEVICE_OBJECT pObject, PIRP pIrp)&#13;
+{&#13;
+	PVOID pReadBuffer = NULL;&#13;
+	ULONG uReadLength = 0;&#13;
+	PIO_STACK_LOCATION pStack = NULL;&#13;
+	ULONG uMin = 0;&#13;
+	ULONG uHelloStr = 0;&#13;
+&#13;
+	uHelloStr = (wcslen(L"hello world")+1)*sizeof(WCHAR);&#13;
+&#13;
+	//第一步，拿到缓存的地址和长度&#13;
+	//从irp头部拿缓存地址，因为这里使用DO_BUFFERED_IO 方式进行通讯，所以这里获得的pReadBuffer指向io管理器在内核中分配的缓存，之后要传递给应用层的数据就要放到该缓存中&#13;
+	pReadBuffer = pIrp-&gt;AssociatedIrp.SystemBuffer;&#13;
+	//从irp栈上拿缓存长度&#13;
+	pStack = IoGetCurrentIrpStackLocation(pIrp);//得到当前irp栈的位置&#13;
+	uReadLength = pStack-&gt;Parameters.Read.Length;//从irp栈中获得本次read操作lenth参数&#13;
+&#13;
+	//第二步：读，写等操作&#13;
+	uMin = uReadLength&gt;uHelloStr?uHelloStr:uReadLength;//将字符串的长度和缓存的长度的最小值作为内存拷贝的字节数，此时问题在于如果缓存的大小小于字符串长度，则不能将字符串完整拷贝到缓存中，会丢失字符串最后的\0&#13;
+	RtlCopyMemory(pReadBuffer, L"hello world",uMin);//进行内存拷贝,此时如果拷贝字符串，并且缓存的大小小于字符串长度，则此时内存操作的字节数为缓存的大小-2，因为需要最后两个字节空间存储字符串结尾符\0(当前这是对于unicode字符串而言，对于ascii存储\0只需要一字节)&#13;
+&#13;
+	//第三步，完成IRP&#13;
+	pIrp-&gt;IoStatus.Status = STATUS_SUCCESS;&#13;
+	pIrp-&gt;IoStatus.Information = uMin;//本次io实际传输的字节数&#13;
+	IoCompleteRequest(pIrp,IO_NO_INCREMENT);//结束irp&#13;
+&#13;
+	return STATUS_SUCCESS;&#13;
+&#13;
+}&#13;
+//数据从应用层到内核层&#13;
+NTSTATUS DispatchWrite(PDEVICE_OBJECT pObject, PIRP pIrp)&#13;
+{&#13;
+	PVOID pWriteBuff = NULL;&#13;
+	ULONG uWriteLength = 0;&#13;
+	PIO_STACK_LOCATION pStack = NULL;&#13;
+&#13;
+	PVOID pBuffer = NULL;&#13;
+	//从irp头中获得缓存地址&#13;
+	pWriteBuff = pIrp-&gt;AssociatedIrp.SystemBuffer;	&#13;
+	//从irp栈中获得缓存长度&#13;
+	pStack = IoGetCurrentIrpStackLocation(pIrp);&#13;
+	uWriteLength = pStack-&gt;Parameters.Write.Length;&#13;
+	//一般WriteFile函数需要将用户层内容写道磁盘上，所以需要将irp消息继续往下传递到磁盘驱动中，这里我们仅仅模拟一个写操作，将数据写到内核内存中&#13;
+	//在内核中申请内存 参数PagedPool表示分页内存（分页内存可能发生缺页中断）分页内存只能在IRQL为PASSIVE的情况下使用（分发函数均为PASSIVE级别），NonPagedPool表示非分页内存，可以在驱动任何位置使用，非分页内存池中的内存比较少，所以要节省使用&#13;
+	//第二个参数为分配内存的长度&#13;
+	//第三个参数为标志，该标志一般不超过4字节，用于标记分配的内存,这里'TSET'不是字符串,在内存中是TEST所代表的数据&#13;
+	pBuffer = ExAllocatePoolWithTag(PagedPool, uWriteLength, 'TSET');&#13;
+	if(pBuffer == NULL)&#13;
+	{&#13;
+		pIrp-&gt;IoStatus.Status = STATUS_INSUFFICIENT_RESOURCES;//返回值表示内存空间不足&#13;
+		pIrp-&gt;IoStatus.Information = 0;&#13;
+		IoCompleteRequest(pIrp,IO_NO_INCREMENT);&#13;
+		return STATUS_INSUFFICIENT_RESOURCES;//返回值表示内存空间不足&#13;
+	}&#13;
+&#13;
+	memset(pBuffer, 0, uWriteLength);//将内存初始化&#13;
+&#13;
+	RtlCopyMemory(pBuffer, pWriteBuff, uWriteLength);//将用户空间的数据写入内核内存空间&#13;
+&#13;
+	ExFreePool(pBuffer);//释放内核中分配的内存&#13;
+	pBuffer=NULL;&#13;
+&#13;
+	//结束本次irp&#13;
+	pIrp-&gt;IoStatus.Status = STATUS_SUCCESS;&#13;
+	pIrp-&gt;IoStatus.Information = uWriteLength;&#13;
+&#13;
+	IoCompleteRequest(pIrp,IO_NO_INCREMENT);&#13;
+&#13;
+	return STATUS_SUCCESS;&#13;
+&#13;
+}&#13;
+&#13;
+NTSTATUS DispatchIoctrl(PDEVICE_OBJECT pObject, PIRP pIrp)&#13;
+{&#13;
+	ULONG uIoctrlCode = 0;&#13;
+	PVOID pInputBuff = NULL;&#13;
+	PVOID pOutputBuff = NULL;&#13;
+&#13;
+	ULONG uInputLength = 0;&#13;
+	ULONG uOutputLength = 0;&#13;
+	PIO_STACK_LOCATION pStack = NULL;&#13;
+	&#13;
+	//从irp头部获得InputBuff、OutputBuff两者在内核层实际上表示的是一个内存&#13;
+	pInputBuff = pOutputBuff = pIrp-&gt;AssociatedIrp.SystemBuffer;&#13;
+&#13;
+	//从irp栈中获得buffer的长度，获得了InputBuff、OutputBuff两个长度，应该以其中较长的为准&#13;
+	pStack = IoGetCurrentIrpStackLocation(pIrp);&#13;
+	uInputLength = pStack-&gt;Parameters.DeviceIoControl.InputBufferLength;&#13;
+	uOutputLength = pStack-&gt;Parameters.DeviceIoControl.OutputBufferLength;&#13;
+&#13;
+	//获得io控制码&#13;
+	uIoctrlCode = pStack-&gt;Parameters.DeviceIoControl.IoControlCode;&#13;
+	&#13;
+	//通过switch语句选择指定控制码要执行的操作&#13;
+	switch(uIoctrlCode)&#13;
+	{&#13;
+	case CTL_HELLO:&#13;
+		DbgPrint("Hello iocontrol\n");&#13;
+		//*(DWORD*)pOutputBuff=2    //可以通过往pOutputBuff中写入数据，从而返回指定值给到r3&#13;
+		break;&#13;
+	case CTL_PRINT:&#13;
+		DbgPrint("%ws\n", pInputBuff);&#13;
+		break;&#13;
+	case CTL_BYE:&#13;
+		DbgPrint("Goodbye iocontrol\n");&#13;
+		break;&#13;
+	default:&#13;
+		DbgPrint("Unknown iocontrol\n");&#13;
+&#13;
+	}&#13;
+	//irp结束&#13;
+	pIrp-&gt;IoStatus.Status = STATUS_SUCCESS;&#13;
+	pIrp-&gt;IoStatus.Information = 0;//如果执行了*(DWORD*)pOutputBuff=2，则就传输了size(DWORD)字节的数据&#13;
+	IoCompleteRequest(pIrp,IO_NO_INCREMENT);&#13;
+&#13;
+	return STATUS_SUCCESS;&#13;
+&#13;
+}&#13;
+&#13;
+NTSTATUS DispatchClean(PDEVICE_OBJECT pObject, PIRP pIrp)&#13;
+{&#13;
+	pIrp-&gt;IoStatus.Status=STATUS_SUCCESS;&#13;
+	pIrp-&gt;IoStatus.Information = 0;&#13;
+&#13;
+	IoCompleteRequest(pIrp, IO_NO_INCREMENT);&#13;
+&#13;
+	return STATUS_SUCCESS;&#13;
+}&#13;
+&#13;
+NTSTATUS DispatchClose(PDEVICE_OBJECT pObject, PIRP pIrp)&#13;
+{&#13;
+	pIrp-&gt;IoStatus.Status=STATUS_SUCCESS;&#13;
+	pIrp-&gt;IoStatus.Information = 0;&#13;
+&#13;
+	IoCompleteRequest(pIrp, IO_NO_INCREMENT);&#13;
+&#13;
+	return STATUS_SUCCESS;&#13;
+}&#13;
+&#13;
+&#13;
+VOID DriverUnload(PDRIVER_OBJECT pDriverObject)&#13;
+{&#13;
+	UNICODE_STRING uLinkName={0};&#13;
+	RtlInitUnicodeString(&amp;uLinkName, LINK_NAME);&#13;
+	IoDeleteSymbolicLink(&amp;uLinkName);&#13;
+&#13;
+	IoDeleteDevice(pDriverObject-&gt;DeviceObject);&#13;
+&#13;
+	DbgPrint("Driver unloaded\n");&#13;
+&#13;
+}&#13;
+&#13;
+NTSTATUS DriverEntry(PDRIVER_OBJECT pDriverObject,&#13;
+					 PUNICODE_STRING pRegPath)&#13;
+{&#13;
+	UNICODE_STRING uDeviceName = {0};&#13;
+	UNICODE_STRING uLinkName={0};&#13;
+	NTSTATUS ntStatus = 0;&#13;
+	PDEVICE_OBJECT pDeviceObject = NULL;&#13;
+	ULONG i=0;&#13;
+&#13;
+	DbgPrint("Driver load begin\n");&#13;
+&#13;
+	RtlInitUnicodeString(&amp;uDeviceName, DEVICE_NAME); //使用该函数初始化字符串&#13;
+	RtlInitUnicodeString(&amp;uLinkName,LINK_NAME);  //符号链接主要用于在3环中指定设备对象&#13;
+    &#13;
+        //内核层为了让应用层可以访问，内核层必须创建设备对象和对应符号链接，irp最终发送给设备对象，然后设备对象将irp发送给分发函数进行处理&#13;
+	//pDriverObject为设备对象所属的驱动对象&#13;
+	//第一个0表示设备扩展的大小，设备扩展是设备对象上的一块空间，可以用于存放私有数据&#13;
+	//&amp;uDeviceName设备名&#13;
+	//FILE_DEVICE_UNKNOWN表示设备对象类型&#13;
+	//第二个0表示一些属性，设置为0即可&#13;
+	//FALSE表示设备对象是否独占打开，如果为ture则设备对象只能被一个进程打开，别的进程无法打开，主要用于安全性考虑&#13;
+	//通过&amp;pDeviceObject返回新创建的设备对象的指针&#13;
+	ntStatus = IoCreateDevice(pDriverObject,&#13;
+	 0,&amp;uDeviceName,FILE_DEVICE_UNKNOWN,0,FALSE,&amp;pDeviceObject);&#13;
+	&#13;
+	if(!NT_SUCCESS(ntStatus))&#13;
+	{&#13;
+		DbgPrint("IoCreateDevice failed:%x", ntStatus);&#13;
+		return ntStatus;&#13;
+	}&#13;
+&#13;
+	//DO_BUFFERED_IO规定R3和R0之间read和write通信的方式：&#13;
+	//1,buffered io&#13;
+	//2,direct io&#13;
+	//3,neither io &#13;
+	pDeviceObject-&gt;Flags |= DO_BUFFERED_IO;&#13;
+&#13;
+	//创建符号链接，实际上c盘e盘等盘符也就是系统创建的符号链接&#13;
+	ntStatus = IoCreateSymbolicLink(&amp;uLinkName,&amp;uDeviceName);&#13;
+	if(!NT_SUCCESS(ntStatus))&#13;
+	{&#13;
+		IoDeleteDevice(pDeviceObject);&#13;
+		DbgPrint("IoCreateSymbolicLink failed:%x\n", ntStatus);&#13;
+		return ntStatus;&#13;
+	}&#13;
+	//初始化驱动对象所有的分发函数（即派遣函数）IRP_MJ_MAXIMUM_FUNCTION为0x1b=27，所以分发函数一共有28个&#13;
+	for(i=0;i&lt;IRP_MJ_MAXIMUM_FUNCTION+1;i++)&#13;
+	{&#13;
+		pDriverObject-&gt;MajorFunction[i] = DispatchCommon;//先将所有分发函数设置为公共分发函数&#13;
+	}&#13;
+	//对指定irp请求单独设置分发函数&#13;
+	pDriverObject-&gt;MajorFunction[IRP_MJ_CREATE]=DispatchCreate;&#13;
+	pDriverObject-&gt;MajorFunction[IRP_MJ_READ]=DispatchRead;&#13;
+	pDriverObject-&gt;MajorFunction[IRP_MJ_WRITE]=DispatchWrite;&#13;
+	pDriverObject-&gt;MajorFunction[IRP_MJ_DEVICE_CONTROL]=DispatchIoctrl;&#13;
+	pDriverObject-&gt;MajorFunction[IRP_MJ_CLEANUP]=DispatchClean;&#13;
+	pDriverObject-&gt;MajorFunction[IRP_MJ_CLOSE]=DispatchClose;&#13;
+&#13;
+	pDriverObject-&gt;DriverUnload=DriverUnload;&#13;
+&#13;
+	DbgPrint("Driver load ok!\n");&#13;
+&#13;
+	return STATUS_SUCCESS;&#13;
+}&#13;
+</a>
+</h3>
+<h3 class="topic">
+<a name="7pnhf082jhk64lldk5de1retra">&nbsp;&nbsp;&nbsp;加载驱动并与之通讯的应用层程序</a>
+</h3>
+<h3 class="topic">
+<a name="17nplo1pcuv4nh0mudmmkvetj6">&nbsp;&nbsp;&nbsp;&nbsp;#include &lt;windows.h&gt;  &#13;
+#include &lt;winsvc.h&gt;  &#13;
+#include &lt;conio.h&gt;  &#13;
+#include &lt;stdio.h&gt;&#13;
+#include &lt;winioctl.h&gt;&#13;
+&#13;
+#define DRIVER_NAME "ntmodeldrv" //驱动名称&#13;
+#define DRIVER_PATH ".\\ntmodeldrv.sys" //驱动路径，位于当前路径&#13;
+&#13;
+//定义io控制码，和r0中相同&#13;
+#define IOCTRL_BASE 0x800&#13;
+&#13;
+#define MYIOCTRL_CODE(i) \&#13;
+	CTL_CODE(FILE_DEVICE_UNKNOWN, IOCTRL_BASE+i, METHOD_BUFFERED,FILE_ANY_ACCESS)&#13;
+&#13;
+#define CTL_HELLO MYIOCTRL_CODE(0)&#13;
+#define CTL_PRINT MYIOCTRL_CODE(1)&#13;
+#define CTL_BYE MYIOCTRL_CODE(2)&#13;
+&#13;
+//装载NT驱动程序 参数1为驱动名称 参数2为驱动路径&#13;
+//装载nt驱动本质上就是写注册表，往注册表中添加服务项&#13;
+BOOL LoadDriver(char* lpszDriverName,char* lpszDriverPath)&#13;
+{&#13;
+	//char szDriverImagePath[256] = "D:\\DriverTest\\ntmodelDrv.sys";&#13;
+ 	char szDriverImagePath[256] = {0};&#13;
+ 	//得到完整的驱动路径 将参数传进来的路径转为绝对路径&#13;
+ 	GetFullPathName(lpszDriverPath, 256, szDriverImagePath, NULL);&#13;
+&#13;
+	BOOL bRet = FALSE;&#13;
+&#13;
+	SC_HANDLE hServiceMgr=NULL;//SCM管理器的句柄&#13;
+	SC_HANDLE hServiceDDK=NULL;//NT驱动程序的服务句柄&#13;
+&#13;
+	//打开服务控制管理器&#13;
+	hServiceMgr = OpenSCManager( NULL, NULL, SC_MANAGER_ALL_ACCESS );&#13;
+&#13;
+	if( hServiceMgr == NULL )  &#13;
+	{&#13;
+		//OpenSCManager失败&#13;
+		printf( "OpenSCManager() Failed %d ! \n", GetLastError() );&#13;
+		bRet = FALSE;&#13;
+		goto BeforeLeave;&#13;
+	}&#13;
+	else&#13;
+	{&#13;
+		////OpenSCManager成功&#13;
+		printf( "OpenSCManager() ok ! \n" );  &#13;
+	}&#13;
+&#13;
+	//创建驱动所对应的服务，即在注册表中添加一个服务项，实际上对应内核加载工具中的内核安装功能&#13;
+	hServiceDDK = CreateService( hServiceMgr,&#13;
+		lpszDriverName, //驱动程序的在注册表中的名字  &#13;
+		lpszDriverName, // 注册表驱动程序的 DisplayName 值  &#13;
+		SERVICE_ALL_ACCESS, // 加载驱动程序的访问权限  &#13;
+		SERVICE_KERNEL_DRIVER,// 表示加载的服务是驱动程序  &#13;
+		SERVICE_DEMAND_START, // 注册表驱动程序的 Start 值  &#13;
+		SERVICE_ERROR_IGNORE, // 注册表驱动程序的 ErrorControl 值   表示驱动启动时如果出错就忽略该错误&#13;
+		szDriverImagePath, // 注册表驱动程序的 ImagePath 值  表示驱动的.sys文件在磁盘中的文职，很关键，要按照该路径寻找sysy文件并加载&#13;
+		NULL,  //GroupOrder HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\GroupOrderList&#13;
+		NULL,  &#13;
+		NULL,  &#13;
+		NULL,  &#13;
+		NULL);  &#13;
+&#13;
+	DWORD dwRtn;&#13;
+	//判断服务是否失败&#13;
+	if( hServiceDDK == NULL )  &#13;
+	{  &#13;
+		dwRtn = GetLastError();&#13;
+		if( dwRtn != ERROR_IO_PENDING &amp;&amp; dwRtn != ERROR_SERVICE_EXISTS )  &#13;
+		{  &#13;
+			//由于其他原因创建服务失败&#13;
+			printf( "CrateService() Failed %d ! \n", dwRtn );  &#13;
+			bRet = FALSE;&#13;
+			goto BeforeLeave;&#13;
+		}  &#13;
+		else  &#13;
+		{&#13;
+			//服务创建失败，是由于服务已经创立过&#13;
+			printf( "CrateService() Failed Service is ERROR_IO_PENDING or ERROR_SERVICE_EXISTS! \n" );  &#13;
+		}&#13;
+&#13;
+		// 驱动程序已经加载，只需要打开  &#13;
+		hServiceDDK = OpenService( hServiceMgr, lpszDriverName, SERVICE_ALL_ACCESS );  &#13;
+		if( hServiceDDK == NULL )  &#13;
+		{&#13;
+			//如果打开服务也失败，则意味错误&#13;
+			dwRtn = GetLastError();  &#13;
+			printf( "OpenService() Failed %d ! \n", dwRtn );  &#13;
+			bRet = FALSE;&#13;
+			goto BeforeLeave;&#13;
+		}  &#13;
+		else &#13;
+		{&#13;
+			printf( "OpenService() ok ! \n" );&#13;
+		}&#13;
+	}  &#13;
+	else  &#13;
+	{&#13;
+		printf( "CrateService() ok ! \n" );&#13;
+	}&#13;
+&#13;
+	//开启此项服务 相当于内核加载工具中的内核启动功能，该函数执行后，驱动程序开始执行DriverEntry&#13;
+	bRet= StartService( hServiceDDK, NULL, NULL );  &#13;
+	if( !bRet )  &#13;
+	{  &#13;
+		DWORD dwRtn = GetLastError();  &#13;
+		if( dwRtn != ERROR_IO_PENDING &amp;&amp; dwRtn != ERROR_SERVICE_ALREADY_RUNNING )  &#13;
+		{  &#13;
+			printf( "StartService() Failed %d ! \n", dwRtn );  &#13;
+			bRet = FALSE;&#13;
+			goto BeforeLeave;&#13;
+		}  &#13;
+		else  &#13;
+		{  &#13;
+			if( dwRtn == ERROR_IO_PENDING )  &#13;
+			{  &#13;
+				//设备被挂住&#13;
+				printf( "StartService() Failed ERROR_IO_PENDING ! \n");&#13;
+				bRet = FALSE;&#13;
+				goto BeforeLeave;&#13;
+			}  &#13;
+			else  &#13;
+			{  &#13;
+				//服务已经开启&#13;
+				printf( "StartService() Failed ERROR_SERVICE_ALREADY_RUNNING ! \n");&#13;
+				bRet = TRUE;&#13;
+				goto BeforeLeave;&#13;
+			}  &#13;
+		}  &#13;
+	}&#13;
+	bRet = TRUE;&#13;
+//离开前关闭句柄&#13;
+BeforeLeave:&#13;
+	if(hServiceDDK)&#13;
+	{&#13;
+		CloseServiceHandle(hServiceDDK);&#13;
+	}&#13;
+	if(hServiceMgr)&#13;
+	{&#13;
+		CloseServiceHandle(hServiceMgr);&#13;
+	}&#13;
+	return bRet;&#13;
+}&#13;
+&#13;
+//卸载驱动程序  &#13;
+BOOL UnloadDriver( char * szSvrName )  &#13;
+{&#13;
+	BOOL bRet = FALSE;&#13;
+	SC_HANDLE hServiceMgr=NULL;//SCM管理器的句柄&#13;
+	SC_HANDLE hServiceDDK=NULL;//NT驱动程序的服务句柄&#13;
+	SERVICE_STATUS SvrSta;&#13;
+	//打开SCM管理器&#13;
+	hServiceMgr = OpenSCManager( NULL, NULL, SC_MANAGER_ALL_ACCESS );  &#13;
+	if( hServiceMgr == NULL )  &#13;
+	{&#13;
+		//带开SCM管理器失败&#13;
+		printf( "OpenSCManager() Failed %d ! \n", GetLastError() );  &#13;
+		bRet = FALSE;&#13;
+		goto BeforeLeave;&#13;
+	}  &#13;
+	else  &#13;
+	{&#13;
+		//带开SCM管理器失败成功&#13;
+		printf( "OpenSCManager() ok ! \n" );  &#13;
+	}&#13;
+	//打开驱动所对应的服务&#13;
+	hServiceDDK = OpenService( hServiceMgr, szSvrName, SERVICE_ALL_ACCESS );  &#13;
+&#13;
+	if( hServiceDDK == NULL )  &#13;
+	{&#13;
+		//打开驱动所对应的服务失败&#13;
+		printf( "OpenService() Failed %d ! \n", GetLastError() );  &#13;
+		bRet = FALSE;&#13;
+		goto BeforeLeave;&#13;
+	}  &#13;
+	else  &#13;
+	{  &#13;
+		printf( "OpenService() ok ! \n" );  &#13;
+	}  &#13;
+	//停止驱动程序，如果停止失败，只有重新启动才能，再动态加载。  &#13;
+	if( !ControlService( hServiceDDK, SERVICE_CONTROL_STOP , &amp;SvrSta ) )  &#13;
+	{  &#13;
+		printf( "ControlService() Failed %d !\n", GetLastError() );  &#13;
+	}  &#13;
+	else  &#13;
+	{&#13;
+		//打开驱动所对应的失败&#13;
+		printf( "ControlService() ok !\n" );  &#13;
+	} &#13;
+	&#13;
+&#13;
+	//动态卸载驱动程序。通过DeleteService卸载驱动&#13;
+&#13;
+	if( !DeleteService( hServiceDDK ) )  &#13;
+	{&#13;
+		//卸载失败&#13;
+		printf( "DeleteSrevice() Failed %d !\n", GetLastError() );  &#13;
+	}  &#13;
+	else  &#13;
+	{  &#13;
+		//卸载成功&#13;
+		printf( "DelServer:deleteSrevice() ok !\n" );  &#13;
+	}  &#13;
+&#13;
+	bRet = TRUE;&#13;
+BeforeLeave:&#13;
+//离开前关闭打开的句柄&#13;
+	if(hServiceDDK)&#13;
+	{&#13;
+		CloseServiceHandle(hServiceDDK);&#13;
+	}&#13;
+	if(hServiceMgr)&#13;
+	{&#13;
+		CloseServiceHandle(hServiceMgr);&#13;
+	}&#13;
+	return bRet;	&#13;
+} &#13;
+&#13;
+void TestDriver()&#13;
+{&#13;
+	//测试驱动程序  &#13;
+	//"\\\\.\\NTmodeldrv"即符号链接，根据符号链接打开设备对象&#13;
+	HANDLE hDevice = CreateFile("\\\\.\\NTmodeldrv",  &#13;
+		GENERIC_WRITE | GENERIC_READ,  &#13;
+		0,  &#13;
+		NULL,  &#13;
+		OPEN_EXISTING,  &#13;
+		0,  &#13;
+		NULL);  &#13;
+	if( hDevice != INVALID_HANDLE_VALUE )  &#13;
+	{&#13;
+		printf( "Create Device ok ! \n" );  &#13;
+	}&#13;
+	else  &#13;
+	{&#13;
+		printf( "Create Device Failed %d ! \n", GetLastError() ); &#13;
+		return;&#13;
+	}&#13;
+	CHAR bufRead[1024]={0};&#13;
+	WCHAR bufWrite[1024]=L"Hello, world";&#13;
+&#13;
+	DWORD dwRead = 0;&#13;
+	DWORD dwWrite = 0;&#13;
+&#13;
+	ReadFile(hDevice, bufRead, 1024, &amp;dwRead, NULL);&#13;
+	printf("Read done!:%ws\n",bufRead);&#13;
+	printf("Please press any key to write\n");&#13;
+	getch();&#13;
+	WriteFile(hDevice, bufWrite, (wcslen(bufWrite)+1)*sizeof(WCHAR), &amp;dwWrite, NULL);&#13;
+&#13;
+	printf("Write done!\n");&#13;
+&#13;
+	printf("Please press any key to deviceiocontrol\n");&#13;
+	getch();&#13;
+	CHAR bufInput[1024] ="Hello, world";&#13;
+	CHAR bufOutput[1024] = {0};&#13;
+	DWORD dwRet = 0;&#13;
+&#13;
+	WCHAR bufFileInput[1024] =L"c:\\docs\\hi.txt";&#13;
+&#13;
+	printf("Please press any key to send PRINT\n");&#13;
+	getch();&#13;
+	DeviceIoControl(hDevice, &#13;
+		CTL_PRINT, &#13;
+		bufFileInput, &#13;
+		sizeof(bufFileInput), &#13;
+		bufOutput, &#13;
+		sizeof(bufOutput), &#13;
+		&amp;dwRet, &#13;
+		NULL);&#13;
+	printf("Please press any key to send HELLO\n");&#13;
+	getch();&#13;
+	DeviceIoControl(hDevice, &#13;
+		CTL_HELLO, &#13;
+		NULL, &#13;
+		0, &#13;
+		NULL, &#13;
+		0, &#13;
+		&amp;dwRet, &#13;
+		NULL);&#13;
+	printf("Please press any key to send BYE\n");&#13;
+	getch();&#13;
+	DeviceIoControl(hDevice, &#13;
+		CTL_BYE, &#13;
+		NULL, &#13;
+		0, &#13;
+		NULL, &#13;
+		0, &#13;
+		&amp;dwRet, &#13;
+		NULL);&#13;
+	printf("DeviceIoControl done!\n");&#13;
+	CloseHandle( hDevice );//关闭设备对象，内核中会调用DispathClean()&#13;
+} &#13;
+&#13;
+int main(int argc, char* argv[])  &#13;
+{&#13;
+	//加载驱动&#13;
+	BOOL bRet = LoadDriver(DRIVER_NAME,DRIVER_PATH);&#13;
+	if (!bRet)&#13;
+	{&#13;
+		printf("LoadNTDriver error\n");&#13;
+		return 0;&#13;
+	}&#13;
+	//加载成功&#13;
+&#13;
+	printf( "press any key to create device!\n" );  &#13;
+	getch();  &#13;
+&#13;
+	TestDriver();&#13;
+&#13;
+	//这时候你可以通过注册表，或其他查看符号连接的软件验证。  &#13;
+	printf( "press any key to stop service!\n" );  &#13;
+	getch();  &#13;
+&#13;
+	//卸载驱动&#13;
+	bRet = UnloadDriver(DRIVER_NAME);&#13;
+	if (!bRet)&#13;
+	{&#13;
+		printf("UnloadNTDriver error\n");&#13;
+		return 0;&#13;
+	}&#13;
+&#13;
+&#13;
+	return 0;  &#13;
+}&#13;
+</a>
+</h3>
+<h3 class="topic">
+<a name="29tce0qd7c5ntg6e89v834pr5t">&nbsp;r0 r3开发的区别</a>
+</h3>
+<h3 class="topic">
+<a name="34a69cntornkhn35vliibigf20">&nbsp;&nbsp;vt技术出现后，相当于在内核和硬件之间又添加了一层，vt拥有比r0更高的权限可以监控操作系统的一举一动</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E5%86%85%E6%A0%B8-1_files/2i8eohsc57ksdmlogbt0m96gfa.png"></p>
+<h3 class="topic">
+<a name="70oai073ug62a7mmhvs9fkince">&nbsp;&nbsp;&nbsp;部分c运行库中的函数在内核中不能使用，部分仍然可以使用，r0函数的返回值一般与r3函数返回值不同，并且一般使用NT_SUCCESS宏判断函数返回值是否为返回成功，返回值一般使用16进制输出，然后可以在ntstatus.h中查找返回值的具体含义&#13;
+内核中的内存分配需要指定是分页内存还是非分页内存，并且可以使用tag标示该内存（具体可见驱动模型代码）</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E5%86%85%E6%A0%B8-1_files/097vovdt74t78qdlmck9v27k79.png"></p>
+<h3 class="topic">
+<a name="4qi111qhp5i8uariol9tv48d16">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E5%86%85%E6%A0%B8-1_files/0pjk51527p5b0ou0sed4ntah0l.png"></p>
+<h3 class="topic">
+<a name="73oem7i961mfjl5iaemmort2d0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;r0中函数调用均与中断请求级别相关</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E5%86%85%E6%A0%B8-1_files/4jf48552ukc78g73eai4j1ho75.png"></p>
+<h3 class="topic">
+<a name="5amkrubvkbbrqfmgq8p2k3mbq4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;内核文件版本与操作系统版本的对应</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E5%86%85%E6%A0%B8-1_files/3c2oecpbavbr8662bu45urc9bc.png"></p>
+<h3 class="topic">
+<a name="08rvflc03l078vjggml64ohm0e">&nbsp;驱动在安全领域的使用</a>
+</h3>
+<h3 class="topic">
+<a name="7r6e710d1d3u0h7jj65s1mfkj2">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E5%86%85%E6%A0%B8-1_files/5l75sb4ak94d5e9u2fhdlvdhu6.png"></p>
+<h3 class="topic">
+<a name="3rv7p5murmnq2vqisl0utiu0ej">&nbsp;驱动函数的分类</a>
+</h3>
+<h3 class="topic">
+<a name="4f60a13jqpi91hcq73nfe69lpe">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E5%86%85%E6%A0%B8-1_files/4fdl58orrai00guv6qp9dphahh.png"></p>
+<h3 class="topic">
+<a name="0q427ia5tjgqsj25tjate1pa2t">&nbsp;编写驱动的注意事项（内核驱动漏洞与攻击预防）</a>
+</h3>
+<h3 class="topic">
+<a name="3s0r1vukudkfmun3vggl7m9dm5">&nbsp;&nbsp;具体内容见：内核驱动漏洞与攻击预防--by MJ0011</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E5%86%85%E6%A0%B8-1_files/71jfbmftn0bl06uu9fqmpcv8ga.png"></p>
+</body>
+</html>

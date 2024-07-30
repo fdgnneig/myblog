@@ -1,0 +1,726 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>漏洞分析2</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="4vh8doq59pm4v47rvgdrjf6840">漏洞分析2</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%902_files/images/%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%902.jpg"></div>
+<h2 class="topic">
+<a name="620sannti8308up7gsr7uksa96">内核漏洞</a>
+</h2>
+<h3 class="topic">
+<a name="589u1i5l2h9ilukurh4d0f9ajf">&nbsp;内核漏洞一般分类</a>
+</h3>
+<h3 class="topic">
+<a name="41bpid3b2lleraf8hto330tf1o">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%902_files/5i3ti6kkap2fcnpsvutb9hbeqb.png"></p>
+<h3 class="topic">
+<a name="3q9a8qtj72a1jaus1k43jt6ao0">&nbsp;拒绝服务漏洞</a>
+</h3>
+<h3 class="topic">
+<a name="2iokf51b4urfo2fv3c6o80rn1i">&nbsp;&nbsp;MmIsAddressValid函数只能验证buffer第一个字节位于有效内存页，如果buffer位于分页内存，则该函数的判断也不可靠</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%902_files/3v16ub6rskv4hja17ru5qu73ll.png"></p>
+<h3 class="topic">
+<a name="64mbk1771jilnace4btfnibogn">&nbsp;任意地址写任意数据</a>
+</h3>
+<h3 class="topic">
+<a name="3bgqmrll10isfqn8pu5t729ok1">&nbsp;&nbsp;图中是指内核接收应用层传进来的两个数据，并将value值不经检验的写入addr指向的内存空间，从而造成了任意地址写任意数据漏洞</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%902_files/6plhpkrc5f6gfqum2tq8a3ar4k.png"></p>
+<h3 class="topic">
+<a name="7pj6gsvjmd5udtjmf1dabnn55m">&nbsp;&nbsp;&nbsp;3种从0环到三环的通讯方式</a>
+</h3>
+<h3 class="topic">
+<a name="27tjhcuevmlegpn9kk1o9kgcgp">&nbsp;&nbsp;&nbsp;&nbsp;缓冲区设备读写方式</a>
+</h3>
+<h3 class="topic">
+<a name="1leuriae74j8dioi020t7igilq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在内核态中申请堆空间，将用户态缓冲区拷贝到内核态，内核态处理完毕后，在拷贝回用户态</a>
+</h3>
+<h3 class="topic">
+<a name="6jeg1m2lt7172vb86oqcqsckk6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用于不追求效率的情况下</a>
+</h3>
+<h3 class="topic">
+<a name="7kbot1c5ckibq2uuisnfdinn9a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过irp获取缓冲区</a>
+</h3>
+<h3 class="topic">
+<a name="2ofn82qbh1jeqqge0adnqd46ak">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;irp-》AssociatedIrp.SystemBuffer</a>
+</h3>
+<h3 class="topic">
+<a name="0dmaq7gbe6069cd686ju4remln">&nbsp;&nbsp;&nbsp;&nbsp;直接读写方式</a>
+</h3>
+<h3 class="topic">
+<a name="0h51o5oglfma4spf3fm7km35vd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过MDL对用户态内存进行重新映射，得到一个内核空间的地址，对该地址的内容进行修改，改变的是对应用户态内存中的数据</a>
+</h3>
+<h3 class="topic">
+<a name="1sp0vk6lqqmcj5pv6upjf1nkon">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;需要创建MDL,如果需要获取缓冲区地址需要调用api</a>
+</h3>
+<h3 class="topic">
+<a name="2sj1ap6p3hk9m3on3gqsgsb508">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过irp+api获得缓冲区的指针及其数据</a>
+</h3>
+<h3 class="topic">
+<a name="51d2n740jmlb25p3tcek7vn8nc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;irp-》MdlAddress</a>
+</h3>
+<h3 class="topic">
+<a name="1ref55ofginfvhfmnuqqdoebmh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果要使用其中的数据，需要使用api 才能获得其中的数据</a>
+</h3>
+<h3 class="topic">
+<a name="21q9ek7c12oooril1gh234ng69">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MmGetSystemAddressForMdlSafe(irp-&gt;MdlAddress,NormalPagePriority)</a>
+</h3>
+<h3 class="topic">
+<a name="6ktvrn9iudvbn42knmun71fnpb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该函数返回指定数据的指针</a>
+</h3>
+<h3 class="topic">
+<a name="44ajnh4t9sp9c6frppmphildas">&nbsp;&nbsp;&nbsp;&nbsp;其他方式</a>
+</h3>
+<h3 class="topic">
+<a name="7iev8lpme74p0tu3crcgg44h7t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过irp获得缓冲区地址</a>
+</h3>
+<h3 class="topic">
+<a name="5letm4iv5g4tgdufohlrs7qcg7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;irp-》UserBuffer</a>
+</h3>
+<h3 class="topic">
+<a name="41r21bd3li91kdupthkho7maa6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意此种方法得到的缓冲度地址是用户层的地址，当cpu发生进程切换的时候，该地址中的数据会变成另一个进程中的数据，会发生地址错误</a>
+</h3>
+<h3 class="topic">
+<a name="4sb6ald27v5fh26q285cb9igvm">&nbsp;&nbsp;&nbsp;在内核中若要直接操作应用层的内存，（即irp-&gt;UserBuffer）,写入该内存之前需要使用probeforwrite，读该内存之前需要使用probeforread，从而对该内存进行校验，校验的目的是确定所使用的内存是应用层的地址，从而防止应用层传入内核层的地址，从而修改内核数据</a>
+</h3>
+<h3 class="topic">
+<a name="5nc45ospqe4sgfsq83ej7h5ljo">&nbsp;&nbsp;&nbsp;&nbsp;使用probeforread和probeforwrite函数时需要将其放在结构化异常处理中（try except），从而当异常发生时进一步处理</a>
+</h3>
+<h3 class="topic">
+<a name="3aqk1gl7tp7gprq8huv0o171oj">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%902_files/5u7d76886gccaspgq36ijqn9ms.png"></p>
+<h3 class="topic">
+<a name="4talpmmd410f87lcemb4oh63du">&nbsp;&nbsp;&nbsp;这里之所以要选择很少被调用的内核函数作为目标，是因为r0的shellcode存储在内存地址为0的内存中，该内存属于用户层，不同的进程用户层的数据不一样，如果其他进程调用该内核函数，从而调用0地址处的数据，可能导致崩溃</a>
+</h3>
+<h3 class="topic">
+<a name="0e3nclegq3n7l5vgu6rg67ausb">&nbsp;&nbsp;&nbsp;win8之后，ZwAllocateVirtualMemory函数分配0地址内存空间</a>
+</h3>
+<h3 class="topic">
+<a name="3dloqu7dukq8agknkbhp6n3mvl">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%902_files/2gtbtf4m0v4cj1tv1vu99mk3cc.png"></p>
+<h3 class="topic">
+<a name="1r829ql6oulkqg7c5k1quhgjgq">&nbsp;&nbsp;&nbsp;system权限可以访问部分普通权限无法访问的注册表项</a>
+</h3>
+<h3 class="topic">
+<a name="54invu0mi68pj68poqtlc84nbh">&nbsp;&nbsp;&nbsp;system权限可以访问系统还原目录</a>
+</h3>
+<h3 class="topic">
+<a name="0nt2anibahn00068gvgpesusqe">&nbsp;&nbsp;&nbsp;system权限可以更换系统文件</a>
+</h3>
+<h3 class="topic">
+<a name="1mi04bmhs5ev39e5u52m3kidqi">&nbsp;&nbsp;&nbsp;system权限为windows系统中最高的权限，比管理员权限还要高</a>
+</h3>
+<h3 class="topic">
+<a name="3f2c7scu7gbjgkphe5f29jsq2a">&nbsp;&nbsp;demo</a>
+</h3>
+<h3 class="topic">
+<a name="35k14psjimlsu9k4voh1cl0s7t">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%902_files/68mc3i1lthhficnp8onirk2mh8.png"></p>
+<h3 class="topic">
+<a name="1mujeipgr95c00sgjaj92htj55">&nbsp;&nbsp;&nbsp;&nbsp;r0程序</a>
+</h3>
+<h3 class="topic">
+<a name="4ugj2qtlgcr800edohnc1s74fg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;存在漏洞的驱动程序</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%902_files/3l9vs6ddbrl2rmjclgmcek42h4.png"></p>
+<h3 class="topic">
+<a name="36e3hugq9l8os3pq4i95ephua5">&nbsp;&nbsp;&nbsp;&nbsp;r3程序</a>
+</h3>
+<h3 class="topic">
+<a name="0a3l7v979fvt3da776m0rkmrfg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3环程序使用NtDeviceIoControlFile函数发送0和一个内核函数地址给0环，从而将该内核函数的指针修改为0</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%902_files/2rdph0ds93auqdndgk9g9f2lll.png"></p>
+<h3 class="topic">
+<a name="5aks05k3na0h9g2gko7hhno003">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3环程序中调用NtAllocateVirtualMemory函数在内存地址为0处分配内存空间，注意不能直接将要分配的函数内存地址设置为0，否则会报错，这里将要分配内存首地址设置为4，然后设置MEM_TOP_DOWN,这样函数会从地址4开始由高到低进行内存分配，从而分配地址0处的内存</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%902_files/17khm8lh95bpu6puahevhb79qt.png"></p>
+<h3 class="topic">
+<a name="4bh1s7kg80o2m75a4vlg2rdjc6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%902_files/3tl53q37oo9i1q84b31iqmr6oa.png"></p>
+<h3 class="topic">
+<a name="15f9df1far7i6gc6ogtkddk3iu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将shellcode拷贝0地址的内存中</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%902_files/0moe0r0csv5lvvn9m5ocpa2rf6.png"></p>
+<h3 class="topic">
+<a name="65kvlt1up2tc58l7brtn5l38ju">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;r3中调用指定函数，该函数在内核中会调用被覆盖的内核函数从而执行shellcode</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%902_files/5rp8pugpt8aluasbtoqqumstca.png"></p>
+<h3 class="topic">
+<a name="57j8f53cvd00858e04is7e67v8">&nbsp;&nbsp;&nbsp;&nbsp;shellcode（针对xp系统）</a>
+</h3>
+<h3 class="topic">
+<a name="5a936h0fo3rmnbp3vn98h0o592">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过修改cr0寄存器，禁用写保护</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%902_files/1lju4uqp68ivc9upj0bin2scb7.png"></p>
+<h3 class="topic">
+<a name="3265s7ebar5b9evrsd9aqqutm3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%902_files/1qotf0v79bevo48osjpaooc4dm.png"></p>
+<h3 class="topic">
+<a name="51ihiop58mdcrsi74e01qq38m8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%902_files/4ailev2ujldvlvt1t9sff2n0aa.png"></p>
+<h3 class="topic">
+<a name="0ob50q9n0t4674otfv21mjoomg">&nbsp;内核漏洞实例</a>
+</h3>
+<h3 class="topic">
+<a name="5ml0vb58rce5ct3ritedng9vc3">&nbsp;&nbsp;minifilte在系统中会时刻扫描系统中的文件，当minifilter检测到javascript脚本之后，会将该脚本交给Nscript，由后者扫描javascript脚本时因为没有判断数据类型，从而导致漏洞</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%902_files/46vmm151p2l31nupmhinuu17sm.png"></p>
+<h3 class="topic">
+<a name="0buoud4lh1cegtopim3nemgq86">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%902_files/1bkgjm30k7alhu5qp5vgk38sh6.png"></p>
+<h3 class="topic">
+<a name="4e68u4pjq510dldv27qhokbqkr">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%902_files/5u2tm3hv728h7uf72idsj756b6.png"></p>
+<h3 class="topic">
+<a name="1or9j4lirkb3ai9e7ie905op8s">&nbsp;内核漏洞预防</a>
+</h3>
+<h3 class="topic">
+<a name="5gude8m4rvokg92ruget3anhet">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%902_files/0tqlnvdqocvp7bs71hl50hk1hv.png"></p>
+<h3 class="topic">
+<a name="27c4b83aom8mtc9gtgkaqn9p8b">&nbsp;&nbsp;&nbsp;严格检查输入参数</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%902_files/4l856883jqs73auklnsivjnasg.png"></p>
+<h3 class="topic">
+<a name="6vb05l4h81r4tsnjtemss2h0s2">&nbsp;&nbsp;&nbsp;&nbsp;字符串拷贝注意使用函数strncpy(linux中)</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%902_files/39982di665cg7u7oombnmngg3p.png"></p>
+<h3 class="topic">
+<a name="6t0g1svcl7bokdskok6g5ad9m2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;内存拷贝时进行长度校验</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%902_files/5dd72do29jkdb0p3vf0828qp9h.png"></p>
+<h3 class="topic">
+<a name="2qn4a926fjhrgh5amgl1m6opjt">&nbsp;&nbsp;由于未校验内存拷贝长度导致的心脏流血漏洞</a>
+</h3>
+<h3 class="topic">
+<a name="3072li6ur0pqivi34dco1bdfoj">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%902_files/354ld29435mb6o7uormld4su43.png"></p>
+<h3 class="topic">
+<a name="6gv2h9p60o5c32en7bfhr5hk93">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%902_files/10982l853t2c139kqitcqsjgob.png"></p>
+<h2 class="topic">
+<a name="7d41a0971g6pckti3cabieoh45">竞争条件漏洞</a>
+</h2>
+<h3 class="topic">
+<a name="7sq7uleebcsiujl6f7dgio2oen">&nbsp;漏洞原理</a>
+</h3>
+<h3 class="topic">
+<a name="3pih61l77g67lnn73ar5ud74te">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%902_files/6qhpn9bhjsesqb49rl1m7fth70.png"></p>
+<h3 class="topic">
+<a name="2akjnn9s72uhc9rucg5tfcm35j">&nbsp;&nbsp;&nbsp;竞争条件可能涉及的系统调用或函数</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%902_files/51haklfmdj3hbtk4ni5jca0b79.png"></p>
+<h3 class="topic">
+<a name="5muoq2qp6mkr1qhi5ho2be4v1f">&nbsp;漏洞dome</a>
+</h3>
+<h3 class="topic">
+<a name="78f2m19tg50f4m5grtrpi4fi87">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%902_files/0kir567auvqj41498onqosk9k3.png"></p>
+<h3 class="topic">
+<a name="5bmcagkf94ovlu25c3ivti6ied">&nbsp;&nbsp;&nbsp;set-uid</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%902_files/12mfm52g3d7q2n7n2ikd2u0pie.png"></p>
+<h3 class="topic">
+<a name="4cjt4715j44cmmk6rt7v39gb3i">&nbsp;&nbsp;&nbsp;&nbsp;demo路径</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%902_files/4dh8ar8k4mvffigndghdhg2mq3.png"></p>
+<h3 class="topic">
+<a name="5m49qvb8istvm52gho1hjh65ig">&nbsp;竞争条件漏洞的结果</a>
+</h3>
+<h3 class="topic">
+<a name="5t9p8f7d849ortpqaqoipf8jpt">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%902_files/788g00pmn946ppr1bun17j5fi3.png"></p>
+<h3 class="topic">
+<a name="0ubks401j375b84vamgrefbuk0">&nbsp;漏洞实例</a>
+</h3>
+<h3 class="topic">
+<a name="20siumk9r178hj02h7j9k3dou1">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%902_files/67i5e6sfg07n4q563lgjpilu61.png"></p>
+<h3 class="topic">
+<a name="0645l0hvb4cdi3klh2rugjrqsi">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%902_files/13lrg3fqd3g4drq35bmr26p9o0.png"></p>
+<h3 class="topic">
+<a name="57nu535uds58tmdlsd367g4lpf">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%902_files/79oikrhpnktbte1nmc68j0kq9h.png"></p>
+<h3 class="topic">
+<a name="2p6l1ohepeuvuvg7g7ich0cbte">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%902_files/3b84dqpbritgue11ro3tnf733s.png"></p>
+<h3 class="topic">
+<a name="4etfaef5ov6i7ohpbc8cmpjc7p">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%902_files/3tkpgqjc6c766go65no8gskv35.png"></p>
+<h2 class="topic">
+<a name="6f1f3nemknrk6j6eeql99cdrrd">漏洞利用技术</a>
+</h2>
+<h3 class="topic">
+<a name="069getrlotj2kpvijth6em67v4">&nbsp;ROP技术</a>
+</h3>
+<h3 class="topic">
+<a name="7elbrm8n34aj8cfbbfaj7tpl4i">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%902_files/68vjn4pmk58laorlk0in0onem3.png"></p>
+<h3 class="topic">
+<a name="0ldgn4ns7475gvi54pp9tdrbkj">&nbsp;Double-fetch（两次获取）</a>
+</h3>
+<h3 class="topic">
+<a name="5ksja6ncl4tuojn9dbm5aq4msc">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%902_files/6nbkv2q88tmfpvn1ee0r78erp2.png"></p>
+<h3 class="topic">
+<a name="3pe5effmc4iisuani1j5n4saou">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%902_files/1h25t8of5k6pi6u2dhn6f6bpjf.png"></p>
+<h3 class="topic">
+<a name="7d7mlsqk4qrhibisho7va9ghe4">&nbsp;uaf漏洞</a>
+</h3>
+<h3 class="topic">
+<a name="4hvrpqtbq73v7551s8b3q8tftq">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%902_files/51ohdo3mks00a0m3ud2k9kt24j.png"></p>
+<h3 class="topic">
+<a name="5ithctm6if6f6mqp4foje1g75i">&nbsp;未初始化漏洞</a>
+</h3>
+<h3 class="topic">
+<a name="39r6b8vnqgeubrnr7rq64rsqkb">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%902_files/7918l1f5efn7no1618s2gem1a1.png"></p>
+<h3 class="topic">
+<a name="350vk73adi92f7ijbdlqagq51l">&nbsp;&nbsp;&nbsp;一般分为指针未初始化漏洞和内存未初始化漏洞</a>
+</h3>
+<h3 class="topic">
+<a name="3k549cdnn0ru0fmfvs83ur2c4l">&nbsp;OOB漏洞</a>
+</h3>
+<h3 class="topic">
+<a name="5fndbd1icfac99jv13i0b7bu04">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%902_files/4990885ucio65dqtgrhqd4o2uc.png"></p>
+<h3 class="topic">
+<a name="0g25g2se6u5tcacjd5cmlimg5b">&nbsp;外部命令执行漏洞</a>
+</h3>
+<h3 class="topic">
+<a name="7skv7rce9vvfcpm45q9k1a7gbd">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%902_files/4k93l3ao0hold354ts39bu8npn.png"></p>
+<h3 class="topic">
+<a name="1agbejkvdhm31pb5sql673220f">&nbsp;环境变量欺骗漏洞</a>
+</h3>
+<h3 class="topic">
+<a name="2c16nupcte0nc1df7ngmkfqfhs">&nbsp;&nbsp;即程序运行过程中会优先在本目录寻找要使用的dll，如果没有找到，才会去系统目录查找，如果再同一目录下放置与系统dll同名的伪造dll，则程序会加载该dll并使用其中的函数</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%902_files/7nm1dvvvk7j49ln1pgkttlc56l.png"></p>
+<h3 class="topic">
+<a name="5fupchhegjbbe969n91fqofb1s">&nbsp;格式化字符漏洞</a>
+</h3>
+<h3 class="topic">
+<a name="7gpptvnnv2ugpcpb5ea0i2l5a7">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%902_files/14vb6fn9gbcujumom0ofrn82jh.png"></p>
+<h2 class="topic">
+<a name="3d0pd0k25qrk3d4kqa06uquskr">web漏洞</a>
+</h2>
+<h3 class="topic">
+<a name="0jbqmgv66j9svfg0j4l01ti37p">&nbsp;sql注入</a>
+</h3>
+<h3 class="topic">
+<a name="0881cd7ci371u9dse62etukudi">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%902_files/5jtpkhf16as6n7o8id2tog9oqg.png"></p>
+<h3 class="topic">
+<a name="5s4efchq0qnbg2h2am1m0uj2mg">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%902_files/5mt8kr25ecvdq1brqsp198kltq.png"></p>
+<h3 class="topic">
+<a name="38sitknuj3c9foj8vpv04gkq8a">&nbsp;&nbsp;预防sql注入</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%902_files/4l3elrbmp2n2vl126lq09dd47g.png"></p>
+<h3 class="topic">
+<a name="3rvsfhkgncsi5roba5m7vd037j">&nbsp;&nbsp;&nbsp;参数化查询</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%902_files/0602gsnm4i53mqurrb4bd5ic59.png"></p>
+<h3 class="topic">
+<a name="3keg8fqt7teacm595lml03bn4m">&nbsp;xss漏洞</a>
+</h3>
+<h3 class="topic">
+<a name="0fmvt9935lmscqsfd94l813cje">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%902_files/7r0kffd19akfjs2uo8ed3ocdvk.png"></p>
+<h3 class="topic">
+<a name="1ru05to9nmojfbesd9hfi8tpal">&nbsp;&nbsp;&nbsp;利用xss漏洞执行js指令将cookie发送到黑客的服务器</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%902_files/6jm09ra498tj8bcah73kv91ubo.png"></p>
+<h3 class="topic">
+<a name="3v77bdk0ehuu2rnct4icpjs32i">&nbsp;&nbsp;&nbsp;&nbsp;存储型xss</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%902_files/1ma26q4be03djsj4fvbb9iffeo.png"></p>
+<h3 class="topic">
+<a name="1ap344ua56b1tuh7a9onpnppkh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DMO-xss</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%902_files/5vmqsan91oq9a7u0vsso9fde5f.png"></p>
+<h3 class="topic">
+<a name="5dhdgiv4oqhjegflekk660k00u">&nbsp;&nbsp;xss漏洞共利用</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%902_files/1mj3gf23g29sr50rsrim93uclr.png"></p>
+<h3 class="topic">
+<a name="0uubvqv3veau49r71a6r43hfen">&nbsp;&nbsp;xss漏洞预防</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%902_files/0lc40m3j0gmne8c64vcjbv38ob.png"></p>
+<h3 class="topic">
+<a name="4atmdgt0lsb46960h5p67f8gkt">&nbsp;路径回溯漏洞</a>
+</h3>
+<h3 class="topic">
+<a name="4idna8i1ilch60ql7n7gql7rki">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%902_files/7lv9mlin6ehk90ade9hop19knq.png"></p>
+<h3 class="topic">
+<a name="0pvo1j9p9io4plodqs4ulgru1f">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%902_files/0fulhk1ha6keagjcsnntpu60bp.png"></p>
+<h2 class="topic">
+<a name="1aijchsk2j701l9b50obn57lgd">安全编码</a>
+</h2>
+<h3 class="topic">
+<a name="0gehili6gq7e0jm9cr7a50sbko">&nbsp;windows安全机制</a>
+</h3>
+<h3 class="topic">
+<a name="5rnqqf0orft140jgm7fpoa2glm">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%902_files/29efsiiop1qig28t693ob1cfmm.png"></p>
+<h3 class="topic">
+<a name="46hrcdacucclelfiamuul06eg6">&nbsp;&nbsp;&nbsp;gs</a>
+</h3>
+<h3 class="topic">
+<a name="1869a2kkk5fipnhoqtv4ak751t">&nbsp;&nbsp;&nbsp;&nbsp;安全cookie</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%902_files/2b9ih8ooqp5v8el9puq7qgcvjh.png"></p>
+<h3 class="topic">
+<a name="4uounobopd6hpmfdeblnn7me0f">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;变量重排</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%902_files/030ddujb41311udofgsqcdf6on.png"></p>
+<h3 class="topic">
+<a name="5432pv2u2aqp10kcgqureno8hl">&nbsp;&nbsp;&nbsp;&nbsp;可能的突破方法</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%902_files/5dd2h947kr6866mgeggpear8ek.png"></p>
+<h3 class="topic">
+<a name="7vop2jsto6jlvqr2jncs84v80f">&nbsp;&nbsp;&nbsp;safeseh</a>
+</h3>
+<h3 class="topic">
+<a name="4coqrejv4sd5bchkb5051mfovm">&nbsp;&nbsp;&nbsp;&nbsp;即将seh中所有的异常处理函数均保存到一个白名单中，当异常处理函数被调用时，检查该函数是否在白名单中</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%902_files/356lh3ob4kv3d2j2tvo25gaiue.png"></p>
+<h3 class="topic">
+<a name="26qnm6t0h6ifoargpeh65hrpei">&nbsp;&nbsp;&nbsp;dep</a>
+</h3>
+<h3 class="topic">
+<a name="0ebtgibpa5uh2406955v6t6qej">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%902_files/02fajqa80gjjv22e6fdnls82l4.png"></p>
+<h3 class="topic">
+<a name="5fn385ms5175hvtm2ad2vua4i7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%902_files/2vfqkf4plsshlpis20o4je7kau.png"></p>
+<h3 class="topic">
+<a name="6l6s08ips3iiiudabu46vcfgc5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%902_files/6vl4pacbq04obdf5u9gam03rgm.png"></p>
+<h3 class="topic">
+<a name="6darbrp49ce578ndqotgtedh57">&nbsp;&nbsp;&nbsp;&nbsp;dep工作模式</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%902_files/003hg1hd2h0pj1uuhshne1flcq.png"></p>
+<h3 class="topic">
+<a name="13nnq1lu51s77c6f2ni3iqm4np">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dep工作模式</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%902_files/3upmqg0rl7r0lfevlqg9dbendq.png"></p>
+<h3 class="topic">
+<a name="0gv8ano4202b7f5553s7vs3kn0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;绕过dep</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%902_files/05b48po6n6me212h41oe678kti.png"></p>
+<h3 class="topic">
+<a name="4hth50kts3b5pk78knr4seb1ka">&nbsp;&nbsp;&nbsp;aslr</a>
+</h3>
+<h3 class="topic">
+<a name="4ulutu763ifiph9f5pmqfoj8oe">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%902_files/696tourefju4oi9d1ljek1qq7e.png"></p>
+<h3 class="topic">
+<a name="62oh4soc1nofn4965a9j4tdo8g">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%902_files/6t63qbdlrtrm2jv6mef1jjqotu.png"></p>
+<h3 class="topic">
+<a name="5patm56vusqionlsvubh2prk8l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;绕过aslr</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%902_files/3fbqqs75nibm0bqh7t9ku7ocq3.png"></p>
+<h3 class="topic">
+<a name="3c1rpm7o2fcvaon23mobot66a3">&nbsp;&nbsp;&nbsp;sehop</a>
+</h3>
+<h3 class="topic">
+<a name="5v21s8b65bia4k3q3mqdqjp7k7">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%902_files/51g7mljg2a392k2jke0v28giut.png"></p>
+<h3 class="topic">
+<a name="4g29qkokfk812ufagnba7vlkfv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;核心就是检查seh链的完整性</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%902_files/1mdesd5ggcfqaacsftrj8d6sf6.png"></p>
+<h3 class="topic">
+<a name="1hcb00f19c3tmrh796otmmkck7">&nbsp;&nbsp;&nbsp;堆保护</a>
+</h3>
+<h3 class="topic">
+<a name="7pm6s51b0oe5okmvui882t6pdv">&nbsp;&nbsp;&nbsp;&nbsp;peb基址随机化</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%902_files/41jpsiq7ludnds2que3r5hl6a1.png"></p>
+<h3 class="topic">
+<a name="0nrhiajqacch68ge9n3ustnnq9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;safeunlink，&#13;
+即本节点的下一个节点的上一个节点为本节点&#13;
+本节点的上一个节点的下一个节点为本节点</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%902_files/4pfdebq6lrjndg0shn0128lsc4.png"></p>
+<h3 class="topic">
+<a name="74k7ni5hheeagsdp3u1e9cc52a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;heapcookie</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%902_files/0ds345v1hcijcp6pidhbodjj72.png"></p>
+<h3 class="topic">
+<a name="1l7diin1mudlnht0j6vi6mpemu">&nbsp;如何避免缓冲区溢出</a>
+</h3>
+<h3 class="topic">
+<a name="2ob4tnl6ocaaca3qhl0ld41nol">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%902_files/2556qjr36nl7mr369ecrur9dg7.png"></p>
+<h2 class="topic">
+<a name="7ej3qst96nnmflckphvurd41c7">漏洞挖掘</a>
+</h2>
+<h3 class="topic">
+<a name="4idp8crasqf40pjnhih9t267ro">&nbsp;流程</a>
+</h3>
+<h3 class="topic">
+<a name="3pgos2m5091rjrkvhucidju499">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%902_files/0ve6oidhaq7qlikls8bgco5jpc.png"></p>
+<h3 class="topic">
+<a name="16e6elqs3kfe3mrs34fleupp1j">&nbsp;fuzz</a>
+</h3>
+<h3 class="topic">
+<a name="07796dnrd6mjoeu56qdnbb3dcj">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%902_files/4705m5uebb7i171chhp3mogjol.png"></p>
+<h3 class="topic">
+<a name="688c1vhu8mh2duca7qf0gp8rki">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%902_files/4b4piqtpht0ehqfco2p0ockign.png"></p>
+<h3 class="topic">
+<a name="10fn1r48l3qpv6mc5qpcaq7219">&nbsp;&nbsp;具体工具</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%902_files/0hdqkpe943g7jjctg584bj6bqn.png"></p>
+<h3 class="topic">
+<a name="2hr1r5ja77dvom4aj37584tftd">&nbsp;&nbsp;&nbsp;工具IoControl Fuzz</a>
+</h3>
+<h3 class="topic">
+<a name="3vhofs4u53dn6sbm92m9gm8u6d">&nbsp;&nbsp;&nbsp;&nbsp;拦截应用层发送的io控制码</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%902_files/5ibpkc47d4hv3ecqjhsth57l9j.png"></p>
+<h3 class="topic">
+<a name="62lmh90bqabohaq82l0nu7k4kr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%902_files/69mmhvu9nnfl8vika79j0vrssa.png"></p>
+<h3 class="topic">
+<a name="1ab0gckagm41m3fjrt208dl3ql">&nbsp;&nbsp;&nbsp;工具IOCTL DRIVER FUZZ</a>
+</h3>
+<h3 class="topic">
+<a name="2mk5l0hg8qbas5v3noo9npnflv">&nbsp;&nbsp;&nbsp;&nbsp;主动发送io控制码</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%902_files/1obd3qocdo57gj3bued2gicoiq.png"></p>
+<h3 class="topic">
+<a name="4tb74vu5u5gr0a700bje04c5ha">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%902_files/2vkjl7sncdb57nrnjs22e6alse.png"></p>
+<h3 class="topic">
+<a name="266d3ssvoqmo8u6ovi0jkko2u8">&nbsp;&nbsp;&nbsp;其他工具</a>
+</h3>
+<h3 class="topic">
+<a name="7t1oprcju3c6n2nl7casd74ria">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%902_files/6j0urlba9njovhcdan1gm7pgnu.png"></p>
+<h3 class="topic">
+<a name="4mfojk4hrn7mdrguk3f4n1f95l">&nbsp;参考资料</a>
+</h3>
+<h3 class="topic">
+<a name="5ckednra1q1bmficp6t3tmv58d">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%902_files/174ai4f9ekhvevggg69u8p2e29.png"></p>
+<h2 class="topic">
+<a name="6aelo4mpn6u4kqi1gnjpj52vbf">apt</a>
+</h2>
+<h3 class="topic">
+<a name="6vre48rchki9duag25atgq7b21">&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%902_files/3eqcprg6q5659c68n7dme6js99.png"></p>
+<h3 class="topic">
+<a name="6bkmuvahv7h91t8bh1pu19j7bk">&nbsp;&nbsp;持续性</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%902_files/306nfbkm77cqvtnl81j6r19f3t.png"></p>
+<h3 class="topic">
+<a name="1vt5a91sibo1phab83jmqk40np">&nbsp;&nbsp;&nbsp;社工</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%902_files/30ff41v1irmuapmuboh4au1pbv.png"></p>
+<h3 class="topic">
+<a name="3i0vk372p9ufq1fnccvtv5is2n">&nbsp;&nbsp;&nbsp;&nbsp;成本与目标</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%902_files/4iecdijvos6uaapa5dh0mcgf5n.png"></p>
+<h3 class="topic">
+<a name="4eetsqvge3c482dpiq2dhtm1qc">&nbsp;物理隔绝与apt</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%902_files/7fgnif2sg99lragna21i3rh3jj.png"></p>
+<h3 class="topic">
+<a name="6f0pl8uvreorf4veltd6bsg07s">&nbsp;&nbsp;攻击手段</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%902_files/1l998icqqqbptqagvcmrfc4agh.png"></p>
+<h3 class="topic">
+<a name="2vkn0o1cu67kknut7u926uucia">&nbsp;&nbsp;&nbsp;攻击途径</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%902_files/1l0k4tfje9brlf0980g1oe0epn.png"></p>
+<h3 class="topic">
+<a name="5ao416mqg5j9q9gk3j6pldk2st">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%902_files/2mv81ra0gro7rq3psfp4m9mc5j.png"></p>
+<h3 class="topic">
+<a name="1sp2ko2u1l993t421pnfblafs8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%902_files/4j0oq9pfr88k40tdio5v6r79fg.png"></p>
+<h3 class="topic">
+<a name="6niq4ch1fengkrnf9elsntnjbo">&nbsp;APT案例 极光行动</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%902_files/3vvoiv84kfvkvqdcrrjcvt35s4.png"></p>
+<h3 class="topic">
+<a name="0l7painvts0i65bu5ice4jin4l">&nbsp;&nbsp;RSA</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%902_files/7bikj27721drbq61fbc9lo3u5o.png"></p>
+<h3 class="topic">
+<a name="15037sgvubu9br4gdkfjci7tun">&nbsp;&nbsp;&nbsp;震网</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%902_files/6s312sgcbuibfk0jk3fjhcfhfk.png"></p>
+</body>
+</html>

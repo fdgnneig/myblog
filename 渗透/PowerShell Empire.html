@@ -1,0 +1,334 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>PowerShell Empire</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="2tb22irbkpg7v47lgvn8nl3glf">PowerShell Empire</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="PowerShell Empire_files/images/PowerShell Empire.jpg"></div>
+<h2 class="topic">
+<a name="1aas82cdf3jsgj6cft36oqe9uu">介绍</a>
+</h2>
+<h3 class="topic">
+<a name="5ul4ou0b1pfg9hfrvpgqfnujio">&nbsp;Empire（https://github.com/EmpireProject/Empire）是&ldquo; PowerShell和Python后渗透代理&rdquo;，重点关注Active Directory（AD）部署的客户端利用和后渗透。&#13;
+  破解和后渗透在Windows上使用PowerShell进行，在Linux和macOS上使用Python进行。  Empire依靠标准的预安装库和功能；  PowerShell执行仅需要PowerShell版本2（自Windows 7开始预安装），而Linux和Mac模块则需要Python 2.6或2.7。</a>
+</h3>
+<h3 class="topic">
+<a name="404n6p4mr0pp5n1pd4ct85av2t">&nbsp;&nbsp;从历史上看，PowerShell Empire专注于Windows破解，而另一个名为EmPyre（https://www.harmj0y.net/blog/empyre/building-an-empyre-with-python/）的项目则针对Mac OS X / macOS和Linux。 在PowerShell Empire的第二个主要版本中，这些项目进行了合并，并保留了原来的名称，通常简称为Empire。 原先的开发人员不再支持PowerShell Empire项目，但已创建了更新的fork，例如BC-SECURITY.（https://github.com/BC-SECURITY/Empire）。分叉的版本最近发布了新版本3.0.（https://github.com/BC-SECURITY/Empire/tree/dev）。</a>
+</h3>
+<h3 class="topic">
+<a name="2r2onkbqlm3nn12ljjd2amiga4">&nbsp;&nbsp;&nbsp;虽然Empire似乎与Metasploit框架共享许多功能，但它们在本质上却大不相同。  Metasploit包含大量旨在获得初始访问权限的漏洞利用程序。 另一方面，Empire被设计为主要针对Active Directory环境的后渗透工具。 它倾向于利用目标操作系统及其主要应用程序的内置功能。</a>
+</h3>
+<h2 class="topic">
+<a name="2fd5offj2378skgv55oqdl9lrn">安装，设置和使用</a>
+</h2>
+<h3 class="topic">
+<a name="5gu42cup5kfmbq1e8rukmrp9tc">&nbsp;要在Kali Linux上安装Empire，我们将使用git clone从公共GitHub存储库中克隆项目，然后运行install.sh脚本：</a>
+</h3>
+<p class="topicImage">
+<img height="141" src="PowerShell Empire_files/7phgnbkn2umci59iaqqj3vnk63.png" width="405"></p>
+<h3 class="topic">
+<a name="7j2s68sf4dko110mvocl34h9nd">&nbsp;&nbsp;Empire允许使用共享私钥以及扩展名（共享密码）跨多个服务器进行渗透测试人员之间的协作。 但是，我们正在安装一个实例，因此在密码提示下按Return会生成一个随机密码。</a>
+</h3>
+<p class="topicImage">
+<img height="34" src="PowerShell Empire_files/611duuolks2qa1bhcmjiuahgud.png" width="523"></p>
+<h3 class="topic">
+<a name="19jm7nkfe09jp7rtakbgtkiuc1">&nbsp;&nbsp;&nbsp;安装了框架后，我们可以使用适当命名的Python脚本empire启动Empire。</a>
+</h3>
+<p class="topicImage">
+<img src="PowerShell Empire_files/3gh09sapo3fmfgnasjbtmv0iit.png"></p>
+<h3 class="topic">
+<a name="32fr3dm1aj9hrlp1n2o6v7a3hi">&nbsp;PowerShell Empire语法</a>
+</h3>
+<h3 class="topic">
+<a name="34q678o700df41rtrefub2sifb">&nbsp;&nbsp;我们可以使用help列出Empire中可用的各种命令，包括listeners, stagers, agents, modules.</a>
+</h3>
+<p class="topicImage">
+<img src="PowerShell Empire_files/0k7q8bjkbe8cb34e1di6mpsa5d.png"></p>
+<h3 class="topic">
+<a name="280s2v9qgaian5dnpmvds89rj8">&nbsp;Listeners and Stagers</a>
+</h3>
+<h3 class="topic">
+<a name="29vu8bgran5n75k8tk7t457tbi">&nbsp;&nbsp;我们将通过Listeners和Stagers的简短讨论开始Empire之旅。 Listeners等效于Metasploit的multi / handler，可以接受来自各种Empire代理的入站连接。&#13;
+  Stagers是Empire生成的一小段代码，在受害者身上执行，并重新连接到侦听器。 他们在受害者和攻击者之间建立连接，并执行其他任务以促进分段负载的传输。&#13;
+  要开始Empire会话，我们将首先进入Listener上下文，输入uselistener，然后按下空格键和双击Tab键，从而打印可用的侦听器。</a>
+</h3>
+<p class="topicImage">
+<img src="PowerShell Empire_files/09br6u3ibfn0esiu17c0k4s21g.png"></p>
+<h3 class="topic">
+<a name="067vf3bkohksal32s2v022396m">&nbsp;&nbsp;&nbsp;http侦听器是最基本的侦听器，就像Metasploit中的windows / meterpreter / reverse_http有效负载一样，它通过一系列HTTP GET和POST请求进行通信以模拟合法的HTTP流量。&#13;
+重定向器侦听器也值得一提，因为它创建了一个枢轴，该枢轴允许通过受感染的主机与内部网络进行通信。</a>
+</h3>
+<h3 class="topic">
+<a name="5tcvplkq3tp0eadjcrjulhvuk3">&nbsp;&nbsp;&nbsp;&nbsp;选择侦听器后，我们可以运行uselistener命令选择它，并运行info以显示信息和语法：</a>
+</h3>
+<h3 class="topic">
+<a name="4kj8v339ksbt88ei0toqccgm5e">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="PowerShell Empire_files/43bo8bjc54dd9727l4uapbiajo.png"></p>
+<h3 class="topic">
+<a name="2l4ld3iqe5amobpk2h7gkejkum">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="PowerShell Empire_files/3c44l7flohdjkltklr2gl1o8aa.png"></p>
+<h3 class="topic">
+<a name="6ltd3ao8gfoknnbofb0n749lq7">&nbsp;&nbsp;如上面的清单所示，有很多选项，但是大多数已经设置或为可选。 最重要的参数是主机和端口，分别用于选择本地IP地址或主机名以及侦听器的端口号。 我们可以如下设置主机：</a>
+</h3>
+<p class="topicImage">
+<img height="49" src="PowerShell Empire_files/34vf73ter4sgrr4kvihafo7e5e.png" width="466"></p>
+<h3 class="topic">
+<a name="55bafk02ldjqhl2fvtku8htgc7">&nbsp;&nbsp;&nbsp; 还有其他值得注意的设置。  DefaultDelay尝试通过设置从受感染主机到侦听器的等待间隔回调时间来模拟更多合法的HTTP流量。 通过将DefaultDelay设置为随机偏移量，DefaultJitter使通过程序生成的流量看起来较少。  KillDate将在指定日期自动终止所有受到感染的主机上的侦听器。 在渗透测试后执行清理时，这尤其有用。</a>
+</h3>
+<h3 class="topic">
+<a name="1i7ef571jnjrcm568lfsc1od65">&nbsp;&nbsp;&nbsp;&nbsp;设置选项后，我们可以使用execute命令启动侦听器，然后back返回主侦听器菜单。 最后，我们可以列出所有可用的stagers，通过输入usestager&#13;
+然后按一次空格键和两次tab键</a>
+</h3>
+<p class="topicImage">
+<img src="PowerShell Empire_files/6shqil23mjv922fgt9kt9in859.png"></p>
+<h3 class="topic">
+<a name="540m17g8j7dg9ggenjgjm3hk3c">&nbsp;&nbsp;Empire支持Windows，Linux和OS X的stagers。Windows stagers包括对标准DLL，HTLM应用程序，Microsoft Office宏的支持，以及更多奇特的stagers，例如与USB Rubber Ducky一起使用的windows / ducky。 要了解其工作原理，让我们尝试使用windows / launcher_bat stage。 选择stagers后，我们可以使用info命令查看这些选项。</a>
+</h3>
+<p class="topicImage">
+<img src="PowerShell Empire_files/2f638nttl3igq3ggpfoo5f4bjf.png"></p>
+<h3 class="topic">
+<a name="16sgl0c3bbb5sgbc74aa1va6hi">&nbsp;&nbsp;&nbsp;我们可以使用set命令配置Listener参数，后跟刚刚创建的侦听器的名称。 最后，我们将使用execute创建stager&#13;
+通过创建stage，最终创建了一个bat文件，该文件在目标机器执行后，会连接listener，从而使我们获得shell</a>
+</h3>
+<p class="topicImage">
+<img src="PowerShell Empire_files/0lss25r9ju28fb8kff8dgatolr.png"></p>
+<h3 class="topic">
+<a name="109hf42n03jmbjtc4j9cihgrde">&nbsp;&nbsp;&nbsp;&nbsp;为了更好地了解我们刚刚创建的stager，让我们看一下生成的launcher.bat文件的部分内容。&#13;
+stage程序是base64编码的PowerShell命令字符串。 这个第一阶段的有效负载将连接到侦听器，并获取Empire代理代码的其余部分。</a>
+</h3>
+<p class="topicImage">
+<img src="PowerShell Empire_files/2vlcqvtg2bcft1qqleji1u3fh3.png"></p>
+<h3 class="topic">
+<a name="1fl1hv2c4faf9qsccvaqgprk1d">&nbsp;The Empire Agent</a>
+</h3>
+<h3 class="topic">
+<a name="00v90n5j4nit9jblmvlpu7jmnl">&nbsp;&nbsp;现在我们已经运行了listeners并准备了stagers，我们将需要在受害者上部署一个代理。 代理只是stagers获取的最终有效负载，它使我们能够执行命令并与系统进行交互。 stagers（在本例中为.bat文件）将删除自身并在执行完成后退出。&#13;
+   代理在目标上运行后，它将使用HTTP GET和POST请求的数据部分与侦听器建立AES加密的通信通道。</a>
+</h3>
+<h3 class="topic">
+<a name="5i4de1op7fpe5lota5kkeg9lu2">&nbsp;&nbsp;&nbsp;我们将首先将launcher.bat脚本复制到Windows 10工作站，然后在命令提示符下执行它。</a>
+</h3>
+<p class="topicImage">
+<img src="PowerShell Empire_files/4hjgn1tdnojvk3bmh8lh9ng4e0.png"></p>
+<h3 class="topic">
+<a name="1tcvd20502bftisl436l1np221">&nbsp;&nbsp;&nbsp;&nbsp;成功执行启动器脚本后，初始代理调用将出现在我们的Empire会话中，如图</a>
+</h3>
+<p class="topicImage">
+<img height="30" src="PowerShell Empire_files/5t98241j8rp5o5abr06h65siuj.png" width="539"></p>
+<h3 class="topic">
+<a name="45h51cnql4ap5alh908jgugl0c">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;接下来，我们可以使用agents命令显示所有活动的agent。</a>
+</h3>
+<p class="topicImage">
+<img src="PowerShell Empire_files/7dsjh2a0tidettqdljkbbmb9c5.png"></p>
+<h3 class="topic">
+<a name="6rs623codeptouqr9ff3u8gstr">&nbsp;&nbsp;现在，我们可以使用后面带有代理名称的interact命令与代理进行交互并执行命令。&#13;
+   在这种情况下，我们将运行sysinfo来检索有关受感染主机的信息。</a>
+</h3>
+<p class="topicImage">
+<img src="PowerShell Empire_files/73oacu5gjmn7ke7dbemb28ojqq.png"></p>
+<h3 class="topic">
+<a name="1fkftg3dbbgvrpp7f8mrpebnfe">&nbsp;&nbsp;&nbsp;请注意，该命令不会立即返回。 此延迟是由DefaultDelay参数引起的，该参数当前设置为默认值5秒。&#13;
+   help命令（清单832）显示了所有不言自明的可用命令，例如upload, download,  screenshot,。 此外，我们可以使用shell执行命令并执行spawn指令在同一主机上生成其他代理。</a>
+</h3>
+<p class="topicImage">
+<img src="PowerShell Empire_files/7njurss14njvlhnvrjep1gitf5.png"></p>
+<h3 class="topic">
+<a name="0m2jjr18g4r9bdd4en7984u1j8">&nbsp;&nbsp;&nbsp;&nbsp;与merterpreter有效负载一样，Empire允许我们将有效负载迁移到另一个进程中。 为此，我们可以先使用ps查看所有正在运行的进程。 选择目标进程后，我们将使用psinject命令迁移有效负载，包括Listener的名称和进程ID作为命令参数</a>
+</h3>
+<p class="topicImage">
+<img src="PowerShell Empire_files/3882udikr0pa0nrqhqh5ls5q0a.png"></p>
+<h3 class="topic">
+<a name="3pdl9dfsjjj3p303oi921orm21">&nbsp;&nbsp;  需要特别注意的是，与Meterpreter有效负载的迁移功能不同，一旦进程迁移完成，原始的Empire代理将保持活动状态，我们必须手动切换到新创建的代理，如下所示：</a>
+</h3>
+<p class="topicImage">
+<img src="PowerShell Empire_files/07h52i070l7pbrkpjitks9009f.png"></p>
+<h2 class="topic">
+<a name="141v6qgg11d519iv0gao148nlr">PowerShell模块</a>
+</h2>
+<h3 class="topic">
+<a name="1m04se72u306iens8419l9968v">&nbsp;Empire代理的功能在于框架提供的各种模块。 我们可以通过运行usemodule，然后按一次空格键两次tab键列出所有可用的模块</a>
+</h3>
+<p class="topicImage">
+<img src="PowerShell Empire_files/256k8dvdpvn0vnqau5uj6qgdnc.png"></p>
+<h3 class="topic">
+<a name="1ivqsq97nrct5cgeh1thc6v2iu">&nbsp;&nbsp;这些模块分为多个类别，但也包括基本功能，例如键盘记录，屏幕截图和文件下载。</a>
+</h3>
+<h3 class="topic">
+<a name="0n5motr8f19r2p2mcj0ujmf68j">&nbsp;环境感知</a>
+</h3>
+<h3 class="topic">
+<a name="1k6lvv6pccf3j64t3lairg57c5">&nbsp;&nbsp;让我们看几个模块，看看它们由什么组成。 在本节中，我们将针对专用的Active Directory实验环境。&#13;
+   首先，让我们探索&ldquo;情境意识&rdquo;类别。 尽管有许多方法和命令可以执行网络枚举，但此类的主要焦点是本地客户端和Active Directory枚举。&#13;
+Active Directory枚举模块位于网络子类别中，其前缀为PowerView。 这是对@ harmj0y的原始Veil-PowerView项目的引用。</a>
+</h3>
+<h3 class="topic">
+<a name="1a4mhh6pmqo534v9ecot6tpudr">&nbsp;&nbsp;&nbsp;例如，我们可以使用get_user模块，然后发出info命令以显示有关该模块的信息。&#13;
+请密切注意此示例中的语法。 要从&ldquo;帝国基础提示&rdquo;中选择一个模块，我们包括该模块的完整路径。 如果不在此基本提示下，则将在模块路径前面加上powershell /。</a>
+</h3>
+<h3 class="topic">
+<a name="1rnr6dn038t703qnhgldfm1mkd">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="PowerShell Empire_files/30bk2e70dm6pfh04h58sujfh37.png"></p>
+<h3 class="topic">
+<a name="2sem0cd3v9u48i46m291cdq50q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="PowerShell Empire_files/47ejhaplsvrrpvofcoj25m061b.png"></p>
+<h3 class="topic">
+<a name="07gn3696k2ao041ei9lopouqoa">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;请注意，此较长的Empire命令中的换行符无法正确换行。 这只是显示问题，不会影响我们键入的命令。&#13;
+   让我们看一下上面清单中的标题部分。 名称，模块和语言字段是不言自明的。&#13;
+如果NeedsAdmin字段设置为&ldquo; True&rdquo;，则脚本需要本地管理员权限。 如果OpsecSafe字段设置为&ldquo; True&rdquo;，则脚本将避免留下破坏迹象，例如临时磁盘文件或新用户帐户。 这种隐形驱动的方法更有可能规避端点保护机制。&#13;
+   MinLanguageVersion字段描述执行脚本所需的PowerShell的最低版本。 当使用Windows 7或Windows Server 2008 R2目标与PowerShell版本2一起提供时，这尤其重要。</a>
+</h3>
+<h3 class="topic">
+<a name="2omcfh104pk536q6qrpb1oq9q0">&nbsp;&nbsp;background告诉我们模块是否在后台执行而对受害者没有可见性，而OutputExtension告诉我们模块将输出返回数据到文件时的输出格式。&#13;
+   上图有几个选项。在此特定模块中，除Agent（已设置）以外的所有选项都是可选的，该模块将按原样工作，枚举目标Active Directory中的所有用户。&#13;
+   我们可以设置任何数量的过滤选项或通过execute执行模块。</a>
+</h3>
+<p class="topicImage">
+<img src="PowerShell Empire_files/7k8l29u2v7hjomvtetqgrtf79u.png"></p>
+<h3 class="topic">
+<a name="755p5jir70579f8tfj9cra5ohp">&nbsp;&nbsp;&nbsp;除了PowerView子类别中的枚举工具外，环境感知类别还包括各种各样的网络和端口扫描程序。&#13;
+   bloodhound模块特别值得注意。 它可以自动执行PowerView的大部分功能，收集域中的所有计算机，用户和组以及所有当前登录的用户。 输出结果存储在适合与后端BloodHound应用程序一起使用的CSV文件中，该应用程序使用图论突出显示Active Directory环境中经常被忽略且高度复杂的攻击路径。</a>
+</h3>
+<h3 class="topic">
+<a name="4pjbpqg20338bjsphu6k4boe8q">&nbsp;凭证和特权升级</a>
+</h3>
+<h3 class="topic">
+<a name="2pf4q5ulbg4gdg08mp68rkpuhm">&nbsp;&nbsp;privesc类别包含特权升级模块。 该组中最有趣的模块之一是powerup / allchecks.。它使用了一些基于错误配置的技术，例如未引用的服务路径，对服务可执行文件的不当权限等等。</a>
+</h3>
+<p class="topicImage">
+<img src="PowerShell Empire_files/4pmp3p0r46p9664l4iq5hm1k14.png"></p>
+<h3 class="topic">
+<a name="3l1vtsstfkqlnj4pqk1ohgdfop">&nbsp;&nbsp;&nbsp;如果我们可以访问本地管理员帐户，则bypassuac_fodhelper模块非常有用。 根据本地Windows版本，此模块可以绕过UAC并启动高完整性的PowerShell Empire代理：</a>
+</h3>
+<h3 class="topic">
+<a name="16rlm73adf5nv8hf1hgkeutfpc">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="PowerShell Empire_files/5q4d5ri5e5vnn7ehb9j90ktqdk.png"></p>
+<h3 class="topic">
+<a name="1qc3n1fcv6q2flnihhsk7pi6s2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="PowerShell Empire_files/5hnsj15h447vsgoj44eajjlqlc.png"></p>
+<h3 class="topic">
+<a name="1fc7127598p0qun7qo62i2g9lp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;拥有高完整性的会话后，我们可以执行需要本地管理员或SYSTEM权限的操作，例如执行mimikatz来转储缓存的凭据</a>
+</h3>
+<p class="topicImage">
+<img src="PowerShell Empire_files/3s8m4oa28hjo7j4nfen8t2kqaf.png"></p>
+<h3 class="topic">
+<a name="7riidtpf5shfne4dduuv2de2pg">&nbsp;&nbsp;上图中的凭证类别包含已移植到Empire中的多个mimikatz命令。 标有星号的命令需要具有高完整性的Empire代理。&#13;
+   Empire使用反射性DLL注入将mimikatz库直接从内存加载到代理中。&#13;
+   由于大多数EDR解决方案仅分析硬盘驱动器上存储的文件，因此以这种方式加载恶意可执行文件可使检测风险降到最低。&#13;
+该方法是自定义编码到代理中的，因为Windows不会公开任何官方API（类似于LoadLibrary），这将使我们能够实现相同的目标。</a>
+</h3>
+<h3 class="topic">
+<a name="2tc63gvmdca9cjf7aot38bc2t8">&nbsp;&nbsp;&nbsp;让我们看一个高完整性的访问模块，例如logonpasswords：</a>
+</h3>
+<p class="topicImage">
+<img src="PowerShell Empire_files/1pg11f0r65hhmgg4lulljekcsp.png"></p>
+<h3 class="topic">
+<a name="58qf99brqo3kd1r1abd81hpmtn">&nbsp;&nbsp;&nbsp;&nbsp;此输出与mimikatz相同，但是收集的凭证也被写入凭证存储区，可以用creds指令枚举：</a>
+</h3>
+<p class="topicImage">
+<img src="PowerShell Empire_files/4lojeqvge04cd7t119jbol957u.png"></p>
+<h3 class="topic">
+<a name="3j7oi7o1q9b431dc7fj3aa2kbq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;我们还可以使用creds add将数据手动输入凭据存储</a>
+</h3>
+<p class="topicImage">
+<img src="PowerShell Empire_files/4a91vdb9s2g6lm297h7ra2sql1.png"></p>
+<h3 class="topic">
+<a name="5093gdfmmtvb3rddcjeuuvuhtp">&nbsp;横向运动</a>
+</h3>
+<h3 class="topic">
+<a name="2a9juhebq92jlgdi303r653su8">&nbsp;&nbsp;一旦获得有效的用户凭据，就可以使用它们登录其他系统，直到达到目标为止。 这称为横向运动。&#13;
+   在我们的实验室中，域控制器位于内部网络上，这意味着我们无法通过Kali VM来访问它。 为了演示Empire内横向移动的机制，我们将在Windows 10客户端上在其他用户的上下文中获得另一个外壳。&#13;
+   尽管此示例由于具有单个目标VM而得以简化，但是在实际情况下移至其他远程主机时，该过程的机制将相同。</a>
+</h3>
+<h3 class="topic">
+<a name="0hmp5caroh26hjf3766gmn2e78">&nbsp;&nbsp;&nbsp;我们可以使用lateral_movement类别中的各种矢量在远程主机上布置Empire代理：</a>
+</h3>
+<p class="topicImage">
+<img src="PowerShell Empire_files/0sp3t5htnp656qf81m1s2402ed.png"></p>
+<h3 class="topic">
+<a name="7b2t4enjjvbgbvlieftimtglua">&nbsp;&nbsp;&nbsp;&nbsp;作为示例，我们将尝试invoke_smbexec模块，该模块需要几个参数。&#13;
+   我们将ComputerName设置为Windows 10客户端（client251）的主机名，并将Listener设置为&ldquo; http&rdquo;。 我们还将使用上一部分中jeff_admin用户帐户中的相关数据来设置Username，Domain和Hash参数。 这是在Listener中进行配置。&#13;
+  我们可以使用set CredID命令从凭据存储中指定条目的ID号，也可以手动输入所有凭据。 请注意，在这种情况下，Offsec和Jeff_admin的密码是一致的。</a>
+</h3>
+<h3 class="topic">
+<a name="58pq606vn1vqs6eqdhu2v9l9ub">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="PowerShell Empire_files/0an2caqqjbbqrn0g145i6461lh.png"></p>
+<h3 class="topic">
+<a name="0ah340hn925t33as3hds7vs56s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="PowerShell Empire_files/4hjl749uvecsminn4hvstruqic.png"></p>
+<h3 class="topic">
+<a name="082pk0op8jh05hnbh89idsdmie">&nbsp;&nbsp;优秀的！ 该代理已成功部署，我们现在可以与其进行交互：</a>
+</h3>
+<p class="topicImage">
+<img src="PowerShell Empire_files/1q8uh4k7tcob2tputli79h72d5.png"></p>
+<h2 class="topic">
+<a name="3gj5830meekt4luf9djpb8rc1p">23.3在Empire和Metasploit之间切换</a>
+</h2>
+<h3 class="topic">
+<a name="0u4aop09lb8i1ie0j7o6h21f2m">&nbsp;Empire代理支持许多功能。 但是，很多时候我们需要使用仅在Metasploit中找到的功能。 由于我们可以在同一台受感染的主机上同时拥有Empire和Metasploit外壳，因此这实际上很容易&#13;
+在PowerShell Empire版本2.4中，可以使用meterpreter侦听器和injectshellcode模块直接将PowerShell中的meterpreter shellcode注入到内存中。 但是，不幸的是，在最新版本（2.5）中，此代码已损坏。</a>
+</h3>
+<h3 class="topic">
+<a name="47s8kufr373qf2asackhnl8p8i">&nbsp;&nbsp;如果主机上的PowerShell Empire代理处于活动状态，我们可以使用msfvenom生成meterpreter反向外壳程序作为可执行文件。</a>
+</h3>
+<p class="topicImage">
+<img src="PowerShell Empire_files/641jl5va85mtp53de6cgpaunih.png"></p>
+<h3 class="topic">
+<a name="34f2e6actn572lbl5t7us0h21v">&nbsp;&nbsp;&nbsp;然后，我们使用multi / handler模​​块和先前选择的设置来设置Metasploit侦听器：</a>
+</h3>
+<p class="topicImage">
+<img src="PowerShell Empire_files/2uq75bpjeivtq8seteptoedaoh.png"></p>
+<h3 class="topic">
+<a name="1k505iijqnm5b5r9hs21kjh1nu">&nbsp;&nbsp;&nbsp;&nbsp;现在，我们切换回PowerShell Empire Shell并上传可执行文件：</a>
+</h3>
+<p class="topicImage">
+<img src="PowerShell Empire_files/6m2qplmqpd85uf2i7mr5e94j67.png"></p>
+<h3 class="topic">
+<a name="30uhbtdev216hvjhkagj1tm4dq">&nbsp;上传可执行文件后，我们发出dir 和shell 命令以显示其位置并执行它：</a>
+</h3>
+<p class="topicImage">
+<img src="PowerShell Empire_files/2512lnmvs5ln700jkfeimu5v30.png"></p>
+<h3 class="topic">
+<a name="6ap1ur9kdt2mndv1uqsv138hsb">&nbsp;&nbsp;运行可执行文件后，我们将切换回Meterpreter侦听器并观察传入的Shell</a>
+</h3>
+<p class="topicImage">
+<img src="PowerShell Empire_files/5mt2cdlhk4vp52b8oolvj0jqo5.png"></p>
+<h3 class="topic">
+<a name="0kco1b06suco94j4jpa6unv4e6">&nbsp;&nbsp;&nbsp;逆转此过程以从现有的Meterpreter会话连接到Empire代理也很简单。 我们可以创建一个启动器（.bat格式），并使用meterpreter上传并执行它。 首先，我们将使用Empire创建启动器：</a>
+</h3>
+<p class="topicImage">
+<img height="117" src="PowerShell Empire_files/73nkv1hqdkji2pu0a6s10s5hnh.png" width="450"></p>
+<h3 class="topic">
+<a name="6mnu543uigl87nu012kmlon7go">&nbsp;&nbsp;&nbsp;&nbsp;然后我们可以上传并执行它：</a>
+</h3>
+<p class="topicImage">
+<img src="PowerShell Empire_files/0d7meuctionq55596jg85j6hlh.png"></p>
+<h3 class="topic">
+<a name="1tdl8l8jd9lcf67708o4nc2oll">&nbsp;现在，我们应该从受到感染的主机那里接收Empire代理：&#13;
+使用这些技术，我们可以在相同的受感染主机上利用这两个框架。</a>
+</h3>
+<p class="topicImage">
+<img height="16" src="PowerShell Empire_files/6evsu4u0m2pj276bovnv1u9tui.png" width="491"></p>
+</body>
+</html>

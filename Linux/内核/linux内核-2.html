@@ -1,0 +1,869 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>linux内核-2</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="7lv2i1n6qaqh7bdnr5g7aldr3i">linux内核-2</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/images/linux%E5%86%85%E6%A0%B8-2.jpg"></div>
+<h2 class="topic">
+<a name="0t1ialp93udi1cqqgod5v61mpe">linux内核开发进阶</a>
+</h2>
+<h3 class="topic">
+<a name="121khiqvk9lhb1od4uicbpehgu">&nbsp;linux内核调试</a>
+</h3>
+<h3 class="topic">
+<a name="2h6r9lh3rtd0uaf51b2utar6kp">&nbsp;&nbsp;需要调试的两种情况</a>
+</h3>
+<h3 class="topic">
+<a name="4kt6a7hnkfti89ols2l04irdat">&nbsp;&nbsp;&nbsp;程序崩溃</a>
+</h3>
+<h3 class="topic">
+<a name="0urlfqm8l8q6rrddkhclpcluta">&nbsp;&nbsp;&nbsp;&nbsp;panic</a>
+</h3>
+<h3 class="topic">
+<a name="5vhpblf1vj49db5ro1nu8k40bt">&nbsp;&nbsp;&nbsp;程序没崩溃，但是结果与与预期不同</a>
+</h3>
+<h3 class="topic">
+<a name="3p31h07cav0ffvmf6vcb9vbcje">&nbsp;&nbsp;内核发生oops但是不崩溃，此时可以通过dmesg 或dmesg-&gt;oops stack或cat /proc/kmsg指令可以查看发生oops时输出的错误信息&#13;
+通过objdump -S 错误内核模块的中间文件，而可以看到内核模块源代码及其汇编代码</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/2k79vhg02207cae99fltdincfm.png"></p>
+<h3 class="topic">
+<a name="3elmik25lfcqcqcm3ms0k1sbl5">&nbsp;&nbsp;&nbsp;内核发生oops同时会崩溃，修改了/etc/sysctl.conf文件中的内容之后需要运行sudo sysctl -p指令，使得修改生效，&#13;
+当oops导致系统崩溃后，要收集崩溃相关信息，需要将界面切换到终端界面，然后执行sudo insmod oops.ok,从而输出一些错误信息，如果错误信息过长一个终端显示不下，就需要使用一些工具KDUMP，将此时的错误信息dump下来</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/2l2it7t5a6n673h1v4llrjhjg3.png"></p>
+<h3 class="topic">
+<a name="4p3ia68bbnghipvshucpii3hiq">&nbsp;&nbsp;&nbsp;&nbsp;/etc/sysyctl文件中的kernel.panic_on_oops=1时，发生oops系统会崩溃；当该字段等于0，且内核运行在进程上下文中时，发生oops系统不会崩溃</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/4rkkttdlbumm01d8fptjc806c3.png"></p>
+<h3 class="topic">
+<a name="5b038jmltbg1mg2rjqd6g9r9ue">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;内核发生oops时，系统可能崩溃，可能不崩溃</a>
+</h3>
+<h3 class="topic">
+<a name="2ijooae4kv7cm6aqc0obc3jo89">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果系统不崩溃，则此时内核一定运行在进程上下文中，而不是中断上下文，并且没有设置panic的配置文件即etc/sysctl.conf文件中kernel.panic_on_oops字段没有设置为1</a>
+</h3>
+<h3 class="topic">
+<a name="7bni9tdust23q9ieitg2953lbi">&nbsp;&nbsp;&nbsp;&nbsp;安装KDUMP从而当panic发生系统崩溃的时候获得崩溃的信息</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/3othqcvp165fa3quilo6p9vu6r.png"></p>
+<h3 class="topic">
+<a name="5ifcc2i0at7rk6mdqo2sd0rpmo">&nbsp;&nbsp;gdb在调试内核程序时，只能读不能改，即不能下断点，kdb和kgdb可以用于调试linux内核</a>
+</h3>
+<h3 class="topic">
+<a name="314a3an9o598qio74ddg3mt57m">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/7efj1dcl8uhcj2rp9r42t32o3h.png"></p>
+<h3 class="topic">
+<a name="1m5nm3nu2eq72r48472pdeg3ag">&nbsp;&nbsp;&nbsp;&nbsp;kdb在使用时需要重新编译内核，从而将kdb加入到内核中去，这种调试方法不是基于源码，而是基于汇编</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/50mj4meqls89ncmq4v9occ7l0t.png"></p>
+<h3 class="topic">
+<a name="3hbe9e2evv5fgs935j1ea75jnc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这种调试方法不是基于源码，而是基于汇编</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/2un66n5d2229de2n9ln1v0e75o.png"></p>
+<h3 class="topic">
+<a name="32mf56066g3774k4qic20bjpbf">&nbsp;&nbsp;strace：类似windows中的APImonitor，是一个应用层程序</a>
+</h3>
+<h3 class="topic">
+<a name="6h0bk6ibca6etk8ufo39drgler">&nbsp;&nbsp;&nbsp;该工具用于监视程序执行过程中执行的所有系统调用，并且得到系统调用的参数和返回值</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/5dj7qlfugsl1gq4ntmit86m32s.png"></p>
+<h3 class="topic">
+<a name="1of0bt7kf5nu77luqpjr0c53jd">&nbsp;&nbsp;linus不信任交互式调试工具，所以linux中没有高级的调试特性（比如下断点等）</a>
+</h3>
+<h3 class="topic">
+<a name="6aos3jp3unm8ehkc6rs8b805ag">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/749ofpu8mvvdi3psurjvi9ebl3.png"></p>
+<h3 class="topic">
+<a name="44i9k3kiscrs6nig2esd614418">&nbsp;&nbsp;一个会引发oops的内核模块源码，即针对null指针进行了解引用</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/5q72pk9902lptfmju1vqggr3jn.png"></p>
+<h3 class="topic">
+<a name="3rg3h19p3m8h97e15vmp6sf6oi">&nbsp;&nbsp;oops不导致系统崩溃，即不发生panic</a>
+</h3>
+<h3 class="topic">
+<a name="5ks8502olsqbq5jh5tcnqcsmf0">&nbsp;&nbsp;&nbsp;修改/etc/sysctl.conf中的kernel.panic_on_oops字段为0</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/5262g2jlt65ktk0clqhrcsecao.png"></p>
+<h3 class="topic">
+<a name="30ocr5epq47ujqou6f8i05p8ij">&nbsp;&nbsp;&nbsp;&nbsp;之后加载存在错位内核模块到内核中，仅显示killed，系统不会崩溃</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/61i1nltohjm8ava72s7uakgp68.png"></p>
+<h3 class="topic">
+<a name="2v7787shkr0m7nt3dch069resi">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过运行dmsg显示oops发生时的错误信息</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/7kcf2p72421d6ilno3vu4q4ljv.png"></p>
+<h3 class="topic">
+<a name="77v4ff94smleogurjek00vsj8e">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/1a34tpj44os186ilah12gfnrvr.png"></p>
+<h3 class="topic">
+<a name="22ps6saq7tgphd3sj41nmi6et2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;错误信息中还包括寄存器信息、栈信息、函数调用信息</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/56u605l1k1uv2atq7ntolnv2id.png"></p>
+<h3 class="topic">
+<a name="2dku48fodkq03umkprhg12me6q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过objdump指令显示内核模块中源代码和汇编代码的对应关系</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/42evv20ee3vrdeka1g7tf2c8bm.png"></p>
+<h3 class="topic">
+<a name="7qu4ehv87s81crhquos6bnefra">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/178idl6ev2c1do2duidr910fns.png"></p>
+<h3 class="topic">
+<a name="6e9vupgidr8qt4bid7f6j1cf08">&nbsp;&nbsp;oops导致系统崩溃，发生panic</a>
+</h3>
+<h3 class="topic">
+<a name="6n2pl16pfmaf7cm0b37o16qaoe">&nbsp;&nbsp;&nbsp;修改/etc/sysctl.conf中的kernel.panic_on_oops字段为1，并执行导致panic的内核模块</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/33i2mms1ur5f1dc4hb9p6qt42u.png"></p>
+<h3 class="topic">
+<a name="147co72k2fitl9cisucv7f0a46">&nbsp;&nbsp;&nbsp;&nbsp;发生panic，系统崩溃，输出相关信息，并且进入倒计时重启</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/7800a721lmn0u62e0f116vsmr1.png"></p>
+<h3 class="topic">
+<a name="3l7s1rrn18i7lq52a7rrte39sl">&nbsp;&nbsp;当程序存在bug但是不会oops，也不会panic，仅仅是程序执行结果与预期不同，此时使用printk在疑似问题代码处输出日志信息</a>
+</h3>
+<h3 class="topic">
+<a name="4s1ajndtsi53n13tgtre7f177a">&nbsp;&nbsp;&nbsp;printk可以使用宏指定输出信息的日志级别，即紧急程度</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/48vdr9tbbfnoq2932buuoatjur.png"></p>
+<h3 class="topic">
+<a name="2m47jah3phg4ms89m0decjj613">&nbsp;&nbsp;使用strace跟踪程序执行的api 参数 返回值</a>
+</h3>
+<h3 class="topic">
+<a name="7asoajjaclkqq49ubsg7t1bj9h">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/0009ovc1r7jvs8spnnu8e8i8fc.png"></p>
+<h3 class="topic">
+<a name="41nsepsurmon6pv5rl794u1bc5">&nbsp;内核内存分配</a>
+</h3>
+<h3 class="topic">
+<a name="0n85cc17eah9uj91fpt5l4lah2">&nbsp;&nbsp;内核内存分配方法</a>
+</h3>
+<h3 class="topic">
+<a name="03g2t324qc3kkcaq3627oifiti">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/1d560l44jis8qb5i6no7sf8dra.png"></p>
+<h3 class="topic">
+<a name="3skosne95jcapbp4v0b2l32135">&nbsp;&nbsp;内核内存分类</a>
+</h3>
+<h3 class="topic">
+<a name="38t4r1gatuei8rdvurhrgup8ud">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/6cpbnup9dvuh2nm7v1bs8taitq.png"></p>
+<h3 class="topic">
+<a name="002h1sec9najsi4p4539hv7hj9">&nbsp;&nbsp;&nbsp;&nbsp;DMA-capable memory</a>
+</h3>
+<h3 class="topic">
+<a name="17gn53qk912dan0vd9t4i7aik4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;做中断或写硬件驱动的时候会用到</a>
+</h3>
+<h3 class="topic">
+<a name="64dgjuqs3pvcq8qjafg9g2esgq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x86中dma内存一般是内存区域的前16mb，该部分内存主要用于支持ISA设备，即isa设备只能使用前16mb内存，但是pci设备就没有这种限制</a>
+</h3>
+<h3 class="topic">
+<a name="4jkj4169qo0j3vnopekf58g5m2">&nbsp;&nbsp;&nbsp;&nbsp;normal memory</a>
+</h3>
+<h3 class="topic">
+<a name="4m0t9m7ephab0s7ctbcjf9alo0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通用内存</a>
+</h3>
+<h3 class="topic">
+<a name="3dmn947qno3klf0u1a0h4r6h98">&nbsp;&nbsp;&nbsp;&nbsp;high memory</a>
+</h3>
+<h3 class="topic">
+<a name="7ampm31ph9klsk30erk245kh4o">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在32位平台上用于大量获取内存的方法</a>
+</h3>
+<h3 class="topic">
+<a name="74qumu1881s6nhij0k0776pm2j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;是高地址内存，通过映射的方式使得其能够被硬件使用</a>
+</h3>
+<h3 class="topic">
+<a name="2bp864cir5sffbldcer4l50jg6">&nbsp;&nbsp;kmalloc内存分配方法</a>
+</h3>
+<h3 class="topic">
+<a name="3tso10061ujjtr48cjibkjlgki">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/6n3i05mhidmbcp8m3m7ks53lp9.png"></p>
+<h3 class="topic">
+<a name="4dtipq2nls8qkem31bbo77i403">&nbsp;&nbsp;&nbsp;&nbsp;使用GFP_KERNEL标志分配内存时，如果空闲内存较少，进程可能进入休眠从而等待一个空闲页面，因为进程可能休眠，所以使用这种方法分配内存的函数必须可重入，并且不能运行在原子上下文(即中断上下文，因为如果中断上下文中进程出现休眠，则会造成进程无法继续运行)</a>
+</h3>
+<h3 class="topic">
+<a name="5uedndvefd58qmoepiih40h209">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过int 0x80等方法调用中断处理函数时，内核运行中断上下文&#13;
+通过open等方式打开内核对象的设备对象，从而进一步调用设备对象中的函数时，内核运行在进程上下文</a>
+</h3>
+<h3 class="topic">
+<a name="62tjsjchahgi76lmhkncab3s97">&nbsp;&nbsp;&nbsp;&nbsp;通过GFP_ATOMIC标记分配内存时进程不会发生睡眠，如果没有足够内存可能会返回失败，所以可以使用该方法为中断处理函数、tasklets、内核定时器等运行在中断上下文中的程序分配内存</a>
+</h3>
+<h3 class="topic">
+<a name="665hv9n2a1a8s8t324669l1918">&nbsp;&nbsp;&nbsp;&nbsp;kamalloc分配的内存物理地址是连续的，所以内存使用效率会更高</a>
+</h3>
+<h3 class="topic">
+<a name="4rus2bpphc0p0ccij8sqt867vq">&nbsp;&nbsp;&nbsp;&nbsp;原子上下文即当前执行的代码必须一次性执行完毕</a>
+</h3>
+<h3 class="topic">
+<a name="6a7h7is7sfjqq7qefl75s2cmr1">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/7bi4c386jvn7ggq7c3ekei2rf7.png"></p>
+<h3 class="topic">
+<a name="1mfpjv3puk3ec728afjrt2ft7h">&nbsp;&nbsp;vmalloc内存分配方法</a>
+</h3>
+<h3 class="topic">
+<a name="2qddf9q09ceq53vqem0d252v1b">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/4d9vl3jl25069d85t180uqbv44.png"></p>
+<h3 class="topic">
+<a name="74cjkhsvsg3u8d1im7juagpmr9">&nbsp;&nbsp;&nbsp;&nbsp;此时分配的内存都是虚拟地址空间的内存，所以分配内存的物理地址不一定是连续的</a>
+</h3>
+<h3 class="topic">
+<a name="74g4qi9mmlp6gc9dhc18643lgu">&nbsp;&nbsp;&nbsp;&nbsp;可能会发生进程睡眠，所以在中断上下文中不能使用vmalloc</a>
+</h3>
+<h3 class="topic">
+<a name="2osuh4heimd6silms5n1ea82ro">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/34iuuk6sum45opa0fd2pb22i85.png"></p>
+<h3 class="topic">
+<a name="6qh4ebl7iqm8f2iv4b595nmeek">&nbsp;&nbsp;__get_free_pages()</a>
+</h3>
+<h3 class="topic">
+<a name="6ba71q26t37d6kplsummmqvuv7">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/311206kmcukug9qslai3q4r72r.png"></p>
+<h3 class="topic">
+<a name="7ci2u6tl2tbnu28dblmj3ejsea">&nbsp;&nbsp;&nbsp;&nbsp;以内存页为单位分配内存</a>
+</h3>
+<h3 class="topic">
+<a name="1ph8bhjnqek4vsnk5h5p8gnj3h">&nbsp;&nbsp;&nbsp;&nbsp;函数中GFP_KERNEL标记与之前介绍的标记意义相同</a>
+</h3>
+<h3 class="topic">
+<a name="1ag65an8trn5d0qi93artk2tjm">&nbsp;&nbsp;&nbsp;&nbsp;3表示2的3次方，即会分配8个内存页</a>
+</h3>
+<h3 class="topic">
+<a name="4370k26puotd5epc7mk4ujr1vg">&nbsp;&nbsp;&nbsp;get_zeroed_page函数只分配一页内存</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/013bbtg4f1smgigl16ar60u3jq.png"></p>
+<h3 class="topic">
+<a name="5g4gchjqoadt9qrfq90fsg1bn5">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/3utgpmpaiefp94onbpipcp0mp2.png"></p>
+<h3 class="topic">
+<a name="0afsgf5b2eck4qt5h39mk8usqr">&nbsp;&nbsp;kmem_cache_alloc</a>
+</h3>
+<h3 class="topic">
+<a name="6187a670etphnobcosdjl7c3os">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/1c3noqlbf82iog7pohl395c215.png"></p>
+<h3 class="topic">
+<a name="42h7ud5aubg538ug0r0dk0qj70">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/44a0h72cqfnmjbcstfmriq0fng.png"></p>
+<h3 class="topic">
+<a name="4a320qlfuoq53lvavnvngu86rh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当程序中需要频繁分配和释放固定大小内存时，如果使用之前的内存分配方法会造成大量的内存碎片，此时就可以使用缓存</a>
+</h3>
+<h3 class="topic">
+<a name="6o1h63kise59v45n5g36nsrqta">&nbsp;&nbsp;各种内存分配方式的区别</a>
+</h3>
+<h3 class="topic">
+<a name="1l6vn52nbihed9milb8s3hdniu">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/5ubo8smh5sk2j1kdug5fj1k251.png"></p>
+<h3 class="topic">
+<a name="7nfsptv8vgujhhrpt01aoh3ik9">&nbsp;&nbsp;&nbsp;&nbsp;kmalloc</a>
+</h3>
+<h3 class="topic">
+<a name="126a9rucbu24g20v51cigfpjkm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;申请的内存大小存在限制（32B 或64B到128KB）申请的内存在物理内存中是连续的，使用效率比较高，不会申请的内存进行初始化</a>
+</h3>
+<h3 class="topic">
+<a name="6jhnmdnef2glp76jils9cg3rck">&nbsp;&nbsp;&nbsp;&nbsp;vmalloc</a>
+</h3>
+<h3 class="topic">
+<a name="64d02hoq4spmt2tfspt3dgaok8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;分配虚拟内存，分配的物理地址不一定连续，所以效率相对较低，不能在原子上下文中使用，适合于分配连续的大的内存</a>
+</h3>
+<h3 class="topic">
+<a name="75vag90hrbpli65dc7l2eregka">&nbsp;&nbsp;&nbsp;&nbsp;kmem_cache</a>
+</h3>
+<h3 class="topic">
+<a name="5n81g4i1d74i7p2emjhfr61c56">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用于响应频繁分配、释放相同大小内存块的需求</a>
+</h3>
+<h3 class="topic">
+<a name="6qlqarvulc2uflvqh3mavj1j61">&nbsp;&nbsp;&nbsp;&nbsp;__get_free_pages()</a>
+</h3>
+<h3 class="topic">
+<a name="7419k2eq5akjb8gaaougrdh94v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;适用于按照按内存页进行分配和释放的内存</a>
+</h3>
+<h3 class="topic">
+<a name="3jfk4p40q7khh18m2gtciq7hdn">&nbsp;多线程</a>
+</h3>
+<h3 class="topic">
+<a name="45662glcnjtcacisnuit1mtn1t">&nbsp;&nbsp;关键在于互斥与同步</a>
+</h3>
+<h3 class="topic">
+<a name="062nrjn5v1fsgu3lq90nchunh0">&nbsp;&nbsp;windows内核中</a>
+</h3>
+<h3 class="topic">
+<a name="5ahoj12jf57q5fq8gu16k8cpvi">&nbsp;&nbsp;&nbsp;互斥</a>
+</h3>
+<h3 class="topic">
+<a name="7t7ir86s6aaat5il7nqc4s74hh">&nbsp;&nbsp;&nbsp;&nbsp;mutex</a>
+</h3>
+<h3 class="topic">
+<a name="5n2ak3ioeracv41dtcchb9slv9">&nbsp;&nbsp;&nbsp;&nbsp;fastmutex</a>
+</h3>
+<h3 class="topic">
+<a name="2kcgbeoil1mqfs2eqv1i4783ue">&nbsp;&nbsp;&nbsp;&nbsp;kspin lock</a>
+</h3>
+<h3 class="topic">
+<a name="74nbrgcnp00u7a4ds7ncgp86v0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;自旋锁</a>
+</h3>
+<h3 class="topic">
+<a name="0vg36bgpoksm799gj8q163gdvm">&nbsp;&nbsp;&nbsp;&nbsp;eresource</a>
+</h3>
+<h3 class="topic">
+<a name="5sqtp4uunht05ag8flvt0o3r0i">&nbsp;&nbsp;&nbsp;同步</a>
+</h3>
+<h3 class="topic">
+<a name="027976c35dq5gg3tkiqvn0tdl6">&nbsp;&nbsp;&nbsp;&nbsp;信号量</a>
+</h3>
+<h3 class="topic">
+<a name="4ukeqgcacjqujsm8leav9i3j9s">&nbsp;&nbsp;&nbsp;&nbsp;一些内核对象</a>
+</h3>
+<h3 class="topic">
+<a name="5ndpq7e0lc00smn7kbhsmmcfgm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;线程</a>
+</h3>
+<h3 class="topic">
+<a name="1v55bn19rl2uhff8ncm5bcrnej">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;进程</a>
+</h3>
+<h3 class="topic">
+<a name="4cvhvao5fmliouhsef89lhil0m">&nbsp;&nbsp;linux内核中如何创建多线程</a>
+</h3>
+<h3 class="topic">
+<a name="16fb5issr9jd90s7qn50nvu1j2">&nbsp;&nbsp;&nbsp;kernel_thread函数在部分内核版本中无法运行</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/72s59t160g1ses65m15on04hpl.png"></p>
+<h3 class="topic">
+<a name="1f6nj0tkf3dobm6kua00imuf0o">&nbsp;&nbsp;&nbsp;kthred_run</a>
+</h3>
+<h3 class="topic">
+<a name="5flc9klo1dquqvmtememg1hfp1">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/09bmrkahijej8k0die3nirjmk0.png"></p>
+<h3 class="topic">
+<a name="7t6deolh295igs3nen0k828v5q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/5ofqu167s4t4361glv8pvpjoc3.png"></p>
+<h3 class="topic">
+<a name="39m3d3o92mo8gfssq9rlnvmah7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/0j52g6bqokcibnb4fp0njqq366.png"></p>
+<h3 class="topic">
+<a name="5423pdunrnr6tsmu3jira5asih">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Myprint是线程回调函数 "hello world"是线程回调函数的参数，mythread是线程的名称</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/27lo0hhvfq6s9a6hk5lpqta36a.png"></p>
+<h3 class="topic">
+<a name="7mlip0bmqg716vdm5fo7sil68n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/2i8jvvhqomf8m07i8vqlihap11.png"></p>
+<h3 class="topic">
+<a name="5m8hd0l031efa89477cetq6q4s">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/49c5u7u4ep22422jkqldc159j8.png"></p>
+<h3 class="topic">
+<a name="6j9g5nsfbg2egijnb9s6epkapa">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/0if1f7a3vmgjsnud72kb8hg7u1.png"></p>
+<h3 class="topic">
+<a name="2ehq7dh0g8dnnd4g47n13apr9o">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/3bvcsnuhpbgiv11bhp8esra8vo.png"></p>
+<h3 class="topic">
+<a name="5t2gt4vh867d7hml4qmbvdemqa">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/71moko2o0j92hrqenbc7edt2ki.png"></p>
+<h3 class="topic">
+<a name="6adhbstv9k9pcdiq38jkqr1q3n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/0qej55rhgaafku9sg1ndlam541.png"></p>
+<h3 class="topic">
+<a name="5i6ahigannsf8p5v036buhk5m2">&nbsp;&nbsp;内核的同步与互斥</a>
+</h3>
+<h3 class="topic">
+<a name="4cu6a729p46nfd78egfhrppfqo">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/67u2vohio7epbg1usqh65q41ja.png"></p>
+<h3 class="topic">
+<a name="035487ltpc9dql3c2hg9tnajk8">&nbsp;&nbsp;&nbsp;&nbsp;信号量</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/7f9mr12pi42mr97k6qcet5be70.png"></p>
+<h3 class="topic">
+<a name="0vsqakrre1l7hhdnt9q39a901a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;同一个资源可以同时被多个线程使用</a>
+</h3>
+<h3 class="topic">
+<a name="12hje6814ak64umj6khm3jh2p1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/6jlihub13jkookvkandcu3pfu2.png"></p>
+<h3 class="topic">
+<a name="7faqvn9cd1e28m2lc9teb49tcv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;void down()表示信号量减1后为负数，则down()函数会发生阻塞，直到有信号，且其他线程无法打断该过程，终止该线程&#13;
+&#13;
+void down_interruptible()表示信号量-1后为负数时会继续等待，但其他线程可以打断这一过程，终止该线程。通常使用该函数获取信号量&#13;
+&#13;
+void down_teylock()会尝试获取信号量，获得或没获得信号均会返回，不会导致线程睡眠，通常用于中断程序中</a>
+</h3>
+<h3 class="topic">
+<a name="78tvos4uvqm3ohmpuqn5fnig38">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/7os7iqa01t6rqnupse06mfj1aa.png"></p>
+<h3 class="topic">
+<a name="3oiv5pulbsdr811q6nh10dtot1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/3hau5rv1g27sto7qr9bsp7t6s7.png"></p>
+<h3 class="topic">
+<a name="3jqtfrlmmv91vbdv8f537dii3r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/55iqjpemtaa00u2lkruqskuqrq.png"></p>
+<h3 class="topic">
+<a name="0tao4bt51hsi30kvl28lbg1oh9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/3h8bgrd71ao6grs7jk7lo86g2h.png"></p>
+<h3 class="topic">
+<a name="4ekaunekoo5g3vq1blto8t81nf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;信号量初始化时信号数位1，此时的信号量相当于互斥体mutex</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/673t1mlqvjir77auhcv2o9c4eo.png"></p>
+<h3 class="topic">
+<a name="1gvcpgvaiptfbf6ou1ha9hqhm2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/1doj7djr9toja1dtmtklosvjoc.png"></p>
+<h3 class="topic">
+<a name="25chd76rre3ujkbkgmolct8ull">&nbsp;&nbsp;&nbsp;&nbsp;linxu2.6.16版本之前没有互斥体机制，所以该版本之前如果要实现一个资源同一时间只能被一个线程访问只能使用信号量为1的信号量</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/1rih3c9ir3puku5l2drb92o4nt.png"></p>
+<h3 class="topic">
+<a name="2v1or0cfp7fb5bu0ao151pepfi">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/112b4n3cigf8fd2gth82aufve6.png"></p>
+<h3 class="topic">
+<a name="761ha5jtr0ofci5t3vm0bbbj57">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lock()&#13;
+lock_interruptible()&#13;
+lock_trylock&#13;
+三个函数的区别类似于down的三个函数，主要区别在在于是否阻塞以及阻塞后是否能被大打断</a>
+</h3>
+<h3 class="topic">
+<a name="0ufgbkgkvs7a8gon6ljqg853hh">&nbsp;&nbsp;&nbsp;&nbsp;完成变量，类似于windows平台的event</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/4mbh5vif691gla79hnvnss8p1q.png"></p>
+<h3 class="topic">
+<a name="0anegioovnip1n7takudumn7vi">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/7u744tpt5it4b6l346ojtcs0sk.png"></p>
+<h3 class="topic">
+<a name="6dk2ooi708mg2heie6mjd2kmb3">&nbsp;&nbsp;&nbsp;&nbsp;自旋锁</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/01p3gg5ivq3hrhbm97vm3g9obp.png"></p>
+<h3 class="topic">
+<a name="75ep7lreumlt1s2ooa9c52bp0l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;读写锁</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/2p0qfkdc7rdon356qeevqghor8.png"></p>
+<h3 class="topic">
+<a name="75risj205ai2g6kq182u1ul0jp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/0f30412lcjjmpsh9n2lnusifkl.png"></p>
+<h3 class="topic">
+<a name="7guq541c9js4pc38iuo5f1gtjs">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;spinlock和mutex都是用于进行互斥的，区别在于spinlock在无法获得锁的时候不会阻塞(即睡眠)而是进行轮询（一直尝试拿到该锁），所以spinlock效率会较差，所以spinlock保护的代码应该较短，执行速度越快越好，spinlock是轮询，不会睡眠，所以在中断上下文中可以使用</a>
+</h3>
+<h3 class="topic">
+<a name="04radfpchmj26sujs0v4tehq2g">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;相对的mutex用于保护较长的代码段，否则会经常因为无法获得互斥体而睡眠</a>
+</h3>
+<h3 class="topic">
+<a name="22tji4k5jd94jqgqaj23dsgiv5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;读写锁:允许多个线程同时读，但是只允许一个线程写&#13;
+类似于windows平台的eresource</a>
+</h3>
+<h3 class="topic">
+<a name="3cp5ov10gmf8vr7t64dimav6qa">&nbsp;&nbsp;&nbsp;&nbsp;原子变量</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/57mkvu4vk3mo2rfkcf7vd96v7f.png"></p>
+<h3 class="topic">
+<a name="2e7a857h2jujbdam5i90rq0sud">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;原子变量的算数运算为原子操作</a>
+</h3>
+<h3 class="topic">
+<a name="027ipfdemkscargbtekph1uu4h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/05ro760eq439agljpi8siocp37.png"></p>
+<h3 class="topic">
+<a name="68or8817frapk2iqv6gkek10tk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;atomic_read函数可以用于将原子变量转换程其他类型数据</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/62j7h77ru6o5qhkd08u6g24293.png"></p>
+<h3 class="topic">
+<a name="42n9t0d0nc43crq872uvdai2ch">&nbsp;中断</a>
+</h3>
+<h3 class="topic">
+<a name="07lkrnlal8t7mk5edfqcsm93uf">&nbsp;&nbsp;定时器</a>
+</h3>
+<h3 class="topic">
+<a name="2fksoonh91urstn502bg5j0hak">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/1d52diqv0or0ar6vg4mdi2vgt7.png"></p>
+<h3 class="topic">
+<a name="2vkv9jai6odsohqtk20t29cn1e">&nbsp;&nbsp;中断上半部和中断下半部</a>
+</h3>
+<h3 class="topic">
+<a name="2pmdr1ijm7utdjpnmn0mshbm65">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/02tbq53h297nb6rubtul8jbrfu.png"></p>
+<h3 class="topic">
+<a name="2jdt1bn9o4jdvfkfgb3ako62lh">&nbsp;&nbsp;&nbsp;&nbsp;中断上半部：中断处理函数</a>
+</h3>
+<h3 class="topic">
+<a name="0reh51nv2vh1fi5sfp86qa74q3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在内核模块中通过request_irq()可以注册中断序号和对应中断处理函数，函数中的irq就是中断序列号，handler 函数指针指向中断处理函数，通过free_irq()可以撤销中断向量及其中断处理函数</a>
+</h3>
+<h3 class="topic">
+<a name="1iu1vd66f2j2vv8l9d8ophif4l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;中断分为上半部和下半部，上半部用于存放中断处理函数，从而快速响应中断的处理，上半部是关中断的，即当该中断发生时，同级别或低级别的中断如果发送就不会被处理</a>
+</h3>
+<h3 class="topic">
+<a name="2ln58c8gcin6litg94fkofjj1k">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/70c1199dd860skteb1fml83i44.png"></p>
+<h3 class="topic">
+<a name="7519jncpubcddm37vp29nia2p4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/79fs6huv9pt51e298adp9t9npd.png"></p>
+<h3 class="topic">
+<a name="75qjnpchj8uclg7aavr1ca2run">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这里中断处理函数比较简单，一般中断处理函数中会和硬件进行通讯、读写数据等，从而完成响应的功能</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/49br1o2a0f1k93cnco6bhjtgsb.png"></p>
+<h3 class="topic">
+<a name="6rb6pph8ef2jhrfr1p0n65b2pn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在模块退出时，将对应的中断处理向量和中断处理函数删除</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/03j2m3b2mm8k58uefh2p054tvf.png"></p>
+<h3 class="topic">
+<a name="5rv81qkbhh98pbd5094f735nca">&nbsp;&nbsp;&nbsp;&nbsp;中断下半部:softirq(软中断)、Tasklets、Workqueues</a>
+</h3>
+<h3 class="topic">
+<a name="7v7lva0fhqul0oftmq1l23gq0g">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;中断下半部用于处理本次中断处理其他比较耗时的操作（即中断上半部分没有处理完的操作），下半部是开中断的，所以可以同时响应其他的中断</a>
+</h3>
+<h3 class="topic">
+<a name="5r9gr3cik0amab2ttoqrac55ok">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;软中断实现比较麻烦，需要重新修改编译内核</a>
+</h3>
+<h3 class="topic">
+<a name="7mi424mdausclm1u06o8lu1p5t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tasklets</a>
+</h3>
+<h3 class="topic">
+<a name="1jtrj3qhitjostnnahqp6mq2l3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tasklets实现中断下半部</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/3bq21eh62ericsp4u90pjib6q2.png"></p>
+<h3 class="topic">
+<a name="3tccd3gt1umcmurj4h289c573b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tasklets函数执行时，内核依然处于中断上下文中，所以Tasklets函数代码执行过程中不能出现线程睡眠等情况</a>
+</h3>
+<h3 class="topic">
+<a name="2f33ubp3hlri1hfro3paqj334c">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;有一个问题是作为中断下半部的TaskLets如何确定其对应的中断上半部是哪一个？如何确保tasklets能够继续执行对应中断上半部的任务呢？</a>
+</h3>
+<h3 class="topic">
+<a name="68k1krm5q6h3e7md4dvulo8q9u">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/4dpi1a2f8depa901med8a8278h.png"></p>
+<h3 class="topic">
+<a name="4r5u05vosf0sqkvq22dl8ni9jf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/5svjg6crd02qa8ff5k5to2iesp.png"></p>
+<h3 class="topic">
+<a name="7oe4iqpvo3878pk024b5dqdmqm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Workqueues</a>
+</h3>
+<h3 class="topic">
+<a name="6kj3tmab89dq4aa3m2rd15ulrh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/1hh9u2smnpegfjhp4f0o1kesh1.png"></p>
+<h3 class="topic">
+<a name="6e8v98c0prq5fo720ag00nvhju">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Workqueues于Tasklets最大的区别在于运行时处于进程上下文，所以其中的代码可以睡眠</a>
+</h3>
+<h3 class="topic">
+<a name="5fprtdmot1nrb15sbmnh2rbtdf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;所以某种意义上说，工作队列不属于中断下半部，因为其并不运行在中断上下文</a>
+</h3>
+<h3 class="topic">
+<a name="1ms5n4tebuorggmsagr2j1a068">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;自己创建的工作队列和系统的共享工作队列是并行执行的</a>
+</h3>
+<h3 class="topic">
+<a name="3k7prln6pf959doivltd34vi55">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;独立的工作队列</a>
+</h3>
+<h3 class="topic">
+<a name="0h6bbmrdde7esajdscq2rmdq9o">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/6r1nvpn0sou9gmmt1bu267hfq7.png"></p>
+<h3 class="topic">
+<a name="66amrisjft5g783k2jbnemr89s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/43ujtjgemv52320t6bcb9it1eb.png"></p>
+<h3 class="topic">
+<a name="5ner2c0nkdc5bp62epunumk7k0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/0j5mvucf0u9egn5vup51pg239k.png"></p>
+<h3 class="topic">
+<a name="52rf9i52setith5ehlssukfhu2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;共享的工作队列</a>
+</h3>
+<h3 class="topic">
+<a name="15u1amrphtnfp538ochh9ehe7n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/23pafls2m13v4kltufip44gpqi.png"></p>
+<h3 class="topic">
+<a name="35je8rjup4t3gudp7uucu05ljq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/7hckc9jr3r11ekfdlqi848hojq.png"></p>
+<h3 class="topic">
+<a name="7iv2p6ckhgsc0tptf1lhvdbddq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;软中断、Tasklets、Workqueues的区别</a>
+</h3>
+<h3 class="topic">
+<a name="2rd7eavd908k3krnmubpajo8gg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/1s3aj7djm8sf4647mvp0l279c9.png"></p>
+<h3 class="topic">
+<a name="0a3d46mknag3bmhava7a80dpct">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/33nmpbc0ke116u3gt7g6kq51q3.png"></p>
+<h3 class="topic">
+<a name="0nd07k7athi7afkf5h1amacpri">&nbsp;&nbsp;中断上半部和中断下半部的区别</a>
+</h3>
+<h3 class="topic">
+<a name="7msnuim7oetg7a0jkfg9tfrm6e">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/09ml4si657i45l1o9n6ji7n2b2.png"></p>
+<h3 class="topic">
+<a name="7ffs4g8alachpeaevl614ggvc6">&nbsp;&nbsp;&nbsp;&nbsp;为内核添加中断后半部主要用于编写硬件驱动，比如网卡驱动、声卡驱动等</a>
+</h3>
+<h3 class="topic">
+<a name="3p1n9pds2rh22t6rotlv1f0mva">&nbsp;基于Netfilter的网络防火墙</a>
+</h3>
+<h3 class="topic">
+<a name="2ues9a3it0hgs7lorl01u12k9c">&nbsp;&nbsp;Netfilter是一个框架，而可以用于在linux网络io栈中拦截每一个数据包，但是不会对拦截到的数据包做任何操作，需要人为编制规则（通过应用层的IPTABLES）</a>
+</h3>
+<h3 class="topic">
+<a name="30alk3m7mukscvu4ksagu6e2av">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/5ec2brp4q7uiduvif605uk1jtj.png"></p>
+<h3 class="topic">
+<a name="09kichsjbsur4sq2uha9pu1aoa">&nbsp;&nbsp;防火墙的本质：过滤监控网络数据包</a>
+</h3>
+<h3 class="topic">
+<a name="4i1e1kagllu34bundvspdkl9fd">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/6eibnj9s4t3d4srss81r87iks7.png"></p>
+<h3 class="topic">
+<a name="40q49jvpf0kbjh28tobr72ha67">&nbsp;&nbsp;网络数据的传输</a>
+</h3>
+<h3 class="topic">
+<a name="1mqimojbef9tv7qrd3ofmu5h49">&nbsp;&nbsp;&nbsp;FCS为校验和 简单的防火墙仅进行ip、端口的过滤，复杂的防火墙会对数据包中的数据进行解密、解压缩、嗅探、篡改等</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/1ta9ihvmcsrfq2lr79nbsdrhpn.png"></p>
+<h3 class="topic">
+<a name="27n8shgjcpu0rnscijig1i6jah">&nbsp;&nbsp;&nbsp;&nbsp;TCP头，关键字段头部长度可以用于寻找tcp头之后的数据，还有源端口号和目的端口号，doff代表tcp头的长度</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/29qbgl7mr1cd5vmiisbq2iehk9.png"></p>
+<h3 class="topic">
+<a name="722ricbo292rhirnbk35hb2u8a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;UDP头，关键数据是源端口号和目的端口号</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/4un6fbu0dtdoqb2me2mc8rik5j.png"></p>
+<h3 class="topic">
+<a name="2bd3u2ktlmlb7hqqdtcp614fpf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IP头，其中最关键的数据是源ip地址、目标ip地址、协议（protocol：用于指定下一层是tcp协议还是udp协议）、ihl（该字段的值*4表示ip头的长度）</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/2c701vsu69hag1ihppr4o0m4la.png"></p>
+<h3 class="topic">
+<a name="49fesb6cfg13ff9st0ukku685r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;以太网帧头ETHERNET_FRAME，其中FrameType用于表示下一层是一个ARP包还是IP包，ARP包用于数据进入局域网后，根据ip地址找到mac地址&#13;
+&#13;
+ARP头ARP_HEADER，ARP头中存放源mac地址和目的mac地址</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/09vfhd0ttni84ukg4nljhvo6sb.png"></p>
+<h3 class="topic">
+<a name="302ru40n1320mrnr4cd9jrkbo0">&nbsp;&nbsp;基于linux内核的防火墙开发</a>
+</h3>
+<h3 class="topic">
+<a name="1spch4n9r61blmtpiulodsntp1">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/3sm5q6ns0btcam4fia84r8d78j.png"></p>
+<h3 class="topic">
+<a name="53gfdrkti4teueekbb4n0kb33p">&nbsp;&nbsp;&nbsp;&nbsp;iptables命令就是在右边5个点处下钩子，添加过滤的规则</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/7hp6vkqr7r0k5hlqbapo1pskdp.png"></p>
+<h3 class="topic">
+<a name="5conb9c5mjlo6016b80f5ooat3">&nbsp;&nbsp;iptables与netfilter在网络栈中的关系</a>
+</h3>
+<h3 class="topic">
+<a name="7b0f5b8a5075on5pjb3q1r0oeg">&nbsp;&nbsp;&nbsp;netfilter负责hook网络层的数据，并将hook到的数据传递给iptables中的规则进行判断，从而处理相应的数据包</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/1qksdhbp1igi6ll8rudthvnrl9.png"></p>
+<h3 class="topic">
+<a name="5dm663v45a17njcrj41oc0lbag">&nbsp;&nbsp;内核防火墙开发</a>
+</h3>
+<h3 class="topic">
+<a name="46i8kn5g24uo6d457vc6586v5c">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/07nta1l1mob88aeq088p5u99uv.png"></p>
+<h3 class="topic">
+<a name="3h6va7f1u5q7so5500nqnm456b">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/0mpugfmrvhecku9t8los409hs0.png"></p>
+<h3 class="topic">
+<a name="7p289p3ud8irgb84hcbng31v07">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在程序中描述关键点、对数据包的处理、hook函数优先级</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/7807bcsenhvsi04434g7r17vhn.png"></p>
+<h3 class="topic">
+<a name="2k0pa4kqfhaot1loas57kd7b40">&nbsp;&nbsp;&nbsp;nf_hooks数组是一个二维数组，&#13;
+通过确定hook函数要hook的协议、要hook的关键点、该hook函数的优先级（因为针对同一个协议、同一个关键点，可能存在好几个hook函数，所以有必要指定优先级），可以编写hook函数&#13;
+&#13;
+通过将指定的hook函数添加到指定协议和关键点链表中，即可完成hook</a>
+</h3>
+<h3 class="topic">
+<a name="0jtoo5k4k5rm31e1ccliuo974v">&nbsp;&nbsp;&nbsp;&nbsp;通过构造nf_hook_ops结构体从而定义一个存在指定优先级、hook指定协议、指定关键点的函数，然后通过regist_hook()将hook函数注册到系统中&#13;
+&#13;
+通过修改要hook的网络层协议类型，可以针对任何网络层协议数据包进行hook，网络层协议包括ip arp icmp等&#13;
+&#13;
+因为网络层协议是传输层的下层协议，所以的拦截的网络层协议数据包中就包括传输层的数据包，所以拦截的协议类型中不需要指定传输层协议，仅指定网络层协议</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/4hcd9ugq5otncfe23b8div2ib9.png"></p>
+<h3 class="topic">
+<a name="4746s2svnm8ep3g9r3mn5iq357">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hook函数的参数sk_buff结构体的结构，其中最关键的是四个指针，两个指针只指向数据的首尾，两个指针指向有效数据（即以太网帧）的头部和尾部，发送数据包时，随着不同层次的协议头部的添加，data指针从下往上移动，直到指向以太网帧的头部，接受数据时，随着不同层次协议头的解析，data指针从上往下移动，最终指向数据内容的首地址</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/27s4mu6ndrl9mhc7lstgutj9ds.png"></p>
+<h3 class="topic">
+<a name="2cb9al4unlmjq5gknpsm5n9v1v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;skbuff结构体中的成员&#13;
+被挡住的内容&#13;
+...这来两个指针而已，向套接字缓冲区拷贝数据....</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/5p809c3m6qnkrqmtegr9ku6r6k.png"></p>
+<h3 class="topic">
+<a name="5onsgav8cdptmgjspok4je8unb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;skbuff结构体中的字段，其中标黄的字段分别是指向tcp头、udp头、icmp头等协议头的指针，浅灰部分protocal用于表示传输层协议头的指针，深灰部分用于表示网络层协议头的指针，data_len表示数据包中实际数据的长度</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/2gelc5lhios703sna0nu4gkrka.png"></p>
+<h3 class="topic">
+<a name="056ofpv10jkb63s5epu1vbcfsi">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;skbuff结构体的解析</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/1jja6m4pq02om0qcern3p6rclk.png"></p>
+<h3 class="topic">
+<a name="2ugdod65q9k5lel92f40assvkk">&nbsp;&nbsp;内核f防火墙简单demo</a>
+</h3>
+<h3 class="topic">
+<a name="2fqpg70oj2qukhdo3p3nqckqb1">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/2hnalpn4knil7q43t50sd6vt15.png"></p>
+<h3 class="topic">
+<a name="3joptv78i4dvsclj1kc0mdobh2">&nbsp;&nbsp;&nbsp;&nbsp;可以在一个内核模块中注册多个hook函数，只要创建多个nf_hook_ops结构体并进行注册即可</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/04vv05k9l5t1lgbnrejnbk312b.png"></p>
+<h3 class="topic">
+<a name="4ok6l53ua9q9lvs47laiucjkjh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/251slsppm25qgpu7nocsjekttj.png"></p>
+<h3 class="topic">
+<a name="4i9beagfcabuqm8ovkmuggua55">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/0on135pe7cosdg8rgpm3psvoap.png"></p>
+<h3 class="topic">
+<a name="5sdd6fbq83agb91kddeoo3qhku">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%86%85%E6%A0%B8-2_files/1art2l8taaqi3out1gr0ae21p6.png"></p>
+</body>
+</html>

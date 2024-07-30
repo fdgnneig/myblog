@@ -1,0 +1,450 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>安卓-5</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="2fiolger04b3heuddd7j1p6tn8">安卓-5</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="%E5%AE%89%E5%8D%93-5_files/images/%E5%AE%89%E5%8D%93-5.jpg"></div>
+<h2 class="topic">
+<a name="3mitfp0tmu4fnb7p914slm3hig">hook技术</a>
+</h2>
+<h3 class="topic">
+<a name="3mkf2pj0v4ocnqdjgdblrj62i8">&nbsp;介绍</a>
+</h3>
+<h3 class="topic">
+<a name="4lt2sco4bkrcqguau8iveqh0b4">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-5_files/0dn31n939kb9ktume4313qtq88.png"></p>
+<h3 class="topic">
+<a name="0bi0a51k1pcc42q727jqbup09l">&nbsp;&nbsp;&nbsp;linux中编译驱动必须和内核源码相关，编译驱动会涉及当前内核的版本号（这一点可以path掉）</a>
+</h3>
+<h3 class="topic">
+<a name="66cnv70ogfpjojqru7okhehpqu">&nbsp;&nbsp;&nbsp;目标操作系统的linux内核是否开启了驱动加载的功能，（即加载ko文件）如果没开启，则无法通过内核模块加载进行内核层的对抗</a>
+</h3>
+<h3 class="topic">
+<a name="0apu7fakdkbur7biabllgvjsvo">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-5_files/2jq20m2cglfbc70fngd3vs5p5d.png"></p>
+<h3 class="topic">
+<a name="6g60pel2he5804gnrvk98k64bh">&nbsp;&nbsp;&nbsp;一般又三种思路</a>
+</h3>
+<h3 class="topic">
+<a name="7tpc6lv5v9pbeoi3bqj25hjkqi">&nbsp;&nbsp;&nbsp;&nbsp;直接hook java层的代码</a>
+</h3>
+<h3 class="topic">
+<a name="02a0ch81pgp6u3v042mb7eg1h0">&nbsp;&nbsp;&nbsp;&nbsp;直接hook c层的代码</a>
+</h3>
+<h3 class="topic">
+<a name="4mhsuilhldbs5ojjj7vtafr6qu">&nbsp;&nbsp;&nbsp;&nbsp;通过hook c层的代码进而控制java层代码的执行</a>
+</h3>
+<h3 class="topic">
+<a name="5ipds182o14bl34mhj828dp47r">&nbsp;hookjava函数</a>
+</h3>
+<h3 class="topic">
+<a name="781ctue7pl446csjujf4it7302">&nbsp;&nbsp;java层hook机制</a>
+</h3>
+<h3 class="topic">
+<a name="112re0mhjmiafekv99hg22h2us">&nbsp;&nbsp;&nbsp;利用java语言的反射特性，动态替换函数</a>
+</h3>
+<h3 class="topic">
+<a name="6f32u60ud3nvhas0bvilrcevvn">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-5_files/66dbeu356g867rgee3ndvdb890.png"></p>
+<h3 class="topic">
+<a name="1be9oibsrsqbttq0t4ph6c97s2">&nbsp;&nbsp;&nbsp;java反射</a>
+</h3>
+<h3 class="topic">
+<a name="2q3te1745urtjbg36819isf4pg">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-5_files/0amasvkk4apt1mc4v0f0hsdrof.png"></p>
+<h3 class="topic">
+<a name="5f5gck56ddnrfok9d2vtg824c8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Java类中的field，即数据域，可以理解为类中的成员变量</a>
+</h3>
+<h3 class="topic">
+<a name="0v39g1q9qd7nh9e5rebdne01ic">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-5_files/3oh5p5o87tacikrfca6h4pi59v.png"></p>
+<h3 class="topic">
+<a name="1vcg2c4pe675go79mvgk7qg60e">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;java类中的method</a>
+</h3>
+<h3 class="topic">
+<a name="6cgajg0aldqgaiep07tankjuc1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;即类方法</a>
+</h3>
+<h3 class="topic">
+<a name="7649ubvi4ckelo76ei77gmrc51">&nbsp;&nbsp;&nbsp;&nbsp;类似于jni反射到java层的代码，&#13;
+实际上安卓jni中调用java层的代码的实现过程即java语言的反射机制在system层中的实现</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-5_files/59kgfgdkas970c2n8k99at963v.png"></p>
+<h3 class="topic">
+<a name="6jkbcr7r8b0i7vsm1odusf516g">&nbsp;&nbsp;native层hookjava函数（整个hook的过程在native中实现）(针对Dalvik虚拟机)</a>
+</h3>
+<h3 class="topic">
+<a name="4hue8f3ls1t44fa84io67q4sn1">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-5_files/21qm2m5vs0u17qc7ucurao4sbu.png"></p>
+<h3 class="topic">
+<a name="0uh870t3v8ejelinnbd7sjr9st">&nbsp;&nbsp;&nbsp;&nbsp;MethodID在jni.h中实际上是一个void*，指向一个Method结构体（类似于dlopend返回void*，该void*指向的是soinfo结构体）</a>
+</h3>
+<h3 class="topic">
+<a name="0c54h95ujv3l0gb7ci57rq0vf3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Method结构体，hook的关键就是修改该结构体中的内容</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-5_files/5nj6hd0kda2g5hc9dkpj4n0p9q.png"></p>
+<h3 class="topic">
+<a name="7slo3vhlbqp1173127skfa7r6f">&nbsp;&nbsp;&nbsp;&nbsp;直接hook一个进程后，需要手动从runtime中获得该进程的java虚拟机实例(即vm指针)，通过vm指针进一步获得java的虚拟机环境(即env指针)，最后通过env指针调用指定函数获得对应类，获得类中的MrthodID,最后修改对应的Method结构体，从而完成hook</a>
+</h3>
+<h3 class="topic">
+<a name="480erplj7unrjb8t3h1t4usckd">&nbsp;&nbsp;&nbsp;实例代码（代码中已经获得了env指针）</a>
+</h3>
+<h3 class="topic">
+<a name="1me2i0rr5dbitg98me6fmsi8ec">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-5_files/3skpuik8d8f0nise00vbrkcked.png"></p>
+<h3 class="topic">
+<a name="1uet1jd2mm86igodk97sq4bajp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;针对函数dvmFindJNIClass函数</a>
+</h3>
+<h3 class="topic">
+<a name="6gnmp0v7qtan9it1su28sj1o9j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-5_files/0v8543nvca4fvd4i7ulfm1ffve.png"></p>
+<h3 class="topic">
+<a name="46k1gt06q94hhoavma775kbdnk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-5_files/3binkpi64cbq0pr162mk5d9p3v.png"></p>
+<h3 class="topic">
+<a name="1c80ou7d3k035n4o2jh52h19ab">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-5_files/7f0s5n8jvvkdbkqb25p8ukbupn.png"></p>
+<h3 class="topic">
+<a name="09ceqj750rap6cd4bi9j723nfr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关于dvmGetMethodParamTypes函数</a>
+</h3>
+<h3 class="topic">
+<a name="61sap3dupku18r5v7m0e4fcqn4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-5_files/4uavhqe32msqn11ei1fbc45f43.png"></p>
+<h3 class="topic">
+<a name="253mc8amt7vrlrftrtjkhqa1mq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-5_files/020ov0587qj9k1me39gpfbev76.png"></p>
+<h3 class="topic">
+<a name="646llja5euk75jdus55eqc0pun">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-5_files/1j78vpdjv8ap6gibkpalcds953.png"></p>
+<h3 class="topic">
+<a name="6h3qrt22ubvuoek95r0ulqj53v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-5_files/5u8ve6v7lpeg8leuqqh7efc4g7.png"></p>
+<h3 class="topic">
+<a name="70g208op2tvi6g88619vicigvs">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关于calcMethodArgsSize函数</a>
+</h3>
+<h3 class="topic">
+<a name="6mn2hu0e8givho447or96enspc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这里shortyidx应该是指向函数原型字符串</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-5_files/2qmih2jrmdkiiemiakmosj6lgs.png"></p>
+<h3 class="topic">
+<a name="4m95rne57ggcp65ck8fqo4nmd1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-5_files/4j5qolsgpcjud4sf6ns66ctonp.png"></p>
+<h3 class="topic">
+<a name="0di1a2m9mfopqbrrfqq3po87kr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关于method-&gt;insns，对于native函数，该字段保存的就是native函数的指针，对于隐式注册的native函数，刚开始该字段为空，执行该函数是才会填充该字段并调用对应函数</a>
+</h3>
+<h3 class="topic">
+<a name="3nkjtbm7enr79bkefkhacasal8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关于method_handler函数</a>
+</h3>
+<h3 class="topic">
+<a name="30eqt2jqo9g0k47ek808mvp7a1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-5_files/5l1meh1dff76l3vshmfj823hpq.png"></p>
+<h3 class="topic">
+<a name="09geb3vbhac8pqc932k29uu9oo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hook函数可以用java实现，可以在native中实现，最后均在method_handler中被调用</a>
+</h3>
+<h3 class="topic">
+<a name="2ldblvkk6quc5ccn7fuepbt91a">&nbsp;&nbsp;&nbsp;&nbsp;实例代码的源码</a>
+</h3>
+<h3 class="topic">
+<a name="6020mj1d4vfps9r7uv1gj8dio9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://github.com/boyliang/AllHookInOne/tree/master/jni/JavaHook</a>
+</h3>
+<h3 class="topic">
+<a name="32skrknoer3glta6j30nrrfp8k">&nbsp;&nbsp;&nbsp;参考资料</a>
+</h3>
+<h3 class="topic">
+<a name="5bapuvnkc8ve0g55kcbsumf78g">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-5_files/6t879vkoih2r60r0hgoalil5rf.png"></p>
+<h3 class="topic">
+<a name="3ufhiina44ll7cp9p76h5ooka3">&nbsp;hooknative函数</a>
+</h3>
+<h3 class="topic">
+<a name="16l7gqa34kf91lgsu1v1ltqi4b">&nbsp;&nbsp;即传统的linux中的动态连接库的hook</a>
+</h3>
+<h3 class="topic">
+<a name="36588pij3kbkirkaup0durijeb">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-5_files/78e7dt9u1ofm68h5f3seol07sh.png"></p>
+<h3 class="topic">
+<a name="2049hicj0kk5ui5otuf12887sn">&nbsp;&nbsp;环境变量hook</a>
+</h3>
+<h3 class="topic">
+<a name="63of3r8u7s92j6qo1jl8f690pe">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-5_files/7bcc7bbri07lg5fhllj31uld99.png"></p>
+<h3 class="topic">
+<a name="5pi2voeab3lg8kvdug1i288d4s">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-5_files/6dfc6nj9iomsa2f78hkvcjo55g.png"></p>
+<h3 class="topic">
+<a name="6kc08tfiopjsd0kfkvnia3kp7n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fakeso文件中的getuid和getpid函数</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-5_files/3739tqlo84ofi624bd3q5bj7kq.png"></p>
+<h3 class="topic">
+<a name="7vq5uprbpte9mcr65ki26j6gpf">&nbsp;&nbsp;got表hook</a>
+</h3>
+<h3 class="topic">
+<a name="320in7eqp8727et1jlsgbp84lt">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-5_files/6gjafhsib2l0gohb6ufult89oi.png"></p>
+<h3 class="topic">
+<a name="3unesvouonl0dgelmk33nb495d">&nbsp;&nbsp;&nbsp;&nbsp;基于链接视图（section）的文件解析：找到重定位表-》找到对应符号表-》搜索要hook的函数的符号-》进行hook</a>
+</h3>
+<h3 class="topic">
+<a name="0tl4qigcq81pqmeqn2hta0uf1v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;基于枚举法（因为没有进程注入，所以实际上是hook本程序的hook表）</a>
+</h3>
+<h3 class="topic">
+<a name="0joqlmlebh77aq6ehr74c5vfu9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-5_files/6usjnukjn9n6i2sp9ld1l2q4fn.png"></p>
+<h3 class="topic">
+<a name="3qkv6jseg2toble81416tt6rau">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-5_files/3r9a2aojjbgom0q0guqdoo30gd.png"></p>
+<h3 class="topic">
+<a name="62jpr5l9mpq7c3qumbg6t57n5a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-5_files/5riaupq6egckssqu46d92vbb07.png"></p>
+<h3 class="topic">
+<a name="61qcbkoehclde8kmttcornt3be">&nbsp;&nbsp;&nbsp;&nbsp;基于装载视图（segment）的文件解析</a>
+</h3>
+<h3 class="topic">
+<a name="57h2mr2svc2m7fskvob8q357ju">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过在maps文件中搜索so文件的名称，从而获得so文件在内存中的加载基址</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-5_files/7cct2ltkhgr51vsoejarul4p6m.png"></p>
+<h3 class="topic">
+<a name="2fnkvauqp353hot906bggl29rh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;map文件内容</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-5_files/1lq8lcsgesnr1o6o159isreahu.png"></p>
+<h3 class="topic">
+<a name="284a7ig5ai8am0ic2sr4tb1mpg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-5_files/682va6tbl4k1l05ismrt9o2nbo.png"></p>
+<h3 class="topic">
+<a name="7u424olvioj61m2fk3jl68gkeu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-5_files/48i0mq1d1bn7psgfrlad6kbjce.png"></p>
+<h3 class="topic">
+<a name="7sul6gvjvd8o7a3vlc2lkn23tn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-5_files/3a099t6dd0g81p8um89ulfvphu.png"></p>
+<h3 class="topic">
+<a name="7ej3p9f0ui42u35usdhcojn8f3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-5_files/105cb3a79v2ki2e9f86hl4ddv0.png"></p>
+<h3 class="topic">
+<a name="1fbrrqkuls1bs7sctua1ufd212">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;字符串表[符号表[重定位信息.符号表下标].字符串表下标]</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-5_files/40clbhcpe5o5lo2qigkn75pljh.png"></p>
+<h3 class="topic">
+<a name="0qf9qnrbmeoql9f3418pbbriis">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意这里定位需要重定位的位置时仅仅使用了offset，没有加上base</a>
+</h3>
+<h3 class="topic">
+<a name="4ujd5diq20124175se4n3rkng7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-5_files/5ehfpcrh6res1lk2595cgrplte.png"></p>
+<h3 class="topic">
+<a name="2bksv8kq2r77p4t3g4g0d3st9a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;以上代码定位dynamic段、字符表、符号表、重定位表、函数地址保存位置的时候，直接使用了offset而没有加上base，说明此时的程序仅适用于非随机基址的情况（即非PIE编译），对于支持随机基址的程序，还需要在offset基础上加上base</a>
+</h3>
+<h3 class="topic">
+<a name="3tbqanavpc2794g0feorsf7otn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;安卓5.0之后的linker强制为pie编译</a>
+</h3>
+<h3 class="topic">
+<a name="7l767l4pnf4mhn1soobetq47ut">&nbsp;&nbsp;inline hook（基于arm32）</a>
+</h3>
+<h3 class="topic">
+<a name="6gtf8ql3i89p381eacmslkep3b">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-5_files/6991c6b1rafmbc6gabatrhuao9.png"></p>
+<h3 class="topic">
+<a name="4ivqlt31e6dk3avideg3q8ts0f">&nbsp;&nbsp;&nbsp;&nbsp;因为arm32和arm64指令长度均为四字节，所以不可能直接通过b指令寻址整个虚拟内存空间，必须要结合pc寄存器的值和指定偏移，或者将跳转的目的地址保存到某个寄存器中，然后使用b指令根据寄存器的值进行跳转</a>
+</h3>
+<h3 class="topic">
+<a name="0acp40uc8s1gbmus3j93s09272">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-5_files/3i9fbmkm495vk1mueie535atb0.png"></p>
+<h3 class="topic">
+<a name="6h5rv70b0f8vbh6kqb90g2jggo">&nbsp;&nbsp;&nbsp;&nbsp;因为arm32中存在指令预取（即cpu三级流水）(即pc寄存器中取出的值为当前指令地址的后两条指令的地址)，程序执行时会将数据或指令预先保存到对应的cache中，所以进行hook时需要将对应的cache进行刷新，从而保证修改起效</a>
+</h3>
+<h3 class="topic">
+<a name="0g57heoc7biahfukoql1qkk64a">&nbsp;&nbsp;&nbsp;&nbsp;因为此种hook涉及到使用内联汇编，所以编译hook程序的时候需要指定编译的目标平台</a>
+</h3>
+<h3 class="topic">
+<a name="4kdhssbanjeprpfdupajlvm0ef">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;编写Application.mk，指定编译的目标平台</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-5_files/534g9ep2v3kd00sdenk46qqkss.png"></p>
+<h3 class="topic">
+<a name="40etdghjgelolohun2vk69t8q6">&nbsp;&nbsp;&nbsp;实例（不涉及进程注入，所以仅hook程序中的函数）</a>
+</h3>
+<h3 class="topic">
+<a name="2fcg0vvfodbd6r7q2k0uaaq4ni">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-5_files/5mo1eo57hoatmept782p1t1ivo.png"></p>
+<h3 class="topic">
+<a name="02fbg5g6cm8pbooskske5jja32">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-5_files/5cplqn22nth6dm655aehn071kn.png"></p>
+<h3 class="topic">
+<a name="6qddm7fpl3icru19dkd818cc4q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;foo就是被hook的函数，其前两条nop指令是为了被替换为其他指令从而进行hook所设置的，每条nop指令会占据4字节的内存空间</a>
+</h3>
+<h3 class="topic">
+<a name="58mteg8oiuetkttgtnkr8m1asv">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-5_files/4k2rvmclafts4k2un1n8ujiivn.png"></p>
+<h3 class="topic">
+<a name="2fheo67ifmpo3hrjv8fce48lcl">&nbsp;&nbsp;&nbsp;&nbsp;以上实例在编译过程中函数foo会被优化，直接在调用该函数的位置展开，所以可以将foo() goo()函数写成外部导入的函数，从而避免函数被优化</a>
+</h3>
+<h3 class="topic">
+<a name="2hf3omid2i704jpge5snn0hg8e">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-5_files/795ocjdsjf7nevudvem9ffl1lt.png"></p>
+<h3 class="topic">
+<a name="1e0na42505in0og32s94ldefff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-5_files/299svt001hsmu4aoipj7aa0hu3.png"></p>
+<h3 class="topic">
+<a name="17cob3p6fgcdqnpeuv20omram4">&nbsp;&nbsp;&nbsp;调试该实例</a>
+</h3>
+<h3 class="topic">
+<a name="1a363slr36lsf6eleg203ka77t">&nbsp;&nbsp;&nbsp;&nbsp;被hook前的foo函数</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-5_files/7190j2k1djcoa9pkd5otdtgp7u.png"></p>
+<h3 class="topic">
+<a name="5cp7bht0fqkiu8mc65ldu3fhu1">&nbsp;&nbsp;&nbsp;&nbsp;被hook后的foo函数，如果在内存地址0x8278处下断点，程序执行到这里就会报错，因为下断点的行为修改了内存地址0x8278中的数据，而该数据会被用于赋值给pc寄存器进行跳转，所以程序会崩溃</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-5_files/74oqjmon528av21j5nouqrebod.png"></p>
+<h3 class="topic">
+<a name="2veo92i8bjokt0gohteuufd9dh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-5_files/3f5df3mgldr2pg2lalctsouss5.png"></p>
+<h3 class="topic">
+<a name="1fjf9at3ovfk8etot4pqaj7t97">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-5_files/1nsd8300ksbpoo1u3frhgssap4.png"></p>
+<h3 class="topic">
+<a name="659kg9o3lej1h4sildh3duiqqd">&nbsp;&nbsp;其他hook native函数的方法见：SO hook技术汇总</a>
+</h3>
+<h3 class="topic">
+<a name="526oetuasmjfbl6pa1le523rik">&nbsp;hook框架</a>
+</h3>
+<h3 class="topic">
+<a name="752jeq44q9r5kpv3ut6brbu9qa">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-5_files/0a1nu6run1rrv33s9guun1uqh2.png"></p>
+<h3 class="topic">
+<a name="4qa50t42uemc4l3oqr9jtl2osn">&nbsp;&nbsp;&nbsp;Xposed的使用</a>
+</h3>
+<h3 class="topic">
+<a name="51o6s7b443kcoslfgh82d84bk1">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-5_files/5fg461e1rvp88uhv9a8jeknak3.png"></p>
+<h3 class="topic">
+<a name="44iojcqoovo77b2hnapu1cqlqo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-5_files/7nq0stmqgb3pep1pkc01aavpb9.png"></p>
+<h3 class="topic">
+<a name="4mnf1cb6hg329th9qco7l0149e">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-5_files/0g2s1vfvrjklptpr5kbc3mk4qj.png"></p>
+<h3 class="topic">
+<a name="2iuq4odb1re4mh7vgaj3h6f7f2">&nbsp;&nbsp;&nbsp;Cydia Substrate</a>
+</h3>
+<h3 class="topic">
+<a name="140kfj9rs2b6ra847rid4fv8em">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-5_files/57i8m7jrp9gcjkqmrp7mikvhlj.png"></p>
+<h3 class="topic">
+<a name="6ielmmr0vaptq9ip4kkm2o13jk">&nbsp;&nbsp;&nbsp;Frida</a>
+</h3>
+<h3 class="topic">
+<a name="5mbeej9kpdav10pq0ojgj1mjf8">&nbsp;&nbsp;&nbsp;&nbsp;frida安装</a>
+</h3>
+<h3 class="topic">
+<a name="7609ckejrd2a1kdp4g08d7hc16">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-5_files/38cvcpkoosr5lf6t6of6jnus5i.png"></p>
+<h3 class="topic">
+<a name="55f8fjvm1k9tl3rbvgit546jb0">&nbsp;&nbsp;&nbsp;&nbsp;fridaDEMO（使用js编写）</a>
+</h3>
+<h3 class="topic">
+<a name="2l2hr9obqt7fggut5ol58rvrti">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-5_files/794de787le79jbrro574hvtam1.png"></p>
+</body>
+</html>

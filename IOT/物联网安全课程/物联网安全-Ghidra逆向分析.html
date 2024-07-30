@@ -1,0 +1,164 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>物联网安全-Ghidra逆向分析</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="2d56uegvpfhs64t89fcv18r0gr">物联网安全-Ghidra逆向分析</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-Ghidra%E9%80%86%E5%90%91%E5%88%86%E6%9E%90_files/images/%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-Ghidra%E9%80%86%E5%90%91%E5%88%86%E6%9E%90.jpg"></div>
+<h2 class="topic">
+<a name="3n0gsr0f3ncolfpiu67qn1ntt7">ghidra介绍</a>
+</h2>
+<h3 class="topic">
+<a name="651l9agbhjff8obpo9egngear1">&nbsp;使用java编写，支持mips直接转c</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-Ghidra%E9%80%86%E5%90%91%E5%88%86%E6%9E%90_files/5hcsa012hohtmiun7gicf3c5fd.png"></p>
+<h2 class="topic">
+<a name="4jm2ndlupk6e9tlb3vjaielulm">Ghidra逆向分析mips和arm</a>
+</h2>
+<h3 class="topic">
+<a name="2rlq20ebfc6bpnf7hs6buovbld">&nbsp;ghidra界面</a>
+</h3>
+<h3 class="topic">
+<a name="51icvap0i1eilsnbv5un378v0o">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-Ghidra%E9%80%86%E5%90%91%E5%88%86%E6%9E%90_files/41gjmpfegkm80pqjsnjloe1spu.png"></p>
+<h3 class="topic">
+<a name="7fv3849ndku2g9of4h13k4jvko">&nbsp;&nbsp;&nbsp;导入可执行文件后，选择默认分析选项即可</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-Ghidra%E9%80%86%E5%90%91%E5%88%86%E6%9E%90_files/6pluq8fmppt3apel169fp2o17s.png"></p>
+<h3 class="topic">
+<a name="543qj9qa3hhgt065tpk3fdsi77">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-Ghidra%E9%80%86%E5%90%91%E5%88%86%E6%9E%90_files/1pb2n06cqe8hkt3rafjdf9qtd8.png"></p>
+<h3 class="topic">
+<a name="20hi0nh9110jl9jun1d20uv44a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-Ghidra%E9%80%86%E5%90%91%E5%88%86%E6%9E%90_files/6m2f6548lbv8ampvogf9hljdcq.png"></p>
+<h3 class="topic">
+<a name="2qhq6uj2nksdue0b7mal2s7bep">&nbsp;ghidra提供的api（提供基于python和java的api）</a>
+</h3>
+<h3 class="topic">
+<a name="6cpffhb7e96o5chksqpb7hp0dn">&nbsp;&nbsp;ghidra对java的api支持的更友好</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-Ghidra%E9%80%86%E5%90%91%E5%88%86%E6%9E%90_files/36cfivl478avl0qekc1e5um9f2.png"></p>
+<h3 class="topic">
+<a name="6qutlhgp90hcgl198los1h49c0">&nbsp;&nbsp;&nbsp;ghidra中选择脚本管理器</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-Ghidra%E9%80%86%E5%90%91%E5%88%86%E6%9E%90_files/1jbp166jpo1s0t9uolm8s9u972.png"></p>
+<h3 class="topic">
+<a name="725odoickncj1i9en1aaqlt2im">&nbsp;&nbsp;&nbsp;&nbsp;打开指定python脚本</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-Ghidra%E9%80%86%E5%90%91%E5%88%86%E6%9E%90_files/5v6k2up6kf5rag8apd0b48vig1.png"></p>
+<h3 class="topic">
+<a name="5jtbjpelhim8bchh6nqech88md">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;脚本管理器右上角有创建按钮，可以创建python或java脚本</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-Ghidra%E9%80%86%E5%90%91%E5%88%86%E6%9E%90_files/2jl2v14ohetmm1c3v8am16oflc.png"></p>
+<h3 class="topic">
+<a name="0p5pli8mikfbb36islho2tr1da">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-Ghidra%E9%80%86%E5%90%91%E5%88%86%E6%9E%90_files/5ob284kafdrmhi4utsv5t5upre.png"></p>
+<h3 class="topic">
+<a name="1rleblc2asd1eji7mpnple1jjj">&nbsp;&nbsp;ghidra主界面打开python命令行</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-Ghidra%E9%80%86%E5%90%91%E5%88%86%E6%9E%90_files/30u2gvfaarm714avms2klnssdo.png"></p>
+<h3 class="topic">
+<a name="3vib44r1luj3e0qidiadvcsp7q">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-Ghidra%E9%80%86%E5%90%91%E5%88%86%E6%9E%90_files/6nj5a4he48a9vkv03jr6sacauj.png"></p>
+<h3 class="topic">
+<a name="7pmg82tafrk6ai1p4tj41lov2h">&nbsp;&nbsp;&nbsp;&nbsp;以键值对的方式输出data中程序详细信息</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-Ghidra%E9%80%86%E5%90%91%E5%88%86%E6%9E%90_files/0cjvf6ko3r80ief1nhlglnckoh.png"></p>
+<h3 class="topic">
+<a name="2agkqa48jmhfdvrbfll67e78rp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;toAddr函数将十六进制数转为程序内存地址格式，然后才能使用getFunctionAt获得该地址对应的函数名，此时getFunctionAt的参数是对应函数第一条指令的地址</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-Ghidra%E9%80%86%E5%90%91%E5%88%86%E6%9E%90_files/4na98grle1caisfottth1i9kci.png"></p>
+<h3 class="topic">
+<a name="261oaljfshapseu236eooovblk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果要判断一条指令在哪个函数，可以使用getFunctionContainting函数，该函数的参数为函数内部任意一条指令的地址，并返回该指令所在函数的名称</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-Ghidra%E9%80%86%E5%90%91%E5%88%86%E6%9E%90_files/1oo4qvqmq2ipt8t4lkh1q39rf3.png"></p>
+<h3 class="topic">
+<a name="2d6f8es64t1no5upm5n2rg2jqm">&nbsp;&nbsp;使用api给函数改名</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-Ghidra%E9%80%86%E5%90%91%E5%88%86%E6%9E%90_files/57gh16fpb9abjfk78baglsili1.png"></p>
+<h3 class="topic">
+<a name="5j4qpd3bo6t7dlbnhe3jj46c01">&nbsp;解析结构体</a>
+</h3>
+<h3 class="topic">
+<a name="73p1bn3mna25fdu9vorssda1bg">&nbsp;&nbsp;左下角结构体窗口中创建新的结构体分类</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-Ghidra%E9%80%86%E5%90%91%E5%88%86%E6%9E%90_files/6ma6scov6lipqe30gqjugou0jq.png"></p>
+<h3 class="topic">
+<a name="740ahga0dtlsf3ii2frdei9al5">&nbsp;&nbsp;&nbsp;在新创建的结构体类中创建结构体Structure</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-Ghidra%E9%80%86%E5%90%91%E5%88%86%E6%9E%90_files/6ufj08b2gb28efnuf69l0aknos.png"></p>
+<h3 class="topic">
+<a name="72gnret7sha4euik603g6ntqo1">&nbsp;&nbsp;&nbsp;&nbsp;设置结构体大小信息</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-Ghidra%E9%80%86%E5%90%91%E5%88%86%E6%9E%90_files/4m6euativiubookapea6tfquop.png"></p>
+<h3 class="topic">
+<a name="4sk412ppom227jsha39gljde5q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将结构体前四个字节数据类型设置为pointer（指针）</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-Ghidra%E9%80%86%E5%90%91%E5%88%86%E6%9E%90_files/1s8hlthn60bmp27r3f1irg98vg.png"></p>
+<h3 class="topic">
+<a name="2ngspkldirtan4bmaja5ojedsm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;同理设置后四字节数据类型为int，并给两个结构体成员命名</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-Ghidra%E9%80%86%E5%90%91%E5%88%86%E6%9E%90_files/1bnktko36an6dvjf0kbjsr67qn.png"></p>
+<h3 class="topic">
+<a name="71b94o1o5f0jv1vt0p44sj68t9">&nbsp;&nbsp;源码中右键关键变量，使用retype varable将其数据类型修改为刚创建的结构体&#13;
+同时在右键菜单中还可以重命名变量</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-Ghidra%E9%80%86%E5%90%91%E5%88%86%E6%9E%90_files/156k0u2bis91nqevoslukq4nr6.png"></p>
+<h3 class="topic">
+<a name="2mkicjbvtditqoemv6unknqpao">&nbsp;&nbsp;&nbsp;选择刚创建的结构体</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-Ghidra%E9%80%86%E5%90%91%E5%88%86%E6%9E%90_files/4s2j87c4fph4d54d0mf8o0853p.png"></p>
+<h3 class="topic">
+<a name="216s29220rsq9oce33gjm6jal9">&nbsp;&nbsp;&nbsp;&nbsp;完成修改后源码中展示出对自定义结构体的引用，从而提升了可读性</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-Ghidra%E9%80%86%E5%90%91%E5%88%86%E6%9E%90_files/6v2rhh05qiguk5el37r903q7lm.png"></p>
+<h3 class="topic">
+<a name="6vrhpuiieij3kc2fv7f7dn36ci">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;修改数据区中全局变量的类型</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-Ghidra%E9%80%86%E5%90%91%E5%88%86%E6%9E%90_files/4d1t72d98qofagoa1ci9pvra12.png"></p>
+<h3 class="topic">
+<a name="717mcutudv3u2hf6d96i8qbs0f">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;修改后显示变量字符串Lucy</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-Ghidra%E9%80%86%E5%90%91%E5%88%86%E6%9E%90_files/4usjv3oav1931bso4c0n46j965.png"></p>
+<h2 class="topic">
+<a name="1411nns1q9b7cl3m9h74s1sufu">一般使用ghidra对mips进行静态分析，使用ida或gdb进行动态调试</a>
+</h2>
+</body>
+</html>

@@ -1,0 +1,169 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>物联网安全-ZigBee协议嗅探与分析实战</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="7v400j1o9omm9a8qlmbh6amus4">物联网安全-ZigBee协议嗅探与分析实战</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-ZigBee%E5%8D%8F%E8%AE%AE%E5%97%85%E6%8E%A2%E4%B8%8E%E5%88%86%E6%9E%90%E5%AE%9E%E6%88%98_files/images/%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-ZigBee%E5%8D%8F%E8%AE%AE%E5%97%85%E6%8E%A2%E4%B8%8E%E5%88%86%E6%9E%90%E5%AE%9E%E6%88%98.jpg"></div>
+<h2 class="topic">
+<a name="5h2f2ovjpgsm72tag7lgr9i53e">zigbee嗅探</a>
+</h2>
+<h3 class="topic">
+<a name="73hkb2q9v12tdfksdfa75dlkci">&nbsp;使用CC2531嗅探数据，使用wireshark解析数据包具体内容  图中ubiqua软件类似于wireshark，是一个强大的协议分析工具，可以分析zigbee、ble或其他协议</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-ZigBee%E5%8D%8F%E8%AE%AE%E5%97%85%E6%8E%A2%E4%B8%8E%E5%88%86%E6%9E%90%E5%AE%9E%E6%88%98_files/5iqret8pk619uru633mljml8v0.png"></p>
+<h3 class="topic">
+<a name="2afjnttp2f2cku3fubt3bf4skr">&nbsp;&nbsp;测试门磁，当该设备安装在门上，当门被打开时，门磁分离，就会引发网关报警</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-ZigBee%E5%8D%8F%E8%AE%AE%E5%97%85%E6%8E%A2%E4%B8%8E%E5%88%86%E6%9E%90%E5%AE%9E%E6%88%98_files/6a0phk01lklbv6bv2vjjr8pm0h.png"></p>
+<h3 class="topic">
+<a name="0mg6njfj4iigshee9mvkbevbs6">&nbsp;&nbsp;&nbsp;将CC2531插入电脑usb接口，在TI Wireshark工具中中点击按钮，识别设备</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-ZigBee%E5%8D%8F%E8%AE%AE%E5%97%85%E6%8E%A2%E4%B8%8E%E5%88%86%E6%9E%90%E5%AE%9E%E6%88%98_files/2m9ev2k2a4snu76r9ueq4kcc64.png"></p>
+<h3 class="topic">
+<a name="4icbqgbslb7nsssu2g9a91j04n">&nbsp;&nbsp;&nbsp;&nbsp;弹窗中识别出了cc2531设备，点击start开始嗅探</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-ZigBee%E5%8D%8F%E8%AE%AE%E5%97%85%E6%8E%A2%E4%B8%8E%E5%88%86%E6%9E%90%E5%AE%9E%E6%88%98_files/51bdsghjg58riu02pvtm7duar4.png"></p>
+<h3 class="topic">
+<a name="5mrmb7sodvvn6ioaaqiapfe6t2">&nbsp;Incoming Data处于Running状态，表示正在监听周围zigbee数据包&#13;
+Outgoing Data是Connecting状态，需要在wireshark上配置管道才能接收到TI软件监听到的数据</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-ZigBee%E5%8D%8F%E8%AE%AE%E5%97%85%E6%8E%A2%E4%B8%8E%E5%88%86%E6%9E%90%E5%AE%9E%E6%88%98_files/5ebpnju56qp1d3vvmo7haessdh.png"></p>
+<h3 class="topic">
+<a name="60c1agdmr5899tdtt08cv0892p">&nbsp;&nbsp;打开wireshark，点击进入pip，&#13;
+可以在快捷方式中配置一下pip文档，从而方便操作，具体的配置方式查看课程文档</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-ZigBee%E5%8D%8F%E8%AE%AE%E5%97%85%E6%8E%A2%E4%B8%8E%E5%88%86%E6%9E%90%E5%AE%9E%E6%88%98_files/3et53u3a6t8rqle34df5f8epsv.png"></p>
+<h3 class="topic">
+<a name="1h08bi47hvkbaslhs9ssjust70">&nbsp;&nbsp;&nbsp;将zigbee智能网关插入电源，wireshark立刻接收到其发送的广播数据包</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-ZigBee%E5%8D%8F%E8%AE%AE%E5%97%85%E6%8E%A2%E4%B8%8E%E5%88%86%E6%9E%90%E5%AE%9E%E6%88%98_files/38k835mj9p4r576j4oua66cd1q.png"></p>
+<h3 class="topic">
+<a name="4i8fdrng8auh30j17k2rhtrbt9">&nbsp;&nbsp;&nbsp;&nbsp;编辑中选中首选项</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-ZigBee%E5%8D%8F%E8%AE%AE%E5%97%85%E6%8E%A2%E4%B8%8E%E5%88%86%E6%9E%90%E5%AE%9E%E6%88%98_files/140r8e5540bk98mi5jpbo0fuhp.png"></p>
+<h3 class="topic">
+<a name="1inutvtn0gf4gevnpr8u52l4n5">&nbsp;弹出框中选中protocols-》zigbee-》edit，将默认的链接密钥填入，如果智能门磁与网关之间使用默认的链接密钥，则可以嗅探出两者使用的网络密钥，通过网络密钥即可解出两者之间传输的网络数据</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-ZigBee%E5%8D%8F%E8%AE%AE%E5%97%85%E6%8E%A2%E4%B8%8E%E5%88%86%E6%9E%90%E5%AE%9E%E6%88%98_files/79pppnjmamcrpvprdkgl97d59a.png"></p>
+<h3 class="topic">
+<a name="6g3asdt5uj53ihc5kqnhq9a8gf">&nbsp;&nbsp;通过app将智能门磁与智能网关连接起来，并让其进入配对状态，连接成功后智能门磁将会获得自己的短地址</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-ZigBee%E5%8D%8F%E8%AE%AE%E5%97%85%E6%8E%A2%E4%B8%8E%E5%88%86%E6%9E%90%E5%AE%9E%E6%88%98_files/70r6drp03gdsi2s6p1eo15ii1a.png"></p>
+<h3 class="topic">
+<a name="0cpn4oh3qmtou1kceurdrmidnn">&nbsp;&nbsp;&nbsp;智能门磁发起连接申请、智能网关返回PAN ID和短地址，并且向门磁发送网络密钥</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-ZigBee%E5%8D%8F%E8%AE%AE%E5%97%85%E6%8E%A2%E4%B8%8E%E5%88%86%E6%9E%90%E5%AE%9E%E6%88%98_files/74hq0n30pfr2ukk7a983ndvvg5.png"></p>
+<h3 class="topic">
+<a name="0b28ncbbl8dgerv1i6kqsr3pjb">&nbsp;&nbsp;&nbsp;&nbsp;分析该数据包，获得网络密钥值，这里是因为该厂商使用了默认的链接密钥，所以导致可以直接抓包获取网络密钥</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-ZigBee%E5%8D%8F%E8%AE%AE%E5%97%85%E6%8E%A2%E4%B8%8E%E5%88%86%E6%9E%90%E5%AE%9E%E6%88%98_files/7m3ujaj7crici1o0fkacubvq4p.png"></p>
+<h3 class="topic">
+<a name="36o671c0c65e0b57gfmb7oo4pc">&nbsp;将网络密钥值复制下来</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-ZigBee%E5%8D%8F%E8%AE%AE%E5%97%85%E6%8E%A2%E4%B8%8E%E5%88%86%E6%9E%90%E5%AE%9E%E6%88%98_files/2su62mppq3u9u5k5s9r24qguop.png"></p>
+<h3 class="topic">
+<a name="38vi0d16tgrnqebu8gt9b6f0tf">&nbsp;&nbsp;与之前设置默认默认链接密钥相同，将得到的网络密钥也设置进去，设置完成后，wireshark中的数据包将会刷新，由之间的加密状态变为解密状态</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-ZigBee%E5%8D%8F%E8%AE%AE%E5%97%85%E6%8E%A2%E4%B8%8E%E5%88%86%E6%9E%90%E5%AE%9E%E6%88%98_files/6gi5d5e9h37hnua8sn4egihqf7.png"></p>
+<h3 class="topic">
+<a name="7bvto4radpsueifjmpj1os91oq">&nbsp;&nbsp;&nbsp;断开智能门磁传感器（模拟开门），智能门磁会发送数据包与智能网关交互，智能网关将发出警报，</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-ZigBee%E5%8D%8F%E8%AE%AE%E5%97%85%E6%8E%A2%E4%B8%8E%E5%88%86%E6%9E%90%E5%AE%9E%E6%88%98_files/3o4h4l43hfpguu3vrvndp9hkt5.png"></p>
+<h3 class="topic">
+<a name="56p1gbkbo1fi1h66dqt65p8u5i">&nbsp;&nbsp;&nbsp;&nbsp;分析该zc数据包内容，发现表示门磁状态的重要数据位</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-ZigBee%E5%8D%8F%E8%AE%AE%E5%97%85%E6%8E%A2%E4%B8%8E%E5%88%86%E6%9E%90%E5%AE%9E%E6%88%98_files/5dl97ck85kgon6i1if267lsjsc.png"></p>
+<h3 class="topic">
+<a name="24l5vqlno76bbsolo550r89f5h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;此时将智能门磁重新合上（即门关闭），门磁重新发送zcl数据包到网关&#13;
+推断Alarm1位用于控制网关是否开启警报，并推测只要智能网关收到特定数据包，就可以直接发出警报或关闭警报，</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-ZigBee%E5%8D%8F%E8%AE%AE%E5%97%85%E6%8E%A2%E4%B8%8E%E5%88%86%E6%9E%90%E5%AE%9E%E6%88%98_files/5mdv990q745l9bf85r4eganajm.png"></p>
+<h3 class="topic">
+<a name="19lnj506a5tj6aop9ing9pq3m6">&nbsp;使用ubiqa嗅探数据</a>
+</h3>
+<h3 class="topic">
+<a name="5kp4e1dnk8k1nc3b347h41231t">&nbsp;&nbsp;这里使用ubiqa分析（强大的协议分析工具，可以分析zigbee、ble或其他协议）</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-ZigBee%E5%8D%8F%E8%AE%AE%E5%97%85%E6%8E%A2%E4%B8%8E%E5%88%86%E6%9E%90%E5%AE%9E%E6%88%98_files/1ktvitaumikqaajos206rp4g37.png"></p>
+<h3 class="topic">
+<a name="0cdm543u2t2qq4qm9no6h9ukuj">&nbsp;&nbsp;&nbsp;添加cc2531</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-ZigBee%E5%8D%8F%E8%AE%AE%E5%97%85%E6%8E%A2%E4%B8%8E%E5%88%86%E6%9E%90%E5%AE%9E%E6%88%98_files/6fb89ubfrdeba5dv29apifptld.png"></p>
+<h3 class="topic">
+<a name="25mu8jht56vt4lr6j0596mdgdd">&nbsp;&nbsp;&nbsp;&nbsp;添加设备后需要手动选择添加信道，使用wireshark抓包会自动搜索到传输信道，而使用该工具需要手动选择信道</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-ZigBee%E5%8D%8F%E8%AE%AE%E5%97%85%E6%8E%A2%E4%B8%8E%E5%88%86%E6%9E%90%E5%AE%9E%E6%88%98_files/3d7si1ccpm3rioke2a99nqi5io.png"></p>
+<h3 class="topic">
+<a name="78vqokd0p6uhisg1q492h6levh">&nbsp;&nbsp;点击开关，开始准备监听数据</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-ZigBee%E5%8D%8F%E8%AE%AE%E5%97%85%E6%8E%A2%E4%B8%8E%E5%88%86%E6%9E%90%E5%AE%9E%E6%88%98_files/0gq1utmpivijkqa0oq88i5qhht.png"></p>
+<h3 class="topic">
+<a name="14veh57uom53d9vap1gugf5mod">&nbsp;&nbsp;&nbsp;将门磁重新关闭，显示抓取到了数据，关键内容和wireshark显示的相同</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-ZigBee%E5%8D%8F%E8%AE%AE%E5%97%85%E6%8E%A2%E4%B8%8E%E5%88%86%E6%9E%90%E5%AE%9E%E6%88%98_files/7u75bim6n5t6rb6i4oafvmihlc.png"></p>
+<h3 class="topic">
+<a name="56raiftt1p0b18792dtlr2c28p">&nbsp;&nbsp;&nbsp;&nbsp;再次打开门磁，抓取数据包显示alarm1为yes状态，即当前门磁被打开</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-ZigBee%E5%8D%8F%E8%AE%AE%E5%97%85%E6%8E%A2%E4%B8%8E%E5%88%86%E6%9E%90%E5%AE%9E%E6%88%98_files/6jdk5j6h24djo7thesnrai5ga5.png"></p>
+<h3 class="topic">
+<a name="2nemm789a95kl9jscc4k081t6c">&nbsp;使用TI公司的Package Sniffer进行数据嗅探</a>
+</h3>
+<h3 class="topic">
+<a name="1ntkrdski09tjual4dkjbh93uf">&nbsp;&nbsp;还可以使用TI公司的Package Sniffer进行数据嗅探</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-ZigBee%E5%8D%8F%E8%AE%AE%E5%97%85%E6%8E%A2%E4%B8%8E%E5%88%86%E6%9E%90%E5%AE%9E%E6%88%98_files/63k0qgpa2an68o0mklt251efb8.png"></p>
+<h3 class="topic">
+<a name="70omhbimbnj8ovrcuesp2vn2gs">&nbsp;&nbsp;&nbsp;选择信道，开始嗅探</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-ZigBee%E5%8D%8F%E8%AE%AE%E5%97%85%E6%8E%A2%E4%B8%8E%E5%88%86%E6%9E%90%E5%AE%9E%E6%88%98_files/7huu4a5u210druv0mu2ihqf2go.png"></p>
+<h3 class="topic">
+<a name="2j7q438ih8vtujnp02jv1un3vs">&nbsp;&nbsp;&nbsp;&nbsp;嗅探到门磁传感器关闭时产生的数据</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-ZigBee%E5%8D%8F%E8%AE%AE%E5%97%85%E6%8E%A2%E4%B8%8E%E5%88%86%E6%9E%90%E5%AE%9E%E6%88%98_files/4ttekcufeikgjvqam9ohe6jo0h.png"></p>
+<h2 class="topic">
+<a name="6gs9ubl6rk7i4iquhe0ecktpbf">相关命令</a>
+</h2>
+<h3 class="topic">
+<a name="5b0mu9v5p5tj7fsjsqlhum06j2">&nbsp;打开timac并启动&#13;
+&#13;
+使用wireshark -i.pipetiwspc_data命令打开    (为便于操作也可添加到快捷方式内)&#13;
+&#13;
+Wireshark转到&ldquo;编辑&rdquo;&gt;&ldquo;首选项&rdquo;&gt;&ldquo;协议&rdquo;&gt; Zigbee&#13;
+&#13;
+添加Zigbee 默认TC链接密钥5a6967426565416c6c69616e63653039</a>
+</h3>
+</body>
+</html>

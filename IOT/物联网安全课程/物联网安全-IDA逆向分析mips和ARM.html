@@ -1,0 +1,294 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>物联网安全-IDA逆向分析mips和ARM</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="2bmp55j4mvgidsc2fmf4jqj5be">物联网安全-IDA逆向分析mips和ARM</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-IDA%E9%80%86%E5%90%91%E5%88%86%E6%9E%90mips%E5%92%8CARM_files/images/%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-IDA%E9%80%86%E5%90%91%E5%88%86%E6%9E%90mips%E5%92%8CARM.jpg"></div>
+<h2 class="topic">
+<a name="10kdf0csaug3vfh6eo5mb49orc">介绍</a>
+</h2>
+<h3 class="topic">
+<a name="2gs00btqfktn046c7kn8qevae5">&nbsp;原生ida7.5之前不支持mips到c的转换，需要使用插件完成该操作</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-IDA%E9%80%86%E5%90%91%E5%88%86%E6%9E%90mips%E5%92%8CARM_files/21d8chuot2ed72otnn4hb0bk5h.png"></p>
+<h2 class="topic">
+<a name="3rnmveqk9ed6i544prgolcnv43"></a>
+</h2>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-IDA%E9%80%86%E5%90%91%E5%88%86%E6%9E%90mips%E5%92%8CARM_files/1dpp91h6jb88l9kk4ulidlrhfm.png"></p>
+<h3 class="topic">
+<a name="24njn2hrf51kuidii7tbk3e287">&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-IDA%E9%80%86%E5%90%91%E5%88%86%E6%9E%90mips%E5%92%8CARM_files/7so4upu4enlumvrophvdbs5ha4.png"></p>
+<h3 class="topic">
+<a name="7hlfgcttarnfqmbmgdmoe7sulf">&nbsp;&nbsp;ida支持arm架构的F5功能，所以可以直接得到类c代码，一般分析套路：&#13;
+打开string窗口，查看敏感字符串，从而定位关键位置&#13;
+分析函数：按x可以向上追踪，双击可以向下追踪</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-IDA%E9%80%86%E5%90%91%E5%88%86%E6%9E%90mips%E5%92%8CARM_files/4gqmveccuc08u41gm2iorfr2ql.png"></p>
+<h3 class="topic">
+<a name="09ttbeg4gr0b0ggnopbrsnrhel">&nbsp;ida自动化操作</a>
+</h3>
+<h3 class="topic">
+<a name="67s5295bbsn5o6tphs3ci7fphp">&nbsp;&nbsp;ida目录结构&#13;
+可以直接在plugins目录下编写python脚本并使用&#13;
+但比较工整的写法是在plugins下写类的实例化，具体功能代码（类的实现）在python文件夹下进行实现</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-IDA%E9%80%86%E5%90%91%E5%88%86%E6%9E%90mips%E5%92%8CARM_files/2vf5papbn1a8ki58l06r2os50b.png"></p>
+<h3 class="topic">
+<a name="0cj8iaj7cpah70a7j2v6k9nv0v">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-IDA%E9%80%86%E5%90%91%E5%88%86%E6%9E%90mips%E5%92%8CARM_files/15ajni9v87ri40ee8tb8ib73a8.png"></p>
+<h3 class="topic">
+<a name="6tso0iel7p4jl8fn193u8m5u4d">&nbsp;&nbsp;&nbsp;&nbsp;进入listFunc模块</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-IDA%E9%80%86%E5%90%91%E5%88%86%E6%9E%90mips%E5%92%8CARM_files/7shegfe0kdt5reda3r39fq5cge.png"></p>
+<h3 class="topic">
+<a name="5cvdoar2srrq7r3ohr97ti7cm3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;编写idapython脚本的api可以查询官网</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-IDA%E9%80%86%E5%90%91%E5%88%86%E6%9E%90mips%E5%92%8CARM_files/29drsbkr3m35fhojvultrn4lmk.png"></p>
+<h3 class="topic">
+<a name="6ilg9kbi09ofoov0bmk9tn9heu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-IDA%E9%80%86%E5%90%91%E5%88%86%E6%9E%90mips%E5%92%8CARM_files/7invtg5qpitrt9onvm3r9sgtl7.png"></p>
+<h3 class="topic">
+<a name="4s7se97aqfr0sddrn3r9e52pbi">&nbsp;&nbsp;listFunc插件</a>
+</h3>
+<h3 class="topic">
+<a name="37vj2grnjghjtd9t8k0ggvrr81">&nbsp;&nbsp;&nbsp;保存在plugins目录下的python脚本</a>
+</h3>
+<h3 class="topic">
+<a name="5qv1m1cof4f1h901au4tqgdhfp">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-IDA%E9%80%86%E5%90%91%E5%88%86%E6%9E%90mips%E5%92%8CARM_files/7d0fbgvh0as8mbb79uo798jicp.png"></p>
+<h3 class="topic">
+<a name="4giig8405bpkp455n8n5j58vdl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# -*- coding:utf-8 -*-&#13;
+ &#13;
+import idautils&#13;
+import idaapi&#13;
+import idc&#13;
+from datetime import datetime&#13;
+ &#13;
+class ListFunc(idaapi.plugin_t):&#13;
+    flags = idaapi.PLUGIN_UNL&#13;
+    comment = "List all function in this binary file."&#13;
+    wanted_name = "listfunc"&#13;
+    wanted_hotkey  = "Alt-F6"&#13;
+    help = "Coming soon.."&#13;
+ &#13;
+    def init(self):&#13;
+        idaapi.msg("&gt;&gt;&gt;My plugin starts.{0}.n".format(datetime.now()))&#13;
+ &#13;
+        idaapi.require("listFunc")&#13;
+        idaapi.require("listFunc.listFuncImpl")&#13;
+ &#13;
+        return idaapi.PLUGIN_OK&#13;
+ &#13;
+    def run(self, arg):&#13;
+        listFunc.listFuncImpl.main()&#13;
+ &#13;
+    def term(self):&#13;
+        idaapi.msg("&gt;&gt;My plugin ends.{0}n".format(datetime.now()))&#13;
+ &#13;
+def PLUGIN_ENTRY():&#13;
+    return ListFunc()</a>
+</h3>
+<h3 class="topic">
+<a name="56ndta9qi0qqclgtu1ss413ibg">&nbsp;&nbsp;&nbsp;保存在python目录下的插件类实现代码</a>
+</h3>
+<h3 class="topic">
+<a name="2k2iht1ne4gvp0rkjgjdtp4lk1">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-IDA%E9%80%86%E5%90%91%E5%88%86%E6%9E%90mips%E5%92%8CARM_files/6lfaveh5e9por81khq23qfrjj6.png"></p>
+<h3 class="topic">
+<a name="5gnopsmn8kk452qnt9sncpisn3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-IDA%E9%80%86%E5%90%91%E5%88%86%E6%9E%90mips%E5%92%8CARM_files/1doh1a8r8jqlso4mencj5k967p.png"></p>
+<h3 class="topic">
+<a name="04p7jp336mhter5kumtjjdhviu">&nbsp;&nbsp;&nbsp;&nbsp;listFuncImpl.py</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-IDA%E9%80%86%E5%90%91%E5%88%86%E6%9E%90mips%E5%92%8CARM_files/2oo1glfvbd0vgcgjv4rt3vveg4.png"></p>
+<h3 class="topic">
+<a name="73v4mlv66jq6kfsmt6hf73ec0m">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;import idautils&#13;
+import idaapi&#13;
+import idc&#13;
+from datetime import datetime&#13;
+ &#13;
+def main():&#13;
+    for i,func in enumerate(idautils.Functions()):&#13;
+        func_name = ida.GetFunctionName(func)&#13;
+ &#13;
+        if "main" in func_name:&#13;
+            print("{0} is the value function:{1}".format(i, func_name))&#13;
+ &#13;
+if __name__ == "__main__":&#13;
+    main()</a>
+</h3>
+<h3 class="topic">
+<a name="3hh2t2gdm2qri4u86q38i1ib63">&nbsp;&nbsp;&nbsp;运行插件</a>
+</h3>
+<h3 class="topic">
+<a name="69tm9gidrngfl5n7bvrub7fe11">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-IDA%E9%80%86%E5%90%91%E5%88%86%E6%9E%90mips%E5%92%8CARM_files/0359u3hts0qh07em9n7uia08ce.png"></p>
+<h3 class="topic">
+<a name="2rfu2veorh9j6uc6he7pp953o0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;插件执行结果，输出所有函数名中存在main的函数</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-IDA%E9%80%86%E5%90%91%E5%88%86%E6%9E%90mips%E5%92%8CARM_files/3qn6jvb4cp33g265ik5d3i3a0k.png"></p>
+<h3 class="topic">
+<a name="2ecs2ned352tuojosdhddclmd4">&nbsp;&nbsp;IDAPython插件</a>
+</h3>
+<h3 class="topic">
+<a name="5sufgcutvml5lu194edmn8a8bh">&nbsp;&nbsp;&nbsp;该插件直接在plugins目录下保存，不需要用到python目录下的数据</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-IDA%E9%80%86%E5%90%91%E5%88%86%E6%9E%90mips%E5%92%8CARM_files/1tr71pbcf8c73ipguqb5o3k49n.png"></p>
+<h3 class="topic">
+<a name="46m5ksn20f18il16nodkgvsacp">&nbsp;&nbsp;&nbsp;&nbsp;使用脚本搜索程序中是否存在危险函数</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-IDA%E9%80%86%E5%90%91%E5%88%86%E6%9E%90mips%E5%92%8CARM_files/4ma7l8tqhpsa2eb8fnv4kohcgu.png"></p>
+<h3 class="topic">
+<a name="23t8d1mfdi21h3cj3opr6l2735">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from idautils import *&#13;
+from idc import *&#13;
+from idaapi import *&#13;
+from datetime import datetime&#13;
+ &#13;
+class IDAPython(idaapi.plugin_t):&#13;
+    flags = PLUGIN_UNL&#13;
+    comment = "IDA Python Testing"&#13;
+    help = ''&#13;
+    wanted_name = "IDA Testing"&#13;
+    wanted_hotkey = ''&#13;
+ &#13;
+    def init(self):&#13;
+        idaapi.msg("&gt;&gt;&gt;My plugin starts.{0}.n".format(datetime.now()))&#13;
+ &#13;
+    def term(self):&#13;
+        idaapi.msg("&gt;&gt;My plugin ends.{0}n".format(datetime.now()))&#13;
+ &#13;
+    def run(self, arg):&#13;
+        danger_func = ["strcpy", "strncpy", "memcpy", "gets", "read"]&#13;
+ &#13;
+        for func in idautils.Functions():&#13;
+            if idc.GetFunctionName(func) in danger_func:&#13;
+                print hex(func), idc.GetFunctionName(func)&#13;
+ &#13;
+def PLUGIN_ENTRY():&#13;
+    return IDAPython()</a>
+</h3>
+<h3 class="topic">
+<a name="4tenhko0dhbbak7r5aogcrsjp6">&nbsp;&nbsp;&nbsp;调用该插件</a>
+</h3>
+<h3 class="topic">
+<a name="1b019oiugkaaue4u81r1p4e8f1">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-IDA%E9%80%86%E5%90%91%E5%88%86%E6%9E%90mips%E5%92%8CARM_files/21qh27bhm6k7mir7plrabf2gn9.png"></p>
+<h3 class="topic">
+<a name="2a6t405lipre49pdlu20ir1mn4">&nbsp;&nbsp;批量分析脚本（用ida打开多个文件并进行分析）</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-IDA%E9%80%86%E5%90%91%E5%88%86%E6%9E%90mips%E5%92%8CARM_files/0v89hrqa8fepiepmt6h64sor80.png"></p>
+<h3 class="topic">
+<a name="4qs2eikp6lu4ba1b3sntrt9del">&nbsp;&nbsp;&nbsp;run.py</a>
+</h3>
+<h3 class="topic">
+<a name="7vedrccdi51v2opgk3633mimsa">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-IDA%E9%80%86%E5%90%91%E5%88%86%E6%9E%90mips%E5%92%8CARM_files/15s50vq9c88u5t3115892l5siq.png"></p>
+<h3 class="topic">
+<a name="7vkcbsr93ipq4uqdhd3gj0mm9t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-IDA%E9%80%86%E5%90%91%E5%88%86%E6%9E%90mips%E5%92%8CARM_files/6k5pi4h83qgqqd8abhlu1049mv.png"></p>
+<h3 class="topic">
+<a name="08rtoccva5kho1u7vhbro094e7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;import os&#13;
+import subprocess&#13;
+ &#13;
+dir_path = "C://Users//clb//Desktop//test"&#13;
+ida_path = "E://IDA7.0//ida.exe"&#13;
+ana_file = "C://Users//clb//Desktop//IDA//analysis.py"&#13;
+ &#13;
+def run():&#13;
+    for root, dirs, files in os.walk(dir_path):&#13;
+        for file_name in files:&#13;
+            file_path = os.path.join(root, file_name)&#13;
+            cmd = "{0} -LE:/mylog.log -c -A -S{1} {2}".format(ida_path, ana_file, file_path)&#13;
+            p = subprocess.Popen(cmd)&#13;
+            p.wait()&#13;
+ &#13;
+if __name__ == "__main__":&#13;
+    run()</a>
+</h3>
+<h3 class="topic">
+<a name="1rh4gl9bs9el4irj5lb3l60to4">&nbsp;&nbsp;&nbsp;analysis.py</a>
+</h3>
+<h3 class="topic">
+<a name="29akqdlv59s07ah2ghf6kk7ffb">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-IDA%E9%80%86%E5%90%91%E5%88%86%E6%9E%90mips%E5%92%8CARM_files/1qk58t3kfbi46lpub419pqdegd.png"></p>
+<h3 class="topic">
+<a name="2spnd0d8ormbvkostqnb6jq67s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;import idaapi&#13;
+import idautils&#13;
+import idc&#13;
+ &#13;
+def do_some_analyse();&#13;
+    danger_func = ["strcpy", "strncpy", "memcpy", "gets", "read"]&#13;
+ &#13;
+    for func in idautils.Functions():&#13;
+        if idc.GetFunctionName(func) in danger_func:&#13;
+            print hex(func), idc.GetFunctionName(func)&#13;
+def main():&#13;
+    idc.wait()&#13;
+    do_some_analyse()&#13;
+    idc.Exit(0)&#13;
+ &#13;
+if __name__ == "__main__":&#13;
+    main()</a>
+</h3>
+<h3 class="topic">
+<a name="3ur9b20or8cq1kp9vp0vhol821">&nbsp;&nbsp;&nbsp;运行脚本</a>
+</h3>
+<h3 class="topic">
+<a name="577ls0662t71gnaun27o9fsgfq">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-IDA%E9%80%86%E5%90%91%E5%88%86%E6%9E%90mips%E5%92%8CARM_files/306lfljfu89smn9b9lidlh1tjs.png"></p>
+<h3 class="topic">
+<a name="0d3ktggdo8g2vlt1tlargv1t55">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;查看e盘下mylog.log日志文件，得到分析结果</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-IDA%E9%80%86%E5%90%91%E5%88%86%E6%9E%90mips%E5%92%8CARM_files/0grkv3lde7bmegq3cpk6qti36g.png"></p>
+<h2 class="topic">
+<a name="6fta3f9n1tka8apgupf94huqve">一般arm程序可以直接f5查看类c代码&#13;
+mips因为比较简单所以可以直接看汇编或安装ida插件将其转为类c代码</a>
+</h2>
+<h3 class="topic">
+<a name="5mk4he5muorthq0b05mc1qigb6">&nbsp;一般使用ghidra对mips进行静态分析，使用ida或gdb进行动态调试</a>
+</h3>
+</body>
+</html>

@@ -1,0 +1,359 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>免杀</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="43c7ge521ems6anolpm3r6bk3v">免杀</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="%E5%85%8D%E6%9D%80_files/images/%E5%85%8D%E6%9D%80.jpg"></div>
+<h2 class="topic">
+<a name="2b0515i0qk9fekarmh94qedev9">杀毒软件简介</a>
+</h2>
+<h3 class="topic">
+<a name="0c2kh2tb1j1025gabn7u43uom0">&nbsp;防病毒（AV）是旨在防止，检测和删除恶意软件的应用程序类型。它最初旨在仅删除计算机病毒。 但是，随着其他类型恶意软件的发展，防病毒软件现在通常包括其他保护措施，例如防火墙，网站扫描程序等。</a>
+</h3>
+<h2 class="topic">
+<a name="53dqjvrpfa0pgtngprffurf3e6">恶意代码检测方法</a>
+</h2>
+<h3 class="topic">
+<a name="606f6rvetthk7o461njsjdj3ao">&nbsp;为了演示各种防病毒产品的有效性，我们将从扫描流行的Meterpreter有效负载开始。 使用msfvenom，我们将生成一个包含有效负载的标准可移植可执行文件，在这种情况下，该文件是简单的TCP反向外壳程序。</a>
+</h3>
+<h3 class="topic">
+<a name="4js8h1c712il6qbgr6sjia2h7o">&nbsp;&nbsp;生成反弹shell的exe</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%85%8D%E6%9D%80_files/7lb7m1ed52fut3df5i4i3jddef.png"></p>
+<h3 class="topic">
+<a name="3ff5vq1sfds88o22p0qgv9ql1k">&nbsp;&nbsp;&nbsp;使用VirusTotal进行扫描以确定各种AV产品的检测率。VirusTotal很方便，但是它为每个唯一的提交生成一个哈希，然后与所有参与的AV供应商共享。 因此，在提交敏感的有效载荷时要小心，因为从首次提交之时起，哈希就基本上被认为是公共的</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%85%8D%E6%9D%80_files/42s3hk1acf3i16dohr394fllcp.png"></p>
+<h3 class="topic">
+<a name="6d786941iiht8h84459vbf0k9e">&nbsp;基于签名的检测</a>
+</h3>
+<h3 class="topic">
+<a name="1aaj4bvjbvjiaq2jgfc04276ct">&nbsp;&nbsp;防病毒签名是恶意软件中唯一标识它的连续字节序列。 基于签名的防病毒检测通常被认为是黑名单技术。 换句话说，在文件系统中扫描已知的恶意软件签名，如果检测到任何恶意软件签名，则隔离有问题的文件。 这意味着，使用正确的工具，我们可以相当轻松地绕过依赖此检测方法的防病毒软件。 具体来说，我们可以通过简单地更改或混淆已知恶意文件的内容来绕过基于签名的检测，以破坏标识字节序列（或签名）。</a>
+</h3>
+<h3 class="topic">
+<a name="5q4o6qj005dja9l4jqb44tkn75">&nbsp;&nbsp;&nbsp;根据所测试的防病毒软件的类型和质量，有时我们可以通过简单地将二进制文件中的几个无害的字符串从大写改为小写来绕过防病毒软件。 但是，并非每种情况都这么简单。&#13;
+   由于防病毒软件供应商使用不同的签名和专有技术来检测恶意软件，并且每个供应商都在不断更新其数据库，因此通常很难提出一种全面的防病毒逃避解决方案。 通常，此过程基于测试环境中的反复试验方法。</a>
+</h3>
+<h3 class="topic">
+<a name="75vqu7oldr9v2bm2ui5h0l3e60">&nbsp;&nbsp;&nbsp;&nbsp;   因此，在进行渗透测试时，我们应先确定已部署的防病毒软件的存在，类型和版本，然后再考虑绕过策略。 如果客户端网络或系统实施了防病毒软件，则在将文件上传到目标计算机之前，我们应该收集尽可能多的信息，并在实验室环境中复制配置以进行AV旁路测试。</a>
+</h3>
+<h3 class="topic">
+<a name="0dc0t7lmosvghd5n34dl9gd7e1">&nbsp;基于启发式和行为的检测</a>
+</h3>
+<h3 class="topic">
+<a name="01kh8qln2uvkq6sgud6d05q9km">&nbsp;&nbsp;为了解决基于签名的检测的陷阱，防病毒制造商引入了其他检测方法来提高其产品的有效性。&#13;
+   基于启发式的检测408是一种依靠各种规则和算法来确定某个动作是否被视为恶意的检测方法。 这通常是通过逐步执行二进制文件的指令集或尝试反编译然后分析源代码来实现的。 这个想法是寻找被认为是恶意的各种模式和程序调用（与简单的字节序列相反）。&#13;
+启发式检测：搜索匹配特定指令序列或者反编译源码&#13;
+https://en.wikipedia.org/wiki/Heuristic_analysis</a>
+</h3>
+<h3 class="topic">
+<a name="7k7mldtk7j5e5r2r8rm355m6kr">&nbsp;&nbsp;&nbsp;基于行为的检测409可动态分析二进制文件的行为。 这通常是通过在仿真环境（例如小型虚拟机）中执行相关文件并查找被认为是恶意的行为或动作来实现的。&#13;
+  由于这些技术不需要恶意软件签名，因此可以将它们用于更有效地识别未知恶意软件或已知恶意软件的变体。 鉴于防病毒制造商在启发式和行为检测方面使用不同的实现方式，因此每种防病毒产品在认为什么代码是恶意代码方面都会有所不同。&#13;
+  值得注意的是，大多数防病毒开发人员会结合使用这些检测方法来实现更高的检测率。&#13;
+行为检测：沙盒执行，分析程序动作&#13;
+https://pdfs.semanticscholar.org/08ec/24106e9218c3a65bc3e16dd88dea2693e933.pdf</a>
+</h3>
+<h2 class="topic">
+<a name="4ot1o90huklhp1sfqs909bi3v8">绕过防病毒检测</a>
+</h2>
+<h3 class="topic">
+<a name="3r49lko9ovjh9kqj1s19vo0ttv">&nbsp;防病毒规避分为两大类：磁盘上和内存中。 磁盘上逃避的重点是修改物理存储在磁盘上的恶意文件，以逃避AV检测。 鉴于AV文件扫描的成熟度，现代恶意软件经常尝试进行内存中操作，从而完全避免了磁盘操作，从而降低了被检测到的可能性。 在以下各节中，我们将对两种技术中使用的一些技术进行非常一般的概述。</a>
+</h3>
+<h3 class="topic">
+<a name="0ioargi8ho8u6hjg7fjc1pbegt">&nbsp;磁盘层面免杀</a>
+</h3>
+<h3 class="topic">
+<a name="6t888cd8v2hncal84prc5sk13v">&nbsp;&nbsp;加壳（压缩壳）</a>
+</h3>
+<h3 class="topic">
+<a name="25jo978lvjs6675rrhd1sltrld">&nbsp;&nbsp;&nbsp;现代的磁盘上恶意软件混淆可以采用多种形式。 避免检测的最早方法之一就是使用压缩程序。由于Internet初期磁盘空间成本高昂且网络速度较慢，因此压缩程序最初旨在简化可执行文件的大小。 与现代的&ldquo; zip&rdquo;压缩技术不同，打包程序生成的可执行文件不仅较小，而且在功能上与全新的二进制结构等效。 生成的文件具有新的签名，因此可以有效地绕过较早且更简单的AV扫描仪。 即使某些现代恶意软件使用了该技术的变体，仅使用UPX和其他流行的打包工具也无法逃避现代AV扫描仪。</a>
+</h3>
+<h3 class="topic">
+<a name="768avbl2tl9j4bj7ddcelo4jl9">&nbsp;&nbsp;混淆器</a>
+</h3>
+<h3 class="topic">
+<a name="6fju4fppogkhmugf70ug279d1b">&nbsp;&nbsp;&nbsp;混淆器以使反向工程更加困难的方式来重组和变异代码。 这包括用语义等效的指令替换指令，插入不相关的指令或&ldquo;死代码&rdquo;，拆分或重新排序功能，等等。 尽管此技术主要由软件开发人员用于保护其知识产权，但在基于签名的AV检测方面也有些许有效</a>
+</h3>
+<h3 class="topic">
+<a name="5r50g1srrgn08c0eercev2fd4s">&nbsp;&nbsp;加密</a>
+</h3>
+<h3 class="topic">
+<a name="6g2nfmpfngme70fuo03tbgol66">&nbsp;&nbsp;&nbsp;&ldquo;加密程序&rdquo;软件以密码方式更改可执行代码，并添加一个解密存根，该存根将在执行后恢复原始代码。 该解密在内存中进行，仅将加密的代码保留在磁盘上。 作为最有效的AV规避技术之一，加密已成为现代恶意软件的基础。</a>
+</h3>
+<h3 class="topic">
+<a name="66gevlvomefqpueuo6s96uvqg5">&nbsp;&nbsp;软件保护器</a>
+</h3>
+<h3 class="topic">
+<a name="07ik6krig8ja85evli0f5ct9jc">&nbsp;&nbsp;&nbsp;高效的免杀除其他高级技术外，还需要结合所有先前的技术，包括防逆向，防调试，虚拟机仿真检测等。 在大多数情况下，软件保护程序是出于合法目的而设计的，但也可以用于绕过AV检测。这些技术中的大多数在高层次上可能看起来很简单，但实际上却非常复杂。 因此，目前很少有主动维护的免费工具能够提供可接受的，在市售工具中，Enigma Protector尤其可以成功用于绕过防病毒产品。</a>
+</h3>
+<h3 class="topic">
+<a href="http://www.enigmaprotector.com/en/home.html" name="50l4i9vucveos5koicruofaggn">&nbsp;&nbsp;&nbsp;&nbsp;Enigma Protector：http://www.enigmaprotector.com/en/home.html</a>
+</h3>
+<h3 class="topic">
+<a name="5bo7ef51c90leknf6hdnq43s84">&nbsp;内存层面免杀</a>
+</h3>
+<h3 class="topic">
+<a name="7t2c9f4katc4tmlmflkct5oiq7">&nbsp;&nbsp;内存中注入（也称为PE注入）是一种流行的技术，用于绕过防病毒产品。 该技术不是混淆恶意二进制文件，创建新节或更改现有权限，而着重于对内存的操作。 该技术的主要优点之一是它不会将任何文件写入磁盘，这是大多数防病毒产品关注的主要领域之一。</a>
+</h3>
+<h3 class="topic">
+<a name="2p1v9j3ptk0m768hhgk7scmn9v">&nbsp;&nbsp;&nbsp;   有几种规避技术415不会将文件写入磁盘。 尽管我们将对其中一些进行简要说明，但在本模块中，我们将仅详细介绍使用PowerShell进行内存中注入，因为其他依赖于诸如C / C ++等语言的底层编程背景</a>
+</h3>
+<h3 class="topic">
+<a name="5k52ckrbe74d6b16p912ks50uo">&nbsp;&nbsp;&nbsp;&nbsp;即通过内存注入直接在内存中执行恶意代码，并不将恶意代码保存到磁盘</a>
+</h3>
+<h3 class="topic">
+<a name="6fss7k8c879tjh2skpk1nqbsi2">&nbsp;&nbsp;远程进程注入</a>
+</h3>
+<h3 class="topic">
+<a name="6favpp37ulm08hhlff4svegfvr">&nbsp;&nbsp;&nbsp;此技术尝试将有效负载注入到另一个不是恶意的有效PE中。 最常用的方法是利用一组WindowsAPI首先，我们将使用OpenProcess函数为有权访问的目标进程获取有效的HANDLE。 获得HANDLE之后，我们将通过调用Windows API（例如VirtualAllocEx）在该进程的上下文中分配内存。一旦在远程进程中分配了内存，我们将使用WriteProcessMemory将恶意有效负载复制到新分配的内存中。有效负载成功复制后，通常使用CreateRemoteThread API在单独的线程中的内存中执行它。</a>
+</h3>
+<h3 class="topic">
+<a name="5asvfi9gcn0m3algrephf42g6k">&nbsp;&nbsp;&nbsp;&nbsp;下面的示例中，我们将使用类似的技术，使用PowerShell进行大部分繁重的工作，并针对本地powershell.exe实例执行非常相似但简化的攻击。</a>
+</h3>
+<h3 class="topic">
+<a name="3db2io7ngdgq90q1une8051fja">&nbsp;&nbsp;反射式DLL注入</a>
+</h3>
+<h3 class="topic">
+<a name="413f8g8jmhl8mbdl2pkrg0v1eg">&nbsp;&nbsp;&nbsp;与常规DLL注入不同（后者意味着使用LoadLibrary API从磁盘加载恶意DLL），此技术尝试将攻击者存储的DLL加载到进程内存中。实现此技术的主要挑战是LoadLibrary不支持加载内存中的DLL。 此外，Windows操作系统也不公开任何可以处理此问题的API。 选择使用此技术的攻击者必须编写自己的不依赖于基于磁盘的DLL的API版本。</a>
+</h3>
+<h3 class="topic">
+<a name="2je4v5iq8ss9dbigld8d64c8l4">&nbsp;&nbsp;&nbsp;&nbsp;常规dll注入是使用LoadLibrary从磁盘加载恶意dll</a>
+</h3>
+<h3 class="topic">
+<a name="64elnr28np064ib6p6ml5dcnd1">&nbsp;&nbsp;&nbsp;&nbsp;反射式DLL：让DLL自身不使用LoadLibraryA函数，将自身映射到目标进程内存中。</a>
+</h3>
+<h3 class="topic">
+<a href="https://bbs.pediy.com/thread-224143.htm" name="44j07flr715hv8v4u701p4dqgk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://bbs.pediy.com/thread-224143.htm</a>
+</h3>
+<h3 class="topic">
+<a name="7rs82ejfl9i711bu5eq1eiqq3j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://bbs.pediy.com/thread-224241.htm</a>
+</h3>
+<h3 class="topic">
+<a name="06ht8hk6rqeao8flhc3ckq5vc1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://blog.csdn.net/qq_43312649/article/details/100094106</a>
+</h3>
+<h3 class="topic">
+<a href="https://www.andreafortuna.org/2017/12/08/what-is-reflective-dll-injection-and-how-can-be-detected/" name="179o5s9k7vdkcloijpjntjd016">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://www.andreafortuna.org/2017/12/08/what-is-reflective-dll-injection-and-how-can-be-detected/</a>
+</h3>
+<h3 class="topic">
+<a name="07rlja56eco05l5s0q3oun5s9f">&nbsp;&nbsp;Process Hollowing（进程替换）</a>
+</h3>
+<h3 class="topic">
+<a name="3o1aj4nj9hhkjho9abhp8jlbqc">&nbsp;&nbsp;&nbsp;当使用Process Hollowing绕过防病毒软件时，攻击者首先以挂起状态启动一个非恶意进程。 启动后，该进程的映像将从内存中删除，并替换为恶意的可执行映像。 最后，然后恢复该过程，并执行恶意代码而不是合法过程。</a>
+</h3>
+<h3 class="topic">
+<a href="https://blog.csdn.net/weixin_34290000/article/details/94609258" name="3bdp7js54a80oaonmke0eubnef">&nbsp;&nbsp;&nbsp;&nbsp;https://blog.csdn.net/weixin_34290000/article/details/94609258</a>
+</h3>
+<h3 class="topic">
+<a name="1qcu5rflsb7vh8n40rsfrlr7vp">&nbsp;&nbsp;&nbsp;&nbsp;https://ired.team/offensive-security/code-injection-process-injection/process-hollowing-and-peimage-relocations</a>
+</h3>
+<h3 class="topic">
+<a name="5jie1c2rpe5ot6dn5gnim4lujm">&nbsp;&nbsp;内联hook</a>
+</h3>
+<h3 class="topic">
+<a name="09btf6rt7feei462g7js4l96rc">&nbsp;&nbsp;&nbsp;此技术涉及修改内存并将钩子（重定向代码执行的指令）引入函数，以将执行流指向我们的恶意代码。 在执行我们的恶意代码后，该流程将返回到修改后的函数并恢复执行，似乎只有原始代码已执行</a>
+</h3>
+<h3 class="topic">
+<a name="1ihuh5nelh5dcu2hidhfo6cjau">&nbsp;免杀实例</a>
+</h3>
+<h3 class="topic">
+<a name="6itplnr5pjupad6e37glpucub8">&nbsp;&nbsp;将在Windows 10客户端上安装Avira Free Antivirus版本15.0.34.16。 可以在C：\ Tools \ antivirus_evasion \目录中找到Avira安装程序。 安装完成后，我们可以通过在Windows 10搜索栏中搜索&ldquo;启动Avira Antivirus&rdquo;来检查其配置。</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%85%8D%E6%9D%80_files/33e5koo8juqgg7qdefk13387sr.png"></p>
+<h3 class="topic">
+<a name="6bfg4n4ivigr72ej75lmb4ii9t">&nbsp;&nbsp;&nbsp;启动此应用程序将显示&ldquo; Avira控制中心&rdquo;，我们可以在其中验证是否启用了&ldquo;实时保护&rdquo;功能，如果未启用，则可以手动启用它</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%85%8D%E6%9D%80_files/6kecv1j6rvl0i0s73u24rpkih2.png"></p>
+<h3 class="topic">
+<a name="3as2oj1cuhqn4g2h1e531u9e98">&nbsp;&nbsp;&nbsp;&nbsp;第一步，我们应验证防病毒产品是否按预期工作。 我们将使用之前生成的meterpreter有效负载，并使用Avira对其进行扫描，将恶意PE转移到Windows客户端后，我们将尝试运行二进制文件并观察结果。</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%85%8D%E6%9D%80_files/3u77u1cpuei82snmvrbfp718jv.png"></p>
+<h3 class="topic">
+<a name="779pv08930j62tg30veit777j0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在这种情况下，我们将收到一条错误消息，指示系统无法执行我们的文件。 之后，Avira会立即显示一个弹出通知，通知我们该文件被标记为恶意文件并已被隔离。</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%85%8D%E6%9D%80_files/39jo3bs647amhc6336jss62vu9.png"></p>
+<h3 class="topic">
+<a name="2sbfg9155a46e59c2e8g3r4khr">&nbsp;&nbsp;PowerShell内存中注入</a>
+</h3>
+<h3 class="topic">
+<a name="6j6s4qot63fu5pbcgtv0ouc7oo">&nbsp;&nbsp;&nbsp;将使用类似于&ldquo;远程进程内存注入&rdquo;部分中描述的技术。 主要区别在于我们将以当前正在执行的进程为目标，在本例中为PowerShell解释器。&#13;
+   PowerShell的一项非常强大的功能是它与Windows API交互的能力。这使我们能够在PowerShell脚本中实现内存中注入过程。 执行脚本而不是PE的主要好处之一是，防病毒制造商很难确定脚本是否是恶意的，因为它在解释器中运行并且脚本本身不是可执行代码。 但是，请记住，某些反病毒产品比其他反病毒产品要好，并且可以更成功地处理恶意脚本检测，此外，即使脚本被标记为恶意脚本，也可以轻松对其进行更改。 防病毒软件通常会查看变量名，注释和逻辑，所有这些都可以更改，而无需重新编译任何内容。</a>
+</h3>
+<h3 class="topic">
+<a name="5b3h1d29sp9bucqqlnfut7jtuv">&nbsp;&nbsp;&nbsp;&nbsp;一个执行内存注入的基本模板脚本,该脚本首先从kernel32.dll以及从msvcrt.dll导入memset导入VirtualAlloc428和CreateThread429。 这些函数将使我们能够分配内存，创建执行线程以及将任意数据分别写入分配的内存。 再次注意，我们正在分配内存并在当前进程（powershell.exe）中执行一个新线程，而不是一个远程线程。</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%85%8D%E6%9D%80_files/03q9pmbk0rre18cvp15k0ggnbe.png"></p>
+<h3 class="topic">
+<a name="3uq9narcgak7o1at7irvbm91am">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;脚本中缺少的是我们选择的有效负载，它可以使用msfvenom生成。 为了保持一致性，我们将保持有效载荷与先前测试中使用的有效载荷相同：</a>
+</h3>
+<h3 class="topic">
+<a name="65ph4p2la4sti2cpn312u6q58g">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%85%8D%E6%9D%80_files/3etvp5m69bbom06ki55slgmg6h.png"></p>
+<h3 class="topic">
+<a name="6i4lf4gtkp5d5aurrt2fmj348b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%85%8D%E6%9D%80_files/3d8n6ef595eecvgcu8dg64dq2u.png"></p>
+<h3 class="topic">
+<a name="149tc0m5q6rree3d30jdittt7t">&nbsp;&nbsp;&nbsp;根据脚本的要求，从msfvenom $ sc重命名$ buf变量后，可以将结果输出复制到最终脚本中。 我们完整的脚本如下所示：</a>
+</h3>
+<h3 class="topic">
+<a name="5isjnoctc95ml1cvnrmqphjvec">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%85%8D%E6%9D%80_files/2ldb7mksvn4e4kkbpk028qtf1t.png"></p>
+<h3 class="topic">
+<a name="1sb12k7b2k9r7sec181s1ag1ah">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%85%8D%E6%9D%80_files/5rc5iekb1e2v5267649bh0b6jj.png"></p>
+<h3 class="topic">
+<a name="4n2h79uif04ha1objhvm37msmk">&nbsp;&nbsp;&nbsp;根据VirusTotal扫描的结果，在59种AV产品中，只有2种检测到了我们的脚本。 这是很有希望的。</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%85%8D%E6%9D%80_files/0hvh4h7m8lkv3244sj9bk1g8ap.png"></p>
+<h3 class="topic">
+<a name="7ehal2p8t143344vkpnu4q5c7v">&nbsp;&nbsp;&nbsp;&nbsp;此外，通过Windows计算机上的Avira AV引擎对脚本的扫描显示，未将其检测为恶意</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%85%8D%E6%9D%80_files/51e870rbdb25n1ticpc7qdre1v.png"></p>
+<h3 class="topic">
+<a name="2sjg4qll51f76oco0ra630e0fa">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当我们尝试运行恶意脚本时，会出现一个错误，该错误引用了我们系统的执行策略，这似乎阻止了脚本的运行：快速浏览有关PowerShell执行策略的Microsoft文档（在错误消息中链接），显示这些策略是基于每个用户而不是每个系统设置的。</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%85%8D%E6%9D%80_files/4dikoephbs7ga9eomis39jrple.png"></p>
+<h3 class="topic">
+<a name="6rk1hv8juckr7tun0518ft1oed">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;请记住，与Windows中的任何东西一样，PowerShell执行策略设置可以由一个或多个Active Directory GPO决定。在这种情况下，可能有必要寻找其他绕过向量。（Active Directory GPO：https://docs.microsoft.com/en-us/previous-versions/windows/desktop/policy/group-policy-objects）</a>
+</h3>
+<h3 class="topic">
+<a name="0r095bqu10i99tg23iho001o08">&nbsp;&nbsp;&nbsp;让我们尝试查看和更改当前用户的系统执行策略。 请注意，在这种情况下，我们选择更改策略，而不是基于每个脚本绕过策略，这可以通过在运行每个脚本时使用-ExecutionPolicy Bypass标志来实现。&#13;
+清单显示我们已经成功地将当前用户的策略更改为&ldquo;不受限制&rdquo;。</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%85%8D%E6%9D%80_files/1cdj56dpjdp3l3vfa84jd395o0.png"></p>
+<h3 class="topic">
+<a name="26lnr4vp8dv9n44esjhinkf5fc">&nbsp;&nbsp;&nbsp;&nbsp;在执行脚本之前，我们将在Kali攻击者机器上启动meterpreter处理程序，以与我们的shell进行交互</a>
+</h3>
+<h3 class="topic">
+<a name="030nvio54p2csk7giiq3e6b89r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%85%8D%E6%9D%80_files/5r3vjjc3s5ijaa46e0ld67gca8.png"></p>
+<h3 class="topic">
+<a name="5rj1gpk1r3o0516k9j64ioufk9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%85%8D%E6%9D%80_files/3jf1920ptpbslh3d7mpdqnpej7.png"></p>
+<h3 class="topic">
+<a name="1ibgooilejbpt1bmafsg33jicv">&nbsp;&nbsp;&nbsp;现在，我们将尝试启动PowerShell脚本：</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%85%8D%E6%9D%80_files/4lgsotqb3t8mjcbn60vba9e9fq.png"></p>
+<h3 class="topic">
+<a name="708ea5n5ctpcuj2qll5mu05tfi">&nbsp;&nbsp;&nbsp;&nbsp;该脚本执行没有任何问题，我们在攻击机上收到了Meterpreter shell：</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%85%8D%E6%9D%80_files/3ritkcapj2ivkappb0ta1s9tm6.png"></p>
+<h3 class="topic">
+<a name="7li9lev5n52ispdimekg5cv9gl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  在成熟的组织中，可以实施各种机器学习程序，这些软件将尝试分析系统上运行的脚本的内容。从而判断是否为恶意软件，此时上述脚本可能需要针对目标环境进行更改或调整</a>
+</h3>
+<h3 class="topic">
+<a name="29bmqgeeu40uhhn1he4vdc0muk">&nbsp;&nbsp;Shellter</a>
+</h3>
+<h3 class="topic">
+<a name="5e5e162p309gs73f034j54qkf1">&nbsp;&nbsp;&nbsp;Shellter是一个动态的Shellcode注入工具，也是能够绕过防病毒软件的最受欢迎的免费工具之一。 它使用许多新颖和先进的技术对带有恶意shellcode有效负载的有效且非恶意的可执行文件进行后门操作。&#13;
+   尽管Shellter使用的技术细节超出了本模块的范围，但它实际上对目标PE文件和执行路径进行了全面的分析。 然后，它确定了可以在何处注入我们的shellcode，而无需依赖易于被AV引擎捕获的传统注入技术。 这些措施包括更改PE文件节权限，创建新节等。&#13;
+   最后，Shellter尝试使用现有的PE导入地址表（IAT）条目来定位将用于内存分配，传输和执行有效负载的函数。</a>
+</h3>
+<h3 class="topic">
+<a name="6gdgfurknrj27bdskn82r07j0q">&nbsp;&nbsp;&nbsp;&nbsp;https://www.shellterproject.co</a>
+</h3>
+<h3 class="topic">
+<a name="35s9mj64230f848io8p708jjtu">&nbsp;&nbsp;&nbsp;使用apt在Kali中安装Shellter</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%85%8D%E6%9D%80_files/1dt8jcvfa8fp62ir5h4ouj1dno.png"></p>
+<h3 class="topic">
+<a name="1ter8a04icct81nr4f2oaecqo5">&nbsp;&nbsp;&nbsp;&nbsp;由于Shellter旨在Windows操作系统上运行，因此我们还将安装wine，即一个兼容层，该兼容层能够在多个POSIX兼容操作系统上运行win32应用程序。</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%85%8D%E6%9D%80_files/12ee4s9mi01tpkv3brsadc5rft.png"></p>
+<h3 class="topic">
+<a name="5sjev37e1kqr3v8g8o4aed2hmh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在终端中运行Shellter将为我们提供在wine下运行的新控制台。</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%85%8D%E6%9D%80_files/5h3j9kem45p2qeuu6dnqhaf597.png"></p>
+<h3 class="topic">
+<a name="31p758b0867abv5v3jnqihaivf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Shellter可以在自动或手动模式下运行。 在&ldquo;手动&rdquo;模式下，该工具将启动我们要用于注入的PE，并允许我们在更细微的层次上对其进行操作。 如果自动选择的选项失败，我们可以使用此模式高度自定义注入过程。&#13;
+   但是，出于本示例的目的，我们将在提示符下选择&ldquo; A&rdquo;以自动模式运行Shellter。&#13;
+   接下来，我们必须选择目标PE。  Shellter将分析并更改执行流程以注入并执行我们的有效负载。 对于此示例，我们将使用流行的WinRAR实用程序的32位试用版可执行安装程序作为目标PE。&#13;
+   在以任何方式分析和更改原始PE之前，Shellter首先将创建文件的备份</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%85%8D%E6%9D%80_files/1jpg848tl53t8s5sd4m2usf2qa.png"></p>
+<h3 class="topic">
+<a name="40710nh7npgghnhrt7pd0hlkdo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<h3 class="topic">
+<a name="6c2isb5ke5o2esnunn8af6mhoo">&nbsp;&nbsp;&nbsp;一旦Shellter找到合适的位置来注入我们的有效负载，它将询问我们是否要启用Stealth Mode，437，该模式将在我们的有效负载执行后尝试恢复PE的执行流程。 我们将选择启用Stealth Mode，因为我们希望WinRAR安装程序能够正常运行以避免任何怀疑。&#13;
+   至此，我们将看到可用负载列表。 这些包括流行的选择，例如meterpreter，但是Shellter还支持自定义有效负载。&#13;
+请注意，为了通过&ldquo;隐形模式&rdquo;选项恢复执行流，自定义有效负载需要通过退出当前线程来终止。</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%85%8D%E6%9D%80_files/4pq34gtoppbj1p5oqqoa6tu375.png"></p>
+<h3 class="topic">
+<a name="5uj3ptkstf7jegmdte774p4mf2">&nbsp;&nbsp;&nbsp;&nbsp;鉴于Avira检测到了我们先前生成的Meterpreter PE，我们将使用相同的有效负载设置来测试Shellter bypass功能。 选择有效负载后，我们将看到Metasploit的默认选项，例如反向外壳主机（LHOST）和端口（LPORT）</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%85%8D%E6%9D%80_files/3rhahb3q3jun14lp69oahrfh00.png"></p>
+<h3 class="topic">
+<a name="371lg323vdkvr70bhrdar5qmod">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;设置好所有参数后，Shellter会将有效负载注入WinRAR安装程序，并尝试到达有效负载的第一条指令。</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%85%8D%E6%9D%80_files/728j9g904tb2ibnbf42tfk82ni.png"></p>
+<h3 class="topic">
+<a name="04u5rh8bhumvkfup3ubc5tns0q">&nbsp;&nbsp;&nbsp;在攻击端监听反弹shell</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%85%8D%E6%9D%80_files/4niqlj2k1te2ok8o33kq1ems1b.png"></p>
+<h3 class="topic">
+<a name="1bp1k6au81jjiujce41lv4al3k">&nbsp;&nbsp;&nbsp;&nbsp;将使用Avira手动扫描生成的文件，显示未被查杀，由于Shellter在将有效负载以及有效负载解码器注入PE之前会对其进行混淆，因此Avira基于签名的扫描可以正常运行。 它不认为二进制文件是恶意的。</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%85%8D%E6%9D%80_files/657tu4rnqfvvfqk1mpdbo98ti9.png"></p>
+<h3 class="topic">
+<a name="2ne7ftbb0ceiqhiq4qu7qfv39a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   执行文件后，将显示默认的WinRAR安装窗口，该窗口将正常安装软件而不会出现任何问题。 回顾我们的处理程序，我们已经成功接收了Meterpreter会话，但是该会话似乎在安装完成或被取消后终止</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%85%8D%E6%9D%80_files/2pims6bccetc55041f2ue0f2t4.png"></p>
+<h3 class="topic">
+<a name="0nbkd25mfh0rrjhaoi5htdrhjm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这是有道理的，因为安装程序的执行已完成并且该过程已终止。 为了解决此问题，我们可以设置一个AutoRunScript，以在创建会话后立即将Meterpreter迁移到一个单独的进程。 如果在更改为侦听器实例后重新运行WinRAR安装文件，我们将收到不同的结果：</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%85%8D%E6%9D%80_files/53akhfvq14k0sh8g2ltsflb7l9.png"></p>
+<h3 class="topic">
+<a name="2gk6ilb2t48jig4f2smvrhub48">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;迁移完成后，即使我们已完成WinRAR安装过程或取消了该过程，该会话仍将保持活动状态</a>
+</h3>
+<h2 class="topic">
+<a name="62q23s6m0qh68q1t6h1p63qdua">免杀相关资料</a>
+</h2>
+<h3 class="topic">
+<a href="https://cloudblogs.microsoft.com/microsoftsecure/2018/03/01/finfisher-exposed-a-researchers-tale-ofdefeating-traps-tricks-and-complex-virtual-machines/" name="5kgduhv247egtd3hibeoj6m5dt">&nbsp;https://cloudblogs.microsoft.com/microsoftsecure/2018/03/01/finfisher-exposed-a-researchers-tale-ofdefeating-traps-tricks-and-complex-virtual-machines/</a>
+</h3>
+</body>
+</html>

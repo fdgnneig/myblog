@@ -1,0 +1,154 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>物联网-openwrt漏洞实战</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="7oecnc6cjff1fi49mpp9e8mqr3">物联网-openwrt漏洞实战</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-openwrt%E6%BC%8F%E6%B4%9E%E5%AE%9E%E6%88%98_files/images/%E7%89%A9%E8%81%94%E7%BD%91-openwrt%E6%BC%8F%E6%B4%9E%E5%AE%9E%E6%88%98.jpg"></div>
+<h2 class="topic">
+<a name="7dbgv0lrf78vjd7k650ra0ka1l">xss</a>
+</h2>
+<h3 class="topic">
+<a name="0gm467091sl5reos1rtn2qah51">&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-openwrt%E6%BC%8F%E6%B4%9E%E5%AE%9E%E6%88%98_files/394ufjo7qp5gjaamqann9ld7tm.png"></p>
+<h3 class="topic">
+<a name="22a9ogp03qn4nr0r8obcc6tj0t">&nbsp;&nbsp;设置创建虚拟网络接口，配置ip，qemu模拟执行存在漏洞的openwrt镜像</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-openwrt%E6%BC%8F%E6%B4%9E%E5%AE%9E%E6%88%98_files/08fqkms90luh63ht6ngchn8knd.png"></p>
+<h3 class="topic">
+<a name="6po9j1oo2jvepg0itf1j808emm">&nbsp;&nbsp;&nbsp;启动openwrt后，查看ip地址</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-openwrt%E6%BC%8F%E6%B4%9E%E5%AE%9E%E6%88%98_files/00bb9fr4r16tu78m0l273uvnok.png"></p>
+<h3 class="topic">
+<a name="27ei76prlgqooh4q6oqu5cpu3n">&nbsp;进入openwrt登陆界面</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-openwrt%E6%BC%8F%E6%B4%9E%E5%AE%9E%E6%88%98_files/27tmuuf8o7603uc81s7m3n8105.png"></p>
+<h3 class="topic">
+<a name="0s6md2k9pudm2a3qmcdeheddck">&nbsp;&nbsp;配置burp代理，点击登陆</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-openwrt%E6%BC%8F%E6%B4%9E%E5%AE%9E%E6%88%98_files/5k2dirvfj35prgge6m3da3feks.png"></p>
+<h3 class="topic">
+<a name="25h3ukuqi2b111ih3lh90qniu4">&nbsp;&nbsp;&nbsp;burp截获登陆包，将url路径中的luci修改为js代码</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-openwrt%E6%BC%8F%E6%B4%9E%E5%AE%9E%E6%88%98_files/4g4l3lftagu935h4m9kc8a2m25.png"></p>
+<h3 class="topic">
+<a name="0ma1cc5gfu8cljsvqf2las0t1i">&nbsp;发送后浏览器触发xss，弹窗</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-openwrt%E6%BC%8F%E6%B4%9E%E5%AE%9E%E6%88%98_files/5dliankdr0jclcpto561h3j51a.png"></p>
+<h3 class="topic">
+<a name="0ue6fmufcgo50rpmsprrlhb9cc">&nbsp;&nbsp;由于触发漏洞时url访问cgi-bin，所以在源码的uhttp目录下找到cgi.c目录</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-openwrt%E6%BC%8F%E6%B4%9E%E5%AE%9E%E6%88%98_files/0qjm79etji1sv2tgkalm7l105l.png"></p>
+<h3 class="topic">
+<a name="1ar1203r75f7ijagsfcl42i0j3">&nbsp;&nbsp;&nbsp;因为漏洞触发后，页面显示forbidden字符，所以根据该字符串，定位到出发漏洞的函数，该源码为新版本的，所以漏洞已经被修复，漏洞代码在下面</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-openwrt%E6%BC%8F%E6%B4%9E%E5%AE%9E%E6%88%98_files/6sdsbi1fu5bus595vtbem0qlut.png"></p>
+<h3 class="topic">
+<a name="4pv5vka8h6bv08d47cepu80dg9">&nbsp;模拟启动openwrt 18.06.1固件</a>
+</h3>
+<h3 class="topic">
+<a name="6nht8s5nje910tj35hgrtae4jg">&nbsp;&nbsp;qemu-system-arm -M virt -m 64 -kernel zImage-initramfs -net nic -net tap,ifname=tap0,script=no,downscript=no -nographic</a>
+</h3>
+<h3 class="topic">
+<a name="14heu7487946aa439ja416km23">&nbsp;漏洞成因：对于输入的url没有进行任何编码，直接将url包含到Forbidden字符串中作为错误输出返回给浏览器。另一处代码具有同样的错误。</a>
+</h3>
+<h3 class="topic">
+<a name="71ea5kv1590j4nf04rmulvun7t">&nbsp;&nbsp;static void cgi_handle_request(struct client *cl, char *url, struct path_info *pi)&#13;
+{&#13;
+    unsigned int mode = S_IFREG | S_IXOTH;&#13;
+ &#13;
+    if (!pi-&gt;ip &amp;&amp; !((pi-&gt;stat.st_mode &amp; mode) == mode)) {&#13;
+        uh_client_error(cl, 403, "Forbidden",&#13;
+        "You don't have permission to access %s on this server.",url);//这里直接将url拼接到字符串中，导致漏洞&#13;
+    return;&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="3khu4caah6mjo0ienhl2s3okl0">&nbsp;xss利用</a>
+</h3>
+<h3 class="topic">
+<a name="23larjfmuv9qfnufeqa1gk5arq">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-openwrt%E6%BC%8F%E6%B4%9E%E5%AE%9E%E6%88%98_files/29kpfr0fe1mvqudf245ot1snpv.png"></p>
+<h3 class="topic">
+<a name="69oekan02tvkkr88hp6q9t2m6n">&nbsp;&nbsp;&nbsp;GET /cgi-bin/?&lt;script&gt;alert(0)&lt;/script&gt; HTTP/1.1&#13;
+Host: 192.168.1.1&#13;
+Cache-Control: max-age=0&#13;
+Upgrade-Insecure-Requests: 1&#13;
+User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36&#13;
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9&#13;
+Accept-Encoding: gzip, deflate&#13;
+Accept-Language: en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7&#13;
+Connection: close</a>
+</h3>
+<h3 class="topic">
+<a name="23nvpr038jvljshnamiq1rn1bo">&nbsp;漏洞共修复 使用uh_htmlescape()函数进行了编码，防御了xss</a>
+</h3>
+<h3 class="topic">
+<a name="63eluvgkgbe0ohj4qdsj66usfm">&nbsp;&nbsp;if (!pi-&gt;ip &amp;&amp; !((pi-&gt;stat.st_mode &amp; mode) == mode)) {&#13;
+    escaped_url = uh_htmlescape(url);&#13;
+ &#13;
+    uh_client_error(cl, 403, "Forbidden","You don't have permission to access %s on this server.",escaped_url ? escaped_url : "the url");&#13;
+ &#13;
+    if (escaped_url)&#13;
+        free(escaped_url);&#13;
+ &#13;
+    return;&#13;
+}</a>
+</h3>
+<h2 class="topic">
+<a name="53pqjk6pmsetfmqp7tbn88gpmd">命令执行</a>
+</h2>
+<h3 class="topic">
+<a name="6ukdi47oojjskk45quvvdorm6a">&nbsp;openwrt RCE漏洞</a>
+</h3>
+<h3 class="topic">
+<a name="5n5sl2hcnqmq9vek27jj5fjq0t">&nbsp;&nbsp;由于过滤不严造成命令执行，这里的加号是进行的修复代码，使用gsub()函数进行了替换</a>
+</h3>
+<h3 class="topic">
+<a name="2o2aj43pu2ldngbt97hhl3ai48">&nbsp;&nbsp;&nbsp;function action_bandwidth(iface)&#13;
+    luci.http.prepare_content("application/json")&#13;
+ &#13;
+    - local bwc = io.popen("luci-bwc -i %q 2&gt;/dev/null" % iface)//这里iface可能为某个linux指令，此时iface被直接拼接到字符串中，可能触发漏洞&#13;
+    + local bwc = io.popen("luci-bwc -i '%s' 2&gt;/dev/null" % iface:gsub("'", ""))//这里gsub函数将iface中的单引号全部替换为空，&#13;
+    if bwc then                                                                                                   //从而避免了iface中的数据通过单引号进行命令截断，从而执行其他命令&#13;
+        luci.http.write("[")&#13;
+ &#13;
+@@ -80,7 +80,7 @@ end&#13;
+function action_wireless(iface)&#13;
+    luci.http.prepare_content("application/json")&#13;
+ &#13;
+    - local bwc = io.popen("luci-bwc -r %q 2&gt;/dev/null" % iface)&#13;
+    + local bwc = io.popen("luci-bwc -r '%s' 2&gt;/dev/null" % iface:gsub("'", ""))&#13;
+    if bwc then&#13;
+        luci.http.write("[")</a>
+</h3>
+<h3 class="topic">
+<a name="1gq0kgoklo89l824apda3lnhsg">&nbsp;github上找到openwrt项目，一般关注接口信息，因为通过接口才能造成远程漏洞</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-openwrt%E6%BC%8F%E6%B4%9E%E5%AE%9E%E6%88%98_files/4u4opdjs8v49fbt5arbqnmpqqu.png"></p>
+<h3 class="topic">
+<a name="7bih3dlphou4qd9aejo0hkns5r">&nbsp;&nbsp;显示了对远程执行漏洞的修复</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-openwrt%E6%BC%8F%E6%B4%9E%E5%AE%9E%E6%88%98_files/1d0av9djt7b09lu76p87l7oec3.png"></p>
+</body>
+</html>

@@ -1,0 +1,574 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>安卓应用漏洞分析</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="0rf33172orud27d92amem371to">安卓应用漏洞分析</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90_files/images/%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.jpg"></div>
+<h2 class="topic">
+<a name="4c2hvhvnupvnj5to3evrrf3e2q">漏洞</a>
+</h2>
+<h3 class="topic">
+<a name="7pk2pouk9l5t8l6vtomcjpuutc">&nbsp;Web组件远程代码执行漏洞</a>
+</h3>
+<h3 class="topic">
+<a name="6sv8ite3b782jodttf3d6lmupi">&nbsp;&nbsp;核心思想通过网页端的js代码利用java反射机制，调用app内部类的方法（主要是通过反射调用java.lang.Runtime类的getRuntime方法，从而实现在手机端执行任意指令）</a>
+</h3>
+<h3 class="topic">
+<a name="2db6senahnn34gprt810s46aro">&nbsp;&nbsp;关于WebView</a>
+</h3>
+<h3 class="topic">
+<a name="470vesov4ue8vto4bu37f8uu5c">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90_files/5lmbgs38ovlkhfd6fgjo9ik2vm.png"></p>
+<h3 class="topic">
+<a name="5om0488uo51rscpva96ofc7ug8">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90_files/17dskr2m1tc5odt87vga4m4p2h.png"></p>
+<h3 class="topic">
+<a name="4n9ote4subv7ra6qier4s7qqhj">&nbsp;&nbsp;关于java反射机制</a>
+</h3>
+<h3 class="topic">
+<a name="0rdq39s7ga4alauptu7aueidkn">&nbsp;&nbsp;&nbsp;即在运行过程中，对于类，程序可以获知该类所有方法和属性的信息，对于对象，程序可以调用该类任意方法（包括私有方法）</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90_files/0e5drcufp8ui513mesc7k4advp.png"></p>
+<h3 class="topic">
+<a name="0fb7sujusqiukvqlbtmqiq2g99">&nbsp;&nbsp;关于触发漏洞的关键函数</a>
+</h3>
+<h3 class="topic">
+<a name="2ceo79dcbmescqlotomk187m3v">&nbsp;&nbsp;&nbsp;关键api：webView.addJavascriptInterface&#13;
+通过该函数，app可以向网页提供一个java类，网页中的js代码可以使用该类，并调用该类的方法，如果该类支持getClass()方法（即反射方法），则js代码可以利用该类调用getClass()方法，从而通过反射得到app中任意一个类并调用共该类的方法，攻击场景中，一般通过getClass()反射获得java.lang.Runtime类，调用该类的getRuntime方法，从而执行任意命令</a>
+</h3>
+<h3 class="topic">
+<a name="03c3994af3q04nq9vcja7pf8l4">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90_files/269cs1438v71kme5r48vlad6td.png"></p>
+<h3 class="topic">
+<a name="7u0l1f75u6kmgolj3qgud9lieo">&nbsp;&nbsp;关键漏洞示例代码</a>
+</h3>
+<h3 class="topic">
+<a name="1hoi68h2qhgnai4n6spcdqv6fj">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90_files/47vm3emq7sb1ga5mm58osi5ds8.png"></p>
+<h3 class="topic">
+<a name="093vketmcg2pr1rrcegmgv4rco">&nbsp;&nbsp;相关资料</a>
+</h3>
+<h3 class="topic">
+<a href="https://www.freebuf.com/vuls/90552.html" name="1c2l5kqse1ke3ef37g52q89g9l">&nbsp;&nbsp;&nbsp;https://www.freebuf.com/vuls/90552.html</a>
+</h3>
+<h3 class="topic">
+<a href="https://blog.csdn.net/jltxgcy/article/details/50676591" name="0eu9cav60c21n7poc182f4121s">&nbsp;&nbsp;&nbsp;https://blog.csdn.net/jltxgcy/article/details/50676591</a>
+</h3>
+<h3 class="topic">
+<a href="http://www.droidsec.cn/android-webview-%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E4%B8%8E%E6%A3%80%E6%B5%8B/" name="7v6c0hhfqqim8pul0e4ajnqmh0">&nbsp;&nbsp;&nbsp;http://www.droidsec.cn/android-webview-%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E4%B8%8E%E6%A3%80%E6%B5%8B/</a>
+</h3>
+<h3 class="topic">
+<a href="https://www.jianshu.com/p/3cb256de46d3" name="22e08n3mmb8ticch7mr744sd6i">&nbsp;&nbsp;&nbsp;https://www.jianshu.com/p/3cb256de46d3</a>
+</h3>
+<h3 class="topic">
+<a name="0jcpb9u3r8u2nrbuftl20g93o0">&nbsp;&nbsp;&nbsp;https://blog.csdn.net/u012195899/article/details/68942725</a>
+</h3>
+<h3 class="topic">
+<a name="7cnm63vat72mf6hfo4ejknfc5c">&nbsp;&nbsp;&nbsp;https://blog.csdn.net/u013107656/article/details/51729115</a>
+</h3>
+<h3 class="topic">
+<a href="https://www.jb51.net/article/139432.htm" name="03v43gal86u12jaiqonk376etl">&nbsp;&nbsp;&nbsp;https://www.jb51.net/article/139432.htm</a>
+</h3>
+<h3 class="topic">
+<a name="0nald7p18l71aj5jvm8dfclrcq">&nbsp;&nbsp;&nbsp;&nbsp;存在大量exp</a>
+</h3>
+<h3 class="topic">
+<a name="3cl2o8edm2jrbd6nqktn7fmbae">&nbsp;Intent协议解析越权漏洞</a>
+</h3>
+<h3 class="topic">
+<a name="0kf90m9me1iukdf3qu82cmdkpr">&nbsp;&nbsp;关于安卓中的intent，是一种消息机制，用于实现不同安卓应用组件间的交互</a>
+</h3>
+<h3 class="topic">
+<a href="https://www.cnblogs.com/deagle/articles/2106564.html" name="3fr9f0h3aq56imapm3lr1n1cb2">&nbsp;&nbsp;&nbsp;https://www.cnblogs.com/deagle/articles/2106564.html</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90_files/7knun993fqufr744pfqag2q7ur.png"></p>
+<h3 class="topic">
+<a name="1gtg2t3qaiqu1ma1k6s2jliekr">&nbsp;&nbsp;关于Intent scheme url</a>
+</h3>
+<h3 class="topic">
+<a name="0ejmeukuf9o64voiin2a5ruf9f">&nbsp;&nbsp;&nbsp;Intent scheme url是一种用于在web页面中启动终端app activity的特殊URL，该url可以等效于调用Intent类对象的java代码，安卓提供了Intent.parseUri(String uri)静态方法，通过这种方法能够直接解析uri</a>
+</h3>
+<h3 class="topic">
+<a name="2phoe1c3imie8n0k0tqi65kc5i">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90_files/3v1to4hqcup0qtevl11c4slcq1.png"></p>
+<h3 class="topic">
+<a name="4n67teas385kdcifhpq5dek3fl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;发送intent可能会唤起指定activity，浏览器对于Intent scheme url规则过滤的不严格导致了系统可能执行来自web页面的恶意Intent scheme url</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90_files/55a5j4o7nc8fv4cluptreadsl4.png"></p>
+<h3 class="topic">
+<a name="0sgf2jhevao1kddhb6jt65ik3s">&nbsp;&nbsp;相关资料</a>
+</h3>
+<h3 class="topic">
+<a href="http://www.androidchina.net/6145.html" name="53jqkcbj8dj3bf4t3q4lc4lcmr">&nbsp;&nbsp;&nbsp;http://www.androidchina.net/6145.html</a>
+</h3>
+<h3 class="topic">
+<a href="https://www.cnblogs.com/lytwajue/p/6724055.html" name="0sv42pojbct0fa4t1v8hpifsn5">&nbsp;&nbsp;&nbsp;https://www.cnblogs.com/lytwajue/p/6724055.html</a>
+</h3>
+<h3 class="topic">
+<a name="407ojg4kq32d3edcdi9uf8c8bo">&nbsp;https敏感数据劫持漏洞</a>
+</h3>
+<h3 class="topic">
+<a name="5ncfqrv34l86ve0n6d3tqck92c">&nbsp;&nbsp;手机浏览器访问通过https连接访问网站时，需要检查网站是否存在CA颁发的证书文件，如果指定网站不存在CA证书或者仅使用了自签名的证书文件，说明该网站可能已经被劫持，连接该网站的操作存在被中间人攻击的风险，函数setHostnameVerifier可以用于设置app访问网站时，对网站的CA证书的验证策略，当使用ALLOW_ALL_HOSTNAME_VERIFIER（关闭host验证，允许和所有的host建立SSL通信）作为验证模式时，app会允许与所有服务器端简历ssl连接（即https）此时若服务器端是使用自签名的证书恶意中间人（而非CA机构颁发的证书）， 则app仍会与其建立连接，从而被中间人劫持</a>
+</h3>
+<h3 class="topic">
+<a name="21dv8kr3u1clf5rnjlspv7amb4">&nbsp;&nbsp;&nbsp;简单说就是app针对所访问的网站未进行CA证书校验，或CA证书校验不完全（允许自签名证书等），从而导致中间人攻击</a>
+</h3>
+<h3 class="topic">
+<a name="53dc40puhp3k3nidi8u6l4aad1">&nbsp;&nbsp;关键函数：setHostnameVerifier</a>
+</h3>
+<h3 class="topic">
+<a name="3c026mgsdnn5f368089utt1oke">&nbsp;&nbsp;&nbsp;该函数的三种验证模式，使用第一种时就会触发漏洞</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90_files/3jab1c33edptel3d8pldfi91g9.png"></p>
+<h3 class="topic">
+<a name="324jfec4qrsm9o1r45pi0d6cms">&nbsp;&nbsp;漏洞位置与触发漏洞的条件</a>
+</h3>
+<h3 class="topic">
+<a name="3ovcmvmq29jbjrsla63bd09mc4">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90_files/499g1q8h2fb56fpe35bj6ldl1k.png"></p>
+<h3 class="topic">
+<a name="2aun3559la8m7fsuhp59qaoc0a">&nbsp;&nbsp;相关资料</a>
+</h3>
+<h3 class="topic">
+<a name="6bgnqdq1o6upr8dr6hrfqjfhng">&nbsp;&nbsp;&nbsp;https://www.freebuf.com/articles/terminal/61216.html</a>
+</h3>
+<h3 class="topic">
+<a name="233r1ehknsrckr1pvtikd5cmuf">&nbsp;&nbsp;&nbsp;https://blog.csdn.net/u013107656/article/details/52036158</a>
+</h3>
+<h3 class="topic">
+<a href="http://www.droidsec.cn/android-https%E6%95%8F%E6%84%9F%E6%95%B0%E6%8D%AE%E5%8A%AB%E6%8C%81%E6%BC%8F%E6%B4%9E/" name="0jsl0kk4nj79gpunp0usg0vk50">&nbsp;&nbsp;&nbsp;http://www.droidsec.cn/android-https%E6%95%8F%E6%84%9F%E6%95%B0%E6%8D%AE%E5%8A%AB%E6%8C%81%E6%BC%8F%E6%B4%9E/</a>
+</h3>
+<h3 class="topic">
+<a name="18d5udepfe1coqe14endm6faj6">&nbsp;AppKey信息泄露漏洞检测</a>
+</h3>
+<h3 class="topic">
+<a name="44v7v3bgl8fln4ik7c6bkj639q">&nbsp;&nbsp;什么是AppKey</a>
+</h3>
+<h3 class="topic">
+<a name="0rnhhpjmqibpe1g8nmqjfbetr4">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90_files/13b1fi9cqpb5ch1a2ovtv0am13.png"></p>
+<h3 class="topic">
+<a name="1ial2fpqs213elisbgmtlcjc4s">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90_files/1v260md80o3aq3hom1d66jddb0.png"></p>
+<h3 class="topic">
+<a name="4mhrdeit6h7ntshm5tq0mdctei">&nbsp;&nbsp;AppKey使用示例</a>
+</h3>
+<h3 class="topic">
+<a name="1bj76bhmts76g9ar0ddkkc72me">&nbsp;&nbsp;&nbsp;说明appkey是app中用于与服务器端建立连接的凭证</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90_files/099t0ojqoqchf4j1t9r1824seb.png"></p>
+<h3 class="topic">
+<a name="6k3diemf0e18umolm3glc4g5js">&nbsp;&nbsp;相关资料</a>
+</h3>
+<h3 class="topic">
+<a href="https://blog.csdn.net/u013176138/article/details/78962402" name="1977s9dhpabarh755sfe0bjkku">&nbsp;&nbsp;&nbsp;https://blog.csdn.net/u013176138/article/details/78962402</a>
+</h3>
+<h3 class="topic">
+<a href="https://blog.csdn.net/dglf54292/article/details/101232212?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-2.channel_param&amp;depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-2.channel_param" name="7b9cpr67rlksb1arji9gdkigcj">&nbsp;&nbsp;&nbsp;https://blog.csdn.net/dglf54292/article/details/101232212?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-2.channel_param&amp;depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-2.channel_param</a>
+</h3>
+<h3 class="topic">
+<a name="7al1fahmsucjf4souo32626j9s">&nbsp;目录遍历检测</a>
+</h3>
+<h3 class="topic">
+<a name="0if1eo7ffajqurvf93gjp267pr">&nbsp;&nbsp;Zip文件目录遍历攻击漏洞</a>
+</h3>
+<h3 class="topic">
+<a name="7kh8ascnmologn8bk86ulgi10e">&nbsp;&nbsp;&nbsp;漏洞内容</a>
+</h3>
+<h3 class="topic">
+<a name="21b5g6e1a605bvavdb6pbn0htb">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90_files/7opoboisfkfubnqgbn84j72hjj.png"></p>
+<h3 class="topic">
+<a name="2p6fb2r7bjbt4s65teg9r40m9q">&nbsp;&nbsp;&nbsp;相关资料</a>
+</h3>
+<h3 class="topic">
+<a name="7j95gpm3obcf0rr79s173ts16k">&nbsp;&nbsp;&nbsp;&nbsp;https://blog.csdn.net/u010889616/article/details/80955250</a>
+</h3>
+<h3 class="topic">
+<a name="6sdbshk2r91270ur4bfqlekitl">&nbsp;&nbsp;&nbsp;&nbsp;使用Soot检测Android应用Zip目录遍历漏洞</a>
+</h3>
+<h3 class="topic">
+<a href="https://blog.csdn.net/u010889616/article/details/80955487" name="6847pdgn2mlpkkul9mt6al5ls6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://blog.csdn.net/u010889616/article/details/80955487</a>
+</h3>
+<h3 class="topic">
+<a name="4uq45eekecdn3643kar8r6vkpr">&nbsp;&nbsp;Content Provider文件目录遍历漏洞</a>
+</h3>
+<h3 class="topic">
+<a name="0q31nqjaic1pn41bhn9d94eo72">&nbsp;&nbsp;&nbsp;什么是Content Query Uri；</a>
+</h3>
+<h3 class="topic">
+<a name="1g7dm66hp47jt6cejuvs2psr2l">&nbsp;&nbsp;&nbsp;&nbsp;Uri用于标识 ContentProvider以及需要操作的文件</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90_files/326pme78npgqke51m5vc7fkrfi.png"></p>
+<h3 class="topic">
+<a href="https://www.cnblogs.com/linjiqin/archive/2011/05/28/2061396.html" name="5ltnuoj2em5ti55r5d3kuguv9e">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://www.cnblogs.com/linjiqin/archive/2011/05/28/2061396.html</a>
+</h3>
+<h3 class="topic">
+<a name="0rck2b8r9fvlufjq1jp1tlpjb7">&nbsp;&nbsp;&nbsp;漏洞描述</a>
+</h3>
+<h3 class="topic">
+<a name="2ik3kishdngi95t6apjvprqaj6">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90_files/1msnf7nhm2jed5o9hicsc96otl.png"></p>
+<h3 class="topic">
+<a name="1td4r3m6daigk6resnemq4o5nu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90_files/39i5q2dqoff88r3kp4jbok6efg.png"></p>
+<h3 class="topic">
+<a name="10hceaksouhuirlomr47dfect1">&nbsp;&nbsp;&nbsp;相关资料</a>
+</h3>
+<h3 class="topic">
+<a href="http://www.droidsec.cn/content-provider%E6%96%87%E4%BB%B6%E7%9B%AE%E5%BD%95%E9%81%8D%E5%8E%86%E6%BC%8F%E6%B4%9E%E6%B5%85%E6%9E%90/" name="651rcbvvdffual1venihr4mqfb">&nbsp;&nbsp;&nbsp;&nbsp;http://www.droidsec.cn/content-provider%E6%96%87%E4%BB%B6%E7%9B%AE%E5%BD%95%E9%81%8D%E5%8E%86%E6%BC%8F%E6%B4%9E%E6%B5%85%E6%9E%90/</a>
+</h3>
+<h3 class="topic">
+<a name="4ee99vno85q4enpqq3b8hat0sv">&nbsp;&nbsp;&nbsp;&nbsp;https://blog.csdn.net/u010889616/article/details/80959737</a>
+</h3>
+<h3 class="topic">
+<a name="0i84ht8apnil3535r5m913jtau">&nbsp;应用克隆漏洞检测</a>
+</h3>
+<h3 class="topic">
+<a name="24446gedigjk9i2btv1gitfvk7">&nbsp;&nbsp;file域</a>
+</h3>
+<h3 class="topic">
+<a name="7opqj349c18l6kh5okkis72j2u">&nbsp;&nbsp;&nbsp; var arm="file:///mnt/sdcard/abc.txt";</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90_files/7848juo7nbnp8rn74s6834mams.png"></p>
+<h3 class="topic">
+<a name="44ugudd4qoa4sabnk5josjkgkg">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90_files/6alsksviag792edobh519gkr02.png"></p>
+<h3 class="topic">
+<a name="6ubgbfbm04dcfmf3nvqosd2h8p">&nbsp;&nbsp;关键函数&#13;
+setAllowFileAccessFromFileURLs&#13;
+setAllowUniversalAccessFromFileURLsAPI</a>
+</h3>
+<h3 class="topic">
+<a name="58ejhic0bsssdrg5qt7rpp9dh5">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90_files/2arfvvplu2rec60kkl0bmskeln.png"></p>
+<h3 class="topic">
+<a name="50l2npm7afhe4tovi9vj13e12i">&nbsp;&nbsp;漏洞解决方案</a>
+</h3>
+<h3 class="topic">
+<a href="https://www.jianshu.com/p/6e32d353e3fc" name="7u55houk41bnckpg44nkc6js6n">&nbsp;&nbsp;&nbsp;https://www.jianshu.com/p/6e32d353e3fc</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90_files/15sc0onkmcc95r28sgkic74pnm.png"></p>
+<h3 class="topic">
+<a name="0ve88glsnedhb8q89lc184kann">&nbsp;&nbsp;相关资料</a>
+</h3>
+<h3 class="topic">
+<a href="https://blog.csdn.net/xwh_1230/article/details/79045251" name="4stg6b8khad488laracfujhoba">&nbsp;&nbsp;&nbsp;https://blog.csdn.net/xwh_1230/article/details/79045251</a>
+</h3>
+<h3 class="topic">
+<a href="https://blog.csdn.net/zhangcanyan/article/details/51930775" name="4q73mmd6c38gllogra5nbd33af">&nbsp;&nbsp;&nbsp;https://blog.csdn.net/zhangcanyan/article/details/51930775</a>
+</h3>
+<h3 class="topic">
+<a name="53926l8dn9jbo19bohr30m8gi3">&nbsp;Fragment框架层注入检测</a>
+</h3>
+<h3 class="topic">
+<a name="7f3tg8d35i7uc3sabjg9vjt9qp">&nbsp;&nbsp;漏洞原理</a>
+</h3>
+<h3 class="topic">
+<a name="71mdmam7kt0j5rpbn5v21g79bv">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90_files/0aejuc02k2rsarrq3lqhgu8gdq.png"></p>
+<h3 class="topic">
+<a name="397t76h8ululsp3ucrba5pr0gd">&nbsp;&nbsp;漏洞描述</a>
+</h3>
+<h3 class="topic">
+<a name="0kio98r8o2iu8nt5gp0rarlr69">&nbsp;&nbsp;&nbsp;为了适应越来越大的设备屏幕，Android在3.X后引入了Fragment概念，作用是可以在一个屏幕上同时显示多个Activity，以达到充分利用屏幕的目的。关于Fragment的使用说明，可以阅读《Android Fragment完全解析，关于碎片你所需知道的一切》。其中，Fragment有一个很强大的功能，就是可以动态加载。这样可以让整个界面的开发更加灵活，可以根据不同的场景动态加加载不同的Activity。&#13;
+&#13;
+回到今天的主题&mdash;&mdash;利用Fragment实现注入攻击。从3.X后，android工程师重构PreferenceActivity的实现，采用Fragment实现界面的加载。通过阅读源码可以发现，PreferenceActivity的onCreate里，需要读取Intent的多个extra内容，常量都定义在PreferenceActivity里（那堆EXTRA_XXXX就是了），其中有两个常量分别是EXTRA_SHOW_FRAGMENT=":android:show_fragment"和EXTRA_SHOW_FRAGMENT_ARGUMENTS=":android:show_fragment_args"，这两个参数可以决定当前的PreferenceActivity首次显示的Fragment。过程比较简单，就是先拿到fragment_class和fragment_args，然后通过反射生成一个Fragment实例，并动态加载。</a>
+</h3>
+<h3 class="topic">
+<a name="72ljodqv5ftkm2o1ffc6em4314">&nbsp;&nbsp;&nbsp;PreferenceActivity类及其子类的onCreate函数中，会接收intent，并根据其中指定的Fragment类和Fragment类参数启动一个Fragment，如果PreferenceActivity类及其子类是exported的，则我们可以给其传递精心设置Intent，从而打开没有exported的activity</a>
+</h3>
+<h3 class="topic">
+<a name="25kualdlp9tlelu2vidlb02v9g">&nbsp;&nbsp;&nbsp;&nbsp;典型的应用是系统设置中重新设置手机锁屏码前，需要先输入当前锁屏码，如果通过该漏洞，则可以跳过这一步，直接进入锁屏码重新设置界面</a>
+</h3>
+<h3 class="topic">
+<a name="5ru5gs6buceu660brhvrqrfmeq">&nbsp;&nbsp;相关资料</a>
+</h3>
+<h3 class="topic">
+<a name="11vb04o33c5abc31435rdo8t91">&nbsp;&nbsp;&nbsp;关键教程</a>
+</h3>
+<h3 class="topic">
+<a name="0vsr2jsndljrtsq90nhidhhn5n">&nbsp;&nbsp;&nbsp;&nbsp;https://www.cnblogs.com/riasky/p/3471323.html</a>
+</h3>
+<h3 class="topic">
+<a name="14v9jmalkkq6r77vg18lhnb82a">&nbsp;&nbsp;&nbsp;&nbsp;https://my.oschina.net/u/1777508/blog/314518</a>
+</h3>
+<h3 class="topic">
+<a name="3ocuauvba3ada01laavlonof48">&nbsp;&nbsp;&nbsp;&nbsp;http://www.vuln.cn/6207</a>
+</h3>
+<h3 class="topic">
+<a name="70p8bk8enl1acu9sol3k70f3or">&nbsp;&nbsp;&nbsp;Fragment注入漏洞(CVE-2013-6271)检测</a>
+</h3>
+<h3 class="topic">
+<a name="62vr25gtpisdakv91hb0ujiahd">&nbsp;&nbsp;&nbsp;&nbsp;https://blog.csdn.net/chichoxian/article/details/96847291</a>
+</h3>
+<h3 class="topic">
+<a name="3d9hrks23god1s9qtrrgcfsjob">&nbsp;&nbsp;&nbsp;漏洞披露译文</a>
+</h3>
+<h3 class="topic">
+<a name="0ou2lgbrp30s7ckjn03dikjt1a">&nbsp;&nbsp;&nbsp;&nbsp;https://bbs.pediy.com/thread-183459.htm</a>
+</h3>
+<h3 class="topic">
+<a name="2knl1iokkjpdk731shtmmt0fp6">&nbsp;&nbsp;&nbsp;https://blog.csdn.net/u013107656/article/details/53289134</a>
+</h3>
+<h3 class="topic">
+<a name="2d2lu2pdan2c5i4a2p9o217goc">&nbsp;Scheme SQL注入检测</a>
+</h3>
+<h3 class="topic">
+<a name="7gokphql7u86h8mqcp4siuaag3">&nbsp;&nbsp;Android中的scheme协议</a>
+</h3>
+<h3 class="topic">
+<a name="2pu3p928mjbh95c36guvs5mk8s">&nbsp;&nbsp;&nbsp;该scheme协议可以配置到指定的activity中（在Manfest.xml文件中），在其他activity中可以根据该scheme协议创建intent，从而切换到该activity</a>
+</h3>
+<h3 class="topic">
+<a name="45igavteeohahc53oecjbsgkg6">&nbsp;&nbsp;&nbsp;&nbsp;xml文件中配置scheme协议</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90_files/5aed9uekh3jpjcj17qi6rbi46q.png"></p>
+<h3 class="topic">
+<a name="139h1dhffr0vmqntg895u3d5fj">&nbsp;&nbsp;&nbsp;模拟网络中获得scheme协议url，并据此启动activity</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90_files/52uics69avhoclotbe4a4vqdsu.png"></p>
+<h3 class="topic">
+<a name="6cou9i785m57r98a1udb48m8b3">&nbsp;&nbsp;&nbsp;&nbsp;指定activity从scheme协议中获得参数</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90_files/0tp2c21v36r5shhqvnmc4japn0.png"></p>
+<h3 class="topic">
+<a name="2vck7nothpm2p07u8hta8skdq3">&nbsp;&nbsp;漏洞原理</a>
+</h3>
+<h3 class="topic">
+<a name="4f27oh65lh7bviki5leqlosj5n">&nbsp;&nbsp;&nbsp;由于scheme的url中存在参数，故可能存在sql注入漏洞</a>
+</h3>
+<h3 class="topic">
+<a name="5ad7a12infalcpnciuchm0b51k">&nbsp;&nbsp;&nbsp;&nbsp;String url = "scheme://mtime/goodsDetail?goodsId=10011002";</a>
+</h3>
+<h3 class="topic">
+<a name="45cfeca9ta4l2n1uhh8gqnrng3">&nbsp;&nbsp;相关资料</a>
+</h3>
+<h3 class="topic">
+<a name="1n6a9plvacnr07opqo1v81vnvp">&nbsp;&nbsp;&nbsp;Android中的scheme协议</a>
+</h3>
+<h3 class="topic">
+<a name="6dt6mcekqhhqi09im2kst3lgc5">&nbsp;&nbsp;&nbsp;&nbsp;https://www.jianshu.com/p/f9f9f0aa0f86</a>
+</h3>
+<h3 class="topic">
+<a name="7e2560oqk4sahl24viochhrkdv">&nbsp;后门 SDK 检测</a>
+</h3>
+<h3 class="topic">
+<a name="1352li9ssn0frja1ifuejm87av">&nbsp;&nbsp;描述</a>
+</h3>
+<h3 class="topic">
+<a name="719behruto2o1pj7fsieuah6df">&nbsp;&nbsp;&nbsp;安卓app开发过程中会使用到大量第三方提供的SDK，此类sdk中共可能存在后门，以便于收集用户信息或执行越权操作，不法分子能够利用后门对用户手机进行远程静默安装应用、静默添加联系人、获取用用户隐私信息等。</a>
+</h3>
+<h3 class="topic">
+<a name="3esl1kolvbo0b5g798smqulvut">&nbsp;&nbsp;相关报道</a>
+</h3>
+<h3 class="topic">
+<a name="7cg6ofod79m4npprt6lc13se6c">&nbsp;&nbsp;&nbsp;https://www.donews.com/201511/2907351.shtm</a>
+</h3>
+<h3 class="topic">
+<a href="http://www.droidsec.cn/%e6%af%94%e8%91%ab%e8%8a%a6%e5%a8%83%e8%bf%98%e5%8f%af%e6%80%95%e7%9a%84%e7%99%be%e5%ba%a6%e5%85%a8%e7%b3%bbapp-sdk%e6%bc%8f%e6%b4%9e-wormhole%e8%99%ab%e6%b4%9e%e6%bc%8f%e6%b4%9e%e5%88%86%e6%9e%90/" name="0ulbplthkp4eaare4jeavjsivt">&nbsp;&nbsp;&nbsp;http://www.droidsec.cn/%e6%af%94%e8%91%ab%e8%8a%a6%e5%a8%83%e8%bf%98%e5%8f%af%e6%80%95%e7%9a%84%e7%99%be%e5%ba%a6%e5%85%a8%e7%b3%bbapp-sdk%e6%bc%8f%e6%b4%9e-wormhole%e8%99%ab%e6%b4%9e%e6%bc%8f%e6%b4%9e%e5%88%86%e6%9e%90/</a>
+</h3>
+<h3 class="topic">
+<a name="2qv67md5vdhg529lsgcvjm8blp">&nbsp;随机数加密破解漏洞</a>
+</h3>
+<h3 class="topic">
+<a name="4odcihkbpkl341u7pkt5pt0ktg">&nbsp;&nbsp;即生成随机数的算法存在问题，生成的数据并不是完全随机的</a>
+</h3>
+<h3 class="topic">
+<a name="32ir6ej5rfdia51pvuc1qbv017">&nbsp;&nbsp;&nbsp;（3）setSeed伪随机数漏洞&#13;
+本地加密时如果使用SecureRandom中的setSeed方法设置种子将会造成生成的随机数不随机，使加密数据容易被破解。在SecureRandom生成随机数时，如果不调用setSeed方法，SecureRandom会从系统中找到一个默认随机源。每次生成随机数时都会从这个随机源中取seed。</a>
+</h3>
+<h3 class="topic">
+<a name="6bqq6b5er2av6u0s2n9tmts75i">&nbsp;&nbsp;相关资料</a>
+</h3>
+<h3 class="topic">
+<a name="6htt1gq4tollhn2gpilnosqvhr">&nbsp;&nbsp;&nbsp;安卓数据加密漏洞相关</a>
+</h3>
+<h3 class="topic">
+<a href="https://blog.csdn.net/shayuchaor/article/details/60783216" name="59mcd4i5u5hq8919i54u80uirp">&nbsp;&nbsp;&nbsp;&nbsp;https://blog.csdn.net/shayuchaor/article/details/60783216</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90_files/5gq723b2oipi57ot77grht3em3.png"></p>
+<h3 class="topic">
+<a name="0fom2f71njuvufrjcr31tor9ss">&nbsp;弱加密漏洞</a>
+</h3>
+<h3 class="topic">
+<a name="3t3t1r5kfm5o27t867o1ive4dp">&nbsp;&nbsp;使用的加密算法等存在加密性较弱的问题</a>
+</h3>
+<h3 class="topic">
+<a name="7v57d42q8j5ca29t548j55v12k">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90_files/6lb2pl4i06v3aag9e859eiir9o.png"></p>
+<h3 class="topic">
+<a name="3tutiri6b75kbsm1b6p188dov0">&nbsp;&nbsp;相关资料</a>
+</h3>
+<h3 class="topic">
+<a name="7b1odmjvinpv3qeo1mvk10bi03">&nbsp;&nbsp;&nbsp;安卓数据加密漏洞相关</a>
+</h3>
+<h3 class="topic">
+<a href="https://blog.csdn.net/shayuchaor/article/details/60783216" name="1dnd2d411g84encd5mdaesh2a0">&nbsp;&nbsp;&nbsp;&nbsp;https://blog.csdn.net/shayuchaor/article/details/60783216</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90_files/2rc3c14jqnfhcplohttgt88kd2.png"></p>
+<h3 class="topic">
+<a name="2vf7ec5cse272n0d2coeg2dtji">&nbsp;Manifest不安全属性配置风险</a>
+</h3>
+<h3 class="topic">
+<a name="2ksk1mfu031menr1ec2e2mkote">&nbsp;&nbsp;Manifest.xml中可以配置app相关属性，相关属性配置不当可能带来安全风险</a>
+</h3>
+<h3 class="topic">
+<a name="308ut4hvemg5m29e3ju4tvddml">&nbsp;&nbsp;相关资料</a>
+</h3>
+<h3 class="topic">
+<a name="70hjeoigcatqhfc8l9g95751u6">&nbsp;&nbsp;&nbsp;https://blog.csdn.net/sinat_15877283/article/details/50903606</a>
+</h3>
+<h3 class="topic">
+<a name="5ml5q49n91tjuqg846t0iusdal">&nbsp;&nbsp;xml中敏感权限</a>
+</h3>
+<h3 class="topic">
+<a name="7pvm0553rfbe6a6rqir7n3gtut">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90_files/1o5ho1acnbii8gvsbaqhd7an33.png"></p>
+<h3 class="topic">
+<a name="5ofk58d2r43hvds0h4m9g0plcr">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90_files/00rmuaj15sm1cjh7amndm2gfit.png"></p>
+<h3 class="topic">
+<a name="70ggldoeuh57lbndomhnqnk60h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90_files/7damdn5uq3q4uo6jb03pg7kjq6.png"></p>
+<h3 class="topic">
+<a name="03g9uaumtoiq1k2s9aegqh8se2">&nbsp;强制类型转换本地拒绝服务漏洞</a>
+</h3>
+<h3 class="topic">
+<a name="4ocfdembbgsi4u79o36cqcf6ba">&nbsp;&nbsp;漏洞概述</a>
+</h3>
+<h3 class="topic">
+<a name="5gau9upuj2lk9i392iabbbbrv3">&nbsp;&nbsp;&nbsp;Android应用使用Intent机制在组件之间传递数据，如果应用在使用getIntent()，getAction()，Intent.getXXXExtra()获取到空数据、异常或者畸形数据时没有进行异常捕获，应用就会发生Crash，应用不可使用（本地拒绝服务）。恶意应用可通过向受害者应用发送此类空数据、异常或者畸形数据从而使应用产生本地拒绝服务。</a>
+</h3>
+<h3 class="topic">
+<a name="1fm8umq8fu8d628pqf7b13s6ng">&nbsp;&nbsp;&nbsp;&nbsp;本地拒绝服务的四种情况</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90_files/0jfi0a7j5a53si3iuocc85e5f8.png"></p>
+<h3 class="topic">
+<a name="156ihn5c14e4hhehs24vt85m9a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1、NullPointerException空数据异常：应用程序没有对getAction()等获取到的数据进行空指针判断，从而导致空指针异常而导致应用崩溃。&#13;
+&#13;
+2、ClassCastException类型转换异常：程序没有对getSerializableExtra()等获取到的数据进行类型判断而进行强制类型转换，从而导致类型转换异常而导致应用崩溃。&#13;
+&#13;
+3、IndexOutOfBoundsException数组越界异常：程序没有对getIntegerArrayListExtra()等获取到的数据数组元素大小的判断，从而导致数组访问越界而导致应用崩溃。&#13;
+&#13;
+4、ClassNotFoundException异常：程序没有无法找到从getSerializableExtra ()获取到的序列化类对象的类定义，因此发生类未定义的异常而导致应用崩溃。</a>
+</h3>
+<h3 class="topic">
+<a name="4taq4qr3nomrbn4dvi6tc79i7h">&nbsp;&nbsp;&nbsp;简单来即intent获取到了畸形的数据，从而导致程序崩溃</a>
+</h3>
+<h3 class="topic">
+<a name="0jc8v47ogr2secptolj1955497">&nbsp;&nbsp;强制类型转换本地拒绝服务漏洞关键方法</a>
+</h3>
+<h3 class="topic">
+<a name="7ng5s1t06bgjvhdtct0sprrd0o">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90_files/5lsikpucf8n2mu1b5batm5agi7.png"></p>
+<h3 class="topic">
+<a name="32i0oirc42r5h981qs98p9klkj">&nbsp;&nbsp;相关资料</a>
+</h3>
+<h3 class="topic">
+<a href="http://www.droidsec.cn/%e9%98%bf%e9%87%8c%e8%81%9a%e5%ae%89%e5%85%a8%e6%89%ab%e6%8f%8f%e5%99%a8%e4%b9%8b%e6%9c%ac%e5%9c%b0%e6%8b%92%e7%bb%9d%e6%9c%8d%e5%8a%a1%e6%a3%80%e6%b5%8b%e8%af%a6%e8%a7%a3/" name="0d0ln7sapmgifl025c96lse2h6">&nbsp;&nbsp;&nbsp;http://www.droidsec.cn/%e9%98%bf%e9%87%8c%e8%81%9a%e5%ae%89%e5%85%a8%e6%89%ab%e6%8f%8f%e5%99%a8%e4%b9%8b%e6%9c%ac%e5%9c%b0%e6%8b%92%e7%bb%9d%e6%9c%8d%e5%8a%a1%e6%a3%80%e6%b5%8b%e8%af%a6%e8%a7%a3/</a>
+</h3>
+<h3 class="topic">
+<a name="5dqb2jbcaliu3eah10lkfdptjr">&nbsp;&nbsp;&nbsp;https://blog.csdn.net/u013107656/article/details/53488089</a>
+</h3>
+<h2 class="topic">
+<a name="7ntktjvl1m4u0iiage4c8b88qv">重点资料</a>
+</h2>
+<h3 class="topic">
+<a name="1ihsa7j7adj4vtkgtcoscjmgji">&nbsp;安卓静态安全检测系列</a>
+</h3>
+<h3 class="topic">
+<a href="https://blog.csdn.net/u010889616/category_9272288.html" name="70mm66po3g7h4bh2khoaf3sbu6">&nbsp;&nbsp;https://blog.csdn.net/u010889616/category_9272288.html</a>
+</h3>
+<h3 class="topic">
+<a name="0ini7hlgq6hsdiscgt3sdss55t">&nbsp;腾讯团队</a>
+</h3>
+<h3 class="topic">
+<a href="http://www.droidsec.cn/" name="53h5l7o2ord9uo07u5n0la901l">&nbsp;&nbsp;http://www.droidsec.cn/</a>
+</h3>
+<h3 class="topic">
+<a name="65j326o2qgnbu0ai351frng0fp">&nbsp;安卓手机App安全漏洞整理</a>
+</h3>
+<h3 class="topic">
+<a href="https://blog.csdn.net/shayuchaor/article/details/60783216" name="4qk5v34gpghvu6q6bgtv26b85k">&nbsp;&nbsp;https://blog.csdn.net/shayuchaor/article/details/60783216</a>
+</h3>
+<h3 class="topic">
+<a name="43jpg8s4hpf50lnvbgceggkc7p">&nbsp;移动APP漏洞自动化检测平台建设</a>
+</h3>
+<h3 class="topic">
+<a href="http://www.droidsec.cn/%e7%a7%bb%e5%8a%a8app%e6%bc%8f%e6%b4%9e%e8%87%aa%e5%8a%a8%e5%8c%96%e6%a3%80%e6%b5%8b%e5%b9%b3%e5%8f%b0%e5%bb%ba%e8%ae%be/" name="3gs28397m0vg4k7lvhl4pqfav4">&nbsp;&nbsp;http://www.droidsec.cn/%e7%a7%bb%e5%8a%a8app%e6%bc%8f%e6%b4%9e%e8%87%aa%e5%8a%a8%e5%8c%96%e6%a3%80%e6%b5%8b%e5%b9%b3%e5%8f%b0%e5%bb%ba%e8%ae%be/</a>
+</h3>
+<h2 class="topic">
+<a name="5gpt03hjojfvrkq75s0fe835ef">风险与隐私合规</a>
+</h2>
+<h3 class="topic">
+<a name="6atbhtcp0c7liir110qp4cthv1">&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90_files/5j03gp9n4cn3vpmq9v5r0fjs1q.png"></p>
+<h3 class="topic">
+<a name="5tpkvunk58d0ol6v6co92gd43b">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90_files/3rd5k0qi43bkmddegkcv8rdgau.png"></p>
+</body>
+</html>

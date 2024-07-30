@@ -1,0 +1,438 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>物联网安全-RFID实战：克隆与修改，逆向工程，监听，数据解密等</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="643038f3bjds6vvu4a1mtf9fst">物联网安全-RFID实战：克隆与修改，逆向工程，监听，数据解密等</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-RFID%E5%AE%9E%E6%88%98%EF%BC%9A%E5%85%8B%E9%9A%86%E4%B8%8E%E4%BF%AE%E6%94%B9%EF%BC%8C%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%EF%BC%8C%E7%9B%91%E5%90%AC%EF%BC%8C%E6%95%B0%E6%8D%AE%E8%A7%A3%E5%AF%86%E7%AD%89_files/images/%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-RFID%E5%AE%9E%E6%88%98%EF%BC%9A%E5%85%8B%E9%9A%86%E4%B8%8E%E4%BF%AE%E6%94%B9%EF%BC%8C%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%EF%BC%8C%E7%9B%91%E5%90%AC%EF%BC%8C%E6%95%B0%E6%8D%AE%E8%A7%A3%E5%AF%86%E7%AD%89.jpg"></div>
+<h2 class="topic">
+<a name="6n1kv1rkod10qmt86hurc3eujs">密钥破解</a>
+</h2>
+<h3 class="topic">
+<a name="1r51c3r0ufbg69ftm98dvpbcah">&nbsp;mifare卡使用私有加密算法Crypto1，为防止算法泄露，故只能使用配套读写器，读写器中使用与卡相同的密钥，卡片进入阅读器工作区域后，执行防冲突协议，主动向读写器发送uid号，此时读写器会选定该卡，如果此时有其他卡，则其他卡处于等待状态，读写器选定该卡之后，向该卡发送某一块的数据请求，随后开始三次认证，三次认证通过后，则可以使用密钥传递加密数据</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-RFID%E5%AE%9E%E6%88%98%EF%BC%9A%E5%85%8B%E9%9A%86%E4%B8%8E%E4%BF%AE%E6%94%B9%EF%BC%8C%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%EF%BC%8C%E7%9B%91%E5%90%AC%EF%BC%8C%E6%95%B0%E6%8D%AE%E8%A7%A3%E5%AF%86%E7%AD%89_files/7jnb609d55d61okkjoh04rho4b.png"></p>
+<h3 class="topic">
+<a name="6581rjl8arle96veqsu9brna9q">&nbsp;&nbsp;使用PM3可以嗅探以上三次认证过程，该硬件支持linux和windows（需要安装驱动）</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-RFID%E5%AE%9E%E6%88%98%EF%BC%9A%E5%85%8B%E9%9A%86%E4%B8%8E%E4%BF%AE%E6%94%B9%EF%BC%8C%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%EF%BC%8C%E7%9B%91%E5%90%AC%EF%BC%8C%E6%95%B0%E6%8D%AE%E8%A7%A3%E5%AF%86%E7%AD%89_files/42aqf1v3gu6gkh4kr17k13jeoa.png"></p>
+<h3 class="topic">
+<a name="1gdureu90ah7enhg6637fmlf42">&nbsp;使用数据线连接好pm3，使用以上指令连接pm3的com7端口，如出现如图所示回显，表示连接成功</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-RFID%E5%AE%9E%E6%88%98%EF%BC%9A%E5%85%8B%E9%9A%86%E4%B8%8E%E4%BF%AE%E6%94%B9%EF%BC%8C%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%EF%BC%8C%E7%9B%91%E5%90%AC%EF%BC%8C%E6%95%B0%E6%8D%AE%E8%A7%A3%E5%AF%86%E7%AD%89_files/79tmplag2iee5j9dbdlbggmqab.png"></p>
+<h3 class="topic">
+<a name="7j3b44hgvkko6s295pmbl64mim">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-RFID%E5%AE%9E%E6%88%98%EF%BC%9A%E5%85%8B%E9%9A%86%E4%B8%8E%E4%BF%AE%E6%94%B9%EF%BC%8C%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%EF%BC%8C%E7%9B%91%E5%90%AC%EF%BC%8C%E6%95%B0%E6%8D%AE%E8%A7%A3%E5%AF%86%E7%AD%89_files/5stdqj7f1jl0l29alt4qhpc8uo.png"></p>
+<h3 class="topic">
+<a name="2v5vujckdbr6e8in0vs98jrts3">&nbsp;&nbsp;&nbsp;天线调谐测试，可以使用载波电压测试指定卡片为低频卡还是高频卡&#13;
+本图中测试时pm3上并未放置卡片，所以测得的是空载时的载波电压</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-RFID%E5%AE%9E%E6%88%98%EF%BC%9A%E5%85%8B%E9%9A%86%E4%B8%8E%E4%BF%AE%E6%94%B9%EF%BC%8C%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%EF%BC%8C%E7%9B%91%E5%90%AC%EF%BC%8C%E6%95%B0%E6%8D%AE%E8%A7%A3%E5%AF%86%E7%AD%89_files/5f4s0bsjg5j49mumda4lcjv2gd.png"></p>
+<h3 class="topic">
+<a name="6k02g5tk4tmmntgr73tg0453er">&nbsp;判断低频卡或高频卡</a>
+</h3>
+<h3 class="topic">
+<a name="4i5338d4jphqhmflf1s0b5c6t1">&nbsp;&nbsp;将卡片放在高频阅读区，再次进行天线调谐测试</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-RFID%E5%AE%9E%E6%88%98%EF%BC%9A%E5%85%8B%E9%9A%86%E4%B8%8E%E4%BF%AE%E6%94%B9%EF%BC%8C%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%EF%BC%8C%E7%9B%91%E5%90%AC%EF%BC%8C%E6%95%B0%E6%8D%AE%E8%A7%A3%E5%AF%86%E7%AD%89_files/05rdtq9mqievhfcrjk7oe4hgpj.png"></p>
+<h3 class="topic">
+<a name="3dkkifp5pd8if4vqea8156id18">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-RFID%E5%AE%9E%E6%88%98%EF%BC%9A%E5%85%8B%E9%9A%86%E4%B8%8E%E4%BF%AE%E6%94%B9%EF%BC%8C%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%EF%BC%8C%E7%9B%91%E5%90%AC%EF%BC%8C%E6%95%B0%E6%8D%AE%E8%A7%A3%E5%AF%86%E7%AD%89_files/26ou29vtu1hj28d92t7dur490l.png"></p>
+<h3 class="topic">
+<a name="3lrc3qavi3q9i5d6qj7jtd5ti3">&nbsp;&nbsp;&nbsp;&nbsp;再将卡片放在低频阅读区</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-RFID%E5%AE%9E%E6%88%98%EF%BC%9A%E5%85%8B%E9%9A%86%E4%B8%8E%E4%BF%AE%E6%94%B9%EF%BC%8C%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%EF%BC%8C%E7%9B%91%E5%90%AC%EF%BC%8C%E6%95%B0%E6%8D%AE%E8%A7%A3%E5%AF%86%E7%AD%89_files/4sjnsuvg6tcippr6g0efcg8ejh.png"></p>
+<h3 class="topic">
+<a name="5g63qo6qtpjnoglv6a92g46a02">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;判断该卡为低频卡，因为如果是高频卡，其几次测试过程中高频载波电压会变化的十分明显，而低频载波电压不会有什么变化</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-RFID%E5%AE%9E%E6%88%98%EF%BC%9A%E5%85%8B%E9%9A%86%E4%B8%8E%E4%BF%AE%E6%94%B9%EF%BC%8C%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%EF%BC%8C%E7%9B%91%E5%90%AC%EF%BC%8C%E6%95%B0%E6%8D%AE%E8%A7%A3%E5%AF%86%E7%AD%89_files/69nbkkf2ud8kd19m551cncivg8.png"></p>
+<h3 class="topic">
+<a name="5ukp4nbc0bupd65s26iieeeak3">&nbsp;低频卡读取操作</a>
+</h3>
+<h3 class="topic">
+<a name="7sk3r7l358tg6d31gt78qk03hb">&nbsp;&nbsp;将低频卡放在低频阅读区，输入命令lf search，识别到卡的类型为EM410X，同时识别到卡的id</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-RFID%E5%AE%9E%E6%88%98%EF%BC%9A%E5%85%8B%E9%9A%86%E4%B8%8E%E4%BF%AE%E6%94%B9%EF%BC%8C%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%EF%BC%8C%E7%9B%91%E5%90%AC%EF%BC%8C%E6%95%B0%E6%8D%AE%E8%A7%A3%E5%AF%86%E7%AD%89_files/6tfp76el3b6gag8b9hjqk8tp30.png"></p>
+<h3 class="topic">
+<a name="2vskq6fg08lbn81jt8kpura2ce">&nbsp;&nbsp;&nbsp;高频卡卡片类型识别</a>
+</h3>
+<h3 class="topic">
+<a name="6d5kvdfsn0047vn5t24hl45crf">&nbsp;&nbsp;&nbsp;&nbsp;将高频卡放到高频阅读区，识别出该卡相关信息，说明该卡不是uid卡</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-RFID%E5%AE%9E%E6%88%98%EF%BC%9A%E5%85%8B%E9%9A%86%E4%B8%8E%E4%BF%AE%E6%94%B9%EF%BC%8C%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%EF%BC%8C%E7%9B%91%E5%90%AC%EF%BC%8C%E6%95%B0%E6%8D%AE%E8%A7%A3%E5%AF%86%E7%AD%89_files/260fkh12ns4o3ut76mf0n0vjco.png"></p>
+<h3 class="topic">
+<a name="2vse15d9b5p20vt7j7jnfn0eji">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-RFID%E5%AE%9E%E6%88%98%EF%BC%9A%E5%85%8B%E9%9A%86%E4%B8%8E%E4%BF%AE%E6%94%B9%EF%BC%8C%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%EF%BC%8C%E7%9B%91%E5%90%AC%EF%BC%8C%E6%95%B0%E6%8D%AE%E8%A7%A3%E5%AF%86%E7%AD%89_files/2r86smkcvceo9s0alb8brvr39i.png"></p>
+<h3 class="topic">
+<a name="245n3vphbnd00jri2fj7bcqk76">&nbsp;M1密钥破解</a>
+</h3>
+<h3 class="topic">
+<a name="4onib18is8s02v6fgstfp9fpq3">&nbsp;&nbsp;m1卡存在嵌套验证漏洞，可以用一个扇区的密钥解得其他扇区的密钥，所以第一步是获得任意一个扇区的密钥，从而进一步进行破解，有以上四种方法</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-RFID%E5%AE%9E%E6%88%98%EF%BC%9A%E5%85%8B%E9%9A%86%E4%B8%8E%E4%BF%AE%E6%94%B9%EF%BC%8C%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%EF%BC%8C%E7%9B%91%E5%90%AC%EF%BC%8C%E6%95%B0%E6%8D%AE%E8%A7%A3%E5%AF%86%E7%AD%89_files/31gpv54lu2fcdnmgukb7gm6392.png"></p>
+<h3 class="topic">
+<a name="16h5oq4s1oij7n9lvonknnos4v">&nbsp;&nbsp;&nbsp;方法一：默认密钥扫描&#13;
+m1卡为无源标签，需要读卡器为其提供能量，读卡器切断电源，卡中的临时数据就会丢失，这样就无法记录攻击者输入错误密码的次数，卡就不会因为密钥输入次数过多而被锁定，故可以尝试暴力破解</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-RFID%E5%AE%9E%E6%88%98%EF%BC%9A%E5%85%8B%E9%9A%86%E4%B8%8E%E4%BF%AE%E6%94%B9%EF%BC%8C%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%EF%BC%8C%E7%9B%91%E5%90%AC%EF%BC%8C%E6%95%B0%E6%8D%AE%E8%A7%A3%E5%AF%86%E7%AD%89_files/2d7ufke7665cs6qp1f4dp9mv5n.png"></p>
+<h3 class="topic">
+<a name="0lvdmckl4ho5jt7bblt61u9btj">&nbsp;&nbsp;&nbsp;&nbsp;将卡放到高频阅读区，输入默认密钥扫描指令</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-RFID%E5%AE%9E%E6%88%98%EF%BC%9A%E5%85%8B%E9%9A%86%E4%B8%8E%E4%BF%AE%E6%94%B9%EF%BC%8C%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%EF%BC%8C%E7%9B%91%E5%90%AC%EF%BC%8C%E6%95%B0%E6%8D%AE%E8%A7%A3%E5%AF%86%E7%AD%89_files/1ueh91bs5v7640pfvkcn2gocpr.png"></p>
+<h3 class="topic">
+<a name="792mrgtik9k7l3l98h93ovhpur">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-RFID%E5%AE%9E%E6%88%98%EF%BC%9A%E5%85%8B%E9%9A%86%E4%B8%8E%E4%BF%AE%E6%94%B9%EF%BC%8C%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%EF%BC%8C%E7%9B%91%E5%90%AC%EF%BC%8C%E6%95%B0%E6%8D%AE%E8%A7%A3%E5%AF%86%E7%AD%89_files/2jts04dofhgdgel4oang0nr2bl.png"></p>
+<h3 class="topic">
+<a name="2qau2o8994kfhi2jsatfhf4vck">&nbsp;&nbsp;&nbsp;方法二：PRNG漏洞攻击获得密钥</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-RFID%E5%AE%9E%E6%88%98%EF%BC%9A%E5%85%8B%E9%9A%86%E4%B8%8E%E4%BF%AE%E6%94%B9%EF%BC%8C%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%EF%BC%8C%E7%9B%91%E5%90%AC%EF%BC%8C%E6%95%B0%E6%8D%AE%E8%A7%A3%E5%AF%86%E7%AD%89_files/50fm37kq0g6hp13fefemq4n7tj.png"></p>
+<h3 class="topic">
+<a name="48sa7t4e529lku00birjp1o65q">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-RFID%E5%AE%9E%E6%88%98%EF%BC%9A%E5%85%8B%E9%9A%86%E4%B8%8E%E4%BF%AE%E6%94%B9%EF%BC%8C%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%EF%BC%8C%E7%9B%91%E5%90%AC%EF%BC%8C%E6%95%B0%E6%8D%AE%E8%A7%A3%E5%AF%86%E7%AD%89_files/5jjg57itsg3a86e8mbq4jrnuhs.png"></p>
+<h3 class="topic">
+<a name="22874hr19lofsi6nfffpiv9bd1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-RFID%E5%AE%9E%E6%88%98%EF%BC%9A%E5%85%8B%E9%9A%86%E4%B8%8E%E4%BF%AE%E6%94%B9%EF%BC%8C%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%EF%BC%8C%E7%9B%91%E5%90%AC%EF%BC%8C%E6%95%B0%E6%8D%AE%E8%A7%A3%E5%AF%86%E7%AD%89_files/6f70s8p9ain04ji41mmqhujjpv.png"></p>
+<h3 class="topic">
+<a name="0llhslqme4p0t030p9d2rq81s6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;密钥被成功破解</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-RFID%E5%AE%9E%E6%88%98%EF%BC%9A%E5%85%8B%E9%9A%86%E4%B8%8E%E4%BF%AE%E6%94%B9%EF%BC%8C%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%EF%BC%8C%E7%9B%91%E5%90%AC%EF%BC%8C%E6%95%B0%E6%8D%AE%E8%A7%A3%E5%AF%86%E7%AD%89_files/4nqu0g5s0mglsqv9ba9tpnavhk.png"></p>
+<h3 class="topic">
+<a name="7rqqdk8vf38nstudphdnk30gtk">&nbsp;&nbsp;&nbsp;方法三：嗅探交互数据</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-RFID%E5%AE%9E%E6%88%98%EF%BC%9A%E5%85%8B%E9%9A%86%E4%B8%8E%E4%BF%AE%E6%94%B9%EF%BC%8C%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%EF%BC%8C%E7%9B%91%E5%90%AC%EF%BC%8C%E6%95%B0%E6%8D%AE%E8%A7%A3%E5%AF%86%E7%AD%89_files/65faik6tkesd017bs1uo44iq95.png"></p>
+<h3 class="topic">
+<a name="1j62033d8ahetgeoa2gn8a6srv">&nbsp;&nbsp;&nbsp;&nbsp;输入命令，此时pm3出于嗅探状态，绿色指示灯将会常亮，此时可以将移动电源插到pm3的第二个usb口上，从而给pm3供电，原先连接的数据线可以拔出</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-RFID%E5%AE%9E%E6%88%98%EF%BC%9A%E5%85%8B%E9%9A%86%E4%B8%8E%E4%BF%AE%E6%94%B9%EF%BC%8C%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%EF%BC%8C%E7%9B%91%E5%90%AC%EF%BC%8C%E6%95%B0%E6%8D%AE%E8%A7%A3%E5%AF%86%E7%AD%89_files/0s9po3v4e0jso9q9903pcuicpm.png"></p>
+<h3 class="topic">
+<a name="3v7lni5ce8t208p38f5jk21404">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将pm3放到卡片与阅读器中间，调整卡片与pm3与阅读器之间的距离，pm3嗅探到交互的数据时，指示灯将会闪烁，橙色指示灯常亮不闪烁时，说明已经嗅探到了，嗅探到数据之后可以按下pm3上的按钮，之后将数据线重新连接到电脑上，注意此时不能断开移动电源，此时可以看到上图中截获的数据长度</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-RFID%E5%AE%9E%E6%88%98%EF%BC%9A%E5%85%8B%E9%9A%86%E4%B8%8E%E4%BF%AE%E6%94%B9%EF%BC%8C%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%EF%BC%8C%E7%9B%91%E5%90%AC%EF%BC%8C%E6%95%B0%E6%8D%AE%E8%A7%A3%E5%AF%86%E7%AD%89_files/7a4hp5p4qjenq8t4u34mpthfvt.png"></p>
+<h3 class="topic">
+<a name="7us6k22g5iel4utgtud5nhpsuk">&nbsp;&nbsp;&nbsp;&nbsp;使用hf list 14a进行查看</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-RFID%E5%AE%9E%E6%88%98%EF%BC%9A%E5%85%8B%E9%9A%86%E4%B8%8E%E4%BF%AE%E6%94%B9%EF%BC%8C%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%EF%BC%8C%E7%9B%91%E5%90%AC%EF%BC%8C%E6%95%B0%E6%8D%AE%E8%A7%A3%E5%AF%86%E7%AD%89_files/24r2hoh4v1cm5461efqiu82kt6.png"></p>
+<h3 class="topic">
+<a name="7suqgquuhtu3mp3upoveci6gdr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;找到m1卡与阅读器三次认证的数据，从而可以解密密钥</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-RFID%E5%AE%9E%E6%88%98%EF%BC%9A%E5%85%8B%E9%9A%86%E4%B8%8E%E4%BF%AE%E6%94%B9%EF%BC%8C%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%EF%BC%8C%E7%9B%91%E5%90%AC%EF%BC%8C%E6%95%B0%E6%8D%AE%E8%A7%A3%E5%AF%86%E7%AD%89_files/15gb05q0nvecnuje17b6k4lpmt.png"></p>
+<h3 class="topic">
+<a name="3e2di0bld4pskocheg02podr37">&nbsp;&nbsp;&nbsp;&nbsp;使用crapto1gui计算密钥</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-RFID%E5%AE%9E%E6%88%98%EF%BC%9A%E5%85%8B%E9%9A%86%E4%B8%8E%E4%BF%AE%E6%94%B9%EF%BC%8C%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%EF%BC%8C%E7%9B%91%E5%90%AC%EF%BC%8C%E6%95%B0%E6%8D%AE%E8%A7%A3%E5%AF%86%E7%AD%89_files/2k9dmb6i6q5uu533g9qmrrss24.png"></p>
+<h3 class="topic">
+<a name="0799v54flfij77vvs9mn1shj46">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-RFID%E5%AE%9E%E6%88%98%EF%BC%9A%E5%85%8B%E9%9A%86%E4%B8%8E%E4%BF%AE%E6%94%B9%EF%BC%8C%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%EF%BC%8C%E7%9B%91%E5%90%AC%EF%BC%8C%E6%95%B0%E6%8D%AE%E8%A7%A3%E5%AF%86%E7%AD%89_files/73q2lf953v4k0kpl9p7ftbfdm2.png"></p>
+<h3 class="topic">
+<a name="1fguggqv2aneqj2a241tbmrc7c">&nbsp;&nbsp;&nbsp;方法四：模拟m1卡捕获密钥</a>
+</h3>
+<h3 class="topic">
+<a name="5i7l85or1lkbikcgap3mc9b40m">&nbsp;&nbsp;&nbsp;&nbsp;可以将pm3伪装为m1卡与阅读器进行交互，从而嗅探到密钥，但是支持的阅读器数量不多，应用并不广泛</a>
+</h3>
+<h3 class="topic">
+<a name="3ssivjo3lb22at5s73vb8kpvs4">&nbsp;&nbsp;嵌套验证漏洞攻击</a>
+</h3>
+<h3 class="topic">
+<a name="2jr95cieerpa3os27o9a44i0si">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-RFID%E5%AE%9E%E6%88%98%EF%BC%9A%E5%85%8B%E9%9A%86%E4%B8%8E%E4%BF%AE%E6%94%B9%EF%BC%8C%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%EF%BC%8C%E7%9B%91%E5%90%AC%EF%BC%8C%E6%95%B0%E6%8D%AE%E8%A7%A3%E5%AF%86%E7%AD%89_files/0qv884jl1f58svg982n5srljnk.png"></p>
+<h3 class="topic">
+<a name="057lrphdai1ckvaumc8h6eb309">&nbsp;&nbsp;&nbsp;&nbsp;使用一条指令即可利用已知扇区的密钥解出其他所有扇区的密钥</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-RFID%E5%AE%9E%E6%88%98%EF%BC%9A%E5%85%8B%E9%9A%86%E4%B8%8E%E4%BF%AE%E6%94%B9%EF%BC%8C%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%EF%BC%8C%E7%9B%91%E5%90%AC%EF%BC%8C%E6%95%B0%E6%8D%AE%E8%A7%A3%E5%AF%86%E7%AD%89_files/7cqokb0m5286bat8o4lj74gv0j.png"></p>
+<h3 class="topic">
+<a name="418j02bji9lai9hsjne9v9tsp0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-RFID%E5%AE%9E%E6%88%98%EF%BC%9A%E5%85%8B%E9%9A%86%E4%B8%8E%E4%BF%AE%E6%94%B9%EF%BC%8C%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%EF%BC%8C%E7%9B%91%E5%90%AC%EF%BC%8C%E6%95%B0%E6%8D%AE%E8%A7%A3%E5%AF%86%E7%AD%89_files/0m11jnct89ot0hf5uo7erofqff.png"></p>
+<h3 class="topic">
+<a name="50o4miodj8929lt0a0308bk78j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-RFID%E5%AE%9E%E6%88%98%EF%BC%9A%E5%85%8B%E9%9A%86%E4%B8%8E%E4%BF%AE%E6%94%B9%EF%BC%8C%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%EF%BC%8C%E7%9B%91%E5%90%AC%EF%BC%8C%E6%95%B0%E6%8D%AE%E8%A7%A3%E5%AF%86%E7%AD%89_files/0vomoiqohqd0k9g6tr2mdoskkt.png"></p>
+<h3 class="topic">
+<a name="60628vo2msd2uo7c70h779mjs0">&nbsp;数据dump</a>
+</h3>
+<h3 class="topic">
+<a name="4pjm9c0g3q1mkjptun1iq7t43s">&nbsp;&nbsp;获得所有扇区密钥后，可以全卡数据dump出来</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-RFID%E5%AE%9E%E6%88%98%EF%BC%9A%E5%85%8B%E9%9A%86%E4%B8%8E%E4%BF%AE%E6%94%B9%EF%BC%8C%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%EF%BC%8C%E7%9B%91%E5%90%AC%EF%BC%8C%E6%95%B0%E6%8D%AE%E8%A7%A3%E5%AF%86%E7%AD%89_files/7qifp99rtfttrpljrs5qk6b9j9.png"></p>
+<h3 class="topic">
+<a name="4f54pbbvmd4etfd80rkqqjpmoi">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-RFID%E5%AE%9E%E6%88%98%EF%BC%9A%E5%85%8B%E9%9A%86%E4%B8%8E%E4%BF%AE%E6%94%B9%EF%BC%8C%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%EF%BC%8C%E7%9B%91%E5%90%AC%EF%BC%8C%E6%95%B0%E6%8D%AE%E8%A7%A3%E5%AF%86%E7%AD%89_files/23p8pvai7pvjf2m29u5nbpk7mj.png"></p>
+<h3 class="topic">
+<a name="1vgdagv97t2oet5s8aa59f0dgf">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-RFID%E5%AE%9E%E6%88%98%EF%BC%9A%E5%85%8B%E9%9A%86%E4%B8%8E%E4%BF%AE%E6%94%B9%EF%BC%8C%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%EF%BC%8C%E7%9B%91%E5%90%AC%EF%BC%8C%E6%95%B0%E6%8D%AE%E8%A7%A3%E5%AF%86%E7%AD%89_files/3qdsr3hcg9tggsqddosc9l00ku.png"></p>
+<h3 class="topic">
+<a name="4c8hdtlefsd88bkneoe498lq8k">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-RFID%E5%AE%9E%E6%88%98%EF%BC%9A%E5%85%8B%E9%9A%86%E4%B8%8E%E4%BF%AE%E6%94%B9%EF%BC%8C%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%EF%BC%8C%E7%9B%91%E5%90%AC%EF%BC%8C%E6%95%B0%E6%8D%AE%E8%A7%A3%E5%AF%86%E7%AD%89_files/0f6sfev2k09ig79a12ldnsqu00.png"></p>
+<h3 class="topic">
+<a name="1ebm6hk85a28vl6p827j8moo9u">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;查看eml文件</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-RFID%E5%AE%9E%E6%88%98%EF%BC%9A%E5%85%8B%E9%9A%86%E4%B8%8E%E4%BF%AE%E6%94%B9%EF%BC%8C%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%EF%BC%8C%E7%9B%91%E5%90%AC%EF%BC%8C%E6%95%B0%E6%8D%AE%E8%A7%A3%E5%AF%86%E7%AD%89_files/14ktb07d6e0m8n72c7k8ur99tc.png"></p>
+<h2 class="topic">
+<a name="2pneem9htlb8fh9eacc712chvj">常见攻击</a>
+</h2>
+<h3 class="topic">
+<a name="7vdg5m16i6dc1nq3f8gef2dun8">&nbsp;数据伪造</a>
+</h3>
+<h3 class="topic">
+<a name="4jvogr1riic2r4ma77tsbosh5i">&nbsp;&nbsp;卡内数据分析</a>
+</h3>
+<h3 class="topic">
+<a name="7eje62jjuk4lo0mcp190ui2e1j">&nbsp;&nbsp;&nbsp;通过特征比对，知道该卡为电梯卡</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-RFID%E5%AE%9E%E6%88%98%EF%BC%9A%E5%85%8B%E9%9A%86%E4%B8%8E%E4%BF%AE%E6%94%B9%EF%BC%8C%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%EF%BC%8C%E7%9B%91%E5%90%AC%EF%BC%8C%E6%95%B0%E6%8D%AE%E8%A7%A3%E5%AF%86%E7%AD%89_files/0l6l1hvupvbmhnam0lnmekqcmj.png"></p>
+<h3 class="topic">
+<a name="24081o5ik41c60702n4cgphd3g">&nbsp;&nbsp;&nbsp;&nbsp;第五扇区第01块前半部分0702表示8楼，该卡第六扇区01块表示该卡可以使用的起止时间</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-RFID%E5%AE%9E%E6%88%98%EF%BC%9A%E5%85%8B%E9%9A%86%E4%B8%8E%E4%BF%AE%E6%94%B9%EF%BC%8C%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%EF%BC%8C%E7%9B%91%E5%90%AC%EF%BC%8C%E6%95%B0%E6%8D%AE%E8%A7%A3%E5%AF%86%E7%AD%89_files/0i561570lo4icb2sdielvevfr6.png"></p>
+<h3 class="topic">
+<a name="6i1tb9bqjen6j0bsj1cro32rn3">&nbsp;&nbsp;卡内数据伪造</a>
+</h3>
+<h3 class="topic">
+<a name="1s0dgn074pksvks6g484ktlca7">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<h3 class="topic">
+<a name="2d2b13f7vtf50j0s8h8e30ebua">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<h3 class="topic">
+<a name="3b8i669dct7p55v1svju25b836">&nbsp;&nbsp;&nbsp;修改卡内数据就可以使电梯卡前往其他楼层，类似一卡通水卡和超市购物卡，卡内存储余额等信息，可以通过变量对比法进行分析，或者将已知数据转为十六进制，寻找卡片中能与之对应的数据，从而确定卡片中指定数据的意义。卡片开发人员应该将数据加密存储并设置校验位，从而保证数据安全性</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-RFID%E5%AE%9E%E6%88%98%EF%BC%9A%E5%85%8B%E9%9A%86%E4%B8%8E%E4%BF%AE%E6%94%B9%EF%BC%8C%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%EF%BC%8C%E7%9B%91%E5%90%AC%EF%BC%8C%E6%95%B0%E6%8D%AE%E8%A7%A3%E5%AF%86%E7%AD%89_files/6bhks59s4rpkpqi71a0lojcr93.png"></p>
+<h3 class="topic">
+<a name="4gi6t3f41v3idhkc2l7n940taj">&nbsp;数据克隆</a>
+</h3>
+<h3 class="topic">
+<a name="70cqu76kimjeb0m9cljgqettna">&nbsp;&nbsp;UID卡的克隆</a>
+</h3>
+<h3 class="topic">
+<a name="660r54t91i1iboododbbvo7plk">&nbsp;&nbsp;&nbsp;即可以将卡内数据内容保存，卡片使用过后再将卡内数据恢复</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-RFID%E5%AE%9E%E6%88%98%EF%BC%9A%E5%85%8B%E9%9A%86%E4%B8%8E%E4%BF%AE%E6%94%B9%EF%BC%8C%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%EF%BC%8C%E7%9B%91%E5%90%AC%EF%BC%8C%E6%95%B0%E6%8D%AE%E8%A7%A3%E5%AF%86%E7%AD%89_files/7donu1mhubt5lj5tmbhv45uai4.png"></p>
+<h3 class="topic">
+<a name="4i0r00vilqpt5p35s6hr1pthea">&nbsp;&nbsp;&nbsp;&nbsp;使用命令克隆卡内数据</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-RFID%E5%AE%9E%E6%88%98%EF%BC%9A%E5%85%8B%E9%9A%86%E4%B8%8E%E4%BF%AE%E6%94%B9%EF%BC%8C%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%EF%BC%8C%E7%9B%91%E5%90%AC%EF%BC%8C%E6%95%B0%E6%8D%AE%E8%A7%A3%E5%AF%86%E7%AD%89_files/1u33rbsk0bf5lbf4ugq5536j2t.png"></p>
+<h3 class="topic">
+<a name="547umq2tgv1sd8b5tgbqaju08r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将uid卡放到pm3的高频阅读区，然后输入hf mf cload命令并回车</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-RFID%E5%AE%9E%E6%88%98%EF%BC%9A%E5%85%8B%E9%9A%86%E4%B8%8E%E4%BF%AE%E6%94%B9%EF%BC%8C%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%EF%BC%8C%E7%9B%91%E5%90%AC%EF%BC%8C%E6%95%B0%E6%8D%AE%E8%A7%A3%E5%AF%86%E7%AD%89_files/06mve1pqtk5j9rd5d9j5oepb4s.png"></p>
+<h3 class="topic">
+<a name="6d0grs26c1bldmmul5c13vjpgc">&nbsp;&nbsp;EM410卡的克隆方式</a>
+</h3>
+<h3 class="topic">
+<a name="18ppqmmbl57lltk7d22et3hbgl">&nbsp;&nbsp;&nbsp;EM410卡内数据较为简单，只需要将卡号的uid读取出来，然后写入到T5577卡中</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-RFID%E5%AE%9E%E6%88%98%EF%BC%9A%E5%85%8B%E9%9A%86%E4%B8%8E%E4%BF%AE%E6%94%B9%EF%BC%8C%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%EF%BC%8C%E7%9B%91%E5%90%AC%EF%BC%8C%E6%95%B0%E6%8D%AE%E8%A7%A3%E5%AF%86%E7%AD%89_files/6ln51lremrsi279q5fsei82mve.png"></p>
+<h3 class="topic">
+<a name="6rcevcufgpc7l6dnm3nuomdp6n">&nbsp;&nbsp;&nbsp;&nbsp;一些厂商针对EM410卡推出防克隆机制，也被称作防火墙，其在阅读器上不断发送写卡指令，正常em4卡不会响应，但如果是可以克隆的卡就会被写入数据而无法正常读取，所以可以使用T5577卡进行写入操作，之后进行加密，加密后写入数据需要指定的密码，从而突破防火墙限制成功克隆</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-RFID%E5%AE%9E%E6%88%98%EF%BC%9A%E5%85%8B%E9%9A%86%E4%B8%8E%E4%BF%AE%E6%94%B9%EF%BC%8C%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%EF%BC%8C%E7%9B%91%E5%90%AC%EF%BC%8C%E6%95%B0%E6%8D%AE%E8%A7%A3%E5%AF%86%E7%AD%89_files/3atitnci5g5d37kofver326926.png"></p>
+<h3 class="topic">
+<a name="0d7saci5u12bbuue92g92lokm2">&nbsp;&nbsp;&nbsp;将id卡放到低频阅读区，执行lf search指令得到id卡号</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-RFID%E5%AE%9E%E6%88%98%EF%BC%9A%E5%85%8B%E9%9A%86%E4%B8%8E%E4%BF%AE%E6%94%B9%EF%BC%8C%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%EF%BC%8C%E7%9B%91%E5%90%AC%EF%BC%8C%E6%95%B0%E6%8D%AE%E8%A7%A3%E5%AF%86%E7%AD%89_files/5b5me2pj2tfdtt2jd1n9o36v0o.png"></p>
+<h3 class="topic">
+<a name="2a9sosfegq9gmg681mb0ru8ir8">&nbsp;&nbsp;&nbsp;&nbsp;将id卡移走，将t5577卡放到低频阅读区，输入指令&#13;
+lf t55xx detect检测t5577卡</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-RFID%E5%AE%9E%E6%88%98%EF%BC%9A%E5%85%8B%E9%9A%86%E4%B8%8E%E4%BF%AE%E6%94%B9%EF%BC%8C%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%EF%BC%8C%E7%9B%91%E5%90%AC%EF%BC%8C%E6%95%B0%E6%8D%AE%E8%A7%A3%E5%AF%86%E7%AD%89_files/74cslkn01vbngn47en9id5et62.png"></p>
+<h3 class="topic">
+<a name="2s5p151q6uac8chtk04fu4qfk8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;输入指令lf t55xx dump将t5577卡内的数据显示出来，可见此时卡内数据未加密，因为最后一个数据块中是正常数据而不是密码</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-RFID%E5%AE%9E%E6%88%98%EF%BC%9A%E5%85%8B%E9%9A%86%E4%B8%8E%E4%BF%AE%E6%94%B9%EF%BC%8C%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%EF%BC%8C%E7%9B%91%E5%90%AC%EF%BC%8C%E6%95%B0%E6%8D%AE%E8%A7%A3%E5%AF%86%E7%AD%89_files/5nsjlvr6a8l57pbpoi6fofiom0.png"></p>
+<h3 class="topic">
+<a name="59oosh1895f7j4qqj8ph3pd36j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将之前获得的id号写入t5577卡中</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-RFID%E5%AE%9E%E6%88%98%EF%BC%9A%E5%85%8B%E9%9A%86%E4%B8%8E%E4%BF%AE%E6%94%B9%EF%BC%8C%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%EF%BC%8C%E7%9B%91%E5%90%AC%EF%BC%8C%E6%95%B0%E6%8D%AE%E8%A7%A3%E5%AF%86%E7%AD%89_files/0h8cdr25m2fqkg6pa772oppvdj.png"></p>
+<h3 class="topic">
+<a name="6jpit90kdkscj6940ucq5v776k">&nbsp;&nbsp;&nbsp;写入完成后重新检测t5577卡</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-RFID%E5%AE%9E%E6%88%98%EF%BC%9A%E5%85%8B%E9%9A%86%E4%B8%8E%E4%BF%AE%E6%94%B9%EF%BC%8C%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%EF%BC%8C%E7%9B%91%E5%90%AC%EF%BC%8C%E6%95%B0%E6%8D%AE%E8%A7%A3%E5%AF%86%E7%AD%89_files/33aa2npskpbjdgh6ag5cs032qq.png"></p>
+<h3 class="topic">
+<a name="0dv09srb9kq6ufkbqsqpgmm008">&nbsp;&nbsp;&nbsp;&nbsp;使用lf search命令将t5577卡当作uid卡查看</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-RFID%E5%AE%9E%E6%88%98%EF%BC%9A%E5%85%8B%E9%9A%86%E4%B8%8E%E4%BF%AE%E6%94%B9%EF%BC%8C%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%EF%BC%8C%E7%9B%91%E5%90%AC%EF%BC%8C%E6%95%B0%E6%8D%AE%E8%A7%A3%E5%AF%86%E7%AD%89_files/4if4408nhq6p8mbje289amhbcj.png"></p>
+<h3 class="topic">
+<a name="4ngtij048gmip9niskjiojnoip">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以看到该t5577卡对应的uid号，和之前复制的一致，说明已经将uid复制成功</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-RFID%E5%AE%9E%E6%88%98%EF%BC%9A%E5%85%8B%E9%9A%86%E4%B8%8E%E4%BF%AE%E6%94%B9%EF%BC%8C%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%EF%BC%8C%E7%9B%91%E5%90%AC%EF%BC%8C%E6%95%B0%E6%8D%AE%E8%A7%A3%E5%AF%86%E7%AD%89_files/1hgujj8oci1q6mhi4va08ua4j0.png"></p>
+<h3 class="topic">
+<a name="70ne1gsrc36fq1t491798ttj6i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;向t5577卡0扇区写入加密的格式 0表示0扇区 00148050表示当前是一张加密的id卡，如果现在使用默认密钥（00000000）则不需要输入密钥&#13;
+指令输出说明写入成功</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-RFID%E5%AE%9E%E6%88%98%EF%BC%9A%E5%85%8B%E9%9A%86%E4%B8%8E%E4%BF%AE%E6%94%B9%EF%BC%8C%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%EF%BC%8C%E7%9B%91%E5%90%AC%EF%BC%8C%E6%95%B0%E6%8D%AE%E8%A7%A3%E5%AF%86%E7%AD%89_files/4fccrheed2o0r4fse6k7l8nrvu.png"></p>
+<h3 class="topic">
+<a name="4ea6iasu4bpvi129uc9oqm9tgh">&nbsp;&nbsp;&nbsp;再次读取t5577卡数据内容，发现读取不出来，并且也无法使用detect指令识别，说明卡片加密成功</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-RFID%E5%AE%9E%E6%88%98%EF%BC%9A%E5%85%8B%E9%9A%86%E4%B8%8E%E4%BF%AE%E6%94%B9%EF%BC%8C%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%EF%BC%8C%E7%9B%91%E5%90%AC%EF%BC%8C%E6%95%B0%E6%8D%AE%E8%A7%A3%E5%AF%86%E7%AD%89_files/586vgfbp82dokb9dp9rb24iqju.png"></p>
+<h3 class="topic">
+<a name="7r56dvjbkac2r2cshr2krfut39">&nbsp;&nbsp;&nbsp;&nbsp;加密后使用lf search指令再次将t5577卡当作uid卡查询，发现uid仍为之前写入的内容，说明当前已经成功地被复制加密了</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-RFID%E5%AE%9E%E6%88%98%EF%BC%9A%E5%85%8B%E9%9A%86%E4%B8%8E%E4%BF%AE%E6%94%B9%EF%BC%8C%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%EF%BC%8C%E7%9B%91%E5%90%AC%EF%BC%8C%E6%95%B0%E6%8D%AE%E8%A7%A3%E5%AF%86%E7%AD%89_files/4erpo5sulq0204g1ia1ivdo8ue.png"></p>
+<h3 class="topic">
+<a name="1u6q8ebtudcbr349j145ks01bu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以输入取消加密的命令，只是需要在0扇区重新写入一下 &#13;
+00148040表示将当前t5577卡模拟成没有加密的id卡&#13;
+最后需要输入密码，当时加密时使用的时是默认密码，所以此时输入00000000</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-RFID%E5%AE%9E%E6%88%98%EF%BC%9A%E5%85%8B%E9%9A%86%E4%B8%8E%E4%BF%AE%E6%94%B9%EF%BC%8C%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%EF%BC%8C%E7%9B%91%E5%90%AC%EF%BC%8C%E6%95%B0%E6%8D%AE%E8%A7%A3%E5%AF%86%E7%AD%89_files/7nknqk59e07rj67eufnok68hfc.png"></p>
+<h3 class="topic">
+<a name="6v74mfgs0jp57vng1icn3q3qgs">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;取消加密后重新查看，发现该卡可以被正常读取</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-RFID%E5%AE%9E%E6%88%98%EF%BC%9A%E5%85%8B%E9%9A%86%E4%B8%8E%E4%BF%AE%E6%94%B9%EF%BC%8C%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%EF%BC%8C%E7%9B%91%E5%90%AC%EF%BC%8C%E6%95%B0%E6%8D%AE%E8%A7%A3%E5%AF%86%E7%AD%89_files/2cl4vb4lvrpos8871a0lbbn5t3.png"></p>
+<h3 class="topic">
+<a name="1kmepmesa4tphakk0oj62ajs6c">&nbsp;注入攻击</a>
+</h3>
+<h3 class="topic">
+<a name="1haqbcb8tvc8nqunrp84e6vsl9">&nbsp;&nbsp;标签内的内容一旦被控制就可以被恶意构造，系统将标签内的恶意数据作为数据就可能导致攻击发生</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-RFID%E5%AE%9E%E6%88%98%EF%BC%9A%E5%85%8B%E9%9A%86%E4%B8%8E%E4%BF%AE%E6%94%B9%EF%BC%8C%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%EF%BC%8C%E7%9B%91%E5%90%AC%EF%BC%8C%E6%95%B0%E6%8D%AE%E8%A7%A3%E5%AF%86%E7%AD%89_files/27nlkvi5t9ku61rqaqi5mj49bq.png"></p>
+<h3 class="topic">
+<a name="2qvmv1nd6s91ekjl0085im2dhe">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-RFID%E5%AE%9E%E6%88%98%EF%BC%9A%E5%85%8B%E9%9A%86%E4%B8%8E%E4%BF%AE%E6%94%B9%EF%BC%8C%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%EF%BC%8C%E7%9B%91%E5%90%AC%EF%BC%8C%E6%95%B0%E6%8D%AE%E8%A7%A3%E5%AF%86%E7%AD%89_files/6h02qm2thnbti0s2jfq2mtt3ki.png"></p>
+<h3 class="topic">
+<a name="110b16s2i1gs6sqoo4vk95jn2d">&nbsp;常用工具</a>
+</h3>
+<h3 class="topic">
+<a name="7sa7und2u5msgrq243nc3hngcv">&nbsp;&nbsp;市面上有集成的攻击，可以自动化集成工具并运行脚本</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-RFID%E5%AE%9E%E6%88%98%EF%BC%9A%E5%85%8B%E9%9A%86%E4%B8%8E%E4%BF%AE%E6%94%B9%EF%BC%8C%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%EF%BC%8C%E7%9B%91%E5%90%AC%EF%BC%8C%E6%95%B0%E6%8D%AE%E8%A7%A3%E5%AF%86%E7%AD%89_files/0c8l0tkj6quun75v586qfbqu68.png"></p>
+<h3 class="topic">
+<a name="2p0i3qmm3sc541h5uv0aj62mur">&nbsp;&nbsp;&nbsp;手机端也有mifare class2类似工具，使用手机的nfc功能也能进行简单数据扫描和密钥读写</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-RFID%E5%AE%9E%E6%88%98%EF%BC%9A%E5%85%8B%E9%9A%86%E4%B8%8E%E4%BF%AE%E6%94%B9%EF%BC%8C%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%EF%BC%8C%E7%9B%91%E5%90%AC%EF%BC%8C%E6%95%B0%E6%8D%AE%E8%A7%A3%E5%AF%86%E7%AD%89_files/2a931g77s3k832gak7m2ldg1l8.png"></p>
+<h3 class="topic">
+<a name="6j3qc3npf5a41suv0k4tnfo7re">&nbsp;&nbsp;启动工具</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-RFID%E5%AE%9E%E6%88%98%EF%BC%9A%E5%85%8B%E9%9A%86%E4%B8%8E%E4%BF%AE%E6%94%B9%EF%BC%8C%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%EF%BC%8C%E7%9B%91%E5%90%AC%EF%BC%8C%E6%95%B0%E6%8D%AE%E8%A7%A3%E5%AF%86%E7%AD%89_files/6sndtgu559gttcc9k2vbhrp8gr.png"></p>
+<h3 class="topic">
+<a name="6q7k0l5c7oooqhcj0itcsgjmug">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-RFID%E5%AE%9E%E6%88%98%EF%BC%9A%E5%85%8B%E9%9A%86%E4%B8%8E%E4%BF%AE%E6%94%B9%EF%BC%8C%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%EF%BC%8C%E7%9B%91%E5%90%AC%EF%BC%8C%E6%95%B0%E6%8D%AE%E8%A7%A3%E5%AF%86%E7%AD%89_files/6cbh5vlijh44k6cf459bgf055r.png"></p>
+<h3 class="topic">
+<a name="3t9qorj0jsv1m112u96j2mjrs3">&nbsp;&nbsp;&nbsp;&nbsp;可以将卡的内容读取到二进制编辑区或保存为bin文件&#13;
+同时支持m1卡 fuid uid id hid卡的克隆</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-RFID%E5%AE%9E%E6%88%98%EF%BC%9A%E5%85%8B%E9%9A%86%E4%B8%8E%E4%BF%AE%E6%94%B9%EF%BC%8C%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%EF%BC%8C%E7%9B%91%E5%90%AC%EF%BC%8C%E6%95%B0%E6%8D%AE%E8%A7%A3%E5%AF%86%E7%AD%89_files/6aq7gpu3uc9eruqlrfrbbfbtd4.png"></p>
+<h2 class="topic">
+<a name="73ru88u2n27758hvseklh28hgc">安全防范措施</a>
+</h2>
+<h3 class="topic">
+<a name="1v098tm0h61frn43nvk65d6o48">&nbsp;不使用初始密钥，采用全扇区加密的方式提高破解难度，数据存储时将数据采用算法加密后存储，避免明文直接存放，及时与数据库内的数据进行对比，如果被恶意破解使用也可以及时发现</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-RFID%E5%AE%9E%E6%88%98%EF%BC%9A%E5%85%8B%E9%9A%86%E4%B8%8E%E4%BF%AE%E6%94%B9%EF%BC%8C%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%EF%BC%8C%E7%9B%91%E5%90%AC%EF%BC%8C%E6%95%B0%E6%8D%AE%E8%A7%A3%E5%AF%86%E7%AD%89_files/61r96i0surmlbv2l6ggijq0fuf.png"></p>
+<h2 class="topic">
+<a name="7r1lurq7jtb5hsk6clh7gdmeu0">PM3常用命令</a>
+</h2>
+<h3 class="topic">
+<a name="10od6lo0iokjvdisd7r6k0hepe">&nbsp;PM3常用命令&#13;
+连接PM3 proxmark3 &lt;serial port&gt;&#13;
+&#13;
+系统测试&#13;
+天线调谐测试 hw tune&#13;
+显示系统版本hw version&#13;
+卡读取&#13;
+通用低频卡读取 lf search&#13;
+em410系低频卡读取 lf em4x em410xwatch&#13;
+高频卡类型读取 hf 14a reader&#13;
+t5577卡检测 lf t55xx detect&#13;
+t5577卡读取 lf t55xx dump&#13;
+密钥获取&#13;
+密钥查询hf mf chk &lt;block number&gt;|&lt;*card memory&gt; &lt;key type (A/B/?)&gt; [t|d] [&lt;key &gt;] [&lt;dic (*.dic)&gt;]&#13;
+检测密码 hf mf chk 0 A ffffffffffff&lt;!--检查M1卡 0扇区的 A 密码是否为ffffffffffff--&gt;&#13;
+检测默认密码 hf mf chk * ? [t] &lt;!--使用默认密钥集查询所有扇区--&gt;&#13;
+PRNG 攻击 hf mf mifare&#13;
+开启离线嗅探 hf 14a snoop&#13;
+查看离线嗅探数据 hf list 14a&#13;
+Nested 攻击 hf mf nested 1 0 A ffffffffffff [d]&#13;
+数据导出&#13;
+dump卡片数据 hf mf dump &lt;!--默认输出当前目录下dumpdata.bin文件--&gt;&#13;
+bin转换为eml文件 script run dumptoemul.lua&#13;
+数据写入&#13;
+指定块数据写入 hf mf wrbl &lt;block number&gt; &lt;key A/B&gt; &lt;key&gt; &lt;block data&gt;&#13;
+UID卡整卡克隆hf mf cload filename&#13;
+T5577卡写入id卡uid号 lf em4x em410xwrite &lt;UID&gt; 1 64&#13;
+T5577卡扇区写入数据 lf t55xx wr &lt;block&gt; &lt;data&gt; [password]</a>
+</h3>
+</body>
+</html>

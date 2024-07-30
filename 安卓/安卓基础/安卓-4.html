@@ -1,0 +1,815 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>安卓-4</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="409scalldjq1sat2596vltr7ms">安卓-4</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="%E5%AE%89%E5%8D%93-4_files/images/%E5%AE%89%E5%8D%93-4.jpg"></div>
+<h2 class="topic">
+<a name="6bj7hu75nfa3qmolcjkttp6n5m">文件格式</a>
+</h2>
+<h3 class="topic">
+<a name="7gksha65audisujki0epnqvn5j">&nbsp;文件格式学习目标</a>
+</h3>
+<h3 class="topic">
+<a name="2o40j2eicjb6moes1i3loc5u8t">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/1od07v1q8197hlqk1k72greu26.png"></p>
+<h3 class="topic">
+<a name="2p923d2nfcuttnobtfr42l86o2">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/6gddn0rfdtuuqnutvavlkuulmq.png"></p>
+<h3 class="topic">
+<a name="2cmfqi34vs2gp01d5dtn4at2fq">&nbsp;文件格式分析工具</a>
+</h3>
+<h3 class="topic">
+<a name="5gt7hifp15ui3kqqrvq7o80nhm">&nbsp;&nbsp;binwalk主要用于识别二进制文件中潜在的文件格式</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/71llc7usdkebd5mjhcmpic2o9p.png"></p>
+<h3 class="topic">
+<a name="70kmensemofa7vlsrslq2ab0mj">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/0q9u024gt2rju4l4tfr7ltemsj.png"></p>
+<h3 class="topic">
+<a name="7uvs3v76d8ksdmqsdeukcednp7">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/6gtq8sv5r6lj0nrtiipp7m9b7d.png"></p>
+<h3 class="topic">
+<a name="5ta6j9mpetfies17cghf0um42j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;新版的010editor中可以通过template repository直接从远程服务器下载模板</a>
+</h3>
+<h2 class="topic">
+<a name="109nqpqd2kr1934q3n5o3gcg8j">dex文件格式</a>
+</h2>
+<h3 class="topic">
+<a name="1lf0eovdr0j6gmbluak4bamhuv">&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/23hgc1cm550gr7dra185glt8c3.png"></p>
+<h3 class="topic">
+<a name="2ta1ta8lpe8vuh0bs49g1ijke9">&nbsp;&nbsp;安卓5.0之后，oat文件在安装的时候编译进指定目录下的，而对于系统文件包（比如提供蓝牙等功能），是在编译安卓源码时已经生成了oat文件</a>
+</h3>
+<h3 class="topic">
+<a name="5t497fg80voelhafjffslgmb60">&nbsp;dex文件结构</a>
+</h3>
+<h3 class="topic">
+<a name="1g1lff4m14tq903pmm43qbm0sn">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/3jmb4hm384lao3ik4kqqaivs6b.png"></p>
+<h3 class="topic">
+<a name="57pku4ng3brh8loriet85gt3fe">&nbsp;&nbsp;&nbsp;class文件与dex文件</a>
+</h3>
+<h3 class="topic">
+<a name="2fk953pp5ptehu49qoakpdgnas">&nbsp;&nbsp;&nbsp;&nbsp;class文件是java编译后产生的，dx工具将class文件转化为dex文件</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/1vc1jnd73f9ktskd120ht85kr3.png"></p>
+<h3 class="topic">
+<a name="6s4elfg8ie8esls4u5p7du3sl8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/33lbpap7uvopfgvorhu01o9c59.png"></p>
+<h3 class="topic">
+<a name="2vi8uds63qjhb8ba627ge7tlrf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当java程序编译成class后，还需要使用dx工具将所有的class文件整合到一个dex文件，目的是其中各个类能够共享数据，在一定程度上降低了冗余，同时也是文件结构更加经凑，实验表明，dex文件是传统jar文件大小的50%左右&#13;
+dex将原来class每个文件都有的共有信息合成一体，这样减少了class的冗余</a>
+</h3>
+<h3 class="topic">
+<a name="3dhrq31v992jeu514c9qhockkp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;参考资料：https://www.jianshu.com/p/f7f0a712ddfe</a>
+</h3>
+<h3 class="topic">
+<a name="7mtspcn7v8fqhub8f81m711k5l">&nbsp;结构详解</a>
+</h3>
+<h3 class="topic">
+<a name="3mpfg08revpkds4fsurdgti2sk">&nbsp;&nbsp;dex文件头</a>
+</h3>
+<h3 class="topic">
+<a name="3c39fkoeadii0sl0pmuasgg1dv">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/57njtblhk53fsnv0ebir6p59nd.png"></p>
+<h3 class="topic">
+<a name="4ln834au7n5cp2q03ogp8em6gf">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/4mm95ncpomu9hhpvr3oq8mdaph.png"></p>
+<h3 class="topic">
+<a name="2oku1ifq2qlethfjau6b2jsr63">&nbsp;&nbsp;字符串表和类型表</a>
+</h3>
+<h3 class="topic">
+<a name="16er01eah8j9eta9p4j0gpij39">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/4f5n8udbfdu3kno5v7fgv132t4.png"></p>
+<h3 class="topic">
+<a name="31a747bnukke22j8osmdlcvoe3">&nbsp;&nbsp;&nbsp;&nbsp;dex文件中保存的字符串并不是c语言格式的字符串，并不以/0进行结尾，而是在字符串开头保存一个字符串长度数据</a>
+</h3>
+<h3 class="topic">
+<a name="2afs7sqn1jte3qeo4c5j72tjl4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/1p4k101md6d0joslk3nvfl8mn5.png"></p>
+<h3 class="topic">
+<a name="3dn3p92n1kuq0iaotce56o1jb2">&nbsp;&nbsp;函数原型列表</a>
+</h3>
+<h3 class="topic">
+<a name="1699majh3u5mnlqorrsjpnrthf">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/18f4muqrb98oavt6ueph5upase.png"></p>
+<h3 class="topic">
+<a name="46rtg1qre0q9qnspelf1qo5nrj">&nbsp;&nbsp;字段列表和方法列表</a>
+</h3>
+<h3 class="topic">
+<a name="2i5tp8lgirodalioudaukc95c4">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/7dcgnhl75mtlfsbatpehp9l8b2.png"></p>
+<h3 class="topic">
+<a name="593s3om5ufqu5ou7k3tiueltuu">&nbsp;&nbsp;类列表</a>
+</h3>
+<h3 class="topic">
+<a name="1pg9oe85ej5fqb8mislr05dvlc">&nbsp;&nbsp;&nbsp;accseeFlags即表示对应类在java中是如何修饰的</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/25lv81rte1l9fo2v64vcmrfge9.png"></p>
+<h3 class="topic">
+<a name="4nh8rird02rg7b92v0d9v55ofo">&nbsp;&nbsp;&nbsp;&nbsp;accessFlags是一系列的访问标志，不仅仅只有public、private、protect、static、native</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/5lb1ab2icnrb90go52finv4rm7.png"></p>
+<h3 class="topic">
+<a name="0th05qv7il7npnptm2dmpfachq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/1p0gv15b8c156lkpvlitfho65t.png"></p>
+<h3 class="topic">
+<a name="5pn4hs5ls155df1gkf06160igf">&nbsp;&nbsp;&nbsp;整个smali文件的的内容顺序基本上与DexClassDef中内容的顺序相同，所以dex文件中已经包含了将该文件转为smali文件所需的所有索引信息，只需要按照指定方法解析dex文件内容即可得到smali文件</a>
+</h3>
+<h3 class="topic">
+<a name="3e817pfqnelaqneonj5tes6ft5">&nbsp;&nbsp;&nbsp;&nbsp;如果在DexMethod结构体中将codeOff设置为假数据，就可以使得dex文件在解析时无法找到当前类方法的实际代码，然后在类中设置静态数据块，因为静态数据块中的代码会再类初始化时运行，所以将修复codeOff的指令放在静态数据块，即在类初始化时完成codeOff修复（JNI中System.loadLibrary()就是在静态数据块中执行）&#13;
+&#13;
+也可以将codeOff设置为指向一个native函数，由该native函数恢复原本的codeOff值，之后再调用对应的函数&#13;
+以上即第2第3代指令保护的套路</a>
+</h3>
+<h3 class="topic">
+<a name="5upujqr4bq135pp1tfpeegml09">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;函数hook的一般思路</a>
+</h3>
+<h3 class="topic">
+<a name="1thdsikfrfr6qp0afpt287nvs7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对于DexMethod结构体，当描述一个native函数时，因为java中没有对应的函数，所以codeOff字段没有意义&#13;
+&#13;
+对于一个java方法，将其DexMethod结构体中的accessFlags设置为native，当调用该函数时，就会执行native函数，在native函数中将accessFlags设置回来，重新调用该java方法，就会执行该方法原本的代码，在原本代码的最后重新将accessFlags设置为native，则下次执行该函数时，还是会先执行native函数，以上就形成的了hook</a>
+</h3>
+<h3 class="topic">
+<a name="4hsnfd24lgii4tsb4ab0krt4f5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;左边所有的修改均是针对内存中数据进行，而不是针对文件数据</a>
+</h3>
+<h3 class="topic">
+<a name="7pnv32fqnquptr4julp2gfd03i">&nbsp;&nbsp;&nbsp;一般解析一个dex文件是从类列表开始解析的</a>
+</h3>
+<h3 class="topic">
+<a name="03arhu77u3j4hl4pk3f28mg61a">&nbsp;可以参考之前推荐的非虫的书</a>
+</h3>
+<h2 class="topic">
+<a name="0j2glhf2moig8ola0q7unfn5cr">elf文件格式</a>
+</h2>
+<h3 class="topic">
+<a name="194p4hlej8h09mggdlgone8f22">&nbsp;文件格式</a>
+</h3>
+<h3 class="topic">
+<a name="0fn5jlab6rogu66n4glba9mtks">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/7elp22cv8qstu7fdf0r8fam4fj.png"></p>
+<h3 class="topic">
+<a name="1j8o10e3eoot89cr2j8ce0soha">&nbsp;&nbsp;&nbsp;一个段表项所描述的段可能包括若干个节，即程序加载时，会将该若干个节作为一个段加载到内存&#13;
+&#13;
+链接视图-》section&#13;
+装载视图-》segment</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/2tu80rji0vtkfmfq35pu4tbcst.png"></p>
+<h3 class="topic">
+<a name="0jl3k2rglmpnd8bi25ikukaijm">&nbsp;&nbsp;&nbsp;&nbsp;节表不会被加载到内存中</a>
+</h3>
+<h3 class="topic">
+<a name="134t72o4l1bl5ioambf8e35j0e">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/0dmojg23m939qquh34hsj8ump9.png"></p>
+<h3 class="topic">
+<a name="02klddksatvhj5qqqqf4ed7i9s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/5hb0b8kr6647qfs3ncvbf5n6ap.png"></p>
+<h3 class="topic">
+<a name="1nd41rcnhjvt8sf209c89e9ced">&nbsp;&nbsp;&nbsp;&nbsp;可以将elf文件中elf头中节区大小和节区偏移的数据设置为0，或将节表从文件中删除，这样不影响程序执行，但是会使得部分静态分析工具无法分析</a>
+</h3>
+<h3 class="topic">
+<a name="0fkdsqu51ssqnt2c3b2pcepvhk">&nbsp;&nbsp;&nbsp;&nbsp;大部分静态工具的解析均需要依赖于节表，比如ida只有存在节表信息时，才能决定需要显示哪些节的数据，哪些不用显示，如果节区不存在，则ida将elf文件从文件头开始所有数据全部显示</a>
+</h3>
+<h3 class="topic">
+<a name="65pabj5tdo9k14vlcv3lrc2q1i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/15qvtf3jcg3jdjglmd3f150oj8.png"></p>
+<h3 class="topic">
+<a name="4jq9jd42hu5io8hjlp0aelpiro">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/70snue4kjca51nuc5ldhl5cme7.png"></p>
+<h3 class="topic">
+<a name="5ei7ej2og7spspgjpaf80nklr4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/36ono3rvh5e88440n16slde3c2.png"></p>
+<h3 class="topic">
+<a name="0h5h2c85rcmiqiht7rc9it651u">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/1i40phn3scea9tev27srchnrsm.png"></p>
+<h3 class="topic">
+<a name="5qqt5nnba8ids1rl7l1jg6qvdj">&nbsp;jni中，如果在Android.mk文件指定可执行文件，则ndk-build编译出来的就是bin文件</a>
+</h3>
+<h3 class="topic">
+<a name="7tha5vri8f212mrdmiftl7bf48">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/02dj6ku5169jlkiitocrgf1u2e.png"></p>
+<h3 class="topic">
+<a name="47v8aq2qt6lsa7l2hknd27mcb7">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/1puoa039jgv4efej49amvd29oe.png"></p>
+<h3 class="topic">
+<a name="023qs04oiip6eo7jsh3ueudrm1">&nbsp;&nbsp;BULID_STATIC_LIBRARY编译生成.o文件&#13;
+BULID_SHARED_LIBRARY编译生成.so文件</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/5c62nkd2s7ck2svk5qnt97nf88.png"></p>
+<h3 class="topic">
+<a name="19i0tej5mtcaa3rm27fn0pus6o">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/0mrb61hoic7g7utjfi5gfula09.png"></p>
+<h3 class="topic">
+<a name="78pk1av2m7mu22akkh62t0ur2i">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/007q0ckv3gtpsaga6endosciv3.png"></p>
+<h3 class="topic">
+<a name="2vs4k9pfalddeklaaa9bpj5n37">&nbsp;elf头</a>
+</h3>
+<h3 class="topic">
+<a name="06v5pdfvdv653ugmgp25k53jbv">&nbsp;&nbsp;字符串表中的所有字符串均是0结尾的c字符串</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/60h787khuf1gn3tvpbtkfkauv5.png"></p>
+<h3 class="topic">
+<a name="0ud147bck4ncba3b6vl3ksev8f">&nbsp;&nbsp;&nbsp;寻址段表后首地址有两种方式</a>
+</h3>
+<h3 class="topic">
+<a name="34p0uiov0thgolph8g3e5nvhfg">&nbsp;&nbsp;&nbsp;&nbsp;1、当前文件首地址+elf文件头的大小（一般elf头与段表是紧密相邻的）</a>
+</h3>
+<h3 class="topic">
+<a name="1utjfqm062ve152k2ghj366drs">&nbsp;&nbsp;&nbsp;&nbsp;2、通过elf头中的段表偏移定位段表</a>
+</h3>
+<h3 class="topic">
+<a name="71bk299m4a20f11789d9a0rgsj">&nbsp;&nbsp;&nbsp;&nbsp;一般linker是通过方法2加载整个elf文件的，所以如果修改elf头中的字段（包括elf头大小，段表偏移等），可以实现在elf头和段表之间插入一些数据而不影响程序加载运行，插入的数据可以用于保存恶意代码，也可以用于作为反静态调试的一种手段（即部分工具解析elf文件中的段表首地址是通过第一种方法，则此时该工具就会解析失败）</a>
+</h3>
+<h3 class="topic">
+<a name="4lhsubqdd29nb38khgbt6dm2rp">&nbsp;节表中每一项的结构</a>
+</h3>
+<h3 class="topic">
+<a name="67n122ri2kp4h6ghr5sgi6ugiq">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/6nmnjt0j9r74fmibqbt5se8hr9.png"></p>
+<h3 class="topic">
+<a name="1qqjehs8os7lusrtuirr021h9d">&nbsp;段表中每一项的结构</a>
+</h3>
+<h3 class="topic">
+<a name="1im5cdnj6g3v7phr48ijq1dlr5">&nbsp;&nbsp;段没有段名称的说法</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/0knjgnfoi6i09f7t8rbh7unl8d.png"></p>
+<h3 class="topic">
+<a name="0sg434keqd3ke91hblmkl6uisa">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/56967dad893enul579abbse4ig.png"></p>
+<h3 class="topic">
+<a name="2o64kdib591svah4431bfgvh6k">&nbsp;&nbsp;&nbsp;程序加载过程中&#13;
+将哪部分文件内容映射到内存时会用到段类型、段文件偏移、文件中的大小&#13;
+映射到内存哪个具体位置，映射多长，取决于段虚地址和段内存中的大小</a>
+</h3>
+<h3 class="topic">
+<a name="2mh9oqmkbob27nt5flk01d6q8e">&nbsp;&nbsp;&nbsp;段的权限属性一般为rw或rx</a>
+</h3>
+<h3 class="topic">
+<a name="0dlmu90ekbgv2v5qpkv0esdda9">&nbsp;以上均是32位elf文件格式，对于64位，整体结构体相同，由于结构体中数据对齐的原因，部分字段顺序可能不同</a>
+</h3>
+<h3 class="topic">
+<a name="4fsh88utuc2j09b3qkstjhoeca">&nbsp;linux中可以通过readelf分析elf文件格式</a>
+</h3>
+<h3 class="topic">
+<a name="6cjoopn8h4n4q44ljufvn6tlv4">&nbsp;&nbsp;查看efl头</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/758v2ivken3dbm3gsf33d3ajhj.png"></p>
+<h3 class="topic">
+<a name="1mfsbbit1hmqpoter24eal1ood">&nbsp;&nbsp;&nbsp;查看节表64位</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/2sjhpnskvspag5tl8n1po03ohl.png"></p>
+<h3 class="topic">
+<a name="0rmgq4irgfn8oh4qo3l0hhqup5">&nbsp;&nbsp;&nbsp;&nbsp;查看节表32位</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/6p0niapesteqb9manptcutm5vp.png"></p>
+<h3 class="topic">
+<a name="0tjo0k9b8e3p94akmnfilsqoqk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;查看段表32位</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/3jibpl1kqf3ifc0efsnq8r231m.png"></p>
+<h3 class="topic">
+<a name="06v0fd81sais671i7uan983h60">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;查看重定位信息</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/5jfpje6779i23dcq2bkikq6scg.png"></p>
+<h3 class="topic">
+<a name="2eq3act7r25bmh7spi0juls59b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;查看dynamic表信息</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/2ubdtsp767btt6nk27ss15586k.png"></p>
+<h3 class="topic">
+<a name="56gk4lg5nom641je53pdfqhjek">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;查看dynamic表信息</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/2s0dj8ofh5hug73cg0v6r01sne.png"></p>
+<h3 class="topic">
+<a name="618cdi41tb01ijos77a33v3hjg">&nbsp;使用010editor解析elf</a>
+</h3>
+<h3 class="topic">
+<a name="41ljdc0r38f25qvs2akeep966g">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/79smt2m12673fs42cjaqchchi5.png"></p>
+<h2 class="topic">
+<a name="292nddg250e3tbbmuo6ebbennh">linker加载机制</a>
+</h2>
+<h3 class="topic">
+<a name="5k4vff23tbfg54mb5cdu8pgttt">&nbsp;学习目的</a>
+</h3>
+<h3 class="topic">
+<a name="0tnvmvhplgle9m4h8u9u4cco9s">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/42vauht4t2gio5k9af55h2i70a.png"></p>
+<h3 class="topic">
+<a name="54f4d7jeised09mhfd24okujg7">&nbsp;代码分析</a>
+</h3>
+<h3 class="topic">
+<a name="620b523h124taq87014kiok6qv">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/2ljp2i4tgej4fsjg1feag2qu84.png"></p>
+<h3 class="topic">
+<a name="646a2ujnsa2rhdcc4qt4m13ds3">&nbsp;&nbsp;&nbsp;dlopen函数执行后，会执行find_library函数，后者中会调用load_library和init_library</a>
+</h3>
+<h3 class="topic">
+<a name="4giv1foo4uinivqi6v1potbpc3">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/6deou45419tq750msde6aqfr21.png"></p>
+<h3 class="topic">
+<a name="10h3f8v4fmcpeu7a1j0vvg48ch">&nbsp;&nbsp;&nbsp;类中加载so文件会在静态代码块中调用System.loadLiarary函数，该函数最后会调用到load_library函数，并且将so文件的全路径作为参数</a>
+</h3>
+<h3 class="topic">
+<a name="4a8v5l02hg9st7320jr2sa6740">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/59q48k8f0jnpmnmbpe39g2efg8.png"></p>
+<h3 class="topic">
+<a name="2pgt1eo8ggh26vgovp51seggdl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对于open_library，该函数将so文件的全路径进行分割，找到指定的so文件，调用open_lib（该函数底层调用open函数）返回文件句柄，如果指定路径下没找到so文件，就要在预先定义的环境变量中进行搜索</a>
+</h3>
+<h3 class="topic">
+<a name="6edjcrsvf49b02s107g8088kqa">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/5rerou7mqcv2rbbfs8i7ph1ihk.png"></p>
+<h3 class="topic">
+<a name="233b1fptm998e8f22g83rheted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/3lr8jbglqorkjck8btm2dgo9bc.png"></p>
+<h3 class="topic">
+<a name="1o9907d532ngnr0kk80434vvi2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;get_lib_extents()函数返回了加载elf所有段到内存所需的内存大小</a>
+</h3>
+<h3 class="topic">
+<a name="7rnr4c3nvjs4p749cjsin0rgpp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/2efq1l6qetqrab3dhddkfdgk0d.png"></p>
+<h3 class="topic">
+<a name="4mqn3vdj31sv0av6oqd1n0316n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/37jv6i13up517s407h7ikqqkgn.png"></p>
+<h3 class="topic">
+<a name="1dbn1in1i3ju3ugvmujibei9c1">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/6vun81ju0c2gjf97g3lronp3f5.png"></p>
+<h3 class="topic">
+<a name="7t6en58cb6pgliu3blslt85fvs">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关于soinfo结构体</a>
+</h3>
+<h3 class="topic">
+<a name="4d1mvambr0e3kf6pml8qgjqq5i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dlopen函数返回void*，即指向soinfo的指针&#13;
+dlsym可以用于查找某个函数</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/16qh9n31ufpj9npilu8slbviba.png"></p>
+<h3 class="topic">
+<a name="75flss0c283td1hjvjpghcd1g8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;soinfo结构体被定义在linker.h中</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/79mh1i4912iij1lr8ql9rcns31.png"></p>
+<h3 class="topic">
+<a name="15hp0apbu93hqcrgmb1ve9b49h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;soinfo可以直接在内存中解析</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/3nb4d19qaf4jdqad7n1jpqens4.png"></p>
+<h3 class="topic">
+<a name="7qro77h07vrknbfn5kfukuoi1a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;alloc_info函数返回一个soinfo结构体</a>
+</h3>
+<h3 class="topic">
+<a name="4njk68benpc636kv9jcfe4b4e2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该函数是从soinfo池中获取了一个soinfo，系统预先分配一大块内存，以soinfo双向链表的形式组织成了soinfo池</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/72rp66de8vh176sqphj91u2e35.png"></p>
+<h3 class="topic">
+<a name="0gc858063bojumtd74ip498usu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;alloc_mem_region函数中使用mmap进行匿名内存分配</a>
+</h3>
+<h3 class="topic">
+<a name="7pu4tq2ft3fucinvmon4frvvl9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/25vpkfoajgeq4jmrfk2tvdhag7.png"></p>
+<h3 class="topic">
+<a name="1tksgu7l3ohc5q0044dae23sej">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/3jjltgvsfkjfc8u6qsnilmdh3v.png"></p>
+<h3 class="topic">
+<a name="7saj7qcjs2ph7niicn0oc9hf41">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/2agun9jej86sbhol0930cm0d45.png"></p>
+<h3 class="topic">
+<a name="0r31gn9bctq22dg61lmcukbknu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对于load_segment，是将so文件中的各个段映射到内存中</a>
+</h3>
+<h3 class="topic">
+<a name="6o83gnds6tl8mlqhpcbfe0rc0k">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/529stpl5nm628glt21n4kj8ta8.png"></p>
+<h3 class="topic">
+<a name="5ev0qqlfvgtemvo08l8h50jog1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/06vd26iddk0miffbpkdsiandol.png"></p>
+<h3 class="topic">
+<a name="3jqsodmj2f786qedpu68v16li5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/75u0fm5bgbo0gcg5566i2vmgos.png"></p>
+<h3 class="topic">
+<a name="1t6f6p6jdmhmjvm4btj5vl66p0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/1kt0k623ehlkcija5fj4ufbtmu.png"></p>
+<h3 class="topic">
+<a name="3f6061mq46d8ue2f4h5iakj5b4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/2sfrv131oei0m3d119vq6uog1a.png"></p>
+<h3 class="topic">
+<a name="69m3tf2f61c305vg055ljnujir">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;最后将elf映射到内存中</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/0sadde92qtat0t3nhb262icn0g.png"></p>
+<h3 class="topic">
+<a name="0r6esdjq1hnkdve9qn3ds886l8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/62ov82nh58as0grg1kc8erocmm.png"></p>
+<h3 class="topic">
+<a name="2c0ccv3t6a8vmd68e7rlmgeekn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/6d91b6e7c6ttee18igrlj35sho.png"></p>
+<h3 class="topic">
+<a name="5ugcp4baoihrf4eir6d92ri6o6">&nbsp;&nbsp;&nbsp;对于init_library函数</a>
+</h3>
+<h3 class="topic">
+<a name="5un565o51oknfbdb7cuqclfj80">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/3uru3cg4sh7fjd0s4pqghpf0he.png"></p>
+<h3 class="topic">
+<a name="4hi42sishpvfhb8ocscgj1vivr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;link_image函数用于链接so文件或bin文件所依赖的其他so文件</a>
+</h3>
+<h3 class="topic">
+<a name="3l85am063gcl3u7377303usamk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;si-&gt;flags&amp;FLAG_EXE判断当前有没有执行标志</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/5kgppibgq11ic828qa9jniqo66.png"></p>
+<h3 class="topic">
+<a name="5g1mfloq1ttf2pb0crk77nqblm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/3j8q14qmehbah7165scogt263p.png"></p>
+<h3 class="topic">
+<a name="2na51li1qvet87ofrcfsk1bca7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/4qeh9j94p20e6fkd9s6f75minq.png"></p>
+<h3 class="topic">
+<a name="1iae78gmmgm3s7nhhdca1rg5pa">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;elf.h中可以找到dynamic表项的定义&#13;
+表项中有两个int类型数据，一个表示类型，第二个表示其值</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/37lc385t0uf8rtalktj51t9lh0.png"></p>
+<h3 class="topic">
+<a name="5inquhj0ah310gsonm0ppqal45">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/6sovm2odcto2msgak23uitbb9s.png"></p>
+<h3 class="topic">
+<a name="0fsr4b64ss3ha9el5ph00om5h0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/0oaqpui1fvifv008a0m1kkjeob.png"></p>
+<h3 class="topic">
+<a name="76avfm4mtcoffcckdct4nm66lr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过readelf -r可以看到函数重定位表和数据重定位表</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/1c8cdme34sosagp9ce8fbprd46.png"></p>
+<h3 class="topic">
+<a name="2rh20n187dkk12p3qo31292fsv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;32位和64位重定位表表项结构</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/1hm388ttqtaecr1p7t6qnm3s4e.png"></p>
+<h3 class="topic">
+<a name="54a15glc68pkl23f23aplppfr1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/36jb6ke10momqtsl2uc6bp387n.png"></p>
+<h3 class="topic">
+<a name="56je2fgip38u0duuq7lgsat4rj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这里的case DT_DEBUG标签与gdb和ida调试相关，（即触发断点时调用到调试器）做反调试会用到</a>
+</h3>
+<h3 class="topic">
+<a name="2bodtodrapm61tdb78p7cmqpq0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/5mau7jfsrckfabi2ld4evs052h.png"></p>
+<h3 class="topic">
+<a name="1nounfq2r44vl0phddtjkfsup8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;同通过readelf -S查看节表，其中有dynamic</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/1kca8fup3jq8bcs6tuf615dlnt.png"></p>
+<h3 class="topic">
+<a name="133i2qrbkrjeevhv6q3uvsbp61">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;同通过readelf -l查看段表，其中也有dynamic，并且根据映射，节表段表中的dynamic是同一段内存</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/12hfagk1tojt94hr6j2n2s8cvo.png"></p>
+<h3 class="topic">
+<a name="13h6a2kpcbafrntloj2l7est1v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;initfunc和initarray会在文件加载完成后被调用，这也是一般加固的入口点，initfunc和initarray是程序自己可控的</a>
+</h3>
+<h3 class="topic">
+<a name="4gflaj3o74o2f0c9dtqde1kh44">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/5qu0e2sepge5d1j67d0kbhhjqb.png"></p>
+<h3 class="topic">
+<a name="6ot5ovkurk9njh8ag181kgoefh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过readelf -d查看dynamic段</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/7cvo9q0mudkhl4l18o98iqn4sk.png"></p>
+<h3 class="topic">
+<a name="00armts7ecfa7qhc5ftsguq2ch">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果当前elf文件为可执行文件，则preload部分的代码会调用find_library()将需要的so文进行加载</a>
+</h3>
+<h3 class="topic">
+<a name="3ssg2od8daoatplq2kt8b98qpd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/07a4925pa1ua0srvsclo9o91o7.png"></p>
+<h3 class="topic">
+<a name="7vf0ti6oodm2vsc0i1e2i7268t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/0mp72c37lq0jarcuc2p0u62o1n.png"></p>
+<h3 class="topic">
+<a name="5id49rnlpgg85uqpmhll4mllbn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对于reloc_libaray函数(从重定位表中获得符号，符号表索引字符串表找到对应字符串，计算字符串hash，之后查找hash值，对于内部函数重定位和外部函数重定位，使用不同的方法进行处理)</a>
+</h3>
+<h3 class="topic">
+<a name="7poa9u3s0c3i45d3q7fbfsskjb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/7m4ouo92013c1j4hv6v1idtahr.png"></p>
+<h3 class="topic">
+<a name="61dq8fsga86em5kc2s3cunu1g2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/4r5r7ln2gsuli5fjonpcsnsugi.png"></p>
+<h3 class="topic">
+<a name="4mmun92cdvgn12oaogcl869o3p">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过readelf -sD可以看到队文件中的符号是自己的还是外部的</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/0fs05sbk45laccskhgvmgcpoaj.png"></p>
+<h3 class="topic">
+<a name="4vrpkd94u701ot6cnid6bc4q4m">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;do_lookup用于搜索符号名称</a>
+</h3>
+<h3 class="topic">
+<a name="5jg8r3hlp8p0l7n78sdko7h077">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/5gtje8claj7ee5iq9oao7rc9ga.png"></p>
+<h3 class="topic">
+<a name="732qg58fk71q2bkjin332m5d6a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;elf_lookup用于根据符号名称的hash值查找hash表</a>
+</h3>
+<h3 class="topic">
+<a name="715vblnfutrbpcmua7c48gpvi9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/6esd0kjg3ji89e2capofllv7s5.png"></p>
+<h3 class="topic">
+<a name="1so2c0nc022br68lmjo5n6lt8d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/7rmj8pmgeme61bgpg2fs3edq12.png"></p>
+<h3 class="topic">
+<a name="1v61ej4461jiac0nolnmqmogrm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对文件中内部代码的相互调用进行重定位</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/59j3gf94r6itph46ihuo0slbb4.png"></p>
+<h3 class="topic">
+<a name="7osavhir83u80rbfi39s4ckgrj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对文件中外部函数的调用进行重定位</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/2bab31vcluabjpnum2ikdg6h21.png"></p>
+<h3 class="topic">
+<a name="6734jb59ia1ub92sto664v9bo1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在link_imag函数的最后call_constructors中会调用init_func和init_array函数，该两个函数内容可以自己指定，一般是所有安卓加固的入口</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/4gil4ckoicrqdgefagf7oqaa8k.png"></p>
+<h3 class="topic">
+<a name="5p6vri9upuhentrdkr7akl8hkb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/2t9gnslv1l1sad3cld8av1frjo.png"></p>
+<h3 class="topic">
+<a name="2ev0adt8knq4g5umoem9srlgde">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;call_array函数</a>
+</h3>
+<h3 class="topic">
+<a name="2sa0un3uhvnhjs63c2bi055fqb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/0poevclrtmo7gus90lfi06vo2k.png"></p>
+<h3 class="topic">
+<a name="250283u11n84qpr7m9qpfek8rn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;init_array中的函数也是需要被重定位的</a>
+</h3>
+<h3 class="topic">
+<a name="3kbqcs3cmrl3mu9cfaia5qgrgq">&nbsp;对于加载bin文件，相较于加载so文件，会在init_func和init_array执行完成后跳转到入口函数中执行&#13;
+对于so文件加载完成后程序会从dlopen函数中返回，返回值为一个soinfo结构体指针，并继续执行dlopen之后的代码&#13;
+如果是bin文件加载完成后会从文件中的start函数开始执行</a>
+</h3>
+<h3 class="topic">
+<a name="2darl74u4huda22kom6u3jmeqs">&nbsp;加固思路</a>
+</h3>
+<h3 class="topic">
+<a name="350csmv4lpv9fn2gj8eob85ihu">&nbsp;&nbsp;加载so时初始化类时</a>
+</h3>
+<h3 class="topic">
+<a name="262u19qov7dumdvbf2s7q58phj">&nbsp;&nbsp;apk启动，会加载所有需要的so文件，加载so时会调用init_func和init_array函数，可以在init_func中将init_array中的函数解密出来，从而进行对抗</a>
+</h3>
+<h3 class="topic">
+<a name="5pd5d9edd0fersk8rqavhiif1a">&nbsp;&nbsp;apk启动后，虚拟机会初始化类，类初始化时会调用static块中的System.loadLibrary</a>
+</h3>
+<h3 class="topic">
+<a name="0e7k9gjm1duff1h1hvdslb21ra">&nbsp;&nbsp;&nbsp;可以将static块（当中包含System.loadLibrary）放在app的application类中的attachBaseContext和onCreate函数中，这样的话System.loadLibrary会比attachBaseContext和onCreate函数更早执行，则loadlibrary中的init_func和init_array也更早执行，则loadlibrary中的init_func和init_array执行完毕后会搜索so文件中是否有JNIonLoad函数，如果有需要调用JNIonLoad，之后才会返回到application中，进一步调用attachBaseContext和onCreate</a>
+</h3>
+<h3 class="topic">
+<a name="7e1d97j7sm6rmld1kbdq5h67ss">&nbsp;&nbsp;&nbsp;&nbsp;可以在init_func之后调用的函数全部加密，init_func运行时解密，从而进行对抗</a>
+</h3>
+<h3 class="topic">
+<a name="29i46l8jt004cidk7gledj35bq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将static块放在MainActivity中也可以进行类似的加密，从而在MainActivity对应类初始化之前无法静态看到其中内容</a>
+</h3>
+<h2 class="topic">
+<a name="0skrp9439nlu7m07tur00cltmp">注意</a>
+</h2>
+<h3 class="topic">
+<a name="4i6h0na3cu18rm2c8oi4p3ntu8">&nbsp;oat文件就是elf文件中包含了一个dex文件，加了一些额外的字段，从而使两者部分数据耦合</a>
+</h3>
+<h3 class="topic">
+<a name="0n9hkc8lfcpc4n9behrc6rh5v8">&nbsp;elf文件节表恢复</a>
+</h3>
+<h3 class="topic">
+<a name="3so3jnjtgl0hchiqv3e5cqeuls">&nbsp;&nbsp;如果elf文件的节表被删除，也可以使用工具等方法根据文件中其他内容（主要是dynamic）将节表恢复</a>
+</h3>
+<h3 class="topic">
+<a name="5vs1ngivjupff7a7n15l9mbrbj">&nbsp;&nbsp;原理</a>
+</h3>
+<h3 class="topic">
+<a name="1g3m8v70vjgfngr0l76rndngt7">&nbsp;&nbsp;&nbsp;一般elf中节的包括</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/6b63cjtm8hddn9pf0ieasc3ik5.png"></p>
+<h3 class="topic">
+<a name="0dum8cs6h87enluasuffe1963j">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/5d2pfc5rvi7sgc8bvmohakc2el.png"></p>
+<h3 class="topic">
+<a name="2q65cf65jn4o1v4qrob0elv2al">&nbsp;&nbsp;&nbsp;&nbsp;节名称可以通过自己创建字符串表从而重建</a>
+</h3>
+<h3 class="topic">
+<a name="1j0qsnhedblvrcs2f7h8d3ou07">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/1nm7mtu0rbjk7396ndgguesdce.png"></p>
+<h3 class="topic">
+<a name="1dovljdkrpvaq3fl1n4nqjq5t5">&nbsp;&nbsp;&nbsp;&nbsp;在节表和段表中，dynamic节和dynamic段对应的都是同一段内存数据，即dynamic段即dynamic节，根据段表表项的信息，我们可以得到dynamic节的虚地址、文件偏移和大小，从而恢复dynamic节</a>
+</h3>
+<h3 class="topic">
+<a name="3p4u8708282vhsgfbo1bbuckop">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/6n24hui5dvp88j43m420qurmus.png"></p>
+<h3 class="topic">
+<a name="7qmfacrogrnhjj9ce12qv98gmi">&nbsp;&nbsp;&nbsp;&nbsp;在link_image函数中，会取出.dynamic节中的内容用于重定位，其中就包括了.hash .dynstr .dynsym .rel.plt  .rel.dyn等节的地址或大小等信息，可以通过这些信息恢复对应节的节表</a>
+</h3>
+<h3 class="topic">
+<a name="6omu8pvriejp1dv2qf49jfhqrn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/7aqjmit22kq7taifpr4rj2k9ae.png"></p>
+<h3 class="topic">
+<a name="48euqgank18djnal46r9m9o141">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;got表(即.got节)中的内容因为被.rel.plt中的内容所引用，所以可以大致计算出.got的范围，当然可能存在一定误差</a>
+</h3>
+<h3 class="topic">
+<a name="043ljou4pbfqb98adp1s0e4d9i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.test节可以通过搜索特征汇编的方法确定其在内存中的虚拟地址</a>
+</h3>
+<h3 class="topic">
+<a name="23qoulkfaio4cpo3ubfed9i4g7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;同理.plt实际上也是由代码组成，并且特征十分明显，所以也可以通过搜索汇编的方法确定虚拟地址</a>
+</h3>
+<h3 class="topic">
+<a name="36gcsdavqt0fe8hn42cjbr1gsd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.ARM.exidx节可以直接从elf文件中识别出来，因为其就是段中的EXIDX</a>
+</h3>
+<h3 class="topic">
+<a name="532uj60l1db0ru9qea53l2o1iv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对于.data .bss&#13;
+因为bss不占文件大小，所以将LOAD段的内存大小减LOAD段的文件大小，即可求得.bss的大小&#13;
+LOAD的起始虚地址+LOAD的filesize即.bss的起始地址</a>
+</h3>
+<h3 class="topic">
+<a name="5gkm5u5u8657pd4fmgo5255ii3">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/39gidgdgogdeajncdqs58kd4k3.png"></p>
+<h3 class="topic">
+<a name="6908qb4evkeh5tspb96jb2jep7">&nbsp;&nbsp;&nbsp;&nbsp;通过elf.h中的内容，也可以知道像.dynstr节的大小等信息也保存在.dynamic中</a>
+</h3>
+<h3 class="topic">
+<a name="2nhblpbvs9f4rkhrshclaaa8pu">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/4uv0i3ojtpnd2ep4ccmq9m3fpv.png"></p>
+<h3 class="topic">
+<a name="67p51o6e00s7ol82fphg5apges">&nbsp;&nbsp;&nbsp;&nbsp;根据相对虚拟内存地址转文件偏移的方法，可以根据节的虚拟地址计算其文件偏移</a>
+</h3>
+<h3 class="topic">
+<a name="20mgej8j8p2mku47644uj6irv3">&nbsp;&nbsp;&nbsp;将以上得到的数据保存在elf文件末尾，并修改elf文件头部的相应字段，即可恢复节表 ，注意所恢复的节表还是会有一些数据不完整，比如.got的数据计算存在误差等</a>
+</h3>
+<h3 class="topic">
+<a name="239u6meef7ovahgrvvlc8t03og">&nbsp;一些反反调试方法</a>
+</h3>
+<h3 class="topic">
+<a name="4aqd2me43nd8ind7u3j7hamk9r">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-4_files/6ptdve32jh7klbhoe22rrql95p.png"></p>
+<h3 class="topic">
+<a name="07i3hhqhcqgc04vtv8074r11kq">&nbsp;&nbsp;&nbsp;在段中，LOAD、DYNAMIC类型的段是程序执行必要的，其他段可以没有，如果反调试手段将NOTE段的内容进行修改，导致ida无法加载，则可以通过将LOAD、DYNAMIC类型之外的段全部删除，并修改段数量的方法绕过</a>
+</h3>
+</body>
+</html>

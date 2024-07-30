@@ -1,0 +1,1185 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>软件安全对抗2</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="33h2b9tufve2utfek3ouq7p1lp">软件安全对抗2</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/images/%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972.jpg"></div>
+<h2 class="topic">
+<a name="6ndrdo9ul1jbga5auud00i6cjd">安卓调试与反调试</a>
+</h2>
+<h3 class="topic">
+<a name="5ktbi6f7e7t0u2cqgcmg2nl2nd">&nbsp;环境搭建（基于windows）</a>
+</h3>
+<h3 class="topic">
+<a name="7sh11m924tmn8f1ik9u4t3lps2">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/2j0u7kj2m3vr8p19pqa1e6046n.png"></p>
+<h3 class="topic">
+<a name="1u0ag2ian76sd5v3kisl8rosv1">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/4j2mem1c92h32gla0s5hvinl6b.png"></p>
+<h3 class="topic">
+<a name="6neqqsrr9nm0vbq52fd5cq9uai">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/12me5prn0i4teuv32qcbgr88jc.png"></p>
+<h3 class="topic">
+<a name="07nqglmeodfl5edomflh7b4hii">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/3mhkefviioqu9e9e9b1gpkjsuk.png"></p>
+<h3 class="topic">
+<a name="4lhbt6528hpdah35dtjf2amj9c">&nbsp;adb常用指令</a>
+</h3>
+<h3 class="topic">
+<a name="17obrr6416gj0cer48948vmso4">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/7fnjdcpse1omgtbnl2bb3jfc43.png"></p>
+<h3 class="topic">
+<a name="4avj6j120q6ual6qgpm4aqh47n">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/7ddk1eephj24venj94hbrl2lic.png"></p>
+<h3 class="topic">
+<a name="3cottgsm9o5ekjr5t4p60nbkvo">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/5tjc5q6rp2445ddp5dj96o58gs.png"></p>
+<h3 class="topic">
+<a name="3rfbhvdcq1bfns0fj48g1cj3bj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;su提升权限进入data/app目录，查看其中内容</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/11940j1ccojhmec81ml1391smd.png"></p>
+<h3 class="topic">
+<a name="1d19ffvtmd05vg134i4lro00p6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;root之前的权限</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/26bi4vmboc0cfr92sdknclds6o.png"></p>
+<h3 class="topic">
+<a name="4b5uoqa48f01vdu461guga5bcr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;root之后的权限，如果开启SElinux，此时即使uid gid均为零，若context不为0，也不能使用root权限</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/7up94cteqd0svv7olgej4vc9d5.png"></p>
+<h3 class="topic">
+<a name="5t128av2c5nsru6qmj3k9n1g9p">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过ps -Z查看进程及其对应的context 例如进程init的context即为u:r:init:s0</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/7c27jbp72iknsj7apb3cj0ubbe.png"></p>
+<h3 class="topic">
+<a name="17isefhthcmprmevvsls53baiv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用rm指令删除/system/app目录下的app，但是/system目录只读权限，所以删除失败</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/0336q515ducd7k6u0a53j1j2iq.png"></p>
+<h3 class="topic">
+<a name="13afdqb0tck78itek9l31b2c2e">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mount命令查看/system目录的属性为ro，即只读</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/67ts7no8mjhgouar313rlebsp9.png"></p>
+<h3 class="topic">
+<a name="7b359r8alqruhc1trsghbkt3qu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用mount指令将/system目录改为读写属性 rw，有的手机厂商修改了mount命令的内核实现，从而禁止用户修改目录属性</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/6p6tc09cnq02fr1loff8ko75gu.png"></p>
+<h3 class="topic">
+<a name="3mcm9je6jk3r1m32nf4c0vro4t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将要删除的app拷贝一份</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/3md7jk48iccc3kapkbcbsodtek.png"></p>
+<h3 class="topic">
+<a name="4p08n154sfld1be8qivm4mnk6v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;修改拷贝apk的权限与原apk相同</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/40l1bdp27sm60qfh4gc30ldgu5.png"></p>
+<h3 class="topic">
+<a name="5urb8uphagusp59r0nmd31fo4n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;删除原apk</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/5rv9sp16b245s8c7j5hl7npplh.png"></p>
+<h3 class="topic">
+<a name="1e7f8hoqnpe6rdgfuftpa80nq8">&nbsp;apk签名方式</a>
+</h3>
+<h3 class="topic">
+<a name="3cotu27oj3l5sa67d7u3a6n8jv">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/1nmvp6h8kridkmd30gu9dnotrm.png"></p>
+<h3 class="topic">
+<a name="5330gdr4qasspdejrufca88va3">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/7eh698tc0alclhcbmig7iu5bv7.png"></p>
+<h3 class="topic">
+<a name="2snpsk83s3p9hnubsmdb9s26ng">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/0q5dri1fcpr4onnrlq8aqonq94.png"></p>
+<h3 class="topic">
+<a name="0obf1oit64peefuaksfqh35pim">&nbsp;编写批处理脚本并右键调用</a>
+</h3>
+<h3 class="topic">
+<a name="1cji6p99mg9n9jb40hhigjh3k9">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/3b5js3h1e8rvi0jblngdj7cblt.png"></p>
+<h3 class="topic">
+<a name="0g92btlp254c99qfb8acsafec0">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/2j5of5aranq4mcg7vbha8i3c01.png"></p>
+<h3 class="topic">
+<a name="7r61l24g3p8elub9q9kl5hrac3">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/0e4djfsusvbgd07j7vitphpupf.png"></p>
+<h3 class="topic">
+<a name="35l5b4r82jl2b8984j38bb4v6s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/7fgmehksfkfvfpaephqlkeqs4p.png"></p>
+<h3 class="topic">
+<a name="4om1lihf6m8b7evobpcoi8ac2v">&nbsp;查看apk进程信息</a>
+</h3>
+<h3 class="topic">
+<a name="3p02k7s7nql9mbr0up4949l8sh">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/51408kdoqcl8703nt6begbtaos.png"></p>
+<h3 class="topic">
+<a name="5a7qoiaulnatuj2lkod9sdu9nu">&nbsp;&nbsp;&nbsp;/proc/self/maps显示当前进程的内存映射</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/3iggkc568dtdoc5aasiv821vko.png"></p>
+<h3 class="topic">
+<a name="3uurmvnjbmul87guov040tf9ij">&nbsp;&nbsp;&nbsp;&nbsp;/proc/self/status显示当前进程状态</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/640t6cqhnepu4afknkncdmgo5r.png"></p>
+<h3 class="topic">
+<a name="2k667aj1goqhork32fiqd1e2oq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过/proc/self/mem直接修改进程内存需要一定的权限</a>
+</h3>
+<h3 class="topic">
+<a name="4vdambav4julqrepmojlptioar">&nbsp;相关集成工具</a>
+</h3>
+<h3 class="topic">
+<a name="5i485o6v9s3jim5lcpk9a70dko">&nbsp;&nbsp;apktool</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/2pie2o4cbotf9pcr5ku2vhqotj.png"></p>
+<h3 class="topic">
+<a name="7l4lijk9cs1o682ike87r71t7g">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/7osv2u6rf3b2giarsi9hfde7ff.png"></p>
+<h3 class="topic">
+<a name="2ht52culpc98f0qv4tni5ucq55">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/415k3su2v8ikuekum2pbbisfmt.png"></p>
+<h3 class="topic">
+<a name="1h1ud0b8pjiaqsj7evt0shsbi7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/1e4r53hn2v1sfblfhu68gb2945.png"></p>
+<h3 class="topic">
+<a name="0qmn0qavbvlb3lj2a817rukdfb">&nbsp;动态调试dex（dex反汇编得到smali，反编译得到java代码）</a>
+</h3>
+<h3 class="topic">
+<a name="0kg3u354u0nqmag9spei8aupvm">&nbsp;&nbsp;使用netbeans（比较老的调试方法）</a>
+</h3>
+<h3 class="topic">
+<a name="3si3f1vgoppmeqpblmra91pit1">&nbsp;&nbsp;&nbsp;需要对程序二次打包，如果程序由校验，需要过校验</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/5hrpnp4ol6q2sj2tvihtlc67pf.png"></p>
+<h3 class="topic">
+<a name="4qhk7v64lop4ah128jhjvlk0tn">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/0q5ev784iu5qjoqt6g2fh2mjhq.png"></p>
+<h3 class="topic">
+<a name="60246kav4e95sh8tuqmpo9bpv8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/2c3ttf0sjkua3lgvosa0fij0v3.png"></p>
+<h3 class="topic">
+<a name="3ipvosv5vdlnkbvjt3rocqfgo4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/6tno8kpgfaclnvpok5ko7b1e3d.png"></p>
+<h3 class="topic">
+<a name="41mbesva6g3f6qrtmirjl80bc8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/2n1hqcctms5cei05k2379f9k8l.png"></p>
+<h3 class="topic">
+<a name="2k8ul6jglu7tb458o8adcrkknn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/75f0pvm9shl59lnp4uemo9l010.png"></p>
+<h3 class="topic">
+<a name="01ib3b5jaulmes1kgcve0jjq0v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/5ju8l5kp0t20ikdvup7pjfhros.png"></p>
+<h3 class="topic">
+<a name="4ojumcb134db65qksbu66s6d21">&nbsp;动态调试bin</a>
+</h3>
+<h3 class="topic">
+<a name="62p207nddi98rb95p8iuqaihio">&nbsp;&nbsp;使用ida调试bin文件</a>
+</h3>
+<h3 class="topic">
+<a name="7e4cg816eiht5siuo8fn8phq39">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/3e3059vqe324coqi2m70743l7i.png"></p>
+<h3 class="topic">
+<a name="48ls3cnq2r2ntj5u207qustgug">&nbsp;&nbsp;&nbsp;&nbsp;android_server在ida中找</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/341fu29santub57rtbmucji9j4.png"></p>
+<h3 class="topic">
+<a name="301gh8a1o1t2cd547panehineb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/3d8egn41reghaq5uipataqdfps.png"></p>
+<h3 class="topic">
+<a name="7192l5rasmha567smm0ifra3nv">&nbsp;调试JNI的so文件</a>
+</h3>
+<h3 class="topic">
+<a name="3212l7ihp80njofd9g3attbfd0">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/0bbi79f5qfbdrif02jnovsmjen.png"></p>
+<h3 class="topic">
+<a name="6li2eatpduepk1r7jccvmfvlb2">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/2ip65uib0lfppa2b5c67vgd456.png"></p>
+<h3 class="topic">
+<a name="1uof77b75e667v2ulrgtu344sr">&nbsp;反调试</a>
+</h3>
+<h3 class="topic">
+<a name="0ohkcvruqntiuglnhfup8s93hv">&nbsp;&nbsp;安卓底层为linux内核，linux提供的ptrace机制可以调试一个安卓进程</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/1n7lsnpmb6rgg5u9en6c4e1eba.png"></p>
+<h3 class="topic">
+<a name="39ppct57rsls91mpreu1e19aeq">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/0f9kdk5pc8dloj8kt7f42kjtbb.png"></p>
+<h3 class="topic">
+<a name="7p4952i78768jpblbmmut2msip">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/7gpmpfulrl5mee1ai6ca83ch9e.png"></p>
+<h3 class="topic">
+<a name="6jlabp0ilh7qe2l9vbtb498cge">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/2hs614dd92a2a098fco8rfeujf.png"></p>
+<h3 class="topic">
+<a name="1vja5o0eik8rnsm9pulghin3g0">&nbsp;&nbsp;一个安卓进程被调试，则其PPid和TracePid会存在特征</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/7cv2mgjgpi70b8454bcr1pcf3s.png"></p>
+<h3 class="topic">
+<a name="0i9oltd0cttpfpt7fgnmd4mdjt">&nbsp;&nbsp;&nbsp;通过判断进程的state字段（此时为t即trace stop）PPid、TracePid ，从而判断当前进程是否被调试</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/7ldop1fsf5dd7l9gco5u1kllnm.png"></p>
+<h3 class="topic">
+<a name="7ue73kfbck8q27afsjfqu2sj9t">&nbsp;&nbsp;&nbsp;&nbsp;pid为21346的进程即ida调试所用的android_server进程，说明当前进程正在被调试</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/49s2jtqd7h2dfhs8c0lvh683s2.png"></p>
+<h3 class="topic">
+<a name="111h7ojjks8lfne55nvqf80elq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;手机中通过点击打开的app其父进程基本都是zygote进程，即zygote进程通过fork创建所打开的app进程（类比于windows中的explorer.exe进程），</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/1jsq9uhac9pkl56h7ljod5i51o.png"></p>
+<h3 class="topic">
+<a name="1prngaq0hcbg5rqpq6o1k305ab">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;zygote进程启动之后，会将系统库加载到本进程中，当启动app进程之后，会将zygote中的系统库拷贝到启动的app进程中，所以通过hook zygote进程，修改其中的系统库，就可以控制有其创建的app进程（实现全局注入）</a>
+</h3>
+<h3 class="topic">
+<a name="5f35guv5atgdp0s79t36rt4o2o">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/0vh8oprnal954ldpq4o01u7bvl.png"></p>
+<h3 class="topic">
+<a name="5oaodm7o4k08ir88qm0n5jpu8f">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;zygote中也加载了libbinder和libandroid_runtime等重要库</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/4v3rl3569rv010nj85io455e3i.png"></p>
+<h3 class="topic">
+<a name="25elnmgcr9mj12oaos8dbcdnkd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意点击打开的apk的父进程一般都是zygote进程，但是运行的bin文件进程文件其父进程则不是zygote，如果该bin文件是被一个工具启动的，则该bin文件的进程就是工具的进程</a>
+</h3>
+<h3 class="topic">
+<a name="420gs6mnag4u7998mjcr2s36vc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过strace工具启动dapk，strace等工具是linux中用于跟踪系统调用的工具，底层使用ptrace实现</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/45uc05jvlg1eo6ndecoh89nhfr.png"></p>
+<h3 class="topic">
+<a name="2mbsmlhects7137jp7g1u4n7d3">&nbsp;&nbsp;判断进程的stat中是否有t</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/3939q32c0sh9f9avvfkb70ftj2.png"></p>
+<h3 class="topic">
+<a name="6oma2l4f0dl0jcsel2i93o5okl">&nbsp;&nbsp;&nbsp;进程的stat还可能为S，即sleeping</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/0nuobkh2h5at0d27lh7umdiq1t.png"></p>
+<h3 class="topic">
+<a name="3172372ku7tm573sbue4bpv6lr">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/142fsfqleordb99g8g5idhjqlj.png"></p>
+<h3 class="topic">
+<a name="5q9t6o959avg28s5ihfs5jurv9">&nbsp;&nbsp;&nbsp;进程的wchan属性为ptrace_stop，则进程被调试</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/69aoc4nlg37pt3v9nra7jnpt15.png"></p>
+<h3 class="topic">
+<a name="20r2llia63crpji0f1487d6ki7">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/7u6u8dsk0q5s2gq0lll06vak7p.png"></p>
+<h3 class="topic">
+<a name="44jgin8o7t90c454n48gjfvstp">&nbsp;&nbsp;ida调试时会映射23946端口</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/39jkf6aqrcthv36bqlfe3vt592.png"></p>
+<h3 class="topic">
+<a name="5327ke0aouh1c359o47l660gec">&nbsp;&nbsp;&nbsp;壳程序可能检测该端口，从而判断当前是否被调试</a>
+</h3>
+<h3 class="topic">
+<a name="1vf2bso4q07j7p01eaohhj3uts">&nbsp;&nbsp;通过hook read和write从而对抗内存dump，自己通过汇编进行系统调用实现read和write函数，执行时检测当读写elf文件头相关数据是，函数退出</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/5dflqdpfv8s8sf7dg132b7lphq.png"></p>
+<h3 class="topic">
+<a name="427c5tjnp48ojeietgrob5hvo9">&nbsp;&nbsp;&nbsp;压缩壳在程序运行起来之后会会恢复程序原本数据，此时可以进行dump，android的dump主要针对dex文件进行</a>
+</h3>
+<h3 class="topic">
+<a name="7c46obth7t9oadcatmq6arl6u7">&nbsp;&nbsp;通过设置inotify（通知回调）进行反调试，读取进程的mem、pagemap文件也可以进行内存dump，mem中有对应进程所加载的模块和内存信息，当使用inotify监控系统中文件读的行为时，可以检测到读mem进行内存dump，从而防止内存被dump</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/3fnpvctrgr2jeeq0uauk163fke.png"></p>
+<h3 class="topic">
+<a name="4e9i9jn71533ur88cubtvsj706">&nbsp;&nbsp;&nbsp;函数inotify用于监控系统的一个事件</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/7u51cejm5mg5sadii4tgfnfiga.png"></p>
+<h3 class="topic">
+<a name="0ceupatmc7qu7ee2vroqtak7kq">&nbsp;&nbsp;&nbsp;&nbsp;代表所监控事件的结构体，mask用于指定所监控事件的类型可以为读、写、创建目录等</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/1b9f7vps30inp3ercg32r65lrp.png"></p>
+<h3 class="topic">
+<a name="4pbvt36a628fntflq0j21b7b1k">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;inotify能监控的事件类型</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/2lc0dgct2oji9u9v6hki535flp.png"></p>
+<h3 class="topic">
+<a name="39lk4mvpa0rkkoqbbm63j0gatu">&nbsp;&nbsp;&nbsp;绕过该反调试的方法是注入zygote进程，hook inotify函数，当设置inotify时，将其指向其他进程</a>
+</h3>
+<h3 class="topic">
+<a name="3ip6i5j2mst3g1jiqc8d8hr556">&nbsp;&nbsp;&nbsp;&nbsp;工具dapk就是绕过inotify反dump机制，从mem文件中dump数据，从而脱壳的</a>
+</h3>
+<h3 class="topic">
+<a name="2tobv8reqb16umphc846jdo2dg">&nbsp;&nbsp;利用信号机制实现反调试</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/7to2o7oe7eqlj5jppp3f2tesv0.png"></p>
+<h3 class="topic">
+<a name="1b6b4qcn4t830i916qn7fe467n">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/66vemsciqe2f9f238n08ekje86.png"></p>
+<h3 class="topic">
+<a name="1o0o3spttmbkc1p67q3n8vvdua">&nbsp;&nbsp;通过判断reld_db_dlactivity函数中指令内容判断当前是否被调试</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/6cl0h2cs7d8eva57ncgqaiblnk.png"></p>
+<h3 class="topic">
+<a name="4s9sceqcs3q547115pv6rjn319">&nbsp;&nbsp;&nbsp;rtld_db_dlactivity函数位于linker的rt.c中</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/6f0nqdlcd56r1v25rhsjvur14q.png"></p>
+<h3 class="topic">
+<a name="6jpd6hn5as8nrg0p7fq3pb1la3">&nbsp;&nbsp;&nbsp;&nbsp;正常时该函数为空函数，当有断点存在时该函数中存在断点相关指令</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/2tk3m6h4schpjgd07f9husv1ji.png"></p>
+<h3 class="topic">
+<a name="64o1uf05tunnvagtdtnbegoaq0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当存在断点时该函数内容非空</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/6419m85g6luhh2e0ncr4mt8cgk.png"></p>
+<h3 class="topic">
+<a name="23f2387fve4umci40d6clca0st">&nbsp;&nbsp;检测当前进程内存中是否存在软件断点</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/4q0schq82650gf0j0393p2jaup.png"></p>
+<h3 class="topic">
+<a name="30g49qbmb1brhhfhfkjophvbln">&nbsp;&nbsp;DvmGlobals是一个全局结构，其中部分字段（例如debuggerActive）用于表示是否被调试，可以调用图中的api从结构体中获得该字段</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/5qf1dbfjhefprs6q088htqbjmv.png"></p>
+<h3 class="topic">
+<a name="2t0dhb89l2qsefp1kmfg6k5gmo">&nbsp;&nbsp;&nbsp;该结构体每个系统版本可能不同，需要进行适配</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/5slvlrfoou77u7b301ugae0vrk.png"></p>
+<h3 class="topic">
+<a name="4hi6lt245r49ma6vjbabsne2v1">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/1dgojbs3hi4suui85i628mq5jt.png"></p>
+<h3 class="topic">
+<a name="6quj50rv44r6ec1rg4irm8fm7o">&nbsp;&nbsp;&nbsp;获取系统启动时间与当前时间点的差值，从而判断是否被调试</a>
+</h3>
+<h3 class="topic">
+<a name="27mh1dp7vdag76p67vcgjmamem">&nbsp;反调试实例</a>
+</h3>
+<h3 class="topic">
+<a name="340b88nbub9ctpl0qttpqgsipv">&nbsp;一般安卓root利用思路</a>
+</h3>
+<h3 class="topic">
+<a name="24hri8bh67uek3j3c0m1dsfn5l">&nbsp;&nbsp;通过漏洞提升权限，之后进行下一步操作</a>
+</h3>
+<h3 class="topic">
+<a name="4o2p29ea880d0uc224hctmctu5">&nbsp;&nbsp;&nbsp;将su等可执行程序利用root权限写入/system/xbin等目录中然后设置开机自启动</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/2so7mc4gn2263966lqb4clognk.png"></p>
+<h3 class="topic">
+<a name="6knrum0s2r4bs1nfh9diihf8ro">&nbsp;&nbsp;&nbsp;&nbsp;/etc目录中有脚本文件install-recovery.sh，开机时会执行该文件，root工具利用root权限在该脚本文件中加上要开机运行的命令行（5.x之后版本不保证一定成功利用）</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/2ef1g0q59bl6f3r9gtuthimdks.png"></p>
+<h3 class="topic">
+<a name="1841eaeu9ctc5e6k9fdiopu1v9">&nbsp;安全大师免root的实现原理</a>
+</h3>
+<h3 class="topic">
+<a name="4n5j1398d3vj2meeksqj8bppm0">&nbsp;&nbsp;通过漏洞提升权限，之后进行下一步操作</a>
+</h3>
+<h3 class="topic">
+<a name="2b6b9qjn741l77q1ffksg1otg6">&nbsp;&nbsp;&nbsp;在需要的时候启动一个root进程，如果需要进行root，直接和该进程通讯即可，但是设备重启之后该进程不会自启动</a>
+</h3>
+<h2 class="topic">
+<a name="1s4d50kmvfd7lb29shvc71t1dn">加壳与脱壳</a>
+</h2>
+<h3 class="topic">
+<a name="4ctiup69ajorrjpji28kfvfg2f">&nbsp;安卓加壳</a>
+</h3>
+<h3 class="topic">
+<a name="1dj7bnmv3di91lujue34ev38k2">&nbsp;&nbsp;一般壳的功能执行流程</a>
+</h3>
+<h3 class="topic">
+<a name="71vr34fln4d3astbbohf6gbrm1">&nbsp;&nbsp;&nbsp;壳代码-》反调试-》解码-》运行原始程序</a>
+</h3>
+<h3 class="topic">
+<a name="1i3lvdmnmr4g7tl8fq77hmkrki">&nbsp;&nbsp;&nbsp;&nbsp;反调试和函数替换均可能穿插到原始程序执行过程中</a>
+</h3>
+<h3 class="topic">
+<a name="2t7mdum4n0uacdo7mgob7isrh2">&nbsp;&nbsp;&nbsp;&nbsp;如果原始程序被加密，需要还原，针对被加壳程序的不同，分为两种情况</a>
+</h3>
+<h3 class="topic">
+<a name="2928bbb9m1lgmk5tnpcl1q06on">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;程序中有原始数据备份</a>
+</h3>
+<h3 class="topic">
+<a name="5lce55h9pbcltum5ue4noiis2n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;例如加密壳的iat加密</a>
+</h3>
+<h3 class="topic">
+<a name="5hn2ijhp3h5mdba0or8qcqdggi">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以通过跳过或解密从而修复</a>
+</h3>
+<h3 class="topic">
+<a name="2fmmg2i29esb356g0o6p172n6a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;一般通过写脚本实现修复</a>
+</h3>
+<h3 class="topic">
+<a name="4p3s26j2sje46m7qv69n3ra65d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;程序中原始数据被完全替换</a>
+</h3>
+<h3 class="topic">
+<a name="65nu279istr0brvdg256asb2fu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;例如vmp用自己的指令架构模拟，这种不好修复</a>
+</h3>
+<h3 class="topic">
+<a name="57hv09mtbs8a5h5ppk5ion963o">&nbsp;&nbsp;安卓加壳的目标文件DEX、SO文件</a>
+</h3>
+<h3 class="topic">
+<a name="36tldfcan2gvuqs9t04g0c6je3">&nbsp;&nbsp;&nbsp;安卓开源，所以dex动态加载和so动态加载（即linker）的过程可以看到源码</a>
+</h3>
+<h3 class="topic">
+<a name="3iome9angp090pqhsl5v15bdvi">&nbsp;&nbsp;安卓中壳的种类也分压缩壳、加密壳、虚拟机壳</a>
+</h3>
+<h3 class="topic">
+<a name="5lsuce30g3g1avacqerlfobmva">&nbsp;&nbsp;&nbsp;压缩壳</a>
+</h3>
+<h3 class="topic">
+<a name="08vghhap36d7kn1gtduhj07egd">&nbsp;&nbsp;&nbsp;&nbsp;主要实现了dex的动态加载</a>
+</h3>
+<h3 class="topic">
+<a name="78p7p6plhbvv7jm9vod395p8jb">&nbsp;&nbsp;&nbsp;加密壳</a>
+</h3>
+<h3 class="topic">
+<a name="39osk893jndnfgs5b11m7dpu8i">&nbsp;&nbsp;&nbsp;&nbsp;动态加载的基础上对关键函数进行加解密</a>
+</h3>
+<h3 class="topic">
+<a name="3a4f65sj5n9oinpvk9p8t947gm">&nbsp;&nbsp;&nbsp;虚拟机壳</a>
+</h3>
+<h3 class="topic">
+<a name="09nsphgg8hhm48pqeri0no3bbk">&nbsp;&nbsp;&nbsp;&nbsp;因为要处理不同系统版本兼容性问题，所以稳定性兼容性有待考察</a>
+</h3>
+<h3 class="topic">
+<a name="2ppbb17bukg6j8ffidpn03mjkl">&nbsp;&nbsp;&nbsp;&nbsp;需要处理的兼容问题</a>
+</h3>
+<h3 class="topic">
+<a name="2iv0me3j6g132h67v1ln1mt1hm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dex版本问题</a>
+</h3>
+<h3 class="topic">
+<a name="09fr4ulr5l6vv806hd8l7i2f24">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;各个厂商的diy代码</a>
+</h3>
+<h3 class="topic">
+<a name="10a7529nn4ouh62kvfd73apdbc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;不同硬件架构的so文件（x86 arm32等），不同硬件架构对指令的解析模式（即指令是如何反汇编和汇编的）不同，针对不同架构的可编译指令均需要兼容性处理</a>
+</h3>
+<h3 class="topic">
+<a name="3vb5c955ag8ck5sqghloar2kjv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以参考capstone等开源编译反编译引擎</a>
+</h3>
+<h3 class="topic">
+<a name="4r42vsomkl27so11c7tt0fq37a">&nbsp;脱壳思路</a>
+</h3>
+<h3 class="topic">
+<a name="0c1nje865oecid0s53b6iqdjap">&nbsp;&nbsp;dex脱壳修复（处理加密壳）</a>
+</h3>
+<h3 class="topic">
+<a name="11k05q550u5bsnbk88igju09a6">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/1d3fbjdfeme70m4bbi2c736u89.png"></p>
+<h3 class="topic">
+<a name="3oem2fii4cojp7albcp5qpr2d7">&nbsp;&nbsp;&nbsp;&nbsp;dvmResolveClass函数是源码中调用被还原代码的关键函数，当被加密函数解析执行时，会调用该函数，如果hook该函数，则可以从该函数的参数ClassObject中获得还原过后的类对象，通过解析该类对象，可以输出该类对象中被还原的函数</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/3pfjqs3l7m05jcj8gu104iegoi.png"></p>
+<h3 class="topic">
+<a name="248es3gjs67se4ede9gs8ns9fl">&nbsp;&nbsp;elf脱壳修复（主要与linker有关）</a>
+</h3>
+<h3 class="topic">
+<a name="21in08r5vhndv861ug5amu0eq1">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/0uc0ssup4b5b0cbqq22dhddkpb.png"></p>
+<h3 class="topic">
+<a name="0696n0ap41cjd69hhvafanq9p6">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/0is4e559r9pj1ll6cd57b74e7s.png"></p>
+<h3 class="topic">
+<a name="7v5i03ufe2iaqhadd4bag90p41">&nbsp;&nbsp;脱壳思路</a>
+</h3>
+<h3 class="topic">
+<a name="11ehgf67a7q1mon8htslf183hq">&nbsp;&nbsp;&nbsp;dex文件被加载之后相关信息保存在DvmDex结构体中，系统根据该结构体中的信息解析执行dex文件</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/4oh8ec6hq2akc916mbfnou6h2f.png"></p>
+<h3 class="topic">
+<a name="60190jqb9qbcqmn7nssrofptmj">&nbsp;&nbsp;&nbsp;&nbsp;脱壳套路1</a>
+</h3>
+<h3 class="topic">
+<a name="7d66av4jt2718ad1917jo4u2i7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/2oaj63093i1hk2b5ftfk28o8gr.png"></p>
+<h3 class="topic">
+<a name="2j3h39og66a5tnissod23ptubn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;更详细的操作步骤</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/6410rsdcnfl41nb3iaj8cemmfq.png"></p>
+<h3 class="topic">
+<a name="6groqt9bkl5l5g5hlh0rinudeb">&nbsp;&nbsp;&nbsp;&nbsp;脱壳套路2</a>
+</h3>
+<h3 class="topic">
+<a name="6m0b158qudfcr2us659gmckhas">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/4utgguqjicp1g8o2gurfvosksl.png"></p>
+<h3 class="topic">
+<a name="6i58s9ei0oj2breb7mf53ipvr8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果注入不成功，则需要将SElinux关闭</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/5cl7g4ouqqtri3f45f9g56dn8e.png"></p>
+<h3 class="topic">
+<a name="7g617ti8pok578gg805ro46fbj">&nbsp;&nbsp;&nbsp;思路1</a>
+</h3>
+<h3 class="topic">
+<a name="0t9k1u7cull157cjkp9s1c6brv">&nbsp;&nbsp;&nbsp;&nbsp;通过010editor中的dex模板解析dex文件获得文件大小</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/6u2tqlifn8n08at1apm6qlvcj5.png"></p>
+<h3 class="topic">
+<a name="66ifgjm63pittp26pkj8jroq91">&nbsp;&nbsp;&nbsp;思路2</a>
+</h3>
+<h3 class="topic">
+<a name="1thva13fdvl474mi0s2ukecqa1">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/5k89sobs1lb8428cu49ttg8nif.png"></p>
+<h3 class="topic">
+<a name="0v3qdek9qah6n1bfoefve68ee6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/54f75ls9ikdhcps37pk92k1e2a.png"></p>
+<h3 class="topic">
+<a name="4g3n2ctqdfagotdh5plrmaf5le">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/4aqmgvbhh22d3s7091lu86ji0g.png"></p>
+<h3 class="topic">
+<a name="0agc3jpkve94punpp8upqump00">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/0bcfisj11o8boimhaetimk99g1.png"></p>
+<h3 class="topic">
+<a name="7ufa9qr652vt5sdi1dhqc1b2uk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dvmDexFileOpenPartial函数会从参数addr起始的内存 将len长度的数据作为dex文件解析，并将数据解析结果存放到pDvmDex结构体中，所以从该函数的参数中可以找到dex文件的内存起始地址和长度，即对该函数下断点</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/02c7omgdi4islc1a6s5umu97m7.png"></p>
+<h3 class="topic">
+<a name="2iqeur0kqtfnomri20ntsg6pcv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;调用allocateAuxStructures函数创建pDvmDex结构体，所以通过给该函数下断，可以获得pDvmDex结构体中的信息</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/7uqa5pcljdpt5k9d1343jju7mo.png"></p>
+<h3 class="topic">
+<a name="6u6nh8jvcfqojvg1ip571eaobk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;进程中的aux结构体起始就是DvmDex结构体，其用于保存一个dex文件的相关信息</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/63sdmq90a4b37sj2ptbtsd91gr.png"></p>
+<h3 class="topic">
+<a name="7e6bv0tu0219qhdcileogaqofn">&nbsp;&nbsp;一般脱壳套路</a>
+</h3>
+<h3 class="topic">
+<a name="652u32pui3rqj3e9h7eqv5pae5">&nbsp;&nbsp;&nbsp;搜索是否有脱壳工具</a>
+</h3>
+<h3 class="topic">
+<a name="633fac91uu4s3oj8uij72od8te">&nbsp;&nbsp;&nbsp;了解安卓系统对被加壳程序的处理流程，在这个过程进行下断等操作</a>
+</h3>
+<h3 class="topic">
+<a name="5g9tffq9v0vbbciktgmre97jhc">&nbsp;&nbsp;脱壳工具</a>
+</h3>
+<h3 class="topic">
+<a name="0ilmf5kkq303sqajs2gbimglpg">&nbsp;&nbsp;&nbsp;dapk</a>
+</h3>
+<h3 class="topic">
+<a name="72j97sm4p8ci3p057mrst0l1bp">&nbsp;&nbsp;&nbsp;&nbsp;用于暴力dump内存，原理是解析maps文件，可以用于dump一个进程的所有内存</a>
+</h3>
+<h3 class="topic">
+<a name="43h6flfq3irgjta0r7p8squ91n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;编译dapk工具，将其编译为elf文件</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/7fr5mi9qvl7tgeufj19o10l9at.png"></p>
+<h3 class="topic">
+<a name="1jgg92qdc80gdhctc5ghvsedo1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将dapk文件传入手机中</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/0t65ajh0dffivhqtj3smi8mf4t.png"></p>
+<h3 class="topic">
+<a name="1ind7uc4602ca7n7nanvrura3t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;赋予dapk工具执行权限</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/75991k1j4ma45qcs3clp93kl8o.png"></p>
+<h3 class="topic">
+<a name="06g8j61c2hbluqfroun7kfijdk">&nbsp;&nbsp;&nbsp;dumpdex</a>
+</h3>
+<h3 class="topic">
+<a name="3od8jbepla90kul3mhbm2ohhhg">&nbsp;&nbsp;&nbsp;&nbsp;用于自定义dump内存加载dex，编译完成后是一个so文件，可以通过注入工具将其注入到目标进程，该程序会返回目标文件的加载基址和大小，从而方便下一步进行内存dump</a>
+</h3>
+<h3 class="topic">
+<a name="173itkecense8ldir0vgcjkic4">&nbsp;&nbsp;&nbsp;&nbsp;使用方法</a>
+</h3>
+<h3 class="topic">
+<a name="1o9q61o38mejlprgd1hdrd91er">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/418toi04q6kl4d8la0thc63pqd.png"></p>
+<h3 class="topic">
+<a name="1qsadb08hjm4bkbg4veej9o9j9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果注入不成功，则需要将SElinux关闭</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/7liqmjfern7l1o94rm77ro57is.png"></p>
+<h3 class="topic">
+<a name="6bo9u74b8p3e3rv3usfhbs8v0l">&nbsp;&nbsp;&nbsp;&nbsp;实现原理</a>
+</h3>
+<h3 class="topic">
+<a name="6njhrrpsa146v5llohr94hug7e">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;findAppClass函数通过反射机制实现了动态加载类</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/78hrlqqltu1qvbmm5cjo8eh4lq.png"></p>
+<h3 class="topic">
+<a name="3hsl32go8vuh3630ahusl41c44">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;getJavaEnv</a>
+</h3>
+<h3 class="topic">
+<a name="641b18vrl7c93jn3nfukec4pkn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这里也可以通过javaVM调用GetEnv函数从而获取javaenv</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/3vo62ca6j8n95je3eb39qqbcu7.png"></p>
+<h3 class="topic">
+<a name="262b08pp1amg7hgp7ag869u7fn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/5is266e4gqt9loos5iji5g39ss.png"></p>
+<h3 class="topic">
+<a name="48bfle0k9stjrnr5942kou58l9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/1dngr5f7phjj9afiavur94aca2.png"></p>
+<h3 class="topic">
+<a name="2p14o13rehbnc6kuobs0hplola">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/0bq4ogtvshc33u2nbc4kqfughe.png"></p>
+<h3 class="topic">
+<a name="5s1l0295ui3ss34sqg20u2a4ga">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;initFunction</a>
+</h3>
+<h3 class="topic">
+<a name="6nlav9lkbteo8ifq00nmec5t14">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;initFunction函数用于初始化之后需要使用到的函数，其中调用了dlsym函数，该函数相当于windows中getProcAddress函数</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/37bis3lk4mgg7fr51tvsfede0u.png"></p>
+<h3 class="topic">
+<a name="0inq76p6kvdevnodpfjhuqi5jv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dumpsys activity top</a>
+</h3>
+<h3 class="topic">
+<a name="25tkc4kg7pq3v4fejq9okggqqt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/5g2batkgl2cdhna7bhg55dt0mv.png"></p>
+<h3 class="topic">
+<a name="7lhoi02c7niig5vl7s9c2l8q5a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;执行之后能够获取一个类</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/4rnr8ul52phbdbnb56rjvjh1d6.png"></p>
+<h3 class="topic">
+<a name="28h6cke3v18u8uj4gpfcfh94es">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;findAppClass</a>
+</h3>
+<h3 class="topic">
+<a name="1f61hbrgbqe928phpdaabunqaa">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/661tm5trgq18v5qmnp0ghgiopv.png"></p>
+<h3 class="topic">
+<a name="5s91g93nn4cbijnvncba9jt1b0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/1agjm600rdlq78b2n13u3mts26.png"></p>
+<h3 class="topic">
+<a name="088vd7eobpqh6apfbb9pslqhjs">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/72h21skan4djeg658h680gu0ql.png"></p>
+<h3 class="topic">
+<a name="6ag5mqta44k8vtjjahtl9j69qm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/4gsfmqunq2s7ociop9i85mjnb2.png"></p>
+<h3 class="topic">
+<a name="1gu96h6slmlu9ku8786cm5f2s1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/4b5sh8shfv6o09t3qt9hje6isv.png"></p>
+<h3 class="topic">
+<a name="2qhr24qota05gr3rjkqmbgho6k">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;根据android源码，ClassObject中包含我们要找的DvmDex结构体的指针</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/2vc15ep8mokghq1pn1829h3u4k.png"></p>
+<h3 class="topic">
+<a name="6secn1b180iml38acd88k3p3p1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DvmDex结构体中包含 pDexFile指针以及memMap</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/282htp3ofij7qrrgil8le0gc1p.png"></p>
+<h3 class="topic">
+<a name="20sb37fgg5djji4ddlgnsbf5pd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DexFile文件中有一个baseAddr字段，用于表示dex文件加载基址</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/5rmo9bl3k97q9jhc11m14s54qn.png"></p>
+<h3 class="topic">
+<a name="420n322qvcj6h5fuvai8ik0n7o">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;memMap结构体中有dex文件基址和大小</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/6uebl8nnhf5aeinp03r8m98mhb.png"></p>
+<h3 class="topic">
+<a name="4ii2f6pd4k9ivsehnjrt7t6upk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/0bur106951e59vu0i5lubb28kr.png"></p>
+<h3 class="topic">
+<a name="6l4ti6qdf52r6fcsk47gevfh48">&nbsp;&nbsp;&nbsp;inject</a>
+</h3>
+<h3 class="topic">
+<a name="2h0abrin91dplfadifbtfs2v3o">&nbsp;&nbsp;&nbsp;&nbsp;用于注入安卓进程</a>
+</h3>
+<h3 class="topic">
+<a name="55jei50qljvkr7sql8tar195kq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/7jq2ui99bds2vq15l1ioh859ao.png"></p>
+<h3 class="topic">
+<a name="6cu8uh2d1s14h8rtfft14uaf0s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;一般有PIE和非PIE两个版本</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/778g3npg1sa6l6jmqpeiv7s7oo.png"></p>
+<h3 class="topic">
+<a name="2g6g4pfvrbjhi5q4t9h9q3g2d2">&nbsp;脱壳实例</a>
+</h3>
+<h3 class="topic">
+<a name="491et4hi2j8t7aad46uf2bplh5">&nbsp;&nbsp;实例1</a>
+</h3>
+<h3 class="topic">
+<a name="4hj8lqo2af7f90t2oj4na4ef1d">&nbsp;&nbsp;&nbsp;设置ro.debuggable 1主要是为了在ddms显示进程列表，方便查看端口号，在第六步中需要用到ddms中的端口号</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/66lfbpcnt7jmagsg70mmqb7kmr.png"></p>
+<h3 class="topic">
+<a name="1dcmqfk87ghng3b7e9nqqj855u">&nbsp;&nbsp;&nbsp;&nbsp;安装被加壳程序，参数表示如果出现版本问题，就会重新安装</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/572du16u237397ur6tvoltbego.png"></p>
+<h3 class="topic">
+<a name="31un4iblddtfcer2chr5q6j94v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/4hmsa9f13bk7n52unal0sk0cvv.png"></p>
+<h3 class="topic">
+<a name="2ujfjc176s0uh6i6rkvjph5ku4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;并进行端口转发</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/0veov966ijtqjj1gcck2ovlfen.png"></p>
+<h3 class="topic">
+<a name="6800292j8v3mnmul5k20bmr5e2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/5058ml2t3uestpihkmf2koa7tl.png"></p>
+<h3 class="topic">
+<a name="1ncfcst9afvc5dgrkutd4hve8j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/4n1u1vrrti1j16692mjvv8248k.png"></p>
+<h3 class="topic">
+<a name="5pjqr4ngvmn6114am8tbrahj64">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/1qu70r33rngpr36fvvj76m9tdb.png"></p>
+<h3 class="topic">
+<a name="2e13343aql27l9sqcss47ttu16">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/7k5v0ccu15qsvgcjdvb3tjmufa.png"></p>
+<h3 class="topic">
+<a name="3b32vifhntjfop48qcr2577nbg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/74ib5vstk8vnsamaq0peno4o10.png"></p>
+<h3 class="topic">
+<a name="3osl9heo7pg86hf7ru8nfpngi4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/2st9ho2tgffcdkd1sdbb9gbopp.png"></p>
+<h3 class="topic">
+<a name="2idrhj8ac4apsuo0irfm5r7cfb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/32garja2sd5uhsvk4oqabdgkvp.png"></p>
+<h3 class="topic">
+<a name="69mgt0tdaj2lue2cu5168fqhll">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;链接8601端口</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/1icl5s9qk7ngu9316libm5g0gf.png"></p>
+<h3 class="topic">
+<a name="13l1n1bv3fkimlq0v8g3pmujik">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ida中程序断在断点处</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/5pdlsmmrgrq88qng57i86491ol.png"></p>
+<h3 class="topic">
+<a name="4orsc39mkr74itjbb670up0va0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/0s5andq5b80v8p4asvsfotlrrd.png"></p>
+<h3 class="topic">
+<a name="6k4i0v542df8j67aefsjtlvn0t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;得到dex文件首地址和大小后，运行ida中的脚本命令</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/1fhq89604k43goqalos3dhcu9j.png"></p>
+<h3 class="topic">
+<a name="3npputag9na4chph1apov5jbva">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将用于dump的脚本代码复制其中，运行脚本进行dump，运行过程中需要输入dex内存起始地址和文件大小</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/7veluletqrsg4jgq0t4v5urj02.png"></p>
+<h3 class="topic">
+<a name="4ot8a6ativnhbbl4lsoce7nt1s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用010打开dump的文件，发现其为一个dex文件</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/29v0056ophscv05ap3p85afsos.png"></p>
+<h3 class="topic">
+<a name="1u74kcb6u92mdgebqpc8mmdh98">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;脱壳前的dex文件</a>
+</h3>
+<h3 class="topic">
+<a name="00h4rp5kvfq6havurpu6h3uqs2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;分析脱壳前的dex文件发现并没有有用代码</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/76uqqugvtej2u60hn0i478ic41.png"></p>
+<h3 class="topic">
+<a name="6btd0c8u0ob96dc6u86nhts5nv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/00ets2vm244mdjcu5savh5omo5.png"></p>
+<h3 class="topic">
+<a name="44uonfma55g77m6j1ljng5lu63">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;脱壳后的dex文件</a>
+</h3>
+<h3 class="topic">
+<a name="3ihrnapf8pgke901407n6b3vtj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;发现可以看到源码</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/5q4cd52nj81g8hep4h1rnspp8n.png"></p>
+<h3 class="topic">
+<a name="0jpob6uanpm5n8hinoidr0n5nf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;按q可以将smali汇编反编译为java源码</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/1gul2q7e7tf1pg6dgqdsmjdbes.png"></p>
+<h3 class="topic">
+<a name="1hhljtkvr6s6rsl5ilpi6grfql">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用于dump的脚本</a>
+</h3>
+<h3 class="topic">
+<a name="2s4pvgeu2affvh2i0ncjs36m12">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/0coj6pe0d5ar91hghmv91fhf9c.png"></p>
+<h3 class="topic">
+<a name="79loejm14e2r27nme5rpps90e6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/2omqua0m2g7mocg7u4ab5385gi.png"></p>
+<h3 class="topic">
+<a name="1lila0spo2n5654eaf5o2hns19">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/5vdmcao4451q548f124rfv3795.png"></p>
+<h3 class="topic">
+<a name="6ji2srjj8cveqvgr63a3d89p2q">&nbsp;&nbsp;&nbsp;&nbsp;安装ddms</a>
+</h3>
+<h3 class="topic">
+<a name="2t0g2q464p8848jqv0c4vd15q4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;下载过程中需要翻墙，可以将adt工具包直接下载到本地，然后离线安装（搜索网络教程即可）</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/0bfkn1u2nusedqc9iik5glrkte.png"></p>
+<h3 class="topic">
+<a name="22nvibahb4a4nqi9pt4gjpv988">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ddms也可以直接通过下载安卓sdk从而获得，对于google的sdk，正常下载会被墙，可以使用迅雷进行下载</a>
+</h3>
+<h3 class="topic">
+<a name="2ljeb34533qrbee2pspv614tla">&nbsp;&nbsp;实例2</a>
+</h3>
+<h3 class="topic">
+<a name="7kv0793k0o8fpkifqg97g2h9h6">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/72kk0il1f5gmv1mj1m7q9jkqa3.png"></p>
+<h3 class="topic">
+<a name="7arc4irl5bafv26l464gp0vk3p">&nbsp;&nbsp;&nbsp;&nbsp;安装被加壳程序</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/0jm8ra06lsj1qfb1hqhrorbi7q.png"></p>
+<h3 class="topic">
+<a name="0itl81fkedd9i8aafmp7lbf6rv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/7vsb48edlbqq5fq0nt1liucuoc.png"></p>
+<h3 class="topic">
+<a name="2ccrp72b3jdapt2gjkchd4iji9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将DumpDex文件传入手机</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/7itcfqgo4l0spgud4390pv48vj.png"></p>
+<h3 class="topic">
+<a name="7cc26lfb7cik7fmkbr2rarcdvg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;设置DumpDex可执行权限</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/78c8f63g4rsc4dn4ckmfghhnmc.png"></p>
+<h3 class="topic">
+<a name="1sq3t3vvsfif4gtti3pkrdrtb9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将inject传入手机</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/0msd7pr9mempo67fnvo6t1ej61.png"></p>
+<h3 class="topic">
+<a name="7n9clq4cvgp92qfid57pdaujhi">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;设置inject可执行权限</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/32vv42q13ej9rnvv7d8579t535.png"></p>
+<h3 class="topic">
+<a name="6gl81lefd646lnhgcr0egn4st0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;进行注入，并注入成功</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/760ghkdrtpcke5ptluvjod4j9v.png"></p>
+<h3 class="topic">
+<a name="79dh130tl9b1psfmk5c9ognfv5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;查看trace输出，成功输出了dex文件基址和大小信息</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/3hhkun48ajn3lfjkp60cruf0vj.png"></p>
+<h3 class="topic">
+<a name="2suqrsq61ohiiuo6c2smpligd4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/05sanikuhbo3dqh8c8tlurojb3.png"></p>
+<h3 class="topic">
+<a name="5mj5dvlhafj06tdm3m99aabae3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用工具dapk进行dump</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/2q5ka20uo6jm1961m7jlhph8fj.png"></p>
+<h3 class="topic">
+<a name="3me83s40dmceooepd8mf2hkolb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/2qfqb71ic9gei3aio5nl5uims2.png"></p>
+<h3 class="topic">
+<a name="4j1vivvcsgad297s7j81u5frig">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;获得dump出来的文件</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/53j9ojtc6t05vtrboi8nehlagm.png"></p>
+<h3 class="topic">
+<a name="7jtna5pa4ed5fqbio9cdogdnsp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用010editor分析，发现dump出来的文件也是完整的</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/08k51oj7et0skiu4rqsa1nkipf.png"></p>
+<h3 class="topic">
+<a name="7lo9d98450pr9fntq09eh8pr38">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过jeb分析dump出来的文件发现可以得到java代码</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/0gfhibv8uoiimq5q3fs7m2mmld.png"></p>
+<h3 class="topic">
+<a name="78irc5rvpuphtua16uqe7sa2ie">&nbsp;&nbsp;实例3（dex脱壳修复）</a>
+</h3>
+<h3 class="topic">
+<a name="3m4ik3ftv15isg4vookm62r3lu">&nbsp;&nbsp;&nbsp;将被脱壳程序装入手机</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/4hlsh8fra7eqk4kfn73mvcv1pp.png"></p>
+<h3 class="topic">
+<a name="57mcraet5hevquv5n0bkdmqb6m">&nbsp;&nbsp;&nbsp;&nbsp;直接通过ida进行attach进程会退出</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/5a9ara8dr2gss24av0t8sej1u2.png"></p>
+<h3 class="topic">
+<a name="278pib460klds5qif2q09eo4to">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/2t50ejn77o65cvqmo6d855os49.png"></p>
+<h3 class="topic">
+<a name="5clqpel1fck8016fkggsov96ml">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;执行kill或 killall指令，将被脱壳进程的状态修改为stop</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/6dsl3mpg61svnnl2f9p737k4vv.png"></p>
+<h3 class="topic">
+<a name="31utjef0e3p05ioch1lju5mbm0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;被脱壳进程的状态被修改为stop，即挂起暂停状态</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/4d4vkg5b6ob63d20jpc3vqpbr1.png"></p>
+<h3 class="topic">
+<a name="55mleaitn85h29hjjl5gstnp21">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;此时再通过ida进行附加调试</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/16igdiqj356f84kr70kj88m4oh.png"></p>
+<h3 class="topic">
+<a name="7a5c0idsp1ecdppjjif9pmuu60">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;attach成功，之后需要找到dex文件的首地址和大小（一般即得到DvmDex结构体），从而方便dump</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/4mjre5druka2os9jedgtb0subj.png"></p>
+<h3 class="topic">
+<a name="2m7igagafeejk4stg9cptd0lvb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ida中选择Script file运行脚本</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/6c40j5pit2ek0ivsfqtsosdqc4.png"></p>
+<h3 class="topic">
+<a name="255dmr8rijnd8hkmb83bgv9gap">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;选择要运行的脚本文件</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/1doqobittgo8k1448k883iofmj.png"></p>
+<h3 class="topic">
+<a name="6567oj9fi069940s0e7lvqc7da">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;脚本由于操作超时运行失败，但是仍然输出了dex文件的基址和大小</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/0i8qknkrpedsb0dlqlsg1fo28p.png"></p>
+<h3 class="topic">
+<a name="0os34hadbumunl70dqhbnidvv7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用dapk工具将指定内存范围的数据dump出来</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/28drh6150kgo0jhajsjt6q41v2.png"></p>
+<h3 class="topic">
+<a name="1ma3gsr5hdct6rnl3g2c7u93bq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用jeb分析dump出来的文件，发现虽然dex文件的架构出来了，但是其中部分函数被nop所填充，说明该函数被加密过</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/4evl6ipa9albcumjeviudbfl53.png"></p>
+<h3 class="topic">
+<a name="285250bhuqotej8f0hci2jof51">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;修复的一般思路，即在指定函数被解密后的执行过程中，可以得到还原的代码</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/0q9r3fblt0496f9juebafoq4bu.png"></p>
+<h3 class="topic">
+<a name="1edkkk4kos70dkqq9ng4ql80sh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将修复工具写入手机并赋予执行权限，具体修复工具的原理见DEX文件脱壳修复</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/0lq1p4gahomb3jphsl4macmdb5.png"></p>
+<h3 class="topic">
+<a name="7q4hc6rpm37tbul4qvij6fh54o">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用inject将工具注入进去</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/0qah8g84frvbrk5olg3irhlb6j.png"></p>
+<h3 class="topic">
+<a name="3jp6j21lcukrhs6s49i4spcdae">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;工具的实现思路：将工具注入-&gt;枚举所有的类-&gt;找到类的method-&gt;将找到的结果拼装成dex文件</a>
+</h3>
+<h3 class="topic">
+<a name="5r4mn1nok5e33pdh8qkf4e41ht">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用py脚本获得dex的基址和大小，从而进一步dump（该脚本思路还是获取DvmDex结构体中的信息）</a>
+</h3>
+<h3 class="topic">
+<a name="4jh9mdl566ea9e6tujt0n3mc5e">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用看雪论坛的py脚本找到dex文件的首地址和长度（该脚本用python写成，运行在ida中）</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/7sumaeokuv38aluem5ca6hco37.png"></p>
+<h3 class="topic">
+<a name="09c56a6fc16162iuu8hihqq5ht">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/6mim24s0n1lfotdb4ps17h0djv.png"></p>
+<h3 class="topic">
+<a name="5ou1cje45i4m3cl32p6da8uftl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/5lg3nmnrpfl5isjukqktdnslpi.png"></p>
+<h3 class="topic">
+<a name="7n8j9o36np58al444fvdd04ula">&nbsp;一些加固的特征</a>
+</h3>
+<h3 class="topic">
+<a name="2uk8j3g1f4cdblc8t59tmaiiot">&nbsp;&nbsp;以上文件中一般保存加密的数据</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/0nfov87mjqe3mpjh1lvke0gj4l.png"></p>
+<h2 class="topic">
+<a name="2jif1kam01lvq74l3fmbfcqirq">学习资料</a>
+</h2>
+<h3 class="topic">
+<a name="1nl1lm45tine9bhrel8fsf73uj">&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/5qlj5eq5b0fp8fkvb5bgl7f509.png"></p>
+<h3 class="topic">
+<a name="42hqn0s51lt20shrtt9hbcbvg6">&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E5%AF%B9%E6%8A%972_files/5titbd9onr75vpdp94gf8k331g.png"></p>
+</body>
+</html>

@@ -1,0 +1,557 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>被动信息收集</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="0q5ho382r2npbv4ftgqgq3j54t">被动信息收集</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="%E8%A2%AB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/images/%E8%A2%AB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86.jpg"></div>
+<h2 class="topic">
+<a name="34ilg56toocml6s3vb01oasjbb">最终目的</a>
+</h2>
+<h3 class="topic">
+<a name="47c03arr56e9dau523t7nku7if">&nbsp;被动信息收集的最终目标是获得可澄清或扩大攻击面的信息，帮助我们进行成功的网络钓鱼活动，或补充其他渗透测试步骤，例如密码猜测。</a>
+</h3>
+<h2 class="topic">
+<a name="5ruj9i55jnniq1sr3tva5cmo89">如何定义被动</a>
+</h2>
+<h3 class="topic">
+<a name="1dsc5r7h9tkn0b1sn0961pp569">&nbsp;在最严格的解释中，我们从不直接与目标对象交流。 例如，我们可以依靠第三方来获取信息，但是我们将无法访问目标的任何系统或服务器。&#13;
+  使用这种方法可以高度保密我们的行为和意图，但也很麻烦，可能会限制我们的结果。</a>
+</h3>
+<h3 class="topic">
+<a name="62n4tidd9je0klfbegmo4licfj">&nbsp;用更宽松的解释，我们可能会与目标交互，但只能像普通的Internet用户那样进行交互。 例如，如果目标网站允许我们注册帐户，则可以这样做。 但是，在此阶段，我们不会测试网站的漏洞。</a>
+</h3>
+<h2 class="topic">
+<a name="11m6mifsvovbqab79m74nfvodk">笔记记录</a>
+</h2>
+<h3 class="topic">
+<a name="7qlebpcnn53uu8gurfdfip37dg">&nbsp;收集整理所获得的信息，以便在之后的阶段能够用到</a>
+</h3>
+<h2 class="topic">
+<a name="3j0124b1nn7g4mlbtplvanj8af">网站侦察</a>
+</h2>
+<h3 class="topic">
+<a name="2em5jfd8jb343oktaj9olhhvpr">&nbsp;公司及员工的电子邮件、电子邮件命名格式、社交媒体账户</a>
+</h3>
+<h2 class="topic">
+<a name="2kb2le85b9dlij8emtdi0tsfq0">whois查询</a>
+</h2>
+<h3 class="topic">
+<a name="3ot3rm1f031hjol8mtsh824baa">&nbsp;域名查询</a>
+</h3>
+<h3 class="topic">
+<a name="1stpqh11rujenofnbm3uh36v85">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%A2%AB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/2kua850it3uq54309hno5qnbnf.png"></p>
+<h3 class="topic">
+<a name="48s9a2hla3ldn6qu21njci4tmt">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%A2%AB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/6ukhso0g9oms02hh7dcq5cvccf.png"></p>
+<h3 class="topic">
+<a name="7n701or3bespnf858cotvam68t">&nbsp;&nbsp;关键信息：域名注册人，名称服务器（是DNS的组成部分）</a>
+</h3>
+<h3 class="topic">
+<a name="5p1ds7cq6v96eg11gdqnmii6k6">&nbsp;ip查询</a>
+</h3>
+<h3 class="topic">
+<a name="1ec6r5mk3sd00qnq99ikdabcms">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%A2%AB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/5bv2dt5mra9284n3gb8r4fm3si.png"></p>
+<h3 class="topic">
+<a name="1k9t0pmkp1g0s2in1ldbmh2bvq">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%A2%AB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/0u4iu6j21ocg6d19bp5uiigmh2.png"></p>
+<h3 class="topic">
+<a name="7m4dpo7og6c2m8e9rok1kk23ot">&nbsp;&nbsp;关键信息：ip地址的托管方</a>
+</h3>
+<h2 class="topic">
+<a name="771sqptj9okoaht7uim3v039ok">谷歌查询</a>
+</h2>
+<h3 class="topic">
+<a name="28oj32qhearjjh9spq172paecb">&nbsp;书籍</a>
+</h3>
+<h3 class="topic">
+<a name="0nrhd3cp9hl3dhpckr684djp0v">&nbsp;&nbsp;Google Hacking for Penetration Testers</a>
+</h3>
+<h3 class="topic">
+<a name="54l6k399da4fa7qg5q6g0s400t">&nbsp;&nbsp;https://www.amazon.com/Google-Hacking-Penetration-TestersJohnny/dp/0128029641/ref=dp_ob_image_bk</a>
+</h3>
+<h3 class="topic">
+<a name="4ti7lek7fi3jtace9es67ep3sp">&nbsp;搜索指定域名的信息</a>
+</h3>
+<h3 class="topic">
+<a name="5k5b9h8mok23sn3kl7ccgoic5i">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%A2%AB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/3u6f1fqtvoprnan6u3ejtcde1n.png"></p>
+<h3 class="topic">
+<a name="4ugas60pfn9q4t8q7p36c2rstv">&nbsp;文件类型（或扩展名）运算符将搜索结果限制为指定的文件类型  filestyle</a>
+</h3>
+<h3 class="topic">
+<a name="12anccv2gkt1d24nucq5m9ignj">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%A2%AB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/1cjsoid4dbupmsms1up77suf5a.png"></p>
+<h3 class="topic">
+<a name="6l89o00vl7h5v89i791ordth8r">&nbsp;&nbsp;&nbsp;查询找到了AlienVault OSSIM实例的登录页面，该实例是安全信息和事件管理（SIEM）平台。 安全团队使用SIEM工具来监视应用程序和网络流量中是否存在恶意活动。 通常，这些工具仅在内部网络上可用。 我们应该注意该URL，因为如果我们可以找到在活动利用阶段登录的用户凭据，则可能会很有用。</a>
+</h3>
+<h3 class="topic">
+<a name="2da7ud20knqgs49qa67mibg9cu">&nbsp;搜索域名下指定编程语言的网页</a>
+</h3>
+<h3 class="topic">
+<a name="26n9t3449inov4r1mec1fsmd57">&nbsp;&nbsp; ext运算符也可能有助于识别网站上可能使用的编程语言。 像ext：.jsp，ext：cfm和ext：pl这样的搜索将分别找到索引的Java Server Pages，Coldfusion和Perl页面。</a>
+</h3>
+<h3 class="topic">
+<a name="4i1mfmbc94b4lmoloipjj76kog">&nbsp;排除指定类型的搜索结果</a>
+</h3>
+<h3 class="topic">
+<a name="0a6cirm59jjo4nsreofcgpbat5">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%A2%AB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/5i7ja31qgajj4jdivoofdbkul4.png"></p>
+<h3 class="topic">
+<a name="0qmvchlrqlob6hshjlcdm805l5">&nbsp;&nbsp;&nbsp;使用-修改运算符，以从搜索中排除特定项目，从而缩小搜索范围。&#13;
+   例如，要查找有趣的非HTML页面，我们可以使用site：megacorpone.com将搜索限制为megacorpone.com和子域，然后使用-filetype：html从结果中排除HTML页面：</a>
+</h3>
+<h3 class="topic">
+<a name="063jfo3iv168jdnspv7usish0q">&nbsp;搜索网页标题和网页内容</a>
+</h3>
+<h3 class="topic">
+<a name="2h9cokg6nhbg1r99t4ptgsb5ur">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%A2%AB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/0d5pm0li09qgo5ah4ef0nu67ar.png"></p>
+<h3 class="topic">
+<a name="7fsud858mkihrcvp9897bk3lp2">&nbsp;&nbsp;&nbsp;查找标题中包含&ldquo; index of&rdquo;和页面上包含&ldquo; parent directory&rdquo;字样的页面。</a>
+</h3>
+<h3 class="topic">
+<a name="7a7bfggan2vvbe49veuvfbhgvb">&nbsp;&nbsp;&nbsp;通过此类搜索可以得到网站目录列表，该列表中包含没有索引页的目录文件内容。 这样的错误配置可能会泄露有趣的文件和敏感信息。</a>
+</h3>
+<h3 class="topic">
+<a name="0p06sphaj8vcdnu31prncvn999">&nbsp;&nbsp;&nbsp;有关此类信息泄露的资料</a>
+</h3>
+<h3 class="topic">
+<a href="https://cwe.mitre.org/data/definitions/548.html" name="71s0oa12qf5apoehijejcof26j">&nbsp;&nbsp;&nbsp;&nbsp;https://cwe.mitre.org/data/definitions/548.html</a>
+</h3>
+<h3 class="topic">
+<a name="2mjurkppgr72stjr65q4in97u4">&nbsp;更多的google hacking技巧</a>
+</h3>
+<h3 class="topic">
+<a href="https://www.exploit-db.com/google-hacking-database" name="6tmiuikmsi3pe8nmej24khlak2">&nbsp;&nbsp;https://www.exploit-db.com/google-hacking-database</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%A2%AB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/0j10ese8928eanced42enshcnh.png"></p>
+<h2 class="topic">
+<a name="7duakbsnjdishve3o8n56fceb0">netcraft</a>
+</h2>
+<h3 class="topic">
+<a name="10urbddec2p6qf9chd60eafffl">&nbsp;使用Netcraft的DNS搜索页面（https://searchdns.netcraft.com）来收集有关megacorpone.com域的信息：</a>
+</h3>
+<h3 class="topic">
+<a name="63nqq8ob4s8ks1r0q1k2ovip3f">&nbsp;&nbsp;获得子域名相关信息</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%A2%AB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/1hca3167jnihg78p1bhh40v8vm.png"></p>
+<h3 class="topic">
+<a name="1kuiojpc4pnqm0tescocus68vb">&nbsp;&nbsp;&nbsp;查看site report</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%A2%AB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/2vrd5talop1rahls0q6b0eb1sn.png"></p>
+<h3 class="topic">
+<a name="5qgvkupalm1nd25gteuj4ur7ee">&nbsp;&nbsp;&nbsp;&nbsp;site report中的网站技术信息，获得有关网站的技术构架信息等</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%A2%AB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/54dub5mv327k1p3qp00945c7r8.png"></p>
+<h2 class="topic">
+<a name="000uavvggrpgkkihv88lh5e57j">Recon-ng</a>
+</h2>
+<h3 class="topic">
+<a name="6krvm6edaicg9qj8b5sjk247a9">&nbsp;使用recon/domains-hosts/google_site_web模块搜索指定域名的子域名</a>
+</h3>
+<h3 class="topic">
+<a name="0t28l4a74gkgn5g6pghl67lkp1">&nbsp;&nbsp;运行recon-ng</a>
+</h3>
+<h3 class="topic">
+<a name="50p8jfvrc6dovsof3pnrrkgfoi">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%A2%AB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/442ct3kt3gou1k8ch7o36bihhs.png"></p>
+<h3 class="topic">
+<a name="1l4386rppm1tal7l6241c6unld">&nbsp;&nbsp;&nbsp;&nbsp;Unable to synchronize module index. (ConnectionError)</a>
+</h3>
+<h3 class="topic">
+<a name="4aufg6udsav61pud0v5548m272">&nbsp;&nbsp;&nbsp;&nbsp;该工具使用疑似需要翻墙，尝试了ssr+proxychains的翻墙方法，但是均不成功</a>
+</h3>
+<h3 class="topic">
+<a name="19oik0ja3meacudcj60kdjju6o">&nbsp;&nbsp;&nbsp;&nbsp;需要之后研究下linux的翻墙，或者是linux通过主机的翻墙代理进行翻墙</a>
+</h3>
+<h3 class="topic">
+<a name="1aodbg58qg3mjk5njlq8cb1lgb">&nbsp;&nbsp;从市场中搜索指定模块</a>
+</h3>
+<h3 class="topic">
+<a name="7q52imvig9mp6qr9hchq0u00ei">&nbsp;&nbsp;&nbsp;marketplace search 用于从市场中搜索 ，此处搜索github相关模块，某些模块在&ldquo; K&rdquo;列中标有星号。 这些模块需要第三方提供商的凭据或API密钥，更多的信息需要查看每个模块的具体信息</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%A2%AB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/41li5t8ja3h8psd8n21g3k0r52.png"></p>
+<h3 class="topic">
+<a name="47p0pl4utho01d8rdjgm0mii4g">&nbsp;&nbsp;查看指定模块的具体信息</a>
+</h3>
+<h3 class="topic">
+<a name="2jedp416t4fapgmoh47vc878j1">&nbsp;&nbsp;&nbsp;使用marketplace info 模块名查询具体模块的信息，查到的信息包括是模块功能和是否需要密钥等</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%A2%AB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/4l5i4i1vea8jt0scvl4l3a9d0q.png"></p>
+<h3 class="topic">
+<a name="45gkv60is014erab014mvpvokr">&nbsp;&nbsp;安装该模块</a>
+</h3>
+<h3 class="topic">
+<a name="2bgsq8m91u12ogu6hfeunfu73u">&nbsp;&nbsp;&nbsp;通过marketplace install命令安装对应模块</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%A2%AB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/51jfabdqg1fcoak66alvi0qch9.png"></p>
+<h3 class="topic">
+<a name="5mrdv71mtrpdbh3n3t5b6in3us">&nbsp;&nbsp;加载对应模块，并显示对应模块详细信息</a>
+</h3>
+<h3 class="topic">
+<a name="2lt4iagngrp66pa9el1riegopc">&nbsp;&nbsp;&nbsp;通过modules load 模块名可以加载模块，info用于查看模块具体信息</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%A2%AB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/26mpbcj7qcde8l0t615dk8oeou.png"></p>
+<h3 class="topic">
+<a name="7krl4u8nbrlpjmcccv097gceb0">&nbsp;&nbsp;&nbsp;从info中可知，必须的参数SOURCE可以为默认、字符串、路径、sql查询语句四种</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%A2%AB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/2fen5ca0hf2938tn4p8ptnmr08.png"></p>
+<h3 class="topic">
+<a name="7jei7a5sujl63t1v47g4lu2u2d">&nbsp;&nbsp;使用options set SOURCE megacorpone.com选项设置目标域</a>
+</h3>
+<h3 class="topic">
+<a name="49459mca86jiu91mce4aq5mcv2">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%A2%AB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/3d2qv4m03hme5skfqqs5nl8j92.png"></p>
+<h3 class="topic">
+<a name="4hqpooajqoflq9tltkhbqnldap">&nbsp;&nbsp;run指令运行已加载的模块</a>
+</h3>
+<h3 class="topic">
+<a name="500tgfre0ujvhgvjgh5m4iaqv2">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%A2%AB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/36ndgn6g2tpllgflr0dnas8ggg.png"></p>
+<h3 class="topic">
+<a name="3edf0228b0cgcptish1bcltkae">&nbsp;&nbsp;侦查结果存储在本地数据库中，这些结果将馈入其他侦查模块。我们可以使用show hosts命令来查看存储的数据：</a>
+</h3>
+<h3 class="topic">
+<a name="7chbgfnngs9eb9mq5t80g4b80e">&nbsp;&nbsp;&nbsp;通过back指令退出当前模块</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%A2%AB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/6tqbk3567lope3ls9sj0q7ka9j.png"></p>
+<h3 class="topic">
+<a name="3clh7up86tet5iveiig59nkc36">&nbsp;&nbsp;&nbsp;&nbsp;show host指令用于显示当前数据库中的收集到的主机信息</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%A2%AB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/4nbnla0jdj34gelo51uph5m4lu.png"></p>
+<h3 class="topic">
+<a name="0irinvc3n341dhrcujpsgnhore">&nbsp;使用recon / hosts-hosts / resolve模块根据数据库中的域名反查ip地址</a>
+</h3>
+<h3 class="topic">
+<a name="3bd8drtgl72n8nl2ldoqfhlo18">&nbsp;&nbsp;查询模块信息</a>
+</h3>
+<h3 class="topic">
+<a name="3eccshohjsu94c2862pfodi635">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%A2%AB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/6aqsl8cjsivtevj7olo4f9v6hq.png"></p>
+<h3 class="topic">
+<a name="7ks69a0uj2trkfrslr51e8bnd5">&nbsp;&nbsp;安装该模块</a>
+</h3>
+<h3 class="topic">
+<a name="2bqgl0v8d9il23i6ndlu0gih91">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%A2%AB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/3sknke8s37rsrrb243kiq3obrb.png"></p>
+<h3 class="topic">
+<a name="177vqnadtiftel7jckfthutdtj">&nbsp;&nbsp;加载该模块并显示模块信息</a>
+</h3>
+<h3 class="topic">
+<a name="62i9j700bk4ja5830lehs02c5l">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%A2%AB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/5tj25i3p347dq203bqq376163d.png"></p>
+<h3 class="topic">
+<a name="77jnbdj6mmdjm4do2qergkcso0">&nbsp;&nbsp;&nbsp;&nbsp;该模块的SOURCE参数使用&ldquo;默认&rdquo;值，则recon-ng将在其数据库中查找主机信息，以查找具有主机名但没有IP地址的任何记录。此时数据库中有四个没有IP地址的主机。 如果我们选择&ldquo;默认&rdquo;源，该模块将自动针对数据库中的所有四个主机运行。</a>
+</h3>
+<h3 class="topic">
+<a name="0fgda4mk15ns0c0oaldv2sodau">&nbsp;&nbsp;使用默认参数运行该模块</a>
+</h3>
+<h3 class="topic">
+<a name="7eq9ijpfn17v9no6qjvdcv9jk4">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%A2%AB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/24q9cd8to89k2hej6rbmua2m6i.png"></p>
+<h3 class="topic">
+<a name="20tr8lv0eqd6jum5do6rv3emnr">&nbsp;&nbsp;显示此时的数据库</a>
+</h3>
+<h3 class="topic">
+<a name="145nh92a1b60k4m6ghk8dcqito">&nbsp;&nbsp;&nbsp;此时可见所有的域名均获得了其对应的ip值</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%A2%AB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/19gm0s43hnl2l0q1bugki2j12l.png"></p>
+<h2 class="topic">
+<a name="6e45mai83c31pgsgrgi55jbhc1">开源代码</a>
+</h2>
+<h3 class="topic">
+<a name="3n98oeuq6vpqbb7jll2veclmvv">&nbsp;相关开源代码仓库</a>
+</h3>
+<h3 class="topic">
+<a name="475919pf54qfjgovqtk1731p33">&nbsp;&nbsp;GitHub， GitLab，SourceForge</a>
+</h3>
+<h3 class="topic">
+<a name="25udicutdmakpmfcaeb93vg5a0">&nbsp;&nbsp;&nbsp;https://github.com/ &#13;
+https://about.gitlab.com/ &#13;
+https://sourceforge.net/</a>
+</h3>
+<h3 class="topic">
+<a name="0naa0lsjbs1av7d6as7nkttau3">&nbsp;在线存储的代码可以让您瞥一眼组织所使用的编程语言和框架。 在极少数情况下，开发人员甚至不小心将敏感数据和凭据提交给了公共仓库。</a>
+</h3>
+<h3 class="topic">
+<a name="7gm28rut41oep3kslrvfkg48si">&nbsp;在GitHub上，我们将能够搜索用户或组织的存储库，但是如果要在所有公共存储库中进行搜索，则需要一个帐户。针对具体组织对1代码仓库，使用filename：users搜索名称中带有单词&ldquo; users&rdquo;的任何文件： </a>
+</h3>
+<h3 class="topic">
+<a name="4qvh648skb9mpmth0i35fo5e9c">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%A2%AB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/216f17mp5uvjj919u6v2fh44lv.png"></p>
+<h3 class="topic">
+<a name="7dagrms09jcmgc4dupdhdivood">&nbsp;&nbsp;&nbsp;搜索仅找到一个文件-xampp.users。 XAMPP是Web应用程序开发环境。 让我们检查文件的内容</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%A2%AB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/113r6met8756iqcgcae93gdhhm.png"></p>
+<h3 class="topic">
+<a name="10bp9vu8la7ihjgf0a121h1ne1">&nbsp;&nbsp;&nbsp;&nbsp;该文件似乎包含用户名和密码hash</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%A2%AB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/2176p8vlmkleebp0lfngssm42a.png"></p>
+<h3 class="topic">
+<a name="4a70f5883mubu7lni5a203rm1l">&nbsp;手动方法在小型存储库上效果最佳。 对于较大的存储库，我们可以使用多种工具来自动执行某些搜索，例如Gitrob和Gitleaks。&#13;
+Recon-ng还具有用于搜索GitHub的多个模块。 这些工具大多数都需要访问令牌才能使用源代码托管提供商的API。</a>
+</h3>
+<h3 class="topic">
+<a name="6q1p5544o4s4cla06qfp1o6bi4">&nbsp;&nbsp;Gitleaks在文件中查找AWS Client ID</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%A2%AB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/5h60apjc1sep7p190psn6d7b8c.png"></p>
+<h3 class="topic">
+<a name="1ikhfv5g0eg4nps6c3rkg5phe6">&nbsp;&nbsp;&nbsp;https://github.com/michenriksen/gitrob</a>
+</h3>
+<h3 class="topic">
+<a name="1ainu52hnqqv8skct23om2f08h">&nbsp;&nbsp;&nbsp;https://github.com/zricethezav/gitleaks</a>
+</h3>
+<h3 class="topic">
+<a href="https://docs.aws.amazon.com/general/latest/gr/aws-sec-cred-types.html#access-keys-and-secretaccess-keys" name="27nc0u3i019f7fa95n5dov6013">&nbsp;&nbsp;&nbsp;https://docs.aws.amazon.com/general/latest/gr/aws-sec-cred-types.html#access-keys-and-secretaccess-keys</a>
+</h3>
+<h3 class="topic">
+<a name="7gjeoo3fq3k0sqkckttm0o66mq">&nbsp;关于在原代码中搜索关键信息</a>
+</h3>
+<h3 class="topic">
+<a name="6m6tkth68s5bto8g00jpvoeote">&nbsp;&nbsp;在源代码中搜索秘密的工具（例如Gitrob或Gitleaks）通常依赖于基于正则表达式163或entropy164的检测来识别潜在有用的信息。 正则表达式是预定义的搜索模式。 它们对于在文本正文中搜索常用密码的变体特别有用。 另一方面，基于熵的检测尝试查找随机生成的字符串。 这里的想法是，一长串随机字符和数字可能是密码。</a>
+</h3>
+<h2 class="topic">
+<a name="649r727bc1v7iarbk450qpoco1">shodan</a>
+</h2>
+<h3 class="topic">
+<a name="5ul9jl3hh0oeck3dstj9s63fot">&nbsp;Shodan是一个搜索引擎，可对连接到Internet的设备（包括但不限于万维网）进行爬网。 这包括运行网站的服务器，还包括路由器和IoT设备等设备。， 在使用Shodan之前，我们必须注册一个免费帐户，该帐户提供有限的访问权限。</a>
+</h3>
+<h3 class="topic">
+<a name="1dha33koq55nulabtee0vhk73b">&nbsp;&nbsp;https://www.shodan.io/</a>
+</h3>
+<h3 class="topic">
+<a name="3dde8eoqgocglnha349mhbghnv">&nbsp;通过hostname指定要搜索的目标组织的域名</a>
+</h3>
+<h3 class="topic">
+<a name="2rmhh0h31pn674pvu2r1nounku">&nbsp;&nbsp;hostname:域名</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%A2%AB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/14vqktt1baiflp6879d9i6o0e5.png"></p>
+<h3 class="topic">
+<a name="5ko7rtjavo4ub2tklrqb73n2uq">&nbsp;&nbsp;&nbsp;Shodan将列出IP，服务和banner信息。 所有这些都是被动收集的，无需与客户的网站进行交互。</a>
+</h3>
+<h3 class="topic">
+<a name="3vua1l4q4eunm0vofde85ha802">&nbsp;这些信息为我们提供了目标互联网足迹的快照。 例如，有八台运行SSH的服务器，我们可以通过单击&ldquo;顶级服务&rdquo;下的SSH来深入研究以完善我们的结果。</a>
+</h3>
+<h3 class="topic">
+<a name="069cebdirc62r9795ha627mo2v">&nbsp;&nbsp;通过port:22指定搜索开放22端口的服务器，即支持ssh的服务器</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%A2%AB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/7fnjl96prvk8ptovr5496k6a0t.png"></p>
+<h3 class="topic">
+<a name="0mqpe2oea1jci8knqp351nvp5h">&nbsp;根据Shodan的结果，我们可以准确知道每台服务器上正在运行哪个版本的OpenSSH。 如果单击IP地址，则可以检索主机的摘要。</a>
+</h3>
+<h3 class="topic">
+<a name="3vmh0g894tajmt5smqfdpi2jl1">&nbsp;&nbsp;查看服务器使用的端口，服务和技术。  Shodan还将透露任何已识别的服务或技术是否存在已发布的漏洞。</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%A2%AB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/6ieors9b3o4jb9gac6obgsoe2c.png"></p>
+<h2 class="topic">
+<a name="0rqa5dhl630ubts6llfv976juo">安全头扫描</a>
+</h2>
+<h3 class="topic">
+<a name="0970fga7mg8fgftnrvuue8dphl">&nbsp;目标的&ldquo;安全头&rdquo; 即HTTP响应标题，通过对目标站点安全状况的基本分析。 我们可以根据结果来了解组织的编码和安全实践。</a>
+</h3>
+<h3 class="topic">
+<a name="7s4klp6irgut14n9bm8iks6mmg">&nbsp;&nbsp;https://securityheaders.com/</a>
+</h3>
+<h3 class="topic">
+<a name="46ig8eu58kodl5akhaiq0gsevv">&nbsp;扫描指定网站的安全头信息</a>
+</h3>
+<h3 class="topic">
+<a name="464rd96oe1vehailcfpn8449pm">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%A2%AB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/3q5krffqto9u05crv7h502uhag.png"></p>
+<h3 class="topic">
+<a name="413nmq9d14lgljarnrhvfh0d07">&nbsp;&nbsp;&nbsp;该站点缺少一些防御性标头，例如Content-Security-Policy和X-FrameOptions。这些丢失的标头不一定本身就是漏洞，但是它们可能表示Web开发人员或不熟悉服务器加固的服务器管理员。</a>
+</h3>
+<h3 class="topic">
+<a name="494i96rpdbdcv8onfq4skbjaji">&nbsp;服务器强化或安全配置是通过配置保护服务器的总体过程。 这包括禁用不必要的服务，删除未使用的服务或用户帐户，轮换默认密码，设置适当的服务器标头等</a>
+</h3>
+<h2 class="topic">
+<a name="2ah2tj1mab7mv9kkdok3elsl4h">SSL服务器测试</a>
+</h2>
+<h3 class="topic">
+<a name="3k3k6t692tp816r0i30h5o2ph0">&nbsp;扫描工具是Qualys SSL Labs可用于SSL服务器测试。该工具分析服务器的SSL / TLS配置，并将其与当前的最佳做法进行比较，还可以识别一些与SSL / TLS相关的漏洞，例如Poodle或Heartbleed</a>
+</h3>
+<h3 class="topic">
+<a name="6b3n5sg6eroqh0p5gq0dugncpt">&nbsp;&nbsp;https://www.ssllabs.com/ssltest/</a>
+</h3>
+<h3 class="topic">
+<a name="7e330vkmupu0ekhed8pddl3m64">&nbsp;针对指定网站进行ssl服务器设置</a>
+</h3>
+<h3 class="topic">
+<a name="0orgedpqf996qs2fu11qafti7g">&nbsp;&nbsp;Diffie-Hellman密钥交换薄弱，RC4密码和前向保密性不足表明，我们的目标不是针对SSL / TLS强化应用当前的最佳实践。 例如，由于存在多个漏洞，几年来建议禁用RC4密码。 </a>
+</h3>
+<p class="topicImage">
+<img src="%E8%A2%AB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/1vfs98k2lh2l1ino4mh8dbtiln.png"></p>
+<h2 class="topic">
+<a name="66po5fcj55aes1lhvd5trgpvqt">Pastebin</a>
+</h2>
+<h3 class="topic">
+<a name="3vds338nq2d0fsaq5d47uevhg8">&nbsp;Pastebin是一个用于存储和共享文本的网站。 该网站不需要帐​​户即可使用。 许多人使用Pastebin是因为它无处不在且易于使用。 但是由于Pastebin是一项公共服务，因此我们可以使用它来搜索敏感信息。</a>
+</h3>
+<h3 class="topic">
+<a name="4lvl7622olun201cmdjs749td9">&nbsp;&nbsp;https://pastebin.com/</a>
+</h3>
+<h3 class="topic">
+<a name="5hn6gqv3dvpe3qmkfh6s8erng1">&nbsp;可以使用网站进行基本搜索，也可以使用API​​进行更高级的使用。 搜索megacorpone.com：</a>
+</h3>
+<h3 class="topic">
+<a name="3mh3brmajm2u68u752fdvf9clf">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%A2%AB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/1942gen15v1bhbcpmpnrsn9d3d.png"></p>
+<h2 class="topic">
+<a name="1baqi7co32uc2qoq1lri9iklc5">用户信息收集</a>
+</h2>
+<h3 class="topic">
+<a name="7jbgrmj00k9aoo0s0hm5h5f7kt">&nbsp;收集员工信息的目的是编译用户或密码列表，为社交工程构建借口，增强网络钓鱼活动或客户端攻击，执行凭证填充等。</a>
+</h3>
+<h3 class="topic">
+<a name="64u2fs2tphi5st5fb38vivvoh4">&nbsp;用户邮箱信息收集</a>
+</h3>
+<h3 class="topic">
+<a name="39f5kjfrqdt2hcqmqs7q83g03f">&nbsp;&nbsp;使用The Harvester从多个公共数据源收集电子邮件，名称，子域，IP和URL。&#13;
+使用-d运行Harvester来指定目标域，使用-b来运行要搜索的数据源，可能会发现一些新的邮箱和子域名</a>
+</h3>
+<h3 class="topic">
+<a href="https://github.com/laramies/theHarvester" name="1lhnl4u0nbubaacq0tq1aj5cn6">&nbsp;&nbsp;&nbsp;https://github.com/laramies/theHarvester</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%A2%AB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/4b4o928ro47o1k10lt3c4ejfd6.png"></p>
+<h3 class="topic">
+<a name="67cg03167h51dp66srhfvv0snm">&nbsp;密码dump</a>
+</h3>
+<h3 class="topic">
+<a name="38mm1fp4a4qr1aam2soulk0td3">&nbsp;&nbsp;恶意黑客经常在Pastebin或其他信誉较差的网站上丢弃违反凭据的信息。这些密码转储对于生成单词列表非常有价值。 例如，Kali Linux包括2009年因数据泄露而产生的&ldquo; rockyou&rdquo;字词列表。检查用户枚举期间发现的电子邮件地址是否存在密码转储，可以找出可用于凭据填充攻击的密码。</a>
+</h3>
+<h3 class="topic">
+<a name="14p8ahecdl10nm7krrp1l2rjtl">&nbsp;&nbsp;&nbsp;https://en.wikipedia.org/wiki/RockYou#Data_breach</a>
+</h3>
+<h2 class="topic">
+<a name="0jvk7qtab7vuham2npi73kodq3">社交工具信息收集</a>
+</h2>
+<h3 class="topic">
+<a name="46qnitt5fqg2ajmrcs87aitb18">&nbsp;工具：Social-Searcher</a>
+</h3>
+<h3 class="topic">
+<a name="365i0i93lntod8g4e2ct23gl6r">&nbsp;&nbsp;https://www.social-searcher.com</a>
+</h3>
+<h3 class="topic">
+<a name="7kl7ev2il3o9d87s3rvqd0mmsk">&nbsp;&nbsp;Social-Searcher是社交媒体网站的搜索引擎。 一个免费帐户每天将允许有限数量的搜索。 社交搜索者可以是在多个更专业的服务上设置API密钥的快速替代方案</a>
+</h3>
+<h3 class="topic">
+<a name="3hn54ipkipb5b6a4v6fgmia7tv">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%A2%AB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/4dc3q5frbd28us9du05vno8gl1.png"></p>
+<h3 class="topic">
+<a name="1qnufsup2nqf2o2ks5v3fnc3q1">&nbsp;Twofi扫描用户的Twitter feed，并生成用于针对该用户的密码攻击的个性化单词列表。Twofi需要有效的Twitter API密钥。</a>
+</h3>
+<h3 class="topic">
+<a name="14i8e6813aa2q8cumafcvmqp2d">&nbsp;&nbsp;https://digi.ninja/projects/twofi.php</a>
+</h3>
+<h3 class="topic">
+<a name="4gel4vs81ks22pdlt5vj42e7u9">&nbsp;linkedin2username是用于基于LinkedIn数据生成用户名列表的脚本。 它需要有效的LinkedIn凭据，并且取决于LinkedIn与目标组织中个人的连接。 该脚本将以几种不同的格式输出用户名</a>
+</h3>
+<h3 class="topic">
+<a name="6an0b0vkj61tcsp4q660n1qklh">&nbsp;&nbsp;https://github.com/initstring/linkedin2username</a>
+</h3>
+<h2 class="topic">
+<a name="7saahme3kp7lhutooepvbgsuls">Stack Overflow</a>
+</h2>
+<h3 class="topic">
+<a name="1jpfvkum4302olpqk7dd990256">&nbsp;该网站的价值在于查看给定用户正在询问或回答的问题类型。 如果我们可以合理地确定Stack Overflow上的用户也是我们目标组织的雇员，则我们可以根据该雇员的问题和答案推断出有关该组织的某些信息。&#13;
+如果我们发现员工在这些类型的论坛上讨论敏感信息（例如漏洞补救），我们可能会在此阶段发现未修补的漏洞。</a>
+</h3>
+<h3 class="topic">
+<a name="1jt2i2u6m7d0v184qcrhfd16p8">&nbsp;&nbsp;https://stackoverflow.com/</a>
+</h3>
+<h2 class="topic">
+<a name="5siqe9eb0t06hhaqmnar1r2455">信息收集框架</a>
+</h2>
+<h3 class="topic">
+<a name="1ei2ur58pt5pm88sbgigj1rage">&nbsp;OSINT Framework</a>
+</h3>
+<h3 class="topic">
+<a name="06a6mmkjdrpnr1e74pk1s7pcv3">&nbsp;&nbsp;https://osintframework.com/</a>
+</h3>
+<h3 class="topic">
+<a name="4lrhut02cuvl5eqqf5j2fhsj5o">&nbsp;&nbsp;OSINT Framework包含各种信息收集工具和网站。 框架中列出的某些工具涵盖的领域比信息安全性还多。</a>
+</h3>
+<h3 class="topic">
+<a name="3f8uot60lda5ruhtjfgjb3rpfr">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E8%A2%AB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/7q5qa3v7ll06al4vba5uqibjra.png"></p>
+<h3 class="topic">
+<a name="4plhm2l7gl3614rn88ha4j6cnq">&nbsp;Maltego</a>
+</h3>
+<h3 class="topic">
+<a href="https://www.paterva.com/buy/maltego-clients.php" name="25cf3hm3hflb8imirmf73uagr4">&nbsp;&nbsp;https://www.paterva.com/buy/maltego-clients.php</a>
+</h3>
+<h3 class="topic">
+<a name="4oph5alrtkmspnripo53ku97en">&nbsp;&nbsp; Maltego搜索成千上万的在线数据源，并使用极其巧妙的&ldquo;转换&rdquo;将一条信息转换为另一条信息。 例如，如果我们正在执行用户信息收集活动，则可以提交电子邮件地址，并通过各种自动搜索将其&ldquo;转换&rdquo;为关联的电话号码或街道地址。 在组织信息收集活动中，我们可以提交一个域名，然后将其&ldquo;转换&rdquo;为Web服务器，然后是电子邮件地址列表，然后是关联的社交媒体帐户列表，然后是该电子邮件帐户的潜在密码列表。  。&#13;
+   Maligo CE（Maltego的受限&ldquo;社区版本&rdquo;）包含在Kali中，并且需要免费注册才能使用。 商业版本也可用，并且可以处理更大的数据集。&#13;
+多家供应商提供了Maltgo可以提取和显示的信息。 但是，某些提供商也对访问其数据收费</a>
+</h3>
+</body>
+</html>

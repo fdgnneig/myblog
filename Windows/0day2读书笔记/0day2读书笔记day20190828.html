@@ -1,0 +1,159 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>0day2读书笔记day20190828</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="1jlms6h3a4rd3vtfbt7ua3qcf1">0day2读书笔记day20190828</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190828_files/images/0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190828.jpg"></div>
+<h2 class="topic">
+<a name="0ak10rthus0ca2rg4pepak08es">第十五章 重重保护下的堆</a>
+</h2>
+<h3 class="topic">
+<a name="2qee0bqsi5c0rh6sdlmbgcu19e">&nbsp;windows中堆的保护机制</a>
+</h3>
+<h3 class="topic">
+<a name="52koubcce2fav90rdb6nn1uh70">&nbsp;&nbsp;PEB基址随机化</a>
+</h3>
+<h3 class="topic">
+<a name="2593qdhj1imlh3sg3gl885jlpi">&nbsp;&nbsp;&nbsp;windows xp sp2之后不再使用固定的PEB基址0x7ffdf000，此举主要影响了对peb中函数指针的攻击，特别是使用DWORD SHOOT修改peb中函数指针的攻击</a>
+</h3>
+<h3 class="topic">
+<a name="7ve1pig24musds0per7bgsnlfh">&nbsp;&nbsp;&nbsp;&nbsp;攻击peb中函数指针可以参考&ldquo;堆溢出利用&rdquo;和&ldquo;攻击PEB中的函数指针&rdquo;的实验</a>
+</h3>
+<h3 class="topic">
+<a name="517hu9l55buq8791tds8gceh84">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;实际上随机程度比较小仅在0x7FFDF000~0x7FFD4000 之间移动，尤其在多线程中容易被预测出来</a>
+</h3>
+<h3 class="topic">
+<a name="34hlhmns17ovmhm8bft33dsat4">&nbsp;&nbsp;SafeUnlink</a>
+</h3>
+<h3 class="topic">
+<a name="2ficb0o07psiq08r3g4hv4epp7">&nbsp;&nbsp;&nbsp;在操作堆时添加了验证措施，在卸载free list中的堆块的过程中，首先要验证被卸载堆块的前向堆块的后向堆块是不是本堆块，被卸载堆块的后向堆块的前向堆块是不是本堆块</a>
+</h3>
+<h3 class="topic">
+<a name="4199a4ufn7qnb2aqnio2i3srqa">&nbsp;&nbsp;&nbsp;&nbsp;windows xp sp2之前的堆块卸载</a>
+</h3>
+<h3 class="topic">
+<a name="2odkmdus34e2in7kj13uf9jp18">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190828_files/1p0sgvecocu4df283r5l6t5cp2.png"></p>
+<h3 class="topic">
+<a name="6ov0t5ip7tn5lkj4mtc8gsipo4">&nbsp;&nbsp;&nbsp;&nbsp;windows xp sp2之后的堆块卸载</a>
+</h3>
+<h3 class="topic">
+<a name="0fkjflh6nq0ovf439isj31q32t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190828_files/1m416p8404nkg5g12pf7ng4mai.png"></p>
+<h3 class="topic">
+<a name="5ongso76nua89jh0fge89dpc38">&nbsp;&nbsp;heap cookie</a>
+</h3>
+<h3 class="topic">
+<a name="53dleflqjcs6s6mngocdbuvnq4">&nbsp;&nbsp;&nbsp;与栈中的安全cookie类似，微软在堆中引入了cookie用于检测堆溢出的发生，cookie被设置在堆首部分原堆块的segment table位置，占一个字节</a>
+</h3>
+<h3 class="topic">
+<a name="5ajtabf0kiks25tgei31spjmap">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190828_files/5neg7qm70b7v07tbk44ktvp8kc.png"></p>
+<h3 class="topic">
+<a name="7lq7c0tb05r7q3qkumemc1q0l5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;实际的cookie值仅有一个字节，变化范围在0~256之间，研究其生成的随机算法，仍存在被破解的可能</a>
+</h3>
+<h3 class="topic">
+<a name="7kg8lbc6va5662m4aebl8h94th">&nbsp;&nbsp;元数据加密</a>
+</h3>
+<h3 class="topic">
+<a name="4kc9ori24enak3f0l25rk06kjj">&nbsp;&nbsp;&nbsp;在windows vista之后的版本中，对堆块首中的重要数据保存时会与一个4字节的数据异或，使用的时候再次进行异或解密，从而避免这些数据被直接修改</a>
+</h3>
+<h3 class="topic">
+<a name="1v5n25nqlv8clrvvkt03ia1jc1">&nbsp;&nbsp;在windows xp sp2之后的系统上成功利用堆溢出漏洞，仍然十分困难</a>
+</h3>
+<h3 class="topic">
+<a name="1mjtbu0fhg430rok6iajt63og2">&nbsp;攻击思路</a>
+</h3>
+<h3 class="topic">
+<a name="02v6dr52pnhjfcesrf4a6si6dj">&nbsp;&nbsp;攻击堆中存储的变量</a>
+</h3>
+<h3 class="topic">
+<a name="5gqh4nsuvbnloc10i5ji05f0ms">&nbsp;&nbsp;&nbsp;堆的保护措施注重关于堆块结构的保护，对堆中存储的内内容没有进行保护，若堆中存放关键变量或函数指针，广覆盖此类重要内容可以实现溢出</a>
+</h3>
+<h3 class="topic">
+<a name="2pg9l4r5tfvsfvlstph22cun01">&nbsp;&nbsp;&nbsp;&nbsp;即在不破坏堆块结构的前提下对堆中的内容进行修改</a>
+</h3>
+<h3 class="topic">
+<a name="6493u18q11ki8s18usksne602t">&nbsp;&nbsp;利用chunk重设大小攻击堆</a>
+</h3>
+<h3 class="topic">
+<a name="4aftal65l8rmume42rs5dqelp3">&nbsp;&nbsp;&nbsp;Safe Unlink对于chunk从freelist[n]种拆卸进行了验证，但是对于chunk安装到freelist[n]种没有进行验证，可以伪造一个chunk将其安装到freelist[n]中从而完成攻击</a>
+</h3>
+<h3 class="topic">
+<a name="77p82h5cnlse4c0cp20u4t9bec">&nbsp;&nbsp;&nbsp;链表中发生插入的情况</a>
+</h3>
+<h3 class="topic">
+<a name="7i15a3lsem290gsigli9h2og9u">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190828_files/5p2so5hleheieul68jupnbhjbp.png"></p>
+<h3 class="topic">
+<a name="6og2q9gk85cguh3jpi5ndhis0d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;第二种情况有机可乘</a>
+</h3>
+<h3 class="topic">
+<a name="7ri4tc9gp28gbu0l38rijj0pkk">&nbsp;&nbsp;&nbsp;从freelist[0]中分配内存空间的步骤</a>
+</h3>
+<h3 class="topic">
+<a name="0391ito8e3d12oc9dfpmsrr3t8">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190828_files/3dqvo6iuaaj6digfkdpvshjtje.png"></p>
+<h3 class="topic">
+<a name="08r6fvgbvfdojumo8ar8os4v5d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;第二三步可以被利用，第二步中，将chunk从freelist中拆卸出来，会产生Safe Unlink验证，如果验证不通过，系统还是允许一些后续操作，比如重设chunk的大小</a>
+</h3>
+<h3 class="topic">
+<a name="5hr03k89q5sgdsurk6qhfukbe4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;实验观察chunk大小重设</a>
+</h3>
+<h3 class="topic">
+<a name="6tub50klcn6jgd2gcb5ages71m">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;实验代码</a>
+</h3>
+<h3 class="topic">
+<a name="0ovl23679cq6il0enq8hn0fjho">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190828_files/59q0chfplmimlovprjesfm69v3.png"></p>
+<h3 class="topic">
+<a name="61o9mmighe7er7hd7m11cs7m3q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190828_files/7hrel3dobcd0dt2sl6len5psbn.png"></p>
+<h3 class="topic">
+<a name="25hcdueieebv7k3j2bndejq249">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;实验环境</a>
+</h3>
+<h3 class="topic">
+<a name="7pprapim6a7ekip67ahse2bnpl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190828_files/2c4lm8hjaedd38ct6ok0jtjp71.png"></p>
+<h3 class="topic">
+<a name="1e1gjmlvmq9lm9fli0n5ofg3l2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;程序暂停时，堆中freelist[0]以及堆中头节点的内存布局</a>
+</h3>
+<h3 class="topic">
+<a name="390hasnujogp4jbibut86enq08">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190828_files/76h2gd0mhqdq40s8leiaff9jcb.png"></p>
+<h3 class="topic">
+<a name="50k248qvg3j7f43ugjj7qd7j1j">&nbsp;&nbsp;利用Lookaside表进行堆溢出</a>
+</h3>
+<h3 class="topic">
+<a name="4fosc0egq4kf7us891gnt2241m">&nbsp;&nbsp;&nbsp;略</a>
+</h3>
+<h2 class="topic">
+<a name="7okscct81ijnmqdh7ccg41h02k">微软曝广新漏洞的时间每月第二周的星期二</a>
+</h2>
+</body>
+</html>

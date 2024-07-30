@@ -1,0 +1,1170 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>基本命令</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="5khd1dlnrne50khovu4jjgfmnu">基本命令</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/images/%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4.jpg"></div>
+<h2 class="topic">
+<a name="2ma774j2pn54sthcqj3cj6jkkm">kali镜像下载</a>
+</h2>
+<h3 class="topic">
+<a name="43fbeq3jcd6k1ikbpa683aeu84">&nbsp;oscp官网</a>
+</h3>
+<h3 class="topic">
+<a name="7b8inm4eodfpcgpgc7l6qcu3gc">&nbsp;&nbsp;下载好的虚拟机解压缩可以直接使用不用安装</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/7jsn5sadsv0nu7v3vkflgubjfk.png"></p>
+<h3 class="topic">
+<a name="55cnpajivtisu3h9lad1ssmdnl">&nbsp;&nbsp;&nbsp;默认用户名和密码均为kali</a>
+</h3>
+<h3 class="topic">
+<a name="7c2ltleu27qlqeuha4tcfkd34h">&nbsp;中科大镜像站、清华镜像站</a>
+</h3>
+<h2 class="topic">
+<a name="5co8db45ljl8ijjdfv8ggisc28">虚拟机下载</a>
+</h2>
+<h3 class="topic">
+<a name="2bqulra7s0eh2t2l7re8uijg39">&nbsp;virtualbox</a>
+</h3>
+<h3 class="topic">
+<a name="6vn54f28hr311fej6fe5vcdh21">&nbsp;&nbsp;清华开源镜像站</a>
+</h3>
+<h3 class="topic">
+<a href="https://mirrors.tuna.tsinghua.edu.cn/virtualbox/6.1.6/" name="5mlvj4l04ih657ildidhupd2ci">&nbsp;&nbsp;&nbsp;https://mirrors.tuna.tsinghua.edu.cn/virtualbox/6.1.6/</a>
+</h3>
+<h3 class="topic">
+<a name="70c9vplsf0j0vs7rhivlcb9fcn">&nbsp;&nbsp;首次安装会出现的问题</a>
+</h3>
+<h3 class="topic">
+<a name="4vr5bhubdfat2kmuorf3o8jk7p">&nbsp;&nbsp;&nbsp;关于禁用usb2.0</a>
+</h3>
+<h3 class="topic">
+<a name="3bjq76u91bvsf424dsaktflp31">&nbsp;&nbsp;&nbsp;&nbsp;https://www.cnblogs.com/wildernessdreams/p/8408797.html</a>
+</h3>
+<h3 class="topic">
+<a name="5unr2pv1vsk2ndqaaqdiv61q02">&nbsp;&nbsp;&nbsp;中文乱码</a>
+</h3>
+<h3 class="topic">
+<a name="0a89pflgpo7sglqda1l3gun7hp">&nbsp;&nbsp;&nbsp;&nbsp;仍未解决</a>
+</h3>
+<h3 class="topic">
+<a name="5hljmvekniirjc8rbcf875d4vk">&nbsp;vmware workstation</a>
+</h3>
+<h3 class="topic">
+<a name="2njpvgbv1vhpilnqmubac8mnmb">&nbsp;&nbsp;15.5.2安装oscp官网kali存在bug，疑似与cpu虚拟化有关</a>
+</h3>
+<h2 class="topic">
+<a name="7hhk498cl26klng1s22pks2hhm">关于虚拟机上网</a>
+</h2>
+<h3 class="topic">
+<a name="0n3lv1k2c6klirv7hjfr92v6vi">&nbsp;在官方kali虚拟机中网络设置中默认仅有有线网链接，所以只有真机插入有线网，kali虚拟机才能使用网络，如果真机使用wifi，则需要为kali虚拟机增加对应的无线网链接项</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/08g2cnhdrgtrh7voh2d89d83f4.png"></p>
+<h2 class="topic">
+<a name="6bbac7k2pdh99ijcdepbi8990q">关于虚拟机翻墙</a>
+</h2>
+<h3 class="topic">
+<a name="415hmo9i746pcpmkgngrtb5len">&nbsp;总思路</a>
+</h3>
+<h3 class="topic">
+<a name="40aref95sb0so6evpihr5h0oas">&nbsp;&nbsp;在真机中安装ssr，虚拟机中设置NAT连接模式，虚拟机连接真机中的ssr，从而实现翻墙需要注意的一点时，真机中的ssr需要设置允许局域网连接，只有这样，虚拟机才能连接到真机的ssr</a>
+</h3>
+<h3 class="topic">
+<a name="45qcfjv939ote7uk36b91m43qq">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/7c20ahur37ama4v3fudabgsv1t.png"></p>
+<h3 class="topic">
+<a name="4nh1634j27upg44vjdb72vo14m">&nbsp;&nbsp;&nbsp;&nbsp;确定真机ip</a>
+</h3>
+<h3 class="topic">
+<a name="76p6qjh90hjv1pjccfmvihue5j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/0vmgfq6r2uqhsfbo33nq7dpj4m.png"></p>
+<h3 class="topic">
+<a name="1gfodj4e3i1fhrmrq0j0k96jff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/7ubsroc6bbv41frbv2936t3auq.png"></p>
+<h3 class="topic">
+<a name="348ni7clghspai2tp37gdvdnh5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/3r5naran3vhrfs9m2dhd59hqm0.png"></p>
+<h3 class="topic">
+<a name="0rn9f0hsmkeksdmarcsa016u48">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/52mf0p7c39m5m1nfjttlhru3ot.png"></p>
+<h3 class="topic">
+<a name="7snodikeutahlcn6t3ifq160o9">&nbsp;unbutu</a>
+</h3>
+<h3 class="topic">
+<a href="http://scarhett.com/index.php/2018/04/18/01/" name="0dj5ngqrvikh43b13ne5b4mig8">&nbsp;&nbsp;http://scarhett.com/index.php/2018/04/18/01/</a>
+</h3>
+<h3 class="topic">
+<a name="360si1bmp7rlvtj201ii2n2a2l">&nbsp;&nbsp;主要是在unbutu系统设置中可以手动设置代理的ip</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/0m2omev33jpbuc3cmbuo0l76o1.png"></p>
+<h3 class="topic">
+<a name="47j0g32pd963vprj28apn1hogu">&nbsp;&nbsp;&nbsp;同时使用火狐浏览器是，将代理设置选为使用系统代理设置，从而成功翻墙</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/65s546vcf93j06t4manpthrmmn.png"></p>
+<h3 class="topic">
+<a name="0t2j7gcea5vmbkbjm0f4s4s2pf">&nbsp;kali2020</a>
+</h3>
+<h3 class="topic">
+<a name="1hm66jm4gk31mo6tkd0ehpbcor">&nbsp;&nbsp;浏览器</a>
+</h3>
+<h3 class="topic">
+<a name="26oa9bb4vhi5ddm3k3qb6eg30b">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/4vt33ojblov71sflnddm44ormp.png"></p>
+<h3 class="topic">
+<a name="63dmpd5osccb4sjbqm31kk5954">&nbsp;&nbsp;&nbsp;&nbsp;若想在kali虚拟机中的浏览器中使用ssr，需要设置火狐浏览器的代理，选中手动代理，然后将真机的内网ip和1080端口（即ssr占用的端口）填写进去，从而使得浏览器通过真机的ssr代理流量</a>
+</h3>
+<h3 class="topic">
+<a name="3h7e7mdbtmkgt7vr04mlhso6mi">&nbsp;&nbsp;工具</a>
+</h3>
+<h3 class="topic">
+<a name="5feis9573nu9ht4v8eh8r64bav">&nbsp;&nbsp;&nbsp;部分工具（比如recon-ng）运行时需要翻墙，但是kali系统设置中没有手动配置代理选项（仅有无代理和自动代理），所以要通过工具proxychains，将真机的ip地址和1080端口写入proxychains.conf文件中，将真机作为代理，从而以proxychains recon-ng的方式使用recon-ng</a>
+</h3>
+<h3 class="topic">
+<a name="6ui539u7oqvmkgnshmip65rpkh">&nbsp;&nbsp;&nbsp;&nbsp;proxychains工具的使用见下面的 《kali中安装ssr+proxychains实现翻墙》，不同点在于文中是虚拟机自身安装ssr，然后将127.0.0.1 1080配置到proxychain中，而此时是将真机的ip和1080端口配置到proxychain中</a>
+</h3>
+<h3 class="topic">
+<a name="3993cn2olmjrsuj57bals5ubc7">&nbsp;&nbsp;&nbsp;proxychains设置成功后，即使firefox不使用代理设置，也可以通过proxychains firefox打开该浏览器，从而实现翻墙</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/0j6snbv3tfu1heda4gecu0367c.png"></p>
+<h3 class="topic">
+<a name="518j956l9bpp87brttv3l3g33b">&nbsp;&nbsp;&nbsp;&nbsp;成功使用</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/0jqip45b3qa4ah8qodnqd428dj.png"></p>
+<h3 class="topic">
+<a name="5e2h72r0746flgbgusk4ob8vj5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;成功使用</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/4f5u6lr2podnt20sfa0vj9s2ag.png"></p>
+<h3 class="topic">
+<a name="07i6s6r13gq3of5crn73b63mf9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意此时如果翻墙网速比较慢，也可能工具使用失败，则需要更换速度较快的梯子</a>
+</h3>
+<h3 class="topic">
+<a name="0jskpr2vfs7rpmjs30skc3spl8">&nbsp;kali中安装ssr+proxychains实现翻墙</a>
+</h3>
+<h3 class="topic">
+<a href="https://www.cnblogs.com/pythonal/p/9301350.html" name="1ifpbgteaunhenl0gujl7nat8q">&nbsp;&nbsp;https://www.cnblogs.com/pythonal/p/9301350.html</a>
+</h3>
+<h3 class="topic">
+<a name="1reb62hk3525hkd5qmb0og3pba">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/1h6cup41e9odvpj39vm7146kfl.png"></p>
+<h3 class="topic">
+<a name="7u17g080jaifeftuv77kuu44dd">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/5qmifndhufkr9qigke5chrnh94.png"></p>
+<h3 class="topic">
+<a name="1c4ksk3nus1vc9flu43mbainsm">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/4g4ecf1l1k569f7c2c9bjqjqu6.png"></p>
+<h3 class="topic">
+<a name="4qr4a6rp04c33bmsa14lm37ab4">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/5rh7861t130mqq6f693ibtn40a.png"></p>
+<h3 class="topic">
+<a name="52uq7ndh5tvftjik9kh91pca37">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/057tbbiovtpbukjlsm5p8ifqte.png"></p>
+<h3 class="topic">
+<a name="5067lkdpbavdvo4v59vhppjf79">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/3tbmi50l7gvudlji335t3ssbi8.png"></p>
+<h3 class="topic">
+<a name="3mc9s2rp5peluioikdeqjnntid">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/7o8ncekqb5glmqm1dheovik8l4.png"></p>
+<h2 class="topic">
+<a name="0oiqnfqania01n7613embb2efu">显示属性调节</a>
+</h2>
+<h3 class="topic">
+<a name="2jj1etc8klbpauelgk3cnjj0ts">&nbsp;更改终端字体大小快捷键</a>
+</h3>
+<h3 class="topic">
+<a name="6ptarmth999h3fdqrdds9hjfl9">&nbsp;&nbsp;增大字体：Ctrl+Shift++</a>
+</h3>
+<h3 class="topic">
+<a name="2ci93fipgomg7ahepqeehnnup8">&nbsp;&nbsp;缩小字体：Ctrl+-</a>
+</h3>
+<h3 class="topic">
+<a name="1jgc79vpog8av2cmojvu7o1co3">&nbsp;修改系统字体大小</a>
+</h3>
+<h3 class="topic">
+<a name="3t8k1cd2lsov6iih3hc5feicke">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/46iporqmmtg5lua5hvggc3o9ma.png"></p>
+<h3 class="topic">
+<a name="2fia7fr49090jga9r466031r8n">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/7tl7p62oubpc89bu6kfhngpd4l.png"></p>
+<h2 class="topic">
+<a name="4q9fk9jaiuulimp08vn05g38k4">设置更新源</a>
+</h2>
+<h3 class="topic">
+<a href="https://www.cnblogs.com/xiaolee-tech/p/12373859.html" name="7b0jhloim5adrku1nk5jh8r63f">&nbsp;https://www.cnblogs.com/xiaolee-tech/p/12373859.html</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/6cg905p9ltsnu8istsud021fpi.png"></p>
+<h3 class="topic">
+<a name="1cgshd9g14d3r6e6h5krciv63u">&nbsp;&nbsp;中科大的源地址&#13;
+deb http://mirrors.ustc.edu.cn/kali kali-rolling main non-free contrib&#13;
+deb-src http://mirrors.ustc.edu.cn/kali kali-rolling main non-free contrib</a>
+</h3>
+<h3 class="topic">
+<a name="5622hnd2eem5vgfi92esuitonl">&nbsp;不要盲目追求将当前系统中所有软件包均更新，特别是需要将原本软件包删除后重新安装才能完成更新时，可能造成问题，当未被成功更新的软件包较少时，可以在使用过程中出现问题时，才考虑是否将对应软件包进行更新</a>
+</h3>
+<h3 class="topic">
+<a name="60bqp2dkh8uv2aku4kip6f84aj">&nbsp;&nbsp;更新报错信息的处理</a>
+</h3>
+<h3 class="topic">
+<a name="712v6enookv5l6492vdtcj7ce4">&nbsp;&nbsp;&nbsp;部分程序apt upgrade不成功，可以单独apt upgrade 包名，如果不成功，显示包损坏可以将其apt remove，然后重新apt install</a>
+</h3>
+<h3 class="topic">
+<a name="1epr92lu3ooj60l1icdirave9j">&nbsp;&nbsp;&nbsp;部分程序在上面的过程中会报错</a>
+</h3>
+<h3 class="topic">
+<a name="16fftunldltlkqn32hotn3mp7b">&nbsp;&nbsp;&nbsp;&nbsp;E: Error, pkgProblemResolver::Resolve generated breaks, this may be caused by held packages</a>
+</h3>
+<h3 class="topic">
+<a name="4216t6b3va906da5eokf5uslas">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://blog.csdn.net/weixin_42156097/article/details/103805063</a>
+</h3>
+<h3 class="topic">
+<a name="343cndbqoqrptnm636qds0ltnk">&nbsp;&nbsp;&nbsp;子主题 3</a>
+</h3>
+<h3 class="topic">
+<a name="75mcmuc4415a6u25s5ij79ddn8">&nbsp;ubuntu清华更新源</a>
+</h3>
+<h3 class="topic">
+<a name="6jigkn0k5mio2qb1l49qpsp033">&nbsp;&nbsp;https://mirrors.tuna.tsinghua.edu.cn/help/ubuntu/</a>
+</h3>
+<h2 class="topic">
+<a name="2do2rinfaocolma6n0r1uecrdf">vim：神之编辑器</a>
+</h2>
+<h3 class="topic">
+<a name="7iddl6kgri7o3239v452q0r74h">&nbsp;vimtutor</a>
+</h3>
+<h3 class="topic">
+<a name="7e33ptfst6iiuevmmk42v4fv5u">&nbsp;&nbsp;vim教程</a>
+</h3>
+<h3 class="topic">
+<a name="5rgea5du6nqkr64l1gv22j6g3r">&nbsp;模式</a>
+</h3>
+<h3 class="topic">
+<a name="6lr03hfbn9983jj6h25pm8pjg3">&nbsp;&nbsp;浏览模式</a>
+</h3>
+<h3 class="topic">
+<a name="39dk91kgp0n9s3ppd2bib9247b">&nbsp;&nbsp;&nbsp;无法输入内容</a>
+</h3>
+<h3 class="topic">
+<a name="2cpvosb6p2lu84mcv68lg1r61t">&nbsp;&nbsp;&nbsp;输入的内容均当作命令解析</a>
+</h3>
+<h3 class="topic">
+<a name="1ec1i1ct67gllb7trmk4p324c3">&nbsp;&nbsp;&nbsp;dd</a>
+</h3>
+<h3 class="topic">
+<a name="0eu31tfioge91s7v56rtrvjmci">&nbsp;&nbsp;&nbsp;&nbsp;删除整行</a>
+</h3>
+<h3 class="topic">
+<a name="7g185umvfpg7n9uii5v3koqi58">&nbsp;&nbsp;&nbsp;x        删除当前光标下的字符</a>
+</h3>
+<h3 class="topic">
+<a name="6etnqcgc7p7f4569ubrk8v4la5">&nbsp;&nbsp;编辑模式</a>
+</h3>
+<h3 class="topic">
+<a name="6barppgsr28tf2l16g4k71lmh7">&nbsp;&nbsp;&nbsp;i</a>
+</h3>
+<h3 class="topic">
+<a name="5ekiqe88vvn7r40r698eaffv65">&nbsp;&nbsp;&nbsp;&nbsp;从浏览模式进入编辑模式</a>
+</h3>
+<h3 class="topic">
+<a name="4dv6jpq44ff2r5ci0jh4rt6f4u">&nbsp;&nbsp;&nbsp;o a </a>
+</h3>
+<h3 class="topic">
+<a name="68aia2do8cpruea2ri8rknbamm">&nbsp;&nbsp;&nbsp;&nbsp;均可以进入编辑模式</a>
+</h3>
+<h3 class="topic">
+<a name="1pr0pemd6t6tn7b7sagj0udvt1">&nbsp;&nbsp;&nbsp;I、O、A</a>
+</h3>
+<h3 class="topic">
+<a name="59lg5s42ackd3is7790fvc0fh0">&nbsp;&nbsp;&nbsp;&nbsp;与小写ioa不同</a>
+</h3>
+<h3 class="topic">
+<a name="4577c98o7s7b0avb7mip56djtf">&nbsp;&nbsp;&nbsp;esc</a>
+</h3>
+<h3 class="topic">
+<a name="6gkei407pel4o1s9pch9193qh3">&nbsp;&nbsp;&nbsp;&nbsp;返回浏览模式</a>
+</h3>
+<h3 class="topic">
+<a name="2rp0ai8efujl2nvd0b3oqgpaop">&nbsp;&nbsp;命令模式</a>
+</h3>
+<h3 class="topic">
+<a name="1k4ncbc385mvn4i69t2glp1fdm">&nbsp;&nbsp;&nbsp;shift+:</a>
+</h3>
+<h3 class="topic">
+<a name="2rcq7so2vnqvi3csudq8kh10e7">&nbsp;&nbsp;&nbsp;&nbsp;从浏览模式进入命令模式</a>
+</h3>
+<h3 class="topic">
+<a name="5rh7isd79br98ll02chupv9ia6">&nbsp;&nbsp;&nbsp;在命令模式中 输入q，退出vim编辑器</a>
+</h3>
+<h3 class="topic">
+<a name="2opr9i0gpeed0nfgsehi90n7rb">&nbsp;退出</a>
+</h3>
+<h3 class="topic">
+<a name="64s8n0g05ui1f8u6bthbbiuro1">&nbsp;&nbsp;q!</a>
+</h3>
+<h3 class="topic">
+<a name="6n0ohnrt6ud85rj56fngfutan9">&nbsp;&nbsp;&nbsp;不保存修改强制退出</a>
+</h3>
+<h3 class="topic">
+<a name="4u2jif0in2ebpjhc0qlkbqj7ci">&nbsp;&nbsp;w</a>
+</h3>
+<h3 class="topic">
+<a name="4jkig1gks8a33sicbjcd1045gj">&nbsp;&nbsp;&nbsp;保存啊当前内容</a>
+</h3>
+<h3 class="topic">
+<a name="0eo438vst0hh13mj2um3t8k9ct">&nbsp;&nbsp;wq</a>
+</h3>
+<h3 class="topic">
+<a name="7sridp0euejbl4blo8u2pg2f48">&nbsp;&nbsp;&nbsp;保存并退出</a>
+</h3>
+<h3 class="topic">
+<a name="6d048jalqdt86p7c0pke3puohs">&nbsp;修改配置文档</a>
+</h3>
+<h3 class="topic">
+<a name="5id3bspan9ntoi36h0kbn3j841">&nbsp;&nbsp;在vim配置文件中设置指令</a>
+</h3>
+<h3 class="topic">
+<a name="08uf4bqdru352soaf4tr63plun">&nbsp;&nbsp;vi ~/.vimrc</a>
+</h3>
+<h3 class="topic">
+<a name="0f6rtksgl9vljid7n6fuoc1uk0">&nbsp;&nbsp;&nbsp;vim配置文件</a>
+</h3>
+<h3 class="topic">
+<a name="6v1k5j4dkmk3bojb525td4322h">&nbsp;&nbsp;set nu</a>
+</h3>
+<h3 class="topic">
+<a name="4rteclli81u4p6t73ustvbg1re">&nbsp;&nbsp;&nbsp;将set nu 保存在配置文件中，保存，可以显示行号</a>
+</h3>
+<h3 class="topic">
+<a name="76aaamknmslp7fugs5dv3i0b10">&nbsp;vim教程</a>
+</h3>
+<h3 class="topic">
+<a name="4l79qeda9ebvbeleep2gfaaijf">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/568gerv614gs37fk6jo8lg0vpm.png"></p>
+<h3 class="topic">
+<a name="0onjlsgjarbenuq1pd863ejtvr">&nbsp;报错信息的处理</a>
+</h3>
+<h3 class="topic">
+<a name="08khv0emhepr9lbegot5gena6n">&nbsp;&nbsp;部分程序apt upgrade不成功，可以单独apt upgrade 包名，如果不成功，显示包损坏可以将其apt remove，然后重新apt install</a>
+</h3>
+<h3 class="topic">
+<a name="65vb6vnlmrkfejj8jheddj4bos">&nbsp;&nbsp;部分程序在上面的过程中会报错</a>
+</h3>
+<h3 class="topic">
+<a name="00ilgng4ibcdv7qks0v8jkl9ha">&nbsp;&nbsp;&nbsp;E: Error, pkgProblemResolver::Resolve generated breaks, this may be caused by held packages</a>
+</h3>
+<h3 class="topic">
+<a name="56gpq9njh4gsanhiq2qomm62ih">&nbsp;&nbsp;&nbsp;&nbsp;https://blog.csdn.net/weixin_42156097/article/details/103805063</a>
+</h3>
+<h2 class="topic">
+<a name="4168782o0j93ho058v9rna7ld8">基础知识</a>
+</h2>
+<h3 class="topic">
+<a name="4nc2v7iih5eta3kid525k1j62q">&nbsp;基础目录</a>
+</h3>
+<h3 class="topic">
+<a name="5idt01lij8gddmj3hvgh25eu0p">&nbsp;&nbsp;/ bin-基本程序（ls，cd，cat等）/ sbin-系统程序（fdisk，mkfs，sysctl等）/ etc-配置文件/  tmp-临时文件（通常在启动时删除）/ usr / bin-应用程序（apt，ncat，nmap等）/ usr / share-应用程序支持和数据文件</a>
+</h3>
+<h3 class="topic">
+<a name="79n7rq08i410fhohuv9t1krc8o">&nbsp;基础kali指令</a>
+</h3>
+<h3 class="topic">
+<a name="0r8qmgct32uu14gto8grnom7ds">&nbsp;&nbsp;指令搜索</a>
+</h3>
+<h3 class="topic">
+<a name="213b4urrhuhmjm0o6r1stkk0fj">&nbsp;&nbsp;&nbsp;man指令</a>
+</h3>
+<h3 class="topic">
+<a name="0s1ig8m51u4hl40qvdmvpvtcug">&nbsp;&nbsp;&nbsp;&nbsp;man ls</a>
+</h3>
+<h3 class="topic">
+<a name="34o6m9m35oahqb3cutvo74oa7u">&nbsp;&nbsp;&nbsp;&nbsp;man -k ls</a>
+</h3>
+<h3 class="topic">
+<a name="1007nlvlhubu2ab9bg95a7ldck">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-k参数可以进行关键字搜索，可以结合正则表达式</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/7au3vpacoe3g38cbesuvs2h098.png"></p>
+<h3 class="topic">
+<a name="6h8ehhffuq3j9s5mt8qb209t4v">&nbsp;&nbsp;&nbsp;apropso</a>
+</h3>
+<h3 class="topic">
+<a name="40uc0n0hfu6di8if4392a3spjr">&nbsp;&nbsp;&nbsp;&nbsp;根据指令描述对指令进行检索</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/4vstq1qjkla7ntapr4d847au6v.png"></p>
+<h3 class="topic">
+<a name="3o5t46bur1jh9ak3b5ahq0b98q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;与man -k功能相同</a>
+</h3>
+<h3 class="topic">
+<a name="43s81b8u7f6c0d5960uv09suoa">&nbsp;&nbsp;文件系统操作</a>
+</h3>
+<h3 class="topic">
+<a name="029kg76uetil1n9t44qj9nehf9">&nbsp;&nbsp;&nbsp;ls</a>
+</h3>
+<h3 class="topic">
+<a name="2ofc1pt8fggjnjths87jaukp44">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/330o79lbice0ual2qi3uh2tc6i.png"></p>
+<h3 class="topic">
+<a name="1bijl2flf957ftmad2fhf9j3r3">&nbsp;&nbsp;&nbsp;cd pwd</a>
+</h3>
+<h3 class="topic">
+<a name="6j93hedt86vrv3oifuiatk4jej">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/7qcn9qucuv30m7p64lsqokap7r.png"></p>
+<h3 class="topic">
+<a name="3e9f8hqqko26rncjaun857rt60">&nbsp;&nbsp;&nbsp;mkdir</a>
+</h3>
+<h3 class="topic">
+<a name="5usa7pnf2dbmjc1pse17fqm980">&nbsp;&nbsp;&nbsp;&nbsp;rm -rf可以强制删除目录，如果创建的目录名包含空格，可以使用""将目录名引起来</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/51us688ua0j2koi6p2mf9bftqs.png"></p>
+<h3 class="topic">
+<a name="3c2s7o8eicvi3idd2amejibqe4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-p参数创建一个父目录以及多个子目录</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/13dmbaqift32fe7tqte58tvv51.png"></p>
+<h3 class="topic">
+<a name="76ngvlndglq4dslu9d06a2o48b">&nbsp;&nbsp;文件搜索命令</a>
+</h3>
+<h3 class="topic">
+<a name="7pd558ovndaphndeuiljqteh5m">&nbsp;&nbsp;&nbsp;which</a>
+</h3>
+<h3 class="topic">
+<a name="3qghga4u5c0s0avd8k96eg4mr8">&nbsp;&nbsp;&nbsp;&nbsp;which会在$PATH指令的路径中寻找文件</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/02q680of7bl0sj2d2ln0mqebb5.png"></p>
+<h3 class="topic">
+<a name="24t5adc39evi4if947cs8i7ss1">&nbsp;&nbsp;&nbsp;locate</a>
+</h3>
+<h3 class="topic">
+<a name="79uvb2mupl5415jmhglbntq4st">&nbsp;&nbsp;&nbsp;&nbsp;最快的搜索方法，内不维护一个数据库，updatedb可以用于更新该数据库</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/4bv8hmt4hblvtn0vnfpkl9qg0t.png"></p>
+<h3 class="topic">
+<a name="41q4ucr8ihccjmos730n8g7mpv">&nbsp;&nbsp;&nbsp;find</a>
+</h3>
+<h3 class="topic">
+<a name="5ajagn3nvtbk2v39ludtifbmtj">&nbsp;&nbsp;&nbsp;&nbsp;最复杂的搜索方式，例子中为从根目录遍历所有以sbd开头的文件</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/3gklp2h4tg53ijtl9cuup5d6p1.png"></p>
+<h3 class="topic">
+<a name="25ub3l2dkha4be83q3i6mi66l5">&nbsp;管理kali服务</a>
+</h3>
+<h3 class="topic">
+<a name="7lmnjgs842kdorpks2qtvp1b82">&nbsp;&nbsp;ssh服务 22端口</a>
+</h3>
+<h3 class="topic">
+<a name="0dcrvj13g084j6otn9fql9iv15">&nbsp;&nbsp;&nbsp;开启ssh服务</a>
+</h3>
+<h3 class="topic">
+<a name="0367fbf69q53ri4abd0q4266vu">&nbsp;&nbsp;&nbsp;&nbsp;开启服务 sudo systemctl start 服务名</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/4pecpvkd8lh2ouh2lkcmgaibic.png"></p>
+<h3 class="topic">
+<a name="4j6mra61mkrfjm7ruc579tlidn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关闭服务使用stop关键字</a>
+</h3>
+<h3 class="topic">
+<a name="6boh5tlasf9nmtkhujn30novn3">&nbsp;&nbsp;&nbsp;查看socket链接情况</a>
+</h3>
+<h3 class="topic">
+<a name="2mb20j04048fsvgt5n0cr59bfg">&nbsp;&nbsp;&nbsp;&nbsp;ss指令类似于netstate  antlp分别是ss指令的五个参数</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/7685dajvrfn13d2s1sv7hq01ug.png"></p>
+<h3 class="topic">
+<a name="3ea62ndvapm4di55a29l82004m">&nbsp;&nbsp;&nbsp;enable与disable</a>
+</h3>
+<h3 class="topic">
+<a name="0b9s9cckqe620tp0bpug8sol7k">&nbsp;&nbsp;&nbsp;&nbsp;enable用于设置ssh服务开机自启动</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/12lvlb4qnakdgu6prbb8rsfea6.png"></p>
+<h3 class="topic">
+<a name="65sjfbin69p01h5f5b3o4iugck">&nbsp;&nbsp;HTTP服务</a>
+</h3>
+<h3 class="topic">
+<a name="3u71pi7oq47g30ogjmjqvpeg83">&nbsp;&nbsp;&nbsp;启动http</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/2qup5hdhh5slvo55gfjbqc58lo.png"></p>
+<h3 class="topic">
+<a name="0k0crvdtqcnc2k4fjq8so47rq0">&nbsp;&nbsp;&nbsp;启动http服务后，系统监听80端口</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/1or7lrgc31fulsrr9n0f9uj31k.png"></p>
+<h3 class="topic">
+<a name="5us7junv4ctgkc8gbdl5asljaj">&nbsp;&nbsp;&nbsp;自动开启HTTP服务</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/34agvp7fvnlbtdk5ov755v21hi.png"></p>
+<h3 class="topic">
+<a name="0uonmc5l00j6rfgteljs3mim68">&nbsp;&nbsp;查看所有可以管理的服务</a>
+</h3>
+<h3 class="topic">
+<a name="4a3vk28l70tst87j6vpnclp2j0">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/1p01fpful04lo6dn5tlf1rht5r.png"></p>
+<h3 class="topic">
+<a name="5g5ablooved1vm86snhsnke652">&nbsp;软件包管理</a>
+</h3>
+<h3 class="topic">
+<a name="48463ipn014ve002n7g3h3obqr">&nbsp;&nbsp;获取更新列表（获得可更新的软件的信息，而不是直接更新软件）</a>
+</h3>
+<h3 class="topic">
+<a name="76grpb08g1eb4csrmcaltn14hj">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/1891g494occqh35pmfuen9ne53.png"></p>
+<h3 class="topic">
+<a name="594723mf62q78nbp8r92e9tuur">&nbsp;&nbsp;实际更新</a>
+</h3>
+<h3 class="topic">
+<a name="7lelp1r1o7uuhnvbrbrnc5rv22">&nbsp;&nbsp;&nbsp;更新所有软件包</a>
+</h3>
+<h3 class="topic">
+<a name="5h3lrbhdao6j6vp4c89k65ldmg">&nbsp;&nbsp;&nbsp;&nbsp;apt upgrade</a>
+</h3>
+<h3 class="topic">
+<a name="7u611p4ei37ivn6te5833d115s">&nbsp;&nbsp;&nbsp;更新指定软件包</a>
+</h3>
+<h3 class="topic">
+<a name="6vu10n44gjhrugi5nia4e4k3u2">&nbsp;&nbsp;&nbsp;&nbsp;apt upgrade 软件包包名</a>
+</h3>
+<h3 class="topic">
+<a name="7m9j6eqqr0fvdhbjh1ul8se9db">&nbsp;&nbsp;&nbsp;&nbsp;apt upgrade metasploit-framework</a>
+</h3>
+<h3 class="topic">
+<a name="36f0eq7ui0kdc6j3fsmc86upd0">&nbsp;&nbsp;在系统软件包列表中查找指定软件</a>
+</h3>
+<h3 class="topic">
+<a name="5negr2r2ltb2e7nlp8migtm3d7">&nbsp;&nbsp;&nbsp;该指令会搜索软件包名称和软件包描述</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/2fq00oi4e8u7pdnbemuebmda64.png"></p>
+<h3 class="topic">
+<a name="7jvkmb0d4v995kjh0guie31fta">&nbsp;&nbsp;显示指定软件包的描述信息</a>
+</h3>
+<h3 class="topic">
+<a name="557nahg78ohdpr6afu8htodmuc">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/6d4bokbf31v34m3tq4p84aufem.png"></p>
+<h3 class="topic">
+<a name="35ure2to3ls5ao22hkufq5pmfh">&nbsp;&nbsp;根据包名安装软件包</a>
+</h3>
+<h3 class="topic">
+<a name="1bcpn39te26c5uh8ja2ecm408h">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/7st575mi8rq0t54usa1glukj7d.png"></p>
+<h3 class="topic">
+<a name="3a10firep713o96boab93k1s68">&nbsp;&nbsp;根据包名卸载软件包</a>
+</h3>
+<h3 class="topic">
+<a name="4765ra786gjsvcjcljc4vhsn8u">&nbsp;&nbsp;&nbsp;--purge选项用于完全删除软件包相关信息，包括用户配置文件等</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/6pl70kggtcervl9ilo8sv6c8fg.png"></p>
+<h3 class="topic">
+<a name="1l206astmcpe1jkud2arf5df0r">&nbsp;&nbsp;离线安装软件包 dpkg指令</a>
+</h3>
+<h3 class="topic">
+<a name="688gu9k7u6kv82ca944o6cujia">&nbsp;&nbsp;&nbsp;dpkg不会安装该软件包可能需要的任何依赖项。该指令需要体提供-i或--i​​nstall选项以及.deb软件包文件的路径</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/427kpdo27onlk5mq9mbqd7e6iu.png"></p>
+<h3 class="topic">
+<a name="53r49kbmu24t0061l84cuda3u4">&nbsp;学习资源</a>
+</h3>
+<h3 class="topic">
+<a name="1fqvjg7js2tsev8dukvscv5fkm">&nbsp;&nbsp;https://kali.training/</a>
+</h3>
+<h2 class="topic">
+<a name="1p4f2oq2ljoaaooi8dmki9n0kg">基础命令行工具</a>
+</h2>
+<h3 class="topic">
+<a name="2ma0bsif4q0u4ij25svhf96bv9">&nbsp;bash（每个终端，对应一个bash进程）</a>
+</h3>
+<h3 class="topic">
+<a name="3qcmtebafhqme29golr5o62gts">&nbsp;&nbsp;环境变量</a>
+</h3>
+<h3 class="topic">
+<a name="05jdtruvs478qp8jbe84pd19p1">&nbsp;&nbsp;&nbsp;env查看所有环境变量</a>
+</h3>
+<h3 class="topic">
+<a name="3lkf900g7oae5npgcpr5sns3vs">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/2ecsp0fn98hjjdqqk3ip1169jn.png"></p>
+<h3 class="topic">
+<a name="5t8sg334ld05apfih6kkkeip7b">&nbsp;&nbsp;&nbsp;$PATH </a>
+</h3>
+<h3 class="topic">
+<a name="17ii07hnkvee8rllvni1a193b4">&nbsp;&nbsp;&nbsp;&nbsp;任何命令执行时若未指定路径，就会在$PATH指定的路径下寻找可执行程序</a>
+</h3>
+<h3 class="topic">
+<a name="4578s51bb2bo5l8glhvb9q1lvk">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/5mrp1eacaa33v4hhunknde6fev.png"></p>
+<h3 class="topic">
+<a name="7q83pr22omtr51f9i00r97q28d">&nbsp;&nbsp;&nbsp;其他</a>
+</h3>
+<h3 class="topic">
+<a name="7hirs7scehfv7e7l0r4jli6qni">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/06vbc3erflh3i9q536h8hvmuck.png"></p>
+<h3 class="topic">
+<a name="5nigt0nssl1ss3bdpn1pdvhkdq">&nbsp;&nbsp;&nbsp;export指令创建环境变量</a>
+</h3>
+<h3 class="topic">
+<a name="0sah52fho6nn22j6ui40bc85f1">&nbsp;&nbsp;&nbsp;&nbsp;创建环境变量b 并在之后使用</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/1haso77ft7nljphn73hc96tbht.png"></p>
+<h3 class="topic">
+<a name="3t4flf4klc75032dt70mol525b">&nbsp;&nbsp;&nbsp;&nbsp;export命令创建的环境变量可供当前Bash实例产生的任何子进程访问（比如当前bash中执行bash指令，则当前bash会产生一个子bash）&#13;
+如果仅设置环境变量但不导出，那么它将仅在当前bash中可用，其他bash中不可用。&#13;
+&#13;
+$$变量可以显示当前shell实例的进程ID，以确保我们确实在两个不同的shell中发出命令： </a>
+</h3>
+<h3 class="topic">
+<a name="46tp81cif2houbonl83n3d2tcn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/1o8hb8j8tp071djrldn76qvlf7.png"></p>
+<h3 class="topic">
+<a name="4iblfrfcspmp2en9i7k1lbnkep">&nbsp;&nbsp;自动补全</a>
+</h3>
+<h3 class="topic">
+<a name="63e2i3pc85csig1o5fbf2f0vua">&nbsp;&nbsp;&nbsp;注意按两次tab会显示符合当特征的所有目标文件</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/69uucivsodhfq20si4nib0fkkr.png"></p>
+<h3 class="topic">
+<a name="5mhf8c1v1es98trmsb76ip96ur">&nbsp;&nbsp;显示历史指令</a>
+</h3>
+<h3 class="topic">
+<a name="1g04unha5kv8br3o81ko67v2ni">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/5ms4a8gpsgsrvo65nfr03vrgdj.png"></p>
+<h3 class="topic">
+<a name="4qejtev6dvs6ua2iaebdsj3j7n">&nbsp;&nbsp;&nbsp;&nbsp;!指令行号 可以重新执行指令</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/28mbn5mlagibqbalcgq2ppd3f1.png"></p>
+<h3 class="topic">
+<a name="1qdsrl9b0t8bmjjmmfl1e2i3f7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;!!自动执行上一条指令</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/389jpt552210moipg11cuqr0r4.png"></p>
+<h3 class="topic">
+<a name="6qp6gbn2u9g9hhoqns0urn91o3">&nbsp;&nbsp;&nbsp;默认情况下，命令历史记录将保存到用户主目录中的.bash_history文件。 两个环境变量控制历史记录的大小：HISTSIZE和HISTFILESIZE。&#13;
+   HISTSIZE控制当前会话中存储在内存中的命令数量，而HISTFILESIZE配置历史记录文件中保留的命令数量。 这些变量可以根据需要进行编辑，并保存到Bash配置文件（.bashrc）中</a>
+</h3>
+<h3 class="topic">
+<a name="4j6er0t2uj83dun7glshcdc5or">&nbsp;&nbsp;ctrl+r 可以搜索历史指令（注意vmbox虚拟机可能产生快捷键冲突）</a>
+</h3>
+<h3 class="topic">
+<a name="68n75629k5pm0r9n0h7ad7m51j">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/35siik5fo4fjel476nk7kdjcdp.png"></p>
+<h3 class="topic">
+<a name="7l9o1kt5c4re98gasqfob8d243">&nbsp;管道和重定向</a>
+</h3>
+<h3 class="topic">
+<a name="0shp07l7a37o45cucqcvo3lo5c">&nbsp;&nbsp;命令行程序相关的三种流</a>
+</h3>
+<h3 class="topic">
+<a name="5rg1653bf0fgt6bc52uci5g77i">&nbsp;&nbsp;&nbsp;基本输入、基本输出、基本错误</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/7fij1lub3okmdi9pp6qaprv4v9.png"></p>
+<h3 class="topic">
+<a name="7p519lppatslno7vpt94e7ldo6">&nbsp;&nbsp;&nbsp;&nbsp; 管道（使用|运算符）和重定向（使用&gt;和&lt;运算符）在程序和文件之间连接这些流，以适应几乎无限数量的可能用例。</a>
+</h3>
+<h3 class="topic">
+<a name="1hkg5k59c2iktlosgtksinfm1r">&nbsp;&nbsp;重定向</a>
+</h3>
+<h3 class="topic">
+<a name="6ompogp144d64p6nm61dckj6pa">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/0jk8n84i4vdijm0ppk9bt11gmu.png"></p>
+<h3 class="topic">
+<a name="4ovs2rfffajkskra9e20fhmang">&nbsp;&nbsp;&nbsp;&nbsp;将输出重定向到一个不存在的文件，该文件将被自动创建。 但是，如果我们将输出保存到已经存在的文件中，则该文件的内容将被替换。 重定向时要小心！ 没有撤消功能！</a>
+</h3>
+<h3 class="topic">
+<a name="5qj14ehf9d44q9rht6buarv3bu">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/2fq8vv5871lu1b8qnaat6li0oe.png"></p>
+<h3 class="topic">
+<a name="4thbrvlcbsm5qnuqf7i6d0v011">&nbsp;&nbsp;&nbsp;&nbsp;重定向&gt;&gt;可以在现有文件的基础上增加内容，而不是将原本文件内容替换</a>
+</h3>
+<h3 class="topic">
+<a name="5rf4q3o6h0rjusk1su0efiqi17">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/0ado60bfds4uc87pbl1qp0jm86.png"></p>
+<h3 class="topic">
+<a name="1dc0b5am0ou6t8d7mn83k12v78">&nbsp;&nbsp;&nbsp;&nbsp;将数据重定向到程序wc的输入，从而计算文件字节数</a>
+</h3>
+<h3 class="topic">
+<a name="1bh4vc32d05p86r9e77mch4b64">&nbsp;&nbsp;&nbsp;&nbsp;wc -l 可以计算文本文件行数</a>
+</h3>
+<h3 class="topic">
+<a name="4aradeevv3uigo9nuu8d4kmiuv">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/35j95vbo102n42hb1tbfkh9bi2.png"></p>
+<h3 class="topic">
+<a name="1vu1p3m2hf477bgmk83cmo628d">&nbsp;&nbsp;&nbsp;&nbsp;STDIN，STDOUT和STDERR的文件描述符55分别定义为0、1和2</a>
+</h3>
+<h3 class="topic">
+<a name="1vbfa2smmc1e49kj5amu6p6v2i">&nbsp;&nbsp;&nbsp;&nbsp;2表示将指令执行的错误信息重定向到文件中</a>
+</h3>
+<h3 class="topic">
+<a name="2q5evsv3rl8qs15nar63innb6v">&nbsp;&nbsp;&nbsp;注意&gt;或&lt;将数据重定向到文件，如果文件不存在，会创建文件，如果文件存在，会将内容彻底替换，不会保留文件原内容</a>
+</h3>
+<h3 class="topic">
+<a name="24bs4mp1sa13njfq8siscbs7j3">&nbsp;&nbsp;&nbsp;&nbsp;&gt;&gt;或 &lt;&lt;会保留文件内容，并增加重定向的数据</a>
+</h3>
+<h3 class="topic">
+<a name="6l4e0dkvcac8kn5p4lmgjafuje">&nbsp;&nbsp;管道</a>
+</h3>
+<h3 class="topic">
+<a name="10suq8q19hid0suskbqd2t3ln5">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/2bqks5qd9ks8rlhrbst0lif0bl.png"></p>
+<h3 class="topic">
+<a name="4ij9c0jvuh04nm4616hjacqrms">&nbsp;&nbsp;&nbsp;&nbsp;将程序的输入输出流链接</a>
+</h3>
+<h3 class="topic">
+<a name="1gvfsd342b2eq1i2saqu8gh194">&nbsp;文字搜索于处理</a>
+</h3>
+<h3 class="topic">
+<a name="61ikre4jkh2c401cusooadq7tk">&nbsp;&nbsp;涉及正则表达式</a>
+</h3>
+<h3 class="topic">
+<a name="3h5f2s4aqiigd017b1dp5324lj">&nbsp;&nbsp;&nbsp;https://www.runoob.com/regexp/regexp-syntax.html</a>
+</h3>
+<h3 class="topic">
+<a name="40vheguskv6aflc9cq7f29f37k">&nbsp;&nbsp;grep</a>
+</h3>
+<h3 class="topic">
+<a name="3813pld7bd3n6b3ni8fh7idhet">&nbsp;&nbsp;&nbsp;-r进行递归搜索和-i忽略文本大小写</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/08eo3pp5torglqvlrspackvib5.png"></p>
+<h3 class="topic">
+<a name="2qljmnjl34leo9b3tkprjc6kns">&nbsp;&nbsp;sed</a>
+</h3>
+<h3 class="topic">
+<a name="6cni5aqc02fl73qch1fgb271v1">&nbsp;&nbsp;&nbsp;使用正则表示式，以将单词&ldquo; hard&rdquo;替换为&ldquo; harder&rdquo;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/60rc6l5qfp90c426nt8qomr9ve.png"></p>
+<h3 class="topic">
+<a name="450lu7gi5i5rgnfa9dm6mjr9cr">&nbsp;&nbsp;cut</a>
+</h3>
+<h3 class="topic">
+<a name="034aq6c2e23c6fcokevpg5rcm9">&nbsp;&nbsp;&nbsp;-f用于我们要剪切的字段编号，以及-d用于字段定界符。</a>
+</h3>
+<h3 class="topic">
+<a name="33ujkf8goa2d7oocavrmf20j78">&nbsp;&nbsp;&nbsp;以,作为分割依据，提取分割后的第二个字段</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/0giqee10af4aiusg6do1m7bjd9.png"></p>
+<h3 class="topic">
+<a name="529ilbr9jsj4uibbdr8p5o86n2">&nbsp;&nbsp;&nbsp;用/作为分隔符并检索第一个字段，从/ etc / passwd中提取用户列表：</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/4jf3intkn665b8p0plfvvpaskb.png"></p>
+<h3 class="topic">
+<a name="5i8ddnbtkjd98mcs3rhqcdne7m">&nbsp;&nbsp;&nbsp;只能用单个字符作为分割符</a>
+</h3>
+<h3 class="topic">
+<a name="14rq5csrbg0h51g34a2dpp5v4f">&nbsp;&nbsp;awk</a>
+</h3>
+<h3 class="topic">
+<a name="10ke88bang05pa23u88su4mttg">&nbsp;&nbsp;&nbsp;是一种专为文本处理而设计的编程语言，通常用作数据提取和报告工具</a>
+</h3>
+<h3 class="topic">
+<a name="3mubrhut8mluhksu3i8nhce8kl">&nbsp;&nbsp;&nbsp;将::作为分割依据返回第一个和第三个分割结果</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/0bfke7ufhfveqv80cf8n8hi3ga.png"></p>
+<h3 class="topic">
+<a name="6l74vpdg6lgoc31ilqa3vppdcj">&nbsp;&nbsp;&nbsp;可以使用多个字符作为分割符</a>
+</h3>
+<h3 class="topic">
+<a name="6igo4gj89e0lgb6g6qlg3813mo">&nbsp;恶意日志分析实例</a>
+</h3>
+<h3 class="topic">
+<a name="0vrec620lu19juvhomoed6ah1c">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/2eeu8qvpegsd75agj07fip51dj.png"></p>
+<h3 class="topic">
+<a name="2bn15f1ti397stunpe9i2tdcj0">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/25bcl4vsga0rvdkbjse4hoh9ak.png"></p>
+<h3 class="topic">
+<a name="0v0inpf0m9r9kupqlukjutf4jm">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/5nv4v4g5fgojnb84rg1vtb679m.png"></p>
+<h3 class="topic">
+<a name="51ta0i13gd3oe16ndnup9eiuua">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/1rvhoomt9oe8nlebhr9gq7m7h8.png"></p>
+<h3 class="topic">
+<a name="7f9gjnr914g8oee1ha8qt7bsur">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/1tj5gs8v7upikng4u2orhcos9s.png"></p>
+<h3 class="topic">
+<a name="3dl3eaj4nv706oerbmf4mrqs9t">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/0fqdg7r22uulqpn0kogvg2bhnk.png"></p>
+<h3 class="topic">
+<a name="45ojbkdvlm8ahqtfhc2iarcost">&nbsp;&nbsp;grep -v是显示不包含匹配字段所有行，说明该ip所有访问目标均为admin</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/3afg54pkm84e6gprprs9b7trpu.png"></p>
+<h3 class="topic">
+<a name="7417q2oc4ng80n2bhfvek9nfl2">&nbsp;&nbsp;显然208.68.234.99已涉及对此Web服务器的HTTP暴力破解尝试。 此外，经过大约1000次尝试后，蛮力尝试似乎成功了，如&ldquo; HTTP 200&rdquo;消息所示。</a>
+</h3>
+<h3 class="topic">
+<a name="25nm686bpmt0vbp4u2tfm25hia">&nbsp;文本编辑</a>
+</h3>
+<h3 class="topic">
+<a name="27ae9k4jqie7msc18hp174a500">&nbsp;&nbsp;nano</a>
+</h3>
+<h3 class="topic">
+<a name="1ln6e9mg2ehpu6ac5m17bihvsn">&nbsp;&nbsp;&nbsp;编辑文件</a>
+</h3>
+<h3 class="topic">
+<a name="2nig771latktlh06r49po3vqbu">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/6h67eq388dsekd5mij0bjm3bes.png"></p>
+<h3 class="topic">
+<a name="4u8a11tl55ogi9fgvurohp38ot">&nbsp;&nbsp;vi</a>
+</h3>
+<h3 class="topic">
+<a name="5pba8k166q3678bus893r7gbva">&nbsp;&nbsp;&nbsp;编辑文件</a>
+</h3>
+<h3 class="topic">
+<a name="3qrq30b3dcdgrt8oqu92frib0l">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/3ni7n56qn0u2m3h1ogkcict6i0.png"></p>
+<h3 class="topic">
+<a name="6kmr68b3jfui185sroc3bf66sv">&nbsp;&nbsp;&nbsp;参考资料</a>
+</h3>
+<h3 class="topic">
+<a name="6nb2t1kjpbo2s4t08a7v44dn76">&nbsp;&nbsp;&nbsp;&nbsp;https://en.wikibooks.org/wiki/Learning_the_vi_Editor/vi_Reference &#13;
+https://www.debian.org/doc/manuals/debian-tutorial/ch-editor.html</a>
+</h3>
+<h3 class="topic">
+<a name="393dc8intf2pl0832cd3bmbqvk">&nbsp;文件对比</a>
+</h3>
+<h3 class="topic">
+<a name="44pbe5m7utnvl2teu2k0sg3ogp">&nbsp;&nbsp;comm</a>
+</h3>
+<h3 class="topic">
+<a name="6khqcgmnpueqosc3tpfe9nb87v">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/4ktfscqa2oh4p3k0mbfgnfj17k.png"></p>
+<h3 class="topic">
+<a name="3rdb8b3li42lkfjmv1o505tec5">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/5pvjt01hvrb06jkarvmrh3tjlr.png"></p>
+<h3 class="topic">
+<a name="667fpg5ip013hcf5h2flqogrod">&nbsp;&nbsp;diff</a>
+</h3>
+<h3 class="topic">
+<a name="17kr1e6pav9q7mf64nep9aucus">&nbsp;&nbsp;&nbsp;上下文输出格式（-c）</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/19o68jrenjtq26vopgm8016ta8.png"></p>
+<h3 class="topic">
+<a name="21ol4bos36ig844r9oc8kshgcf">&nbsp;&nbsp;&nbsp;统一输出格式（-u）</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/63ui6go3879io87fmpjqmloqqf.png"></p>
+<h3 class="topic">
+<a name="5g5q8veoehdi3dnt8dht031g1s">&nbsp;&nbsp;&nbsp;使用&ldquo;-&rdquo;指示符显示该行出现在第一个文件中，而不出现在第二个文件中。 相反，&ldquo; +&rdquo;指示器表明该行出现在第二个文件中，而不是出现在第一个文件中</a>
+</h3>
+<h3 class="topic">
+<a name="5f7ano1s08t1q1e1ktn7922kcq">&nbsp;&nbsp;vimdiff</a>
+</h3>
+<h3 class="topic">
+<a name="7rbtrbnkpg84eaub7bjodbofp5">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/1cghio7stis5amov5tklmtq95a.png"></p>
+<h3 class="topic">
+<a name="6idq4it75umj9b4s2hs3dnijdl">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/280qactagtus51uijo252db496.png"></p>
+<h3 class="topic">
+<a name="03ll2hgo1ftic4kcdv15tpsdh7">&nbsp;&nbsp;&nbsp;快捷键</a>
+</h3>
+<h3 class="topic">
+<a name="20f4sdlvii1212db9nm36k6v0q">&nbsp;&nbsp;&nbsp;&nbsp;do：将更改从另一个窗口移至当前窗口&#13;
+dp：将更改从当前窗口移至另一个窗口&#13;
+] c：跳转至下一个更改&#13;
+[c：跳转至上一个更改&#13;
+ctrl+w：切换至另一个拆分窗口</a>
+</h3>
+<h3 class="topic">
+<a name="29ra6v8gfg7gpeop30mqf0bas9">&nbsp;进程管理</a>
+</h3>
+<h3 class="topic">
+<a name="1vd93kcja7c3c4vib94d2hm49v">&nbsp;&nbsp;指令最后的&amp;指定了将命令直接在后台运行，相当于开了一条进程，整条指令执行完毕后立即返回，可以继续执行其他指令</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/7mth9mncv6n0s9osaqlhc808f4.png"></p>
+<h3 class="topic">
+<a name="3he9k55lle29i3fhabr1ql3554">&nbsp;&nbsp;&nbsp;若没有加&amp;，则指令执行之后会占用当前shell，使用ctrl+c可以结束指令执行，ctrl+z可以暂停指令 bg指令可以使暂停的指令继续运行（bg指令继续执行后，不能使用ctrl+c使其停止执行）（bg指令会将指定进程在后台运行起来）（某些进程对运行时间敏感，使用ctrl+z暂停后可能导致运行结果错误）</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/0svta1ke0frm5bapvt51v97h14.png"></p>
+<h3 class="topic">
+<a name="6vvimq0rmbjmc44sv4dgrmr3cr">&nbsp;&nbsp;jobs:查看当前shell中的后台作业的进程，&#13;
+fg:将后台作业的进程返回到前台</a>
+</h3>
+<h3 class="topic">
+<a name="0hdhufmc98jn3op3esd3c8t7gv">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/40f6r1hsjc4lalk3919hn04cpj.png"></p>
+<h3 class="topic">
+<a name="5rsd8i68u8thsu1o4uv7gfuqv5">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/5tm498iic15t91untcfb373hqj.png"></p>
+<h3 class="topic">
+<a name="21b9m1kbcuc2ubgjl6qqjnmp3o">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fg bg指令后的%后可以使用数字，进程名称用于指定特定进程，可以使用%+或%%表示当前进程 ，用%-表示上一个进程，如果仅后台处理了一个进程，则不需要作业号。</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/2j9id3u6lnemcn3jb4vekkn66m.png"></p>
+<h3 class="topic">
+<a name="05ln1l3pd4dlgju5toiukco549">&nbsp;&nbsp;ps（显示系统中所有进程） kill（根据pid结束进程）</a>
+</h3>
+<h3 class="topic">
+<a name="2ure27a8hvdgqc4f7j1adp3n6m">&nbsp;&nbsp;&nbsp;ps</a>
+</h3>
+<h3 class="topic">
+<a name="4luo497iseg03eq4ggtonkpqnb">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/76snkoa06clifh09lmf3umruk3.png"></p>
+<h3 class="topic">
+<a name="5vpo9t03crnfi622t96mefnnj6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-C 按照指定命令名称显示进程</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/2ma3o84ogkkg17a0j6chaaq9pc.png"></p>
+<h3 class="topic">
+<a name="3c5qe2t8cj6k3v4gk6gng8okrf">&nbsp;&nbsp;&nbsp;kill</a>
+</h3>
+<h3 class="topic">
+<a name="684kldous8gu7ddg80uht2cv3t">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/0f3tue5cv8jmon0jehamgevb2p.png"></p>
+<h3 class="topic">
+<a name="4ka8rqjl0bsb0spako27nfgfb1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;kill会给指定进程发送终止的默认信号：SIGTERM（请求终止）</a>
+</h3>
+<h3 class="topic">
+<a name="4n22bet53pufdf53bj2tnsvqe6">&nbsp;文件和命令行监控</a>
+</h3>
+<h3 class="topic">
+<a name="196tl5e830s23kvggbu7eumnfa">&nbsp;&nbsp;tail</a>
+</h3>
+<h3 class="topic">
+<a name="5ad0hfn7095sr6lt52o8sv5h73">&nbsp;&nbsp;&nbsp;tail用于查看文件内容，-f常用于查看日志内容，文件内容被更新时会显示出来</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/71n8fq5m6ontfn0sqalsoq4uta.png"></p>
+<h3 class="topic">
+<a name="1tir8kfh1qc672ggbutr3ld4aa">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/20beeq7f0eivvebfa15ma7d0oq.png"></p>
+<h3 class="topic">
+<a name="0b1kcm5j9mtoprc9rv29kajo57">&nbsp;&nbsp;&nbsp;&nbsp;f选项（后跟）非常有用，因为它会随着目标文件的增长不断更新输出。 另一个方便的开关是-nX，它输出最后的&ldquo; X&rdquo;行数，而不是默认值10。（tail默认输出文件最后10行）</a>
+</h3>
+<h3 class="topic">
+<a name="6jptbcupmrj0jurcgp9e314rfj">&nbsp;&nbsp;watch</a>
+</h3>
+<h3 class="topic">
+<a name="7pictfch2g3hsufsmurmqu43f3">&nbsp;&nbsp;&nbsp;用于自动重复执行指定指令，这里-n 5表示没5秒执行w指令一次，w指令用于显示当前登陆用户，使用ctrl+c可以结束该重复执行</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/5na3p2e0cn9f9io01o1h75bqdu.png"></p>
+<h3 class="topic">
+<a name="1qqv10oe6l2muip1e96eep1548">&nbsp;文件下载</a>
+</h3>
+<h3 class="topic">
+<a name="4hsaq5dghhfvann912mf1ei76h">&nbsp;&nbsp;wget</a>
+</h3>
+<h3 class="topic">
+<a name="3822trdvnhahs1dqm0gq0h5l11">&nbsp;&nbsp;&nbsp;weg -O 目标文件名 下载url</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/2gb75d4mc34him3om8bafdpr1j.png"></p>
+<h3 class="topic">
+<a name="1tvr0kmehuv3ioeduash5af9ja">&nbsp;&nbsp;&nbsp;&nbsp;参数-O用于指定下载文件的名称</a>
+</h3>
+<h3 class="topic">
+<a name="3lenivs51pla6c52tubnpslt3h">&nbsp;&nbsp;curl</a>
+</h3>
+<h3 class="topic">
+<a name="5mrqugnsn0o4ta8sp3er6uefs1">&nbsp;&nbsp;&nbsp;与wget类似</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/6vfo61ikv5e09570c1ecq7e9e8.png"></p>
+<h3 class="topic">
+<a name="46cav2tklqml7hitdna0sbbqhe">&nbsp;&nbsp;axel</a>
+</h3>
+<h3 class="topic">
+<a name="02gt8kquu6j88nsl17cc91b4r8">&nbsp;&nbsp;&nbsp;可以使用多个进程同时下载，从而提高下载速度，-a指定更简洁的进度指示，-n指定同时下载链接的数量，-o指定下载文件名</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/0g0u6ul3nn5cpi6p2m1mi26eej.png"></p>
+<h3 class="topic">
+<a name="2mu661c1umln0epvqgjsidchd5">&nbsp;自定以bash环境</a>
+</h3>
+<h3 class="topic">
+<a name="38nr6ieu4ujollvbiv4sfqbcql">&nbsp;&nbsp;使用HISTCONTROL, HISTIGNORE, and HISTTIMEFORMAT三个宏，指定history指令的运行方式</a>
+</h3>
+<h3 class="topic">
+<a name="2b1o5jd7putr2ebfmoorle4dsa">&nbsp;&nbsp;&nbsp;HISTCONTROL变量定义是否删除重复的命令，从历史记录中以空格开头的命令，或同时删除这两者。 默认情况下，两者均被删除，但您可能会发现仅省略重复项会更有用。</a>
+</h3>
+<h3 class="topic">
+<a name="3cf3lo73u62ga5co35ctbrgvor">&nbsp;&nbsp;&nbsp;&nbsp;设置为仅删除重复项</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/1qepr477c8n8o3fo667jgp52gl.png"></p>
+<h3 class="topic">
+<a name="7cbf4tt2vuoe4o6p0gqg4769lf">&nbsp;&nbsp;&nbsp;&nbsp;默认为均删除</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/7htdc0n49ibrrbd49al42g5vqr.png"></p>
+<h3 class="topic">
+<a name="2k1mmdp8b1b96ug21niakdr2vk">&nbsp;&nbsp;&nbsp;HISTIGNORE变量对于过滤掉经常运行的基本命令（例如ls，exit，history，bg等）特别有用：</a>
+</h3>
+<h3 class="topic">
+<a name="60gmams1ofgarg086ej4ctvhpu">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/3ou9o286cajvnv6l4dtd78l2mm.png"></p>
+<h3 class="topic">
+<a name="6smrt9r8tb31u7hr0u8m3qb41h">&nbsp;&nbsp;&nbsp;最后，HISTTIMEFORMAT控制历史命令输出中的日期和/或时间戳。</a>
+</h3>
+<h3 class="topic">
+<a name="69v947r78jkmqljrb33p28u7ej">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/18ur1ebj6kv2a7g4ucahkla8h0.png"></p>
+<h3 class="topic">
+<a name="1vke5egc1k74efuqt3dnkivn2n">&nbsp;&nbsp;指令别名alias（仅对当前shell有效）</a>
+</h3>
+<h3 class="topic">
+<a name="58ksaom4895te8ufrqts6q4upo">&nbsp;&nbsp;&nbsp;将ls -al取别名为lsa</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/7ob6epfvcrgfc2p46tl1eicdut.png"></p>
+<h3 class="topic">
+<a name="6fh4imbmbtg91trsmgmji2k0ni">&nbsp;&nbsp;&nbsp;&nbsp;可以使用与当前命令相同的字符串作为别名，对应命令的功能就会被覆盖</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/3ps6c4t767g5t55gbleamr6tbj.png"></p>
+<h3 class="topic">
+<a name="318l74mc19pt9dt08enf0iv0tb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;退出当前shell或者使用unalias可以取消别名</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/4tl8gu16lpkc721c2d9artdacv.png"></p>
+<h3 class="topic">
+<a name="3ve7fhsk4o2a57n9ja2fus74s0">&nbsp;&nbsp;持久化bash定制</a>
+</h3>
+<h3 class="topic">
+<a name="3t6c2v8m6is4v8gcbsr10d5ncf">&nbsp;&nbsp;&nbsp;用户主目录中有.bashrc脚本文件，用户每次登陆，该脚本会执行，所以可以在该脚本中设置alias等指令，从而修改当前bash执行环境</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/4a89j0ihpi2l9juqpqkgka417d.png"></p>
+<h3 class="topic">
+<a name="1kvuhqj2le66kamsfjge0olqdl">&nbsp;&nbsp;&nbsp;&nbsp;显示.bashrc文件内容</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4_files/0ghvdu1r7895u49f776as1fuu9.png"></p>
+</body>
+</html>

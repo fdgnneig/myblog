@@ -1,0 +1,275 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>物联网安全-BLE协议嗅探与重放实战</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="0caqisuetc2og3hj0dp47la9ds">物联网安全-BLE协议嗅探与重放实战</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-BLE%E5%8D%8F%E8%AE%AE%E5%97%85%E6%8E%A2%E4%B8%8E%E9%87%8D%E6%94%BE%E5%AE%9E%E6%88%98_files/images/%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-BLE%E5%8D%8F%E8%AE%AE%E5%97%85%E6%8E%A2%E4%B8%8E%E9%87%8D%E6%94%BE%E5%AE%9E%E6%88%98.jpg"></div>
+<h2 class="topic">
+<a name="4blvstoq4o9kblkh03fm698alk">BLE数据嗅探</a>
+</h2>
+<h3 class="topic">
+<a name="4prpt6h095qklv99vkigvrvafh">&nbsp;监听智能温度计</a>
+</h3>
+<h3 class="topic">
+<a name="2g5knovhir78891558rrn4bcdj">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-BLE%E5%8D%8F%E8%AE%AE%E5%97%85%E6%8E%A2%E4%B8%8E%E9%87%8D%E6%94%BE%E5%AE%9E%E6%88%98_files/0nuadj8g1h03vdvi2gnr2u4i90.png"></p>
+<h3 class="topic">
+<a name="4rtpc87j9ugq5m2293ab1iuhvu">&nbsp;&nbsp;&nbsp;52832工具所需的环境</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-BLE%E5%8D%8F%E8%AE%AE%E5%97%85%E6%8E%A2%E4%B8%8E%E9%87%8D%E6%94%BE%E5%AE%9E%E6%88%98_files/3ggoq5u5m61dhnl29fapok00qg.png"></p>
+<h3 class="topic">
+<a name="174qbpdktgl40avsf52p59l9g0">&nbsp;&nbsp;&nbsp;&nbsp;将52832插入电脑的usb接口中，该型号产品会出现红色指示灯闪烁的状态，打开wireshark，找到开发板串口，双击进入进行嗅探</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-BLE%E5%8D%8F%E8%AE%AE%E5%97%85%E6%8E%A2%E4%B8%8E%E9%87%8D%E6%94%BE%E5%AE%9E%E6%88%98_files/5fm0tl8n7sa1gb09c0jtkhodkp.png"></p>
+<h3 class="topic">
+<a name="7oror6d06a1cvphpi4ae22sqve">&nbsp;&nbsp;开始进行监听</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-BLE%E5%8D%8F%E8%AE%AE%E5%97%85%E6%8E%A2%E4%B8%8E%E9%87%8D%E6%94%BE%E5%AE%9E%E6%88%98_files/6oekh5t59bvo2n5leragc6mqr3.png"></p>
+<h3 class="topic">
+<a name="1ieolvpk7ls2rvt6c0bbijg57d">&nbsp;&nbsp;&nbsp;选择指定智能设备进行监听</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-BLE%E5%8D%8F%E8%AE%AE%E5%97%85%E6%8E%A2%E4%B8%8E%E9%87%8D%E6%94%BE%E5%AE%9E%E6%88%98_files/2klc893lhtg9dbacbrgqegfol3.png"></p>
+<h3 class="topic">
+<a name="517c8up4i4fgl0naovrnbi7giu">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-BLE%E5%8D%8F%E8%AE%AE%E5%97%85%E6%8E%A2%E4%B8%8E%E9%87%8D%E6%94%BE%E5%AE%9E%E6%88%98_files/3f3ugseife1hcv7k7nph4ld6di.png"></p>
+<h3 class="topic">
+<a name="1ikapm9qom0lgah2mtgorc4e38">&nbsp;&nbsp;使用kali中的工具获得周围ble设备的mac地址</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-BLE%E5%8D%8F%E8%AE%AE%E5%97%85%E6%8E%A2%E4%B8%8E%E9%87%8D%E6%94%BE%E5%AE%9E%E6%88%98_files/6pa756taind3nqjsvk68ire7ao.png"></p>
+<h3 class="topic">
+<a name="3o03skpk0hpf008s71839mjs77">&nbsp;&nbsp;&nbsp;net blue和nrf connect等手机端工具可以检测周围ble设备信号强度，并得到设备名称和mac地址，可以通过靠近及远离智能设备，根据其信号强弱变化确定设备名与mac地址对应哪一个设备</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-BLE%E5%8D%8F%E8%AE%AE%E5%97%85%E6%8E%A2%E4%B8%8E%E9%87%8D%E6%94%BE%E5%AE%9E%E6%88%98_files/16njqo7jei0nnteg41gllch04s.png"></p>
+<h3 class="topic">
+<a name="18s5arr3r5mbd16n9fmfpdqfq3">&nbsp;&nbsp;&nbsp;&nbsp;通过手机app连接智能设备，显示温度和湿度，52832的指示灯从红色闪烁状态变成了绿色常亮状态，wireshark检测到了有意义的数据包</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-BLE%E5%8D%8F%E8%AE%AE%E5%97%85%E6%8E%A2%E4%B8%8E%E9%87%8D%E6%94%BE%E5%AE%9E%E6%88%98_files/2ela3sc5h5b33874i34c37i9u3.png"></p>
+<h3 class="topic">
+<a name="7p00fgm0dv8gdqbofjqcmjs5b4">&nbsp;监听智能灯泡</a>
+</h3>
+<h3 class="topic">
+<a name="2k5ikdaqj8k1nellgl1g68n4mf">&nbsp;&nbsp;监听前将whireshark重启，以保证正常监听到数据</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-BLE%E5%8D%8F%E8%AE%AE%E5%97%85%E6%8E%A2%E4%B8%8E%E9%87%8D%E6%94%BE%E5%AE%9E%E6%88%98_files/3eoluhni8raak4ukbfubk9oi7m.png"></p>
+<h3 class="topic">
+<a name="6edg9625avk52gc1ufdghohrf1">&nbsp;&nbsp;&nbsp;使用app进行连接，52832变成绿色常亮状态</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-BLE%E5%8D%8F%E8%AE%AE%E5%97%85%E6%8E%A2%E4%B8%8E%E9%87%8D%E6%94%BE%E5%AE%9E%E6%88%98_files/1vi8cs5npj95p39asg5peic7q0.png"></p>
+<h3 class="topic">
+<a name="1if8llbkj2p8kg1s9u09vovn3a">&nbsp;&nbsp;&nbsp;&nbsp;过滤att协议数据包</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-BLE%E5%8D%8F%E8%AE%AE%E5%97%85%E6%8E%A2%E4%B8%8E%E9%87%8D%E6%94%BE%E5%AE%9E%E6%88%98_files/32ib3sfdbhi46o70o6as9cgvkp.png"></p>
+<h3 class="topic">
+<a name="48sf2rte5hrjv980bamv8jl3qd">&nbsp;&nbsp;查看关闭灯泡和打开灯泡产生的数据包</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-BLE%E5%8D%8F%E8%AE%AE%E5%97%85%E6%8E%A2%E4%B8%8E%E9%87%8D%E6%94%BE%E5%AE%9E%E6%88%98_files/2639lgi77042a40ppn6mbfkraf.png"></p>
+<h3 class="topic">
+<a name="03c57shii8mgp08ku19hvs6m1n">&nbsp;&nbsp;&nbsp;由此推断，特征值最后一字节为0x80时，表示灯泡关闭，0x81表示灯泡开启，而有效特征的第二字节每次递增0x10(即从0x30-》0x40-》0x50)，推测下次开灯特征值为0x406020181</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-BLE%E5%8D%8F%E8%AE%AE%E5%97%85%E6%8E%A2%E4%B8%8E%E9%87%8D%E6%94%BE%E5%AE%9E%E6%88%98_files/38qfbetj392er0ui1kmi4ajqgl.png"></p>
+<h3 class="topic">
+<a name="1g6in6ogtvmhl7ke5vbm9ek198">&nbsp;&nbsp;&nbsp;&nbsp;再次开灯，本次特征值验证了之前的猜想</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-BLE%E5%8D%8F%E8%AE%AE%E5%97%85%E6%8E%A2%E4%B8%8E%E9%87%8D%E6%94%BE%E5%AE%9E%E6%88%98_files/702dp5sme8b1idubpou9pqbqt9.png"></p>
+<h3 class="topic">
+<a name="5afd06dq7j8e353micb3kleq4o">&nbsp;若不能通过wireshark抓包的方式进行分析，则可以使用以下方法获得交互的BLE数据包信息，从而进行分析</a>
+</h3>
+<h3 class="topic">
+<a name="75bdjt58unu4561bj4r52jac96">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-BLE%E5%8D%8F%E8%AE%AE%E5%97%85%E6%8E%A2%E4%B8%8E%E9%87%8D%E6%94%BE%E5%AE%9E%E6%88%98_files/5tev2kklomh1g503hbj0ei1pbv.png"></p>
+<h3 class="topic">
+<a name="1f954peu1opa1oibaacepkjr15">&nbsp;&nbsp;&nbsp;手机用usb连接到电脑，打开usb调试，然后使用logcat命令，由于本指令输出的日志过于庞杂，所以下一步需要过滤</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-BLE%E5%8D%8F%E8%AE%AE%E5%97%85%E6%8E%A2%E4%B8%8E%E9%87%8D%E6%94%BE%E5%AE%9E%E6%88%98_files/0628j0akvvtg1qqgabl9efg529.png"></p>
+<h3 class="topic">
+<a name="4s879r2d7bn5u56i4623svieg3">&nbsp;&nbsp;使用adb shell运行ps命令，找到智能灯泡app进程的包名和对应的pid</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-BLE%E5%8D%8F%E8%AE%AE%E5%97%85%E6%8E%A2%E4%B8%8E%E9%87%8D%E6%94%BE%E5%AE%9E%E6%88%98_files/0t4edfvj6tof3pi683ha193s4k.png"></p>
+<h3 class="topic">
+<a name="4cr1dco6ger4psrvtqbabt3gvo">&nbsp;&nbsp;&nbsp;获得pid之后根据pid过滤输出logcat中的数据，从而查询大本进程的logcat</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-BLE%E5%8D%8F%E8%AE%AE%E5%97%85%E6%8E%A2%E4%B8%8E%E9%87%8D%E6%94%BE%E5%AE%9E%E6%88%98_files/739lg9sum7rk19o9grirbh6m4d.png"></p>
+<h3 class="topic">
+<a name="3vql1tinfo7r8puf5gv0q78nj0">&nbsp;&nbsp;从输出的logcat中可以看到有用的信息</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-BLE%E5%8D%8F%E8%AE%AE%E5%97%85%E6%8E%A2%E4%B8%8E%E9%87%8D%E6%94%BE%E5%AE%9E%E6%88%98_files/408h0n8l6bondeubv7mu9vm6h2.png"></p>
+<h3 class="topic">
+<a name="2s9914va3rh4gdl3qqfib91pk3">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-BLE%E5%8D%8F%E8%AE%AE%E5%97%85%E6%8E%A2%E4%B8%8E%E9%87%8D%E6%94%BE%E5%AE%9E%E6%88%98_files/3h6203n9n3l3sjnhgotoc9gk9c.png"></p>
+<h2 class="topic">
+<a name="2g7vops5jqeqdp8pkhfl664962">重放与伪造攻击</a>
+</h2>
+<h3 class="topic">
+<a name="3gm8qobi0rjeppu4chu3s92ft0">&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-BLE%E5%8D%8F%E8%AE%AE%E5%97%85%E6%8E%A2%E4%B8%8E%E9%87%8D%E6%94%BE%E5%AE%9E%E6%88%98_files/0uikrf12kjtg91a9runr9g8tsg.png"></p>
+<h3 class="topic">
+<a name="2psq56rk69epc76c1cmvv5rfjv">&nbsp;&nbsp;使用kali中gatttool工具连接智能灯泡</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-BLE%E5%8D%8F%E8%AE%AE%E5%97%85%E6%8E%A2%E4%B8%8E%E9%87%8D%E6%94%BE%E5%AE%9E%E6%88%98_files/7om3phq7laeohd1o6jlndgqkco.png"></p>
+<h3 class="topic">
+<a name="281pfrj27hjufgefne1c2ngav5">&nbsp;&nbsp;&nbsp;观察最新抓取到的数据包，注意其handle值和特征值</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-BLE%E5%8D%8F%E8%AE%AE%E5%97%85%E6%8E%A2%E4%B8%8E%E9%87%8D%E6%94%BE%E5%AE%9E%E6%88%98_files/20ajs118o0uqmch8lgc5ensn9k.png"></p>
+<h3 class="topic">
+<a name="7vvhhv8j62b7ev3v3fm2rrbv5t">&nbsp;将特征值复制为一个十六进制流</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-BLE%E5%8D%8F%E8%AE%AE%E5%97%85%E6%8E%A2%E4%B8%8E%E9%87%8D%E6%94%BE%E5%AE%9E%E6%88%98_files/0u5fe9duo2k1auo9q09g3oar3f.png"></p>
+<h3 class="topic">
+<a name="4qh1348q1g2vqo4u38qpoqlepn">&nbsp;&nbsp;发出伪造的att协议数据包，从而打开智能灯泡</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-BLE%E5%8D%8F%E8%AE%AE%E5%97%85%E6%8E%A2%E4%B8%8E%E9%87%8D%E6%94%BE%E5%AE%9E%E6%88%98_files/5cgkim2n62fl67phivje94kmcj.png"></p>
+<h3 class="topic">
+<a name="797bpmetmr2mhihq8ti89oebhc">&nbsp;&nbsp;&nbsp;灯泡成功点亮，当前app使用justwork方式与智能灯炮连接，即主从设备之间的交互使用公开的短期密钥，十分不安全</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-BLE%E5%8D%8F%E8%AE%AE%E5%97%85%E6%8E%A2%E4%B8%8E%E9%87%8D%E6%94%BE%E5%AE%9E%E6%88%98_files/15d7nfknae9cp6peg98a8stsmk.png"></p>
+<h3 class="topic">
+<a name="7qefunl468hovubfl581nu409f">&nbsp;其他可以操作ble设备的工具</a>
+</h3>
+<h3 class="topic">
+<a name="0208fd1kovrjebuckbuan5tjtt">&nbsp;&nbsp;kali中的bettercap</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-BLE%E5%8D%8F%E8%AE%AE%E5%97%85%E6%8E%A2%E4%B8%8E%E9%87%8D%E6%94%BE%E5%AE%9E%E6%88%98_files/5civ810gga0lm4ee19kps38t5o.png"></p>
+<h3 class="topic">
+<a name="28gj95naoeb9f9faige9lged0f">&nbsp;&nbsp;&nbsp;手机端 nrf connect</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-BLE%E5%8D%8F%E8%AE%AE%E5%97%85%E6%8E%A2%E4%B8%8E%E9%87%8D%E6%94%BE%E5%AE%9E%E6%88%98_files/0so63fjs99ach2p6n1pmi8lf5l.png"></p>
+<h3 class="topic">
+<a name="3fpam3faln7m5h62thjti92ppu">&nbsp;&nbsp;&nbsp;&nbsp;点击连接后可以看到相关服务和特征</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-BLE%E5%8D%8F%E8%AE%AE%E5%97%85%E6%8E%A2%E4%B8%8E%E9%87%8D%E6%94%BE%E5%AE%9E%E6%88%98_files/59b6ns3kgpkp8rgnojhnojkoll.png"></p>
+<h3 class="topic">
+<a name="40sndbhsdc8turq5dfgahit20k">&nbsp;&nbsp;找到关键数据包的服务uuid和特征uuid</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-BLE%E5%8D%8F%E8%AE%AE%E5%97%85%E6%8E%A2%E4%B8%8E%E9%87%8D%E6%94%BE%E5%AE%9E%E6%88%98_files/739nr7ij5b0s9jpt8hhh31m0h3.png"></p>
+<h3 class="topic">
+<a name="1ll21s4835fqt908b4takhfsrg">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-BLE%E5%8D%8F%E8%AE%AE%E5%97%85%E6%8E%A2%E4%B8%8E%E9%87%8D%E6%94%BE%E5%AE%9E%E6%88%98_files/6i1an4hg40v628ff4o4aktoamp.png"></p>
+<h3 class="topic">
+<a name="46ls4jnrlf8oqi4eatseh4ps4u">&nbsp;&nbsp;&nbsp;&nbsp;弹出的界面中输入特定的特征值，点击发送，即可以控制智能灯泡</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-BLE%E5%8D%8F%E8%AE%AE%E5%97%85%E6%8E%A2%E4%B8%8E%E9%87%8D%E6%94%BE%E5%AE%9E%E6%88%98_files/2hsb2fn2qktbjdch622a0mjcmo.png"></p>
+<h2 class="topic">
+<a name="1nvq1tei0sg8v8h3snmjicciqc">常见攻击方式</a>
+</h2>
+<h3 class="topic">
+<a name="4vk0i1hn8ssb0flubhi2ct7ic5">&nbsp;周边设备连接恶意中心设备，恶意中心设备向其发送恶意数据，可能导致周边设备崩溃，或持续连接耗尽电量，例如耗尽智能门锁的电量</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-BLE%E5%8D%8F%E8%AE%AE%E5%97%85%E6%8E%A2%E4%B8%8E%E9%87%8D%E6%94%BE%E5%AE%9E%E6%88%98_files/26tgk6nv3moo3j270k688qhndn.png"></p>
+<h3 class="topic">
+<a name="26nhr2c5vhv5m1vhlm47rpj81t">&nbsp;&nbsp;使用python提供的库可以与ble设备交互，也可以使用该库对周边设备进行模糊测试</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-BLE%E5%8D%8F%E8%AE%AE%E5%97%85%E6%8E%A2%E4%B8%8E%E9%87%8D%E6%94%BE%E5%AE%9E%E6%88%98_files/7qdh8gbeda1pt22514md1vu5lk.png"></p>
+<h3 class="topic">
+<a name="0qe1b4fvqd1jn5kv45l66babtk">&nbsp;&nbsp;&nbsp;#coding=utf-8&#13;
+import sys&#13;
+from bluepy.btle import UUID,Peripheral&#13;
+ &#13;
+mac="F0:45:DA:F4:13:E4"&#13;
+ &#13;
+uuWrite=UUID("4039ddf0-c2b8-1bb0-7b47-11b7b21e3f91")&#13;
+uuRead=UUID(0x2A00)&#13;
+#待发送特征值&#13;
+value=bytes([0x08,0x00,0x15,0x02,0x57,0x11,0xc0,0x54,0x00,0x00])&#13;
+ &#13;
+p=Peripheral(mac,"public",1)&#13;
+ &#13;
+try:&#13;
+    #发送特征值&#13;
+    p.getCharacteristics(uuid=uuWrite)[0].write(value)&#13;
+    #读取特征值&#13;
+    print(p.getCharacteristics(uuid=uuRead)[0].read())&#13;
+ &#13;
+finally:&#13;
+    p.disconnect()</a>
+</h3>
+<h3 class="topic">
+<a name="2kqcjad36dljfre16tmikpg3rm">&nbsp;&nbsp;&nbsp;bluepy&#13;
+安装配置 https://github.com/IanHarvey/bluepy&#13;
+官方文档 http://ianharvey.github.io/bluepy-doc/</a>
+</h3>
+<h3 class="topic">
+<a name="1b9gkk8sd86fj11n9t0rvpar1e">&nbsp;中间人攻击</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-BLE%E5%8D%8F%E8%AE%AE%E5%97%85%E6%8E%A2%E4%B8%8E%E9%87%8D%E6%94%BE%E5%AE%9E%E6%88%98_files/47ghp08tu7o4i0ht7758s0r1m2.png"></p>
+<h2 class="topic">
+<a name="36q8h3g3gp9q2avnglhe2hn74l">相关指令</a>
+</h2>
+<h3 class="topic">
+<a name="5eoqc4tnd5u4datgsijdb3ob9p">&nbsp;本机蓝牙设备状态&#13;
+查看蓝牙设备状态hciconfig&#13;
+开启/关闭指定蓝牙设备 hciconfig hciX up/down&#13;
+&#13;
+扫描周边蓝牙设备&#13;
+扫描蓝牙hcitool scan&#13;
+扫描低功耗蓝牙hcitool lescan&#13;
+&#13;
+连接/交互BLE设备&#13;
+gatttool&#13;
+以交互模式启动gatttoolgatttool -b &lt;MAC&gt; -I [-i hciX]&#13;
+连接 connect [MAC]&#13;
+显示可用服务primary&#13;
+显示此设备ble特征 characteristics&#13;
+通过uuid读取特征值 char-read-uuid &lt;UUID&gt;&#13;
+发送特征值 char-write-req/char-write-cmd &lt;handle&gt; &lt;value&gt;&#13;
+&#13;
+bettercap&#13;
+开启ble设备发现模块 ble.recon on&#13;
+显示扫描到的ble设备 ble.show&#13;
+列举出指定ble设备的服务和特征 ble.enum &lt;MAC&gt; &#13;
+发送特征值 ble.write &lt;MAC&gt; &lt;UUID&gt; &lt;value&gt;&#13;
+&#13;
+安卓adb命令&#13;
+查看logcat adb logcat &#13;
+查看应用pid adb shell "ps|grep &lt;package name&gt;"</a>
+</h3>
+</body>
+</html>

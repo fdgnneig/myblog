@@ -1,0 +1,451 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>密码攻击</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="1u6jer1rrbpp3n98k3uci36489">密码攻击</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="%E5%AF%86%E7%A0%81%E6%94%BB%E5%87%BB_files/images/%E5%AF%86%E7%A0%81%E6%94%BB%E5%87%BB.jpg"></div>
+<h2 class="topic">
+<a name="1l7kuq01id73kvmmgt9cud1161">密码是用户帐户和服务身份验证的最基本形式，并且通过扩展，密码攻击的目标是发现和使用有效的凭据，以便获得对用户帐户或服务的访问权限。&#13;
+  一般而言，有几种常见的密码攻击方法。 我们可以尝试使用各种单词表通过字典攻击来猜测密码，也可以通过暴力破解密码中的每个可能字符。</a>
+</h2>
+<h3 class="topic">
+<a name="11cl2dat8ska2c1chirlppk3jo">&nbsp;通常，字典攻击会优先考虑速度，从而提供较少的密码覆盖率，而蛮力会优先考虑以速度为代价的密码覆盖率。 根据我们的优先级和时间要求，两种技术都可以在参与期间有效使用</a>
+</h3>
+<h3 class="topic">
+<a name="0pd074iq3apsjo1p46k2e10c0o">&nbsp;&nbsp;在某些情况下，一旦我们获得了对目标的访问权限（通常是特权）并且能够提取密码哈希，我们就可以利用密码破解攻击来尝试访问明文密码。&#13;
+Pass-the-Hash攻击， 也允许我们仅使用用户名和哈希对基于Windows的目标进行身份验证。</a>
+</h3>
+<h3 class="topic">
+<a name="4f63qmjo5clh344spgrn3a55hu">&nbsp;&nbsp;&nbsp;字典</a>
+</h3>
+<h3 class="topic">
+<a href="https://en.wikipedia.org/wiki/Dictionary_attack" name="3dtf3vogonjpc7e8vfrc68lvo9">&nbsp;&nbsp;&nbsp;&nbsp;https://en.wikipedia.org/wiki/Dictionary_attack</a>
+</h3>
+<h3 class="topic">
+<a name="43auai3c16fu6qr02skgioal2e">&nbsp;&nbsp;&nbsp;暴力破解</a>
+</h3>
+<h3 class="topic">
+<a name="159ucu09i6tq29nq5hvmithd24">&nbsp;&nbsp;&nbsp;&nbsp;https://en.wikipedia.org/wiki/Dictionary_attack</a>
+</h3>
+<h2 class="topic">
+<a name="4i09j49nfats2p2765u30m0u1j">字典</a>
+</h2>
+<h3 class="topic">
+<a name="5voppaokehpolmkvjtgehr1gvh">&nbsp;词表，有时也称为字典文件，只是包含词的文本文件，这些词可用作设计测试密码的程序的输入。 考虑字典攻击时，精度通常比覆盖范围更重要，这意味着创建相关密码的精简单词列表比创建庞大的通用单词列表更为重要。 因此，许多单词表都基于一个通用主题，例如流行文化参考，特定行业或地理区域，并经过精炼以包含常用密码。  Kali Linux在/ usr / share / wordlists /目录中包含许多此类词典文件，并且还有更多在线托管。553</a>
+</h3>
+<h3 class="topic">
+<a name="3if15n03n1e8pir0i29l7pm5hm">&nbsp;&nbsp;进行密码攻击时，可能很想简单地使用这些预先构建的列表。 但是，如果我们花时间精心构建自己的自定义列表，我们的方法会更加有效。</a>
+</h3>
+<h3 class="topic">
+<a name="08ftk7n794vp2ufap6s2481a7s">&nbsp;&nbsp;&nbsp;在线字典仓库</a>
+</h3>
+<h3 class="topic">
+<a name="3to4u1joiqsdqen6dabn099k2l">&nbsp;&nbsp;&nbsp;&nbsp;https://github.com/danielmiessler/SecLists</a>
+</h3>
+<h3 class="topic">
+<a name="4e7g9ocoikjiviqsnn8riuk1l9">&nbsp;标准字典</a>
+</h3>
+<h3 class="topic">
+<a name="2985ah1h0i13f39kbe9cn47mbh">&nbsp;&nbsp;我们可以通过添加特定于目标组织的单词和短语来提高单词列表的效率。&#13;
+     例如，考虑一家从事纳米技术的公司MegaCorp One。 该公司的网站www.megacorpone.com列出了该公司出售的各种产品，包括Nanobot。 在假设的评估中，我们能够识别出Nanobot93的低级密码。 假设这可能是该公司的通用密码格式，我们想创建一个自定义单词列表，以类似的方式（可能使用其他产品名称）来标识其他密码。</a>
+</h3>
+<h3 class="topic">
+<a name="3i078diaqvn2qoqgjcgnk64chq">&nbsp;&nbsp;&nbsp;我们可以浏览该网站，然后将常用术语和产品名称手动添加到我们的自定义单词列表中，或者可以使用cewl(http：//www.digininja.org/projects/cewl.php)之类的工具为我们完成繁重的工作。 如-help输出所示，以下命令抓取www.megacorpone.com网站，查找至少包含六个字符的单词（-m 6），并将单词列表（-w）写入自定义文件（megacorpcewl.txt）：</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AF%86%E7%A0%81%E6%94%BB%E5%87%BB_files/5ogcc4jhpbkbdc5lsma2tpa3qj.png"></p>
+<h3 class="topic">
+<a name="1hdn51708a4j87t3olptr6cffv">&nbsp;&nbsp;&nbsp;&nbsp;上面的清单显示cewl找到了包括Nanobot在内的几种产品的名称。 我们应该考虑在密码中也可以使用其他产品名称的可能性。&#13;
+   但是，这些单词本身将用作极弱的密码，并且不符合典型的密码执行规则。 这些类型的规则通常要求使用大写和小写字符，数字以及特殊字符。 根据我们发现的密码（Nanobot93），我们可以推测，megacorpone的密码实施要求至少在密码中使用两个数字，并且可能进一步指示（但不太可能）必须在密码末尾使用这些数字。 </a>
+</h3>
+<h3 class="topic">
+<a name="4fbmod69rg5budaobmq34jk3re">&nbsp;&nbsp;为了进行简单的演示，我们将假定Megacorp One策略规定密码以两位数结尾。&#13;
+   要创建满足此要求的密码，我们可以编写一个Bash脚本。 但是，我们将改用功能更强大的工具，称为John Ripper（JTR）(http://www.openwall.com/john/)，它是快速的密码破解程序，具有多种功能，包括生成自定义单词列表和应用规则排列的功能。</a>
+</h3>
+<h3 class="topic">
+<a name="65aajhmejpmrl891imu8uldlkg">&nbsp;&nbsp;&nbsp;继续我们对密码策略的假设，我们将向JTR配置文件（/etc/john/john.conf）添加一条规则，该规则将使我们的单词表发生变化，在每个密码后附加两位数字。 为此，我们必须找到[List.Rules：Wordlist]段，其中定义了单词表变异规则，并附加一个新规则。 在此示例中，我们将在单词列表中的每个单词之后附加两位数字序列（从（双）零到九十九）。我们将从$字符开始此规则，该命令告诉John在我们的单词表中的原始单词后面附加一个字符。 接下来，我们指定要附加的字符类型，在这种情况下，我们需要介于0到9之间的任何数字（[0-9]）。 最后，要添加两位数，我们将简单地重复$ [0-9]序列。 清单592中显示了最终规则。</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AF%86%E7%A0%81%E6%94%BB%E5%87%BB_files/36nhsc46t2ia7sst85k948vhl3.png"></p>
+<h3 class="topic">
+<a name="19fd73e70f8031o92sg2scp3f8">&nbsp;&nbsp;&nbsp;&nbsp;John Ripper 规则文档&#13;
+http：//www.openwall.com/john/doc/RULES.shtml</a>
+</h3>
+<h3 class="topic">
+<a name="2r9uau2bni52cm8gtaptkprnc0">&nbsp;&nbsp;现在已将规则添加到配置文件中，我们可以更改上一步生成的单词列表，该单词列表当前包含312个条目。为此，我们将调用john并指定字典文件（--wordlist = megacorp-cewl.txt），激活配置文件中的规则（--rules），将结果输出到标准输出（-stdout），然后 将输出重定向到一个名为mutated.txt的文件：</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AF%86%E7%A0%81%E6%94%BB%E5%87%BB_files/763ru6lir2jp498ucuqursttb1.png"></p>
+<h3 class="topic">
+<a name="6cmmo35qfnj4clsfsdghhtvdlh">&nbsp;&nbsp;&nbsp;由于对密码执行了多次更改，因此生成的文件包含超过46000个密码条目。 密码之一是&ldquo; Nanobot93&rdquo;，与我们在假设评估中较早发现的密码匹配。 考虑到有关MegaCorp One密码策略的假设，此单词表可能会在字典攻击中产生结果。</a>
+</h3>
+<h2 class="topic">
+<a name="610bcifsjbf9aca8l16kiscla6">暴力破解</a>
+</h2>
+<h3 class="topic">
+<a name="5hlpued817837joa7itu6rg46s">&nbsp;与字典攻击相反，蛮力密码攻击会计算和测试可能构成密码的每种可能的字符组合，直到找到正确的密码为止。 虽然这听起来像是一种保证结果的简单方法，但它非常耗时。 根据密码的长度和复杂性以及测试系统的计算能力，强行使用强密码可能需要很长时间甚至数年。&#13;
+   我们甚至可以结合这两个概念来创建暴力破解字典，即字典文件，其中包含与特定模式匹配的所有可能的密码</a>
+</h3>
+<h3 class="topic">
+<a name="4ki6lptnro93dnlfb2qv8vq5fm">&nbsp;&nbsp;考虑一个显示非常具体的密码实施策略的方案</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AF%86%E7%A0%81%E6%94%BB%E5%87%BB_files/7g3a0fmtc7h51tqa1q1gv3u5np.png"></p>
+<h3 class="topic">
+<a name="3tfiu3peqo29bur0k52r1rgtoq">&nbsp;&nbsp;&nbsp;查看密码，我们注意到密码结构中的以下模式：</a>
+</h3>
+<p class="topicImage">
+<img height="24" src="%E5%AF%86%E7%A0%81%E6%94%BB%E5%87%BB_files/0rtal2dgeh9n6vmlmlh2cd4g4l.png" width="719"></p>
+<h3 class="topic">
+<a name="03g5dco4qgpufle60epuslcbli">&nbsp;掌握了这些知识之后，创建一个包含与该模式匹配的所有可能密码的单词列表将非常有用。  Kali Linux随附的Crunch （https://sourceforge.net/projects/crunch-wordlist/）是功能强大的单词表生成器，可以处理此任务。</a>
+</h3>
+<h3 class="topic">
+<a name="4eppfj2nauk5djmuigidf4c3qk">&nbsp;&nbsp;首先，我们必须描述我们需要紧缩处理的模式，为此，我们将使用代表特定类型字符的占位符：</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AF%86%E7%A0%81%E6%94%BB%E5%87%BB_files/4fqurlg2dla9vlqt43g8h2vqco.png"></p>
+<h3 class="topic">
+<a name="5h2r5dm5cfp0gi6f5mguk4rt0n">&nbsp;&nbsp;&nbsp;为了生成符合我们要求的单词表，我们将指定最小和最大单词长度为八个字符（8 8），并使用-t来描述我们的规则模式   ,@@ ^^ %%%：该命令按预期工作，但是如前所述，输出将占用160 GB的巨大磁盘空间！ 请记住，蛮力技术优先考虑密码覆盖，但要以牺牲速度为代价，在这种情况下，是以磁盘空间为代价的。</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AF%86%E7%A0%81%E6%94%BB%E5%87%BB_files/4ggsut4tmpur8tjsf8ooo2r6mg.png"></p>
+<h3 class="topic">
+<a name="43t42cmd112cfa0doaqunqbr0u">&nbsp;我们还可以使用紧缩定义字符集。 例如，我们可以创建一个蛮力词表，说明密码长度在4到6个字符之间（4 6），仅包含字符0-9和AF（0123456789ABCDEF），然后将输出写入文件（-o  crunch.txt）：</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AF%86%E7%A0%81%E6%94%BB%E5%87%BB_files/357gfbdh95ln9b1306cg7dnmoo.png"></p>
+<h3 class="topic">
+<a name="6ahnbflcjfohjruu35aus6g6ui">&nbsp;&nbsp;请注意，文件输出的大小比上一个示例小得多，这主要是由于较短的密码长度和有限的字符集。 但是，单词列表文件令人印象深刻，其中包含超过1700万个密码</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AF%86%E7%A0%81%E6%94%BB%E5%87%BB_files/45ie8p0hf93ldoreapkd46531m.png"></p>
+<h3 class="topic">
+<a name="7spe40mlbk59laaif4efqli6si">&nbsp;&nbsp;&nbsp;另外，我们可以基于预定义的字符集（例如/usr/share/crunch/charset.lst中定义的字符集）生成密码。 例如，我们可以指定字符集文件（-f /usr/share/crunch/charset.lst）的路径，然后选择混合的字母集mixalpha，其中包括所有大小写字母：</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AF%86%E7%A0%81%E6%94%BB%E5%87%BB_files/7f80gnmmis856g9b6rjj3288vc.png"></p>
+<h3 class="topic">
+<a name="1lp3acrj3s9kchp4e4u2jcntrn">&nbsp; 尽管此特定命令会生成一个巨大的131 GB单词表文件，但它提供了相当不错的密码覆盖率。&#13;
+  花时间与JTR一起工作，并思考如何最有效地使用每个人。 正如我们将在下一节中发现的那样，我们需要避免依赖大量和通用词表的诱惑，因为它们会对客户的生产环境产生不利影响。</a>
+</h3>
+<h2 class="topic">
+<a name="2je0f0eubc9nq5bqq5tctkt3nn">常见的网络服务攻击方法</a>
+</h2>
+<h3 class="topic">
+<a name="5id2ej4doeqi4uuhmkoeu2aapp">&nbsp;请记住，针对网络服务的密码攻击是嘈杂的，在某些情况下是危险的。 多次失败的登录尝试通常会在目标系统上生成日志和警告，甚至可能会在预定义次数的失败登录尝试后锁定帐户。 在渗透测试期间，这可能是灾难性的，阻止用户访问生产系统，直到管理员重新启用该帐户。 在盲目运行基于网络的暴力攻击之前，请记住这一点</a>
+</h3>
+<h3 class="topic">
+<a name="1og15r56jvu5uqs54cqlff2r44">&nbsp;&nbsp;权衡风险并考虑目标网络的状况之后，我们可以采取一些步骤来提高密码测试的效率。&#13;
+   根据协议和密码破解工具的不同，我们可以增加登录线程的数量以提高攻击速度。 但是，在某些情况下（例如RDP和SMB），由于协议限制，可能无法增加线程数，并且我们的优化尝试可能会减慢该过程。</a>
+</h3>
+<h3 class="topic">
+<a name="07k31avoghce24prgotdm0h8a2">&nbsp;&nbsp;&nbsp;最重要的是，值得注意的是，诸如RDP之类的协议的身份验证协商过程比HTTP更为耗时。 但是，虽然攻击RDP协议可能比攻击HTTP花费更多的时间，但对RDP的成功攻击通常会带来更大的回报。 网络服务密码攻击背后的隐藏技术是，在发起攻击之前，请仔细，智能地选择合适的目标，用户列表和密码文件。</a>
+</h3>
+<h3 class="topic">
+<a name="2ooo2uibt0qppml34anun1e0j7">&nbsp;为了成功攻击网络服务（例如HTTP，SSH，VNC，FTP，SNMP和POP3）上的密码，我们不仅必须匹配目标用户名和密码，而且必须遵守身份验证过程中涉及的协议。&#13;
+     幸运的是，诸如THC-Hydra，558 Medusa，559 Crowbar，560和spray561之类的流行工具可以为我们处理这些身份验证请求。</a>
+</h3>
+<h3 class="topic">
+<a name="1l7bj4mu9ohq7i96v7disiq8us">&nbsp;&nbsp;THC-Hydra：https://github.com/vanhauser-thc/thc-hydra &#13;
+Medusa：http://h.foofus.net/?page_id=51&#13;
+Crowbar：https://github.com/galkan/crowbar &#13;
+spray：https://github.com/SpiderLabs/Spray</a>
+</h3>
+<h3 class="topic">
+<a name="44l0nhk6vlab9a395kls58gdvl">&nbsp;HTTP htaccess Attack with Medusa</a>
+</h3>
+<h3 class="topic">
+<a name="115p9nv6ouvb305c1cepmbpllj">&nbsp;&nbsp;Medusa旨在成为&ldquo;快速，大规模并行，模块化，登录暴力破解者&rdquo;。&#13;
+   我们将使用Medusa尝试访问受htaccess保护的Web目录。&#13;
+ 首先，我们将设置目标，即在Windows客户端上安装的Apache Web服务器，我们将通过XAMPP控制面板启动它。 我们将尝试访问该服务器上受htaccess保护的文件夹/ admin。 </a>
+</h3>
+<h3 class="topic">
+<a name="7fdgvnlud4rmdt0q0gp92a90sm">&nbsp;&nbsp;&nbsp;在此示例中，我们选择的单词列表为/usr/share/wordlists/rockyou.txt.gz，我们必须首先使用gunzip解压缩：</a>
+</h3>
+<p class="topicImage">
+<img height="43" src="%E5%AF%86%E7%A0%81%E6%94%BB%E5%87%BB_files/5jm6rl3f0p6af8h4aven0rcd32.png" width="623"></p>
+<h3 class="topic">
+<a name="72le3jtg7uik7di0dg8o04ofun">&nbsp;&nbsp;&nbsp;&nbsp;接下来，我们将启动medusa并使用-h 10.11.0.22对目标主机上受htaccess保护的URL（-m DIR：/ admin）发起攻击。 我们将使用来自rockyou单词列表文件（-P /usr/share/wordlists/rockyou.txt）的密码攻击管理员用户（-u admin），并且当然会使用HTTP身份验证方案（-M）：</a>
+</h3>
+<p class="topicImage">
+<img height="164" src="%E5%AF%86%E7%A0%81%E6%94%BB%E5%87%BB_files/2np3jvrjuoupcr45gvop4jl5vl.png" width="482"></p>
+<h3 class="topic">
+<a name="2di3lsaq37eo4dnrq25qp3qdo0">&nbsp;&nbsp;该工具可以与各种网络协议进行交互，这些协议可以通过-d选项显示，</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AF%86%E7%A0%81%E6%94%BB%E5%87%BB_files/43k25p5baeiaf9q96i8796g3s0.png"></p>
+<h3 class="topic">
+<a name="62jnssp640p1j2lifl2msso4jv">&nbsp;&nbsp;&nbsp;Medusa有许多其他选项和设置，</a>
+</h3>
+<h3 class="topic">
+<a name="3r5v8duhqdg6dec92s62v62fdo">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AF%86%E7%A0%81%E6%94%BB%E5%87%BB_files/0gg2cjottt653b7f5f4stoumhg.png"></p>
+<h3 class="topic">
+<a name="226v2ti6krvmo96mjnicvh2moa">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AF%86%E7%A0%81%E6%94%BB%E5%87%BB_files/55ookvlm8t4ogelrssn99u20hg.png"></p>
+<h3 class="topic">
+<a name="1t0sa7efgpe9dvjv266j1gs6ar">&nbsp;使用Crowbar进行远程桌面协议攻击</a>
+</h3>
+<h3 class="topic">
+<a name="65dvrb3d0jpu5qb66v5u7kttd4">&nbsp;&nbsp;Crowbar，正式名称为Levye，是一种网络身份验证破解工具，主要用于利用SSH密钥而不是密码。 它也是能够在现代Windows版本上可靠且有效地对Windows远程桌面协议（RDP）服务进行密码攻击的工具之一。 让我们在Windows客户端计算机上试用该工具。</a>
+</h3>
+<h3 class="topic">
+<a name="23dfjiqm6j3t3mud6dk9a77t7m">&nbsp;&nbsp;&nbsp;首先让我们从Kali存储库安装Crowbar</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AF%86%E7%A0%81%E6%94%BB%E5%87%BB_files/14ro26tt5sbav1se9jk2jisc5p.png"></p>
+<h3 class="topic">
+<a name="2lv2dllbg7ma3j7pjhpeo7golq">&nbsp;&nbsp;&nbsp;&nbsp;要调用Crowbar，我们将指定协议（-b），目标服务器（-s），用户名（-u），单词列表（-C）和线程数（-n）请注意，Crowbar发现了&ldquo; admin&rdquo;用户的工作凭证。 我们指定了一个线程，因为远程桌面协议无法可靠地处理多个线程。</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AF%86%E7%A0%81%E6%94%BB%E5%87%BB_files/098diatp34jmspr0qejclja2rp.png"></p>
+<h3 class="topic">
+<a name="7qj201u6dq3gf6dee2q3ue2oc3">&nbsp;&nbsp;要查看其他受支持的协议，我们可以使用--help标志运行Crowbar： </a>
+</h3>
+<h3 class="topic">
+<a name="1d26q7it5km3g25kn0q1kvaqct">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AF%86%E7%A0%81%E6%94%BB%E5%87%BB_files/33n7fd17ag17grpmeqg9t7bdmp.png"></p>
+<h3 class="topic">
+<a name="1cv5f1ruqntlaho8r1f9bgf7uh">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AF%86%E7%A0%81%E6%94%BB%E5%87%BB_files/6go4kpektp2s4np4sfhijd3us9.png"></p>
+<h3 class="topic">
+<a name="59l6r9t1rd89dop290qthu541d">&nbsp;使用THC-Hydra进行SSH攻击</a>
+</h3>
+<h3 class="topic">
+<a name="4v4232214s5ls8kqf5gcie55ah">&nbsp;&nbsp;THC-Hydra是正在积极开发中的另一种功能强大的网络服务攻击工具，值得掌握。 我们可以使用它来攻击各种协议身份验证方案，包括SSH和HTTP。&#13;
+  标准选项包括-l（用于指定目标用户名），-P（用于指定单词列表）和protocol：// IP（分别用于指定目标协议和IP地址）。</a>
+</h3>
+<h3 class="topic">
+<a name="7o3qm6uhh0ehkl70s33tdra4vb">&nbsp;&nbsp;&nbsp;在第一个示例中，我们将攻击我们的Kali VM。 我们将在本地计算机ssh：//127.0.0.1上使用SSH协议，重点是kali用户（-l kali），然后再次使用rockyou单词表（-P）：在此输出中，我们可以看到hydra针对本地SSH服务器发现了有效的登录名。</a>
+</h3>
+<p class="topicImage">
+<img height="120" src="%E5%AF%86%E7%A0%81%E6%94%BB%E5%87%BB_files/0kb3nejudgh7t29a2o8hi82eng.png" width="494"></p>
+<h3 class="topic">
+<a name="7cf9qgttlqopevro878uleg7ks">&nbsp;&nbsp;&nbsp;&nbsp;THC-Hydra支持许多标准协议和服务</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AF%86%E7%A0%81%E6%94%BB%E5%87%BB_files/0cbg15rv5flpasn1s7mdjtgnb8.png"></p>
+<h3 class="topic">
+<a name="1q4ofgl5tk5ok5f9bh37fmpode">&nbsp;使用THC-Hydra进行HTTP POST攻击</a>
+</h3>
+<h3 class="topic">
+<a name="7s1482kfaubm1mm7hnk4tsrhdu">&nbsp;&nbsp;作为另一个示例，我们将使用Hydra对Windows Apache服务器执行HTTP POST攻击。 当HTTP POST请求用于用户登录时，通常是通过使用Web表单进行的，这意味着我们应该使用&ldquo; http-form-post&rdquo;服务模块。 我们可以提供服务名称，后跟-U以获得有关所需参数的其他信息：</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AF%86%E7%A0%81%E6%94%BB%E5%87%BB_files/52tmi90pnj21qjft75iggcsb69.png"></p>
+<h3 class="topic">
+<a name="7rkqdf1ukvrbbv1di303cfaeoc">&nbsp;&nbsp;&nbsp;根据此输出，我们确定需要提供许多参数，这些参数将要求我们执行一些应用程序发现。 首先，我们需要Windows客户端上包含Web表单的网页的IP地址和URL。  IP地址将作为hydra的第一个参数提供。&#13;
+ 接下来，我们必须通过检查有问题的网页的HTML代码（位于/form/login.html）来了解要暴力破解的Web表单。&#13;
+   右图显示了右键单击页面并从上下文菜单中选择&ldquo;查看页面源&rdquo;之后的目标Web表单的代码： </a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AF%86%E7%A0%81%E6%94%BB%E5%87%BB_files/70upmsm0ido8pojlrf6eo2ghso.png"></p>
+<h3 class="topic">
+<a name="12vnq90df22biphau1r9kal5jg">&nbsp;&nbsp;上面的表单是/form/login.html页面的一部分，指示POST请求由/form/frontpage.php处理，这是我们将提供给Hydra的URL。显示的语法需要表单参数，在这种情况下为user和pass。 由于我们使用单词列表来攻击管理员用户登录名，因此Hydra的组合参数变为/form/frontpage.php:user=admin&amp;pass=^PASS^，其中^ PASS ^充当单词列表文件条目的占位符。</a>
+</h3>
+<h3 class="topic">
+<a name="6u04l393uul9d8r3ivkmobu3sr">&nbsp;&nbsp;&nbsp;我们还必须提供条件字符串以指示登录尝试何时失败。 可以通过尝试几次手动登录来找到。 在我们的示例中，网页返回文本&ldquo; INVALID LOGIN&rdquo;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AF%86%E7%A0%81%E6%94%BB%E5%87%BB_files/48bm0ddlo9q520rdg61c94qn34.png"></p>
+<h3 class="topic">
+<a name="69q2e6vsfqr5f0t204cnti976g">&nbsp;&nbsp;&nbsp;&nbsp;将这些片段放在一起，就可以完成如上图所示的http-form-post语法</a>
+</h3>
+<p class="topicImage">
+<img height="27" src="%E5%AF%86%E7%A0%81%E6%94%BB%E5%87%BB_files/5a9nfcfimltbfp79842m812mk0.png" width="802"></p>
+<h3 class="topic">
+<a name="4e4g8tq7itm2l37n78p54cegot">&nbsp;&nbsp;现在可以执行完整的命令。 我们将提供管理员用户名（-l admin）和单词列表（-P），请求使用-vV输出详细信息，并在找到第一个成功结果时使用-f停止攻击。 另外，我们将提供服务模块名称（http-form-post）及其必需的参数（&ldquo; /form/frontpage.php:user=admin&amp;pass=^PASS^:INVALID LOGIN&rdquo;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AF%86%E7%A0%81%E6%94%BB%E5%87%BB_files/5urp07ek5p2koftu5i38urovtp.png"></p>
+<h3 class="topic">
+<a name="44s22g0ojf1sri7fah4j81n785">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<h2 class="topic">
+<a name="0ik7h35c3q70hc0f5q37i9k6po">利用密码哈希</a>
+</h2>
+<h3 class="topic">
+<a name="2c7mlg0smbe9mnm8qrecltf96c">&nbsp;接下来，我们将注意力转向针对使用密码哈希的攻击。&#13;
+   密码散列函数562是实现一种算法的单向函数，该算法在给定任意数据块的情况下，返回称为&ldquo;散列值&rdquo;或&ldquo;消息摘要&rdquo;的固定大小的位字符串。 密码哈希函数最重要的用途之一是它们在密码验证中的应用。</a>
+</h3>
+<h3 class="topic">
+<a name="54unurbmua0gkjjaf4v3lkdsj3">&nbsp;检索密码哈希</a>
+</h3>
+<h3 class="topic">
+<a name="08e2gqt09mmom0d5ga7inb19qa">&nbsp;&nbsp;使用密码认证机制的大多数系统都需要将这些密码本地存储在计算机上。 现代身份验证机制通常不是将密码以明文形式存储，而是将其存储为散列，以提高安全性。 对于操作系统，网络硬件等等，都是如此。 这意味着在身份验证过程中，将对用户提供的密码进行哈希处理并将其与以前存储的消息摘要进行比较。</a>
+</h3>
+<h3 class="topic">
+<a name="64o8il9o3n3hpq5j4am4bbshb6">&nbsp;&nbsp;&nbsp;在没有有关生成哈希的程序或机制的进一步信息的情况下，确定哈希的确切类型可能非常具有挑战性，有时甚至是不可能的。  Openwall网站（http://openwall.info/wiki/john/sample-hashhes）可以帮助识别各种密码哈希的来源。 尝试标识消息摘要类型时，需要考虑三个重要的哈希属性。 这些包括哈希的长度，哈希中使用的字符集以及哈希中使用的任何特殊字符。</a>
+</h3>
+<h3 class="topic">
+<a name="4vtc3so64tls82frfer31aut2j">&nbsp;&nbsp;&nbsp;&nbsp;hashid.（https://psypanda.github.io/hashID/）是可以帮助进行哈希类型识别的有用工具。我们只需运行该工具，然后将其粘贴到我们希望识别的哈希中即可，我们分析了两个不同的哈希值。 虽然第一个示例返回了多个可能的匹配项，但是第二个示例将哈希类型缩小为SHA-512加密。</a>
+</h3>
+<h3 class="topic">
+<a name="20jc7g5b45el7v44ivv1urqke0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AF%86%E7%A0%81%E6%94%BB%E5%87%BB_files/65ljt17eg4jc4mlojqcq8i74q0.png"></p>
+<h3 class="topic">
+<a name="2gp0hrgho53r04psha5jnvn8kf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AF%86%E7%A0%81%E6%94%BB%E5%87%BB_files/3r8vqqdle77inu4vttcvqlcbnl.png"></p>
+<h3 class="topic">
+<a name="7mg1ojpmbm462ieomka7ib89u8">&nbsp;&nbsp;   接下来，让我们在我们的Kali Linux系统上检索和分析一些哈希。 许多Linux系统将用户密码哈希存储在/ etc / shadow文件中，该文件需要root权限才能读取：</a>
+</h3>
+<p class="topicImage">
+<img height="42" src="%E5%AF%86%E7%A0%81%E6%94%BB%E5%87%BB_files/7kkh2f5lc82hao49cs3l9h8di7.png" width="541"></p>
+<h3 class="topic">
+<a name="763vlik8ps6viqtsuj2f6s4hc1">&nbsp;&nbsp;&nbsp;上图中，该行以用户名（root）开头，后跟密码哈希。 哈希表分为多个子字段，第一个字段（$ 6）引用SHA-512算法。 下一个子字段是salt，它与明文密码一起用于创建密码哈希。 盐是一个随机值，与明文密码一起用于计算密码哈希。 由于密码哈希将根据盐值变化，因此可以防止哈希查找攻击。</a>
+</h3>
+<h3 class="topic">
+<a name="6iqo6ih23l95s6h0cpuqvtpckq">&nbsp;&nbsp;&nbsp;&nbsp;攻击者可以在哈希表中存储针对不同单词列表的预先计算的哈希值。这些表可能会消耗数TB的存储空间，具体取决于预先计算的密码数量，但可用于将哈希快速映射（查找）为明文密码。 在计算实际哈希之前，加盐会增加密码值的随机性，从而大大降低了该哈希存在于预先计算的表中的机会。 以HashKiller网站（https://hashkiller.co.uk/）为例，了解哈希查找服务。</a>
+</h3>
+<h3 class="topic">
+<a name="7m1506ei2hs8c7ot571srqv76v">&nbsp;&nbsp;现在，我们将重点转向Windows目标，并讨论如何使用各种哈希实现以及如何在评估过程中利用它们。&#13;
+   在Windows系统上，哈希用户密码存储在安全帐户管理器（SAM）中。为了阻止脱机SAM数据库密码攻击，Microsoft引入了SYSKEY功能（Windows NT 4.0 SP3），该功能部分加密了SAM文件。</a>
+</h3>
+<h3 class="topic">
+<a name="0lvpiltrl766nt492i87p1pjr6">&nbsp;&nbsp;&nbsp;  基于Windows NT即之后的操作系统（包括Windows 2003）存储两个不同的密码哈希：&#13;
+  基于DES的LAN Manager（LM）571和使用MD4哈希的NT LAN Manager（NTLM）。&#13;
+  众所周知，LAN Manager非常弱，因为长于七个字符的密码被分成两个字符串，并且每个哈希分别散列。每个密码字符串在被散列之前也将转换为大写，此外，LM散列系统不包含盐，这使得散列查找攻击变得可行。</a>
+</h3>
+<h3 class="topic">
+<a name="7rofagbe3dlhe08u1lrrqo3q50">&nbsp;&nbsp;&nbsp;&nbsp;从Windows Vista开始，操作系统默认情况下会禁用LM并使用NTLM，NTLM区分大小写，支持所有Unicode字符，并且不会将哈希分成较小的较弱部分。 但是，存储在SAM数据库中的NTLM哈希值仍然不会被添加盐。&#13;
+  值得一提的是，由于Windows内核会在文件上锁定排他性文件系统，因此无法在操作系统运行时复制SAM数据库。 但是，我们可以使用mimikatz（https://blog.3or.de/mimikatz-deep-dive-on-lsadumplsa-patch-and-inject.html）来发起旨在转储SAM哈希的内存中攻击。&#13;
+  除其他事项外，mimikatz模块还有助于从本地安全授权子系统（LSASS）进程存储器中缓存密码的位置提取密码哈希。</a>
+</h3>
+<h3 class="topic">
+<a name="3kfvu79ep5ht5g77l0oamv9k5n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;由于LSASS是在SYSTEM用户下运行的特权进程，因此我们必须从管理命令提示符下启动mimikatz。 要提取密码哈希，我们必须首先执行两个命令。 第一个是privilege :: debug，它启用篡改另一个进程所需的SeDebugPrivilge访问权限。 如果此命令失败，则极有可能未使用管理特权执行mimikatz。</a>
+</h3>
+<h3 class="topic">
+<a name="09aa0m9j4883pink0qb9hikvua">&nbsp;&nbsp;重要的是要了解LSASS是一个SYSTEM进程，这意味着它具有比具有管理特权的mimikatz更高的特权。 为了解决这个问题，我们可以使用token :: elevate命令将安全性令牌从高完整性（管理员）提升为SYSTEM完整性。 如果从SYSTEM Shell启动mimikatz，则不需要此步骤。 现在，让我们逐步完成此过程：</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AF%86%E7%A0%81%E6%94%BB%E5%87%BB_files/19sv2k1fp71pm37qkp8cn28api.png"></p>
+<h3 class="topic">
+<a name="2va3jsmjf0c5a8penqt4eq8p4b">&nbsp;&nbsp;&nbsp;值得注意的是，令牌模块可能会为当前登录到该计算机的所有用户列出（令牌：：列表）并使用（令牌：：提升）令牌，在某些情况下，这些用户可能是其他计算机的管理员。</a>
+</h3>
+<h3 class="topic">
+<a name="399i8u2adkg1s04q57ks0d2od9">&nbsp;&nbsp;&nbsp;&nbsp;现在，我们可以使用lsadump :: sam转储SAM数据库的内容：如我们所见，mimikatz已根据要求优雅而有效地得到了哈希。</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AF%86%E7%A0%81%E6%94%BB%E5%87%BB_files/2jothtujeefc57656fopdgvpo7.png"></p>
+<h3 class="topic">
+<a name="1mandadqhur10t3ae98oc8bqjn">&nbsp;&nbsp;其他哈希转储工具，包括pwdump，fgdump，577和Windows Credential Editor（wce）578，可与Windows XP和Windows Server 2003等较旧的Windows操作系统很好地兼容。</a>
+</h3>
+<h3 class="topic">
+<a name="0vu925lp5p0i45kbpv7rb7lbom">&nbsp;&nbsp;&nbsp;http://foofus.net/goons/fizzgig/fgdump/downloads.htm</a>
+</h3>
+<h3 class="topic">
+<a name="2didjektjml3m8gusj97jc52jh">&nbsp;&nbsp;&nbsp;https://www.ampliasecurity.com/research/windows-credentials-editor/</a>
+</h3>
+<h3 class="topic">
+<a name="35k48hsa54u9amocqbnissj381">&nbsp;在Windows中传递哈希</a>
+</h3>
+<h3 class="topic">
+<a name="5mrqmni6qulr4ot8leuuprenrm">&nbsp;&nbsp;   哈希传递（PtH）技术（于1997年发现）允许攻击者通过使用用户名和NTLM / LM哈希的有效组合而不是明文密码对远程目标进行身份验证。 这是可能的，因为NTLM / LM密码哈希不会加盐，并且在会话之间保持静态。 此外，如果我们在一个目标上发现了密码哈希，我们不仅可以使用它来对该目标进行身份验证，还可以使用它来对另一个目标进行身份验证，只要该目标具有一个相同用户名和密码的帐户即可。</a>
+</h3>
+<h3 class="topic">
+<a name="1lisv1ern8ao4asb5kbikd44a9">&nbsp;&nbsp;&nbsp;让我们介绍一个场景来演示这种攻击。 在评估过程中，我们发现了一个在多个系统上启用的本地管理帐户。 我们利用了其中一个系统上的漏洞，并获得了SYSTEM特权，使我们能够转储本地LM和NTLM哈希。 我们已经复制了本地管理员NTLM哈希，现在可以使用它代替密码来访问另一台具有相同本地管理员帐户和密码的计算机。&#13;
+   为此，我们将使用Passing-The-Hash工具箱（winexe的修改版本）中的pth-winexe（https://github.com/byt3bl33d3r/pth-toolkit），该工具箱使用SMB协议执行身份验证：</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AF%86%E7%A0%81%E6%94%BB%E5%87%BB_files/247hqbuleatibe8ipk41uqo37k.png"></p>
+<h3 class="topic">
+<a name="1nn1dqvpa6pt7gmu3fa0breit4">&nbsp;&nbsp;&nbsp;&nbsp;若要使用SMB协议在远程计算机上执行cmd之类的应用程序，需要管理特权。 这是由于对管理共享C $进行了身份验证以及随后创建了Windows服务。</a>
+</h3>
+<h3 class="topic">
+<a name="7v831737lvfahrha3phrf54833">&nbsp;&nbsp;作为演示，我们将在Kali机器上调用pth-winexe，以使用先前转储的密码哈希对目标进行身份验证。 通过指定用户名和哈希（-U）以及SMB共享（采用UNC格式）以及要执行的命令的名称（在清单618中为cmd），我们将在目标计算机上获得远程命令提示符。 我们将忽略DOMAIN参数，并将用户名（后跟一个％符号）添加到哈希中以完成命令。 语法有点棘手，如下所示：该命令成功完成，使用捕获的哈希作为凭据在目标上提供了外壳。</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AF%86%E7%A0%81%E6%94%BB%E5%87%BB_files/3fjstb7ansotnqlcmi2ij3vfoe.png"></p>
+<h3 class="topic">
+<a name="6bk1ilt8en4etaipe06p263ien">&nbsp;&nbsp;&nbsp;   在后台，我们在身份验证过程中将提供的NTLM哈希格式更改为NetNTLM版本1或2。 我们可以使用中间人攻击或中毒攻击来捕获这些哈希，然后将它们破解或进行中继。例如，某些应用程序（例如Internet Explorer和Windows Defender）使用Web代理自动发现协议（WPAD）来检测代理设置。如果我们在本地网络上，我们可能会毒化这些请求并使用Responder.py（https://github.com/SpiderLabs/Responder）之类的工具强制进行NetNTLM身份验证，该工具会创建旨在利用此安全问题的恶意WPAD服务器。 由于中毒会对其他用户造成严重破坏，因此不应在实验室中使用Responder.py之类的工具。</a>
+</h3>
+<h3 class="topic">
+<a name="7ooglshjm58elvpo9c36kvm883">&nbsp;密码破解</a>
+</h3>
+<h3 class="topic">
+<a name="0ciltqnrh62q8jbbqfmn3o93uq">&nbsp;&nbsp;在密码分析中，密码破解根据存储的密码哈希值恢复明文密码的过程。&#13;
+   密码破解的过程在很大程度上很简单。 一旦发现目标身份验证过程中要处理的哈希机制，我们就可以遍历单词列表中的每个单词并生成相应的消息摘要。 如果计算出的哈希值与从目标系统获得的哈希值匹配，则我们已经获得了匹配的纯文本密码。 通常，这一切都可以通过专门的密码破解程序来完成。</a>
+</h3>
+<h3 class="topic">
+<a name="1prb6ggjcca9cvqj6ccf9jt0qn">&nbsp;&nbsp;&nbsp;如果盐值参与了身份验证过程，而我们不知道盐值，那么破解就将变得极其复杂，甚至是不可能的，因为我们必须用各种盐反复地哈希每个潜在的明文密码。 &#13;
+但是，根据我们的经验，我们几乎总是能够捕获密码哈希值和盐（无论是包含每个记录的两个唯一值的数据库，还是来自对所有哈希值使用单一盐的配置或二进制文件） 当两个值都已知时，密码破解的复杂性将降低。。</a>
+</h3>
+<h3 class="topic">
+<a name="45cr35r0ai0tedism8v9cei39m">&nbsp;&nbsp;&nbsp;&nbsp;一旦从目标系统获得了对密码哈希的访问权限，我们就可以开始在后台运行的密码破解会话，并继续进行评估。 如果任何密码被破解，我们可以尝试在其他系统上使用这些密码来增强对目标网络的控制。 就像其他渗透测试过程一样，这是反复进行的，随着我们扩大控制范围，我们将把数据反馈回之前的步骤。&#13;
+   为了演示密码破解，我们将再次转向John the Ripper，因为它支持多种密码格式，并且功能强大而灵活</a>
+</h3>
+<h3 class="topic">
+<a name="1hleiln0d6ct5o68ji3oltdasa">&nbsp;&nbsp;在纯暴力模式下运行john（尝试使用密码中的每个可能的字符组合）就像在命令行中传递包含我们的密码哈希的文件名以及哈希格式一样简单。&#13;
+  我们攻击了使用mimikatz转储的NT哈希（--format = NT）。</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AF%86%E7%A0%81%E6%94%BB%E5%87%BB_files/4sn9snmr8qvpm0kva1392bqedg.png"></p>
+<h3 class="topic">
+<a name="2t0cnt5rfi1cc2jb5ali42nkti">&nbsp;&nbsp;&nbsp;在上面的输出中，JTR正确识别了哈希类型并着手对其进行破解。 但是，基于我们系统的速度，像这样的暴力攻击将花费很长时间。 作为替代方案，我们可以使用--wordlist参数，并改为提供单词表的路径，这样可以缩短处理时间，但可以减少密码覆盖率：</a>
+</h3>
+<p class="topicImage">
+<img height="21" src="%E5%AF%86%E7%A0%81%E6%94%BB%E5%87%BB_files/1len8k9qtdh3dtln30mjvtovfk.png" width="667"></p>
+<h3 class="topic">
+<a name="5pgdp9sbvvcrsjbpre214g42fu">&nbsp;&nbsp;&nbsp;&nbsp;如果仍有待破解的密码，我们接下来可以尝试通过--rules参数应用JTR的单词处理规则：</a>
+</h3>
+<p class="topicImage">
+<img height="30" src="%E5%AF%86%E7%A0%81%E6%94%BB%E5%87%BB_files/36s4tembr3q3anrqv56ajipfc9.png" width="545"></p>
+<h3 class="topic">
+<a name="1u3bn4iktgkv2j1agu9v83qq1l">&nbsp;&nbsp;为了使用JTR破解基于Linux的哈希，我们首先需要使用unshadow实用程序来组合受感染系统中的passwd和shadow文件。</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AF%86%E7%A0%81%E6%94%BB%E5%87%BB_files/3te8c6k47ababr4bvqbroptjcs.png"></p>
+<h3 class="topic">
+<a name="05t15kstkargadqo463jsr7cg1">&nbsp;&nbsp;&nbsp;我们现在可以运行john，将单词列表和unshadowed的文本文件作为参数传递</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AF%86%E7%A0%81%E6%94%BB%E5%87%BB_files/3dh7t9j9vt96bvgg5sjo5v05dg.png"></p>
+<h3 class="topic">
+<a name="0m1um6ve96suhrt84nq0dg4f96">&nbsp;&nbsp;&nbsp;&nbsp;新版本John the Ripper默认为多线程，但较旧的版本仅使用单个CPU内核来执行破解操作。 如果您遇到较旧的JTR版本，则它支持可以加快该过程的替代方法。 我们可以使用多个CPU内核，甚至多个计算机来分配负载并加快破解过程。  --fork选项需要多个进程来利用一台计算机上的更多CPU内核，而--node可以将工作分散到多台计算机上。</a>
+</h3>
+<h3 class="topic">
+<a name="60v7jse0qk0q1r7npp174ks24h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;例如，假设我们有两台计算机，每台计算机都有一个8核CPU。 在第一台机器上，我们将设置--fork = 8和--node = 1-8 / 16选项，指示John在该机器上创建八个进程，将提供的单词表分成16个相等的部分，然后处理前八个部分 当地。 在第二台计算机上，我们可以使用--fork = 8和--node = 9-16将八个进程分配给单词表的后半部分。 以这种方式划分工作将使性能提高约16倍</a>
+</h3>
+<h3 class="topic">
+<a name="71lqlp8ndo0k03tdbhc76nnt86">&nbsp;&nbsp;攻击者还可以预先计算密码的哈希值（这可能要花费大量时间），并将其存储在庞大的数据库或Rainbow表中，以使密码破解成为一个简单的查找表的事情。 这是一个时空折衷方案，因为这些表会占用大量空间（取决于密码复杂性，达到PB级），但是密码&ldquo;破解&rdquo;过程本身（技术上是查找过程）花费的时间大大减少。</a>
+</h3>
+<h3 class="topic">
+<a name="6u6ekhitlikf6ek0qdm2mshgbm">&nbsp;&nbsp;&nbsp;尽管John the Ripper是破解密码哈希的好工具，但其速度受限于专用于此任务的CPU的能力。 近年来，图形处理单元（GPU）变得异常强大，并且在每台带有显示器的计算机中都可以找到它。 高端机器（如用于视频编辑和游戏的机器）随附功能强大的GPU。  Hashcat（John the Ripper）等GPU破解工具可以利用CPU和GPU的强大功能来达到令人难以置信的密码破解速度。&#13;
+   Hashcat的选项通常与开膛手John的选项相似，并包括算法检测和密码列表更改等功能。&#13;
+   在此示例中，我们将在具有GeForce GTX 1080 Ti GPU的计算机上以基准测试模式（-b）运行hashcat：</a>
+</h3>
+<h3 class="topic">
+<a name="0si6g0n114s24al0kikv9f6er1">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AF%86%E7%A0%81%E6%94%BB%E5%87%BB_files/6q9jsvf4pp367snmen2290ajee.png"></p>
+<h3 class="topic">
+<a name="3h8dqdq6a21a6fud91mc1hdfu4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AF%86%E7%A0%81%E6%94%BB%E5%87%BB_files/6vi1g80n039d2sk5210u7e6bp9.png"></p>
+<h3 class="topic">
+<a name="5djparj8lecsu8v6heap6uoobd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;基准数字非常令人难以置信，它揭示了SHA1每秒超过130亿个哈希的速度，NTLM每秒超过620亿哈希的速度，甚至非常复杂且缓慢的sha512crypt哈希算法也以惊人的每秒200,000哈希运行。 将此与我们之前（在我们看来是la脚的）Kali VM CPU上的开膛手John的一些运行进行比较，该运行速度每秒达到数百个哈希。&#13;
+   这些速度是通过单个GPU达到的，但是多GPU计算机可以使用四个，八个或更多个GPU。 在发布本文档时，可以用大约2000美元的价格构建具有单个GPU的破解计算机，而使用四核GPU的设备大约需要6000美元。 八GPU系统已记录了每秒超过5000亿个NTLM哈希的基准！587</a>
+</h3>
+</body>
+</html>

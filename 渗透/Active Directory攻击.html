@@ -1,0 +1,888 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>Active Directory攻击</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="1uspkt090rhpii5p3ksuia8jm0">Active Directory攻击</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="Active Directory%E6%94%BB%E5%87%BB_files/images/Active Directory%E6%94%BB%E5%87%BB.jpg"></div>
+<h2 class="topic">
+<a name="77lt6jaho4u3iohlkfjtd0hmf6">简介</a>
+</h2>
+<h3 class="topic">
+<a name="6gvjunht1d5hb401a6kuh5ju76">&nbsp;Microsoft Active Directory域服务(https://docs.microsoft.com/zh-cn/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domainservices-overview)，通常称为Active Directory（AD），是一项允许系统管理员大规模更新和管理操作系统，应用程序，用户和数据访问的服务。 由于Active Directory可能是高度复杂且精细的管理层，因此它构成了很大的攻击面，值得引起注意。</a>
+</h3>
+<h2 class="topic">
+<a name="5f87mpts5r7etep2jfo7ioag14">Active Directory理论</a>
+</h2>
+<h3 class="topic">
+<a name="7qnfb2akhta5vhuv11bgd5hptb">&nbsp;首先，我们简要概述Active Directory的基本概念和术语，以便在进行枚举和利用之前奠定基础。&#13;
+   Active Directory由几个组件组成。 最重要的组件是域控制器（DC）601，它是安装了Active Directory域服务角色的Windows 2000-2019服务器。 域控制器是Active Directory的中心和核心，因为它存储有关如何配置Active Directory特定实例的所有信息。 它还执行各种规则，这些规则管理给定Windows域中的对象如何相互交互以及最终用户可以使用哪些服务和工具。  Active Directory的强大功能和复杂性基于网络管理员可以使用的惊人粒度的控件。</a>
+</h3>
+<h3 class="topic">
+<a name="4s3jr7059u5td46kjd0ih6llt0">&nbsp;&nbsp;Windows服务器操作系统有三种不同版本。 第一个是原始的&ldquo;桌面体验&rdquo;版本。  Windows Server 2008 R2附带的Server Core 是最小的服务器安装，没有专用的图形界面。  Windows Server 2016引入了Server Nano 的最新版本，并且比Server Core最小。 标准的&ldquo;桌面体验&rdquo;和Server Core版本可以充当域控制器。 Server Nano 不能。</a>
+</h3>
+<h3 class="topic">
+<a name="10fiqtjjto68svkhjvnashomcj">&nbsp;&nbsp;&nbsp;配置Active Directory实例后，将使用诸如corp.com之类的名称创建域，其中corp是组织的名称。 在此域内，我们可以添加各种类型的对象，包括计算机和用户对象。</a>
+</h3>
+<h3 class="topic">
+<a name="3f1nlf40halelr3fq4uqenj9ed">&nbsp;系统管理员可以（并且几乎总是这样做）在组织单位（OU）的帮助下组织这些对象。604OU与文件系统文件夹相当，因为它们是用于存储和分组其他对象的容器。 计算机对象代表加入域（域的一部分）的实际服务器和工作站，而用户对象代表组织中的员工。 所有AD对象都包含属性，这些属性根据对象的类型而有所不同。 例如，用户对象可以包括诸如名字，姓氏，用户名和密码的属性。</a>
+</h3>
+<h3 class="topic">
+<a name="5cha2boghn27sfofd4hfbvhf0s">&nbsp;&nbsp;通常，内部网络上的客户端计算机连接到域控制器和各种其他内部成员服务器，例如数据库服务器，文件存储服务器等。此外，许多组织通过连接Internet的Web服务器提供内容，有时这些服务器也是 内部域的成员。</a>
+</h3>
+<h3 class="topic">
+<a name="7kpt6fqlofaerfjdk70btgkplu">&nbsp;&nbsp;&nbsp;应当注意，某些组织将拥有未加入域的计算机。 对于面向Internet的机器尤其如此。</a>
+</h3>
+<h3 class="topic">
+<a name="41ck6c923jbgrofvkf4067ofrl">&nbsp;Active Directory在技术上可能令人生畏，因为它包含了我们在本模块中无法完全涵盖的许多概念和功能。 取而代之的是，我们将介绍基本的AD术语和语言以及构建枚举和利用功能所需的其他知识。</a>
+</h3>
+<h3 class="topic">
+<a name="0i8egqnu74nhhvce41kg8bfvo7">&nbsp;&nbsp;Active Directory环境非常依赖域名系统（DNS）服务。 这样，AD中的典型域控制器也将托管对给定域具有权威性的DNS服务器。 请注意，在实验室中，您可能还会发现与Active Directory不相关的DNS服务器，并为其他计算机提供查找服务。</a>
+</h3>
+<h2 class="topic">
+<a name="58f74g3rlo96qrhusk2jqofh7l">Active Directory枚举</a>
+</h2>
+<h3 class="topic">
+<a name="7qle5losii6bov68jmu61h4mgq">&nbsp;通常，对Active Directory基础结构的攻击始于对域工作站或服务器的成功利用或客户端攻击，然后枚举AD环境。</a>
+</h3>
+<h3 class="topic">
+<a name="33ga6jd0fciboq9dq68vh1vnjl">&nbsp;&nbsp;建立立足点后，目标是提高特权级别，直到我们获得一个或多个域的控制权为止。 有几种方法可以完成此操作。&#13;
+   在AD中，管理员使用组将权限分配给成员用户，这意味着在我们进行评估时，我们将定位高价值的组。 在这种情况下，我们可能会破坏Domain Admins组的成员，以完全控制域中的每台计算机。</a>
+</h3>
+<h3 class="topic">
+<a name="7h625mb0qv6u7fugtk7djj2q0a">&nbsp;&nbsp;&nbsp;获得域控制权的另一种方法是成功破坏域控制器，因为它可用于修改所有加入域的计算机或在它们上执行应用程序。 此外，正如我们稍后将看到的那样，域控制器包含每个单个域用户帐户的所有密码哈希。&#13;
+   在研究此模块时，我们将逐步介绍各种AD枚举和利用技术，以演示典型的域折衷方案。 在现实世界中，我们可以使用前面模块中概述的许多Windows枚举和利用技术。 但是，在本模块中，我们将专注于专门用于枚举和利用AD用户和组的技术。</a>
+</h3>
+<h3 class="topic">
+<a name="1a3e6n8fmlis8ble509q19tm0q">&nbsp;我们将假设我们已经通过本课程前面介绍的技术获得了对Windows 10工作站的访问权限。 我们还将假定我们已经危害了Offsec域用户，该用户也是加入域的工作站的本地管理员组的成员。 这将使我们能够专注于与Active Directory相关的枚举和利用技术。</a>
+</h3>
+<h3 class="topic">
+<a name="2gg9sbs0cc6b34f8ldcm4plor2">&nbsp;&nbsp;在这种情况下，我们的首要目标是枚举域用户，并尽可能地了解他们的组成员身份，以寻找高价值目标。 为此，我们将利用多种工具和技术，其中许多工具和技术无需任何管理权限即可执行。</a>
+</h3>
+<h3 class="topic">
+<a name="5cdkpgogrrfufkvr2m807hprn0">&nbsp;传统方法</a>
+</h3>
+<h3 class="topic">
+<a name="2cu73ub7min4u024jj1sfa2hoq">&nbsp;&nbsp;第一种技术，我们称为&ldquo;传统&rdquo;方法，它利用内置的net.exe应用程序。 具体来说，我们将使用net user子命令，该命令会枚举所有本地帐户。</a>
+</h3>
+<p class="topicImage">
+<img src="Active Directory%E6%94%BB%E5%87%BB_files/5jt964n0a2mejacn4ri94bgrja.png"></p>
+<h3 class="topic">
+<a name="2mvh3qh11mmvdsgbinp7s8rhqq">&nbsp;&nbsp;&nbsp;添加/ domain标志将枚举整个域中的所有用户：</a>
+</h3>
+<p class="topicImage">
+<img src="Active Directory%E6%94%BB%E5%87%BB_files/4vs6bk1mreba2127fg0fe8gkqg.png"></p>
+<h3 class="topic">
+<a name="2pm7fa8j3h0f20465j0s9uduck">&nbsp;&nbsp;&nbsp;&nbsp;在生产环境中运行此命令可能会返回更长的用户列表。 有了此列表，我们现在可以查询有关单个用户的信息。&#13;
+  根据上面的输出，我们应该查询jeff_admin用户，因为该名称听起来很有希望。我们过去的经验表明，管理员通常倾向于向用户名添加前缀或后缀，以根据其功能来识别帐户。</a>
+</h3>
+<h3 class="topic">
+<a name="2tib0cktmv10vd2d2n28918qls">&nbsp;&nbsp;输出表明jeff_admin是Domain Admins组的成员，因此我们将对此进行说明。</a>
+</h3>
+<p class="topicImage">
+<img src="Active Directory%E6%94%BB%E5%87%BB_files/3tsn9nvcu6i8qn01kokkois5i6.png"></p>
+<h3 class="topic">
+<a name="2732lef8h64nu7gap3je4l7nt2">&nbsp;&nbsp;&nbsp;为了枚举域中的所有组，我们可以向net group命令提供/ domain标志</a>
+</h3>
+<p class="topicImage">
+<img src="Active Directory%E6%94%BB%E5%87%BB_files/6da65j69631dj4vp0u6a7ibc86.png"></p>
+<h3 class="topic">
+<a name="1mfuvqb9eegucp912er6the2vb">&nbsp;&nbsp;&nbsp;&nbsp;从清单664中突出显示的输出中，我们注意到自定义组Secret_Group，Nested_Group和Another_Nested_Group。 在Active Directory中，可以将一个组（以及随后包含的所有成员）作为成员添加到另一个组。 这称为嵌套组。&#13;
+   虽然嵌套可能看起来令人困惑，但它确实可以很好地扩展，甚至可以在最大型的AD实现中实现灵活性和动态成员资格自定义。&#13;
+   不幸的是，net.exe命令行工具无法列出嵌套组，而仅显示直接用户成员。</a>
+</h3>
+<h3 class="topic">
+<a name="1pe4cik4aok9u1rncd7bf32cqj">&nbsp;现代方法</a>
+</h3>
+<h3 class="topic">
+<a name="7rgfhjeevehphm179pi3mv9ubf">&nbsp;&nbsp;还有几种能够枚举AD环境的现代工具。 像Get-ADUser（https://docs.microsoft.com/zh-CN/powershell/module/addsadministration/get-aduser?view=win10-ps）这样的PowerShell cmdlet可以很好地工作，但是默认情况下它们仅安装在域控制器上（作为RSAT的一部分），尽管它们能安装在Windows 7及更高版本的Windows工作站上，但它们需要管理权限才能使用。&#13;
+   但是，我们可以使用PowerShell（Windows首选的管理脚本语言）来枚举AD。我们将开发一个脚本，该脚本将枚举AD用户以及这些用户帐户的所有属性。</a>
+</h3>
+<h3 class="topic">
+<a name="181vafqgtkokr38bucmsa0a4bv">&nbsp;&nbsp;&nbsp;尽管这不像运行net.exe这样的命令那么简单，但脚本将非常灵活，允许我们根据需要添加功能。 在构建脚本时，我们将讨论与手头任务相关的许多技术细节。 脚本完成后，我们可以复制并粘贴该脚本以供评估时使用。&#13;
+   作为概述，此脚本将在网络上查询主域控制器仿真器和域的名称，搜索Active Directory并过滤输出以显示用户帐户，然后清理输出以提高可读性。主域控制器仿真器是域控制器执行的五个操作主机角色或FSMO角色之一。 从技术上讲，该属性称为PdcRoleOwner，具有此属性的域控制器将始终具有有关用户登录和身份验证的最新信息。</a>
+</h3>
+<h3 class="topic">
+<a name="2b6o4kgsib2fh50n6q9fqf0lf2">&nbsp;&nbsp;&nbsp;&nbsp; 该脚本依赖于一些组件。 具体来说，我们将使用DirectorySearcher对象通过轻型目录访问协议（LDAP）查询Active Directory，该协议是域控制器理解的网络协议，也用于与第三方应用程序进行通信。&#13;
+   LDAP是Active Directory服务接口（ADSI）提供程序（本质上是API），它支持针对Active Directory的搜索功能。 这将使我们能够使用PowerShell与域控制器进行交互，并提取有关域中对象的非特权信息。&#13;
+   我们的脚本将围绕一个非常特定的LDAP提供程序路径，该路径将用作DirectorySearcher .NET类的输入。 路径的原型如图</a>
+</h3>
+<p class="topicImage">
+<img height="30" src="Active Directory%E6%94%BB%E5%87%BB_files/7jhl3rgorfavdo6vs491t6cq9m.png" width="500"></p>
+<h3 class="topic">
+<a name="4vqk22m1d29m6vurko8onfitra">&nbsp;&nbsp;要创建此路径，我们需要目标主机名（在本例中为域控制器的名称）和域的DistinguishedName（DN），后者具有基于特定域组件（DC）的特定命名标准。</a>
+</h3>
+<h3 class="topic">
+<a name="6v16epvptqr9n1r5nngjbq5r5n">&nbsp;&nbsp;&nbsp;首先，让我们使用PowerShell命令发现域控制器的主机名和DistinguishedName的组件。&#13;
+   具体来说，我们将使用System.DirectoryServices.ActiveDirectory命名空间的Domain类。  Domain类包含一个名为GetCurrentDomain，的方法，该方法为当前登录的用户检索Domain对象。下面的列表中显示了GetCurrentDomain方法及其输出的调用：</a>
+</h3>
+<p class="topicImage">
+<img height="175" src="Active Directory%E6%94%BB%E5%87%BB_files/52jg1bv9um0nskj1km87ogts57.png" width="517"></p>
+<h3 class="topic">
+<a name="6mlbnlbkm570tk8ctm8jlc5t9b">&nbsp;&nbsp;根据此输出，域名是&ldquo; corp.com&rdquo;（来自Name属性），主域控制器名称是&ldquo; DC01.corp.com&rdquo;（来自PdcRoleOwner属性）。&#13;
+  我们可以使用此信息以编程方式构建LDAP提供程序路径。 让我们在构建提供程序路径的简单PowerShell脚本中包含Name和PdcRoleOwner属性： </a>
+</h3>
+<p class="topicImage">
+<img src="Active Directory%E6%94%BB%E5%87%BB_files/1pc23a4b0tcm51in3m1hjjs83o.png"></p>
+<h3 class="topic">
+<a name="483k3shdt9plb3urohcar9h2bl">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<h3 class="topic">
+<a name="3pbaccr3t39pcce9bb9g85cbuf">&nbsp;&nbsp;&nbsp;&nbsp;在此脚本中，$ domainObj将存储整个域对象，$ PDC将存储PDC的名称，$ SearchString将构建提供程序的输出路径。 请注意，DistinguishedName将由我们的域名（corp.com）分解为单个域组件（DC），从而使DistinguishedName为&ldquo; DC = corp，DC = com&rdquo;，如脚本的输出所示：</a>
+</h3>
+<p class="topicImage">
+<img height="38" src="Active Directory%E6%94%BB%E5%87%BB_files/2j4ebu6904sc3t9l0fmdgbkk97.png" width="542"></p>
+<h3 class="topic">
+<a name="75n8ff7p6a0hemudas3pukkrbc">&nbsp;&nbsp;这是对域控制器执行LDAP查询所需的完整LDAP提供程序路径。&#13;
+   现在，我们可以使用LDAP提供程序路径实例化DirectorySearcher类。 要使用DirectorySearcher类，我们必须指定SearchRoot，它是Active Directory层次结构中开始搜索的节点。SearchRoot采用从DirectoryEntry类实例化的对象的形式。 当没有参数传递给构造函数时，SearchRoot将指示每次搜索都应返回整个Active Directory的结果。 右图中的代码显示了完成此任务的脚本的相关部分。</a>
+</h3>
+<p class="topicImage">
+<img height="188" src="Active Directory%E6%94%BB%E5%87%BB_files/2eb6585rrmfv4rdohnf9vcl6t9.png" width="458"></p>
+<h3 class="topic">
+<a name="24a3m50kbrjt70570d061s46vo">&nbsp;&nbsp;&nbsp;准备好DirectorySearcher对象之后，我们可以执行搜索。 但是，如果没有任何过滤器，我们将接收整个域中的所有对象。&#13;
+   设置筛选器的一种方法是通过samAccountType属性，该属性是所有用户，计算机和组对象都具有的属性。 请参考链接的reference622以获得更多示例，但是在我们的示例中，我们可以为filter属性提供0x30000000（十进制805306368），以枚举域中的所有用户</a>
+</h3>
+<p class="topicImage">
+<img src="Active Directory%E6%94%BB%E5%87%BB_files/1ka1uo29i0pst8o367chgf6qmi.png"></p>
+<h3 class="topic">
+<a name="64b4b3bibm303ltgmlauk6r4dl">&nbsp;&nbsp;我们已经通过$ Searcher对象的.filter属性添加了samAccountType过滤器，然后调用FindAll方法623进行搜索并找到给定配置过滤器的所有结果。&#13;
+  运行时，此脚本应枚举域中的所有用户： </a>
+</h3>
+<p class="topicImage">
+<img height="126" src="Active Directory%E6%94%BB%E5%87%BB_files/4gnlop9mhjo8509ehfo6ccidte.png" width="445"></p>
+<h3 class="topic">
+<a name="6rhhqu0p28mgo6dl8ko20h1grk">&nbsp;&nbsp;&nbsp;这是很好的信息，但我们应该对其进行清理。 由于用户对象的属性存储在&ldquo;属性&rdquo;字段中，因此我们可以实现一个双重循环，该循环将在每个属性的一行上打印每个属性。&#13;
+  完整的PowerShell脚本将收集所有用户及其属性：  p630</a>
+</h3>
+<p class="topicImage">
+<img src="Active Directory%E6%94%BB%E5%87%BB_files/5ejfe44vhmrsjd46p8i4gvn0p0.png"></p>
+<h3 class="topic">
+<a name="3799574go457ek8c56sdmi8tt4">&nbsp;&nbsp;&nbsp;&nbsp;由于用户对象具有许多属性，因此检索到的信息可能会不堪重负。 下面的清单显示了Jeff_Admin用户属性的部分视图。</a>
+</h3>
+<p class="topicImage">
+<img src="Active Directory%E6%94%BB%E5%87%BB_files/328mfnuroetfksjm3e649o1199.png"></p>
+<h3 class="topic">
+<a name="15p4b8ig6pqspbhr6bjpji615s">&nbsp;&nbsp;根据上面的输出，Jeff_Admin帐户是Domain Admins组的成员。 使用DirectorySearcher对象，我们可以使用过滤器来定位特定组（例如Domain Admin）的成员，或者使用过滤器专门搜索Jeff_Admin用户。&#13;
+   在filter属性中，我们可以设置所需对象类型的任何属性。 例如，我们可以使用name属性为Jeff_Admin用户创建一个过滤器，如下所示：</a>
+</h3>
+<p class="topicImage">
+<img height="38" src="Active Directory%E6%94%BB%E5%87%BB_files/6o1evup1fh04odvd4kk37er1fv.png" width="490"></p>
+<h3 class="topic">
+<a name="0u7l72ca7uantqnmjrhcb8easm">&nbsp;&nbsp;&nbsp;尽管此脚本乍看之下似乎令人生畏，但它具有极高的灵活性，可以对其进行修改以辅助执行其他AD枚举任务。</a>
+</h3>
+<h3 class="topic">
+<a name="0nk667lhe5brsh72ehjs1e1q2q">&nbsp;解决嵌套组问题</a>
+</h3>
+<h3 class="topic">
+<a name="4b70lufd09ufa3j32d7he5243o">&nbsp;&nbsp;接下来，让我们使用我们新开发的PowerShell脚本来解开使用net.exe时遇到的嵌套组。&#13;
+   第一项任务是找到域中的所有组并打印其名称。 为此，我们将创建一个过滤器，以将objectClass624设置为&ldquo; Group&rdquo;的所有记录提取出来，并且仅打印每个组的name属性，而不是所有属性。&#13;
+   右图显示了修改后的脚本，突出显示了更改。</a>
+</h3>
+<p class="topicImage">
+<img src="Active Directory%E6%94%BB%E5%87%BB_files/13uk9n39nn2vfpdm7fveh4ip6v.png"></p>
+<h3 class="topic">
+<a name="23mrh05q414o9pjb1jm5gafufe">&nbsp;&nbsp;&nbsp;执行后，脚本将输出域中所有组的列表。 清单676中所示的截断输出显示了组Secret_Group，Nested_Group和Another_Nested_Group：</a>
+</h3>
+<p class="topicImage">
+<img src="Active Directory%E6%94%BB%E5%87%BB_files/1i67hrmds05i24haqv3f069a34.png"></p>
+<h3 class="topic">
+<a name="3uu7g4l6uu3fentrqkdqljada3">&nbsp;&nbsp;现在，通过在name属性上设置适当的过滤器，尝试列出Secret_Group的成员。&#13;
+  另外，我们将仅显示member属性来获取组成员。 清单677中显示了为实现此目的而修改的PowerShell，突出显示了更改： </a>
+</h3>
+<p class="topicImage">
+<img src="Active Directory%E6%94%BB%E5%87%BB_files/3jhd2p26t8cob591t8o0mgg2fg.png"></p>
+<h3 class="topic">
+<a name="243r32hk0i5u0kqnnk6hau3d1v">&nbsp;&nbsp;&nbsp;修改后的脚本将转储DistinguishedName组成员的名称（没理解）根据此输出，Nested_Group是Secret_Group的成员。 为了枚举其成员，我们必须重复执行的步骤以列出Nested_Group的成员。 我们可以通过在过滤条件中替换组名来做到这一点：</a>
+</h3>
+<p class="topicImage">
+<img height="36" src="Active Directory%E6%94%BB%E5%87%BB_files/32vpjlmpf0c971r62qii771oqj.png" width="563"></p>
+<h3 class="topic">
+<a name="394mj1levsu0chmgfeq7iqcenr">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="Active Directory%E6%94%BB%E5%87%BB_files/6kv879v40r6lcahmbmd2fa3rqp.png"></p>
+<h3 class="topic">
+<a name="17mmncbbv8gh4q803t3m8vln72">&nbsp;&nbsp;此更新的脚本生成如图所示的输出，这表明Another_Nested_Group是Nested_Group的唯一成员。 我们需要修改并再次运行脚本，在过滤条件中替换组名。</a>
+</h3>
+<p class="topicImage">
+<img src="Active Directory%E6%94%BB%E5%87%BB_files/1oepiuv8kd1ntefk753fj3adcs.png"></p>
+<h3 class="topic">
+<a name="5q4ehudrot8k0e5riajm5iip8j">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="Active Directory%E6%94%BB%E5%87%BB_files/2stn4cfjr9ns04ko1qtvk7utsa.png"></p>
+<h3 class="topic">
+<a name="2kpe4l2a6fh3fufspgmf83i42c">&nbsp;&nbsp;&nbsp;&nbsp;如图显示了下一个搜索的输出。</a>
+</h3>
+<p class="topicImage">
+<img src="Active Directory%E6%94%BB%E5%87%BB_files/4fk6eaipu86qa3bdkmoeglk3k8.png"></p>
+<h3 class="topic">
+<a name="7stat1ohfpsint9f0njdim2ar9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;最后，我们发现域用户Adam是Another_Nested_Group的唯一成员。 这样就结束了解开嵌套组所需的枚举，并演示了如何利用PowerShell和LDAP来执行这种查找。</a>
+</h3>
+<h3 class="topic">
+<a name="5it67v7dre9rf03k4son8pbf9d">&nbsp;当前登录的用户</a>
+</h3>
+<h3 class="topic">
+<a name="0dqen1ng29usjvnvti1spljf3c">&nbsp;&nbsp;此时，我们可以列出用户及其组成员身份，并可以轻松地找到管理用户。&#13;
+   下一步，我们要查找属于高价值组成员的登录用户，因为其凭据将被缓存在内存中，我们可以窃取凭据并对其进行身份验证。&#13;
+   如果我们成功地破坏了一位域管理员，那么我们最终可以接管整个域（我们将在后面的部分中看到）。 或者，如果我们不能立即危及一位域管理员，则必须危及其他帐户或计算机，以最终获得该级别的访问权限。</a>
+</h3>
+<h3 class="topic">
+<a name="2l2vu1pbrm15evi3hl9fb2ei7k">&nbsp;&nbsp;&nbsp;如图显示Bob登录到CLIENT512，并且是所有工作站上的本地管理员。 爱丽丝已登录CLIENT621，并且是所有服务器上的本地管理员。 最后，Jeff登录到SERVER21，并且是Domain Admins组的成员。</a>
+</h3>
+<p class="topicImage">
+<img src="Active Directory%E6%94%BB%E5%87%BB_files/02qdt8lg59lg0momr8gahmg8au.png"></p>
+<h3 class="topic">
+<a name="79fg19cv6bnl1ssbv5qfsg8pbv">&nbsp;&nbsp;&nbsp;&nbsp;如果我们设法破坏Bob的帐户（例如，通过客户端攻击），则可以从CLIENT512转向CLIENT621上的目标Alice。 通过扩展，我们也许可以再次转危为安以SERVER21上的Jeff，获得域访问权限。&#13;
+   在这种情况下，我们必须调整枚举，不仅要考虑域管理员，还应考虑&ldquo;链式妥协&rdquo;的潜在途径，包括寻找所谓的派生本地管理员。为此，我们需要一个已登录用户列表 瞄准目标。 我们可以与目标进行交互以直接检测到此问题，也可以在域控制器或文件服务器上跟踪用户的活动登录会话。</a>
+</h3>
+<h3 class="topic">
+<a name="31ak1gjtiv2jpi39kvfgk2qtq5">&nbsp;&nbsp;可以帮助我们实现这些目标的两个最可靠的Windows函数是NetWkstaUserEnum和NetSessionEnum API。 前者需要管理权限并返回登录到目标工作站的所有用户的列表，而后者可以从常规域用户中使用，并返回服务器（例如文件服务器或域控制器）上的活动用户会话的列表。在评估过程中，损害域计算机后，我们应枚举域中的每台计算机，然后针对所获得的目标列表使用NetWkstaUserEnum。 请记住，如果我们对该目标具有本地管理员特权，则此API仅列出该目标上登录的用户。</a>
+</h3>
+<h3 class="topic">
+<a name="2qleo9jtj34rcaf0ee9mefio6g">&nbsp;&nbsp;&nbsp;  另外，我们可以集中精力发现网络中的域控制器和任何潜在的文件服务器（基于服务器的主机名或开放端口），并对这些服务器使用NetSessionEnum来枚举所有活动用户的会话。&#13;
+  此过程将为我们提供一个良好的&ldquo;开发图&rdquo;，以供您使用以破坏域管理员帐户。 但是，请记住，使用这两个API所获得的结果将根据登录用户的当前权限和域环境的配置而有所不同。</a>
+</h3>
+<h3 class="topic">
+<a name="1rjre7e5ue8k57gilbd0eh441l">&nbsp;&nbsp;&nbsp;&nbsp;作为一个非常基本的示例，在本节中，我们将使用NetWkstaUserEnum API枚举Windows 10客户端计算机上的本地用户，并使用NetSessionEnum枚举域控制器上用户的活动会话。&#13;
+   从PowerShell调用操作系统API并不完全简单。 幸运的是，其他研究人员提出了一种简化流程并帮助避免端点安全检测的技术。 最常见的解决方案是使用PowerView （https://github.com/PowerShellEmpire/PowerTools/blob/master/PowerView/powerview.ps1），它是PowerShell脚本，它是PowerShell Empire框架的一部分。</a>
+</h3>
+<h3 class="topic">
+<a name="0l119gjr656gerovu6rgeu6aro">&nbsp;&nbsp;PowerView脚本已经存储在Windows 10客户端的C：\ Tools \ active_directory目录中。 要使用它，我们必须首先导入它：</a>
+</h3>
+<p class="topicImage">
+<img height="21" src="Active Directory%E6%94%BB%E5%87%BB_files/1mlf7lbl9njar6gt1hfk6cqbm9.png" width="494"></p>
+<h3 class="topic">
+<a name="61bs1j52lf8bi5k6qedgv3727t">&nbsp;&nbsp;&nbsp;PowerView很大，但是我们将仅使用Get-NetLoggedon和Get-NetSession函数，它们分别调用NetWkstaUserEnum和NetSessionEnum。&#13;
+  首先，我们将使用Get-NetLoggedon以及-ComputerName选项（以指定目标工作站或服务器）枚举已登录的用户，。 由于在这种情况下，我们的目标是Windows 10客户端，因此我们将使用-Co​​mputerName client251： &#13;
+输出显示预期的offsec用户帐户。</a>
+</h3>
+<p class="topicImage">
+<img src="Active Directory%E6%94%BB%E5%87%BB_files/7s5t7t3ovg1svtei25c5bkt8a5.png"></p>
+<h3 class="topic">
+<a name="0rn7mlkpv0084b41dhbufjucfe">&nbsp;&nbsp;接下来，让我们尝试在域控制器DC01上检索活动会话。 请记住，这些会话是在用户登录时针对域控制器执行的，但它们源自特定的工作站或服务器，而这正是我们试图枚举的内容。&#13;
+    我们可以使用-Co​​mputerName标志以类似的方式调用Get-NetSession函数。 回想一下，此函数调用Win32 API NetSessionEnum，它将返回所有活动的会话，在本例中是从域控制器返回的。</a>
+</h3>
+<p class="topicImage">
+<img height="127" src="Active Directory%E6%94%BB%E5%87%BB_files/6gr4cskug7mdrmep4u740ausvo.png" width="479"></p>
+<h3 class="topic">
+<a name="25mkitr9e41nlpmsbhpmon94n7">&nbsp;&nbsp;&nbsp;如预期的那样，由于活动登录，Offsec用户在192.168.1.111（Windows 10客户端）上的域控制器上具有活动会话。 从这两个API获得的信息最终与我们仅针对一台机器的目标相同，而这恰好也是我们从中执行脚本的机器。 但是，在实际的Active Directory基础结构中，使用每个API获得的信息可能会有所不同，并且肯定会更有帮助。&#13;
+   现在，我们可以枚举组成员身份并确定用户当前登录的机器，我们掌握了开始损害用户帐户所需的基本技能，其最终目标是获得域管理特权。</a>
+</h3>
+<h3 class="topic">
+<a name="0j1m18pul19f5vv0oi6c00c5an">&nbsp;通过服务主体名称枚举</a>
+</h3>
+<h3 class="topic">
+<a name="2spnllni1r9llfa0cb57lqlmo6">&nbsp;&nbsp;到目前为止，我们已经列举了域用户来搜索属于高价值组成员的登录帐户。 攻击域用户帐户的一种替代方法是针对所谓的服务帐户，该服务帐户也可能是高价值组的成员。&#13;
+   执行应用程序时，必须始终在操作系统用户的上下文中执行。 如果用户启动应用程序，则该用户帐户定义上下文。 但是，系统本身启动的服务会使用基于服务帐户的上下文。</a>
+</h3>
+<h3 class="topic">
+<a name="74dpbr2kmd4dhg937io8li9akd">&nbsp;&nbsp;&nbsp;换句话说，隔离的应用程序可以使用一组预定义的服务帐户：LocalSystem， LocalService，和NetworkService.对于更复杂的应用程序，可以使用域用户帐户来提供所需的上下文，同时仍可以访问域内部的资源。 </a>
+</h3>
+<h3 class="topic">
+<a name="48eh346l3ci69lnv3ul0t1t7ek">&nbsp;&nbsp;&nbsp;&nbsp;当将Exchange，SQL或Internet信息服务（IIS）之类的应用程序集成到Active Directory中时，将使用称为服务主体名称（SPN）的唯一服务实例标识符将特定服务器上的服务与该服务器中的服务帐户相关联。(在Active Directory范围内)</a>
+</h3>
+<h3 class="topic">
+<a name="65f6b5k3p3o47l02biddq8gnke">&nbsp;&nbsp;Windows Server 2008 R2引入的托管服务帐户是为需要与Active Directory紧密集成的复杂应用程序而设计的。 大型应用程序（例如SQL和Microsoft Exchange635）在运行时通常需要服务器冗余以保证可用性，但是托管服务帐户无法支持此功能。 为解决此问题，Windows Server 2012引入了组托管服务帐户，但这要求域控制器运行Windows Server 2012或更高版本。 因此，许多组织仍然依赖基本的服务帐户。</a>
+</h3>
+<h3 class="topic">
+<a name="6kmdrv1l0udl5ara1srmnan3ef">&nbsp;&nbsp;&nbsp;通过枚举域中所有已注册的SPN，我们可以获得在与目标Active Directory集成的服务器上运行的应用程序的IP地址和端口号，从而限制了对广泛的端口扫描的需求。&#13;
+  由于该信息已注册并存储在Active Directory中，因此它存在于域控制器上。 为了获得数据，我们将再次查询域控制器以搜索特定的服务主体名称。尽管Microsoft尚未记录可搜索SPN的列表，但可以在线找到大量列表。</a>
+</h3>
+<h3 class="topic">
+<a name="4vd2p1f7lr546u1s27ntpq5m88">&nbsp;&nbsp;&nbsp;&nbsp;例如，让我们更新PowerShell枚举脚本，以过滤字符串* http *的serviceprincipalname属性，以表明存在已注册的Web服务器：</a>
+</h3>
+<p class="topicImage">
+<img src="Active Directory%E6%94%BB%E5%87%BB_files/4q52tdqiksmvu6u8u4u646i659.png"></p>
+<h3 class="topic">
+<a name="7b8iqlj2i6pp71eoct44fsgrb6">&nbsp;&nbsp;  此搜索返回许多结果，尽管可以进一步过滤它们，但我们可以轻松地找到相关信息</a>
+</h3>
+<p class="topicImage">
+<img src="Active Directory%E6%94%BB%E5%87%BB_files/0j0g9v7ccrgrqb0kll55u4uaoq.png"></p>
+<h3 class="topic">
+<a name="346b4ed8knrqj078jj7cbe8me3">&nbsp;&nbsp;&nbsp;根据输出，一个属性名称samaccountname设置为iis_service，指示存在Web服务器，而serviceprincipalname设置为HTTP / CorpWebServer.corp.com。 所有这些似乎都暗示了Web服务器的存在。&#13;
+  让我们尝试使用nslookup解析&ldquo; CorpWebServer.corp.com&rdquo;： &#13;
+从结果中可以明显看出，主机名解析为内部IP地址，即域控制器的IP地址。</a>
+</h3>
+<p class="topicImage">
+<img height="107" src="Active Directory%E6%94%BB%E5%87%BB_files/70pt3o47v7htb40g9jt9pbo776.png" width="479"></p>
+<h3 class="topic">
+<a name="3vj0ejgssr6gk9thm963vn46ak">&nbsp;&nbsp;&nbsp;&nbsp;如果浏览此IP，则会找到默认的IIS Web服务器，如图所示。</a>
+</h3>
+<p class="topicImage">
+<img src="Active Directory%E6%94%BB%E5%87%BB_files/42mtboggib1436opomnltivcjn.png"></p>
+<h3 class="topic">
+<a name="2va2pk6i6k59je0o5hv613di3o">&nbsp;&nbsp;尽管域控制器通常不会托管Web服务器，但学生实验室充满了惊喜。&#13;
+   虽然服务主体名称的枚举不会产生Web服务器软件或版本，但是它将缩小搜索范围，并允许手动检测或范围狭窄的端口扫描。</a>
+</h3>
+<h2 class="topic">
+<a name="7nh29brngg15ssfg7nurovfjii">Active Directory验证</a>
+</h2>
+<h3 class="topic">
+<a name="1f2b3j6k0d0pqf1hqnihn9und5">&nbsp;现在，我们已经枚举了用户帐户，组成员身份和已注册的SPN，让我们尝试使用此信息来破坏Active Directory。 为此，我们必须首先讨论Active Directory身份验证的详细信息。&#13;
+  Active Directory支持多种身份验证协议和技术，并且对Windows计算机以及运行Linux和macOS的计算机都实施身份验证。</a>
+</h3>
+<h3 class="topic">
+<a name="6nnbes0ngcec75liv3huucpnph">&nbsp;&nbsp;Active Directory支持包括WDigest.639在内的几种较旧的协议，尽管这些协议对Windows 7或Windows Server 2008 R2等较旧的操作系统可能很有用，但在本节中，我们仅关注更现代的身份验证协议。&#13;
+  对于大多数身份验证尝试，Active Directory使用Kerberos或NTLM身份验证协议。 我们将首先讨论更简单的NTLM协议</a>
+</h3>
+<h3 class="topic">
+<a name="13oehnptrmfdac3vu72166fd70">&nbsp;NTLM身份验证</a>
+</h3>
+<h3 class="topic">
+<a name="2sdtdt9g7rpj09ood7b6q071qj">&nbsp;&nbsp;当客户端通过IP地址（而不是主机名）向服务器进行身份验证时，或者如果用户尝试向未在Active Directory集成DNS服务器上注册的主机名进行身份验证，则使用NTLM身份验证。 同样，第三方应用程序可能选择使用NTLM身份验证而不是Kerberos身份验证。</a>
+</h3>
+<h3 class="topic">
+<a name="5kap11gubjfm3jijuml2ifjlce">&nbsp;&nbsp;&nbsp;NTLM身份验证协议包括七个步骤，下面将进行详细说明</a>
+</h3>
+<p class="topicImage">
+<img src="Active Directory%E6%94%BB%E5%87%BB_files/2g6d04i0e4qet8t6nepgt34b0k.png"></p>
+<h3 class="topic">
+<a name="79ujd34h4p64ra5a711vq8r43k">&nbsp;&nbsp;&nbsp;&nbsp;在第一个身份验证步骤中，计算机根据用户的密码计算一个称为NTLM哈希的加密哈希。 接下来，客户端计算机将用户名发送到服务器，服务器将返回一个随机值，称为随机数或质询。 然后，客户端使用NTLM哈希对随机数进行加密，加密的结果称为响应，并将其发送到服务器。&#13;
+   服务器将响应、用户名、随机数转发到域控制器。 然后由域控制器执行验证，因为它已经知道所有用户的NTLM哈希。 域控制器使用提供的用户名的NTLM哈希对随机数本身进行加密，并将其与从服务器收到的响应进行比较。 如果两者相等，则身份验证请求成功。</a>
+</h3>
+<h3 class="topic">
+<a name="070n5gu4rhc2b0lbvoh2bkhor0">&nbsp;&nbsp;与其他任何哈希一样，NTLM也不能反转。 但是，它被认为是&ldquo;快速哈希&rdquo;加密算法，因为在中等设备中，短密码也可以在几天内破解。通过将Hashcat之类的破解软件与顶级图形处理器一起使用，每秒可以测试超过6,000亿个NTLM哈希值。 这意味着可以在2.5小时内测试所有八个字符的密码，并且可以在11天内测试所有九个字符的密码。</a>
+</h3>
+<h3 class="topic">
+<a name="52ndfnoi7gtfq0idnorvuj5n3h">&nbsp;Kerberos验证</a>
+</h3>
+<h3 class="topic">
+<a name="4m3vcbohoinmr8u4vtbhf5nhan">&nbsp;&nbsp;Kerberos是Active Directory和相关服务中的默认身份验证协议。</a>
+</h3>
+<h3 class="topic">
+<a name="4u6brb0mqqlg824f6hmoaqk53m">&nbsp;&nbsp;&nbsp;Microsoft使用的Kerberos身份验证协议是从MIT创建的Kerberos版本5身份验证协议中采用的，自Windows Server 2003起已被用作Microsoft的主要身份验证机制。NTLM身份验证通过质询和响应的原理工作，而基于Windows的Kerberos身份验证使用票据系统原理工作。&#13;
+  在较高级别上，对Active Directory中的服务使用Kerberos客户端身份验证涉及在密钥分发中心或KDC.的角色下使用域控制器。此过程如图所示。</a>
+</h3>
+<p class="topicImage">
+<img src="Active Directory%E6%94%BB%E5%87%BB_files/0578ani9ks6pjtgv02nl9cshbg.png"></p>
+<h3 class="topic">
+<a name="1ubkpkjc3l34tr3l2v4dgrhd75">&nbsp;&nbsp;&nbsp;&nbsp;当用户登录其工作站时，请求将发送到域控制器，该域控制器具有KDC的作用，并且还维护身份验证服务器服务。 该身份验证服务器请求（或AS_REQ）包含一个时间戳，该时间戳由用户密码和用户名通过哈希值加密得到。&#13;
+  当域控制器接收到请求时，它会查找与特定用户关联的密码哈希，并尝试解密时间戳。 如果解密过程成功，并且时间戳记不重复（可能发生重放攻击），则认为身份验证成功。</a>
+</h3>
+<h3 class="topic">
+<a name="7df4g6no9lk6sse6db0jr5cquu">&nbsp;&nbsp;域控制器使用包含会话密钥（因为Kerberos是无状态的）和票证授予票证（TGT）的身份验证服务器回复（AS_REP）答复客户端。 会话密钥使用用户的密码哈希进行加密，并且可以由客户端解密并重新使用。  TGT包含有关用户的信息，包括组成员身份，域，时间戳，客户端的IP地址和会话密钥。&#13;
+   为了避免篡改，票证授予票证仅由KDC已知的密钥加密，不能由客户端解密。 客户端收到会话密钥和TGT后，KDC会认为客户端身份验证已完成。 默认情况下，TGT有效期为10个小时，之后将进行续订。 此更新不需要用户重新输入密码。</a>
+</h3>
+<h3 class="topic">
+<a name="3qqej8gcfig4grrhef5e8s7nld">&nbsp;&nbsp;&nbsp;当用户希望访问域的资源（例如网络共享，Exchange邮箱或其他具有注册服务主体名称的应用程序）时，它必须再次与KDC联系。&#13;
+   这次，客户端构造了一个票证授予服务请求（或TGS_REQ）数据包，该数据包由当前用户和一个时间戳（使用会话密钥加密），资源的SPN和加密的TGT组成。接下来，KDC上的票证授予服务接收到TGS_REQ，如果域中存在SPN，则使用仅KDC已知的密钥对TGT进行解密。 然后，从TGT中提取会话密钥，并将其用于解密请求的用户名和时间戳。 至此，</a>
+</h3>
+<h3 class="topic">
+<a name="03n1so2s4pe7h9tngbb2spdbv2">&nbsp;&nbsp;&nbsp;&nbsp;KDC将执行以下检查：&#13;
+1. TGT必须具有有效的时间戳（未检测到重播且请求尚未过期）。  &#13;
+2. TGS_REQ中的用户名必须与TGT中的用户名匹配。  &#13;
+3.客户端IP地址必须与TGT IP地址一致。</a>
+</h3>
+<h3 class="topic">
+<a name="0r2trhb03fa7deg2snj6sptp3s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果此验证过程成功，票证授予服务将使用票证授予服务器回复或TGS_REP响应客户端。 该数据包包含三个部分：&#13;
+1.已被授予访问权限的SPN。  &#13;
+2.在客户端和SPN之间使用的会话密钥。&#13;
+3.包含用户名和组成员身份以及新创建的会话密钥的服务票证。</a>
+</h3>
+<h3 class="topic">
+<a name="46no2ed76h74mdff7e9uv93ebp">&nbsp;&nbsp;在创建TGT的过程中，使用会话密钥对SPN和会话密钥进行加密，并使用在相关SPN中注册的服务帐户的密码哈希对服务票证进行加密。&#13;
+   一旦完成了KDC的身份验证过程，并且客户端同时拥有会话密钥和服务票证，便开始服务身份验证。&#13;
+   首先，客户端向应用程序服务器发送应用程序请求或AP_REQ，其中包括用户名和时间戳（使用与服务凭单关联的会话密钥加密）以及服务凭单本身。</a>
+</h3>
+<h3 class="topic">
+<a name="1u2e0dh8pl91d8m56f45bujnaa">&nbsp;&nbsp;&nbsp;应用程序服务器使用服务帐户密码哈希对服务票证进行解密，并提取用户名和会话密钥。 然后，使用后者从AP_REQ解密用户名。 如果AP_REQ用户名与从服务票证解密的用户名匹配，则该请求被接受。 在授予访问权限之前，服务将检查服务票证中提供的组成员身份，并为用户分配适当的权限，然后用户可以访问请求的服务。</a>
+</h3>
+<h3 class="topic">
+<a name="2lnjmts3vohk34mvic9oi4h0j0">&nbsp;&nbsp;&nbsp;&nbsp;该协议看似复杂，甚至令人费解，但其目的是减轻各种网络攻击并防止使用伪造的凭据。&#13;
+     现在，我们已经探究了NTLM和Kerberos身份验证的基础，让我们探究各种缓存的凭据存储和服务帐户攻击。</a>
+</h3>
+<h3 class="topic">
+<a name="41e1kpggp7sbnq1dbkpl746vsj">&nbsp;缓存的凭证存储和检索</a>
+</h3>
+<h3 class="topic">
+<a name="02hudvbnsdom7pcat72lgg3vfv">&nbsp;&nbsp;为了为缓存的存储凭据攻击打下基础，我们必须首先讨论与Kerberos一起使用的各种密码哈希，并说明它们的存储方式。&#13;
+  由于Microsoft的Kerberos实现使用单点登录，因此必须将密码哈希存储在某个地方才能续签TGT请求。 在当前版本的Windows中，这些哈希存储在本地安全机构子系统服务（LSASS）内存空间中。如果我们可以访问这些哈希，则可以破解它们以获得明文密码或重复使用它们以执行各种操作。&#13;
+  尽管这是我们AD攻击的最终目标，但过程并不像听起来那样简单。 由于LSASS进程是操作系统的一部分，并且以SYSTEM身份运行，因此我们需要SYSTEM（或本地管理员）权限才能访问存储在目标上的哈希。</a>
+</h3>
+<h3 class="topic">
+<a name="6mitajqahafv6h1egk680unkdv">&nbsp;&nbsp;&nbsp;因此，为了锁定存储的哈希，我们通常必须以本地特权升级来开始攻击。 为了使事情变得更加棘手，用于公开存储在内存中的哈希的数据结构未公开记录，并且还使用LSASS存储的密钥进行了加密。&#13;
+不过，由于这是针对Windows和Active Directory的巨大攻击媒介，因此已经创建了多种工具来提取哈希，其中最流行的是Mimikatz(https://github.com/gentilkiwi/mimikatz)。让我们尝试使用Mimikatz在Windows 10系统上提取哈希。</a>
+</h3>
+<h3 class="topic">
+<a name="0j6dtso5fo8nbu0ftdndf99aae">&nbsp;&nbsp;&nbsp;&nbsp;在下面的示例中，我们将Mimikatz作为独立的应用程序运行。 但是，由于Mimikatz的主流流行和众所周知的检测签名，请考虑避免将其用作独立应用程序。 例如，使用PowerShell等注入器直接从内存中执行Mimikatz，或使用诸如Task Manager之类的内置工具转储整个LSASS进程内存，将转储的数据移至辅助计算机，然后从那里将数据加载到Mimikatz。  </a>
+</h3>
+<h3 class="topic">
+<a name="6q796ia5dlk9bhocckmo1uc1fv">&nbsp;&nbsp;由于Offsec域用户是本地管理员，因此我们能够以提升的特权启动命令提示符。 在此命令提示符下，我们将运行mimikatz(https://github.com/gentilkiwi/mimikatz/wiki/module-~-sekurlsa)并输入privilege :: debug以启用SeDebugPrivlege特权，这将使我们能够与另一个帐户拥有的进程进行交互。&#13;
+   最后，我们将运行sekurlsa :: logonpasswords，以使用Sekurlsa模块转储所有已登录用户的凭据。&#13;
+   这应该为所有登录到当前工作站或服务器的用户转储哈希，包括远程登录（如远程桌面会话）。</a>
+</h3>
+<p class="topicImage">
+<img src="Active Directory%E6%94%BB%E5%87%BB_files/2e1cnnpgblee8jqlk46r8sjurc.png"></p>
+<h3 class="topic">
+<a name="1pg28pdpn8p7fj6e311mkff0pd">&nbsp;&nbsp;&nbsp;上面的输出代码段显示了存储在LSASS中的域用户Offsec的所有凭据信息，包括缓存的哈希。&#13;
+   请注意，上面的输出中突出显示了两种类型的哈希。 这将根据AD实现的功能级别而有所不同。 对于Windows 2003功能级别的AD实例，NTLM是唯一可用的哈希算法。 对于运行Windows Server 2008或更高版本的实例，NTLM和SHA-1（AES加密的常见伴侣）可能都可用。 在Windows 7等较旧的操作系统或手动设置了该操作系统的操作系统上，将启用WDigest。 启用WDigest时，运行Mimikatz将在密码哈希旁边显示明文密码。</a>
+</h3>
+<h3 class="topic">
+<a name="6l9dneood93akfudqkomv3sb81">&nbsp;&nbsp;有了这些哈希，我们可以尝试破解它们并获得明文密码。&#13;
+  Mimikatz的另一种方法和用法是通过滥用TGT和服务票证来利用Kerberos身份验证。 如前所述，我们知道当前已登录到本地计算机的用户的Kerberos TGT和服务票证已存储以备将来使用。 这些票证也存储在LSASS中，我们可以使用Mimikatz与我们的票证以及其他本地用户的票证进行交互并检索。&#13;
+  例如，在右图中，我们使用Mimikatz来显示存储在内存中的Offsec用户的票证： </a>
+</h3>
+<h3 class="topic">
+<a name="06co0lgonf13v4q3de1otr3cc2">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="Active Directory%E6%94%BB%E5%87%BB_files/2qte1e0p3l38ccfvj0qqc98opd.png"></p>
+<h3 class="topic">
+<a name="3c1jj6tiqqps7ghvpg2o101lh7">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="Active Directory%E6%94%BB%E5%87%BB_files/4nh05rusht2s2ou790qs53ad02.png"></p>
+<h3 class="topic">
+<a name="63rs7u8u8sshu2k6l6dohjsks4">&nbsp;&nbsp;输出同时显示TGT和TGS。 窃取TGS将使我们只能访问与那些票证相关的特定资源。 另一方面，有了TGT票证，我们可以为我们要在域内定位的特定资源请求TGS。 我们稍后将在模块中讨论如何利用被盗或伪造的票证。&#13;
+   除了这些功能之外，Mimikatz还可以将票证导出到硬盘驱动器，并将票证导入LSASS，稍后我们将进行探讨。  Mimikatz甚至可以提取与通过智能卡和PIN进行的身份验证有关的信息，从而使该工具成为真正的缓存凭证&ldquo;瑞士军刀&rdquo;！</a>
+</h3>
+<h3 class="topic">
+<a name="7841hv219nn6kjsh4i42r24iil">&nbsp;服务帐户攻击</a>
+</h3>
+<h3 class="topic">
+<a name="1gf11s5hvg367imk7spldv2ph5">&nbsp;&nbsp;回顾Kerberos协议的说明，我们知道，当用户想要访问SPN托管的资源时，客户端会请求域控制器生成的服务票证。 由于服务票证是通过SPN的密码哈希进行加密的，因此该服务票证将由应用程序服务器解密和验证。&#13;
+   从域控制器请求服务票证时，不检查用户是否具有访问由服务主体名称托管的服务的任何权限。 仅当连接到服务本身时，才将这些检查作为第二步执行。 这意味着，如果我们知道要定位的SPN，则可以向域控制器请求它的服务票证。 然后，由于它是我们自己的票证，因此我们可以从本地内存中提取票证并将其保存到磁盘。</a>
+</h3>
+<h3 class="topic">
+<a name="6fnrvd94pnbq586tquc3n1v8nd">&nbsp;&nbsp;&nbsp;在本节中，我们将滥用服务票证并尝试破解服务帐户的密码。&#13;
+   例如，我们知道域中Internet信息服务Web服务器的注册SPN是HTTP / CorpWebServer.corp.com。 在PowerShell中，我们可以使用KerberosRequestorSecurityToken类来请求服务票证。我们所需的代码段位于System.IdentityModel命名空间内，该命名空间默认情况下不会加载到PowerShell实例中。 要加载它，我们将Add-Type cmdlet与AssemblyName参数一起使用。</a>
+</h3>
+<h3 class="topic">
+<a name="65r2vpmecf1dk3ml7e0qkq2ori">&nbsp;&nbsp;&nbsp;&nbsp;我们可以通过使用ArgumentList选项指定SPN来调用KerberosRequestorSecurityToken构造函数，如图所示</a>
+</h3>
+<p class="topicImage">
+<img height="38" src="Active Directory%E6%94%BB%E5%87%BB_files/0a0dhg4a2urflvvonnn6oolqfc.png" width="490"></p>
+<h3 class="topic">
+<a name="0t0mb9itp5i1sokl453v0tfefb">&nbsp;&nbsp;执行后，请求的服务票证应由域控制器生成并加载到Windows 10客户端的内存中。 除了始终执行Mimikatz之外，我们还可以使用内置的klist（https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/klist）命令显示当前用户的所有缓存的Kerberos票证：</a>
+</h3>
+<p class="topicImage">
+<img src="Active Directory%E6%94%BB%E5%87%BB_files/7ktok63p5ppm3sq26c79gnm4d5.png"></p>
+<h3 class="topic">
+<a name="6ab1br0asn022dblee52uj7nnf">&nbsp;&nbsp;&nbsp;创建了Internet Information Services服务主体名称的服务票证并将其保存到内存中，我们可以使用内置APIs或Mimikatz从内存中下载该票证。&#13;
+  要使用Mimikatz下载服务票证，我们使用kerberos :: list命令，它产生与上面的klist命令等效的输出。 我们还指定了/ export标志以下载到磁盘</a>
+</h3>
+<p class="topicImage">
+<img src="Active Directory%E6%94%BB%E5%87%BB_files/07rbnjq6ihgb5010qvqva41nda.png"></p>
+<h3 class="topic">
+<a name="47gaq4e4b59f9rt352mfcj561t">&nbsp;&nbsp;根据Kerberos协议，使用SPN的密码哈希对服务票证进行加密。 如果我们能够请求票证并使用蛮力或猜测对其进行解密（采用称为Kerberoasting661的技术），我们将知道密码哈希，从而可以破解服务帐户的明文密码。 另外，我们不需要此攻击的管理权限。</a>
+</h3>
+<h3 class="topic">
+<a name="124sirf8rsr14gbvur5a4jrcsv">&nbsp;&nbsp;&nbsp;让我们尝试一下。 要执行单词列表攻击，我们必须首先使用apt安装kerberoast软件包，然后运行tgsrepcrack.py，提供单词列表和下载的服务票证： 请注意，服务票证文件是二进制的。 使用Netcat之类的工具进行传输时，请记住这一点，该工具可能会在传输过程中损坏它。</a>
+</h3>
+<p class="topicImage">
+<img height="83" src="Active Directory%E6%94%BB%E5%87%BB_files/2gfa3i2bq1vben8b9l1t64b7ce.png" width="481"></p>
+<h3 class="topic">
+<a name="54ipb77c2bv5to48o5kt4esusc">&nbsp;&nbsp;&nbsp;&nbsp;在此示例中，我们成功破解了服务凭单，并获得了服务帐户的明文密码。&#13;
+   如果域包含具有弱密码的高特权服务帐户，那么该技术将非常强大，这在许多组织中并不罕见。 但是，如果将托管帐户或组托管服务帐户用于特定的SPN，则密码将随机生成，复杂且长度为120个字符，因此无法进行破解。&#13;
+   尽管此示例依赖于kerberoast tgsrepcrackck.py脚本，但我们也可以使用John Ripper（https://github.com/magnumripper/JohnTheRipper/commit/05e514646dfe5aa65ee48774571c0169f7e25a53）和Hashcat（https://github.com/hashcat/hashcat/pull/225）来利用这些工具的功能和速度。</a>
+</h3>
+<h3 class="topic">
+<a name="2aam8n3691s0due80569bq7p0c">&nbsp;&nbsp;Invoke-Kerberoast.ps1（https://github.com/EmpireProject/Empire/blob/master/data/module_source/credentials/InvokeKerberoast.ps1）脚本扩展了此攻击，并且可以自动枚举域中的所有服务主体名称，为其请求服务票证，并以可用于破解Ripper和Hashcat的格式导出它们，从而完全消除了这次攻击中对于Mimikatz需要。</a>
+</h3>
+<h3 class="topic">
+<a name="153ocs1ck1g4a9hampoudqlq7i">&nbsp;低和慢速密码猜测</a>
+</h3>
+<h3 class="topic">
+<a name="08l450fkvj1a287j776r6ftlf3">&nbsp;&nbsp;在上一节中，我们研究了如何通过滥用Kerberos协议的功能来攻击服务帐户，但是Active Directory也可以为我们提供信息，从而可以针对用户帐户提供更高级的密码猜测技术。&#13;
+在执行暴力或单词列表身份验证攻击时，我们必须注意帐户锁定，因为太多的失败登录可能会阻止帐户进行进一步的攻击，并可能向系统管理员发出警报。</a>
+</h3>
+<h3 class="topic">
+<a name="3bpvr5luo3jqfsn7hsng7svgj0">&nbsp;&nbsp;&nbsp;在本节中，我们将使用LDAP和ADSI对AD用户执行&ldquo;慢速&rdquo;密码攻击，而不会触发帐户锁定。&#13;
+   首先，让我们看一下使用net accounts的域帐户政策：</a>
+</h3>
+<p class="topicImage">
+<img src="Active Directory%E6%94%BB%E5%87%BB_files/120o74sia5stbmtvu04t6ouue0.png"></p>
+<h3 class="topic">
+<a name="4ejp15l8i6paic0valhdtmfs11">&nbsp;&nbsp;&nbsp;&nbsp;这里有很多有用的信息，但让我们首先关注&ldquo;锁定阈值&rdquo;，它表示锁定前最多只能登录5次。 这意味着我们可以安全地尝试四次登录而不会触发锁定。 听起来似乎不多，但是请考虑&ldquo;锁定&rdquo;观察窗口，该窗口指示在上一次尝试登录后每隔30分钟，我们会获得一次额外的&ldquo;免费&rdquo;登录尝试。</a>
+</h3>
+<h3 class="topic">
+<a name="1aevf59li6in5o543e9sf7vo8b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过这些设置，我们可以在二十四小时内尝试对每个域用户进行52次登录，而不会触发锁定，前提是实际用户不会失败。&#13;
+   像这样的攻击将使我们能够编译出非常常用的密码的简短列表，并针对大量用户使用它，实际上，这揭示了组织中相当多的弱帐户密码。&#13;
+   知道了这一点，让我们实施这种攻击</a>
+</h3>
+<h3 class="topic">
+<a name="69m6o7bb2bt0m4ngkvfg6crr97">&nbsp;&nbsp;有多种方法可以测试AD用户登录，但是我们可以使用PowerShell脚本来演示基本组件。 在前面的部分中，我们以登录用户的身份对域控制器执行了查询。 但是，我们也可以通过设置DirectoryEntry实例在其他用户的上下文中进行查询。&#13;
+   在前面的示例中，我们使用了不带参数的DirectoryEntry构造函数，但是我们可以提供三个参数，包括域控制器的LDAP路径以及用户名和密码：</a>
+</h3>
+<p class="topicImage">
+<img height="153" src="Active Directory%E6%94%BB%E5%87%BB_files/4f6cck6273k9iio7vb6cgotd06.png" width="478"></p>
+<h3 class="topic">
+<a name="4ghma2dl0i8pf90rkidupcn9ea">&nbsp;&nbsp;&nbsp;如果用户帐户的密码正确，则对象创建将成功，</a>
+</h3>
+<p class="topicImage">
+<img height="56" src="Active Directory%E6%94%BB%E5%87%BB_files/685kphtijv913gmc4mn7vd8etd.png" width="665"></p>
+<h3 class="topic">
+<a name="3inik0idl2t8bt4ah8e298n577">&nbsp;&nbsp;&nbsp;&nbsp;如果密码无效，则不会创建任何对象，并且我们将收到异常。请注意明确的警告，指出用户名或密码不正确。</a>
+</h3>
+<p class="topicImage">
+<img height="60" src="Active Directory%E6%94%BB%E5%87%BB_files/4qf9hp4003ifjmq03jd3n92a55.png" width="470"></p>
+<h3 class="topic">
+<a name="7lpe4e5ua4q7l2q05aj4ugr9eo">&nbsp;&nbsp;通过这种方式，我们可以创建一个PowerShell脚本，该脚本枚举所有用户并根据&ldquo;锁定阈值&rdquo;和&ldquo;锁定观察&rdquo;窗口执行身份验证。&#13;
+  此攻击的现有实现名为Spray-Passwords.ps1(https://github.com/ZilentJack/Spray-Passwords/blob/master/Spray-Passwords.ps1)，位于Windows 10客户端的C：\ Tools \ active_directory文件夹中。&#13;
+  -Pass选项允许我们设置单个密码进行测试，或者我们可以使用File提交单词列表文件。 我们还可以通过添加-Admin标志来测试管理员帐户。</a>
+</h3>
+<p class="topicImage">
+<img height="196" src="Active Directory%E6%94%BB%E5%87%BB_files/340b11peut7k7u5cee4d0pu8o4.png" width="466"></p>
+<h3 class="topic">
+<a name="1ob86fo1ml0e3j4jcu87qd8d74">&nbsp;&nbsp;&nbsp;这个简单的示例会产生快速的结果，但是通常，我们需要使用带有良好密码候选的单词表。&#13;
+  现在，我们发现了在攻击Active Directory及其身份验证协议时获取用户帐户和服务帐户凭据的方法。 接下来，我们可以开始利用它来破坏域中的其他计算机，理想情况下是具有高价值登录用户的计算机。</a>
+</h3>
+<h2 class="topic">
+<a name="1coqd01c0fo5vclqmosfe7spga">Active Directory横向移动</a>
+</h2>
+<h3 class="topic">
+<a name="77691cco6mgnc8v2nhd38mepjo">&nbsp;在前面的部分中，我们定位了可能导致Active Directory受到全面破坏的高价值目标，并发现了这些目标已登录到的工作站或服务器。 我们收集了密码哈希，恢复了现有的票证，并将其用于Kerberos身份验证。&#13;
+   接下来，我们将使用横向移动来破坏已登录我们高价值目标的机器。</a>
+</h3>
+<h3 class="topic">
+<a name="05ubbp0navhja1qkve77kh6t9r">&nbsp;&nbsp;我们的方法的下一步是将我们获得的所有密码散列进行破解，并使用明文密码对计算机进行身份验证，以获得未经授权的访问。 但是，密码破解需要时间，并且可能会失败。 此外，Kerberos和NTLM不会直接使用明文密码，并且Microsoft的本机工具不支持使用密码哈希进行身份验证。&#13;
+  在下一节中，我们将探讨一种替代的横向移动技术，该技术将使我们能够通过仅对用户的哈希或Kerberos票证进行系统身份验证并执行代码。</a>
+</h3>
+<h3 class="topic">
+<a name="12e8nb84rmpdieut1mosivvfec">&nbsp;通过哈希值进行身份验证</a>
+</h3>
+<h3 class="topic">
+<a name="2rjnbtsgqrtia7m7lk695i8ou7">&nbsp;&nbsp;通过散列（PtH）技术使攻击者可以使用用户的NTLM散列而不是关联的纯文本密码对远程系统或服务进行身份验证。 请注意，这不适用于Kerberos身份验证，仅适用于使用NTLM身份验证的服务器或服务。</a>
+</h3>
+<h3 class="topic">
+<a name="244colftioam1m779mopgu0mrb">&nbsp;&nbsp;&nbsp;  许多第三方工具和框架都使用PtH来允许用户进行身份验证并获得代码执行，包括Metasploit的PsExec，（https://www.offensive-security.com/metasploit-unleashed/psexec-pass-hash/）的哈希传递工具包（https://github.com/byt3bl33d3r/pth-toolkit）和Impacket（https://github.com/CoreSecurity/impacket/blob/master/examples/smbclient.py）。它们背后的机制或多或少都相同 攻击者使用服务器消息块（SMB）协议连接到受害者，并使用NTLM哈希执行身份验证。</a>
+</h3>
+<h3 class="topic">
+<a name="60mth1civpqfndeivtksfuj26r">&nbsp;&nbsp;&nbsp;&nbsp;执行连接时，它通常使用称为Admin $的特殊管理共享。 为了建立与此共享的连接，攻击者必须提供具有本地管理权限的有效凭据。 换句话说，这种横向移动通常需要本地管理权限。</a>
+</h3>
+<h3 class="topic">
+<a name="74kntkp93qgroa6ppphm87tqs0">&nbsp;&nbsp;请注意，PtH合法使用NTLM哈希。 但是，该漏洞在于我们未经授权访问了本地管理员的密码哈希。&#13;
+  为了证明这一点，我们可以使用Passing-The-Hash工具包中的pth-winexe，就像我们在密码攻击模块中将哈希传递给非域加入的用户时一样： </a>
+</h3>
+<p class="topicImage">
+<img height="100" src="Active Directory%E6%94%BB%E5%87%BB_files/6g9gj5kptuuk2nr4una9s2v2f2.png" width="512"></p>
+<h3 class="topic">
+<a name="1feecc3h84a8h06mpgtm5f17nv">&nbsp;&nbsp;&nbsp;在这种情况下，我们使用NTLM身份验证直接从我们的Kali Linux（仅使用用户的NTLM哈希）实现了Windows 10客户端上获取代码执行。&#13;
+   此方法适用于Active Directory域帐户和内置的本地管理员帐户。 自2014年安全更新以来，该技术不能用作其他任何本地管理员帐户的身份验证。</a>
+</h3>
+<h3 class="topic">
+<a name="421efo7ak0436kqm3b8plhs6fk">&nbsp;绕过哈希进行身份验证</a>
+</h3>
+<h3 class="topic">
+<a name="5kp2trp64uvabj34omc0jpbkac">&nbsp;&nbsp;通过使用越过哈希，673，我们可以&ldquo;过度&rdquo;滥用NTLM用户哈希来获得完整的Kerberos票证授予票证（TGT）或服务票证，从而使我们能够以该用户身份访问另一台机器或服务。&#13;
+   为了说明这一点，假设我们已经破坏了Jeff_Admin用户已通过身份验证的工作站（或服务器），并且该计算机现在正在缓存其凭据（并因此缓存其NTLM密码）。&#13;
+   为了模拟此缓存的凭据，我们将以Offsec用户身份登录Windows 10计算机，并以Jeff_Admin身份运行进程，以提示身份验证。</a>
+</h3>
+<h3 class="topic">
+<a name="2qfpti48jagg7qhe649jgkfeoq">&nbsp;&nbsp;&nbsp;最简单的方法是右键单击任务栏上的&ldquo;记事本&rdquo;图标，然后右移鼠标右键单击弹出窗口上的&ldquo;记事本&rdquo;图标，从而产生图中的选项。</a>
+</h3>
+<p class="topicImage">
+<img height="309" src="Active Directory%E6%94%BB%E5%87%BB_files/6km472pm7f6vd7lcg6qa0qdotb.png" width="322"></p>
+<h3 class="topic">
+<a name="079qfni5i0b0jjgo7iairnj4fs">&nbsp;&nbsp;&nbsp;&nbsp;在这里，我们可以选择&ldquo;以其他用户身份运行&rdquo;，然后输入&ldquo; jeff_admin&rdquo;作为用户名以及相关的密码，这将在该用户的上下文中启动记事本。 身份验证成功后，Jeff_Admin的凭据将被缓存在此计算机上。</a>
+</h3>
+<h3 class="topic">
+<a name="5q3gim5qomga1qvblqceh0287k">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;我们可以使用mimikatz的sekurlsa :: logonpasswords命令对此进行验证，该命令将转储缓存的密码哈希。</a>
+</h3>
+<p class="topicImage">
+<img src="Active Directory%E6%94%BB%E5%87%BB_files/10puvao7rrn40q5p09flq5cipl.png"></p>
+<h3 class="topic">
+<a name="5r7ijjffqj21sr1etja7ve43hk">&nbsp;&nbsp;此输出显示Jeff_Admin的缓存凭据，包括NTLM哈希，我们将利用该凭据来超过哈希。&#13;
+  超越哈希技术的本质是将NTLM哈希转换为Kerberos票证，并避免使用NTLM身份验证。 一种简单的方法是使用Mimikatz的sekurlsa :: pth命令。&#13;
+  该命令需要一些参数，并在Jeff_Admin用户的上下文中创建一个新的PowerShell进程。 这个新的PowerShell提示将使我们无需通过网络执行NTLM身份验证即可获取Kerberos票证，从而使这种攻击不同于传统的哈希传递。</a>
+</h3>
+<h3 class="topic">
+<a name="6u9cho19o1rfu5h1il56uv3trt">&nbsp;&nbsp;&nbsp;作为第一个参数，我们指定/ user：和/ domain：，分别将它们设置为jeff_admin和corp.com。 我们将使用/ ntlm：指定NTLM哈希，最后使用/ run：指定要创建的过程（在本例中为PowerShell）。</a>
+</h3>
+<p class="topicImage">
+<img src="Active Directory%E6%94%BB%E5%87%BB_files/1ul1n76r0vaj39fcp24tfjc1us.png"></p>
+<h3 class="topic">
+<a name="1uv4pgpon0viaoklechhv3tcv5">&nbsp;&nbsp;&nbsp;&nbsp;至此，我们有了一个新的PowerShell会话，该会话允许我们以Jeff_Admin的身份执行命令。&#13;
+   让我们用klist列出缓存的Kerberos票证：</a>
+</h3>
+<p class="topicImage">
+<img src="Active Directory%E6%94%BB%E5%87%BB_files/178c76ccd0vmosnco8m5fei7bu.png"></p>
+<h3 class="topic">
+<a name="63lfr0hb4fabv9k0k31m8iut6a">&nbsp;&nbsp;还没有缓存Kerberos票证，但这是可以预期的，因为Jeff_Admin没有执行交互式登录。 但是，让我们通过执行net use，在域控制器上的网络共享进行身份验证来生成TGT：</a>
+</h3>
+<h3 class="topic">
+<a name="1ecdu6e0eujplj22j78ashd524">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="Active Directory%E6%94%BB%E5%87%BB_files/7es8fvbttgt0au4vumcsvlfc77.png"></p>
+<h3 class="topic">
+<a name="5sa9h90rrm031eag8jloor8smb">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="Active Directory%E6%94%BB%E5%87%BB_files/6qaeu24pg5n9gl251o9iea06qf.png"></p>
+<h3 class="topic">
+<a name="5pt2rklrtl1hr8ml14rcct58ui">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;输出表明net use命令成功。 然后，我们使用klist命令列出新请求的Kerberos票证，其中包括TGT和CIFS服务的TGS。&#13;
+在此示例中，我们随意使用了&ldquo; net use&rdquo;，但是我们可以使用任何需要域权限并随后创建TGS的命令。</a>
+</h3>
+<h3 class="topic">
+<a name="05q4q4fjqo3sa7hbmuloim5i3u">&nbsp;&nbsp;现在，我们已经将NTLM哈希转换为Kerberos TGT，从而使我们能够使用任何依赖Kerberos身份验证的工具（而不是NTLM），例如Microsoft的官方PsExec应用程序（https://docs.microsoft.com/zh-cn/sysinternals/downloads/psexec）。PsExec可以远程运行命令，但不接受密码 哈希。 由于我们已生成Kerberos票证并在PowerShell会话中的Jeff_Admin上下文中进行操作，因此我们可以重用TGT来在域控制器上获取代码执行。&#13;
+  现在尝试一下，运行./PsExec.exe以Jeff_Admin身份在\ dc01计算机上远程启动cmd.exe： </a>
+</h3>
+<p class="topicImage">
+<img src="Active Directory%E6%94%BB%E5%87%BB_files/7shcos3j7ll26sb92os7kgo9rl.png"></p>
+<h3 class="topic">
+<a name="2fp69r6qhueu8m50v7sadrmuol">&nbsp;&nbsp;&nbsp;输出显示，我们已成功重用Kerberos TGT在域控制器上启动命令外壳程序。&#13;
+  优秀的！ 我们已经成功地将缓存的NTLM密码哈希升级到Kerberos TGT，并利用它来执行远程代码。</a>
+</h3>
+<h3 class="topic">
+<a name="3pkntrdandp1s3ifqfafmgj2uu">&nbsp;通过票据进行身份验证</a>
+</h3>
+<h3 class="topic">
+<a name="1s6epfjdajmnrak9dbbmorebj3">&nbsp;&nbsp;在上一节中，我们使用了超越哈希技术（以及捕获的NTLM哈希）来获取Kerberos TGT，从而使我们能够使用Kerberos进行身份验证。 我们只能在为其创建机器的机器上使用TGT，但是TGS可能会提供更大的灵活性。&#13;
+   票证攻击利用了TGS，可以将TGS导出并重新注入到网络上的其他位置，然后用于对特定服务进行身份验证。 此外，如果服务票证属于当前用户，则不需要管理特权。&#13;
+   到目前为止，此攻击并没有为我们提供任何其他访问权限，但确实可以灵活地选择要使用票证的计算机。 但是，如果使用服务主体名称注册了服务，则这种情况将变得更加有趣。</a>
+</h3>
+<h3 class="topic">
+<a name="707bj36pe2grtmtvlsv5jjg9n6">&nbsp;&nbsp;&nbsp;之前，我们证明了可以破解服务帐户密码哈希并从服务票证中获取密码。 然后可以使用该密码来访问服务帐户可用的资源。&#13;
+  但是，如果服务帐户不是任何服务器上的本地管理员，我们将无法使用矢量进行横向移动，例如传递哈希值或超越哈希值，因此，在这些情况下，我们将需要使用其他方法 。&#13;
+与&ldquo;传递哈希&rdquo;一样，&ldquo;跨越哈希&rdquo;还需要访问名为Admin $的特殊管理共享，而这又需要目标计算机上的本地管理权限。</a>
+</h3>
+<h3 class="topic">
+<a name="7tm249srevfa4sgevrv5qs77r5">&nbsp;&nbsp;&nbsp;&nbsp;记住Kerberos身份验证的内部工作原理，在服务帐户上下文中执行的服务器上的应用程序会根据服务票证中包含的组成员身份检查用户的权限。 但是，应用程序未验证服务票证中的用户和组权限。 该应用程序盲目地信任服务票证的完整性，因为它是用密码哈希（理论上仅由服务帐户和域控制器知道）加密的。&#13;
+   例如，如果我们对在服务帐户iis_service上下文中执行的IIS服务器进行身份验证，则IIS应用程序将根据服务票证中存在的组成员身份来确定我们对IIS服务器具有的权限。</a>
+</h3>
+<h3 class="topic">
+<a name="6fep2284ecnmt8nua07r1te3gp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;但是，有了服务帐户密码或其相关联的NTLM哈希，我们可以伪造自己的服务票证以所需的任何权限访问目标资源（在本例中为IIS应用程序）。 此定制创建的凭单被称为白银凭单（https://adsecurity.org/?p=2011），如果在多个服务器上使用了服务主体名称，则可以对所有白银利用银凭单。&#13;
+   Mimikatz可以制作一张银票，并通过kerberos :: golden命令（有些误导）将其直接注入内存。 我们稍后将在模块中解释这种明显的错误命名。&#13;
+   要创建票证，我们首先需要获取域的所谓的安全标识符或SID。  SID是Active Directory中任何对象的唯一名称，并具有以下结构：</a>
+</h3>
+<p class="topicImage">
+<img src="Active Directory%E6%94%BB%E5%87%BB_files/3qno83ie3613kbhh3cs61u6v29.png"></p>
+<h3 class="topic">
+<a name="4icqs1m61th02e140b2umu8apv">&nbsp;&nbsp;在此结构中，SID以文字&ldquo; S&rdquo;开头，以将字符串标识为SID，然后是修订级别（通常设置为&ldquo; 1&rdquo;），标识符授权值（在AD中通常为&ldquo; 5&rdquo;）和一个 或更多子权限值。&#13;
+   例如，实际的SID可能如下所示：</a>
+</h3>
+<p class="topicImage">
+<img height="27" src="Active Directory%E6%94%BB%E5%87%BB_files/7b9psl8vg9g9l15rgklk9jq647.png" width="469"></p>
+<h3 class="topic">
+<a name="6ujfhp4cj7jmuk9318nmgcaf10">&nbsp;&nbsp;&nbsp;第一个值（&ldquo; S-1-5&rdquo;）在AD中是相当静态的。 子权限值是动态的，由两个主要部分组成：域的数字标识符（在本例中为&ldquo; 21-25366144053629634762-1218571035&rdquo;）和代表域中特定对象的相对标识符或RID（在本例中为&ldquo; 1116&rdquo;）。&#13;
+  域值和相对标识符的组合有助于确保每个SID都是唯一的。</a>
+</h3>
+<h3 class="topic">
+<a name="0e28kbsuv40nqvnrq7mj6vtclk">&nbsp;&nbsp;&nbsp;&nbsp;我们可以使用whoami / user命令轻松获取当前用户的SID，然后从中提取域SID部分。 让我们尝试在Windows 10客户端上执行此操作：&#13;
+如突出显示的那样，定义域的SID是整个字符串，但末尾（-1103）的RID除外</a>
+</h3>
+<p class="topicImage">
+<img height="129" src="Active Directory%E6%94%BB%E5%87%BB_files/7t3l3of8q6fv6tfttkogebqtee.png" width="440"></p>
+<h3 class="topic">
+<a name="39c167htfekp82pan338tt12m9">&nbsp;&nbsp;现在我们有了域SID，让我们尝试为以前在专用实验室域中发现的IIS服务制作一张银票。&#13;
+  silver ticket命令需要用户名（/ user），域名（/ domain），域SID（/ sid）（上面突出显示），服务的全限定主机名（/ target），服务类型（/  service：HTTP），以及iis_service服务帐户（/ rc4）的密码哈希。&#13;
+     最后，将生成的白银票证与/ ppt标志一起直接注入到内存中。&#13;
+在运行此程序之前，我们将使用kerberos :: purge刷新所有现有的Kerberos票证，并使用kerberos :: list验证清除操作：</a>
+</h3>
+<p class="topicImage">
+<img src="Active Directory%E6%94%BB%E5%87%BB_files/5unolvubbc74mammf377adb4k1.png"></p>
+<h3 class="topic">
+<a name="3ksnv0jdkgiu6r9tu49aqnoq44">&nbsp;&nbsp;&nbsp;如清单709中的输出所示，已将SPN HTTP / CorpWebServer.corp.com的新服务票证加载到内存中，并且Mimikatz在伪造票证中设置了适当的组成员身份权限。 从IIS应用程序的角度来看，当前用户将既是内置的本地管理员（相对ID：500）又是多个高度特权组的成员，其中包括Domain Admins组（如上所述）。</a>
+</h3>
+<h3 class="topic">
+<a name="3ufichc3eb62qo4rpp7hqnvh7b">&nbsp;&nbsp;&nbsp;&nbsp;要创建银票，我们使用密码哈希而不是明文密码。 如果一个kerberoast会话向我们提供了明文密码，我们必须在使用它生成银票之前对其进行哈希处理。现在，我们已将此票证加载到内存中，我们可以与服务进行交互并基于放入银票证中的组成员身份访问任何信息。 根据服务的类型，也可能会获得代码执行。</a>
+</h3>
+<h3 class="topic">
+<a name="7tqbft0blvjgdjnv17ibm1f4oi">&nbsp;分布式组件对象模型</a>
+</h3>
+<h3 class="topic">
+<a name="2fobdbl6s4u4l7t6ia8krlf75u">&nbsp;&nbsp;在本节中，我们将仔细研究一种利用分布式组件对象模型（DCOM）的相当新的横向移动技术。（https://msdn.microsoft.com/zh-CN/library/cc226801.aspx）&#13;
+值得一提的还有其他两种著名的横向移动技术：滥用Windows Management Instrumentation（https://www.blackhat.com/docs/us-15/materials/us-15-Graeber-Abusing-Windows-ManagementInstrumentation-WMI-To-Build-A-Persistent%20Asynchronous-And-Fileless-Backdoor-wp.pdf）和称为PowerShell Remoting（https://msdn.microsoft.com/zh-CN/library/aa384426(v=vs.85).aspx）.的技术。尽管我们在这里不详细介绍这些方法，但它们各有优缺点，并且在PowerShell和Python.中有多种实现方式 </a>
+</h3>
+<h3 class="topic">
+<a name="38lvrv15t64n057p7ld7mn3gd5">&nbsp;&nbsp;&nbsp;-滥用Windows Management Instrumentation：&#13;
+https://www.blackhat.com/docs/us-15/materials/us-15-Graeber-Abusing-Windows-ManagementInstrumentation-WMI-To-Build-A-Persistent%20Asynchronous-And-Fileless-Backdoor-wp.pdf）&#13;
+&#13;
+-PowerShell Remoting：&#13;
+https://msdn.microsoft.com/zh-CN/library/aa384426(v=vs.85).aspx</a>
+</h3>
+<h3 class="topic">
+<a name="1r8d7f8m4vte3hvtorpfjtgb1g">&nbsp;&nbsp;&nbsp;&nbsp;Microsoft组件对象模型（COM）是用于创建相互交互的软件组件的系统。 创建COM时，它是用于同一进程或跨进程的交互，但它已扩展到分布式组件对象模型（DCOM），以便通过网络在多台计算机之间进行交互。&#13;
+   COM和DCOM都是非常古老的技术，其历史可以追溯到Windows的第一版。与DCOM的交互是通过RPC在TCP端口135上进行的，并且要求本地管理员访问才能调用DCOM服务控制管理器，该管理器本质上是一个API。&#13;
+   与Microsoft Office相关的DCOM对象可以通过使用Outlook和PowerPoint进行横向移动。由于这要求目标计算机上存在Microsoft Office，因此，这种横向移动技术最好用于工作站。 但是，在我们的案例中，我们将在实验室中针对已安装Office的专用域控制器演示这种攻击。 具体来说，我们将利用Excel.Application DCOM对象。</a>
+</h3>
+<h3 class="topic">
+<a name="6sl76on2up6kpcubmv955gtfcg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在利用Microsoft Office之前，我们必须在Windows 10学生VM和域控制器上都安装它。 安装程序位于C：\ tools \ client_side_attacks \ Office2016.img，该过程与&ldquo;客户端攻击&rdquo;模块中执行的过程相同。&#13;
+   首先，我们必须首先使用PowerShell查找该DCOM对象的可用方法或子对象。 对于此示例，我们从Windows 10客户端以jeff_admin用户（远程计算机上的本地管理员）进行操作。&#13;
+   在此示例代码中，我们首先使用PowerShell和System.Activator类的CreateInstance方法创建对象的实例。</a>
+</h3>
+<h3 class="topic">
+<a name="1fg29vafr0lnaaf7n0esuch6m9">&nbsp;&nbsp;作为CreateInstance的参数，我们必须使用GetTypeFromProgID方法指定程序标识符（在本例中为Excel.Application）以及远程工作站的IP地址，以提供其类型。&#13;
+  实例化对象之后，我们可以使用GetMember cmdlet.发现其可用方法和对象。&#13;
+该脚本产生以下截断的输出：</a>
+</h3>
+<p class="topicImage">
+<img src="Active Directory%E6%94%BB%E5%87%BB_files/3fcasffogerm3ottr3nuo7q2ri.png"></p>
+<h3 class="topic">
+<a name="6e1d81ivgf845cebbd7rl0agdm">&nbsp;&nbsp;&nbsp;输出包含许多方法和对象，但我们将重点介绍Run方法，该方法将使我们能够远程执行Visual Basic for Applications（VBA）宏。&#13;
+   要使用此功能，我们将首先通过选择VIEW功能区并在Excel中单击&ldquo;宏&rdquo;来创建带有概念证明宏的Excel文档。&#13;
+   在这个简单的概念证明中，我们将使用VBA宏启动notepad.exe：</a>
+</h3>
+<p class="topicImage">
+<img src="Active Directory%E6%94%BB%E5%87%BB_files/0lirq6bcoarp07hjehcu7155d0.png"></p>
+<h3 class="topic">
+<a name="71o15mt1u96fg17lppoj443ihs">&nbsp;&nbsp;&nbsp;&nbsp;我们将宏命名为&ldquo; mymacro&rdquo;，并将Excel文件保存为旧版.xls格式。&#13;
+   若要执行宏，我们必须首先将Excel文档复制到远程计算机。 由于我们必须是本地管理员才能利用DCOM，因此我们也应该可以通过SMB访问远程文件系统。</a>
+</h3>
+<h3 class="topic">
+<a name="0p044otica63jv8pak4ksb7uks">&nbsp;&nbsp;我们可以使用.NET System.IO.File类的Copy method复制文件。 要调用它，我们指定源文件，目标文件和一个标志，以指示是否应覆盖目标文件（如果存在），如下面的PowerShell代码所示：</a>
+</h3>
+<p class="topicImage">
+<img height="94" src="Active Directory%E6%94%BB%E5%87%BB_files/21h8scquskmvap0htlbq49k6e7.png" width="479"></p>
+<h3 class="topic">
+<a name="4a8s83mn2q91l05duq21sun0h0">&nbsp;&nbsp;&nbsp;在我们能够对宏执行Run方法之前，我们必须首先指定包含在Excel文档中的文档。这是通过Workbooks对象的Open方法完成的，该方法也可以通过DCOM获得，如以下枚举所示。 方法和对象：</a>
+</h3>
+<p class="topicImage">
+<img height="136" src="Active Directory%E6%94%BB%E5%87%BB_files/007gcgnqmdamtujt7cm9lr0652.png" width="457"></p>
+<h3 class="topic">
+<a name="21mo2h092ciglj3pqldjb29m4f">&nbsp;&nbsp;&nbsp;&nbsp;Workbooks对象是从我们先前创建的$ com COM句柄创建的，以执行枚举。&#13;
+   我们可以使用以下代码直接调用Open方法：</a>
+</h3>
+<p class="topicImage">
+<img height="28" src="Active Directory%E6%94%BB%E5%87%BB_files/077n8q3sdneh1otosq525ogusq.png" width="486"></p>
+<h3 class="topic">
+<a name="1ukreeavb0vkbndo7egvie8qk9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;但是，此代码与远程计算机进行交互时会导致错误：</a>
+</h3>
+<p class="topicImage">
+<img src="Active Directory%E6%94%BB%E5%87%BB_files/7k8lcbdrmfp4pohtsa2u50lh44.png"></p>
+<h3 class="topic">
+<a name="7sq8kitrgj7b6q6rs10dbeesrg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;出现此错误的原因是，通过DCOM实例化Excel.Application时，是使用SYSTEM帐户完成的。SYSTEM帐户没有配置文件，该配置文件在打开过程中会被使用。 要解决此问题，我们可以简单地在C：\ Windows \ SysWOW64 \ config \ systemprofile中创建Desktop文件夹，该文件夹满足此配置文件要求。&#13;
+   我们可以使用以下PowerShell代码创建此目录：</a>
+</h3>
+<p class="topicImage">
+<img height="42" src="Active Directory%E6%94%BB%E5%87%BB_files/7hos99bk0qskh12hcnbha7v6o7.png" width="510"></p>
+<h3 class="topic">
+<a name="2fcs3rh0d8tusg1f95lj9i36r1">&nbsp;&nbsp;创建了SYSTEM帐户的配置文件文件夹后，我们可以尝试再次调用Open方法，该方法现在应该成功并打开Excel文档。&#13;
+   现在已经打开了文档，我们可以使用以下完整的PowerShell脚本调用Run方法：</a>
+</h3>
+<p class="topicImage">
+<img src="Active Directory%E6%94%BB%E5%87%BB_files/46rvpapkjik6enchk2glg51ssd.png"></p>
+<h3 class="topic">
+<a name="70fd0aiodb7bvbfv5234fr0p45">&nbsp;&nbsp;&nbsp;此代码应打开记事本应用程序，作为在远程计算机上以高完整性上下文执行的后台进程</a>
+</h3>
+<p class="topicImage">
+<img src="Active Directory%E6%94%BB%E5%87%BB_files/6hvcogobipgesp3k8ht9dl914m.png"></p>
+<h3 class="topic">
+<a name="29ihbrvf2k5d61msmkuiaha8c2">&nbsp;&nbsp;&nbsp;&nbsp;尽管创建远程记事本应用程序很有趣，但我们需要升级此攻击以启动反向Shell。 由于我们使用的是Office文档，因此我们可以简单地重用上一个模块中介绍的Microsoft Word客户端代码执行技术。&#13;
+  为此，我们将使用msfvenom来为HTA攻击创建有效负载，因为它包含要与PowerShell一起使用的Base64编码的有效负载： </a>
+</h3>
+<p class="topicImage">
+<img src="Active Directory%E6%94%BB%E5%87%BB_files/79pgj06ahqi2mt1qqv8na4eng0.png"></p>
+<h3 class="topic">
+<a name="37ub08judccm0lh06rbd4u4c2r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;请注意，我们使用Windows 10客户端第二个网络接口的IP地址，以便域控制器可以回调到我们的Netcat侦听器。&#13;
+   接下来，我们提取以&ldquo; powershell.exe -nop -w hidden -e&rdquo;开头的行，然后提取Base64编码的有效负载，并使用清单720中的简单Python脚本将命令拆分为较小的块，从而绕过Excel宏中文字字符串的大小限制 ：</a>
+</h3>
+<p class="topicImage">
+<img height="96" src="Active Directory%E6%94%BB%E5%87%BB_files/2tfv7mn5n18skm7nhtn60br55u.png" width="492"></p>
+<h3 class="topic">
+<a name="1ksovfdlh4a8lpc2ddlkh5738s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;现在，我们将更新Excel宏以执行PowerShell，而不是记事本，并重复操作以将其上传到域控制器并执行。</a>
+</h3>
+<p class="topicImage">
+<img src="Active Directory%E6%94%BB%E5%87%BB_files/3unq8gr4fkanm9cbt6sbuuv4pg.png"></p>
+<h3 class="topic">
+<a name="4e7h7k5r10q4p0t58ppdufnimo">&nbsp;&nbsp; 在执行宏之前，我们将在Windows 10客户端上启动Netcat侦听器，以接受来自域控制器的反向命令Shell：</a>
+</h3>
+<p class="topicImage">
+<img src="Active Directory%E6%94%BB%E5%87%BB_files/07jlha1nuivqnr2bmq20hkto7q.png"></p>
+<h3 class="topic">
+<a name="72jh793njode44csm3grq4qh05">&nbsp;&nbsp;&nbsp;虽然攻击需要访问DCOM的TCP 135和SMB的TCP 445，但这是横向移动的相对较新的媒介，可以避免触发某些检测系统，例如网络入侵检测或基于主机的防病毒软件。</a>
+</h3>
+<h2 class="topic">
+<a name="00a89g5aja91gkm3nlv24dhb33">Active Directory持久性</a>
+</h2>
+<h3 class="topic">
+<a name="5dbjuquntacq5cp96onrsjsb83">&nbsp;一旦获得访问权并实现了参与的主要目标，我们的下一个目标就是获得持久性，确保我们不会失去对受感染机器的访问权。&#13;
+  我们可以在AD环境中使用传统的持久性方法，但也可以获取特定于AD的持久性。 请注意，在许多现实世界的渗透测试或红队参与中，持久性不属于范围之内，因为一旦评估完成，存在不完全清除的风险。</a>
+</h3>
+<h3 class="topic">
+<a name="6barc76knpictoo7aalu7comvu">&nbsp;金票据</a>
+</h3>
+<h3 class="topic">
+<a name="52dr9rhfpk9it1od4bs2ag471c">&nbsp;&nbsp;回到Kerberos身份验证的解释中，我们回想起当用户提交TGT请求时，KDC用仅域中KDC已知的密钥对TGT进行加密。 此秘密密钥实际上是称为krbtgt.的域用户帐户的密码哈希。如果我们能够使用krbtgt密码哈希，则可以创建我们自己制作的自定义TGT或金票。&#13;
+  例如，我们可以创建一个TGT来声明非特权用户实际上是Domain Admins组的成员，并且域控制器会信任它，因为它已正确加密。</a>
+</h3>
+<h3 class="topic">
+<a name="4rpd6qln4j95qe2kvsg8kiv6iu">&nbsp;&nbsp;&nbsp;我们必须小心保护被盗的krbtgt密码哈希，因为它会授予无限的域访问权限。 在执行此技术之前，请考虑获得客户的许可。</a>
+</h3>
+<h3 class="topic">
+<a name="35i6uudn42vn55c2diupjlljt1">&nbsp;&nbsp;&nbsp;&nbsp;这提供了一种在Active Directory环境中保持持久性的巧妙方法，但是最大的好处是不会自动更改krbtgt帐户密码。&#13;
+  实际上，仅在将域功能级别从Windows 2003升级到Windows 2008时才更改此密码。因此，找到非常旧的krbtgt密码哈希并不少见。&#13;
+  域功能级别指示域的功能，并确定可以在域控制器上运行哪些Windows操作系统。 较高的功能级别可启用其他功能和安全缓解措施。</a>
+</h3>
+<h3 class="topic">
+<a name="26tgjivap8usu3ntj8621v9taj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;为了测试这种持久性技术，我们首先将尝试以Offsec用户的身份通过PsExec从Windows 10工作站横向移动到域控制器。&#13;
+   这应该失败，因为我们没有适当的权限：</a>
+</h3>
+<p class="topicImage">
+<img src="Active Directory%E6%94%BB%E5%87%BB_files/3l3r6oisu3rdjekuoehrcamtbf.png"></p>
+<h3 class="topic">
+<a name="1u8bk8vd6etl02dpalbd3cgm39">&nbsp;&nbsp;在参与的这一阶段，我们应该有权访问作为Domain Admins组成员的帐户，或者我们已经损害了域控制器本身。&#13;
+   通过这种访问，我们可以使用Mimikatz提取krbtgt帐户的密码哈希。&#13;
+   为了模拟这种情况，我们将使用jeff_admin帐户通过远程桌面登录域控制器，从C：文件夹运行Mimikatz，然后发出lsadump :: lsa命令，如下所示</a>
+</h3>
+<p class="topicImage">
+<img src="Active Directory%E6%94%BB%E5%87%BB_files/20mifa3dhch61miguuqlgi1223.png"></p>
+<h3 class="topic">
+<a name="09afbdajm24pc0c55e9q0dtdma">&nbsp;&nbsp;&nbsp;创建黄金票证并将其注入内存不需要任何管理权限，甚至可以在未加入域的计算机上执行。 我们将进行哈希处理并在受到感染的工作站上继续进行操作。&#13;
+   在生成黄金票证之前，我们将使用kerberos :: purge删除所有现有的Kerberos票证。&#13;
+   我们将向Mimikatz kerberos :: golden命令提供域SID（我们可以通过whoami / user收集），以创建黄金票据。 这次，我们将使用/ krbtgt选项而不是/ rc4来表示我们正在提供密码哈希。 我们会将黄金票的用户名设置为fakeuser。 之所以允许这样做，是因为域控制器信任由krbtgt密码哈希正确加密的任何内容。</a>
+</h3>
+<p class="topicImage">
+<img src="Active Directory%E6%94%BB%E5%87%BB_files/7icjfp0tsler57pj1ivqt8fd5s.png"></p>
+<h3 class="topic">
+<a name="1i0u84r41umpphvg4amvdfv9oi">&nbsp;&nbsp;&nbsp;&nbsp;当使用黄金票证选项时，Mimikatz提供了两组默认值，即用户ID和组ID。 默认情况下，用户ID设置为500，这是域的内置管理员的RID，而组ID的值则包含Active Directory中最特权的组，包括Domain Admins组。</a>
+</h3>
+<h3 class="topic">
+<a name="6hmkldac1t5i2sud0ma6rjb612">&nbsp;&nbsp;将金票插入内存后，我们可以使用misc :: cmd启动新的命令提示符，然后再次尝试使用PsExec横向移动。</a>
+</h3>
+<p class="topicImage">
+<img src="Active Directory%E6%94%BB%E5%87%BB_files/70b2cnc0q819pskbebdhhst13f.png"></p>
+<h3 class="topic">
+<a name="2edfi1edt7o90tl8bu16dcln28">&nbsp;&nbsp;&nbsp;我们在域控制器上有一个交互式命令提示符，并注意到whoami命令将我们报告为用户fakeuser，该用户在域中不存在。 列出组成员身份表明我们是多个强大组的成员，其中包括Domain Admins组。&#13;
+如果事件处理程序正在查看访问日志，则使用不存在的用户名可能会警告事件处理程序。 为了减少怀疑，请考虑使用现有系统管理员的名称和ID。</a>
+</h3>
+<h3 class="topic">
+<a name="2k29g09chul346gj9uqlmqjp90">&nbsp;&nbsp;&nbsp;&nbsp;请注意，通过创建自己的TGT，然后使用PsExec，我们将利用Kerberos身份验证来执行绕过哈希攻击。 如果我们要使用PsExec连接到域控制器的IP地址而不是主机名，则将强制使用NTLM身份验证，并且访问仍将被阻止，如下面的清单所示。</a>
+</h3>
+<p class="topicImage">
+<img src="Active Directory%E6%94%BB%E5%87%BB_files/24an46s4pvf728v4k2luh7nmfl.png"></p>
+<h3 class="topic">
+<a name="67om7rrtq8lsmqhcljqd0rpqt7">&nbsp;域控制器同步</a>
+</h3>
+<h3 class="topic">
+<a name="1i68587biqpmsp87tq4nkhg6vt">&nbsp;&nbsp;在Active Directory基础结构中实现持久性的另一种方法是窃取域中所有管理用户的密码哈希。&#13;
+  为此，我们可以横向移动到域控制器并运行Mimikatz来转储每个用户的密码哈希。 我们还可以窃取NTDS.dit数据库文件的副本，该文件是存储在硬盘驱动器上的所有Active Directory帐户的副本，类似于用于本地帐户的SAM数据库。&#13;
+  虽然这些方法可能效果很好，但它们留下了访问线索，并可能需要我们上载工具。 一种替代方法是滥用AD功能本身以从工作站远程捕获哈希 </a>
+</h3>
+<h3 class="topic">
+<a name="15406rioikrtkskov8eomvep99">&nbsp;&nbsp;&nbsp;在生产环境中，域通常具有多个域控制器以提供冗余。 目录复制服务远程协议使用Replication来同步这些冗余域控制器。 域控制器可以使用IDL_DRSGetNCChangesAPI请求更新特定对象（例如帐户）。&#13;
+   对我们来说幸运的是，接收到更新请求的域控制器不会验证该请求是否来自已知的域控制器，而不会验证关联的SID具有适当的特权。 如果我们尝试从Domain Admins组的成员用户向域控制器发出恶意更新请求，它将成功。&#13;
+   在下一个示例中，我们将以jeff_admin身份登录Windows 10客户端，以模拟对域管理员帐户的破坏并执行复制。</a>
+</h3>
+<h3 class="topic">
+<a name="5almqjgaepapre5vivi7u6go6o">&nbsp;&nbsp;&nbsp;&nbsp;我们将打开Mimikatz，并使用带有/ user选项的lsadump :: dcsync来开始复制，以指示要同步的目标用户，在这种情况下为内置域管理员帐户Administrator</a>
+</h3>
+<h3 class="topic">
+<a name="5ladjrf87tl99l66ij4vl4onri">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="Active Directory%E6%94%BB%E5%87%BB_files/5g472ir2sn6iocjnia9i9enkhr.png"></p>
+<h3 class="topic">
+<a name="6hkt88ted9cl0hbkp42i8ch3el">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="Active Directory%E6%94%BB%E5%87%BB_files/1u1j0hvt818pimvtu2op8e5jfn.png"></p>
+<h3 class="topic">
+<a name="5vjbvelfjd6bu4pdsn7tv8tscr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="Active Directory%E6%94%BB%E5%87%BB_files/4vhknjiip2rm9e0lnfraqfnvvr.png"></p>
+<h3 class="topic">
+<a name="2rjd04ci9ujcis1eccnc5jre52">&nbsp;&nbsp;转储包含与最近使用的第二十九个用户密码关联的多个哈希，以及与AES加密一起使用的哈希。&#13;
+   使用上述技术，我们可以请求使用域控制器进行复制更新，并获得Active Directory中每个帐户的密码哈希，而无需登录到域控制器</a>
+</h3>
+</body>
+</html>

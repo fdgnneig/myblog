@@ -1,0 +1,879 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>web安全1</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="6q3pslcuji9sbtul3l4l321atg">web安全1</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="web%E5%AE%89%E5%85%A81_files/images/web%E5%AE%89%E5%85%A81.jpg"></div>
+<h2 class="topic">
+<a name="5ir6jsho2nbr6dgv2p7vcujphk">学习资料推荐</a>
+</h2>
+<h3 class="topic">
+<a name="5uavp5ku46n19tfoe206eujkvu">&nbsp;乌云镜像站中的文章</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/1drmeftnnctt17k11vr93s2p6t.png"></p>
+<h2 class="topic">
+<a name="67kbi64oi0slkkils20kn9q8bh">配置实验环境</a>
+</h2>
+<h3 class="topic">
+<a name="0sc2r3mururmg89tpgo7fbvp10">&nbsp;将集成环境安装包拷贝虚拟机中运行，从安装php、Mysql、apache等环境</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/224os0e0ig18qmlk2dkh3dfnfo.png"></p>
+<h3 class="topic">
+<a name="057204h6sfro1obil19g43433r">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/36uq3gns28bl56mmmdsoj8ap4d.png"></p>
+<h3 class="topic">
+<a name="1hlfa7qmegbjnlnp2a254h5qto">&nbsp;&nbsp;&nbsp;设置apache用户名和密码，默认使用80端口</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/4bva19q2ooqv2mksl5tgofvrr2.png"></p>
+<h3 class="topic">
+<a name="4jq8kqlhtpenom0h0u7rrokf13">&nbsp;&nbsp;&nbsp;&nbsp;设置Mysql密码</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/1cjsm1jvpjmolp8hla0tcolimm.png"></p>
+<h3 class="topic">
+<a name="2pt5bj8ovjdemjh6mn5hgs87jn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;安装完成，启动apache和Mysql</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/5kmmbit3u56et4fq2n9cgv6t2j.png"></p>
+<h3 class="topic">
+<a name="3kf6s0a50t92v5gp37i3m3c6o0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/75rh6rlieivimk4n25d5v9itf5.png"></p>
+<h3 class="topic">
+<a name="2lpnff8ba0ndviru7dkhegdvj4">&nbsp;AppServ目录为当前集成服务环境的主目录，网站相关源码需要放在www目录下，其他目录分别保存apache、mysql、php环境</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/18fekr51b5ulasrqk4ai1r7h0l.png"></p>
+<h3 class="topic">
+<a name="7mblaqsg5uesrgf032nv061v3a">&nbsp;&nbsp;集成环境安装完成后www目录中默认的内容</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/56vtrej4euhgqspce7c27u4fia.png"></p>
+<h3 class="topic">
+<a name="69b89r4p2ol4esrsnh9amcjnbr">&nbsp;&nbsp;&nbsp;查询虚拟机ip</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/7o73bgvel4ik4gje3cmmr1cuti.png"></p>
+<h3 class="topic">
+<a name="32dh4imf52gvd2gi58egnr91af">&nbsp;&nbsp;&nbsp;&nbsp;真机中访问虚拟机IP显示网页</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/053mqjci2g5rc693saih654jp8.png"></p>
+<h3 class="topic">
+<a name="7mc1jcftks38c8g245ag07nmjc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;访问phpinfo.php文件得到网站php信息，说明网站环境配置成功</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/706qgk51r2fsi4luujrpu0vu2v.png"></p>
+<h3 class="topic">
+<a name="177p9fa7ikkt9f9j2ap3q5p0fn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将www文件夹中原始内容清空，将目标网站的源码复制到www目录下</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/0psg42kcvoqke3a1hcuv67i585.png"></p>
+<h3 class="topic">
+<a name="2e4nl4tmjfqkurhcn4g96mjh2i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/1t80l6jcskb00h8dri3aoqv79e.png"></p>
+<h3 class="topic">
+<a name="3drfjnos8edcia4v3qciposlbn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;真机中访问index.php，显示若要安装，需要删除install_lock.txt文件</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/328n2q7qdnsikoo7enu9l2602g.png"></p>
+<h3 class="topic">
+<a name="2pq3r8hlh30j9pok183e1n56ul">&nbsp;参数install_lock之后访问index.php，进入网站安装界面</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/5uajn8lbf3f6349gkbj5l0d95h.png"></p>
+<h3 class="topic">
+<a name="660eo14ai68avp2lfgtlg81v5s">&nbsp;&nbsp;设置数据库密码和管理员密码，数据库密码即之前安装mysql设置的密码</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/0ct6680jqdt0uhtrh22rh7gf2p.png"></p>
+<h3 class="topic">
+<a name="6md10niut0i5s0h3ka2aeu4p43">&nbsp;&nbsp;&nbsp;安装完成</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/2vemsc031p754h4v8p2fcdi863.png"></p>
+<h3 class="topic">
+<a name="2j4g9orpia3a8bjte76ar5lpmp">&nbsp;&nbsp;&nbsp;&nbsp;前台后台均访问</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/050if1vnvpmit3dqo38fbignh0.png"></p>
+<h3 class="topic">
+<a name="4lq7m0m316i0mmutc3927imteg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/40mhrenhi03ste4gq9qgg66bi0.png"></p>
+<h2 class="topic">
+<a name="7odm2ubpq8qv0aqn8b9d8fjmsu">web漏洞利用过程</a>
+</h2>
+<h3 class="topic">
+<a name="19mn4oqb21snqf2g0hamqcs3bv">&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/19q5kn2eo99bn5t1ls0u2qll4d.png"></p>
+<h3 class="topic">
+<a name="2pgrlkb6nm1im6fub3sfvau8n3">&nbsp;漏洞网站环境搭建工具</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/6348da6uqb7hpljf7mas3ko642.png"></p>
+<h3 class="topic">
+<a name="4ivcglaef3rlrpiek820m6q47l">&nbsp;虚拟机漏洞站点的ip</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/23gj3v7vbt4trq7nn87imfr5rv.png"></p>
+<h3 class="topic">
+<a name="01jlanagfkea5cuf0cplf1uopv">&nbsp;在攻击端访问该ip，显示网页</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/486msm0t4ne64e6vvpthv1ff8b.png"></p>
+<h3 class="topic">
+<a name="3pjfhskorbvqtn2crhtqvermuf">&nbsp;&nbsp;查看网站robots权限，根据源码后缀，该站点可能是php写成的，并且是一个dede网站，因为存在特征文件/plus/recommend.php</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/15ltnasgbn17ndc454rk7aams2.png"></p>
+<h3 class="topic">
+<a name="5c8dmek0vp32rg2d0298b8k1b2">&nbsp;&nbsp;&nbsp;robots协议也叫robots.txt（统一小写）是一种存放于网站根目录下的ASCII编码的文本文件，它通常告诉网络搜索引擎的漫游器（又称网络蜘蛛），此网站中的哪些内容是不应被搜索引擎的漫游器获取的，哪些是可以被漫游器获取的</a>
+</h3>
+<h3 class="topic">
+<a name="3gsumtbgnt8m3j3seh15kveake">&nbsp;dede网站的默认后台就是dede，尝试访问其网站后台</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/3tjmg2ofkn8hs4epi1ahhs99g9.png"></p>
+<h3 class="topic">
+<a name="0kcf2409tohvjt1lf40hksp2eu">&nbsp;&nbsp;成功进入后台管理登陆界面，此时可以尝试弱密码登陆</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/2nree1s5bv005u3fuogt99sq2i.png"></p>
+<h3 class="topic">
+<a name="0ofrldojnegcng6p0m9t6e1o7a">&nbsp;&nbsp;&nbsp;输入单引号，看是否存在sql注入漏洞，因为单引号在sql中表示字符串，仅使用一个单引号会导致字符串没有闭合，导致报错</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/6f6go15bpk5tc4f9hrlf4u1tj2.png"></p>
+<h3 class="topic">
+<a name="7k3jh0m0qpoot6h036a7l2tbin">&nbsp;设置浏览器端口代理，使得流量均经由burpsuite转发</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/33rqv348ugbcspnma7l4k2f281.png"></p>
+<h3 class="topic">
+<a name="5ed0a1qmip6e1hk7bqeudj8eqp">&nbsp;&nbsp;打开burp的拦截开关，并在浏览器中尝试登陆后台</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/4lekofctj6l7eeddkem97al5fg.png"></p>
+<h3 class="topic">
+<a name="3va4nd9pjokef9he9unohh3n52">&nbsp;&nbsp;&nbsp;尝试登陆后台</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/007pb82evonur8gfuq7ju118kr.png"></p>
+<h3 class="topic">
+<a name="1806i7oi93v4lldaenck12g1st">&nbsp;&nbsp;&nbsp;&nbsp;burp中抓到数据包</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/180uehhtlq7bej1kjnuq806hh3.png"></p>
+<h3 class="topic">
+<a name="1jnfg1ot5s1066pi7jtr79rl0l">&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/4vu4maks2udaisimm4cnlvai8a.png"></p>
+<h3 class="topic">
+<a name="5fsm9ugm3ugvs0j3bgd94s7j4a">&nbsp;&nbsp;option中将数据编码格式修改为utf-8，然后重新发送登陆数据包，查看返回的数据</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/3akrfrb7m2s42jokasi5a29tr7.png"></p>
+<h3 class="topic">
+<a name="3u0t9h3lb95dh5jcsla3bf5u6i">&nbsp;&nbsp;&nbsp;重新发送后，收到的数据包显示文本字符串可读</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/19dj6a2n6jq8edqijhfmcp003f.png"></p>
+<h3 class="topic">
+<a name="0di0fb16jsjngv8jtcqi8rafv9">&nbsp;将当前请求发送给intruder模块，该模块可以修改请求数据包并自动提交</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/52nq6s5ft5ukqqi98fq6k758bt.png"></p>
+<h3 class="topic">
+<a name="7pn0uib03if5lt2to8vqcn2sln">&nbsp;&nbsp;该模块默认将数据包中所有的参数（即标红部分）设置为变量，此时仅需要将密码作为变量，所以现clear清除所有变量</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/3kiloffd7l6jmaupas52o4ru7s.png"></p>
+<h3 class="topic">
+<a name="4sgos2qcbg847ovj6c3s6hdpl0">&nbsp;&nbsp;&nbsp;然后选择密码部分数据，点击add，将其作为变量</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/2bsl2um2nt032lrin7rln75db0.png"></p>
+<h3 class="topic">
+<a name="5knia768jm76pc86afi32i59ol">&nbsp;&nbsp;&nbsp;&nbsp;载入密码字典作为变量的数据来源</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/5pbpcaovkqlvntjbs66t7e63g7.png"></p>
+<h3 class="topic">
+<a name="6lkmh8fhthlipbv84qftgmql9k">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;点击start attack，开始密码爆破</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/0krpgrhvtj4uhnbrlskcnldnj7.png"></p>
+<h3 class="topic">
+<a name="59df8n13guicqn6t2rcvu3msgh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用字典中的字段作为密码，逐个尝试登陆</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/0j7p5g549ocg9ech82133ff3e8.png"></p>
+<h3 class="topic">
+<a name="0uqajajbdcopi0rsqvb7kb5ti0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;根据返回数据包，判断本次登陆是否成功，找到爆破出的密码</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/1cda825ku3rmratnhkmf2bb1o4.png"></p>
+<h3 class="topic">
+<a name="0bcdrgoci1k6kb2jl8oiss17o3">&nbsp;使用爆破出来的密码成功登陆后台</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/3pe12lo3kajiah92mem8vvl12u.png"></p>
+<h3 class="topic">
+<a name="13tjg3nqcseveg070b6i23csea">&nbsp;&nbsp;找到文件管理器的文件上传功能，（上传新文件的功能因为对上传文件的类型有限制，不方便上传后门）</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/4vcliv0smgk6cv5mht6f8p2c75.png"></p>
+<h3 class="topic">
+<a name="4dl15ib9ddtt0pdqbjanip1l5d">&nbsp;&nbsp;&nbsp;github中搜索webshell</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/62im66668ovmnboa1n1l8j0tll.png"></p>
+<h3 class="topic">
+<a name="0i1fhul0jobslt2ibtnri1cp95">&nbsp;&nbsp;&nbsp;&nbsp;该webshell中的数据本身是加密的，可以免杀</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/0drgpdhl2i9g2otkoo269kh5ng.png"></p>
+<h3 class="topic">
+<a name="2qf12599k5l6ps4atgulkee1vg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将得到的shell保存为shell.php</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/13vg56m7jf8pe5um3ba0pfb1cb.png"></p>
+<h3 class="topic">
+<a name="59sspc3c0st2j92j46bl4mk4ua">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;上传该php后门文件</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/3s4r3ccgeuaaj15g2r3ieo6uvb.png"></p>
+<h3 class="topic">
+<a name="1tofs8lvd3ev19dnsruk4uu4d8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/43joqu6pllbobl2e184i0al7g1.png"></p>
+<h3 class="topic">
+<a name="02602idbq53qgbmlu43q325j1j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;访问后门文件并输入密码即可进入网站后台</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/7amku28irpmke9e8uan7h47d5g.png"></p>
+<h3 class="topic">
+<a name="4cerjdhg5g35f30bjt9m8n9g7m">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;登陆shell成功，下一步才能进行脱库、内网渗透等</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/23v0sspg1c9mled2k88nuqfmon.png"></p>
+<h3 class="topic">
+<a name="0rk0eehnf99ccosb505lpgr3dq">&nbsp;使用后门提供的命令行执行功能</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/5eetbisvceq7gfvhtnihbp6c3a.png"></p>
+<h3 class="topic">
+<a name="6drmfq6h5nn7diiel8jrriif9o">&nbsp;&nbsp;执行whoami，显示拿到system权限</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/2ria1l6a3uevo2n1efuooqm9sd.png"></p>
+<h3 class="topic">
+<a name="43l7lpftc4roggh4l0tmfnse2f">&nbsp;&nbsp;&nbsp;后门提供数据库操作接口，通过输入用户名密码等，可以获得数据库中的数据</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/28sq6tvs6637e5225tbepqalkk.png"></p>
+<h3 class="topic">
+<a name="579f8jgo341rd4rurjr5va06o7">&nbsp;&nbsp;&nbsp;&nbsp;执行systeminfo命令</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/4nrd5tdea0qofs1jtqgjrdghlq.png"></p>
+<h3 class="topic">
+<a name="7aa1pl64gqnvjamvkndl0u49bs">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以查看服务器补丁情况，针对没有进行补丁的漏洞，可以利用其进行提权</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/4mod1ecjr45t1jq5q1bgls5vje.png"></p>
+<h3 class="topic">
+<a name="4ilpgslkfc30uk70cgshm52erd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;企业中内网外网是分开的，但是一般对于web程序开放端口转发，将80端口的数据转发，从而控制内网的数据</a>
+</h3>
+<h2 class="topic">
+<a name="020g86hc8734c3q9riijelec4v">网站账号登陆暴力破解</a>
+</h2>
+<h3 class="topic">
+<a name="4f27ufqbmt28dqiiv8mo4uasi5">&nbsp;部分网站登陆界面虽然有验证码，但是实际上验证码在请求数据包中并不会变，此时可以无视验证码，直接使用burp进行暴力破解</a>
+</h3>
+<h3 class="topic">
+<a name="7vt5hf99c0qfb0210ctdad7d98">&nbsp;部分网站中验证码是有效的，会包含在请求数据包中发送到服务端，此时验证码每次在请求数据包中值不同，此时验证码图片对应一个网址，通过对该网址进行图像识别，得到每次登陆的验证码，并将其填入数据包中</a>
+</h3>
+<h3 class="topic">
+<a name="4e1dumckfmsafiru8j6phj8ncm">&nbsp;&nbsp;登陆验证码对应的网址</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/3cvpurqs9lq1htr2nv2feafbb8.png"></p>
+<h3 class="topic">
+<a name="6a3p07jhhcacgmseh92gbm48de">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/7q3rr9k9mqg17oeg8isn6i1tuk.png"></p>
+<h2 class="topic">
+<a name="6q8ophi2cuof7gl23lo6dh5rgb">web安全基础知识</a>
+</h2>
+<h3 class="topic">
+<a name="773pt31595j9g28s69jisn9ct3">&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/631lcnpcorjc5v5grvs9ocf5pu.png"></p>
+<h2 class="topic">
+<a name="0qifur7mbk3oaelg69sk0cc7bj">http协议原理</a>
+</h2>
+<h3 class="topic">
+<a name="409s1ld6tmriukusivl5ecauke">&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/59k6km5fb3ll9ic78ijp80lnua.png"></p>
+<h3 class="topic">
+<a name="1q1uprrrbdi9v2s2cq5ni6v99b">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/2meu6grjmn8gedn7nciua26amr.png"></p>
+<h3 class="topic">
+<a name="1snsqbpur95a6idee7ajnp873g">&nbsp;&nbsp;&nbsp;实例访问www.sina.con.cn抓包</a>
+</h3>
+<h3 class="topic">
+<a name="1ruj38km1obuof647fiell09al">&nbsp;&nbsp;&nbsp;&nbsp;通过科来抓包，发现浏览器解析url查询DNS的数据包</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/5nrbrid24puk8l7pj0805o0jub.png"></p>
+<h3 class="topic">
+<a name="0uk55d0frtqn94ia9hesaeq82k">&nbsp;&nbsp;&nbsp;&nbsp;查看http日志，发现针对新浪的http数据包，邮件可以显示会话视图</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/0589v74gs3qp2m3mmbu426uhq2.png"></p>
+<h3 class="topic">
+<a name="04vimln1mvf7ijg7rl8e2jsg2t">&nbsp;&nbsp;&nbsp;&nbsp;跳转到会话视图</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/6uscjfgtvbakg436onb4gdj8rs.png"></p>
+<h3 class="topic">
+<a name="75ug0mf57oj3esa44psrnif205">&nbsp;&nbsp;&nbsp;&nbsp;显示tcp流信息</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/4s8eid2gpo9r9in3n9j6bdqkft.png"></p>
+<h3 class="topic">
+<a name="4t6ourtomcd0rnjas1ghpjuqcd">&nbsp;&nbsp;&nbsp;&nbsp;tcp流信息</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/5tt5q2872o8rc1l728sgactlcp.png"></p>
+<h3 class="topic">
+<a name="3d3vtkivkqjepe26130nko01r5">&nbsp;&nbsp;&nbsp;&nbsp;查看tcp的数据流</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/33cj4moifoqbn4qpnob0t8iioc.png"></p>
+<h2 class="topic">
+<a name="11fsct0qdtjpup6no7cmbss15j">TCP创建链接（socket）</a>
+</h2>
+<h3 class="topic">
+<a name="1prkg44f4pjla4rk8eo5mv41j6">&nbsp;三次握手四次挥手</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/4o23au0lqbh1mqetbjkakf9rsn.png"></p>
+<h3 class="topic">
+<a name="7q3rmv1okvohpt3u7b9r2mi0o1">&nbsp;&nbsp;c语言实现TCP的socket链接（客户端）</a>
+</h3>
+<h3 class="topic">
+<a name="7nspqe5mp3erfkg4843fhb4ueq">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/0uuhsle6gb32n6uce76h38f1vi.png"></p>
+<h3 class="topic">
+<a name="7cimhehmffsml8bhm0llv3cik0">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/7nqi7isqtnqlmtjclfmnjva9ob.png"></p>
+<h3 class="topic">
+<a name="2stvifqfoqrntls6kp44h1b21i">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/3mm3th6lrfjpeetg24ks0bd9a6.png"></p>
+<h3 class="topic">
+<a name="5bpmvvon8osjlrnulf8ff2ne72">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/1dbohu8tc12scc6q5opkihb6fk.png"></p>
+<h3 class="topic">
+<a name="1h8teqqea1f9nc0sktq3mqujh8">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/09otk705chjvc64dk0jpa7elgq.png"></p>
+<h3 class="topic">
+<a name="5mpvjogr98jot977gcail02187">&nbsp;&nbsp;c语言实现TCP的socket服务端</a>
+</h3>
+<h3 class="topic">
+<a name="2dq4p13e1t3jb3veg7inmmhv3p">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/5tscch0407glc3jp50mghekmmd.png"></p>
+<h3 class="topic">
+<a name="7scbiq3a60t53is8cb05gl21ui">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/3hlq65m6fif10mi5612l5c80a0.png"></p>
+<h3 class="topic">
+<a name="08jhhn4hqft0g15a459mgrjnmc">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/41of1qq8or1vvs79j7ckvsvg2o.png"></p>
+<h3 class="topic">
+<a name="7p9fsg3veuv448onlqi3lva4rt">&nbsp;&nbsp;&nbsp;使用浏览器访上述实现的服务端</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/5o4mp69gshc8q2jmutdiu02f4a.png"></p>
+<h3 class="topic">
+<a name="76na6qftflhcd587kpfq2tpb0o">&nbsp;&nbsp;c语言中可以通过gethostbyname()函数进行DNS解析，即通过域名得到IP地址</a>
+</h3>
+<h3 class="topic">
+<a name="6fafe2nbj0at5j6pp5crb7ujmd">&nbsp;&nbsp;实例（执行上述代码访问新浪，读取返回的数据）</a>
+</h3>
+<h3 class="topic">
+<a name="2b6rlsp99f0hkdv7d3su6gb2gb">&nbsp;&nbsp;&nbsp;将返回的数据写入到文件1.txt中</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/60gsrk6g9nt1akbaqs8e5nuc1j.png"></p>
+<h3 class="topic">
+<a name="58suv7n94rmos8a0dofnit5bab">&nbsp;&nbsp;&nbsp;&nbsp;1.txt中保存新浪网返回的数据</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/2drs7cvvob9t3cdff9ttku9j9l.png"></p>
+<h2 class="topic">
+<a name="389u8cia9qdut679c311cm350o">常用工具</a>
+</h2>
+<h3 class="topic">
+<a name="4ob3lvrd5c548loc1gr5bbp48i">&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/5629opqfq92og6njc531o34e56.png"></p>
+<h3 class="topic">
+<a name="42df74hs05be2mkqdfbdiae3bk">&nbsp;&nbsp;burpsuit</a>
+</h3>
+<h3 class="topic">
+<a name="214t1tkv7fuvodk9d58mbqn7bn">&nbsp;&nbsp;&nbsp;proxy中的intercept功能可以拦截所有代理的流量数据包</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/3pg5vt7umodrb8orqs80c8137g.png"></p>
+<h3 class="topic">
+<a name="25pd9v9m34tsflossmci2dml9b">&nbsp;&nbsp;&nbsp;&nbsp;注意在浏览器通过插件设置burp的代理，此后该浏览器的网络通过会被burp进行代理</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/0av4t7d5kpni2kotkhajhtvb5t.png"></p>
+<h3 class="topic">
+<a name="4hqvo02c9b2rebld5uadi7l1ar">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;也可以直接配置火狐浏览器的代理</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/39ideavrcvfc5ben4ssc2spva1.png"></p>
+<h3 class="topic">
+<a name="3qgd283i7e1hf375698cve31r3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/4d6mvrto7u65aspsl683n2rnls.png"></p>
+<h3 class="topic">
+<a name="4qdt5cb6h6sk0u3b8h0m9o2m1k">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/2g3hlh0q76nssnvn38t4c2e51f.png"></p>
+<h3 class="topic">
+<a name="249j580gnictmt3g1u2igjliom">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/247iku5kp4ju3u6n63q1ibcjci.png"></p>
+<h3 class="topic">
+<a name="4hko8gd78old3n91he1isrmhrs">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/0t4uvgl247454g1cbsgb10qs7q.png"></p>
+<h3 class="topic">
+<a name="5842r1q0phlsffd6urbga95d32">&nbsp;&nbsp;sqlmap</a>
+</h3>
+<h3 class="topic">
+<a name="1el1aue6v62rr9d9elisttkqrm">&nbsp;&nbsp;&nbsp;实例演示</a>
+</h3>
+<h3 class="topic">
+<a name="34ebcvbc4iqapiqj6gp2djotad">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/2i7uf6ss381si3tjrauljee0rf.png"></p>
+<h3 class="topic">
+<a name="4upp36hibm415vu5dhu32lj93f">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;执行tomcat中bin目录下的startup.bat，从而开始运行tomcat</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/67j7a7gerb9t4eo57q7holeaim.png"></p>
+<h3 class="topic">
+<a name="604a74uslre7ujtq9uco6aslcg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;真机中访问8080端口（tomcat默认端口）说明程序运行成功</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/6gt3pajv3q1ns7r1ntq5agjj8u.png"></p>
+<h3 class="topic">
+<a name="5felq2i3sg4q30v6je5sddojpm">&nbsp;&nbsp;&nbsp;&nbsp;找到wavsep-install目录下的wavsep安装程序</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/2avrbb4vhqogufigt6vifbrnic.png"></p>
+<h3 class="topic">
+<a name="153gp24dce60n7l04r1gadnc3l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;真机中访问install.jsp文件，从而安装wavsep</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/6cshtq8c5g9tc764jql50qs0l5.png"></p>
+<h3 class="topic">
+<a name="0jg7ihf1lheinbh321hpjqrg7a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/3ttsrq00pcmq3h9tf8intknme8.png"></p>
+<h3 class="topic">
+<a name="3ic3c7nhv6ua66t6oodb3r3c6s">&nbsp;&nbsp;&nbsp;&nbsp;访问wavsep目录</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/75slk465fpdklj42v55ba0bbfm.png"></p>
+<h3 class="topic">
+<a name="2vdjptjuaf92ivcpg4j68ofar5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;进一步访问active/index-sql.jsp目录，可以找到有sql注入的链接</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/4sakq4b36a5cc242eg8qk50djs.png"></p>
+<h3 class="topic">
+<a name="61prbeiaod3bdvut3d4t50b62t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;点击上图第一条返回状态码为500的链接</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/5f354goh5gml434a5rh8d84lvd.png"></p>
+<h3 class="topic">
+<a name="4ng32o8v4eg8hgvif1o37lijnm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用火狐的hackbar插件分析存在sql注入漏洞的链接这里的http链接是get类型的，get类型链接将参数放在url中，而post类型的链接将参数放在http包中</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/0iit6vk214vdajdg5qkcgg5n1d.png"></p>
+<h3 class="topic">
+<a name="1v8ctlionspffu4q2jhmt22obd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/10dqhsevskldu5517jm9410auk.png"></p>
+<h3 class="topic">
+<a name="5smca5oro5e0sa2t6rjthdc3am">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;火狐hackbar插件提供urlencode功能</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/7fqc0uphn54k0eotn1l2fi90s2.png"></p>
+<h3 class="topic">
+<a name="7rb3kqqg6gsomcbt3lpvbogses">&nbsp;&nbsp;&nbsp;&nbsp;因为post方法传递数据时将数据保存在http包中，所以使用hackbar插件发送psot包时可以使用post data设置post传递的数据，</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/6g694dprskrsolkp2r7djtp68r.png"></p>
+<h3 class="topic">
+<a name="61kuj4rb1hb865cqmur2si7p8v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;上面hackbar的访问相当于发送了该数据包</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/0tdnedakiqk1468l4j7d94126b.png"></p>
+<h3 class="topic">
+<a name="2aob967r3u9o5erlve3ga9mjl9">&nbsp;&nbsp;&nbsp;&nbsp;使用sqlmap分存在漏洞的链接，得到反馈</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/5i13oll9tl8sdppoglekdocjqt.png"></p>
+<h3 class="topic">
+<a name="1832dmsmcogvplvfh8ircou3st">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;发现url种username字段存在脆弱性，即该字段存在注入点</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/217qi2i5vhhldg18tvca705595.png"></p>
+<h3 class="topic">
+<a name="50q35f7m1b37hfuug1o6rj1odp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;执行指令查看当前数据库  --dbs</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/2jffjvq04ft3k9bskq13372jps.png"></p>
+<h3 class="topic">
+<a name="4jhr68ksvmbtujn6q3ga2irj2n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;爆出的数据库信息</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/5bscf438ceoqn2n7963j7o10hr.png"></p>
+<h3 class="topic">
+<a name="2vpbuqecf7loa74nf5laov4d5r">&nbsp;&nbsp;&nbsp;&nbsp;查看指定数据库种所有数据表  -D xxx --tables</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/4s8k6ckhkvjlqb1m6h3ihhji6q.png"></p>
+<h3 class="topic">
+<a name="2uvnlicaref46a481g0qhri0u7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;爆出该库数据表信息</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/1o8t94sl9cphenb98d23h9qjfj.png"></p>
+<h3 class="topic">
+<a name="2nv1u4k9o8dav5nj9vfl2sk65l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dump指定表中的数据</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/3rrrob3l19pi7s8vt7oca3g70s.png"></p>
+<h3 class="topic">
+<a name="6d2smstvjijb9fq4op50flb9lo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;得到数据表中的数据</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/4k6jpof59j29q1scbbkgm2u93d.png"></p>
+<h3 class="topic">
+<a name="69r4c1845vop8hlvkaarbkoqe6">&nbsp;&nbsp;目录爆破工具</a>
+</h3>
+<h3 class="topic">
+<a name="4h8fqhsqhdvn95opse4gs4am8o">&nbsp;&nbsp;&nbsp;用于扫描网站可能拥有的目录</a>
+</h3>
+<h3 class="topic">
+<a name="4t7k14thqjk51so24mupm49raq">&nbsp;&nbsp;&nbsp;也可以使用burp，将数据请求包中的请求目录作为变量，重复发包，尝试访问多个目录，从而爆破目录信息</a>
+</h3>
+<h3 class="topic">
+<a name="0u360jutgidojgck83nubh1b2e">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/3b5frd53tprimf63j1o8hnedt0.png"></p>
+<h3 class="topic">
+<a name="1ekvmk3beatk5ehe50ojesn7r7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;加上网站目录字典进行扫描</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/32kdobvlev7oei63uqg4i1b8h0.png"></p>
+<h3 class="topic">
+<a name="0v2a9l224ftb1jr753eg767ris">&nbsp;&nbsp;nmap</a>
+</h3>
+<h3 class="topic">
+<a name="7a60c5bikkvpt2gekilpiid1dl">&nbsp;&nbsp;&nbsp;使用nmap扫描指定的ip获得端口信息</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/4drcfsjah282sbbsm3otqgmlii.png"></p>
+<h3 class="topic">
+<a name="6734msoavu47cj6hvbussrm4aq">&nbsp;&nbsp;python手动编写工具</a>
+</h3>
+<h3 class="topic">
+<a name="3e6a90jj2fnhhcgikja9n4sq6h">&nbsp;&nbsp;&nbsp;网站的渗透测试工具均可以写成python脚本</a>
+</h3>
+<h3 class="topic">
+<a name="4doc49b0s76guam76qpjoct8sc">&nbsp;&nbsp;二级域名扫描工具</a>
+</h3>
+<h3 class="topic">
+<a name="6l1d57ea4jbcjv7h92n7hieraj">&nbsp;&nbsp;awvs</a>
+</h3>
+<h3 class="topic">
+<a name="6bdpjlcvrugmcvr8469ib8dnsl">&nbsp;&nbsp;&nbsp;网站漏洞扫描工具</a>
+</h3>
+<h3 class="topic">
+<a name="169slk49bjrgi48c3mjurpkf79">&nbsp;&nbsp;中国菜刀</a>
+</h3>
+<h3 class="topic">
+<a name="3u8cd9871u2r5olo7g0tstdejd">&nbsp;&nbsp;&nbsp;用于管理webshell，现在被杀毒软件杀的很严重，不如用大马</a>
+</h3>
+<h2 class="topic">
+<a name="3qrv8ii02g3macbpa2h7aqjilr">web编程语言快速入门</a>
+</h2>
+<h3 class="topic">
+<a name="5pekd1h1r4f7q09djlnrrks5pl">&nbsp;web安全需要掌握php java html javascript</a>
+</h3>
+<h3 class="topic">
+<a name="5hurnfpkrn8nafes2gt1h64i67">&nbsp;可以在菜鸟教程或w3cschool中学习</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/4fov133ihk3660kv3c7qioblul.png"></p>
+<h3 class="topic">
+<a name="3shqkt3unhb1ga4jsf12bjq14v">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/3rtsagso9kop29nvfc46bs1pek.png"></p>
+<h3 class="topic">
+<a name="4sfcnc5gn6mt314bq8a5n1onrd">&nbsp;php用户登陆demo</a>
+</h3>
+<h3 class="topic">
+<a name="1la2d6k7a3vhnu4as0rmvfr34c">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/41jml1g8804vn0881v9mgm1hpg.png"></p>
+<h3 class="topic">
+<a name="4v90uh9vv839ttt9o1dj55nl1p">&nbsp;&nbsp;&nbsp;要使php用户登陆发挥作用需要在数据库中写入账户密码</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/4722ushpi78eh1mt6e7qfb7uk5.png"></p>
+<h3 class="topic">
+<a name="37vi8veodlq52kfgvl0ok17ltd">&nbsp;&nbsp;&nbsp;&nbsp;在该数据库中创建表</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/66vcej6eo2kr6nl3cjh399ue5f.png"></p>
+<h3 class="topic">
+<a name="20iff1bh3cmvs867524kird9b7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;显示当前的数据表</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/1340kenqt56olsveahrpfldk4u.png"></p>
+<h3 class="topic">
+<a name="2p81s2a1f17hoqj72ohdjfl65p">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在表中插入用户名和密码的信息</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/5t9tmlo12h87fq6sjd26bqo1kq.png"></p>
+<h3 class="topic">
+<a name="7lc9n960cn0eimtie9paj3r0nc">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/448qeho7p6rjp6lm01uqm6mqo0.png"></p>
+<h3 class="topic">
+<a name="1dnlffeeqei215ks9h9bh8u04k">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/4ct822a09hh2ldvk4av8mitfkq.png"></p>
+<h3 class="topic">
+<a name="2tihsbk2m1juu2ieks3f445fsd">&nbsp;java web留言班demo</a>
+</h3>
+<h3 class="topic">
+<a name="2kc07ipq3vjegppj9e4tnkslv4">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/6f7l71ohtt75h1uutcrsjk1mhf.png"></p>
+<h3 class="topic">
+<a name="72ell7ruqv39ck6ve4lje50h2u">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/3v0fkqr7jn2p4rru7lld8r77is.png"></p>
+<h3 class="topic">
+<a name="06lloduqljclt5v1pu5k12irbv">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/1mpdn4cq38k7k57oitrtf2p3nf.png"></p>
+<h3 class="topic">
+<a name="2qutsrjijk89divcao556lviff">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/1v88rjv4d53u84mec0ksvpo9q6.png"></p>
+<h3 class="topic">
+<a name="386t7a5alhd41pmihkbbj1u8p7">&nbsp;&nbsp;java中通过out.println向前端打印出html代码</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/5v4grevseo44glnepqv7a07vrf.png"></p>
+<h3 class="topic">
+<a name="6v18ubfrjt8i5krj84ctlnedm5">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/657tg0msdl171rnuo310nuafu1.png"></p>
+<h3 class="topic">
+<a name="3ijn817laaifcga4c3lflut736">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/03hc9rdm895k9eaijora325ojk.png"></p>
+<h3 class="topic">
+<a name="7lh36hsd78oomedahdk7j6hmdt">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/59pi0lic21nrhji3ggf1b2crdb.png"></p>
+<h3 class="topic">
+<a name="3lr1a7rvb94is23b2g657vqf4p">&nbsp;实例</a>
+</h3>
+<h3 class="topic">
+<a name="3rnuqo0edkj2bsrq7nb11s9age">&nbsp;&nbsp;sql注入漏洞实例</a>
+</h3>
+<h3 class="topic">
+<a name="6ap1b5bsk5sb267fdml581vunh">&nbsp;&nbsp;&nbsp;php登陆demo保存进之前创建的php站点中，并访问该文件</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/1m6n5eto949saumpqcjs1j28o9.png"></p>
+<h3 class="topic">
+<a name="6b4gtm2i7n61jtii9m33uvu4fa">&nbsp;&nbsp;&nbsp;&nbsp;由于php登陆demo中存在sql注入漏洞，所以可以通过图中用户名加上任意密码实现登陆</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/44d6552fn4qth6fml3qvisbamj.png"></p>
+<h3 class="topic">
+<a name="5ojrcplid3ocgl3b8cc0pr53rp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将php登陆demo的登陆数据包复制出来</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/3q7i9goruolvotojm2pbh2v5p4.png"></p>
+<h3 class="topic">
+<a name="22vlati3de9vrhin7lslhl4t35">&nbsp;&nbsp;&nbsp;将复制出来的数据包内容保存为1.txt，保存到sqlmap的根目录下</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/6cf5v07pgh4hqmkmttrrapqh4o.png"></p>
+<h3 class="topic">
+<a name="1v3ta6lvmnujmka6d70tppsdej">&nbsp;&nbsp;&nbsp;&nbsp;sqlmap -r参数分析文件</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/4ise667a314rd3f3a5t96g7a16.png"></p>
+<h3 class="topic">
+<a name="1bbgmkknkplbk2p2rtdstj0n99">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;检测出使用mysql数据库，检测出Name字段存在脆弱性，此时已经检测到注入点为Name，可以开始dump数据，不需要继续检测，输入n</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/68380k9k2nsm8erh04ms6nn5ti.png"></p>
+<h3 class="topic">
+<a name="52eh0vofs6p4nujnog4s3ohp6t">&nbsp;&nbsp;&nbsp;--dbs检测数据库</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/6f2uvu42kiums3f8tr9667jj1j.png"></p>
+<h3 class="topic">
+<a name="77292vb205teotn0bde8cee5pv">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/7a68p6m6aqsp94e1fgk9psu2ab.png"></p>
+<h3 class="topic">
+<a name="31reni6tqnj4pibn6t84hvk2aj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-D xxx --tabels 检测指定数据库中的表</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/62nitj6kckbddl749uecgno3uj.png"></p>
+<h3 class="topic">
+<a name="0o1mmc86nch4sisbro2j857ol0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/734ome87fu0peh6kt1pol50hnc.png"></p>
+<h3 class="topic">
+<a name="1sm8kltl09bhr26tf2f4ubf40m">&nbsp;&nbsp;&nbsp;-D XXX -T XXX dump获得表中数据</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/1tng40culs3ac4aq1t8ba5uj8k.png"></p>
+<h3 class="topic">
+<a name="4vc3rmhnu32nl70lnuvlrj5bq4">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/53t6fhauhq1tbilfc9q2c4bkol.png"></p>
+<h3 class="topic">
+<a name="1mh81f1h20r6n4mbjf5k3gj7ep">&nbsp;&nbsp;XSS漏洞实例</a>
+</h3>
+<h3 class="topic">
+<a name="4e6o4etsqkdj14edsgrdt11v94">&nbsp;&nbsp;&nbsp;使用MyEclipse运行java留言本dome，因为是在真机运行MyEclipse，所以相当于在真机运行了一个服务器程序，其中运行java代码</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/2s1iaui3n7qk4q7emfqthtm7f3.png"></p>
+<h3 class="topic">
+<a name="3fjp67ktrkp3r259cqi4l7579u">&nbsp;&nbsp;&nbsp;&nbsp;将该java应用运行在tomcat上，此时会在真机运行一个tomcat服务器，服务器中运行运行该java程序，注意tomcat占用8080端口，burpsuite默认也占用8080端口，如果发生端口冲突，需要将burpsuite端口修改为其他窗口</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/2bu5jkda3s8edcth5j47ghanlo.png"></p>
+<h3 class="topic">
+<a name="5s2tlm29ft0dc6923l4if7fmdi">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;表示本站点的链接</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/61l7uclpmq5ndhhjcfgc3nl078.png"></p>
+<h3 class="topic">
+<a name="4v0gbp80f2or79rd03idkdhjta">&nbsp;&nbsp;&nbsp;访问该链接，显示网站主页</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/5s5l7g529mf7im9dashnfud4m3.png"></p>
+<h3 class="topic">
+<a name="6boh6efnoh9lmb0mn1k30pu5aq">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/49je2e5c2scnj1q9v59suq5vrr.png"></p>
+<h3 class="topic">
+<a name="0kckg9902aljcbc57ds8jr701h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/06alok1pt0thk71fv0d8mq92dm.png"></p>
+<h3 class="topic">
+<a name="6tt0oim2g0foiv5rr43qbftjhr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;访问留言版页面</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/008vv69fllnkc8lot2jolo9bql.png"></p>
+<h3 class="topic">
+<a name="4i2evhkms7eosgnmb424qgf4s9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将js代码作为留言内容，则js代码会被保存到数据库中，一旦有用户再访问该网页，服务器会将数据库中的数据作为字符串解析显示到网页中，如果没有对数据库中的数据进行判断，则将js代码当作字符串传给客户端浏览器时，浏览器会将其作为js代码执行，从而导致所有访问该页面的用户均执行该js代码</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/0rsq6oj31010o1hef2gdrifqqk.png"></p>
+<h3 class="topic">
+<a name="37ums6oporiqka4vjquhf6kjmg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;触发XSS，此类js代码可以用于盗取用户cookie、钓鱼登陆框，跳转、js蠕虫等功能</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A81_files/5e3ntivfflirlqs8r8n5r24c77.png"></p>
+</body>
+</html>

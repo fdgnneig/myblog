@@ -1,0 +1,1457 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>通讯接口调试与固件获取</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="143eqg7o2q5lgtjiubc10s96j0">通讯接口调试与固件获取</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/images/%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96.jpg"></div>
+<h2 class="topic">
+<a name="5h22dl1qgh24b0v5cs9ua2kqfs">注意点</a>
+</h2>
+<h3 class="topic">
+<a name="710tudc5a5jhp8vgm57vrjtj49">&nbsp;uart接口</a>
+</h3>
+<h3 class="topic">
+<a name="35n3jjr8vro3qttpffegrp19c3">&nbsp;&nbsp;uart口中需要分辨哪个是vcc口，若TTL转usb连接到vcc，同时设备进行供电则可能烧毁设备&#13;
+ttl转usb设备3v3 5v用用于供电，当ttl转usb向设备供电时，不能使用设备本身的供电，否则会烧毁&#13;
+万用表测量测量电压电流时，万用表本身就会给固件施加电压是，所以此时设备不能接电，否则电压过大可能烧毁芯片</a>
+</h3>
+<h3 class="topic">
+<a name="2lucilj56dnetvdp6b5iqgh93r">&nbsp;&nbsp;&nbsp;TTL转usb如果将3.3v口连接设备vcc，则电脑不识别ttl转usb设备驱动</a>
+</h3>
+<h3 class="topic">
+<a name="04pg2emcfv5n6i25fmh8fb4a9n">&nbsp;&nbsp;正常来说当设备接电，uart口的GND与VCC、GND与RX、GND与TX之间的电压均为3.3v（光猫实测结果）</a>
+</h3>
+<h3 class="topic">
+<a href="https://www.zhihu.com/question/53036782" name="318v5enh5lgh25vake93fn29kf">&nbsp;&nbsp;&nbsp;https://www.zhihu.com/question/53036782</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/4pu9epvmn319iqji9eb9djfb9f.png"></p>
+<h3 class="topic">
+<a name="213lfuvs5i6dm5kfrfjg159n00">&nbsp;示波器、逻辑分析仪可以用于确定波特率</a>
+</h3>
+<h3 class="topic">
+<a name="2c2bhrl9g9tec2q9ssc7b9r3eg">&nbsp;逻辑分析仪可以通过分析传输的数据，从而识别uart SPI I2C等接口</a>
+</h3>
+<h3 class="topic">
+<a name="4616rfktefuk51s86sr1i7j7l0">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/1tl76ih51vi9bas34jcnr68co0.png"></p>
+<h3 class="topic">
+<a name="03och3a5ftskhs92qs7sp0rivd">&nbsp;当板子上有多个八脚flash芯片时，如何确定哪个芯片用于存放固件</a>
+</h3>
+<h3 class="topic">
+<a name="2ughvtcjllromps6lj4fpbb92p">&nbsp;&nbsp;存放固件的芯片会被cpu多次读取，所以会该芯片在板子上一般临近cpu存放，并且芯片与cpu之间可能存在大量电路连接（可以在电路板表面看到）</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/4k9vp5kkvkfa5a5rqt8f558t4e.png"></p>
+<h3 class="topic">
+<a name="55gop1a4th9gcvnp9cdakh7js4">&nbsp;&nbsp;&nbsp;另一方面，为保证cpu执行过程中不被其他电子元件干扰，cpu周围会布置相关抗干扰器件，如果某个flah芯片与cpu没有明显连接（多层板除外）且位于抗干扰器件范围外，该芯片大概率不保存固件</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/23n903o7rdvkc5ig07bd4k418o.png"></p>
+<h3 class="topic">
+<a name="1mobc886166qqm7du3hrpbgdvh">&nbsp;emmc芯片也常用于保存设备固件，其特征是回字形的针脚，从其中读取固件需要特殊的芯片托，然后连接到编程器上，从而读取固件</a>
+</h3>
+<h3 class="topic">
+<a name="1fks7igpuld089eu9vbvbdr70m">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/466dnolbpl56vsh8uiobfb45h5.png"></p>
+<h2 class="topic">
+<a name="33a23l4f6n53r7ieiptscmtv8d">资料来源</a>
+</h2>
+<h3 class="topic">
+<a name="25njroiuduvjs0v3ir26o68d3p">&nbsp;亚伦&middot;古兹曼（Aaron Guzman</a>
+</h3>
+<h3 class="topic">
+<a name="266lmve8ago056jg8li5bb4tbs">&nbsp;&nbsp;书+视频</a>
+</h3>
+<h3 class="topic">
+<a name="6lmrfr1ssuc6mdrcei6go91fo7">&nbsp;devttys0博客</a>
+</h3>
+<h3 class="topic">
+<a name="2r8va9q5hknrljfb7l29vk264c">&nbsp;attify官网</a>
+</h3>
+<h3 class="topic">
+<a name="5rri26ntlha7vqrn9a23b2bcpf">&nbsp;硬件攻防大揭秘</a>
+</h3>
+<h3 class="topic">
+<a name="42ih5m8qjq9ctj0q8j1rckbju9">&nbsp;路由器漏洞挖掘</a>
+</h3>
+<h3 class="topic">
+<a name="2tne65o60jqql09vgcit36gqs0">&nbsp;无线电攻防大揭秘</a>
+</h3>
+<h3 class="topic">
+<a name="40bq7kbjnaqug8p615q4s6s5m5">&nbsp;汽车安全攻揭秘</a>
+</h3>
+<h3 class="topic">
+<a name="1cd7at1hvc54ebo2gltnb2tnl5">&nbsp;固件提取</a>
+</h3>
+<h3 class="topic">
+<a href="https://www.cnblogs.com/HacTF/p/8052187.html" name="3rmbk8jf2aps72gldb3akm9obq">&nbsp;&nbsp;https://www.cnblogs.com/HacTF/p/8052187.html</a>
+</h3>
+<h3 class="topic">
+<a name="2808rpqhtgi7uhbsv6lghv0j0b">&nbsp;优秀博客</a>
+</h3>
+<h3 class="topic">
+<a href="https://www.cnblogs.com/HacTF/p/8052315.html" name="562roofan2bsbsu2j63mdsjcca">&nbsp;&nbsp;https://www.cnblogs.com/HacTF/p/8052315.html</a>
+</h3>
+<h3 class="topic">
+<a href="https://www.cnblogs.com/H4lo/p/11721932.html" name="4d229t47c7pg5vimq757hm7rrn">&nbsp;&nbsp;https://www.cnblogs.com/H4lo/p/11721932.html</a>
+</h3>
+<h3 class="topic">
+<a name="2er4odcu0qkjnh7de2eeo8l7md">&nbsp;微信读书：一步一步写嵌入式操作系统  &#13;
+操作系统真相还原&#13;
+韦东山视频&#13;
+千峰物联网视频&#13;
+https://www.bilibili.com/video/BV14i4y1s7LJ?p=643&#13;
+https://www.bilibili.com/video/BV1Ex411M7xm?from=search&amp;seid=11617821613386931792&#13;
+https://edu.51cto.com/course/1363.html&#13;
+https://www.bilibili.com/video/BV1Ax411S7WQ?from=search&amp;seid=6904810425873806808&#13;
+https://space.bilibili.com/345273593/video?tid=0&amp;page=8&amp;keyword=&amp;order=pubdate&#13;
+http://download.100ask.org/&#13;
+https://www.bilibili.com/video/BV14i4y1s7LJ?p=643&#13;
+物联网安全资料博客&#13;
+https://www.cnblogs.com/H4lo/p/11721932.html&#13;
+http://www.droidsec.cn/category/smart-devices-security/page/2/</a>
+</h3>
+<h3 class="topic">
+<a name="3raq96vabutp0oob5r7bfp5nrf">&nbsp;rt8090编程器软件下载地址</a>
+</h3>
+<h3 class="topic">
+<a href="https://www.kancloud.cn/rddz2017/china_english/885238" name="025ihvtjtfblu0i171ordovd2j">&nbsp;&nbsp;https://www.kancloud.cn/rddz2017/china_english/885238</a>
+</h3>
+<h2 class="topic">
+<a name="19jq754ifj8jllj736kqp0h4sg">通讯端口调试（uart）</a>
+</h2>
+<h3 class="topic">
+<a name="6vrg07n8gtn0m4je9266mpjrhe">&nbsp;水星路由器串口调试（萧别离大佬指导方法）</a>
+</h3>
+<h3 class="topic">
+<a name="308ounc1h6m909ufi97e2n5kff">&nbsp;&nbsp;通信接口调试</a>
+</h3>
+<h3 class="topic">
+<a name="38sfaru8hgkje3eicubqr68qgs">&nbsp;&nbsp;&nbsp;win10官方商店安装串口调试助手或putty，使用ttl转usb连接设备的GND、RX、TX，使用设备自身电源供电，设置对应串口和波特率，从而进行设备调试，爱该pcb板uart接口为四个洞，没有区分具体的rx tx gnd vcc，可以用之前教的方法区分四个接口（万用表黑笔接电源，红笔接四个uart接口，响的就是gnd，设备接电，vcc和gnd连接时，设备会短路）</a>
+</h3>
+<h3 class="topic">
+<a name="0fjmdintghat24bn3lt71ra00i">&nbsp;&nbsp;&nbsp;&nbsp;ttl转usb安装完成后，出现该设备</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/0s824pq3fduguscg2fnn6hfrth.png"></p>
+<h3 class="topic">
+<a name="6b3vlmfscjqn4uarvia8istrqr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/6gk0blfo2iku6a0fofm0h0ebn4.png"></p>
+<h3 class="topic">
+<a name="0mik299avhdjc5bephptuctbic">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/4i604d34nqu5fcjp2r58u4ubgg.png"></p>
+<h3 class="topic">
+<a name="58fpdvgs5i4lqs68439ovjovo3">&nbsp;&nbsp;&nbsp;&nbsp;结果：可以看到uboot的启动信息，在qadinit处停下，此时输入help+回车键（只有后面加了回车键，输入的help才能被执行，因为help仅仅是输入命令，没有执行）</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/6462fkjcosdjpgfuujhplr0c1s.png"></p>
+<h3 class="topic">
+<a name="26qufs8qefuv4jlpo6mvnm0fmk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;串口显示当前shell可用命令，看到?和help均可以显示当前可用命令</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/34mop22nrg8nlloum4f9rr46f1.png"></p>
+<h3 class="topic">
+<a name="2egk8cmqjf55up8e2l9edmq4gb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当前可用命令中mem可以用作dump固件</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/4ifdt5s14i9p2j7uqp7ubsccb6.png"></p>
+<h3 class="topic">
+<a name="44h643sg0lnvrtnb0o9qj0cu7p">&nbsp;光猫端口调试</a>
+</h3>
+<h3 class="topic">
+<a name="4lna3b89cp2556d6qq1nclp3up">&nbsp;&nbsp;波特率为115200</a>
+</h3>
+<h3 class="topic">
+<a name="3hnre72it6j22210kub3fjg82h">&nbsp;&nbsp;&nbsp;与水星路由器相同的方法，调试成功</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/57mmgusbi7nmmthk8njnikdv1o.png"></p>
+<h3 class="topic">
+<a name="1atgm3tp5qo42prmdb58022qnj">&nbsp;使用minicom调试</a>
+</h3>
+<h3 class="topic">
+<a name="1jn674mesm08lqfsrmj9i31jvb">&nbsp;&nbsp;注意minicom调试可能出现无法输入命令的情况，此时需要设置minicom-》Serial port setup-》 Hardware Flow Control 为No，具体步骤见：minicom无法输入字符的问题.jpg</a>
+</h3>
+<h3 class="topic">
+<a name="2pedbebop8bsjc9j2564jck8fs">&nbsp;&nbsp;&nbsp;参考资料</a>
+</h3>
+<h3 class="topic">
+<a name="79mqec59vcth5j7tekkli90vcj">&nbsp;&nbsp;&nbsp;&nbsp;https://blog.csdn.net/qq_38880380/article/details/78222695</a>
+</h3>
+<h2 class="topic">
+<a name="59doubbispssj8q8sp039es5p9">固件获取（获得固件.bin文件）</a>
+</h2>
+<h3 class="topic">
+<a name="38ifnssqccd4dl82dvi5qnvkqo">&nbsp;固件获取十种方法</a>
+</h3>
+<h3 class="topic">
+<a name="26i76l1im6fuht0q32fn9csm6q">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/4qplmpke63ec5e6una3i2hm7sv.png"></p>
+<h3 class="topic">
+<a name="1e53pon461pda6n7uja5rjmn8n">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/3g4j5bcf7qsnclulr7nd1c3utm.png"></p>
+<h3 class="topic">
+<a name="2phuvgtcuh8gom0qtgi3d7m146">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/2f5u1pejnccu7t3rnnfa6ipsij.png"></p>
+<h3 class="topic">
+<a name="71p8jmeal4rlajj7v32glvo1r4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/3d04abpbfvfi9uabct8ve0ppqb.png"></p>
+<h3 class="topic">
+<a name="46iovmvjra9ihfc5t7o58vhsi7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/0eqgq54krk6rg8vvhtdebovqjd.png"></p>
+<h3 class="topic">
+<a name="2ufa6o1gvdj3b48ckibc8thgob">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/4dkmsk8gpogsqhhhdtkccseohl.png"></p>
+<h3 class="topic">
+<a name="3qdke4rb3knlld1napsg2eu16j">&nbsp;&nbsp;&nbsp;使用j-link获取固件</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/4lj6hg06sut47tcdsdke70nfco.png"></p>
+<h3 class="topic">
+<a name="7r7hs506kntls85cc7bh31pq69">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/42lgajn5c90eequj4baft2mopg.png"></p>
+<h3 class="topic">
+<a name="6bh8r9vms69c1lvf20345otg0q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/7l74q7s3kacidp2t6mo2abu9sj.png"></p>
+<h3 class="topic">
+<a name="5d786nlp17hvhkkeoska7g9eor">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/2osmnojebjkmbfbhvjnuqn5pnf.png"></p>
+<h3 class="topic">
+<a name="4j8r5srkjbid51o712bgqrnt32">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/4dbdsqqoo8vp827udqh5pc9rvd.png"></p>
+<h3 class="topic">
+<a name="1f9t498aqclet420phf593pa2l">&nbsp;&nbsp;&nbsp;bdinfo flinfo md printenv均对于固件获取有用</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/4j4pdj5bqil70qqlgm636v5raa.png"></p>
+<h3 class="topic">
+<a name="2nuielf7eeubcl5dpkasc56t2m">&nbsp;&nbsp;&nbsp;&nbsp;md命令</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/3d846gq4cp8pg1a55vtqvldum4.png"></p>
+<h3 class="topic">
+<a name="4u94ua08o1meqg4dij4bg4pfq3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/74cck2hv58djq5grqrajcae040.png"></p>
+<h3 class="topic">
+<a name="7251mhlj8cm15j46llnnf70gct">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;详情见demo.wmv</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/1spsqbvb1i7rj5gc2kre0sfls7.png"></p>
+<h3 class="topic">
+<a name="0t3k7okecjgjmljdvv16gf6dpd">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/5d91i9duks3t3qcakoq75c3hru.png"></p>
+<h3 class="topic">
+<a name="5fk2rdlcmlosv402a1hiu9u6cm">&nbsp;&nbsp;&nbsp;以上指令均可以用于将flash内数据读取到内存中</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/47qo3bapaufgl7q7spl7t12pf1.png"></p>
+<h3 class="topic">
+<a name="5kga9f22rhajou8m2fagbfkd7a">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/3q189v217o9arts7osm69fruph.png"></p>
+<h3 class="topic">
+<a name="1ph3vtjhg291nf13ohk03guadh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/2qmknd7ac65rj5944f8eb8t79l.png"></p>
+<h3 class="topic">
+<a name="4t28caqg86k3pb5npt3iavk1m2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/7pcula7h4eavueajlb15hbjhbc.png"></p>
+<h3 class="topic">
+<a name="7rv0nvucaps7bgucfkmiu8ku7j">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/3kouhd1sh81lmii3c8n5hgv6h3.png"></p>
+<h3 class="topic">
+<a name="5lfr5ujomha45t1s3lgg8qeoei">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/0t2fepnc0gr865jrf5mfflgd15.png"></p>
+<h3 class="topic">
+<a name="3bg7tdfojj7l9fsjqdcdkkdstr">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/4302gl7f6q2auuq4d6tddfjt6l.png"></p>
+<h3 class="topic">
+<a name="7uh1pubv9vrjce5ko6v7cbs3bk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/3opd10q4m5vqh9ub8bpmd3uo3b.png"></p>
+<h3 class="topic">
+<a name="4gqu97kgg49i30bpjelqq1blqo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/0e8p8ldrs6qit6g4pumqibbrol.png"></p>
+<h3 class="topic">
+<a name="42f4uidupbjq130p2jta8kv1f8">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/4lt1jsrk10hdho2hgmratn1ls1.png"></p>
+<h3 class="topic">
+<a name="3jamkfddsfv6dmoc69853c0n4e">&nbsp;&nbsp;&nbsp;查看固件有无加密</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/4us6id6stcfr0652h6kpj63fqj.png"></p>
+<h3 class="topic">
+<a name="6s8blb1kjc2eo0ripo8iv62jqs">&nbsp;&nbsp;&nbsp;&nbsp;漏洞挖掘思路</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/762v7uq43s8qvbd4aor6g1o8tj.png"></p>
+<h3 class="topic">
+<a name="0eb3phbcs5al436u1crkffuu2q">&nbsp;固件获取相关命令学习</a>
+</h3>
+<h3 class="topic">
+<a name="72a4cn05p6c2aidcvlrc70tlis">&nbsp;&nbsp;linux命令（busybox）</a>
+</h3>
+<h3 class="topic">
+<a name="3l6spcj7ns7r8e3f1ajub5uj70">&nbsp;&nbsp;&nbsp;tar</a>
+</h3>
+<h3 class="topic">
+<a name="1hj44381vk30e65d5rmoaa6k44">&nbsp;&nbsp;&nbsp;&nbsp;打包命令，将很多个文件打包在一起</a>
+</h3>
+<h3 class="topic">
+<a name="39n5iclgaubp0036vpp7ive0ef">&nbsp;&nbsp;&nbsp;&nbsp;打包使用-c</a>
+</h3>
+<h3 class="topic">
+<a name="7tr9tnabboniv727rhmr3vrg2l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-cf 打包包名称 被打包的文件名</a>
+</h3>
+<h3 class="topic">
+<a name="1q0ps7jbtilutasbm226r0vam2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;没有压缩效果</a>
+</h3>
+<h3 class="topic">
+<a name="3fta773ddrbglbqgai3e8h2g59">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-caf 打包包名称 被打包的文件名</a>
+</h3>
+<h3 class="topic">
+<a name="60oim1pu1r4sl9ekn9vbuv6gss">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;根据不同的文件后缀名执行压缩算法</a>
+</h3>
+<h3 class="topic">
+<a name="1pc3j9g0eonkh65b7klm4h49i2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-avf 打包</a>
+</h3>
+<h3 class="topic">
+<a name="16ge1f7rpkosre42hah49t1b5c">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-cavf 打包后文件名称 被打包的文件名</a>
+</h3>
+<h3 class="topic">
+<a name="51bme0utg5qimitffom1khafis">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;显示压缩过程</a>
+</h3>
+<h3 class="topic">
+<a name="3bpligmar3ursqdfutmsp9drtt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tar -caf manpages-zh.tar.gz manpages-zh</a>
+</h3>
+<h3 class="topic">
+<a name="74ied8k1lscjt72hp1pju7eu82">&nbsp;&nbsp;&nbsp;&nbsp;解包使用-x</a>
+</h3>
+<h3 class="topic">
+<a name="22crvof12bcjefiplvm3u0j44o">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tar -xf 文件名</a>
+</h3>
+<h3 class="topic">
+<a name="5os6e3s88p63ms5gd0u7qusd3c">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tar -xvf 压缩文件名</a>
+</h3>
+<h3 class="topic">
+<a name="3cs6mjmug03dvpkg9gu7cco6dh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;显示解压过程</a>
+</h3>
+<h3 class="topic">
+<a name="33sdouhnns7bv90g8k4825bjbb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tar -xvf manpages-zh.tar.gz</a>
+</h3>
+<h3 class="topic">
+<a name="1j7mhtdp36svms2htnhrr0p78u">&nbsp;&nbsp;&nbsp;dd</a>
+</h3>
+<h3 class="topic">
+<a name="1h73vb5e7s6dmqncgs56qjkvsb">&nbsp;&nbsp;&nbsp;&nbsp;使用dd命令从固件.bin文件中截取疑似文件系统的数据，并保存到另一个文件中：&#13;
+Linux dd命令用于读取、转换并输出数据 &#13;
+if参数指定被读取的文件名，&#13;
+of指定结果输出文件名，&#13;
+bs=1指定输入输出的块均为1字节大小，&#13;
+skip=41472表示从bin文件头跳过41472个块后读取数据，&#13;
+count=749632表示读取749632个块的数据（即bin文件第二个LZMA数据块的大小）&#13;
+dd指令后，目录下出现a200文件，将其改为.lzma文件，并尝试使用lzma工具解压，此时解压失败</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/76rtnpiuk3gi1d5nkg685ld8d0.png"></p>
+<h3 class="topic">
+<a href="https://www.runoob.com/linux/linux-comm-dd.html" name="12v07sji0rivp1sn7gt2oou8s5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://www.runoob.com/linux/linux-comm-dd.html</a>
+</h3>
+<h3 class="topic">
+<a name="6em7fdj7toksjb83a5kbtjk240">&nbsp;&nbsp;&nbsp;nc</a>
+</h3>
+<h3 class="topic">
+<a name="0b2ho579a6t4iv97jinkckdq1m">&nbsp;&nbsp;&nbsp;vi</a>
+</h3>
+<h3 class="topic">
+<a name="5a31q8dfl92s4rh7q374jgqhi9">&nbsp;&nbsp;&nbsp;echo</a>
+</h3>
+<h3 class="topic">
+<a name="7enujmf5v57jh7kddn6dt5igr3">&nbsp;&nbsp;&nbsp;FS</a>
+</h3>
+<h3 class="topic">
+<a name="1513o4lbbbcq2m2rq63hrunbpa">&nbsp;&nbsp;&nbsp;关于busybox提供的命令</a>
+</h3>
+<h3 class="topic">
+<a href="https://blog.csdn.net/jeffreyst/article/details/7160984" name="52hthuvb8invn7qh86vtq9a2t9">&nbsp;&nbsp;&nbsp;&nbsp;https://blog.csdn.net/jeffreyst/article/details/7160984</a>
+</h3>
+<h3 class="topic">
+<a name="1eomnovnf42d11ss2canfuucjf">&nbsp;&nbsp;uboot命令</a>
+</h3>
+<h3 class="topic">
+<a name="2vjp5uc0d3pb6tu5e5efv93q2h">&nbsp;&nbsp;&nbsp;md</a>
+</h3>
+<h3 class="topic">
+<a name="665je35241bqrsifr54uuakvos">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/0k2j3h3440nk0q4pnpk7oj3at3.png"></p>
+<h3 class="topic">
+<a name="307stutvc801ob4h4n5vjr01ip">&nbsp;&nbsp;&nbsp;boot</a>
+</h3>
+<h3 class="topic">
+<a name="003vgd16govmdv9f8ebiovouup">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/36mvftpkpn3ptkkbns14hmrts0.png"></p>
+<h3 class="topic">
+<a name="17hd5bpmttv0o0p06227ml1ts7">&nbsp;&nbsp;&nbsp;flash</a>
+</h3>
+<h3 class="topic">
+<a name="7gptpbg6sn15oif6f7blee54tk">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/73kh17godkqiphpvljiqjbus1h.png"></p>
+<h3 class="topic">
+<a name="1cgb1rjluca83eehtn4at7h0h3">&nbsp;&nbsp;&nbsp;mem</a>
+</h3>
+<h3 class="topic">
+<a name="1kokb8masdanf6jdgqm5oc7f93">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/0hcpu8t9ahrc7fi1o49fkk3goh.png"></p>
+<h3 class="topic">
+<a name="4n0gnkb0dp8n72sb7ofed1fn2n">&nbsp;&nbsp;&nbsp;https://www.cnblogs.com/Cqlismy/p/12214305.html</a>
+</h3>
+<h3 class="topic">
+<a name="625627qiegno52pfksjfi81oh2">&nbsp;&nbsp;&nbsp;bdinfo</a>
+</h3>
+<h3 class="topic">
+<a name="4l12uo2q9trk303f1or7h5f00j">&nbsp;&nbsp;&nbsp;&nbsp;用于获取flash芯片在cpu中的起始内存和大小，方便后期输出flash中所有数据</a>
+</h3>
+<h3 class="topic">
+<a name="6obsva1162kq8olaqqu5sqvmg9">&nbsp;&nbsp;&nbsp;flinfo</a>
+</h3>
+<h3 class="topic">
+<a name="2779vhin15gf4ghe2kb0eh4rkr">&nbsp;&nbsp;&nbsp;&nbsp;用于打印flash内存相关信息</a>
+</h3>
+<h3 class="topic">
+<a name="1i61lqc7q8nkbcum62p8j74gcm">&nbsp;&nbsp;&nbsp;printenv</a>
+</h3>
+<h3 class="topic">
+<a name="7k0nmjj599le6g8cq94gmpqhpe">&nbsp;&nbsp;&nbsp;&nbsp;输出环境变量，可以获得bootcmd或flash内存等关键信息</a>
+</h3>
+<h3 class="topic">
+<a name="68rad721v605brhco9p9ob8lo6">&nbsp;&nbsp;&nbsp;setenv saveenv</a>
+</h3>
+<h3 class="topic">
+<a name="35shk1vr7j46qbfabir2ouetd8">&nbsp;&nbsp;&nbsp;&nbsp;用于修改uboot环境变量，例如通过修改bootcmd环境变量，可以修改uboot启动时执行的命令</a>
+</h3>
+<h3 class="topic">
+<a name="4e9qmr2jfom68bsfnj58agc7t0">&nbsp;&nbsp;&nbsp;tftp</a>
+</h3>
+<h3 class="topic">
+<a name="0u2pac2t4ms2jq9kmi8ldpi8d2">&nbsp;固件获取实操</a>
+</h3>
+<h3 class="topic">
+<a name="0hdn6iv2nvf1c5u8077ouvfa5k">&nbsp;&nbsp;软件层面 &#13;
+通过uboot获取固件有如下几个关键点&#13;
+关键1：定位flash芯片在cpu中的内存地址，通过指令或启动信息定位到&#13;
+关键2：存在指令可以输出flash中内存信息（md echo等）&#13;
+关键3：知道flash内存中的内存布局（boot kernel filesystem）（不必要，也可以将flash中所有数据均保存到bin文件中，使用binwalk解析）&#13;
+关键4：如果需要将flash数据拷贝到ram内存中输出，拷贝的数据不能覆盖其他关键数据，否则程序运行结束</a>
+</h3>
+<h3 class="topic">
+<a name="0jgcv5oc2seog91j2cffvarloh">&nbsp;&nbsp;&nbsp;使用uboot中的mem和flash指令（获取水星路由器固件）</a>
+</h3>
+<h3 class="topic">
+<a name="4ineljcr4beho1gtjdntsh06uf">&nbsp;&nbsp;&nbsp;&nbsp;进入uboot，使用mem指令结合flash指令，使用flash -layout指令确定flash芯片内存数据布局，定位芯片数据中文件操作系统的位置，使用mem -dump指令查看当前ram内存布局，查找一片与系统运行无关的内存，使用flash -read将flash芯片中的文件系统数据拷贝到ram中与系统运行无关的内存，然后使用mem -dump显示flash中拷贝过来的数据，以上过程执行之前设置minicom将操作输出保存到iot.bin文件中，所以最后一步mem -dump输出的flash中文件系统的数据可会保存进iot.bin,后期以十六进制方式打开iot.bin并进行裁剪拼接，即可获得固件文件系统</a>
+</h3>
+<h3 class="topic">
+<a name="7a57l9f4cev7qe99doh841qr6p">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;因为flash -read最多一次允许操作1024字节，故每次最多获得1024字节的固件文件系统数据，需要多次执行该过程并拼接得到的数据</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/6a14ndt4jhhn9v8do77dsps47t.png"></p>
+<h3 class="topic">
+<a name="5v2u0pvt046vnudlso5hlbv332">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这里使用flash -read将数据从flash中读取到内存中，还是有其他的指令可以做到这一点</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/1sjug95o097mv8c7r2d51ri4e0.png"></p>
+<h3 class="topic">
+<a name="38ckf4r4l4htpige7vbvb85o2c">&nbsp;&nbsp;&nbsp;使用bdinfo和md命令提取固件</a>
+</h3>
+<h3 class="topic">
+<a name="45cgeujp0e1jg5e3aau5ugrbvn">&nbsp;&nbsp;&nbsp;&nbsp;通过bdinfo查看flash芯片在cpu中共的内存地址，通过启动信息判断flash芯片内存布局，使用md输出flash芯片中的内容，并保存为二进制文件，即为固件</a>
+</h3>
+<h3 class="topic">
+<a name="629vrbmmqqq88764tp38bu6e65">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;设置串口参数打开串口</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/7043dbgls81t5od2uj5ihb3r6a.png"></p>
+<h3 class="topic">
+<a name="4lvjkubv8t7aecrish0ahbt146">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;从串口输出信息中获取flash芯片内存布局</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/176elleee2kiefjmv3q6k3nln4.png"></p>
+<h3 class="topic">
+<a name="5gan4lntv7uk2ldmbaqbegg9bh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uboot中使用bdinfo查看flash在cpu中的起始内存和大小</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/3qsaghvqd5sf73vrftm1lto765.png"></p>
+<h3 class="topic">
+<a name="5ti0u2f0kipu3suml2acvbn3j8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;根据获得的信息使用md指令提取flash中的内存数据</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/43ton8d9co0bmtsmmc912esi9t.png"></p>
+<h3 class="topic">
+<a name="7vk54epv3ifhgbg4nfeukld63d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用md指令输出部分flash中内核数据</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/30sish7iu90aoqqnrdd12gti5h.png"></p>
+<h3 class="topic">
+<a name="4j23g63cog4oc8cc7mg3j5mnjc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/4dfkp04vfkm6dfsmdh8au61vkl.png"></p>
+<h3 class="topic">
+<a name="2hh6pps2ohhm9lsjbp8fdd7kbm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ue编辑器切换到列块模式，删除列数据</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/60uvqhn32tjph7ag9sllvh6bd8.png"></p>
+<h3 class="topic">
+<a name="4pv73eq75nfpul8pjvvgbcea24">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;删除掉固件数据前的地址信息</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/5gdqrfl4v8m168e9d3fbc7ufnk.png"></p>
+<h3 class="topic">
+<a name="37lj1pc4s9gmrbg51nd98c6ri0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;删除固件数据后的多余信息</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/6l1ul9f1vg7cl6529bmiqt1f42.png"></p>
+<h3 class="topic">
+<a name="2jgtcqfrc70fp4qg39lb6me3i4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将字符形式的固件转为响应的二进制文件，需要注意大小端（使用软件实现）最终得到的flash中全部数据的bin文件即固件，可以直接用binwalk解包分析</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/1jl909p8tl2g65lldvqk5v8i42.png"></p>
+<h3 class="topic">
+<a name="411keu47tcd03em584igqajn3n">&nbsp;&nbsp;&nbsp;在shell中：使用tar或dd打包固件，使用ifconfig确定ip，使用nc传输固件</a>
+</h3>
+<h3 class="topic">
+<a name="2h36ii8ongb46phiso57cbm5rb">&nbsp;&nbsp;硬件层面</a>
+</h3>
+<h3 class="topic">
+<a name="4t9bu9rvoa28q24oaplgadd7a9">&nbsp;&nbsp;&nbsp;使用编程器、针夹、连接flash芯片</a>
+</h3>
+<h3 class="topic">
+<a name="7m1kl2ge6jolk96r75qac3pcf6">&nbsp;&nbsp;&nbsp;&nbsp;如果外围电路对flash芯片产生影响，则需要将flash芯片从板上取下，然后用编程器读取</a>
+</h3>
+<h3 class="topic">
+<a name="7k2v14g5amdimbmpkb32i5nqhb">&nbsp;&nbsp;&nbsp;获取路由器固件</a>
+</h3>
+<h3 class="topic">
+<a name="3u00egv0rvm6l4gvacdtbui5dk">&nbsp;&nbsp;&nbsp;&nbsp;使用编程器进行固件提取，读取时报芯片校验错误</a>
+</h3>
+<h3 class="topic">
+<a name="5cvolftt4efe8unle0f0puv6ir">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://www.chinafix.com/thread-851769-1-1.html</a>
+</h3>
+<h3 class="topic">
+<a name="1fmm5stmqg2arq011ulrnciofu">&nbsp;&nbsp;&nbsp;&nbsp;编程器+芯片夹</a>
+</h3>
+<h3 class="topic">
+<a name="1deemqgb9ugccl5r8a88g20ri9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;智能识别芯片型号前选择芯片类型，经过电笔测量以及资料查询，芯片电压为3.3v</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/51h3kk7a3nbv3cqhrum6itj2ps.png"></p>
+<h3 class="topic">
+<a name="1hmiphmvlac7hi59l0lsslga0j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;点击智能识别，发现芯片型号，此时使用不同的编程器，得到的结果不同，使用rt809h编程器可以读取成功，使用rt809f编程器读取失败</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/1vij7pfvfljv4ioj5jpp3gutr6.png"></p>
+<h3 class="topic">
+<a name="2u04t7smr6lbae0kkelb0p1pkt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用芯片夹子刷写固件</a>
+</h3>
+<p class="topicImage">
+<img height="400" src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/1oaus2vhml778tctduvlbqc9d1.jpg" width="300"></p>
+<h3 class="topic">
+<a name="11k8ij5i5qls15vjdffdabevrc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果芯片已经吹下来了，可以直接夹在夹子中连接编程器进行读取，而不同焊到托片上</a>
+</h3>
+<p class="topicImage">
+<img height="300" src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/2v40i7ajnc8iln98ln5o752joo.jpg" width="400"></p>
+<h3 class="topic">
+<a name="4sughthismqgngnvkj81cqmh8i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;先使用打开功能，将要刷入的固件打开到缓冲区中，之后点击写入，通过编程器写入固件到芯片</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/2b3fobjbop950cp16gcfobtnev.png"></p>
+<h3 class="topic">
+<a name="7ho3d8kach4ns1u8ji1ejpn4gm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;编程夹可能存在接触不良问题，读取结果不稳定，且读出来的固件可能存在问题，也可能存在外围电路干扰</a>
+</h3>
+<h3 class="topic">
+<a name="2v6igo1ii17868us52o6i5nupv">&nbsp;&nbsp;&nbsp;&nbsp;编程器+芯片托+热风枪取下芯片</a>
+</h3>
+<h3 class="topic">
+<a name="634pf1fq74b2gefefnqblvmve3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;读写结果稳定，并且当板子以及芯片托对应引脚上存在锡时，仅用热风枪就可以完成取下芯片以及焊接芯片的过程（热风枪将引脚上的锡吹化，从而完成取芯片、焊芯片）</a>
+</h3>
+<h3 class="topic">
+<a name="3977p398uh30u7ghqqtek7mmmh">&nbsp;&nbsp;&nbsp;&nbsp;芯片与编程器的连接，关键在于8个引脚呈倒u型一一对应</a>
+</h3>
+<h3 class="topic">
+<a name="3a8982lknfpgt34e8o299n7el7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/7nitj54atpa1l5u31ri0fmchr7.png"></p>
+<h3 class="topic">
+<a name="3qnd4ra2dndq0h815gnaclaf2u">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/7e992qmsfuc5p8ufoupsgbnesl.png"></p>
+<h3 class="topic">
+<a name="25913kvdltvr4v403v056j4lsg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/03soo9nhidl4v7nigg9mu7igi7.png"></p>
+<h3 class="topic">
+<a name="63jh8uvhad97f8t9siajsggn59">&nbsp;其他固件获取方法</a>
+</h3>
+<h3 class="topic">
+<a name="05nfkkje4gn34dsf71qp9pvior">&nbsp;&nbsp;资料来源：物联网渗透测试</a>
+</h3>
+<h3 class="topic">
+<a name="5bj4k4hgohofq4v6t6clacdv9i">&nbsp;&nbsp;&nbsp;固件分析关注的内容</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/3ip63sde4sud38uaf9upcdq6i0.png"></p>
+<h3 class="topic">
+<a name="7ll9bsqk8up400vl8rka7hgan5">&nbsp;&nbsp;&nbsp;&nbsp;固件分析过程中用到的方法</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/7dfaq2bhjl3th547eo2qmk4f0t.png"></p>
+<h3 class="topic">
+<a name="3ed9fp18q566410n00ck63vufj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;固件镜像获取方法&#13;
+代理固件更新流量（书54）&#13;
+flashrom工具+uart接口+芯片夹获取固件（书58）</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/2g8f7d6qv1esf5m373ec9sk8ba.png"></p>
+<h3 class="topic">
+<a name="0ds6us92usebc1tvpq0s8nuohp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;固件获取过程中用的工具</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/3urh7fve4irhfeq587dkpf9np7.png"></p>
+<h2 class="topic">
+<a name="3usdg1in5hf00pur25jblfb10e">固件提取（从固件.bin文件中获得文件系统）</a>
+</h2>
+<h3 class="topic">
+<a name="3rfu2eahmj417arl5b2vmaoi0j">&nbsp;根据对vxworks镜像的分析，其系统入口点多为0x80001000</a>
+</h3>
+<h2 class="topic">
+<a name="0jntqg8f6tl84jaeccl8tm5opu">补充资料：物联网渗透测试</a>
+</h2>
+<h3 class="topic">
+<a name="46bsfuhh9ghd2h1im4vbm5n4at">&nbsp;分析固件文件，获取固件中文件系统</a>
+</h3>
+<h3 class="topic">
+<a name="4e4rvlptm308l33lbf1bf02os2">&nbsp;&nbsp;使用hexdump+grep工具在镜像中搜索文件系统头部特征，从而定位文件系统在固件中的偏移（书60页）</a>
+</h3>
+<h3 class="topic">
+<a name="44sfdv9vuk2hcgaf9l724o0fcg">&nbsp;&nbsp;使用binwalk从固件中提取文件系统（书61页）</a>
+</h3>
+<h3 class="topic">
+<a name="4impeoapenpb9qhopmjp17484h">&nbsp;&nbsp;使用binwalk对固件进行熵分析，从而判断固件镜像是否进行了压缩或加密（书63页）</a>
+</h3>
+<h3 class="topic">
+<a name="6haugt6mpfvei41de879n7pmi0">&nbsp;&nbsp;&nbsp;binwalk作者的博客</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/6qkj9qau95htpki8cdesvcffel.png"></p>
+<h3 class="topic">
+<a name="61lln0f7522jpqhsk0ugqvcf53">&nbsp;&nbsp;分析文件系统（书64页）</a>
+</h3>
+<h3 class="topic">
+<a name="213k31u2a6amsvu534r3jq8g1p">&nbsp;&nbsp;&nbsp;手工分析</a>
+</h3>
+<h3 class="topic">
+<a name="1oe1ql1m1poo447mqovs16pkdv">&nbsp;&nbsp;&nbsp;&nbsp;用于破解加密的zip文件</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/2lm1qhp3r9uqv8p6oo3i9b5rmt.png"></p>
+<h3 class="topic">
+<a name="0fkr3ko3fvaqo2pd5loq0cuaip">&nbsp;&nbsp;&nbsp;&nbsp;通过find命令在文件系统中找到所有后缀为.conf的文件，配置文件中可能存在敏感信息</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/6omlt8raa92id04jmgk9djuadu.png"></p>
+<h3 class="topic">
+<a name="4irijhf6jjecigus54ttdf58u0">&nbsp;&nbsp;&nbsp;自动化分析固件文件系统</a>
+</h3>
+<h3 class="topic">
+<a name="22fttrn659he84ie5dfegvcq6o">&nbsp;&nbsp;&nbsp;&nbsp;使用工具firmwalker的脚本识别各种敏感信息（书67页）</a>
+</h3>
+<h3 class="topic">
+<a name="020bg8rgsoeuiauj82mn1g44lg">&nbsp;&nbsp;&nbsp;&nbsp;firmware diffing用于判断两个固件的差异</a>
+</h3>
+<h3 class="topic">
+<a name="1sbb31ph36go5prnqhai4a8iu6">&nbsp;&nbsp;模拟固件执行(书68页)</a>
+</h3>
+<h3 class="topic">
+<a name="0k20ki6cc8o6c63hladfnhf6lj">&nbsp;&nbsp;&nbsp;使用firmware analysis toolkit（FAT）实现固件镜像的仿真</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/16cesscd8phs3gr6bfp5qglpl8.png"></p>
+<h3 class="topic">
+<a name="6a15sf0v9d2cr0ljrtajgmju1o">&nbsp;arm mips二进制分析入门(书71页）</a>
+</h3>
+<h3 class="topic">
+<a name="38u0l8fub5dah85ggj52melk9k">&nbsp;&nbsp;mips</a>
+</h3>
+<h3 class="topic">
+<a name="7r9vf6si744fih05vckcniu9pp">&nbsp;&nbsp;&nbsp;后门发现（71页）</a>
+</h3>
+<h3 class="topic">
+<a name="47c26ff2biq2f12sojvtgc75du">&nbsp;&nbsp;&nbsp;&nbsp;使用Hopper反汇编固件，在其中搜索关键字符串（例如telnet）从而发现后门</a>
+</h3>
+<h3 class="topic">
+<a name="34e567likkitj8cjl6j08uta2k">&nbsp;&nbsp;&nbsp;漏洞利用（74页）</a>
+</h3>
+<h3 class="topic">
+<a name="1g8fdinsod0tq2io61u1qhla48">&nbsp;&nbsp;&nbsp;&nbsp;使用路由器漏洞攻防演练靶机（DVRF）作为环境</a>
+</h3>
+<h3 class="topic">
+<a name="06hnt95oiebets0hr3ejhta8qh">&nbsp;使用firmware-mod-kit（FMK）在固件中添加后门(83页)</a>
+</h3>
+<h3 class="topic">
+<a name="251fpinej7pomrd8p6c7vbuo45">&nbsp;iot硬件设备攻击（书164页）</a>
+</h3>
+<h3 class="topic">
+<a name="26inacmmbtm4a0jlbea28nsmm7">&nbsp;&nbsp;硬件攻击方法</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/0rbqp82v5f3p461eerge4m001v.png"></p>
+<h3 class="topic">
+<a name="2bcjetmtje2k98cuhprs4iiheb">&nbsp;&nbsp;&nbsp;设备信息收集</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/46idrr382ivtkbq09fogpt98k6.png"></p>
+<h3 class="topic">
+<a name="1cco9ko88h0iurm1m4ln0t8ota">&nbsp;&nbsp;&nbsp;&nbsp;设备外部分析与内部分析</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/0diaujdai59752o9kloj86tcm7.png"></p>
+<h3 class="topic">
+<a name="4cddgf1hbrm4jeq37opjmkg5qf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;设备中常用到的通讯接口</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/362t815s60psao3ru0ndha6l8u.png"></p>
+<h3 class="topic">
+<a name="11pv9n275fvif5pvg0jetlm2c7">&nbsp;&nbsp;芯片型号识别</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/7so5tkgpn4tg0hctf7p11dlo0e.png"></p>
+<h3 class="topic">
+<a name="2jcr1jfhu1i4iq2eltq5v8f02v">&nbsp;&nbsp;&nbsp;存储器类型，还有EMMC</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/69vt0qo5vu0rgp5v44qiq5hu1c.png"></p>
+<h3 class="topic">
+<a name="0r3cc6l5qieppokip3uqbjr1pg">&nbsp;&nbsp;&nbsp;&nbsp;存储器特点</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/2fo1h1c3cj5rko6egkkk7mv1f3.png"></p>
+<h3 class="topic">
+<a name="02oqf7c509tqs6n2o7ijm0kl9t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;EEPROM与flash的区别</a>
+</h3>
+<h3 class="topic">
+<a href="https://blog.csdn.net/yuanlulu/article/details/6163106" name="049v5egcrfdtbno10dia3h2k3d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://blog.csdn.net/yuanlulu/article/details/6163106</a>
+</h3>
+<h3 class="topic">
+<a name="3cottt6mb0p9d4744rjk591sh8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;emmc与Nand flash、Nor flash之间的区别</a>
+</h3>
+<h3 class="topic">
+<a href="https://blog.csdn.net/woshishui918/article/details/85056958" name="5uah2i6nghiav8f45gje1hhk8r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://blog.csdn.net/woshishui918/article/details/85056958</a>
+</h3>
+<h3 class="topic">
+<a name="4bsgoko8jk4irburduv5fr5nkv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://www.jianshu.com/p/ea84db15c1fa</a>
+</h3>
+<h3 class="topic">
+<a name="2onb3n8dheddbp96h7ag4bv1uu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;emmc：全称为embeded MultiMedia Card，是一种嵌入式非易失性存储器系统，由Nand flash和Nand flash控制器组成，以BGA方式封装在一款chip上。&#13;
+Nand flash：一种存储数据介质；若要读取其中的数据，需要外接的主控电路。&#13;
+Nor flash：也是一种存储介质；它的存储空间一般比较小，但它可以不用初始化，可以在其内部运行程序，一般在其存储一些初始化内存的固件代码；&#13;
+这里主要重点讲的是emmc 和Nand flash 之间的区别，主要区别如下：</a>
+</h3>
+<h3 class="topic">
+<a name="1kc25sp2nupgbnv6lero578rlo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;根据工作电压的不同，MMC卡可以分为两类：&#13;
+High Voltage MultiMediaCard，工作电压为3.3V左右。&#13;
+Dual Voltage MultiMediaCard，工作电压有两种，1.70V~1.95V和2.7V~3.6V，CPU可以根据需要切换&#13;
+我所使用的eMMC实测工作电压VCC为2.80V~2.96V，VCCQ为1.70V~1.82V。&#13;
+其中VCC为MMC Controller/Flash Controller的供电电压，VCCQ为Memory和Controller之间I/O的供电。&#13;
+上电初始化阶段MMC时钟频率为400KHz，需要等电压调整到它要求的VCC时（host去获取OCR中记录的电压值，上面有说），MMC时钟才会调整到更高的正常工作频率。</a>
+</h3>
+<h3 class="topic">
+<a name="2kf2qtveb8rjsj4io5lenhgkcv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;NorFlash&#13;
+NOR Flash需要很长的时间进行抹写，但是它提供完整的寻址与数据总线，并允许随机存取存储器上的任何区域，这使的它非常适合取代老式的ROM芯片。当时ROM芯片主要用来存储几乎不需更新的代码，例如电脑的BIOS或机上盒(Set-top Box)的固件。NOR Flash可以忍受一万到一百万次抹写循环，它同时也是早期的可移除式快闪存储媒体的基础。CompactFlash本来便是以NOR Flash为基础的，虽然它之后跳槽到成本较低的 NAND Flash。</a>
+</h3>
+<h3 class="topic">
+<a name="6fhdr4c4o769d03v1b2kfd9ocr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;NandFlash&#13;
+NAND Flash式东芝在1989年的国际固态电路研讨会(ISSCC)上发表的， 要在NandFlash上面读写数据，要外部加主控和电路设计。。NAND Flash具有较快的抹写时间, 而且每个存储单元的面积也较小，这让NAND Flash相较于NOR Flash具有较高的存储密度与较低的每比特成本。同时它的可抹除次数也高出NOR Flash十倍。然而NAND Flash 的I/O接口并没有随机存取外部地址总线，它必须以区块性的方式进行读取，NAND Flash典型的区块大小是数百至数千比特。&#13;
+&#13;
+因为多数微处理器与微控制器要求字节等级的随机存取，所以NAND Flash不适合取代那些用以装载程序的ROM。从这样的角度看来，NAND Flash比较像光盘、硬盘这类的次级存储设备。NAND Flash非常适合用于储存卡之类的大量存储设备。第一款创建在NAND Flash基础上的可移除式存储媒体是SmartMedia，此后许多存储媒体也跟着采用NAND Flash，包括MultiMediaCard、Secure Digital、Memory Stick与xD卡。</a>
+</h3>
+<h3 class="topic">
+<a name="6in59fuidv5vn1o8gdnrd9mpmm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;eMMC&#13;
+eMMC (Embedded Multi Media Card) 为MMC协会所订立的，eMMC 相当于 NandFlash+主控IC ，对外的接口协议与SD、TF卡一样，主要是针对手机或平板电脑等产品的内嵌式存储器标准规格。eMMC的一个明显优势是在封装中集成了一个控制器，它提供标准接口并管理闪存，使得手机厂商就能专注于产品开发的其它部分，并缩短向市场推出产品的时间。这些特点对于希望通过缩小光刻尺寸和降低成本的NAND供应商来说，同样的重要。&#13;
+&#13;
+eMMC由一个嵌入式存储解决方案组成，带有MMC（多媒体卡）接口、快闪存储器设备（Nand Flash）及主控制器，所有都在一个小型的BGA 封装。接口速度高达每秒52MBytes，eMMC具有快速、可升级的性能。同时其接口电压可以是 1.8v 或者是 3.3v。</a>
+</h3>
+<h3 class="topic">
+<a name="092l1s1pt30l7ccs2ianakg52h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Nor Flash因为支持单独bit的读写操作，所以可以作为rom存储设备开机的bootloader等代码</a>
+</h3>
+<h3 class="topic">
+<a name="49kbagqsd552oqikk6sg6c0oe9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Nand flash因为仅支持按块读写内存，所以不能用于带代码执行，常用于存储数据以及系统OS</a>
+</h3>
+<h3 class="topic">
+<a name="1c2hpu8ct4a536q7obtku6dnk1">&nbsp;总线接口识别与利用</a>
+</h3>
+<h3 class="topic">
+<a name="1j83r144jue5q5cm2t37fecb3s">&nbsp;&nbsp;UART接口（书171页）</a>
+</h3>
+<h3 class="topic">
+<a name="16mransto5d2b30li9nn6msf8l">&nbsp;&nbsp;&nbsp;确定uart接口各个接口的具体功能（178页）</a>
+</h3>
+<h3 class="topic">
+<a name="3ksivkrgi8i1l7b6trn4u6u0bu">&nbsp;&nbsp;SPI I2C（书172页）</a>
+</h3>
+<h3 class="topic">
+<a name="67iing81pnirdnn9lammpvlj9m">&nbsp;&nbsp;&nbsp;使用Attify Badge工具读取SPI芯片内容</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/18vvhmn23b5pf85pb2vrs06nkd.png"></p>
+<h3 class="topic">
+<a name="0hqcu62chs7bp6akertobl0820">&nbsp;&nbsp;JTAG(书175页)</a>
+</h3>
+<h3 class="topic">
+<a name="780pg372ccepdvp141fpgcho7m">&nbsp;&nbsp;&nbsp;JTAG接口的调试与漏洞利用，使用JTAGulator工具识别JTAG接口，可以将JTAG与GDB调试器建立连接，从而对当前运行的进程进行调试</a>
+</h3>
+<h3 class="topic">
+<a name="1q9fkui53vo06fchv804p4jla4">&nbsp;NAND噪声干扰</a>
+</h3>
+<h3 class="topic">
+<a name="7i7jogdcc1np05e09ghil70vih">&nbsp;&nbsp;可以用于绕过嵌入式设备安全防护措施，例如大端uboot启动操作系统内核，从而进入uboot</a>
+</h3>
+<h2 class="topic">
+<a name="428tv6s4oaljgeehp5b0r8q2q2">补充资料：解密家用路由器0day漏洞挖掘</a>
+</h2>
+<h3 class="topic">
+<a name="26nphe5274tv1p9roe5icgc09j">&nbsp;固件模拟环境运行（书71页）</a>
+</h3>
+<h3 class="topic">
+<a name="4ts4otmujk23vo72prvj8ut2mm">&nbsp;&nbsp;基于QEMU模拟路由器固件的运行环境，大体思路就是hook，即看雪课程中讲的内容</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/3bn8d8d8pqsgkkeet5gkucovtm.png"></p>
+<h3 class="topic">
+<a name="7ce1n6p5fi0vuqs1c9270tline">&nbsp;linux下静态分析与动态调试（书78页）</a>
+</h3>
+<h3 class="topic">
+<a name="0o8q6dbr9iacnptic20ha04m2o">&nbsp;&nbsp;使用ida进行静态分析以及远程动态调试（因为QUMU支持GDB远程调试，故QEMU+IDA实现固件模拟运行的远程调试）（动态调试在书80页，分为动态调试和附加调试两部分）</a>
+</h3>
+<h3 class="topic">
+<a name="1noief7087jc3bmsi1ca0arqcs">&nbsp;ida脚本基础（书87页）</a>
+</h3>
+<h3 class="topic">
+<a name="40obm6ellu4g060foithppjar3">&nbsp;&nbsp;使用IDA帮助系统查看IDC函数功能（书89页）</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/49haqq1d4p63hogcp42ni0vr3o.png"></p>
+<h3 class="topic">
+<a name="113r5ls9r4t1j2n6qplrbos51r">&nbsp;路由器固件及其文件系统（181页）</a>
+</h3>
+<h3 class="topic">
+<a name="1081ecrrepn74t23da5iqbah8n">&nbsp;&nbsp;常见的文件系统格式：Squashfs</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/55ejj5n63f9sbfs27v1orf9m5d.png"></p>
+<h3 class="topic">
+<a name="7kehu8ddbolin8mg3036ehneo4">&nbsp;&nbsp;&nbsp;Squashfs文件系统常见压缩格式</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/7p63gfa1fqm8spfjndddi0fc8f.png"></p>
+<h3 class="topic">
+<a name="1454e1j0d8ku2hsvpqb12ath8e">&nbsp;&nbsp;固件提取（书298页）</a>
+</h3>
+<h3 class="topic">
+<a name="031oreadurlsr5kfsifkdqv1n5">&nbsp;&nbsp;&nbsp;flash中存储数据的构成</a>
+</h3>
+<h3 class="topic">
+<a name="45rs0u41grsodd36o3inh5lf62">&nbsp;&nbsp;&nbsp;&nbsp;NVRAM中保存了路由器配置信息，可能很关键</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/022gh3dg036o1jqunknc7r935u.png"></p>
+<h3 class="topic">
+<a name="0pj6428rdgjngf3mnum68k86ag">&nbsp;&nbsp;&nbsp;主要数据提取思路</a>
+</h3>
+<h3 class="topic">
+<a name="4kbl5m1abiqg3427ij8m3jukic">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/7mt1cb1penlbij5kmlb3nf01ss.png"></p>
+<h3 class="topic">
+<a name="2mldr8sjf4ue4m3iakqtabpbar">&nbsp;&nbsp;&nbsp;探测uart串口功能（书300页）</a>
+</h3>
+<h3 class="topic">
+<a name="5jjatdc3ofvir22gu2i8n7aa1o">&nbsp;&nbsp;&nbsp;&nbsp;目测法</a>
+</h3>
+<h3 class="topic">
+<a name="3p8nf4b9botnvt7jidaqtb3qnd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/4amnsuueba9j04r3nainl1i18p.png"></p>
+<h3 class="topic">
+<a name="0a02lei9ofgi81s47ej66cblrq">&nbsp;&nbsp;&nbsp;&nbsp;万用表测试法</a>
+</h3>
+<h3 class="topic">
+<a name="6ui476pfhsf61et8q0esa0iudi">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/6q8t90mnuh8rlpqbbfv789l8io.png"></p>
+<h3 class="topic">
+<a name="3jup9u9ceptv92uglh2seca4ql">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/493u0cj222lvsd84krpkh597r4.png"></p>
+<h3 class="topic">
+<a name="4r15ftptp9ki6l48r6t7rj4n80">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/05sesh8lav650i9f34r64nk62m.png"></p>
+<h3 class="topic">
+<a name="24frhfjbh8phnkjkhqtmva6aum">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/4a5en82b7m0ia6dmmru2lcbgsc.png"></p>
+<h3 class="topic">
+<a name="15nn2qonbv98h2j3e8gn83smqs">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/5c97hpmmpbk0oa15jpkrkd66q5.png"></p>
+<h3 class="topic">
+<a name="2rliqs4akae0lgr6qst8l397hf">&nbsp;&nbsp;&nbsp;连接串口（书305页）</a>
+</h3>
+<h3 class="topic">
+<a name="3ltt88a3qaneo92aaff0c5eban">&nbsp;&nbsp;&nbsp;&nbsp;自动检测波特率的工具baudrate.py</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/3jusnm1h2r4vbng7arm3ko18r2.png"></p>
+<h3 class="topic">
+<a name="6c6s6bb0i3b7ha6ud0oflt555e">&nbsp;&nbsp;&nbsp;linux和windows下读取串口数据（书306页）</a>
+</h3>
+<h3 class="topic">
+<a name="2lfakms6lqqkmba49kqgsaamv6">&nbsp;&nbsp;&nbsp;&nbsp;linux下使用minicom等</a>
+</h3>
+<h3 class="topic">
+<a name="4oo1teo24rucla1ssvtln8k6im">&nbsp;&nbsp;&nbsp;&nbsp;windows下可以使用putty、串口调试助手等</a>
+</h3>
+<h3 class="topic">
+<a name="5i3gdj76rmq6o39jb5u3d3pont">&nbsp;&nbsp;&nbsp;JTAG提取数据(书311页)</a>
+</h3>
+<h3 class="topic">
+<a name="2btaesbdkbdbmjh8131t31cshp">&nbsp;&nbsp;&nbsp;&nbsp;介绍了jtag引脚等相关信息</a>
+</h3>
+<h3 class="topic">
+<a name="5tljuckvnfun753bts3tskj42s">&nbsp;&nbsp;&nbsp;&nbsp;使用brjtag通过jtaag接口刷写flash（书315页）</a>
+</h3>
+<h3 class="topic">
+<a name="38i1re40i2lmgvqkbtdvr3m2kj">&nbsp;&nbsp;&nbsp;&nbsp;使用brjtag提取flash</a>
+</h3>
+<h3 class="topic">
+<a name="25ja2781ido0s6du6lv5qgv7sq">&nbsp;&nbsp;&nbsp;&nbsp;使用brjtag提取CFE(也即bootloader)</a>
+</h3>
+<h3 class="topic">
+<a name="40gho5gulchc31blnepu6lsc63">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;什么是CFE</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/65b6rr3ursid0lij10cdao526k.png"></p>
+<h3 class="topic">
+<a name="1upo6jfskfhheerrspapnre6lp">&nbsp;&nbsp;&nbsp;&nbsp;使用brjtag提取NVRAM</a>
+</h3>
+<h3 class="topic">
+<a name="41k1v0qja6iqi10pshn6d4unpq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/0ggq6t7lnk2udc5phcmutelegj.png"></p>
+<h3 class="topic">
+<a name="33jnh97h9e89norgidjkpj3mjb">&nbsp;&nbsp;手工识别并提取固件文件系统（182页）</a>
+</h3>
+<h3 class="topic">
+<a name="2ln3lahts5vkotrnh5sm44n8f8">&nbsp;&nbsp;&nbsp;使用file命令查看文件类型，该命令根据文件开头的magic字段判断文件类型，固件.bin文件中包含了包括文件系统的多种数据，故直接使用file xx.bin，无法判断固件文件类型</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/2v9kftegf8art4kqvpkoa0r19a.png"></p>
+<h3 class="topic">
+<a name="7olqg4m9bc82b87p6islbgvjgc">&nbsp;&nbsp;&nbsp;&nbsp;使用linux命令判断固件中文件系统类型</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/0pm7o47a4nm1l7al828sf36g7h.png"></p>
+<h3 class="topic">
+<a name="7uds1pm0b9ro2khh55fh2oguea">&nbsp;&nbsp;&nbsp;在固件文件中检索文件系统magic签名（使用string |grep指令）</a>
+</h3>
+<h3 class="topic">
+<a name="6828k2bkuipo1erlupq7kdndhf">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/223fuesannhbo45gendr8iu25d.png"></p>
+<h3 class="topic">
+<a name="3cfn837hlv34s333hq6op6np1g">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/27564fs45lnp46ucpi9olhua63.png"></p>
+<h3 class="topic">
+<a name="0ppg16gamtdk5e0kgpa1vke15b">&nbsp;&nbsp;&nbsp;使用hexdump、dd、file命令确认文件系统</a>
+</h3>
+<h3 class="topic">
+<a name="4renrqdf0hjvc8e74htgv8h88m">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/08jkg8m4recqfi3m46dugmj7qj.png"></p>
+<h3 class="topic">
+<a name="3cr2gjqf32bcnbrh4e78sra2a9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/6mnt5q40cm3usdognvra4dfbv4.png"></p>
+<h3 class="topic">
+<a name="15vkd5nagbni8pq66j8icvd0df">&nbsp;&nbsp;&nbsp;手动提取文件系统（使用dd命令获得文件系统数据，通过squashfs文件系统头文件识别文件系统压缩格式，该文件系统以LZMA格式压缩，使用firmware-mod-kit命令解压）（184页）</a>
+</h3>
+<h3 class="topic">
+<a name="74g3apd004a6aeg6sfo2pq2da1">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/5i2nq2be9rci7fs9pvop09s5gh.png"></p>
+<h3 class="topic">
+<a name="2pl7s2hc0qeu7mf1v031e71p2t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/79db11p8oet693h23vnl6e9m31.png"></p>
+<h3 class="topic">
+<a name="0aucf9vcr0ge4a1ggfm6sna8lj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/3j9khrkefpber642msjaeffg4q.png"></p>
+<h3 class="topic">
+<a name="3a2fm8rsb0ehkaji4ku708ein0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/5sh8vrr8dtmnt7c6cjbo9feduv.png"></p>
+<h3 class="topic">
+<a name="68djp7bng5rsrn7bgu60r6b3ds">&nbsp;&nbsp;&nbsp;自动提取文件系统，使用binwalk（189页）</a>
+</h3>
+<h3 class="topic">
+<a name="1v2la6ma12duh77t77t9kmtdf5">&nbsp;&nbsp;&nbsp;&nbsp;binwalk实现原理（189页）</a>
+</h3>
+<h3 class="topic">
+<a name="22k4o1iv6ct5kicu9ihn5ti7ma">&nbsp;&nbsp;&nbsp;&nbsp;binwalk提取与分析（191页）</a>
+</h3>
+<h3 class="topic">
+<a name="52tpcpcoc17v2icf6ikrskgt79">&nbsp;&nbsp;&nbsp;&nbsp;binwalk用法进阶</a>
+</h3>
+<h3 class="topic">
+<a name="3os335a8di7e686kfbhq2cakuu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;基于magic签名文件自动提取，即用户自己编写magic文件，实现binwalk识别新的文件格式，这里介绍的了签名文件的写法</a>
+</h3>
+<h3 class="topic">
+<a name="6b7burbprhqm779bfe342kg622">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/75kduiokc625djvr9uuh75c9bs.png"></p>
+<h3 class="topic">
+<a name="5kklp7nqgipcdaoh7gfhhtf9p6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;基于binwalk的配置文件提取</a>
+</h3>
+<h3 class="topic">
+<a name="0t99aqgi3hui8eq2fkm9ncmiks">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/784lvoeefb9lpruktf3lo94t30.png"></p>
+<h3 class="topic">
+<a name="2ajmmdrvehnb4j1b0h5tbne7aq">&nbsp;路由器漏洞挖掘（324页）</a>
+</h3>
+<h3 class="topic">
+<a name="24csb52s8vb91fio6llpq0o89a">&nbsp;&nbsp;静态代码审计</a>
+</h3>
+<h3 class="topic">
+<a name="7n60ivul3pde4ju0plqcbcq8s3">&nbsp;&nbsp;&nbsp;人工代码审计</a>
+</h3>
+<h3 class="topic">
+<a name="2ctoomfa8c5dpardljdgn64c5d">&nbsp;&nbsp;&nbsp;&nbsp;基本步骤</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/1pn91082lnsh3jp3vufc4rgrlk.png"></p>
+<h3 class="topic">
+<a name="45h2im4ahnl0ptra8phjkr0ncr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/2nf83rlo3f91sqcs6l0po77ptf.png"></p>
+<h3 class="topic">
+<a name="363dgeuoufrr4df8qpg9i1s836">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/1q7sqo9ce6v6k1c3n8pvocn3ak.png"></p>
+<h3 class="topic">
+<a name="2eba6flce6nqjtsko0t4dc39mf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/4shp59horgq3ks0khs0piojh4s.png"></p>
+<h3 class="topic">
+<a name="65a88l54upe90kffjoocklic3b">&nbsp;&nbsp;&nbsp;二进制自动化漏洞审计</a>
+</h3>
+<h3 class="topic">
+<a name="37gq1po00h3ao3f298ks0pvadq">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/53nk96iv58jm8iimbvjjdaujt9.png"></p>
+<h3 class="topic">
+<a name="5kru6q4ln4ouboqcjp3c2dbmno">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/1lj6k2quulrju26enbqbttsi32.png"></p>
+<h3 class="topic">
+<a name="18tp1fhkfe3j54ms3t2628rg41">&nbsp;&nbsp;&nbsp;自己定制分析RISC指令集的BugScan工具（书330页）</a>
+</h3>
+<h3 class="topic">
+<a name="0uelk1q1875aqplbigo7iaubg4">&nbsp;&nbsp;模糊测试(书338)</a>
+</h3>
+<h3 class="topic">
+<a name="43q1isse7c99pd8r8nlrhakcfg">&nbsp;&nbsp;&nbsp;使用spike 进行协议fuzz(书340），可以使用更新的Boofuzz</a>
+</h3>
+<h3 class="topic">
+<a name="2atlge61kt041nunmibsdie79q">&nbsp;&nbsp;&nbsp;使用sulley进行协议fuzz</a>
+</h3>
+<h3 class="topic">
+<a name="4107ikbj9jlom4846vrpp1ldq2">&nbsp;&nbsp;&nbsp;使用burp suite爬虫爬取路由器服务端</a>
+</h3>
+<h3 class="topic">
+<a name="200purcd3rjbivvrvmoo79plkt">&nbsp;&nbsp;漏洞挖掘实战（347页）</a>
+</h3>
+<h2 class="topic">
+<a name="1qvmnknsi49q1qr8ivtdun87vj">补充资料：硬件安全大揭秘</a>
+</h2>
+<h3 class="topic">
+<a name="384rp1ueecs8caltnj4gue6i1n">&nbsp;硬件接口问题</a>
+</h3>
+<h3 class="topic">
+<a name="0435971jmn7eibua4t9j3ld2ha">&nbsp;&nbsp;常见硬件接口</a>
+</h3>
+<h3 class="topic">
+<a name="3ffnphqlc5nug9e6ftfov9fh4a">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/4a7df7dr79edb4aqq9jvme4roc.png"></p>
+<h3 class="topic">
+<a name="0lf9eoo894u6qa817sfq3cvfuc">&nbsp;&nbsp;uart与RS232等标准的关系</a>
+</h3>
+<h3 class="topic">
+<a name="101s2s1g1aq9rpbj7ftv4h5nce">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/5trmkk8u3aij7sk8383qup4h99.png"></p>
+<h3 class="topic">
+<a name="7mr8avhfgp47ke2p8o94ubdpmm">&nbsp;&nbsp;RS232（书35页）</a>
+</h3>
+<h3 class="topic">
+<a name="01tr141s367kqr814cquqrircg">&nbsp;&nbsp;&nbsp;RS232协议数据报文格式，适用于传输距离近的场景</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/5i3vjlrfn49j8uuq400gmgpgjn.png"></p>
+<h3 class="topic">
+<a name="1gpn7l3heokc5u5l67423fgm9s">&nbsp;&nbsp;&nbsp;&nbsp;接口脚位定义</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/7bq6oaov2gbkjpe7j54k21umn3.png"></p>
+<h3 class="topic">
+<a name="6drjjockp0gc62fantfk686t7u">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过关键接口读数据</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/5fcg1uq61hihskide0r0n3314g.png"></p>
+<h3 class="topic">
+<a name="0eu3fp17dvavmimi5kcdic2bj3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;串口读取软件的设置项（38）波特率、数据位、奇偶校验、停止位</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/7ukcimj63imav88nqf9adjj9d5.png"></p>
+<h3 class="topic">
+<a name="2u9qdttiba3i2ek8ratpph8cim">&nbsp;&nbsp;RS485/RS422(书40页)</a>
+</h3>
+<h3 class="topic">
+<a name="2cbthooolhkl260gk17p1n1mhu">&nbsp;&nbsp;&nbsp;适用于远距离传输的工业控制领域，输出的发送传输与串口类似</a>
+</h3>
+<h3 class="topic">
+<a name="519tels852shkpja2jvvbbtcbg">&nbsp;&nbsp;I2C(书41页)</a>
+</h3>
+<h3 class="topic">
+<a name="75ottofa9me9pjkiod7u10sqno">&nbsp;&nbsp;&nbsp;即集成电路总线</a>
+</h3>
+<h3 class="topic">
+<a name="72499dgj6uc5k2co1dcc10rdh8">&nbsp;&nbsp;&nbsp;&nbsp;用途</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/1872hfvggplcd24tisid449tna.png"></p>
+<h3 class="topic">
+<a name="2ssc4jctrhrdmlr2715bh5oebj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;常用于传感器接口和EEPROM存储芯片接口</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/18d9auer8mmk5nolv95pvg659d.png"></p>
+<h3 class="topic">
+<a name="3jpmuncnpdjjhv7fu17qoi5qe1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;eeprom用于少量数存储场景，大量数据存储场景使用flash</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/6if4f8ga98tfapd8a3dvq78tjv.png"></p>
+<h3 class="topic">
+<a name="1t1foggpuht0t6ub1rofnb5ffs">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;EEPROM与flash的区别</a>
+</h3>
+<h3 class="topic">
+<a name="0532aoamvek1ht39i7jvse3b3e">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://blog.csdn.net/yuanlulu/article/details/6163106</a>
+</h3>
+<h3 class="topic">
+<a name="056tasa4srh9dqq059rne8ct3i">&nbsp;&nbsp;SPI(书42页)</a>
+</h3>
+<h3 class="topic">
+<a name="0nmnsk1im4uk927i02ovgc1dng">&nbsp;&nbsp;&nbsp;即串行外设接口，是短程通信的同步串行通信接口规范，速度较快，常用于连接存储芯片（SPI flash、NAND flash、EMMC）</a>
+</h3>
+<h3 class="topic">
+<a name="69ln68v3j6tdaloks1ok1p2nhf">&nbsp;&nbsp;&nbsp;&nbsp;SPI接口应用</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/2hfft188rco87pccq7q63d23e0.png"></p>
+<h3 class="topic">
+<a name="5tm5qfc9qvck1o0hemaimq3t0a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/3e34mhcti2cdgsfsk85v34jj8p.png"></p>
+<h3 class="topic">
+<a name="66bjgnjjpvl0ov0u35u1ldnoso">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;芯片示例</a>
+</h3>
+<h3 class="topic">
+<a name="10bk3kpdobc7qmgieurk115gf4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/00cfqq9793arodjllfli63f12e.png"></p>
+<h3 class="topic">
+<a name="4bjlg4afia797bsopt9afh2s3f">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SPI四根接口线</a>
+</h3>
+<h3 class="topic">
+<a name="1pknvrqin676d3j9mj1am1lqsp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/68un2o4hp7pthi6lah5e38msv3.png"></p>
+<h3 class="topic">
+<a name="3jic4addgkn4umbsh2gkhvi2qs">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/349sln0svb66ooapk0oii8lba4.png"></p>
+<h3 class="topic">
+<a name="36btsmsobdccd86gdgd290n69j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/6u7j1osh87rpgudd7tdll5sc2j.png"></p>
+<h3 class="topic">
+<a name="7rvq34hsngo41h36qb4pdh75ia">&nbsp;&nbsp;CAN(书44页)</a>
+</h3>
+<h3 class="topic">
+<a name="1ckg3vv9lbis7dk7o0f56ifqfe">&nbsp;&nbsp;&nbsp;即控制器局域网</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/6ivo5bbd42oudlpnl9b8iivjv4.png"></p>
+<h3 class="topic">
+<a name="1m74ut4oniem00p23om53n6ntc">&nbsp;&nbsp;&nbsp;&nbsp;CAN总线数据收发及其特征</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/5t4iq4c50pgm0gkqdg99drv9e1.png"></p>
+<h3 class="topic">
+<a name="2qp3tmjacmr5vbinf1ptaek6p2">&nbsp;&nbsp;MobBus（书46页）</a>
+</h3>
+<h3 class="topic">
+<a name="23sasdm93u0f1p238veqn5lpbv">&nbsp;&nbsp;&nbsp;工控设备的主要通讯协议</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/77a22r73ptab1j6vo14vr0l20m.png"></p>
+<h3 class="topic">
+<a name="4nbl1in76mhlm8td875om6enqj">&nbsp;&nbsp;ProFiBus（书47页）</a>
+</h3>
+<h3 class="topic">
+<a name="5c4bi1inveu6l3boaolkpcao26">&nbsp;&nbsp;&nbsp;自动化领域主要设备</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/79f4oonnllh7ei0fmcfd7ebp72.png"></p>
+<h3 class="topic">
+<a name="2n54oj4o0dlr5rns8fhfh0ds5a">&nbsp;&nbsp;RJ45（书48页）</a>
+</h3>
+<h3 class="topic">
+<a name="3o8135csa0s2dtnqtbm6f2f8qr">&nbsp;&nbsp;&nbsp;即网卡接口</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/3ru23oc26cuaeh574i855b0cgd.png"></p>
+<h3 class="topic">
+<a name="5b6eoh3r72emhkaa3nu70qi55a">&nbsp;&nbsp;特殊接口（书49页）</a>
+</h3>
+<h3 class="topic">
+<a name="19v0fa0kik7lgnpu1ngt0bsrnn">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/6qo5ss5ito1dtfjaq58vg8l36a.png"></p>
+<h3 class="topic">
+<a name="52us1a0n09p5m8niurv9g0baus">&nbsp;&nbsp;硬件接口调试工具BusPirate（使用指南）</a>
+</h3>
+<h3 class="topic">
+<a name="2i2ca9m6hq1c4gc7mv455b6d4s">&nbsp;&nbsp;&nbsp;书50页</a>
+</h3>
+<h3 class="topic">
+<a name="22nchepgmt548ats34id3elceu">&nbsp;硬件分析设备</a>
+</h3>
+<h3 class="topic">
+<a name="0l16d457e8qf7a1ji3ecttcrms">&nbsp;&nbsp;逻辑分析仪(书74页)</a>
+</h3>
+<h3 class="topic">
+<a name="2ueba2rqkc74jto39dqmun8vbs">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/4pmt4o8pknfji26qn7upjqnslv.png"></p>
+<h3 class="topic">
+<a name="2pginv84ec579mv76ovhcd503q">&nbsp;&nbsp;示波器（书85页）</a>
+</h3>
+<h3 class="topic">
+<a name="7gv4h8ek26vcp4rv3cbe4c6jfi">&nbsp;&nbsp;&nbsp;常用于侧信道、边信道攻击</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/7j2vsa6bajfsu12r1tlvkbolkm.png"></p>
+<h3 class="topic">
+<a name="3i52v8t5sa0cmhnvldb9uco47n">&nbsp;&nbsp;编程器</a>
+</h3>
+<h3 class="topic">
+<a name="1thjt0uaiao8o1lrisunnvi8t5">&nbsp;&nbsp;&nbsp;用于将固件烧写到芯片中，或者用于从芯片中读取固件</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/20boaks3q5lmaag5ukngdooipb.png"></p>
+<h3 class="topic">
+<a name="0qfk1pg2cjoouas96nhvd0fp9o">&nbsp;&nbsp;SDR软件无线电</a>
+</h3>
+<h3 class="topic">
+<a name="3ecgi8m9ui869qvivbhq5qjbk7">&nbsp;拆焊技巧</a>
+</h3>
+<h3 class="topic">
+<a name="5fiuac9oip4vl9420q6bs11eg9">&nbsp;&nbsp;使用热风枪拆芯片</a>
+</h3>
+<h3 class="topic">
+<a name="0v4k3dhpick1kkavtviiv4ds7l">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/531egnl5fo2dbe340dkd9utj0t.png"></p>
+<h3 class="topic">
+<a name="7cn1lqoid85k3hslugu4lojcb2">&nbsp;常见智能硬件与无人机</a>
+</h3>
+<h3 class="topic">
+<a name="5m0cmnb59h46keeqbbd8v1l450">&nbsp;&nbsp;路由器</a>
+</h3>
+<h3 class="topic">
+<a name="6kn2nomvsqa1b5tm2e4r25gckh">&nbsp;&nbsp;&nbsp;串口、JTAG、flash芯片、后门</a>
+</h3>
+<h3 class="topic">
+<a name="33qhmlggiejg6drs9398va5ho4">&nbsp;&nbsp;智能硬件攻击面</a>
+</h3>
+<h3 class="topic">
+<a name="20crqerfkqm26iajrg1rv1nr7q">&nbsp;&nbsp;&nbsp;底层硬件、app、云端</a>
+</h3>
+<h3 class="topic">
+<a name="4ueebptqlbga5513s7ciasdh45">&nbsp;&nbsp;汽车安全</a>
+</h3>
+<h3 class="topic">
+<a name="3lkgh589k22c4a7hm0j239rus3">&nbsp;&nbsp;&nbsp;ECU安全</a>
+</h3>
+<h3 class="topic">
+<a name="04s5725iu34frs3rvlsl4l7r05">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/0u11lq67nkk5p40gdh1tvongdk.png"></p>
+<h3 class="topic">
+<a name="4fvk6p3q0kkqrp505p8b9j0rgk">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/47mlufek251aeic62ia2ve7fsj.png"></p>
+<h3 class="topic">
+<a name="12nrqdj7mkdqlaqj5uplr5b55q">&nbsp;&nbsp;&nbsp;OBD安全</a>
+</h3>
+<h3 class="topic">
+<a name="5601m6qji67nuifeb9p46h1o29">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/7987fddnrqq03n5mcjaq3v3r16.png"></p>
+<h3 class="topic">
+<a name="1l7ci9ba8pd4sfhhka6j87qj35">&nbsp;&nbsp;&nbsp;CAN安全</a>
+</h3>
+<h3 class="topic">
+<a name="6qbh7m5885tt2lt54p0j3tjcd6">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/4fdc7ad5b53rif2j8nvdclvhks.png"></p>
+<h3 class="topic">
+<a name="6q9964fausb9nliih8nv71vdfc">&nbsp;&nbsp;&nbsp;T-BOX安全</a>
+</h3>
+<h3 class="topic">
+<a name="4u0rdsdikt54lbelmhphb0be4l">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%9A%E8%AE%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%E4%B8%8E%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/560ie4r0ajj6pa7j98r01snjou.png"></p>
+<h2 class="topic">
+<a name="7fqavh8417i0fevhodop4c096h">问题</a>
+</h2>
+<h3 class="topic">
+<a name="3km626ki85thj2sba3mprval1p">&nbsp;ttl转usb中ttl是什么</a>
+</h3>
+<h3 class="topic">
+<a name="5k8ftco6onvota9nj8ckfi6dgv">&nbsp;&nbsp;ttl是一种串口标准</a>
+</h3>
+<h3 class="topic">
+<a name="2rnaap24bet966moiblhokckql">&nbsp;uart接口中vcc是什么，为何会与芯片烧毁有关</a>
+</h3>
+<h3 class="topic">
+<a name="4a5g1gjilt3ne9a0866nc4mjv3">&nbsp;&nbsp;vcc与供电相关</a>
+</h3>
+</body>
+</html>

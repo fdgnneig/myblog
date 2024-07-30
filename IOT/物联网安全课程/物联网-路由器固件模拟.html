@@ -1,0 +1,243 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>物联网-路由器固件模拟</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="62ktps0r5arej6lco7jnip8aei">物联网-路由器固件模拟</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E8%B7%AF%E7%94%B1%E5%99%A8%E5%9B%BA%E4%BB%B6%E6%A8%A1%E6%8B%9F_files/images/%E7%89%A9%E8%81%94%E7%BD%91-%E8%B7%AF%E7%94%B1%E5%99%A8%E5%9B%BA%E4%BB%B6%E6%A8%A1%E6%8B%9F.jpg"></div>
+<h2 class="topic">
+<a name="0s1e15tbeca8q99n2aj7pg7tf5">物联网设备漏洞验证可以使用公网设备，如果公网设备无法满足要求，则需要购置设备，但后者开销庞大，故常进行固件模拟（验证0day时常需要购置设备），固件模拟也可以满足固件调试的需求</a>
+</h2>
+<h2 class="topic">
+<a name="5c5h79kvr30hbvbm7p3fs9kjl1">相关工具</a>
+</h2>
+<h3 class="topic">
+<a name="74mh7vsikj28mfbhafo27tlvft">&nbsp;firmadyne即之前用于封装固件的工具</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E8%B7%AF%E7%94%B1%E5%99%A8%E5%9B%BA%E4%BB%B6%E6%A8%A1%E6%8B%9F_files/75kif0in2imhtcq99dk90gmvg0.png"></p>
+<h3 class="topic">
+<a name="3spp6m2a9ef60m8ptj749silnn">&nbsp;&nbsp;Firmadyne的原理：&#13;
+爬虫：从固件厂商服务器获得固件程序&#13;
+固件提取：获得固件的文件系统和内核&#13;
+固件模拟与访问；漏洞测试</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E8%B7%AF%E7%94%B1%E5%99%A8%E5%9B%BA%E4%BB%B6%E6%A8%A1%E6%8B%9F_files/4c8h06k068sbo9c84lqfic2lq1.png"></p>
+<h2 class="topic">
+<a name="3t6lrrsmv5nopoki0u10s47tmf">firmadyne安装注意事项</a>
+</h2>
+<h3 class="topic">
+<a name="4jj2373addfumbf8b2fa82q4k7">&nbsp;firmware-analysis-toolkit目录结构如下，其中reset.py可以用于清空网络环境，fat.py脚本用于完成firmadyne单步加载，但一般不建议用该脚本直接启动firmadyne，可能会报错误</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E8%B7%AF%E7%94%B1%E5%99%A8%E5%9B%BA%E4%BB%B6%E6%A8%A1%E6%8B%9F_files/57fmf36vibrvvqbvau492krh4f.png"></p>
+<h3 class="topic">
+<a name="2s2mtm3q5ojh0i8gjv5cidnjcb">&nbsp;&nbsp;进入firmadyne中，安装firmadyne最好使用低版本ubuntu，主要是考虑到兼容性问题，（工具作者使用ubuntu18）需要安装binwalk及其所有插件，才能在firmadyne中提取大部分固件</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E8%B7%AF%E7%94%B1%E5%99%A8%E5%9B%BA%E4%BB%B6%E6%A8%A1%E6%8B%9F_files/70qbbsdbhhhqv59teie40q00gl.png"></p>
+<h3 class="topic">
+<a name="3q81k11hrjb4ib53kvchhct0di">&nbsp;最好使用apt-get install qemu安装qemu，如果使用源码编译安装，则一定安装的是最新版的，可能缺失某些模块，导致firmadyne无法与qemu联动（qemu3之后有一个网络模块缺失了）</a>
+</h3>
+<h3 class="topic">
+<a name="7ioe43om7qn5tcfohuf3sa906j">&nbsp;&nbsp;如果使用attifyos的虚拟机，则最开始使用firmadyne时需要创建一些数据库，并填充数据表</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E8%B7%AF%E7%94%B1%E5%99%A8%E5%9B%BA%E4%BB%B6%E6%A8%A1%E6%8B%9F_files/7kts774uuaka2qtei6f7d4f1fu.png"></p>
+<h2 class="topic">
+<a name="2i8vruvj1uoqt057r1e0u1lkmp">firmadyne实战</a>
+</h2>
+<h3 class="topic">
+<a name="48d5s62p1ukvm86t9te6s7gk86">&nbsp;查看分析示例</a>
+</h3>
+<h3 class="topic">
+<a name="55kegg07eqtbjjacpge686vpvg">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E8%B7%AF%E7%94%B1%E5%99%A8%E5%9B%BA%E4%BB%B6%E6%A8%A1%E6%8B%9F_files/19fs5bciu6i4ov75ecakjjhl70.png"></p>
+<h3 class="topic">
+<a name="750873d8196h1et9l9u4ba4ro3">&nbsp;分析固件提取脚本extractor</a>
+</h3>
+<h3 class="topic">
+<a name="2hpu8odp9km0gnol63u3l9u8ck">&nbsp;&nbsp;该脚本中引入了binwalk，说明其通过binwalk的api提取固件</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E8%B7%AF%E7%94%B1%E5%99%A8%E5%9B%BA%E4%BB%B6%E6%A8%A1%E6%8B%9F_files/6bv9nkoo82vfmei0c0vhhq87ph.png"></p>
+<h3 class="topic">
+<a name="0o52rbqm1lgvkthbp7sqgnuf9h">&nbsp;&nbsp;&nbsp;脚本的main函数，可以了解各参数的意义</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E8%B7%AF%E7%94%B1%E5%99%A8%E5%9B%BA%E4%BB%B6%E6%A8%A1%E6%8B%9F_files/1bl3moja5iop3d78jvn930crqo.png"></p>
+<h3 class="topic">
+<a name="7bsr49k3k822uls01u3mobpbao">&nbsp;模拟固件运行</a>
+</h3>
+<h3 class="topic">
+<a name="7b7s5426vps0761r9a5gecrjc1">&nbsp;&nbsp;模拟固件之前，运行不同路径下的两个reset.py脚本，将整个数据库和images文件夹清空</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E8%B7%AF%E7%94%B1%E5%99%A8%E5%9B%BA%E4%BB%B6%E6%A8%A1%E6%8B%9F_files/56e74e6qtqfa7269s8prjgmiia.png"></p>
+<h3 class="topic">
+<a name="1a67ocs4se48cv4ciu4c7l42cb">&nbsp;&nbsp;&nbsp;运行提取固件的脚本</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E8%B7%AF%E7%94%B1%E5%99%A8%E5%9B%BA%E4%BB%B6%E6%A8%A1%E6%8B%9F_files/02h1sfhjq2lnolebgh41fadi8t.png"></p>
+<h3 class="topic">
+<a name="7hag157kjgn1g82uq2psqbhhns">&nbsp;&nbsp;getArch.sh脚本获取架构相关信息&#13;
+tar2db.py脚本将固件信息存入数据库&#13;
+makeImage.sh脚本将固件打包为qemu可执行的镜像</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E8%B7%AF%E7%94%B1%E5%99%A8%E5%9B%BA%E4%BB%B6%E6%A8%A1%E6%8B%9F_files/3n0km48j3d0hdr8r18vue6u7jt.png"></p>
+<h3 class="topic">
+<a name="1pvsga2npd5rs5r8brlsakuvk9">&nbsp;&nbsp;&nbsp;创建虚拟接口与firmadyne和qemu通讯，脚本运行完成，创建了两个接口</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E8%B7%AF%E7%94%B1%E5%99%A8%E5%9B%BA%E4%BB%B6%E6%A8%A1%E6%8B%9F_files/7dqqc65ptmehr99a3sgc9u3sa4.png"></p>
+<h3 class="topic">
+<a name="2rgl8277hmoocqj91ou4cq1d6e">&nbsp;&nbsp;接口创建完成后，进入scratch/1目录下，该目录存放刚生成的适用于qemu的系统镜像image.raw ,运行日志文件，以及模拟运行脚本run.sh，运行该脚本即可模拟运行固件 </a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E8%B7%AF%E7%94%B1%E5%99%A8%E5%9B%BA%E4%BB%B6%E6%A8%A1%E6%8B%9F_files/5dqpt0kbm9js5jjeeg4v7lhe3u.png"></p>
+<h3 class="topic">
+<a name="5pr3440fe71l29lium2qn10nmc">&nbsp;&nbsp;&nbsp;访问接口(192.168.0.1)可以访问到路由器，说明固件模拟成功，</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E8%B7%AF%E7%94%B1%E5%99%A8%E5%9B%BA%E4%BB%B6%E6%A8%A1%E6%8B%9F_files/55i852pc48h27rfcbtenkk1u60.png"></p>
+<h3 class="topic">
+<a name="394tomtt77jav4hcb426nm35gb">&nbsp;&nbsp;ctrl a+x可以退出固件模拟，退出后发现生成了固件运行的最终日志和启动日志</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E8%B7%AF%E7%94%B1%E5%99%A8%E5%9B%BA%E4%BB%B6%E6%A8%A1%E6%8B%9F_files/5tqd5bb1ibu22gv08c2jsfrvrt.png"></p>
+<h2 class="topic">
+<a name="101lmshhqequt1n30r18toe1i1">使用qemu固件模拟</a>
+</h2>
+<h3 class="topic">
+<a name="7lrvagv54tqotvivijljnglfup">&nbsp;  firmadyne底层使用了qemu实现模拟，直接使用qemu也可以完成模拟，此时需要手动使用binwalk提取固件，并将文件放入qemu中执行&#13;
+  qemu结构类似于虚拟机，其中模拟了一个芯片，并包括了io接口和硬件设备，通过io接口可以与linux进行通讯，甚至挂载硬盘&#13;
+  qemu用户模式下可以在短暂时间内运行单文件应用程序。system模式可以完整运行一个系统，会包含程序所需所有的依赖与文件</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E8%B7%AF%E7%94%B1%E5%99%A8%E5%9B%BA%E4%BB%B6%E6%A8%A1%E6%8B%9F_files/0pujqjcm10vil8l73kveh16k04.png"></p>
+<h3 class="topic">
+<a name="62ukllnjkqv754u5arjbbb8r8u">&nbsp;&nbsp;当固件提取完成，需要将固件放入qemu中模拟运行，此时qemu系统架构必须与固件架构相同，故可以在图中链接处下载不同架构的qemu</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E8%B7%AF%E7%94%B1%E5%99%A8%E5%9B%BA%E4%BB%B6%E6%A8%A1%E6%8B%9F_files/0ockgq2jcdv3g8suqmrpuh6j3i.png"></p>
+<h3 class="topic">
+<a name="5pl6g96qeasuq453idt7krgqln">&nbsp;如果程序可以在用户模式下运行（不报错），即可以使用用户模式运行，并结合ida等工具动态调试，如果用户模式下无法运行（缺少依赖库等），或需要进行漏洞验证，则一般在系统模式下完整运行</a>
+</h3>
+<h2 class="topic">
+<a name="25a91pqi7hfci0k7sg4lf2pvh3">qemu实战</a>
+</h2>
+<h3 class="topic">
+<a name="38avehkvm6b4cavqsio8bmg4br">&nbsp;在用户模式下模拟运行单个应用程序</a>
+</h3>
+<h3 class="topic">
+<a name="4kfdp0uh5b8gatn3o0dfn29ars">&nbsp;&nbsp;使用file指令查看/bin/busybox系统架构，以此判断固件的系统架构，因为busybox常被用于固件，故使用其进行判断</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E8%B7%AF%E7%94%B1%E5%99%A8%E5%9B%BA%E4%BB%B6%E6%A8%A1%E6%8B%9F_files/37bl6034ttu2uk8n448dfti4m8.png"></p>
+<h3 class="topic">
+<a name="0on85cl88emetld4fcr33jn46i">&nbsp;&nbsp;在bash中，$( )与` `（反引号）都是用来作命令替换的。&#13;
+命令替换与变量替换差不多，都是用来重组命令行的，先完成引号里的命令行，然后将其结果替换出来，再重组成新的命令行。&#13;
+之所以要复制qemu-mips-static是因为如果直接使用指令qemu-mips-static进行模拟，则程序会从当前linux系统的根目录下/lib 、/dev查找相关依赖项，依赖项查找不到从而导致错误&#13;
+需要根据固件架构的不同，复制不同的qemu模拟程序到该固件文件系统目录</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E8%B7%AF%E7%94%B1%E5%99%A8%E5%9B%BA%E4%BB%B6%E6%A8%A1%E6%8B%9F_files/78m3lnj0l3b353035a8v3ao72o.png"></p>
+<h3 class="topic">
+<a name="47m6bebfedtfiqlter0rn56igu">&nbsp;&nbsp;chroot指令用于设置当前程序运行的根目录，chroot .表示将当前目录作为根目录/  后面的参数表示运行当前目录下的qemu-mips-static模拟运行tdd协议（一种私有协议）根据返回信息，说明协议启动成功，即成功模拟运行了固件的单个应用程序 ，此时可以调试或漏洞测试</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E8%B7%AF%E7%94%B1%E5%99%A8%E5%9B%BA%E4%BB%B6%E6%A8%A1%E6%8B%9F_files/5mdgut877p3mb9jndolard6cq4.png"></p>
+<h3 class="topic">
+<a name="2hb9587gnan27gtcgjsi1bthv1">&nbsp;系统模式下模拟整个固件</a>
+</h3>
+<h3 class="topic">
+<a name="54dg1nqmnk0q6tcjr7dfr8d33m">&nbsp;&nbsp;通过查询可知，当前固件系统为arm架构，如果使用binwalk解析，可以看到其为硬件浮点型arm架构</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E8%B7%AF%E7%94%B1%E5%99%A8%E5%9B%BA%E4%BB%B6%E6%A8%A1%E6%8B%9F_files/2ege91j5d75npblp950bt35pid.png"></p>
+<h3 class="topic">
+<a name="6e2d5aeao9cmt82biu64vmqt89">&nbsp;&nbsp;&nbsp;查看与固件架构相同的qemu程序，该目录下的程序与内核、文件系统、初始化有关</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E8%B7%AF%E7%94%B1%E5%99%A8%E5%9B%BA%E4%BB%B6%E6%A8%A1%E6%8B%9F_files/2fu1glnkk7869473d8k3b3rnjl.png"></p>
+<h3 class="topic">
+<a name="0c82pqtl4m2rkn9ljjtjh3hgsd">&nbsp;&nbsp;查看其中的readme，发现启动qemu模拟的指令格式，将其复制下来</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E8%B7%AF%E7%94%B1%E5%99%A8%E5%9B%BA%E4%BB%B6%E6%A8%A1%E6%8B%9F_files/7f368n9mut9s6i09b7p27m9e4l.png"></p>
+<h3 class="topic">
+<a name="3rkmup03oihnlngg5lr510lagc">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E8%B7%AF%E7%94%B1%E5%99%A8%E5%9B%BA%E4%BB%B6%E6%A8%A1%E6%8B%9F_files/7cskaqeomcf6o8ol82v09eegnb.png"></p>
+<h3 class="topic">
+<a name="4tie62oanh3e1li2a5opqmv805">&nbsp;&nbsp;在readme指令示例的基础上，console指定通信接口 ifname指定虚拟通讯网口 script与downscript分别指定模拟运行时和模拟结束时调用的脚本，-nographic表示不启用图形界面&#13;
+如果有树莓派，可以直接使用树莓派作为模拟环境，而不用qemu</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E8%B7%AF%E7%94%B1%E5%99%A8%E5%9B%BA%E4%BB%B6%E6%A8%A1%E6%8B%9F_files/58kun7frrst2agc9ooagv1kmts.png"></p>
+<h3 class="topic">
+<a name="6jflp4b1maiv0mkrk2mf3edkov">&nbsp;&nbsp;&nbsp;qemu运行成功后，会开启arm架构的虚拟机，此时可以将之前测试剩下的数据全部清空</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E8%B7%AF%E7%94%B1%E5%99%A8%E5%9B%BA%E4%BB%B6%E6%A8%A1%E6%8B%9F_files/5am2u3enl6lvld2hketdkp45qa.png"></p>
+<h3 class="topic">
+<a name="772ca1o6e399dg0mj36kq33eu3">&nbsp;&nbsp;查看当前模拟环境的网络信息，设置ip并尝试ping通主机</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E8%B7%AF%E7%94%B1%E5%99%A8%E5%9B%BA%E4%BB%B6%E6%A8%A1%E6%8B%9F_files/0qe6oeonj31a9nampg1je1q7fu.png"></p>
+<h3 class="topic">
+<a name="45taig5r2cj20f4vqjr3on9c1k">&nbsp;&nbsp;&nbsp;将要被模拟运行的程序创建压缩包</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E8%B7%AF%E7%94%B1%E5%99%A8%E5%9B%BA%E4%BB%B6%E6%A8%A1%E6%8B%9F_files/2852knvsqotifjoq8k7198va5u.png"></p>
+<h3 class="topic">
+<a name="5tmc39v7hltaji12haejhivf8l">&nbsp;&nbsp;压缩完成后，在主机启动小型的http服务</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E8%B7%AF%E7%94%B1%E5%99%A8%E5%9B%BA%E4%BB%B6%E6%A8%A1%E6%8B%9F_files/154kl15t1c46nbchjn51ulg5st.png"></p>
+<h3 class="topic">
+<a name="430us67o04o5kuil0bm8jfk0e0">&nbsp;&nbsp;&nbsp;在模拟环境中使用wget从主机上下载固件压缩包</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E8%B7%AF%E7%94%B1%E5%99%A8%E5%9B%BA%E4%BB%B6%E6%A8%A1%E6%8B%9F_files/68io3kv3aceha3c883du0v9u01.png"></p>
+<h3 class="topic">
+<a name="1fnjridtta04pb6epu6e3hgp3k">&nbsp;&nbsp;模拟环境中将固件进行解压</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E8%B7%AF%E7%94%B1%E5%99%A8%E5%9B%BA%E4%BB%B6%E6%A8%A1%E6%8B%9F_files/7atjm91fo2jctl44dim9ri5sog.png"></p>
+<h3 class="topic">
+<a name="7upptqafjvr896ctaoms5tuqht">&nbsp;&nbsp;&nbsp;解压完成后可以得到固件的文件系统</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E8%B7%AF%E7%94%B1%E5%99%A8%E5%9B%BA%E4%BB%B6%E6%A8%A1%E6%8B%9F_files/3ap0fc5muur9bmdftu77meu0hu.png"></p>
+<h3 class="topic">
+<a name="4fri92p8cer5rf3022b1je6ti9">&nbsp;&nbsp;将/proc/目录挂载到./squashfs-root/proc/目录下，检查ip发现又失效了，所以重新设置ip</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E8%B7%AF%E7%94%B1%E5%99%A8%E5%9B%BA%E4%BB%B6%E6%A8%A1%E6%8B%9F_files/6bfddem2rbko0h462ldpfp7p7k.png"></p>
+<h3 class="topic">
+<a name="3656lpq8hq1r4s98ffea2vvf50">&nbsp;&nbsp;&nbsp;使用chroot切换根目录为当前固件目录</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E8%B7%AF%E7%94%B1%E5%99%A8%E5%9B%BA%E4%BB%B6%E6%A8%A1%E6%8B%9F_files/5h3fqo3i9il9brg47l9v31db62.png"></p>
+<h3 class="topic">
+<a name="3c7a17mlp5a1llar6o3c2i9bqt">&nbsp;&nbsp;此时能ping通主机，并且执行tddp指令可以开启tddp协议，说明当前目录下可以运行各种固件中程序</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91-%E8%B7%AF%E7%94%B1%E5%99%A8%E5%9B%BA%E4%BB%B6%E6%A8%A1%E6%8B%9F_files/383ueaepgp0hlfuutp9s4t5m58.png"></p>
+<h2 class="topic">
+<a name="4og7s8662t0bv9d86ursjlj5mj">firmadyne使用脚本利用qemu实现了模拟，单独利用qemu也可以实现模拟</a>
+</h2>
+</body>
+</html>

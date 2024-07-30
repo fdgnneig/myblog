@@ -1,0 +1,467 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>征服oscp23-组装零件：渗透测试细目</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="4hf517h7j94peisjv9hhbnqonh">征服oscp23-组装零件：渗透测试细目</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="%E5%BE%81%E6%9C%8Doscp23-%E7%BB%84%E8%A3%85%E9%9B%B6%E4%BB%B6%EF%BC%9A%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E7%BB%86%E7%9B%AE_files/images/%E5%BE%81%E6%9C%8Doscp23-%E7%BB%84%E8%A3%85%E9%9B%B6%E4%BB%B6%EF%BC%9A%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E7%BB%86%E7%9B%AE.jpg"></div>
+<h2 class="topic">
+<a name="5opdrfhqa145ll8sbt01spn7t0">介绍</a>
+</h2>
+<h3 class="topic">
+<a name="1skoeahvgfar9uv1i2h35io6pb">&nbsp;现在我们已经介绍了渗透测试的所有各个部分，现在是将它们组合在一起的时候了。 在本模块中，我们将根据实际发现进行模拟渗透测试。&#13;
+   尽管我们在此练习中的目标是在环境中获取域管理员访问权限，但必须注意，这并不总是渗透测试的最终目标。 我们的目标应由客户的数据基础架构和业务模型确定。 例如，如果客户的主要业务是仓储数据，那么我们的目标就是获取这些数据。 那是因为违反这种性质会对客户产生最大的影响。 在大多数情况下，域管理员的访问权限将帮助我们实现该目标，但并非总是如此。</a>
+</h3>
+<h3 class="topic">
+<a name="76s208ogd7fp080ec4ebca8t8p">&nbsp;&nbsp;在此渗透测试期间，我们将在枚举和利用之间来回移动。 我们将在枚举阶段花费一些时间，以确保我们用于破解的方法正确。 我们还将回顾一些容易犯的错误，并讨论为什么并非总是需要在目标上获得root / admin的原因。&#13;
+   我们的虚拟客户为我们提供了一个名为&ldquo; sandbox.local&rdquo;的初始目标，并提到一个受到威胁的域管理员帐户将对其业务产生最大的影响。 沙盒网络可通过实验室VPN进行访问，其网络布局如图所示。</a>
+</h3>
+<h3 class="topic">
+<a name="0p1ervogljlt80b2rdvr9eo6mk">&nbsp;&nbsp;&nbsp;该域可通过PWK VPN访问，但需要我们在/ etc / hosts文件中添加一个条目。 首先，我们将/ etc / hosts复制到主目录中的hosts.orig中，对现有文件进行备份。 现在，我们将添加一个条目，该条目将允许我们通过运行sudo bash -c&ldquo; echo '10 .11.1.250 sandbox.local'&gt;&gt; / etc / hosts&rdquo;通过其DNS名称与该域联系。 有了这个设置，我们可以继续。</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%BE%81%E6%9C%8Doscp23-%E7%BB%84%E8%A3%85%E9%9B%B6%E4%BB%B6%EF%BC%9A%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E7%BB%86%E7%9B%AE_files/4vj8t8pkoant3r44qeopbgg48o.png"></p>
+<h2 class="topic">
+<a name="095m5igl1nrr8vbpdibvlse8fl">公共网络枚举</a>
+</h2>
+<h3 class="topic">
+<a name="2orp1c8i7nrsbrfnagbs943vth">&nbsp;我们将首先扫描通过DNS名称sandbox.local可解析的外部主机。 为此，我们将Nmap与以下命令配合使用：&#13;
+图中的命令将使用Nmap的默认脚本集（-sC），使用SYN扫描以加快运行时间（-sS），扫描所有端口（-p0-65535），并且仅针对sandbox.local网络。</a>
+</h3>
+<p class="topicImage">
+<img height="29" src="%E5%BE%81%E6%9C%8Doscp23-%E7%BB%84%E8%A3%85%E9%9B%B6%E4%BB%B6%EF%BC%9A%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E7%BB%86%E7%9B%AE_files/6ahol4pp64rqdjsne94o2g3qgp.png" width="556"></p>
+<h3 class="topic">
+<a name="7bqn6rak3aauolirg83m3vkvpl">&nbsp;&nbsp;Nmap扫描结果可以在下图中找到。</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%BE%81%E6%9C%8Doscp23-%E7%BB%84%E8%A3%85%E9%9B%B6%E4%BB%B6%EF%BC%9A%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E7%BB%86%E7%9B%AE_files/25p85p89uequcmhodgm5p9klss.png"></p>
+<h3 class="topic">
+<a name="55m81om6u58t7i6ropifqrkmls">&nbsp;&nbsp;&nbsp;让我们回顾一下该扫描的结果。 首先，Nmap扫描仅显示了两个开放的端口：22和80。Nmap将服务指纹化为分别在端口上运行SSH服务和HTTP服务。  Nmap的默认插件集也显示了ssh-hostkeys。&#13;
+   HTTP服务向我们显示正在运行的应用程序可能是WordPress 5.3。  SSH服务暴露的风险通常比HTTP服务暴露的风险小得多。 因此，HTTP服务似乎是折衷sandbox.local环境的一个更好的起点。</a>
+</h3>
+<h2 class="topic">
+<a name="40gvsulc67o8ukuc643ulvgtdj">定位Web应用程序</a>
+</h2>
+<h3 class="topic">
+<a name="77v5ehf1m4hphil3vo4lctem2r">&nbsp;我们采取的第一步只是访问Web应用程序主页。</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%BE%81%E6%9C%8Doscp23-%E7%BB%84%E8%A3%85%E9%9B%B6%E4%BB%B6%EF%BC%9A%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E7%BB%86%E7%9B%AE_files/5k410uhr7ob9dejmupeioatvpt.png"></p>
+<h3 class="topic">
+<a name="4ufuls1c3knqphc5ppcnijmr6v">&nbsp;&nbsp;主页似乎是公司的标准登录页面。 导航栏中的所有链接均指向主页上的锚点，左下角有一项调查要求反馈。除此以外没有用户可控的输入途径&#13;
+ Nmap扫描表明该网页正在WordPress 5.3上运行，但要确认这一点，需要进行进一步的枚举。&#13;
+   虽然WordPress核心本身也有漏洞，但WordPress开发人员可以迅速对其进行修补。 但是，主题和插件是由社区编写的，许多漏洞没有得到适当的修补，甚至根本无法修复。&#13;
+  这使WordPress成为渗透的绝佳目标。</a>
+</h3>
+<h3 class="topic">
+<a name="42nphbqpkilkm3596eln8ohj78">&nbsp;Web应用程序枚举</a>
+</h3>
+<h3 class="topic">
+<a name="1knl0u85jhvquja9d42g2rog19">&nbsp;&nbsp;在我们开始专门针对WordPress之前，让我们做一个基本的目录暴力破解，以发现任何潜在的敏感文件并确认该网站正在运行WordPress。 为此，我们将如下使用dirb</a>
+</h3>
+<p class="topicImage">
+<img height="35" src="%E5%BE%81%E6%9C%8Doscp23-%E7%BB%84%E8%A3%85%E9%9B%B6%E4%BB%B6%EF%BC%9A%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E7%BB%86%E7%9B%AE_files/5c81d05pacu11ctq54t2s2qmqu.png" width="482"></p>
+<h3 class="topic">
+<a name="7due63mg44p4hnfaf473ocalsa">&nbsp;&nbsp;&nbsp;尽管dirb具有许多可以使用的标志和功能，但我们选择运行一个简单的测试。 我们的命令输出可以在下图中找到。&#13;
+我们的扫描显示了目标上常见的WordPress目录（wp-admin，wp-content和wp-includes）。 我们还找到了一些可列出的目录。 但是，这些是常见的WordPress目录，可能不会透露太多有用信息。</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%BE%81%E6%9C%8Doscp23-%E7%BB%84%E8%A3%85%E9%9B%B6%E4%BB%B6%EF%BC%9A%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E7%BB%86%E7%9B%AE_files/3c88q9s64bb6g2cqrb8hrekn99.png"></p>
+<h3 class="topic">
+<a name="561ilcssq7clql0n4c8nkceot7">&nbsp;&nbsp;&nbsp;&nbsp;让我们继续进行更详细的扫描，WPScan是一种WordPress漏洞扫描程序，它使用已知漏洞的数据库来发现WordPress实例的安全问题。&#13;
+为了进行全面扫描，我们将需要提供目标的URL（&ndash;url）并配置枚举选项（&ndash;enumerate）以包括&ldquo;所有插件&rdquo;（ap），&ldquo;所有主题&rdquo;（at），&ldquo;配置备份&rdquo;  （cb）和&ldquo; Db出口&rdquo;（dbe）。 最后的命令可以在下面图中找到</a>
+</h3>
+<p class="topicImage">
+<img height="21" src="%E5%BE%81%E6%9C%8Doscp23-%E7%BB%84%E8%A3%85%E9%9B%B6%E4%BB%B6%EF%BC%9A%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E7%BB%86%E7%9B%AE_files/06krd6kslu3nhd9o2pdos4i2u9.png" width="494"></p>
+<h3 class="topic">
+<a name="1jgvra8s25ql1s5jbrmn6usij5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WPScan输出有关目标的有用信息：</a>
+</h3>
+<h3 class="topic">
+<a name="303jk42n5lepmgk25qbpn7s02v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%BE%81%E6%9C%8Doscp23-%E7%BB%84%E8%A3%85%E9%9B%B6%E4%BB%B6%EF%BC%9A%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E7%BB%86%E7%9B%AE_files/77508s4vrprsfm79pe38t61lra.png"></p>
+<h3 class="topic">
+<a name="2o1gv6q1nhuer804q0cf4cbspp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%BE%81%E6%9C%8Doscp23-%E7%BB%84%E8%A3%85%E9%9B%B6%E4%BB%B6%EF%BC%9A%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E7%BB%86%E7%9B%AE_files/6jojfovff4r5b82g03q67pu1i9.png"></p>
+<h3 class="topic">
+<a name="4q88poa78l7rsapfh066409odh">&nbsp;&nbsp;我们发现的最有趣的项目是已安装的三个插件：elementor，ocean-extra和wp-survey-and-poll。  WPScan具有自己的漏洞数据库，该数据库可以使用，但需要注册。 为了避免注册，所以我们仅找到了三个插件，我们可以使用searchsploit在已安装的插件中​​查找可能的漏洞。 使用&ndash;update选项更新searchsploit之后，我们可以搜索每个插件。</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%BE%81%E6%9C%8Doscp23-%E7%BB%84%E8%A3%85%E9%9B%B6%E4%BB%B6%EF%BC%9A%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E7%BB%86%E7%9B%AE_files/71s18ib214ap6lp4eem08v1oul.png"></p>
+<h3 class="topic">
+<a name="0kkqu1gruv5kc265ph67ehoip8">&nbsp;&nbsp;&nbsp;不幸的是，我们没有发现任何漏洞。 但是，我们需要谨慎地进行搜索。 仅仅因为搜索&ldquo;ocean-extra&rdquo;什么都没有发现，并不意味着什么都不存在。 我们将尝试对ocean-extra进行更通用的搜索，例如&ldquo;ocean&rdquo;。</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%BE%81%E6%9C%8Doscp23-%E7%BB%84%E8%A3%85%E9%9B%B6%E4%BB%B6%EF%BC%9A%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E7%BB%86%E7%9B%AE_files/68kc49kqlrbeiar7sc64k9kic8.png"></p>
+<h3 class="topic">
+<a name="2pnu80ljmvg6plmvcircd0102k">&nbsp;&nbsp;&nbsp;&nbsp;仅搜索&ldquo;ocean"会给我们一些结果，但查看输出结果后发现，没有一个适用于WordPress插件。 让我们对wp-survey-and-poll进行同样的操作，然后搜索&ldquo; survey poll&rdquo;。</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%BE%81%E6%9C%8Doscp23-%E7%BB%84%E8%A3%85%E9%9B%B6%E4%BB%B6%EF%BC%9A%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E7%BB%86%E7%9B%AE_files/65cnps10bkdppm4s6otfgpdlof.png"></p>
+<h3 class="topic">
+<a name="6bs7jrspeickhjgvq3s788jo39">&nbsp;&nbsp;这项搜索看起来更有希望。 第四和第五个结果似乎是针对我们的WordPress插件的。 第五个结果名为&ldquo; Wordpress Plugin Survey &amp; Poll 1.5.7.3&rdquo;，也与WPScan找到的插件版本（1.5.7.3）相匹配。 让我们检查一下漏洞利用程序，看看是否有任何有趣的东西。</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%BE%81%E6%9C%8Doscp23-%E7%BB%84%E8%A3%85%E9%9B%B6%E4%BB%B6%EF%BC%9A%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E7%BB%86%E7%9B%AE_files/5b9rk96satt3tooodjik7kutrh.png"></p>
+<h3 class="topic">
+<a name="6uluiejhmqqk8mce9uuqr6svb1">&nbsp;&nbsp;&nbsp;略过漏洞利用并没有提及是否需要进一步的身份验证。 但是，需要设置一个cookie。 让我们转到插件网站，看看是否可以找到有关它的更多信息。 通过Google的快速搜索&ldquo; Wordpress Survey＆Poll&rdquo;，我们可以进入插件页面。在屏幕截图中，我们找到了一个调查页面上的样例。</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%BE%81%E6%9C%8Doscp23-%E7%BB%84%E8%A3%85%E9%9B%B6%E4%BB%B6%EF%BC%9A%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E7%BB%86%E7%9B%AE_files/1j8kg2iiiu0i5kfdu6051o28fb.png"></p>
+<h3 class="topic">
+<a name="3ntmagbqmef85b5jtdqka01rvg">&nbsp;&nbsp;&nbsp;&nbsp;我们在sandbox.local主页上找到了类似的调查</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%BE%81%E6%9C%8Doscp23-%E7%BB%84%E8%A3%85%E9%9B%B6%E4%BB%B6%EF%BC%9A%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E7%BB%86%E7%9B%AE_files/2fhnl6pnh6v5u20c23ch6kjct6.png"></p>
+<h3 class="topic">
+<a name="3lqk06008kjumlhhvorqmgql8p">&nbsp;&nbsp;让我们打开Burp Suite，在Firefox中配置代理设置，并在与调查进行交互时拦截通信, 加载页面并将Burp配置为拦截后，我们将单击调查的选项之一。 这将导致在Burp中捕获请求。 我们将单击Burp中的转发以继续页面加载。</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%BE%81%E6%9C%8Doscp23-%E7%BB%84%E8%A3%85%E9%9B%B6%E4%BB%B6%EF%BC%9A%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E7%BB%86%E7%9B%AE_files/7vt52rm4uhqg44bvip8ggc310v.png"></p>
+<h3 class="topic">
+<a name="3dpbv5qka5pqa6nhp1jmcikr5f">&nbsp;&nbsp;&nbsp;现在，当我们重新加载页面时，我们注意到提到的漏洞利用代码中容易受到攻击的cookie。</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%BE%81%E6%9C%8Doscp23-%E7%BB%84%E8%A3%85%E9%9B%B6%E4%BB%B6%EF%BC%9A%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E7%BB%86%E7%9B%AE_files/6utrim0f8mts99fl40taj1hfdv.png"></p>
+<h3 class="topic">
+<a name="7gcshjtl3ml0j005s61gpnoq3e">&nbsp;&nbsp;&nbsp;&nbsp;使用此cookie，我们可以开始尝试利用SQL注入漏洞。</a>
+</h3>
+<h3 class="topic">
+<a name="1c2jnkkq5f2k4ifac81a6aohoh">&nbsp;SQL注入破解</a>
+</h3>
+<h3 class="topic">
+<a name="0bsr3s80e9bq01bik07cig8nem">&nbsp;&nbsp;现在，我们已经捕获了带有易受攻击的cookie的请求，我们可以在Burp的&ldquo; Repeater&rdquo;中使用该请求，以尝试利用SQL注入。 为此，我们在包含Cookie的Burp的&ldquo; HTTP历史记录&rdquo;标签中找到该请求，右键单击它，然后选择&ldquo;Send to Repeater&rdquo;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%BE%81%E6%9C%8Doscp23-%E7%BB%84%E8%A3%85%E9%9B%B6%E4%BB%B6%EF%BC%9A%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E7%BB%86%E7%9B%AE_files/4bnhm5nuo8jj0r81ugprd2bmse.png"></p>
+<h3 class="topic">
+<a name="3m604gi5ahkrr9cjfu280rj7p7">&nbsp;&nbsp;&nbsp;然后，我们单击&ldquo; Repeater&rdquo;选项卡并以原始格式查看cookie。</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%BE%81%E6%9C%8Doscp23-%E7%BB%84%E8%A3%85%E9%9B%B6%E4%BB%B6%EF%BC%9A%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E7%BB%86%E7%9B%AE_files/5lsqe5l04s91poolq7b8bu5kh2.png"></p>
+<h3 class="topic">
+<a name="72t1smecir4vfn6pr6c53mkm0a">&nbsp;&nbsp;&nbsp;&nbsp;让我们从原始漏洞利用中获取有效负载，将其放入Cookie中，然后将请求发送到服务器。 可以找到有效载荷</a>
+</h3>
+<p class="topicImage">
+<img height="21" src="%E5%BE%81%E6%9C%8Doscp23-%E7%BB%84%E8%A3%85%E9%9B%B6%E4%BB%B6%EF%BC%9A%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E7%BB%86%E7%9B%AE_files/1g2g7kc6gbh6d8bam6rkpsg2v2.png" width="628"></p>
+<h3 class="topic">
+<a name="4o2rlko99ln0c0a9ckj105gos3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;根据漏洞利用，可以将有效负载插入wp_sap cookie变量值。  cookie变量的值以&ldquo; =&rdquo;符号开头，并且必须以分号结尾。</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%BE%81%E6%9C%8Doscp23-%E7%BB%84%E8%A3%85%E9%9B%B6%E4%BB%B6%EF%BC%9A%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E7%BB%86%E7%9B%AE_files/5c3rna747hc91p22rdlamn61ps.png"></p>
+<h3 class="topic">
+<a name="0klm1d1kvhb0shuen6rrf56g3e">&nbsp;&nbsp;漏洞利用代码提到将SQL注入的结果放置在&ldquo; script&rdquo;标签内的sss_params变量中。 在Burp中搜索变量应该将我们带到SQL注入的输出位置。&#13;
+将来，我们还可以将Burp设置为&ldquo;自动滚动&rdquo;到该位置，以使破解更加容易，因此我们不必每次都滚动来查找输出。</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%BE%81%E6%9C%8Doscp23-%E7%BB%84%E8%A3%85%E9%9B%B6%E4%BB%B6%EF%BC%9A%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E7%BB%86%E7%9B%AE_files/57jtdc5p7q6l3c3uk7i47hshe9.png"></p>
+<h3 class="topic">
+<a name="7q601bc33ojilsr5d262043t39">&nbsp;&nbsp;&nbsp;在此输出中，我们可以看到正在使用的数据库的版本。 这向我们表明SQL注入有效！</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%BE%81%E6%9C%8Doscp23-%E7%BB%84%E8%A3%85%E9%9B%B6%E4%BB%B6%EF%BC%9A%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E7%BB%86%E7%9B%AE_files/3g29qal116pnbhcj4pu2vkilq8.png"></p>
+<h3 class="topic">
+<a name="60e54g86li51k0ua615b5fu8td">&nbsp;&nbsp;&nbsp;&nbsp;现在我们知道该WordPress实例使用的数据库是10.3.20-MariaDB。&#13;
+MariaDB是MySQL的分支。 它旨在用作MySQL的即插即用替代品，而MySQL所使用的SQL注入漏洞通常也适用于MariaDB。</a>
+</h3>
+<h3 class="topic">
+<a name="05e7dclqb69uq5bojjnmv347a5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;现在我们知道SQL注入的工作原理，我们需要确定下一步。 尽管通过MariaDB上传PHP Shell可能使我们能够在WordPress实例上执行远程代码执行，但是如果我们没有有关该系统的更多信息，可能会非常困难。&#13;
+   让我们从简单的事情开始，提取管理员的用户名和密码哈希。 为此，我们需要获取表列表，查找用户表，获取列列表，然后最终提取相关信息。</a>
+</h3>
+<h3 class="topic">
+<a name="7b2v8rh7k9oopitqjec0u5c253">&nbsp;&nbsp;要获取表名的列表，我们需要在information_schema.tables表中查询table_name列。 可以通过更改图中所示的cookie有效负载来完成。&#13;
+请注意，我们还从原始有效负载中删除了&ldquo; ALL&rdquo;。 这是为了减少结果，因为我们不在乎重复的值。</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%BE%81%E6%9C%8Doscp23-%E7%BB%84%E8%A3%85%E9%9B%B6%E4%BB%B6%EF%BC%9A%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E7%BB%86%E7%9B%AE_files/689rc9h7q9v1dvomqa7ghk24kn.png"></p>
+<h3 class="topic">
+<a name="6dv63b8a0elt08kcbnbdcjjp8f">&nbsp;&nbsp;&nbsp;同样，可以将有效负载插入wp_sap cookie值。 和以前一样，cookie的值在&ldquo; =&rdquo;符号之后开始，并以分号结束。&#13;
+结果包括大量表，但是对我们来说最引人注目的是wp_users，因为它很可能包含WordPress用户信息。</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%BE%81%E6%9C%8Doscp23-%E7%BB%84%E8%A3%85%E9%9B%B6%E4%BB%B6%EF%BC%9A%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E7%BB%86%E7%9B%AE_files/3o2c2kldvh2nuaj8rvr75nebat.png"></p>
+<h3 class="topic">
+<a name="2cfb1hhagfndqvn47jfeomg4qk">&nbsp;&nbsp;&nbsp;&nbsp;现在我们有了表名，我们可以检索它的列名。 为此，我们查询information_schema.columns中的column_name列，将结果限制为表为wp_users的列。 可以通过更新清单868中所示的有效负载来完成。</a>
+</h3>
+<p class="topicImage">
+<img height="24" src="%E5%BE%81%E6%9C%8Doscp23-%E7%BB%84%E8%A3%85%E9%9B%B6%E4%BB%B6%EF%BC%9A%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E7%BB%86%E7%9B%AE_files/2330evv41ahduppvlulmh90d50.png" width="480"></p>
+<h3 class="topic">
+<a name="5pqujs2i749ctik9vfuiodk97l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;与先前的有效负载一样，该有效负载也将放置在&ldquo;转发器&rdquo;选项卡的wp_sap cookie值中。&#13;
+查询的结果显示了几个列名。 我们最感兴趣的是user_login和user_pass，因为它们很可能包含用于对WordPress实例进行身份验证的凭据。</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%BE%81%E6%9C%8Doscp23-%E7%BB%84%E8%A3%85%E9%9B%B6%E4%BB%B6%EF%BC%9A%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E7%BB%86%E7%9B%AE_files/4cn250p37mgl2i1od76smbpa34.png"></p>
+<h3 class="topic">
+<a name="069o1o7m852gn2ht066fahp42p">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;接下来，让我们查询用户名。 为此，我们需要发送一个SQL注入请求，要求从wp_users表中获取所有user_login值。 这可以通过如下更新查询来完成。</a>
+</h3>
+<p class="topicImage">
+<img height="16" src="%E5%BE%81%E6%9C%8Doscp23-%E7%BB%84%E8%A3%85%E9%9B%B6%E4%BB%B6%EF%BC%9A%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E7%BB%86%E7%9B%AE_files/68gfa6v8tth0dtblt7lc1b7k2n.png" width="492"></p>
+<h3 class="topic">
+<a name="0ihfrtsfi0hv3h57mndcqsfqmh">&nbsp;&nbsp;我们再次重复与以前相同的注入。</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%BE%81%E6%9C%8Doscp23-%E7%BB%84%E8%A3%85%E9%9B%B6%E4%BB%B6%EF%BC%9A%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E7%BB%86%E7%9B%AE_files/65fcha304l8a5ujru66fj8fku1.png"></p>
+<h3 class="topic">
+<a name="0vho36l0jad9k247i8t5hqnrsr">&nbsp;&nbsp;&nbsp;该查询仅公开一个用户名：wp_ajla_admin。 现在我们有了用户名，是时候获取密码哈希了。&#13;
+为此，我们需要将查询中的user_login替换为user_pass。</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%BE%81%E6%9C%8Doscp23-%E7%BB%84%E8%A3%85%E9%9B%B6%E4%BB%B6%EF%BC%9A%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E7%BB%86%E7%9B%AE_files/76h797ioq9546vl9ehr8u7hr0o.png"></p>
+<h3 class="topic">
+<a name="6hc90b90p23ic7gvmep88jap8k">&nbsp;&nbsp;&nbsp;&nbsp;由于注入的结果，我们能够恢复管理员的密码哈希。 注意最后的编码； 响应包含三个&ldquo; \&rdquo;字符以转义单个&ldquo; /&rdquo;。 在我们尝试对Web应用程序进行身份验证之前，需要破解此哈希。</a>
+</h3>
+<h3 class="topic">
+<a name="0intss1o2u1oj94orahrf6qdrn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;也可以使用sqlmap利用SQL注入并提取用户名和密码。</a>
+</h3>
+<h3 class="topic">
+<a name="7ptn9glj1lmu51c5og2g5bftmv">&nbsp;破解密码</a>
+</h3>
+<h3 class="topic">
+<a name="6fc0jrrl5us0uhco2tgfau2oto">&nbsp;&nbsp;现在我们有了密码哈希，我们将需要破解它以获得纯文本密码。 虽然我们可以进行传统的蛮力攻击，但我们会尝试每个字母的组合以期与之匹配，但这可能会花费很长时间。 相反，我们将选择使用Kali Linux中包含的&ldquo; rockyou&rdquo;单词列表开始。&#13;
+如果尚未这样做，可以通过使用gunzip解压缩/usr/share/wordlists/rockyou.txt.gz文件。 这会将存档文件替换为纯文本文件。</a>
+</h3>
+<h3 class="topic">
+<a name="7ruhnhhr8547i8n361bss2g5va">&nbsp;&nbsp;&nbsp;在继续之前，我们先创建一个包含密码哈希的文件。</a>
+</h3>
+<p class="topicImage">
+<img height="17" src="%E5%BE%81%E6%9C%8Doscp23-%E7%BB%84%E8%A3%85%E9%9B%B6%E4%BB%B6%EF%BC%9A%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E7%BB%86%E7%9B%AE_files/4blgl6svuhaj95og0dgnv9ck1e.png" width="469"></p>
+<h3 class="topic">
+<a name="3ou7378h049h5hgtgblufoapa2">&nbsp;&nbsp;&nbsp;&nbsp;让我们尝试使用John the Ripper破解密码。 我们将使用&ndash;wordlist选项以及单词列表的路径，并提供包含密码哈希的文件名。</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%BE%81%E6%9C%8Doscp23-%E7%BB%84%E8%A3%85%E9%9B%B6%E4%BB%B6%EF%BC%9A%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E7%BB%86%E7%9B%AE_files/4eqsk520h6f1vla882i58225qn.png"></p>
+<h3 class="topic">
+<a name="1o8oc1n2p148vdfdah4i3nf3lj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;根据计算机的CPU，运行上述命令可能需要很长时间。 根据上图的输出，John指示密码为&ldquo;love29jan2006！&rdquo;。 让我们尝试看看是否可以登录到网络应用程序。&#13;
+   默认情况下，可以在/ wp-admin中找到WordPress登录页面。 访问此页面会提示我们输入用户名和密码。</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%BE%81%E6%9C%8Doscp23-%E7%BB%84%E8%A3%85%E9%9B%B6%E4%BB%B6%EF%BC%9A%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E7%BB%86%E7%9B%AE_files/0032kgm2rmavrl2g3o3rt49ggo.png"></p>
+<h3 class="topic">
+<a name="7ujdtbi3j70h9ob7lmltf88auo">&nbsp;&nbsp;单击登录后，我们将进入管理仪表板。&#13;
+您可能会收到要求验证管理员电子邮件的请求。 在这种情况下，您可以单击&ldquo;此电子邮件是正确的&rdquo;继续。</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%BE%81%E6%9C%8Doscp23-%E7%BB%84%E8%A3%85%E9%9B%B6%E4%BB%B6%EF%BC%9A%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E7%BB%86%E7%9B%AE_files/29glp50bau5nvjg9dmm1tluk2i.png"></p>
+<h3 class="topic">
+<a name="6aao1fe273rkv62h5pku8ogplh">&nbsp;&nbsp;&nbsp;现在，我们已经登录，我们可以继续我们的枚举过程，以发现下一步应该使用的内容。</a>
+</h3>
+<h3 class="topic">
+<a name="0b01596q28heh5drrtqtck4o49">&nbsp;枚举管理界面</a>
+</h3>
+<h3 class="topic">
+<a name="1bfg574hkimlhng91hff0ra761">&nbsp;&nbsp;登录到管理界面为进一步利用打开了大门。 在开始探索提高当前访问权限的方法之前，让我们研究WordPress必须提供的选项。&#13;
+从WordPress开始的一个好地方是&ldquo;工具&rdquo;&gt;&ldquo;网站健康&rdquo;部分下的&ldquo;信息&rdquo;标签。&#13;
+在此页面上，我们可以确定服务器正在使用PHP版本7.0.330ubuntu0.16.04.7运行WordPress。 我们还发现该数据库在10.5.5.11 IP地址上运行，该IP地址与我们当前定位的IP地址不同。 这很常见，因为数据库和Web应用程序通常在单独的服务器上运行。</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%BE%81%E6%9C%8Doscp23-%E7%BB%84%E8%A3%85%E9%9B%B6%E4%BB%B6%EF%BC%9A%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E7%BB%86%E7%9B%AE_files/7c121794jegorb072trp2ef39v.png"></p>
+<h3 class="topic">
+<a name="4querqb2bd6hiku80pkhcci138">&nbsp;&nbsp;&nbsp;现在我们已经收集了一些基本信息，我们可以尝试提高访问权限。 拥有对WordPress的管理访问权限的一个便利方面是，我们可以安装自己的插件。  WordPress中的插件是用PHP编写的，没有很多限制。 例如，我们可以上传一个包含PHP反向外壳或代码执行功能的插件。 幸运的是，其他人已经为此创建了恶意插件。</a>
+</h3>
+<h3 class="topic">
+<a name="1ij9jjjpbns31vnsoncq6irnei">&nbsp;&nbsp;&nbsp;&nbsp;在seclists软件包中可以找到一个这样的插件，可以使用apt将其安装在Kali中。</a>
+</h3>
+<p class="topicImage">
+<img height="33" src="%E5%BE%81%E6%9C%8Doscp23-%E7%BB%84%E8%A3%85%E9%9B%B6%E4%BB%B6%EF%BC%9A%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E7%BB%86%E7%9B%AE_files/1odj2ufmrsdg98k4nmif4h22r7.png" width="488"></p>
+<h3 class="topic">
+<a name="1to3h349dass014evdtrp1f6gf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;安装后，可以在/ usr / share / seclists中找到seclist目录，并且可以在Web-Shells / WordPress中找到我们要查找的文件。</a>
+</h3>
+<p class="topicImage">
+<img height="71" src="%E5%BE%81%E6%9C%8Doscp23-%E7%BB%84%E8%A3%85%E9%9B%B6%E4%BB%B6%EF%BC%9A%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E7%BB%86%E7%9B%AE_files/3d05dc3tfgjr0hv5s824phon9t.png" width="450"></p>
+<h3 class="topic">
+<a name="20g2r5lnpje9p1jkkgabheo6n1">&nbsp;&nbsp;我们正在寻找的特定文件是plugin-shell.php。 让我们快速检查一下并找出它的作用。&#13;
+上图是WordPress将文件识别为插件所必需的注释。</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%BE%81%E6%9C%8Doscp23-%E7%BB%84%E8%A3%85%E9%9B%B6%E4%BB%B6%EF%BC%9A%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E7%BB%86%E7%9B%AE_files/2bkvouhl5s04t17e5drfjtd84k.png"></p>
+<h3 class="topic">
+<a name="4r04014isr2kbqqbks3bep9rf7">&nbsp;&nbsp;&nbsp; 第12-14行尝试防止文件被系统删除。</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%BE%81%E6%9C%8Doscp23-%E7%BB%84%E8%A3%85%E9%9B%B6%E4%BB%B6%EF%BC%9A%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E7%BB%86%E7%9B%AE_files/5ggk661d31e2adoo3qj86g5mr9.png"></p>
+<h3 class="topic">
+<a name="1n8h252l9gtck8rc96oire7tve">&nbsp;&nbsp;&nbsp;&nbsp;如果在HTTP请求中设置了cmd变量，则第20-24行将尝试运行系统命令。 插件将使用executeCommand函数来识别并执行适当的PHP内部API，以在目标系统上运行命令。  executeCommand函数可以在第47-82行找到。</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%BE%81%E6%9C%8Doscp23-%E7%BB%84%E8%A3%85%E9%9B%B6%E4%BB%B6%EF%BC%9A%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E7%BB%86%E7%9B%AE_files/3f5fj1lsedf2mmvo4h04n2nrs6.png"></p>
+<h3 class="topic">
+<a name="0opkk3ma7fv7kh3grfs4g3tn9v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;plugin-shell.php插件是在系统上执行命令的催化剂。 一旦我们能够在受感染的主机上触发任意代码执行，便可以使用许多方法来获取适当的反向外壳程序。</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%BE%81%E6%9C%8Doscp23-%E7%BB%84%E8%A3%85%E9%9B%B6%E4%BB%B6%EF%BC%9A%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E7%BB%86%E7%9B%AE_files/4jtdbria4oh016h9gcbiss8acv.png"></p>
+<h3 class="topic">
+<a name="0hcr3d6euibdhoucrkh306e8uc">&nbsp;获取外壳</a>
+</h3>
+<h3 class="topic">
+<a name="70ifiaiukkc8h7mjau64876unv">&nbsp;&nbsp;要获得外壳，我们首先必须以WordPress知道如何处理的方式打包插件。  WordPress希望插件位于zip文件中。 当WordPress收到zip文件时，它将把它解压缩到服务器上的wp-content / plugins目录中。  WordPress将zip文件的内容放入与zip文件本身名称匹配的文件夹中。 因此，我们需要记下文件名，以便以后能够访问我们的PHP Shell。</a>
+</h3>
+<h3 class="topic">
+<a name="5kh7p5hhj1eqnn5hra8d9ab4g2">&nbsp;&nbsp;&nbsp;创建zip文件的过程</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%BE%81%E6%9C%8Doscp23-%E7%BB%84%E8%A3%85%E9%9B%B6%E4%BB%B6%EF%BC%9A%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E7%BB%86%E7%9B%AE_files/41da8foces10ol4pghj5bmglrh.png"></p>
+<h3 class="topic">
+<a name="38506kip33a3hfkqk6b82905iv">&nbsp;&nbsp;&nbsp;&nbsp;生成的zip文件名为plugin-shell.zip，并将放置在服务器上wp-content / plugins中的plugin-shell文件夹中。&#13;
+  现在已经生成了插件包，是时候上传外壳了。 首先，我们需要通过单击左侧侧栏上的Plugins链接来访问Plugins页面。&#13;
+接下来，我们通过单击左上角的&ldquo;添加新插件&rdquo;来安装插件。 这将带我们进入&ldquo;添加插件&rdquo;页面</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%BE%81%E6%9C%8Doscp23-%E7%BB%84%E8%A3%85%E9%9B%B6%E4%BB%B6%EF%BC%9A%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E7%BB%86%E7%9B%AE_files/28sgsf6lv2om6j33n3u1aqhgqc.png"></p>
+<h3 class="topic">
+<a name="1i9vl8dnc54kt83t1lu7e7ek3v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;由于我们不是从WordPress插件目录下载插件，因此我们需要选择页面左上方的Upload Plugin。</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%BE%81%E6%9C%8Doscp23-%E7%BB%84%E8%A3%85%E9%9B%B6%E4%BB%B6%EF%BC%9A%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E7%BB%86%E7%9B%AE_files/2vluh3n5aoeu5j8dutu1e5util.png"></p>
+<h3 class="topic">
+<a name="3h91971snm7aqh2o0sbq6bnsh7">&nbsp;&nbsp;这将打开一个部分，我们可以在其中选择我们的插件包。 我们需要选择浏览，这将打开一个文件对话框，供我们查找创建的包。</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%BE%81%E6%9C%8Doscp23-%E7%BB%84%E8%A3%85%E9%9B%B6%E4%BB%B6%EF%BC%9A%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E7%BB%86%E7%9B%AE_files/37hkgtba70e8roa5p74qdrt4ko.png"></p>
+<h3 class="topic">
+<a name="69c9unk2mlnjd7sec90llgg1j7">&nbsp;&nbsp;&nbsp;打开文件对话框后，我们导航到包含插件的目录，选择pluginshell.zip文件，然后单击文件对话框底部的&ldquo;打开&rdquo;。</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%BE%81%E6%9C%8Doscp23-%E7%BB%84%E8%A3%85%E9%9B%B6%E4%BB%B6%EF%BC%9A%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E7%BB%86%E7%9B%AE_files/253djo86dvljhgegqlm6q081vu.png"></p>
+<h3 class="topic">
+<a name="6dvphoab4gdml96v0igbde64ed">&nbsp;&nbsp;&nbsp;&nbsp;最后，要安装插件，请单击立即安装</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%BE%81%E6%9C%8Doscp23-%E7%BB%84%E8%A3%85%E9%9B%B6%E4%BB%B6%EF%BC%9A%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E7%BB%86%E7%9B%AE_files/2k4kjib2sgds22psqj0efaj89f.png"></p>
+<h3 class="topic">
+<a name="7idtov8aefqp5kvtmvbe9u6rrk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;安装插件将上传zip并解压缩内容。&#13;
+   现在已经安装了插件，我们可以尝试使用它在WordPress目标上运行系统命令。 为此，我们可以简单地使用cURL。 如前所述，该插件的目录为wp-content / plugins /，该zip文件将解压缩到一个名为plugin-shell的目录中，而我们定位的文件名为plugin-shell.php。&#13;
+请记住，我们还必须设置一个cmd参数，其中包含我们要在目标系统上尝试执行的命令。 让我们尝试运行whoami，看看该外壳是否有效。</a>
+</h3>
+<p class="topicImage">
+<img height="38" src="%E5%BE%81%E6%9C%8Doscp23-%E7%BB%84%E8%A3%85%E9%9B%B6%E4%BB%B6%EF%BC%9A%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E7%BB%86%E7%9B%AE_files/0hrrkln3ipd1o2in35inmq3873.png" width="490"></p>
+<h3 class="topic">
+<a name="7dq288q4sftn9etb2a6u87rnno">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;有效！ 根据上图，我们以www-data用户身份运行命令。 现在是时候上传merterpreter的有效载荷并获得完整的反向外壳。&#13;
+首先，我们使用msfvenom实用程序生成一个merterpreter有效载荷。</a>
+</h3>
+<p class="topicImage">
+<img height="26" src="%E5%BE%81%E6%9C%8Doscp23-%E7%BB%84%E8%A3%85%E9%9B%B6%E4%BB%B6%EF%BC%9A%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E7%BB%86%E7%9B%AE_files/1hsotoornti0lllq6mgm4uatv2.png" width="495"></p>
+<h3 class="topic">
+<a name="5rc2rcod1sku45qvm481sid1gp">&nbsp;&nbsp;由于我们从先前的枚举工作中知道目标正在Ubuntu上运行，因此我们选择Linux反向TCP Meterpreter有效负载。  LHOST选项将指向我们的Kali IP地址，我们选择的LPORT为443，以逃避任何出站防火墙规则。 始终检查所有出口过滤是一种很好的做法，在这种情况下，我们将假设端口443是不受限制的。 我们将有效负载生成为elf文件，并将输出重定向到kali用户主目录中名为shell.elf的文件。&#13;
+   生成meterpreter反向外壳程序后，我们启动Web服务器以允许目标下载该外壳程序。</a>
+</h3>
+<p class="topicImage">
+<img height="45" src="%E5%BE%81%E6%9C%8Doscp23-%E7%BB%84%E8%A3%85%E9%9B%B6%E4%BB%B6%EF%BC%9A%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E7%BB%86%E7%9B%AE_files/4kn2vqjt45pril61rj65f1ll5p.png" width="461"></p>
+<h3 class="topic">
+<a name="173b6tmben0h6sr4kbsnddvbju">&nbsp;&nbsp;&nbsp;上图中的Web服务器正在使用Python http.server模块，被指示使用端口80，并从kali用户主目录提供文件。 我们再次选择端口80，以避免如果防火墙阻止任意出站端口时可能遇到的任何潜在问题。&#13;
+   生成外壳程序并运行Web服务器后，我们将指示目标用户下载外壳程序。 我们将使用目标中的wget从我们的Kali系统中下载shell。 但是，由于不能在URL中使用空格，因此必须使用&ldquo;％20&rdquo;对任何空格字符进行编码。 清单883中显示了我们正在运行的命令。</a>
+</h3>
+<p class="topicImage">
+<img height="29" src="%E5%BE%81%E6%9C%8Doscp23-%E7%BB%84%E8%A3%85%E9%9B%B6%E4%BB%B6%EF%BC%9A%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E7%BB%86%E7%9B%AE_files/528m3lsivb6mkj7cdeijotmhni.png" width="527"></p>
+<h3 class="topic">
+<a name="5lc1cfmgc0dqcgcftis5g0cjsf">&nbsp;&nbsp;&nbsp;&nbsp;如果该命令有效，我们应该在Python网络服务器的日志中看到与以下内容类似的条目。</a>
+</h3>
+<p class="topicImage">
+<img height="36" src="%E5%BE%81%E6%9C%8Doscp23-%E7%BB%84%E8%A3%85%E9%9B%B6%E4%BB%B6%EF%BC%9A%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E7%BB%86%E7%9B%AE_files/1k12as99fvdf8uhnp8qjs5495s.png" width="553"></p>
+<h3 class="topic">
+<a name="34d2pj35ov0ltrl0pac8008ab3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;成功！ 接下来，我们需要使外壳可执行，在Kali上启动Metasploit有效负载处理程序，并在目标上运行elf文件以获取meterpreter外壳。 为了使Shell可执行，我们将在其上运行chmod + x。 再一次，我们需要记住对敏感字符进行空间编码，例如空格（％20）和&ldquo; +&rdquo;（％2b）。 上图中显示了使Shell可执行的命令。</a>
+</h3>
+<p class="topicImage">
+<img height="27" src="%E5%BE%81%E6%9C%8Doscp23-%E7%BB%84%E8%A3%85%E9%9B%B6%E4%BB%B6%EF%BC%9A%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E7%BB%86%E7%9B%AE_files/4u4nnut8r7kbhsa9irrhi735jt.png" width="514"></p>
+<h3 class="topic">
+<a name="20e2i0s2nuhonveakv7c6dspkq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;此时，外壳程序应该是可执行的。 接下来，我们将在适当的接口和端口上启动一个Meterpreter有效负载侦听器。</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%BE%81%E6%9C%8Doscp23-%E7%BB%84%E8%A3%85%E9%9B%B6%E4%BB%B6%EF%BC%9A%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E7%BB%86%E7%9B%AE_files/6flvm35ld5n3vf4up2eutcajvn.png"></p>
+<h3 class="topic">
+<a name="1ps2rk1k7t1dh6mtn4fcb7lac4">&nbsp;&nbsp;在上面的msfconsole命令中，我们让Metasploit安静地启动（-q），并立即通过-x选项配置有效负载处理程序，并传递与生成Shell时使用的相同的有效负载设置。&#13;
+  随着我们的监听器的运行，终于可以获取反向外壳了。 这可以通过我们先前安装的恶意WordPress插件执行shell.elf文件来完成。</a>
+</h3>
+<p class="topicImage">
+<img height="25" src="%E5%BE%81%E6%9C%8Doscp23-%E7%BB%84%E8%A3%85%E9%9B%B6%E4%BB%B6%EF%BC%9A%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E7%BB%86%E7%9B%AE_files/1tehs75r4ec4ts2k8cf4sp7els.png" width="476"></p>
+<h3 class="topic">
+<a name="3a60h58edk1sscfuv3go4rel42">&nbsp;&nbsp;&nbsp;返回到侦听器，我们应该看到已经捕获了一个shell。&#13;
+既然我们在WordPress机器上有了外壳，我们将继续进行利用后枚举。</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%BE%81%E6%9C%8Doscp23-%E7%BB%84%E8%A3%85%E9%9B%B6%E4%BB%B6%EF%BC%9A%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E7%BB%86%E7%9B%AE_files/5f2197o48odh3mr75pbkecv3rl.png"></p>
+<h3 class="topic">
+<a name="48o4via56qgcrjqsabf2kdja83">&nbsp;后渗透枚举</a>
+</h3>
+<h3 class="topic">
+<a name="7ri8nqu2gbesu2j1pd7sbi3df6">&nbsp;&nbsp;首先，让我们收集有关主机的一些基本信息，例如网络配置，主机名，操作系统版本等。</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%BE%81%E6%9C%8Doscp23-%E7%BB%84%E8%A3%85%E9%9B%B6%E4%BB%B6%EF%BC%9A%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E7%BB%86%E7%9B%AE_files/4jegt9u4mvorn918lp5tqpbbc0.png"></p>
+<h3 class="topic">
+<a name="18pdf8qsm8qf72co3t3iu6h60e">&nbsp;&nbsp;&nbsp;通过此基本信息收集，我们了解到主机名为&ldquo; Ajla&rdquo;，IP地址为10.4.4.10，Linux版本为4.4.0-21-通用内核上的Ubuntu 16.04.12。 这些信息将使我们能够开始绘制网络的思维导图，以后可能会有用。</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%BE%81%E6%9C%8Doscp23-%E7%BB%84%E8%A3%85%E9%9B%B6%E4%BB%B6%EF%BC%9A%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E7%BB%86%E7%9B%AE_files/7icdn92ar9tjjtpi06nrr4og9f.png"></p>
+<h3 class="topic">
+<a name="6al3v1evmj91p5v0t66grnfp0l">&nbsp;&nbsp;&nbsp;&nbsp;收集了这些基本信息后，我们可以继续进行更具体的枚举。 由于我们知道目标正在运行WordPress，并且我们发现数据库在另一台主机上，因此我们知道该系统上某处应该有数据库凭据。 快速的Google搜索显示，可以在wp-config.php文件中找到WordPress的数据库配置。 查看此文件，我们找到了下一个目标。</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%BE%81%E6%9C%8Doscp23-%E7%BB%84%E8%A3%85%E9%9B%B6%E4%BB%B6%EF%BC%9A%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E7%BB%86%E7%9B%AE_files/7m03r0uob7p13moqi4qrkip14v.png"></p>
+<h3 class="topic">
+<a name="52j25f6g9vs4h6g8tdn25r6s5r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在wp_config.php文件中，我们发现数据库IP地址设置为10.5.5.11。 我们还发现了MariaDB用户名&ldquo; wp&rdquo;，该帐户的密码为&ldquo; Lv9EVQq86cfi8ioWsqFUQyU&rdquo;。 要继续，我们需要巩固我们的立足点，并建立一个稳定的枢纽点</a>
+</h3>
+<h3 class="topic">
+<a name="5fb0lltuht7njkn8lah3qhjihl">&nbsp;创建稳定的枢轴点</a>
+</h3>
+<h3 class="topic">
+<a name="5iqmfmanhk7jvs70dmskb3hum1">&nbsp;&nbsp;在继续之前，让我们回顾一下我们现有的内容。 我们在WordPress上有一个外壳，可以作为www-data用户，并且还可以通过Ajla进行网络访问数据库。 最后，我们刚刚发现了已知有效的数据库凭证，因为WordPress应用程序已在使用它们。&#13;
+     到目前为止，我们知道网络应该类似于图</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%BE%81%E6%9C%8Doscp23-%E7%BB%84%E8%A3%85%E9%9B%B6%E4%BB%B6%EF%BC%9A%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E7%BB%86%E7%9B%AE_files/07pkl16obi6bv132gov068jr1c.png"></p>
+<h3 class="topic">
+<a name="1qup9b18vkd4vcops7ner9k34j">&nbsp;&nbsp;&nbsp;由于WordPress机器和数据库位于单独的网络上，因此这是使用隧道的好时机。 但是，由于我们的反向外壳程序在无特权用户帐户的上下文中运行（即没有有效登录外壳程序（www-data）），因此我们的选择受到限制。</a>
+</h3>
+<h3 class="topic">
+<a name="10b0o44qtddr2jhdrlql4i7h90">&nbsp;&nbsp;&nbsp;&nbsp;由于ssh（客户端）是几乎每个Linux发行版中都包含的核心应用程序，因此我们可以尝试使用它来创建反向隧道。 一个警告是，由于我们没有超级用户权限来为www-data用户创建登录名，因此我们将需要使用WordPress计算机上的SSH客户端登录到我们的Kali服务器上以创建隧道。 简而言之，我们需要一个反向隧道。</a>
+</h3>
+<h3 class="topic">
+<a name="538kfl4q6o5jaqacgan1kf4d7k">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;动态端口转发对我们没有用，因为隧道走错了路。 出于相同的原因，本地端口转发也将无用。 远程端口转发将使我们能够在Kali中打开一个指向MariaDB服务器的端口。 但是，这需要我们知道内部目标上实际打开了哪些端口。&#13;
+   首先，我们将检查Nmap以查看是否可以简化端口扫描，但是我们不应该抱有希望。</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%BE%81%E6%9C%8Doscp23-%E7%BB%84%E8%A3%85%E9%9B%B6%E4%BB%B6%EF%BC%9A%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E7%BB%86%E7%9B%AE_files/7tns02rlc2gl9c00eufblivr2q.png"></p>
+<h3 class="topic">
+<a name="1293h0flvhs3aiaak0hngk4u0b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;不出所料，Nmap不在服务器上，但无需担心。 我们可以创建一个快速脚本来扫描主机。</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%BE%81%E6%9C%8Doscp23-%E7%BB%84%E8%A3%85%E9%9B%B6%E4%BB%B6%EF%BC%9A%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E7%BB%86%E7%9B%AE_files/5kkbkb05eq93l87ot7vatm3olh.png"></p>
+<h3 class="topic">
+<a name="6aeampvdabpmo0elp1qf44gcvm">&nbsp;&nbsp;脚本的内容可以保存在名为portscan.sh的文件中。 我们的脚本将每个端口从1循环到65535。对于每个端口，将建立连接，超时时间为.1秒，如果连接成功，脚本将回显打开哪个端口。&#13;
+   该脚本快速且基本； 但是，它应该为我们提供所需的信息。 要运行脚本，我们需要将内容转储到文件中。 一种快速的方法是使用meterpreter upload命令。</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%BE%81%E6%9C%8Doscp23-%E7%BB%84%E8%A3%85%E9%9B%B6%E4%BB%B6%EF%BC%9A%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E7%BB%86%E7%9B%AE_files/1ka0machn380nnsf98j2dm1m9s.png"></p>
+<h3 class="topic">
+<a name="34p6a2r04g6qokeet336qnf9fn">&nbsp;&nbsp;&nbsp;扫描需要一段时间，但完成后，我们看到端口22和3306已打开。 现在我们知道，我们将需要创建一个隧道，以允许Kali访问数据库服务器上的端口22和3306。  ssh命令可以完成以下任务：</a>
+</h3>
+<p class="topicImage">
+<img height="23" src="%E5%BE%81%E6%9C%8Doscp23-%E7%BB%84%E8%A3%85%E9%9B%B6%E4%BB%B6%EF%BC%9A%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E7%BB%86%E7%9B%AE_files/0sfpia65jegke2er9kugjbp20g.png" width="511"></p>
+<h3 class="topic">
+<a name="672ea2nqs0bqcqc0h2n5gc5ukm">&nbsp;&nbsp;&nbsp;&nbsp;在清单894中，我们将在Kali上打开端口1122，以指向MariaDB主机上的端口22。 接下来，我们还将在Kali上打开13306，以指向MariaDB主机上的3306。&#13;
+   如果要在Meterpreter Shell中运行此命令，由于没有完全交互式的Shell，我们会很快遇到障碍。 这是一个问题，因为ssh会提示我们接受Kali机器的主机密钥并输入Kali用户的密码。 出于安全原因，我们要避免在刚刚遭到破坏的主机上输入我们的Kali密码。</a>
+</h3>
+<h3 class="topic">
+<a name="1jb1tnueka8fdjd1olo07he4pa">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;我们可以通过传递两个可选标志来自动接受Kali机器的主机密钥来解决第一个问题。 这些是UserKnownHostsFile = / dev / null和StrictHostKeyChecking = no。 第一个选项通过将输出发送到/ dev / null来防止ssh尝试保存主机密钥。 第二个选项将指示ssh不要提示我们接受主机密钥。 这两个选项都可以通过-o标志设置。 我们更新的命令如下所示：</a>
+</h3>
+<p class="topicImage">
+<img height="26" src="%E5%BE%81%E6%9C%8Doscp23-%E7%BB%84%E8%A3%85%E9%9B%B6%E4%BB%B6%EF%BC%9A%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E7%BB%86%E7%9B%AE_files/04ncj7da5igmap2kb8b4jqbmfa.png" width="520"></p>
+<h3 class="topic">
+<a name="41f24bb0idkj5mn2mrc2kfpuo9">&nbsp;&nbsp;现在，我们需要防止ssh要求我们提供密码，这可以通过使用ssh密钥来完成。 我们将在WordPress主机上生成ssh密钥，将Kali配置为接受来自新生成的密钥的登录（并且仅允许端口转发），并再修改ssh命令一次以匹配我们的更改</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%BE%81%E6%9C%8Doscp23-%E7%BB%84%E8%A3%85%E9%9B%B6%E4%BB%B6%EF%BC%9A%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E7%BB%86%E7%9B%AE_files/4al4fcvnppfcqim1i9tnnbu1gb.png"></p>
+<h3 class="topic">
+<a name="6hlhu1ll16asil9m65uag5g7b8">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+</body>
+</html>

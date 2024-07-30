@@ -1,0 +1,496 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>物联网安全-固件提取与封装及常见加密固件解密</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="3mglkbsjsq8vq51du93pnqf1g4">物联网安全-固件提取与封装及常见加密固件解密</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E6%8F%90%E5%8F%96%E4%B8%8E%E5%B0%81%E8%A3%85%E5%8F%8A%E5%B8%B8%E8%A7%81%E5%8A%A0%E5%AF%86%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86_files/images/%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E6%8F%90%E5%8F%96%E4%B8%8E%E5%B0%81%E8%A3%85%E5%8F%8A%E5%B8%B8%E8%A7%81%E5%8A%A0%E5%AF%86%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86.jpg"></div>
+<h2 class="topic">
+<a name="65alcuddiguu4rt8n5kppbevk7">固件组成</a>
+</h2>
+<h3 class="topic">
+<a name="04d2v1c983e70tdu2t6kq6vkqp">&nbsp;官网上获得的路由器系统均以固件形式下载的，固件以16进制形式保存在flash芯片中，设备启动后固件会启动kernel和文件系统</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E6%8F%90%E5%8F%96%E4%B8%8E%E5%B0%81%E8%A3%85%E5%8F%8A%E5%B8%B8%E8%A7%81%E5%8A%A0%E5%AF%86%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86_files/6otcrj5g1sdiq50hdqiduhhdr2.png"></p>
+<h3 class="topic">
+<a name="7m8pdhfiepsqmjqefoqmmejohf">&nbsp;&nbsp;linux启动时会挂载文件系统，对于路由器，挂载的内容可能包括服务端应用程序，密钥，固件提取的目的就是获得文件系统中的代码与数据，从而进行研究</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E6%8F%90%E5%8F%96%E4%B8%8E%E5%B0%81%E8%A3%85%E5%8F%8A%E5%B8%B8%E8%A7%81%E5%8A%A0%E5%AF%86%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86_files/5215fkt65732jrg9kr8o2hj2bc.png"></p>
+<h3 class="topic">
+<a name="3r93q713gn9lj2mhe0rg94ptce">&nbsp;&nbsp;&nbsp;实时操作系统与非实时操作系统</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E6%8F%90%E5%8F%96%E4%B8%8E%E5%B0%81%E8%A3%85%E5%8F%8A%E5%B8%B8%E8%A7%81%E5%8A%A0%E5%AF%86%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86_files/4qv2s8350puga376pa7ref4hrq.png"></p>
+<h3 class="topic">
+<a name="19u8b34uneeq66c577trb4lv37">&nbsp;提取固件过程中，内核不是很重要，可以使用其他工具模拟内核，从而运行从固件中提取出的application，并针对后者进行分析</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E6%8F%90%E5%8F%96%E4%B8%8E%E5%B0%81%E8%A3%85%E5%8F%8A%E5%B8%B8%E8%A7%81%E5%8A%A0%E5%AF%86%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86_files/6suj4odhlgi1mspbb3t3244e1p.png"></p>
+<h3 class="topic">
+<a name="141b04cp9mu4aqji8ph7019lcq">&nbsp;&nbsp;不同种类的linux镜像</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E6%8F%90%E5%8F%96%E4%B8%8E%E5%B0%81%E8%A3%85%E5%8F%8A%E5%B8%B8%E8%A7%81%E5%8A%A0%E5%AF%86%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86_files/09fais1bep96a4bop3inobo8nm.png"></p>
+<h3 class="topic">
+<a name="6najamseke2ml839fp9q41pslt">&nbsp;&nbsp;&nbsp;可加载：镜像存储在开发机上，运行时再加载到板上RAM&#13;
+vxworks开发完成后会打包成一个大的bin文件，作为一个整体执行</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E6%8F%90%E5%8F%96%E4%B8%8E%E5%B0%81%E8%A3%85%E5%8F%8A%E5%B8%B8%E8%A7%81%E5%8A%A0%E5%AF%86%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86_files/7of3da72lef0a2i0bdqsc8k3hj.png"></p>
+<h3 class="topic">
+<a name="2pvas5mskds1di4d48r878vlbn">&nbsp;在板子的ROM或flash中烧录了BootStrapPrograms程序，当设备通电后会将Boot Program拷贝到RAM中，然后执行Boot Program，用来引导整个vxworks操作系统加载</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E6%8F%90%E5%8F%96%E4%B8%8E%E5%B0%81%E8%A3%85%E5%8F%8A%E5%B8%B8%E8%A7%81%E5%8A%A0%E5%AF%86%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86_files/4jqp4oe8r7ssmdhlb7j4f602v0.png"></p>
+<h3 class="topic">
+<a name="6j7fn2lnlfrmq2eug2sfnid76g">&nbsp;&nbsp;设备接电后会运行ROM中的引导程序，引导程序会将rom中的vxworks镜像拷贝到RAM中</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E6%8F%90%E5%8F%96%E4%B8%8E%E5%B0%81%E8%A3%85%E5%8F%8A%E5%B8%B8%E8%A7%81%E5%8A%A0%E5%AF%86%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86_files/7sgij3t49idrbsdjke8rc5086o.png"></p>
+<h3 class="topic">
+<a name="4h3qsrhs4jpetleqjjl5kg5l7v">&nbsp;&nbsp;&nbsp;ROM中保存vxwork的代码段和数据段，引导程序会将vxworks的data段和bss段拷贝到RAM中，因为引导程序仅需拷贝vxworks的数据段，所以此类程序引导速度较快</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E6%8F%90%E5%8F%96%E4%B8%8E%E5%B0%81%E8%A3%85%E5%8F%8A%E5%B8%B8%E8%A7%81%E5%8A%A0%E5%AF%86%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86_files/4nrob3cc1pm0q71kmjtlace6rh.png"></p>
+<h2 class="topic">
+<a name="44vhit3ok3e6fpd2g2k71fc1du">固件提取</a>
+</h2>
+<h3 class="topic">
+<a name="1f38i9989hu6vn0disvln62cd3">&nbsp;当已经获得了固件（bin）程序，则需要对bin进行进一步提取，从而提取出文件系统，获得文件系统中的应用程序，上面几种工具可以用于从bin文件中提取文件系统和应用程序（考虑到固件容量问题，可能会对文件系统压缩处理，此时需要解压缩）</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E6%8F%90%E5%8F%96%E4%B8%8E%E5%B0%81%E8%A3%85%E5%8F%8A%E5%B8%B8%E8%A7%81%E5%8A%A0%E5%AF%86%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86_files/6l06m5ufjuhqi7bv2omo6ma301.png"></p>
+<h2 class="topic">
+<a name="1s23r4facsipchs1m8nkavblrn">固件提取实战</a>
+</h2>
+<h3 class="topic">
+<a name="445ult6k19ndvo3b3n4d4rjotp">&nbsp;提取linux架构固件</a>
+</h3>
+<h3 class="topic">
+<a name="2u294904uh16acjtnon40g4q6a">&nbsp;&nbsp;当前目录下存在固件文件（.bin），此时使用binwalk -Me 固件名 解压固件，解压过程中可以看到该固件使用了LZMA压缩，且为Squashfs文件系统&middot;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E6%8F%90%E5%8F%96%E4%B8%8E%E5%B0%81%E8%A3%85%E5%8F%8A%E5%B8%B8%E8%A7%81%E5%8A%A0%E5%AF%86%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86_files/40tfcvshlefd470tm42curd31h.png"></p>
+<h3 class="topic">
+<a name="62efo4m0cfn3241v3c1nbcutrb">&nbsp;&nbsp;&nbsp;bingwalk运行完成后，发现当前目录下出现_开头的对应目录，进入该目录，并进入squashfs-root目录，可以看到类似linux的目录结构，说明此时目录结构提取成功，对于未加密的linux嵌入式操作系统，binwalk -Me即可提取固件</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E6%8F%90%E5%8F%96%E4%B8%8E%E5%B0%81%E8%A3%85%E5%8F%8A%E5%B8%B8%E8%A7%81%E5%8A%A0%E5%AF%86%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86_files/55pn11mqnv0q7iafsgmmtb3otc.png"></p>
+<h3 class="topic">
+<a name="3pl4v75oef4q4bf0nl6u8kthqr">&nbsp;提取vxworks架构固件（固件1）</a>
+</h3>
+<h3 class="topic">
+<a name="5lq2omb0jidqec51p27f69kcg1">&nbsp;&nbsp;使用dd指令提取vxworks系统镜像</a>
+</h3>
+<h3 class="topic">
+<a name="4ca107g3n7dn0m9i8rso3htito">&nbsp;&nbsp;&nbsp;当前目录存在待分析固件wr886nv6.bin，使用binwalk wr886nv6.bin查看固件信息，输出了固件uboot版本等信息，并存在大量LZMA压缩的数据，</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E6%8F%90%E5%8F%96%E4%B8%8E%E5%B0%81%E8%A3%85%E5%8F%8A%E5%B8%B8%E8%A7%81%E5%8A%A0%E5%AF%86%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86_files/5l52mrb63vdj1ea1vk8nu4rrcm.png"></p>
+<h3 class="topic">
+<a name="0m50f20o95fk8f36lufvr9g4oi">&nbsp;&nbsp;&nbsp;&nbsp;其中第二个LZMA压缩的数据体积较大，为2365008字节，猜测其为操作系统数据，并且其内存偏移为41472（即0xA200）</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E6%8F%90%E5%8F%96%E4%B8%8E%E5%B0%81%E8%A3%85%E5%8F%8A%E5%B8%B8%E8%A7%81%E5%8A%A0%E5%AF%86%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86_files/0u3vgiteobd8babrejr8druu9r.png"></p>
+<h3 class="topic">
+<a name="4hjm7998nk5ndoi1e60p6ba403">&nbsp;&nbsp;&nbsp;Linux dd命令用于读取、转换并输出数据 if参数指定被读取的文件名，of指定结果输出文件名，bs=1指定输入输出的块均为1字节大小，skip=41472表示从文件头跳过41472个块后读取数据，count=749632表示读取749632个块的数据（即第二个LZMA数据块的大小）&#13;
+dd指令后，目录下出现a200文件，将其改为.lzma文件，并尝试使用lzma工具解压，此时解压失败</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E6%8F%90%E5%8F%96%E4%B8%8E%E5%B0%81%E8%A3%85%E5%8F%8A%E5%B8%B8%E8%A7%81%E5%8A%A0%E5%AF%86%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86_files/23lsvq0d583mlf55ialmuinapa.png"></p>
+<h3 class="topic">
+<a name="1347e30o7ftgaaeus7vn3mikuv">&nbsp;&nbsp;&nbsp;&nbsp;压缩文件解压失败的原因可能是该文件并不是以一个整体进行压缩的，其内部可能包含非压缩文件结构的数据，使用hexdump查看固件（-C）从0xc1100（-s）开始的512字节的数据（-n），这里的偏移0xc1100是不断测试，从而确定的，通过输出看出，第二个LZMA数据块内部部分数据并不是LZMA格式的，比如0xc1200起始的内存数据就不是LZMA加密的（因为其数据仍能组成字符串）</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E6%8F%90%E5%8F%96%E4%B8%8E%E5%B0%81%E8%A3%85%E5%8F%8A%E5%B8%B8%E8%A7%81%E5%8A%A0%E5%AF%86%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86_files/3riacq3n85vioserqttju940gp.png"></p>
+<h3 class="topic">
+<a name="3lqq1jinlnmlveie57l1tqjnh3">&nbsp;&nbsp;&nbsp;使用hexdump查询并找到了固件文件中疑似LZMA数据块的关键位置，即从内存地址0xc04b1之后，内存数据均为FF，该部分应当不属于LZMA压缩文件，而0xc04b1疑似为LZMA压缩数据的结尾</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E6%8F%90%E5%8F%96%E4%B8%8E%E5%B0%81%E8%A3%85%E5%8F%8A%E5%B8%B8%E8%A7%81%E5%8A%A0%E5%AF%86%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86_files/70d5lks0ssim2ob6p1763e399i.png"></p>
+<h3 class="topic">
+<a name="1k04fms4h8u6293ggimp8hkgol">&nbsp;&nbsp;&nbsp;&nbsp;计算从0xc04b1到0xa200之间的偏移，将其作为dd命令截取数据的长度</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E6%8F%90%E5%8F%96%E4%B8%8E%E5%B0%81%E8%A3%85%E5%8F%8A%E5%B8%B8%E8%A7%81%E5%8A%A0%E5%AF%86%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86_files/6jeagrnpk22nv6vv8d94e91s61.png"></p>
+<h3 class="topic">
+<a name="4hg5eg29qpuuj0du4qde1hm2po">&nbsp;&nbsp;&nbsp;使用dd指令，截取wr886nv6.bin固件从41472字节开始共746162字节的数据，并将其命名为a200.lzma，截取完毕后，使用lzma解压a200.lzma文件，得到a200文件，说明解压成功</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E6%8F%90%E5%8F%96%E4%B8%8E%E5%B0%81%E8%A3%85%E5%8F%8A%E5%B8%B8%E8%A7%81%E5%8A%A0%E5%AF%86%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86_files/3m9dmkieouq612rkalg0a942f3.png"></p>
+<h3 class="topic">
+<a name="62c0hq5urgrtl51csf7ch1ocav">&nbsp;&nbsp;&nbsp;&nbsp;使用32位ida分析a200文件，注意选择程序架构为大端的MIPS</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E6%8F%90%E5%8F%96%E4%B8%8E%E5%B0%81%E8%A3%85%E5%8F%8A%E5%B8%B8%E8%A7%81%E5%8A%A0%E5%AF%86%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86_files/1gotftnacn683krkudkrc97m61.png"></p>
+<h3 class="topic">
+<a name="3vdkdt28i7gv5pvufu8u8436g9">&nbsp;&nbsp;&nbsp;因为此时文件为二进制文件，故需要指定文件入口点（如图标注的位置），根据其他对vxworks镜像的分析，其入口点多为0x80001000</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E6%8F%90%E5%8F%96%E4%B8%8E%E5%B0%81%E8%A3%85%E5%8F%8A%E5%B8%B8%E8%A7%81%E5%8A%A0%E5%AF%86%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86_files/1dqcs5ajp9h2ebru8tt1iojt3g.png"></p>
+<h3 class="topic">
+<a name="45t181doemvggs9erp1s35tjpc">&nbsp;&nbsp;&nbsp;&nbsp;打开后ida显示文件的十六进制数据，此时按c可以将数据反汇编，从而显示汇编代码</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E6%8F%90%E5%8F%96%E4%B8%8E%E5%B0%81%E8%A3%85%E5%8F%8A%E5%B8%B8%E8%A7%81%E5%8A%A0%E5%AF%86%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86_files/6sd8flef9og90l7f21sr6oopf1.png"></p>
+<h3 class="topic">
+<a name="6j24gg2vuourfkqc7qij41il7p">&nbsp;&nbsp;&nbsp;将符号文件和导入符号文件的ida脚本放到与a200同一目录下</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E6%8F%90%E5%8F%96%E4%B8%8E%E5%B0%81%E8%A3%85%E5%8F%8A%E5%B8%B8%E8%A7%81%E5%8A%A0%E5%AF%86%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86_files/36lidf1n471tovoiaen4e9doj0.png"></p>
+<h3 class="topic">
+<a name="2ouspprbf7hu8uh647rb47h7nq">&nbsp;&nbsp;&nbsp;&nbsp;在ida中载入脚本</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E6%8F%90%E5%8F%96%E4%B8%8E%E5%B0%81%E8%A3%85%E5%8F%8A%E5%B8%B8%E8%A7%81%E5%8A%A0%E5%AF%86%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86_files/4tg4bu290sk9km778m494bpncm.png"></p>
+<h3 class="topic">
+<a name="5qeji973f1t8ll2rao9ge9cc1g">&nbsp;&nbsp;&nbsp;脚本运行后大量vxworks中的函数被识别出来</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E6%8F%90%E5%8F%96%E4%B8%8E%E5%B0%81%E8%A3%85%E5%8F%8A%E5%B8%B8%E8%A7%81%E5%8A%A0%E5%AF%86%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86_files/5atgg4872kpbmbed7s9nplvudr.png"></p>
+<h3 class="topic">
+<a name="0m86hclcs1mf3ba9k0707jerio">&nbsp;&nbsp;使用binwalk提取vxworks系统镜像</a>
+</h3>
+<h3 class="topic">
+<a name="6ioguddth4kb591vgtplvau16n">&nbsp;&nbsp;&nbsp;使用binwalk -Me直接从固件中提取vxworks系统镜像</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E6%8F%90%E5%8F%96%E4%B8%8E%E5%B0%81%E8%A3%85%E5%8F%8A%E5%B8%B8%E8%A7%81%E5%8A%A0%E5%AF%86%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86_files/74trq6g95o1pmhdanvma12l5aq.png"></p>
+<h3 class="topic">
+<a name="0cpjv43roec74eiton53lltvcf">&nbsp;&nbsp;&nbsp;&nbsp;binwalk -Me执行完毕后，会得到下划线开头的文件夹，进入该文件夹，发现文件夹下有大量的7z压缩包，可以看到，提取到的vxworks文件系统的目录与linxu完全不同</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E6%8F%90%E5%8F%96%E4%B8%8E%E5%B0%81%E8%A3%85%E5%8F%8A%E5%B8%B8%E8%A7%81%E5%8A%A0%E5%AF%86%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86_files/2c08qj0pke2497ovcfrrh9nnf0.png"></p>
+<h3 class="topic">
+<a name="5uu6ednkbpucdutr1gag5v1604">&nbsp;&nbsp;&nbsp;在文件夹中一般有三个部分重要数据1、U-Boot程序 2、vxworks镜像文件 3、vxworks系统镜像的符号链接，根据之前的分析vxworks镜像文件即文件夹中的A200（根据固件中的偏移命名），此时我们需要查找vxworks系统镜像的符号链接</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E6%8F%90%E5%8F%96%E4%B8%8E%E5%B0%81%E8%A3%85%E5%8F%8A%E5%B8%B8%E8%A7%81%E5%8A%A0%E5%AF%86%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86_files/3r1djnj47f5ogh8t81bdacrbgm.png"></p>
+<h3 class="topic">
+<a name="48g63iink0mqr6amrjletfu7ld">&nbsp;&nbsp;&nbsp;&nbsp;使用grep在当前文件夹中搜索bzero（即符号表），查找到在文件C2E3A中存在该字符串  -ri参数表示或略大小写</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E6%8F%90%E5%8F%96%E4%B8%8E%E5%B0%81%E8%A3%85%E5%8F%8A%E5%B8%B8%E8%A7%81%E5%8A%A0%E5%AF%86%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86_files/7jimd75qamaqa1i9eg9omqf5je.png"></p>
+<h3 class="topic">
+<a name="77ifrmuokod2hopdd33e4mdlbu">&nbsp;&nbsp;&nbsp;使用hexdump查看C2E3A文件内容</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E6%8F%90%E5%8F%96%E4%B8%8E%E5%B0%81%E8%A3%85%E5%8F%8A%E5%B8%B8%E8%A7%81%E5%8A%A0%E5%AF%86%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86_files/39asnd8pumolvtpj1kc6158f8s.png"></p>
+<h3 class="topic">
+<a name="6lr8d163agn04ns9nee9gbmvb0">&nbsp;&nbsp;&nbsp;&nbsp;在文件C2E3A中看到符号表的相关结构，其中0x54表示符号类型，后面三字节表示当前项在符号表中的偏移，最后四字节表示某个存储地址，疑似与某对象相关，具体含义位置</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E6%8F%90%E5%8F%96%E4%B8%8E%E5%B0%81%E8%A3%85%E5%8F%8A%E5%B8%B8%E8%A7%81%E5%8A%A0%E5%AF%86%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86_files/7n0tu2qd9hog0giadns2av7fls.png"></p>
+<h3 class="topic">
+<a name="0ac45nrn6eb7cgq8jio1tdhr90">&nbsp;&nbsp;&nbsp;在文件C2E3A中也能看到函数名称字符串</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E6%8F%90%E5%8F%96%E4%B8%8E%E5%B0%81%E8%A3%85%E5%8F%8A%E5%B8%B8%E8%A7%81%E5%8A%A0%E5%AF%86%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86_files/011iudqhg3p4k6c1gopb5rq5o3.png"></p>
+<h3 class="topic">
+<a name="0vbjtna33acl4bdu0ihsf5j8b1">&nbsp;&nbsp;&nbsp;&nbsp;拷贝符号表文件</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E6%8F%90%E5%8F%96%E4%B8%8E%E5%B0%81%E8%A3%85%E5%8F%8A%E5%B8%B8%E8%A7%81%E5%8A%A0%E5%AF%86%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86_files/1j1jv26i5sv5vbgvd0jq1b3pv1.png"></p>
+<h3 class="topic">
+<a name="6h36nmnvjcjujsj40e175i13lo">&nbsp;&nbsp;&nbsp;将符号表文件拷贝到a200同目录下</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E6%8F%90%E5%8F%96%E4%B8%8E%E5%B0%81%E8%A3%85%E5%8F%8A%E5%B8%B8%E8%A7%81%E5%8A%A0%E5%AF%86%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86_files/5nh64rtsch2vvjb5q6jo5ip6t9.png"></p>
+<h3 class="topic">
+<a name="27bkm6li5sh91j8a8d3v2l8ts2">&nbsp;&nbsp;&nbsp;&nbsp;编写import_vxworks_symbols.py的ida脚本用于将符号导入到正在分析的vxworks系统镜像中</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E6%8F%90%E5%8F%96%E4%B8%8E%E5%B0%81%E8%A3%85%E5%8F%8A%E5%B8%B8%E8%A7%81%E5%8A%A0%E5%AF%86%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86_files/4ea4ck69kch85o3rcvlu19ncvf.png"></p>
+<h3 class="topic">
+<a name="24rjo0n28a76ldgcrlefkuqaim">&nbsp; 提取vxworks架构固件（固件2）</a>
+</h3>
+<h3 class="topic">
+<a name="6kqpobtdk5hi2fho7ba9r61oub">&nbsp;&nbsp;使用binwalk查看固件信息，该固件也存在大量LZMA数据包，疑似为vxworks系统的固件</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E6%8F%90%E5%8F%96%E4%B8%8E%E5%B0%81%E8%A3%85%E5%8F%8A%E5%B8%B8%E8%A7%81%E5%8A%A0%E5%AF%86%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86_files/507d1qrdgqcsr31hd2brudt643.png"></p>
+<h3 class="topic">
+<a name="0tstt4bsnclntkvsvhoj04d2f7">&nbsp;&nbsp;&nbsp;根据binwalk的输出信息，在0x4e020位置处存在一个较大的LZMA数据块，疑似为vxwork操作系统镜像</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E6%8F%90%E5%8F%96%E4%B8%8E%E5%B0%81%E8%A3%85%E5%8F%8A%E5%B8%B8%E8%A7%81%E5%8A%A0%E5%AF%86%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86_files/45nc4qnmgvmm3mu269g84lgh2v.png"></p>
+<h3 class="topic">
+<a name="1qarddg9mjj7orp3dftja48lcn">&nbsp;&nbsp;&nbsp;&nbsp;直接使用binwalk -Me提取固件</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E6%8F%90%E5%8F%96%E4%B8%8E%E5%B0%81%E8%A3%85%E5%8F%8A%E5%B8%B8%E8%A7%81%E5%8A%A0%E5%AF%86%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86_files/4gvlpctolbbugivcnu25u31glf.png"></p>
+<h3 class="topic">
+<a name="1dp3ii57uttl37com8chehhfhv">&nbsp;&nbsp;在提取固件后获得的文件夹下找到名为4e020的文件，</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E6%8F%90%E5%8F%96%E4%B8%8E%E5%B0%81%E8%A3%85%E5%8F%8A%E5%B8%B8%E8%A7%81%E5%8A%A0%E5%AF%86%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86_files/7fidqo3g5cr925kk1q0pltd3h5.png"></p>
+<h3 class="topic">
+<a name="7ouj8t7rn2sgh2akavrpchj1qr">&nbsp;&nbsp;&nbsp;使用相同的grep指令尝试寻找vxworks的符号链接文件，但是没有找到</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E6%8F%90%E5%8F%96%E4%B8%8E%E5%B0%81%E8%A3%85%E5%8F%8A%E5%B8%B8%E8%A7%81%E5%8A%A0%E5%AF%86%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86_files/20q2cl62fjh7vrik797lr6079c.png"></p>
+<h3 class="topic">
+<a name="6i8ovpcr2q30tuooro1hkcc7aj">&nbsp;&nbsp;&nbsp;&nbsp;使用与之前相同的步骤，用ida加载该文件，选择mips 大端架构，输入程序入口点为0x80001000，按c得到汇编代码，此时直接调用import_vxworks_symbols.py脚本，使用从另一个vxworks固件中获得的符号链接文件解析本程序中的符号，这样可以解析一部分函数符号</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E6%8F%90%E5%8F%96%E4%B8%8E%E5%B0%81%E8%A3%85%E5%8F%8A%E5%B8%B8%E8%A7%81%E5%8A%A0%E5%AF%86%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86_files/6dmm4tbfv5a979gaqf61bmfj9i.png"></p>
+<h2 class="topic">
+<a name="46matjabf6tmntfnknkhrjcfqa">固件封装实战</a>
+</h2>
+<h3 class="topic">
+<a name="69ks0vcfr8nv3n2pvfg09dgmia">&nbsp;例如：在已提取的固件中留个后门，然后重新封装，烧录到设备中</a>
+</h3>
+<h3 class="topic">
+<a name="2cmrc5hgetvfcgh65rhilie04h">&nbsp;固件封装需要使用工具firmware-mod-kits，此时将固件（.bin）拷贝到当前目录中</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E6%8F%90%E5%8F%96%E4%B8%8E%E5%B0%81%E8%A3%85%E5%8F%8A%E5%B8%B8%E8%A7%81%E5%8A%A0%E5%AF%86%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86_files/7grfbuoecu2ummnb4vnu0mk2f0.png"></p>
+<h3 class="topic">
+<a name="36ub54a8defb5flaogr7l5rqli">&nbsp;&nbsp;使用当前工具目录下的脚本extract-firmware.sh将固件提取出来，其效果和binwalk -Me相同，固件提取成功后进入/fmk/rootfd路径下，即可看到嵌入式系统文件目录</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E6%8F%90%E5%8F%96%E4%B8%8E%E5%B0%81%E8%A3%85%E5%8F%8A%E5%B8%B8%E8%A7%81%E5%8A%A0%E5%AF%86%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86_files/3gt673tgjsees174i698986jel.png"></p>
+<h3 class="topic">
+<a name="64ihe14iem8ihtup7b00v66lrm">&nbsp;&nbsp;&nbsp;为了设置后门需要查看系统配置信息，特别是自启动服务信息，故进入/etc/init.d目录下，该目录下的文件rcS和rcS_Gw指定了开机自启动项</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E6%8F%90%E5%8F%96%E4%B8%8E%E5%B0%81%E8%A3%85%E5%8F%8A%E5%B8%B8%E8%A7%81%E5%8A%A0%E5%AF%86%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86_files/0mc00933radv8jgpt1n1kkeks1.png"></p>
+<h3 class="topic">
+<a name="1a2bnkr95kc6kd4cpdkggoni7e">&nbsp;&nbsp;&nbsp;&nbsp;使用vim rcS指令，发现rcS脚本中存在开启telnet相关代码，猜测是否系统启动后就会开启telnet</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E6%8F%90%E5%8F%96%E4%B8%8E%E5%B0%81%E8%A3%85%E5%8F%8A%E5%B8%B8%E8%A7%81%E5%8A%A0%E5%AF%86%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86_files/0i97ioi9199hrgnfupcvldnrf9.png"></p>
+<h3 class="topic">
+<a name="4n34rpf0ar90nsfn011ivgas6j">&nbsp;将firmware目录下的固件拷贝到firmadyne目录</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E6%8F%90%E5%8F%96%E4%B8%8E%E5%B0%81%E8%A3%85%E5%8F%8A%E5%B8%B8%E8%A7%81%E5%8A%A0%E5%AF%86%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86_files/1edhnhda037ehiucvuujmpb1uk.png"></p>
+<h3 class="topic">
+<a name="199lbj023rj7a1ak7ispehbo2l">&nbsp;&nbsp;将firmware目录下的固件启动脚本DIR823G.sh拷贝到firmadyne目录下</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E6%8F%90%E5%8F%96%E4%B8%8E%E5%B0%81%E8%A3%85%E5%8F%8A%E5%B8%B8%E8%A7%81%E5%8A%A0%E5%AF%86%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86_files/32od877nhbqnchuf6t28t38c8g.png"></p>
+<h3 class="topic">
+<a name="02guifjtmtng2474labe65f8tg">&nbsp;&nbsp;&nbsp;确保images目录下的信息被清空（可以使用reset.sh脚本）</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E6%8F%90%E5%8F%96%E4%B8%8E%E5%B0%81%E8%A3%85%E5%8F%8A%E5%B8%B8%E8%A7%81%E5%8A%A0%E5%AF%86%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86_files/25v8ioqaivchbvqj3poppqk1g2.png"></p>
+<h3 class="topic">
+<a name="59mij7j8dt8vno2qki9okq42s0">&nbsp;&nbsp;&nbsp;&nbsp;以root权限运行固件启动脚本</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E6%8F%90%E5%8F%96%E4%B8%8E%E5%B0%81%E8%A3%85%E5%8F%8A%E5%B8%B8%E8%A7%81%E5%8A%A0%E5%AF%86%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86_files/6e4vhp93gr0peej2plbqidlr72.png"></p>
+<h3 class="topic">
+<a name="6c26b1qhjskr9gs55cb97b4v0g">&nbsp;固件启动后尝试ping一下该固件的ip，ping通说明固件运行成功</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E6%8F%90%E5%8F%96%E4%B8%8E%E5%B0%81%E8%A3%85%E5%8F%8A%E5%B8%B8%E8%A7%81%E5%8A%A0%E5%AF%86%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86_files/4jdee6a8arro44klcok3qt3jsu.png"></p>
+<h3 class="topic">
+<a name="6g6jv0u48c3r2bbmighjma377k">&nbsp;&nbsp;使用nmap扫描设备，发现设备telnet未启动，可能是rcS脚本中if判断条件未满足</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E6%8F%90%E5%8F%96%E4%B8%8E%E5%B0%81%E8%A3%85%E5%8F%8A%E5%B8%B8%E8%A7%81%E5%8A%A0%E5%AF%86%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86_files/5a6glfgguqgfu7qhaek7hheljp.png"></p>
+<h3 class="topic">
+<a name="29kmieg9sdkgludjobh9gskie8">&nbsp;&nbsp;&nbsp;ctrl a+x将固件停止运行</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E6%8F%90%E5%8F%96%E4%B8%8E%E5%B0%81%E8%A3%85%E5%8F%8A%E5%B8%B8%E8%A7%81%E5%8A%A0%E5%AF%86%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86_files/6cajan6cd04pr60vbsvtp1hcld.png"></p>
+<h3 class="topic">
+<a name="0g8ts1gjt2vle2ncgi5c3ce83q">&nbsp;&nbsp;&nbsp;&nbsp;此时为了设置后门，可以向固件中上传符合固件架构的后门程序，同时写入到启动项中，但根据rcS，固件中本身就有telnet应用可用，故使用telnetd -p 23 -l /bin/sh 在23端口上运行shell，从而开启后门</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E6%8F%90%E5%8F%96%E4%B8%8E%E5%B0%81%E8%A3%85%E5%8F%8A%E5%B8%B8%E8%A7%81%E5%8A%A0%E5%AF%86%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86_files/1hesnt0ota6oognomlh1qkbk4a.png"></p>
+<h3 class="topic">
+<a name="2ptv98r0cus28rjfmsim1ui5mq">&nbsp;将rcS脚本修改完毕后，使用工具firmware-mod-kits路径下的build-firmware.sh脚本将固件重新打包</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E6%8F%90%E5%8F%96%E4%B8%8E%E5%B0%81%E8%A3%85%E5%8F%8A%E5%B8%B8%E8%A7%81%E5%8A%A0%E5%AF%86%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86_files/1502qs36gvontug18i07478o8o.png"></p>
+<h3 class="topic">
+<a name="46ifmg9m20mufnfpiv2hfi706h">&nbsp;&nbsp;打包完成后可以在fmk路径下生成.bin文件，将该bin文件保存到firmadyne路径下</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E6%8F%90%E5%8F%96%E4%B8%8E%E5%B0%81%E8%A3%85%E5%8F%8A%E5%B8%B8%E8%A7%81%E5%8A%A0%E5%AF%86%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86_files/2n207mqoehq8r8hlbgrtmpejkr.png"></p>
+<h3 class="topic">
+<a name="1taq4fcu81md0qr52vjrsajev2">&nbsp;&nbsp;&nbsp;将firmadyne路径下的固件启动脚本拷贝一份并命名为new.sh，编辑new.sh，让其启动刚打包好的bin文件</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E6%8F%90%E5%8F%96%E4%B8%8E%E5%B0%81%E8%A3%85%E5%8F%8A%E5%B8%B8%E8%A7%81%E5%8A%A0%E5%AF%86%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86_files/4s03l2962u0leqng58qqei1i2b.png"></p>
+<h3 class="topic">
+<a name="3bmdtpva0vi7oia7t59eb6q2l1">&nbsp;&nbsp;&nbsp;&nbsp;将脚本该位置修改为要启动的固件名称</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E6%8F%90%E5%8F%96%E4%B8%8E%E5%B0%81%E8%A3%85%E5%8F%8A%E5%B8%B8%E8%A7%81%E5%8A%A0%E5%AF%86%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86_files/1uefjq1uvsv1f3kt7srrdo7mi9.png"></p>
+<h3 class="topic">
+<a name="4b5ad16qlvvglg170qmu4denhs">&nbsp;调用reset脚本，重置网络环境</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E6%8F%90%E5%8F%96%E4%B8%8E%E5%B0%81%E8%A3%85%E5%8F%8A%E5%B8%B8%E8%A7%81%E5%8A%A0%E5%AF%86%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86_files/672a8t30p0p706t52l8v1e7co5.png"></p>
+<h3 class="topic">
+<a name="4q0p430s8fekll5p4h6e633sfm">&nbsp;&nbsp;reset脚本执行完毕，images目录下数据被清空</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E6%8F%90%E5%8F%96%E4%B8%8E%E5%B0%81%E8%A3%85%E5%8F%8A%E5%B8%B8%E8%A7%81%E5%8A%A0%E5%AF%86%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86_files/5aerr5e2h8qqt825olhe09ngn0.png"></p>
+<h3 class="topic">
+<a name="130v0b58n3e35kv04ur4aoh3hk">&nbsp;&nbsp;&nbsp;启动new.sh，运行新打包的固件</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E6%8F%90%E5%8F%96%E4%B8%8E%E5%B0%81%E8%A3%85%E5%8F%8A%E5%B8%B8%E8%A7%81%E5%8A%A0%E5%AF%86%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86_files/7is7i8c469aj27qgi24ks83bsg.png"></p>
+<h3 class="topic">
+<a name="6g3epoev1896vl9k535frp953p">&nbsp;&nbsp;&nbsp;&nbsp;测试设备可以ping通</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E6%8F%90%E5%8F%96%E4%B8%8E%E5%B0%81%E8%A3%85%E5%8F%8A%E5%B8%B8%E8%A7%81%E5%8A%A0%E5%AF%86%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86_files/6oehhnkrsk8kfk1so70n95ueku.png"></p>
+<h3 class="topic">
+<a name="7nfddk22oegph1174bnkrnf0ss">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nmap扫描，发现telnet开启</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E6%8F%90%E5%8F%96%E4%B8%8E%E5%B0%81%E8%A3%85%E5%8F%8A%E5%B8%B8%E8%A7%81%E5%8A%A0%E5%AF%86%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86_files/7icdeir35ga3mbouen1bk4gqa4.png"></p>
+<h3 class="topic">
+<a name="6o8mjth66vief05nfpviffuvu1">&nbsp;使用telnet链接设备，成功获得shell</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E6%8F%90%E5%8F%96%E4%B8%8E%E5%B0%81%E8%A3%85%E5%8F%8A%E5%B8%B8%E8%A7%81%E5%8A%A0%E5%AF%86%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86_files/3v5hai45lfhb8p0ue7mod7oakg.png"></p>
+<h2 class="topic">
+<a name="2va3dv5hjed2kf921e1ub8kp6r">常见固件解密</a>
+</h2>
+<h3 class="topic">
+<a name="38ce1mcek2jr876j7r366kbh94">&nbsp;为了防止被逆向，厂商可能加密固件</a>
+</h3>
+<h3 class="topic">
+<a name="2n4vk17h4o2kiq22i18509lpuu">&nbsp;&nbsp;加密情况分类，对于出厂时固件就被加密的情况，要想解密十分复杂，而如果厂商尝试从某个版之后对固件加密，则会存在一个中间版本，该版本中存在加密解密的算法，可以用作解密固件</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E6%8F%90%E5%8F%96%E4%B8%8E%E5%B0%81%E8%A3%85%E5%8F%8A%E5%B8%B8%E8%A7%81%E5%8A%A0%E5%AF%86%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86_files/1vsv8rcsaoiquv9nirnpomlvph.png"></p>
+<h3 class="topic">
+<a name="4vvp6e7flsic1o3naf51c7jfvm">&nbsp;&nbsp;&nbsp;对于出厂时固件就被加密的情况，要想解密十分复杂，不过中心思路还是获得其解密脚本</a>
+</h3>
+<h3 class="topic">
+<a name="7k0fi0pt075ogbehkg6k71kvac">&nbsp;固件解密实战</a>
+</h3>
+<h3 class="topic">
+<a name="7307aa5as1serbfuujadimf8q7">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E6%8F%90%E5%8F%96%E4%B8%8E%E5%B0%81%E8%A3%85%E5%8F%8A%E5%B8%B8%E8%A7%81%E5%8A%A0%E5%AF%86%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86_files/1pih6benuc89td59pko1dc945v.png"></p>
+<h3 class="topic">
+<a name="5ood22k6p1hbf32r2h363apbhk">&nbsp;&nbsp;&nbsp;针对老版本的固件，因为其是zip包，所以使用unzip进行解压缩，可以得到未加密bin固件，推测其中存在固件的加解密脚本</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E6%8F%90%E5%8F%96%E4%B8%8E%E5%B0%81%E8%A3%85%E5%8F%8A%E5%B8%B8%E8%A7%81%E5%8A%A0%E5%AF%86%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86_files/4bpr9h4dmn84aob9iefcbm0k35.png"></p>
+<h3 class="topic">
+<a name="00oqpc908baokjrlu96g67girh">&nbsp;&nbsp;&nbsp;&nbsp;解压新版本固件的zip包，解压缩后仅得到bin文件，说明该固件可能是被加密的</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E6%8F%90%E5%8F%96%E4%B8%8E%E5%B0%81%E8%A3%85%E5%8F%8A%E5%B8%B8%E8%A7%81%E5%8A%A0%E5%AF%86%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86_files/3ou7n98d0vofencqtpe4jqtfe8.png"></p>
+<h3 class="topic">
+<a name="6sg9glcu5htn9scbm1juc4rvmn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用binwalk和 -Me参数提取新版本固件，发现没有得到预期效果，说明新版本固件被加密</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E6%8F%90%E5%8F%96%E4%B8%8E%E5%B0%81%E8%A3%85%E5%8F%8A%E5%B8%B8%E8%A7%81%E5%8A%A0%E5%AF%86%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86_files/2mphkvjp7gdt2iorjva9bm2hav.png"></p>
+<h3 class="topic">
+<a name="760bc9qi4fjoi5tb2o6mu4d0qf">&nbsp;&nbsp;使用binwalk -Me提取未加密固件</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E6%8F%90%E5%8F%96%E4%B8%8E%E5%B0%81%E8%A3%85%E5%8F%8A%E5%B8%B8%E8%A7%81%E5%8A%A0%E5%AF%86%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86_files/3nr20e9vvros1ivpjbpm3vbvnr.png"></p>
+<h3 class="topic">
+<a name="4kurj551llp40mb02dsfjbrdvn">&nbsp;&nbsp;&nbsp;提取完毕后，获得新的文件夹，进入固件文件夹的_8AB758.extracted目录下</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E6%8F%90%E5%8F%96%E4%B8%8E%E5%B0%81%E8%A3%85%E5%8F%8A%E5%B8%B8%E8%A7%81%E5%8A%A0%E5%AF%86%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86_files/646tm8bkrii5ictc77jmt83rl6.png"></p>
+<h3 class="topic">
+<a name="7fbpifo1lbovdoiseg19q543te">&nbsp;&nbsp;&nbsp;&nbsp;进一步进入，发现linux架构的文件结构</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E6%8F%90%E5%8F%96%E4%B8%8E%E5%B0%81%E8%A3%85%E5%8F%8A%E5%B8%B8%E8%A7%81%E5%8A%A0%E5%AF%86%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86_files/5lrgtpnq28ve5ajuqlo9thjebp.png"></p>
+<h3 class="topic">
+<a name="20i6u5lnilkjhbsl054c1jai5a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用grep命令搜索当前目录中（固件文件系统）包含encry的程序（grep指令可以搜索当前目录中文件的内容包含的encry字符串，但这个不是我们关注的目标，我们假定当前版本的固件中存在解密程序，可以用于解密新版本固件，所以搜索目标为脚本或程序）</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E6%8F%90%E5%8F%96%E4%B8%8E%E5%B0%81%E8%A3%85%E5%8F%8A%E5%B8%B8%E8%A7%81%E5%8A%A0%E5%AF%86%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86_files/049aqge0at3jua37hkkmbsqkvt.png"></p>
+<h3 class="topic">
+<a name="4k6m0njckdsaq33c32at847a6o">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E6%8F%90%E5%8F%96%E4%B8%8E%E5%B0%81%E8%A3%85%E5%8F%8A%E5%B8%B8%E8%A7%81%E5%8A%A0%E5%AF%86%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86_files/5ni5ai4c6pscl7gtio3h57mpri.png"></p>
+<h3 class="topic">
+<a name="20gcc5hb4mucvukdgvgeeaspca">&nbsp;&nbsp;&nbsp;将加密固件拷贝到当前目录，查看当前目录bin文件夹下的程序架构为mips小端，使用qemu模拟mips小端环境运行解密程序imgdecrypt ，从而解密加密固件，该过程中可以获得密钥</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E6%8F%90%E5%8F%96%E4%B8%8E%E5%B0%81%E8%A3%85%E5%8F%8A%E5%B8%B8%E8%A7%81%E5%8A%A0%E5%AF%86%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86_files/4o1obegtggg90vhkjijcjkj188.png"></p>
+<h3 class="topic">
+<a name="5quj7716hcn2gi5lnea38v0pgc">&nbsp;&nbsp;&nbsp;&nbsp;用binwalk查看解密后的固件，发现可以得到相关信息，解密成功</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E6%8F%90%E5%8F%96%E4%B8%8E%E5%B0%81%E8%A3%85%E5%8F%8A%E5%B8%B8%E8%A7%81%E5%8A%A0%E5%AF%86%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86_files/6pb8u0ubkc3oknhq7rp85uerpa.png"></p>
+<h3 class="topic">
+<a name="54996dqjp5snnve546igjnchna">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用binwalk -Me发现可以正常提取固件</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E6%8F%90%E5%8F%96%E4%B8%8E%E5%B0%81%E8%A3%85%E5%8F%8A%E5%B8%B8%E8%A7%81%E5%8A%A0%E5%AF%86%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86_files/666r4k9iog5r29k5ecj0lt6opf.png"></p>
+<h3 class="topic">
+<a name="25etoicocug8ckr70cmq953r4p">&nbsp;&nbsp;通过以上路径可以访问解密后固件的文件系统</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E6%8F%90%E5%8F%96%E4%B8%8E%E5%B0%81%E8%A3%85%E5%8F%8A%E5%B8%B8%E8%A7%81%E5%8A%A0%E5%AF%86%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86_files/7jafdost38vm5d3tbf5kqho835.png"></p>
+<h2 class="topic">
+<a name="41n6cdre8i03d821qnrqlnahru">import_vxworks_symbols.py</a>
+</h2>
+<h3 class="topic">
+<a name="6ggjvvjk8q5hog59qg13do2a4h">&nbsp;import idautils&#13;
+import idc&#13;
+import idaapi&#13;
+ &#13;
+symfile_path = './C2E3A'&#13;
+symbols_table_start = 8&#13;
+strings_table_start = 0x9d00&#13;
+ &#13;
+with open(symfile_path, 'rb') as f:&#13;
+    symfile_contents = f.read()&#13;
+ &#13;
+symbols_table = symfile_contents[symbols_table_start:strings_table_start]&#13;
+strings_table = symfile_contents[strings_table_start:]&#13;
+ &#13;
+def get_string_by_offset(offset):&#13;
+    index = 0&#13;
+    while True:&#13;
+        if strings_table[offset+index] != 'x00':&#13;
+            index += 1&#13;
+        else:&#13;
+            break&#13;
+    return strings_table[offset:offset+index]&#13;
+ &#13;
+ &#13;
+def get_symbols_metadata():&#13;
+    symbols = []&#13;
+    for offset in xrange(0, len(symbols_table),8):&#13;
+        symbol_item = symbols_table[offset:offset+8]&#13;
+        flag = symbol_item[0]&#13;
+        string_offset = int(symbol_item[1:4].encode('hex'), 16)&#13;
+        string_name = get_string_by_offset(string_offset)&#13;
+        target_address = int(symbol_item[-4:].encode('hex'), 16)&#13;
+        symbols.append((flag, string_name, target_address))&#13;
+    return symbols&#13;
+ &#13;
+ &#13;
+def add_symbols(symbols_meta_data):&#13;
+    for flag, string_name, target_address in symbols_meta_data:&#13;
+        idc.MakeName(target_address, string_name)&#13;
+        if flag == 'x54':&#13;
+            idc.MakeCode(target_address)&#13;
+            idc.MakeFunction(target_address)&#13;
+ &#13;
+ &#13;
+if __name__ == "__main__":&#13;
+    symbols_metadata = get_symbols_metadata()&#13;
+    add_symbols(symbols_metadata)</a>
+</h3>
+</body>
+</html>

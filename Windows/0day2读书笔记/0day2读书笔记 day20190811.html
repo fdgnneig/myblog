@@ -1,0 +1,1310 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>0day2读书笔记&#13;
+day20190811</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="330s1uu3stbgsjccv86ib3j4lt">0day2读书笔记&#13;
+day20190811</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190811_files/images/0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190811.jpg"></div>
+<h2 class="topic">
+<a name="7ho8u7cd3cgrla798odtel34h0">第六章形形色色的内存攻击技术</a>
+</h2>
+<h3 class="topic">
+<a name="0h8b09pqj0qav849o29mnfjgub">&nbsp;狙击windows异常处理机制</a>
+</h3>
+<h3 class="topic">
+<a name="6rjb2u8nous3rurc8fsum50f6p">&nbsp;&nbsp;SEH</a>
+</h3>
+<h3 class="topic">
+<a name="57q95ruj9p0usk3vfur7s4n1o9">&nbsp;&nbsp;&nbsp;SEH：即异常处理结构体</a>
+</h3>
+<h3 class="topic">
+<a name="1otileretj017m7qct5dhe2g6h">&nbsp;&nbsp;&nbsp;一个异常处理结构体包括两部分组成</a>
+</h3>
+<h3 class="topic">
+<a name="3r2q039u66mt2fqu3nf8ijck6k">&nbsp;&nbsp;&nbsp;&nbsp;seh链表指针</a>
+</h3>
+<h3 class="topic">
+<a name="40ujlujie5cqpjp8h75d0eccap">&nbsp;&nbsp;&nbsp;&nbsp;异常处理函数句柄</a>
+</h3>
+<h3 class="topic">
+<a name="17l2abq8o0i3kle9pe1e0ap9qb">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190811_files/47bl17ab1c9ipl5tmputsr38us.png"></p>
+<h3 class="topic">
+<a name="3ld86gt3cjddebvhdmbfdma6ic">&nbsp;&nbsp;&nbsp;seh机制即当程序发生异常，操作系统在关闭程序之前，给程序一个执行预先设定的回调函数的机会，该回调函数会尝试解决程序异常，如果异常被解决，则程序继续正常运行</a>
+</h3>
+<h3 class="topic">
+<a name="6ka4jiohlpofj9b5hv27q0c2e2">&nbsp;&nbsp;&nbsp;SEH相关特性</a>
+</h3>
+<h3 class="topic">
+<a name="615ot4eivsps15lev69923q4hd">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190811_files/5uqnmpcsvnu3okn33shek8sm0o.png"></p>
+<h3 class="topic">
+<a name="3hlqdedscs3isuaidf7l0cdcpt">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190811_files/0arpmo2en2nmt8o025rj1ded4b.png"></p>
+<h3 class="topic">
+<a name="6ng6mvfb0flulrfnqnf7ahhrt8">&nbsp;&nbsp;&nbsp;SEH链表</a>
+</h3>
+<h3 class="topic">
+<a name="64lk75s73r4kuit56t007fduc8">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190811_files/3ks6997r6vf6tre1d4sud6266b.png"></p>
+<h3 class="topic">
+<a name="6njevmtuiq65cn3jarlq5kl4tt">&nbsp;&nbsp;&nbsp;详情见seh相关资料.docx</a>
+</h3>
+<h3 class="topic">
+<a name="234jgcnapi2pmal3ts3ku6l0a2">&nbsp;&nbsp;windows异常处理机制利用的基本思路</a>
+</h3>
+<h3 class="topic">
+<a name="0qeqbe5nhvdq42omq2ta7aifeu">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190811_files/4747ld19gfk604hn5071i915tv.png"></p>
+<h3 class="topic">
+<a name="4vgv30aa2m04m6m2ud94vvueba">&nbsp;&nbsp;栈溢出中利用SEH</a>
+</h3>
+<h3 class="topic">
+<a name="1l313tpm9n02guv14hsfpt297h">&nbsp;&nbsp;&nbsp;示例代码</a>
+</h3>
+<h3 class="topic">
+<a name="09v6vtkdt9dmaacehf29aedigh">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190811_files/1i0aor4ot59g5qq4nj4r23b31q.png"></p>
+<h3 class="topic">
+<a name="132dipajvh2g9rn5b89umrkups">&nbsp;&nbsp;&nbsp;&nbsp;注意如果函数中使用了__try{}等结构化异常处理语句，编译器会在函数栈帧中安装SEH ，从而实现异常处理</a>
+</h3>
+<h3 class="topic">
+<a name="5br1qn6093eh0v3k516t9ssald">&nbsp;&nbsp;&nbsp;&nbsp;默认的SEH链是保存在系统栈中的，即idt表中，其存储内存属于内核态空间</a>
+</h3>
+<h3 class="topic">
+<a name="7ti3kkgt7euirmri4q01edt1pg">&nbsp;&nbsp;&nbsp;&nbsp;如果test函数产生栈溢出，则溢出可能将函数栈帧中的异常处理函数地址覆盖，当产生除零异常时，被覆盖的函数指针会当作异常处理函数执行，从而劫持程序执行流程</a>
+</h3>
+<h3 class="topic">
+<a name="7uhti69bvpn0gs1jv77mmn9toi">&nbsp;&nbsp;&nbsp;当溢出未发生时</a>
+</h3>
+<h3 class="topic">
+<a name="68j9voqn8eugu5i7t1hv219sop">&nbsp;&nbsp;&nbsp;&nbsp;当shellcode为"\x90"时，可以在栈中找到shellcode的起始地址</a>
+</h3>
+<h3 class="topic">
+<a name="3fgot072gmo3lempo2kqq4uq06">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190811_files/5if7ud11k2q7tdj51eetpqfk0l.png"></p>
+<h3 class="topic">
+<a name="73n784pbjoms3584jfhg5rhvit">&nbsp;&nbsp;&nbsp;&nbsp;通过od-》view-》SEH chain可以查看到当前程序中的seh结构体的地址和异常处理函数指针</a>
+</h3>
+<h3 class="topic">
+<a name="0eag8jh6p90maip929pshuvbfg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190811_files/068lv8kc1m6pg7nreenqrbmlqo.png"></p>
+<h3 class="topic">
+<a name="77vdd82bp8j1ll5ejrva0nlirm">&nbsp;&nbsp;&nbsp;&nbsp;观察test函数栈帧中的seh结构体</a>
+</h3>
+<h3 class="topic">
+<a name="6tu8f5inhbthhbsc494893tb7i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190811_files/0266cngd4i8ekr6cng3b3js6pl.png"></p>
+<h3 class="topic">
+<a name="1o3gmb66greslltt55s4vag7rq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190811_files/3sb2i54385dme4l6k46ak6fcmp.png"></p>
+<h3 class="topic">
+<a name="4p8q942q171c7mqvo4lq2lab3a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190811_files/4mjum9cb1ac84pilnk679e08m8.png"></p>
+<h3 class="topic">
+<a name="2f6qmruvhl34npghicm7a0mknt">&nbsp;&nbsp;&nbsp;此时只要组织shellcode，将seh中异常函数的指针淹没为shellcode在栈中的起始地址，并触发除零异常，即可通过seh调用shellcode，完成漏洞利用</a>
+</h3>
+<h3 class="topic">
+<a name="2dukfojm5vm7jmo76f3b48eg5h">&nbsp;&nbsp;&nbsp;&nbsp;漏洞利用代码</a>
+</h3>
+<h3 class="topic">
+<a name="4avefja8m52j4ff3oddkhd8mqf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190811_files/548audp05llamhpht626i76tqd.png"></p>
+<h3 class="topic">
+<a name="78ihal9u0mo76qa2sklavn1ai4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190811_files/0gsjgd8kkltv988g0je4c8phqo.png"></p>
+<h3 class="topic">
+<a name="100eh1g6gh6vthgjvdtrekcdh2">&nbsp;&nbsp;&nbsp;&nbsp;成功利用</a>
+</h3>
+<h3 class="topic">
+<a name="0pv4elv86dhl0pfrot00l1qkqk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190811_files/6qbs9jkmhcgtkj6du8gumpnfg9.png"></p>
+<h3 class="topic">
+<a name="6vhbb96uubv33i9kmalfn7k0sg">&nbsp;&nbsp;&nbsp;实际漏洞利用中，栈溢出淹没返回地址于栈溢出淹没seh几乎同样流行</a>
+</h3>
+<h3 class="topic">
+<a name="743pkt8of2rhqv1258jll58b02">&nbsp;&nbsp;&nbsp;&nbsp;如果程序源码中没有产生异常的语句，也可以直接通过溢出触发异常，同时溢出也修改了异常处理函数的指针</a>
+</h3>
+<h3 class="topic">
+<a name="1ivshksijarubtmiv40ofprj9v">&nbsp;&nbsp;堆溢出中利用SEH</a>
+</h3>
+<h3 class="topic">
+<a name="7fuu6a7ctrq1lgsst51afvnm97">&nbsp;&nbsp;&nbsp;堆溢出常常伴随着异常，所以seh也是堆溢出DWORD SHOOT的目标之一</a>
+</h3>
+<h3 class="topic">
+<a name="78a93hlpl7mshi1l1ggj4maqe3">&nbsp;&nbsp;&nbsp;漏洞验证代码</a>
+</h3>
+<h3 class="topic">
+<a name="06i6p79msendl9k5k1i0vi1bm8">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190811_files/5momeb9jaif3ur7nevi0t41nf3.png"></p>
+<h3 class="topic">
+<a name="53fl25c128sqp4kish379uvegt">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190811_files/5kk8bj56d1pqqf6flkiej61312.png"></p>
+<h3 class="topic">
+<a name="4p8nivfn9e8lbnpepetrls45ir">&nbsp;&nbsp;&nbsp;该漏洞验证过程中，DWORD SHOOT的过程与之前的相同，仅仅是将flink设置为shellcode的地址，将blink先设置为"\x90909090",然后将od设置为不忽略任何异常，让程序在向地址0x90909090处写数据的时候触发异常断下，之后查找程序中seh异常处理函数指针所在地址，将该地址作为blink再次编译运行程序，成功利用漏洞</a>
+</h3>
+<h3 class="topic">
+<a name="6n5c8s6c4faf8l2usjnfcle6dh">&nbsp;&nbsp;&nbsp;&nbsp;将od设置为不忽略任何异常</a>
+</h3>
+<h3 class="topic">
+<a name="01ifa10argfaq3lc2s1cav73vj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190811_files/7p3v3hcbqfa8ggs7r5egctcm42.png"></p>
+<h3 class="topic">
+<a name="3gcbd9lbc8eusvulbq72b2lf5j">&nbsp;&nbsp;&nbsp;&nbsp;第一次发生DWORD SHOOT时触发异常</a>
+</h3>
+<h3 class="topic">
+<a name="7u73lc0hc8pvuj236rlhdq2dup">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190811_files/7j886dqkbkbg7cttg732jtfeue.png"></p>
+<h3 class="topic">
+<a name="14rljheo7aac6rovggoipg1941">&nbsp;&nbsp;&nbsp;&nbsp;查询seh异常处理函数句柄</a>
+</h3>
+<h3 class="topic">
+<a name="16lvbs7et9bf5b6tor5t8gllek">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190811_files/5ar6nrubelsjovkhb49jjdfv02.png"></p>
+<h3 class="topic">
+<a name="0s1715s46dl8lmg93rkemmij6f">&nbsp;&nbsp;&nbsp;&nbsp;成功利用堆溢出进行漏洞利用</a>
+</h3>
+<h3 class="topic">
+<a name="799vebqpdc55p2qg3v9hamfbic">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190811_files/2kb8vglla80ad1o1ne9mpqn33n.png"></p>
+<h3 class="topic">
+<a name="6c0b6qb8jeqp2ffd2gnh6hghvv">&nbsp;&nbsp;&nbsp;与之前栈溢出狙击seh的区别就是使用dword shoot的方式将shellcode的地址覆盖到第一个seh异常处理函数的地址</a>
+</h3>
+<h3 class="topic">
+<a name="4dglu02oqur1cho9054agds7fl">&nbsp;深入理解windows异常处理机制</a>
+</h3>
+<h3 class="topic">
+<a name="68anq3rf8666uudfota4ug87i1">&nbsp;&nbsp;windows异常处理机制与堆管理机制一样，windows未正式公开</a>
+</h3>
+<h3 class="topic">
+<a name="37hcvghk7uphssn4qpcmcvgg66">&nbsp;&nbsp;&nbsp;有关windows中seh异常处理的资料 </a>
+</h3>
+<h3 class="topic">
+<a name="0198ime06o5cm90gr6q2v5m3fa">&nbsp;&nbsp;&nbsp;&nbsp;A Crash Course on the Depths of Win32&trade; Structured Exception Handling</a>
+</h3>
+<h3 class="topic">
+<a name="6of24nhprld7dslpv16i1h3qu5">&nbsp;&nbsp;异常处理的种类</a>
+</h3>
+<h3 class="topic">
+<a name="7gganbfo8cgcp3o0u9kovf937t">&nbsp;&nbsp;&nbsp;线程的异常处理</a>
+</h3>
+<h3 class="topic">
+<a name="7dag9d6vd8pg8ni1goaera8g4c">&nbsp;&nbsp;&nbsp;&nbsp;异常处理最小的单位是线程，每个线程都拥有自己的seh链表，线程发生错误时，优先由自身的seh进行处理</a>
+</h3>
+<h3 class="topic">
+<a name="1q64cljh8icdpvjumntsoi18a1">&nbsp;&nbsp;&nbsp;&nbsp;对应代码中的__try{}  __except(){}或Assert等语句</a>
+</h3>
+<h3 class="topic">
+<a name="04qv7r9nj0mjoabds1fk7ff87l">&nbsp;&nbsp;&nbsp;进程的异常处理</a>
+</h3>
+<h3 class="topic">
+<a name="0k70dlurod4bi757mhjbitoi6c">&nbsp;&nbsp;&nbsp;&nbsp;如果线程的异常处理无法起作用，则进程异常处理将发挥作用，进程异常处理会影响该进程中的所有线程</a>
+</h3>
+<h3 class="topic">
+<a name="1ta8h3vs07k361g0cdll638jc2">&nbsp;&nbsp;&nbsp;&nbsp;对应代码中的SetUnhandledExceptionFilter()函数</a>
+</h3>
+<h3 class="topic">
+<a name="7udegkepdt2u4p28qmh92a1qud">&nbsp;&nbsp;&nbsp;操作系统默认的异常处理</a>
+</h3>
+<h3 class="topic">
+<a name="6bu0i5tqfrulfvbr4cjnj4k15q">&nbsp;&nbsp;&nbsp;&nbsp;当所有的异常处函数均为发挥作用时，系统默认异常处理函数会发挥作用，一般为显示一个错误对话框</a>
+</h3>
+<h3 class="topic">
+<a name="5sh3at8ctr80othmjjltu04rp1">&nbsp;&nbsp;&nbsp;&nbsp;对应系统中的UnhandledExceptionFilter()函数</a>
+</h3>
+<h3 class="topic">
+<a name="797630o0bfcdf6atans1e3ju24">&nbsp;&nbsp;简单的异常处理流程</a>
+</h3>
+<h3 class="topic">
+<a name="6aa1tg5qnqdgv1gofb0duqc6b5">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190811_files/1ho37gkgo7hcqgd071o0dqkqe8.png"></p>
+<h3 class="topic">
+<a name="4la4onn5l993h82ikvl1h6eb4e">&nbsp;&nbsp;线程的异常处理</a>
+</h3>
+<h3 class="topic">
+<a name="1rpspobkp4a0jfdfmfk9mc5k8u">&nbsp;&nbsp;&nbsp;线程异常处理函数的参数</a>
+</h3>
+<h3 class="topic">
+<a name="4ouojal1go49sbgdgl57r0d1af">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190811_files/4prplh96b0s46ptp03d97acfpv.png"></p>
+<h3 class="topic">
+<a name="78vas5lj1msmilj1ac83ju6h8a">&nbsp;&nbsp;&nbsp;线程异常处理函数的返回值</a>
+</h3>
+<h3 class="topic">
+<a name="7l12tt8dch6hrhgc87k3qh9o8s">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190811_files/6cn3vpbobu5bvmqibsokb3ern1.png"></p>
+<h3 class="topic">
+<a name="2e8fhionqdq5mdboksovrhmrsf">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190811_files/5cepi2kg34onemmneu911d2bo9.png"></p>
+<h3 class="topic">
+<a name="1k0umqtc9c3426u5idkbfgfqnm">&nbsp;&nbsp;&nbsp;unwind操作</a>
+</h3>
+<h3 class="topic">
+<a name="4h6l9uf83qsu7pm3jir93754fm">&nbsp;&nbsp;&nbsp;&nbsp;系统在遍历异常处理链表，寻找能够处理异常的回调函数的过程中，会调用每个遍历到的链表节点中对应的异常处理函数</a>
+</h3>
+<h3 class="topic">
+<a name="5tkb48ouk6coa9o8b5veq3alds">&nbsp;&nbsp;&nbsp;&nbsp;如果一个异常链表节点对应的异常处理函数第一次执行后不能处理该类异常，该异常函数会在稍后被再次调用，不过第二次被调用的目的是清理现场、释放资源，之后这些SEH结构体将被从链表中删除</a>
+</h3>
+<h3 class="topic">
+<a name="0s5s0ls6bhqpa8efnvo853r260">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190811_files/2g2boq6d894mpkfq1s3rpa1v8n.png"></p>
+<h3 class="topic">
+<a name="6o1d9eij07soueorcj9pdlqq1t">&nbsp;&nbsp;&nbsp;&nbsp;如何标识一个回调函数的调用是否为unwind?</a>
+</h3>
+<h3 class="topic">
+<a name="4glnf7ij4l56rg362t967u8rp3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过异常回调函数第一个参数指向的结构体中的部分字段进行指定</a>
+</h3>
+<h3 class="topic">
+<a name="3j5ac6s11rl2m0bu1t9fukg7pl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190811_files/0j6iapa00t73obbad3p9f1rue0.png"></p>
+<h3 class="topic">
+<a name="4u45ud6gl45e00mghesfebdc95">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190811_files/4si25e8fsh3viffaoo5phpod3o.png"></p>
+<h3 class="topic">
+<a name="0tc63g7huf7brca3i6ge9gddim">&nbsp;&nbsp;&nbsp;&nbsp;unwind的操作是通过kernel32中的一个导出函数实现的</a>
+</h3>
+<h3 class="topic">
+<a name="1ml1cokvin8r4vef5ij2ddbha7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190811_files/3g4bjlj6gkbrcmpsqgtkrlg921.png"></p>
+<h3 class="topic">
+<a name="64fb1nsj8u4opkruqk8lugue0j">&nbsp;&nbsp;&nbsp;&nbsp;在调用栈中的异常处理函数之前，如果当前进程处于被调试状态，则会将异常交给调试器处理</a>
+</h3>
+<h3 class="topic">
+<a name="6c2j5fge4p0iu0ceq31ja305bu">&nbsp;&nbsp;&nbsp;SEH相关资料</a>
+</h3>
+<h3 class="topic">
+<a name="081cs0eha2p4u2rmaute50va34">&nbsp;&nbsp;&nbsp;&nbsp;https://blog.csdn.net/w1012747007/article/details/77131781</a>
+</h3>
+<h3 class="topic">
+<a name="5u8tu3us0atpcl8f9sporl737d">&nbsp;&nbsp;进程的异常处理</a>
+</h3>
+<h3 class="topic">
+<a name="46apik2ep7u44usi8do6hnii5c">&nbsp;&nbsp;&nbsp;其实就是上课讲的ueh</a>
+</h3>
+<h3 class="topic">
+<a name="5dsqm666hit3qs96dqhkuf2a8a">&nbsp;&nbsp;&nbsp;如果线程中的异常处理或调试器没有处理异常，则异常将交给进程中的异常处理机制进行处理</a>
+</h3>
+<h3 class="topic">
+<a name="0mn54vt5d7ssrqv79pbimtvv6m">&nbsp;&nbsp;&nbsp;进程的异常处理需要通过SetUnhandledExceptionFilter()函数进行注册</a>
+</h3>
+<h3 class="topic">
+<a name="2ct4cu9nl5pq48347euie0256o">&nbsp;&nbsp;&nbsp;&nbsp;该函数为kernel32的导出函数</a>
+</h3>
+<h3 class="topic">
+<a name="3fqsd32n5ha585ech1fa8v9tqu">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190811_files/7mat4k05s051n8pamerldlc38o.png"></p>
+<h3 class="topic">
+<a name="5meq75cs4s4r0j9f01rmrchn26">&nbsp;&nbsp;&nbsp;函数返回值有三种</a>
+</h3>
+<h3 class="topic">
+<a name="7jd09ef8kcqvmeme7c1fkfm87i">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190811_files/7u80capsbfd1jd7pk724bq5hpe.png"></p>
+<h3 class="topic">
+<a name="31rmfcfhurh9hraihtn62ifr0r">&nbsp;&nbsp;系统默认的异常处理</a>
+</h3>
+<h3 class="topic">
+<a name="14iftt74pomtlip0irehe6594n">&nbsp;&nbsp;&nbsp;即系统默认的ueh，这里叫做uef，即顶层异常处理</a>
+</h3>
+<h3 class="topic">
+<a name="18ao9erc5ob3ch724luibjbf9g">&nbsp;&nbsp;&nbsp;即系统中的默认异常处理函数 UnhandledExceptionFilter()</a>
+</h3>
+<h3 class="topic">
+<a name="6f1qtlpa7m86lfnd4e8dpeda0m">&nbsp;&nbsp;&nbsp;&nbsp;用于处理前两者无法处理的异常，是所有异常的终结</a>
+</h3>
+<h3 class="topic">
+<a name="71o368r9477nj89tihuogn6bec">&nbsp;&nbsp;&nbsp;&nbsp;主要用于弹出异常对话框</a>
+</h3>
+<h3 class="topic">
+<a name="7ps3ge2rau9sf4pmvb1rf5cft6">&nbsp;&nbsp;&nbsp;运行原理</a>
+</h3>
+<h3 class="topic">
+<a name="3poind403vs2e2m6qnq0e9ojtu">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190811_files/3abttkt71n3415fn6m8gvcojp4.png"></p>
+<h3 class="topic">
+<a name="10n3gu4689hoh68q7vvo1cco6j">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190811_files/1phqfpkitg3kifp3l0itqfsltc.png"></p>
+<h3 class="topic">
+<a name="2gid6am2f7bq2k7qn4toa1mn6s">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190811_files/6mktne0c6n3td56v3mgsk25euj.png"></p>
+<h3 class="topic">
+<a name="0tmjusj3umbb3r0s9310h2o439">&nbsp;&nbsp;异常处理流程的总结</a>
+</h3>
+<h3 class="topic">
+<a name="7covom27fkhfoommrrfbeum62f">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190811_files/4mvlv7uj6td6cjl73dbkprq1j7.png"></p>
+<h3 class="topic">
+<a name="0v0sdkn19qpa3c6cbfel1mqo2i">&nbsp;其他异常处理机制的利用思路</a>
+</h3>
+<h3 class="topic">
+<a name="3feg6g0hvelpk32r2bab5caoul">&nbsp;&nbsp;VEH利用</a>
+</h3>
+<h3 class="topic">
+<a name="79o6j1g23cirvgbbrfnt2gbtrq">&nbsp;&nbsp;&nbsp;veh是基于进程的，需要使用指定api注册异常回调函数</a>
+</h3>
+<h3 class="topic">
+<a name="0ptiv922j21svafarb2s78pccu">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190811_files/0kmcq11nvps7k0hthjaeo4s5j7.png"></p>
+<h3 class="topic">
+<a name="4kq9rrsdh56scec9vq6l2r9pcd">&nbsp;&nbsp;&nbsp;veh结构体中的字段</a>
+</h3>
+<h3 class="topic">
+<a name="78jnrols917vr7rv9tt3v4aepa">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190811_files/20f5v5ml2eqmemkpb10gr8u75j.png"></p>
+<h3 class="topic">
+<a name="77rf1voiacahvu2jbi9bgu8vd4">&nbsp;&nbsp;&nbsp;veh可以注册多个，形成双向链表</a>
+</h3>
+<h3 class="topic">
+<a name="1sj4vg633524ba9ohqud69f3p7">&nbsp;&nbsp;&nbsp;veh优先级低于调试器，高于seh，即优先级 调试器&gt;veh&gt;seh</a>
+</h3>
+<h3 class="topic">
+<a name="2akl1bl1c9cjlo6ufg7734hth9">&nbsp;&nbsp;&nbsp;veh注册时可以指定其在链中的位置，且其veh结构体保存在堆中，unwind不对veh起作用</a>
+</h3>
+<h3 class="topic">
+<a name="6bcktmgleovd51h5a5svl5brsn">&nbsp;&nbsp;&nbsp;veh在windows XP之后被加入系统</a>
+</h3>
+<h3 class="topic">
+<a name="647apotsj8eamsb69f2hki26i6">&nbsp;&nbsp;&nbsp;利用思路</a>
+</h3>
+<h3 class="topic">
+<a name="24e93q0oeo0jko8jcfit3ihj2o">&nbsp;&nbsp;&nbsp;&nbsp;veh双向链表保存在堆中，如果使用堆溢出的DWORD SHOOT修改VEH双向链表头节点的函数指针，从而引导程序执行shellcode</a>
+</h3>
+<h3 class="topic">
+<a name="4car14rk8kv42fab2ndug2ea8s">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190811_files/6ie0gtkdeepoq5lpsq06brrllo.png"></p>
+<h3 class="topic">
+<a name="2jkoj94ptbnnsehr5ema7m7nrh">&nbsp;&nbsp;攻击TEB中的SEH头节点</a>
+</h3>
+<h3 class="topic">
+<a name="0c4u3ahsk0biocrqdqt1ulud27">&nbsp;&nbsp;&nbsp;异常发生时,第一个seh是通过TEB结构体的第一个&#13;
+dword（fs:[0]）进行标识的，如果能控制TEB结构体中的第一dword，就有可能在异常发生时将程序执行流程引导到shellcode中</a>
+</h3>
+<h3 class="topic">
+<a name="7g1ks4n1sne5rsbdc6m5k3vehd">&nbsp;&nbsp;&nbsp;TEB相关知识</a>
+</h3>
+<h3 class="topic">
+<a name="5827nvimkfem4msqkh0k8ekhhf">&nbsp;&nbsp;&nbsp;&nbsp;一个进程内中可能存在多个线程</a>
+</h3>
+<h3 class="topic">
+<a name="18n128eg8fcc6g919bqle55ed3">&nbsp;&nbsp;&nbsp;&nbsp;每个线程都有一个线程环境块 TEB</a>
+</h3>
+<h3 class="topic">
+<a name="580mmte7s4atnqsa0e1ld1rk9c">&nbsp;&nbsp;&nbsp;&nbsp;第一个TEB起始于0x7ffde000，之后新建线程的teb紧跟其后，每个teb之间间隔0x1000个字节，并向内存低地址增长</a>
+</h3>
+<h3 class="topic">
+<a name="72fbk7cktj6b593m27oi2c0qqi">&nbsp;&nbsp;&nbsp;&nbsp;线程退出时，对应的teb被销毁，新的线程创建时，会将对应teb保存在之前被销毁的teb的位置</a>
+</h3>
+<h3 class="topic">
+<a name="6cddl80f5q2fsn1mck2gpaijlq">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190811_files/0o6eqc3j424b9e6mop5m6edh15.png"></p>
+<h3 class="topic">
+<a name="5e5icq9ja58uk3vv6thupcifjf">&nbsp;&nbsp;&nbsp;综上，当程序多线程时，很难确定当前线程的teb位置，所以此种方法多用于攻击单线程程序</a>
+</h3>
+<h3 class="topic">
+<a name="031gn2rahdf31jn50dh3ccv3m9">&nbsp;&nbsp;&nbsp;&nbsp;当然也有通过大量创建线程或关闭线程的方式控制teb排列，从而攻击多线程程序的思路</a>
+</h3>
+<h3 class="topic">
+<a name="0e77ums0t1o4oth2hpfvrptem5">&nbsp;&nbsp;&nbsp;参考文档</a>
+</h3>
+<h3 class="topic">
+<a name="19gk127rpl4af644muopfj094f">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190811_files/6hva7e6jbh8tfdnildlpvc4nqd.png"></p>
+<h3 class="topic">
+<a name="2ehddkclmdve250cclvt19usn1">&nbsp;&nbsp;攻击uef（即顶层异常处理函数，系统默认异常处理函数）</a>
+</h3>
+<h3 class="topic">
+<a name="2eqjund9hamd58dup4klfsa1g9">&nbsp;&nbsp;&nbsp;利用思路</a>
+</h3>
+<h3 class="topic">
+<a name="3p4bg440dc49gjqp65r1rs5566">&nbsp;&nbsp;&nbsp;&nbsp;通堆溢出产生的DWORD SHOOT将该函数的调用句柄覆盖为shellcode的地址，然后产生其他异常处理机制均无法处理的异常，从而调用shellcode</a>
+</h3>
+<h3 class="topic">
+<a name="2b1td3bf1n6d0f48t48p5dt6s0">&nbsp;&nbsp;&nbsp;uef函数地址在不同系统版本和补丁版本不同，可以通过反汇编kernel32中的导出函数SetUnhandledExceptionFilter()函数获取</a>
+</h3>
+<h3 class="topic">
+<a name="2qs0521101as4pt70mrsetc7sk">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190811_files/5mkcuba573b4nnfe5n56pqdsa6.png"></p>
+<h3 class="topic">
+<a name="0g5c02cfscsvbd5hee4rc326j9">&nbsp;&nbsp;&nbsp;结合使用跳板技术定位shellcode可以有更高的成功率</a>
+</h3>
+<h3 class="topic">
+<a name="6o175bpblumph1fsihlfnfjoda">&nbsp;&nbsp;&nbsp;异常发生时，edi往往仍指向堆中离shellcode不远的地方，使用call dword ptr[edi+0x78]指令作为跳板指令往往能使程序跳转执行shellcode</a>
+</h3>
+<h3 class="topic">
+<a name="7i4lelhfbh2juqj655tsm5ds7p">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190811_files/2qahit206egspi6t9r3lvikthf.png"></p>
+<h3 class="topic">
+<a name="7k1p6glnpc72lj1j6l2sodueg1">&nbsp;&nbsp;&nbsp;&nbsp;以上指有时可能用于定位shellcode</a>
+</h3>
+<h3 class="topic">
+<a name="3dbvuoke0qkv9455bnssaknbu9">&nbsp;&nbsp;&nbsp;调试过程中发现eax ebx也可能指向堆中，所以堆溢出的关键在于漏洞利用时哪些寄存器中保存有堆区的地址，可以通过call jmp指令操作这些寄存器，从而将程序执行流程定位到堆中</a>
+</h3>
+<h3 class="topic">
+<a name="0lsbg69d27kc0aegcg2em7n11t">&nbsp;&nbsp;&nbsp;&nbsp;堆溢出中的跳板技术不像栈溢出中有 jmp esp作为保底，堆溢出的跳板技术往往依赖于调试中的具体情况</a>
+</h3>
+<h3 class="topic">
+<a name="6uiq4jgkp50sq84ab99d8jb82m">&nbsp;&nbsp;攻击peb中的同步函数的指针</a>
+</h3>
+<h3 class="topic">
+<a name="2hop1dtbfjsfqp4fqbgsecncdl">&nbsp;&nbsp;&nbsp;即在第五章最后使用堆溢出攻击peb中同步函数入口地址</a>
+</h3>
+<h3 class="topic">
+<a name="2gnu66keslng1n3u5u26317392">&nbsp;&nbsp;&nbsp;相较于攻击位置不定的teb中的seh，由于peb地址固定可求，所以攻击peb相较于攻击seh成功率更高</a>
+</h3>
+<h3 class="topic">
+<a name="543vlge533nkdkek04fhfmn64v">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190811_files/6pa4knner5lgvab835oukckbe2.png"></p>
+<h3 class="topic">
+<a name="2v6l2duv5r6celj7a78nbopahi">&nbsp;off by one的利用</a>
+</h3>
+<h3 class="topic">
+<a name="022prjj2fsnnm0cjgg6u91ppbu">&nbsp;&nbsp;漏洞利用技术难度等级</a>
+</h3>
+<h3 class="topic">
+<a name="22g6f4i1djdunak446g9qgtp09">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190811_files/2m5ba9dsrqmnjnf414spb6r6sk.png"></p>
+<h3 class="topic">
+<a name="4f0ajf3cgugcpahhjnmtb4fceh">&nbsp;&nbsp;off by one漏洞示例代码</a>
+</h3>
+<h3 class="topic">
+<a name="06m4sdgh6b68ibatv51ian346p">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190811_files/7lkjoa1vpu6hhk9mah59sd5nmb.png"></p>
+<h3 class="topic">
+<a name="4qifd8rjpj49ec06jbar9r7isc">&nbsp;&nbsp;&nbsp;代码中循环控制语句 i&lt;=len可能会导致一个字节的数据的溢出，正确的应该是 i&lt;len，因为c语言数组下标从0开始</a>
+</h3>
+<h3 class="topic">
+<a name="2l479vi2j1tnuh2uol39ke80eq">&nbsp;&nbsp;&nbsp; 只溢出一个字节在大多数情况下并不是一件非常严重的事情，也许只能算得上是 bug。然 而，配合上特定的溢出场景，off by one 就有可能演化为安全漏洞。 </a>
+</h3>
+<h3 class="topic">
+<a name="0rtdfncsn8klgcden9m177udql">&nbsp;&nbsp;&nbsp;&nbsp;如果栈帧中局部变量之后分别保存ebp和返回地址，则溢出的一字节可以将原ebp的最低一字节的数值修改，从而将能在255个字节的范围内移动ebp，如果ebp可以植入可控的缓冲区时，有可能做到进程劫持</a>
+</h3>
+<h3 class="topic">
+<a name="7do919v0hln9ktda5ht04r6fg1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190811_files/1gicmlied9osbheu40bkaqhr1v.png"></p>
+<h3 class="topic">
+<a name="3p6k48p80oth7ii2kv9tnh44g4">&nbsp;&nbsp;&nbsp;&nbsp;如果栈帧溢出的局部变量后面保存邻接变量，则off by one可能破坏该变量，导致程序流程改变或整数溢出等问题</a>
+</h3>
+<h3 class="topic">
+<a name="70omac09n6irmlpkpp63jfs3e5">&nbsp;攻击c++中的虚函数</a>
+</h3>
+<h3 class="topic">
+<a name="458hjqlc7vdulhahj2rqae57s5">&nbsp;&nbsp;c++中的多态主要通过虚函数进行实现</a>
+</h3>
+<h3 class="topic">
+<a name="5j5976uku4j6jdh45eoh2nntf6">&nbsp;&nbsp;虚函数和虚表的关键</a>
+</h3>
+<h3 class="topic">
+<a name="5sm5b6bfedeiav0etu5d6d4u38">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190811_files/4s30ht7h1ica30ie2s677opai9.png"></p>
+<h3 class="topic">
+<a name="6evvudtl50e1dvhdg8kvsgm6ti">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190811_files/4sh05crtc974vkcvuiuhkk8a9i.png"></p>
+<h3 class="topic">
+<a name="1ui1i4a78ej34ps5qg4q4v8fmi">&nbsp;&nbsp;&nbsp;类对象的数据保存在堆中</a>
+</h3>
+<h3 class="topic">
+<a name="7t1c4ut2sucgmcquv29o1sj6fc">&nbsp;&nbsp;利用思路</a>
+</h3>
+<h3 class="topic">
+<a name="75qcn2uppj8rlbhi7245eo1olo">&nbsp;&nbsp;&nbsp;如果程序中的类对象的成员变量发生溢出，有机会修改虚函数表指针或虚函数表中的虚函数地址，则程序调用该虚函数时，会执行给shellcode</a>
+</h3>
+<h3 class="topic">
+<a name="1q1pb41oqeif5ukfmk1k74kk8v">&nbsp;&nbsp;&nbsp;&nbsp;可以修改的有</a>
+</h3>
+<h3 class="topic">
+<a name="6398n8pbs0vr9lgmi7jtocl56k">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;虚函数表的指针</a>
+</h3>
+<h3 class="topic">
+<a name="5f90hhi4f9sd1320k504n0mre9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;虚函数表中虚函数的指针</a>
+</h3>
+<h3 class="topic">
+<a name="5v1aok5s35ad3np4spio6pifu8">&nbsp;&nbsp;&nbsp;虚函数表指针保存在类对象数据结构的首地址，在所有的类数据成员之前，而数据成员溢出只能向后覆盖数据，所以这种利用方式具有一定局限性</a>
+</h3>
+<h3 class="topic">
+<a name="63m3ppbvguvvkgfstncgs0jeb0">&nbsp;&nbsp;&nbsp;&nbsp;除非溢出到下一个类对象的内存空间中</a>
+</h3>
+<h3 class="topic">
+<a name="77iu4ctcp08nrk4ejefkkp987b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190811_files/7pgsi6hjfb7hfl974rerdf95rc.png"></p>
+<h3 class="topic">
+<a name="5jfqdg9lkpjbpj96ngclv32gmf">&nbsp;&nbsp;&nbsp;使用DWORD SHOOT直接修改虚函数表指针或虚函数表中虚函数的指针，更具有可行性</a>
+</h3>
+<h3 class="topic">
+<a name="1s932s44i420ak4q61aedn6ee6">&nbsp;&nbsp;攻击虚函数的实例</a>
+</h3>
+<h3 class="topic">
+<a name="4kfauvm75succ3a75br0h7eods">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190811_files/6aa0llt5m5ujbt4ekdpg6m8j1n.png"></p>
+<h3 class="topic">
+<a name="36lekt7l4tnlihlgrg6i0sgl8j">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190811_files/775cri8mj9921ej373igqhss9n.png"></p>
+<h3 class="topic">
+<a name="7eg23c8irjuucng78vp35vbrlp">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190811_files/2m7dvm27dskfhsau6ev62j42jj.png"></p>
+<h3 class="topic">
+<a name="2chgdc9v3mvgnkheoekri9ce51">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190811_files/1th616h9cl7tgn9nr06ncpgd16.png"></p>
+<h3 class="topic">
+<a name="1b637978nhes3taveoe1phpe7c">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190811_files/7981ht247o5p2bvmmsura74n0h.png"></p>
+<h3 class="topic">
+<a name="44q3j4cr9hmli44b8t351sh36m">&nbsp;Heap Spray：堆与栈的协同攻击</a>
+</h3>
+<h3 class="topic">
+<a name="79h6921h87iiaer18c3jdmcusm">&nbsp;&nbsp;即堆喷射</a>
+</h3>
+<h3 class="topic">
+<a name="3rg5l48kr6kvh5emkuj5lfp1ak">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190811_files/0dls829shjm1eq6fa516ctc7jl.png"></p>
+<h3 class="topic">
+<a name="4gkhkk2v1maa5fdt0qcdd9s49c">&nbsp;&nbsp;将shellcode保存在堆中，而堆喷射主要用于解决定位堆中的shellcode的问题，是浏览器攻击的经典方法，并被网马普遍使用</a>
+</h3>
+<h3 class="topic">
+<a name="245rv8i5a22700sd55epgptish">&nbsp;&nbsp;堆喷射利用思路</a>
+</h3>
+<h3 class="topic">
+<a name="01dnlqpm40fifcci5si7bikkvh">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190811_files/1kpgt3k9dth9q4r64dfu0c9t85.png"></p>
+<h3 class="topic">
+<a name="3jpc00r1cpppu84ag9cehs9paj">&nbsp;&nbsp;使用javascript代码编写html页面，产生覆盖内存所需的内存块</a>
+</h3>
+<h3 class="topic">
+<a name="7jmoamhatrgesitpakccih0i42">&nbsp;&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="0rb0ev1va4u0bj2hi2d7ooioav">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190811_files/2u6gnjed5mele0t8gumi29prlq.png"></p>
+<h3 class="topic">
+<a name="6aupoongq5tv0gsu8gbnsbv5hr">&nbsp;&nbsp;&nbsp;&nbsp;之所以要将nop字符串使用substring函数进行裁剪，是为了在内存中给其他堆块结构留出空间，从而使一个内存块正好为1mb</a>
+</h3>
+<h3 class="topic">
+<a name="2qlsgd77c2830j6sg449u547mq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190811_files/5nnvqocbf6uvdbmu9asjqurnce.png"></p>
+<h3 class="topic">
+<a name="29phcis5dru9vcp0vo11s0actr">&nbsp;&nbsp;&nbsp;每个内存块的结构（内存块大小为1mb）</a>
+</h3>
+<h3 class="topic">
+<a name="3ec8sr3eademd4236c76bdrqqm">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190811_files/4p78kh99q6kgpn8oa7419aj94u.png"></p>
+<h3 class="topic">
+<a name="7jol3cl18o7avjnrgfbanr1jjk">&nbsp;&nbsp;&nbsp;之所以将每个内存块设置为1mb大小，是为了让shellcode和额外内存信息占内存块的比例足够小，从而让地址0x0c0c0c0c处被nop区域覆盖，保证exploit的稳定性</a>
+</h3>
+<h3 class="topic">
+<a name="7tlknivuejuph5scd4kc22qt5g">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190811_files/2dth17geop30ic5e1h7ecca9e8.png"></p>
+<h2 class="topic">
+<a name="37e20da04dmq4r2g2jfa02iloo">第七章 手机中的缓冲区溢出</a>
+</h2>
+<h3 class="topic">
+<a name="6bb0jtccl2j3fuon7k7duusae0">&nbsp;windows mobile发展历程</a>
+</h3>
+<h3 class="topic">
+<a name="5ispsmolvp0bsda1ufk2tf8a00">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190811_files/308ufdnvka7bl92av9ebklun8v.png"></p>
+<h3 class="topic">
+<a name="6pf3o895n7j3khs5ng1cdsm6vm">&nbsp;windows mobile架构</a>
+</h3>
+<h3 class="topic">
+<a name="6bhq9c0cudqtbec9nond20fjl5">&nbsp;&nbsp;分为四层</a>
+</h3>
+<h3 class="topic">
+<a name="11luf3k7ulvtublmpgb43npuvi">&nbsp;&nbsp;&nbsp;硬件层</a>
+</h3>
+<h3 class="topic">
+<a name="3rnh0j457pdona5qocok8mqanu">&nbsp;&nbsp;&nbsp;OEM层</a>
+</h3>
+<h3 class="topic">
+<a name="6vi2fdmom1senc55l804h3v6id">&nbsp;&nbsp;&nbsp;&nbsp;内核与目标硬件之间的一个代码层，用于抽象硬件</a>
+</h3>
+<h3 class="topic">
+<a name="5bm8l1gi1ce5hlqjufavf24kus">&nbsp;&nbsp;&nbsp;操作系统层</a>
+</h3>
+<h3 class="topic">
+<a name="49g0uefaki3pnl3obvuei3rbbt">&nbsp;&nbsp;&nbsp;应用层</a>
+</h3>
+<h3 class="topic">
+<a name="4uoqhsaoj0rlpmu7v2k4vunao6">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190811_files/249cv99p3al963r9vp3slpr3eg.png"></p>
+<h3 class="topic">
+<a name="2204gjrvmqlbf5ktqjjknf6lv1">&nbsp;ARM简介</a>
+</h3>
+<h3 class="topic">
+<a name="2lba5qeb7foh613q880f9t26hp">&nbsp;&nbsp;ARM是什么</a>
+</h3>
+<h3 class="topic">
+<a name="6bn9k9h0muhp7cf3niag5gln7p">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190811_files/5cgtmbrcrth9c95pudq2h5852k.png"></p>
+<h3 class="topic">
+<a name="11rfopub825779hb7tlflqap74">&nbsp;&nbsp;ARM有七种处理器模式，每一种处理器模式与一组寄存器相对应，有的寄存器在不同的处理器模式下对应同一个物理寄存器，有的对应不同的物理寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="164rf9226ucj12e86tgpi0j06l">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190811_files/0v1ojj1h25nohv11bjgnus0ol8.png"></p>
+<h3 class="topic">
+<a name="19933e412umqtdlf2mohc44psu">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190811_files/7btd3bhc1pre2pa56km18bjesj.png"></p>
+<h3 class="topic">
+<a name="6gln2e7sd4coakahpb0l0h3goi">&nbsp;&nbsp;ARM寄存器结构</a>
+</h3>
+<h3 class="topic">
+<a name="0i6t5ad3vkhl4bd6q2qt878321">&nbsp;&nbsp;&nbsp;一共有37个寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="5vm1km149o83nd20mdigv4ftsu">&nbsp;&nbsp;&nbsp;&nbsp;31个通用寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="380seqscb6c26h9hpbah1uku2n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;均为32位</a>
+</h3>
+<h3 class="topic">
+<a name="6b7dl5lagk11h1o19u0rk115b6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;分为</a>
+</h3>
+<h3 class="topic">
+<a name="16jhjlfphbt6o9slo8ql6758v9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;分组寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="1dl0h08c1of7gn2asj3pgfvbpu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;所访问的物理寄存器与处理器模式相关</a>
+</h3>
+<h3 class="topic">
+<a name="3ara708kip3fddj4ftme6jqrhp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;R8-R12</a>
+</h3>
+<h3 class="topic">
+<a name="6pnqinhgcb4pukibn1qqt1ambo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;快速中断模式下是一种物理寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="0bpdjpom256105irrrbm73ho21">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;其他模式下是一种物理寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="7g2dtdo4pfr9a9fjfmh2lm72ei">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;R13-R14</a>
+</h3>
+<h3 class="topic">
+<a name="68206r0bo104vp0b1our0g617c">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;每个寄存器对应6种不同的物理寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="2it0guvjcj522it522re3g5g95">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190811_files/6m51mnfj4gh0oqi09i833j9oqa.png"></p>
+<h3 class="topic">
+<a name="0karcbo4du1dkn6ur3spd47fe4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;寄存器R13通常被用作堆栈指针，Thumb指令集中某些指令强制要求使用R13作为堆栈指针</a>
+</h3>
+<h3 class="topic">
+<a name="4vjk42ifvnii656bfb345cj40b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;应用程序初始化时，需要将r13对应的所有物理寄存器均进行初始化，使其指向该运行模式下的栈空间，从而保证程序进入异常模式或从异常模式中返回之后，能够从不同模式的堆栈中保存需保护的寄存器的值和恢复寄存器的值</a>
+</h3>
+<h3 class="topic">
+<a name="10akpg2jen43erf2s1pup20hcg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;R14通常称为子程序链接寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="0f4h41aneb0co1r3t0ji27t3tk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;每一种处理器模式在自己的物理 R14 中存放当前子程序的返回地址。当通过 BL 或者 BLX 指令调用子程序时，R14 被设置成该子程序的返回地址，。在子程序中，当把 R14 的值复制到程 序计数器 PC 中时，就实现了子程序返回</a>
+</h3>
+<h3 class="topic">
+<a name="7akm5fko2efhf003tm1jn7j66l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当发生异常中断的时候，该模式下的特定物理 R14 被设置成该异常模式将要返回的地址。</a>
+</h3>
+<h3 class="topic">
+<a name="25q0d7vgtvg1qij7gid3ehv9qb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;未分组寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="0chjlns26819dl20rgu5tb2ots">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190811_files/0crc6tme3fvds56h9sotnjapju.png"></p>
+<h3 class="topic">
+<a name="7tcn7qpo7941shgrsn26pkk12g">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;没有被系统用于特殊用途，在不同的处理器模式下均对应相同的物理寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="5spjfhkqs36u3m8en31h7rk34i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;程序计数器</a>
+</h3>
+<h3 class="topic">
+<a name="6si391f5q0mkfqgao7f5ef1fv6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;即PC指针，即R15</a>
+</h3>
+<h3 class="topic">
+<a name="4gckdtvq6p8v15asb1b2b3s05o">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ARM有两种指令集</a>
+</h3>
+<h3 class="topic">
+<a name="4mefnj0duf7stsur4heb50f7kc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ARM指令集</a>
+</h3>
+<h3 class="topic">
+<a name="07gjtr0p1ei1v77hm6jbvcdr8d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;每条指令32位，即4个字节</a>
+</h3>
+<h3 class="topic">
+<a name="6800mqd5tnp680mgojp0ft3odk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Thumb指令集</a>
+</h3>
+<h3 class="topic">
+<a name="7ogn9ah9vrut6u5icrasotthv8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;每条指令16位，即2个字节</a>
+</h3>
+<h3 class="topic">
+<a name="50kvndlbimkobjvo4ijenn62l1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PC寄存器指向当前执行的指令的地址+8字节的位置</a>
+</h3>
+<h3 class="topic">
+<a name="2fku9pf8k4ddriv57d0f8qn4hb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对于ARM指令集，PC指向当前指令下2条指令的位置</a>
+</h3>
+<h3 class="topic">
+<a name="3k2vmo9usvfmkvd2regg9f8ds5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对于Thumb指令集，PC指向当前指令下4条指令的位置</a>
+</h3>
+<h3 class="topic">
+<a name="4k2qj8slvp446v0lovckkhmqc1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当成功地向 PC 写入一个地址数值时，程序将跳转到该地址执行</a>
+</h3>
+<h3 class="topic">
+<a name="5f41s4d7f66jtjn7j2h2sulrql">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ARM的指令集一定是字对齐的，所以PC的第0位和第1位总是0</a>
+</h3>
+<h3 class="topic">
+<a name="1isuq9pvst824bbhi794dtfgpd">&nbsp;&nbsp;&nbsp;&nbsp;6个状态寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="4u9h8vdhaepqtji9o3f42k56c4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用于表示程序运行状态和cpu工作状态</a>
+</h3>
+<h3 class="topic">
+<a name="3upidd4p5g9u041dd1p9e77i6v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;目前之使用了其中一部分</a>
+</h3>
+<h3 class="topic">
+<a name="073d24qjsn7ibmi5qhabtldks9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CPSR(也称R16）</a>
+</h3>
+<h3 class="topic">
+<a name="1led1edkar70l1dcs5gh4ad7gv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;程序状态寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="7urq0b0it6qjjbftbl411tlqau">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可在任何运行模 式下被访问，它包括条件标志位、中断禁止位、当前处理器模式标志位，以及其他一些相关的 控制和状态位。 </a>
+</h3>
+<h3 class="topic">
+<a name="44mojl55fov7njs89g12n7sb6l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SPSR</a>
+</h3>
+<h3 class="topic">
+<a name="62p1nr28kj4o5kshhbphdba81p">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;备份的程序状态寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="2b0i6pu7u84ifhmukpbv88bhdn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当异常发生时，SPSR 用于保存 CPSR 的当前值，从异常退出时则可 由 SPSR 来恢复 CPSR。 由于用户模式和系统模式不属于异常模式，他们没有 SPSR，当在这两种模式下访问 SPSR， 结果是未知的</a>
+</h3>
+<h3 class="topic">
+<a name="2isrqe2h89sa7tc8iurdalcb5d">&nbsp;&nbsp;ARM指令结构</a>
+</h3>
+<h3 class="topic">
+<a name="3f1rsr3oqcg73oeci0n5koakmn">&nbsp;&nbsp;&nbsp;ARM有两种指令集</a>
+</h3>
+<h3 class="topic">
+<a name="7bnu0mtj8dju6v1adpl2s6jg3h">&nbsp;&nbsp;&nbsp;&nbsp;ARM指令集</a>
+</h3>
+<h3 class="topic">
+<a name="4q93ioqkt7gt60743ukjnhoj3e">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;每条指令32位，即4个字节</a>
+</h3>
+<h3 class="topic">
+<a name="76q1dhgrm93en5kao7efbvusj4">&nbsp;&nbsp;&nbsp;&nbsp;Thumb指令集</a>
+</h3>
+<h3 class="topic">
+<a name="7uqs1t5ec0o7e2duf0nl3chmt9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;每条指令16位，即2个字节</a>
+</h3>
+<h3 class="topic">
+<a name="0fol5i5p8grulmbngjoltsl01s">&nbsp;&nbsp;&nbsp;ARM指令基本格式</a>
+</h3>
+<h3 class="topic">
+<a name="2eb89sg0vgefk99kbcr8521qtq">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190811_files/2antsfhddv4s228m0ipb7g15mk.png"></p>
+<h3 class="topic">
+<a name="2fnm90biq9j302nth55j45avj0">&nbsp;&nbsp;&nbsp;指令分类</a>
+</h3>
+<h3 class="topic">
+<a name="77924rdi8fhtlp3mv0qv7tv79a">&nbsp;&nbsp;&nbsp;&nbsp;存储器访问指令</a>
+</h3>
+<h3 class="topic">
+<a name="14vae06gc8l4o98u6537bt8qu1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;加载指令</a>
+</h3>
+<h3 class="topic">
+<a name="2r5s04e1q91u1i9bevcmsnb5bt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;数据从存储器到寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="18955i8b0o6slmuibcdefc11hm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;存储指令</a>
+</h3>
+<h3 class="topic">
+<a name="1a8u2o1lbk2hbkve9b8vam906c">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;数据从寄存器到存储器</a>
+</h3>
+<h3 class="topic">
+<a name="5dstq7tf9n6ti67a9eal88eou3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190811_files/6if2ocp1vucr50n4qd2b1qmkqm.png"></p>
+<h3 class="topic">
+<a name="4vqp33hcv93ni8ls41q6jkd0jj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190811_files/7gg1icjtcfnq4q5ripu1cp2j7f.png"></p>
+<h3 class="topic">
+<a name="0609plqnv1c95rmppo9ic7kh47">&nbsp;&nbsp;&nbsp;&nbsp;数据处理指令</a>
+</h3>
+<h3 class="topic">
+<a name="1u06qod7md9dnsnvurkocnmcbm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;数据传送指令</a>
+</h3>
+<h3 class="topic">
+<a name="061kkcavtujs1ef203j9pupeip">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;算数逻辑运算指令</a>
+</h3>
+<h3 class="topic">
+<a name="3a5d6749nnogav47rs8vs2c3p1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;会更新CPSR中相应的条件标志位</a>
+</h3>
+<h3 class="topic">
+<a name="45lvht4pcoe3k9be2ull4o3umg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;乘法指令</a>
+</h3>
+<h3 class="topic">
+<a name="55ppigmpfk9g8oj4bvok94e5ef">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;比较指令</a>
+</h3>
+<h3 class="topic">
+<a name="1k53ag9i1d6mrv1jgq577qq6st">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;不保存结果，只更新CPSR中相应的条件标志位</a>
+</h3>
+<h3 class="topic">
+<a name="19hoef0er529drnbbu2jr04e7n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190811_files/1lot3rmuo450gdbafbalrlkgfr.png"></p>
+<h3 class="topic">
+<a name="5agb95ea4fcfift8mctcre43rt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190811_files/5a0rllmtgr7s9g5eom9hvp3g8t.png"></p>
+<h3 class="topic">
+<a name="16705glepmt5u3h16u7g7b9rve">&nbsp;&nbsp;&nbsp;&nbsp;跳转指令</a>
+</h3>
+<h3 class="topic">
+<a name="7kkg5gratolpu1e43snkin5bjc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以完成当前指令前后32MB的跳转</a>
+</h3>
+<h3 class="topic">
+<a name="4jgj0d46fptc60jf2h4a61330i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190811_files/6mt95os0omnpr7f2uspo5thgj3.png"></p>
+<h3 class="topic">
+<a name="63racv8efrcn8slchauqa2cgn2">&nbsp;&nbsp;&nbsp;&nbsp;协处理指令</a>
+</h3>
+<h3 class="topic">
+<a name="2ltilsik6s5nfa6ub91jgisjpc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;主要用于初始化ARM协处理器的数据处理</a>
+</h3>
+<h3 class="topic">
+<a name="69hfr8m9kua35irhpoec58vqkj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在ARM的寄存器和协处理器以及存储器与协处理器之间传输数据</a>
+</h3>
+<h3 class="topic">
+<a name="39vpclq4jr0lqrar5c96p80j0a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190811_files/79c9rvj1ls8chfj2e486p33v1g.png"></p>
+<h3 class="topic">
+<a name="1tvasdcujmb03ietd7e0ubhraa">&nbsp;&nbsp;&nbsp;&nbsp;杂项指令</a>
+</h3>
+<h3 class="topic">
+<a name="1athd4leinaaimi6qcub1c76cf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;中断指令、读写状态寄存器指令等</a>
+</h3>
+<h3 class="topic">
+<a name="2ua82fah97ne2e8dvb9a752bkr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190811_files/1bu25kqjilbg4dphrf2rua0mkg.png"></p>
+<h3 class="topic">
+<a name="5umrhgr54ifcgrfsr6mehshks0">&nbsp;&nbsp;&nbsp;&nbsp;伪指令</a>
+</h3>
+<h3 class="topic">
+<a name="6ea85ehe4te15g3ccp66d3u1mk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;实际上并不是ARM指令，在编译时编译器将其替换为等效的ARM指令</a>
+</h3>
+<h3 class="topic">
+<a name="68t150gt9pt8ao0knj4jltbvkv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190811_files/0h6ksvt6eoje8snv52avvuuvng.png"></p>
+<h3 class="topic">
+<a name="76rks4dt31bqds12i5loai18t8">&nbsp;&nbsp;&nbsp;ARM指令的执行条件</a>
+</h3>
+<h3 class="topic">
+<a name="51bib0cp29pf4f30i20cpv3j52">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190811_files/6r28rmnkno2mnea4878upvmnjd.png"></p>
+<h3 class="topic">
+<a name="69jq57emlm8nhlucdp10p5mgmj">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190811_files/0o7b4l6dh5uc27l91fastttq6g.png"></p>
+<h3 class="topic">
+<a name="47c3383ts3etg6qoq6du2ngm59">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190811_files/7ti5hokclbtgtv027vvcj23a8h.png"></p>
+<h3 class="topic">
+<a name="2mvqa0883h0qjhakq7qgmq4jcb">&nbsp;&nbsp;&nbsp;ARM指令的寻址方式</a>
+</h3>
+<h3 class="topic">
+<a name="66ecjggbi6bbkcftvnk0lvth6f">&nbsp;&nbsp;&nbsp;&nbsp;寻址方式</a>
+</h3>
+<h3 class="topic">
+<a name="4r6or0q8ora770blmr0mshh470">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;即处理器根据指令中给出的地址码来寻找物理地址的方式</a>
+</h3>
+<h3 class="topic">
+<a name="0ji47enujte76laqt9mffhh3sg">&nbsp;&nbsp;&nbsp;&nbsp;分类</a>
+</h3>
+<h3 class="topic">
+<a name="3sd7899peoeku7ui54b6pfr7pe">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;立即数寻址</a>
+</h3>
+<h3 class="topic">
+<a name="2t4n4mcujj13i61bqg2qcmtu1k">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;立即数在指令中以#开头，如果是十六进制表示的立即数，还需要在#后面加上 0x 或 &amp;</a>
+</h3>
+<h3 class="topic">
+<a name="67efjdn78ovbds5pch8vs43trt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190811_files/7ti6rog38cr7gkkmceokq32cu7.png"></p>
+<h3 class="topic">
+<a name="5nrs4t2rv313533l0jm69mdf8g">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;操作数在指令中</a>
+</h3>
+<h3 class="topic">
+<a name="7tia2qq0repfhp10h8qs5tlvse">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;寄存器寻址</a>
+</h3>
+<h3 class="topic">
+<a name="27u6pher03a89giq9lroa87c65">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190811_files/2toj6vlb33sa72qdumnsne5ri7.png"></p>
+<h3 class="topic">
+<a name="2oi93flv1q3c97bnmo9o7db37b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;操作数在寄存器中保存</a>
+</h3>
+<h3 class="topic">
+<a name="1osmsuego4t2ruts82iocljfbb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;寄存器间接寻址</a>
+</h3>
+<h3 class="topic">
+<a name="4jbj27naiceh6p2nj17qh315g2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;操作数保存在存储器，寄存器保存对应存储器的地址</a>
+</h3>
+<h3 class="topic">
+<a name="2r34rgj8fk5jil04ft5jkh1i2p">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190811_files/6rklvdam0jrl248m4cuof44ge4.png"></p>
+<h3 class="topic">
+<a name="04mv437nts6b8rcnc7old8hmu7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LDR是加载指令，数据从存储器到寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="4mab7o6ct8ous1cjuf5ti3e2ib">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;STR是存储指令，数据从寄存器到存储器</a>
+</h3>
+<h3 class="topic">
+<a name="4j1qatt8gciaa5b2k59mq3hv5i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;基址变址寻址</a>
+</h3>
+<h3 class="topic">
+<a name="3j01e1r97bk3ghhgu9cktupvma">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190811_files/4pgse3o9a7c8563ef6tnmtj9jk.png"></p>
+<h3 class="topic">
+<a name="5clvr9i3n1rqs66016ng7dhqbm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意第一条指令与第二条指令是不同的</a>
+</h3>
+<h3 class="topic">
+<a name="64ragc04a0tqr2b1stgm6iucq1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;寄存器偏移寻址</a>
+</h3>
+<h3 class="topic">
+<a name="5llm7hvs4tqhld2caar73mjtrb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190811_files/7p5d657s7q3lqis98jb4evldfn.png"></p>
+<h3 class="topic">
+<a name="6atjdmml04fa4nge2546rjck3o">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;多寄存器寻址</a>
+</h3>
+<h3 class="topic">
+<a name="3rss1qlovukbffcn6kms2cgijh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190811_files/7g56tqclor6dv4gi5mb5taoti8.png"></p>
+<h3 class="topic">
+<a name="1vam8835q158o6m0diuianh9be">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该指令将以R0为首地址的内存中的数据传输到 R1~R4</a>
+</h3>
+<h3 class="topic">
+<a name="10kjkpubdr9hn7e3ctapkme6dv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;相对寻址</a>
+</h3>
+<h3 class="topic">
+<a name="1t4v45po7086kpljm940nopecf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190811_files/3qlnhfk181k73iaedlss4r3d1h.png"></p>
+<h3 class="topic">
+<a name="2feq419p5u8cdi3bk16u3p7bia">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;与指令中的地址标号相关</a>
+</h3>
+<h3 class="topic">
+<a name="17quffdtbm73f2al8rkf6voa64">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该程序中被调用函数返回是通过将pc寄存器赋值的方式进行的</a>
+</h3>
+<h3 class="topic">
+<a name="1gk4valeavvivuiruq8k1735p2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;堆栈寻址</a>
+</h3>
+<h3 class="topic">
+<a name="3ir7ld1rgtf62du9g0cgjmt6dq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;类比x86中的push 和pop，操作数的内存地址是隐含的，一般是程序中栈顶的地址，该地址由特定寄存器保存</a>
+</h3>
+<h3 class="topic">
+<a name="1art52t8hj93ngq6bidtob8n7j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ARM中堆栈有两重特性</a>
+</h3>
+<h3 class="topic">
+<a name="23p9fcof41f1um43m17qsljn13">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;堆栈生长方向</a>
+</h3>
+<h3 class="topic">
+<a name="1sc1uipuruckugbi5etqqomsch">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;堆栈向高地址增长</a>
+</h3>
+<h3 class="topic">
+<a name="5v86qjucekdrcl0s8hur9afble">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;递增堆栈</a>
+</h3>
+<h3 class="topic">
+<a name="05e10mfh6sqp17uimr90lma5he">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;堆栈向低地址增长</a>
+</h3>
+<h3 class="topic">
+<a name="2rlqg9991m2m7r2moafje49lnd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;递减堆栈</a>
+</h3>
+<h3 class="topic">
+<a name="3vcgaop9ikvkfp3dniklbb1mgs">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;栈顶是否指向有效数据</a>
+</h3>
+<h3 class="topic">
+<a name="0o9h16ln5uncnfiqr90nt6hpah">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;堆栈指针指向后压入的堆栈的有效数据项，称为满堆栈（Full Stack）</a>
+</h3>
+<h3 class="topic">
+<a name="7ru9vi54kgo6hhtqpngh873l6k">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;堆栈指针指向下 一个要放入的空位置，称为空堆栈（Empty Stack）</a>
+</h3>
+<h3 class="topic">
+<a name="0vl90hbotvm5ghumvjt1ol6n8d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;故有四种类型给堆栈，其操作对应堆栈的指令也有四种，每种指令中一般包括出栈和入栈的指令</a>
+</h3>
+<h3 class="topic">
+<a name="475k68ps78plk1ek4akhljd7ti">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190811_files/7b776mcuq9hf75gtii0kicpcfj.png"></p>
+<h3 class="topic">
+<a name="4buuljiqrh2djmsqjc6j04sql8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;例子</a>
+</h3>
+<h3 class="topic">
+<a name="3d241193o3d9es9ai4q97so9t9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190811_files/7p5n7ir3ccaeokllffeqgmd39e.png"></p>
+<h3 class="topic">
+<a name="766olpv7s8mo4parkrj9aae1p8">&nbsp;&nbsp;&nbsp;ARM函数的调用和返回</a>
+</h3>
+<h3 class="topic">
+<a name="4l1cc756g3k05r2j9p0ii1obem">&nbsp;&nbsp;&nbsp;&nbsp;ARM 属于 RISC 指令集，不同于 x86 的 CISC 指令集</a>
+</h3>
+<h3 class="topic">
+<a name="7qtj3ccv5ps1fseq71gv4vb5j5">&nbsp;&nbsp;&nbsp;&nbsp;ARM函数传参是会使用R0-R3传递前四个参数，如果参数个数超过4个，就通过堆栈传递参数</a>
+</h3>
+<h3 class="topic">
+<a name="3qgf69puhcjo1593m4p9a0mv6o">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;参数的顺序是从左到右，即从左起的四个参数通过寄存器传参，之后的使用堆栈传参</a>
+</h3>
+<h3 class="topic">
+<a name="6ggfec50jid1h2hbrag1oo3vge">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在汇编中传参是从右往左进行参数处理</a>
+</h3>
+<h3 class="topic">
+<a name="4hop1gqq690rdp1m160b206ivm">&nbsp;&nbsp;&nbsp;&nbsp;ARM调用子函数时不是通过call指令，而是使用bl指令，该指令执行后R15（即pc，即程序计数器）的值会保存在R14中，进入子函数中程序会将R14入栈保存</a>
+</h3>
+<h3 class="topic">
+<a name="4btr3f9nr4t132ebnrpcsevntr">&nbsp;&nbsp;&nbsp;&nbsp;当函数有返回值时ARM通过R0寄存器传递返回值</a>
+</h3>
+<h3 class="topic">
+<a name="0c2b84a0bsttvrju3gri14gbjl">&nbsp;&nbsp;&nbsp;&nbsp;函数返回前会将返回值放进R0，并且cpu从栈中取出保存的返回地址并赋值给R15，从而完成函数调用</a>
+</h3>
+<h3 class="topic">
+<a name="20qpogttrmq31aokok9ajlji1n">&nbsp;&nbsp;&nbsp;&nbsp;例子</a>
+</h3>
+<h3 class="topic">
+<a name="79iailpfhdgugst4dlph2d1o2c">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;c语言</a>
+</h3>
+<h3 class="topic">
+<a name="618alfdeuqorgocfu9pq6evbrp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190811_files/5h621e9r785hlhiiumcj9maqg9.png"></p>
+<h3 class="topic">
+<a name="6l2c775ule44qvt9qmjld3vnju">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ARM汇编</a>
+</h3>
+<h3 class="topic">
+<a name="0kbvn7h60k91qokg7mfgamooe5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;test函数调用</a>
+</h3>
+<h3 class="topic">
+<a name="2qalah5dp976v75ds66k7j76bq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190811_files/35ioku1ve5ljnq9kpd6b5olrjh.png"></p>
+<h3 class="topic">
+<a name="4l89rfbah9kbm0a1sa6fh309oj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190811_files/3294bv6uqgile21nvq7b6p3cq0.png"></p>
+<h3 class="topic">
+<a name="21duot3br5ampa5e5oqku08gui">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;test函数内部</a>
+</h3>
+<h3 class="topic">
+<a name="66rc66c4qo24n0tqjjfuemcho9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190811_files/0uo3tm676of6uvaqumdme15u9g.png"></p>
+<h3 class="topic">
+<a name="33ak4l1pu294fe5h245bq8mk1h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ldr是加载指令，数据从存储器到寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="0ov8aruf6d6jsi0clc1te5f335">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;str是存储指令，数据从寄存器到存储器</a>
+</h3>
+<h3 class="topic">
+<a name="7obi2blv47qjlbqfe6q18jsapn">&nbsp;windows mobile上的hello world</a>
+</h3>
+<h3 class="topic">
+<a name="4f1o8it1s6vb8h8mf3am20u9lu">&nbsp;远程调试工具</a>
+</h3>
+<h3 class="topic">
+<a name="0f641ihvvs5hfei43vtgc1khvl">&nbsp;&nbsp;用于在pc上远程查看windows mobile手机的注册表	，进程、堆等信息</a>
+</h3>
+<h3 class="topic">
+<a name="5kd98ip3b6igsc8tdd17r1jfiv">&nbsp;手机上的exploit me</a>
+</h3>
+<h3 class="topic">
+<a name="1niphc0n55sm26r7eh45u7apu1">&nbsp;&nbsp;手机上的溢出本质上与pc的溢相同均是通过向缓冲区复制超长的字符串来覆盖重要的数据结构，达到控制程序的目的</a>
+</h3>
+<h3 class="topic">
+<a name="7tsp0pu28f115t4a199op2aq74">&nbsp;&nbsp;存在漏洞的程序</a>
+</h3>
+<h3 class="topic">
+<a name="5jf3jjnkbp9dpf3aqicb6uuof4">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190811_files/1eg8e2i9g1384bs4s9fi6guqgt.png"></p>
+<h3 class="topic">
+<a name="25fbrpinusv36bganreicf23gj">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190811_files/4vifc3j8daaf35houd23l2kmpp.png"></p>
+<h3 class="topic">
+<a name="6tulnt4n4rvn1usjf4lti81n0g">&nbsp;&nbsp;文件中的shellcode</a>
+</h3>
+<h3 class="topic">
+<a name="2cag0i6qli4qv4m1k1jo6vfs36">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 day20190811_files/7kktv1242811s4rie5htbbfjbt.png"></p>
+</body>
+</html>

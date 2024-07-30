@@ -1,0 +1,336 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>安卓-6</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="09cnqllqqg8iu1nu0rd75ob95k">安卓-6</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="%E5%AE%89%E5%8D%93-6_files/images/%E5%AE%89%E5%8D%93-6.jpg"></div>
+<h2 class="topic">
+<a name="7mn8j2tq8sve3nmtqhkdeucq6g">安卓进程注入</a>
+</h2>
+<h3 class="topic">
+<a name="2q5l9q6fillgohfdcumsf3c8dn">&nbsp;介绍</a>
+</h3>
+<h3 class="topic">
+<a name="4a73s8smq22n2a3ng0c2e7pm79">&nbsp;&nbsp;ptrace是linux内核提供的用于调试其他进程的一种机制，也是实现调试器的基础</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-6_files/4pivfeog2v4she3i2mdhg8f8os.png"></p>
+<h3 class="topic">
+<a name="1etvagcnmv0itumv56eigusmnj">&nbsp;ptrace</a>
+</h3>
+<h3 class="topic">
+<a name="01ikfkve4otecotnnaplq9d7u4">&nbsp;&nbsp;ptrace会在什么时候出现呢？在执行系统调用之前，内核会先检查当前进程是否处于被&ldquo;跟踪&rdquo;(traced)的状态。如果是的话，内核暂停当前进程并将控制权交给跟踪进程，使跟踪进程得以察看或者修改被跟踪进程的寄存器。</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-6_files/2p1j1rrl27408qiu2qdb4oi7r4.png"></p>
+<h3 class="topic">
+<a name="29k648a3e2dc5sj0i70kd8na0s">&nbsp;&nbsp;&nbsp;ptrace附加其他进程需要root权限，如果是父类和子类之间的附加，则不需要root权限</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-6_files/1uhfk2q7vhe5890q3rt7t44tg5.png"></p>
+<h3 class="topic">
+<a name="0qgnra6kk22879uqsrf4k51173">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-6_files/40s2kid5o9tub08nbu4ubd4tm7.png"></p>
+<h3 class="topic">
+<a name="5b1nt9eou0bulb3kjbk1bcie7c">&nbsp;&nbsp;ptrace函数资料</a>
+</h3>
+<h3 class="topic">
+<a href="https://blog.csdn.net/edonlii/article/details/8717029" name="4qrnud236116l80hmrpif5qrbg">&nbsp;&nbsp;&nbsp;https://blog.csdn.net/edonlii/article/details/8717029</a>
+</h3>
+<h3 class="topic">
+<a name="2adfhdepc5vkfng8flldmvfmr5">&nbsp;注入流程，该注入过程实际上就是注入一个so到目标进程中（类比windows中的dll注入），当然这种方法也可以通过直接注入shellcode完成功能</a>
+</h3>
+<h3 class="topic">
+<a name="0bm1jhvsdkvj7a6i3v2u7scgen">&nbsp;&nbsp;保存现场：即保存此时寄存器的状态&#13;
+dlopen：即加载so文件&#13;
+dlsym：即查找so文件中的符号</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-6_files/6mg2q208vij6g2c26d795nl7o6.png"></p>
+<h3 class="topic">
+<a name="27juj5fd3et5248hjfdmq1b3ds">&nbsp;注入流程代码分析(源代码见360古河LibInject)</a>
+</h3>
+<h3 class="topic">
+<a name="7bq6t3r35qfnegb9laspfj58rh">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-6_files/7lje76c25mdpk1bj5fnids8uft.png"></p>
+<h3 class="topic">
+<a name="1vnh8gf7qhfhb24111dt1tamm6">&nbsp;&nbsp;inject_remote_process</a>
+</h3>
+<h3 class="topic">
+<a name="4ui2regdfesp2kpvlg4oog4n3q">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-6_files/2ig3n0s43u41dnp5f4ekds8sg1.png"></p>
+<h3 class="topic">
+<a name="2gjlmb7m5b6d6r7u6bjs3g6mhb">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-6_files/6sor5k47r350683qdin4690h0q.png"></p>
+<h3 class="topic">
+<a name="32f4rk0fumhhdq875hid6i3d7t">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-6_files/4lq8cu7ccpelbd0l5j1pmsu5c7.png"></p>
+<h3 class="topic">
+<a name="6r6dhpb7l02fub5pdkt517d91m">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-6_files/774qvl1dneqhhj5ouv3b4eogu3.png"></p>
+<h3 class="topic">
+<a name="57d0gfgg8jvpovh07actbkhgr3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-6_files/317p41qsu1usuj4pjcu4c9u8vs.png"></p>
+<h3 class="topic">
+<a name="0of65ra0oqdnhp7uaejuqvqotp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-6_files/1kpdckhvjp1ga9tq97tl7o8ag1.png"></p>
+<h3 class="topic">
+<a name="31agp37m72gll26tbt3iqttbc3">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-6_files/5mgvtf7gqffu2gie78mj8ongf4.png"></p>
+<h3 class="topic">
+<a name="0qq1da4gsct0pkt07urpiqg6lo">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-6_files/73iob1q0j0jko4orph7frj02ic.png"></p>
+<h3 class="topic">
+<a name="5vi25hfo13rrd3qqs4h45euh00">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-6_files/6nejf6ujgk2ggg39cbnq78a81b.png"></p>
+<h3 class="topic">
+<a name="7ba94q714rs4qagrehriu1i0mg">&nbsp;&nbsp;shellcode</a>
+</h3>
+<h3 class="topic">
+<a name="5jk3k3jon9cekovb5678kvh15j">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-6_files/50shb0166551jge80n0r4r4c2l.png"></p>
+<h3 class="topic">
+<a name="2levhu23upgpvgf6po9hagp90i">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-6_files/1hg8crdn7kqsi1tdl6umc50c0a.png"></p>
+<h3 class="topic">
+<a name="23ro9lc094mk80311r1e1674a2">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-6_files/1js2thatp638bq13feqku7etc5.png"></p>
+<h3 class="topic">
+<a name="5d4pdokgmm67g77n88n3sbuon7">&nbsp;注入过程</a>
+</h3>
+<h3 class="topic">
+<a name="7mlhr8hg85q3gdpi6msda20g0k">&nbsp;&nbsp;这里可知用于注入的程序最终会编译成一个bin文件，只要以被hook进程的pid调用该bin文件即可实现注入</a>
+</h3>
+<h3 class="topic">
+<a name="5e8h8u11au7k19108juob9d8ci">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-6_files/624pkqv0dlinedmcsbja4nvgl8.png"></p>
+<h3 class="topic">
+<a name="2phokfg8gt5uc9es6ko5ggj7ve">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-6_files/2r7c6093emou6e6pjov4uhn9oj.png"></p>
+<h3 class="topic">
+<a name="78r600b4oq5lltbc3f2kgo3csp">&nbsp;&nbsp;根据logcat可以看到整个注入过程</a>
+</h3>
+<h3 class="topic">
+<a name="5vk29qflglotl2o0r7cfpv9ps1">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-6_files/1l4og62cv6eeoic338e5j5rpkc.png"></p>
+<h3 class="topic">
+<a name="2kppsp4obtrop1dds0nurqf72v">&nbsp;&nbsp;&nbsp;&nbsp;被注入的so文件中的hook入口函数 hook_entry，实际运行时可以在hook_entry中设置各种javahook和nativehook，从做一些助手等功能</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-6_files/2pcaktgr376a548mrfvol7u104.png"></p>
+<h2 class="topic">
+<a name="72e62rn48u4jmm5o2qtnbekto7">安卓权限管理</a>
+</h2>
+<h3 class="topic">
+<a name="6qbl0su3q9517s27aj37stjva2">&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-6_files/1v73eoesjdpc02mp7sopo7729s.png"></p>
+<h3 class="topic">
+<a name="35fms88m0me877mvl1m8qj0pgm">&nbsp;&nbsp;其中system server是一个关键的高权限进程，四大组件等均被改进程管理，通过hook该进程替换其中的binder进程可以达到权限管理的目的&#13;
+安卓中所有的IPC通讯均通过Binder进行</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-6_files/10hrb6npham0p2celoq4c8f6fk.png"></p>
+<h3 class="topic">
+<a name="6ktefjgaf2m6tfivdk1gpa8jb0">&nbsp;Binder驱动</a>
+</h3>
+<h3 class="topic">
+<a name="4sqsacmu2sfiio1t8lfdallm3u">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-6_files/7uoib02087q2v0a04bj62ar4gl.png"></p>
+<h3 class="topic">
+<a name="79a0dbqaiulkddid5uvvnr1q09">&nbsp;Binder架构</a>
+</h3>
+<h3 class="topic">
+<a name="41c9r3hbf8hmn2uf0j1vgkp2h5">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-6_files/4orq29bh2c4o55fbhaf256u083.png"></p>
+<h3 class="topic">
+<a name="6n989ivkj03efedk5t07seople">&nbsp;替换服务</a>
+</h3>
+<h3 class="topic">
+<a name="6btmao1pp69th7pup60uluuv27">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-6_files/0s36vc4ou3e4gakfelqdjnm23v.png"></p>
+<h3 class="topic">
+<a name="20fd6nvq398ag6d4a8edegcci8">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-6_files/0mmgi5v31vnlmo0eumtg9qumuv.png"></p>
+<h3 class="topic">
+<a name="5dfmf5480e2flb8lrq85lpdfsp">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-6_files/47nld3htahelocr9vh7c1oinh7.png"></p>
+<h3 class="topic">
+<a name="2lvp5n1r0durd2j1etbhm563kg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-6_files/4j9apqe5j1goi998m1tttmj2sq.png"></p>
+<h3 class="topic">
+<a name="43ejtdjamsnvartvd3oit3soc4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-6_files/6f1sv5pr0rlv8llngd6j6r7q14.png"></p>
+<h2 class="topic">
+<a name="5v7ic80l5vuia625nmot7f5m10">软件保护</a>
+</h2>
+<h3 class="topic">
+<a name="3kjlit7oovm1rhreqbllni2f5m">&nbsp;保护内容</a>
+</h3>
+<h3 class="topic">
+<a name="7kab9dc1v08u49su8hsnnqhq4n">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-6_files/4cinjhlr4ctu6h4qrm75p23488.png"></p>
+<h3 class="topic">
+<a name="258okc0ktgtseagdimcsvlqsn6">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-6_files/7rhpnk8ij29p7h6tbs62ebrtdp.png"></p>
+<h3 class="topic">
+<a name="5bie2cm6kk4sfnuopqk7g8t8fk">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-6_files/1ttmfbnpeqa2s1ntd9cnbseeln.png"></p>
+<h3 class="topic">
+<a name="23ot25fbsh823hqkuh9u4j8bmj">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-6_files/2dslq866udcengntfjnb0q8ior.png"></p>
+<h3 class="topic">
+<a name="5dsv94c5499qoo5bs2ojdc0pe8">&nbsp;保护方式</a>
+</h3>
+<h3 class="topic">
+<a name="03stbicj10kn8e69ueskbhpjt0">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-6_files/4i4dfpg4hgcmjv8tm1k8irtqt3.png"></p>
+<h3 class="topic">
+<a name="4pv0c4u4lsiusddvksh5fs8g9n">&nbsp;&nbsp;&nbsp;静态保护</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-6_files/40tfd05mfogo37gk9eot975pvr.png"></p>
+<h3 class="topic">
+<a name="6b9p165j03n85n0h6iupg4a1c0">&nbsp;&nbsp;&nbsp;&nbsp;arm指令加花：效果是ida无法f5</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-6_files/6ugiesc2i4sr8calipqo8i0n42.png"></p>
+<h3 class="topic">
+<a name="5amvc2drg089cajlc1ei3n53va">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;分支平台化混淆</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-6_files/1n4eip9i29f2lfunj00urhen1o.png"></p>
+<h3 class="topic">
+<a name="26sc6lu8j80dioiqlmrc539vps">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-6_files/43i4rdv0v71qo4s3k3rihgru0e.png"></p>
+<h3 class="topic">
+<a name="2iei7f898c2p0nkp1v289ef9jl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-6_files/0j879eehtbr215r14216ettsm5.png"></p>
+<h3 class="topic">
+<a name="4l831k05bjiaofsbi2akpq3ble">&nbsp;&nbsp;&nbsp;动态保护</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-6_files/4bckva7ds6ljubsm5qeknfc0at.png"></p>
+<h3 class="topic">
+<a name="3pghsdlo1e9f0dpdhbnvq9j0sq">&nbsp;&nbsp;&nbsp;&nbsp;dex动态加载</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-6_files/7i6qphu2121s0gbm7ls6b6lf0s.png"></p>
+<h3 class="topic">
+<a name="4dievb1i831f69vjlt8hafblng">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-6_files/1lj94k514qmfj4m8383l3hvmij.png"></p>
+<h3 class="topic">
+<a name="0234015qau07rhh8tkld15terv">&nbsp;&nbsp;&nbsp;&nbsp;调试状态检测：&#13;
+isDebuggerConneted是一个native函数，可以通过注入zygote进程，hook该函数返回flase，从而过掉检测</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-6_files/54b5jce1shsk7qsjeri5jreh3f.png"></p>
+<h3 class="topic">
+<a name="06n3e6htah51v2lnpi9bk3kusv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-6_files/5s9jbfaq9l98u51pbmm6bupd3d.png"></p>
+<h3 class="topic">
+<a name="60ru0vttouo4jpguoeoh38hco6">&nbsp;&nbsp;&nbsp;&nbsp;反ptrace</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-6_files/6rt65k8qjf8l7u5l7f4lt1cp6u.png"></p>
+<h3 class="topic">
+<a name="57bmk0miuh8kdobud7t9rg12q8">&nbsp;&nbsp;&nbsp;&nbsp;断点检测</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-6_files/4hakj5dgbndequ5eq19mei75ic.png"></p>
+<h3 class="topic">
+<a name="7d5h3vi121gf4tmon4is2b918a">&nbsp;&nbsp;&nbsp;&nbsp;反内存dump</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-6_files/2rn09f1ttsg98s4qfkbuln448i.png"></p>
+<h3 class="topic">
+<a name="7knaeja0bbhhrljd5iucoatdvp">&nbsp;&nbsp;&nbsp;&nbsp;反模拟器</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-6_files/2uhmvetnc4phtmvt1tiouo2acp.png"></p>
+<h3 class="topic">
+<a name="3psc7f5hgqon5eq779p25mf116">&nbsp;&nbsp;&nbsp;&nbsp;反插件</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-6_files/0s626e5kth99vnsbkodlsp385e.png"></p>
+<h3 class="topic">
+<a name="2i1okj5433cgk6eqn920ieuqk8">&nbsp;&nbsp;&nbsp;&nbsp;完整性校验</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%AE%89%E5%8D%93-6_files/14oc06bfdjpf4rdcr6s9t6stmk.png"></p>
+</body>
+</html>

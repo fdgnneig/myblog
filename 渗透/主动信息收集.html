@@ -1,0 +1,863 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>主动信息收集</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="51k1us9d5qmkn61guaun9sqpa7">主动信息收集</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="%E4%B8%BB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/images/%E4%B8%BB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86.jpg"></div>
+<h2 class="topic">
+<a name="7bk96tuic1mj3uu5u6sk9uupr6">DNS枚举</a>
+</h2>
+<h3 class="topic">
+<a name="2fllavhlcce1fnbob5dtgoute1">&nbsp;dns的过程</a>
+</h3>
+<h3 class="topic">
+<a name="7nm642fl0be8b8u4uss4jhgb46">&nbsp;&nbsp;当在浏览器或其他应用程序中输入主机名时，该过程开始。 浏览器将主机名传递给操作系统的DNS客户端，然后操作系统将请求转发到配置为使用的外部DNS服务器。 链中的第一个服务器称为DNS递归，它负责与DNS基础结构进行交互并将结果返回给DNS客户端。  DNS递归与DNS根区域中的服务器之一联系。 然后，根服务器将使用负责包含顶级域（TLD）的区域（在本例中为.com TLD）的服务器的地址进行响应（TLD即顶级域名 top level domain）</a>
+</h3>
+<h3 class="topic">
+<a name="42ac42kli6398pdbu7jrh288j3">&nbsp;&nbsp;&nbsp;一旦DNS递归接收到TLD DNS服务器的地址，它将向其查询megacorpone.com域的权威名称服务器的地址。 权威的名称服务器是DNS查找过程的最后一步，并将DNS记录包含在称为区域文件的本地数据库中。 它通常为每个域托管两个区域，即用于查找特定主机名的IP地址的正向查找区域和用于查找特定IP地址的主机名的反向查找区域（如果由管理员配置）  。 一旦DNS递归器为DNS客户端提供了www.megacorpone.com的IP地址，浏览器便可以使用其IP地址联系正确的Web服务器并加载该网页。</a>
+</h3>
+<h3 class="topic">
+<a name="2tqm9arl0v6pd8donrrb05485v">&nbsp;&nbsp;&nbsp;&nbsp;为了提高DNS的性能和可靠性，DNS缓存用于在查找过程的各个阶段存储DNS记录的本地副本。 因此，某些现代应用程序（例如Web浏览器）会保留单独的DNS缓存。 此外，操作系统的本地DNS客户端还在查找过程中与每个DNS服务器一起维护其自己的DNS缓存。 域所有者还可以通过DNS记录的生存时间（TTL）字段来控制服务器或客户端将DNS记录缓存多长时间。</a>
+</h3>
+<h3 class="topic">
+<a name="05jm0ckb1cm7pi2m8ckp64o9jp">&nbsp;&nbsp;浏览器-》操作系统dns客户端-》dns递归-》dns根服务器（将TLD DNS服务器地址返回给dns递归）&#13;
+dns递归-》TLD DNS服务器（包含域名转ip的数据和ip转域名的数据）&#13;
+TLD DNS服务器将ip地址返回给dns递归，后者返回给浏览器</a>
+</h3>
+<h3 class="topic">
+<a name="0ji978sh30kqotut42qieee8u8">&nbsp;与dns服务器交互</a>
+</h3>
+<h3 class="topic">
+<a name="7ffuv4nrpllquu2s3g7nv454a1">&nbsp;&nbsp;每个域可以使用不同类型的DNS记录。  DNS记录的一些最常见类型包括：</a>
+</h3>
+<h3 class="topic">
+<a name="5d127jm149455l4bd1hu55pa5e">&nbsp;&nbsp;&nbsp;&bull;NS-名称服务器记录包含托管域DNS记录的权威服务器的名称。（例如kali中的nameserver 8.8.8.8）&#13;
+&bull;A-也称为主机记录，&ldquo;记录&rdquo;包含主机名的IP地址（例如www.megacorpone.com）。&#13;
+&bull;MX-邮件交换记录包含负责处理域电子邮件的服务器的名称。 一个域可以包含多个MX记录。&#13;
+&bull;PTR-指针记录用于反向查找区域，并用于查找与IP地址关联的记录。&#13;
+&bull;CNAME-规范名称记录用于为其他主机记录创建别名。  &#13;
+&bull;TXT-文本记录可以包含任何任意数据，并且可以用于多种目的，例如域所有权验证。</a>
+</h3>
+<h3 class="topic">
+<a name="0f4n3t5f73t2haoohec8588ci1">&nbsp;&nbsp;&nbsp;&nbsp;关于PTR记录</a>
+</h3>
+<h3 class="topic">
+<a href="https://en.wikipedia.org/wiki/Reverse_DNS_lookup" name="6ni2nl44v1s10qp5jvubfmhsfl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://en.wikipedia.org/wiki/Reverse_DNS_lookup</a>
+</h3>
+<h3 class="topic">
+<a name="6shf4vnqbu98473k3rn6gesep1">&nbsp;&nbsp;查找指定域名的ip地址</a>
+</h3>
+<h3 class="topic">
+<a name="6kocgr11tr3o9bag96ihklcmta">&nbsp;&nbsp;&nbsp;host指令默认查找DNS的A记录</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%B8%BB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/5vuqktrgergmaj5789ahk406g8.png"></p>
+<h3 class="topic">
+<a name="5fmcbcqe2o8lfhfe9aqj9vrlm2">&nbsp;&nbsp;&nbsp;&nbsp;使用-t选项而可以指定要查找的DNS记录类型</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%B8%BB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/3d57mlhroqnrih0aul1bci4dpn.png"></p>
+<h3 class="topic">
+<a name="6e15krpp9nou8in6l6est5d69r">&nbsp;自动查询</a>
+</h3>
+<h3 class="topic">
+<a name="73sjv4k990hun8r7jb1cal7ftl">&nbsp;&nbsp;查找主机的ip地址</a>
+</h3>
+<h3 class="topic">
+<a name="4mck08rrn92clrb45gvkjot7ot">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%B8%BB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/37js7gpl7tfjbg4rrl9hpujplv.png"></p>
+<h3 class="topic">
+<a name="4k4bkn1nlm7ldqbccfk3s0unof">&nbsp;&nbsp;让我们看看megacorpone.com是否具有主机名为&ldquo; idontexist&rdquo;的服务器</a>
+</h3>
+<h3 class="topic">
+<a name="5g2t4g09s4ul5l3213v5tu2v3r">&nbsp;&nbsp;&nbsp;返回错误（NXDOMAIN189），该错误指示该主机名不存在公共DNS记录。 现在我们了解了如何搜索有效的主机名，我们可以自动化我们的工作。</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%B8%BB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/3blf1vo8gm9gc4jj8hbb53p5b6.png"></p>
+<h3 class="topic">
+<a name="7s5agol92ddd6lga0rvhpjv0e8">&nbsp;正向暴力查询（正向即根据域名查询ip）</a>
+</h3>
+<h3 class="topic">
+<a name="3hoqvre6psa84bloa2j0tskbc9">&nbsp;&nbsp;通过使用包含常用主机名的单词表，我们可以尝试猜测DNS记录并检查响应中是否包含有效的主机名。</a>
+</h3>
+<h3 class="topic">
+<a name="6sma6q7ugkldt562cr0uu3b7si">&nbsp;&nbsp;要查找的目的信息包括</a>
+</h3>
+<h3 class="topic">
+<a name="7kufla7uf9i6jo1uslq5rfiqfj">&nbsp;&nbsp;&nbsp;网络服务器上的目录，用户名和密码组合，或在这种情况下为有效的DNS记录</a>
+</h3>
+<h3 class="topic">
+<a name="26uego106j5vu212miiameijpp">&nbsp;&nbsp;bash+host指令实现常用主机名的正向dns查找（根据主机名查找ip地址）</a>
+</h3>
+<h3 class="topic">
+<a name="04vl3nrf2fjvadpjl9o0bvbq35">&nbsp;&nbsp;&nbsp;创建可能的主机名列表</a>
+</h3>
+<h3 class="topic">
+<a name="4ia649oim4kbh2q74bgi24am4q">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%B8%BB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/4gmuth028iq2s70pu8cctrj3q7.png"></p>
+<h3 class="topic">
+<a name="5vf7s5ira4vmep53od07mm1dib">&nbsp;&nbsp;&nbsp;使用bash查询每一个可能的主机名，从而判断对应主机是否存在</a>
+</h3>
+<h3 class="topic">
+<a name="293c8d927k95ssvnuc011ckgiv">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%B8%BB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/7pei2v38k9jh7rae2h7681v834.png"></p>
+<h3 class="topic">
+<a name="4gkaa25jv08kd2kffktrqigm9m">&nbsp;&nbsp;SecLists项目的一部分提供了更全面的单词列表。可使用sudo apt install seclists命令将这些单词列表安装到/ usr / share / seclists目录中。</a>
+</h3>
+<h3 class="topic">
+<a href="https://github.com/danielmiessler/SecLists" name="3fb9u91939j621ingnmsrmk8vd">&nbsp;&nbsp;&nbsp;https://github.com/danielmiessler/SecLists</a>
+</h3>
+<h3 class="topic">
+<a name="06n5mpslirhl5jugfth328ul77">&nbsp;反向暴力查询（根据ip查询域名）</a>
+</h3>
+<h3 class="topic">
+<a name="16lmfi58oe4gbklbni4onh70js">&nbsp;&nbsp;反向查询指定ip地址范围的主机是否存在，grep -v将过滤掉主机不存在的记录</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%B8%BB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/23h7871hj2l05ie85vp3e9cbei.png"></p>
+<h3 class="topic">
+<a name="22csucvf2k9chdjkuaqcboc8a3">&nbsp;&nbsp;&nbsp;根据输出的域名信息，还可以扫描&ldquo; mail1&rdquo;，&ldquo; mail3&rdquo;等，并反向查找肯定结果</a>
+</h3>
+<h3 class="topic">
+<a name="1vfui0a8qlulm6ksg1qlejn415">&nbsp;&nbsp;这些类型的扫描通常是周期性的。 我们会根据每轮收到的任何信息扩大搜索范围。</a>
+</h3>
+<h3 class="topic">
+<a name="5v8vr9o57kab49indbq3as07ml">&nbsp;dns区域传输</a>
+</h3>
+<h3 class="topic">
+<a name="21qeiekhj65ncclirdkgllq4ub">&nbsp;&nbsp;区域传输基本上是相关DNS服务器之间的数据库复制，其中区域文件从主DNS服务器复制到从属服务器。 区域文件包含为该区域配置的所有DNS名称的列表。 区域传输仅应允许到授权的从属DNS服务器，但是许多管理员会错误配置其DNS服务器，在这种情况下，任何要求复制DNS服务器区域的人通常都会收到一个。从而窥探服务器的所有名称，地址和功能。</a>
+</h3>
+<h3 class="topic">
+<a name="2lcoqunon06k6odrkvl26hfpno">&nbsp;&nbsp;&nbsp;我们已经看到DNS服务器配置错误的组织，它们没有将内部DNS名称空间和外部DNS分开为独立的，不相关的区域。 这使我们能够检索内部和外部网络结构的完整地图。 以这种方式错误配置DNS服务器的情况并不少见</a>
+</h3>
+<h3 class="topic">
+<a href="https://github.com/mandatoryprogrammer/TLDR" name="7mujk8cgfhi5qd3d1lp8ge9ar1">&nbsp;&nbsp;&nbsp;&nbsp;https://github.com/mandatoryprogrammer/TLDR</a>
+</h3>
+<h3 class="topic">
+<a name="357oa87b5rhfs4lmak704sunoq">&nbsp;&nbsp;执行区域传输的命令</a>
+</h3>
+<h3 class="topic">
+<a name="2h6i9rkmfai9kks8d89j4kpjci">&nbsp;&nbsp;&nbsp;host -l</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%B8%BB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/4uq9q3sfef5bkf5irlo0eghl1d.png"></p>
+<h3 class="topic">
+<a name="5n5qv1lgp5bdndkm13p1l78bcp">&nbsp;&nbsp;&nbsp;三个DNS服务器为megacorpone.com域提供服务：ns1，ns2和ns3。 让我们尝试对每个区域进行区域转移。</a>
+</h3>
+<h3 class="topic">
+<a name="05n64h8tc2frreirgjaetqg2sq">&nbsp;&nbsp;&nbsp;&nbsp;ns1不允许跨区域传输</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%B8%BB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/491eejbe1aolfa0rc1c4c1b08b.png"></p>
+<h3 class="topic">
+<a name="3le4ihl161seit357fusngnkjd">&nbsp;&nbsp;&nbsp;&nbsp;ns2允许区域传输</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%B8%BB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/7dtq0l6shf0d9rvs7jl66nksmg.png"></p>
+<h3 class="topic">
+<a name="0vkc2aqk25dmj0fegk9fan9uqs">&nbsp;&nbsp;通过bash指令，对某个域名下所有的dns服务器尝试区域传输</a>
+</h3>
+<h3 class="topic">
+<a name="7spmuges25noo1cn239q4v7g8t">&nbsp;&nbsp;&nbsp;根据指定域名，得到该域名下所有的dns服务器&#13;
+host -t ns 即查询ns类型的dns服务器</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%B8%BB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/2cbfl3avq9e59t2up92gjt2v5q.png"></p>
+<h3 class="topic">
+<a name="5kbm25li0v6eqg8nd913qgmbnl">&nbsp;&nbsp;&nbsp;识别指定域名的所有dns服务器，并且尝试进行区域传输</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%B8%BB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/2na4uqrblddt5lkr4ngijrntml.png"></p>
+<h3 class="topic">
+<a name="27qiarlih54a5iklk1caecke9n">&nbsp;&nbsp;&nbsp;&nbsp;#!/bin/bash &#13;
+# Simple Zone Transfer Bash Script&#13;
+# $1 is the first argument given after the bash script # Check if argument was given, if not, print usage&#13;
+if [ -z "$1" ]; then&#13;
+echo "[*] Simple Zone transfer script" echo "[*] Usage : $0 &lt;domain name&gt; " exit 0&#13;
+fi &#13;
+# if argument was given, identify the DNS servers for the domain&#13;
+for server in $(host -t ns $1 | cut -d " " -f4); do # For each of these servers, attempt a zone transfer host -l $1 $server |grep "has address"&#13;
+done</a>
+</h3>
+<h3 class="topic">
+<a name="0pr136ljs1kjdr3indo1kd40qi">&nbsp;&nbsp;&nbsp;获得指定域名下所有DNS服务器的ip</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%B8%BB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/6ta2c3avi32o3198adqq8n1bfk.png"></p>
+<h3 class="topic">
+<a name="6h2rlj72su038v368p6apqhjuq">&nbsp;kali中枚举DNS的几个工具</a>
+</h3>
+<h3 class="topic">
+<a name="2ekb7rmllmqgo4f9ugs59kpaab">&nbsp;&nbsp;DNSRecon</a>
+</h3>
+<h3 class="topic">
+<a name="5d646i45d0aqarsme7rd9n4hp1">&nbsp;&nbsp;&nbsp;用Python编写的高级现代DNS枚举脚本。 使用-d选项指定域名，对-megamegaone.com运行dnsrecon，使用-t指定要执行的枚举类型（在本例中为区域传输），将产生以下输出：</a>
+</h3>
+<h3 class="topic">
+<a name="29gjr5ep2vh7gl2uloa2e2ob66">&nbsp;&nbsp;&nbsp;&nbsp;https://github.com/darkoperator/dnsrecon</a>
+</h3>
+<h3 class="topic">
+<a name="3ho3a19o94or7hmtq9f61399cu">&nbsp;&nbsp;&nbsp;对指定域名进行区域传输</a>
+</h3>
+<h3 class="topic">
+<a name="3bsvjmqj32j3prn8qq80a61b4n">&nbsp;&nbsp;&nbsp;&nbsp;-d 指定域名 -t axfr指定要枚举的类型为区域传输</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%B8%BB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/07ss7b7eh9ogug9imtl1fhgi10.png"></p>
+<h3 class="topic">
+<a name="7v6lh9fa7kkasji3m30ioteasp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%B8%BB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/7gnt3kte1hv6tlpcejao6tqb0f.png"></p>
+<h3 class="topic">
+<a name="0ma4lvqnj7frfjcutjoiv801kb">&nbsp;&nbsp;&nbsp;暴力枚举子域名</a>
+</h3>
+<h3 class="topic">
+<a name="0r2ve47bjlqebe2seojmkals56">&nbsp;&nbsp;&nbsp;&nbsp;使用-d选项指定域名，-D指定包含潜在子域字符串的文件名，-t指定要执行的枚举类型（在本例中为brt为暴力枚举）</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%B8%BB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/31lrntptgaua5cqn73s9lvkqac.png"></p>
+<h3 class="topic">
+<a name="6n6m28fbv339jftbu4jbbt9fj7">&nbsp;&nbsp;DNSenum</a>
+</h3>
+<h3 class="topic">
+<a name="587hgk4uk3shbgf49u657g2ir1">&nbsp;&nbsp;&nbsp;枚举dns服务器并尝试区域传输</a>
+</h3>
+<h3 class="topic">
+<a name="546hm1g6eilvl2mm3upn35bu2k">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%B8%BB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/2lrn3quv7nj1c89oq5n2ptcf45.png"></p>
+<h3 class="topic">
+<a name="5k3brb3o37ccnsos1foman0rts">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%B8%BB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/4ul6jn1f7jb49h5pame41fbv1v.png"></p>
+<h2 class="topic">
+<a name="1igt6q25hp5s422nkegqhfve3f">端口扫描</a>
+</h2>
+<h3 class="topic">
+<a name="3kfqrlpnic1gr7nt5ticvvosht">&nbsp;端口扫描是检查远程计算机上的TCP或UDP端口的过程，目的是检测目标上正在运行的服务以及可能存在的潜在攻击媒介。</a>
+</h3>
+<h3 class="topic">
+<a name="678q0eeq2uts6kgb30riao91qt">&nbsp;&nbsp;由于某些扫描可能产生的通信量以及其侵入性，盲目运行端口扫描可能会对目标系统或客户端网络产生不利影响，例如服务器和网络链接超载或触发IDS。 运行错误的扫描可能会导致客户停机。</a>
+</h3>
+<h3 class="topic">
+<a name="1si74h88n7rooprnvkis95fpo1">&nbsp;&nbsp;&nbsp;使用正确的端口扫描方法可以大大提高我们作为渗透测试仪的效率，同时还可以降低许多风险。 根据参与范围，我们可以只扫描端口80和443，而不是对目标网络运行完整的端口扫描。有了可能的Web服务器列表，我们可以对这些服务器运行完整的端口扫描 在后台执行其他枚举时。 一旦完整的端口扫描完成，我们可以进一步缩小扫描范围，以在每次后续扫描中探测越来越多的信息。 端口扫描应被视为每个参与过程唯一的动态过程。 一次扫描的结果确定了下一次扫描的类型和范围。</a>
+</h3>
+<h3 class="topic">
+<a name="4is2ks386lel905b567lmag5qm">&nbsp;tcp/udp扫描</a>
+</h3>
+<h3 class="topic">
+<a name="4taso2hfkrmvml75qg43rfam5j">&nbsp;&nbsp;tcp扫描</a>
+</h3>
+<h3 class="topic">
+<a name="786tqujlecn2kr4pen8udbljc8">&nbsp;&nbsp;&nbsp;基本原理基于tcp三次握手，如果三次握手完成则说明对应端口已经被打开</a>
+</h3>
+<h3 class="topic">
+<a name="14tmc0p797odidb8r9qn2e5em4">&nbsp;&nbsp;&nbsp;&nbsp;主机将TCP SYN数据包发送到目标端口上的服务器。 如果目标端口已打开，则服务器将以SYN-ACK数据包作为响应，并且客户端主机将发送ACK数据包以完成握手。</a>
+</h3>
+<h3 class="topic">
+<a name="2ai2e6m18o8e44rg8nl1b9s4os">&nbsp;&nbsp;&nbsp;netcat用于端口扫描</a>
+</h3>
+<h3 class="topic">
+<a name="4cmcodg5n5iqaoi0g9rgjin80e">&nbsp;&nbsp;&nbsp;&nbsp;在端口3388-3390上运行TCP Netcat端口扫描。  -w选项以秒为单位指定连接超时，-z用于指定零I / O模式，该模式将不发送任何数据并用于扫描：</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%B8%BB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/0d49qfaa0a7lae3du5adfbnprc.png"></p>
+<h3 class="topic">
+<a name="60rtgerkc123ms5ek1spaem2ef">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;扫描对应的wireshark抓包</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%B8%BB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/37bncnqln4irbc24b3ke85p6d0.png"></p>
+<h3 class="topic">
+<a name="4itd7eo5alcpfqkinhm2jq2nra">&nbsp;&nbsp;udp扫描</a>
+</h3>
+<h3 class="topic">
+<a name="55pjhr7akqfd9h8r7ddasgg1ao">&nbsp;&nbsp;&nbsp;UDP是无状态的，并且不涉及三向握手，因此UDP端口扫描的机制不同于TCP。</a>
+</h3>
+<h3 class="topic">
+<a name="18u1ki2eenin5tvfea1s0tso5c">&nbsp;&nbsp;&nbsp;netcat用于端口扫描</a>
+</h3>
+<h3 class="topic">
+<a name="3si047182j73b7ursqjl94pchr">&nbsp;&nbsp;&nbsp;&nbsp;端口160-162运行UDP Netcat端口扫描。 这是使用我们尚未看到的唯一nc选项-u来完成的，它表示UDP扫描</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%B8%BB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/3ri96ef22takd8n9csa0lu2bpm.png"></p>
+<h3 class="topic">
+<a name="135e2ak2lvpmu71s5f16lm6n1e">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;扫描对应的wireshark抓包</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%B8%BB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/0sgg8e02k83e02b1itob0neuho.png"></p>
+<h3 class="topic">
+<a name="217k53r5k53ak63k5llgiqo389">&nbsp;&nbsp;&nbsp;&nbsp;icmp包是否返回并不能作为端口是否开放的准确标准</a>
+</h3>
+<h3 class="topic">
+<a name="61kc1bk4jab7bnll8i8li2qauu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;大多数UDP扫描程序都倾向于使用标准的&ldquo; ICMP端口不可达&rdquo;消息来推断目标端口的状态。 但是，当目标端口被防火墙过滤时，此方法可能完全不可靠。 实际上，在这些情况下，由于没有ICMP消息，扫描程序将报告目标端口为打开状态</a>
+</h3>
+<h3 class="topic">
+<a name="2dnm2ribnu1q7rjtjn9pdsuq5k">&nbsp;通用端口扫描陷阱</a>
+</h3>
+<h3 class="topic">
+<a name="5o8p8dhflfljf9io2pqpgmkbqr">&nbsp;&nbsp;即udp扫描结果可能会不可靠，但是也不能忽略，使用针对特定协议的udp扫描程序可能会得到更准确的结果</a>
+</h3>
+<h3 class="topic">
+<a name="0gkcfu0b5s7gp35kv5pkesai59">&nbsp;&nbsp;&nbsp;UDP扫描可能有问题，原因有几个。 首先，UDP扫描通常是不可靠的，因为防火墙和路由器可能会丢弃ICMP数据包。 这可能会导致误报，并且端口实际上处于关闭状态时显示为打开。 其次，许多端口扫描程序不会扫描所有可用的端口，通常会预先设置要扫描的&ldquo;有趣端口&rdquo;的列表。 这意味着打开的UDP端口可能会被忽略。 使用特定于协议的UDP端口扫描程序可能有助于获得更准确的结果。 最后，渗透测试人员经常忘记扫描开放的UDP端口，而只关注&ldquo;更令人兴奋&rdquo;的TCP端口。 尽管UDP扫描可能不可靠，但开放的UDP端口背后隐藏着许多攻击媒介。</a>
+</h3>
+<h3 class="topic">
+<a name="284ljchkbbhtlft93pl3e7b54l">&nbsp;nmap进行端口扫描</a>
+</h3>
+<h3 class="topic">
+<a name="6ns5g7e37hg77c530kvoko18kj">&nbsp;&nbsp;namp部分扫描选项需要使用到root权限，因为需要对原始套接字数据包进行修改，否则只能使用标准的Berkeley套接字API来制作数据包</a>
+</h3>
+<h3 class="topic">
+<a name="4p0jsh921pohtmncbqc06kpc2f">&nbsp;&nbsp;&nbsp;http://nmap.org/</a>
+</h3>
+<h3 class="topic">
+<a name="4jnio329ueukdev1t66l1kupd4">&nbsp;&nbsp;对流量负责</a>
+</h3>
+<h3 class="topic">
+<a name="5qrk62f8a6je0coe4l7lmg4ri5">&nbsp;&nbsp;&nbsp;默认的nmap tcp扫描会扫描指定计算机上1000个常用端口，此时需要分析这种扫描发送的数据包，所以在kali中使用iptables监视发送到目标主机的流量</a>
+</h3>
+<h3 class="topic">
+<a name="34hbts67dbvtesfklnd50k1juo">&nbsp;&nbsp;&nbsp;&nbsp;使用-I选项将新规则插入到给定链中，在这种情况下，它包括INPUT（入站）和OUTPUT（出站）链，后跟规则编号。 我们将使用-s来指定源IP地址，使用-d来指定目标IP地址，并使用-j来接受流量。 最后，我们将使用-Z选项将所有链中的包和字节计数器清零。</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%B8%BB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/3f1pcgfg73rek9grp09gqgv6is.png"></p>
+<h3 class="topic">
+<a name="6d3tdptd9r7v32bms71kk3q4vk">&nbsp;&nbsp;&nbsp;使用nmap进行默认扫描</a>
+</h3>
+<h3 class="topic">
+<a name="5lmmkr7auti3ju5uittmhpg7q6">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%B8%BB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/738mjtfdebc51oipg7blhep3m8.png"></p>
+<h3 class="topic">
+<a name="5lrqosrpr0gs3c8dbmobnm2nv0">&nbsp;&nbsp;&nbsp;查看nmap发出的用于端口扫描的数据包</a>
+</h3>
+<h3 class="topic">
+<a name="2690bnbs9vn2658oviksbisf9f">&nbsp;&nbsp;&nbsp;&nbsp;使用-v选项在输出中添加一些详细信息，-n启用数字输出，并使用L列出所有链中存在的规则： </a>
+</h3>
+<p class="topicImage">
+<img src="%E4%B8%BB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/3pmosavh2majkmk0oma994aq8j.png"></p>
+<h3 class="topic">
+<a name="7l5it97krdil6479025qrjr9s1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;根据此输出，此默认的1000端口扫描已生成约78 KB的流量。</a>
+</h3>
+<h3 class="topic">
+<a name="5fvnrh18vvu6t91gvf1ollqeuk">&nbsp;&nbsp;&nbsp;使用iptables -Z将所有链中的数据包和字节计数器归零，然后使用-p运行另一个nmap扫描以指定所有TCP端口：</a>
+</h3>
+<h3 class="topic">
+<a name="2b15dq8u4mpbafrguftrjn0knf">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%B8%BB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/1bgpj3jme0vdicclr7i56vh6rr.png"></p>
+<h3 class="topic">
+<a name="0oe18jukthefsiu68lcifpbvod">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;namp -p探测了所有65535个端口，从而产生大约4 MB的流量，同时也探测出新的开放端口</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%B8%BB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/7a8e5t8ftg1s8adqrs4g1lfqh6.png"></p>
+<h3 class="topic">
+<a name="5laelqt2bqrqa5fpuc6jpcc8ah">&nbsp;&nbsp;&nbsp;上面的结果表明，对C类网络（254台主机）进行完整的Nmap扫描将导致向网络发送超过1000 MB的流量。 在理想情况下，对每台目标计算机进行完整的TCP和UDP端口扫描将提供有关公开网络服务的最准确信息。 但是，以上示例表明，需要通过使用更为详尽的扫描来平衡所有流量限制（例如慢速上行链路）与发现其他开放端口和服务的需求。 对于较大的网络（例如A类或B类网络评估）尤其如此。</a>
+</h3>
+<h3 class="topic">
+<a name="4rsr9fofq2e8noknegg9t04ibn">&nbsp;&nbsp;&nbsp;&nbsp;即扫描的全面性和目标主机可能的流量限制之间需要平衡</a>
+</h3>
+<h3 class="topic">
+<a name="0ac7668pcaj5544lapclbia5h7">&nbsp;&nbsp;nampTCP隐形扫描</a>
+</h3>
+<h3 class="topic">
+<a name="1hj6bfjlg1bmcoa3hmjdbuvheb">&nbsp;&nbsp;&nbsp;SYN扫描有很多好处，因此，它是在nmap命令中未指定任何扫描技术时使用的默认扫描技术。 必需的原始套接字特权。</a>
+</h3>
+<h3 class="topic">
+<a name="02g028a26sji0098npivq9ogv5">&nbsp;&nbsp;&nbsp;&nbsp;SYN扫描是一种TCP端口扫描方法，它涉及将SYN数据包发送到目标计算机上的各个端口，而无需完成TCP握手。 如果打开了TCP端口，则应从目标计算机发回SYN-ACK，通知我们该端口已打开。 此时，端口扫描程序无需费心发送最终ACK即可完成三向握手。</a>
+</h3>
+<h3 class="topic">
+<a name="2br8egser9gh9p73sgugr9nnp3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;由于三向握手从未完成，因此信息不会传递到应用程序层，因此不会出现在任何应用程序日志中。 由于发送和接收的数据包更少，因此SYN扫描也更快，更高效。（旧版本防火墙不会记录未完成的tcp链接，但是新版本防火墙不一定）</a>
+</h3>
+<h3 class="topic">
+<a name="4prp25aaftoavrairc3c7ojmjj">&nbsp;&nbsp;&nbsp;nmap -sS</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%B8%BB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/5v5d3jskongpbn5be7s8738brh.png"></p>
+<h3 class="topic">
+<a name="34ocrpu1rihvtrvapitm3te59r">&nbsp;&nbsp;nmapTCP连接扫描</a>
+</h3>
+<h3 class="topic">
+<a name="5t4d2pb36nelcupvd76o4qau8n">&nbsp;&nbsp;&nbsp;当运行nmap的用户没有原始套接字特权时，Nmap将默认使用TCP connect scan技术。 由于Nmap TCP连接扫描使用Berkeley套接字API执行三向握手，因此它不需要提升的特权。 但是，由于Nmap必须等待连接完成才能在API返回连接状态之前完成，因此与SYN扫描相比，连接扫描花费的时间要长得多。</a>
+</h3>
+<h3 class="topic">
+<a name="5t6el68l267uk8ooav8golvira">&nbsp;&nbsp;&nbsp;&nbsp;   有时候，我们需要使用nmap专门执行连接扫描，例如，通过某些类型的代理进行扫描时。 我们使用-sT选项启动连接扫描：</a>
+</h3>
+<h3 class="topic">
+<a name="4t4ok3oidpqpuvjpl3vi3qdg9q">&nbsp;&nbsp;&nbsp;通过某些代理进行扫描：nmap -sT</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%B8%BB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/1rrnkqk4q79fbamt82bq5tf11b.png"></p>
+<h3 class="topic">
+<a name="1ml400g70o35kn3mfdh0kcekas">&nbsp;&nbsp;udp扫描</a>
+</h3>
+<h3 class="topic">
+<a name="5mnaqbkv7000d716n0fbu3n3p6">&nbsp;&nbsp;&nbsp;在执行UDP扫描时，Nmap将使用两种不同方法的组合来确定端口是打开还是关闭。 对于大多数端口，它将通过将空数据包发送到给定的端口来使用前面描述的标准&ldquo; ICMP端口不可达&rdquo;方法。 但是，对于通用端口（例如SNMP使用的端口161），它将发送特定于协议的SNMP数据包，以尝试从绑定到该端口的应用程序获得响应。</a>
+</h3>
+<h3 class="topic">
+<a name="50ci3q0s2fud0e377f0lvgkc1t">&nbsp;&nbsp;&nbsp;&nbsp; 要执行UDP扫描，请使用-sU选项，并且需要sudo来访问原始套接字：</a>
+</h3>
+<h3 class="topic">
+<a name="5ikiksi819b88hhpd62bu01h6r">&nbsp;&nbsp;&nbsp;udp扫描：sudo nmap -sU</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%B8%BB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/5mn1u85hm2k31en9k5he0tkn2q.png"></p>
+<h3 class="topic">
+<a name="4chnq4n3rnd3titgk6iqegs3ls">&nbsp;&nbsp;&nbsp;&nbsp;UDP扫描（-sU）也可以与TCP SYN扫描（-sS）选项结合使用</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%B8%BB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/5sptt97ua5cfr6069e4f0d9fm8.png"></p>
+<h3 class="topic">
+<a name="760vlvbsrhi3o5qiijhlbftibn">&nbsp;&nbsp;网络扫描</a>
+</h3>
+<h3 class="topic">
+<a name="69f8qh733mgeaqmvu0m70a79td">&nbsp;&nbsp;&nbsp;为了处理大量主机，或以其他方式尝试节省网络流量，我们可以尝试使用网络扫描技术来探测目标，在这种技术中，我们首先进行广泛扫描，然后对目标主机使用更具体的扫描。</a>
+</h3>
+<h3 class="topic">
+<a name="7qsqqoenl10p4tkg9tm0ferpq7">&nbsp;&nbsp;&nbsp;&nbsp;   使用-sn选项使用Nmap执行网络扫描时，主机发现过程不仅包括发送ICMP回显请求，还包括其他内容。 除了ICMP请求之外，还使用了其他几个探针。  Nmap还向端口443发送一个TCP SYN数据包，向端口80发送一个TCP ACK数据包，以及一个ICMP时间戳请求，以验证主机是否可用。</a>
+</h3>
+<h3 class="topic">
+<a name="578h5b4smt210a7uf6ddam2flr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;即在检验大量主机时，需要先广泛扫描，之后可以通过针对特定主机和端口进行具体扫描</a>
+</h3>
+<h3 class="topic">
+<a name="6potsk2ovq2hhulkig7ue4pmf1">&nbsp;&nbsp;&nbsp;nmap -sn 探测指定ip范围中多台主机的存活情况</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%B8%BB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/43o7760e981854e9cjh37iuncb.png"></p>
+<h3 class="topic">
+<a name="1esluhlahcspofdi7qbhlskm3d">&nbsp;&nbsp;&nbsp;&nbsp;使用-oG参数将网络扫描结果保存到文本中</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%B8%BB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/59bgu9c7dqeteeatp72g1bsapc.png"></p>
+<h3 class="topic">
+<a name="47lq8g9n5510ot7eskjo9lv117">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用 -p 80参数扫描网络中主机80端口的开放情况</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%B8%BB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/6bs5gp2chs2v7hpr6qovifadah.png"></p>
+<h3 class="topic">
+<a name="39jep0gcam4loiqpmko2ld9738">&nbsp;&nbsp;&nbsp;--top-ports选项对前二十个TCP端口进行TCP连接扫描，并使用-A启用操作系统版本检测，脚本扫描和跟踪扫描</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%B8%BB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/6376q596ag1rr08fvnhg38dce4.png"></p>
+<h3 class="topic">
+<a name="14hv0jh23th3pjif7ocblk0l2i">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%B8%BB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/1fqflv1nr69mg5q315do41bmrr.png"></p>
+<h3 class="topic">
+<a name="4lvsbqmu4qrb9ujdgjvq0k2nad">&nbsp;&nbsp;&nbsp;使用/ usr / share / nmap / nmap-services文件确定前20个nmap要扫描的端口。 该文件使用三个空格分隔的列的简单格式。 第一个是服务的名称，第二个是端口号和协议，第三个是&ldquo;端口频率&rdquo;。 第三列之后的所有内容都将被忽略，但通常用于注释。 端口频率基于互联网研究扫描期间发现端口打开的频率</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%B8%BB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/610epe96kvsrdjpaumme7jgnhf.png"></p>
+<h3 class="topic">
+<a name="40p3e2882nt05j94p9dqv8rl3r">&nbsp;&nbsp;&nbsp;&nbsp;端口频率：https://nmap.org/book/nmap-services.html</a>
+</h3>
+<h3 class="topic">
+<a name="3ndbl9j1fc34aprljl2qj3adea">&nbsp;&nbsp;&nbsp;更多的主机发现技术</a>
+</h3>
+<h3 class="topic">
+<a name="0k268abge2pm564t0obclmi6hq">&nbsp;&nbsp;&nbsp;&nbsp;https://nmap.org/book/man-host-discovery.html</a>
+</h3>
+<h3 class="topic">
+<a name="1hjqfna1p45bjoruj4en3bpf25">&nbsp;&nbsp;操作系统指纹</a>
+</h3>
+<h3 class="topic">
+<a name="6fu5gges4vs5sc4266ik968n5g">&nbsp;&nbsp;&nbsp;使用-O选项启用。 此功能尝试通过检查返回的数据包来猜测目标操作系统。（根据nma中内置的系统指纹列表）</a>
+</h3>
+<h3 class="topic">
+<a name="0d90k39v3unbalii9pj971b573">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%B8%BB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/7u55prm7mk4ps4q76fqs7bfoog.png"></p>
+<h3 class="topic">
+<a name="0ils6i13a27akf38tqnafo9m68">&nbsp;&nbsp;&nbsp;识别结果并非100%准确</a>
+</h3>
+<h3 class="topic">
+<a name="3sgmd48kmpgetddc34kteu6e5b">&nbsp;&nbsp;服务枚举</a>
+</h3>
+<h3 class="topic">
+<a name="69d7nhpts0u5emhotd20o9oqqg">&nbsp;&nbsp;&nbsp;枚举服务（-sV）并针对目标运行各种OS和服务枚举脚本（&ndash;A）来识别在特定端口上运行的服务：</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%B8%BB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/6tsugsuaa8ig1al0bgm6rf892g.png"></p>
+<h3 class="topic">
+<a name="2ko1ubfgngfvc17ejuo32pqb27">&nbsp;&nbsp;&nbsp;&nbsp;注意服务banner可能是伪造的，系统管理员以此进行误导攻击者</a>
+</h3>
+<h3 class="topic">
+<a name="73ep7l2bou25q8v1noiuqicdj1">&nbsp;&nbsp;&nbsp;枚举服务对使用的流量和扫描速度有重大影响</a>
+</h3>
+<h3 class="topic">
+<a name="4dlakrbff52tntijfg9e7f7ecm">&nbsp;&nbsp;nmap脚本引擎</a>
+</h3>
+<h3 class="topic">
+<a name="7chg46kcd348nvpqebnkvstktu">&nbsp;&nbsp;&nbsp;我们可以使用Nmap脚本引擎（NSE）启动用户创建的脚本，以自动执行各种扫描任务。 这些脚本执行各种功能，包括DNS枚举，暴力攻击甚至漏洞识别。  NSE脚本位于/ usr / share / nmap / scripts目录中。</a>
+</h3>
+<h3 class="topic">
+<a href="http://nmap.org/book/nse.html" name="1r7lgmi908uigubba8taf8e5ab">&nbsp;&nbsp;&nbsp;&nbsp;http://nmap.org/book/nse.html</a>
+</h3>
+<h3 class="topic">
+<a name="2e4418ht5eoqcr1qa0hgg2d7e9">&nbsp;&nbsp;&nbsp;使用 -script==调用smb-os-discovery脚本尝试连接到目标系统上的SMB服务并确定其操作系统：</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%B8%BB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/5dvdq5snglo92sg7cas842m3lv.png"></p>
+<h3 class="topic">
+<a name="0idsr7gt0v5qkmin2ahtgtes1s">&nbsp;&nbsp;&nbsp;&nbsp;调用dns-zone-transfer脚本扫描53端口（dns协议默认端口）尝试进行区域传输</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%B8%BB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/7avsgm9uvuvl32o0575tn4km0s.png"></p>
+<h3 class="topic">
+<a name="6l76i0if6uskqg77guegfvds9a">&nbsp;&nbsp;&nbsp;查询指定脚本的帮助信息</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%B8%BB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/4ovf55suei3gfuis6kvq535vhk.png"></p>
+<h3 class="topic">
+<a name="2u0vo3cq21tqro2cniira80nuu">&nbsp;Masscan进行端口扫描</a>
+</h3>
+<h3 class="topic">
+<a name="468i6vv375rre9kvmpu3cua1ri">&nbsp;&nbsp;Masscan可以说是最快的端口扫描程序。 它可以在大约6分钟内扫描整个Internet，每秒传输惊人的1000万个数据包！ 它最初设计为扫描整个Internet，但它可以轻松处理A或B类子网，这是渗透测试期间更合适的目标范围。</a>
+</h3>
+<h3 class="topic">
+<a href="https://tools.kali.org/information-gathering/masscan" name="0a19moha40agfqcsf3pdo340c9">&nbsp;&nbsp;&nbsp;https://tools.kali.org/information-gathering/masscan</a>
+</h3>
+<h3 class="topic">
+<a name="1sqjdetm83t6j4teeg2p9lsrcl">&nbsp;&nbsp;默认情况下，Malican未安装在Kali上。 它必须使用apt install安装</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%B8%BB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/40lfnpq5epvl3t43231u5hobsp.png"></p>
+<h3 class="topic">
+<a name="4insv1hssndh8kt15djvdaonft">&nbsp;&nbsp;&nbsp;sudo masscan -p80 10.0.0.0/8&#13;
+（在TCP端口80打开（使用-p80选项）的大型内部网络上定位所有计算机。 由于masscan实现了自定义的TCP / IP堆栈，因此将需要访问原始套接字，因此需要sudo。）</a>
+</h3>
+<h3 class="topic">
+<a name="0lb6e1j3cjfv06bc0n87fhh47e">&nbsp;&nbsp;--rate指定所需的数据包传输速率，-e指定要使用的原始网络接口，以及--router-ip指定适当网关的IP地址：</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%B8%BB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/41afubcgg1c7c5h79fsn4cspaf.png"></p>
+<h2 class="topic">
+<a name="6b8ffps805gi6n2sk5tstkovge">SMB枚举</a>
+</h2>
+<h3 class="topic">
+<a name="00j80tps0tbh2oja1ivpv642fr">&nbsp;SMB协议</a>
+</h3>
+<h3 class="topic">
+<a name="6c4c6l7frue7n727qi9g8rjv1q">&nbsp;&nbsp;在NetBIOS出现之后，Microsoft就使用NetBIOS实现了一个网络文件/打印服务系统，这个系统基于NetBIOS设定了一套文件共享协议，Microsoft称之为SMB（Server Message Block）协议。这个协议被Microsoft用于它们Lan Manager和Windows NT服务器系统中，而Windows系统均包括这个协议的客户软件，因而这个协议在局域网系统中影响很大。 　随着Internet的流行，Microsoft希望将这个协议扩展到Internet上去，成为Internet上计算机之间相互共享数据的一种标准。因此它将原有的几乎没有多少技术文档的SMB协议进行整理，重新命名为 CIFS（Common Internet File System），并打算将它与NetBIOS相脱离，试图使它成为Internet上的一个标准协议。</a>
+</h3>
+<h3 class="topic">
+<a name="1126bpi75a17c14o1ausknkgnd">&nbsp;扫描NetBIOS服务</a>
+</h3>
+<h3 class="topic">
+<a name="2jg9ssjm6nbr8kn0rridh4b3kl">&nbsp;&nbsp;同时扫描NetBIOS和SMB服务</a>
+</h3>
+<h3 class="topic">
+<a name="0lmav847bntdhtcmpdrrii55j5">&nbsp;&nbsp;&nbsp;nmap -v -p 139,445 -oG smb.txt 10.11.1.1-254</a>
+</h3>
+<h3 class="topic">
+<a name="71lf70g5ivi8cm8qjifmaqf5gp">&nbsp;&nbsp;&nbsp;NetBIOS210服务侦听TCP端口139和几个UDP端口,NetBIOS是一个独立的会话层协议和服务，它允许本地网络上的计算机相互通信，SMB（TCP端口445）和NetBIOS是两个单独的协议。</a>
+</h3>
+<h3 class="topic">
+<a name="6mnbpte3fdva0aac6jd6j8uifr">&nbsp;&nbsp;其他专门识别NetBIOS的工具</a>
+</h3>
+<h3 class="topic">
+<a name="07ibbcq6b54miknolu8fllvhsq">&nbsp;&nbsp;&nbsp;  -r选项用于将原始UDP端口指定为137，该端口用于向NetBIOS名称服务查询有效的NetBIOS名称：</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%B8%BB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/21sbi687d1a46hc35c34nspj71.png"></p>
+<h3 class="topic">
+<a name="3v8fpgagdjv466jdq69u0eei3i">&nbsp;Nmap SMB NSE脚本</a>
+</h3>
+<h3 class="topic">
+<a name="1imod2rr4chih252pruqtpv7s4">&nbsp;&nbsp;Nmap包含许多有用的NSE脚本，可用于发现和枚举SMB服务。 这些脚本可以在/ usr / share / nmap / scripts目录中找到：</a>
+</h3>
+<h3 class="topic">
+<a name="1tfahj91fe2226glgrcmm2qbn5">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%B8%BB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/4hd57n7igta4c7sg546vin3vo3.png"></p>
+<h3 class="topic">
+<a name="536dir0ue2gqgs18toq98ajo0m">&nbsp;&nbsp;通过smb枚举发现主机</a>
+</h3>
+<h3 class="topic">
+<a name="12121e3mv9b20qpq9ogldthc0l">&nbsp;&nbsp;&nbsp;139为NetBIOS端口  445为SMB端口</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%B8%BB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/3v710j7or1j9b9a4mspjo5take.png"></p>
+<h3 class="topic">
+<a name="5ubcup23ii5qjnhs0u1bm9b13m">&nbsp;&nbsp;使用namp脚本利用smb漏洞</a>
+</h3>
+<h3 class="topic">
+<a name="0hfu11cfor93b23fif4iihqsi1">&nbsp;&nbsp;&nbsp;--script-args用于指定脚本的参数，unsafe=1的参数很可能导致漏洞利用时，被攻击的主机崩溃，需要慎用</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%B8%BB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/0j124gthaqeo63nkrlse2q50ue.png"></p>
+<h3 class="topic">
+<a name="49lms5bpjemj4utsgseafepbiu">&nbsp;&nbsp;&nbsp;可以看到针对ms08067漏洞，主机存在脆弱性</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%B8%BB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/3io7nh3e58pkf8hkkn6u2pqhjb.png"></p>
+<h2 class="topic">
+<a name="50i000fk8li49818nbdb6ipll6">NFS 枚举</a>
+</h2>
+<h3 class="topic">
+<a name="1gp8obhg92g72dkbt2pvcjhe4c">&nbsp;NFS定义</a>
+</h3>
+<h3 class="topic">
+<a name="1lbni5gbtui5imfnb4eorgm3m5">&nbsp;&nbsp;网络文件系统（NFS）213是最初由Sun Microsystems在1984年开发的一种分布式文件系统协议。它允许客户端计算机上的用户通过计算机网络访问文件，就像它们在本地安装的存储中一样。&#13;
+   NFS通常与UNIX操作系统一起使用，并且在实现上主要是不安全的。 安全设置可能有些困难，因此找到向全世界开放的NFS共享并不少见。 作为渗透测试人员，这对于我们来说非常方便，因为我们可以利用它们来收集敏感信息，提升我们的特权等等。</a>
+</h3>
+<h3 class="topic">
+<a name="6859ns7t8eb5dbqnkigbm4jilm">&nbsp;扫描NFS共享</a>
+</h3>
+<h3 class="topic">
+<a name="2ib84g1udnbemeb8jbm6rcq946">&nbsp;&nbsp;NFS依靠远程过程调用(RPC)在客户端和服务器端路由请求。在Linux下RPC服务由portmap服务控制.</a>
+</h3>
+<h3 class="topic">
+<a name="279c01vv2cj5ajtqqqggmecfao">&nbsp;&nbsp;&nbsp;portmap进程的主要功能是把RPC（即远程程序调用）程序号转化为Internet的端口号。</a>
+</h3>
+<h3 class="topic">
+<a name="724eb26hc9vunurc27k82mv3fr">&nbsp;&nbsp;&nbsp;&nbsp;RPCbind是一个RPC服务，主要是在nfs共享时候负责通知客户端服务器的nfs端口号的。简单理解rpc就是一个中介服务。</a>
+</h3>
+<h3 class="topic">
+<a name="3sk9mmpmehv8fe7c04rokpkonr">&nbsp;&nbsp;Portmapper和RPCbind都在TCP端口111上运行。RPCbind将RPC服务映射到它们侦听的端口。  RPC进程在启动时会通知rpcbind，注册正在侦听的端口以及期望使用的RPC程序号。客户端系统使用特定的RPC程序号与服务器上的rpcbind联系。  rpcbind服务会将客户端重定向到适当的端口号（通常为TCP端口2049)从而与请求的服务进行通信</a>
+</h3>
+<h3 class="topic">
+<a name="4kvs7mo4m0krrg8qghepltlad4">&nbsp;&nbsp;nmap -v -p 111 10.11.1.1-254</a>
+</h3>
+<h3 class="topic">
+<a name="4tn33emjm3u36lt4s5ego3pspq">&nbsp;&nbsp;&nbsp;使用nmap扫描111端口，从而判断Portmapper和RPCbind的情况</a>
+</h3>
+<h3 class="topic">
+<a name="6akob1bqo9mt01d77tskj7g36i">&nbsp;&nbsp;使用rpcinfo之类的NSE脚本来查找可能已在rpcbind中注册的服务：</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%B8%BB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/2gk560s2q2ihhs49tbiecbgooh.png"></p>
+<h3 class="topic">
+<a name="074se87u7mct40qlds6ctc0c57">&nbsp;Nmap NFS NSE脚本</a>
+</h3>
+<h3 class="topic">
+<a name="2iha1e683qu06a9j0d3jafa28s">&nbsp;&nbsp;一旦发现NFS正在运行，就可以使用/ usr / share / nmap / scripts目录中的NSE脚本收集其他信息，枚举NFS服务并发现其他服务：</a>
+</h3>
+<h3 class="topic">
+<a name="2fq3vad37aui0091ore05nmm8j">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%B8%BB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/212cc2aeuup6jadpk5p81gftne.png"></p>
+<h3 class="topic">
+<a name="20ejishjki438l1q3s5aka1hau">&nbsp;&nbsp;使用脚本名称中的通配符（*）运行所有这三个脚本：</a>
+</h3>
+<h3 class="topic">
+<a name="4tf5fbvjg7791fv0f3fdmeo2fo">&nbsp;&nbsp;&nbsp;根据showmount的输出，显示远程主机home目录被共享</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%B8%BB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/0df3lhcndvd0b57j457cls68dd.png"></p>
+<h3 class="topic">
+<a name="7ev8ci33iqvo4pt9nm2cc0qk85">&nbsp;&nbsp;将远程主机中的home目录挂载到本地中，从而查看目录中的文件</a>
+</h3>
+<h3 class="topic">
+<a name="21d708m81erucdum7lkj8oa586">&nbsp;&nbsp;&nbsp;mount指令用于挂载系统外的文件</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%B8%BB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/7m0sgl2hol8p7ajpj1550d5cnu.png"></p>
+<h3 class="topic">
+<a name="24upq3l38c4nvrp2gqov35qres">&nbsp;&nbsp;查看目录中的敏感文件，并尝试打开</a>
+</h3>
+<h3 class="topic">
+<a name="30dusoa0h76crq7ug8uedftda6">&nbsp;&nbsp;&nbsp;尝试打开敏感文件，发现没有权限，该文件的所有者的uuid为1040，所以可以当前kali中创建新用户，将其uuid修改为1040，从而访问该文件</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%B8%BB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/3fe89or1g8nsg8gkthc4kcsr89.png"></p>
+<h3 class="topic">
+<a name="2rok9nh6n7pv1smkdgc00emo9h">&nbsp;&nbsp;&nbsp;使用adduser指令增加用户pwn，根据输出，新增加的用户uuid为1001，需要将其修改为1040</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%B8%BB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/475luugi2boveo3mgss9dnp61f.png"></p>
+<h3 class="topic">
+<a name="37lc39en0uh00bd4dcm6vm54uh">&nbsp;&nbsp;&nbsp;sed 命令是利用脚本来处理文本文件。-i选项用于就地替换文件，而-e选项执行脚本。 在这种情况下，恰好是&ldquo; s / 1001/1014 / g&rdquo;，它将全局替换/ etc / passwd文件中的UUID：</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%B8%BB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/51fck88pcr9jjh8jkof355en0p.png"></p>
+<h3 class="topic">
+<a name="0fblo8v7ueq6s9ih0nljjbonc4">&nbsp;&nbsp;&nbsp;使用su命令更改当前登录会话的所有者。 然后，我们将使用id显示当前的用户ID。 最后，我们将尝试再次访问该文件：</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%B8%BB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/42h0ud19dcp0e4t6h7t17v0trd.png"></p>
+<h2 class="topic">
+<a name="3lcousc0e4tkn4skn1nio7q446">SMTP枚举</a>
+</h2>
+<h3 class="topic">
+<a name="5dpovrkvfkpio3cdaq2s5ncusm">&nbsp;smtp协议</a>
+</h3>
+<h3 class="topic">
+<a name="7pu2snu2kpuk4i3a3ksgu3k9kc">&nbsp;&nbsp;SMTP是一种提供可靠且有效的电子邮件传输的协议。SMTP是建立在FTP文件传输服务上的一种邮件服务，主要用于系统之间的邮件信息传递，并提供有关来信的通知。</a>
+</h3>
+<h3 class="topic">
+<a name="7rdbrv8ki8kr0ebepadq2b7i0j">&nbsp;&nbsp;&nbsp;可以从易受攻击的邮件服务器收集有关主机或网络的信息。 简单邮件传输协议（SMTP）216支持一些有趣的命令，例如VRFY和EXPN。  &#13;
+VRFY请求要求服务器验证电子邮件地址，&#13;
+EXPN请求服务器提供邮件列表的成员身份。&#13;
+ 经常会滥用这些来验证邮件服务器上的现有用户，这在渗透测试期间是有用的信息。</a>
+</h3>
+<h3 class="topic">
+<a name="3471g0qnqqeedimud7dk0v6pq6">&nbsp;使用netcat连接服务器的smtp服务</a>
+</h3>
+<h3 class="topic">
+<a name="4nsb8lhth1h96usupkb9nqd3je">&nbsp;&nbsp;nc -nv指连接服务器tcp端口，此时连接25端口，即smtp服务的对应端口</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%B8%BB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/1fgtg58li512895cr9epi99r5v.png"></p>
+<h3 class="topic">
+<a name="3fhejji75v4scrk3m99au53jrm">&nbsp;&nbsp;使用VRFY请求服务器验证电子邮箱</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%B8%BB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/4mc04g6e4idr0jmk3onul24boe.png"></p>
+<h3 class="topic">
+<a name="4j7qvi2o7ijrqk9htghah1o2bl">&nbsp;&nbsp;使用VRFY请求验证指定的用户名是否存在，在上面的例子中，root用户名存在，idontexist用户名不存在，可以通过这种方式验证指定用户是否存在</a>
+</h3>
+<h3 class="topic">
+<a name="7f256qqae5phl43r3t7bj7gbuc">&nbsp;python脚本：通过VRFY命令验证指定用户是否存在</a>
+</h3>
+<h3 class="topic">
+<a name="1ie4tfbpo58t5c0stqapsvci34">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%B8%BB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/5quva0beorboc0fr8l055kq1lg.png"></p>
+<h2 class="topic">
+<a name="3e15f32us4ukgu5b00l4emi3kj">SNMP枚举</a>
+</h2>
+<h3 class="topic">
+<a name="3r85g5kc4db8ekm6ui23mudkrd">&nbsp;snmp协议</a>
+</h3>
+<h3 class="topic">
+<a name="5cl7t0vsm4v5ugv9vko7usfjfe">&nbsp;&nbsp;SNMP 是专门设计用于在 IP 网络管理网络节点（服务器、工作站、路由器、交换机及HUBS等）的一种标准协议，它是一种应用层协议。 SNMP 使网络管理员能够管理网络效能，发现并解决网络问题以及规划网络增长。通过 SNMP 接收随机消息（及事件报告）网络管理系统获知网络出现问题。</a>
+</h3>
+<h3 class="topic">
+<a name="1rd8kqgah3oiljktshuri0lrfe">&nbsp;&nbsp;&nbsp;SNMP基于UDP（一种简单的无状态协议），因此容易受到IP欺骗和重放攻击。 此外，常用的SNMP协议1、2和2c不提供流量加密，这意味着SNMP信息和凭据可以在本地网络上轻松拦截。 传统的SNMP协议还具有较弱的身份验证方案，通常使用默认的公共和私有社区字符串进行配置</a>
+</h3>
+<h3 class="topic">
+<a name="3vq88sj5lu5en7pugab3rhva8d">&nbsp;&nbsp;该协议是最经常被枚举的协议之一</a>
+</h3>
+<h3 class="topic">
+<a name="5vmr2qoea4slrf0c4kdsqq4cf5">&nbsp;SNMP MIB树</a>
+</h3>
+<h3 class="topic">
+<a name="1r6tqni0g41rhm6vs1nsevfsu2">&nbsp;&nbsp;管理信息库（MIB，Management Information Base）是TCP/IP网络管理协议标准框架的内容之一，MIB定义了受管设备必须保存的数据项、允许对每个数据项进行的操作及其含义，即管理系统可访问的受管设备的控制和状态信息等数据变量都保存在MIB中。</a>
+</h3>
+<h3 class="topic">
+<a name="3obuc7hp9gk9h30v32gkejsidi">&nbsp;&nbsp;&nbsp;SNMP管理信息库（MIB）是一个数据库，其中包含通常与网络管理有关的信息。 数据库的组织就像一棵树，其中的分支代表不同的组织或网络功能。 树的叶子（最终端点）对应于特定的变量值，然后外部用户可以访问这些变量值并进行探测</a>
+</h3>
+<h3 class="topic">
+<a name="4nnb6154getbot5c3g77j1rkeq">&nbsp;&nbsp;&nbsp;&nbsp;关于mib：https://www.ibm.com/support/knowledgecenter/ssw_aix_71/commprogramming/mib.html</a>
+</h3>
+<h3 class="topic">
+<a name="5g6petuqlpfp30ld3dpcanse4q">&nbsp;&nbsp;MIB值对应于特定的Microsoft Windows SNMP参数（可以根据mib值得到对应的系统信息）</a>
+</h3>
+<h3 class="topic">
+<a name="5u38kfnvvp6lcnmoqmdfj12ho7">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%B8%BB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/7cgjde4sfb3kksg0natdmrhfur.png"></p>
+<h3 class="topic">
+<a name="20ev99njpf0ipso1effdrfdsak">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%B8%BB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/7ol5cqqa7qaln9um4ipkp72e4e.png"></p>
+<h3 class="topic">
+<a name="58n1a7c25lg5p1afhenn8v8tqg">&nbsp;扫描SNMP</a>
+</h3>
+<h3 class="topic">
+<a name="1nc4omihbmv19ut6h41alajfct">&nbsp;&nbsp;使用nmap进行扫描</a>
+</h3>
+<h3 class="topic">
+<a name="5ag330525qeh0t1etkoh1btjdf">&nbsp;&nbsp;&nbsp;-sU选项用于执行UDP扫描，而--open选项用于将输出限制为仅显示打开的端口</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%B8%BB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/627n13447jnfh6omhaaeslf5tv.png"></p>
+<h3 class="topic">
+<a name="1juv2isrd35eklrc8g4enscv1m">&nbsp;&nbsp;&nbsp;&nbsp;因为snmp协议是基于udp的，所以通过udp扫描</a>
+</h3>
+<h3 class="topic">
+<a name="0sgbcvnqo7418h3qrlss22pvr6">&nbsp;&nbsp;使用oneixtyone工具对ip地址列表进行暴力攻击（该哦工具专门针对snmp协议进行枚举）</a>
+</h3>
+<h3 class="topic">
+<a name="79r5h5kqdlj5mgfbsqnpumupjr">&nbsp;&nbsp;&nbsp;http://www.phreedom.org/software/onesixtyone/</a>
+</h3>
+<h3 class="topic">
+<a name="4uk933n7r4eqinbjnd5op3svf9">&nbsp;&nbsp;&nbsp;关于snmp协议的community</a>
+</h3>
+<h3 class="topic">
+<a name="1lrq0re7qhqddv26c8f70hfafp">&nbsp;&nbsp;&nbsp;&nbsp;community是snmp协议基本的安全机制，用于实现SNMP网络管理员访问SNMP管理代理时的身份验证。类似于密码，默认值为 public。团体名（Community name）是管理代理的口令，管理员被允许访问数据对象的前提就是网络管理员知道网络代理的口令</a>
+</h3>
+<h3 class="topic">
+<a name="2kd4actlas3g95dlbpmq2a8m4k">&nbsp;&nbsp;&nbsp;-c指定snmp扫描时的团体名列表，可以理解为使用snmp服务的口令列表&#13;
+-i指定要扫描的ip地址的列表&#13;
+&gt;&gt;用于将数据追加到已有的文件，而不是覆盖</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%B8%BB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/6oog94l56e7dipjm6hq4a5da3n.png"></p>
+<h3 class="topic">
+<a name="6hl2ucmelemp4dubsnpoj4rjnh">&nbsp;&nbsp;&nbsp;找到SNMP服务后，就可以开始向它们查询可能感兴趣的特定MIB数据。</a>
+</h3>
+<h3 class="topic">
+<a name="1julcaedmbkbtfouutht9knsg9">&nbsp;Windows SNMP枚举示例</a>
+</h3>
+<h3 class="topic">
+<a name="7halfsg6ig8up5vga5ahhk4363">&nbsp;&nbsp;我们可以使用诸如snmpwalk之类的工具来探查和查询SNMP值，只要我们至少知道SNMP只读community字符串，在大多数情况下它是&ldquo; public&rdquo;。</a>
+</h3>
+<h3 class="topic">
+<a name="0f6vkkqnn9kmt32k2kctrji549">&nbsp;&nbsp;枚举整个MIB树</a>
+</h3>
+<h3 class="topic">
+<a name="3pn8rrd3g38919slo3tuqq2hc2">&nbsp;&nbsp;&nbsp;使用-c选项指定community字符串，使用-v指定SNMP版本号以及使用-t 10来将整个MIB树枚举，以将超时时间增加到10秒：</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%B8%BB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/0igj3d77502afpadvkuakuvecl.png"></p>
+<h3 class="topic">
+<a name="0jur465j9lrsuapinhlm87s5o3">&nbsp;&nbsp;根据得到的mib值枚举windows用户</a>
+</h3>
+<h3 class="topic">
+<a name="27t4j8bol1clr0ffi8latcuacd">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%B8%BB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/07t70itahs7e1d545ncukkq0e0.png"></p>
+<h3 class="topic">
+<a name="7g0qdv46ghpf5nlvb16056dic3">&nbsp;&nbsp;根据得到的mib值枚举运行中的windows进程</a>
+</h3>
+<h3 class="topic">
+<a name="21b2eo6lnn9295e1nkg3mddsbq">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%B8%BB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/2dccn0socmur65hkvithe8o6i2.png"></p>
+<h3 class="topic">
+<a name="0vg83qpjho2d0c7gadi4qj9lr9">&nbsp;&nbsp;根据得到的mib值枚举windows中打开的端口</a>
+</h3>
+<h3 class="topic">
+<a name="050ir35ug7mh5uh9sgjfe2r1vm">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%B8%BB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/0q35spfh1rmlph6odq7i0ni2kq.png"></p>
+<h3 class="topic">
+<a name="6nitrebiaq8bnl20o1394cqghh">&nbsp;&nbsp;根据得到的mib值枚举windows中已经安装的软件</a>
+</h3>
+<h3 class="topic">
+<a name="4955f91pd8vk8icsoibddtca39">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E4%B8%BB%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/5e7r900r8ap5ggnjaqgmteljra.png"></p>
+</body>
+</html>

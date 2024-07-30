@@ -1,0 +1,837 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>0day2读书笔记day20190826</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="5fm0uhbmod2s9917mbdoq2qpro">0day2读书笔记day20190826</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190826_files/images/0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190826.jpg"></div>
+<h2 class="topic">
+<a name="1knlqcoefcccn4k7ffspoief6u">第十三章 在内存中躲猫猫：ASLR</a>
+</h2>
+<h3 class="topic">
+<a name="13tkjfld4r5dvs0akjsdk5j3l5">&nbsp;windwos xp的随机基址功能有限，只能对PEB TEB进行简单的随机化处理，对模块的加载基址没有随机化 windows vista之后，ASLR才真正发挥作用</a>
+</h3>
+<h3 class="topic">
+<a name="0kgrlckhc8tc6hna8n5vaimgvd">&nbsp;aslr需要程序自身和操作系统的双重支持，前者不是必须的</a>
+</h3>
+<h3 class="topic">
+<a name="09flq8qjko53f2er8hq048r53l">&nbsp;支持aslr的程序会在pe文件头中设置IMAGE_DLL_CHARACTERISTICS_ DYNAMIC_ BASE 进行标识，且vs2005之后的编译器提供了设置随机基址的链接选项</a>
+</h3>
+<h3 class="topic">
+<a name="3scqfgpalcfomfch86pdo4t2vv">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190826_files/7pch3ght5a83kmskl8tg92ivt6.png"></p>
+<h3 class="topic">
+<a name="452t5baj1erksgahmdk4iu8s3e">&nbsp;aslr组成部分</a>
+</h3>
+<h3 class="topic">
+<a name="2kkdgffnnqspterilu6gbjfg6f">&nbsp;&nbsp;映像随机化</a>
+</h3>
+<h3 class="topic">
+<a name="6alm29kc6s17k9ejqfq4bvv4ik">&nbsp;&nbsp;&nbsp;映像随机化是在 PE 文件映射到内存时，对其加载的虚拟地址进行随机化处理，这个地址 是在系统启动时确定的，系统重启后这个地址会变化。</a>
+</h3>
+<h3 class="topic">
+<a name="7l7jnb49v8642kvr89em4957eo">&nbsp;&nbsp;&nbsp;&nbsp;包括主模块（exe）与其他模块（dll）加载基址均是随机的</a>
+</h3>
+<h3 class="topic">
+<a name="5fh7d4vlpueicj1adqt32jlali">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190826_files/0fcgvbl5lisdcm0rh49qclfhbe.png"></p>
+<h3 class="topic">
+<a name="1sgotjukrfeff24mfepvjqdja0">&nbsp;&nbsp;&nbsp;系统存在映射随机化的开关</a>
+</h3>
+<h3 class="topic">
+<a name="3d3jp2h4fd79i9aoej3l3erh81">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190826_files/397839srea6odl0rfkk4fm813f.png"></p>
+<h3 class="topic">
+<a name="6sj3ovajfmko4688vet15l0kss">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190826_files/3e9j868np543046so6c8v6pvbe.png"></p>
+<h3 class="topic">
+<a name="7mftdv60n2797cvrbjrn6vd8r4">&nbsp;&nbsp;堆栈随机化</a>
+</h3>
+<h3 class="topic">
+<a name="4rp5nnn9ffis9drs72a1v0ksit">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190826_files/1ofcmbvd17fcsli0gr73s55rue.png"></p>
+<h3 class="topic">
+<a name="2cdfnk437uemfek33cbcdnkris">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190826_files/7htsmgod03c7hio6og437oghdb.png"></p>
+<h3 class="topic">
+<a name="7gqi3rns50jcvednuthj1ln64t">&nbsp;&nbsp;&nbsp;对每个线程的堆栈均进行了随机化，从而使得程序运行时每次变量的地址均不相同</a>
+</h3>
+<h3 class="topic">
+<a name="5hsflec9dfkieksdrth51lsagl">&nbsp;&nbsp;peb与teb随机化</a>
+</h3>
+<h3 class="topic">
+<a name="46i4md4vuf7lo87ansggrgmab5">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190826_files/77o53hs1j5ovfd2tkmdtc96nr7.png"></p>
+<h3 class="topic">
+<a name="2e1qh3besgv751mumvecfdspnn">&nbsp;&nbsp;&nbsp;teb保存在FS:[0] 或FS:[0x18]中  peb保存在teb偏移0x30的位置</a>
+</h3>
+<h3 class="topic">
+<a name="252cdrll94hvhk0mdif1ntks2t">&nbsp;&nbsp;&nbsp;&nbsp;获取当前peb和teb的代码</a>
+</h3>
+<h3 class="topic">
+<a name="2a362hahlvjdmm149i5rt825ko">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190826_files/4q21sn16p5usb0nefkdr16nm1l.png"></p>
+<h3 class="topic">
+<a name="5mlqhd4o2kbdt8niju1ump1meu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190826_files/3kr59ghnk8ccniv09t55hkkds5.png"></p>
+<h3 class="topic">
+<a name="2a0rqnbse397qkuuu8q1igsb0k">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如图 teb和peb的随机效果并不是很好</a>
+</h3>
+<h3 class="topic">
+<a name="0e5oder5imivq6tdpqiasfdbfg">&nbsp;aslr突破思路</a>
+</h3>
+<h3 class="topic">
+<a name="49fsjcviv428ef3i44nl0d816e">&nbsp;&nbsp;对于映像机制随机化，只能对一个内存地址的前两个字节（即基地址）进行随机化，对于内存地址后两个字节，不能进行随机化，这一点可以利用</a>
+</h3>
+<h3 class="topic">
+<a name="7jv2rc8pntku45iuapcaog97hg">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190826_files/2q2a9ch68f5k8l2ikjneu42p4f.png"></p>
+<h3 class="topic">
+<a name="155e98u35dvf46jvcaslmp8h2c">&nbsp;&nbsp;对于堆栈随机化，针对精确攻击比较有效，比如直接设置shellcode的起始地址为函数的返回地址，但自从有了jmp esp等跳板技术之后，就不需要精确的堆栈地址，并且在浏览器方面，存在堆喷射等技术，不需要精确跳转即可执行shellcode</a>
+</h3>
+<h3 class="topic">
+<a name="7r064d09t3lqp09m5578uje2vr">&nbsp;&nbsp;ebp teb的随机化的随即程度有限，即使完全随即化，也存在方法获取到当前进程中的peb和teb</a>
+</h3>
+<h3 class="topic">
+<a name="20edkpur19gs0b1c8ipi369np5">&nbsp;攻击未启用aslr的模块</a>
+</h3>
+<h3 class="topic">
+<a name="05uncg9sphiuehclft66t2lajv">&nbsp;&nbsp;利用进程中不支持随机基址的模块当中的指令作为跳板指令，或使用其中的指令构造Ret2Libc链，可以直接无视aslr</a>
+</h3>
+<h3 class="topic">
+<a name="6dpm1cu3vkn5hfcdh3drtvmair">&nbsp;&nbsp;&nbsp;Adobe 在 Flash Player 10 以后的版本中开始全面支持微软的安全特性，之前的版本不完全支持相关安全机制，有机可乘</a>
+</h3>
+<h3 class="topic">
+<a name="10f2393q556dspt94hub51gcct">&nbsp;&nbsp;通过OllyFindAddr 插件中的 Unprotected modules-&gt;Without ASLR ，查找当前进程中未开启aslr的模块</a>
+</h3>
+<h3 class="topic">
+<a name="0nrq2v6sao2kve9292n4bgbn90">&nbsp;&nbsp;&nbsp;使用ie打开一个含有flash的web页面，本机的flash是 Flash Player ActiveX 9.0.262 ，使用插件查看flsh模块的基址是否随机</a>
+</h3>
+<h3 class="topic">
+<a name="4osg6q95m7biodllugf7ll7chp">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190826_files/69kmkcd02k0k4abgb36fgeof2g.png"></p>
+<h3 class="topic">
+<a name="47d3fo6nsh9u10opjdghtbidp8">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190826_files/036cskg9drbqrssdtiah9tue2r.png"></p>
+<h3 class="topic">
+<a name="4mlgvsgtdou6dp7395d33ck6t3">&nbsp;&nbsp;实例：利用Adobe Flash中的指令作为跳板，绕过aslr，在浏览器中执行shellcode</a>
+</h3>
+<h3 class="topic">
+<a name="0fjmhu3hoou41ns06ibb6stufi">&nbsp;&nbsp;&nbsp;所需支持</a>
+</h3>
+<h3 class="topic">
+<a name="63tu5mqohg5sblbslfvvmhin3m">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190826_files/36d1lcnscs82ddvrrps8hbtnes.png"></p>
+<h3 class="topic">
+<a name="34h61ogs4pn0tp7kloqkpbbeqn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;具有漏洞的ActiveX程序使用之前过dep例子中的程序，使用同样的方法在 windows vista（被攻击的主机）中进行注册即可</a>
+</h3>
+<h3 class="topic">
+<a name="6a0dsai22parrt023hao9tr9gv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;本实验中 具有溢出漏洞的ActiveX 和Flash插件均是安装在被攻击主机本地</a>
+</h3>
+<h3 class="topic">
+<a name="3jda35m09b19bafqbrn0r2m8tu">&nbsp;&nbsp;&nbsp;实例代码</a>
+</h3>
+<h3 class="topic">
+<a name="4dli7oalc8hs4c8p8iug5in3qn">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190826_files/6aaor1scmigilha2id759bdg97.png"></p>
+<h3 class="topic">
+<a name="6sarud47rfjkh1qfeo4vbovtad">&nbsp;&nbsp;&nbsp;实验思路和实验环境</a>
+</h3>
+<h3 class="topic">
+<a name="6jvk8q9mtjtfbucikv6jmeuh67">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190826_files/2dtd20tso59esvv60eadk1rjns.png"></p>
+<h3 class="topic">
+<a name="58rnb4n568ajuts21ajgqer04o">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190826_files/62hiib9pv4drlfs8plr4ivp11h.png"></p>
+<h3 class="topic">
+<a name="4fafjd09avc9mv7k48nvfo039q">&nbsp;&nbsp;&nbsp;实验过程</a>
+</h3>
+<h3 class="topic">
+<a name="654co4s84cpreh1nj10s47488o">&nbsp;&nbsp;&nbsp;&nbsp;先将test函数返回地址淹没为0x90909090，查看程序堆栈和寄存器的值</a>
+</h3>
+<h3 class="topic">
+<a name="0u35us3sg36q6kcj12oq86nram">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190826_files/73qu4td5ieie74isnc2gfj6v74.png"></p>
+<h3 class="topic">
+<a name="45hoik09mji64h5trstqo0o4t9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;看到当test准备执行retn4函数返回时，esi与esp值相等，均指向此时的栈顶，此时可以选用jmp esp 或jmp esi作为跳板指令，将跳板指令的地址覆盖到函数返回地址，让程序进入栈中执行，</a>
+</h3>
+<h3 class="topic">
+<a name="097q9kmq3lpmn6vict9pu9m608">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;此时JMP ESP 指令在 Flash9k.ocx 的内存空间中不存在，所以本次实验使用jmp esi作为跳板指令</a>
+</h3>
+<h3 class="topic">
+<a name="4u88hp077o39llsjhmai6o1uo2">&nbsp;&nbsp;&nbsp;&nbsp;JMP ESI指令的机器码为0xFFE6，可以通过OllyDbg自带的二进制搜索功能来查找该指令</a>
+</h3>
+<h3 class="topic">
+<a name="7kn11vggjr7m9ckq9m2j7ht89d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;查找到两个指令，地址分别为 0x100A5FC7 和 0x1012E78A，因为esi指向栈顶，而跳板指令的地址也需要覆盖在此时的栈顶，所以如果执行jmp esi，会将该跳板指令的地址当作指令执行，故要考虑到对应的指令不能对之后shellcode的执行产生影响，两条地址对应的指令分别为</a>
+</h3>
+<h3 class="topic">
+<a name="0miriemfjdpt0mvsdcslnmmr7r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190826_files/7tjn057q5k15a76b2dtu1pcs23.png"></p>
+<h3 class="topic">
+<a name="3auvpr6r8ogvuqsq6s0hi3qij2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;第一个地址翻译为指令之后存在位置指令，故不可用，第二个地址翻译为指令会对eax进行读草做，此时eax并不指向可读内存地址，需要调整eax的指令</a>
+</h3>
+<h3 class="topic">
+<a name="5tubqp2ap5jb4ltki12t0ijq48">&nbsp;&nbsp;&nbsp;&nbsp;此时edx esi esp均指向可读内存空间，此时只要在flash模块中找到类似 mov eax，esi/esp/edx  retn的指令，且该指令的地址翻译为指令后不会产生错误即可</a>
+</h3>
+<h3 class="topic">
+<a name="4khrlq5ncl3stikf16l9ij7ri8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;最终选择 0x1014D286 处的 MOV EAX,EDX RETN 8 作为调整 EAX 的指令，对应的指令为</a>
+</h3>
+<h3 class="topic">
+<a name="5ab5jbprmvoe7puba78pemhivn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190826_files/4u19dfdjq21eqmeid9i1ik2qk5.png"></p>
+<h3 class="topic">
+<a name="5m73n3k31u19ao7eh6d143lnvo">&nbsp;&nbsp;&nbsp;&nbsp;最终将调整eax的指令和跳板指令结合起来，可以得到最终的shellcode布局</a>
+</h3>
+<h3 class="topic">
+<a name="2d6pnjerkklb28m4kp7t60ej36">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190826_files/7ub1dvarlt5o0a6sa4qeb7j6j9.png"></p>
+<h3 class="topic">
+<a name="4lpt3odtlj7mujhcglctum0bbb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190826_files/0jahk0l706oa64f9pulto5jcrm.png"></p>
+<h3 class="topic">
+<a name="6hl1ui37ssia4al4fjujamqf4n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将修正eax的指令的地址覆盖到test函数的返回地址中，之后的四个0x90是为了消除test函数返回时retn4的影响，之后是jmp esi的指令的地址，该地址之后的四个字节使用90填充，之后跟上弹对话框的shellcode</a>
+</h3>
+<h3 class="topic">
+<a name="0lp4vsdaqfj859lij0omd27evn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;跳板指令之后的四个字节的0x90十分有必要，因为修正eax的指令是以retn8结束的，导致esp会指向shllcode中的代码，此时如果shellcode中有入栈的操作，可能会导致shellcode被入栈数据淹没，具体分析如下</a>
+</h3>
+<h3 class="topic">
+<a name="05422877e6krpr7u3aamoukc59">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当跳板指令之后不存在四字节的90时，retn8之后esp的值为0x0019dc98，此时执行谈对话框的shellcode中push 0x12345678时，数据会被保存到地址0x0019dc94~0x0019dc97的内存空间中，而入栈的数据会破坏以0x0019dc96为开头的指令，导shellcode执行失败</a>
+</h3>
+<h3 class="topic">
+<a name="7guduu1ol6k5tml3jkh89gikga">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190826_files/42lgrlobofa7767oq7bj43kctf.png"></p>
+<h3 class="topic">
+<a name="5b0ij8qpcm79gr7a11cf1mviu4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190826_files/1fm9957tpinvb4t4egilvrbuoi.png"></p>
+<h3 class="topic">
+<a name="0uinlfkvqmd4r4bv1d6qk2qpdq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;弹对话框的shellcode的前几条指令</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190826_files/1q79gfdbus9oqhqson7lpdbdak.png"></p>
+<h3 class="topic">
+<a name="72tmnnshcnh1bsmquvflu493vb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当跳板指令之后存在四个字节的0x90时，相对于之前的情况，相当于retn8之后，esp的值会减小4，即为0x0019dc94，此时执行push 0x12345678时，入栈数据会保存在0x0019dc90~0x0019dc93之间，不会影响下一条指令（以0x0019dc96为开头）的执行</a>
+</h3>
+<h3 class="topic">
+<a name="434lpdo7bgr822ha0ojagdeocu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190826_files/0pg4u5ua9s7e5hmrrm1fa1j7ps.png"></p>
+<h3 class="topic">
+<a name="1j9rrdd8tkh22ta1ilif59vsa1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190826_files/04bfht22ru65ppmu1rbgdlekto.png"></p>
+<h3 class="topic">
+<a name="2cgms50uoed08iod00gbd32e8g">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;所有的入栈数据正常入栈</a>
+</h3>
+<h3 class="topic">
+<a name="6nthci1s7o4iqgmpfsjjp2732d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意：之所以可以使用代码段的内存模拟shellcode在栈中的运行，是因为将esp的值进行了修改，且当前.text区段的访问属性也被修改为可读可写可执行，具体方法是在m窗口，选中主模块的.text段 右键-》设置访问-》所有访问</a>
+</h3>
+<h3 class="topic">
+<a name="6gg8hittf5ifthetfk7u4gjv66">&nbsp;&nbsp;&nbsp;&nbsp;另一种shellcode的布局</a>
+</h3>
+<h3 class="topic">
+<a name="1g7ubqtojmbvkst61mc6nfk862">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以不用修正eax，使用retn的指令的地址覆盖test函数的返回地址，然后在其后设置一个短跳指令，该短跳指令将跳过jmp esi指令的地址所占用的内存空间，直接执行弹出对话框的shellcode</a>
+</h3>
+<h3 class="topic">
+<a name="77mk8ouhb07tt9lvabhha8mal9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;所以当jmp esi执行之后，程序会先执行retn指令的地址对应的指令，之后执行短跳，直接跳转执行弹出对话框的shellcode</a>
+</h3>
+<h3 class="topic">
+<a name="36aalefhcqks1f23jvdi03sj53">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当然指令ret的地址对应的指令也不能影响shellcode的继续执行</a>
+</h3>
+<h3 class="topic">
+<a name="2lagijlss2i927a194m643uv6g">&nbsp;&nbsp;实例：利用部分覆盖定位内存地址</a>
+</h3>
+<h3 class="topic">
+<a name="0kbgvog87c3o16p9dkpatfaj1q">&nbsp;&nbsp;&nbsp;绕过思路</a>
+</h3>
+<h3 class="topic">
+<a name="22ntkjcs3d79rengcnqia2v1lq">&nbsp;&nbsp;&nbsp;&nbsp;函数的返回地址、异常处理函数的地址、虚函数表指针均是保存在栈中的，栈中的地址因为aslr的存在，会对内存地址高两个字节进行随机化，而内存地址低两个字节不会随机化，所以可以通过off by one的思想，将栈中各种函数指针的低两字节进行淹没于修改，就可以在一档范围内控制程序流程</a>
+</h3>
+<h3 class="topic">
+<a name="1qng6r2g8ubg9fsegkmo7ueh6h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;假如一个函数的返回地址为0x12345678，则有两种情况</a>
+</h3>
+<h3 class="topic">
+<a name="6d118jlov28ht0100bce3ii1it">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过memcpy类函数进行栈溢出攻击时，可以控制返回地址控制为0x12340000~0x1234FFFF之间的任意一个</a>
+</h3>
+<h3 class="topic">
+<a name="6h5319joc1196b11rh73i475d7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果通过 strcpy 类函数攻击，因为这类函数会在复制结束后自动添加 0x00，所以我们可以 控制的地址为 0x12345600 和 0x12330000~0x123400FF 地址范围中的任意一个。</a>
+</h3>
+<h3 class="topic">
+<a name="278355oposb2ect2pvk2211ghp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;数据拷贝到栈中是从低地址向高地址保存数据，而因为pc段是小端存储，所以数据低位保存在内存低地址，所以返回地址被淹没的顺序是从数据低位到数据高位，同时strcpy类函数拷贝的数据总是以0x00结尾，所以用于淹没返回地址的最后一个字节数据总为0x00，故可以控制的地址范围于memcpy类函数不同</a>
+</h3>
+<h3 class="topic">
+<a name="4o0lol4e3d6k1g03u94l7l23od">&nbsp;&nbsp;&nbsp;&nbsp;aslr即使将基址进行了随机化，但是程序中各个指令的顺序并没有发生变化，即一条指令距离该指令所在模块的加载基址始终是不变的，所以只要找到合适的跳板指令就可以绕过ASLR</a>
+</h3>
+<h3 class="topic">
+<a name="6fsf05dvbloa2cobberlhqet82">&nbsp;&nbsp;&nbsp;示例代码</a>
+</h3>
+<h3 class="topic">
+<a name="4m4j22ntvgn5fsgdv7anulp5bh">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190826_files/5puusjsmn70m0ar651vn95lrg8.png"></p>
+<h3 class="topic">
+<a name="4kmifdht6797ck6sc14rj9bkou">&nbsp;&nbsp;&nbsp;实验思路及实验环境</a>
+</h3>
+<h3 class="topic">
+<a name="5am36mj0lokmma6hd1mhb91npn">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190826_files/01j8dmorcu4c2notg0kjbpj1sp.png"></p>
+<h3 class="topic">
+<a name="35949qjaf3qebj9l22earsbi4l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190826_files/55uddau86vjtbtb2tnlt9jcfde.png"></p>
+<h3 class="topic">
+<a name="1g9al895khb3k2utnsmvsblmpo">&nbsp;&nbsp;&nbsp;实验过程</a>
+</h3>
+<h3 class="topic">
+<a name="3dr6bvarta8i0f14bkqgnqf02k">&nbsp;&nbsp;&nbsp;&nbsp;经计算复制的字符串长度超过260字节之后会覆盖返回地址，所以，向内存中拷贝262个字节的0x90字符串，即可覆盖返回地址低两位为0x90</a>
+</h3>
+<h3 class="topic">
+<a name="0apg9l1nv74kpht2c9h58r99cv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190826_files/71mu6emb1t522t16ll4u1qjuv4.png"></p>
+<h3 class="topic">
+<a name="274s95fagkc723200v4ha7cj2f">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;由于只能部分覆盖返回地址，所以shellcode所在的位置必须在返回地址之前，所以跳板指令不能使用jmp esp，查看当前寄存器中eax保存局部变量tt的内存首地址，所以跳板指令可以使用jmp eax 或call eax</a>
+</h3>
+<h3 class="topic">
+<a name="5i07om1ag0naes7gpo5dn31r5j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意跳板指令必须要在当前模块的内存范围内，即指令所在内存地址的基址必须与返回地址相同</a>
+</h3>
+<h3 class="topic">
+<a name="5j809qfgn72qjk53r6qn370f1k">&nbsp;&nbsp;&nbsp;&nbsp;查找跳板指令</a>
+</h3>
+<h3 class="topic">
+<a name="0nuk24bnu1lgu9n880ne8bc8as">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;再次请出我们的OllyFindAddr 插件，通过 Overwrite return address&rarr;Find CALL/JMP EAX 选项来查找 CALL/JMP EAX 指令，只关注程序主模块ASLR_Offbyone.exe中的指令</a>
+</h3>
+<h3 class="topic">
+<a name="3jq7ekh5si3q29abfdf8qm00du">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以重启计算机之后再次查找一遍，保证找到的指令的地址低两个字节不会改变</a>
+</h3>
+<h3 class="topic">
+<a name="0nnpv92vt538sc8kt1r9593lvp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190826_files/3a8foe2tecqff7f9j4q1esrdkc.png"></p>
+<h3 class="topic">
+<a name="04nc9bvagtt7ufheekaoc9e542">&nbsp;&nbsp;&nbsp;&nbsp;最终shellcode的布局</a>
+</h3>
+<h3 class="topic">
+<a name="1b22boo3m0142bs0mroudqnorb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190826_files/21ddlifp1161oolgd2ote0b12u.png"></p>
+<h3 class="topic">
+<a name="1j0fj25sec70ll2066l61oqnp8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190826_files/640khetkh8nma7pkjot42vvvum.png"></p>
+<h3 class="topic">
+<a name="5d8djkphopaua6up2393fs4ntv">&nbsp;&nbsp;实例：利用Heap spray技术定位内存地址</a>
+</h3>
+<h3 class="topic">
+<a name="1i9nbtb37qsjjdr3pdh23vtop1">&nbsp;&nbsp;&nbsp;aslr对堆基址进行了随机化，有无可能将堆基址随即随机到0x0c0c0c0c之后的地址中呢？</a>
+</h3>
+<h3 class="topic">
+<a name="45jbi9c60m1bi921jrkf34tijd">&nbsp;&nbsp;&nbsp;&nbsp;没有可能</a>
+</h3>
+<h3 class="topic">
+<a name="0kuifk2n1um46lctgepjcd2hfo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;申请200个1MB的内存块，每个内存块开始为0x81828281，多次执行，查看堆内存首地址分配情况</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190826_files/74g8f5obgdmu9vaee2950mupsk.png"></p>
+<h3 class="topic">
+<a name="6itb5bu8qmkvnh81g6csrvpcrl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;查找0x81828281观察堆块内存首地址</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190826_files/184229ugu0evjs6gici14ojo2o.png"></p>
+<h3 class="topic">
+<a name="7hen60uut4t46273c60a8fl4tv">&nbsp;&nbsp;&nbsp;通过攻击ActiveX控件演示浏览器的堆喷射</a>
+</h3>
+<h3 class="topic">
+<a name="7o3mtkgfk8ii7kpnbkq396uine">&nbsp;&nbsp;&nbsp;&nbsp;示例代码</a>
+</h3>
+<h3 class="topic">
+<a name="402i95vhbqoiat9htjo3ogv225">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190826_files/0gnkmoea6jk9m2611ttafes2fh.png"></p>
+<h3 class="topic">
+<a name="3skk39k5i4l3b425ta6c4rtioa">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在程序跳转到0x0c0c0c0c地址上执行代码之前，需要堆喷射已经完成，否则程序执行流程会跳转到非法空间</a>
+</h3>
+<h3 class="topic">
+<a name="77eisql5gtsga6edksmovjg0pr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190826_files/4tgn5e44hg89641j8qqkng61sj.png"></p>
+<h3 class="topic">
+<a name="3tfqvphdmt28us7tpieisg8am7">&nbsp;&nbsp;&nbsp;&nbsp;实验思路及实验环境</a>
+</h3>
+<h3 class="topic">
+<a name="41mastucsjsebsv0r2eiv0jagu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190826_files/7ma955gke839tb9l31b3toelj2.png"></p>
+<h3 class="topic">
+<a name="32js96k3mg6g395agr3in8b2ic">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190826_files/2u9n5pqliap3t48q18q8d2rvo2.png"></p>
+<h3 class="topic">
+<a name="10en5e4tqg8pm8pbf624hciqhh">&nbsp;&nbsp;实例：利用Java applet heap spray技术定位内存地址</a>
+</h3>
+<h3 class="topic">
+<a name="655oo39n1als6gep77ie6dvidv">&nbsp;&nbsp;&nbsp;思路</a>
+</h3>
+<h3 class="topic">
+<a name="1fqeb80k360j9k93phmnvb8v1s">&nbsp;&nbsp;&nbsp;&nbsp;在使用java applet绕过的dep的过程中，	shellcode保存在java applet申请的内存空间中，而JVM负责根据java applet中的代码在堆上分配空间，所以可以在jvm的堆空间中申请大量内存块，从而对抗aslr</a>
+</h3>
+<h3 class="topic">
+<a name="0n97p1eist45m8t4j8i1mu3pn4">&nbsp;&nbsp;&nbsp;&nbsp;注意</a>
+</h3>
+<h3 class="topic">
+<a name="493rnu0pu8sjpqg7am8htl2g0h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在 Heap spray 上我们最大可以申请到 1GB 的空间，而每个 Java applet 最多只能申请 100MB 的空间。</a>
+</h3>
+<h3 class="topic">
+<a name="173l4olu7urm7spgonh6ekfofi">&nbsp;&nbsp;&nbsp;在java applet中申请90个1MB的空间，并多次执行，查看其申请到的堆空间的内存范围</a>
+</h3>
+<h3 class="topic">
+<a name="7ev85g2gkobfdok5tqksfek533">&nbsp;&nbsp;&nbsp;&nbsp;申请90个1MB堆空间的代码</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190826_files/0fl58rnnjqkoftlv49fr7272lf.png"></p>
+<h3 class="topic">
+<a name="0hnt4nfuhg9lnpgeqmusdj0clf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;实验环境和思路</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190826_files/6qrfkchkamng42qidbkckqc3rk.png"></p>
+<h3 class="topic">
+<a name="4bdoggtl7pgqnp3joollptepl6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;多次申请后的堆空间范围</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190826_files/78filnu50jt5ebd5nqr155bapn.png"></p>
+<h3 class="topic">
+<a name="1plcpd1ou1kg6mhls1vqupl595">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;整体来看，每次申请的堆空间地址一定在0x07xxxxxx~0x0dxxxxxx之间，普通的堆喷射因为可以申请的内存容量比较大，所以可以确定申请到的内存空间一定能覆盖地址0x0c0c0c0c</a>
+</h3>
+<h3 class="topic">
+<a name="6j5vvr0lgatk8qhml1sv072k35">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;但是java applet的堆空间申请容量有所限制，但可以看到每次申请的堆空间基本能够覆盖0x07xxxxxx~0x0dxxxxxx之间内存，所以例如地址0x0a0a0a0a就可以作为最终覆盖函数返回地址的数据，程序将执行该地址处的指令，该地址大概率已经被所申请的堆空间覆盖</a>
+</h3>
+<h3 class="topic">
+<a name="177582ummj8ld2b3egf79ijgq3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;所以堆喷射的中心思想是保证所构建的数据块能够覆盖到某个地址，该地址就可以用于绕过aslr执行代码</a>
+</h3>
+<h3 class="topic">
+<a name="0gd8irh3lqchn25q85ntdqbaph">&nbsp;&nbsp;&nbsp;最终构造的java applet以及poc代码以及实验环境</a>
+</h3>
+<h3 class="topic">
+<a name="7nd9r9gmnq9sli6q72g6unvu9p">&nbsp;&nbsp;&nbsp;&nbsp;java applet代码</a>
+</h3>
+<h3 class="topic">
+<a name="2sjn5e8t5aa67fdaqdutjuisci">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190826_files/00ejcid14ti6inca9bmmp47ecb.png"></p>
+<h3 class="topic">
+<a name="4fqlk54fqi28q83o85ukofch9f">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190826_files/2nfd3hghh3t8p0qq9ulqgvnq48.png"></p>
+<h3 class="topic">
+<a name="2fjqckuo7fsaa94gqr2itu2tb8">&nbsp;&nbsp;&nbsp;&nbsp;poc</a>
+</h3>
+<h3 class="topic">
+<a name="1q0vcgd105q3ii0uak3jh2f96c">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190826_files/2tlu9dgtj7qo0plb3mvrct4c0d.png"></p>
+<h3 class="topic">
+<a name="581t1d6hkpdmquj4vfv1a1qfj2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用0x0a0a0a0a覆盖函数的返回值</a>
+</h3>
+<h3 class="topic">
+<a name="3l0bqn0armdc2lh9vic081e0nv">&nbsp;&nbsp;&nbsp;&nbsp;实验环境</a>
+</h3>
+<h3 class="topic">
+<a name="5diudencthtmev5u2lr8vti6ff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190826_files/0gk8d46jinnv5a46kttvej9t73.png"></p>
+<h3 class="topic">
+<a name="1gtc21vkcj83sg1r2orhqqvu0c">&nbsp;&nbsp;实例：为.NET控件禁用ASLR</a>
+</h3>
+<h3 class="topic">
+<a name="3hmrr2jo7vr75cpi8a2eofj6o3">&nbsp;&nbsp;&nbsp;即使将.NET控件的pe文件中的IMAGE_DLL_ CHARACTERISTICS_DYNAMIC_BASE 标识移除，.NET控件依旧会随机加载</a>
+</h3>
+<h3 class="topic">
+<a name="29qjft0qurv3s8eu5supu1284a">&nbsp;&nbsp;&nbsp;ASLR是否将pe文件加载随机化的判断</a>
+</h3>
+<h3 class="topic">
+<a name="5tcplg5b57qad9ka8lluvnnlis">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190826_files/6uagnhfuri7auh6q4icumamfo0.png"></p>
+<h3 class="topic">
+<a name="7uf84nvpodc6sjd308t3ufh0vo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;以上if语句，若进入if判断，则MiNoRelacate++，并返回，不进行加载基址随机化，若不进入if语句，则进行加载随机化，故进行随机化的情况有三</a>
+</h3>
+<h3 class="topic">
+<a name="17p08hjnpqv0gfut2e66ucr0qr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190826_files/0r73q2mvpbbv98hubs84ipr33q.png"></p>
+<h3 class="topic">
+<a name="6aqput6nsrc1h4b7r1ubog1ml5">&nbsp;&nbsp;&nbsp;加载到浏览器中的.NET控件均是IL-Only文件，验证一个.NET文件是否为IL-Only文件的验证过程为</a>
+</h3>
+<h3 class="topic">
+<a name="0tf2e2gber1q1489456tce47gc">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190826_files/2798g4fdp0rcg49h1doe7gacd9.png"></p>
+<h3 class="topic">
+<a name="7kr4gh8v14hlq86mi80jmilhcp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;验证一个.NET 文件是否具有 COMIMAGE_FLAGS&#13;
+_ILONLY 标识前分别对.NET 文件运行时版本号进行判断，如果版本号低于2.5，则不进行COMIMAGE_FLAGS&#13;
+_ILONLY标识验证，即版本验证与COMIMAGE_FLAGS&#13;
+_ILONLY标志验证之间的关系为&amp;&amp;，如果之前的版本验证结果为flase，则&amp;&amp;后面的验证过程不会执行</a>
+</h3>
+<h3 class="topic">
+<a name="161e1754n6bak53iivgp2h2kk1">&nbsp;&nbsp;&nbsp;构造一个,NET控件，该控件既不包括IMAGE_DLL_&#13;
+CHARACTERISTICS_DYNAMIC_BASE 标识，又不被认定为 IL-Only</a>
+</h3>
+<h3 class="topic">
+<a name="4u383ap4ruqnmuqk10v012u4vu">&nbsp;&nbsp;&nbsp;&nbsp;为构建这种.NET控件，需要使用CFF Explorer 的软件来修改.NET 控件的 PE 头，大家可以在 http://www.ntcore.com/exsuite.php 下载这个软件。</a>
+</h3>
+<h3 class="topic">
+<a name="08vpf8lvieg0832focjq0aut0l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;移除IMAGE_DLL_CHARACTERISTICS_DYNAMIC_BASE标识</a>
+</h3>
+<h3 class="topic">
+<a name="6mre0pt1c9ranohjd0smefodeh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190826_files/7rror92upnf4ekf8pt7l3jvh7p.png"></p>
+<h3 class="topic">
+<a name="73nt6qd543uiab973fbekhsi37">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;修改.NET版本号</a>
+</h3>
+<h3 class="topic">
+<a name="4oanit2erbhogoms8u54gcp1eg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190826_files/02h7qs8gj0ep4b14f1u9ug16nq.png"></p>
+<h3 class="topic">
+<a name="1tt1t8v4iu9en42s16hl48cumk">&nbsp;&nbsp;&nbsp;使用&ldquo;利用.NET控件绕过DEP&rdquo;的poc页面演示</a>
+</h3>
+<h3 class="topic">
+<a name="0ql0up9jugdkk31j9l6ldvat2u">&nbsp;&nbsp;&nbsp;&nbsp;演示环境</a>
+</h3>
+<h3 class="topic">
+<a name="140vakuhcjvrj8u3gp93nva7f5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190826_files/3nt829k551dqk199mtupgmovno.png"></p>
+<h3 class="topic">
+<a name="6lh84k1g0uo24kmae9f3vs71v4">&nbsp;&nbsp;&nbsp;&nbsp;将浏览器进程加载到od中，使用插件OllyFindAddr中的Unprotected module-》Without ASLR查看进程中没有开启ASLR的模块</a>
+</h3>
+<h3 class="topic">
+<a name="7giogju1vdd30qmdtsf60kib45">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190826_files/3tglmpj5059hi663crsa005kjj.png"></p>
+<h3 class="topic">
+<a name="26tg0cch5gmhmgvm11t837vnuj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;发现.NET控件并未开启ASLR，所以当初设置的该控件的加载基址是有效的，继续执行即可正常执行shellcode，实例同时可以绕过DEP</a>
+</h3>
+<h3 class="topic">
+<a name="4odnk6tuuh0o1crpfhc1e66tdm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190826_files/6lms8fl3mq969644bqqkgiqfi3.png"></p>
+<h2 class="topic">
+<a name="5q7k1095ofaq8rkvsfhsdpl97g">第十四章 SEH终极防护：SEHOP</a>
+</h2>
+<h3 class="topic">
+<a name="51hpg2dfk16qbbbuggbal531g1">&nbsp;Windows Vista SP1、Windows 7、Windows Server 2008 和Windows Server 2008 R2 均支持SEHOP。SEHOP 在Windows Server 2008 默认启用，而在Windows Vista 和Windows 7 中 SEHOP 默认是关闭的</a>
+</h3>
+<h3 class="topic">
+<a name="2tjqrhrovb00fulcbdr3m4rj46">&nbsp;&nbsp;启动SEHOP的两种方法</a>
+</h3>
+<h3 class="topic">
+<a name="5o55eegv7frcln5em4fif1fgja">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190826_files/65a8a68o9diuvhbf4i518g3ktt.png"></p>
+<h3 class="topic">
+<a name="2b7df1d2jphd9obf0qjuv48ifd">&nbsp;seh链以单链表形式存在，链表的末端是默认异常处理，用于处理之前异常处理没有能处理的异常</a>
+</h3>
+<h3 class="topic">
+<a name="575qc1br591oee43p15e4io27p">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190826_files/6ls220bmh6bjf701h26bepc5lg.png"></p>
+<h3 class="topic">
+<a name="6th2o376bfpugens8vrgma4n7s">&nbsp;SEHOP核心原理</a>
+</h3>
+<h3 class="topic">
+<a name="7ieg1peapkdai0873879umb5o6">&nbsp;&nbsp;SEHOP 的核心任务就是检查这条 S.E.H链的完整性，在程序转入异常处理前 SEHOP会检查 S.E.H链上最后一个异常处理函数是否为系统固定的终极异常处理函数。如果是，则说明这 条 S.E.H链没有被破坏，程序可以去执行当前的异常处理函数；如果检测到最后一个异常处理 函数不是终极 BOSS，则说明 S.E.H 链被破坏，可能发生了 S.E.H 覆盖攻击，程序将不会去执 行当前的异常处理函数。</a>
+</h3>
+<h3 class="topic">
+<a name="0pcv243434sbuikuui67ekt8be">&nbsp;&nbsp;&nbsp;SEHOP验证代码</a>
+</h3>
+<h3 class="topic">
+<a name="4mvjapkpd3dtmlad2brr972c38">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190826_files/29n63141uosl7rcddvpvfig5mm.png"></p>
+<h3 class="topic">
+<a name="1eqqkovlqq5rhci2bc72js3ima">&nbsp;SEHOP对于攻击SEH结构产生的影响</a>
+</h3>
+<h3 class="topic">
+<a name="516mabgl99k2k7nog8k6nbch41">&nbsp;&nbsp;攻击seh是通过修改seh中异常处理函数的地址，然后触发异常，从而执行shellcode，当通过溢出的方式修改异常处理函数地址时，同一结构内的指向下一个异常处理结构的指针也会被修改，导致seh链断裂，从而被SEHOP检测到</a>
+</h3>
+<h3 class="topic">
+<a name="5uqsi94iib7k3nsihv1788je8u">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190826_files/1n2h0o6h75scfc46bontfian0o.png"></p>
+<h3 class="topic">
+<a name="1aefh6inenglgfhncaajhsjjlf">&nbsp;&nbsp;SEHOP检测发生在SafeSEH 的 RtlIsValidHandler 函数校验前，所以利用攻击加载模块之外的地址、堆地址和未启用 SafeSEH模块从而绕过SafeSEH的方法均失效了&#13;
+，因为以上方法本质上还是通过溢出淹没异常处理函数的指针，（除非采用栈溢出的方式精确修改4字节的数据）</a>
+</h3>
+<h3 class="topic">
+<a name="2on3fprcbdlonm3h28hvcp2808">&nbsp;攻击思路</a>
+</h3>
+<h3 class="topic">
+<a name="0i43ikp2kd0tjra7h8mveab3sk">&nbsp;&nbsp;不攻击SEH ，而攻击返回地址或虚函数</a>
+</h3>
+<h3 class="topic">
+<a name="5ek3rfu3ojbq90r94u89su4rm1">&nbsp;&nbsp;&nbsp;攻击返回地址：看运气，能否碰到开启了SEHOP但没有开启GS的函数，或开启了GS但是有方法过掉GS</a>
+</h3>
+<h3 class="topic">
+<a name="5fs2hjuk4hnhcc0tdpnn9jdaqk">&nbsp;&nbsp;&nbsp;攻击虚函数：SEH保护基址不对虚函数表有任何作用，可以通过攻击虚函数表劫持进程</a>
+</h3>
+<h3 class="topic">
+<a name="0etcq6al9ptt9vho6dojfs1bhh">&nbsp;&nbsp;利用未启用SEHOP的模块</a>
+</h3>
+<h3 class="topic">
+<a name="3qv8u3v8pg43ap5m3nn80qsqcv">&nbsp;&nbsp;&nbsp;利用思路与"通过未开启SafeSEH的模块绕过SafeSEH"一样，是通过在未开启SEHOP的模块中寻找一条跳板指令，并将该指令地址覆盖到异常处理函数的地址中，因为该模块未开启SEHOP，所以异常触发后，跳板指令会作为异常处理函数被执行</a>
+</h3>
+<h3 class="topic">
+<a name="1lj918qprgj5a13o584bekn63o">&nbsp;&nbsp;&nbsp;微软出于兼容性的考虑还是对一些程序禁用 了 SEHOP，如经过 Armadilo 加壳的软件</a>
+</h3>
+<h3 class="topic">
+<a name="6dr2bkr7egbv8du6jr109vbouq">&nbsp;&nbsp;&nbsp;&nbsp;操作系统会根据PE头中MajorLinkerVersion和MinorLinkerVersion两个选项来判断是否为&#13;
+程序禁用 SEHOP。例如，我们可以将这两个选项分别设置为 0x53 和 0x52 来模拟经过 Armadilo 加壳的程序，从而达到禁用 SEHOP 的目的。</a>
+</h3>
+<h3 class="topic">
+<a name="1115mmssohrotdj5d7b82mqf55">&nbsp;&nbsp;&nbsp;实验环境</a>
+</h3>
+<h3 class="topic">
+<a name="4e2ip5t2bpnpv37ooa0mq4rg5r">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190826_files/6lc54087tul2rd10o8b866a70a.png"></p>
+<h3 class="topic">
+<a name="4b0jsebnfrbbmdbu2a7mv55cd9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190826_files/6j9u2aqb63crgo6s1pr5nm27ia.png"></p>
+<h3 class="topic">
+<a name="083jdburv63vpa49kqscp6i19s">&nbsp;&nbsp;&nbsp;实验过程</a>
+</h3>
+<h3 class="topic">
+<a name="698jbg4h30jrrpe12d6hj5r6ao">&nbsp;&nbsp;&nbsp;&nbsp;利用CFF Explore打开未开启SafeSEH的模块，将修改该模块的pe头，将该模块的SEHOP关闭</a>
+</h3>
+<h3 class="topic">
+<a name="6pmt462vb4nc8f57av2ooq54ej">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190826_files/7k27es7lpj9nf1da778a4a5jj5.png"></p>
+<h3 class="topic">
+<a name="6jga42dq7e94o4dmrknrbl57h6">&nbsp;&nbsp;&nbsp;&nbsp;修改shellcode，使其能够在win7环境下运行</a>
+</h3>
+<h3 class="topic">
+<a name="59lt1928hl01n2c0n36u8d2qqa">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;win7下PEB_LDR_DATA指向的加载模块列表中第二个模块的位置为kernelbase，kernel32位于第三个模块位置，所以需要对shellcode进行调整，需要获得kernel32基址的过程中再多寻址一次</a>
+</h3>
+<h3 class="topic">
+<a name="6dk0rk0dgfhr6rc3sc7fmu6ca4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;修改后的shellcode</a>
+</h3>
+<h3 class="topic">
+<a name="5fj2u6fm282ao94lb1mhr2kkho">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190826_files/2d05nm34ja0in36cdkq787h6qp.png"></p>
+<h3 class="topic">
+<a name="1ou55fal7lsq372sdo1iob3np4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190826_files/7j5b4tolrqnlkrfvodjoviglde.png"></p>
+<h3 class="topic">
+<a name="31373bgcp4d0710ehg6hd47f78">&nbsp;&nbsp;&nbsp;&nbsp;关闭程序的DEP（保证能够绕过SafeSEH）</a>
+</h3>
+<h3 class="topic">
+<a name="3tm0su0kurtrleu7c4cq4p4ina">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;参考之前DEP相关介绍</a>
+</h3>
+<h3 class="topic">
+<a name="5b3tcra0dk0u0f9ma1elofuug4">&nbsp;&nbsp;伪造SEH链</a>
+</h3>
+<h3 class="topic">
+<a name="7tv8cslngo36fgnhgvq36uqqdi">&nbsp;&nbsp;&nbsp;SEHOP核心原理是检查此时SEH链的最后是否为终极异常处理函数，能否在溢出过程中，将被溢出的异常处理结构中的指向下一个异常处理结构的指针进行修改，使其指向伪造最终异常处理结构体</a>
+</h3>
+<h3 class="topic">
+<a name="7n66m1uk3bs8vqgmaegjkvq1hh">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190826_files/75h9elr79e0aqmc36bknmfi8k3.png"></p>
+<h3 class="topic">
+<a name="0tacmmfqboossk0g7i3v6ffkui">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;要伪造最后一个异常处理函数结构体，需要保证程序没有开启ASLR，因为最后一个异常处理结构体中保存了终极异常处理函数的地址，如果alsr开启，则该地址变成随机的，不能正确指定，则伪造失败</a>
+</h3>
+<h3 class="topic">
+<a name="0lnt651e78vpdeiuo47q1psjnt">&nbsp;&nbsp;&nbsp;伪造SEH链实验所需条件</a>
+</h3>
+<h3 class="topic">
+<a name="3l9outpvgsisckc40op41ubdmr">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190826_files/5bfjku6mlc0rgm73fpkrdq2kh1.png"></p>
+<h3 class="topic">
+<a name="4d5nqj3o78fj27vrvo702ftk35">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;本实验基于&ldquo;利用未开启SafeSEH的模块绕过SafeSEH&rdquo;的实验</a>
+</h3>
+<h3 class="topic">
+<a name="5fetki1d56a2ana1tl6imss406">&nbsp;&nbsp;&nbsp;示例代码</a>
+</h3>
+<h3 class="topic">
+<a name="4tbc8h62ehqanoc4eqfq8kgqhl">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190826_files/0q2oh337cnb4v7g63rcis1eil1.png"></p>
+<h3 class="topic">
+<a name="66rgko14am2gmsd7am906pgeok">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190826_files/7geend0ld2jt0on1fq3aoescsb.png"></p>
+<h3 class="topic">
+<a name="2c2utao9dcjndca1vo4tjah2tr">&nbsp;&nbsp;&nbsp;实验思路及实验环境</a>
+</h3>
+<h3 class="topic">
+<a name="0pdjd1i7dppjai6rgg91f58pfu">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190826_files/37q4olu3u0go1csmdgn9qsf8q3.png"></p>
+<h3 class="topic">
+<a name="3cu62t7bbmk7rjahpgmfs65c9b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190826_files/3s7a8mlha4qbj2rvk5mtfo78g7.png"></p>
+<h3 class="topic">
+<a name="0725d2m9nk4s6itrie21r56e9t">&nbsp;&nbsp;&nbsp;实验过程</a>
+</h3>
+<h3 class="topic">
+<a name="7icihc7lrjgug7bisodj1s8d50">&nbsp;&nbsp;&nbsp;&nbsp;获得终极异常处理函数（UEH）的地址</a>
+</h3>
+<h3 class="topic">
+<a name="7b3p3b62ve26c5n4l0ntv4vavc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;win7中不能使用在代码中添加int 3从而中断程序的方法，可以使用od直接加载程序，观察堆栈的底部，找到FinalExceptionnHandler指向的地址</a>
+</h3>
+<h3 class="topic">
+<a name="6q7mo0nk78vt7ks7kv7qdubibf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190826_files/57oh1to6rf8ct0kh0d12bv709h.png"></p>
+<h3 class="topic">
+<a name="2ju986v8re3j1rimepffgbvpt0">&nbsp;&nbsp;&nbsp;&nbsp;运行程序，触发除零异常，观察堆栈，发现异常处理结构体中指向下一个异常处理结构体的指针已经被覆盖，SEH链被破坏</a>
+</h3>
+<h3 class="topic">
+<a name="7j5f1665s4n730k3e6uouakdhn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190826_files/6s5i7ntb10ak4ihhaidnmghmb7.png"></p>
+<h3 class="topic">
+<a name="4huspc7fl08avo006n4ilt4e0c">&nbsp;&nbsp;&nbsp;&nbsp;伪造异常处理结构体</a>
+</h3>
+<h3 class="topic">
+<a name="4jdtoqejva4sd44ql24bbj4vfl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;考虑是使用程序自带的终极异常处理结构体，让其作为被覆盖的异常处理结构体的下一个异常处理结构体</a>
+</h3>
+<h3 class="topic">
+<a name="5vf88dap7d9dpm0cbuisrlf565">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;但是本程序中终极异常处理结构体的首地址为0x0012FFE4，该值对应的指令会影响之后shellcode的正常执行</a>
+</h3>
+<h3 class="topic">
+<a name="27jk1bkh7g1vcv86jiuj325mv1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将伪造的异常处理结构体放置在弹出对话框的shellcode之后，该位置的地址可以被4整除，且位于当前栈中</a>
+</h3>
+<h3 class="topic">
+<a name="0imitscoof8p38hg207j08i56v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190826_files/6og0lsvus1rv5gd7m2c04it9vn.png"></p>
+<h3 class="topic">
+<a name="4cbv3kj7ot1pt2d0in56q7vref">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意谈对话框的代码结束后还需要填充两个0x90，以保证伪造的异常处理结构体的起始地址一定被4整除</a>
+</h3>
+<h3 class="topic">
+<a name="1cehll44qpu1o3pnf8fnjfusic">&nbsp;&nbsp;&nbsp;&nbsp;最终shellcode的结构</a>
+</h3>
+<h3 class="topic">
+<a name="2vehpg9csv12839dhg63m3uq2p">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190826_files/59n86i6fonsserp8kqkif46mqo.png"></p>
+<h3 class="topic">
+<a name="2lln6umg1qim66gouclc5bjgak">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;至于为何使用 pop pop retn作为跳板指令以及 跳板指令地址后为何存在8个字节的90，可以查看 &ldquo;利用未启用SafeSEH的模块绕过SafeSEH&rdquo;笔记</a>
+</h3>
+<h3 class="topic">
+<a name="7qj5c71is6p01jfl3c433qoild">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190826_files/6h8jj9doatlfo3288a3mo5rpct.png"></p>
+<h3 class="topic">
+<a name="7aui5fjhqrtfnaao43jjo861bn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="0day2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190826_files/7ltvij3gg52k2u4r3g40ejij8c.png"></p>
+</body>
+</html>

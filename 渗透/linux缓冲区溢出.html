@@ -1,0 +1,308 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>linux缓冲区溢出</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="6bcc1g1s6iosd898h8jl40tv4o">linux缓冲区溢出</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="linux%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA_files/images/linux%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA.jpg"></div>
+<h2 class="topic">
+<a name="4pbl1suo94nuenr4f8ko5l5dv1">调试工具Evans Debugger</a>
+</h2>
+<h3 class="topic">
+<a href="https://github.com/eteran/edb-debugger" name="6kohh5uun561vi8csp1j70ivt2">&nbsp;https://github.com/eteran/edb-debugger</a>
+</h3>
+<h2 class="topic">
+<a name="64q8sicv7rjpinr94nnoohjtvb">目标软件：Crossfire 1.9.0（网络的缓冲区溢出）</a>
+</h2>
+<h3 class="topic">
+<a href="https://www.exploit-db.com/exploits/1582/" name="47kivdimch13k3eumpt62i6350">&nbsp;https://www.exploit-db.com/exploits/1582/</a>
+</h3>
+<h2 class="topic">
+<a name="3j42rdau08ji39a0opqfga2o4h">软件保护措施</a>
+</h2>
+<h3 class="topic">
+<a name="6kq2sp6o1m8ve5jmatutvhufvl">&nbsp;DEP, ASLR, Canaries</a>
+</h3>
+<h3 class="topic">
+<a name="5plssj4gmn82le34tvao0934mb">&nbsp;&nbsp;本例中没有开启</a>
+</h3>
+<h2 class="topic">
+<a name="03m28qtdn65db3kanlv7j4i7t0">复现崩溃</a>
+</h2>
+<h3 class="topic">
+<a name="021h5dbilne4pmn4lq1qdj9bnr">&nbsp;目标机器Linux Debain</a>
+</h3>
+<h3 class="topic">
+<a name="5211on5vd016ammiiejqbbmv5q">&nbsp; 为了复现崩溃，我们首先将rdesktop连接到专用的Debian Linux客户端（使用控制面板中提供的凭据）。 连接后，我们将通过&ldquo;系统工具&rdquo;菜单启动一个根终端并运行Crossfire： </a>
+</h3>
+<h3 class="topic">
+<a name="7qjmqieke0f1vjthlo64r1n1ls">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA_files/5nb08tbi6m5hqsof24l6o6a3fk.png"></p>
+<h3 class="topic">
+<a name="7ls42oef5nc7889a737307k4fq">&nbsp;&nbsp;&nbsp;在目标机器（debain）上运行存在漏洞的软件Crossfire</a>
+</h3>
+<h3 class="topic">
+<a name="7qve1e030ei350cc1mabb8hbje">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA_files/3cqhn1fed1sh7lcdhf2kv5vtq2.png"></p>
+<h3 class="topic">
+<a name="68ksqil6ffnptm1prl8ergpmho">&nbsp;&nbsp;&nbsp;Crossfire运行之后，会等待连接</a>
+</h3>
+<h3 class="topic">
+<a name="1a897q2rvjcf0j5b6livu9ap00">&nbsp;&nbsp;rdesktop是linux下的远程桌面客户端，可以用于连接windows或linux客户端</a>
+</h3>
+<h3 class="topic">
+<a name="0jm4765l6ngftkqllp54un9t56">&nbsp;在攻击机运行edb命令启动EDB调试器：</a>
+</h3>
+<h3 class="topic">
+<a name="6jhmi1273h9d8065331mt5lik1">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA_files/2vudnp6o72p7099glc3nu8u2u8.png"></p>
+<h3 class="topic">
+<a name="7nga3sabeuv8vhf5tg3pqa4qu0">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA_files/2j2fvjjdtqlvj2h6emsvlr2n8r.png"></p>
+<h3 class="topic">
+<a name="5eb81u3vi8g1rb0rmt3vf7sjqv">&nbsp;查看包括PID和所有者在内的可用进程，我们将从&ldquo;文件&rdquo;菜单中选择&ldquo;附加&rdquo;，输入要调试的进程名Crossfire，进行附加调试</a>
+</h3>
+<h3 class="topic">
+<a name="21iukm5cv40enpic9i5mmi28lr">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA_files/1ffnmekfch9ujbcalqtscv05q6.png"></p>
+<h3 class="topic">
+<a name="4vvkgp3n5ealnuaa0qq2jkg2nk">&nbsp;当我们最初附加到该过程时，它将被暂停。 要运行它，我们只需单击运行按钮。 根据应用程序在调试器中的工作方式，在运行应用程序之前，它可能会遇到其他断点。 在这种情况下，我们只需要再按一次&ldquo;运行&rdquo;按钮即可。</a>
+</h3>
+<h3 class="topic">
+<a name="1brfus8r5idqgmsktne6a7hik2">&nbsp;&nbsp;使Crossfire运行起来</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA_files/72dpnhsb88sb2p3ev3vn11cj96.png"></p>
+<h3 class="topic">
+<a name="727smvt580fol3468tgba75lan">&nbsp;运行poc将溢出数据发送到debain中</a>
+</h3>
+<h3 class="topic">
+<a name="6782gjph1tietbj504vnkqu9es">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA_files/38cgh5ugrdv0nflm0b9lflqnq4.png"></p>
+<h3 class="topic">
+<a name="1i87n3jv2tkaj9nu42kohot45m">&nbsp;&nbsp;&nbsp;缓冲区变量在其开头和结尾都需要特定的十六进制值，以及&ldquo;设置声音&rdquo;字符串，以使应用程序崩溃。&#13;
+setup sound表示存在缓冲区溢出的命令，通过端口13327连接到远程服务，然后发送该缓冲区使Crossfire崩溃</a>
+</h3>
+<h3 class="topic">
+<a name="4sjrshffm3d9rdjlvrp4uh5mm5">&nbsp;运行poc</a>
+</h3>
+<h3 class="topic">
+<a name="12c0grcv3if8943omltjobddtq">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA_files/0ah2fvd03bp97a32647capk3a1.png"></p>
+<h3 class="topic">
+<a name="3v0vl426k85sth596vki3anab3">&nbsp;&nbsp;&nbsp;调试器中显示崩溃信息，说明eip已经被缓冲区数据覆盖</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA_files/5fsv5pvm58j52o5a912v25d4ie.png"></p>
+<h2 class="topic">
+<a name="47t7c26omii89939kqmp6s4kmf">控制eip</a>
+</h2>
+<h3 class="topic">
+<a name="6l7bsplksvspphpu5ir5l213a0">&nbsp;使用msf-pattern_create创建不重复的字符串</a>
+</h3>
+<h3 class="topic">
+<a name="357u1r24ku6oe02r3oht85p5j4">&nbsp;&nbsp;msf-pattern_create -l 4379  &#13;
+-l参数用于指定长度</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA_files/3c3o3alfl6govvblm9g26enels.png"></p>
+<h3 class="topic">
+<a name="5rjjtsdh31c1pg339jm02dg2m1">&nbsp;使用该字符串进行缓冲区溢出，定位到覆盖eip的四字节数据</a>
+</h3>
+<h3 class="topic">
+<a name="0i330dd1m9ak9cfnpcdmaropfr">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA_files/573bmehoobu2ftbhg0cup5nh8q.png"></p>
+<h3 class="topic">
+<a name="1rqusod30uauibiark7fsk6vrh">&nbsp;查询该四字节数据在缓冲区字符串中的偏移</a>
+</h3>
+<h3 class="topic">
+<a name="3ogoa4hjes9n3l36lhner2f39p">&nbsp;&nbsp;msf-pattern_offset -q 46367046</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA_files/0u0oahudu754pjmiil8us2re4r.png"></p>
+<h3 class="topic">
+<a name="75s9d3g3d76o9igm3q3aprka7b">&nbsp;将该四字节修改为"b"验证偏移</a>
+</h3>
+<h3 class="topic">
+<a name="0gqklpqocpomjimk53na43tg97">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA_files/6a3al04a4q7e3a0q1u6i5p4267.png"></p>
+<h2 class="topic">
+<a name="2amg1mf0qbuim1e4ohbkg5h7v5">为shellcode分配空间</a>
+</h2>
+<h3 class="topic">
+<a name="53vt8dq3if3kq77dolqpnmlc1b">&nbsp;需要找到程序崩溃时指向缓冲区的寄存器，从而以该寄存器为基础创建call jmp等跳板指令，从而定位shellcode</a>
+</h3>
+<h3 class="topic">
+<a name="3mpq689kuv340lcmctuu7djmvb">&nbsp;程序崩溃时，ESP寄存器指向缓冲区的末尾，仅剩下7个字节的空间用于Shellcode。 此外，我们无法增加溢出缓冲区的大小来尝试获得更多空间。 即使增加一个字节也会产生不同的崩溃，该崩溃不会正确覆盖EIP。</a>
+</h3>
+<h3 class="topic">
+<a name="5tk53eqbuccmkcdd34qn5lg13j">&nbsp;&nbsp;仔细查看崩溃时寄存器的状态，可以发现EAX寄存器似乎指向缓冲区的开头，包括&ldquo;设置声音&rdquo;字符串。&#13;
+   EAX直接指向命令字符串的开头这一事实可能会影响我们简单地跳到EAX指向的缓冲区的能力，因为我们将在shellcode之前执行与ASCII字符串&ldquo; setup sound&rdquo;等效的十六进制操作码。 这很可能会破坏执行路径并导致我们的利用失败。</a>
+</h3>
+<h3 class="topic">
+<a name="33vt2ea298hvn3fq78utt04q74">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA_files/0oehhfjdr4l3l99mrt1imbcil7.png"></p>
+<h3 class="topic">
+<a name="7jafmndbum4b8urlp7dg9qf98k">&nbsp;观察&ldquo; setup sound&rdquo;字符串的二进制数据对应的指令</a>
+</h3>
+<h3 class="topic">
+<a name="3vh6f4rndeefri93pq2or167i7">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA_files/4ht5osu7tpmaj0stjr0qms31oh.png"></p>
+<h3 class="topic">
+<a name="4fmm22ie1d2uo8io4pfrbfgn1v">&nbsp;此时的情况时程序崩溃时esp指向可控缓冲区的末尾，仅有7个字节可以控制，eax指向缓冲区头部，但是缓冲区头部存在一些干扰数据，不能直接执行</a>
+</h3>
+<h3 class="topic">
+<a name="45b86n7n4blgpejqjblh9nsjri">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA_files/2uq7dp48png93meibdrc6sgb8p.png"></p>
+<h3 class="topic">
+<a name="0r169isp2rmaj3tdh1jj7cg2oo">&nbsp;此时可以在缓冲区末尾构造add eax,12  jmp eax两条指令，程序执行该两条指令，将eax指向12字节干扰数据之后的shellcode，然后跳转到该位置开始执行（此时需要将eip的覆盖为jmp esp指令的地址从而引发add eax,12  jmp eax的执行）</a>
+</h3>
+<h3 class="topic">
+<a name="2f2uld7a4u9gukapu66vur8dog">&nbsp;&nbsp;通过msf-nasm-shell获得对应指令的操作码，两条指令长度为5字节，可以保存在缓冲区最后的7字节空间</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA_files/43nuqmnuk61kipjo8qei1ha7vb.png"></p>
+<h3 class="topic">
+<a name="1fo6njah4gqr7kf3las25fev35">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA_files/3hiip6unocs7un5otsijds5m5t.png"></p>
+<h3 class="topic">
+<a name="4135pl12sjhth148rsmpkatem5">&nbsp;&nbsp;&nbsp;&nbsp;溢出发生后，eip被"b"覆盖，并且esp指向add eax,12 jmp eax指令的操作码</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA_files/07i02mp27lh37fegj2o5jjcc65.png"></p>
+<h2 class="topic">
+<a name="7gumsa65om7c2gnbgmca1dbjq2">检查坏字符</a>
+</h2>
+<h3 class="topic">
+<a name="4teh5dttfct9asnth5l3ikrmlt">&nbsp;使用与Windows缓冲区溢出模块中相同的方法，在缓冲区中发送了从00到0F的整个字符范围，然后监视这些字节中的任何一个在被应用程序处理后是否在内存中被篡改，交换，删除或更改。</a>
+</h3>
+<h3 class="topic">
+<a name="0565bp01tcp4mvsrvkc0qcqj5q">&nbsp;&nbsp;在多次运行POC并一次消除一个坏字符后，我们得出了Crossfire应用程序的最后一个坏字符列表，它们看起来只有\ x00和\ x20。</a>
+</h3>
+<h2 class="topic">
+<a name="739fjtbje0pv8iij41qqnfltha">获得覆盖返回地址的数据</a>
+</h2>
+<h3 class="topic">
+<a name="2ghg9a8h57520pevobrlt96ma9">&nbsp;即发现一条jmp esp指令</a>
+</h3>
+<h3 class="topic">
+<a name="5s4mjo03lk049cnjsu4bdqf6mn">&nbsp;&nbsp;EDB调试器带有一组插件，其中一个名为OpcodeSearcher。该插件可以用于在代码段中搜索JMP ESP指令或等效指令：</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA_files/20obq2sg75hejjkcntsu06dlrp.png"></p>
+<h3 class="topic">
+<a name="2dlfm9lfa71nkce8rphhjm1486">&nbsp;&nbsp;&nbsp;搜索jmp esp</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA_files/20qpjco7mogm6gvvs0tok5mko9.png"></p>
+<h3 class="topic">
+<a name="401ii8mqvun102nn6c3iis4ds1">&nbsp;&nbsp;&nbsp;&nbsp;将找到的指令地址写入poc中</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA_files/7f5l08mdfa381s5rad3c4pcvr2.png"></p>
+<h3 class="topic">
+<a name="784n8kioupqotaetrcvrvma982">&nbsp;重新启动应用程序，然后再次将调试器附加到该应用程序。 我们使用EDB Breakpoint Manager插件在JMP ESP指令地址上设置了一个断点，而不仅仅是让Crossfire进程运行。 这将帮助我们确认EIP已被适当覆盖。</a>
+</h3>
+<h3 class="topic">
+<a name="71mqu1cuaei5fe0ru82eeftd2u">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA_files/3qmqkfbt9djfdc95m7o4q2p403.png"></p>
+<h3 class="topic">
+<a name="4g1nfnj0pi628fl6l21cu6lg8o">&nbsp;运行poc程序在jmp esp的位置处断下</a>
+</h3>
+<h3 class="topic">
+<a name="7pi2hd2tih73ohh96p6529tb5g">&nbsp;&nbsp;断在jmp esp处</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA_files/0jlln5is6ecu9eba87vg95aiod.png"></p>
+<h3 class="topic">
+<a name="0qo12e7c77o5t8hrf7qsn91t2j">&nbsp;&nbsp;&nbsp;进入栈中执行指令</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA_files/3rr721a053pfa7nfpe791e184g.png"></p>
+<h3 class="topic">
+<a name="0feeo16p0crbof05kbcmqk0dvs">&nbsp;&nbsp;&nbsp;&nbsp;修改eax的值将其指向内存中setup sound字符串之后</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA_files/2m8pbpa97mstlachf0l1692re8.png"></p>
+<h3 class="topic">
+<a name="16b0gk8n94ft6ud7vc255e06q2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;jmp eax将程序执行流引入可控内存</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA_files/120tsjm4r2rafqm76ieq8u6esl.png"></p>
+<h2 class="topic">
+<a name="56j3krn35p5ejiqjbn8dud7elr">获得shell</a>
+</h2>
+<h3 class="topic">
+<a name="7mh7qh4u7ffq8qqe7mci286m09">&nbsp;生成反弹shell</a>
+</h3>
+<h3 class="topic">
+<a name="10uaf4lgcl9lb9lihj7k42uvks">&nbsp;&nbsp;使用反向外壳作为有效负载，并使用msfvenom生成它。 我们传递-p来指定有效负载，然后分别指定LHOST和LPORT的值。 我们还使用-b标志指定要避免的坏字符，使用-f指定输出格式，并使用-v指定变量名称。</a>
+</h3>
+<h3 class="topic">
+<a name="4c2tn8fava0tu7m02jp6djnigr">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA_files/5kpavanmgqhnfl1tlkmjejkrjh.png"></p>
+<h3 class="topic">
+<a name="605q7pss8qimn7b10hs6tugaht">&nbsp;构造exp</a>
+</h3>
+<h3 class="topic">
+<a name="3nvuicqnde9chkv8eugf3t6mnm">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA_files/7ohhrboru9do7u0jhvu45p40ba.png"></p>
+<h3 class="topic">
+<a name="2jihhaf64d4u2q7jtmml7m96ce">&nbsp;重新启动Crossfire应用程序，并连接调试器启动漏洞利用程序。 在我们的攻击机器上，我们在Netcat侦听器上收到一个连接，但是外壳似乎卡住了</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA_files/1uefra53kds802bgmboomk7kpb.png"></p>
+<h3 class="topic">
+<a name="3ss473gepl44crkd3g74t0lteb">&nbsp;&nbsp;返回到调试器窗口，似乎该应用程序已暂停，并且当我们尝试使其运行时，我们收到有关调试事件的消息：</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA_files/0hlv967ekgedeitsa7prcq1uf9.png"></p>
+<h3 class="topic">
+<a name="0rb00tm8g3vcqqhbef2n2spgfg">&nbsp;&nbsp;&nbsp;只需在事件上单击&ldquo;确定&rdquo;并返回到我们的Netcat侦听器即可解决该问题。 但是，每次运行命令时，都必须重复该过程。&#13;
+   这是由于调试器正在捕获从反向外壳发生的子进程发生异常（例如进程退出，崩溃，停止等）时生成的SIGCHLD331事件。</a>
+</h3>
+<h3 class="topic">
+<a name="2jihkm4p036sods5cvu65gpi00">&nbsp;  为确保我们的漏洞利用按预期工作，我们重新启动Crossfire应用程序并在不附加调试器的情况下运行它：</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA_files/1s7a48j7odoiok57ukljna3qpc.png"></p>
+</body>
+</html>

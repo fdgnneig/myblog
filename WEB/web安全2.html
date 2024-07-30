@@ -1,0 +1,702 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>web安全2</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="1jj2b6p1qgpf0tcg1dcucttak3">web安全2</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="web%E5%AE%89%E5%85%A82_files/images/web%E5%AE%89%E5%85%A82.jpg"></div>
+<h2 class="topic">
+<a name="1utdicgefsfutgqvpi625o1865">SQL注入漏洞</a>
+</h2>
+<h3 class="topic">
+<a name="2iueku4hrjikmdq8teolri9tsp">&nbsp;漏洞原理</a>
+</h3>
+<h3 class="topic">
+<a name="58880falq35rrek80cu563l9e7">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/5du507dotlvqoj6qnhrdvhq3jn.png"></p>
+<h3 class="topic">
+<a name="6uu80r8eaq15om60euhlpjldn6">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/7hf7efid79es295b6i32e8dqm6.png"></p>
+<h3 class="topic">
+<a name="458p06prp3umomteou1k7rqbm3">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/47a35u6lgi2c0jr94hq8pt27i7.png"></p>
+<h3 class="topic">
+<a name="04us203f6guuvgf4jmvj4kffsd">&nbsp;&nbsp;一个网页看上去是一个静态页面，不过有可能该静态页面是动态页面伪装的</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/0nvq4g5n2lirho5iju5bcsep7q.png"></p>
+<h3 class="topic">
+<a name="7p8d5gca1gvlj3ndq4v7ru32rl">&nbsp;&nbsp;&nbsp;之所以可以通过左侧的方式判断是否存在sql注入，是因为url中的参数可能会被带入到sql中进行执行</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/15h3srdijvf1788bh716bvdpkl.png"></p>
+<h3 class="topic">
+<a name="319htlc2mkn469v7805al1q4jc">&nbsp;&nbsp;&nbsp;&nbsp;如果name字段是假的，但是后面加or 1=1也可以将要求的数据查出来，即万能密码的原理</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/0vgvispp7n65vsi6t0ddbtfpac.png"></p>
+<h3 class="topic">
+<a name="4tv1d6r9m5gfpnnjkpt1hbj5pn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果网站的sql查询语句中使用了() 或(())将url参数进行包裹，则在构造测试的and 1=1之类指令时，需要使用")and 1=1或"))and 1=1，从而保证sql正常执行</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/7aqsfuuafl9aojcltntuddjske.png"></p>
+<h3 class="topic">
+<a name="05j5ce9rrqqju603oco6m9vp7f">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;因为这里的参数dwsd是一个字符串，所以测试是否有sql注入漏洞时，需要在and 1=1之前加上 " 或 ' 将字符串结束，最后使用#将之后的sql语句注释掉</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/5qf74hgise2mrahkhhiulvuai3.png"></p>
+<h3 class="topic">
+<a name="4gh7lqme10a5i6322shid2r46b">&nbsp;&nbsp;&nbsp;而可以通过在url中插入数据库函数sleep等，通过测试该函数是否执行，从而判断是否存在注入点</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/6t2go01ev44rd96uv74oj8bbq4.png"></p>
+<h3 class="topic">
+<a name="2ch1jtcqbfa1tobso2u7c7ebgb">&nbsp;sql注入预防方式</a>
+</h3>
+<h3 class="topic">
+<a name="07kcjrsbtrnat8daq7a0kk65hj">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/77cpb5mmt44f211m6nqd3epcja.png"></p>
+<h3 class="topic">
+<a name="3idmb594enlbl80imdi0ev64k5">&nbsp;漏洞原理实例</a>
+</h3>
+<h3 class="topic">
+<a name="6dnec9uhie809cca778k95bov5">&nbsp;&nbsp;修改之前的php用户登录demo的代码，将拼接完成的sql语句打印出来</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/7jb0b7l7flq0vej9eq85iq384u.png"></p>
+<h3 class="topic">
+<a name="7s27pt39cdfgjkvj8i894vslbs">&nbsp;&nbsp;&nbsp;打印出的sql语句</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/0hbfbq9iubi6utel4e5mnaucas.png"></p>
+<h3 class="topic">
+<a name="1o02ofj8jspl3gjaoqjiks5q3v">&nbsp;&nbsp;&nbsp;&nbsp;如果输入万能密码</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/7p3i1fnbqc9315fsbg9hjr95kf.png"></p>
+<h3 class="topic">
+<a name="24daa3d06a6u5qbllhbhfh8v6m">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/4h0p2lm0vmugh0m5j6tf3pbi0m.png"></p>
+<h3 class="topic">
+<a name="4isuk4sjifi9sijm799ulc5u5a">&nbsp;数据库中存在的攻击目标</a>
+</h3>
+<h3 class="topic">
+<a name="4bpdb4s5t9rhe0jokq82lf6br8">&nbsp;&nbsp;数据库中保存的目标网站的数据</a>
+</h3>
+<h3 class="topic">
+<a name="55s4bvbsgfnshhi6ugqsgapvul">&nbsp;&nbsp;数据库本身的管理员账户和密码</a>
+</h3>
+<h3 class="topic">
+<a name="7lhetv8eiq2073mmtlo1jjhfsu">&nbsp;&nbsp;&nbsp;查看mysql数据库中有哪些表 （mysql数据库中保存数据库本身的一些数据，包括数据库管理员密码等）</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/1ijj8hrhr0p4ec39h4rtfc4vop.png"></p>
+<h3 class="topic">
+<a name="48jn9ukgbfmrjj8igpeuqn2uks">&nbsp;&nbsp;&nbsp;&nbsp;查看mysql数据库中user表中的数据</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/4cnjhc6oa5vvmv65oep4rcffuu.png"></p>
+<h3 class="topic">
+<a name="2dpri83s9gjq0krhrctk8ptfjh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/6ug2jsevoh9qlnvmlnv4hsomcv.png"></p>
+<h3 class="topic">
+<a name="2nguk4conksc9c4aptgs21k8k0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在cmd5网站中查询加密的密码，从而获得解密密码</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/5u87jda2n7tu6lvbvg94nkflab.png"></p>
+<h3 class="topic">
+<a name="67v2qhautk7bn2a8gtfr17kd5o">&nbsp;&nbsp;&nbsp;获得数据库账户和密码，如果数据库本身开启了远程链接，就可以链接该数据库，从而进行脱库</a>
+</h3>
+<h3 class="topic">
+<a name="6otcls7rk79kr7i29dmba4t8tt">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/31jl6mibkvo636pshvnpbs710f.png"></p>
+<h3 class="topic">
+<a name="0ge0r8rvlv75cl2u532u372adk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;根据将dede找到的加密密码去掉前三位和后一位，进行查询，可以得到真正的密码</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/22n3l95ejeu2e05o6g16b5dio1.png"></p>
+<h3 class="topic">
+<a name="3u911il3ehqii9rfokhhl0qcsb">&nbsp;&nbsp;数据库中保存的其他网站的数据</a>
+</h3>
+<h3 class="topic">
+<a name="7isvk715eo2v5e617j4rlqlvc3">&nbsp;&nbsp;&nbsp;一般通过show databases可以看到所有的数据库，一般一个网站对应对应一个数据库</a>
+</h3>
+<h3 class="topic">
+<a name="6vp2gh4ej9trc70na7lgc9u0ih">&nbsp;&nbsp;数据库所在服务器的文件(数据库支持读取本地文件的功能)</a>
+</h3>
+<h3 class="topic">
+<a name="2t0nt575moubsagnr755f6r9g2">&nbsp;&nbsp;&nbsp;通过--file-read参数进行读取服务器中的指定文件</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/1uoc06dkvcju9utv4dq1a5bnon.png"></p>
+<h3 class="topic">
+<a name="1vjp7l8jj114ep11ss7m15ehi1">&nbsp;&nbsp;&nbsp;&nbsp;读取成功，文件被保存到指定路径</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/7jbdlf46293hm35tmmm24aulu7.png"></p>
+<h3 class="topic">
+<a name="38hnfilc70tsj14psj71ipfn6h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/7ima522hjntsj4cod0dqsbubnn.png"></p>
+<h3 class="topic">
+<a name="2ac39ct0scsc4j7pmk39dd99ru">&nbsp;&nbsp;获取数据库所在服务器系统命令行</a>
+</h3>
+<h3 class="topic">
+<a name="2jpn0634vmr2ogc17hgpf19sg5">&nbsp;&nbsp;&nbsp;通过--os-shell参数获取服务器系统命令行</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/1oe01qpgljcc1am5p7anc3h011.png"></p>
+<h3 class="topic">
+<a name="0mi4fvqr3tmh7u4dpdg0fad6nc">&nbsp;&nbsp;&nbsp;&nbsp;指定网站的编程语言</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/3rmcrl9iu07cs1ecsnai8dm61c.png"></p>
+<h3 class="topic">
+<a name="1p2mtdo4kmj2v5gv001t40dear">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过webshell可以得到网站代码在服务器上的路径</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/1n5ihgb9f3r8ho8djjrv3hksnm.png"></p>
+<h3 class="topic">
+<a name="0b9dl0ukddvsh1tr8b8hpmeo04">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;输入网站文件在服务器上的路径，该路径可以通过webshell得到</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/2fkl148g7o5ier7vctolarasql.png"></p>
+<h3 class="topic">
+<a name="2ps7nickru8rk84fv30b19mtmn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;获得shell，能够执行指令</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/0r6jgjf5e0ce9u0odvpalgdnv2.png"></p>
+<h3 class="topic">
+<a name="591ml0kjmcge6fltvl076dilb7">&nbsp;&nbsp;&nbsp;能够执行命令行就能够添加账号并开启3389端口，进一步上传后门或者提权程序，进行提权</a>
+</h3>
+<h2 class="topic">
+<a name="3u320gnmjr9aeaodqdb0tal7fi">XSS漏洞</a>
+</h2>
+<h3 class="topic">
+<a name="3pplt3ntj52u176ldm1naup92k">&nbsp;漏洞原理</a>
+</h3>
+<h3 class="topic">
+<a name="4d76dulpj2915md0d4s81ie83d">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/6jsgbdut4dktvfv8n9sts3skmv.png"></p>
+<h3 class="topic">
+<a name="52q2ml4svgjhbj8lgahrbtc5aa">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/1vljq48tjjr86pptng02g08p89.png"></p>
+<h3 class="topic">
+<a name="32iv5gjvnbnravv9cti8dtb9g8">&nbsp;&nbsp;&nbsp;&nbsp;xss分类</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/0ob5ksoibjl1035fk5sf1t2a2q.png"></p>
+<h3 class="topic">
+<a name="1k3vjsjmrpntrp0qfuin296kk5">&nbsp;检测方式</a>
+</h3>
+<h3 class="topic">
+<a name="35fdgvgu4pdcvujl94e24eesbi">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/3aj24egk9kccjvrqrk83h8g022.png"></p>
+<h3 class="topic">
+<a name="3aodhp5hrh656eq3fnhfib9h55">&nbsp;xss利用</a>
+</h3>
+<h3 class="topic">
+<a name="6fmgmuh5pvm8qd29jsjd623ao8">&nbsp;&nbsp;反射型xss利用</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/5d31ih66kvf10qvjfa065ob4v8.png"></p>
+<h3 class="topic">
+<a name="32q5he6uemf1n1a767vlvpv0c7">&nbsp;&nbsp;&nbsp;存储型xss利用</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/14ibedk0nbfbpdh48s5dhgleoq.png"></p>
+<h3 class="topic">
+<a name="0cp05crtu4stu524pbqv68p7ul">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/7d8oqgr62esf2sqls5i7pguphj.png"></p>
+<h3 class="topic">
+<a name="0ravcp35tauc0qa3d6hmbonmea">&nbsp;xss预防</a>
+</h3>
+<h3 class="topic">
+<a name="461anonr4vtkobk3bev9k383vb">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/69h2uej3qpksg6ibgdtdf1ltid.png"></p>
+<h3 class="topic">
+<a name="7tj986smctneiuva0rl1pqv4bf">&nbsp;漏洞原理实例</a>
+</h3>
+<h3 class="topic">
+<a name="5rc9hf55f5g4sg6unqcja2p8jk">&nbsp;&nbsp;get数据包中提交的444数据被服务器返回回来，并作为字符串显示在html中</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/1vdp4nj1lntjhaabir69s574qq.png"></p>
+<h3 class="topic">
+<a name="3u3jqoaktqc12d84qgmt4mrgp1">&nbsp;&nbsp;&nbsp;get数据包中提交js代码，则浏览器接收到服务端发来得到数据包，解析js代码，并执行</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/24cb2oedl6jjsinc65gfcm6343.png"></p>
+<h3 class="topic">
+<a name="6i38lithk085pvg24mm5ibqo82">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/5jn6bdq4in7n0edosjb1agnftm.png"></p>
+<h3 class="topic">
+<a name="3sm4aqdccjfhrp9cd5ntrfjars">&nbsp;&nbsp;利用反射性XSS实现网站页面劫持</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/6av5dmovi9rlv26an2v54m1src.png"></p>
+<h3 class="topic">
+<a name="4l6d6pslt8317nkbgi76am3vao">&nbsp;&nbsp;&nbsp;还可以利用js代码执行的机会盗取用户cookie或者设置键盘记录</a>
+</h3>
+<h3 class="topic">
+<a name="0tgk4ihfa7cp8374a4c61m7j24">&nbsp;&nbsp;使用kali中的beef工具利用xss漏洞</a>
+</h3>
+<h3 class="topic">
+<a name="6o2096p87m07c5saqsljs5cv5p">&nbsp;&nbsp;&nbsp;使用kali中的beef进行xss利用</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/6buo47v5ct138isg3eofivdd6n.png"></p>
+<h3 class="topic">
+<a name="044osg2bspc9jvlv6arhbbkao8">&nbsp;&nbsp;&nbsp;&nbsp;用于xss利用的js代码，由beef工具提供，该js代码执行时会调用beef服务端职工的hook.js脚本</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/1cl7val2o6ret55ilibsq3kujr.png"></p>
+<h3 class="topic">
+<a name="3rgell539ujri45eumkj94eqci">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;向存在存储型XSS漏洞的网站提交js代码</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/52fs48hse449ctek62lcdc8ken.png"></p>
+<h3 class="topic">
+<a name="7bh3cjv84kp4ue2s8vbk43clt6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;则kali中的beef工具可以看到漏洞站点上线</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/4tublm4h2t8qkvj6mrrded846v.png"></p>
+<h3 class="topic">
+<a name="2o6k2tcut5p8gds3borvu6o2l7">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/4t5264vp70iab05m7h4ae449e6.png"></p>
+<h3 class="topic">
+<a name="6jh4b7d21o1b9mvuue5e8g676t">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/7e0hmid1ooj9so241rhe7qkn4d.png"></p>
+<h3 class="topic">
+<a name="6e2n332ef9ljs267b31bm0n3rd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/51uj6s9isdjsldosbh6578g4o3.png"></p>
+<h3 class="topic">
+<a name="42s1u76ctar0at6g1f07kgphi8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/2n48dllmgpc610uv9i6v3j59il.png"></p>
+<h3 class="topic">
+<a name="5cahfsn448b74ho9sjogmofhk3">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/1u4bqai3p2bmb5cnhko2mje914.png"></p>
+<h3 class="topic">
+<a name="4ot9ggqmjgrlqdj3e1qvsch1lr">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/04ou20tlan3a5ksomjpmi6tadv.png"></p>
+<h3 class="topic">
+<a name="3f7edouluuahk8taujcuflpuhk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/406i9tssjg7rjhl2r9ebat67bp.png"></p>
+<h2 class="topic">
+<a name="1r1v4arjat8h96dr3fjo5na0or">文件上传漏洞</a>
+</h2>
+<h3 class="topic">
+<a name="1abqhmu0b0n05ib6ratlk3du27">&nbsp;漏洞原理</a>
+</h3>
+<h3 class="topic">
+<a name="7ebrhh79vqnd87ul6vntgmksbj">&nbsp;&nbsp;主要是服务器对用户上传的文件的后缀名没有有效判断</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/7ifk425krpo5c7g0ir9b5837m1.png"></p>
+<h3 class="topic">
+<a name="3md24jfjasurimfm9cuqnffiol">&nbsp;漏洞预防方式</a>
+</h3>
+<h3 class="topic">
+<a name="19mknhe5bni4nq8p059igq4ng7">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/59cmo2d9k1l9cd55foldldlcol.png"></p>
+<h3 class="topic">
+<a name="5g7qshth08jh20km4gs97gi0db">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/2pr8oikuq6ru8hecrat66t98q4.png"></p>
+<h3 class="topic">
+<a name="1o1l4ur31sicreic7q28edigln">&nbsp;&nbsp;&nbsp;通过修改中间件的配置文件可以设置网站部分目录不能执行php jsp文件</a>
+</h3>
+<h3 class="topic">
+<a name="3b4j24uhds32299nhsr9gnhld1">&nbsp;漏洞实例演示</a>
+</h3>
+<h3 class="topic">
+<a name="0pmk4a5u0gftn8fa29updpf8kd">&nbsp;&nbsp;网站后台或前端提供文件上传功能</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/4uiscfjtusdjf61vhmqffomjmf.png"></p>
+<h3 class="topic">
+<a name="7sa5seikn4gg3d8glvu613i82q">&nbsp;&nbsp;&nbsp;将webshell传上去</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/72362d91pornjvk6s9nrikkhf5.png"></p>
+<h3 class="topic">
+<a name="24m05pmuf47ol6n84iq66rsevs">&nbsp;&nbsp;&nbsp;&nbsp;访问webshell</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/65oieqhusmda20r5ddnmipvfhq.png"></p>
+<h3 class="topic">
+<a name="4cf3v4nshrthjfcg9ejda4u089">&nbsp;&nbsp;使用burp可以将上传文件的post数据拦截，并修改上传路径和上传文件名</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/77j7eggktehbc9is2rsip4k3ig.png"></p>
+<h3 class="topic">
+<a name="6081et8cn02qb9o3slre8u5ts6">&nbsp;&nbsp;&nbsp;修改数据包后文件上传成功</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/41qhtmkj0q4bdnrgf1t0she0am.png"></p>
+<h3 class="topic">
+<a name="17ekjhon7gomuplmr9rea3d0cv">&nbsp;&nbsp;部分网站会限制所上传文件的后缀不能为php，所以上传文件时可以将webshell的后缀修改为jpg等其他格式</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/0m9u3stdgcivkcl617em6mogt7.png"></p>
+<h3 class="topic">
+<a name="7gh2u2t3ghoden87unmusi8okr">&nbsp;&nbsp;&nbsp;抓包修改文件后缀，显示文件类型不符错误</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/2henf7gf64h4g6k7cqmbv8r47f.png"></p>
+<h3 class="topic">
+<a name="0mkd5g8f89bk9olee7cjavmibj">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/760jjdu5petg7oln2u0bg17mku.png"></p>
+<h3 class="topic">
+<a name="59ql13i83cala326c4flv5s4pb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;访问webshell</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/526du17fi2rikepp574ihhqqhv.png"></p>
+<h2 class="topic">
+<a name="58qoku6kr83t8r25pnagkp82og">任意文件下载漏洞</a>
+</h2>
+<h3 class="topic">
+<a name="55eehm6a131dtotmk9utc3ol2p">&nbsp;漏洞原理</a>
+</h3>
+<h3 class="topic">
+<a name="6b1po5olhu42g1bmrodq9ddl97">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/24ep22ia7bkh4h1bmumd0hpkft.png"></p>
+<h3 class="topic">
+<a name="60ndndca9o6n884h6f5gi7oqoa">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/3dkjlqkdtbuhs8dembqld87bb9.png"></p>
+<h3 class="topic">
+<a name="61hu405mnll96hgqmsn0q7ersh">&nbsp;&nbsp;&nbsp;&nbsp;例如将参数download设置为特殊参数，从而返回服务器根目录，下载指定文件</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/479acbejc08pc9fp2u4rud5qrj.png"></p>
+<h3 class="topic">
+<a name="4kdmd0373qpgtmpgaij9bhj4fm">&nbsp;漏洞预防方式</a>
+</h3>
+<h3 class="topic">
+<a name="1vv8tvpo75ajcvddc8ecb5cqmi">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/390d3lurevfjiq1a1mg9r2ba21.png"></p>
+<h3 class="topic">
+<a name="0rl0c0sducm2rt2s9tmdn8p6tk">&nbsp;漏洞共利用实例</a>
+</h3>
+<h3 class="topic">
+<a name="1es4p0r8n6vh403p91fap15seu">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/5kia55hr4e5i4q1oht54m3oug4.png"></p>
+<h3 class="topic">
+<a name="7199s4295rahtevne7i8pfrinu">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/38hv4454hls0pshllnmd1dsgva.png"></p>
+<h3 class="topic">
+<a name="34c5874e4e6vs3sn6cqacon87o">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/3fp0s2j2c73bmgifi5gntn32nl.png"></p>
+<h2 class="topic">
+<a name="4o8qdufjgb6sm1no31g8ejfvhg">通用框架与CMS不规则漏洞</a>
+</h2>
+<h3 class="topic">
+<a name="49humbbiku8qnr4adm9ue4e9m5">&nbsp;漏洞原理</a>
+</h3>
+<h3 class="topic">
+<a name="6hkkb1k5m75lojfu60o1jkb8sn">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/77coaiu23ncsjrkm7ikuddsoi0.png"></p>
+<h3 class="topic">
+<a name="14p3g5qlkfq53q7mh47r54b1s7">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/2b4789k5lkhkemdhsat2q7f025.png"></p>
+<h3 class="topic">
+<a name="7k830qvtte3dtgcasugercmcdq">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/7g68vsn9uhoskgji7o30bng0uh.png"></p>
+<h3 class="topic">
+<a name="0t5rel0f5gk0s6q7i6fqa2m2ef">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/0q0vu8dgh6c4iqp5gpva8cqt93.png"></p>
+<h3 class="topic">
+<a name="78oi4drhoss2h2u8p6s8c9clua">&nbsp;预防方式</a>
+</h3>
+<h3 class="topic">
+<a name="5c1833o1n4t25s3hsbb34eqlrv">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/6q09kdjd4tkr2cpgsj820svbfa.png"></p>
+<h3 class="topic">
+<a name="5h7mr8ato3ikmskht463epsqr0">&nbsp;漏洞实例</a>
+</h3>
+<h3 class="topic">
+<a name="5ea4j87l9t9tqpsfur71hru9as">&nbsp;&nbsp;DedeCMSrecommend.php漏洞</a>
+</h3>
+<h3 class="topic">
+<a name="1c7tk9rojsj2cuj6raq3ajfmmm">&nbsp;&nbsp;&nbsp;ip+esp，访问存在漏洞的网站，就可以漏洞利用，这里时获得了网站的用户名和密码</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/1h5db9d4p21t9p3qbkbn71miqc.png"></p>
+<h3 class="topic">
+<a name="5hcdds4h137k6eteshfo5s4bhu">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/5e58dokddm4hkkfer886fu299f.png"></p>
+<h3 class="topic">
+<a name="59rk2tjq9kmccith9ce7hsk43e">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;子主题 1</a>
+</h3>
+<h3 class="topic">
+<a name="18igjq3afgkdt72a47jfecqd20">&nbsp;&nbsp;Struts2远程代码执行漏洞</a>
+</h3>
+<h3 class="topic">
+<a name="3kdg32eapi4rsdel2atmvlh3rn">&nbsp;&nbsp;&nbsp;环境搭建</a>
+</h3>
+<h3 class="topic">
+<a name="18l04a5uc68esa4462712e39hf">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/36uloovadokqqkcn8elm3gtenu.png"></p>
+<h3 class="topic">
+<a name="08jvd1ccmtk2e67pohfqku2evd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/436d0lm8gs5r4rgi6t530am9kn.png"></p>
+<h3 class="topic">
+<a name="7dahmlrpsib0apiuskuv4916lf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;访问对应目录，即可运行struct2</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/054aq3e6ckluvn6v1kimpe54i8.png"></p>
+<h3 class="topic">
+<a name="1igr9qpmt3mlnh08grtbut4tq0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/6jaaj9i10hia4elcs8gjnrl7gd.png"></p>
+<h3 class="topic">
+<a name="3lep4ro6bjhu9gqj4s7cqnpb6u">&nbsp;&nbsp;&nbsp;漏洞利用工具</a>
+</h3>
+<h3 class="topic">
+<a name="64o47nr2fu1nrh69sjap3r2i4s">&nbsp;&nbsp;&nbsp;&nbsp;专门针对Struct2的漏洞利用工具</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/0actds7l86nke69kaokorbttbt.png"></p>
+<h3 class="topic">
+<a name="30rbol640amms5gfdvpuga7iht">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/2bbllv9ddqk03gpnualvtl2e95.png"></p>
+<h3 class="topic">
+<a name="6dhf85mot512il4j755iqtp9nv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/67ni1qptrlp51ihe5bqp4p4m1s.png"></p>
+<h3 class="topic">
+<a name="298p26jo38af415ov8gjm04c3n">&nbsp;&nbsp;&nbsp;&nbsp;通过抓包工具获得漏洞利用程序发送的数据包</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/0a6pbprmna718fhillcju22tdk.png"></p>
+<h3 class="topic">
+<a name="2n2d563guv5fghhttmoo4gt3ti">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/1bbaokc6f5vomavq27q31sqhbf.png"></p>
+<h3 class="topic">
+<a name="5pch65diamhnh0a3l8218gcm6v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/7o6q63ccucrneps0vaa4la2jss.png"></p>
+<h3 class="topic">
+<a name="20qf60cnsgbu41mtagngqqi66v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/5kfdo4cj7buprgiprkmc2lgfr7.png"></p>
+<h3 class="topic">
+<a name="7e0jdlhuj88lnq14l9a8ep263t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将数据包中实际起作用的exp代码抠出来，放在hackbar中与运行</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/7u457282ladc496lun80jmi356.png"></p>
+<h3 class="topic">
+<a name="6tvd97n49v7u597s4arfv9q6fa">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/3o6ilco4175nnrvr4m1bvv5uei.png"></p>
+<h2 class="topic">
+<a name="1h9umkimsn9k9g20imdhad3men">业务安全漏洞</a>
+</h2>
+<h3 class="topic">
+<a name="0c4sse0dnec3voqmussiqkm5k8">&nbsp;漏洞类型</a>
+</h3>
+<h3 class="topic">
+<a name="6ua7vfk9pl038iuauos0egqips">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/4fst08a2kmr5hqj26eem48n6f0.png"></p>
+<h3 class="topic">
+<a name="3tpm89i2v4hgst1im3lshmefv2">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/2catnrhcd027pm38bh7qvilm7f.png"></p>
+<h3 class="topic">
+<a name="0up39iln652pe2su3m0oic4cll">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/373dqcuphrogecl17rmsndjf05.png"></p>
+<h3 class="topic">
+<a name="5v6nfhcatpcrv4vbgtgvghmjmt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/085o2ce2s2i48h4ce3v5p4b1ua.png"></p>
+<h3 class="topic">
+<a name="1gc7ujklgluclt2fda801f4825">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/1rbfr5aok712hk7pd6r44ccvau.png"></p>
+<h3 class="topic">
+<a name="3hipumno99k90hjo946eoehdfr">&nbsp;漏洞实例</a>
+</h3>
+<h3 class="topic">
+<a name="1d07hh9nbigr4ttqq04h021tig">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/6g657r9cvhdbuvj7tnh7ggf252.png"></p>
+<h3 class="topic">
+<a name="58vj5u8ghg504j6o6n7612rjdt">&nbsp;&nbsp;暴力破解</a>
+</h3>
+<h3 class="topic">
+<a name="7e834bvi2es68jr24i4pa5sss1">&nbsp;&nbsp;&nbsp;印象笔记中修改邮箱功能，需要用到用户名和密码，且没有验证码机制</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/588d99n9tgku6va27q9huei3i2.png"></p>
+<h3 class="topic">
+<a name="0sgubtatetn4ke7v6h03rpa5qj">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/14pfm4c3oj0dibfudh72u63bh6.png"></p>
+<h3 class="topic">
+<a name="5hcoermdi4kcqgtr1p8aerdb6v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/0i57c84c8dduv7pjuv9viu2a4v.png"></p>
+<h3 class="topic">
+<a name="3fb730mee03jrudjr98eu9j9im">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;登陆他人印象笔记账户</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/125nqhar0jd4te18pl8cdscnhh.png"></p>
+<h3 class="topic">
+<a name="26uklrqmrbr1kria3j9n2rrgps">&nbsp;&nbsp;任意密码重置</a>
+</h3>
+<h3 class="topic">
+<a name="4g0a1nk7sf7qtvh51ll8k2gvab">&nbsp;&nbsp;&nbsp;重置密码时验证码只有四位数字比较短，且没有尝试次数限制，则可以爆破验证码</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/2npe2a5q9jafhd9vj7fo5609gl.png"></p>
+<h3 class="topic">
+<a name="5p2bm7v5jcmrfg1mj4kmns0m68">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/79ut9h8i56r4fdgh4c4p25r56j.png"></p>
+<h3 class="topic">
+<a name="7gg13gjb6opelrojr67uvq27s5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/39o3onh264j7j5s22g6msnulul.png"></p>
+<h3 class="topic">
+<a name="5161ebims6cq05sg4jggajvnas">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/7q0dii2lrf7q9fln1ailbtdcqd.png"></p>
+<h3 class="topic">
+<a name="62trq3o10p0i4mm90vrmelti3h">&nbsp;&nbsp;&nbsp;关键时在正常重置密码的过程中进行抓包，找到实际进行重置密码功能的那个数据包，然后将数据包中的用户名和密码修改为其他账户，即可将其他账户用户名密码进行重置</a>
+</h3>
+<h3 class="topic">
+<a name="3r1pv1opgk9u46ujld7n0gk98i">&nbsp;&nbsp;短信轰炸</a>
+</h3>
+<h3 class="topic">
+<a name="1mt0cpu3nusur0lfrf6qj5trb5">&nbsp;&nbsp;&nbsp;网站提供某种功能给指定手机号发送短信，发送短信的请求包被抓包，修改其中的手机号信息，再重复发包即可短信轰炸</a>
+</h3>
+<h3 class="topic">
+<a name="6usb3609h5nhvc1l0jqae8t105">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/34mph95qaep9utnihmrbrv1fpt.png"></p>
+<h3 class="topic">
+<a name="3d32uh3koar23nro8ak71p4chb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;同理：邮件轰炸</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/503kav4ak9esq558e2b4p92kl3.png"></p>
+<h2 class="topic">
+<a name="45vbpaadgc3l0fs7kfs7qsjgmc">CMS特征</a>
+</h2>
+<h3 class="topic">
+<a name="33k51g235qeg3c00kck0mnibrn">&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/41f945kh00qano6sitff5vf205.png"></p>
+<h3 class="topic">
+<a name="3de1o86jni2a7n8uqps2mhb9i9">&nbsp;&nbsp;dede网站的后台一般是ip/dede</a>
+</h3>
+<h3 class="topic">
+<a name="27it437rc4777adspd51n068fl">&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="web%E5%AE%89%E5%85%A82_files/4an7r8p3ibnj4no5e64adumun2.png"></p>
+</body>
+</html>

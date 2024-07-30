@@ -1,0 +1,311 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>物联网安全-固件获取</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="3o0n3g6fvp7c1232lmo8k36tvd">物联网安全-固件获取</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/images/%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96.jpg"></div>
+<h2 class="topic">
+<a name="07fl4rboqe6lu8lrk3h8uqbqv6">目标</a>
+</h2>
+<h3 class="topic">
+<a name="1tucoa0sq5aql9c88kk6ul4vdp">&nbsp;服务的二进制应用程序、配置信息、加解密程序，获取固件即获得设备中所有的应用</a>
+</h3>
+<h2 class="topic">
+<a name="36ti4d7r24tj1lpq5mrnh3hgdk">智能硬件组成</a>
+</h2>
+<h3 class="topic">
+<a name="4vtmr5eaabqdplfae1lrbt8hsi">&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/01o732uok0i81i87hubg7n10cs.png"></p>
+<h3 class="topic">
+<a name="50fam2ot9g13iu0l7vdgg8l09o">&nbsp;&nbsp;RAM掉电即丢失数据</a>
+</h3>
+<h3 class="topic">
+<a name="2gf6469opmgbq95jg1s58j7bf9">&nbsp;&nbsp;固件主要分四部分</a>
+</h3>
+<h3 class="topic">
+<a name="1v7p4r3mpj5ob4a1fpuduubttg">&nbsp;&nbsp;&nbsp;UBoot主要用于引导程序，辅助固件烧录，设置环境变量，设置引导项</a>
+</h3>
+<h3 class="topic">
+<a name="5hq1iqol9orphf1heavqdm7627">&nbsp;&nbsp;&nbsp;kernel可以为linux、windows、vxworks等多种操作系统内核</a>
+</h3>
+<h3 class="topic">
+<a name="75btjn19jch1vk0oma41lpcfp3">&nbsp;&nbsp;&nbsp;文件系统中保存进行分析所需的二进制程序等信息</a>
+</h3>
+<h3 class="topic">
+<a name="0e8i37eri93ravo7pt5qvt41hd">&nbsp;&nbsp;&nbsp;其他资源文件</a>
+</h3>
+<h2 class="topic">
+<a name="1lqomdle182vm4lv8uaegk4rgl">固件提取方法</a>
+</h2>
+<h3 class="topic">
+<a name="5440cg1adhlm9mk1ns1h42cv0r">&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/0orf7hhvtat433cp82bjmg4kaa.png"></p>
+<h3 class="topic">
+<a name="7sgh32fhcu628qq3jl8bkruqou">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/2pvj4ba156n3pvl8o1efrog1di.png"></p>
+<h3 class="topic">
+<a name="2glu557jojnaknjc6a8ilua8q1">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/0abi0d5g3g97b3uqdanrsu6q2j.png"></p>
+<h3 class="topic">
+<a name="76t7o1uv3qvamgm3novnm2nm20">&nbsp;正常情况下固件都会升级，当前多数是在线升级，会访问存储固件的服务器，此时可以使用工具抓包，或者设立另一个路由器，让主路由的流量均经过该路由器，通过分析该路由器的日志信息，尝试提取更新的固件升级包的地址，甚至可以对比升级前后升级包的地址，从而推测其规律，获得更老的升级包地址</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/5cmou306e6vsfio7019mgggnjd.png"></p>
+<h3 class="topic">
+<a name="5l6k9r2gno7vtgcuq77kiq21au">&nbsp;&nbsp;不是所有设备厂商均提供在线升级固件或直接生成固件，部分厂商需要使用专门的升级软件从而升级固件，此时需要逆向升级软件的升级接口，如果升级数据加密，还需要进行解密</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/09d801ngmbep0tgcvokfd05nka.png"></p>
+<h3 class="topic">
+<a name="5kmjdvej4rbj0kcs4cj0untecs">&nbsp;&nbsp;&nbsp;编程器需要和对应应用进行连接，flash芯片和编程器的引脚链接需要一一对应上，否则无法读取固件</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/6b7cim8s7rb7qgtju8fjshj2ng.png"></p>
+<h3 class="topic">
+<a name="2i6t55g2ltq2o26k7bn9nvic40">&nbsp;部分设备调试接口没有封闭，可以通过调试接口获得一个shell或是U-Boot，部分UBoot可以实现直接从flash中共读取数据，部分UBoot会将flash中的数据读取到memory中，再通过md等命令读取数据，将数据显示出来，同时记录串口输出（即屏幕上的内容），分析输出数据，仅保留16进制表现形式的数据，将其作为固件保存，该种固件提取方法速度较慢，可能需要输出好几次，详细方法见下面的《使用UBoot提取固件》</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/5lb4i085e5kvfmkpa4uhek6ida.png"></p>
+<h3 class="topic">
+<a name="5vgu3e373tpng7qcibt64ihcjp">&nbsp;&nbsp;通过系统shell提取固件，（可以使用shell向设备传输一些工具，使用工具进行固件的提取）（比如使用tftp向设备传输nc tar等工具，从而完成固件提取）（此时需要获得系统级别的shell，如果是普通shell，则部分操作可能无法完成）</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/4e5ehoqsk507eel9d4jd47ullc.png"></p>
+<h3 class="topic">
+<a name="497ajoi8d3f2gvl5hfev4ni2dk">&nbsp;使用编程器从flash中提取固件</a>
+</h3>
+<h3 class="topic">
+<a name="4k8j023bfv017o321ujl0ndpdm">&nbsp;&nbsp;拆卸芯片需要使用热风枪，需要按引脚一一对应的关系与芯片底座进行连接，一般获得的固件均为.bin</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/1q0ubl9jk438jd760na1qn640b.png"></p>
+<h3 class="topic">
+<a name="3ulu2q344dk61nq3kjku86rvel">&nbsp;&nbsp;&nbsp;使用针夹或编程器夹均有可能无法提取到固件，此时可能需要将flash芯片拆卸下来</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/4pdnlbfsf88qjbhf846affsf63.png"></p>
+<h3 class="topic">
+<a name="7vh8bcm57uh08e9slllm9sff58">&nbsp;&nbsp;将芯片从板子上卸下，将其安装在编程器底座，将后者连接到编程器上，并连接电脑，打开对应软件（软件安装过程中可能报驱动缺少错误，此时可以安装对应驱动，尝试重新安装）</a>
+</h3>
+<h3 class="topic">
+<a name="5un1i1ps5jsc3a2o89dtrb8api">&nbsp;&nbsp;&nbsp;点击智能识别，从而识别芯片厂商和型号</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/05gu8u4vha50ruu210ig5e2s95.png"></p>
+<h3 class="topic">
+<a name="0fqqtk541j05bcinrob3gmilmd">&nbsp;&nbsp;&nbsp;&nbsp;点击读取芯片，读取完毕后会选择固件的保存路径</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/6kk78u88ujn2hn51sreljnfpof.png"></p>
+<h3 class="topic">
+<a name="5qkeqd9u8anicvcsc4hjtevjfg">&nbsp;&nbsp;&nbsp;查看读取出来固件（保存在缓冲区中）</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/7hu2ljsnjlc2ksu737pm01urg3.png"></p>
+<h3 class="topic">
+<a name="2nlqnlmbvgh7ac5cjpekj7l15u">&nbsp;&nbsp;&nbsp;&nbsp;芯片中读取出来的所有数据均保存在缓冲区中，通过UBoot也能达到类似的效果&#13;
+也可以通过该工具提供的写入功能，将固件重新写入到芯片中，并焊接到板子上，从而完成设备固件的修改</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/41o9bgevqqht4hm9hl4ktro503.png"></p>
+<h3 class="topic">
+<a name="6v54cih0brp3sg958n8kl7lvc8">&nbsp;使用UBoot提取固件</a>
+</h3>
+<h3 class="topic">
+<a name="6570gvejo2bfvtspd7s78sj3ii">&nbsp;&nbsp;将ttl转sub插入电脑，检查此时是否存在该设备</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/5rf1ein3iq6pip241ck20afg79.png"></p>
+<h3 class="topic">
+<a name="55dbqp26q4ecuvrknbq7sdmguc">&nbsp;&nbsp;&nbsp;启动迷你com开始监听</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/6lkc4am70c4cfolbuheta18u4s.png"></p>
+<h3 class="topic">
+<a name="6lnj85iu2euqqp00pc5mgs5ntb">&nbsp;&nbsp;&nbsp;&nbsp;按照之前的方法（ctrl a+p），将波特率设置为57600</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/33t0m592eq15dfj7qjpmpv764i.png"></p>
+<h3 class="topic">
+<a name="5seqgig45fa0k2ai0ptor2sbb2">&nbsp;&nbsp;按之前的方法，ctrl a +L将minicom日志数据保存到文件中，此时为了方便，将数据保存到iot.bin的文件中</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/0tp6qq2qa11mo0reqhdo1qv5uc.png"></p>
+<h3 class="topic">
+<a name="46f4vn7vs37fhalalm6aq9d0jm">&nbsp;&nbsp;&nbsp;给设备接电，该设备自动运行到uboot中，查看此时可用指令，关键指令mem和flash</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/60nb8p20b0u1bpehel5lstpc62.png"></p>
+<h3 class="topic">
+<a name="516hqb4lcmp81vadh9a0mhl57d">&nbsp;&nbsp;&nbsp;&nbsp;输入mem指令，显示了mem指令的使用方法</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/4fs0q1jj1rrjposg0deqi8aqmo.png"></p>
+<h3 class="topic">
+<a name="22l9eb96246de3pkoon13amckc">&nbsp;&nbsp;mem -show指令显示内存相关信息&#13;
+mem -dump 起始地址 大小，该指令可以输出内存数据</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/6dr1331umijbcomi8k5bgbr1pr.png"></p>
+<h3 class="topic">
+<a name="6ugdbi2fptir7pra13fesoukj8">&nbsp;&nbsp;&nbsp;输入flash，显示帮助信息</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/24j66gdr7u64vks2r2j7i8gq1c.png"></p>
+<h3 class="topic">
+<a name="5h6rov6e09aoqpe6p6cba2tsrb">&nbsp;&nbsp;&nbsp;&nbsp;输入flash -layout，可以显示flash中的内存布局，其中BOOTIMG即为U-boot的img文件，占据52k内存大小，之后还有FIRMWARE内存块,该块内存即保存嵌入式操作系统vxworks的镜像（该设备使用vxworks操作系统）</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/61bfjm1eh611l3efma30qh245j.png"></p>
+<h3 class="topic">
+<a name="1q7205uoj6oh2oul2p9rsivgk6">&nbsp;&nbsp;mem指令用于dump内存，flash指令用于读取，此时需要在内存中选取位置用于保存dump数据，因为dump数据不能覆盖程序正在运行的代码，此时根据mem dump的输出结果，地址801f5820之后的部分内存并未保存关键数据，可以被覆盖</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/4lj9imfbe1vjcsqe1bluo2siph.png"></p>
+<h3 class="topic">
+<a name="5t89hqa53i61ukqm4apoeej4qc">&nbsp;&nbsp;&nbsp;使用flash的读取指令flash read，从FIRMWARE起始位置开始读取300字节数据到地址801f5820中，之后通过mem -dump 0x801f5820 300可以看到flash读取的数据，数据以IMG0开头，应该就是嵌入式系统的img文件，即固件</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/0m3ndivhd93pmjm41e4o23rc8n.png"></p>
+<h3 class="topic">
+<a name="60l49qb553jv8npc7bjl41q2t8">&nbsp;&nbsp;&nbsp;&nbsp;如果直接读取3000个字节到目的地址，则程序执行会报错，说明保存的dump数据影响了程序执行，此时需要退出UBOOT，重新来。&#13;
+值得注意的是flash指令本身对读取数据的大小也有限制，最多读取1024字节大小的数据</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/0s2hni4d1utahssi5qn4qk4ua0.png"></p>
+<h3 class="topic">
+<a name="4enpuof8cmnerir9231sd0m2gq">&nbsp;&nbsp;通过ctrl A + X退出程序</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/448r3uro2l760ng5nvi8dman8o.png"></p>
+<h3 class="topic">
+<a name="5n8h8s5ql5not5803p7l2cnhln">&nbsp;&nbsp;&nbsp;重新开始监听</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/5g9mdi1p819vu50b9k6rgr61mb.png"></p>
+<h3 class="topic">
+<a name="4euott95ald7d4ks60706fv75q">&nbsp;&nbsp;&nbsp;&nbsp;重新设置波特率</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/05sb1ac490l6f108jk1i33leot.png"></p>
+<h3 class="topic">
+<a name="5a3508fecd99skipnc9n5cttnt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;开启输出日志保存</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/3d6s8lgpttg6p9cmii7lfmii40.png"></p>
+<h3 class="topic">
+<a name="354ecjlp54sjif74t1udmjhppo">&nbsp;&nbsp;使用mem -dump查看指定内存地址（该内存地址通过mem -show得到）开始的数据，</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/6jd67nv72859d673ge3q9smop1.png"></p>
+<h3 class="topic">
+<a name="30dngb359qf5kcpsjhrvrqqjoq">&nbsp;&nbsp;&nbsp;这次向目标内存中读取1024字节的数据</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/59v7js37ckl81hvls7iqf0rv40.png"></p>
+<h3 class="topic">
+<a name="7tv5hingv1gllbmn108fu07atf">&nbsp;&nbsp;&nbsp;&nbsp;并使用mem -dump查看读取后的数据，成功将内存数据读取到指定地址，而没有报错，通过这种方式，可以读取flash芯片中的内存，只不过每次只能读取1024字节</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/34b0ah41tb9nnh6kahvr756d0g.png"></p>
+<h3 class="topic">
+<a name="7393ggml4r7d68rd4e70kb1lt7">&nbsp;&nbsp;mem -dump的输出将会保存在iot2.bin文件中，可以查看该文件</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/7vgiin7bje0rlqqisa3r4u00vc.png"></p>
+<h3 class="topic">
+<a name="3u7cb459p0fegn57gou6r5euok">&nbsp;&nbsp;&nbsp;将iot2.bin文件中的多余内容删除并整理，仅保留代表二进制固件的部分，因为这种方法每次只能读出1024字节数据，所以可能需要读取多次并整理，才能得到想要的固件</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/3kn0i245oeqrrg02is6s2gpd54.png"></p>
+<h3 class="topic">
+<a name="3t17da02vu3tfnti2safsqrma5">&nbsp;&nbsp;&nbsp;&nbsp;之后可以使用binwalk进行固件运行</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/264a0lbva5jp4k24pv497ohdih.png"></p>
+<h2 class="topic">
+<a name="202vkilds9dehkepvjfodai1jc">U-Boot相关</a>
+</h2>
+<h3 class="topic">
+<a name="7ejsa9poa2hunu9es0irvf8119">&nbsp;uboot最终目的是启动内核，之前通过按回车进入Uboot就是打断了uboot启动内核的过程</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/6r9if36j1fgqseuvv306u17t5e.png"></p>
+<h3 class="topic">
+<a name="5tpq27cg0niuemhgi2f26maugv">&nbsp;&nbsp;使用对应平台的编译器编译UBoot，可以从图中UBoot官网获得Uboot的源码，编译完成后会得到U-Boot程序，右图中通过qemu模拟arm环境启动U-Boot，编译完成的uboot也可以烧录到芯片上</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/6pqk4cnr9c75hvm1nbtekuot72.png"></p>
+<h3 class="topic">
+<a name="69i8ncbovniv663fnj2famfhcv">&nbsp;&nbsp;&nbsp;如果不使用编程器烧录固件，则可以使用tftp服务从电脑中下载用于刷机的imge或bin文件，之后把系统刷入到指定的flash位置</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/3vvv7ofho3krigco8p4l004jtf.png"></p>
+<h3 class="topic">
+<a name="496ie6ggq63v8eo3qcr27qor8i">&nbsp;U-Boot编译</a>
+</h3>
+<h3 class="topic">
+<a name="4m9pgdgfjgesrctnocdcr76ofa">&nbsp;&nbsp;U-Boot源码的目录结构</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/1ol2tamjcuntv8gclit84mdq0c.png"></p>
+<h3 class="topic">
+<a name="7bdcgnmq0saakbdgidd89eblko">&nbsp;&nbsp;&nbsp;make指令后ARCH指定程序运行架构&#13;
+CROSS_COMPILE指定所使用的编译器类型，gnueabi-后面会自动补全所有用到的交叉编译器&#13;
+最后指定开发板名称（vexpress_ca9x4_deconfig），此时使用该开发板默认配置，make指令生成后，创建了.config文件</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/2lo8omho1gp889khbl66i6c9op.png"></p>
+<h3 class="topic">
+<a name="6f436ij412n7545huo3ao0lu0a">&nbsp;&nbsp;&nbsp;&nbsp;运行vim .config，查看文，该文件描述了UBoot的编译目标</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/13fjf98knet34ui95079b8uv9r.png"></p>
+<h3 class="topic">
+<a name="4ncfsr9d2v22opqi9r42vnkm03">&nbsp;&nbsp;输入make指令，开始编译</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/1a92gvlr40sct244f74ckoscke.png"></p>
+<h3 class="topic">
+<a name="0tegjpq24mkrrhdtf2qt1tclot">&nbsp;&nbsp;&nbsp;编译完成后当前目录下多出来U-Boot相关文件，其中U-Boot用于在qemu中模拟执行，U-Boot.bin可以用于烧录到固件中&#13;
+使用qemu-system-arm模拟执行U-Boot，-M参数指定开发板名称 -m参数指定内存大小 -kernel参数指定要运行的程序 --nographic表示不另起图形界面</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/5kerp5uq8n3745bq3huqteonor.png"></p>
+<h3 class="topic">
+<a name="1t13lcssavu4ops143m89jucab">&nbsp;&nbsp;U-Boot运行成功，输入？查看可用指令</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/2hlbn5euvvf1k7drk4nutmtsem.png"></p>
+<h3 class="topic">
+<a name="2ph3q8e2vgcjk4o4thdte1s4qh">&nbsp;&nbsp;&nbsp;ctrl a+x退出当前U-Boot，执行make clean指令，清除编译出的文件</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/2jbj6gahgg0i0dq9aa1los1ohr.png"></p>
+<h3 class="topic">
+<a name="6mbcip7958i7ntiv0rqke3nucn">&nbsp;&nbsp;&nbsp;&nbsp;vim .config打开.comfig文件，将CONFIG_CMD_SAVEENV=后面的y改为n，这样在重新编译的uboot中就不再存在saveenv指令了</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/2je7pp3ov4418ccdptbkr7a54p.png"></p>
+<h3 class="topic">
+<a name="4t8nevifjpe6miajnrgik20gsg">&nbsp;&nbsp;重新编译并模拟运行U-Boot，输入?查看可用指令，发现没有saveenv可用，从而实现了UBoot的裁剪</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8-%E5%9B%BA%E4%BB%B6%E8%8E%B7%E5%8F%96_files/5ark9s5nv69irt5r7revs5akkb.png"></p>
+</body>
+</html>
