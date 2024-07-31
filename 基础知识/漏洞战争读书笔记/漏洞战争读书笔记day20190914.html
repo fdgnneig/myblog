@@ -1,0 +1,269 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>漏洞战争读书笔记day20190914</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="5bor83pkhmtqr375q45cv49lnd">漏洞战争读书笔记day20190914</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="%E6%BC%8F%E6%B4%9E%E6%88%98%E4%BA%89%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190914_files/images/%E6%BC%8F%E6%B4%9E%E6%88%98%E4%BA%89%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190914.jpg"></div>
+<h2 class="topic">
+<a name="3i5o51ga8v8p2sr8frs7to85ch">微软补丁日：每个月第二个星期二（北京时间是星期三）</a>
+</h2>
+<h2 class="topic">
+<a name="6jlht12l6r1l5bbapvb837t0ce">od的条件断点快捷键为shift+f2，下条件断点的对象是指令，光标选在指令上，使用快捷键，可以针对寄存器值或存储器值进行条件断点设置，不能直接针对内存进行条件断点的设置</a>
+</h2>
+<h2 class="topic">
+<a name="03vkaain22il11mfc4ht3nkd0j">windbg调试命令</a>
+</h2>
+<h3 class="topic">
+<a name="0tqoe1s1nujqc8kvhc5ckrhj7s">&nbsp;u</a>
+</h3>
+<h3 class="topic">
+<a name="7iolm7rmjdb4mh2nplh2b12cc1">&nbsp;&nbsp;u命令的作用就是反编译指定地址参数之后的代码，如果不指定地址参数，即只输入u命令执行，那么默认就是反编译当前线程的当前指令。</a>
+</h3>
+<h3 class="topic">
+<a name="4njo6i94fhijouglhpstl9h1re">&nbsp;uf</a>
+</h3>
+<h3 class="topic">
+<a name="2mcrg0q5frlp2q2n424ol8q864">&nbsp;&nbsp;反编译整个函数的汇编代码</a>
+</h3>
+<h3 class="topic">
+<a name="4lao86p6tge5rcs2mqjdroc520">&nbsp;ub</a>
+</h3>
+<h3 class="topic">
+<a name="644g49s5q1cscdbrdp7cjuril0">&nbsp;&nbsp;ub命令与u的不同之处在于它是用来查看线程当前指令之前的汇编代码，b这里就是代表向后查看(backward)的意思。</a>
+</h3>
+<h3 class="topic">
+<a name="33bkqtsmnadc3tue07ldra460t">&nbsp;&nbsp;ub 内存地址</a>
+</h3>
+<h3 class="topic">
+<a name="477brbf0av9bnus4jumk9lgr9i">&nbsp;&nbsp;&nbsp;查看该内存地址之前的指令</a>
+</h3>
+<h3 class="topic">
+<a name="28gjj7grfjs4tdvvat5itc9qii">&nbsp;&nbsp;&nbsp;如果针对某个地址的指令下断点断下后，需要查看当前断点指令之前的指令时可以使用 ub+指令地址的方法</a>
+</h3>
+<h2 class="topic">
+<a name="4gmmh452bfku6qvd2h5i5jf4tq">Office文件格式解析工具offvis</a>
+</h2>
+<h2 class="topic">
+<a name="4jdmfh23flgs38hhun4tknr3eq">补丁比较工具BinDiff</a>
+</h2>
+<h3 class="topic">
+<a name="4b5egilher4f0l9qc1nk4p63cg">&nbsp;https://blog.csdn.net/counsellor/article/details/98954462</a>
+</h3>
+<h3 class="topic">
+<a name="5ma10bhfa44lg6f6bka2gms2v8">&nbsp;https://www.cnblogs.com/lsdb/p/10543411.html</a>
+</h3>
+<h3 class="topic">
+<a name="6tee7uikfslures07eksefj6d6">&nbsp;https://www.7down.com/article/84953.html</a>
+</h3>
+<h3 class="topic">
+<a name="6crdvq3a73r96k64aafiia2g1g">&nbsp;注意如果要在64位win7系统中使用BinDiff.jar，需要使用64位的IDA将对应程序生成.i64格式的文件，而不能直接使用idb格式的文件</a>
+</h3>
+<h3 class="topic">
+<a name="1jeehvg371g46acaurdp90ipoo">&nbsp;&nbsp;64位的ida可以生成32位程序或64位程序的.i64文件</a>
+</h3>
+<h3 class="topic">
+<a name="2g9aic3q89p2rpg9uq4a586n9s">&nbsp;idb格式的文件可以在IDA中以插件的形式调用BinDiff，但是不能使用BinDiff.jar以图形界面对比两者区别</a>
+</h3>
+<h2 class="topic">
+<a name="2keovskb7kunouo93hnml2ec0n">补丁比较工具Turbodiff</a>
+</h2>
+<h3 class="topic">
+<a name="5m5963n74d1bmcplu3cmtdt7b1">&nbsp;具体使用漏洞战争第101页</a>
+</h3>
+<h2 class="topic">
+<a name="1c5c6fko54so15c8tf9rn04e57">栈溢出漏洞分析的另一种方法</a>
+</h2>
+<h3 class="topic">
+<a name="10gurdu03o8gr2roha5ndbg5aa">&nbsp;通过指令运行记录功能，记录poc在漏洞版本和修复版本运行的指令上的差异，从而找出漏洞成因和修复方法</a>
+</h3>
+<h2 class="topic">
+<a name="66j423encpj2eu61pecup66nr0">被下断的指令所在的模块在程序一开始并没有被加载，，而是随着程序打开poc而被动态加载的，这种情况应该如何调试？</a>
+</h2>
+<h3 class="topic">
+<a name="1rjmbkgenmt6gjaeq9vi9qp71n">&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%88%98%E4%BA%89%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190914_files/5pe0psibsj2p2ofmvo2anbctr8.png"></p>
+<h2 class="topic">
+<a name="3cibfe72g59bpfobcka6md65q2">如果存在漏洞的是ActiveX控件，poc中通过调用控件函数触发漏洞，则如何调试其存在漏洞的控件函数呢</a>
+</h2>
+<h3 class="topic">
+<a name="6c1r1207ttepef1e15cil86oa2">&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%88%98%E4%BA%89%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190914_files/1gb9f8rocv40m57ifg7fgdkhc3.png"></p>
+<h2 class="topic">
+<a name="22nveutmv7fb3r6hpa6gq64jf6">另一种漏洞分析的思路</a>
+</h2>
+<h3 class="topic">
+<a name="1agcv346k8r9rpr6padeshvc27">&nbsp;通过指令运行记录功能，将poc在漏洞版本软件、补丁版本软件中分别运行，以此发现存在漏洞的指令的位置</a>
+</h3>
+<h2 class="topic">
+<a name="0sndpomensp55rqbrstug1oh2c">开启WinDBG的子进程调试</a>
+</h2>
+<h3 class="topic">
+<a name="1g5jbcpppe13i3is0496ig6219">&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%88%98%E4%BA%89%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190914_files/3v5kp8hjp0l6e9hooe4c09lk7r.png"></p>
+<h2 class="topic">
+<a name="1h48njjus230v8b9rjb2enaqfi">使用系统提供的堆调试机制</a>
+</h2>
+<h3 class="topic">
+<a name="4j7n0eokc2b76pqfalb1tpf5um">&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%88%98%E4%BA%89%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190914_files/0vbuag1fb37a66a4vfv33gt9jt.png"></p>
+<h3 class="topic">
+<a name="6teu0a22n3dbmv55hjaqb1jlks">&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%88%98%E4%BA%89%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190914_files/06ui28jpqj46tn1th2p0mgu9ct.png"></p>
+<h3 class="topic">
+<a name="378j4tuptug4gq5pa0d5f4aklt">&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%88%98%E4%BA%89%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190914_files/0r8n3kl34jpua1hc10k9rl4dsl.png"></p>
+<h3 class="topic">
+<a name="5m6p6h3lk96mam1o0nfiv1kj96">&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%88%98%E4%BA%89%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190914_files/5ig151r3o2nt826c8t721219q0.png"></p>
+<h3 class="topic">
+<a name="27jpqnn5m7rgi15gm0q1iq48nl">&nbsp;&nbsp;注意这里参数应该是+hpa</a>
+</h3>
+<h2 class="topic">
+<a name="4k835t1bub17agivjitnnurjmd">通过信息泄露，可以获取指定模块的加载基址，从而绕过DEP与ASLR</a>
+</h2>
+<h2 class="topic">
+<a name="6bci81esmt7gr9ckv4oaf89hrj">windbg中使用条件记录断点</a>
+</h2>
+<h3 class="topic">
+<a name="6q1n1ccng437u45ragl7pdm854">&nbsp;书152页</a>
+</h3>
+<h2 class="topic">
+<a name="79l8au017ma3853s8u0b7tt5gb">如果使用html页面作为poc触发漏洞，如何定位poc中的javascript函数在ie中对应的的函数呢？</a>
+</h2>
+<h3 class="topic">
+<a name="4prms6s7rc7nsi1osm9c7jsbn0">&nbsp;书目169页</a>
+</h3>
+<h2 class="topic">
+<a name="1atjmdl9igdqehvlen3kgjoq8t">查看某地址所属堆的信息</a>
+</h2>
+<h3 class="topic">
+<a name="26ngvdtdhir174ma21n59d33qe">&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%88%98%E4%BA%89%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190914_files/7trsvsqmfi6q3rve642d34ogjn.png"></p>
+<h2 class="topic">
+<a name="75ee66duviub44fq0jo08ijjkk">在某个符号处下断点</a>
+</h2>
+<h3 class="topic">
+<a name="5it4bqgth1dh9e5mvrkdl5v3o9">&nbsp;bu 符号名称</a>
+</h3>
+<h3 class="topic">
+<a name="2c41micc4dfggkp6mjbv16n0td">&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%88%98%E4%BA%89%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190914_files/7aqaa8gb3a2fnne2p22qfb3uog.png"></p>
+<h2 class="topic">
+<a name="3f9qqurdn8pfo4gesk8s9amk2o">对于跳转指令 ab是指无符号数的跳转，gl是指有符号数跳转</a>
+</h2>
+<h2 class="topic">
+<a name="16ioo9c03dk2vj1h90ed9lj0mb">pdf文件格式与常用分析工具</a>
+</h2>
+<h3 class="topic">
+<a name="664sadkljr6uohu5qes7sp4gvp">&nbsp;书目178页</a>
+</h3>
+<h2 class="topic">
+<a name="1dv9negr3lotu875e418af0ida">immdbg中条件记录断点的使用 shift+f4</a>
+</h2>
+<h3 class="topic">
+<a name="0j4cf48v15fok50gvnc5o2ssgr">&nbsp;书目186页</a>
+</h3>
+<h2 class="topic">
+<a name="047r4jti83a15vjmb3f90l18sd">如何在动态加载的dll中下断点</a>
+</h2>
+<h3 class="topic">
+<a name="7qdt8thu921kmf33k5rie2rodn">&nbsp;对于windbg，可以使用sxe指令让程序在加载指定dll时断下，然后再该dll中下断点</a>
+</h3>
+<h3 class="topic">
+<a name="2l4f17j03gqdq5v170h4i4hk2i">&nbsp;对于od等详见书目185页</a>
+</h3>
+<h2 class="topic">
+<a name="0hl8nu6dmcjrco7qsfgs73o9j8">存在可能即BinDiff中存在漏洞的函数与补丁后的函数无法相互匹配，此时就不能使用BinDiff工具进行补丁比较</a>
+</h2>
+<h2 class="topic">
+<a name="2rm4i6lsj7apmq90jjchhp250b">在windbg中设置火狐浏览器的符号路径与源码调试</a>
+</h2>
+<h3 class="topic">
+<a name="4pmq3rs4cv7qs8j50efgioqkka">&nbsp;书目197页</a>
+</h3>
+<h3 class="topic">
+<a name="74vgc62smod9g1sqtulsr8hste">&nbsp;直接通过火狐官方符号服务器得到地符号信息一般都是最新版本地软件对应的符号，所以会丢失部分旧版本中函数对应的符号，该函数可能就是旧版本中存在漏洞的函数，此时可能需要手动编译对应旧版本的软件</a>
+</h3>
+<h2 class="topic">
+<a name="7ikfmh7cptubuthp53npuhjbio">如果能够确定出现漏洞的模块，而在异常发生时，回溯堆栈，发现当前出现异常的指令来源于非漏洞模块的调用或者非漏洞模块调用了漏洞模块中函数，并造成了异常，此时可以推测当前出现异常的位置可能不是实际漏洞的位置，而是由实际漏洞位置产生了异常数据，继续执行指令，导致的异常位置不同于漏洞位置</a>
+</h2>
+<h2 class="topic">
+<a name="0jso566d7b7n35mfsqfuuf27k5">office文件格式解析工具 py-office-tools</a>
+</h2>
+<h2 class="topic">
+<a name="2kj7co92mju2c6482bhs2eur85">自动化分析shellcode执行行为的工具 scDbg 书目264页</a>
+</h2>
+<h2 class="topic">
+<a name="1lqcdqpg8472q3lf4g8hlmvvre">搭建局域网服务器 XAMPP</a>
+</h2>
+<h2 class="topic">
+<a name="0dogmf45ifspti935d0jbia8ar">补丁比较工具</a>
+</h2>
+<h3 class="topic">
+<a name="415op40vqslrcm7hm353tgiqf9">&nbsp;BinDiff</a>
+</h3>
+<h3 class="topic">
+<a name="1um9uavnq2q3fb429ng7upca04">&nbsp;Turbodiff</a>
+</h3>
+<h3 class="topic">
+<a name="4nit01vtj89je56i87hlrv0u4d">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%88%98%E4%BA%89%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0day20190914_files/2b2gblcvmquai187vkaoh90mqn.png"></p>
+<h2 class="topic">
+<a name="3p62m3dmjk52v3eic6bujvr1of">windbg中</a>
+</h2>
+<h3 class="topic">
+<a name="7ednv0vlcbrfcntmipsvd2nkff">&nbsp;ub 符号</a>
+</h3>
+<h3 class="topic">
+<a name="5k6ccavl9hjolitbmfpiqn1qs6">&nbsp;&nbsp;显示指定符号之前的汇编代码</a>
+</h3>
+<h3 class="topic">
+<a name="4qjgjv4ac83kfnsuv749d7uebd">&nbsp;uf 符号</a>
+</h3>
+<h3 class="topic">
+<a name="1vjue71f7jbe736obibq9j4huq">&nbsp;&nbsp;显示指定符号之后的汇编代码</a>
+</h3>
+<h2 class="topic">
+<a name="7pkmd8d1tmeff9bemmaoc3ntof">immdbg的使用</a>
+</h2>
+<h3 class="topic">
+<a name="3qlkrpsnsud2963trnano50n5i">&nbsp;shift+f2</a>
+</h3>
+<h3 class="topic">
+<a name="79ma52bgv6l7d8bubtvvef4kuu">&nbsp;&nbsp;设置条件断点（与od一样）</a>
+</h3>
+<h3 class="topic">
+<a name="59nv2q061ltm4emafmeekkc0bo">&nbsp;shift+f4</a>
+</h3>
+<h3 class="topic">
+<a name="2h5fpr9mk9i3r2rcgmrs8obv04">&nbsp;&nbsp;设置条件记录断点（与od一样）</a>
+</h3>
+</body>
+</html>

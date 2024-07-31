@@ -1,0 +1,612 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>ctf pwn10</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="12fv189qaajre5ms3t4h9npt78">ctf pwn10</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="ctf pwn10_files/images/ctf pwn10.jpg"></div>
+<h2 class="topic">
+<a name="450pm5kvs0ia48donn2385uiqu">堆溢出</a>
+</h2>
+<h3 class="topic">
+<a name="71fim1l07bkjj78tgvfbn0hokm">&nbsp;Unsorted Bin Attack</a>
+</h3>
+<h3 class="topic">
+<a name="5vpmal5mrnv75o06f5e2fva2td">&nbsp;&nbsp;概述</a>
+</h3>
+<h3 class="topic">
+<a name="599pdr9r0fc0128v1ekut044ub">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ctf pwn10_files/5uomv47a0g5jreetd5rveq92cr.png"></p>
+<h3 class="topic">
+<a name="3o898au5ft47b9qrduu1c6qs61">&nbsp;&nbsp;Unsorted Bin 回顾</a>
+</h3>
+<h3 class="topic">
+<a name="5s25qkafkr2p1roudhts081lec">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ctf pwn10_files/3m78b5ec2r3in3s5bpof7ro7ts.png"></p>
+<h3 class="topic">
+<a name="2onfgt05ckipm2jh1mob951md1">&nbsp;&nbsp;攻击原理</a>
+</h3>
+<h3 class="topic">
+<a name="060ugt8h8v88qu444ntmimqece">&nbsp;&nbsp;&nbsp; shellphish 的 how2heap 仓库中的 unsorted_bin_attack.c </a>
+</h3>
+<h3 class="topic">
+<a name="0766vg129i9dbjpdndag5fv9ct">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ctf pwn10_files/4ncptidmjvnm66uoj83popjnb4.png"></p>
+<h3 class="topic">
+<a name="1bk87d2itd9rcdkoulij4nb7u4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ctf pwn10_files/0npktn6umts6ikeqd8pb76nl3h.png"></p>
+<h3 class="topic">
+<a name="78ou5v12cjcf41c07kcq5psas4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ctf pwn10_files/40ivoi1pbn6t4gglbjqjmgud8l.png"></p>
+<h3 class="topic">
+<a name="47v2k5mvdsisb5hgmsp6tak77e">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ctf pwn10_files/3rccn0t66fjqk5n0coiq08n0kt.png"></p>
+<h3 class="topic">
+<a name="6c0tb3t8bq9r688d3fpfdhtt10">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ctf pwn10_files/64qti8nigdg2ogn6ot97te5nfu.png"></p>
+<h3 class="topic">
+<a name="4u6et6silfau4hc1k79od9nrrt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;所以Unsorted bin attack可以将任意内存地址上的数据修改为一个较大值，一般运用于1、修改循环次数；2、修改heap中global_max_fast的值，从而将较大的chunk视为fasrbin处理，从而进行fastbin attack</a>
+</h3>
+<p class="topicImage">
+<img src="ctf pwn10_files/1djb218dia4mm5aafa7p1chrap.png"></p>
+<h3 class="topic">
+<a name="3psuv9i7781pd2h03e1s2v3bui">&nbsp;&nbsp;&nbsp;通过攻击我们可以得到Unsorted bin的首地址，通过Unsorted bin的地址与mian_arena的固定偏移，可以得到mian_arena的地址，通过mian_arena与libc的固定偏移，可以得到libc的加载基址</a>
+</h3>
+<h3 class="topic">
+<a name="4ncdioa0vh0os7jgl9mt3c97do">&nbsp;&nbsp;&nbsp;&nbsp;具体的利用方法在fastbin attack的最后一道例题</a>
+</h3>
+<p class="topicImage">
+<img src="ctf pwn10_files/0lo9qb45vkvrb57ob8rjg9ehe6.png"></p>
+<h3 class="topic">
+<a name="4u7s0arahc7led7btgqanpbhfa">&nbsp;&nbsp;示例</a>
+</h3>
+<h3 class="topic">
+<a name="4lmnn5u588u9f8k5kj9j1btud7">&nbsp;&nbsp;&nbsp;HITCON Training lab14 magic heap</a>
+</h3>
+<h3 class="topic">
+<a name="474nol8ddrad6htbd5fck6sak8">&nbsp;&nbsp;&nbsp;&nbsp;程序基本信息</a>
+</h3>
+<h3 class="topic">
+<a name="03h66mr5rfamj4hme2r5o4maja">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ctf pwn10_files/3f2sjc5rasb145unspsfdkr1mp.png"></p>
+<h3 class="topic">
+<a name="23uaejjilmbkis9jus5e10p6j3">&nbsp;&nbsp;&nbsp;&nbsp;程序基本功能</a>
+</h3>
+<h3 class="topic">
+<a name="1bbjascjdfdrq0tjgfukrc3nqd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;根据之后的分析，只要控制变量magic 大于4869，即可获得flag，所以使用Unsorted bin attack即可</a>
+</h3>
+<p class="topicImage">
+<img src="ctf pwn10_files/15oc4drbqa2a84t7dctek5o2q8.png"></p>
+<h3 class="topic">
+<a name="5uojlalb82m0jagopchemoapfu">&nbsp;&nbsp;&nbsp;&nbsp;利用过程</a>
+</h3>
+<h3 class="topic">
+<a name="44p3b4t9dig3kmh2j1sq25cgq6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ctf pwn10_files/2qi2ta2tfam6n303mdvgvbeklq.png"></p>
+<h3 class="topic">
+<a name="4i94h78e052ir02n6qc25vjgq1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ctf pwn10_files/4m7squq8la78iv9gn3drirrioi.png"></p>
+<h3 class="topic">
+<a name="73qmv4stbacj76ir1ptqp0g2hm">&nbsp;&nbsp;&nbsp;2016 0CTF zerostorage（当前该题目待完成）</a>
+</h3>
+<h3 class="topic">
+<a name="2fn1esk39ll9ubl022ee1oei3q">&nbsp;&nbsp;&nbsp;&nbsp;安全性检查</a>
+</h3>
+<h3 class="topic">
+<a name="7si0vo3nhffm1vonbsddl6mnrc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ctf pwn10_files/71f0qls2nk5veastgee9ao70q6.png"></p>
+<h3 class="topic">
+<a name="44mudn0atro0fd7g4j01rtkoeg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;基本功能分析</a>
+</h3>
+<h3 class="topic">
+<a name="5qr9epbi4c5snfqfokgsobse0d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ctf pwn10_files/6bquo7qsgdf49pd7ofcnct2ega.png"></p>
+<h3 class="topic">
+<a name="1fflkpgh1deovmi00ueib5mbje">&nbsp;&nbsp;&nbsp;&nbsp;漏洞分析</a>
+</h3>
+<h3 class="topic">
+<a name="695cpmk6sc0eri0gsercmm2v9h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ctf pwn10_files/0ekiq3oh92d0lr556ikg58slii.png"></p>
+<h3 class="topic">
+<a name="55ppfvi00jrubq308vptiim87d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ctf pwn10_files/4rh44pgrqankq80eo0vpadf76c.png"></p>
+<h3 class="topic">
+<a name="7iaevmk1oso5fct4crsf92as9m">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ctf pwn10_files/56jiie1aatvonb7utorvba7qm6.png"></p>
+<h3 class="topic">
+<a name="47pfa5fo621hrg4h22s869d2ue">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ctf pwn10_files/5lp4seb4seekuti2bt8icg22eh.png"></p>
+<h3 class="topic">
+<a name="3msi5cqvbhavbtme8clrm5ieut">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ctf pwn10_files/4c518p63vqa8trvlp6evip4d5r.png"></p>
+<h3 class="topic">
+<a name="1f3ec0kt9h0sidl4jhvg1u1mcv">&nbsp;&nbsp;&nbsp;&nbsp;参考文献</a>
+</h3>
+<h3 class="topic">
+<a name="47p93ovk7hak6tp9vngtobu57b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;http://brieflyx.me/2016/ctf-writeups/0ctf-2016-zerostorage/&#13;
+https://github.com/HQ1995/Heap_Senior_Driver/tree/master/0ctf2016/zerostorage&#13;
+https://github.com/scwuaptx/CTF/blob/master/2016-writeup/0ctf/zerostorage.py</a>
+</h3>
+<h3 class="topic">
+<a name="52nsp4nik7vvkpsaestcu183uh">&nbsp;Use After Free</a>
+</h3>
+<h3 class="topic">
+<a name="2c2vtc8u7o9o3mcdvld2ik30u6">&nbsp;&nbsp;原理及例子</a>
+</h3>
+<h3 class="topic">
+<a name="2jcre5h0563nb6kjd1fmhvldsu">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ctf pwn10_files/0jd0q70ffk8gasp4i0as4fg93l.png"></p>
+<h3 class="topic">
+<a name="6bkdteklig9hk30a9qri1p51hp">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ctf pwn10_files/21nk0abt1v1881kokcdnv8huu4.png"></p>
+<h3 class="topic">
+<a name="4lk3ajufqb49afb9753osgav4t">&nbsp;&nbsp;实例</a>
+</h3>
+<h3 class="topic">
+<a name="1417qsik6hgb8jjtvf8se41fvg">&nbsp;&nbsp;&nbsp; HITCON-training 中的 lab 10 hacknote</a>
+</h3>
+<h3 class="topic">
+<a name="1vvjcs0iaf8ad0dmvjk9nlo761">&nbsp;&nbsp;&nbsp;&nbsp;程序功能</a>
+</h3>
+<h3 class="topic">
+<a name="0vad53bi84254teu5lqbujdnut">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ctf pwn10_files/10ekpgavf7mnmc9k3qik8pq1vc.png"></p>
+<h3 class="topic">
+<a name="6c562pecouc1aqg3afm3sa9lof">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;添加note</a>
+</h3>
+<p class="topicImage">
+<img src="ctf pwn10_files/27ark7f2edv9jtr46rnhjuvb70.png"></p>
+<h3 class="topic">
+<a name="4kp0me45crv82r58m9i86lpmp7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;打印note内容</a>
+</h3>
+<p class="topicImage">
+<img src="ctf pwn10_files/7mor2u3m7f6b5ieuprne9irdog.png"></p>
+<h3 class="topic">
+<a name="0qe56h25d4nc0fv049pr8r1b4m">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;释放note，释放后未将指针置为NULL，故存在uaf漏洞</a>
+</h3>
+<p class="topicImage">
+<img src="ctf pwn10_files/6et9p6j924d08gef1fkfa3csou.png"></p>
+<h3 class="topic">
+<a name="57vre4j728r1ag46lvpg5t659t">&nbsp;&nbsp;&nbsp;&nbsp;利用分析</a>
+</h3>
+<h3 class="topic">
+<a name="4o5untmmj1oesqh1q9su1uh5fg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;整体来说首先本程序为32位程序，每一个note分为两部分，&#13;
+1、保存put函数指针和context指针的chunk（该chunk16字节）称为结构体1&#13;
+2、保存context内容的chunk，其大小根据context来定 称为结构体2&#13;
+利用主要思路是通过将某个note的put函数指针修改为magic函数的地址，从而在使用该note的过程中执行magic函数，打印flag</a>
+</h3>
+<p class="topicImage">
+<img src="ctf pwn10_files/3bl0me2h5t2at2mri4pffduf1l.png"></p>
+<h3 class="topic">
+<a name="64f6poa1n2nupo558s5rrl6oil">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;具体实现思路中，申请note0 和note1，该两个note中结构体1均为16字节，结构体2均为24字节（16+8）这样可以保证结构体1和结构体2并不在同一个fast bin上，而是分属两个fast bin&#13;
+之后将note0 note1释放，并申请一个realcontext为8字节的note2，这样note2的结构体1会占据原来note1的结构体1对应的内存，note2的realcontext会占据原来note0的结构体1对应的内存，所以只要在note2的realcontext前四个字节保存magic函数的地址，就等于修改note0中的put指针，然后使用指向note0的悬空指针使用note0，执行magic函数</a>
+</h3>
+<p class="topicImage">
+<img src="ctf pwn10_files/63kav2mldepfqanafh8dns6am4.png"></p>
+<h3 class="topic">
+<a name="4h67l103adm6scnv363pla95oi">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;exp</a>
+</h3>
+<h3 class="topic">
+<a name="02cnvphbrg2pss2jp9l62r4kgv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ctf pwn10_files/5rji2d7ljrmim8roiu9k3sue7j.png"></p>
+<h3 class="topic">
+<a name="3iuhu41tprj1dd0m1o6ovuu3sc">&nbsp;&nbsp;&nbsp;&nbsp;调试细节</a>
+</h3>
+<h3 class="topic">
+<a name="3ppa6rub9msio3ahf03hbj1u8k">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ctf pwn10_files/3amslj6k3i4asofmn9q7c5amej.png"></p>
+<h3 class="topic">
+<a name="35sjievqb8unodl0tku2jlgqet">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ctf pwn10_files/608o0jm3nlqp05cv4o8si0g881.png"></p>
+<h3 class="topic">
+<a name="0disofvmqgj4c1kcj6q74ndppr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ctf pwn10_files/2dqs9h58duad76ki5k25r97hq6.png"></p>
+<h3 class="topic">
+<a name="04tgikcdad0eo4iu3afv5d5k4j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ctf pwn10_files/56nugicedg5755nm7gfj6s8bdo.png"></p>
+<h3 class="topic">
+<a name="442rh37tfo54a94vicbean2bpk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ctf pwn10_files/6nml345qbsulkp6rantkah6usp.png"></p>
+<h3 class="topic">
+<a name="0fb44takaeoinpreq065o2aoij">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ctf pwn10_files/2sccq5v97ptc39slb1n2178u7s.png"></p>
+<h3 class="topic">
+<a name="0voqhsopoaprni2u8btoi9g61b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ctf pwn10_files/32t8mjs1ooigbdopr94u5gceqj.png"></p>
+<h3 class="topic">
+<a name="51p81rjdl53s46r8nou9v3endq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ctf pwn10_files/2dp2pd1jimh0q01r0rk1m35o5e.png"></p>
+<h3 class="topic">
+<a name="3lh01ul8usrgce7oke5b7j2g51">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ctf pwn10_files/1kh2psen62on5p5k4c5ehe3ubm.png"></p>
+<h3 class="topic">
+<a name="6hvmo8l2g80p3k6bh1t9gpogk0">&nbsp;&nbsp;相关题目</a>
+</h3>
+<h3 class="topic">
+<a name="2p1t8nemk5co039vio4ko0su1d">&nbsp;&nbsp;&nbsp;2016 HCTF fheap</a>
+</h3>
+<h3 class="topic">
+<a name="2fjmpveebldipolhgrld9uclu6">&nbsp;通过堆进行信息泄露</a>
+</h3>
+<h3 class="topic">
+<a name="3cpm9rgqqhlcvccltlpcmatvq8">&nbsp;&nbsp;主要目的是获得有关远程服务器中漏洞程序glibc版本和堆栈基地址、模块加载基址等信息</a>
+</h3>
+<p class="topicImage">
+<img src="ctf pwn10_files/0jat8dkr5dhdcht0a12b43o0qa.png"></p>
+<h3 class="topic">
+<a name="792o5eoi0n0cg6qn3m0hl5vjcf">&nbsp;&nbsp;信息泄露的目标</a>
+</h3>
+<h3 class="topic">
+<a name="2ghgi4jc9sco495nuehvun47gi">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ctf pwn10_files/0rug02j9me9nff1p8179di9gv1.png"></p>
+<h3 class="topic">
+<a name="15428r0j5o7je6oqcdro7i0995">&nbsp;&nbsp;&nbsp;&nbsp;1、获得主模块基地址&mdash;&mdash;》程序开启PIE时主模块基地址会发生变化</a>
+</h3>
+<h3 class="topic">
+<a name="1qbm5do85u677ei2b0fon59jlh">&nbsp;&nbsp;&nbsp;&nbsp;2、堆基地址&mdash;&mdash;》进程每次运行堆栈基地址均会发生变化，因为操作系统支持ASLR</a>
+</h3>
+<h3 class="topic">
+<a name="4pm4pq8cl5r1omn105l9qc8hbv">&nbsp;&nbsp;&nbsp;&nbsp;3、libc.so加载基地址&mdash;&mdash;》需要获得libc中的system函数获得shell或使用libc中的malloc_hook、one_gadgets、IO_FILE结构体用于漏洞利用</a>
+</h3>
+<h3 class="topic">
+<a name="28gl5bn3ovr2rfhbut9c4fs5r0">&nbsp;&nbsp;信息泄露途径（使用不同的bin进行泄露）</a>
+</h3>
+<h3 class="topic">
+<a name="4g9j7lohgvnhgcp937mb1hlcba">&nbsp;&nbsp;&nbsp;Unsorted bin</a>
+</h3>
+<h3 class="topic">
+<a name="7vtngr210fv11d57f4m58mtdd7">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ctf pwn10_files/4dh66slquo6brdmchtoppu2c36.png"></p>
+<h3 class="topic">
+<a name="7kp9upf1ai0q9fqb9sc8kk5qbm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;获得某个堆块的首地址-》结合堆块的size-》获得堆基首地址</a>
+</h3>
+<h3 class="topic">
+<a name="0j9qqlhdnanfgpn65485ludcrs">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;取到main_arena的地址-》main_arena位于libc中，结合偏移-》计算libc的基地址</a>
+</h3>
+<h3 class="topic">
+<a name="6rkgrq36l9ltrf18daf7kahi6o">&nbsp;&nbsp;&nbsp;Fast bin</a>
+</h3>
+<h3 class="topic">
+<a name="25v1b51ecbkf45sj2kvkup57bi">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ctf pwn10_files/7vufhpfqcmng5jd6n1mg5uohff.png"></p>
+<h3 class="topic">
+<a name="5mok0sibs73dq7g6u29f2topdd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fastbin为单链表，所以只能获得堆块的首地址-》进一步获得堆基地址</a>
+</h3>
+<h3 class="topic">
+<a name="0si3bd75ovm1b245l9dcpeuveh">&nbsp;&nbsp;&nbsp;small bin</a>
+</h3>
+<h3 class="topic">
+<a name="3e1v11oh9arp4s3ri4htj74lho">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ctf pwn10_files/2nfoam29dgg9coh6gdcsvquqv0.png"></p>
+<h3 class="topic">
+<a name="069srokgv94m4kvo9kkeslakj0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;与Unsorted bin类似</a>
+</h3>
+<h3 class="topic">
+<a name="31dujfat8l43450b39ka2ijp09">&nbsp;&nbsp;能够用于信息泄露的漏洞类型</a>
+</h3>
+<h3 class="topic">
+<a name="3mrc68fll7rh9chorv5t0h6nbe">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ctf pwn10_files/0d5pimt3jb7rt7p48lfher18d6.png"></p>
+<h3 class="topic">
+<a name="6p155rmg5pj4ht5cfm7ebuvduj">&nbsp;Off-By-One</a>
+</h3>
+<h3 class="topic">
+<a name="4fe6b9ucfn6hl016kdo21erora">&nbsp;&nbsp;定义</a>
+</h3>
+<h3 class="topic">
+<a name="4l9habjbvlq34u3uete8ftjnvp">&nbsp;&nbsp;&nbsp;即只溢出了一个字节</a>
+</h3>
+<p class="topicImage">
+<img src="ctf pwn10_files/4u1b2j1m2jg8g323hmtvrpf8d9.png"></p>
+<h3 class="topic">
+<a name="55uone85sa2ko5f723i9oogvig">&nbsp;&nbsp;漏洞原理</a>
+</h3>
+<h3 class="topic">
+<a name="32ei95972lsv37t0h81siet9kb">&nbsp;&nbsp;&nbsp;此时主要讨论上的offbyone漏洞</a>
+</h3>
+<p class="topicImage">
+<img src="ctf pwn10_files/2kjgo6mqcdm2h5tvetees58gii.png"></p>
+<h3 class="topic">
+<a name="0u8r2ialbh5fb05mkui80s8eil">&nbsp;&nbsp;&nbsp;&nbsp;主要产生于写入数据的for循环的循环次数设置错误或字符串操作函数使用不当或参数使用不当</a>
+</h3>
+<h3 class="topic">
+<a name="1gra90rk736qoo4ht42v2n6d4a">&nbsp;&nbsp;&nbsp;漏洞示例1</a>
+</h3>
+<h3 class="topic">
+<a name="1of822mu6ptgd9gru1ldnco8pi">&nbsp;&nbsp;&nbsp;&nbsp;循环次数控制不当，导致off-by-one</a>
+</h3>
+<p class="topicImage">
+<img src="ctf pwn10_files/2fbvqrc43kfmci66phhk6gush1.png"></p>
+<h3 class="topic">
+<a name="1tqn302hgrtcsmncq2eq9kprtm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ctf pwn10_files/36f328dki1mdem19d9j3aaf4d6.png"></p>
+<h3 class="topic">
+<a name="2gddc43jt0urhhqg13qe1pek9d">&nbsp;&nbsp;&nbsp;漏洞示例2</a>
+</h3>
+<h3 class="topic">
+<a name="5l45vstuv3lnaammsjpqb7dhp6">&nbsp;&nbsp;&nbsp;&nbsp;字符串操作函数使用不当，导致off-by-one</a>
+</h3>
+<p class="topicImage">
+<img src="ctf pwn10_files/54ico683bbdfi30behrdfhak25.png"></p>
+<h3 class="topic">
+<a name="5cjnkmol14a2oana8forq5a8ci">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ctf pwn10_files/1rmt6v5uk5mb0tsrdldml9hmtv.png"></p>
+<h3 class="topic">
+<a name="15c8d21qvgndh2e94scr5vuoqc">&nbsp;&nbsp;&nbsp;总结</a>
+</h3>
+<h3 class="topic">
+<a name="5i52hds07rh0a8v61eqtnl6e4l">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ctf pwn10_files/03fb1nfmiqjm1ea3pr2o8i2lio.png"></p>
+<h3 class="topic">
+<a name="7dnm0p6n863d8soelpsrael4a2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意循环次数和字符串操作</a>
+</h3>
+<h3 class="topic">
+<a name="13ba6ihn68484qimqu5uqbe9pm">&nbsp;&nbsp;实例</a>
+</h3>
+<h3 class="topic">
+<a name="2qvsl7812f0vcjk5b9grfm06ur">&nbsp;&nbsp;&nbsp;2015_plaidctf_datastore（待完成）</a>
+</h3>
+<h3 class="topic">
+<a name="7iau96kemqdjao6jm8dmcjsj17">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ctf pwn10_files/2j8ai59ucdrvcsmq8aaa2d6ceh.png"></p>
+<h3 class="topic">
+<a name="5rd4g58vkoia9if4gi435h6d05">&nbsp;&nbsp;&nbsp;Asis CTF 201的b00ks</a>
+</h3>
+<h3 class="topic">
+<a name="5906od8u5pfocm8ggc2oqvs2s5">&nbsp;&nbsp;&nbsp;&nbsp;程序功能</a>
+</h3>
+<h3 class="topic">
+<a name="1honmac7p4if38a5nq6g7tq15k">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ctf pwn10_files/17b6klpvv57bn90ranvkduoe6h.png"></p>
+<h3 class="topic">
+<a name="54dft4s15t3acnm37llc4400sn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ctf pwn10_files/2dal1g5bd21o0o1etvqm21652o.png"></p>
+<h3 class="topic">
+<a name="1fgsu0o6jf88ku7i5prsfmptr7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ctf pwn10_files/4uocjotl3jo18krv395m83k3o5.png"></p>
+<h3 class="topic">
+<a name="7jvtj51bj04ii019onbtm0pf8b">&nbsp;&nbsp;&nbsp;&nbsp;漏洞分析</a>
+</h3>
+<h3 class="topic">
+<a name="2tmv0gs4oud0gi0veblckufpfl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该函数就是sub_9f5，并且修改作者的名字也是这个函数，所以我们可以利用第四个功能实现溢出。能溢出的前提是因为存放作者名字的地址和存放图书的地址是相邻的。</a>
+</h3>
+<p class="topicImage">
+<img src="ctf pwn10_files/0qeduh7i78gupar65pk533m2qn.png"></p>
+<h3 class="topic">
+<a name="5fe60u8cev553opurg46e5o1qe">&nbsp;&nbsp;&nbsp;&nbsp;漏洞利用</a>
+</h3>
+<h3 class="topic">
+<a name="5h7thpiuepa66tnnuv7skjk2kk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;整体利用步骤</a>
+</h3>
+<p class="topicImage">
+<img src="ctf pwn10_files/2c2setm8r14fcnbscnvst9oq1t.png"></p>
+<h3 class="topic">
+<a name="6oueojahp8re3ofr1j7nmge08d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;定义函数实现程序功能</a>
+</h3>
+<p class="topicImage">
+<img src="ctf pwn10_files/4n5cil0eaf5bdod991utdhlpjj.png"></p>
+<h3 class="topic">
+<a name="71u076fmvk7m592o7osrtl5kt5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;作者名称字符串后保存的是结构体book的指针，&#13;
+struct book&#13;
+{&#13;
+    int id;&#13;
+    char *name;&#13;
+    char *description;&#13;
+    int size;&#13;
+}#book结构体&#13;
+通过溢出一个字节的作者名称，可以将该指针最低一字节修改为0，这里因为作者名称是先保存的，而book指针是后保存的，book指针会将作者名称字符串最后额0x00覆盖掉，所以此时输出作者名称，会将book指针也输出出来</a>
+</h3>
+<p class="topicImage">
+<img src="ctf pwn10_files/31lnoatolrk3gppeeg49m04u6i.png"></p>
+<h3 class="topic">
+<a name="38cqthrpb9q8aafcabvm6t8uuk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;此时book的整体结构</a>
+</h3>
+<p class="topicImage">
+<img src="ctf pwn10_files/49grl3nhls5v909kgkj8q8955k.png"></p>
+<h3 class="topic">
+<a name="5d4mqeb8ie4srqg18v4bnq66pl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;输出作者名称，同时将book1的指针泄露出来</a>
+</h3>
+<p class="topicImage">
+<img src="ctf pwn10_files/3bjlia0j46dagv3gbshkv532up.png"></p>
+<h3 class="topic">
+<a name="0e51qti259ord5qs645b8fbto5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;创建book2，其desc_size要求要比较大，设置book1_desc内容，在其中构造伪造book结构体，并将该结构体置于内存指定地址</a>
+</h3>
+<p class="topicImage">
+<img src="ctf pwn10_files/58435h9u2q92h79nr9jlnca0h5.png"></p>
+<h3 class="topic">
+<a name="3euqfm7n3dilcn3qcuc3pkvk7v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ctf pwn10_files/193r7ogaj1o2rtp79qdsrro6kl.png"></p>
+<h3 class="topic">
+<a name="4eh5rsetgi46btg7pnjmerbsdm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过off-by-one将指向book1的指针修改为指向伪造book结构体的指针</a>
+</h3>
+<p class="topicImage">
+<img src="ctf pwn10_files/13j04ofnsmhjjn98aq55pt4s6q.png"></p>
+<h3 class="topic">
+<a name="11dcd2tvghglo76a4l30tlkf00">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ctf pwn10_files/3n5ckaj4h6b68a4inc48ukmjvj.png"></p>
+<h3 class="topic">
+<a name="15qgdinihld4csfmlcnoeqg1hr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过系统提供的打印函数输出book2中的name指针和desc指针</a>
+</h3>
+<p class="topicImage">
+<img src="ctf pwn10_files/1tgl5vff5rqm66d5h81geb733q.png"></p>
+<h3 class="topic">
+<a name="5vp6ikofkvmnsaee0p33e15g4i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;book2中的desc堆内存是通过mmap分配的，因为通过mmap分配的内存的首地址与libc加载基址的偏移相同，所以可以根据book2desc的指针求出libc基址</a>
+</h3>
+<p class="topicImage">
+<img src="ctf pwn10_files/6edu6huhbhsvej167mt7c63mi3.png"></p>
+<h3 class="topic">
+<a name="5evi4gh3l3q4tvbhj8vjdph5k0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;根据libc的地址获得sysytem函数 "/bin/sh" _free_hook函数的地址&#13;
+&#13;
+通过edit修改book1的desc内容，此时book1被修改为fakebook，而fakebook中的desc指向向book2的name指针，所以可以通过edit函数修改book2中的name、desc指针&#13;
+&#13;
+同理当book2中的desc指针被修改为free_hook_addr之后，通过edit_book(2,p64(sys_addr))可以将free_hook所指向的内容修改为system函数地址，之后执行_free_hook函数就会调用system函数，而根据free_hook函数的调用特点，此时函数参数即为book2中的name指针，即"/bin/sh"字符串的指针</a>
+</h3>
+<p class="topicImage">
+<img src="ctf pwn10_files/1aemn4tc1sq05e2l17msebrtvb.png"></p>
+<h3 class="topic">
+<a name="5inngo1hkelphmt3as0eh8i2ro">&nbsp;&nbsp;&nbsp;&nbsp;参考资料</a>
+</h3>
+<h3 class="topic">
+<a href="https://blog.csdn.net/qq_38204481/article/details/81320898" name="5mlfe2b0tbvg8h4getkurtsler">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://blog.csdn.net/qq_38204481/article/details/81320898</a>
+</h3>
+<h3 class="topic">
+<a href="https://blog.csdn.net/qq_41918771/article/details/101347234" name="1avgqos87nf5s8ns93ri5v2eug">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://blog.csdn.net/qq_41918771/article/details/101347234</a>
+</h3>
+<h3 class="topic">
+<a name="5ivqi49aseuct23vvgmapkinbd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;讲的很清楚</a>
+</h3>
+<h3 class="topic">
+<a name="1lf8h0a76d39rudj5t1fk4bmhv">&nbsp;劫持_free_hook函数</a>
+</h3>
+<h3 class="topic">
+<a name="2ifn9vcp95rdt69i404v8r5ou8">&nbsp;&nbsp;_free_hook函数主要用于为用户提供一种自定义的释放堆内存的方式，如果_free_hook全局变量不为空，则在执行free函数时，会先执行_free_hook函数</a>
+</h3>
+<h3 class="topic">
+<a name="4dh9c5qr4itfs18k2kba2chcsk">&nbsp;&nbsp;&nbsp;源码</a>
+</h3>
+<p class="topicImage">
+<img src="ctf pwn10_files/4vak1ib0j1tl307tbemq4nqb19.png"></p>
+<h3 class="topic">
+<a name="2c2kvtc2bnqn3f6suvnoqtkchk">&nbsp;&nbsp;实例</a>
+</h3>
+<h3 class="topic">
+<a name="3vje12khubvc7o9luajdgp5veb">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ctf pwn10_files/5ej7cnaqnhrovgttbmbm356jsb.png"></p>
+<h3 class="topic">
+<a name="0e0n27h74igfr5oulae17k1m32">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ctf pwn10_files/1kcnnuq3caj6dnjdugli9vlsns.png"></p>
+<h3 class="topic">
+<a name="6chg5vrpg53rilhm2on25c5jvh">&nbsp;&nbsp;&nbsp;freehook劫持代码</a>
+</h3>
+<p class="topicImage">
+<img src="ctf pwn10_files/3sq01jskun8c87l9b4uv0b7sj4.png"></p>
+<h3 class="topic">
+<a name="6r13tit01e3jdkjasdviqer4vk">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ctf pwn10_files/1l8kpm1rn4a2c6cslkj5kll59i.png"></p>
+<h3 class="topic">
+<a name="76f5q4ac7h42pbc4n8pi006ejr">&nbsp;&nbsp;注意_free_hook在内存中以函数指针的形式存在，在调用free之前如果__free_hook函数不为NULL会先调用__free_hook函数在内存中前面紧挨的是它的参数，这个函数本身是一个地址。更改这个地址指向的值可以实现劫持程序执行流。 </a>
+</h3>
+<h3 class="topic">
+<a name="7qardc8h209fropp6krrj6ll64">&nbsp;&nbsp;参考资料</a>
+</h3>
+<h3 class="topic">
+<a href="http://blog.eonew.cn/archives/521" name="6unmpntrq4a90p9ncr8qj9b1pk">&nbsp;&nbsp;&nbsp;http://blog.eonew.cn/archives/521</a>
+</h3>
+<h3 class="topic">
+<a name="63k4vfpk0uu0gingo0t75rvpht">&nbsp;确定lib基地址的一种方法</a>
+</h3>
+<h3 class="topic">
+<a name="6rgj41276onld4k4u4tk63np0d">&nbsp;&nbsp;堆有两种拓展方式一种是brk会直接拓展原来的堆，另一种是mmap会单独映射一块内存。mmap分配的内存与libc之前存在固定的偏移，只要获得一块通过mmap分配的内存的首地址，就可以加上固定偏移就可以获得libc首地址</a>
+</h3>
+<h3 class="topic">
+<a name="3hbin2b463n732gb2j34g4l8ju">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ctf pwn10_files/18fgtafmnh3rlfq2n8ek4eferb.png"></p>
+<h3 class="topic">
+<a name="4790lkvaemt95seedmjemtokvv">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="ctf pwn10_files/3qp5o1q2ijso2257mgvn46s4hs.png"></p>
+</body>
+</html>

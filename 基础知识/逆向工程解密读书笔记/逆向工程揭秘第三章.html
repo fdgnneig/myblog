@@ -1,0 +1,288 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>逆向工程揭秘第三章</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="3h8c80f9l987sr8mf8ke4a1jfk">逆向工程揭秘第三章</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%8F%AD%E7%A7%98%E7%AC%AC%E4%B8%89%E7%AB%A0_files/images/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%8F%AD%E7%A7%98%E7%AC%AC%E4%B8%89%E7%AB%A0.jpg"></div>
+<h2 class="topic">
+<a name="5l8kp9nr6o7l2f53qtknkt2q5e">windows基础知识</a>
+</h2>
+<h3 class="topic">
+<a name="3mhin9nk20fvpm02liqrotl3ou">&nbsp;3.1组件及基本架构</a>
+</h3>
+<h3 class="topic">
+<a name="07no3rq86l889odmj8eeu4uq06">&nbsp;&nbsp;3.1.1简要回顾</a>
+</h3>
+<h3 class="topic">
+<a name="7mrmc6ihfn4qtamqtvr71r9j8h">&nbsp;&nbsp;3.1.2windows NT架构基本特征</a>
+</h3>
+<h3 class="topic">
+<a name="188b2md4pe0ml9stjcd16m2kc1">&nbsp;&nbsp;&nbsp;纯32位架构</a>
+</h3>
+<h3 class="topic">
+<a name="226p87foch7q2b7rbj2oipaca1">&nbsp;&nbsp;&nbsp;支持虚拟内存</a>
+</h3>
+<h3 class="topic">
+<a name="2au403kn5mdi7go9bvj66bbfs7">&nbsp;&nbsp;&nbsp;可移植性</a>
+</h3>
+<h3 class="topic">
+<a name="4eo7ejt61n68chjeqo61oube1g">&nbsp;&nbsp;&nbsp;&nbsp;使用 c c++编写,可以再重新编译之后运行在不同的处理器上</a>
+</h3>
+<h3 class="topic">
+<a name="64ia9upppc0c3m2190cffmp4o3">&nbsp;&nbsp;&nbsp;支持多线程</a>
+</h3>
+<h3 class="topic">
+<a name="3i696v3rgvds6o21e0l6ra7tmb">&nbsp;&nbsp;&nbsp;支持多处理器</a>
+</h3>
+<h3 class="topic">
+<a name="4fuq7u0t2ovftnaajiiuel7ejs">&nbsp;&nbsp;&nbsp;安全性</a>
+</h3>
+<h3 class="topic">
+<a name="3albkn0vch6lehcoml2srca9ca">&nbsp;&nbsp;&nbsp;兼容性</a>
+</h3>
+<h3 class="topic">
+<a name="6bsmat55rbihqe6fl6deaeptdu">&nbsp;&nbsp;3.1.3支持的硬件</a>
+</h3>
+<h3 class="topic">
+<a name="2n6bvo2spg7gbg6dlds3kmgd9s">&nbsp;3.2内存管理</a>
+</h3>
+<h3 class="topic">
+<a name="1okdh1hdlr2dvokea4uq1kmq1t">&nbsp;&nbsp;3.2.1虚拟内存和分页</a>
+</h3>
+<h3 class="topic">
+<a name="7to8h2g4ctvqgvmch5frstie7s">&nbsp;&nbsp;&nbsp;页是指固定大小的内存块,页表中的每一项管理内存中的一页</a>
+</h3>
+<h3 class="topic">
+<a name="5uvf0873u7pqr0q8i7qigrvsbn">&nbsp;&nbsp;&nbsp;&nbsp;使用分页可以创建多个地址空间,一个地址空间就是一个独立的页表,这个页表只允许访问与当前程序或进程相关的内存,因为进程会阻止应用程序访问页表</a>
+</h3>
+<h3 class="topic">
+<a name="43rl128bb2q7jr5ot711265pbo">&nbsp;&nbsp;&nbsp;&nbsp;操作系统中多地址空间保证了程序与程序之间完全独立运行,每个进程有自己的运行空间</a>
+</h3>
+<h3 class="topic">
+<a name="75sota1bsdvsa59p9sisa4taat">&nbsp;&nbsp;&nbsp;页表存在一组标志位,决定了有关具体项的某些属性,规定了处理器访问内存的规则</a>
+</h3>
+<h3 class="topic">
+<a name="7lmc10tc9j2lfm2i15bnfeo1u3">&nbsp;&nbsp;&nbsp;内核模式与用户模式</a>
+</h3>
+<h3 class="topic">
+<a name="2tmsnapupibmv0iemsu9tvpu86">&nbsp;&nbsp;&nbsp;分页</a>
+</h3>
+<h3 class="topic">
+<a name="65s4gp26bt4dqkd0uih667g76m">&nbsp;&nbsp;&nbsp;&nbsp;是指将目前不用的内存区域中的数据临时转存到硬盘的过程</a>
+</h3>
+<h3 class="topic">
+<a name="3orckm0avpmbhhp5e27hiumbh9">&nbsp;&nbsp;&nbsp;&nbsp;负面效果</a>
+</h3>
+<h3 class="topic">
+<a name="26mjperu9vppdi55c29l4lksag">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;应用程序实际使用的内存比可用的物理内存多,一旦物理内存不够用,系统就会把硬盘作为二级存储器使用</a>
+</h3>
+<h3 class="topic">
+<a name="5b5mll2ik5tuc40bicmnc40u2k">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当程序频繁需要使用大于物理内存的提供的空间时,系统就会在物理内存和硬盘之间来回传送数据,造成系统运行缓慢</a>
+</h3>
+<h3 class="topic">
+<a name="1g0cgvkta2hmdbiadabn2kv01i">&nbsp;&nbsp;&nbsp;页面错误</a>
+</h3>
+<h3 class="topic">
+<a name="0hqmn80e3mcqtmm55o7j5u5cj4">&nbsp;&nbsp;&nbsp;&nbsp;处理器访问到一个具有无效页表项的内存地址就会产生页面错误</a>
+</h3>
+<h3 class="topic">
+<a name="0vj55obi4dm86lat30qvgm2po8">&nbsp;&nbsp;3.2.2工作集</a>
+</h3>
+<h3 class="topic">
+<a name="77mmimia2b7qelkkgahilg2vcc">&nbsp;&nbsp;&nbsp;是每一个进程中都有的数据结构,该数据结构列出了该进程地址空间中使用的当前物理页</a>
+</h3>
+<h3 class="topic">
+<a name="0k5gp37fhs80nk877fmsq9fasj">&nbsp;&nbsp;&nbsp;系统使用工作集确定每一个进程对物理内存的动态使用以及哪些内存页在一段时间内不会被访问,此类内存页将会被转存到硬盘,并从工作集中删除</a>
+</h3>
+<h3 class="topic">
+<a name="0heatce8kq8gogk8quond74o89">&nbsp;&nbsp;3.2.3内核内存和用户内存</a>
+</h3>
+<h3 class="topic">
+<a name="7islsp6ecq76f5aee3f64ndbv6">&nbsp;&nbsp;&nbsp;windows使用的32位内存地址(4GB),通常分为两个2GB,一个为应用程序内存部分,一个为共享的内核内存部分(一般是地址较高的2GB内存)</a>
+</h3>
+<h3 class="topic">
+<a name="4kv62gr0kmkbfk0dkq6cltm8uv">&nbsp;&nbsp;&nbsp;&nbsp;一般内核内存是共享的,可以在应用程序内存的运行过程中被获得,此类内存总是被保护的,在用户模式下无法访问</a>
+</h3>
+<h3 class="topic">
+<a name="02fl57rbsfh7d5uo6hv9flj1v6">&nbsp;&nbsp;&nbsp;&nbsp;则应用程序只有31位的地址空间,每个地址的最高位都是0</a>
+</h3>
+<h3 class="topic">
+<a name="0qleanotv75c0g61dpblkaitvf">&nbsp;&nbsp;&nbsp;&nbsp;逆向过程中,对于一个32位的数,如果其十六进制最高位是8或者更大的话,它就不是一个合法的用户模式指针</a>
+</h3>
+<h3 class="topic">
+<a name="3grh2nnaj3r0abnftuk5jos5aj">&nbsp;&nbsp;3.2.4内核内存空间</a>
+</h3>
+<h3 class="topic">
+<a name="3h0hiqt1ee84u1odgn4r6e1ar2">&nbsp;&nbsp;&nbsp;2GB的内存空间是在内核组件之间划分</a>
+</h3>
+<h3 class="topic">
+<a name="6bbie64hu8tb1cair19s54p668">&nbsp;&nbsp;&nbsp;划分通常是静态的,但是有几个注册表项会影响相关内存区域的大小,大多数组件的大小是动态变化的,其大小可以在运行期间根据可用的物理内存和几个用户可配置的注册表项来确定</a>
+</h3>
+<h3 class="topic">
+<a name="0csem560sugihpq4jqha5b65ct">&nbsp;&nbsp;&nbsp;内核空间内存分配</a>
+</h3>
+<h3 class="topic">
+<a name="49hgvgde1pchh5tur81bgn44t9">&nbsp;&nbsp;&nbsp;&nbsp;分页池和未分页池</a>
+</h3>
+<h3 class="topic">
+<a name="40aglej7jvpm1le2m0nl2eqgvc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;实际上就是内核模式的堆,供所有内核组件使用</a>
+</h3>
+<h3 class="topic">
+<a name="40h1qlbglc0pqmq524fcti0g3v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在内核内存中,所以所有的地址空间均可用,但是只有内核模式代码才能访问</a>
+</h3>
+<h3 class="topic">
+<a name="09usv27l4a59264i3do2a2qhde">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;分页池是由常规的分页构成的堆</a>
+</h3>
+<h3 class="topic">
+<a name="3esh71mfsdp555j24g7qd11r1n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;是大部分内核组件默认分配的堆</a>
+</h3>
+<h3 class="topic">
+<a name="02t86douhbqubpils6a63f52nk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;未分页池是由不可分页的内存组成的,意味着数据不能转存到硬盘上而是一直保存到物理内存中</a>
+</h3>
+<h3 class="topic">
+<a name="3j4f0g57gccafp2o5cpgrd5sk1">&nbsp;&nbsp;&nbsp;&nbsp;系统缓存</a>
+</h3>
+<h3 class="topic">
+<a name="3g9ro62duoda3hnlra1ke76csb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;是windows缓存器映射所有当前缓存文件的地方</a>
+</h3>
+<h3 class="topic">
+<a name="4io1jninm02pl08epn6lsceem0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;与文件打开有关</a>
+</h3>
+<h3 class="topic">
+<a name="3oats1s1opn21sofl2qj4kjh6s">&nbsp;&nbsp;&nbsp;&nbsp;终端服务会话空间</a>
+</h3>
+<h3 class="topic">
+<a name="1kosmoj5kgv1vqjlkm6m0finps">&nbsp;&nbsp;&nbsp;&nbsp;页表和超空间</a>
+</h3>
+<h3 class="topic">
+<a name="75t90r1e6t2n5d3cuc43rut7r1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;页表区是活动页表的虚拟内存映射</a>
+</h3>
+<h3 class="topic">
+<a name="54vdgses7mrb8vjbug86gbltlj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;超空间可以用来做很多事,主要是用来映射当前进程的工作集</a>
+</h3>
+<h3 class="topic">
+<a name="53q5aros141nfhhr99oa0g7g19">&nbsp;&nbsp;&nbsp;&nbsp;系统工作集</a>
+</h3>
+<h3 class="topic">
+<a name="4jifrgbakakkg71baatvfhh47d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用来管理系统物理内存的使用(仅适合于可分页的内存),</a>
+</h3>
+<h3 class="topic">
+<a name="26f3meq9fgkj4ss9r8jgsmmvkm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;管理的两个最大的内存区域是分页池和系统缓存</a>
+</h3>
+<h3 class="topic">
+<a name="4mfrqoi574r3tgvn24q5s21qlt">&nbsp;&nbsp;&nbsp;&nbsp;系统页表项</a>
+</h3>
+<h3 class="topic">
+<a name="447usta8sfoo3ecatdblhjets9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用于满足各种较大的内核分配需求,不管是内核和驱动程序在什么时刻出于什么目的需要大的虚拟内存块时都可以使用的虚拟内存空间</a>
+</h3>
+<h3 class="topic">
+<a name="537pb2g566c2vtqeou7tcette8">&nbsp;&nbsp;3.2.5区段对象</a>
+</h3>
+<h3 class="topic">
+<a name="3an5nsrq7v8b7g0pajdfhgl7ef">&nbsp;&nbsp;3.2.6VAD树</a>
+</h3>
+<h3 class="topic">
+<a name="1n0rp0me5vvm4o69kojq0k8ugh">&nbsp;&nbsp;3.2.7用户模式的内存分配</a>
+</h3>
+<h3 class="topic">
+<a name="5m9q0m20mdpo09o0eho3hgsdp7">&nbsp;&nbsp;&nbsp;私有分配</a>
+</h3>
+<h3 class="topic">
+<a name="29ju3ka4ht23e56ue0pprvcv2d">&nbsp;&nbsp;&nbsp;堆</a>
+</h3>
+<h3 class="topic">
+<a name="4chmvbsnr6qok0er0shl6sv4l5">&nbsp;&nbsp;&nbsp;堆栈</a>
+</h3>
+<h3 class="topic">
+<a name="31hrsv3441riga8ab8b12u26hl">&nbsp;&nbsp;&nbsp;可执行文件</a>
+</h3>
+<h3 class="topic">
+<a name="2837rslg9bnrd18ectrlkj4he6">&nbsp;&nbsp;&nbsp; 映射视图</a>
+</h3>
+<h3 class="topic">
+<a name="7j5j8ep1mhvtlfd04mrabp7sdp">&nbsp;&nbsp;3.2.8内存管理API</a>
+</h3>
+<h3 class="topic">
+<a name="0p141q2bq60hr8rhpoahhl7ko6">&nbsp;3.3对象与句柄</a>
+</h3>
+<h3 class="topic">
+<a name="4a667isj8b5ogflfcek0trmoh5">&nbsp;&nbsp;命名对象</a>
+</h3>
+<h3 class="topic">
+<a name="431pjdmt8c9s0aq2luif5rl1km">&nbsp;3.4进程与线程</a>
+</h3>
+<h3 class="topic">
+<a name="23nra6kguje68hi1ou4egmb8ts">&nbsp;&nbsp;3.4.1进程</a>
+</h3>
+<h3 class="topic">
+<a name="6ttf09h8bn6csac90gu4a2eo3q">&nbsp;&nbsp;3.4.2线程</a>
+</h3>
+<h3 class="topic">
+<a name="3mj5tpagvop3ls2f38jmrcj2l6">&nbsp;&nbsp;3.4.3运行状态切换</a>
+</h3>
+<h3 class="topic">
+<a name="76gb7rmfjn8lsqj7ujpa9bhsn3">&nbsp;&nbsp;3.4.4同步对象</a>
+</h3>
+<h3 class="topic">
+<a name="4f53vgd77cpte1rordt7ua0mo2">&nbsp;&nbsp;3.4.5进程初始化顺序</a>
+</h3>
+<h3 class="topic">
+<a name="78jvhmt891v47lfvn6huh58ni2">&nbsp;3.5应用程序编程接口</a>
+</h3>
+<h3 class="topic">
+<a name="091pmjpfr6an4jb7joncraepca">&nbsp;&nbsp;3.5.1WIN32API</a>
+</h3>
+<h3 class="topic">
+<a name="41f1bgtk7lgt62i55o5l6m9c6m">&nbsp;&nbsp;3.5.2本地API</a>
+</h3>
+<h3 class="topic">
+<a name="369sdr77tk5dq77g131m53vol2">&nbsp;&nbsp;3.5.3系统调用机制</a>
+</h3>
+<h3 class="topic">
+<a name="5c0iaepb0r4u2p4qv0enti5sdn">&nbsp;3.6可执行文件格式</a>
+</h3>
+<h3 class="topic">
+<a name="5q8ik4sc25i6fvegjekr17ubmu">&nbsp;&nbsp;3.6.1基本概念</a>
+</h3>
+<h3 class="topic">
+<a name="1qkjifknj85anvor347jro80ht">&nbsp;&nbsp;3.6.2映像区段</a>
+</h3>
+<h3 class="topic">
+<a name="2tp7fkfh9ol7oune23m2iplcuc">&nbsp;&nbsp;3.6.3区段对齐</a>
+</h3>
+<h3 class="topic">
+<a name="6jla7ri537k2850h1jrhsmtukv">&nbsp;&nbsp;3.6.4动态链接库</a>
+</h3>
+<h3 class="topic">
+<a name="2jivrhm53f63jmblnr4mmqsoo5">&nbsp;&nbsp;3.6.5头部</a>
+</h3>
+<h3 class="topic">
+<a name="2204vftv5gq46lnjt3brm6pn1t">&nbsp;&nbsp;3.6.6导入与导出</a>
+</h3>
+<h3 class="topic">
+<a name="4noljktr45t3kgvptcafe0634g">&nbsp;&nbsp;3.6.7目录</a>
+</h3>
+<h3 class="topic">
+<a name="4rbhauup0r2domhlaka6qa2le9">&nbsp;3.7输入与输出</a>
+</h3>
+<h3 class="topic">
+<a name="7fq9di3u8hmmkg77cd6g8mhjvu">&nbsp;&nbsp;3.7.1I/O系统</a>
+</h3>
+<h3 class="topic">
+<a name="6jpq2u2hej25rh4n2tq053bqom">&nbsp;&nbsp;3.7.2Win32子系统</a>
+</h3>
+<h3 class="topic">
+<a name="04v1551t36g7a6ikvhvgpor4ss">&nbsp;3.8结构化异常处理</a>
+</h3>
+<h3 class="topic">
+<a name="0k7teco60eufni40u46alusd9a">&nbsp;3.9结论</a>
+</h3>
+</body>
+</html>

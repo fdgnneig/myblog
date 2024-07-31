@@ -1,0 +1,2680 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>CTF PWN2</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="2dqgfu5tjill0dcoa40ndcvs1p">CTF PWN2</a>
+</h1>
+<h2 class="topic">
+<a name="0nlpu53fqhla136kg5f737oslg">程序员的自我修养</a>
+</h2>
+<h3 class="topic">
+<a name="0bq65pds7j60vmeo647rebr5p7">&nbsp;第三部分装载与动态链接</a>
+</h3>
+<h3 class="topic">
+<a name="4mcgnfp5edhckjl9tmc2lc540g">&nbsp;&nbsp;第六章可执行文件的装载与进程</a>
+</h3>
+<h3 class="topic">
+<a name="7nr5v2rlf458e3vofef88lnn3v">&nbsp;&nbsp;&nbsp;进程虚拟地址空间</a>
+</h3>
+<h3 class="topic">
+<a name="6p2elbqn3nqdl8f0dgr70ab1o4">&nbsp;&nbsp;&nbsp;&nbsp;32位平台的虚拟地址空间</a>
+</h3>
+<h3 class="topic">
+<a name="7vbspu14obd8cc70i3ujal9qur">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4GB虚拟地址空间</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/4st4t1lg33jqpc62l53ob5eqmp.png"></p>
+<h3 class="topic">
+<a name="03r5b1hb5lp71kqsqi5osh4gvm">&nbsp;&nbsp;&nbsp;&nbsp;64位平台的虚拟地址空间</a>
+</h3>
+<h3 class="topic">
+<a name="507ap9719ogqij133rqhfnrgp2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/1bs6v1s19discpeqiet7gtuhbb.png"></p>
+<h3 class="topic">
+<a name="0pmvjcpkm3gqna4mb07h7jgt0t">&nbsp;&nbsp;&nbsp;linux虚拟地址空间分配</a>
+</h3>
+<h3 class="topic">
+<a name="2m6du0sa46q4dj5g2sgaqovb6l">&nbsp;&nbsp;&nbsp;&nbsp;低3gb用户空间 高1gb系统空间</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/1hsno43d14pmq0842s24gbqg49.png"></p>
+<h3 class="topic">
+<a name="4o9da11gugu8tg24mi11g5rs6k">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;windows中2-2分，可以调整为1-3分</a>
+</h3>
+<h3 class="topic">
+<a name="44de6cp7432e8d68p4i4707917">&nbsp;&nbsp;&nbsp;PAE</a>
+</h3>
+<h3 class="topic">
+<a name="5mr7e8qaeofpabmend6r8e4n1c">&nbsp;&nbsp;&nbsp;&nbsp;32位系统中对于虚拟地址空间，程序最大能使用的为4gb，对于实际的物理地址空间，则有可能访问到超出4gb的内存，因为32位系统中cpu地址总线为36位，可以访问64GB的物理内存</a>
+</h3>
+<h3 class="topic">
+<a name="535dk6dn2qhcla3fvu7vdnvf7r">&nbsp;&nbsp;&nbsp;&nbsp;PAE即物理地址扩展，如果要使用超出4gb的物理地址可以通过PAE</a>
+</h3>
+<h3 class="topic">
+<a name="5c0ehu1jrjf786p64ao6shpf61">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PAE的实现原理是提供了一种新的内存页的映射方式，从而访问到更多的物理内存</a>
+</h3>
+<h3 class="topic">
+<a name="4h5hnkkbafj1ep7smjb16f8oqf">&nbsp;&nbsp;&nbsp;内存装载的方式</a>
+</h3>
+<h3 class="topic">
+<a name="17f046bk374pgf98k9ks97vjje">&nbsp;&nbsp;&nbsp;&nbsp;动态装入（即将程序最常用的一部分数据驻留在内存中，不常用的放在磁盘中）的两种方法</a>
+</h3>
+<h3 class="topic">
+<a name="29alaeqasorkue8bm64ekkhh1h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;覆盖装入</a>
+</h3>
+<h3 class="topic">
+<a name="0ca7066qmlmhi8dkmuoqb1i08d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;即针对程序中两个没有调用关系的子模块，可以共享同一块内存，当使用到哪个模块时，就将该模块映射入内存</a>
+</h3>
+<h3 class="topic">
+<a name="1muvl49lvobuom067cjp0njusr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;需要程序员按照模块间的调用关系将模块组织成树状的</a>
+</h3>
+<h3 class="topic">
+<a name="7fokavgvprn072nlkb091so4uv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;覆盖管理器需要保证</a>
+</h3>
+<h3 class="topic">
+<a name="5o50b7q5a8nruel8g5vri95858">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/4tlpjf8587i42jq6nom7fon8c0.png"></p>
+<h3 class="topic">
+<a name="56ttc8gb49obtfd026gtjrueqj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;页映射</a>
+</h3>
+<h3 class="topic">
+<a name="4iqltsjllj4p8ep7j3stnbdf6f">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将内存和磁盘中所有的数据和指令以内存页为单位划分为若干个页，所有内存装在和操作单位均是内存页</a>
+</h3>
+<h3 class="topic">
+<a name="677d8v2ickpmugvokf7gi640o5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用到哪些内存页中的数据就加载对应内存页，不用时就释放从而为其他内存页的加载腾出空间</a>
+</h3>
+<h3 class="topic">
+<a name="433akq14bsikgro7jeb2une4ep">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;是目前主流操作系统的解决方案</a>
+</h3>
+<h3 class="topic">
+<a name="2om6jv3uqerto550dji5rk8s6c">&nbsp;&nbsp;&nbsp;从操作系统角度看可执行文件的装载</a>
+</h3>
+<h3 class="topic">
+<a name="6mcjfindsrm4f0b1fcb3djqg5b">&nbsp;&nbsp;&nbsp;&nbsp;进程的建立</a>
+</h3>
+<h3 class="topic">
+<a name="498cv1le3k7l0f20sq551d4ujt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;前三个步骤步骤</a>
+</h3>
+<h3 class="topic">
+<a name="15cod2lnorgaln5d46cmd3qogq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/00jujselvfv9jr59r66ll6d4p0.png"></p>
+<h3 class="topic">
+<a name="5v5ja42gho2n9877en6090fqn8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;创建虚拟地址空间（即创建虚拟地址和物理地址的映射关系）</a>
+</h3>
+<h3 class="topic">
+<a name="2kcgojb5dvs5mmsgfij5bqf9o6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;实际上是通过映射函数将虚拟地址空间中的内存页映射到物理空间</a>
+</h3>
+<h3 class="topic">
+<a name="17gpk9sfqda1f0n9890cfikkjv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;linux中创建虚拟地址空间实际上只是分配一个页目录即可，甚至不用创建映射关系，等到后面程序发生页错误的时候再进行设置</a>
+</h3>
+<h3 class="topic">
+<a name="4j685k143lg7t952pne5sf7hkg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当程序发生页错误的时候，操作系统将从物理内存中分配一个物理内存页，然后将&ldquo;缺页&rdquo;从磁盘中读取到内存中，然后设置&ldquo;缺页&rdquo;的虚拟页和物理页的映射关系</a>
+</h3>
+<h3 class="topic">
+<a name="4j669b1m2ojneb4mh9g7fekiqo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;此时需要明确程序当前需要的页在可执行文件的哪个位置，即需要建立虚拟地址空间和可执行文件之间的映射</a>
+</h3>
+<h3 class="topic">
+<a name="5sg5ad6jhpcitq3h4aqqutqdpq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;读取可执行文件头，创建虚拟空间和可执行文件的映射关系（最重要）</a>
+</h3>
+<h3 class="topic">
+<a name="3es9loqd0bj11n6vt8joq0co4b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;两者的映射关系保存在操作系统内核中进程结构体中，进程结构体中保存.text段在虚拟内存空间中的地址范围，保存.text段在elf文件中的偏移，保存段属性等</a>
+</h3>
+<h3 class="topic">
+<a name="269kdoadr3lgrav7dm5kdrk45s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/6m2afqk6r73gphun6bi13occrc.png"></p>
+<h3 class="topic">
+<a name="4ohqai75t4jhvegu2o7o63l99h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将cpu指令寄存器设置为可执行文件的程序入口，启动运行</a>
+</h3>
+<h3 class="topic">
+<a name="0vkql22vfib3etipvq301afog8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;前三个步骤之后，实际上程序真正的指令和数据还没有被装入内存，需要通过程序触发页错误，由系统的页错误处理历程查询内存中的进程结构体，从中获得有关指定段的虚拟地址和该段在文件中的偏移的信息，分配物理内存分页，建立虚拟内存地址和物理内分页的映射关系，然后重新执行出现异常的指令</a>
+</h3>
+<h3 class="topic">
+<a name="4egsft27m0ph0gfu0lho61imvt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/2ebdljfqrmorg9ifhic2bck8re.png"></p>
+<h3 class="topic">
+<a name="7rrj4d8nui1j5tvmk5bketjdud">&nbsp;&nbsp;&nbsp;进程在虚拟内存空间的分布</a>
+</h3>
+<h3 class="topic">
+<a name="4u1t8a072i4uaajpobtfq7q97s">&nbsp;&nbsp;&nbsp;&nbsp;ELF文件的链接视图和执行视图</a>
+</h3>
+<h3 class="topic">
+<a name="11g5t78l1a74hdcbf6hh28veca">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;操作系统在可执行文件装载过程中仅关心文件中不同段的属性权限，并不关心段中的内容</a>
+</h3>
+<h3 class="topic">
+<a name="7vq3htoqimu23imr0nsd9oqkm3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;基本的段权限</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/1qdrvg9m5hg2imbi7peo4s1j13.png"></p>
+<h3 class="topic">
+<a name="4io2bhakhrnl591fc21uo2h0uk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;为了节省虚拟内存空间，对于相同权限的段，可以将其合并到一个段进行映射</a>
+</h3>
+<h3 class="topic">
+<a name="7j61tdmb76rsg9i6t7g7tkns9e">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/1eonr0vu4tmb825r26bh4hgalc.png"></p>
+<h3 class="topic">
+<a name="7c888v6sr0qafpak1inkl6po09">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将可执行文件中权限相同的多个段作为一个段映射到虚拟内存中，此时虚拟内存中的段称为一个segment</a>
+</h3>
+<h3 class="topic">
+<a name="6u1mmj584htsrnnbalnggg34r4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;所以一个segment包含原可执行文件中的多个section</a>
+</h3>
+<h3 class="topic">
+<a name="1p6neegdfefjpgtdpcdilrshdm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/31cg6h2dm0e030ocs1h20bijh7.png"></p>
+<h3 class="topic">
+<a name="74l9dmfo1pq8msr0rjmsc66nfq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当链接器将多个中间文件链接为可执行文件时，会将具有相同权限的段分配到同一个空间，从而形成一个一个的segment，系统按照segment而不是section映射可执行文件</a>
+</h3>
+<h3 class="topic">
+<a name="599vva3hoq0tk9ek0o79oaqhja">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;elf文件中的segment</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/384c33kgg3egg33nun486if2b7.png"></p>
+<h3 class="topic">
+<a name="2s0pshi1gq8hirdsjggl0l6a71">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;只有LOAD类型的segment才会被映射</a>
+</h3>
+<h3 class="topic">
+<a name="1nimpgg478a92akgqai2mc5bm8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;从section视角看elf文件即链接视图，从segment视角看elf文件即执行视图</a>
+</h3>
+<h3 class="topic">
+<a name="2m6425fi4efm355peqck2r06lg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在执行视图中使用程序头表描述segment，目标文件不用被装载，所以没有程序头表，但可执行程序和共享库文件都有</a>
+</h3>
+<h3 class="topic">
+<a name="1mr3oiiots9p6jub53o0d2as92">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;程序头表是一个结构体数组，一个数组元素描述一个segment</a>
+</h3>
+<h3 class="topic">
+<a name="15fraft2029fc2pqlkk4auprqo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/1ss25h4djjb49gi4r3980d35mv.png"></p>
+<h3 class="topic">
+<a name="4c05uptp573r8le7sula5feh0g">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当一个segment在虚拟内存中的大小大于其在文件中的大小时，多出来的部分可以用作BSS，从而不需要为.BSS单独设置segment</a>
+</h3>
+<h3 class="topic">
+<a name="4mov6qfqcmrpkbdfo3u054ibvs">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bss中数据与数据段中的数据区别仅在于前者初始化为0，后者初始化值不为0</a>
+</h3>
+<h3 class="topic">
+<a name="00d9cr27mrrckrndftgb23sgd4">&nbsp;&nbsp;&nbsp;&nbsp;堆和栈</a>
+</h3>
+<h3 class="topic">
+<a name="46l57i3gahe7m0fplk31looi82">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;操作系统通过VMA（虚拟内存地址）管理进程地址空间，堆、栈在虚拟内存空间中以VMA形式存在</a>
+</h3>
+<h3 class="topic">
+<a name="1e08ef971ihlap9tqqfvjmtq72">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在操作系统的进程空间中，具有相同权限属性的、有相同映像文件的会被映射为同一个VMA,一个进程通常包括如下几个VMA区域</a>
+</h3>
+<h3 class="topic">
+<a name="5v9h8jcp860fh5454uttca6jbj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/3jgckjkq0vjjjf57hv9tckkc3q.png"></p>
+<h3 class="topic">
+<a name="7bjno0ioro4ij01snvaq43miu9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/32n2me5c0t5jd3ev4ump38qj50.png"></p>
+<h3 class="topic">
+<a name="15vb2ahac42de11jmedmtl9jsj">&nbsp;&nbsp;&nbsp;&nbsp;堆的最大申请数量</a>
+</h3>
+<h3 class="topic">
+<a name="22tu5hshrlfdq9or7ookee5oje">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;malloc可以申请到的最大堆内存取决于操作系统版本、程序本身大小、用到的动态库、共享库数量、大小、程序栈数量、大小等</a>
+</h3>
+<h3 class="topic">
+<a name="3v96kv233ais6p6vd0rsofq4ik">&nbsp;&nbsp;&nbsp;&nbsp;段地址对齐</a>
+</h3>
+<h3 class="topic">
+<a name="4e7il768kadc9qn85p5g7uc660">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;因为内存页是内存映射的最小单位，且可执行文件中很多段大小不是内存页大小的整数倍，所以如果可执行文件中每一个段单独进行映射，会造成大量内存浪费，具体表现为每个段的大小会扩张为内存分页大小的整数倍，多出内存使用0填充</a>
+</h3>
+<h3 class="topic">
+<a name="3ut6v75h51tm8it2g7j0mht5d4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/3jhkf4rndsi8fccck9eqb3rbk8.png"></p>
+<h3 class="topic">
+<a name="4pcvphlri794rpnc5lndt5gsf8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;为了节省内存，可以让各段相接的内存共享一个内存页，然后将该内存页映两次，此时一个物理内存页可能包含两个段的数据、甚至多个段，所以同一个内存页需要映射多次</a>
+</h3>
+<h3 class="topic">
+<a name="2lh95f6d6rf439u3c5k7mbh50u">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/5t1e9pu28kktc2hbvvvbjf019n.png"></p>
+<h3 class="topic">
+<a name="2a97tvj2h0ssbbs8l4g288he4n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;此时带来一个问题，各个段的虚拟内存首地址往往就不是内存分页长度的整数倍了</a>
+</h3>
+<h3 class="topic">
+<a name="6c6ap1ouf1uuvjcp4sdb0spejo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/4tq3ugqpe6b2tfvs5opb2o3qjg.png"></p>
+<h3 class="topic">
+<a name="0pf5rsc268sfpbmf5p21g7tuth">&nbsp;&nbsp;&nbsp;&nbsp;进程栈初始化</a>
+</h3>
+<h3 class="topic">
+<a name="2dd78gtrp426nh2muehc9n67np">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;进程实际运行之前，操作系统需要将系统环境变量和进程运行参数提前保存到进程虚拟空间的栈中</a>
+</h3>
+<h3 class="topic">
+<a name="7dmi87go64kt7c3slt7mem3di9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/4bo5gootr3aqcfhjeotf28grsh.png"></p>
+<h3 class="topic">
+<a name="06o5e914ngpsiu96qpj5ashslg">&nbsp;&nbsp;&nbsp;linux内核装载ELF过程简介</a>
+</h3>
+<h3 class="topic">
+<a name="20rvp17rloot48ndvls9kc375e">&nbsp;&nbsp;&nbsp;&nbsp;在bash中输入一个命令执行某个elf程序</a>
+</h3>
+<h3 class="topic">
+<a name="0j2uacb4icq3kdg1tjgnk3ck1h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bash调用fork()创建新进程，新进程调用execve()执行指定elf</a>
+</h3>
+<h3 class="topic">
+<a name="44sak34qpst8efcj5jg18n5rtc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;execve</a>
+</h3>
+<h3 class="topic">
+<a name="1p79ta9e0mnr0e2rmm3etr106g">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sys_execve</a>
+</h3>
+<h3 class="topic">
+<a name="18j1arf9q59uvjl88qs4cdpffj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;do_execve：读取指定文件钱128个字节，确定要执行的文件格式</a>
+</h3>
+<h3 class="topic">
+<a name="4hu7gu6g5klfklks5qhmsh8417">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;调用search_binary_handle()搜索匹配合适的可执行文件装载处理过程，比如针对elf文件的装载处理过程为 load_elf_binary</a>
+</h3>
+<h3 class="topic">
+<a name="1drhqoh0ituqsqg2rmosbcvusp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;load_elf_binary主要进行</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/57aa711ip9d642uobm5f78i2m1.png"></p>
+<h3 class="topic">
+<a name="2bpi45cv5uph56lngd3jm5v2tp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/7tjetetn13lemm5qk3k9lvmkov.png"></p>
+<h3 class="topic">
+<a name="3bp8l8sf35dg5vkr2l6vuamfv3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/46rv982n4frar8jtp59s2qdglo.png"></p>
+<h3 class="topic">
+<a name="1d9uf303dhfgfaioi2vbmqrgth">&nbsp;&nbsp;&nbsp;工具使用</a>
+</h3>
+<h3 class="topic">
+<a name="1bfmju25u21p1kttaek6bb6jja">&nbsp;&nbsp;&nbsp;&nbsp;查看elf的section</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/33hima8n4kaqvhkqe860l25lqd.png"></p>
+<h3 class="topic">
+<a name="29dmiu6f9jui0esnt0ksduhq4t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;查看elf文件中的segment</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/4krs3iaf2lpp1c87ljk1i7n4ui.png"></p>
+<h3 class="topic">
+<a name="1hbfeiboe3k6obn8atpga5tigf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;查看虚拟空间分布，其中vdso表示内核内存空间</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/3q2id2pomt8j976naoeg6efan4.png"></p>
+<h3 class="topic">
+<a name="57hvhjgvcnjp99kgbcm4356js2">&nbsp;&nbsp;第七章动态链接</a>
+</h3>
+<h3 class="topic">
+<a name="44etk28a4tc9mcfk6scnd63krr">&nbsp;&nbsp;&nbsp;为什么要动态链接</a>
+</h3>
+<h3 class="topic">
+<a name="34lf97orbsjahocodrs7u07bv0">&nbsp;&nbsp;&nbsp;&nbsp;减少进程内存空间中的重复代码，节省内存空间</a>
+</h3>
+<h3 class="topic">
+<a name="2ln3rq23nn3k0r7n045l4tpjuh">&nbsp;&nbsp;&nbsp;&nbsp;方便程序的维护与更新</a>
+</h3>
+<h3 class="topic">
+<a name="4k67ts8rv4jap0n3dcns19k8i9">&nbsp;&nbsp;&nbsp;&nbsp;增加程序可扩展性和兼容性，可以支持程序的插件</a>
+</h3>
+<h3 class="topic">
+<a name="23jhcrgda5tv8fvkub6oc6vid6">&nbsp;&nbsp;&nbsp;动态链接的基本实现</a>
+</h3>
+<h3 class="topic">
+<a name="2ps84vqabdjqasnlqnm6kicj9n">&nbsp;&nbsp;&nbsp;&nbsp;linux下动态链接文件被称为动态共享对象，简称动态共享对象 .so</a>
+</h3>
+<h3 class="topic">
+<a name="6pg173ioj7ai8sevhrjf59vqke">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;linux下c语言运行库为glibc   对应的动态链接库版本为libc.so</a>
+</h3>
+<h3 class="topic">
+<a name="26smndj8vov3vfqiu51i3r1tkf">&nbsp;&nbsp;&nbsp;&nbsp;windwos下即为动态链接库 .dll</a>
+</h3>
+<h3 class="topic">
+<a name="2lloi4e0f40ktvns1tjcjrarm9">&nbsp;&nbsp;&nbsp;&nbsp;可执行文件的动态链接的行为由动态链接器完成，其本身也是一个共享对象</a>
+</h3>
+<h3 class="topic">
+<a name="74oc7hdialtatuja3llupkur4v">&nbsp;&nbsp;&nbsp;&nbsp;在将.c文件编译链接为可执行文件的过程中，在链接阶段</a>
+</h3>
+<h3 class="topic">
+<a name="1bf8vk77sofv8drc33lmshn5pl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果源代码中所引用的外部函数定义于静态目标模块，则链接器将根据静态链接规则，将外部函数地址进行重定位</a>
+</h3>
+<h3 class="topic">
+<a name="1g6i7dtqjo65pmqsekfl6lk5pk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果源代码中所引用的外部函数定义于动态共享对象，则链接器会将该函数的引用标记为动态链接的符号，不对其进行地址重定位，等到装载时再重定位</a>
+</h3>
+<h3 class="topic">
+<a name="4075ofgrvqnreoabeo8l8dke2m">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;因为编译链接的过程中 共享对象文件也作为参数参与了指令的执行，共享对象文件中保存有完整的符号信息，所以链接器可以根据该符号信息判断当前函数是否定义在共享文件中</a>
+</h3>
+<h3 class="topic">
+<a name="0rmemt0f24jp87mijd83qa07ev">&nbsp;&nbsp;&nbsp;&nbsp;动态链接的可执行文件运行时的内存地址空间分布</a>
+</h3>
+<h3 class="topic">
+<a name="5f0e5tnhv6b3m611fu29vhdl7o">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/09tsgmelf0sck9hafuel7bm70d.png"></p>
+<h3 class="topic">
+<a name="688jglv80396kqr73gbkeaipo1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;地址空间中，程序Program1用到的所有共享库均会被映射到虚拟内存空间，其中ld-2.6.1.so就是动态连接器，进程刚开始会将控制权交给动态链接器，完成所有动态链接之后，再将控制权交给Program1</a>
+</h3>
+<h3 class="topic">
+<a name="2j098c1ct45k3lvku3na268kgp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意动态链接模块的装载基址0x0，该地址为非法内存地址，装载器进行装载时，会根据当前内存中的情况，分配一块足够大的虚拟地址空间给共享对象</a>
+</h3>
+<h3 class="topic">
+<a name="0c426ag6dg3g2fv0qqiv1s4sgg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可执行文件的默认装载基址为0x08048000</a>
+</h3>
+<h3 class="topic">
+<a name="65fn66odkg702foacgar1ufgtl">&nbsp;&nbsp;&nbsp;地址无关代码</a>
+</h3>
+<h3 class="topic">
+<a name="3ikao55ss4bcgrsbjcthaa1lhk">&nbsp;&nbsp;&nbsp;&nbsp;共享对象在编译过程中，不能假设自己在虚拟内存空间中的地址，否则多个共享对象同时存在时会发生冲突</a>
+</h3>
+<h3 class="topic">
+<a name="108eg5l8ahueub5islbiu9odg3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;不同的是，作为第一个被加载的文件，可执行文件可以确定自己的加载基址 linux中为0x08048000 winows中为0x400000</a>
+</h3>
+<h3 class="topic">
+<a name="16okjr05j59uaaauerq1okv2kv">&nbsp;&nbsp;&nbsp;&nbsp;装载时重定位</a>
+</h3>
+<h3 class="topic">
+<a name="4p5tf02770squ5d0fhh0i782rs">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对于程序中的绝对地址引用，当链接时不对引用进行重定位，装载时再进行重定位，此时模块加载基址已经确定，所以可以进行重定位</a>
+</h3>
+<h3 class="topic">
+<a name="0480q8q30uhrr4b09g4c0o6kir">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;装载时重定位因为会修改指令中的绝对地址引用，所以当共享对象中的代码被多个可执行文件引用时，就需要针对不同的可执行文件保存不同的重定位后的代码，所以会占据大量内存</a>
+</h3>
+<h3 class="topic">
+<a name="2oip9qldd3t6rd3v2lm4qp8jr5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;与之对应的是链接时重定位，即之前静态链接时提到的重定位</a>
+</h3>
+<h3 class="topic">
+<a name="115go8f0cosqeo2i6me6o7frqu">&nbsp;&nbsp;&nbsp;&nbsp;地址无关代码</a>
+</h3>
+<h3 class="topic">
+<a name="7qh9egvmhdrtqa2prg5slgb56h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果要保证共享对象中的指令部分不因为装载基址的不同而改变，可以将指令中需要被修改的部分分离出来，根数据部分放在一起，这样指令部分与地址无关，数据部分可以在不同的进程中拥有一个副本 	即地址无关技术（PIC）</a>
+</h3>
+<h3 class="topic">
+<a name="23epe0ricoifhh1bt9b9megsnc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;共享模块中的地址引用可以分为四类，这四类拥有对应的地址无关技术</a>
+</h3>
+<h3 class="topic">
+<a name="0gvgm95o41grulggf04j46qnj1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/3444u60mgfqokvvdo0p3kh5c0k.png"></p>
+<h3 class="topic">
+<a name="4ujk1vr07dj26hp3msr78tuh6l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;模块内的调用或跳转</a>
+</h3>
+<h3 class="topic">
+<a name="1jb4ikejfpb27io8740cfcptr1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;不需要重定位，因为调用双方在同一个模块中偏移是一定的，所以可以使用相对地址调用</a>
+</h3>
+<h3 class="topic">
+<a name="4tkcphal3hnejiclf0o27r81hm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;例如jmp 偏移量    call 偏移量</a>
+</h3>
+<h3 class="topic">
+<a name="4iajpbtoeg005coh3l6v3a94h1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;模块内的数据访问(模块中定义的全局变量和静态变量)</a>
+</h3>
+<h3 class="topic">
+<a name="3p9jm4cnlp0imk6rvor97nid6f">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;同一个模块中访问数据的指令和对应的数据之间的偏移是一定的，所以可以通过获得当前指令的地址+偏移访问指定数据</a>
+</h3>
+<h3 class="topic">
+<a name="0p13u9fu4d11quamdqu7ghrarv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/4j7celj0l534j5d9cca7heme3p.png"></p>
+<h3 class="topic">
+<a name="4il34d969mhrsdbs2anooer6dd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/60kdt6e1r248ht87lu3cf0fldn.png"></p>
+<h3 class="topic">
+<a name="3rvkbpsr7vu09cjjkml6u53hkm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;模块外的数据访问（比如其他模块中定义的全局变量）</a>
+</h3>
+<h3 class="topic">
+<a name="6887m5e6og3bfkc85ldpdhuo82">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当前模块指令中使用了其他模块中的全局变量，该全局变量的值只有在链接的时候才能确定，并且链接时不能直接修改指令中的内容（因为会导致共享该段指令其他模块无法使用该指令（除非为每一个模块都保存一段指令））所以此时本模块中会为所有的引用自其他模块中的全局变量创建一个指针数组（保存在数据段），数组中的每一个指针均指向全局变量，该表被称为全局偏移表（GOT）当代码中使用到全局变量时，可以使用GOT表中对应项间接引用</a>
+</h3>
+<h3 class="topic">
+<a name="47gcrsogfsk9r4e4u1pl7nh31s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/784ropuj7u78gsk6boh7r0sp93.png"></p>
+<h3 class="topic">
+<a name="0tbv45h2b0a3gqbbi9l3suvmtd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;链接器在进行链接时会查找每一个全局变量的地址，填充到GOT表中的各项</a>
+</h3>
+<h3 class="topic">
+<a name="2gaf17a3rhh6mp61964r8n4mft">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;GOT表本身放在数据段，所以在模块装载时可以被修改，即根据全局变量所在共享对象的实际加载基址进行重定位，每个进程中都有自己的GOT表，从而保证使用指令的不同模块不会冲突</a>
+</h3>
+<h3 class="topic">
+<a name="6n3pgofmqffo5oua7v0m6it05j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当指令中使用到其他模块中的全局变量时，需要先找到GTO表(GOT表与指令在同一个模块，使用偏移可以找到)，通过全局变量对应的表项获得全局变量的地址</a>
+</h3>
+<h3 class="topic">
+<a name="5640v7gf7rnppma5leff8vd8pa">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;模块外的函数调用或跳转</a>
+</h3>
+<h3 class="topic">
+<a name="059qqjcs9u0f98bdniosgiahdm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;与上一种方法类似，使用GOT表保存对应函数的地址，当函数被调用时，通过GOT表项进行间接调用</a>
+</h3>
+<h3 class="topic">
+<a name="42fjj6v4363091ldiu8hfr486v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/18qsm9fa71vb25l8j8k69e8q8o.png"></p>
+<h3 class="topic">
+<a name="7gu9tgka9cp2nhvl75lrk99ih9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/3n6oanf15g2tdbc07v6ful24po.png"></p>
+<h3 class="topic">
+<a name="2ccm16ubsbg1ucc5l8qfrehu1e">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;GOT</a>
+</h3>
+<p class="summary">(<a href="#3rvkbpsr7vu09cjjkml6u53hkm">模块外的数据访问（比如其他模块中定义的全局变量）</a>, <a href="#5640v7gf7rnppma5leff8vd8pa">模块外的函数调用或跳转</a>)</p>
+<h3 class="topic">
+<a name="7hh3vli3jt1skvf0ssf1eu4l1l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用gcc编译出的地址无关的代码</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/2tfjb6uafkecd9bds4jh3unc4k.png"></p>
+<h3 class="topic">
+<a name="7pcoimv9eq7s2rfqpnm6qbvhre">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意只要加了fPIC参数，就可以产生地址无关的共享对象</a>
+</h3>
+<h3 class="topic">
+<a name="7o3vb84or88h3cfl1qj2bpn18t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果使用fpic，则生成的地址无关的共享对象代码较小，运行快，但是在部分平台上存在限制</a>
+</h3>
+<h3 class="topic">
+<a name="3iae19sepv4uqoh0hpq5isusc9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PIE</a>
+</h3>
+<h3 class="topic">
+<a name="4sk7ohu7rc1q9msd3qsvb9vhk3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用地址无关方式编译出来的可执行文件称为PIE</a>
+</h3>
+<h3 class="topic">
+<a name="1ovnutt06ml0j2j7tornmtrg1f">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/2evmt25s618fdo4tvnesr7m0k7.png"></p>
+<h3 class="topic">
+<a name="0s2pa3e226gj86mliv9l79tkug">&nbsp;&nbsp;&nbsp;&nbsp;共享模块的全局变量问题</a>
+</h3>
+<h3 class="topic">
+<a name="2atng0t2v0cn850igv5qkfngcm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这个问题有关共享库中的全局变量</a>
+</h3>
+<h3 class="topic">
+<a name="327mn5vis5hnrr7adk8e6ndlj2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当共享库中的全局变量被其他可执行文件引用时，编译器编译该可执行文件，无法判断该全局变量时定义在同一个模块中的其他目标文件中还是定义在另一个共享对象中，即无法判断是不是跨模块引用</a>
+</h3>
+<h3 class="topic">
+<a name="3uvhmbeiuj281vfui4r9i4t5eg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在可执行文件链接过程中，该全局变量没有被定义，所以会在.bss段中创建一个全局变量的副本，所以会导致同一个全局变量在可执行文件bss和共享库中均存在，从而导致问题</a>
+</h3>
+<h3 class="topic">
+<a name="22nag979a8qsa7m18eg4plov92">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;所以解决方案不论是可执行文件还是共享库，对该变量的引用全部指向位于可执行文件中的bss中，即对于共享库，其内的所有全局变量都要当作定义在其他模块中，通过GOT实现变量的访问</a>
+</h3>
+<h3 class="topic">
+<a name="0cd70ofblajnfeknst0dii9vql">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;共享模块被装载时，如果自己的全局变量在可执行文件中存在副本，则动态链接器会把GOT表相关地址指向该副本</a>
+</h3>
+<h3 class="topic">
+<a name="3a0oa11lvki7pd03u22r6s0b2g">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果全局变量在共享库中被初始化，则动态链接器将该初始化的值复制到可执行文件的变量副本中，</a>
+</h3>
+<h3 class="topic">
+<a name="6cqq0dhlbs2i4723i0n3ledrph">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果全局变量在可执行模块中没有副本，则GOT相应地址需要指向本模块内部该变量的副本</a>
+</h3>
+<h3 class="topic">
+<a name="3q53itv11ck55tbhjmh1m8t8tb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/67q74ha27mqnl2fod8frrvngk9.png"></p>
+<h3 class="topic">
+<a name="46rp36idf655s41rt4ggj38e7n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;QA</a>
+</h3>
+<h3 class="topic">
+<a name="5t41ofuc3p32fnrjjjrb91ls51">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/4oj0mqalgljfrthklaou9s5ugr.png"></p>
+<h3 class="topic">
+<a name="50sseven6g0j0jc3qdie3b1oii">&nbsp;&nbsp;&nbsp;&nbsp;数据段地址无关性</a>
+</h3>
+<h3 class="topic">
+<a name="1c8d80jdn2u9rfqjg81p81gjl0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;有的时候共享对象的数据段也会出现使用绝对地址的问题，比如</a>
+</h3>
+<h3 class="topic">
+<a name="0nja326f3d8p0uj52f29hl9af6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;此时p中保存的是一个绝对地址</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/5js63v82rl89420csu6e01tig2.png"></p>
+<h3 class="topic">
+<a name="7snkaina9p6ep87k2bmtu4orvs">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如何对共享库中的数据段进行重定位？</a>
+</h3>
+<h3 class="topic">
+<a name="0gv6btor29m8f4droant31au9j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以使用装载时重定位的方法对数据段进行重定位操作</a>
+</h3>
+<h3 class="topic">
+<a name="6ufn1mm6votgbc5i5gvgji5snq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果共享库中存在数据的绝对地址引用，编译器和链接器会会产生重定位表，当的动态链接器装载共享对象是，就会根据重定位表对共享对象进行重定位</a>
+</h3>
+<h3 class="topic">
+<a name="0upakp7l8rh548j4ju456f1gel">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果共享库的代码段是使用装载时重定位，生成的代码不能被多个程序使用</a>
+</h3>
+<h3 class="topic">
+<a name="401fsu0c9k3r2bl00hjq0kcpef">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可执行程序如果是动态链接的，默认情况下GCC会使用PIC的方法产生可执行文件的代码部分，此时不同的程序可以共享该代码段</a>
+</h3>
+<h3 class="topic">
+<a name="17bg2bn9ivuu79e6d0sgvs749d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;所以动态链接的可执行文件存在GOT表即.got段</a>
+</h3>
+<h3 class="topic">
+<a name="3eav5tu928l5cj23aur583t5kq">&nbsp;&nbsp;&nbsp;延迟绑定（PLT）</a>
+</h3>
+<h3 class="topic">
+<a name="0hf8n4otek7d5slg1s35vh2o3h">&nbsp;&nbsp;&nbsp;&nbsp;当共享库中的函数第一次被在主模块中调用的时候，该共享库由动态链接器进行绑定（即载入内存、符号查找、重定位）</a>
+</h3>
+<h3 class="topic">
+<a name="57lv7crtr0c6paqs643eq3l6qc">&nbsp;&nbsp;&nbsp;&nbsp;ELF中使用PLT实现延迟加载，当调用外部函数是，不再直接通过GOT表进行跳转，而是通过PLT表项进行跳转，PLT相当于在原有GOT与函数调用的基础上又加了一个中间层</a>
+</h3>
+<h3 class="topic">
+<a name="09n4h2054imsk2qdr69imsiie5">&nbsp;&nbsp;&nbsp;&nbsp;每一个外部函数在PLT表中都有一个对应的表项，表项结构为</a>
+</h3>
+<h3 class="topic">
+<a name="3q3qqlnatm3l5na01id4ilenbc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/6kurf24dih4h8duhlqdafaokcn.png"></p>
+<h3 class="topic">
+<a name="03do5l6bsfh6rodg46qtga8oqc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果连接器已经将函数地址填入GOT项，则当函数被调用是，程序访问PLT，执行PLT项中的第一条指令，从GOT中取出函数地址直接执行</a>
+</h3>
+<h3 class="topic">
+<a name="5nno4e3bqivch1jkkbfr08a1tc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;但是在延迟绑定中，链接器没有将GOT表初始化为对应函数的地址，而是将GOT表项初始化为 PLT中push n指令的地址，此时如果发生函数调用，通过plt访问到got 然后got执行 push n为首的指令序列</a>
+</h3>
+<h3 class="topic">
+<a name="2lic11sm5inmgf5mh5emim3cil">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;指令序列 &#13;
+push n&#13;
+push moduleID&#13;
+jmp dl_rutime_resolve &#13;
+用于完成函数符号的解析和重定位工作，完成后会将函数的地址填入GOT中，下次该函数再次执行，就可以直接完成调用</a>
+</h3>
+<h3 class="topic">
+<a name="1e086kot8jbtgmdbjkil436fgl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;push n中n为对应函数在重定位表.rel.plt中的偏移（注意不是下标，32位系统中，重定位表中一个表项8字节，所以这里的n为rel.plt表下标*8），对应reloc_index</a>
+</h3>
+<h3 class="topic">
+<a name="7ij3j96nq2i7c5tjn4n8tciq2c">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;push moduleID中moduleID为该函数所在模块的id 对应link_map_obj</a>
+</h3>
+<h3 class="topic">
+<a name="365c5jq8hdq4k2cerpi6lrkqfl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dl_rutime_resolve是动态链接器的函数，用于完成符号解析和重定位</a>
+</h3>
+<h3 class="topic">
+<a name="2ck1vsb90e5767ta7ti8ii0o90">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_dl_runtime_resolve函数原型</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/7gq941c12dgdg2otala8sfo2bi.png"></p>
+<h3 class="topic">
+<a name="2kb6c98np4vnbobr210bkep6po">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PLT的实际结构</a>
+</h3>
+<h3 class="topic">
+<a name="63vsfo4su6iep0qi4of4imrusj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/3816a25m7oadhb6a3scdua405o.png"></p>
+<h3 class="topic">
+<a name="2sa8t59isjj0iq2io11kqhornu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PLT在elf文件中以独立的段存放即.plt，其中因为保存代码，所以一般与代码段合并为一个segment</a>
+</h3>
+<h3 class="topic">
+<a name="6qjaormadfttvvigk6e6tebvrk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这里的push n是将函数_dl_runtime_resolve函数的参数reloc_index入栈&#13;
+本模块的id以及_dl_runtime_resolve函数的地址可以从GOT表项额第二三项种获得，是动态链接器在装载共享模块时负责初始化的</a>
+</h3>
+<h3 class="topic">
+<a name="0eid754bt4a2ukkdj6f13o0dlt">&nbsp;&nbsp;&nbsp;&nbsp;如果PLT存在，则GOT表会被分为</a>
+</h3>
+<h3 class="topic">
+<a name="3qgrhutcb73ulbvqbap4fltt3l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.got</a>
+</h3>
+<h3 class="topic">
+<a name="4qnvpr8ar77km41toegafujhe9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用于保存全局变量引用的地址</a>
+</h3>
+<h3 class="topic">
+<a name="0tsaigcjajcr7hdii3d9ku5uhl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.got.plt</a>
+</h3>
+<h3 class="topic">
+<a name="2m6b7tmuk7mkh9uekpb1e2m8s0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用于保存函数引用的地址</a>
+</h3>
+<h3 class="topic">
+<a name="3nm3t0brqm1kvalfln4dfdds5j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该表的前三项有特殊意义</a>
+</h3>
+<h3 class="topic">
+<a name="7u6bl30ak8ofogbiusbleagi03">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/3e6jl4n2521ui56em3g675i22l.png"></p>
+<h3 class="topic">
+<a name="2292kagc7ibm425jdacjvhbenp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;第二、三项由动态链接器在装载共享模块的时候负责初始化</a>
+</h3>
+<h3 class="topic">
+<a name="0udf3i4c36ej0jm5ufs1605odq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.got.plt的结构</a>
+</h3>
+<h3 class="topic">
+<a name="27k9mbvp5cggv3ormf3ulsg0hi">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/2ljqosh7hi35vm9bcet8nn4jhk.png"></p>
+<h3 class="topic">
+<a name="0at8k60a4777ps46l4amq048at">&nbsp;&nbsp;&nbsp;&nbsp;PLT表与GOT表的联合使用（延迟绑定过程）</a>
+</h3>
+<h3 class="topic">
+<a name="0m246bn4rupovu7f36sqqd8l9h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/3l4pr17afgtihvladh9123so9v.png"></p>
+<h3 class="topic">
+<a name="2vvsjdlpgf7baq22us7cujshev">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如左图所示，程序的plt表具有比较规整的结构，每一个plt表项都是16字节。而且，在每一个表项的6字节偏移处，是该表项对应的函数的解析路径（即push n指令为起始），即程序最初执行该函数的时候，会执行该路径对函数的got地址进行解析。</a>
+</h3>
+<h3 class="topic">
+<a name="1fo7ahu7hfsemlrmtcuasis4r2">&nbsp;&nbsp;&nbsp;&nbsp;PLT表的表项和GOT表的表项存在对应关系对应的</a>
+</h3>
+<h3 class="topic">
+<a name="2ip3kjm0pq4tvu5jcq9n6158v5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/6a2re4v81gd2hcosl01n6e9foh.png"></p>
+<h3 class="topic">
+<a name="6ohrds4fmrgb9jroo8ekc1efkr">&nbsp;&nbsp;&nbsp;&nbsp;GOT与PLT详解</a>
+</h3>
+<h3 class="topic">
+<a href="https://blog.csdn.net/qq_18661257/article/details/54694748" name="325oigh446bvg828mv6uven5al">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://blog.csdn.net/qq_18661257/article/details/54694748</a>
+</h3>
+<h3 class="topic">
+<a name="5dhpu72uuj7eg2si9pu7kph6mq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;讲得很透彻</a>
+</h3>
+<h3 class="topic">
+<a name="0d6s63ufhf8b5psdspotr3utj6">&nbsp;&nbsp;&nbsp;&nbsp;PLT与.got   .got.plt </a>
+</h3>
+<p class="summary">(<a href="#0eid754bt4a2ukkdj6f13o0dlt">如果PLT存在，则GOT表会被分为</a>)</p>
+<h3 class="topic">
+<a name="17am9cr0v6g24aroha6l4h00en">&nbsp;&nbsp;&nbsp;动态链接相关结构</a>
+</h3>
+<h3 class="topic">
+<a name="0mov2qtcv96s1i0e8qbu8vlb4j">&nbsp;&nbsp;&nbsp;&nbsp;动态链接的情况下，可执行文件的装载与静态链接情况基本一样</a>
+</h3>
+<h3 class="topic">
+<a name="3ccd0vnb4c17f69d3rgb3a946q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;读取elf文件头部，检验额合法性</a>
+</h3>
+<h3 class="topic">
+<a name="0no0kgfrpuhb4pf4bvms9l2tl8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;从程序头中取出每个segment的信息（虚拟地址、文件地址、属性高）将其映射到进程虚拟地址空间相应位置</a>
+</h3>
+<h3 class="topic">
+<a name="4pj3l09p2k9obm0odkfa9i4plt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;静态链接中，将程序执行流程交给程序入口函数，动态链接中将程序执行流程交给动态链接器，当到动态链接器对可执行文件完成动态链接后，再将程序执行流程交给可执行文件的入口地址</a>
+</h3>
+<h3 class="topic">
+<a name="2291dtbum75jfk8bq3rgbl826u">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;动态链接器ld.so本身就是共享对象，操作系统需要通过映射的方式将其加载到进程地址空间中</a>
+</h3>
+<h3 class="topic">
+<a name="516dq904il5c03iinmocj9eb93">&nbsp;&nbsp;&nbsp;&nbsp;.interp段</a>
+</h3>
+<h3 class="topic">
+<a name="1nqlmfe7ctke27h0kb7t2dvjod">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;elf可执行文件中的一个段，其中保存一个字符串，该字符串为该执行性文件所需的动态链接器的路径</a>
+</h3>
+<h3 class="topic">
+<a name="3ec5ggk0pc0vk9fs4bctrhqfli">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通常该路径对应的文件是一个软链接</a>
+</h3>
+<h3 class="topic">
+<a name="696kd0lhk9kahdd6fg4s3b0ib7">&nbsp;&nbsp;&nbsp;&nbsp;.dynamic段</a>
+</h3>
+<h3 class="topic">
+<a name="2rgtve3ptp3m1rh1bsuq28kt4m">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;存在于动态链接ELF文件中，保存了动态链接器所需要的基本信息</a>
+</h3>
+<h3 class="topic">
+<a name="3t0jfpo26dfaoda61aro65l2rc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;包含重要信息：所依赖的共享对象的文件、其他与动态链接有关的表的地址，共享对象初始化代码地址等</a>
+</h3>
+<h3 class="topic">
+<a name="5qbne7tkj8764eti4ivr6ii1sv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意该段可以类比elf头，elf投中保存的均是静态链接相关的内容（符号表，重定位表等），而.dynamic可以看成动态链接中的elf文件头</a>
+</h3>
+<h3 class="topic">
+<a name="0et9sec63aa3ik4vglnn44mhj6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;是一个结构体数组</a>
+</h3>
+<h3 class="topic">
+<a name="2gr8hoef053ka1udnh1jc8ip2n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/7bltvgrk88f77rnemer3pe4tiu.png"></p>
+<h3 class="topic">
+<a name="6kta6cj0h64014914d8in5grtb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/5n4bui6cb6kqrj85ul1o392cd5.png"></p>
+<h3 class="topic">
+<a name="3jvs0s0oh7o0bukspd81e51acv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/69ogn2hmiknq3ncqrmqr0gug0v.png"></p>
+<h3 class="topic">
+<a name="2fcktan0te4sbr9rdui1q367r6">&nbsp;&nbsp;&nbsp;&nbsp;动态符号表.dynsym</a>
+</h3>
+<h3 class="topic">
+<a name="5aa3drf4idg93pn97q2mkab012">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;结构与静态链接的符号表几乎一样，但是进保存了与动态链接相关的符号，不保存模块内部的符号，</a>
+</h3>
+<h3 class="topic">
+<a name="7re3ai9qu6tq5dcs15la4ti9t1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;符号表 .symtab中往往保存了所有符号，包括.dynsym中的符号</a>
+</h3>
+<h3 class="topic">
+<a name="4p1fjadgsfd2hp96q9iq0nkebg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;需要一些辅助表</a>
+</h3>
+<h3 class="topic">
+<a name="01f707h1s8ilhppkemf6r4mi7l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;保存符号名称的动态符号字符串表 .dynstr</a>
+</h3>
+<h3 class="topic">
+<a name="0at04lbv6h91ea6eo5djbvnkfh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对应静态链接中的字符串表 .strtab</a>
+</h3>
+<h3 class="topic">
+<a name="2sk1ojd9igfd6u2hv16ccf3jh3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;符号哈希表 .hash</a>
+</h3>
+<h3 class="topic">
+<a name="7oghrljk783bhlnlg55lsvefph">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;动态符号表结构与静态符号表结构相同</a>
+</h3>
+<h3 class="topic">
+<a name="3qbnqenthd9qahkpo34hf645ld">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/6t07fo32rnfspjpv0pudnqpfhn.png"></p>
+<h3 class="topic">
+<a name="42kqjl8frpum87ulishjsulo02">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意结构体中前三个成员大小均为4字节  第四、五成员数据类型均为unsigned char所以各占1字节，最后一个成员数据类型为Elf32_Half，占2字节，故该结构题一共占16字节</a>
+</h3>
+<h3 class="topic">
+<a name="4hto9u88jisqkff5ikoaqetf7d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意st_name所谓的符号名在字符串表中的下标指的是指定字符串相对于字符串首地址的偏移，而不是类似数组下标的概念</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/1h1ts33llc70745krgvqb6io1e.png"></p>
+<h3 class="topic">
+<a name="1gm84jcd3jj4jqckcf8og08iki">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;符号类型与绑定信息</a>
+</h3>
+<h3 class="topic">
+<a name="067lbj925ml9i1tovnidkjhfie">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/7ann236uvrbq1024i4d5ro21v0.png"></p>
+<h3 class="topic">
+<a name="4rpt8bd13c432m4dc69b879df5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/2tenehp7gv69mrjli3158m3equ.png"></p>
+<h3 class="topic">
+<a name="216de0ces3ucoc4jfudsuofmes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;符号所在段</a>
+</h3>
+<h3 class="topic">
+<a name="5aspmccu16n63a9die3uc3rmf9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/0b4fpsl4agdm9ld9i8kur9hlc8.png"></p>
+<h3 class="topic">
+<a name="7l2ofdd5grbq7jsg99ak76cjpf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;符号值</a>
+</h3>
+<h3 class="topic">
+<a name="2g7mdvung6oor1l64eul9p2p4e">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/78bpmapf1hutp26rud732kcs19.png"></p>
+<h3 class="topic">
+<a name="1bl1egrs5ss196vktp4v1mdmll">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/1gqug30o7l53cpc8kpfmihscgt.png"></p>
+<h3 class="topic">
+<a name="12f3j72rk2nroe3u2hq9t5391o">&nbsp;&nbsp;&nbsp;&nbsp;动态链接重定位表</a>
+</h3>
+<h3 class="topic">
+<a name="7ue30j2vkaaju9hj9k3h7sntu7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;动态链接时，不论可执行文件或共享对象，一旦引用其他共享对象，就会有导入符号，就会需要被重定位</a>
+</h3>
+<h3 class="topic">
+<a name="1tm34dirsnc95rj5m7g3uu3m35">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;动态链接的可执行文件或共享对象即使是PIC编译的，也会需要重定位</a>
+</h3>
+<h3 class="topic">
+<a name="2b8pmpl9g7c63kfja96c0s7aro">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;虽然使用了PIC，代码段不需要重定位，但是数据端还需要被重定位，因为PIC通过将代码段中的重定位项分离出来，形成了GOT表，GOT表需要在加载的时候被填充</a>
+</h3>
+<h3 class="topic">
+<a name="39f7clhunf7r1mmfi4fcruev8b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;数据段处了GOT表还有其他绝对地址引用</a>
+</h3>
+<h3 class="topic">
+<a name="4sgu6eh6n8shboe83vmpbg8bc1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;动态链接的重定位与静态链接的重定位类似，只不过发生的时机不一样</a>
+</h3>
+<h3 class="topic">
+<a name="782ee6qbi43l38lpcrmv114jec">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;相关结构</a>
+</h3>
+<h3 class="topic">
+<a name="5uma11meolkocoanm9alvmmgkr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.rel.dyn</a>
+</h3>
+<h3 class="topic">
+<a name="5i97j9dit5icb7s12un9vk5kfr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;相当于静态链接中的.rel.data</a>
+</h3>
+<h3 class="topic">
+<a name="3g6os30j25e29o8ukdr4k03d0l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;修正位置位于.got和数据段</a>
+</h3>
+<h3 class="topic">
+<a name="7ge2u59e4gu0gg779bf484bni4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.rel.plt</a>
+</h3>
+<h3 class="topic">
+<a name="793iic5tkos55ljcm0mg4oeakq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;相当于静态链接中的.rel.text</a>
+</h3>
+<h3 class="topic">
+<a name="427qtscvsbd2aaj42ncpeqt338">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;修正位置位于.got.plt</a>
+</h3>
+<h3 class="topic">
+<a name="2fgro8ahe105iutj57l1d19h2l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;相对于静态链接，动态链接中新的重定位类型</a>
+</h3>
+<h3 class="topic">
+<a name="3rd3srrjqn4vu54hubgo8boars">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/20uf1pra5ockjrva6f61cc5rsv.png"></p>
+<h3 class="topic">
+<a name="4v325inuli4rvbd9b9r0cklmt8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/2dbtsukt8bs95m06gpsv36goir.png"></p>
+<h3 class="topic">
+<a name="7c5o8h0t56thcu4kra3gldffqj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/3q5d8giolg1kova6nie1jmkdhl.png"></p>
+<h3 class="topic">
+<a name="0eajv76mj8ietr8kr79otpi0m2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;重定位时填入符号的地址即可</a>
+</h3>
+<h3 class="topic">
+<a name="60r3i203bh2v8bghgmq22p324m">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;的重定位</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/79rdtnnq6bniim3pomlo3q43u0.png"></p>
+<h3 class="topic">
+<a name="4ci9jp2tn2ltp7darg49mvo8sl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/0jf0c5o0i2ae7v1hvb8q717h4f.png"></p>
+<h3 class="topic">
+<a name="1th5ukf07d17h15pvounohi3rg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;重定位时填入符号的地址即可</a>
+</h3>
+<h3 class="topic">
+<a name="2mnaldbb3978lrraol9q8m8vj5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/593iqbusv76c2g35l5ariba2pd.png"></p>
+<h3 class="topic">
+<a name="1jcs8t74hga6pfe74sggcragg8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果一个elf文件以PIC模式编译，则其引用的外部函数的重定位信息保存在.rel.plt中，如果elf不是以PIC编译，则其引用的外部函数的重定位信息保存在.rel.dyn中</a>
+</h3>
+<h3 class="topic">
+<a name="6h13rrbgu8520n0jr8n4lr8vrn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;重定位表的结构</a>
+</h3>
+<h3 class="topic">
+<a name="7gflse1m4lse0bnismp3r24f4t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/6i0c6k1h4oj6lnrm5o538k3a42.png"></p>
+<h3 class="topic">
+<a name="1t7go66trau81he6avcmnak1is">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/5agvu7mr1efasbeie1p0g3nu18.png"></p>
+<h3 class="topic">
+<a name="4oqribuv9q9elsq4eekmghan5s">&nbsp;&nbsp;&nbsp;&nbsp;动态链接时进程堆栈初始化信息</a>
+</h3>
+<h3 class="topic">
+<a name="2qj2tg50c3cvp2384d13oj4pdt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;操作系统执行动态链接器之前，需要将可执行文件和本进程的信息保存在堆栈中，此信息是一个结构体数组，叫做辅助信息数组，该数组具体位置在环境变量指针后面</a>
+</h3>
+<h3 class="topic">
+<a name="286k6mmb4u9i696vsl3e2i8nt0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;辅助信息数组结构</a>
+</h3>
+<h3 class="topic">
+<a name="1klsh8lr4e17bpaajtkkjosr44">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/788lipntevg9go8bhphhor1lbm.png"></p>
+<h3 class="topic">
+<a name="2p2ug74q4f88dvpq67o67nq7mc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/0t1uvlrc9rqpa6ehislh4rdon9.png"></p>
+<h3 class="topic">
+<a name="0qr5412c1in7atelatfd057q1l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/3vpds006q4frm1bhlaj1rrs63v.png"></p>
+<h3 class="topic">
+<a name="7oves7d8c5oudfl7o3cgaq25dh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/0tui5mekqrr03fpkbdqpk4i9jj.png"></p>
+<h3 class="topic">
+<a name="0l29ojvccfdhkf0c1sngd73ic4">&nbsp;&nbsp;&nbsp;&nbsp;动态链接</a>
+</h3>
+<h3 class="topic">
+<a name="36jeeb9tbrfocuhtri7lkf01e6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;动态链接符号表</a>
+</h3>
+<h3 class="topic">
+<a name="530a1jhmn6e8fa6ep3ruk7ntsm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.dynsym</a>
+</h3>
+<h3 class="topic">
+<a name="7k5cojbmjn8r1nr6dc94vfg59r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;动态链接字符串表</a>
+</h3>
+<h3 class="topic">
+<a name="69an25rrpsj7evt1a72cp7gajp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.dynstr</a>
+</h3>
+<h3 class="topic">
+<a name="1sh1kpv09lbkneo9rs3lv72n0e">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;动态链接重定位表</a>
+</h3>
+<h3 class="topic">
+<a name="27501hl0g9jra3npeunem2mpi7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.rel.dyn  .rel. plt</a>
+</h3>
+<h3 class="topic">
+<a name="423asqpc1g8rts2107ls44km82">&nbsp;&nbsp;&nbsp;&nbsp;静态链接</a>
+</h3>
+<h3 class="topic">
+<a name="5o2g6oq85qgpf86v9od1823bbs">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;静态链接符号表</a>
+</h3>
+<h3 class="topic">
+<a name="3raoagh6cpcuk646gojocf9601">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.symtab</a>
+</h3>
+<h3 class="topic">
+<a name="06qtv4t0a9n0kkbkmofdqhl9dq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;静态链接字符串表</a>
+</h3>
+<h3 class="topic">
+<a name="5avhqeo65i0i4660n1a85o436q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.strtab</a>
+</h3>
+<h3 class="topic">
+<a name="3dapk8dr65rplldt921klvm4fh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;静态链接重定位表</a>
+</h3>
+<h3 class="topic">
+<a name="4rsgjuh9s7kirp29slf9cpnfb4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.rel.text  .rel.data</a>
+</h3>
+<h3 class="topic">
+<a name="1an7sedfrpe010moaii8mur1hj">&nbsp;&nbsp;&nbsp;动态链接的步骤和实现</a>
+</h3>
+<h3 class="topic">
+<a name="7l3a1jsndrcho9qknbbc74psqg">&nbsp;&nbsp;&nbsp;&nbsp;步骤</a>
+</h3>
+<h3 class="topic">
+<a name="0sfrin9bvgaht0f96td5lndmkp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;启动动态链接器自身</a>
+</h3>
+<h3 class="topic">
+<a name="3tilg318oe5ge0votae1ebog9r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;动态链接器自举</a>
+</h3>
+<h3 class="topic">
+<a name="7anr41ueqv19nbseqbibr0gee5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/0tuuvo8rso1s6ni3vqbr6iq8vg.png"></p>
+<h3 class="topic">
+<a name="79j033qkftejt54qac2ate4e71">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;自举过程</a>
+</h3>
+<h3 class="topic">
+<a name="5ibeu60sndom69noq907f7rlb5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/0v8k78n1460u9rpklld3jaf26o.png"></p>
+<h3 class="topic">
+<a name="0dg9in2g1sgphkdi9v5u891m40">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;自举代码中不能使用函数调用？（这里没看懂）</a>
+</h3>
+<h3 class="topic">
+<a name="66bbr0b2ka18t4fi9fpdm6el33">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/3imr6v9k95khgtvdkjtvjhojub.png"></p>
+<h3 class="topic">
+<a name="6ds5n7jf2d9knh7o1ocu2qv5m6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;装载所有需要的共享对象</a>
+</h3>
+<h3 class="topic">
+<a name="0qhnteq0h6jqpe3b8l3lmojv25">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;进程空间中的可执行文件、共享库、动态链接器在被装载到内存之后，其符号表会被合并到全局符号表中</a>
+</h3>
+<h3 class="topic">
+<a name="2n6nptd69ps9197kjkjslb5hqf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;动态链接器自举完成后，将可执行文件加载入内存，寻找可执行文件的.dynamic段，从中找到类型为 DT_NEEDED的项，即为可执行文件依赖的共享对象</a>
+</h3>
+<h3 class="topic">
+<a name="5hdh1cu4kcc0flh2bkrqntgsb3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将所有依赖对象的名称装载到集合中，依次将其对应文件打开， 获取检验elf头、程序头、.dynamic，根据程序头将数据映射到内存中</a>
+</h3>
+<h3 class="topic">
+<a name="1pmpiokgutp15gves1oie7j76k">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;符号的优先级</a>
+</h3>
+<h3 class="topic">
+<a name="6ot3g0q9g3nudmc750t6vqaevu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;全局符号介入</a>
+</h3>
+<h3 class="topic">
+<a name="409lvm403ukue276edmne2pi02">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;一个共享对象中的全局符号被另一个共享对象中的同名全局符号覆盖的现象</a>
+</h3>
+<h3 class="topic">
+<a name="54tj5u1hdacoss38701io308t3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/79nqu2behnuqp3sa165gpm9s8n.png"></p>
+<h3 class="topic">
+<a name="0tmk9u8n5vpbg36tfts0f7nl6o">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;全局符号介入与地址无关代码</a>
+</h3>
+<h3 class="topic">
+<a name="38peppf05d7n3i81nt5im8qjde">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这里解释了，因为全局符号介入的问题，导致PIC编译的模块中对于模块内部的函数的调用不能使用相对地址寻址的方法，（因为可能导致该函数被其他模块中同名函数覆盖），所以必须将其作为外部函数进行调用，从而需要用到.got.plt段，并进行重定位</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/60jdbnjeuipnv1ib0dr6hn8up6.png"></p>
+<h3 class="topic">
+<a name="7um0cob5ck56mebqe83lhjeajr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;重定位和初始化</a>
+</h3>
+<h3 class="topic">
+<a name="3i5846u68gfkug9a5ms816efes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;动态链接其遍历可执行文件和每个动态对象的重定位表，将其GOT /PLT中的重定位位置进行修复</a>
+</h3>
+<h3 class="topic">
+<a name="5r4rtpe11bquopo4rtoe0l86i0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果共享库有.init段，则会动态链接器会执行该段</a>
+</h3>
+<h3 class="topic">
+<a name="38gv0ngfnrgplahj9pg958ge9t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以用于执行构造</a>
+</h3>
+<h3 class="topic">
+<a name="6fh8lqk10rv8plijfhuajj06ug">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;进程退出时要执行.finit段，如果共享对象有的话</a>
+</h3>
+<h3 class="topic">
+<a name="25h66re3ngafgmt0giua4bf6gi">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以用于执行析构</a>
+</h3>
+<h3 class="topic">
+<a name="48q6a4tt601utshi71hq1n1fq6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可知性文件的.init finit由程序初始化部分负责，不由动态链接器调用</a>
+</h3>
+<h3 class="topic">
+<a name="40b0kjlj1ssgj3q0b76odq7mu3">&nbsp;&nbsp;&nbsp;&nbsp;linux动态链接器的实现</a>
+</h3>
+<h3 class="topic">
+<a name="17627ak62pcn4qpov3n127a6sq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;动态链接器共享对象可以直接执行</a>
+</h3>
+<h3 class="topic">
+<a name="64v6eujnt99fp51nkkuoj7le92">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;动态链接库的入口</a>
+</h3>
+<h3 class="topic">
+<a name="2uosfos6co2okli5mgb4gui9lq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/3f40210joq665rgndrb48s3kap.png"></p>
+<h3 class="topic">
+<a name="6o3kgs10uj2qijkcgbff95m4o1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/0lq7vk6j5se7ntg6eac033ctnc.png"></p>
+<h3 class="topic">
+<a name="5hdauf0hdq0rn4ps28psauuaco">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;相关问题</a>
+</h3>
+<h3 class="topic">
+<a name="7sqceola69p65efuad5hqsaq6i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/7qlsgcodctr00q3jt188l160kl.png"></p>
+<h3 class="topic">
+<a name="4tutubgm6okg2n2u3md688sscu">&nbsp;&nbsp;&nbsp;显示运行时链接</a>
+</h3>
+<h3 class="topic">
+<a name="1nklm5d2i7gm5tugompdc568rr">&nbsp;&nbsp;&nbsp;&nbsp;类似于windows中的LoadLibrary，即程序自己调用函数选择加载动态链接库，被加载的共享库称为动态装载库</a>
+</h3>
+<h3 class="topic">
+<a name="194dmoptlqetpdee8dav7ve06b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该过程使用的api（书222页开始）</a>
+</h3>
+<h3 class="topic">
+<a name="70e4e12o37adbbscupvdj34p3u">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dlopen</a>
+</h3>
+<h3 class="topic">
+<a name="0277n6ognh8nlslsipe1nd6jts">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;打开动态库</a>
+</h3>
+<h3 class="topic">
+<a name="736u26ids6ecf8thvr1oh1f62q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;类似LoadLibrary</a>
+</h3>
+<h3 class="topic">
+<a name="1tp4s8h7d86i1t97hcq7l97bu3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dlsym</a>
+</h3>
+<h3 class="topic">
+<a name="10dogpet4huavat1qk6bf4gnml">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;查找符号</a>
+</h3>
+<h3 class="topic">
+<a name="17iitdb32c9l5cu1k8qe491v3j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;类似GetProceAddress</a>
+</h3>
+<h3 class="topic">
+<a name="7c1b6lvnvi8jthditrsnnfm8o7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dlerror</a>
+</h3>
+<h3 class="topic">
+<a name="5trgo8iet7q41mn5t67j75ip73">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;错误处理</a>
+</h3>
+<h3 class="topic">
+<a name="4ffoc2u91ptjkcstfn44lmtaqo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dlclose</a>
+</h3>
+<h3 class="topic">
+<a name="1ihf5attshoccqr1qjhg41tsga">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关闭动态库</a>
+</h3>
+<h3 class="topic">
+<a name="66flfoqkigv55na1vgq1ph7alq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;示例程序（加载共享库 使用其中的函数 关闭共享库）</a>
+</h3>
+<h3 class="topic">
+<a name="3d3tufncplg956kjuikr21r4qg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/21jhc4knqadk7rnu88r4jd4jvt.png"></p>
+<h3 class="topic">
+<a name="48efnlf16rjq3t0ree3pb311bc">&nbsp;&nbsp;&nbsp;&nbsp;运行时装载演示程序225页</a>
+</h3>
+<h3 class="topic">
+<a name="16msn9t8dnn9geerlmjqlkvial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;一个程序，用于将共享库加载到内存，并执行其汇总的某个函数</a>
+</h3>
+<h3 class="topic">
+<a name="2i9qsku9ad9dvtsvodr9algoa7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/4c5tmhmlkft7dl2c5ad3kko3og.png"></p>
+<h3 class="topic">
+<a name="6eomv5it650daef9mtl0e6gd12">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;主要问题在于需要确定共享库中被调用函数的函数原型，从而方便传参和接受返回值</a>
+</h3>
+<h3 class="topic">
+<a name="01ul48m7d83uiejv1hgj715593">&nbsp;&nbsp;&nbsp;工具使用</a>
+</h3>
+<h3 class="topic">
+<a name="5ie7qe3srgaoc18frqll5bclqm">&nbsp;&nbsp;&nbsp;&nbsp;将源代码编译成动态链接库</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/05c08bauu0hstau9t1c36et9v1.png"></p>
+<h3 class="topic">
+<a name="79dnghei3utavdtpf03l1e5upu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;以动态链接的方式编译c源代码，生成可执行文件</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/4drj5q0m0n25i3h1mv35brv49s.png"></p>
+<h3 class="topic">
+<a name="0i5m8chfdu518pfk6gvumah5ra">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;查看可执行程序的内存地址分布</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/41chchovsks5pj1brn2dk91k1m.png"></p>
+<h3 class="topic">
+<a name="7u3bbvbg6m4tku4snevfpcfb06">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;查看.so文件在内存中的装载属性（与elf文件类似）</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/1tpa62i8c1ajgd525uarukftf1.png"></p>
+<h3 class="topic">
+<a name="1l1shn0p7unkejeta59b2f954k">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;查看共享对象中的GOT表</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/0kqcf86kmgdse749vebub65uvk.png"></p>
+<h3 class="topic">
+<a name="3ihsmn7nqhrb4m3ut20uatsi2q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;查看共享对象中需要在动态链接时重定位的项</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/6845qpb2vnn57v9uqdsutbuara.png"></p>
+<h3 class="topic">
+<a name="13s942i2ligtdfuek2v0dk8kte">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;分辨一个so库是否为地址无关的</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/0ku661u9qnnall2km2vho7tn64.png"></p>
+<h3 class="topic">
+<a name="7au0lg9p1k7ccgcok5rf9heohi">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;查看.interp段的内容</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/12jq92vphitr61i82tfn3ej7sn.png"></p>
+<h3 class="topic">
+<a name="0uvdjgq3p6a0t3rjdku9tb89qc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;查看指定文件所需要的动态链接器的路径</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/0l0fo5ar1q6j5uo8magd77bd53.png"></p>
+<h3 class="topic">
+<a name="2b33pamkknqf8rv3nuauai2vlg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;查看.dynamic的内容</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/41k7drhgt1u1dg0jtgumecjhri.png"></p>
+<h3 class="topic">
+<a name="5dh9ldu5c104pnqh5g0rl6fvl0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;查看程序或共享库依赖于哪些共享库</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/7ejip2jle9den9t3b2n74u0nks.png"></p>
+<h3 class="topic">
+<a name="5ps45prq3i2kkrkfn5802vcvcg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;是内核虚拟共享对象</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/2ogmjnpsro5lsqbirpe3pj4t80.png"></p>
+<h3 class="topic">
+<a name="4lthlsrv6ja3l8rth23mq1891v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;查看elf的动态符号表和hash表</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/5iu67ikkd3ao2gcm1ipmtv4911.png"></p>
+<h3 class="topic">
+<a name="4rfhs6ba5jb0g65l4tim5mm283">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;查看动态链接的文件的重定位表</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/2utbdb71u37fhkd4l6n72liqjd.png"></p>
+<h3 class="topic">
+<a name="6qutcjhp999nhnihn0ctgpb4uu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;查看文件动态重定位信息</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/5m4ft544e3o5cvvq20i4tgal5v.png"></p>
+<h3 class="topic">
+<a name="4lncimnkq77g7mc9uee38s9vhp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;创建so文件</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/471344nk3i7u85ua7vjl5m4ck8.png"></p>
+<h3 class="topic">
+<a name="629q5ecckoqbmout1uuqt7hhsh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;结合so文件，编译得到可执行文件</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/4hiiq8p24jsnkae631sii2l615.png"></p>
+<h3 class="topic">
+<a name="4bcjfrrqhfdf4b2l55fj041phf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;查看某进程的地址空间</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/08vv16ao3etvvqqr0s1buv0fd2.png"></p>
+<h3 class="topic">
+<a name="5tqg1p6e3raljbb91lj633860e">&nbsp;&nbsp;第八章Linux共享库的组织</a>
+</h3>
+<h3 class="topic">
+<a name="6dga15gc50j0s5gqdj5j3e8tri">&nbsp;&nbsp;&nbsp;共享库版本</a>
+</h3>
+<h3 class="topic">
+<a name="4gdccukhfv0efsardsp0lmo572">&nbsp;&nbsp;&nbsp;&nbsp;共享库兼容性</a>
+</h3>
+<h3 class="topic">
+<a name="2abph10ul2caqjbsaa43t6qfki">&nbsp;&nbsp;&nbsp;&nbsp;共享库版本命名</a>
+</h3>
+<h3 class="topic">
+<a name="1e0jol2u5o14du1h4emn6jqdk6">&nbsp;&nbsp;&nbsp;&nbsp;SO-NAME</a>
+</h3>
+<h3 class="topic">
+<a name="6bpfuhju8c36g8mplq7qb2hkco">&nbsp;&nbsp;&nbsp;符号版本</a>
+</h3>
+<h3 class="topic">
+<a name="66is7hmq93k3g6bc7eq7hsieuv">&nbsp;&nbsp;&nbsp;&nbsp;基于符号的版本机制</a>
+</h3>
+<h3 class="topic">
+<a name="694g2ofimn4sjh6ckh19hv2dcp">&nbsp;&nbsp;&nbsp;&nbsp;Solaris中的符号版本机制</a>
+</h3>
+<h3 class="topic">
+<a name="5rb9t3dlt9n8mgj1s65akdpq1d">&nbsp;&nbsp;&nbsp;&nbsp;linux中的符号版本</a>
+</h3>
+<h3 class="topic">
+<a name="1hvma00r0mgikhmfkbqsncig3v">&nbsp;&nbsp;&nbsp;共享库系统路径</a>
+</h3>
+<h3 class="topic">
+<a name="13ds3sa953o65l69jr8mdi5ft4">&nbsp;&nbsp;&nbsp;共享库查找过程</a>
+</h3>
+<h3 class="topic">
+<a name="72fn7mmgs08o0g85807d4d2in2">&nbsp;&nbsp;&nbsp;环境变量</a>
+</h3>
+<h3 class="topic">
+<a name="29cshfpln4fg91uu8uijvmpm1j">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/1jhtbfa6c9rpbc8jt7eo35g76k.png"></p>
+<h3 class="topic">
+<a name="1cj2n0o673hsd1ojnsthe0c5e7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;临时改变某个应用程序的共享库查找路径，不影响系统中其他程序</a>
+</h3>
+<h3 class="topic">
+<a name="3aqfo11609c0gmal0cml1fampp">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/7u7fou6dj15654svhro7u1c467.png"></p>
+<h3 class="topic">
+<a name="26e7hpjkbnll388p2bo3cbc56h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;其中指定的文件会在动态链接器按照固定规则搜索共享库之前装载</a>
+</h3>
+<h3 class="topic">
+<a name="55cimv29dip3c8oosdclnhj349">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/3mlr58fdtfg0id7uvhigl5q9bh.png"></p>
+<h3 class="topic">
+<a name="1tnrdpju487bgg77p5qg45uic2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以打开动态链接库的调试功能，动态连接器会打印出各种有用的信息</a>
+</h3>
+<h3 class="topic">
+<a name="0vbbtpl9abiikpevgsqieqfah5">&nbsp;&nbsp;&nbsp;共享库的创建和安装</a>
+</h3>
+<h3 class="topic">
+<a name="4j46k9mr2p5udr2brko9eq8u3h">&nbsp;&nbsp;&nbsp;&nbsp;共享库的创建</a>
+</h3>
+<h3 class="topic">
+<a name="2q0urvll4cdu62ke1bk4db3dmh">&nbsp;&nbsp;&nbsp;&nbsp;清除符号信息</a>
+</h3>
+<h3 class="topic">
+<a name="5cuqf84na81ngelm4rob5baes1">&nbsp;&nbsp;&nbsp;&nbsp;共享库的安装</a>
+</h3>
+<h3 class="topic">
+<a name="5j2uuvtpmjiodnlad8t275ppt7">&nbsp;&nbsp;&nbsp;&nbsp;共享库的构造和析构函数</a>
+</h3>
+<h3 class="topic">
+<a name="1scsq2kjtcrtodfm6udnni7phv">&nbsp;&nbsp;&nbsp;&nbsp;共享库脚本</a>
+</h3>
+<h3 class="topic">
+<a name="5bik14anl948cog9prctld3bah">&nbsp;&nbsp;&nbsp;本章总结</a>
+</h3>
+<h3 class="topic">
+<a name="1gc47nfpgtgq6v5rjr88n0hs58">&nbsp;&nbsp;&nbsp;&nbsp;主要介绍了共享库的管理和搜索方式</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/1nrudc69amvu8unidr10hggmf4.png"></p>
+<h3 class="topic">
+<a name="15d71aorgogm7opcllugndjj7q">&nbsp;&nbsp;第九章Windows下的动态链接</a>
+</h3>
+<h3 class="topic">
+<a name="2040drs1ocaujknaecc2pmcdej">&nbsp;&nbsp;&nbsp;暂略</a>
+</h3>
+<h3 class="topic">
+<a name="3og8t2a1v6rrc78m9oese14fij">&nbsp;第四部分库与运行库</a>
+</h3>
+<h3 class="topic">
+<a name="28g3g72auvqg6vaal0sfj7lq22">&nbsp;&nbsp;一个典型的程序运行环境</a>
+</h3>
+<h3 class="topic">
+<a name="5ntt5gfr06m0g1ovtphq3n8p0d">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/7cutkdu7ooaeg72tsbksu7t6ia.png"></p>
+<h3 class="topic">
+<a name="701m1lom12ljgfgdvmpf5kfg31">&nbsp;&nbsp;第十章内存</a>
+</h3>
+<h3 class="topic">
+<a name="0cn9sa743f9t00u1h8o724imcg">&nbsp;&nbsp;&nbsp;程序的内存布局</a>
+</h3>
+<h3 class="topic">
+<a name="34glsnc0d053rnk0250841ssj1">&nbsp;&nbsp;&nbsp;&nbsp;32位计算机中，虚拟内存空间4gb，可以使用32位的指针寻址整个内存空间</a>
+</h3>
+<h3 class="topic">
+<a name="43860lol10ot8bph29cq7lo6hh">&nbsp;&nbsp;&nbsp;&nbsp;分为用户区和内核区</a>
+</h3>
+<h3 class="topic">
+<a name="16411pbvitf7qqh5f2mlig069e">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;windows 22分</a>
+</h3>
+<h3 class="topic">
+<a name="6u9ll7rpqtnhd3dlrlsfq9g4t1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;linux 31分</a>
+</h3>
+<h3 class="topic">
+<a name="010gun6j4pnf1plsppfi4sm825">&nbsp;&nbsp;&nbsp;&nbsp;用户区中默认存在的内存区域种类</a>
+</h3>
+<h3 class="topic">
+<a name="718k50npa4uunp5v8ruo8eigh6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;栈</a>
+</h3>
+<h3 class="topic">
+<a name="20nmcv8ib6snffv8ttcgh9pjtu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/02d9c8l4arohureih6cl0v7599.png"></p>
+<h3 class="topic">
+<a name="1435qcef5p3ffpin1c9lh4np7j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;向低内存地址扩展</a>
+</h3>
+<h3 class="topic">
+<a name="7dqr1askl2qadu2aippqltt8vc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;栈最开始的地址一般为0xbfffffff，即栈顶</a>
+</h3>
+<h3 class="topic">
+<a name="32q1pd1ivui3pbpraqolufnlu4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;堆</a>
+</h3>
+<h3 class="topic">
+<a name="7uat91mc1kic2hteht6ipieapu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/52053vf0i4dpvt706tpsmb852e.png"></p>
+<h3 class="topic">
+<a name="6a16378mrnnibd8qkgqm389h8r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;向高内存地址扩展</a>
+</h3>
+<h3 class="topic">
+<a name="01fi7kakvhh0mtm9habom0vcpc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可执行文件映射</a>
+</h3>
+<h3 class="topic">
+<a name="4mpg8199etq9ajjv3d7i9tj0ub">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/4gr7l5248essnefdges30f944n.png"></p>
+<h3 class="topic">
+<a name="6ugrhek0plr58tlg5o806jsp6s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;默认加载基址为0x08048000</a>
+</h3>
+<h3 class="topic">
+<a name="6id51a1t0taiu9lv4jjslmhkro">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;保留区</a>
+</h3>
+<h3 class="topic">
+<a name="6g6sjo23s8hbd1adbgtpl11l58">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/22tibve647h1gr0dl8tcrm89b4.png"></p>
+<h3 class="topic">
+<a name="6er4iov2cenui9tpfkrnj1lc3a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;动态链接库映射区</a>
+</h3>
+<h3 class="topic">
+<a name="6b3bgapvcaknh7bp9a8mpcehdu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;动态链接库默认加载基址为0x40000000</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/7g2gklrkdds4vft9bii40sgt5c.png"></p>
+<h3 class="topic">
+<a name="2e0iq8i26f0stkpq9jrfll3dla">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;一个典型的内存分布</a>
+</h3>
+<h3 class="topic">
+<a name="40o7dv6rs9hk9gu5vbqvumd477">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/106vhk80blm9pijsdfkgsqv7as.png"></p>
+<h3 class="topic">
+<a name="3s7b1ij313osd82vcq1dgo02bc">&nbsp;&nbsp;&nbsp;栈与调用惯例</a>
+</h3>
+<h3 class="topic">
+<a name="49nco7l563qjaheedc9pq9abho">&nbsp;&nbsp;&nbsp;&nbsp;栈</a>
+</h3>
+<h3 class="topic">
+<a name="0ng30satkdc525jq5g7ps3lqq1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;大部分内容与windows下相同，已经了解，略</a>
+</h3>
+<h3 class="topic">
+<a name="25rr2ark2u5h6b967b0ttf09ea">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/1o5b4k2818fic6r9sp1r9sqach.png"></p>
+<h3 class="topic">
+<a name="07pceivagg8qeb1ocutem1scnr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;程序的进入和退出的指令序列有时并不按照标准的方式进行</a>
+</h3>
+<h3 class="topic">
+<a name="7p58mj97rk6s2ui4absf1gjsa0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/7iuq49sup1rtv553iqdpn3ql8d.png"></p>
+<h3 class="topic">
+<a name="19c4r0jbjk0f9sp72oqngeh3nb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/0ubdnmuvi0t62f7ft3n6l8b571.png"></p>
+<h3 class="topic">
+<a name="6bvbk82asr571moge1aa2jar7o">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;程序热补丁技术</a>
+</h3>
+<h3 class="topic">
+<a name="0pfvv00kvsu8i813dead7bh1ls">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在程序的指令序列中加入一些用于占位的无效指令，可以在程序执行的某个时刻，将占位指令替换，从而改变程序的执行流程</a>
+</h3>
+<h3 class="topic">
+<a name="4lkshm162cejnesctkrt8jthd9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;存在占位指令的函数</a>
+</h3>
+<h3 class="topic">
+<a name="33afscqvubup1fp897pb4pl4q0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/3ije1c76vf2macvqe5vmjpk51g.png"></p>
+<h3 class="topic">
+<a name="7greps7ql4q81foah3b2987tks">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;某一个时刻，可以将更改展位指令从而函数修改为执行另一段代码</a>
+</h3>
+<h3 class="topic">
+<a name="00c6ofqvkd64llss2fb4nvuob1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/5alac0enp8tatii5sbl2gvdl80.png"></p>
+<h3 class="topic">
+<a name="0jfg711bo2kspju4vir59i5ps6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这种替换机制也可以作为hook使用</a>
+</h3>
+<h3 class="topic">
+<a name="7d56fl23qnmlpc3956svq520hq">&nbsp;&nbsp;&nbsp;&nbsp;调用惯例</a>
+</h3>
+<h3 class="topic">
+<a name="1grjfpegdv0hquikjp331r1f6f">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;调用惯例的内容</a>
+</h3>
+<h3 class="topic">
+<a name="09mufoi3ms7l9heg4l9s68kb87">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/0j3tfqiqgno6a2iasl17ol30ar.png"></p>
+<h3 class="topic">
+<a name="64hht89lf4ph2gvcmm7hmvdb8d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;主要的调用惯例</a>
+</h3>
+<h3 class="topic">
+<a name="19kdlfq0p43knpra96cabbob3s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/6lflh9bfk99feq77hqk4gis7kj.png"></p>
+<h3 class="topic">
+<a name="0mdaoe02pjafk3ll0oasltn062">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;c++中的thiscall 在windows的vc编译器中，使用ecx寄存器传递this指针，在linux的gcc编译器中thiscall与cdecl完全一样，只是将this指针看成是第一个参数</a>
+</h3>
+<h3 class="topic">
+<a name="3afva2d3662u6m0kuhbgrf8qoj">&nbsp;&nbsp;&nbsp;&nbsp;函数返回值传递</a>
+</h3>
+<h3 class="topic">
+<a name="1hpe1oc968u8usfnvvrtog1it4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;返回值4字节-》使用eax传递</a>
+</h3>
+<h3 class="topic">
+<a name="530c3bdo02a15ejpdnjktj8a4c">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;返回值5~8字节-》eax存储返回值低四字节 edx存储返回值高四字节</a>
+</h3>
+<h3 class="topic">
+<a name="03ur3bo51dhgt5vdnoi3kinpoj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;返回值高于8字节</a>
+</h3>
+<h3 class="topic">
+<a name="0k4ja5lh9aqtt778mpt33gsamu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MSVC编译器</a>
+</h3>
+<h3 class="topic">
+<a name="6c8i982hki1m8f7jc2eleltdou">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;整体流程</a>
+</h3>
+<h3 class="topic">
+<a name="27jhunq9anidd4hig0qvpfblnm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/7ubq1qchtvec3scjie2davt06o.png"></p>
+<h3 class="topic">
+<a name="1oiionkk86l76k98mgsbddj8ca">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;一个返回值为128字节的函数return_test</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/605ff80iajm2jev29os6hkpogi.png"></p>
+<h3 class="topic">
+<a name="6n7aurqvf4mjm5nkc2rkg6b4oa">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return_test函数被调用前，使用eax给函数传参，该参数实际在源码层面不存在，可以称为隐含参数，该参数传递一个栈中的一个内存地址，该内存用于保存128字节的函数返回值</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/3cijkq18slstjtlfvg1fcegk90.png"></p>
+<h3 class="topic">
+<a name="4a63h4eg948pr123s2o5k4jr96">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return_test函数被调用后，eax作为函数返回值保存从函数中得到的128字节数据的首地址，然后使用rep指令将该128字节数据复制到main函数的变量中</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/0h2spasjmmcvfsednvar66amm0.png"></p>
+<h3 class="topic">
+<a name="58o4fr66b73erg08hskfepmel1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在return_test函数内部，将使用rep将函数内部的局部变量b复制给return_test函数的隐含参数指向的内存空间，该内存空间分配在main函数的栈帧中</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/7h52ed2qiuvirkl8988odes0sb.png"></p>
+<h3 class="topic">
+<a name="7vu3s7rphlshk5cbm5e6l42nr8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;linux下的GCC</a>
+</h3>
+<h3 class="topic">
+<a name="04d5o8jdvgflvsjl37g2gvg7dd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;主题流程相似，区别在于return_test函数返回之后，gcc使用memcpy将temp中的数据复制到main函数中的变量n中，而MSVC使用rep实现这一过程</a>
+</h3>
+<h3 class="topic">
+<a name="2ea80tar09h5ul8l162a16ou7p">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果返回一个c++类对象</a>
+</h3>
+<h3 class="topic">
+<a name="3kkb5ls7eqobbg5k7nh820qmsb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;主要流程类似，存在一个临时数据对象用于临时保存数据对象的的内容，使用构造拷贝函数进行数据对象的复制，当临时数据将对象使用完毕后，还需要调用析构函数</a>
+</h3>
+<h3 class="topic">
+<a name="6cmgt1tkn27f5t17jh44cif868">&nbsp;&nbsp;&nbsp;堆与内存管理</a>
+</h3>
+<h3 class="topic">
+<a name="0vjsebe94ia3184498i0lpgs7e">&nbsp;&nbsp;&nbsp;&nbsp;什么是堆</a>
+</h3>
+<h3 class="topic">
+<a name="4vjm6k293kqc9r8gflaakf3p84">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/0ppacuev7be1jisfnlsb0d1b5e.png"></p>
+<h3 class="topic">
+<a name="36ibj0hl6o6bo7oa18u5mms3j3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;堆空间的使用分配分为两部分</a>
+</h3>
+<h3 class="topic">
+<a name="17kbcc6tukhhlrs5t0ampqnd3h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;程序向操作系统申请一块适当大小的堆空间</a>
+</h3>
+<h3 class="topic">
+<a name="5g6f1fideunuvbpl19g4khtr5q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;程序自己管理该堆空间的使用和分配</a>
+</h3>
+<h3 class="topic">
+<a name="24vjo1n2l7tqfjrgts8qru0mvh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;需要使用到程序的运行库，涉及进程堆分配的算法</a>
+</h3>
+<h3 class="topic">
+<a name="434spbjvur5799h37ft6g2oopb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果内存不够用，则程序会再次向操作系统申请</a>
+</h3>
+<h3 class="topic">
+<a name="102rb03k0b9qf8mnrkfn1fti3e">&nbsp;&nbsp;&nbsp;&nbsp;linux进程堆管理</a>
+</h3>
+<h3 class="topic">
+<a name="6mqei65jgs0f24nmbop4e4qqh9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;两种堆空间分配方式（两个系统调用）</a>
+</h3>
+<h3 class="topic">
+<a name="4sf37jh1j5oukdnqviha8p0lr9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;brk()</a>
+</h3>
+<h3 class="topic">
+<a name="0mt7sjh8umtrua2ld5qflqd6im">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;设置进程数据段的结束地址，可以用于扩大或缩小数据端</a>
+</h3>
+<h3 class="topic">
+<a name="2fl8tub46m43t3avhrdggl3qjc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;linux中数据段包括bss</a>
+</h3>
+<h3 class="topic">
+<a name="55nims0odjckt7pj455ved281s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当通过brk扩大进程数据段后，扩大的内存最常见的做法是当作堆空间使用</a>
+</h3>
+<h3 class="topic">
+<a name="04m836tsuefq6fbiesigrn17uf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mmap()</a>
+</h3>
+<h3 class="topic">
+<a name="2meciq2kf9a8c559q2p73e480f">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;类似于VirtualAlloc，向操作系统申请虚拟地址空间</a>
+</h3>
+<h3 class="topic">
+<a name="1qd5v88m9dt8v4lthvc3dec643">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;申请到的虚拟地址空间用途</a>
+</h3>
+<h3 class="topic">
+<a name="7jvdiq57v31dlqrb7hes18hnrj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以用于文件映射</a>
+</h3>
+<h3 class="topic">
+<a name="52jpn7547f94mbhh4b4j9tnilh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;不进行文件映射，即匿名空间，常用于作为堆空间</a>
+</h3>
+<h3 class="topic">
+<a name="5nr6vrnmjqci2ak3nlkvm3agmd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;函数原型和参数</a>
+</h3>
+<h3 class="topic">
+<a name="5512ni22rjmbs9c1qmosq1g0lt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/6lnosmuu5ts5a7nidtudim6u06.png"></p>
+<h3 class="topic">
+<a name="6s0u6smnq55ja92q4to778n52k">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;申请的地址空间的起始地址必须是系统页大小的整数倍</a>
+</h3>
+<h3 class="topic">
+<a name="7fur1pojq89mseak8bmpaddnvc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;glibc中的malloc函数</a>
+</h3>
+<h3 class="topic">
+<a name="4m76tu3i44ajq2evu5umsu2red">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;申请小于128kb的内存，在现有堆空间中，使用堆分配算法请求分配</a>
+</h3>
+<h3 class="topic">
+<a name="4vk5v8u79f5chs54o258g00th0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;申请大于128kb的内存，使用mmap分配匿名空间，在该匿名空间为用户分配堆空间</a>
+</h3>
+<h3 class="topic">
+<a name="2lrao8r8egf182qdsfiv828qkg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;一次性可能申请到的最大的堆</a>
+</h3>
+<h3 class="topic">
+<a name="7hnie4c0jlqha82g5m3os6kq2p">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/2hv2h1dru921v4l1q7lcp78c3n.png"></p>
+<h3 class="topic">
+<a name="77vumu408l72ka2rfqji5j55i1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/7jem0pjlp3muinktt69r1sfvpg.png"></p>
+<h3 class="topic">
+<a name="7kghcqv0sqggdjj0st3s89g539">&nbsp;&nbsp;&nbsp;&nbsp;windows进程堆管理</a>
+</h3>
+<h3 class="topic">
+<a name="2rrigs29240ilomtoo2ekc97ql">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;一个普通的windows进程地址空间</a>
+</h3>
+<h3 class="topic">
+<a name="428j9nhkq97gmn6uj04t09e27d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/6rvk0ppgjjtj5q61bc5r7q3pt0.png"></p>
+<h3 class="topic">
+<a name="3cbubbn8moektgqr280mbpcpq0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/3qd1634hcvgcnbh90t5hihp3fd.png"></p>
+<h3 class="topic">
+<a name="4474nc91dm9ckderh3lsb26s96">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;每个线程默认的栈空间大小为1MB</a>
+</h3>
+<h3 class="topic">
+<a name="3jl045cot79071c8ts2penobfa">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;VirtualAlloc函数的特点</a>
+</h3>
+<h3 class="topic">
+<a name="0ecgc08sn5nei3fhiqaf2bpsqm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/5jbagueti1b9udqc0voroahghf.png"></p>
+<h3 class="topic">
+<a name="23b04rghr2fakqgo3c58kb7bjk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;windows下堆管理器实现通过提供API用于使用堆空间</a>
+</h3>
+<h3 class="topic">
+<a name="2u1slf1ur76vo82hja3gc4rtik">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/6g04f7mgotf19jd9l5mn8h2ovm.png"></p>
+<h3 class="topic">
+<a name="2avg71g5artks4hmolg49go1em">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/2k3728j2s2428075vp6f79opb3.png"></p>
+<h3 class="topic">
+<a name="42fsc602hhqmscvqroqrjca8pd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;堆管理器在用户层和内核层分别有一个</a>
+</h3>
+<h3 class="topic">
+<a name="759phkd9kihv1sce8cisrdrguc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/64e5m8bhfm88s8dk4cffcen623.png"></p>
+<h3 class="topic">
+<a name="4c8g8gi0kb8bckemmdleh3qjls">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;进程默认堆的大小为1MB</a>
+</h3>
+<h3 class="topic">
+<a name="0495ri8kr0p02iup75l3pe9urn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;一次性可能申请到的最大的堆</a>
+</h3>
+<h3 class="topic">
+<a name="64b3d64r8u0nve95psfen3c6fb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/771bjo2pg9tm666ugnjm384j6i.png"></p>
+<h3 class="topic">
+<a name="7v81ks971t3mc11h1g45u8mhvh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;malloc申请的空间是不是连续的</a>
+</h3>
+<h3 class="topic">
+<a name="291shdpla5fo30r9g7jaio9l52">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;虚拟地址是连续的，物理地址是不连续的</a>
+</h3>
+<h3 class="topic">
+<a name="11egbuf9rfuvoct41sf0o9cbu9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;不连续的物理地址映射为连续的虚拟地址</a>
+</h3>
+<h3 class="topic">
+<a name="5nibhkk6k2r1juqjurl6jis1dl">&nbsp;&nbsp;&nbsp;&nbsp;堆分配算法</a>
+</h3>
+<h3 class="topic">
+<a name="03cmo6t2tqqlkjl3oa0dqq8bbg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;空闲链表</a>
+</h3>
+<h3 class="topic">
+<a name="7m33k7rkhjph01c7c6fujungjj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;312</a>
+</h3>
+<h3 class="topic">
+<a name="7hhhovj9or8c1g0vmadjr67d97">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;位图</a>
+</h3>
+<h3 class="topic">
+<a name="3qjv9hsgaq0357199dhg2g7keo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;313</a>
+</h3>
+<h3 class="topic">
+<a name="1d8o8jmfsg9lqu7ps9qfj5st6p">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对象池</a>
+</h3>
+<h3 class="topic">
+<a name="7fjutjbiseujvjeumthvh5oju5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;314</a>
+</h3>
+<h3 class="topic">
+<a name="3aerbctv5dp0a3g4kiq1soh5v9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;实际使用过程中</a>
+</h3>
+<h3 class="topic">
+<a name="5ksbvb4v550h4nkv25g6jlcv3d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/2h145i8qmb3946gep5rhkdj1ai.png"></p>
+<h3 class="topic">
+<a name="2r45aip0et1v7pr0rsklvaeb6m">&nbsp;&nbsp;第十一章运行库</a>
+</h3>
+<h3 class="topic">
+<a name="7v799keudoape74a9l7dovp89t">&nbsp;&nbsp;&nbsp;入口函数和程序初始化</a>
+</h3>
+<h3 class="topic">
+<a name="1bf50etbd1kljteko12rbl9avu">&nbsp;&nbsp;&nbsp;&nbsp;实际上main函数执行之前和main函数之后，都会有其他函数进行执行，main之前执行的函数用于初始化各种运行环境，main函数之后执行的函数进行清理工作，</a>
+</h3>
+<h3 class="topic">
+<a name="45mapl5v86kggmc27d3raglpbc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;此类函数可以称为入口函数或入口点，此类函数是运行库的一部分</a>
+</h3>
+<h3 class="topic">
+<a name="4ull5btteor6frbp3jo3irdspl">&nbsp;&nbsp;&nbsp;&nbsp;程序运行的大致步骤</a>
+</h3>
+<h3 class="topic">
+<a name="37dh8fqbn36vaen618vvclgp5h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/737as0rt66491pbtu040foqtq6.png"></p>
+<h3 class="topic">
+<a name="0uekn1mabsc1urlbhig92l452r">&nbsp;&nbsp;&nbsp;&nbsp;入口函数的实现</a>
+</h3>
+<h3 class="topic">
+<a name="2t72dueq3ss9v2pvlpievi5osn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;GLIBC入口函数</a>
+</h3>
+<h3 class="topic">
+<a name="4mee1dorfscgj21vr4enk6cmg6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;linux运行库的不放呢实现细节</a>
+</h3>
+<h3 class="topic">
+<a name="121do9hcunfmb00kaj4l387492">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;启动过程在不同的情况下差别很大</a>
+</h3>
+<h3 class="topic">
+<a name="5g0db46ngi7jmo0fs3ec90eg3c">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MSVC CRT入口函数</a>
+</h3>
+<h3 class="topic">
+<a name="3st2mugmol4frevd825frbt8gk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;即windows运行库实现细节</a>
+</h3>
+<h3 class="topic">
+<a name="61s26pbh88bd4sv4vbqocb0m72">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CRT即c语言的运行时库</a>
+</h3>
+<h3 class="topic">
+<a name="3c53qsd2ngk5aaednoptb3vpik">&nbsp;&nbsp;&nbsp;&nbsp;运行库与I/O</a>
+</h3>
+<h3 class="topic">
+<a name="0hs2d8gjjf3uahcjfmfr9ghb87">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;讨论入口函数中有关I/O部分的实现细节</a>
+</h3>
+<h3 class="topic">
+<a name="12d32mj3ijutv2mhpbuqp2m2t4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;windows中的句柄即为liux中的文件描述符</a>
+</h3>
+<h3 class="topic">
+<a name="2undfo622jikvf9touo4ggsfdk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MSVC CRT入口函数初始化</a>
+</h3>
+<h3 class="topic">
+<a name="46fjik6mkodpd58f3meictri7o">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;系统堆初始化</a>
+</h3>
+<h3 class="topic">
+<a name="2mlcaplq86jjc1jeugithkvqt0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;I/O初始化</a>
+</h3>
+<h3 class="topic">
+<a name="5j6jjq212pfai4s4hqotembsen">&nbsp;&nbsp;&nbsp;c/c++运行库</a>
+</h3>
+<h3 class="topic">
+<a name="10q8stei3slehso1fgo7v3lor5">&nbsp;&nbsp;&nbsp;&nbsp;c语言运行库</a>
+</h3>
+<h3 class="topic">
+<a name="3mtho6khegkrshf0q4nqb1t86l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;提供的功能</a>
+</h3>
+<h3 class="topic">
+<a name="6ken6vmo9bng5md3jr1vd7lj2t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/6jtor4dv698urg6rfihug59th0.png"></p>
+<h3 class="topic">
+<a name="7u19pi1lcb2c3tb86uh3j60ndk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/41l376fap3ohejl2e8vocfe5vo.png"></p>
+<h3 class="topic">
+<a name="0v1sp8g9otusrhlfeeeu8m67j7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;c语言标准库是c语言运行库的主要部分，其定义了c语言中普遍存在的函数集合，可以放心使用而不用担心移植到其他平台时不提供该函数</a>
+</h3>
+<h3 class="topic">
+<a name="39lb2kdu6sk0pjisnstdh5smh6">&nbsp;&nbsp;&nbsp;&nbsp;c语言标准库</a>
+</h3>
+<h3 class="topic">
+<a name="1cmflo8fvvgsosn1eej59qks27">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;内容包括</a>
+</h3>
+<h3 class="topic">
+<a name="1afije8blolk5krul7ooj21lpq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/0dar589qoq95395vlftkhaka8t.png"></p>
+<h3 class="topic">
+<a name="4o7raprebaukt1nkl0oj7v7l7p">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/0vpsqjumeq27aqo6lgjrut2lf1.png"></p>
+<h3 class="topic">
+<a name="1p3pn1nbitafuhmvpems5qfe57">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;变长参数</a>
+</h3>
+<h3 class="topic">
+<a name="5jh0b7v7rhdsfml6o5h5ikft58">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;得益于cdecl传参方向从右到左</a>
+</h3>
+<h3 class="topic">
+<a name="67im7rcg7uq30hh8gojd724s1g">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/4dd9ojed5nmp9b6fntmjfr5f9v.png"></p>
+<h3 class="topic">
+<a name="5gg2t80j4u5gdb33e7n177r2eq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/35iij6cssc929o0ffttpphoi53.png"></p>
+<h3 class="topic">
+<a name="4pvkoj1jn45d9tob3h8q426q19">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/39t3ecm7umpa3lu6gaagodg6c7.png"></p>
+<h3 class="topic">
+<a name="6n422m4qmejc6lsecc0et0gime">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/5pcli9jmg4b0cf5ft68ej84vea.png"></p>
+<h3 class="topic">
+<a name="7keqm05p1t42557gg369juq3gc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;非局部跳转</a>
+</h3>
+<h3 class="topic">
+<a name="7aa8chtb1dsv9mrrp9l5l0qaah">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/1gatii7a0s6muao0n5kpbb7stt.png"></p>
+<h3 class="topic">
+<a name="44709df0tidqq1lvv2uuatm280">&nbsp;&nbsp;&nbsp;&nbsp;glibc和MSVC CRT</a>
+</h3>
+<h3 class="topic">
+<a name="7t0mqkigob0ehqp1s1d49s5cq5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;glibc是linux下的c语言运行库</a>
+</h3>
+<h3 class="topic">
+<a name="44lch7lbbqgf4dhq57gp2uthtn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MSVC CRT是windows下的c语言运行库</a>
+</h3>
+<h3 class="topic">
+<a name="42kuuvdpt1t7c6n9pvflmnngg1">&nbsp;&nbsp;&nbsp;运行库与多线程</a>
+</h3>
+<h3 class="topic">
+<a name="6rsvu50ntreqfpha5660di3kg6">&nbsp;&nbsp;&nbsp;&nbsp;CRT多线程的困扰</a>
+</h3>
+<h3 class="topic">
+<a name="0q097jnqq0s7256hsjvvrbv3kg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;线程访问过程中，线程存在私有的内存空间</a>
+</h3>
+<h3 class="topic">
+<a name="7c7buamcig6gptvqkj8au7c1fl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/6i23ek4ibh2pdqdsmon23o60gi.png"></p>
+<h3 class="topic">
+<a name="0i7rh4l853cdokg2shoh8nagdr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;传统c运行库对多线程的支持不是很好，具体表现为在运行库中没有线程相关上的api提供</a>
+</h3>
+<h3 class="topic">
+<a name="7ecn30s7ulc3ifag0djisn3c6c">&nbsp;&nbsp;&nbsp;&nbsp;CRT改进</a>
+</h3>
+<h3 class="topic">
+<a name="0os485j2p7hlpvuoj348396urh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用TLS</a>
+</h3>
+<h3 class="topic">
+<a name="34bka0sbl8evbal34qepma4o8o">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;加锁</a>
+</h3>
+<h3 class="topic">
+<a name="5v8g5g5dqt8rm4dpum1i7b48tu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;改进函数的调用方式</a>
+</h3>
+<h3 class="topic">
+<a name="2v3sftinmg0lgo1udm7p25tt9j">&nbsp;&nbsp;&nbsp;&nbsp;线程局部存储实现</a>
+</h3>
+<h3 class="topic">
+<a name="1rcl3r4irgkp6v85r662eqvqqp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;定义一个TLS变量</a>
+</h3>
+<h3 class="topic">
+<a name="5teavhme3uvvqgbioc0gjv7h5o">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;GCC中</a>
+</h3>
+<h3 class="topic">
+<a name="5miidcul2qgmpv0fc10pmvmgub">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/4ibvsa6qitreuhu2t7gf09hvdh.png"></p>
+<h3 class="topic">
+<a name="6con516gl08ulbnu8ej0t4i7ol">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MSVC中</a>
+</h3>
+<h3 class="topic">
+<a name="53k519shqli6d8902sonvm98nq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/0eko7bmqko720u8880g734ljpk.png"></p>
+<h3 class="topic">
+<a name="7ctbhk6hepg0b41t9iuqbl0a39">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;windows TLS的实现</a>
+</h3>
+<h3 class="topic">
+<a name="3vh236f0i3mnqp3s8gsrb7o31j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;保存在.tls段中</a>
+</h3>
+<h3 class="topic">
+<a name="0rurtq4ve9k1f37jbkt1vknnjr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;显示TLS</a>
+</h3>
+<h3 class="topic">
+<a name="0q43sf29tll6lfp1ghaup06ups">&nbsp;&nbsp;&nbsp;c++全局构造与析构</a>
+</h3>
+<h3 class="topic">
+<a name="0id4or6bn3j8op1r3i7tp634td">&nbsp;&nbsp;&nbsp;&nbsp;入口函数中需要完成全局变量的构造与析构，对于glibc和MSVCRT分别是如何实现的</a>
+</h3>
+<h3 class="topic">
+<a name="2919blumgc4c7f9cafp6kpefle">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;glibc的全局构造和析构</a>
+</h3>
+<h3 class="topic">
+<a name="39gsk9qem1mhvm1rhca9nusb2m">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MSVC CRT的全局构造与析构</a>
+</h3>
+<h3 class="topic">
+<a name="3f57idjvvrus25g4nstq5o2rq3">&nbsp;&nbsp;&nbsp;fread实现</a>
+</h3>
+<h3 class="topic">
+<a name="79mgmvd9rcl18vraip7ksu67nv">&nbsp;&nbsp;&nbsp;&nbsp;所有运行库中最复杂的部分是软件与外部通讯的部分，即IO部分</a>
+</h3>
+<h3 class="topic">
+<a name="30pvmtmnf3p7pa11l464mqf0ko">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;分析c语言运行库fread()到 Windows API ReadFile()的调用过程</a>
+</h3>
+<h3 class="topic">
+<a name="0ip2ur87rtppn9e3kaebbhju2v">&nbsp;&nbsp;&nbsp;&nbsp;缓冲</a>
+</h3>
+<h3 class="topic">
+<a name="74mttb38bms1t59qgtfvkqftg9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/4m5jbcqs697cir4fr09sarkt6b.png"></p>
+<h3 class="topic">
+<a name="1oqdkhamnnk6i9493nt4dgjm4b">&nbsp;&nbsp;&nbsp;&nbsp;fread_s</a>
+</h3>
+<h3 class="topic">
+<a name="6sqkrbs3d8mi4ac58ltk1ati5h">&nbsp;&nbsp;&nbsp;&nbsp;fread_nolock_s</a>
+</h3>
+<h3 class="topic">
+<a name="4cs38fbvnsl7i8p1mfqein5rjn">&nbsp;&nbsp;&nbsp;&nbsp;_read</a>
+</h3>
+<h3 class="topic">
+<a name="3u040bt35vitrhtnu5clo2c501">&nbsp;&nbsp;&nbsp;&nbsp;文本换行</a>
+</h3>
+<h3 class="topic">
+<a name="45r2hlkp6do3kgguha0tlvn93o">&nbsp;&nbsp;&nbsp;&nbsp;fread回顾</a>
+</h3>
+<h3 class="topic">
+<a name="6bp5ag09j74arpku2489s2ud4p">&nbsp;&nbsp;第十二章系统调用与api</a>
+</h3>
+<h3 class="topic">
+<a name="3q6al2ciiqs3blpqh6f5kc577o">&nbsp;&nbsp;&nbsp;关于系统调用</a>
+</h3>
+<h3 class="topic">
+<a name="5ik3eogvm5anqb25l44cjqvpfi">&nbsp;&nbsp;&nbsp;&nbsp;系统调用是应用程序与操作系统内核的接口，应用程序为了访问计算机中某些资源，需要通过操作系统提供的系统调用从而实现</a>
+</h3>
+<h3 class="topic">
+<a name="4nfa3bc63vg3rtjcremthvebms">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;windows中系统调用通过dll机制实现，dll对系统调用进行了包装，即windows API  例如fread最终会调用到ReadFile函数 但是ReadFile还是会通过系统调用发挥作用</a>
+</h3>
+<h3 class="topic">
+<a name="36ep67iu6ukb0v3778eskdd8e2">&nbsp;&nbsp;&nbsp;&nbsp;系统调用通常通过中断从实现</a>
+</h3>
+<h3 class="topic">
+<a name="2out3p0sv4v5l42biedht6sg8v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;linux使用0x80号中断作为系统调用的入口</a>
+</h3>
+<h3 class="topic">
+<a name="1731egig50rrem8aedvgla1uha">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;windows采用0x2e号中断作为系统调用的入口</a>
+</h3>
+<h3 class="topic">
+<a name="05r1fh8mkbg1361bcsc5da0alv">&nbsp;&nbsp;&nbsp;&nbsp;linux系统调用</a>
+</h3>
+<h3 class="topic">
+<a name="6ek8cpnapvhtmvc6okr0vhdm63">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x86下 系统调用0x80中断，各个通用寄存器用于传递参数，eax寄存器存储目的系统调用的编号，每一个系统调用对应一个内核源码中的函数，该函数以&ldquo;sys_&rdquo;开头</a>
+</h3>
+<h3 class="topic">
+<a name="40l0hfppnb8r13l05q3okc1mm0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2.6.19版本的linxu内核提供了319个系统调用</a>
+</h3>
+<h3 class="topic">
+<a name="7amuq0sd1akkgmaimdqqvu8qbg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/53i32ea4gtob6eit2mqa7h8ija.png"></p>
+<h3 class="topic">
+<a name="1ts04qou7mkf4sapmn4r3fulgr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/5rbpmugfidk731k9ofostm9bhl.png"></p>
+<h3 class="topic">
+<a name="1vnrbrbev4p3dftddntuolf3em">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;此类系统调用可以直接以c语言函数的形式被使用，从而绕过glibc中的函数</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/07cb9i3bua1de917jvehen4gc8.png"></p>
+<h3 class="topic">
+<a name="4q20f5confa3c4o5i2s6ipr8sc">&nbsp;&nbsp;&nbsp;&nbsp;仅仅使用系统调用的弊端</a>
+</h3>
+<h3 class="topic">
+<a name="1t2ljji34scv3q0fehu0l8nag7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;针对大多数操作系统</a>
+</h3>
+<h3 class="topic">
+<a name="5cgh4lctrb80lrulebcc41hvrt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/06j5copot8598b9vpc61e20nfp.png"></p>
+<h3 class="topic">
+<a name="08b4bg2a9p9qhbjm6v2838eboo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;解决方案</a>
+</h3>
+<h3 class="topic">
+<a name="3tvo3ha8jif3jcg1t622nnavjf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用运行库作为系统调用和程序之间的中间层，运行库将系统调用进行封装，从而在不同平台上提供相同的运行库接口，即使运行库底层的实现根据平台的不同而不同</a>
+</h3>
+<h3 class="topic">
+<a name="7lptd9ui44qi27545oi06hicqi">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/5lc6aif7iqhp9f0vjnl9ilq917.png"></p>
+<h3 class="topic">
+<a name="6ku6aoqj9ut4h8vkmse3j1v3pi">&nbsp;&nbsp;&nbsp;linux系统调用的方法</a>
+</h3>
+<h3 class="topic">
+<a name="0b17qohsqt6fo8247bsja4112o">&nbsp;&nbsp;&nbsp;&nbsp;int 0x80</a>
+</h3>
+<h3 class="topic">
+<a name="3f65si7iuo1u63vttcd12r0kqs">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;最传统的系统调用方式，速度较慢，下面两种都是快速系统调用方式</a>
+</h3>
+<h3 class="topic">
+<a name="2r6achcnr9lupfmlo9rg7e0ukj">&nbsp;&nbsp;&nbsp;&nbsp;sysenter</a>
+</h3>
+<h3 class="topic">
+<a name="3k6f79cmbvnc5deq3rve0qu15i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;intel32位架构中使用</a>
+</h3>
+<h3 class="topic">
+<a name="0f9vsba4bcro8uvdsarohnp8f7">&nbsp;&nbsp;&nbsp;&nbsp;syscall</a>
+</h3>
+<h3 class="topic">
+<a name="6fcq7u6pi4p77pril0g6h0ioq7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;intel64位架构、AMD32位架构、AMD64位架构使用</a>
+</h3>
+<h3 class="topic">
+<a name="4i3rt5dk4bql2ffr025s2naelg">&nbsp;&nbsp;&nbsp;&nbsp;其中int 0x80的原理被运用于ret2syscall的漏洞利用方式中，即在内存中寻找int 0x80指令的地址，然后通过搜搜gadget构造int 0x80的参数传递</a>
+</h3>
+<h3 class="topic">
+<a name="4e46fo3dfsllq9pt8q68iaf1fj">&nbsp;&nbsp;&nbsp;&nbsp;https://cloud.tencent.com/developer/article/1492374</a>
+</h3>
+<h3 class="topic">
+<a name="7de473pj8kt7enegf8hl8mv54s">&nbsp;&nbsp;&nbsp;系统调用原理</a>
+</h3>
+<h3 class="topic">
+<a name="1gqiusp3rv826t1glfnn1g9vv3">&nbsp;&nbsp;&nbsp;&nbsp;特权级与中断</a>
+</h3>
+<h3 class="topic">
+<a name="7fupvfn405ml1jb682psobdkrt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;程序存在两种运行特权 用户态 内核态</a>
+</h3>
+<h3 class="topic">
+<a name="3ggcquma38uoahphlmbjs5s01c">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用户态程序切换为内核态通过中断实现</a>
+</h3>
+<h3 class="topic">
+<a name="6qmqsile2od74okc0fitgikm30">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;中断分为硬件中断和软件中断，分别由硬件和软件产生</a>
+</h3>
+<h3 class="topic">
+<a name="016iti4b5thsnnhvg78qeqd269">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;软件中断表现为一条指令 i386为int</a>
+</h3>
+<h3 class="topic">
+<a name="03ab4a68ac9palrs6dr0i3rbq2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;int 0x80; 即为调用0x80号中断异常处理程序</a>
+</h3>
+<h3 class="topic">
+<a name="2jst5utipaaudiot48s7dallas">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;中断由两个概念</a>
+</h3>
+<h3 class="topic">
+<a name="5tleagtooataqs6to5179h9o7m">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;中断号</a>
+</h3>
+<h3 class="topic">
+<a name="2e9sjp8mi7hsujn8l915m7cb7q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用于标识中断类型</a>
+</h3>
+<h3 class="topic">
+<a name="3hpbp1khmh9c5fc9hegsfh827s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;也是中断向量表的下标</a>
+</h3>
+<h3 class="topic">
+<a name="689062db24ishoinafqlc8it9q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;中断处理程序</a>
+</h3>
+<h3 class="topic">
+<a name="2q1p8upan9jjfvr234e7ktojop">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;一个中断处理程序对应一个中断号，中断程序的地址组成的数组称为中断向量表</a>
+</h3>
+<h3 class="topic">
+<a name="1maafodbd29stsdtp9gim06b49">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;中断发生时，程序暂停当前处理的程序，根据中断号，去执行相应的中断处理函数，之后再继续执行之前的函数</a>
+</h3>
+<h3 class="topic">
+<a name="7shp3i90alkaeffbre2mg7mg80">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;linux中0x80号中断用于实现系统调用，具体调用哪个系统函数取决于eax的值，该值为系统调用号，对于系统调用表中中的一个系统调用函数</a>
+</h3>
+<h3 class="topic">
+<a name="1n672qu8bonfdp9frj90ftcbcu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;windows一一般通过0x2e触发系统调用</a>
+</h3>
+<h3 class="topic">
+<a name="7aern4fiejlu2t9214qlcnvcgl">&nbsp;&nbsp;&nbsp;&nbsp;基于int的linux经典系统调用的实现</a>
+</h3>
+<h3 class="topic">
+<a name="1cqauqsqs6mh78d2ab3vjk33pl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;总体流程</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/7j313l9u7otfvj606fh5u38a3f.png"></p>
+<h3 class="topic">
+<a name="492ql0latnas502v0qug9qj645">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;步骤</a>
+</h3>
+<h3 class="topic">
+<a name="2he9jj5cfhsqfq28p5ahgq3u4o">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;触发中断</a>
+</h3>
+<h3 class="topic">
+<a name="4l49l25qoq3fqof5ov8dupeju8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当在代码中调用fork()函数，生成的汇编可能为（fork函数没有参数）</a>
+</h3>
+<h3 class="topic">
+<a name="3vrtl1vof6uqliqd46mbog1u8s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/7gg5skequkb6nlsq8hca4c8aog.png"></p>
+<h3 class="topic">
+<a name="0cs7m2r62null4rnofaf3stptq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意linux中系统调用使用返回值传递错误码，返回值为负说明错误，其绝对值为错误码 但是c语言中当返回值为-1是说明错误，并将错误信息存储在errno的全局变量中，所以在fork函数的汇编中，需要返回值进行处理，如果系统调用错误，将错误码保存到erro中，并将eax赋值为-1</a>
+</h3>
+<h3 class="topic">
+<a name="1puml0hj4u1s1asm8r73u3q3r5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用存在一个参数的系统调用产生的汇编</a>
+</h3>
+<h3 class="topic">
+<a name="510rvsg8o52k9881j31lqm3a2f">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用ebx传递参数</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/78jmgjfv0lnbmvbg5uqer7ovg1.png"></p>
+<h3 class="topic">
+<a name="7u3bjreqora1sipil9qtkfus7e">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x86的linux中系统调用最多支持6个参数</a>
+</h3>
+<h3 class="topic">
+<a name="0me598vel35lqn0319ircse6fb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/360hp7i945tjccq5fagiqv4tsr.png"></p>
+<h3 class="topic">
+<a name="2esgb3ve4kr27m5ausgmsb0gc0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/6tedhdnl636002d39pvao51t7j.png"></p>
+<h3 class="topic">
+<a name="21i527vbpvbe2dm8kmdf6so1nv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;切换堆栈</a>
+</h3>
+<h3 class="topic">
+<a name="2sva2o69o6fgmkqkr7qnugnsst">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;每一个进程都有自己的内核栈，当进程发生用户态和内核态之间的转换时，需要将栈切换为用户栈或内核栈</a>
+</h3>
+<h3 class="topic">
+<a name="73rq7ae1qml83jngm43g9dmevi">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用户态切换为内核态</a>
+</h3>
+<h3 class="topic">
+<a name="3in5r121i1bu36gi98hvutdpi5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/65qk819s8vl81qho85n4drh610.png"></p>
+<h3 class="topic">
+<a name="1fnf58skhbou7fn0kiqa0jh6ot">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;内核态切换为用户态</a>
+</h3>
+<h3 class="topic">
+<a name="6l2jdrmqr1ap3mj6tiposu1q93">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/42g4996opkqsvjk9vjq6e7e3a7.png"></p>
+<h3 class="topic">
+<a name="5amojlbse7a6o31vodtroioh8h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/4sinrs9q7ujmfnvrotk2ab29a8.png"></p>
+<h3 class="topic">
+<a name="24kae26s7ggri99t6ksljd38lb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/0p7iv5h0n5r8djnmqkprrgphge.png"></p>
+<h3 class="topic">
+<a name="1h4ddafve8lolvr05fk97kl97t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;中断处理程序</a>
+</h3>
+<h3 class="topic">
+<a name="6n70slc5pmp8ehssl4c8ejrvc5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;中断处理程序执行流程</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/4ugs2mcbqhdm9hqf9iu4k8ihk4.png"></p>
+<h3 class="topic">
+<a name="1aeu6nr8j23qfnklm2r3aj2a2n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;int 0x80对应的中断异常处理函数 system_call</a>
+</h3>
+<h3 class="topic">
+<a name="4p4ovokku5268tkvk4ped1udpl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/403vo37vb4u80tbk5a4d1paod6.png"></p>
+<h3 class="topic">
+<a name="64gufqec2q7k003ghosv425csp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/3u6417u3ubmioehrpa94b4o9iu.png"></p>
+<h3 class="topic">
+<a name="3ubqju54peadq9t75e51dana7v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fork()函数的调用过程</a>
+</h3>
+<h3 class="topic">
+<a name="58ad4te58v1arqoge7h7qqfimo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/0ismrqblv9fgm52d84tmv5mqmh.png"></p>
+<h3 class="topic">
+<a name="0gbukaljo84b8odh6lkhi0g85e">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;linux系统如何系统掉员工传递参数？</a>
+</h3>
+<h3 class="topic">
+<a name="7h1uajfajtuds5qgb2gspk8va9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/0d7p5k5s6901a0npt7aiulik2e.png"></p>
+<h3 class="topic">
+<a name="2jcb4iqo4q8q193fo8dothsodj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;int 0x80的执行流程</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/7vun9sfdo4lds1h0c8s9g4h3tp.png"></p>
+<h3 class="topic">
+<a name="4sslh5dotnipl385tiunbaf67k">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://blog.csdn.net/hq815601489/article/details/80009791</a>
+</h3>
+<h3 class="topic">
+<a name="5b0gigia6tn0u2s8v0f1e5fet9">&nbsp;&nbsp;&nbsp;&nbsp;Linux新型系统调用机制</a>
+</h3>
+<h3 class="topic">
+<a name="323svn99djarttel4f5qlgn42l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过处理器提供的sysenter 和sysexit指令</a>
+</h3>
+<h3 class="topic">
+<a name="061g6km5hnoofi8ps0gb52831j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可执行文件会依赖一个共享库文件 linux-gate.so.1 但是该文件不对应实际的共享库文件，是一个由操作系统生成的虚拟动态共享库，该库总是被加载到地址0xffffe000的位置上（是内核地址空间）</a>
+</h3>
+<h3 class="topic">
+<a name="68k6b088nct6bqnhg1vkcm5iuj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该虚拟共享库会导出函数__kernel_vsyscall函数，该函数内容为</a>
+</h3>
+<h3 class="topic">
+<a name="5e95lok5b8g0vn6kbcom03vml4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;即通过调用sysenter实现内核态切换</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/78co4q6jc3j1gt66p54hgmithp.png"></p>
+<h3 class="topic">
+<a name="4n5dsejpuris1ia5vpedrfja2q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sysenter指令</a>
+</h3>
+<h3 class="topic">
+<a name="2qqnkr69lhj3kph6a9ij0afplh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;调用该指令后，系统跳转到某个寄存器指定的函数开始执行（一般eax用于存放系统调用的调用号），并完成特权级别转换，堆栈切换等</a>
+</h3>
+<h3 class="topic">
+<a name="16puceuerugve5e9jbv5nubd1n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;仍然是使用6个寄存器传参，仍然将参数保存到内存栈中进行调用</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/0plqun6j8e1ro7saabl24m5a89.png"></p>
+<h3 class="topic">
+<a name="0g7rrm163ebk7qll0vag06rr3t">&nbsp;&nbsp;&nbsp;Windows API</a>
+</h3>
+<h3 class="topic">
+<a name="2gve3gi53p6sjbsftr2fktek4s">&nbsp;&nbsp;&nbsp;&nbsp;简介</a>
+</h3>
+<h3 class="topic">
+<a name="1g6olr0r1onjeqlp8ec2818fs2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/55a3eclc5dna5vs50f1vi8cpqp.png"></p>
+<h3 class="topic">
+<a name="45bmu881vvc6o1esmf387mg5lm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/3aj968ov0t71q2gg97luubq3na.png"></p>
+<h3 class="topic">
+<a name="5c1t100qcfl43m2o13fdqg299m">&nbsp;&nbsp;&nbsp;&nbsp;windowsAPI种类</a>
+</h3>
+<h3 class="topic">
+<a name="1ujfs71qmihnc01l53ru45puig">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/1ddulu1i9raurapmnvskpi8o7r.png"></p>
+<h3 class="topic">
+<a name="18m26qdnoipoh0b1p36d04un6c">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/2s6pti0g0in8g2f2gl8tpoif7f.png"></p>
+<h3 class="topic">
+<a name="4amntrkflc5gh8a52q964ugc2e">&nbsp;&nbsp;&nbsp;&nbsp;windows不公开系统调用而使用API进行对内核中的功能进行使用</a>
+</h3>
+<h3 class="topic">
+<a name="3tldpe70hvngerruq2at98h981">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;直接使用系统调用比较依赖于硬件结构，如果硬件结构发生变化，系统调用可能不会兼容使用</a>
+</h3>
+<h3 class="topic">
+<a name="1fb3r9213llqqsdg86bruj4q4s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;windows为了保证系统的兼容性，将dll与api作为中间层，从而将程序与系统调用隔开</a>
+</h3>
+<h3 class="topic">
+<a name="74tof4v0ibb5ubt4l9ltflnhmr">&nbsp;&nbsp;&nbsp;&nbsp;API与子系统</a>
+</h3>
+<h3 class="topic">
+<a name="2ur5nr94recq1e0utp442oh9na">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/2id2j82jivj0joo5vo3v4cnmhi.png"></p>
+<h3 class="topic">
+<a name="48kkvnpv11g77eimj048uuf3to">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/0646asj4qma04lavjvttnit7er.png"></p>
+<h3 class="topic">
+<a name="7m3vpt1au2luoqu85fp5vs4hnp">&nbsp;&nbsp;&nbsp;工具使用</a>
+</h3>
+<h3 class="topic">
+<a name="7f2004m5v7f15lv6jpt92ar3tg">&nbsp;&nbsp;&nbsp;&nbsp;通过man指令查找系统调用的详细说明</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/7oan2r6mf0h3gl0c2jcs135cm2.png"></p>
+<h3 class="topic">
+<a name="74g1p8jlmp1r14c9iu6d3kts2r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;获取可执行文件的共享库依赖情况</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/0e5q30i1l9hr089h076l0k0nke.png"></p>
+<h3 class="topic">
+<a name="27cafbhvcp811ohksbiotjiroq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过proc文件系统查看可执行程序的内存映像</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/1stpr8tnu2b2k9nt8cjon5h8qt.png"></p>
+<h3 class="topic">
+<a name="3pdi2190d9mrf5h4lcbemgb3n4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将进程内存映像保存到真实文件中</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/00u2al1a00eokr85c9i8o75mlk.png"></p>
+<h3 class="topic">
+<a name="0dgeafr399qjpnfevbrhesm74b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/1bodn5kvumaguot7kljr6f9rgm.png"></p>
+<h3 class="topic">
+<a name="6op7b3aon3ullraslsart8vm7o">&nbsp;&nbsp;第十三章运行库实现</a>
+</h3>
+<h3 class="topic">
+<a name="5a3m9m0sjf482p483hg1esco6u">&nbsp;&nbsp;&nbsp;CRT :c语言运行时库</a>
+</h3>
+<h3 class="topic">
+<a name="5u1i6a57gddo7vp3tlhm48c841">&nbsp;&nbsp;&nbsp;&nbsp;本章主要实现一个简单的CRT包括入口函数、初始化、堆管理、基本IO等，并包括c++相关的语言特性</a>
+</h3>
+<h3 class="topic">
+<a name="47s8l5k2e8s1o67lkpai7c2n0t">&nbsp;&nbsp;&nbsp;c语言运行库</a>
+</h3>
+<h3 class="topic">
+<a name="2u3n5mbdghp28r75fnipr1b3nf">&nbsp;&nbsp;&nbsp;&nbsp;基本功能和设计原则</a>
+</h3>
+<h3 class="topic">
+<a name="496bslt6729c4167aielfiijr0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/7b8jltda2oeqv450qnijimmvf8.png"></p>
+<h3 class="topic">
+<a name="7vi6u697tc4jjjn49mq84mldsm">&nbsp;&nbsp;&nbsp;&nbsp;开始（实现入口函数）</a>
+</h3>
+<h3 class="topic">
+<a name="5cl3ipuol2hto9a3uhn0bdvfi9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;运行时库的入口函数</a>
+</h3>
+<h3 class="topic">
+<a name="39f28ett1ula8jl80dnvfvev2o">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/6eemtv0lml7ge80gvnv6hdcgdn.png"></p>
+<h3 class="topic">
+<a name="4gipug1btermj0pk9oeiv32gb8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;入口函数基本框架</a>
+</h3>
+<h3 class="topic">
+<a name="2396gbuuuetsahaiks342d6vhv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/299l95qndkaf3gvs6a2fsdr4ag.png"></p>
+<h3 class="topic">
+<a name="450a8931aeek3qkfp3nqg988bp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/62fdeen3tcbru0hap7u2qsm76i.png"></p>
+<h3 class="topic">
+<a name="1u2itrdvj587ridoinhn21amom">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/7fjlmrjfcb345o6fdn5vln7v67.png"></p>
+<h3 class="topic">
+<a name="7ad74r6tk0lgehq4mijnagr1pv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/2dn00k77grcks0uvjn1p3ucv31.png"></p>
+<h3 class="topic">
+<a name="5u9abghmdnp1mu7377ii5c55bt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/3qopt3943lmpv55tft4jdfmr9c.png"></p>
+<h3 class="topic">
+<a name="6f354u02og88s2a1gdtk39ncig">&nbsp;&nbsp;&nbsp;&nbsp;实现堆函数 malloc() free()</a>
+</h3>
+<h3 class="topic">
+<a name="72rrgonjk3v3dvcbbr7fns4bj1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;堆的实现过程</a>
+</h3>
+<h3 class="topic">
+<a name="595fq37o51mkp8um1hfkv2jvf8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/29tfipefo0tnuf5e9qjjbhut17.png"></p>
+<h3 class="topic">
+<a name="209m70jdfemv2mkepb8fish85u">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用双向链表管理堆空间的分配</a>
+</h3>
+<h3 class="topic">
+<a name="7utbht1rtbe32pp5ku3270olbi">&nbsp;&nbsp;&nbsp;&nbsp;IO与文件操作</a>
+</h3>
+<h3 class="topic">
+<a name="5udmtjut2s78r9akk4dr39b1bs">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IO设计原则</a>
+</h3>
+<h3 class="topic">
+<a name="6vlkrfkrkpeofce2432on5rspe">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/74vsol5u0o0og1rpbllb9qi7o6.png"></p>
+<h3 class="topic">
+<a name="3s1v2s79ng99vj7grene99qrkd">&nbsp;&nbsp;&nbsp;&nbsp;字符串相关操作</a>
+</h3>
+<h3 class="topic">
+<a name="2vj653vi9c2te4vbn3qnvueqsk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/2tdr4j7s0naufp5r0v2m447rfh.png"></p>
+<h3 class="topic">
+<a name="5j2f137c7mj6d6k2euv7ci1vc3">&nbsp;&nbsp;&nbsp;&nbsp;格式化字符串</a>
+</h3>
+<h3 class="topic">
+<a name="50ij2npa1rgivkl4qjhi028ehl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;即实现printf</a>
+</h3>
+<h3 class="topic">
+<a name="20h46orp90pbh7o8b3q7sal98u">&nbsp;&nbsp;&nbsp;如何使用 Mini CRT</a>
+</h3>
+<h3 class="topic">
+<a name="1lq9mof3flrbtmcuv5qc1j60pp">&nbsp;&nbsp;&nbsp;&nbsp;被提供的CRT一般包含两个部分</a>
+</h3>
+<h3 class="topic">
+<a name="4o6faj5t5iqf76lo0v77qvledp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;头文件：其中包含函数的定义</a>
+</h3>
+<h3 class="topic">
+<a name="4jkieseo4vcs2082qv7h6m65ch">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;库文件：其中包含函数的实现</a>
+</h3>
+<h3 class="topic">
+<a name="6eoqkpm73rn4jssh1ocu8vl7if">&nbsp;&nbsp;&nbsp;&nbsp;编译得到静态库文件</a>
+</h3>
+<h3 class="topic">
+<a name="1iasrspguhoe0d0kqspmlpnoa3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;linux</a>
+</h3>
+<h3 class="topic">
+<a name="1qs21uj1up80oifp5g367jav4d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/19grnc5j6qnm8b918sbcbu49nd.png"></p>
+<h3 class="topic">
+<a name="49fq48ko4ontavpdk52j8lrcmc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;windows</a>
+</h3>
+<h3 class="topic">
+<a name="1hrc2duhigqmoq89mcv77ng41v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/7j0kmirdc1h6mffa9klvp2cil9.png"></p>
+<h3 class="topic">
+<a name="2gogfe7tmdlpj1r9ei6nf39ge3">&nbsp;&nbsp;&nbsp;&nbsp;将静态库文件和源代码进行静态链接</a>
+</h3>
+<h3 class="topic">
+<a name="4a8ugfbbrc1isdc8p55p5ipd59">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;linux</a>
+</h3>
+<h3 class="topic">
+<a name="7g26vkda0leek6jmmn6elnif5v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/3jqlcv4vhlmd1hvq78a0174k3p.png"></p>
+<h3 class="topic">
+<a name="1qj1lbiiknjb3ep1la5quc1vc1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;windows</a>
+</h3>
+<h3 class="topic">
+<a name="7e98pmcijh63ttftdifc71ie2q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/48md5er724vhitnf5lnduijn1e.png"></p>
+<h3 class="topic">
+<a name="6ncbvcvi78p4cc74jho7buvpn2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/48mnckb9qbtgm2rlq6g1qbgbmj.png"></p>
+<h3 class="topic">
+<a name="0ugh2unpmdpvhbr6ms8udiimd2">&nbsp;&nbsp;&nbsp;c++运行库实现</a>
+</h3>
+<h3 class="topic">
+<a name="7iuqpqmrqsa29sjualtlsl9239">&nbsp;&nbsp;&nbsp;&nbsp;c++运行库依赖于c语言运行库，并且单独存在</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/089qp9hcmp9vp5qdoiskl14aa0.png"></p>
+<h3 class="topic">
+<a name="1ut4bm9b01rlk2uemp4tofil76">&nbsp;&nbsp;&nbsp;&nbsp;需要在c运行基础上实现的c++特征</a>
+</h3>
+<h3 class="topic">
+<a name="5p02gmve23g1iibt81ku1romrs">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/4u4hs2stohno24e6adtg3ujoje.png"></p>
+<h3 class="topic">
+<a name="76fo0smjv01hnd1o9bav3ohs1t">&nbsp;&nbsp;&nbsp;&nbsp;c++库设计原则</a>
+</h3>
+<h3 class="topic">
+<a name="6m0vq94t6aj2s4hhn9jq5j3qjp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/3e1q832g168hmtlfi1f0lh42df.png"></p>
+<h3 class="topic">
+<a name="2i1958ghb85q6di5j5ibtu8g6o">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/75ddq26onn3j399n8g5obv65em.png"></p>
+<h3 class="topic">
+<a name="4hf8vi7qa2t0k4sr6th79ua1ie">&nbsp;&nbsp;&nbsp;&nbsp;具体实现</a>
+</h3>
+<h3 class="topic">
+<a name="5cb6a8jhnkeoiunl38eulq0o5o">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;new 与 delete</a>
+</h3>
+<h3 class="topic">
+<a name="354cs759vmmoan4fhj3mmjlicp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;c++全局构造与析构</a>
+</h3>
+<h3 class="topic">
+<a name="6uq7inrj8fdlqm7cf8rn2mv97p">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;atexit的实现</a>
+</h3>
+<h3 class="topic">
+<a name="7a5eiqu8u81u60r15r2fd9pa6e">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;入口函数修改</a>
+</h3>
+<h3 class="topic">
+<a name="1bfb0uj64lkilc7nrpd1e284tq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;stream与string</a>
+</h3>
+<h3 class="topic">
+<a name="61a1807t6reddk7arvi2di837o">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;设计原则</a>
+</h3>
+<h3 class="topic">
+<a name="5doh4be6jmko3o2dmsqqu949q7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/18k317krm4petc5pve3kh2b5ra.png"></p>
+<h3 class="topic">
+<a name="5u99tbk5c8gs9t2amik5fc0lad">&nbsp;&nbsp;&nbsp;&nbsp;如何使用 Mini CRT++</a>
+</h3>
+<h3 class="topic">
+<a name="7g74eiaqpvdhp53e3ci7p2m0fc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;windows下编译Mini CRT++</a>
+</h3>
+<h3 class="topic">
+<a name="53h3lpqvfjorkjp7fclev06u1d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/4nnfg67875s6oeqh6eg66brfuc.png"></p>
+<h3 class="topic">
+<a name="5gknhfndlummahtins1o81pok3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;linux下编译Mini CRT++</a>
+</h3>
+<h3 class="topic">
+<a name="7jmlj3b5oat4ca8vnklrgtqumj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/4kdjohuq2dhi72j0d0iomjl38o.png"></p>
+<h3 class="topic">
+<a name="1s9lefl7b4quu2pg8ki1h457ff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;windows下使用Mini CRT++</a>
+</h3>
+<h3 class="topic">
+<a name="29ubnor0rjua3ppbb88pc9gkv2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/55qerk1qc5ih2a8plg05fquf3j.png"></p>
+<h3 class="topic">
+<a name="43ckn98lhj7olgb40aq3k4801d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Linux下使用Mini CRT++</a>
+</h3>
+<h3 class="topic">
+<a name="3rjqe64ngs6pnsbgtrrukg3cb0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN2_files/7nt8ommh3aagdimq25a72neid9.png"></p>
+<h3 class="topic">
+<a name="3756rih1ubkhdtj3ms3hrort9k">&nbsp;附录</a>
+</h3>
+<h3 class="topic">
+<a name="743luh89k2fi96gb2vkru8v5e6">&nbsp;&nbsp;字节序、EFL常见段、常用开发工具命令行参数</a>
+</h3>
+<h3 class="topic">
+<a name="32hkp4kc00gfe8s3q87old8826">&nbsp;&nbsp;&nbsp;450页</a>
+</h3>
+<h2 class="topic">
+<a name="66go2tbf78baek4idjnn81liaj">动态链接与静态链接对应的表名</a>
+</h2>
+<h3 class="topic">
+<a name="2dfgak2fe65ghb2336vemcvh8t">&nbsp;动态链接</a>
+</h3>
+<h3 class="topic">
+<a name="5ivjul4e6dfg29e02vglcou9d0">&nbsp;&nbsp;动态链接符号表</a>
+</h3>
+<h3 class="topic">
+<a name="5onaee3ujmfgb2l7prh54hf48v">&nbsp;&nbsp;&nbsp;.dynsym</a>
+</h3>
+<h3 class="topic">
+<a name="3215ekr4mkg2hvt2n8vginpght">&nbsp;&nbsp;动态链接字符串表</a>
+</h3>
+<h3 class="topic">
+<a name="0hucm8v344g8dq8nphu2iqkhtu">&nbsp;&nbsp;&nbsp;.dynstr</a>
+</h3>
+<h3 class="topic">
+<a name="2dcs04anq7opl0m7uooshd7sqb">&nbsp;&nbsp;动态链接重定位表</a>
+</h3>
+<h3 class="topic">
+<a name="6500pisan72n5i74fb4hk7lgvl">&nbsp;&nbsp;&nbsp;.rel.dyn  .rel. plt</a>
+</h3>
+<h3 class="topic">
+<a name="4kksopn7r6ed2s4u9hvf8k7c4c">&nbsp;静态链接</a>
+</h3>
+<h3 class="topic">
+<a name="65ieikkftbbd5sni33mu7cgbju">&nbsp;&nbsp;静态链接符号表</a>
+</h3>
+<h3 class="topic">
+<a name="0pejndjhom9k78oa2eg13h1ogn">&nbsp;&nbsp;&nbsp;.symtab</a>
+</h3>
+<h3 class="topic">
+<a name="07nl8lfqm3j676h3mberjntd95">&nbsp;&nbsp;静态链接字符串表</a>
+</h3>
+<h3 class="topic">
+<a name="03cggvcfqqqirbbcbp4qo4mhrt">&nbsp;&nbsp;&nbsp;.strtab</a>
+</h3>
+<h3 class="topic">
+<a name="03hdu30v5dk5lef37i0matb6k5">&nbsp;&nbsp;静态链接重定位表</a>
+</h3>
+<h3 class="topic">
+<a name="1us1o5np4rl3auqj5q7v46havh">&nbsp;&nbsp;&nbsp;.rel.text  .rel.data</a>
+</h3>
+</body>
+</html>

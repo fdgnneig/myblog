@@ -1,0 +1,736 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>漏洞战争-漏洞分析工具使用</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="1jc1s1jig1q4hf6v96spuegela">漏洞战争-漏洞分析工具使用</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="%E6%BC%8F%E6%B4%9E%E6%88%98%E4%BA%89-%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8_files/images/%E6%BC%8F%E6%B4%9E%E6%88%98%E4%BA%89-%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8.jpg"></div>
+<h2 class="topic">
+<a name="41hadrgekuulgevll20af35go7">windbg相关指令</a>
+</h2>
+<h3 class="topic">
+<a name="7u21vv37isv1dtostb80svjpo6">&nbsp;db esi</a>
+</h3>
+<h3 class="topic">
+<a name="1in3v1i6ltt4uatf1q5c614d1n">&nbsp;dd esi</a>
+</h3>
+<h3 class="topic">
+<a name="55qi26v99omgdcam6k2ru1ggq6">&nbsp;&nbsp;使用dd指令显示函数的三个参数</a>
+</h3>
+<h3 class="topic">
+<a name="7ldonmskil4a5c0sm2296ihud4">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%88%98%E4%BA%89-%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8_files/0l5hol2iqs0ucram55q9nh3h1c.png"></p>
+<h3 class="topic">
+<a name="7u9itilgi0bhsj45h5147qvj5f">&nbsp;dc esi</a>
+</h3>
+<h3 class="topic">
+<a name="1no8vdnr7ctct15s3rqndlf3uk">&nbsp;&nbsp;显示指定内存地址数据以及其所对应ascii</a>
+</h3>
+<h3 class="topic">
+<a name="396gitstp7ruagqsltkrgsr8dt">&nbsp;!address esi</a>
+</h3>
+<h3 class="topic">
+<a name="5v18vbtrispoamvrnb21gu3v72">&nbsp;&nbsp;查看指定内存地址的性质</a>
+</h3>
+<h3 class="topic">
+<a name="0fp5vps4t58qof2clo793k970r">&nbsp;模块相关指令</a>
+</h3>
+<h3 class="topic">
+<a name="604r614uemvo2u0ur51c1bte9s">&nbsp;&nbsp;lmm 模块名 v</a>
+</h3>
+<h3 class="topic">
+<a name="3d527ggq6i874iu9nd9d4uaake">&nbsp;&nbsp;&nbsp;指定模块的信息</a>
+</h3>
+<h3 class="topic">
+<a name="6ennqekesifmnjvi74votrn35m">&nbsp;&nbsp;使用*进行模糊搜索</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%88%98%E4%BA%89-%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8_files/3uecmveg90ts1pa1vqsnro50o8.png"></p>
+<h3 class="topic">
+<a name="2rsqf1rdgn3a06k7b238kg0hoq">&nbsp;&nbsp;lmvm 模块名</a>
+</h3>
+<h3 class="topic">
+<a name="0jh883mbvm4dtjgdama62lvr56">&nbsp;&nbsp;&nbsp;了解指定模块的详细信息</a>
+</h3>
+<h3 class="topic">
+<a name="12ps8pb6qv3oo1rk4bhhit48op">&nbsp;&nbsp;&nbsp;lmvm命令可以查看任意一个已加载的DLL/EXE的详细信息，以及symbol的情况, 特别提醒的是，不要加后缀名（无论EXE/DLL）</a>
+</h3>
+<h3 class="topic">
+<a name="7n358va0elbcie8g6hv4no1chp">&nbsp;断点相关指令</a>
+</h3>
+<h3 class="topic">
+<a name="54mcska7odj2ear13t56uno9pg">&nbsp;&nbsp;bp 内存地址</a>
+</h3>
+<h3 class="topic">
+<a name="6cocql83jjmbfdagqnp7u0ie5i">&nbsp;&nbsp;bl</a>
+</h3>
+<h3 class="topic">
+<a name="0luo2mtt3spatcevt5v5dl6uag">&nbsp;&nbsp;&nbsp;显示所有断点信息</a>
+</h3>
+<h3 class="topic">
+<a name="1k5ukkkis2o7vnf7bu03q83u0e">&nbsp;&nbsp;bd 0</a>
+</h3>
+<h3 class="topic">
+<a name="21sk3tqk7dh71gv15bnc7gelr0">&nbsp;&nbsp;&nbsp;禁用0号断点</a>
+</h3>
+<h3 class="topic">
+<a name="5af454kmkome46quodco5rhiiq">&nbsp;&nbsp;bu 符号</a>
+</h3>
+<h3 class="topic">
+<a name="0ua5p6mebsj1qs19ggh400btc6">&nbsp;&nbsp;&nbsp;bu即在某个符号处下断点，代码修改后该断点可以随着函数地址变动而自动更新</a>
+</h3>
+<h3 class="topic">
+<a name="549b83i7m55b0p2rks3bs5nrp6">&nbsp;&nbsp;&nbsp;而且bu 断点会保存在WinDbg工作空间中， 下次启动 Windbg 的时候该断点会自动设置上去。</a>
+</h3>
+<h3 class="topic">
+<a name="1i532nbtokg8mak0ku3jli0563">&nbsp;&nbsp;&nbsp;在模块没有被加载的时候，bp 断点会失败（因为函数地址不存在），而bu 断点则可以成功。</a>
+</h3>
+<h3 class="topic">
+<a name="6at1lhb6j9oj78sdkrdff77j0g">&nbsp;&nbsp;ba指令（内存读写执行断点）</a>
+</h3>
+<h3 class="topic">
+<a name="39kop5bvfervumubribap3l0ei">&nbsp;&nbsp;&nbsp;ba 命令就是针对数据下断点的命令， 该断点在指定内存被访问时触发。 命令格式为&#13;
+ba Access Size [地址]&#13;
+Access 是访问的方式， 比如 e (执行)， r (读/写)， w (写)&#13;
+Size 是监控访问的位置的大小，以字节为单位。 值为 1、2或4，还可以是 8（64位机）。&#13;
+如果Access是e，Size必须是1&#13;
+比如要对内存0x0483DFE进行写操作的时候下断点，可以用命令 ba w4 0x0483DFE&#13;
+在Access 和Size 之间不能加入空格</a>
+</h3>
+<h3 class="topic">
+<a name="0vu13mn70f43am6kqeij5fh1no">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%88%98%E4%BA%89-%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8_files/20ptqq1d180l0f9jpphn61avnp.png"></p>
+<h3 class="topic">
+<a name="1j5mb6het4qjo8nrjtqhgm64bi">&nbsp;&nbsp;条件记录断点</a>
+</h3>
+<h3 class="topic">
+<a name="6opm7oafoe072sh3l9s5f8jk2a">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%88%98%E4%BA%89-%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8_files/07v1fool2maumnlf2th3jt7ekr.png"></p>
+<h3 class="topic">
+<a name="1li3r1vbf1m2r0a1v87c3547g4">&nbsp;&nbsp;&nbsp;&nbsp;在指定函数处断下，输出该函数第三个指针参数指向的内存数据，然后继续运行</a>
+</h3>
+<h3 class="topic">
+<a name="4ciq9tcsdt8krd87irc019hqq2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;书152页</a>
+</h3>
+<h3 class="topic">
+<a name="0nm0qub2h3d84er3gfqum3r64e">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%88%98%E4%BA%89-%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8_files/0as287gtrtbt2g3vqu2rmosejl.png"></p>
+<h3 class="topic">
+<a name="2ir72unfepl90r9f638eba6avo">&nbsp;&nbsp;&nbsp;&nbsp;在指定内存地址处断下（此时指定内存地址使用符号进行表示），输出[ebx+9c]指向的内存数据，并继续执行</a>
+</h3>
+<h3 class="topic">
+<a name="1ftprv4uiv7foapjdgo0870i2j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;书152页</a>
+</h3>
+<h3 class="topic">
+<a name="1m9d2etjpb47jbvtdjqs51nv54">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%88%98%E4%BA%89-%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8_files/6fho5222s4pm4ef1h1bbtvjmv4.png"></p>
+<h3 class="topic">
+<a name="5l6sg6g259kh7f6b4mjepplo6l">&nbsp;&nbsp;&nbsp;&nbsp;当指令执行结果为1，输出ebx寄存器的值</a>
+</h3>
+<h3 class="topic">
+<a name="3t4n1v9nl2c2ovd0f1a9ff4evq">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%88%98%E4%BA%89-%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8_files/74i0gm53nnqj2l9glk17l7tan5.png"></p>
+<h3 class="topic">
+<a name="12hdihf9rcr2of5ud71f8359a8">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%88%98%E4%BA%89-%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8_files/78ps5mfqge0svh27rq81u29gdg.png"></p>
+<h3 class="topic">
+<a name="10v4rf2ocmp7157ti24jpbrmp9">&nbsp;&nbsp;&nbsp;使用条件记录断点记录指定指令的执行次数</a>
+</h3>
+<h3 class="topic">
+<a name="4pc0mkh63bl7u8d0ns2llca4ve">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%88%98%E4%BA%89-%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8_files/5o0o8je67dq5s3f1c47oq1rkr2.png"></p>
+<h3 class="topic">
+<a name="1h548u4qubtubgel2cgstpj9fr">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%88%98%E4%BA%89-%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8_files/7mrkkaauvnp21jmabeolot0bre.png"></p>
+<h3 class="topic">
+<a name="4rv3d0dbcbfs3pa4bkelqkoq8b">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%88%98%E4%BA%89-%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8_files/06mpo5e2keupchh18ap3m23n6g.png"></p>
+<h3 class="topic">
+<a name="5bfvnhvrbbb54jvu7ak6451jqs">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%88%98%E4%BA%89-%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8_files/2d9ski4pqsgl5d0a0h01q9824n.png"></p>
+<h3 class="topic">
+<a name="5dvsul5vsoejgvbofatfn3jm8k">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%88%98%E4%BA%89-%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8_files/3532oorrr9esopa0ik9q03p588.png"></p>
+<h3 class="topic">
+<a name="38l3bgflmq4k9ckamt8gtmmglp">&nbsp;&nbsp;&nbsp;&nbsp;书352页</a>
+</h3>
+<h3 class="topic">
+<a name="760k7ms8sg1uq2u5jqqceh3ahc">&nbsp;&nbsp;&nbsp;针对NtDeviceIoControlFile下条件断点，当IOCTROL为指定值时断下</a>
+</h3>
+<h3 class="topic">
+<a name="2gvkmucp7h05m71j8973a02u5m">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%88%98%E4%BA%89-%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8_files/3tqfof0b942qtsa3hj6kap6pq7.png"></p>
+<h3 class="topic">
+<a name="5qfhs8jqgqp6u9o38pviv187gq">&nbsp;&nbsp;内存写断点</a>
+</h3>
+<h3 class="topic">
+<a name="2034diq7tun79srb165ku4e611">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%88%98%E4%BA%89-%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8_files/0t7v1uurnku0tqseofrgidhgrj.png"></p>
+<h3 class="topic">
+<a name="37u36q841p0lqikv7i59hut0pv">&nbsp;日志相关指令</a>
+</h3>
+<h3 class="topic">
+<a name="1e0aud31d53hum2dg2e9tighcg">&nbsp;&nbsp;将日志信息输出到文本中</a>
+</h3>
+<h3 class="topic">
+<a name="5smab3jk85jujmcqnmuckrpi45">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%88%98%E4%BA%89-%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8_files/7g74ob5rcmtfkdvu60t1fq2ahk.png"></p>
+<h3 class="topic">
+<a name="67g3e6pi47plnmovp9ib5v212f">&nbsp;&nbsp;将日志关闭</a>
+</h3>
+<h3 class="topic">
+<a name="5l9bh2frvjun9da25unjho3km0">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%88%98%E4%BA%89-%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8_files/1s4lm3d2sikam39vcr1b0vu4oe.png"></p>
+<h3 class="topic">
+<a name="0monf1crihur900mjg8r2krd53">&nbsp;栈相关指令</a>
+</h3>
+<h3 class="topic">
+<a name="1cnjlfgnsrl8oqipm91alafp18">&nbsp;&nbsp;kb</a>
+</h3>
+<h3 class="topic">
+<a name="7ue6aoff1a6fatfu8149ain1ci">&nbsp;&nbsp;&nbsp;查看此时栈中的信息</a>
+</h3>
+<h3 class="topic">
+<a name="6eb5icgdirbo82hg10kna2uq7b">&nbsp;&nbsp;kv</a>
+</h3>
+<h3 class="topic">
+<a name="7k2dd2qdukstf00mr0lrmhjrcp">&nbsp;&nbsp;&nbsp;显示所有线程的堆栈信息</a>
+</h3>
+<h3 class="topic">
+<a name="5kuvobehtjhq3eq907bjdh7t04">&nbsp;反汇编指令</a>
+</h3>
+<h3 class="topic">
+<a name="11qtmhn5cmlhe72fu81i34jon3">&nbsp;&nbsp;u 符号</a>
+</h3>
+<h3 class="topic">
+<a name="53laeisi191gkqj050qsndi5pd">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%88%98%E4%BA%89-%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8_files/71mpe11lfia16gj2738lttl86n.png"></p>
+<h3 class="topic">
+<a name="1h879to9iefibk7v131o92dime">&nbsp;&nbsp;&nbsp;&nbsp;反汇编0x10条指令</a>
+</h3>
+<h3 class="topic">
+<a name="6bmrmam7cp6ob9ks74miticsun">&nbsp;&nbsp;&nbsp;通过u查查找指定函数可能出现函数重名（可能是函数重载）的情况，此时需要根据返回地址等信息进一步判断</a>
+</h3>
+<h3 class="topic">
+<a name="398phu3gq0281v5m6dpd4022fe">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%88%98%E4%BA%89-%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8_files/3lf81mif1qj5483k4hjme8v358.png"></p>
+<h3 class="topic">
+<a name="2atgmvdn2kqa9ola66k3rurhkm">&nbsp;&nbsp;ub 内存地址或符号</a>
+</h3>
+<h3 class="topic">
+<a name="270n7qqkcfv8149cu2k3v5bat7">&nbsp;&nbsp;&nbsp;显示该内存地址或符号之前的汇编指令</a>
+</h3>
+<h3 class="topic">
+<a name="6qvts2dtb0pr6jnlcdkm4evi30">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%88%98%E4%BA%89-%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8_files/37c1gndt5b1a25rg1q4bhb46on.png"></p>
+<h3 class="topic">
+<a name="2os42ki3unshugv62eu9tdh4rb">&nbsp;&nbsp;&nbsp;ub后常跟返回地址，从而显示某函数被调用之前的指令执行情况</a>
+</h3>
+<h3 class="topic">
+<a name="2jgitmfguob5v8a1sruqid4s3h">&nbsp;&nbsp;uf 内存地址或符号</a>
+</h3>
+<h3 class="topic">
+<a name="5f0a0g7aigo1ql5qbia2d9vao6">&nbsp;&nbsp;&nbsp;显示某地址址后的汇编指令</a>
+</h3>
+<h3 class="topic">
+<a name="6m6rnbuan5s97a0b71v5ot6eq2">&nbsp;!heap -p -a 内存地址</a>
+</h3>
+<h3 class="topic">
+<a name="1n76utqn9874t1p66ndfep4fo1">&nbsp;&nbsp;查看指定内存地址上的堆信息</a>
+</h3>
+<h3 class="topic">
+<a name="2gtd6rjbhcm3ssnss3eupl67bl">&nbsp;!heap -a 内存地址</a>
+</h3>
+<h3 class="topic">
+<a name="73vmjg7k4en08nk5oeilpm6l3s">&nbsp;!heap</a>
+</h3>
+<h3 class="topic">
+<a name="6h7m28ch2t96filfc1gn7as0pr">&nbsp;&nbsp;查看进程中所有的堆信息</a>
+</h3>
+<h3 class="topic">
+<a name="1hm1i3q1m4c3q7qqlebl7ccgea">&nbsp;sxe ld:mshtml</a>
+</h3>
+<h3 class="topic">
+<a name="646o9upb3l306a42cth5p8rpkh">&nbsp;&nbsp;加载指定模块的时候断下</a>
+</h3>
+<h3 class="topic">
+<a name="0bl3li5tha4lb62u72k0q3e433">&nbsp;dt _HEAP_FREE_ENTRY 内存地址</a>
+</h3>
+<h3 class="topic">
+<a name="5g3g4oljcvv74d8al8fvgla0a7">&nbsp;&nbsp;将该内存地址起始的内存解析为_HEAP_FREE_ENTRY结构</a>
+</h3>
+<h3 class="topic">
+<a name="0m527n9bte0oc3rm1spo6ma76m">&nbsp;&nbsp;如果不加内存地址，即仅仅查看该结构体的字段</a>
+</h3>
+<h3 class="topic">
+<a name="5k3hm1e2iepr3qkrbt8gqhh97j">&nbsp;dd poi(ebp+8)</a>
+</h3>
+<h3 class="topic">
+<a name="779chem2666d1nrfl8uieuogsv">&nbsp;&nbsp;poi是指针解引用 （）中的是指针的地址，指令最终显示指针指向的内存数据</a>
+</h3>
+<h3 class="topic">
+<a name="69euc40m3g6c8bo5leb0c7or5v">&nbsp;da poi(esi+8)</a>
+</h3>
+<h3 class="topic">
+<a name="03tio1o6eg892lj9ih2puosef1">&nbsp;&nbsp;da</a>
+</h3>
+<h3 class="topic">
+<a name="6iu3ai7vp3gg8vdg9c4dgb8fkc">&nbsp;&nbsp;&nbsp;以ASCII 字符显示内容，每行最多48个字符。显示一直继续直到遇到第一个null字节或者到达range 值指定的所有字符都已经显示。所有不可打印字符，如回车和换行都被显示为点号(.)。</a>
+</h3>
+<h3 class="topic">
+<a name="5asflgbh56v3039fb0t0gdi0fj">&nbsp;&nbsp;poi</a>
+</h3>
+<h3 class="topic">
+<a name="6een5mhprarslta40ma8j9dmjd">&nbsp;&nbsp;&nbsp;指针解引用</a>
+</h3>
+<h3 class="topic">
+<a name="2abisdln8c024f4dssm9loml3m">&nbsp;dps指令</a>
+</h3>
+<h3 class="topic">
+<a name="34cjjdrri2asp9h84n52e0vckk">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%88%98%E4%BA%89-%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8_files/0u0tonaqevnmd1i33k007hibt9.png"></p>
+<h3 class="topic">
+<a name="1864oqv9bq21h0ev8knt1tmvjg">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%88%98%E4%BA%89-%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8_files/0cte3jie7kpo5r91iiqp5li7v7.png"></p>
+<h3 class="topic">
+<a name="3gg4rhuuvit4fcmgbt9nebq198">&nbsp;&nbsp;显示给定范围内存的内容,并把内存中每个元素都视为一个符号对其进行解析，dds是四字节视为一个符号，dqs是每8字节视为一个符号，dps是根据当前处理器架构来选择最合适的长度。</a>
+</h3>
+<h3 class="topic">
+<a name="14q7uiv2pp97ld3q30r8bohhl5">&nbsp;ln 内存地址</a>
+</h3>
+<h3 class="topic">
+<a name="33k6lh4a5ksc8g98ub195vq12r">&nbsp;&nbsp;ln表示list near，ln命令将尽可能地给出与特定地址相关的符号，如果没有符号能够精确地与这个地址匹配，那么调试器将通过指针算法对靠近这地址的符号进行显示，</a>
+</h3>
+<h3 class="topic">
+<a name="7gnk4dcva8pq3qrkstri6ko8f7">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%88%98%E4%BA%89-%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8_files/3tfpruuj4jp6v6k2ihv4bll2mo.png"></p>
+<h3 class="topic">
+<a name="7q4hpbkni627ni49ft3kcb68vv">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%88%98%E4%BA%89-%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8_files/1qb0kq58k8kf8edqpv93gkafqa.png"></p>
+<h3 class="topic">
+<a name="1tghvhl6chr62vadki2n9rp0o5">&nbsp;gu</a>
+</h3>
+<h3 class="topic">
+<a name="7e813tgodd1hsbhht1nf6aphda">&nbsp;&nbsp;执行完当前函数返回后断下</a>
+</h3>
+<h3 class="topic">
+<a name="0tpiqi5jhip4spqdse01sitko5">&nbsp;计算指令？</a>
+</h3>
+<h3 class="topic">
+<a name="2fp7cggavklp1p1psqe1nh4ltr">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%88%98%E4%BA%89-%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8_files/41568igadrahm59151r2nfikks.png"></p>
+<h3 class="topic">
+<a name="0blafq2uc7q4bk3n5hf5irsqje">&nbsp;&nbsp;？edi</a>
+</h3>
+<h3 class="topic">
+<a name="6t12q05nlmc064rjrvt8vbnajm">&nbsp;&nbsp;&nbsp;查看edi寄存器的值</a>
+</h3>
+<h3 class="topic">
+<a name="3h3c937k6e3qho87vv56v69g95">&nbsp;f10单步跟踪 f8单步跟进</a>
+</h3>
+<h3 class="topic">
+<a name="7gcf1k2d5qi41d8ceo7g9mup2u">&nbsp;符号相关指令</a>
+</h3>
+<h3 class="topic">
+<a name="3vqhmjdjjd8km5ps9l1p64uo3u">&nbsp;&nbsp;在windbg中添加符号表地址</a>
+</h3>
+<h3 class="topic">
+<a name="2sk0ct4pljg3nqgkhafc0ve5l9">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%88%98%E4%BA%89-%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8_files/0qb7d6n36er38s2v2uuc2ddftu.png"></p>
+<h3 class="topic">
+<a name="7tn363hkrqplhc6gvgdu5rd5p3">&nbsp;搜索相关质指令 x</a>
+</h3>
+<h3 class="topic">
+<a name="01cage5qtrp5cgqgsp0aaumtcb">&nbsp;&nbsp;在windbg中搜索指定名称的函数</a>
+</h3>
+<h3 class="topic">
+<a name="72qo1f81sh5h67btka4is13sms">&nbsp;&nbsp;&nbsp;书279页</a>
+</h3>
+<h3 class="topic">
+<a name="6k1uejjbobg2u367hbainvelil">&nbsp;&nbsp;使用*进行模糊匹配</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%88%98%E4%BA%89-%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8_files/44k2k1q1hep82bpq60abjqac2r.png"></p>
+<h3 class="topic">
+<a name="6qe1rslvqdtdj7d5l2f1nqv1qe">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%88%98%E4%BA%89-%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8_files/3qciv00bapbt5bgc0ldark3ikt.png"></p>
+<h3 class="topic">
+<a name="3ovni3so01u0ofkeip72b39nk7">&nbsp;&nbsp;通过x指令和完整函数名，可以查看函数原型</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%88%98%E4%BA%89-%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8_files/062h2nosu9sk9ltnhogpnnfhvk.png"></p>
+<h3 class="topic">
+<a name="36iqa1r06836grn8m57vqck9io">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%88%98%E4%BA%89-%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8_files/136i65n7lrqa0jt4g7gdsi5v02.png"></p>
+<h3 class="topic">
+<a name="0qppgrcktfr7v8dnjibn8gplsk">&nbsp;确定当前驱动的IoControlCode</a>
+</h3>
+<h3 class="topic">
+<a name="302cg676medgh1jf4os06a5j8l">&nbsp;&nbsp;test即为驱动test.sys的文件名</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%88%98%E4%BA%89-%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8_files/65p6o2vdbv1dcqqjtsq3m8nq8i.png"></p>
+<h3 class="topic">
+<a name="0s0hskhca5ccu904goe7f82vr7">&nbsp;!analyze -v </a>
+</h3>
+<h3 class="topic">
+<a name="75fs4e6pmv56a9githb0eprbld">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%88%98%E4%BA%89-%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8_files/5a30bvvp1j2lqpp28tnmnll9cp.png"></p>
+<h3 class="topic">
+<a name="3ubc45hfrj9rrdr2dmbulgb28g">&nbsp;&nbsp;&nbsp;https://www.cnblogs.com/yilang/p/11497323.html</a>
+</h3>
+<h3 class="topic">
+<a name="12moep1lmtub2h66sb6r8roqqt">&nbsp;wt</a>
+</h3>
+<h3 class="topic">
+<a name="43tmd2j3d0ndsni7vm6nbkb8rt">&nbsp;&nbsp;wt命令可以简便快速追踪函数调用流程</a>
+</h3>
+<h3 class="topic">
+<a name="22f7i6iq4vnm7udgqn9gda1dfh">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%88%98%E4%BA%89-%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8_files/743so9c7ifdns3ser4f0j559se.png"></p>
+<h3 class="topic">
+<a name="19bvjqg03r8so14l45800bpi95">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%88%98%E4%BA%89-%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8_files/7vkesisau36q337ugoc729sgd2.png"></p>
+<h3 class="topic">
+<a name="5cm2l5qd1t7idpo4jri1gni053">&nbsp;&nbsp;&nbsp;https://blog.csdn.net/weixin_43787608/article/details/88138090</a>
+</h3>
+<h3 class="topic">
+<a name="2vvpro94o2s321tl4ojqamr08f">&nbsp;&nbsp;&nbsp;https://www.cnblogs.com/developersupport/p/windbgcommand-wt.html</a>
+</h3>
+<h3 class="topic">
+<a name="78uebj8a6oq7up65t41819guar">&nbsp;!handle	 句柄值</a>
+</h3>
+<h3 class="topic">
+<a name="2la3bn5p9q3vb0oll9h2kdl3ns">&nbsp;&nbsp;通过句柄查看对象类型</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%88%98%E4%BA%89-%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8_files/2785v4qd5o0e1p3tavuekrfc9s.png"></p>
+<h2 class="topic">
+<a name="0g7fq5ua74s89m0mjmcjbdrnsc">OD中相关设置</a>
+</h2>
+<h3 class="topic">
+<a name="58fb0c17c1ujrrul0abh58ndnk">&nbsp;设置程序执行时的命令行参数&gt;调试-》参数</a>
+</h3>
+<h3 class="topic">
+<a name="3lsouc1amt459f83d5qc5uip89">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%88%98%E4%BA%89-%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8_files/7s6pl0hgqsjfa2otuk003kas44.png"></p>
+<h3 class="topic">
+<a name="266b42r983bspmk4it1n08sl1e">&nbsp;搜索指定模块中的字符串</a>
+</h3>
+<h3 class="topic">
+<a name="6m5j8bu5rqijcn12qe3c602ak1">&nbsp;&nbsp;快捷键ALT+E打开指定模块，右键查找-》所有参考文本字符串  右键-》查找文本</a>
+</h3>
+<h3 class="topic">
+<a name="5r4hkgmns1lgpf817nksn6scgq">&nbsp;&nbsp;&nbsp;书目237页</a>
+</h3>
+<h3 class="topic">
+<a name="62abao1vfd87jst8211r96ooti">&nbsp;ctrl+f9</a>
+</h3>
+<h3 class="topic">
+<a name="4edkr8bqvg8agolhv13v7557v5">&nbsp;&nbsp;将函数执行到返回</a>
+</h3>
+<h2 class="topic">
+<a name="7oc4s3f2ql9o7nmc6k1516ptch">immdbg和od中的条件断点和条件记录断点</a>
+</h2>
+<h3 class="topic">
+<a name="7noae9192kpungm53cstjidgqm">&nbsp;条件断点 shift+f2  条件记录断点：shift+f4</a>
+</h3>
+<h2 class="topic">
+<a name="3tmiib6ql5vu8iv5mlct1e0uuq">pdf格式解析工具</a>
+</h2>
+<h3 class="topic">
+<a name="2jb7nrrorskks32atbiouubqkr">&nbsp;PdfStreamDumper</a>
+</h3>
+<h3 class="topic">
+<a name="4hos4j4d2317cjccgue76clrj3">&nbsp;&nbsp;书目20页</a>
+</h3>
+<h3 class="topic">
+<a name="1giagfsgmgpefgbvhasu3k58i6">&nbsp;pdf文件格式与常用分析工具（书178页）</a>
+</h3>
+<h3 class="topic">
+<a name="25anbpukmm0hageepc4p44nd61">&nbsp;&nbsp;PDF-Tool工具包</a>
+</h3>
+<h3 class="topic">
+<a name="53g2o5oei0hl79lsuhbuh4v692">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%88%98%E4%BA%89-%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8_files/0bb51fq6es2n11c5kp957ffcv9.png"></p>
+<h3 class="topic">
+<a name="20qi6ugj5j71c23s745cqtvt86">&nbsp;peepdf</a>
+</h3>
+<h3 class="topic">
+<a name="6g17masaqoaiiuki52m50gjrs3">&nbsp;&nbsp;pdf恶意样分析工具</a>
+</h3>
+<h3 class="topic">
+<a name="4njquuq5e26q33p5vklp43c0hl">&nbsp;&nbsp;&nbsp;书326页</a>
+</h3>
+<h2 class="topic">
+<a name="2ajnj8g664uvt0rbe5us08t06r">office文件格式解析</a>
+</h2>
+<h3 class="topic">
+<a name="2r0oq76do6gjk3odev22focbn9">&nbsp;py-office-tool</a>
+</h3>
+<h3 class="topic">
+<a name="1066prps0vp480avr3g8gsn7cc">&nbsp;&nbsp;书57页</a>
+</h3>
+<h2 class="topic">
+<a name="2qat8qqva5mipvov0khkkbr4gh">进程行为监控工具</a>
+</h2>
+<h3 class="topic">
+<a name="5da0s63mfjtdnimgfr2ce9covf">&nbsp;火绒剑</a>
+</h3>
+<h3 class="topic">
+<a name="6sa7u8j69nvk6vb2tp91ef8hm0">&nbsp;Malware Defender</a>
+</h3>
+<h3 class="topic">
+<a name="262319fqgac9rei2me2mahk4u5">&nbsp;&nbsp;书26页</a>
+</h3>
+<h2 class="topic">
+<a name="5fc4m0kritjodd8i32775kmtr4">poc样本生成</a>
+</h2>
+<h3 class="topic">
+<a name="6bp2kkqjnahu6deaaectamg1ae">&nbsp;MSF</a>
+</h3>
+<h3 class="topic">
+<a name="1tr4qj5dqeiml0240744phohl1">&nbsp;&nbsp;书33页</a>
+</h3>
+<h2 class="topic">
+<a name="46q54unv00njfpmiff40qpc4oc">进程中seh结构的定位</a>
+</h2>
+<h3 class="topic">
+<a name="6vtr6ul3qsj4ode8kui33jsme6">&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%88%98%E4%BA%89-%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8_files/2281u4t4mrtn0h2a2k5hkhkfir.png"></p>
+<h2 class="topic">
+<a name="786dahipa9q843jlq8eahcsqq9">寻找内存中的rop指令</a>
+</h2>
+<h3 class="topic">
+<a name="0np0dec3am1aahb3qpjs9438bf">&nbsp;windbg+mona插件</a>
+</h3>
+<h3 class="topic">
+<a name="672d40q9gmm6r1bi95b7p8sdnr">&nbsp;pvefindaddr插件</a>
+</h3>
+<h3 class="topic">
+<a name="174l1qgag3nv87uau7rh0pb7em">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%88%98%E4%BA%89-%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8_files/7b9hqfcm6174g09rlup7k77den.png"></p>
+<h3 class="topic">
+<a name="4f58odc0fs3f2m0n4m1n1u3lpq">&nbsp;&nbsp;书45页</a>
+</h3>
+<h2 class="topic">
+<a name="0grjejed8959j1g509diusinpc">补丁比较工具</a>
+</h2>
+<h3 class="topic">
+<a name="3oolmtpmf95fh2d84ca1dibdk8">&nbsp;BinDiff</a>
+</h3>
+<h3 class="topic">
+<a name="0bl841lq1qmiu6m4n1lt8auv1e">&nbsp;&nbsp;工具使用：书45页+个人博客</a>
+</h3>
+<h3 class="topic">
+<a name="3u6k23jfvhsrlfml6ip51qbt9a">&nbsp;Turbodiff</a>
+</h3>
+<h3 class="topic">
+<a name="425e5dmb683l4vdeeqsi4vfekv">&nbsp;&nbsp;工具使用：书101页</a>
+</h3>
+<h2 class="topic">
+<a name="64mrrjf318icbg639jm6kk5tj2">源码对比工具</a>
+</h2>
+<h3 class="topic">
+<a name="6bm8vsel7sbgv5rtq3tkuragjt">&nbsp;TextDiff</a>
+</h3>
+<h3 class="topic">
+<a name="2i80h077e2a7ilpnnsfhvhsshs">&nbsp;&nbsp;书207页</a>
+</h3>
+<h2 class="topic">
+<a name="1f2k1q0u8770ctslhig44igupc">Adobe flash反编译器</a>
+</h2>
+<h3 class="topic">
+<a name="5ogq82rmcjb7jojugspum0etho">&nbsp;JPEXS反编译器</a>
+</h3>
+<h3 class="topic">
+<a name="1hlgh5i9hfljq7sao85drgpfcp">&nbsp;&nbsp;可以用于反编译嵌入到网页文件中的.swf文件，从之提取恶意样本代码</a>
+</h3>
+<h3 class="topic">
+<a name="73p9h60e8ean4b8dca24iptoci">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%88%98%E4%BA%89-%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8_files/4ng17c29juh6131po8tns7ma0b.png"></p>
+<h2 class="topic">
+<a name="4jtd1aun93em8d4p9rtupmc76o">Adobe flash编译器</a>
+</h2>
+<h3 class="topic">
+<a name="1v098285t1ftm8rafmtdeb61hi">&nbsp;Adobe Flash Bulider</a>
+</h3>
+<h2 class="topic">
+<a name="0vrpb1vk98cacg0c5vl7689bg1">shellcode自动化模拟执行</a>
+</h2>
+<h3 class="topic">
+<a name="093frnb59tddmc3p4i0gca0g6v">&nbsp;当从样本中提取出shellcode之后，可以通过工具scDbg工具进行shellcode模拟执行</a>
+</h3>
+<h3 class="topic">
+<a name="7p6026iluel18futhq2c6439g7">&nbsp;&nbsp;书263页</a>
+</h3>
+<h2 class="topic">
+<a name="4b1lafs916on8b1ffk6o5ob6ii">搭建局域网服务器工具</a>
+</h2>
+<h3 class="topic">
+<a name="1l34unnf0ot5ge5s97o29k04ub">&nbsp;XAMPP</a>
+</h3>
+<h2 class="topic">
+<a name="0r508sct5oor3htpcuup649527">friefox源码在线查看</a>
+</h2>
+<h3 class="topic">
+<a name="5g53053l5hd9k52t3j24pfltva">&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%88%98%E4%BA%89-%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8_files/4tsrsogttjqsmtfpgmfps91rjl.png"></p>
+<h3 class="topic">
+<a name="0tgaohagkfsvb1p2egdjinqi96">&nbsp;漏洞补丁前后的源码对比</a>
+</h3>
+<h3 class="topic">
+<a name="0k1knva72784m4jjsjb949c4qe">&nbsp;&nbsp;书286页</a>
+</h3>
+<h2 class="topic">
+<a name="7dj3b0j9l8qnnlg58jf9bfck9u">开启UST栈回溯记录</a>
+</h2>
+<h3 class="topic">
+<a name="7at6cj1q7tsdabob83l4dq4746">&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%88%98%E4%BA%89-%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8_files/1g9m35o8v6msk1mj827akafklk.png"></p>
+<h3 class="topic">
+<a name="74jbjibmhofe4915829olih8pm">&nbsp;&nbsp;书319页</a>
+</h3>
+<h2 class="topic">
+<a name="54a1uda1a890kg9p68v4oh5kdc">使用Fiddler提取metasploit模块代码</a>
+</h2>
+<h2 class="topic">
+<a name="3mj902nke8ig7quasc2i1klu5f">源码分析工具</a>
+</h2>
+<h3 class="topic">
+<a name="4icem4i669m55bu5e2n7lck2a5">&nbsp;Source Insight</a>
+</h3>
+<h3 class="topic">
+<a name="0194or5folvde0ghph8rhg50ia">&nbsp;&nbsp;收费</a>
+</h3>
+<h3 class="topic">
+<a name="0q8mjgap7tbjecpeegnllj3p5a">&nbsp;&nbsp;书344</a>
+</h3>
+<h2 class="topic">
+<a name="5d7qrcg41lc74i0svm3temalmf">AdobeFlash代码调试插件与符号文件</a>
+</h2>
+<h3 class="topic">
+<a name="1kq6106bebo8lti3jro90kh2dt">&nbsp;书353页</a>
+</h3>
+<h2 class="topic">
+<a name="57032mpjobo57kq2866q5nkbc6">安装旧版本的AdobeFlashPlayer的限制问题</a>
+</h2>
+<h3 class="topic">
+<a name="42qi4dagu9f54fsk4u5r6iqcmi">&nbsp;书364页</a>
+</h3>
+<h3 class="topic">
+<a name="39uddf0f4mikvthal1uogml4hb">&nbsp;通过修改注册表解决</a>
+</h3>
+<h2 class="topic">
+<a name="0dkm0mj5tsj3jj06buiqpm0g2b">RedHat的bug列表</a>
+</h2>
+<h3 class="topic">
+<a name="6qmaalkr8923ua2h9dhcf6bjhn">&nbsp;可以查看补丁代码对比情况</a>
+</h3>
+<h2 class="topic">
+<a name="2je4716d30or5md9bkkfbelat0">安卓源码在线阅读网站</a>
+</h2>
+<h3 class="topic">
+<a name="5j13omnq150o22r46ikkgbt0da">&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%88%98%E4%BA%89-%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8_files/1hc7i2j28ue05hk80h7jl96ibj.png"></p>
+<h2 class="topic">
+<a name="093knj54c7k46uvp8d0b8qkidm">安卓系统漏洞列表</a>
+</h2>
+<h3 class="topic">
+<a name="0dr4vqt32uei2p0jpf85qdl36o">&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%88%98%E4%BA%89-%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8_files/4uucgurbml4caf3rhv46js488d.png"></p>
+<h2 class="topic">
+<a name="0eaau7rupshihv17nkp659moe4">进程监控工具</a>
+</h2>
+<h3 class="topic">
+<a name="1vj2u12fc3shjtjum42v77h7aa">&nbsp;ProcessExplorer</a>
+</h3>
+<h3 class="topic">
+<a name="7ofdonik15k99r95g7unqu7q7r">&nbsp;https://blog.csdn.net/u010308862/article/details/78098748</a>
+</h3>
+</body>
+</html>

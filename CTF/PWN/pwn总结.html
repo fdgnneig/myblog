@@ -1,0 +1,3196 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>pwn总结</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="6kucco32n3ksfjmnqe4u29f6qh">pwn总结</a>
+</h1>
+<h2 class="topic">
+<a name="2g36brfad11movshh439e14p31">保护机制</a>
+</h2>
+<h3 class="topic">
+<a name="00h6s6s2f1pbih703r72fsko4t">&nbsp;CANNARY（金丝雀）</a>
+</h3>
+<h3 class="topic">
+<a name="01lu6s568b1tp3qmdcvnqjidgg">&nbsp;&nbsp;即栈安全cookie</a>
+</h3>
+<h3 class="topic">
+<a name="7dp82v7s93if8fgsv73e7t5bdd">&nbsp;NX</a>
+</h3>
+<h3 class="topic">
+<a name="6ldrghnrbcmr9ijr98c7ni372q">&nbsp;&nbsp;即DEP</a>
+</h3>
+<h3 class="topic">
+<a name="3nsugfllbvht2n68kjr6lkqg6s">&nbsp;PIE</a>
+</h3>
+<h3 class="topic">
+<a name="5gefqa1fh0eplchu0vnlohh65q">&nbsp;&nbsp;即ASLR</a>
+</h3>
+<h3 class="topic">
+<a name="1fvupmcbrl5f7k6u07tt5b701e">&nbsp;RELRO</a>
+</h3>
+<h3 class="topic">
+<a name="3bai5qo1k1vi2jbkejrchduf5j">&nbsp;&nbsp;设置GOT表为只读或者在程序启动时就解析并绑定所有的动态符号，从而减小对GOT表的攻击</a>
+</h3>
+<h3 class="topic">
+<a name="6mv7hb370dilqnq7g8qa3i4vcl">&nbsp;&nbsp; Partial RELRO意思是对GOT表具有可写权限</a>
+</h3>
+<h3 class="topic">
+<a name="2i5pem89qvut71que076ohf3uo">&nbsp;&nbsp;为FULL时，说明此时GOT不可写</a>
+</h3>
+<h2 class="topic">
+<a name="2nthodb5rf0upe3ktovqc1gq86">常见防御技术与对抗方法</a>
+</h2>
+<h3 class="topic">
+<a name="5sjarc7lp14na1bal6jiqb0fgc">&nbsp;常见防御技术</a>
+</h3>
+<h3 class="topic">
+<a name="0f1a5v8mqfrng0i9hluob4oqss">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/35teet4h91016tsema9ler3c7b.png"></p>
+<h3 class="topic">
+<a name="5fmtbcv56kpcj1up9ju0nl55ag">&nbsp;对抗方法</a>
+</h3>
+<h3 class="topic">
+<a name="1bhbl0b1fldohlpj54dos8v83p">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/0slr8a6dbdt24viqcgmtpbgi7h.png"></p>
+<h3 class="topic">
+<a name="5sqc2i12i5522k6ie8pijkr2mq">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/3h40clql273pkc6d7ss0pk750a.png"></p>
+<h3 class="topic">
+<a name="1vhrurjbmmi64tep6koo74urco">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/3u9p6jdalhe1anq0vg0k4o4cmn.png"></p>
+<h2 class="topic">
+<a name="3bdovbgjrpfn2ubb1baq26stg9">32位程序和64位程序利用区别</a>
+</h2>
+<h3 class="topic">
+<a name="1n0u6hamiecuui7a9tqidcjshp">&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/035b969bsfc4mrbq53jfusi0b7.png"></p>
+<h3 class="topic">
+<a name="6mltuaknm13m1d8lljsarbnu3j">&nbsp;&nbsp;32位函数通过栈传递参数&#13;
+64位函数先用寄存器rdi rsi rdx rcx r8 r9传递参数，其他的通过栈传递参数</a>
+</h3>
+<h2 class="topic">
+<a name="0sc61ctujga715rilq4fbuqtcn">函数调用约定</a>
+</h2>
+<h3 class="topic">
+<a name="7cc0h4vrb2pqvvnrr41aav1kea">&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/5aukd4nelv3re42b1jkgqagq15.png"></p>
+<h2 class="topic">
+<a name="1jsg1ihn0vqsjoilppm4pe8fmh">x86函数返回值传递方法</a>
+</h2>
+<h3 class="topic">
+<a name="3gso1ubih64nkuspbo47de9p6i">&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/0ikk7rd8ccsu9hvmnjda0recl9.png"></p>
+<h2 class="topic">
+<a name="57rua6rrc1brdheb1ujqj1brgb">x86与x64传参区别</a>
+</h2>
+<h3 class="topic">
+<a name="177qvl41in63a3sn0vmhf48dqs">&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/21jp1lt7lkvgm12rumv0tj2fk8.png"></p>
+<h2 class="topic">
+<a name="599fb57lsvemg1olnlhh836q41">栈溢出的保护基址和让绕过方法</a>
+</h2>
+<h3 class="topic">
+<a name="218f902s8tt5heq2ihe7hq255d">&nbsp;保护机制NX/DEP 绕过方法ROP</a>
+</h3>
+<h3 class="topic">
+<a name="4imt34o6su17uj9jk6uc558ltc">&nbsp;保护机制ASLR 绕过方法infoleak 、retdlresolve 、ROP</a>
+</h3>
+<h3 class="topic">
+<a name="7967f68hthtg9nd299pa9gko74">&nbsp;保护机制Stack Canary/ Cookie 绕过方法infoleak</a>
+</h3>
+<h3 class="topic">
+<a name="6m4ikgfl89dbkqiibdbc45reb9">&nbsp;rop学习资源</a>
+</h3>
+<h3 class="topic">
+<a name="6qv2kj1dku2p50cvcnvvmo83vp">&nbsp;&nbsp;蒸米的一步一步学ROP简直是经典篇目。</a>
+</h3>
+<h3 class="topic">
+<a href="https://www.anquanke.com/post/id/85831" name="2vm34frklh7pi27emk7l2hj0md">&nbsp;https://www.anquanke.com/post/id/85831</a>
+</h3>
+<h3 class="topic">
+<a name="78ar4b6b717o140p5rlpdnslu7">&nbsp;&nbsp;这部分学习资料在完成ctf-Wiki栈相关内容之后再继续学习</a>
+</h3>
+<h2 class="topic">
+<a name="0n2s2n5sg32s4s807aekp6hmfg">堆相关漏洞类型</a>
+</h2>
+<h3 class="topic">
+<a name="258n7hcr4aupho4hpdn9trmg1e">&nbsp;堆溢出</a>
+</h3>
+<h3 class="topic">
+<a name="34sef378p9u4moq6io1l6n3rbj">&nbsp;&nbsp;fastbin上的堆溢出</a>
+</h3>
+<h3 class="topic">
+<a name="5h2av6lupemd6q60lq27mpthmc">&nbsp;&nbsp;&nbsp;覆盖下一个chunk中的fd，将伪造的堆块加入单链表</a>
+</h3>
+<h3 class="topic">
+<a name="2eorlcg5jhpbd3avse2t43oq9d">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/1i6p3drgbpq407vd1gui03lvql.png"></p>
+<h3 class="topic">
+<a name="301na5i47a114tipkjm6jvt4mt">&nbsp;&nbsp;bins上的堆溢出</a>
+</h3>
+<h3 class="topic">
+<a name="2ros0gnhjss1dkrlvcv74k9m92">&nbsp;&nbsp;&nbsp;通过溢出，伪造下一个chunk，将本chunk设置为free（即修改下一个chunk中的prev_inuse和prev_size）然后free当前chunk，可以造成堆块合并，从而触发unlink，或者直接free当前chunk，而不通过堆块合并触发unlink</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/6ou10nvuqa4ec6glbbn8nqv1ol.png"></p>
+<h3 class="topic">
+<a name="5l7t791u1mi695b6m0hvh8brnf">&nbsp;&nbsp;&nbsp;&nbsp;即在两个已经分配的chunk1和chunk2之间伪造出一个free的chunk1.5，然后通过释放chunk2，通过chunk1.5和chunk2之间的堆块合并进行unlink，从而达到任意内存写的功能</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/19mpf92pd1t7c2egcvklmmls6u.png"></p>
+<h3 class="topic">
+<a name="1t8n9gv9ec16unbs16r3jg7mom">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;safeunlink对unlink的过程进行了检验，只有当&#13;
+&#13;
+当前chunk的后一个chunk的前一个chunk为当前chunk并且当前chunk的前一个chunk的后一个chunk为当前chunk是&#13;
+&#13;
+unlink才能发挥作用，绕过safeunlink需要特定的方法，即设计一个chunk，其fd和bk均指向自己，然后将该chunk进行unlink</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/3rkao6j0ci0el2m2fh00oeejoa.png"></p>
+<h3 class="topic">
+<a name="748gk8c0qg6um9vrhoc9t3v785">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这是绕过safeunlink的方法，指针变量r中保存被unlink的chunk的地址，注意此时系统为64位，所以每个指针变量占8个字节，故fd距离chunk首地址偏移0x10字节，bk距离chunk首地址偏移0x18字节，此时将本chunk中的fd bk分别设置为 指针变量r的地址-0x18和0x10，当进行安全检查时，*（&amp;r-0x18+0x18）=r，则检查通过，在进行unlink的时候，将会修改指针变量r中的值，使其指向其他内存，从而为进一步漏洞利用做准备</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/16nln7791boqge4etoco5vnmdo.png"></p>
+<h3 class="topic">
+<a name="0ermhc3a8pc275guk09l0804d6">&nbsp;&nbsp;堆溢出覆盖top chunk的大小</a>
+</h3>
+<h3 class="topic">
+<a name="1rcatgfia2octombd1hfa2s1t3">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/0k32ceo4thf1ajmi02fdh33mmn.png"></p>
+<h3 class="topic">
+<a name="7rkin5s3j7mijbinm8eck66lmh">&nbsp;&nbsp;漏洞利用基本思路：覆盖下一个chunk中的元数据</a>
+</h3>
+<h3 class="topic">
+<a name="62eqdde8a5vmv78agpbk6kshqn">&nbsp;双重释放</a>
+</h3>
+<h3 class="topic">
+<a name="2tg9dd2db1kckt8cjck3i89rno">&nbsp;&nbsp;fastbin上的双重释放</a>
+</h3>
+<h3 class="topic">
+<a name="6pp9v1h65ka59kdbvsq3pdq3jc">&nbsp;&nbsp;&nbsp;基本思路是将伪造的堆加入fastbin中</a>
+</h3>
+<h3 class="topic">
+<a name="4cscpc8924earpftle6iml24ji">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/4es4oi5816tao8a3od5r383q42.png"></p>
+<h3 class="topic">
+<a name="37e21l8p8d4mp96dh3kll2p66a">&nbsp;&nbsp;bins上的双重释放</a>
+</h3>
+<h3 class="topic">
+<a name="09vqk30h1jnruhqr9uc31gunj5">&nbsp;&nbsp;&nbsp;伪造堆，从而造成unlink的操作</a>
+</h3>
+<h3 class="topic">
+<a name="006best9mlhqiqmp8sgf203m2a">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/774drk7tcrp1joio9tegj40oor.png"></p>
+<h3 class="topic">
+<a name="0u0mj0eesh8hlpdkvtb6mjpgav">&nbsp;&nbsp;主要利用思路是将双重释放问题转化为释放重引用问题</a>
+</h3>
+<h3 class="topic">
+<a name="5p678mg1skikplpn16emnmj1l2">&nbsp;释放重引用</a>
+</h3>
+<h3 class="topic">
+<a name="5qrgpul5r0uvi63so1cbbck2m1">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/43pc54kcsp47rbokfdrgi4tj4e.png"></p>
+<h3 class="topic">
+<a name="45qgevdljgj0uels9j04rj3bqm">&nbsp;其他（这里的利用方法没看懂，需要结合视频）</a>
+</h3>
+<h3 class="topic">
+<a name="1t2nb4256sh8uu4e65477fd22p">&nbsp;&nbsp;通过栈溢出覆盖栈上的堆指针</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/312emuqdrct1hmd74lm25r09il.png"></p>
+<h3 class="topic">
+<a name="2m7n847ahoasd9nmhi3jta1hsq">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/74fmbqn6jqahftn5lbs38ni4e4.png"></p>
+<h3 class="topic">
+<a name="1cqsi89mlua2oskrsj39srk4ta">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/6o71nf21mi8b1afon9sn6f4gt7.png"></p>
+<h2 class="topic">
+<a name="0ga9vja3muv8u2d4vh6v6bhi5d">栈中rop技巧</a>
+</h2>
+<h3 class="topic">
+<a name="7vmkmd21mki96fr71aq276l6ih">&nbsp;基本ROP</a>
+</h3>
+<h3 class="topic">
+<a name="12tq9hornngag154cguaqml4e6">&nbsp;&nbsp;ret2text</a>
+</h3>
+<h3 class="topic">
+<a name="002qk9oa9iv97eel7f9q1glqq6">&nbsp;&nbsp;&nbsp;ret2text 即控制程序执行程序本身已有的的代码(.text)</a>
+</h3>
+<h3 class="topic">
+<a name="78qontmjea9vc3rdnml4mg62db">&nbsp;&nbsp;ret2shellcode</a>
+</h3>
+<h3 class="topic">
+<a name="63l4do58bo3vack1bnfdjutfbo">&nbsp;&nbsp;&nbsp;自己通过输入填充shellcode，并且ret到shellcode中执行，注意可行的前提是shellcode所在的内存空间具有可知性属性，即nx为disable</a>
+</h3>
+<h3 class="topic">
+<a name="1m7p0gkf7vbkg43psohqgp4qkf">&nbsp;&nbsp;ret2syscall</a>
+</h3>
+<h3 class="topic">
+<a name="72a6dg1f9bvkbgnp6v3hncm6u3">&nbsp;&nbsp;&nbsp;当程序text中不存在现成的函数调用（ret2text）并且因为nx的存在无法在堆栈中执行指令（ret2shelllcode），此时可以使用gadget拼接一段shellcode从而执行</a>
+</h3>
+<h3 class="topic">
+<a name="2vr3gpd1gtgtqpblfcev62boai">&nbsp;&nbsp;&nbsp;注意linux中系统调用的方式有三种</a>
+</h3>
+<h3 class="topic">
+<a name="2k2ctoqmn7it8q8q64qcrts0ep">&nbsp;&nbsp;&nbsp;&nbsp;int 0x80</a>
+</h3>
+<h3 class="topic">
+<a name="12fcdr7c4o8nsqi32v391mtbdd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;最传统的系统调用方式，速度较慢，下面两种都是快速系统调用方式</a>
+</h3>
+<h3 class="topic">
+<a name="0sbhjmqhsrrpum9khmcn03j938">&nbsp;&nbsp;&nbsp;&nbsp;sysenter</a>
+</h3>
+<h3 class="topic">
+<a name="6plvf8o0kace3auuuss46i503v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;intel32位架构中使用</a>
+</h3>
+<h3 class="topic">
+<a name="16spp5ninoh3k8irs0hub6lfiu">&nbsp;&nbsp;&nbsp;&nbsp;syscall</a>
+</h3>
+<h3 class="topic">
+<a name="1tp5tklcqm6f972moesufe3p31">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;intel64位架构、AMD32位架构、AMD64位架构使用</a>
+</h3>
+<h3 class="topic">
+<a name="1mu7coinaepgevg5ah1gv53ihl">&nbsp;&nbsp;&nbsp;&nbsp;其中int 0x80的原理被运用于ret2syscall的漏洞利用方式中，即在内存中寻找int 0x80指令的地址，然后通过搜搜gadget构造int 0x80的参数传递</a>
+</h3>
+<h3 class="topic">
+<a name="5tf849t728sejp35mp3um7o1ka">&nbsp;&nbsp;&nbsp;&nbsp;所以除了int 0x80，也有其他的系统调用方式可以被ret2syscall进行漏洞利用</a>
+</h3>
+<h3 class="topic">
+<a name="04uk3fqmvlg0vqm5lth702q3kc">&nbsp;&nbsp;&nbsp;&nbsp;https://cloud.tencent.com/developer/article/1492374</a>
+</h3>
+<h3 class="topic">
+<a name="44tivm4v9mbdr2hub6qs7k3ho1">&nbsp;&nbsp;ret2libc</a>
+</h3>
+<h3 class="topic">
+<a name="222410ejrgt544a6hp51ns6dn7">&nbsp;&nbsp;&nbsp;gef和pwndbg种均可以通过search搜索字符串</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/7bqn5hiji6agesjdlhqg0nca3h.png"></p>
+<h3 class="topic">
+<a name="0kndgjls77coni9pd2qtmegegp">&nbsp;&nbsp;&nbsp;即函数返回的地址为libc共享库中的地址，这就意味着程序2一定是动态链接的，并且可以使用&#13;
+elf=ELF('文件名')&#13;
+elf.plt['函数名']&#13;
+elf.got['函数名']&#13;
+elf.symbola['函数名']  #一般用于获得函数在lib中的偏移&#13;
+以上指令获取函数地址</a>
+</h3>
+<h3 class="topic">
+<a name="3rp1n59oijm10lrcvbp8dcdj0u">&nbsp;&nbsp;&nbsp;&nbsp;同时也会面临共享库libc随机基址加载的问题，此时就需要通过泄露函数地址从而计算libc加载基址</a>
+</h3>
+<h3 class="topic">
+<a name="042amqfjkneju0hp3ohg875hff">&nbsp;&nbsp;总结</a>
+</h3>
+<h3 class="topic">
+<a name="1vvmhlungh4u7dpheq20d9n265">&nbsp;&nbsp;&nbsp;shell的获取方法</a>
+</h3>
+<h3 class="topic">
+<a name="7768etghtr2k3gjbrrp4jfad20">&nbsp;&nbsp;&nbsp;&nbsp;执行shellcode</a>
+</h3>
+<h3 class="topic">
+<a name="3cr1b9001577k9jjrqs5qn5n9b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/5ogr9gjue4hr0a51e52lnogteo.png"></p>
+<h3 class="topic">
+<a name="547plje0a6s6itsa0o52htavmc">&nbsp;&nbsp;&nbsp;&nbsp;执行system('/bin/sh')  system('sh')等</a>
+</h3>
+<h3 class="topic">
+<a name="5dm091hpu6vlbnkuo7is5q9n3n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/76pehf0p7g1a32tl7f8uasnpkg.png"></p>
+<h3 class="topic">
+<a name="1gp0aise05k5soqlf42vfbgqcf">&nbsp;&nbsp;&nbsp;&nbsp;执行 execve("/bin/sh",NULL,NULL)</a>
+</h3>
+<h3 class="topic">
+<a name="593t7fv4igi3hpthk9pt09pm8v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/325f7ird4m6m6qlo3di070bmto.png"></p>
+<h3 class="topic">
+<a name="2kasb9vljb286le9h5d8emr8s6">&nbsp;&nbsp;&nbsp;&nbsp;执行系统调用</a>
+</h3>
+<h3 class="topic">
+<a name="4j46vluislb4sfb5s6iu3nhm1m">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/63b25sbomofkphfmfto6lurf3c.png"></p>
+<h3 class="topic">
+<a name="6b9k66j3muqelmb6r16trqjpl4">&nbsp;&nbsp;&nbsp;地址寻址</a>
+</h3>
+<h3 class="topic">
+<a name="69th0bki887r1b2oi5uvkh7abh">&nbsp;&nbsp;&nbsp;&nbsp;通用寻址</a>
+</h3>
+<h3 class="topic">
+<a name="25u53k0d34sdu4ftkqtj9dg4r2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;直接地址寻址</a>
+</h3>
+<h3 class="topic">
+<a name="58l621k0gtc698g4v963eeg7dt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;程序中已经给出了相关变量或者函数的地址了。这时候，我们就可以直接进行利用了。</a>
+</h3>
+<h3 class="topic">
+<a name="7evm3rp5ocv06ridd29j7gd4fd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;got表寻址</a>
+</h3>
+<h3 class="topic">
+<a name="4qlnrb9qqk5q81h1rvik7mbinp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;有时候我们并不一定非得直接知道某个函数的地址，可以利用 GOT 表跳转到对应函数的地址。当然，如果我们非得知道这个函数的地址，我们可以利用 write，puts 等输出函数将 GOT 表中地址处对应的内容输出出来（前提是这个函数已经被解析一次了）。</a>
+</h3>
+<h3 class="topic">
+<a name="7av306ad13eva30jrhtlk1fab0">&nbsp;&nbsp;&nbsp;&nbsp;有libc</a>
+</h3>
+<h3 class="topic">
+<a name="2c567igh01u4c6ssnnlc75qivb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;相对偏移寻找，这时候我们就需要考虑利用 libc 中函数的基地址一样这个特性来寻找了。比如我们可以通过 __libc_start_main 的地址来泄漏 libc 在内存中的基地址。注意：不要选择有wapper的函数，这样会使得函数的基地址计算不正确。常见的有wapper 的函数有？（待补充）。</a>
+</h3>
+<h3 class="topic">
+<a name="0glm4m0bqpdkdv7lm9lnf0di3d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;类似于ret2libc中例3</a>
+</h3>
+<h3 class="topic">
+<a name="2unbd5ic0fva6algn1njl7q8cg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;此时如果有libc，可以将libc与exp放在同一个目录，然后在exp中使用   &#13;
+lib=EFL(libc库路径)&#13;
+lib.got[]&#13;
+lib.plt[]&#13;
+lib.symbols[]&#13;
+等方式获得libc中函数的地址</a>
+</h3>
+<h3 class="topic">
+<a name="39lmpalj2la0upr1jid8q2t16g">&nbsp;&nbsp;&nbsp;&nbsp;无llibc</a>
+</h3>
+<h3 class="topic">
+<a name="74ilrq0e10398882rh9qs5jei8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;两种思路</a>
+</h3>
+<h3 class="topic">
+<a name="5lktdm3tum66opu4pfganpfmv6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;设法获得libc</a>
+</h3>
+<h3 class="topic">
+<a name="78g8egdhpi2qssahc87o989nmc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;设法直接获得相应的地址</a>
+</h3>
+<h3 class="topic">
+<a name="75gpo79fb10qpbmlbc8te665q0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;为了直接获得地址，一般需要使用 puts ， write，printf 等函数，puts和printf函数存在\x00截断问题，当目标地址中中存在\x00时可能会输出不完全、write 可以指定长度输出的内容。</a>
+</h3>
+<h3 class="topic">
+<a name="75kit0vbmqr0vcjnbi9uabs5mh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;获得地址的方法</a>
+</h3>
+<h3 class="topic">
+<a name="52cmsftkc2s6s8lfeqke53m1qa">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pwnlib.dynelf</a>
+</h3>
+<h3 class="topic">
+<a name="2d2pnl18g9ca4084h06lg3bmgt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/65a3g7824v95uve6jhnt5tj1n9.png"></p>
+<h3 class="topic">
+<a name="05adonbeb7mvh7j8fra6dsn5s2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://pwntools-docs-zh.readthedocs.io/zh_CN/latest/dynelf.html</a>
+</h3>
+<h3 class="topic">
+<a href="https://www.anquanke.com/post/id/85129" name="6tr4lg3naj0mos5cshe7s9gvtn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://www.anquanke.com/post/id/85129</a>
+</h3>
+<h3 class="topic">
+<a name="74e8ip3s9ras349iltbfmnfr3u">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;此文章中介绍了64位系统中使用dynelf，使用puts、write函数的传参方式__libc_csu_init</a>
+</h3>
+<h3 class="topic">
+<a name="5cf6qqprj70grvvaabk2l1tm6f">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x64下利用通用gadgets调用一个参数、两个参数、三个参数函数的方法&#13;
+https://www.cnblogs.com/Ox9A82/p/5487725.html</a>
+</h3>
+<h3 class="topic">
+<a name="1n6joilaf4ts1h566c242r365k">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://www.freebuf.com/articles/system/193646.html</a>
+</h3>
+<h3 class="topic">
+<a name="5ao9k6kvab8ojp9cnier10k14s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;重要这篇文章中因为可执行程序是32位的，参数使用栈传输，所以write puts函数的调用比较方便</a>
+</h3>
+<h3 class="topic">
+<a name="20qqb009n0bmja90g8109uk1hl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;32位ELF dynelf使用例子</a>
+</h3>
+<h3 class="topic">
+<a name="41ccgb7rp8s25rs6s7h9grs9e7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;源代码</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/5iocg7a4356ab50n0u9961utc5.png"></p>
+<h3 class="topic">
+<a name="4fv68iakc5ghioo8t8ivo2vt4l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;exp</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/1n1mk61ska8g8o145o8hl744u5.png"></p>
+<h3 class="topic">
+<a name="37mfoofjjg5oo677gagedcvlhg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://www.jianshu.com/p/daf0b0cb3c91</a>
+</h3>
+<h3 class="topic">
+<a name="7amdvl7f821sbj1ch9ucktfado">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://www.jianshu.com/p/4404cc01a702</a>
+</h3>
+<h3 class="topic">
+<a name="2godrpoei7qb97hrddlb6nnq8a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://www.jianshu.com/p/f10fc2e11c1d</a>
+</h3>
+<h3 class="topic">
+<a name="6toe76chavri078mjap75sv5kv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://uaf.io/exploitation/misc/2016/04/02/Finding-Functions.html</a>
+</h3>
+<h3 class="topic">
+<a name="7i3v4lcmghaf4mah5bmbgsbl4m">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;libc数据库</a>
+</h3>
+<h3 class="topic">
+<a name="49qn3lik8un5t5sa65ph82i5pq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/1t98lsapmrse3kvm85ulqc1ps0.png"></p>
+<h3 class="topic">
+<a name="56ejje2sbs5tt0pkahkb4tekus">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://www.jianshu.com/p/daf0b0cb3c91</a>
+</h3>
+<h3 class="topic">
+<a name="5s38sgg4devrgpuub043qtj7tt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ret2dl-resolve</a>
+</h3>
+<h3 class="topic">
+<a name="6ejh0pr1pn2ntlnsvltl8pshkf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/5ovfll3oams03j3a5aoqjpng6m.png"></p>
+<h3 class="topic">
+<a name="2kho742mhrkr6k2g28msug6h9k">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当动态链接时，某函数第一次执行时会通过plt表项调用_dl_runtime_resolve函数，该函数解析指定函数的地址然后将其填入got表中</a>
+</h3>
+<h3 class="topic">
+<a name="1g3acb402293rr9ip8pg90gks8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ret2dl-resolve即通过构造gadget模拟_dl_runtime_resolve的执行，从而获得函数地址</a>
+</h3>
+<h3 class="topic">
+<a name="418et1f5uor5gcgdbum9jtds9u">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;高级ROP中介绍</a>
+</h3>
+<h3 class="topic">
+<a name="1o757di1i9u173b8qb8ogfqpve">&nbsp;中级rop</a>
+</h3>
+<h3 class="topic">
+<a name="5pcce44fh128f789salj0sd8rc">&nbsp;&nbsp;ret2__libc_csu_init</a>
+</h3>
+<h3 class="topic">
+<a name="5ppnceqh9vhjfdjpt09lvhmtu9">&nbsp;&nbsp;&nbsp;该技术是指返回到__libc_csu_init 函数中执行gadget，即将该函数中的代码作为gadget</a>
+</h3>
+<h3 class="topic">
+<a name="0rbe9hsk989r96bagmbe8js28u">&nbsp;&nbsp;&nbsp;&nbsp;该函数用于对libc进行初始化，一般函数均会使用到libc，所以该函数一般存在（不同版本的libc该函数可能存在差别）</a>
+</h3>
+<h3 class="topic">
+<a name="2ptk08rr5ssr510nf1gcc94bnj">&nbsp;&nbsp;&nbsp;可以利点的点</a>
+</h3>
+<h3 class="topic">
+<a name="4p0721mdcqtpb160gh459a1r6f">&nbsp;&nbsp;&nbsp;&nbsp;可以用于控制rbx,rbp,r12,r13,r14,r15 寄存器的数据</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/41q9ranh79lr0utls51re2emm7.png"></p>
+<h3 class="topic">
+<a name="0j3aedqel9cp9otcgdi8ousunp">&nbsp;&nbsp;&nbsp;&nbsp;前三个指令可以赋值rdx rsi edi (mov edi，r15d只能赋值rdi低32位的edi，高32位会置0) &#13;
+此时 rdi rsi rdx正好是x64用于保存前三个参数的寄存器，之后的call指令可以通过控制r12和rbx，从而执行任意函数调用</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/7bfhv59k1lr9n0pc6n6m9fb6nb.png"></p>
+<h3 class="topic">
+<a name="5kq0mirg43cqd479kmm44hrmgm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;64位linux参数传递确实是按照rdi、rsi、rdx、rcx、r8、r9的顺序存放第一个参数到第六个参数。对于超出6个参数的入参还是和32位机器一样放入栈中。</a>
+</h3>
+<h3 class="topic">
+<a name="6uqlihtov70kuq4lf4pml3p0sc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对于windows中x64传参前四个参数使用 rcx rdx r8 r9寄存器传参，其他的参数使用栈传递</a>
+</h3>
+<h3 class="topic">
+<a name="6ktinm3si2mdbjlr4395bh30dp">&nbsp;&nbsp;&nbsp;&nbsp;只要控制rbb==rbp就可以保证程序不进行跳转</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/12n8jpc0rdnsn35j51v2n2qqpi.png"></p>
+<h3 class="topic">
+<a name="4escfknungoj1sj3fdgd32a1om">&nbsp;&nbsp;ret2reg</a>
+</h3>
+<h3 class="topic">
+<a name="2lb32greh67gb29f1r3i7qmbtm">&nbsp;&nbsp;&nbsp;即程序溢出之前，某寄存器指向可以执行的缓冲区，则可以将call reg或jmp reg指令的地址覆盖在返回地址处，然后将shellcode覆盖到rag指向的缓冲区</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/41rh3t56oj79735pljkb2vgsln.png"></p>
+<h3 class="topic">
+<a name="7t1fbpahf8hr3jrak7pak07qed">&nbsp;&nbsp;BROP</a>
+</h3>
+<h3 class="topic">
+<a name="1b99tvb9f6vctvo7iluh59f3jv">&nbsp;&nbsp;&nbsp;BROP是没有对应应用程序的源代码或者二进制文件下，对程序进行攻击，劫持程序的执行流。</a>
+</h3>
+<h3 class="topic">
+<a name="0ofbj18448g1ru2q3kkj85vpto">&nbsp;&nbsp;&nbsp;攻击条件</a>
+</h3>
+<h3 class="topic">
+<a name="7ggmdjnbj1q4uavk7orpsnub8s">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/5jd71265bb5p6ksbskb3fuutj4.png"></p>
+<h3 class="topic">
+<a name="18mkimid4b0j9e5gh45tuj7u9d">&nbsp;&nbsp;&nbsp;攻击原理</a>
+</h3>
+<h3 class="topic">
+<a name="0in4orqskf423hjgd2n1o1m620">&nbsp;&nbsp;&nbsp;&nbsp;基本攻击思路</a>
+</h3>
+<h3 class="topic">
+<a name="51qeefq5nhuujs8el4ji0qat0d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/1bi3hjjq0ctodqi903c5hjdvdt.png"></p>
+<h3 class="topic">
+<a name="323o5srq6074esjpposneme0vh">&nbsp;高级rop</a>
+</h3>
+<h3 class="topic">
+<a name="7l4j9l62k80pu1p4o22dqc33qm">&nbsp;&nbsp;与一般的rop相比，只是利用了更加底层的原理</a>
+</h3>
+<h3 class="topic">
+<a name="2u1nm00ei56229etljlf95u29s">&nbsp;&nbsp;&nbsp;el文件格式解析，https://ctf-wiki.github.io/ctf-wiki/executable/elf/elf-structure-zh/</a>
+</h3>
+<h3 class="topic">
+<a name="78hhtpkasad9t1gk93t47pfr96">&nbsp;&nbsp;ret2_dl_runtime_resolve</a>
+</h3>
+<h3 class="topic">
+<a name="071tlsovakovvbiie5k3ci90vj">&nbsp;&nbsp;&nbsp;程序第一次调用api时，会通过访问相应的PLT表项，进一步调用函数_dl_runtime_resolve(link_map_obj, reloc_index)从而将正确的函数地址填入对应GOT表项中</a>
+</h3>
+<h3 class="topic">
+<a name="6g4hm4u7dqlju6cbikphrcrmee">&nbsp;&nbsp;&nbsp;&nbsp;dl_runtime_resolve(link_map_obj, reloc_index)函数调用过程</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/5buu7jjr3n9rhb11vb2k4kbe44.png"></p>
+<h3 class="topic">
+<a name="2go9ek56mirl19vr4t1gnqv1t0">&nbsp;&nbsp;&nbsp;利用思路</a>
+</h3>
+<h3 class="topic">
+<a name="22j5q8nlmajo9aldc7pkklvd8f">&nbsp;&nbsp;&nbsp;&nbsp;通过结合dl_runtime_resolve(link_map_obj, reloc_index)函数执行过程，发现主要通过伪造重定位表项的方式，执行该函数，从而解析我们指定的函数的地址</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/6p9m6lo3brgr3304b5m2iibltp.png"></p>
+<h3 class="topic">
+<a name="4h3u1jjmo42vgphh2os6vh2i02">&nbsp;&nbsp;SROP</a>
+</h3>
+<h3 class="topic">
+<a name="12r8p6ffeo9sth4c2sn5eig6lf">&nbsp;&nbsp;&nbsp;signal机制</a>
+</h3>
+<h3 class="topic">
+<a name="2j4573ku33ec0lnfris8sollcj">&nbsp;&nbsp;&nbsp;&nbsp;定义</a>
+</h3>
+<h3 class="topic">
+<a name="453kkdbue72prielkn6hi4ma35">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;是UNIX内核中一种进程间通讯的机制，是一种软件中断，用于在不的进程之间传递信息，操作系统通过signal机制实现杀死一个进程（`kill -9 $PID`），再比如为进程设置定时器，或者通知进程一些异常事件等等。</a>
+</h3>
+<h3 class="topic">
+<a name="67oq2d15bgpbdujdaupk2f2sjv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/24djiomt7ja7a67515b1b0c89j.png"></p>
+<h3 class="topic">
+<a name="63pqsjq5v1hhh6k21u2d6jcie6">&nbsp;&nbsp;&nbsp;&nbsp;流程</a>
+</h3>
+<h3 class="topic">
+<a name="6lj2gp4dpo9lm4oj9ia23ptnmt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/3maia13h18emsq7ukaf3fpaees.png"></p>
+<h3 class="topic">
+<a name="5it0absf8jo4egth623o917851">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1、用户进程收到signal，进程被挂起，进入内核态，内核将当前进程的上下文保存到用户态栈空间中，并在栈顶填上一个地址`rt_sigreturn`，此时整个栈空间中情况为右图，这样一段内存被称为Signal Frame</a>
+</h3>
+<h3 class="topic">
+<a name="4koml0sio0o1em11i2119tda55">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/6o5igbsrid3a86s8e4eq9a0tld.png"></p>
+<h3 class="topic">
+<a name="74q67o7m7vgeqij6p8mfvhlmfq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2、在内核态中，进程上下文保存完毕之后，程序跳转到之前注册好的signal handler函数中处理相应signal，即signal handler就是对应signal的处理函数，发送signal所期望的效果由signal handler函数实现</a>
+</h3>
+<h3 class="topic">
+<a name="7p0gc99671orrutnp4238j45ma">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3、signal handler函数执行完毕后，程序返回内核态，将之前保存的进程上下文恢复，从而保证之前挂起的进程能继续执行</a>
+</h3>
+<h3 class="topic">
+<a name="55rmsavuucdpc1pd499l1uq1i7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这一步不同的类UNIX系统实现方法不同，在linux中，当signal handler函数执行ret指令返回前，栈顶指针指向Signal Frame中的`rt_sigreturn`，当`signal handler函数返回后，会从rt_sigreturn地址处开始执行指令</a>
+</h3>
+<h3 class="topic">
+<a name="3s3134sbmacilufah06jffenmj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`rt_sigreturn`这个地址指向一段代码，在这段代码中会调用`sigreturn`系统调用，sigreturn系统调用专门用于将进程上下文恢复，所以该系统调用会根据当前Signal Frame中的信息，设置寄存器的值，恢复进程上下文</a>
+</h3>
+<h3 class="topic">
+<a name="07jimcsa73dcfmmdj1svunh9l7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4、进程上下文恢复，此时挂起的进程得以继续执行</a>
+</h3>
+<h3 class="topic">
+<a name="6ibuhmn47in11h9265gtnisk82">&nbsp;&nbsp;ret2VDSO</a>
+</h3>
+<h3 class="topic">
+<a name="5uilsuop96l5mfdiaslmlq7oj0">&nbsp;&nbsp;&nbsp;什么是VDSO</a>
+</h3>
+<h3 class="topic">
+<a name="5cverful3n7vi6nkbuvb5n7lr7">&nbsp;&nbsp;&nbsp;&nbsp;VDSO(Virtual Dynamically-linked Shared Object)</a>
+</h3>
+<h3 class="topic">
+<a name="566jciq7cnc7lho7std4p76hqv">&nbsp;&nbsp;&nbsp;&nbsp;可以理解为一个虚拟的库（so文件），该库经常被加载到程序的虚拟内存空间中</a>
+</h3>
+<h3 class="topic">
+<a name="0khqa3b5rmd4kpfslcpkg5955h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/6f40hh6api65m2svleod8lsfe1.png"></p>
+<h3 class="topic">
+<a name="0n9mocjegg4jcguhgqhq0u4j4o">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ldd命令显示程序所需要的动态链接库</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/69g5lm1fgc4p4p3n6ss0ou4aj3.png"></p>
+<h3 class="topic">
+<a name="6hoahh3bib12et13r18aluv2tm">&nbsp;&nbsp;&nbsp;&nbsp;该库是将内核态的调用映射到用户地址空间，这样主要有两个好处</a>
+</h3>
+<h3 class="topic">
+<a name="6tk9oal9p7oe97nn112l28k7pm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1，部分经常被使用的系统调用可以通过映射直接被使用，而不需要进行用户态到内核态的切换，从而节省系统开销</a>
+</h3>
+<h3 class="topic">
+<a name="2iki230i5f2heene9onrgnk4ei">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2、linux中传统系统调用使用int 0x80进行，不同硬件架构设计了不同的快速系统调用指令，（intel实现了sysenter，sysexit，amd实现了syscall，sysret），为了实现不同硬件平台兼容，所以linux实现了vsyscall接口，在底层会根据具体的结构来进行具体操作。而vsyscall就实现在vdso中。</a>
+</h3>
+<h3 class="topic">
+<a name="436k80rndvlhjng4um7mtv9990">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3、glibc也提供了VDSO的支持, open(), read(), write(), gettimeofday()都可以直接使用VDSO中的实现。使得这些调用速度更快。 内核新特性在不影响glibc的情况下也可以更快的部署。</a>
+</h3>
+<h3 class="topic">
+<a name="10nhdqdfgtvpa0g0r01tj7ss7v">&nbsp;&nbsp;&nbsp;VDSO中有什么（不同版本的内核中vdso会存在差异）</a>
+</h3>
+<h3 class="topic">
+<a name="7cccpa3u9ebpleh86k7k7ee8ch">&nbsp;&nbsp;&nbsp;&nbsp;64位VDSO</a>
+</h3>
+<h3 class="topic">
+<a name="5ikif0sbhsie1tsv6o9o2cpqa9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;内置函数</a>
+</h3>
+<h3 class="topic">
+<a name="3pmcadreirhfb7s50bb5s74b21">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/7ma8rbq63bug5bpmnr764fi5d4.png"></p>
+<h3 class="topic">
+<a name="21msfbr0tq1u5c595f69sih835">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以使用的gadget</a>
+</h3>
+<h3 class="topic">
+<a name="6be3e91niek8a0942f211lqc16">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ex@Ex:~/test$ ROPgadget --binary vdso_x64.so&#13;
+Gadgets information&#13;
+============================================================&#13;
+0x00000000000008b8 : adc byte ptr [r11], r8b ; add dh, byte ptr [rsi + 0x58] ; add cl, byte ptr [rsi + 0xa] ; ret&#13;
+0x00000000000008b9 : adc byte ptr [rbx], al ; add dh, byte ptr [rsi + 0x58] ; add cl, byte ptr [rsi + 0xa] ; ret&#13;
+0x000000000000098b : add bl, byte ptr [rbp - 0x3d] ; mov rax, rdx ; pop rbp ; ret&#13;
+0x0000000000000a23 : add byte ptr [rax], al ; add byte ptr [rax], al ; pop rbp ; ret&#13;
+0x0000000000000a25 : add byte ptr [rax], al ; pop rbp ; ret&#13;
+0x00000000000008be : add cl, byte ptr [rsi + 0xa] ; ret&#13;
+0x00000000000008bb : add dh, byte ptr [rsi + 0x58] ; add cl, byte ptr [rsi + 0xa] ; ret&#13;
+0x0000000000000a18 : add eax, 0xffffc66b ; pop rbp ; ret&#13;
+0x00000000000008ba : add eax, dword ptr [rdx] ; jbe 0x91d ; add cl, byte ptr [rsi + 0xa] ; ret&#13;
+0x0000000000000c23 : add edx, eax ; jmp 0xbb4&#13;
+0x0000000000000c22 : add r10, rax ; jmp 0xbb5&#13;
+0x0000000000000d78 : and al, 0xf6 ; ret&#13;
+0x0000000000000f52 : call 0x3106986a&#13;
+0x0000000000000b26 : call 0xffffffffc9ff487c&#13;
+0x0000000000000aab : clc ; ret&#13;
+0x0000000000000d84 : cld ; ret 0xffff&#13;
+0x0000000000000a16 : cmovae eax, dword ptr [rip - 0x3995] ; pop rbp ; ret&#13;
+0x0000000000000a15 : cmovae rax, qword ptr [rip - 0x3995] ; pop rbp ; ret&#13;
+0x0000000000000988 : cmp edx, eax ; ja 0x993 ; pop rbp ; ret&#13;
+0x0000000000000987 : cmp rdx, rax ; ja 0x994 ; pop rbp ; ret&#13;
+0x0000000000000986 : dec dword ptr [rax + 0x39] ; ret 0x277&#13;
+0x0000000000000c1d : dec dword ptr [rax + 0xf] ; scasd eax, dword ptr [rdi] ; ret 0x149&#13;
+0x0000000000000ec5 : dec dword ptr [rcx + 0x16158b16] ; ret 0xffff&#13;
+0x0000000000000c1f : imul eax, edx ; add r10, rax ; jmp 0xbb8&#13;
+0x0000000000000c1e : imul rax, rdx ; add r10, rax ; jmp 0xbb9&#13;
+0x000000000000098a : ja 0x991 ; pop rbp ; ret&#13;
+0x00000000000008bc : jbe 0x91b ; add cl, byte ptr [rsi + 0xa] ; ret&#13;
+0x0000000000000f1e : je 0xf29 ; mov qword ptr [rdi], rax ; pop rbp ; ret&#13;
+0x0000000000000fdf : jmp qword ptr [rdi]&#13;
+0x0000000000000aa9 : lea esp, dword ptr [rdx - 8] ; ret&#13;
+0x0000000000000aa8 : lea rsp, qword ptr [r10 - 8] ; ret&#13;
+0x0000000000000a21 : mov dword ptr [rdi], 0 ; pop rbp ; ret&#13;
+0x0000000000000f21 : mov dword ptr [rdi], eax ; pop rbp ; ret&#13;
+0x0000000000000f54 : mov dword ptr [rsi], eax ; xor eax, eax ; pop rbp ; ret&#13;
+0x000000000000098f : mov eax, edx ; pop rbp ; ret&#13;
+0x0000000000000f1c : mov ebp, esp ; je 0xf2b ; mov qword ptr [rdi], rax ; pop rbp ; ret&#13;
+0x0000000000000f20 : mov qword ptr [rdi], rax ; pop rbp ; ret&#13;
+0x000000000000098e : mov rax, rdx ; pop rbp ; ret&#13;
+0x0000000000000f1b : mov rbp, rsp ; je 0xf2c ; mov qword ptr [rdi], rax ; pop rbp ; ret&#13;
+0x0000000000000aa3 : pop r13 ; pop r14 ; pop rbp ; lea rsp, qword ptr [r10 - 8] ; ret&#13;
+0x0000000000000aa5 : pop r14 ; pop rbp ; lea rsp, qword ptr [r10 - 8] ; ret&#13;
+0x00000000000008bd : pop rax ; add cl, byte ptr [rsi + 0xa] ; ret&#13;
+0x0000000000000aa7 : pop rbp ; lea rsp, qword ptr [r10 - 8] ; ret&#13;
+0x0000000000000aa4 : pop rbp ; pop r14 ; pop rbp ; lea rsp, qword ptr [r10 - 8] ; ret&#13;
+0x000000000000098c : pop rbp ; ret&#13;
+0x0000000000000aa6 : pop rsi ; pop rbp ; lea rsp, qword ptr [r10 - 8] ; ret&#13;
+0x0000000000000f3f : push qword ptr [rdx + rcx - 0x77] ; ret 0xe281&#13;
+0x00000000000008c1 : ret&#13;
+0x0000000000000c21 : ret 0x149&#13;
+0x0000000000000989 : ret 0x277&#13;
+0x0000000000000b3c : ret 0x4801&#13;
+0x0000000000000e64 : ret 0x53e9&#13;
+0x0000000000000c24 : ret 0x8ceb&#13;
+0x0000000000000c4e : ret 0xc2e9&#13;
+0x0000000000000f43 : ret 0xe281&#13;
+0x0000000000000d85 : ret 0xffff&#13;
+0x0000000000000a20 : rol bh, 7 ; add byte ptr [rax], al ; add byte ptr [rax], al ; pop rbp ; ret&#13;
+0x000000000000090f : ror dword ptr [rdx], 1 ; ret&#13;
+0x0000000000000c20 : scasd eax, dword ptr [rdi] ; ret 0x149&#13;
+0x0000000000000f51 : shr eax, 0xc ; mov dword ptr [rsi], eax ; xor eax, eax ; pop rbp ; ret&#13;
+0x0000000000000a1f : xor eax, eax ; mov dword ptr [rdi], 0 ; pop rbp ; ret&#13;
+0x0000000000000f56 : xor eax, eax ; pop rbp ; ret&#13;
+&#13;
+Unique gadgets found: 62&#13;
+ex@Ex:~/test$</a>
+</h3>
+<h3 class="topic">
+<a name="4fial6tm6thgnp1dcnjp95uhsb">&nbsp;&nbsp;&nbsp;&nbsp;32位VDSO</a>
+</h3>
+<h3 class="topic">
+<a name="48gvcq0iv8kj9akfhd6i5hk5d7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;内置函数</a>
+</h3>
+<h3 class="topic">
+<a name="329dljjpcm3adpfbj89e68cnlc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;存在_kernel_rt_sigreturn函数可以用于执行SROP</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/3kv9mm629t9kcritcquks3sh4d.png"></p>
+<h3 class="topic">
+<a name="7cthd8vtt5l99to8cth1p8mn4v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以使用的gadget</a>
+</h3>
+<h3 class="topic">
+<a name="2bq5noiacgad9stfv9nsjumuqd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ex@Ex:~/test$ ROPgadget --binary vdso_x86.so&#13;
+Gadgets information&#13;
+============================================================&#13;
+0x00000817 : adc al, 0x31 ; rcr byte ptr [ebx + 0x5e], 0x5f ; pop ebp ; ret&#13;
+0x000007e4 : adc al, 0x5b ; pop esi ; pop edi ; pop ebp ; ret&#13;
+0x00000619 : adc byte ptr [ebp + 0xec54704], al ; or al, 0x41 ; ret 0x80e&#13;
+0x00001039 : add al, 0x24 ; ret&#13;
+0x0000061b : add al, 0x47 ; lds ecx, ptr [esi] ; or al, 0x41 ; ret 0x80e&#13;
+0x0000107f : add byte ptr [eax + 0xad], bh ; int 0x80&#13;
+0x0000107d : add byte ptr [eax], al ; add byte ptr [eax + 0xad], bh ; int 0x80&#13;
+0x0000107c : add byte ptr [eax], al ; add byte ptr [eax], al ; mov eax, 0xad ; int 0x80&#13;
+0x00000e3f : add byte ptr [eax], al ; add esp, 0x5c ; pop ebx ; pop esi ; pop edi ; pop ebp ; ret&#13;
+0x00001074 : add byte ptr [eax], al ; int 0x80&#13;
+0x0000107e : add byte ptr [eax], al ; mov eax, 0xad ; int 0x80&#13;
+0x00000e40 : add byte ptr [ebx + 0x5e5b5cc4], al ; pop edi ; pop ebp ; ret&#13;
+0x000010ab : add byte ptr [ebx], al ; add eax, dword ptr [ebx] ; ret&#13;
+0x00001032 : add cl, byte ptr [ecx - 0x3ca2a4f6] ; mov eax, dword ptr [esp] ; ret&#13;
+0x000010ad : add eax, dword ptr [ebx] ; ret&#13;
+0x000007e2 : add esp, 0x14 ; pop ebx ; pop esi ; pop edi ; pop ebp ; ret&#13;
+0x00000815 : add esp, 0x14 ; xor eax, eax ; pop ebx ; pop esi ; pop edi ; pop ebp ; ret&#13;
+0x00000e41 : add esp, 0x5c ; pop ebx ; pop esi ; pop edi ; pop ebp ; ret&#13;
+0x00000967 : add esp, 0x6c ; pop ebx ; pop esi ; pop edi ; pop ebp ; ret&#13;
+0x0000087c : add esp, 0x6c ; xor eax, eax ; pop ebx ; pop esi ; pop edi ; pop ebp ; ret&#13;
+0x0000103e : and al, 0xc3 ; mov ebx, dword ptr [esp] ; ret&#13;
+0x0000103a : and al, 0xc3 ; mov ecx, dword ptr [esp] ; ret&#13;
+0x00001042 : and al, 0xc3 ; mov edi, dword ptr [esp] ; ret&#13;
+0x00000801 : and byte ptr [edi], cl ; inc ebp ; ret 0x450f&#13;
+0x0000073c : call 0x1046&#13;
+0x00001141 : call 0x340ff6d2&#13;
+0x000007d5 : call dword ptr [ecx]&#13;
+0x000007f0 : cli ; pop ebx ; pop esi ; pop edi ; pop ebp ; ret&#13;
+0x00001045 : cmp al, 0x24 ; ret&#13;
+0x0000071f : cmp esi, eax ; ja 0x71e ; pop esi ; pop edi ; pop ebp ; ret&#13;
+0x000007cf : dec dword ptr [ebx - 0x32c37d] ; call dword ptr [ecx]&#13;
+0x00001030 : enter 0x274, -0x77 ; or bl, byte ptr [ebx + 0x5d] ; ret&#13;
+0x00000974 : fmul qword ptr [ebx - 0x32cb61] ; push esi ; ret&#13;
+0x00000722 : hlt ; pop esi ; pop edi ; pop ebp ; ret&#13;
+0x00001143 : in eax, 0xf ; xor al, 0x89 ; int 0xf&#13;
+0x00001054 : in eax, 0xf ; xor al, 0xcd ; sbb byte ptr [ebp + 0x5a], 0x59 ; ret&#13;
+0x00000973 : inc ebp ; fmul qword ptr [ebx - 0x32cb61] ; push esi ; ret&#13;
+0x00000803 : inc ebp ; ret 0x450f&#13;
+0x00000620 : inc ecx ; ret 0x80e&#13;
+0x0000061c : inc edi ; lds ecx, ptr [esi] ; or al, 0x41 ; ret 0x80e&#13;
+0x00000969 : insb byte ptr es:[edi], dx ; pop ebx ; pop esi ; pop edi ; pop ebp ; ret&#13;
+0x0000087e : insb byte ptr es:[edi], dx ; xor eax, eax ; pop ebx ; pop esi ; pop edi ; pop ebp ; ret&#13;
+0x00001057 : int 0x80&#13;
+0x00001147 : int 0xf&#13;
+0x00001072 : ja 0x1078 ; add byte ptr [eax], al ; int 0x80&#13;
+0x00000721 : ja 0x71c ; pop esi ; pop edi ; pop ebp ; ret&#13;
+0x000007e0 : jb 0x7f3 ; add esp, 0x14 ; pop ebx ; pop esi ; pop edi ; pop ebp ; ret&#13;
+0x00000715 : jbe 0x728 ; mov eax, esi ; mov edx, ecx ; pop esi ; pop edi ; pop ebp ; ret&#13;
+0x00001031 : je 0x103b ; mov dword ptr [edx], ecx ; pop ebx ; pop ebp ; ret&#13;
+0x0000061d : lds ecx, ptr [esi] ; or al, 0x41 ; ret 0x80e&#13;
+0x00000968 : les ebp, ptr [ebx + ebx*2 + 0x5e] ; pop edi ; pop ebp ; ret&#13;
+0x0000087d : les ebp, ptr [ecx + esi - 0x40] ; pop ebx ; pop esi ; pop edi ; pop ebp ; ret&#13;
+0x00000e42 : les ebx, ptr [ebx + ebx*2 + 0x5e] ; pop edi ; pop ebp ; ret&#13;
+0x000007e3 : les edx, ptr [ebx + ebx*2] ; pop esi ; pop edi ; pop ebp ; ret&#13;
+0x00000816 : les edx, ptr [ecx + esi] ; rcr byte ptr [ebx + 0x5e], 0x5f ; pop ebp ; ret&#13;
+0x0000113f : lfence ; mov ebp, esp ; sysenter&#13;
+0x0000113c : mfence ; lfence ; mov ebp, esp ; sysenter&#13;
+0x00001033 : mov dword ptr [edx], ecx ; pop ebx ; pop ebp ; ret&#13;
+0x00001071 : mov eax, 0x77 ; int 0x80&#13;
+0x00001080 : mov eax, 0xad ; int 0x80&#13;
+0x00001038 : mov eax, dword ptr [esp] ; ret&#13;
+0x0000102f : mov eax, ecx ; je 0x103d ; mov dword ptr [edx], ecx ; pop ebx ; pop ebp ; ret&#13;
+0x00000717 : mov eax, esi ; mov edx, ecx ; pop esi ; pop edi ; pop ebp ; ret&#13;
+0x000007ed : mov eax, esi ; mov edx, edi ; pop ebx ; pop esi ; pop edi ; pop ebp ; ret&#13;
+0x00001053 : mov ebp, esp ; sysenter&#13;
+0x00001040 : mov ebx, dword ptr [esp] ; ret&#13;
+0x00000965 : mov ebx, edx ; add esp, 0x6c ; pop ebx ; pop esi ; pop edi ; pop ebp ; ret&#13;
+0x0000103c : mov ecx, dword ptr [esp] ; ret&#13;
+0x00001044 : mov edi, dword ptr [esp] ; ret&#13;
+0x00000719 : mov edx, ecx ; pop esi ; pop edi ; pop ebp ; ret&#13;
+0x000007ef : mov edx, edi ; pop ebx ; pop esi ; pop edi ; pop ebp ; ret&#13;
+0x00000792 : movsd dword ptr es:[edi], dword ptr [esi] ; ret 0xf631&#13;
+0x0000104c : nop ; nop ; nop ; nop ; push ecx ; push edx ; push ebp ; mov ebp, esp ; sysenter&#13;
+0x0000106d : nop ; nop ; nop ; pop eax ; mov eax, 0x77 ; int 0x80&#13;
+0x0000104d : nop ; nop ; nop ; push ecx ; push edx ; push ebp ; mov ebp, esp ; sysenter&#13;
+0x0000106e : nop ; nop ; pop eax ; mov eax, 0x77 ; int 0x80&#13;
+0x0000104e : nop ; nop ; push ecx ; push edx ; push ebp ; mov ebp, esp ; sysenter&#13;
+0x0000106f : nop ; pop eax ; mov eax, 0x77 ; int 0x80&#13;
+0x0000104f : nop ; push ecx ; push edx ; push ebp ; mov ebp, esp ; sysenter&#13;
+0x0000103d : or al, 0x24 ; ret&#13;
+0x0000061f : or al, 0x41 ; ret 0x80e&#13;
+0x00001034 : or bl, byte ptr [ebx + 0x5d] ; ret&#13;
+0x000007e1 : or byte ptr [ebx + 0x5e5b14c4], al ; pop edi ; pop ebp ; ret&#13;
+0x00000716 : or byte ptr [ecx + 0x5eca89f0], cl ; pop edi ; pop ebp ; ret&#13;
+0x00001070 : pop eax ; mov eax, 0x77 ; int 0x80&#13;
+0x00001059 : pop ebp ; pop edx ; pop ecx ; ret&#13;
+0x0000071d : pop ebp ; ret&#13;
+0x00001035 : pop ebx ; pop ebp ; ret&#13;
+0x000007e5 : pop ebx ; pop esi ; pop edi ; pop ebp ; ret&#13;
+0x0000105b : pop ecx ; ret&#13;
+0x0000071c : pop edi ; pop ebp ; ret&#13;
+0x0000105a : pop edx ; pop ecx ; ret&#13;
+0x0000071b : pop esi ; pop edi ; pop ebp ; ret&#13;
+0x00000e43 : pop esp ; pop ebx ; pop esi ; pop edi ; pop ebp ; ret&#13;
+0x00000618 : push cs ; adc byte ptr [ebp + 0xec54704], al ; or al, 0x41 ; ret 0x80e&#13;
+0x0000061e : push cs ; or al, 0x41 ; ret 0x80e&#13;
+0x00001052 : push ebp ; mov ebp, esp ; sysenter&#13;
+0x0000073b : push ebx ; call 0x1047&#13;
+0x00001050 : push ecx ; push edx ; push ebp ; mov ebp, esp ; sysenter&#13;
+0x00000739 : push edi ; push esi ; push ebx ; call 0x1049&#13;
+0x00001051 : push edx ; push ebp ; mov ebp, esp ; sysenter&#13;
+0x0000073a : push esi ; push ebx ; call 0x1048&#13;
+0x000008c2 : push esi ; ret&#13;
+0x00000819 : rcr byte ptr [ebx + 0x5e], 0x5f ; pop ebp ; ret&#13;
+0x0000071e : ret&#13;
+0x00000804 : ret 0x450f&#13;
+0x000007b4 : ret 0x458b&#13;
+0x00000b77 : ret 0x5d8b&#13;
+0x00000ecf : ret 0x7d8b&#13;
+0x00000621 : ret 0x80e&#13;
+0x00000793 : ret 0xf631&#13;
+0x000008c8 : ret 2&#13;
+0x00000966 : rol dword ptr [ebx + 0x5e5b6cc4], cl ; pop edi ; pop ebp ; ret&#13;
+0x0000102e : ror byte ptr [ecx - 0x76fd8b38], cl ; or bl, byte ptr [ebx + 0x5d] ; ret&#13;
+0x00001041 : sbb al, 0x24 ; ret&#13;
+0x00001058 : sbb byte ptr [ebp + 0x5a], 0x59 ; ret&#13;
+0x00001140 : scasb al, byte ptr es:[edi] ; call 0x340ff6d3&#13;
+0x00000926 : shl dword ptr [eax], 0xf ; inc ebp ; ret 0x450f&#13;
+0x00001055 : sysenter&#13;
+0x0000061a : test dword ptr [edi + eax*2], eax ; lds ecx, ptr [esi] ; or al, 0x41 ; ret 0x80e&#13;
+0x00001145 : xor al, 0x89 ; int 0xf&#13;
+0x00001056 : xor al, 0xcd ; sbb byte ptr [ebp + 0x5a], 0x59 ; ret&#13;
+0x00000818 : xor eax, eax ; pop ebx ; pop esi ; pop edi ; pop ebp ; ret&#13;
+&#13;
+Unique gadgets found: 123</a>
+</h3>
+<h3 class="topic">
+<a name="01rgkqf8hgabdv6s1kq5k9det8">&nbsp;&nbsp;&nbsp;VDSO与pwn有什么关系</a>
+</h3>
+<h3 class="topic">
+<a name="5ethv7n4c2958phfvles2fnrj3">&nbsp;&nbsp;&nbsp;&nbsp;因为32位VDSO中存在kernel_rt_sigreturn函数可以用于构造SROP，也存在大量可使用的gadget，所以通过VDSO中的代码构造rop，可以作为一种pwn的方法</a>
+</h3>
+<h3 class="topic">
+<a name="4nhb8714om0j2mnst99r8485md">&nbsp;&nbsp;JOP</a>
+</h3>
+<h3 class="topic">
+<a name="3oqo8usag2hfn7gtpi6gupfu8s">&nbsp;&nbsp;&nbsp;Jump-oriented programming</a>
+</h3>
+<h3 class="topic">
+<a name="5m0ikq432uec9ec8h2bdukc1mp">&nbsp;&nbsp;COP</a>
+</h3>
+<h3 class="topic">
+<a name="6gj9og5290do156eati02ec3dr">&nbsp;&nbsp;&nbsp;Call-oriented programming</a>
+</h3>
+<h2 class="topic">
+<a name="5n8eh8gmn7blrdovmq6mj5vr98">花式栈溢出技巧</a>
+</h2>
+<h3 class="topic">
+<a name="12nhr0pgvmg59hhbiqgf1fptnb">&nbsp;stack pivoting</a>
+</h3>
+<h3 class="topic">
+<a name="0e7l5ooe3ge28156qh4lu6mm2c">&nbsp;&nbsp;本质就是修改rsp或esp寄存器的值，从而将栈转移到我们可控的内存空间中，从而方面构rop或其他漏洞利用</a>
+</h3>
+<h3 class="topic">
+<a name="51re9ttsdiqgbloec9ih93kvju">&nbsp;frame faking</a>
+</h3>
+<h3 class="topic">
+<a name="41krv3t5r1gpspl372epekh3d7">&nbsp;&nbsp;本质上是在栈溢出中通过构造 伪造ebp+返回地址的内存块进行对程序执行流程进行控制</a>
+</h3>
+<h3 class="topic">
+<a name="1bhpbb92u10ai1uuhkbah7mieo">&nbsp;&nbsp;原理</a>
+</h3>
+<h3 class="topic">
+<a name="1shcpbsrk5pvmn6mohnn3u6d9t">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/7bjiglm9qqkase78n3oubdnf28.png"></p>
+<h3 class="topic">
+<a name="4v4uttf0ur0tbfnsdiftne57bu">&nbsp;&nbsp;&nbsp;&nbsp;关键就是基本上所有的函数结束钱会指令leave ret指令，其中leave指令等同于mov ebp,esp pop ebp&#13;
+如果使用&#13;
+buffer padding|fake ebp|leave ret addr|&#13;
+进行溢出，在程序执行本程序的pop ebp的时候，会将伪造的ebp赋值给ebp寄存器，然后程序返回地址使用 leave ret的gadget指令覆盖，在执行mov esp,ebp的时候，会将伪造的ebp值赋值给esp，从而切换堆栈，让其指向一篇可控的内存空间，当ret执行完毕后，就可以改变程序执行流程</a>
+</h3>
+<h3 class="topic">
+<a name="2sajfub83gfpthbi657d2ei38l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这种方法的关键在于伪造的ebp的值最后会被赋值给esp作为栈顶，所以该内存地址值需要被提前确定，并且我们也需要在该地址处构造数据结构，从而执行自己代码</a>
+</h3>
+<h3 class="topic">
+<a name="55v34q3npkm8h39i8kcmb3fj9o">&nbsp;Stack smash</a>
+</h3>
+<h3 class="topic">
+<a name="50fv07mk9epf3jplpl9tuk2f1g">&nbsp;&nbsp;原理</a>
+</h3>
+<h3 class="topic">
+<a name="2n4jq8hue99o31je6k838srb3v">&nbsp;&nbsp;&nbsp;因为canary保护机制的存在，所以当溢出修改了程序栈中的指定数据后，程序会报错，程序显示报错的信息是通过执行函数__stack_chk_fail来打印 argv[0] 指针所指向的字符串，一般argv[0]指向程序名称字符串，但是如果将arg[0]覆盖为我们想要输出的字符串的地址，则就可以输出该字符串</a>
+</h3>
+<h3 class="topic">
+<a name="23hr0ut05htthegeroo4g7o730">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/2do6uds7jno6v8r7hg75rgcdm3.png"></p>
+<h3 class="topic">
+<a name="0jdp80qagefici9jujf1u5ipdb">&nbsp;栈上的 partial overwrite&para;</a>
+</h3>
+<h3 class="topic">
+<a name="1t1537e23oibi0tsj09nu8hm1f">&nbsp;&nbsp;技术原理</a>
+</h3>
+<h3 class="topic">
+<a name="4m77g8bk44tuh2rhuctcpv754o">&nbsp;&nbsp;&nbsp;因为pie只修改内存地址中的高位数据，内存地址中的低位数据一般是固定的，所以只修改内存地址的低位，可以一定程度上绕过pie</a>
+</h3>
+<h3 class="topic">
+<a name="6r2dqa2cusrv2otflfelluktf9">&nbsp;&nbsp;&nbsp;对于64位的程序canary，一般是将一个8字节的数据添加到函数栈帧中保存rbp寄存器的内存到保存局部变量的内存之间</a>
+</h3>
+<h3 class="topic">
+<a name="7pfkrg31dad1ghprdrb5bl92sp">&nbsp;&nbsp;&nbsp;&nbsp;栈帧结构：上到下内存地址递增</a>
+</h3>
+<h3 class="topic">
+<a name="61pb6r2ml4v5lnjsftehb91gek">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;函数局部变量</a>
+</h3>
+<h3 class="topic">
+<a name="6rrhaq2rh0p5i13kk67nsfqaim">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;8字节canary值</a>
+</h3>
+<h3 class="topic">
+<a name="7r0h1hjhbbnnu6qa4d330eev5a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;保存的rbp值</a>
+</h3>
+<h3 class="topic">
+<a name="2j1skqq4tsagbc8b95s0ltcabb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;函数返回地址</a>
+</h3>
+<h3 class="topic">
+<a name="286grgmnb45vudev4k0root7og">&nbsp;&nbsp;&nbsp;需要注意的是, 这种技巧不止在栈上有效, 在堆上也是一种有效的绕过地址随机化的手段</a>
+</h3>
+<h2 class="topic">
+<a name="462m55bld6r5liom88e4ffgtdm">堆相关数据结构</a>
+</h2>
+<h3 class="topic">
+<a name="32r61heajti7ka9dkc3rvmabig">&nbsp;数据结构分类</a>
+</h3>
+<h3 class="topic">
+<a name="0s81pu6ng2jm6k8jehr5o984p9">&nbsp;&nbsp;宏观结构、微观结构</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/4j4b678lpp581sucqmcuj3m7p4.png"></p>
+<h3 class="topic">
+<a name="62tnl11j29q625guk1mro3l74i">&nbsp;微观结构</a>
+</h3>
+<h3 class="topic">
+<a name="3pfmq31oim29nhhphq8rs0j9nk">&nbsp;&nbsp;malloc_chunk</a>
+</h3>
+<h3 class="topic">
+<a name="278bk0deiqjj4dq5g066tvlgmq">&nbsp;&nbsp;&nbsp;关于malloc_chunk结构体</a>
+</h3>
+<h3 class="topic">
+<a name="07cdg715sa9c2gs9dsl3a56svi">&nbsp;&nbsp;&nbsp;&nbsp;预备知识</a>
+</h3>
+<h3 class="topic">
+<a name="57lv447uhbjk7iddefa0tdn5tv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;64位系统中size_t为64位无符号数（8字节） &#13;
+32位系统中size_t为32位无符号数（四字节）</a>
+</h3>
+<h3 class="topic">
+<a name="73p7ouhbn2vgollnahjg4hvalf">&nbsp;&nbsp;&nbsp;&nbsp;malloc_chunk</a>
+</h3>
+<h3 class="topic">
+<a name="6q918gnski7iur8oqgppfbps0v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;一个chunk就是malloc在内存中申请的一个内存块，该内存块使用malloc_chunk结构体表示（已经分配或已经释放的堆空间均用该结构体表示）</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/29c3gvf8aausm6smkjf8cmfb74.png"></p>
+<h3 class="topic">
+<a name="7r8rrs14ooqsa87b8dijhij9ra">&nbsp;&nbsp;&nbsp;&nbsp;chunk的结构，进行进一步的分析</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/4021qregrmap784tag91p24afn.png"></p>
+<h3 class="topic">
+<a name="0str90rc97vgma88r04o5jthlg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prev_size</a>
+</h3>
+<h3 class="topic">
+<a name="021f3r12lljaii3mt7ll4blb2g">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prev_size, 如果该 chunk 的物理相邻的前一地址chunk（两个指针的地址差值为前一chunk大小）是空闲的话，那该字段记录的是前一个 chunk 的大小(包括 chunk 头)。否则，该字段可以用来存储物理相邻的前一个chunk 的数据。</a>
+</h3>
+<h3 class="topic">
+<a name="62es9fl1f518pbt2tog0dmsl28">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;只有当前一个chunk用户空间的大小不能被2*sizeof（size_t）整除时（在64位中即不能被16整除，32位中即不能被8整除），才会将本chunk的prev_size当作自己的内容区域</a>
+</h3>
+<h3 class="topic">
+<a name="34pnnvgacqc4ooknligre6dmhc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这里的前一chunk 指的是较低地址的 chunk 。</a>
+</h3>
+<h3 class="topic">
+<a name="6n7rvdl4ceg43d4bsk3g5ur1p6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;size</a>
+</h3>
+<h3 class="topic">
+<a name="7f2apoc7t9s5b5d5k7rgdfie4i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该 chunk 的大小（包括chunk头），大小必须是 2 * SIZE_SZ 的整数倍。如果申请的内存大小不是 2 * SIZE_SZ 的整数倍，会被转换满足大小的最小的 2 * SIZE_SZ 的倍数。32 位系统中，SIZE_SZ 是 4；64 位系统中，SIZE_SZ 是 8,（SIZE_SZ=sizeof（size_t）） </a>
+</h3>
+<h3 class="topic">
+<a name="54tqil8sk9l1f20so48mpa03gs">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;因为malloc实现分配的内存空间是8字节对齐的，所以该字段的低三个比特位对 chunk 的大小没有影响，它们从高到低分别表示（注意这里的由高到低指的是数据的高位低位，而不是地址的高位低位，因为地址是以字节为单位分配的，与bit无关）</a>
+</h3>
+<h3 class="topic">
+<a name="250669viopp8u87jdv2ck1d82u">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;NON_MAIN_ARENA，记录当前 chunk 是否不属于主线程，1表示不属于，0表示属于。位于数据高地址</a>
+</h3>
+<h3 class="topic">
+<a name="5e18jf4e7bs8l70pga9h5dm31r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IS_MAPPED，记录当前 chunk 是否是由 mmap 分配的。 位于数据中间地址</a>
+</h3>
+<h3 class="topic">
+<a name="5p216abt5f58m0hb9k39dtpe28">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PREV_INUSE，记录前一个 chunk 块是否被分配。一般来说，堆中第一个被分配的内存块的 size 字段的P位都会被设置为1，以便于防止访问前面的非法内存。当一个 chunk 的 size 的 P 位为 0 时，我们能通过 prev_size 字段来获取上一个 chunk 的大小以及地址。这也方便进行空闲chunk之间的合并。位于数据低地址</a>
+</h3>
+<h3 class="topic">
+<a name="7kevtd43bo54m73q34r9drf04f">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;前一个chunk块被使用-》1&#13;
+前一个chunk块被释放-》0</a>
+</h3>
+<h3 class="topic">
+<a name="4ked5k2hske7pepam5oa5r6l17">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意P标志位表示前一个chunk的是否被使用，而不是本chunk是否被使用</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/5a021jeg23b942folvg0niq39q.png"></p>
+<h3 class="topic">
+<a name="4ks016vl4cqkvcu62l22anicso">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/5l8pfpbgnf7lfmjff3j1b8f9hj.png"></p>
+<h3 class="topic">
+<a name="1hgpjdvak0ojam8avdcshefa7p">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prev_size 和 size都是 INTERNAL_SIZE_T类型的数据，而根据# define INTERNAL_SIZE_T size_t，可以直到INTERNAL_SIZE_T即为size_t</a>
+</h3>
+<h3 class="topic">
+<a name="1ln4tv5k18i0eukmo6b3114u1b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;size_t在64位中占8字节  在32位中占4字节，说明对于64位中的chunk，其chunk头的大小为16字节，32位chunk中chunk头大小为8字节</a>
+</h3>
+<h3 class="topic">
+<a name="0kksib3l27ufus205bg0pm0q32">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fd bk</a>
+</h3>
+<h3 class="topic">
+<a name="784c5afdofg4ht9fr13v6vj7bn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;chunk 处于分配状态时，从 fd 字段开始是用户的数据。chunk 空闲时，会被添加到对应的空闲管理链表中，其字段的含义如下</a>
+</h3>
+<h3 class="topic">
+<a name="4ht3ckgeej11dda0bfu0d5kvi4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fd 指向下一个（非物理相邻）空闲的 chunk&#13;
+bk 指向上一个（非物理相邻）空闲的 chunk&#13;
+通过 fd 和 bk 可以将空闲的 chunk 块加入到空闲的 chunk 块链表进行统一管理</a>
+</h3>
+<h3 class="topic">
+<a name="6s6en4sf19u62s81quf2jaj3s0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fd_nextsize， bk_nextsize</a>
+</h3>
+<h3 class="topic">
+<a name="1d31ndt1l3rv52hh5ourlfeka5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;也是只有 chunk 空闲的时候才使用，不过其用于较大的 chunk（large chunk）。</a>
+</h3>
+<h3 class="topic">
+<a name="5kqnfdfq7e2r369ohbl8cd56o9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fd_nextsize 指向前一个与当前 chunk 大小不同的第一个空闲块，不包含 bin 的头指针。&#13;
+bk_nextsize 指向后一个与当前 chunk 大小不同的第一个空闲块，不包含 bin 的头指针。&#13;
+一般空闲的 large chunk 在 fd 的遍历顺序中，按照由大到小的顺序排列。这样做可以避免在寻找合适chunk 时挨个遍历。</a>
+</h3>
+<h3 class="topic">
+<a name="6u4cqfv8ahqif4sroj0gc04otk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对于一个已经分配的chunk 其前两个字段称为chunk header，之后的部分称为user data ，malloc申请返回的内存指针指向user data起始处</a>
+</h3>
+<h3 class="topic">
+<a name="0d3rbue0pcjg1g3tug1j6rj8ob">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当一个chunk使用时，其后一个chunk中的prev_size字段无效，可以被当作当前chunk的user data部分使用，不过前提是当前chunk申请的可用内存大小不能被2*sizeof（size_t）整除，在64位中即不能被16整除，32位中即不能被8整除</a>
+</h3>
+<h3 class="topic">
+<a name="5qb98frvdu7kq42quk3omuj6k9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;一个使用中的chunk</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/4fquu61lvfut553cnuthpkra0b.png"></p>
+<h3 class="topic">
+<a name="21gla9dq2p8nfplm8867l1tv36">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;一个被释放的chunk</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/1ubc464dog04abqa1u9cfgblap.png"></p>
+<h3 class="topic">
+<a name="2vgnud3uei98sth5pe3hql8e47">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;一个空闲的chunk的大小会被在两个地方记录，1、本chunk块中的size 2、后一个chunk块中的prev_size</a>
+</h3>
+<h3 class="topic">
+<a name="2retf7vrkf2t21mklvqgipvekr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;一般情况下，物理相邻的两个空闲 chunk 会被合并为一个 chunk 。堆管理器会通过 prev_size 字段以及 size 字段合并两个物理相邻的空闲 chunk 块。</a>
+</h3>
+<h3 class="topic">
+<a name="408f2922g5jvlpmj984m3d4kfl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用户最小申请的内存大小必须是 2 * SIZE_SZ 的最小整数倍。</a>
+</h3>
+<h3 class="topic">
+<a name="4v52feom395puma34j3e769lb4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;32位中即为8字节64位中即为16字节</a>
+</h3>
+<h3 class="topic">
+<a name="0f8dfce0k90319a97e1hormjl3">&nbsp;&nbsp;bin</a>
+</h3>
+<h3 class="topic">
+<a name="7letglp6o7uuvh6u2utc6dmhoe">&nbsp;&nbsp;&nbsp;什么是bin</a>
+</h3>
+<h3 class="topic">
+<a name="2pd73o73fqo93qmcq9apofq1gg">&nbsp;&nbsp;&nbsp;&nbsp;定义：被释放的chunk并不会归还给系统，而是由堆管理器统一管理，堆管理器将不同种类的chunk分为四类fast bins，small bins，large bins，unsorted bin，即不同的bin是一种堆管理器对chunk的分类方式，是一种用于存储同类型free chunk的双链表数据结构</a>
+</h3>
+<h3 class="topic">
+<a name="2t0q49dscaju1jkij27cio2s38">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/6v313d86pv5adurd9kg0a4gfc7.png"></p>
+<h3 class="topic">
+<a name="7cdkbphvbbsjhsv5qf6m92202l">&nbsp;&nbsp;&nbsp;&nbsp;bin即多个free chunk组成的链表，用于实现显示链表，将一些相同大小的chunk组成一个链表，从而方便管理</a>
+</h3>
+<h3 class="topic">
+<a name="3li7101jeo1sea6f3duie512d3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/2325of9pjo7u8f66i5vhib41a3.png"></p>
+<h3 class="topic">
+<a name="18fcs1bqqv3sv6g7hnto64i2vj">&nbsp;&nbsp;&nbsp;&nbsp;显示链表</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/3mhbboocikgk4lpl0fuqo2t781.png"></p>
+<h3 class="topic">
+<a name="5l71gcqnl31k7aqj8am2l38jfi">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/4fklabkj8tjo2t9i9dfo8b6g8d.png"></p>
+<h3 class="topic">
+<a name="0f1908odapcf6javril60koigd">&nbsp;&nbsp;&nbsp;bin的介绍</a>
+</h3>
+<h3 class="topic">
+<a name="0a5cg0g2d9fbarg57qmkgql5h5">&nbsp;&nbsp;&nbsp;&nbsp;bin的分类</a>
+</h3>
+<h3 class="topic">
+<a name="6tvr7ec82vnnmpf82tk7gn6jiv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bin是一种记录free chunk的链表数据结构。系统针对不同大小的free chunk，将bin分为了4类：1) Fast bin; 2) Unsorted bin; 3) Small bin; 4) Large bin。</a>
+</h3>
+<h3 class="topic">
+<a name="7fnldbhnjboi9ce8fdchfib5nq">&nbsp;&nbsp;&nbsp;fastbin（四种bin中只有fastbin是单链表的）</a>
+</h3>
+<h3 class="topic">
+<a name="59ogo1sc1jr4cg8jl4g0m3na38">&nbsp;&nbsp;&nbsp;&nbsp;由fast chunk组成的单链表</a>
+</h3>
+<h3 class="topic">
+<a name="2fr2g76j1p9gck5bfallbk7ui9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fast chunk：chunk size为16到80字节的chunk就叫做fast chunk</a>
+</h3>
+<h3 class="topic">
+<a name="1pc5adi6jkp4mla3c3kgern74n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1)      只要说到chunk size，那么就表示该malloc_chunk的实际整体大小；&#13;
+2)      而说到chunk unused size，就表示该malloc_chunk中刨除诸如prev_size, size, fd和bk这类辅助成员之后的实际可用的大小。因此，对free chunk而言，其实际可用大小总是比实际整体大小少16字节。(在64位系统中presize +size为16字节，32位系统中presize+size占8字节）</a>
+</h3>
+<h3 class="topic">
+<a name="19gtdjdugrcbtejhc6rutg06fg">&nbsp;&nbsp;&nbsp;&nbsp;fastbin的特性</a>
+</h3>
+<h3 class="topic">
+<a name="3qf0fm9ptkjl3dft0cboonmiak">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在内存分配和释放过程中，fast bin是所有bin中操作速度最快的</a>
+</h3>
+<h3 class="topic">
+<a name="4pe3amlm8562fbjaoot14fk9eq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fast bin的个数&mdash;&mdash;10个</a>
+</h3>
+<h3 class="topic">
+<a name="5k65rjoqt21hqc1om3krb959u0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;即实际上存在10个fast bin链表</a>
+</h3>
+<h3 class="topic">
+<a name="4bj1t9qbuhjh16jt8vg7etmau5">&nbsp;&nbsp;&nbsp;Unsorted bin</a>
+</h3>
+<h3 class="topic">
+<a name="03gudcbfcht38gb5rechohm1d9">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/6p5sr94q75h7j00vqao41aob1d.png"></p>
+<h3 class="topic">
+<a name="3ad30ahlv477mtapie6u1a82c7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用于保存没有被保存到其他bin中的free chunk，主要目的是提供二次利用最近释放的chunk的机会，从而加快堆内存分配，只有一个unsorted bin，是一个双向链表，其中chunk的大小没有限制</a>
+</h3>
+<h3 class="topic">
+<a name="4gh32mta7istpgmnesoo43k0qt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;smallbin、largebin中合并出来的chunk和largebin中裁剪剩余的chunk均会被加入到unsortedbin中</a>
+</h3>
+<h3 class="topic">
+<a name="6vbkklc9rbs5lrrqs5or4umahg">&nbsp;&nbsp;&nbsp;&nbsp;可以看成是large bin和small bin的缓存</a>
+</h3>
+<h3 class="topic">
+<a name="314s2gogmpokedmoshrqef0ut2">&nbsp;&nbsp;&nbsp;Small bin</a>
+</h3>
+<h3 class="topic">
+<a name="7afe058t50g586mmrr7t94k0st">&nbsp;&nbsp;&nbsp;&nbsp;小于512字节的chunk称之为small chunk，small bin就是用于管理small chunk的。就内存的分配和释放速度而言，small bin比larger bin快，但比fast bin慢。</a>
+</h3>
+<h3 class="topic">
+<a name="2f4bne97hhfkj9v48fsj0hldgo">&nbsp;&nbsp;&nbsp;Large bin</a>
+</h3>
+<h3 class="topic">
+<a name="6jce5dhksij10mble6mpksfeql">&nbsp;&nbsp;&nbsp;&nbsp;大于512字节的chunk称之为large chunk，large bin就是用于管理这些large chunk的。</a>
+</h3>
+<h3 class="topic">
+<a name="3monlg13ve17ohqrgtl7ivc0ef">&nbsp;宏观结构</a>
+</h3>
+<h3 class="topic">
+<a name="29u6cu7o4r1br16739s0qmfhe2">&nbsp;&nbsp;Arena介绍</a>
+</h3>
+<h3 class="topic">
+<a name="6t817ko4rhfu6qtbhrja25q4cp">&nbsp;&nbsp;&nbsp;Arena的数量限制</a>
+</h3>
+<h3 class="topic">
+<a name="5696mqvhqdk3tgj1plu604j2ls">&nbsp;&nbsp;&nbsp;&nbsp;并不是有多少个线程就有多少个arena，而实根据处理器核心数量相关</a>
+</h3>
+<h3 class="topic">
+<a name="5pcoralqa96nsh0jco6tns31hb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/3t5f7qami4m97560qqfdq6mrvn.png"></p>
+<h3 class="topic">
+<a name="52pnbk7jhn58dhq11lag8ben85">&nbsp;&nbsp;&nbsp;多Arena的管理</a>
+</h3>
+<h3 class="topic">
+<a name="2in8enjtrp51lcaeoi9nlikbnu">&nbsp;&nbsp;&nbsp;&nbsp;当程序中线程数量大于系统所支持的arena数量的时候，就需要重复使用现有的arena作为新线程的arena，具体使用哪个已有的arena，需要根据以下规则</a>
+</h3>
+<h3 class="topic">
+<a name="57p8qe1oa8nhdk6d1ccba4kgs4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果现有的arena可以lock，即该arena对应的线程没有使用该arena，此时可以将该arena作为新线程的arena，否则据需要将新线程的malloc阻塞，直到出现可用的arena</a>
+</h3>
+<h3 class="topic">
+<a name="2spf53n7qasnfgbhgu5g35l0jt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意在3）中如果线程3再次调用malloc，会尝试使用之前使用过的main arena，如果不能此时main arena不能使用，则线程3会阻塞，直到main arena可用，线程3不会尝试循环测试所有其他的arena是否可用</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/669dvho9v3amc070g0fumnrou8.png"></p>
+<h3 class="topic">
+<a name="04t3qfeuk4daph2af0u2k070ok">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/3lg9o0g1qtgevn7h6hsm7t3ee3.png"></p>
+<h3 class="topic">
+<a name="3a42n0gk88s1obccqs7rr3v7po">&nbsp;&nbsp;&nbsp;&nbsp;每一个进程只有一个main_arena，可能存在多个thread_arena(每一个子线程拥有一个thread_arene)&#13;
+&#13;
+main_arena可以使用brk和mmap分配堆内存&#13;
+&#13;
+thread_arena只能使用mmap分配堆内存</a>
+</h3>
+<h3 class="topic">
+<a name="0sbrd4bjp5ufhrqguhg3pubdhh">&nbsp;&nbsp;堆管理介绍</a>
+</h3>
+<h3 class="topic">
+<a name="70lkdbq4nq3nqhj8p7hjehhcen">&nbsp;&nbsp;&nbsp;在glibc malloc中针对堆管理，主要涉及到以下3种数据结构：</a>
+</h3>
+<h3 class="topic">
+<a name="4oqruqibbu48hpshsfchb28j98">&nbsp;&nbsp;&nbsp;&nbsp;heap_info</a>
+</h3>
+<h3 class="topic">
+<a name="3ccn8m4k41jg6j46be3i67tm3u">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;即Heap Header，一个thread arena（注意不包含main arena）中可能包含多个heap，为了方便管理，所以每个heap会被分配一个heap hander</a>
+</h3>
+<h3 class="topic">
+<a name="5q0poeddm0n39ehtfrv2tnpdjg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;若当前thread arena中heap不够用，malloc会通过系统调用申请新的heap，将其加入thread arena中</a>
+</h3>
+<h3 class="topic">
+<a name="2avbjovg8pdd8koosionqkm41h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/662qcesohqqc2g109lekij51aq.png"></p>
+<h3 class="topic">
+<a name="3821amhfjji7b8e4115h8lnbu4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/7luo7qc3kjoegm19jt3gfbfket.png"></p>
+<h3 class="topic">
+<a name="793q9abhn4feolcm0f4ucqkhsj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;thread arena中每一个heap有一个heap_info</a>
+</h3>
+<h3 class="topic">
+<a name="7jt5ou7ue50bk1cvfgbcq9l5ut">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Main Arena只有一个heap，所以也就不含有heap_info结构体。当需要更多堆空间的时候，就通过扩展sbrk的heap segment来获取更多的空间，直到它碰到内存mapping区域为止。</a>
+</h3>
+<h3 class="topic">
+<a name="534ajllur7alv04kc0hk6p15c3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/31rtefkhtaba8k956mg5r844or.png"></p>
+<h3 class="topic">
+<a name="2kjqsst08bh1a9sodc93tjmd7j">&nbsp;&nbsp;&nbsp;&nbsp;malloc_state（即arena的结构）</a>
+</h3>
+<h3 class="topic">
+<a name="51f3u2ba604mr2uvtnd35tlsg3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;即Arena Header，每个thread只含有一个Arena Header。Arena Header包含bins的信息、top chunk以及最后一个remainder chunk等(这些概念会在后文详细介绍):</a>
+</h3>
+<h3 class="topic">
+<a name="6knu5ek4qiqvsevvpor5dt8s2f">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/4m0t8bu6ddncgu919oohjlsg1m.png"></p>
+<h3 class="topic">
+<a name="2uf78itjdrfnhp8fae70qcf5ab">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/173avfj9uaa45dmv08n39orbnj.png"></p>
+<h3 class="topic">
+<a name="336t8nuop4m5ifvugb9qj3kmvi">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意bitmap是保存在malloc_state中的</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/1f5st5ga88r6eg3tjmoshrobss.png"></p>
+<h3 class="topic">
+<a name="670su3hrato3jjbme0qnbknlgq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;每一个线程有一个malloc_state，其中包含bins top chunk等信息</a>
+</h3>
+<h3 class="topic">
+<a name="1rhbl1c66dh7nh8eelnan1uffi">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;不同于thread arena，main arena的arena header并不是sbrk heap segment的一部分，而是一个全局变量！因此它属于libc.so的data segment。</a>
+</h3>
+<h3 class="topic">
+<a name="32qg8l8poplq7l2e62hpomm5v1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;与 thread 不同的是，main_arena 并不在申请的 heap 中，而是一个全局变量，在 libc.so 的数据段。</a>
+</h3>
+<h3 class="topic">
+<a name="0fiqo164vaeh82jahv8e7ndbi7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;thread arena中的malloc_state结构体位于其第一次申请的heap中</a>
+</h3>
+<h3 class="topic">
+<a name="42dkueeciv22sfv1elusfsl1rc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/112tljin8p2812f05tfoirmcbr.png"></p>
+<h3 class="topic">
+<a name="38cgpft4cn6p403n04n09tbltm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;每一个arena只有一个Arena Header</a>
+</h3>
+<h3 class="topic">
+<a name="66mklfkb93r32atrnoj21s546e">&nbsp;&nbsp;&nbsp;&nbsp;malloc_chunk</a>
+</h3>
+<h3 class="topic">
+<a name="2v59ek258rrarq1iug5d0sukuo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;即之前微观结构中讨论过的</a>
+</h3>
+<h3 class="topic">
+<a name="278iljv4k3pm96sipik0jit6t0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/3s5j5dhfam7u78v5p8k9cvi6s6.png"></p>
+<h3 class="topic">
+<a name="074du6jc0jirljvptrcmusaj5c">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/5pj17g2938es34q4mk0159ue04.png"></p>
+<h3 class="topic">
+<a name="0nm34jimiglid37v9g8230bjp5">&nbsp;&nbsp;&nbsp;&nbsp;main arena与thread arena(只有一个heap)中三种结构题的关系</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/4ib41tofuh9i3mecjlrd4qp61f.png"></p>
+<h3 class="topic">
+<a name="7rfpvj5ilgtasf0f1g7v309sfi">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;thread arena(有多个heap)中三种结构题的关系</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/1lu9pldaeg0iv3n64r5j5t4o56.png"></p>
+<h3 class="topic">
+<a name="1b2cj1a6ofgd0isicm6p3l5dku">&nbsp;&nbsp;&nbsp;heap segment与arena关系</a>
+</h3>
+<h3 class="topic">
+<a name="04c6bns7uiij47qt4o0s6r2equ">&nbsp;&nbsp;&nbsp;&nbsp;对于一个thread arena中存在两个heap segment的情况（即存在两个heap）</a>
+</h3>
+<h3 class="topic">
+<a name="4ldb6ojjl09a53r1gp9rbu0d6o">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;thread arena只含有一个malloc_state(即arena header)，却有两个heap_info(即heap header)</a>
+</h3>
+<h3 class="topic">
+<a name="0nqb1uu1bfsmcrdfjou660bmkh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;两个heap segment是通过mmap分配的内存，所以两个heap segment在内存分布中并不相邻的，而是属于不同的内存区间</a>
+</h3>
+<h3 class="topic">
+<a name="0pb37d6hjvbhfnoe11kb2g752h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;libc malloc将第二个heap_info结构体的prev成员指向了第一个heap_info结构体的起始位置（即ar_ptr成员），而第一个heap_info结构体的ar_ptr成员指向了malloc_state，这样就构成了一个单链表，方便后续管理。</a>
+</h3>
+<h3 class="topic">
+<a name="5n44ea5nvu8gbc1esv466v750l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/0clpmckj60aj0e7snhgdk7mfms.png"></p>
+<h3 class="topic">
+<a name="745od6jmdndd44nl5rnub5ep3f">&nbsp;&nbsp;理解chunk</a>
+</h3>
+<h3 class="topic">
+<a name="5m72i452ouko1nklc9q2c936bf">&nbsp;&nbsp;&nbsp;chunk本质上是一段具有特定数据结构的连续堆内存空间，是堆内存管理器的最小操作单位，有四类chunk，一般为简化处理，将其分为被分配的chunk和释放的chunk</a>
+</h3>
+<h3 class="topic">
+<a name="6gvkg9ig2vmfslpeofebpin6t2">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/6kh2lbc59iphpdu6u3kopkdkqv.png"></p>
+<h3 class="topic">
+<a name="32l909u1sacjlcjp296gpfq6rs">&nbsp;&nbsp;&nbsp;隐式链表技术（用于理解当前chunk结构如何形成）</a>
+</h3>
+<h3 class="topic">
+<a name="0mhrnjtn1obh4caut1fqd8n6ba">&nbsp;&nbsp;&nbsp;&nbsp;chunk作为堆管理器最小的操作单位，需要明确界定各个chunk的边界，所以将chunk是否使用的标记和chunk大小的数据（size）保存在chunk结构体中</a>
+</h3>
+<h3 class="topic">
+<a name="5l5abd2grd7fgrsir4fijmttqf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;此时内存中所有的chunk通过size字段连接到了一起，这种结构叫做隐式链表结构，使用过程中需要遍历整个内存的chunk和chunk的size字段，从而找到合适的chunk</a>
+</h3>
+<h3 class="topic">
+<a name="5206jtuejf6pbmvkui8gop7j37">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这种方式不适合合并free chunk的操作，所以会产生大量chunk碎片</a>
+</h3>
+<h3 class="topic">
+<a name="4ms7o63bpugr5jl2a653kst9k5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/4fk0icaqnob643ja6ekrh2ivis.png"></p>
+<h3 class="topic">
+<a name="0906k2ea95fsop6eh4hh9rol04">&nbsp;&nbsp;&nbsp;&nbsp;为了解决内存合并的问题，继续修改现有的chunk结构，在chunk的最后加上一个脚部，通过脚部可以得到前一个chunk的起始位置而和分配状态</a>
+</h3>
+<h3 class="topic">
+<a name="3b6qakg32n3n5h1t935md29k36">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;但是如果为每一个chunk加上这一个脚部，对于小chunk的分配和使用会造成内存浪费，所以继续改进，将上一个chunk是否分配的信息保存在本chunk的size字段的1或2bit位上，然后在本chunk的头部前四个字节保存加上一个chunk的脚部，通过该数据可以定位前一个chunk的起始地址，如果前一个chunk已经被分配，则本chunk中的脚部作为上一个chunk的payload或padding存在</a>
+</h3>
+<h3 class="topic">
+<a name="64nj4ugctpodaetduh7q2djpcc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/5mevf7r9blpk4v9i6i3b5tp0rp.png"></p>
+<h3 class="topic">
+<a name="5i9g7ecsol1hksg6k9trfp3cqj">&nbsp;&nbsp;&nbsp;&nbsp;后来因为多线程机制的引入，堆管理器需要满足多线程的需求，所以进一步堆malloc_chunk结构进行改进</a>
+</h3>
+<h3 class="topic">
+<a name="35linpk71vukp7qdeb97kroj16">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;不再保存本chunk是否被使用的标记，仅保存前一个chunk是否被使用的标记</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/3hnssb0crngdsn156pjk6esalo.png"></p>
+<h3 class="topic">
+<a name="30586rsfu7ptml73fbcnmtodu6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;从而将chunk中size字段的1、2、3bit位分别设置为P、M、N</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/6ljj7rhobecirok55r4lqnhgec.png"></p>
+<h3 class="topic">
+<a name="03k3g7sf03ksfbbsgnv7aqteh7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将前一个chunk的大小保存在本benchunk的起始位置，如果前一个chunk被使用中，则本chunk对应位置用于作为上一个chunk的payload或padding</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/33b1bq7450n8g8qfo0nv533sjt.png"></p>
+<h3 class="topic">
+<a name="515pc2ua0i45rf6da5mghbmeka">&nbsp;&nbsp;&nbsp;&nbsp;综上：每个chunk的prev_size和size构成了隐式链表，而后续的fd, bk等指针并不是作用于隐式链表的，而是用于后文会介绍的用于加快内存分配和释放效率的显示链表bin，并且这些指针跟prev_size一样只在free chunk中存在</a>
+</h3>
+<h3 class="topic">
+<a name="6mids1etgkdik4ddd0k9v9ad4b">&nbsp;&nbsp;&nbsp;Top Chunk</a>
+</h3>
+<h3 class="topic">
+<a name="7sagff4uolnrif80sh89c6q80n">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/4u66uber0nth5579slgl3qs7ph.png"></p>
+<h3 class="topic">
+<a name="6fl6q9b4kp13pb2p61ni0v1hho">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;是指位于当前arena最高内存地址的chunk，top chunk不属于任何bin，用于当所有的free不满足要求时提供内存空间</a>
+</h3>
+<h3 class="topic">
+<a name="2s6v3umsdb772qjfq2qagjkaqo">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/24cptqib4e7airh2e5gilhnmp7.png"></p>
+<h3 class="topic">
+<a name="38g10609s81fr0ult50p6e3g2n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/3uo0nmfrmeb3hqlr0ht9imtuu7.png"></p>
+<h3 class="topic">
+<a name="2b8357ildb9d5q1uu3hf57b3v1">&nbsp;&nbsp;&nbsp;Last Remainder Chunk</a>
+</h3>
+<h3 class="topic">
+<a name="0h2rltlnpr0virrffhf131rark">&nbsp;&nbsp;&nbsp;&nbsp;对该数据结构的理解主要依赖于bin机制的理解</a>
+</h3>
+<h3 class="topic">
+<a name="25amsnmorp8g04qhoom3h4okjl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该数据结构如何产生</a>
+</h3>
+<h3 class="topic">
+<a name="45srm2lr31ism3l8h781j2tqlf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;先回答第一个问题。还记得第二部分文章中对small bin的malloc机制的介绍么？当用户请求的是一个small chunk，且该请求无法被small bin、unsorted bin满足的时候，就通过binmaps遍历bin查找最合适的chunk，如果该chunk有剩余部分的话，就将该剩余部分变成一个新的chunk加入到unsorted bin中，另外，再将该新的chunk变成新的last remainder chunk。</a>
+</h3>
+<h3 class="topic">
+<a name="68d9qctobd45dli1nd5cga2vmh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该数据结构有什么作用</a>
+</h3>
+<h3 class="topic">
+<a name="6mjmsvupdj2cpg1grnl7hqa15s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;然后回答第二个问题。此类型的chunk用于提高连续malloc(small chunk)的效率，主要是提高内存分配的局部性。那么具体是怎么提高局部性的呢？举例说明。当用户请求一个small chunk，且该请求无法被small bin满足，那么就转而交由unsorted bin处理。同时，假设当前unsorted bin中只有一个chunk的话&mdash;&mdash;就是last remainder chunk，那么就将该chunk分成两部分：前者分配给用户，剩下的部分放到unsorted bin中，并成为新的last remainder chunk。这样就保证了连续malloc(small chunk)中，各个small chunk在内存分布中是相邻的，即提高了内存分配的局部性。</a>
+</h3>
+<h3 class="topic">
+<a name="7rteia802skm5dnbfand90f29h">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/7n5pcd8vig95cvuanln9fc4qga.png"></p>
+<h3 class="topic">
+<a name="1ooqhji5pv70vju8ictc6f7d6e">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/2afqs6bjqv2a4bst9cn1tkj90h.png"></p>
+<h3 class="topic">
+<a name="4evf5gc7srlqecbjbl3gikn804">&nbsp;&nbsp;&nbsp;mmaped chunk</a>
+</h3>
+<h3 class="topic">
+<a name="19ji68vlfmc98tfjc54diu9c4c">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/1v0mepge3ddim021v97cs0tvde.png"></p>
+<h2 class="topic">
+<a name="4q1iu37rkrpn7ur7uc2gs0hst4">深入理解堆的实现（本部分学习过程中对于堆代码的实现只有大概的认识，具体细节不是很理解）</a>
+</h2>
+<h3 class="topic">
+<a name="4s8v28momvan7ft57uocljn7l8">&nbsp;思考角度</a>
+</h3>
+<h3 class="topic">
+<a name="51pq4assc6u59r63q3sh23cv5m">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/6qgfe9ptinsnv78eladiaocn2k.png"></p>
+<h3 class="topic">
+<a name="4bavo8gur4crf0phks236eildl">&nbsp;堆初始化</a>
+</h3>
+<h3 class="topic">
+<a name="7u9luf28m7bbps7ojap6s57nll">&nbsp;&nbsp;堆初始化是在用户第一次申请内存时执行 malloc_consolidate 再执行 malloc_init_state 实现的。这里不做过多讲解。可以参见 malloc_state 相关函数</a>
+</h3>
+<h3 class="topic">
+<a name="5pe2f1li8gtdjqodl9485kg7ui">&nbsp;创建堆</a>
+</h3>
+<h3 class="topic">
+<a name="7i3odn2qe13hejkp9m5pgop3qo">&nbsp;&nbsp;双向链表相关操作</a>
+</h3>
+<h3 class="topic">
+<a name="22e5mrvfjja0v1jv2oru0ndpq3">&nbsp;&nbsp;&nbsp;Unlink</a>
+</h3>
+<h3 class="topic">
+<a name="4pkj6pebcv0jdjnm8eefglk5bd">&nbsp;&nbsp;&nbsp;&nbsp;将chunk从双向链表中断链的操作无论申请内存还是合并chunk均需要使用到，图中应该是说small bin中没有使用带安全验证的unlink机制</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/3io0v8to8jt2oj0nl4ldntuavc.png"></p>
+<h3 class="topic">
+<a name="27tg9u2dklandrk11ro273d72e">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Unlink的实现，注意unlink的过程中存在安全性检验，即safe unlink</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/2651os0mhm0hvq0a2chdf8damd.png"></p>
+<h3 class="topic">
+<a name="23bl93qcat9ovs46lecp000arq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;一个small bin的unlink的实例，注意因为large unlink中存在fd_nextsize ，bk_nextsize字段，所以Unlink过程中存在对该两个字段的检测</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/7guvff2ucf5cn6rkbe7mc6oulm.png"></p>
+<h3 class="topic">
+<a name="2cgdvgsbje2v1v1i9o7nait3dd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当chunk被unlink之后，该chunk中的fd bk字段值均不会变化，可以利用这一点，泄露队堆或libc的地址</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/2puq6r8c43sabmvrpbjumga72q.png"></p>
+<h3 class="topic">
+<a name="0hl786u8m51s1vd6itmimgn9i3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unlink过程中对fd，bk、 fd_nextsize ，bk_nextsize字段值进行检验，防止通过修改以上字段从而在unlink的过程中写任意地址</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/4q4htmt57l5ept006gh7obmsps.png"></p>
+<h3 class="topic">
+<a name="5o89nnmoptn9ahj7v2ecnfufgc">&nbsp;&nbsp;&nbsp;申请内存块</a>
+</h3>
+<h3 class="topic">
+<a name="42a0m1mntb4fc950a2qvs89o1q">&nbsp;&nbsp;&nbsp;&nbsp;函数调用流程 malloc-》 __libc_malloc -》_int_malloc</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/2o520tgbrppmbr8rjqrp0ur8md.png"></p>
+<h3 class="topic">
+<a name="0kevolas9qail0eklg2gg8do1k">&nbsp;&nbsp;&nbsp;&nbsp;__libc_malloc</a>
+</h3>
+<h3 class="topic">
+<a name="3uk06hm9aq51rb6tou979q362m">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;首先检测是否存在__malloc_hook函数，该函数主要用于用户自定义的堆分配，用户申请的字节一旦进入申请内存函数中就变成了无符号整数。</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/05uvvg8isalbo5erdcm03cjtah.png"></p>
+<h3 class="topic">
+<a name="5c7a4mdi89lmrhj77k1hakr3k7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/22if8hh4n452tvrrq03s7g1fd6.png"></p>
+<h3 class="topic">
+<a name="6lf49561ci8i3nk86qrcuh2202">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/388lohd4klndc4krlagfh5kq47.png"></p>
+<h3 class="topic">
+<a name="739qkkp8o5hn283qndt21pp8pt">&nbsp;&nbsp;&nbsp;&nbsp;_int_malloc</a>
+</h3>
+<h3 class="topic">
+<a name="2as2fote0sq74u36lntjkmk45a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;核心思路</a>
+</h3>
+<h3 class="topic">
+<a name="1icflo5l1oujnmo3tkgsitggkq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/3fgbt3c5vdiu73if872r9hf3an.png"></p>
+<h3 class="topic">
+<a name="0i6cfgfb0985eonclcrmhq6bt7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;流程（细节没有太看懂）</a>
+</h3>
+<h3 class="topic">
+<a name="4ir261bp5t0fl1uu4utkaq9i2d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将用户申请的内存转换为内部的chunk的大小</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/28v2bub8popnqs8cro4e1q2ihv.png"></p>
+<h3 class="topic">
+<a name="1061sh5ujavjq32o4hq9ic3fl2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;检测当前arena是否可用</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/4dciuds5ehu7sh5bn2nf7175qa.png"></p>
+<h3 class="topic">
+<a name="5tb6g4slr5b0jm7olnjoubb6fb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果申请的chunk大小落在fast bin的范围内</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/0e5gte7gp1d3fg3hjg328shdfd.png"></p>
+<h3 class="topic">
+<a name="5vbdpt37djgh77tul829e8r7p7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果申请的chunk大小落在small bin的范围内</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/7abso9sk25k6g39i27vhehc8dg.png"></p>
+<h3 class="topic">
+<a name="5huhc7n4k2vh1poebm51469obi">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当使用large bin时首先会判断程序中是否存在fast bin，然后调用malloc_consolidate函数将fast bin中可以合并的chunk全部合并，放到unsorted bin中，此举是为了减少堆中的碎片</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/5oj1d2fh9qaq7u05sb5v4egeta.png"></p>
+<h3 class="topic">
+<a name="6itl8ar825u8bqt7714r3bbnig">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/7uu236s3keq814trc83rldp18s.png"></p>
+<h3 class="topic">
+<a name="4k7mvs2lj7pj7fdcg71hgs73jj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/5rpvg10usgnc45qp2g67gmr1n9.png"></p>
+<h3 class="topic">
+<a name="0tva44bpc9at18q55o1fl0h0hv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/6ugbd0ug11aqavrmkas56j2gac.png"></p>
+<h3 class="topic">
+<a name="693fmtn8qnq0otsa7mdbos03fi">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/6cl6vl1t85hm7bb7timna26hed.png"></p>
+<h3 class="topic">
+<a name="561v1tl3734o72ifasut87jcpq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/6udste65mj75phrs00aafgbaf8.png"></p>
+<h3 class="topic">
+<a name="7m344vhf4p3md03qqqmqgredid">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;内容接下图</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/70ipasp134e976ahtdo3ecd1gf.png"></p>
+<h3 class="topic">
+<a name="5hh3md9tlv4k4cvjke5n1qq4ne">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;内容承上图</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/4ka72nk0n6rgecrv2ntgt09i5f.png"></p>
+<h3 class="topic">
+<a name="00mqqsq8463fd4p3l6q9cvsgdv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/1dtq01hebb9j42mclq11o96ldl.png"></p>
+<h3 class="topic">
+<a name="63r90jjhd68dkgmbsjop5932gv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果chunk的大小在large bin范围内 接下图</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/6ka3rq9d0q51i6g4nl9qr1vv47.png"></p>
+<h3 class="topic">
+<a name="0cm7q2r4cn5ijurf7svh17hfq2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;承上图</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/177pk24pf1bphg6o0q0h4td5v1.png"></p>
+<h3 class="topic">
+<a name="52sp5vbma9aldakg1laooe7am5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/5lekm2g7m0t4b8oku877m24mfo.png"></p>
+<h3 class="topic">
+<a name="3vbtv944brnf9ku1h4vv3294n4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/43jjrdl6d13rh2lini35h7od31.png"></p>
+<h3 class="topic">
+<a name="2i938i6kslmfebkcv3jvusd1d7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;接下图</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/4autba6se3aks1dh1jr3qk1jtu.png"></p>
+<h3 class="topic">
+<a name="7uv2673novlhj21bo9fu7avrub">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;承上图</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/1muo5vl9lekeihscptijpa4uu9.png"></p>
+<h3 class="topic">
+<a name="0pkutr15dvnpc8glerohsl84ff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;接下图</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/78hjkkg7e0l7d266a6i8lqa5bt.png"></p>
+<h3 class="topic">
+<a name="3et0dlmv6762okt0epeq100p41">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;承上图</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/3lbtgis7i1nvopntkc5tpifkq1.png"></p>
+<h3 class="topic">
+<a name="3s0nog0fqp8k9q3o3dj6nie3an">&nbsp;&nbsp;&nbsp;&nbsp;使用calloc函数申请内存</a>
+</h3>
+<h3 class="topic">
+<a name="56nfqmhl0funkgv2a9s8ig6mdl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/7k3edi9aol0f2097594b5snm1t.png"></p>
+<h3 class="topic">
+<a name="5mccgkvkenmmh9tmd7cmf3f9qh">&nbsp;&nbsp;&nbsp;释放内存块</a>
+</h3>
+<h3 class="topic">
+<a name="1u24go6cqtps5d3j2i1rjv0qut">&nbsp;&nbsp;&nbsp;&nbsp;__libc_free</a>
+</h3>
+<h3 class="topic">
+<a name="6n51vfv1uq0hsnj6t6tev2dbkf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;与malloc类似 执行free函数释放内存的过程中，函数调用顺序为free-》__libc_free-》_int_free ，__libc_free中会先检查是否存在__free_hook函数，然后调用_int_free函数</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/7lagbagr1007ir2gtqu39i38aa.png"></p>
+<h3 class="topic">
+<a name="5dakq69jq7jk2mbmniptme37ib">&nbsp;&nbsp;&nbsp;&nbsp;_int_free</a>
+</h3>
+<h3 class="topic">
+<a name="37ee34t4a0pnuib7ojrekg8g93">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/6ht3ubmph6ehgjpu8qq07o8i11.png"></p>
+<h3 class="topic">
+<a name="0mf38dm0405rj03ci9851vv25r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/2fjt09kqucbr26o05j7oaq651f.png"></p>
+<h3 class="topic">
+<a name="1p42e39eg2ledemec9qr0emcf3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;检查该chunk是否是fastbin中的chunk，接下图</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/18psejfov7rt3ncf2401nset1e.png"></p>
+<h3 class="topic">
+<a name="1rrl94fpqu35vu1pfr081trq0b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;承上图</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/6h25fned8nbkb70b12c89vnkgo.png"></p>
+<h3 class="topic">
+<a name="1rkv3ekk1tosdb1b3dl8qf6qp7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;合并非mmap的空闲chunk</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/5inqm4nboh7tao9g3u0hsmalt0.png"></p>
+<h3 class="topic">
+<a name="4bjvo1los9kc4nqsumf0uk1fb7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/596m1ubvqvnqj6vq2n48fvg54s.png"></p>
+<h3 class="topic">
+<a name="1igfoj0cpk9r4k0102pt6ro798">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/44v6rsfel4bor06sgofc2imrp7.png"></p>
+<h3 class="topic">
+<a name="3atmumttjv5t1k8l6gmpcklgl9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果下一块不是topchunk，则合并高地址的chunk，并将合并后的chunk放在unsorted bin中 </a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/4ajabufm3kbbgqado60cpcjiks.png"></p>
+<h3 class="topic">
+<a name="12d8g1l1f5v0rai6m8vebcot7r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/7je3jekdm0g4pcv7mn90msrmu3.png"></p>
+<h3 class="topic">
+<a name="3sb3tmqns267pu5dnlk40kj4qn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/3b4t70s4ua9iboupga6224q8k4.png"></p>
+<h3 class="topic">
+<a name="2gjnqdn9gpm0djepqgfbbhq7s0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/4j2k16f4th4ll0dhml714niq1c.png"></p>
+<h3 class="topic">
+<a name="584nqn78544ic49jovg4ekdjh4">&nbsp;删除堆</a>
+</h3>
+<h3 class="topic">
+<a name="40dai02fsa58menmmh1u7q8kv8">&nbsp;&nbsp;malloc_init_state</a>
+</h3>
+<h3 class="topic">
+<a name="2274jckdrj2cjnhjgr10cqsk1b">&nbsp;&nbsp;&nbsp;该函数只能在malloc_consolidate函数中被调用</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/1q4urdf0o4ta70cq5eh3p68mid.png"></p>
+<h3 class="topic">
+<a name="0hjlb5uumssdtpf9i0dfb9eeu6">&nbsp;&nbsp;malloc_consolidate</a>
+</h3>
+<h3 class="topic">
+<a name="1vt4dr8bt6riubbosif06btc80">&nbsp;&nbsp;&nbsp;该函数主要用于在fastbin未初始化的时候进行初始化，在fastbin已经初始化的时候合并fastbin中的chunk</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/5sgnom46jvsh03iskh6iigujd3.png"></p>
+<h3 class="topic">
+<a name="7tgi0udtsijiimllg13o0ls0qo">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/0ubboq1rghcv84jqq242bn1u8t.png"></p>
+<h3 class="topic">
+<a name="2re2j19sv43noil2apsnqejvju">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/648ls92ru4ant8d088d01vit2f.png"></p>
+<h3 class="topic">
+<a name="1hvne8u7sld6hgu12cca7lk60s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/3ijfsckf1fsiqgbgbt3436vao9.png"></p>
+<h3 class="topic">
+<a name="6bcd359n7jjhkcgn788u06g1d7">&nbsp;glibc</a>
+</h3>
+<h3 class="topic">
+<a name="4v0sbon66k7koqq27603vd9lq6">&nbsp;&nbsp;mallloc</a>
+</h3>
+<h3 class="topic">
+<a name="3ajmajsrdh5vrh8l8f0br0hj53">&nbsp;&nbsp;&nbsp;找arena上锁</a>
+</h3>
+<h3 class="topic">
+<a name="7kiaoabppgah5rj45sro7itbir">&nbsp;&nbsp;&nbsp;&nbsp;计算实际chunk大小</a>
+</h3>
+<h3 class="topic">
+<a name="631phh8urmobq4kibdagkfkstt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;判断chunk的尺寸</a>
+</h3>
+<h3 class="topic">
+<a name="6geineodar5oj3lgee6ef54ia6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果chunk_size&lt;=64B</a>
+</h3>
+<h3 class="topic">
+<a name="3u09dr54gcv17tarij1j75vbab">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;search fastbins</a>
+</h3>
+<h3 class="topic">
+<a name="67mm8gtbhlbgl97m6qtjcd8jm8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果chunk_size&gt;64B</a>
+</h3>
+<h3 class="topic">
+<a name="5ouf8158gm3c8b0ogacij6vvh6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;判断chunk_size与512B大关系</a>
+</h3>
+<h3 class="topic">
+<a name="0ukbgfo9pedu3fnofcjcmfbukm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果chunk_size&lt;512B</a>
+</h3>
+<h3 class="topic">
+<a name="41l20ucvipi8ous1ro5vo2qimf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;search smallbins（如果找到直接返回）</a>
+</h3>
+<h3 class="topic">
+<a name="2h1jg2d54ejbnvtuvjnb6qc1mg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;search unsortedbins（如果找到之直接返回）</a>
+</h3>
+<h3 class="topic">
+<a name="2v3i72go4kcl239dhi9fpjjgmg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果unsortedbins中没有找到，则将unsortedbins中所有chunk放回各自的normalbins（即smallbins中或largebins中）中</a>
+</h3>
+<h3 class="topic">
+<a name="4ebt13h42trklfrri9l0oq968e">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;search largebins（如果找到直接返回）</a>
+</h3>
+<h3 class="topic">
+<a name="6a7bsmqov9agk3re2r21ral583">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果没找到，需要分割top chunk作为chunk空间</a>
+</h3>
+<h3 class="topic">
+<a name="1ngar9dm6eauoai4p7lea97enf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果topchunk也不满足，判断&#13;
+size&gt;mmap阈值（128k）</a>
+</h3>
+<h3 class="topic">
+<a name="5dd4pb026m8ho5a6mro13vlrlq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;是</a>
+</h3>
+<h3 class="topic">
+<a name="34h208pk23lq68p29sadr3nrsh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;直接进行mmap</a>
+</h3>
+<h3 class="topic">
+<a name="7bsdrfjclr02mtvi6mv2s084po">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;否</a>
+</h3>
+<h3 class="topic">
+<a name="2v6q3ejv6rjdv81ffeuccsfvkv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果此时是在thread arena中，直接进行mmap</a>
+</h3>
+<h3 class="topic">
+<a name="6osc9qianoiket1vju6ce15ctu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果此时在main arena中，先通过sbrk()进行堆区膨胀，如果sbrk()执行失败，使用mmap()出新的heap</a>
+</h3>
+<h3 class="topic">
+<a name="16adsuf24l2oojag7aq021m263">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果chunk_size&gt;=512B</a>
+</h3>
+<h3 class="topic">
+<a name="5sjn9vo6sep44j214ab97v9grn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;合并fastbin将fastchunk链入unsortedbins（此时fastbin如果物理毗邻可能进行合并）</a>
+</h3>
+<h3 class="topic">
+<a name="7cp84kjgftkpeb1r0cpu13innc">&nbsp;&nbsp;free</a>
+</h3>
+<h3 class="topic">
+<a name="2k18fip5qtd9cq0f7p50m36r78">&nbsp;&nbsp;&nbsp;找arena上锁</a>
+</h3>
+<h3 class="topic">
+<a name="4ok54vv6jhqm6ccnmt44ibfn63">&nbsp;&nbsp;&nbsp;&nbsp;是否与topchunk相邻</a>
+</h3>
+<h3 class="topic">
+<a name="2hg6fah47cg78sv181sca4jmp2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;是</a>
+</h3>
+<h3 class="topic">
+<a name="24mmm1ma7epp0abe8afctjv9lb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;被free的chunk是否为mmaped chunk？</a>
+</h3>
+<h3 class="topic">
+<a name="6m4dhgeo5vkmv09phggpmuu6vv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;是</a>
+</h3>
+<h3 class="topic">
+<a name="5va177g9jhkcg4pflempfigvpm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;执行munmap()释放chunk</a>
+</h3>
+<h3 class="topic">
+<a name="7u2rhqogi1tesph2hb3ognmcsq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;否</a>
+</h3>
+<h3 class="topic">
+<a name="0chpj4msn9ns50scicrjlhgdl2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;check prev，即前一块是否在使用当中</a>
+</h3>
+<h3 class="topic">
+<a name="2jhp99blhs82i7g5kqbcdki80i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果前一块是topchunk 则直接将本chunk合并到top chunk中</a>
+</h3>
+<h3 class="topic">
+<a name="71h0cst3lngn7h95e3i5vbnj73">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果前一块不是topchunk，则正常的合并chunk</a>
+</h3>
+<h3 class="topic">
+<a name="2okohnl8f457laeg13sj73l2fl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;check&gt;FASTBIN_CONSOLIDATION_THRESHOLD?</a>
+</h3>
+<h3 class="topic">
+<a name="19c453k85u465tea5op9to6kgn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;chunk&gt;mmap收缩阈值</a>
+</h3>
+<h3 class="topic">
+<a name="011uri92jb5igblgka2emk4c16">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;End</a>
+</h3>
+<h3 class="topic">
+<a name="421lea8sg20moaihgvii5838th">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;否</a>
+</h3>
+<h3 class="topic">
+<a name="1mgq3vanpdbk75l5qf1uq00unt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;检查size&lt;=64B</a>
+</h3>
+<h3 class="topic">
+<a name="60vk4qhsmsk3v2q1nkb0akgvd6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;是</a>
+</h3>
+<h3 class="topic">
+<a name="2k49d8cjj7s77sd2333vf6t72q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将其放入fastbin中---put into fastbin</a>
+</h3>
+<h3 class="topic">
+<a name="38hn169ctp93ctmcq9sb6dv6uh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;否</a>
+</h3>
+<h3 class="topic">
+<a name="5bdgutar40bf0ks3um6um9qhn2">&nbsp;注意堆块合并过程中</a>
+</h3>
+<h3 class="topic">
+<a name="1m8qmh5qr8beent5pjk8gspk2l">&nbsp;&nbsp;后向合并即合并低地址处的chunk</a>
+</h3>
+<h3 class="topic">
+<a name="019hgpacn2h2btivscg2io1kov">&nbsp;&nbsp;前向合并即合并高地址处的chunk</a>
+</h3>
+<h3 class="topic">
+<a name="4nub34ssvv2nmrb2i6hr6huhih">&nbsp;后续需要去看</a>
+</h3>
+<h3 class="topic">
+<a name="0dns8hluj0i8em12j1e78ckmb8">&nbsp;&nbsp;Glibc内存管理Ptmalloc2源代码分析 .pdf</a>
+</h3>
+<h3 class="topic">
+<a name="7tcpfcv1hkq7472226p8ttmaio">&nbsp;如果在 malloc 的时候，申请的内存块在 small bin 范围内，那么执行的流程如下</a>
+</h3>
+<h3 class="topic">
+<a name="2lm9qls4u0m9foa5l8udbfvqrk">&nbsp;&nbsp;    /*&#13;
+       If a small request, check regular bin.  Since these "smallbins"&#13;
+       hold one size each, no searching within bins is necessary.&#13;
+       (For a large request, we need to wait until unsorted chunks are&#13;
+       processed to find best fit. But for small ones, fits are exact&#13;
+       anyway, so we can check now, which is faster.)&#13;
+     */&#13;
+&#13;
+    if (in_smallbin_range(nb)) {&#13;
+        // 获取 small bin 的索引&#13;
+        idx = smallbin_index(nb);&#13;
+        // 获取对应 small bin 中的 chunk 指针&#13;
+        bin = bin_at(av, idx);&#13;
+        // 先执行 victim= last(bin)，获取 small bin 的最后一个 chunk&#13;
+        // 如果 victim = bin ，那说明该 bin 为空。&#13;
+        // 如果不相等，那么会有两种情况&#13;
+        if ((victim = last(bin)) != bin) {&#13;
+            // 第一种情况，small bin 还没有初始化。&#13;
+            if (victim == 0) /* initialization check */&#13;
+                // 执行初始化，将 fast bins 中的 chunk 进行合并&#13;
+                malloc_consolidate(av);&#13;
+            // 第二种情况，small bin 中存在空闲的 chunk&#13;
+            else {&#13;
+                // 获取 small bin 中倒数第二个 chunk 。&#13;
+                bck = victim-&gt;bk;&#13;
+                // 检查 bck-&gt;fd 是不是 victim，防止伪造&#13;
+                if (__glibc_unlikely(bck-&gt;fd != victim)) {&#13;
+                    errstr = "malloc(): smallbin double linked list corrupted";&#13;
+                    goto errout;&#13;
+                }&#13;
+                // 设置 victim 对应的 inuse 位&#13;
+                set_inuse_bit_at_offset(victim, nb);&#13;
+                // 修改 small bin 链表，将 small bin 的最后一个 chunk 取出来&#13;
+                bin-&gt;bk = bck;&#13;
+                bck-&gt;fd = bin;&#13;
+                // 如果不是 main_arena，设置对应的标志&#13;
+                if (av != &amp;main_arena) set_non_main_arena(victim);&#13;
+                // 细致的检查&#13;
+                check_malloced_chunk(av, victim, nb);&#13;
+                // 将申请到的 chunk 转化为对应的 mem 状态&#13;
+                void *p = chunk2mem(victim);&#13;
+                // 如果设置了 perturb_type , 则将获取到的chunk初始化为 perturb_type ^ 0xff&#13;
+                alloc_perturb(p, bytes);&#13;
+                return p;&#13;
+            }&#13;
+        }&#13;
+    }</a>
+</h3>
+<h2 class="topic">
+<a name="163kjqucm2livde3tce9o41lk5">堆溢出</a>
+</h2>
+<h3 class="topic">
+<a name="6fcoc6emfs6hrv02qasj62es9b">&nbsp;unlink</a>
+</h3>
+<h3 class="topic">
+<a name="7cmi256em7ark2jcnpqr5jseuu">&nbsp;&nbsp;Unlink的原理和过程</a>
+</h3>
+<h3 class="topic">
+<a name="0ochvd95abn5phmhmd6q88r368">&nbsp;&nbsp;&nbsp;主要是针对被断链的chunk进行构造从而在该chunk执行断链的指针操作过程中，修改任意内存地址中的中的数据为指定数据</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/3mulu2h269olmgchnkgmlotfrp.png"></p>
+<h3 class="topic">
+<a name="3jvl0h7rupd5qliplkjooft3fm">&nbsp;&nbsp;没有防护时的Unlink</a>
+</h3>
+<h3 class="topic">
+<a name="1nbho9uavmumrir4j8f33eqn0u">&nbsp;&nbsp;&nbsp;最初Unlink操作没有以下检查机制</a>
+</h3>
+<h3 class="topic">
+<a name="6hv7s1ihiie13pi97kl5iqafbd">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/5ki4da6mtl737kboovnhg4o5ff.png"></p>
+<h3 class="topic">
+<a name="318779ud7kco6jr3hj02j9t9o5">&nbsp;&nbsp;&nbsp;通过设置被unlink的fd、bk指针从而向任意内存地址写任意数据</a>
+</h3>
+<h3 class="topic">
+<a name="35prgrqd7iod0ge6fo21234gac">&nbsp;&nbsp;&nbsp;&nbsp;根据size可知，该chunk为一个small chunk，当释放small chunk的时候，先检查该chunk相邻的chunk是否为free，如果是的话就进行合并操作：将这些chunks合并成新的chunk，然后将它们从small bin中移除，最后将新的chunk添加到unsorted bin中。</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/46qudmmtqcqsbffo3ra8mh30hk.png"></p>
+<h3 class="topic">
+<a name="1pcnalgdojg9ac0t5jk0uqn498">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;此时该small chunk的相邻chunk为空闲，当free该chunk，会导致两个chunk合并，合并的过程中需要将两个chunk均断链，（这一步被利用）然后组成新的chunk，链入unsorted bin中</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/2mhkrkcs9l8604tgd6ldtm84cc.png"></p>
+<h3 class="topic">
+<a name="0e3o1nfi42n3ht7ds33af47cuu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意此时fd bk的值需要特殊构造，一个是目标地址，一个目标值</a>
+</h3>
+<h3 class="topic">
+<a name="70ao6nkfjbm8l03ll75br6os9h">&nbsp;&nbsp;当前有防护的unlink</a>
+</h3>
+<h3 class="topic">
+<a name="7tf178t861dcj4ljh450n2m644">&nbsp;&nbsp;&nbsp;绕过对fd和bk的检查</a>
+</h3>
+<h3 class="topic">
+<a name="3c4sgaloh42sd5jjf86t0s0i5t">&nbsp;&nbsp;&nbsp;&nbsp;32位linux中</a>
+</h3>
+<h3 class="topic">
+<a name="2pbjofhaujk4ro71u0i3quq2d7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;此时如果想绕过fd、bk检查，需要让&#13;
+target_addr=p，&#13;
+expect value+8=p，&#13;
+没有检查机制时，被断链的chunk中&#13;
+fd=target_addr-12，&#13;
+bk=expect value，&#13;
+则此时&#13;
+fd=target_addr-12=p-12&#13;
+bk=expect value=p-8</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/05qtbj3fbksjqsl6fe7h8ivm80.png"></p>
+<h3 class="topic">
+<a name="26h9d74m2m7q9n0nr9b6jq0k9n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果&#13;
+fd=target_addr-12=p-12&#13;
+bk=expect value=p-8&#13;
+则在执行&#13;
+FD-&gt;bk=BK //对应*P= expect value = P - 8&#13;
+BK-&gt;fd=FD //对应*P = target addr -12 = P - 12&#13;
+之后，被断链chunk的内存首地址中的数据被修改为p-12</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/1hvqdsbo5vjavsq358njae62i3.png"></p>
+<h3 class="topic">
+<a name="0kj45qpf9p8si648t69v2o9io3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;根据之后的例子，修改chunk起始内存中的内容是有意义的</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/5a0dc5l0nf1d2ir4t1fova5nl4.png"></p>
+<h3 class="topic">
+<a name="493isf6k4gckcjs7c91bbds51e">&nbsp;&nbsp;&nbsp;&nbsp;64位linux中</a>
+</h3>
+<h3 class="topic">
+<a name="6v5q5sev2hqb08jiqlkl2ttt66">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;大致流程同上，但是64位中一个指针为8字节，所以&#13;
+如果要绕过检验，需要&#13;
+fd=p-24=p-0x18&#13;
+bk=p-16=p-0x10</a>
+</h3>
+<h3 class="topic">
+<a name="2tc0sv0rvn370ft4f3lfhd47qf">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/3ihbc7ljg8id8tcr4arhjducjs.png"></p>
+<h3 class="topic">
+<a name="5suakbdmkfsnmj147qhfql1dj2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;所以绕过检查的关键是，找到一个内存地址，该内存地址处保存着指向chunk的指针，以该内存地址为基础构造fd bk指针，从而绕过</a>
+</h3>
+<h3 class="topic">
+<a name="2atr24ul04h3jl00daj0kn7tln">&nbsp;Unsorted Bin Attack</a>
+</h3>
+<h3 class="topic">
+<a name="6oern20sbripc1a2110sqk0o92">&nbsp;&nbsp;概述</a>
+</h3>
+<h3 class="topic">
+<a name="31csdea56tjahtq67glfrolqr4">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/4vpklsa5hnp558hcvqp17kgqbh.png"></p>
+<h3 class="topic">
+<a name="1nfauuvi3eoi98roif99hvqrdq">&nbsp;&nbsp;攻击原理</a>
+</h3>
+<h3 class="topic">
+<a name="4b75k80n51q5cii8sieavnjrki">&nbsp;&nbsp;&nbsp; shellphish 的 how2heap 仓库中的 unsorted_bin_attack.c </a>
+</h3>
+<h3 class="topic">
+<a name="36ocpl9g9n5ecpsu85c9m7d34k">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/2s6dll4a5dstmi0s0vsfpsm78b.png"></p>
+<h3 class="topic">
+<a name="7lnoku315efe2cnnrbfamnmp6d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/792kv33de8t1sfmr8h1i489090.png"></p>
+<h3 class="topic">
+<a name="4a27jlrqakkordk2kgj85s0e8t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/41ctjq2fq70bi3kheg5ubgmfeg.png"></p>
+<h3 class="topic">
+<a name="5sacagbb63dkoa91tjvfn43o3q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/57dlj888kt0e3b14m2lnsshfh1.png"></p>
+<h3 class="topic">
+<a name="4p3j3pbrh2qn99di4o7f2rfg3i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/4gbs82aof0dco0a7k0l37dgjlo.png"></p>
+<h3 class="topic">
+<a name="11rhiujchimlaj7h4q2m00ojic">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;所以Unsorted bin attack可以将任意内存地址上的数据修改为一个较大值，一般运用于1、修改循环次数；2、修改heap中global_max_fast的值，从而将较大的chunk视为fasrbin处理，从而进行fastbin attack</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/59d1ons8mpep9j9o1kqbtcu3uf.png"></p>
+<h3 class="topic">
+<a name="68gm81cof3n7dovot9a8aepvak">&nbsp;&nbsp;&nbsp;通过攻击我们可以得到Unsorted bin的首地址，通过Unsorted bin的地址与mian_arena的固定偏移，可以得到mian_arena的地址，通过mian_arena与libc的固定偏移，可以得到libc的加载基址</a>
+</h3>
+<h3 class="topic">
+<a name="0gffdvmc52hchgsmnemqhp18ol">&nbsp;&nbsp;&nbsp;&nbsp;具体的利用方法在fastbin attack的最后一道例题</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/7o18qm0hru989dcg48p7tlu5lo.png"></p>
+<h3 class="topic">
+<a name="2nubpdqmpng25iieg8oos1i80l">&nbsp;Use After Free</a>
+</h3>
+<h3 class="topic">
+<a name="5b1np573p7s0h5tti0qhacb5sn">&nbsp;&nbsp;原理及例子</a>
+</h3>
+<h3 class="topic">
+<a name="4afe77suonh8d6mkd59u6377j8">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/1kqmqq5fu2g5k2m0o00ark6ls3.png"></p>
+<h3 class="topic">
+<a name="4g72985sjjni1e9ob55v9elpf7">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/2nnken8q06njmlqklj89hek4oo.png"></p>
+<h3 class="topic">
+<a name="7qs91bfvq7ie1bm8scr99sl0em">&nbsp;通过堆进行信息泄露</a>
+</h3>
+<h3 class="topic">
+<a name="686vhruhgkffuijgvm6qvkkb0t">&nbsp;&nbsp;信息泄露的目标</a>
+</h3>
+<h3 class="topic">
+<a name="172fo3rojse9klh0ltg84pe306">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/2ba6v8r1rocflfoemvel2u9jqc.png"></p>
+<h3 class="topic">
+<a name="0rti5u85r4lggrdlddvieq1q16">&nbsp;&nbsp;&nbsp;&nbsp;1、获得主模块基地址&mdash;&mdash;》程序开启PIE时主模块基地址会发生变化</a>
+</h3>
+<h3 class="topic">
+<a name="083ebotsk5kfm6k4tk8e0errj5">&nbsp;&nbsp;&nbsp;&nbsp;2、堆基地址&mdash;&mdash;》进程每次运行堆栈基地址均会发生变化，因为操作系统支持ASLR</a>
+</h3>
+<h3 class="topic">
+<a name="69ahcm373v5qqgsi3q2fma7bit">&nbsp;&nbsp;&nbsp;&nbsp;3、libc.so加载基地址&mdash;&mdash;》需要获得libc中的system函数获得shell或使用libc中的malloc_hook、one_gadgets、IO_FILE结构体用于漏洞利用</a>
+</h3>
+<h3 class="topic">
+<a name="2e7022t7dl5j1sariribntgmlm">&nbsp;&nbsp;信息泄露途径（使用不同的bin进行泄露）</a>
+</h3>
+<h3 class="topic">
+<a name="7ei0nipa6h8ns2pqseulladll2">&nbsp;&nbsp;&nbsp;Unsorted bin</a>
+</h3>
+<h3 class="topic">
+<a name="72t7j8fvu23c2v52vs4sc3peor">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/7mcgs1s5f1u46at8llp377pfuj.png"></p>
+<h3 class="topic">
+<a name="3tp16pet0kq6suoh27kk1qp9c9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;获得某个堆块的首地址-》结合堆块的size-》获得堆基首地址</a>
+</h3>
+<h3 class="topic">
+<a name="44v0pk1o999c0og2m7ra9uu5ur">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;取到main_arena的地址-》main_arena位于libc中，结合偏移-》计算libc的基地址</a>
+</h3>
+<h3 class="topic">
+<a name="2b9s28hfdjfmrjvndsgivqi943">&nbsp;&nbsp;&nbsp;Fast bin</a>
+</h3>
+<h3 class="topic">
+<a name="7gh1jcfb8t2ueo5b91j1sev5vq">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/3d6qcuavem4r68q86kife9svq0.png"></p>
+<h3 class="topic">
+<a name="64tecpsgdkldgbh2r1ng0dlur9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fastbin为单链表，所以只能获得堆块的首地址-》进一步获得堆基地址</a>
+</h3>
+<h3 class="topic">
+<a name="3ojnij3ffmc5pgrk8it3oeile2">&nbsp;&nbsp;&nbsp;small bin</a>
+</h3>
+<h3 class="topic">
+<a name="1vs7e5m1kcggchjs8hgvpsqsqb">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/7k0lfu8q3r9cggepjmnc9vmnj3.png"></p>
+<h3 class="topic">
+<a name="6i6rl2t2kq5fdul6qjffdgvu89">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;与Unsorted bin类似</a>
+</h3>
+<h3 class="topic">
+<a name="1jc4l181ut9mk609cld47l3lh5">&nbsp;Off-By-One</a>
+</h3>
+<h3 class="topic">
+<a name="5rmsqaipg7dlvddbva0gun5v54">&nbsp;&nbsp;定义</a>
+</h3>
+<h3 class="topic">
+<a name="6ua7pocg2igkld8kcbjluvmgnj">&nbsp;&nbsp;&nbsp;即只溢出了一个字节</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/2pmo91p178i7mlu8f43p2el99o.png"></p>
+<h3 class="topic">
+<a name="525ovb4568i5g82jt0j1og6sl3">&nbsp;劫持_free_hook函数</a>
+</h3>
+<h3 class="topic">
+<a name="5h28amajlaf33grhfl3vp7a1ep">&nbsp;&nbsp;_free_hook函数主要用于为用户提供一种自定义的释放堆内存的方式，如果_free_hook全局变量不为空，则在执行free函数时，会先执行_free_hook函数</a>
+</h3>
+<h3 class="topic">
+<a name="26g2kfhrle54krpofilsiifs6f">&nbsp;&nbsp;&nbsp;源码</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/3abc16u9r4kbtcudrc0dra4gr4.png"></p>
+<h3 class="topic">
+<a name="0o98eal61jto2dcqpp5q6k5494">&nbsp;Chunk Extend and Overlapping</a>
+</h3>
+<h3 class="topic">
+<a name="5jbholsihofd2qhcgf299j3hnj">&nbsp;&nbsp;漏洞原理：即ptmalloc对chunk进行操作时是根据chunk头的信息去寻址chunk或确定chunk大小</a>
+</h3>
+<h3 class="topic">
+<a name="2km42t3e38m0p2lqnbod1kng8d">&nbsp;&nbsp;&nbsp;获得本chunk大小</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/1tlale11ukkp2342kmb6bu3k60.png"></p>
+<h3 class="topic">
+<a name="5un7tvmaa0bl84b3caa4en5n8k">&nbsp;&nbsp;&nbsp;&nbsp;获得下一个chunk块的地址</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/34pdvlqv73q9m5i8afu5fi3mfm.png"></p>
+<h3 class="topic">
+<a name="5ha3v2iskaisaafpajbjgob8pb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;或获得前一个chunk的大小和地址</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/0esn5ttssrlaqcacaarej66i45.png"></p>
+<h3 class="topic">
+<a name="00nmkau09b14cf6e9oa3shms2a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;判断当前chunk的使用状态</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/4qait9c7bml7pb891ig1kta010.png"></p>
+<h3 class="topic">
+<a name="1i276v7qbokj8q0p8m54aa0mon">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;chunk extend就是通过控制size和pre_size域来实现跨越块操作从而导致overlapping的。</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/2npagv23jk6ivngs9kg4k1l498.png"></p>
+<h3 class="topic">
+<a name="01drbfmnsf77p7m7t2pmj5h7br">&nbsp;&nbsp;堆扩展攻击的用途</a>
+</h3>
+<h3 class="topic">
+<a name="0a6gs4qfnqcd4feirlqdkhgssu">&nbsp;&nbsp;&nbsp;主要是修改chunk中的数据内容，从而间接泄露信息或控制程序流程</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/6t2h0qgfhe6k92542sfljnn6kb.png"></p>
+<h3 class="topic">
+<a name="5et095l12e8iqmd0di81p7hqhu">&nbsp;Fastbin Attack</a>
+</h3>
+<h3 class="topic">
+<a name="744f18ee8bs42aihr4ldm3jro2">&nbsp;&nbsp;介绍</a>
+</h3>
+<h3 class="topic">
+<a name="6fa32n5sqv65dv25f9vg7j9ilk">&nbsp;&nbsp;&nbsp;即针对fastbin上的chunk进行的攻击（注意fastbin是通过单链表进行链接的）</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/7lrf54ak7rpgh3d2kkjm5sru2q.png"></p>
+<h3 class="topic">
+<a name="2cqis02hq52qfe9rsrqlrud95i">&nbsp;&nbsp;&nbsp;&nbsp;fastbin double free和house of spirit倾向于将伪造的chunk通过free的方式链入fast bin中，然后通过再次分配方式获得伪造chunk内存的读写权限，此种方式不需要修改chunk中的fd指针</a>
+</h3>
+<h3 class="topic">
+<a name="4bsg64rg69n5q5jr1gkmh6k878">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;free函数的执行涉及更多的检验机制判断，所以要求fakechunk要精心伪造本chunk和下一个chunk的size字段</a>
+</h3>
+<h3 class="topic">
+<a name="6s0v0nmd71b0sbf96u8dcu9uho">&nbsp;&nbsp;&nbsp;&nbsp;alloc to stack和arbitrary alloc一般直接通过修改chunk的fd指针将fake chunk直接链入fast bin中，然后通过malloc获得指定内存的读写权限，上面两种方法不同在于必须可以直接修改chunk的fd指针</a>
+</h3>
+<h3 class="topic">
+<a name="6faltav55vkf0fpr1i6fknvhl4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;因为不需要通过free函数将fakechunk置入fastbin中，仅需要使用malloc申请指定内存空间，而malloc的检验机制更为宽松(相较于free函数)，所以仅仅需要伪造本chunk的size字段即可</a>
+</h3>
+<h3 class="topic">
+<a name="1llced8ekvmtr636t2mq0rf26p">&nbsp;House Of Einherjar</a>
+</h3>
+<h3 class="topic">
+<a name="18iom7ii44qi5ltqo3k8epduk4">&nbsp;&nbsp;介绍</a>
+</h3>
+<h3 class="topic">
+<a name="2p2ibcrgb782civ2ertj8ubqj4">&nbsp;&nbsp;&nbsp;向后合并-》合并低内存地址的chunk&#13;
+向前合并-》合并高内存地址的chunk</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/2nic3lr7l1qoushatmmkolmdo8.png"></p>
+<h3 class="topic">
+<a name="5csfbti7llel7l9ooav99fnhd6">&nbsp;&nbsp;&nbsp;&nbsp;攻击原理</a>
+</h3>
+<h3 class="topic">
+<a name="0m8jnnq7nnkbm13trj4dd04f1j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;即因为pre_sizez字段是被相邻的两个chunk共同使用的，所以内存低地址的chunk而可以通过溢出控制相邻的内存高地址的chunk的pre_size 和PREV_INUSE字段从而控制向后合并时的p指针 ，因为最后p=p-pre_size，所以只要控制pre_size就几乎可以控制p指向任何地址</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/0j8l2bpvuhgpd9rja3kt05jict.png"></p>
+<h3 class="topic">
+<a name="5fejd0vo58b6a4atirm7ss45e1">&nbsp;House Of Force</a>
+</h3>
+<h3 class="topic">
+<a name="0pol14v4he6o9ggk2bgsgl484j">&nbsp;&nbsp;原理</a>
+</h3>
+<h3 class="topic">
+<a name="7d2locb9uqqdhpbg0g4oc399l3">&nbsp;&nbsp;&nbsp;堆管理器中，如果所有的空闲块均无法满足申请需求，则会将topchunk的一部分切割出来作为chunk进行分配，另一部分作为新的topchunk，新topchunk的起始地址起始取决于所申请的堆块的大小，如果原本topchunk的指针为p，此时需要从topchunk中分割出0x20大小的chunk，，则p~p+0x1f之间的chunk被作为堆空间分配，而新的topchunk的起始地址为p+0x20，此时可以看到，申请内存的大小会影响topchunk的起始地址，如果之后再次从topchunk中申请chunk，则chunk的起始地址即为p+0x20，如果可以控制0x20为任何数，则可以将topchunk的起始地址设置为任意地址，从而在任意地址处申请chunk，并内存读写</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/4g5vafp6t56g0ugnv3tgdcs4m1.png"></p>
+<h3 class="topic">
+<a name="2hm85jda3mmmp550andqes3lm2">&nbsp;&nbsp;&nbsp;&nbsp;通过分割topchunk申请堆内存的过程</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/1md0mjl4crk2tsnf3lfajfm6ji.png"></p>
+<h3 class="topic">
+<a name="1hs4j55fg2sdskk22ham7fbmmj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;topchunk被分割后根据申请内存的大小，设置新的topchunk</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/4h3r51darjr3l5f4mke04rsmog.png"></p>
+<h3 class="topic">
+<a name="5r053bh0r9v1pdqcfsghi0s737">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;新的topchunk大小也会被修改，如果下一步要通过分割新topchunk继续申请堆空间，需要保证新topchunk被分割后的大小不小于最小的chunk的大小</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/0pe8l221rkkcak8vs3s46v0mdt.png"></p>
+<h3 class="topic">
+<a name="0cuortk6u41eh1i65fns27j25g">&nbsp;House of Lore</a>
+</h3>
+<h3 class="topic">
+<a name="6fmcn7ugdftcftgq3sjg82v2oq">&nbsp;&nbsp;概述</a>
+</h3>
+<h3 class="topic">
+<a name="0bc1uup4md0or4ctr2g340pggh">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/51ivpglrttfs4dtqsvu4buprra.png"></p>
+<h3 class="topic">
+<a name="4n5h2mq6jcsfk9pivpj6rfmlrr">&nbsp;&nbsp;&nbsp;&nbsp;注意整体来看，程序malloc(smallbin chunk)时，会先找到smallbin中最后一个chunk，然后根据最后一个chunk的bk指针找到倒数第二个chunk，检验导致数第二个chunk的fd指针是否指向倒数第一个chunk，如果检验通过，会修改smallbin，将最后一个chunk取出，然后将倒数第二个chunk作为smallbin最后一个chunk，等待下次申请时，将其作为堆内存使用，所以只要让最后一个chunk的bk指针指向fakechunk，并且保证fakechunk的fd指针指向最后一个chunk，就可以在最后一个chunk被申请出去之后，让fakechunk成为smallbin最后一个chunk，从而在下次malloc(smallbinchunk)时将fakechunk作为堆内存分配</a>
+</h3>
+<h3 class="topic">
+<a name="07lqf05m63sm3p2isqu84e9mmi">&nbsp;House of Orange</a>
+</h3>
+<h3 class="topic">
+<a name="5n5u9f93vc3b6ccko416cqkdst">&nbsp;&nbsp;概述与介绍</a>
+</h3>
+<h3 class="topic">
+<a name="3l443kdqdcmbumuh984m20jt7c">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/44cagqvbbq61m768atfapu6mtm.png"></p>
+<h3 class="topic">
+<a name="1a8ta54rgq1rua5a96keri1l54">&nbsp;&nbsp;&nbsp;&nbsp;主要思路是因为当malloc所申请size的大小过大，导致四种bins中都没有可以满足要求的chunk，并且topchunk也不能满足要求，所以程序会通过扩展堆空间(brk或mmap)方式满足此次内存申请请求，如果通过扩展堆空间的方式申请内存，则会将原本的topchunk链入unsorted bin中，当下一次申请内存时，就会从Unsorted bin中找到原来的topchunk，然后通过切割一部分原topchunk进行堆分配</a>
+</h3>
+<h3 class="topic">
+<a name="45tr9iv75bnfejip205gin4cdi">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;由此可知关键是需要使得申请的字节数大于topchunk的大小，使得topchunk不能满足申请需求，这就要求通过漏洞修改topchunk的size字段，通过将该字段调整为小于申请的字节数，从而构建该攻击，当然为了绕过检测，这里将topchunk的size修改为何值存在一定约束</a>
+</h3>
+<h3 class="topic">
+<a name="069lc4loijvu4nerc5mmcoe9vs">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;此种攻击方式的利用涉及_IO_FILE相关知识</a>
+</h3>
+<h3 class="topic">
+<a name="10t9gtjjts37r6ujkbv7vfta01">&nbsp;House of Rabbit</a>
+</h3>
+<h3 class="topic">
+<a name="3ogi6lmopmvauigmmcsuqjm53v">&nbsp;&nbsp;介绍</a>
+</h3>
+<h3 class="topic">
+<a name="3upr2rj3k18ufe9svamng3ucn6">&nbsp;&nbsp;&nbsp;简单来说就是通过修改fastbin的fd指针或size字段，当程序执行malloc consolidate时(merge top或malloc big chunk时会调用该函数)，会对fastbin中的空闲堆块进行合并，这一过程中没有检测size，所以可以通过这一个过程将伪造的chunk链入bin中，从而方便下一次malloc时在指定位置申请chunk</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/3rjsu26qivsl99ihc1dc2aok9m.png"></p>
+<h3 class="topic">
+<a name="5l4biu7idighi52kgg43n44a8j">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/5bcj3sr176g3ujn99d11ud02c0.png"></p>
+<h3 class="topic">
+<a name="25ssg7t7tvqlage8pa75fs4pmv">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/2dolur1aldjnon8724ikh0iifp.png"></p>
+<h3 class="topic">
+<a name="0u35u1mq9tfbq2ctif1ll8a84j">&nbsp;&nbsp;&nbsp;原理很简单，就是通过修改fastbin chunk的size(如上面的POC 1所示)直接构造overlap chunk，或者修改fd(如面的POC 2所示)，让它指向一个fake chunk，触发malloc consolidate之后让这个fake chunk成为一个合法的chunk。</a>
+</h3>
+<h3 class="topic">
+<a name="3mhd9u2nm95st9r2g7qt87mg4s">&nbsp;House of roman</a>
+</h3>
+<h3 class="topic">
+<a name="7jhhcvofllv1032g12np584kii">&nbsp;&nbsp;介绍</a>
+</h3>
+<h3 class="topic">
+<a name="4ginr8i254cpe4ullpcmpb4h50">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/04kdnt3n75pjmo8uphok4r4tvq.png"></p>
+<h3 class="topic">
+<a name="7voe2darvet2rvh8e81eli7mfl">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/6ieu1bq447ol4mp2vq4lgl6bub.png"></p>
+<h2 class="topic">
+<a name="5okgptjlilrpq11oqgdjm9s4fl">Glibc内存管理Ptmalloc2源代码分析 </a>
+</h2>
+<h3 class="topic">
+<a name="3dk28j11oc8gha9dvbaukn93hd">&nbsp;基础知识</a>
+</h3>
+<h3 class="topic">
+<a name="1bggd00bgg57q2tisk9t3cqtcg">&nbsp;&nbsp;x86平台linux进程内存布局</a>
+</h3>
+<h3 class="topic">
+<a name="0ta9o0bccqu30jkb38on2el2ln">&nbsp;&nbsp;&nbsp;32位模式下进程内存经典布局</a>
+</h3>
+<h3 class="topic">
+<a name="75usimofibhpgrq99tq9qle5t9">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/6g8pnbmqscujqmk54s5evj5c7g.png"></p>
+<h3 class="topic">
+<a name="2anf2m37log1j49fdbd4fgcve9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;特点：mmap区域向内存高地址方向扩展 内核版本2.6.7之前使用&#13;
+问题：导致堆空间只有1gb虚拟地址空间可以使用&#13;
+问题根源：32位模式下地址空间限制造成的</a>
+</h3>
+<h3 class="topic">
+<a name="4kosm31bl0r8ln9uc4dho6da5e">&nbsp;&nbsp;&nbsp;32位模式下进程内存默认布局</a>
+</h3>
+<h3 class="topic">
+<a name="5jimnqriiouculpivk6tmuaogi">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/5beh9sd6bf56humc52fhq1epbr.png"></p>
+<h3 class="topic">
+<a name="7dch8nb8vjaqc34hoetu6b2pek">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;特点：栈是有界的，mmap区域向内存低地址空间扩展，堆、栈、mmap的起始地址在虚拟地址空间中都存在随机偏移&#13;
+内核版本2.6.7之后引入&#13;
+改变mmap区域内存扩展方向，有助于mmap和堆的内存分配管理</a>
+</h3>
+<h3 class="topic">
+<a name="0df04drrvatvb3f4pq0mkg7hcc">&nbsp;&nbsp;&nbsp;64位模式下进程内存布局</a>
+</h3>
+<h3 class="topic">
+<a name="5nuu4utr10jpbgj11aagn57vo5">&nbsp;&nbsp;&nbsp;&nbsp;采用经典内存布局（mmap区域向高内存地址方向扩展）</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/73gt6al53e65nh90hifipdj2pi.png"></p>
+<h3 class="topic">
+<a name="27n2pf5jn0h43rc7qors36ppm8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;理论上栈顶、mmap首地址如图中标注所示，但实际上栈和mmap区域首地址每次启动时存在随机性，用于缓解缓冲区溢出攻击的威胁，当然存在系统设置关闭这种随机性</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/0dn7i644r1idg12fpcilrgrnmc.png"></p>
+<h3 class="topic">
+<a name="664p21gl64o1u24ge1jh7v68m2">&nbsp;&nbsp;操作系统内存分配相关函数</a>
+</h3>
+<h3 class="topic">
+<a name="4t46u8a6r4tq5154nctihbpclh">&nbsp;&nbsp;&nbsp;有关heap的函数：操作系统提供brk()系统调用 c运行库提供sbrk()	&#13;
+有关mmap的函数：操作系统提供mmap() munmap()</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/6f4eflrs55e89so9h40p3e4qb0.png"></p>
+<h3 class="topic">
+<a name="2q9fjj7v8kkncsvfpt6kha7r83">&nbsp;&nbsp;&nbsp;&nbsp;heap相关函数</a>
+</h3>
+<h3 class="topic">
+<a name="7k1b2ndt7hhae481av0ilv14ac">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/1ueqpric2tsah57k6auim1u4r3.png"></p>
+<h3 class="topic">
+<a name="1pjk47u6jvmcjb2d99l92m2cp8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/7ol9lt1jii472nq9dd4cqkhi46.png"></p>
+<h3 class="topic">
+<a name="4nnc0ifvfml5r4pd2jg9dtth3e">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;内核数据结构中的mm_struct中的相关字段</a>
+</h3>
+<h3 class="topic">
+<a name="3bjmuqm559k3684od6h9sgt4ad">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;start_code、end_code</a>
+</h3>
+<h3 class="topic">
+<a name="3qu56nd7eel4oe7rhafktmdhu5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;标识代码段的起始和结尾</a>
+</h3>
+<h3 class="topic">
+<a name="1dbvk9hplgkcu6j7a0q1s78vk2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;start_data、end_data</a>
+</h3>
+<h3 class="topic">
+<a name="24pvjtvnuethl5foujk6r4fkq8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;标识数据端的开始和结尾</a>
+</h3>
+<h3 class="topic">
+<a name="09s8fd2i79kbp8rrqehjpt1fl1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;start_stack</a>
+</h3>
+<h3 class="topic">
+<a name="682gfre2pdgifht3lul6h2t636">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;标识栈的起始地址</a>
+</h3>
+<h3 class="topic">
+<a name="3u9b427pgvppthugk8hvpi6ghg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;start_brk、brk</a>
+</h3>
+<h3 class="topic">
+<a name="6fldtgkj1j1itc5a47ilbk08lk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;标识进程动态内存分配的起始地址 和终止地址</a>
+</h3>
+<h3 class="topic">
+<a name="1t2a44h391g8fq4u9mp91nnp6e">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;brk()函数通过增大brk值从而扩展当前堆的大小</a>
+</h3>
+<h3 class="topic">
+<a name="4ne8aoid3pvh5lve733cpkhtlj">&nbsp;&nbsp;&nbsp;&nbsp;mmap相关函数</a>
+</h3>
+<h3 class="topic">
+<a name="5ev8rvpbvqid9mrqpjsbomdk0d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/2eqol5sddcir42ir3dhgbf9lne.png"></p>
+<h3 class="topic">
+<a name="3cpsuofp67id4iq95hin8nq2p9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/4r7k0dsaf8mk3u8irhc7j20hf4.png"></p>
+<h3 class="topic">
+<a name="64v3jesoomd5361vjsfntf2ni3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;主要是mmap函数和munmap函数，mmap函数主要是将文件或对象映射如内存</a>
+</h3>
+<h3 class="topic">
+<a name="0m8d97dikv00qmldgg8k6je3a9">&nbsp;概述</a>
+</h3>
+<h3 class="topic">
+<a name="7lh75jcg8dp5fpp2bpdkqpj448">&nbsp;&nbsp;Ptmalloc内存管理概述</a>
+</h3>
+<h3 class="topic">
+<a name="0k3mjeaqgc5hbpvphmu34ub34i">&nbsp;&nbsp;&nbsp;概述</a>
+</h3>
+<h3 class="topic">
+<a name="5n4su7ck64ldv56b3ts8uasavb">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/44vmm3orgl2o7un9qdn7g5t071.png"></p>
+<h3 class="topic">
+<a name="6ip7acqnp9eu5fnta2ubo8unfe">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;早期存在多线程支持的问题，后经过改进ptmalloc支持多先线程，会从操作系统中申请一块较大的内存，然后管理该块内存，对于释放的内存并不直接返回给系统而是进行管理，用于应对之后的内存申请需求</a>
+</h3>
+<h3 class="topic">
+<a name="2o2c1mh01u2f74o3oi3faf6fc3">&nbsp;&nbsp;&nbsp;内存管理的设计假设</a>
+</h3>
+<h3 class="topic">
+<a name="178vkv1l09nspf7jieumi6blu7">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/6qfrpaaa6j8579uhda3fldnsct.png"></p>
+<h3 class="topic">
+<a name="0buqaa2ttffb2j6rjifalk6t3s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;就是一些ptmalloc内存管理的要点和前提条件</a>
+</h3>
+<h3 class="topic">
+<a name="08sd00p3rtmib985s0h6k8eda1">&nbsp;&nbsp;&nbsp;内存管理数据结构概述</a>
+</h3>
+<h3 class="topic">
+<a name="66kqbujss85bec65pp5fgkeg4d">&nbsp;&nbsp;&nbsp;&nbsp;Main_arena和non_mian_arena</a>
+</h3>
+<h3 class="topic">
+<a name="0lh38tq0vnf7l2q70qc1d0a77d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/0ldrjm4mj2rblk3ass64gcd5ie.png"></p>
+<h3 class="topic">
+<a name="789lss8tq8n9gk6as3mu77bdlj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/587v0u77hd0bgm00muc3688aef.png"></p>
+<h3 class="topic">
+<a name="4rdpn7a04r1ei0295qgec8u0h6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;一个进程只有一个主分配区，如果是存在多个线程，则会存在多个对应的非主分配区，对应概念可以在之前笔记中的malloc相关数据结构中查看</a>
+</h3>
+<h3 class="topic">
+<a name="55b11d26argt7677sq0h40i0qt">&nbsp;&nbsp;&nbsp;&nbsp;chunk的组织</a>
+</h3>
+<h3 class="topic">
+<a name="7t23veimcoc0ume0v4ro7jctd9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;主要内容查看之前关于chunk的学习，这里仅就几个重点进行记录</a>
+</h3>
+<h3 class="topic">
+<a name="13fbaf41m2c2eqdarpo9vv9ld6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ptmalloc 分配的第一个块总是将 P 设为 1，以防止程序引用到不存在的区域。</a>
+</h3>
+<h3 class="topic">
+<a name="0hldoi2o2r688sgihqep71n4s7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用中的chunk</a>
+</h3>
+<h3 class="topic">
+<a name="5gufrdu18pjsc1chgadhe6uapg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/4d6h7595vgou0kpdnfurq7ai85.png"></p>
+<h3 class="topic">
+<a name="6cfkn0j6vurejr68ddut8qegif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;空闲中的chunk</a>
+</h3>
+<h3 class="topic">
+<a name="2s55bpp8r6nntmugs50licbu0j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/3bsgiupbsha641at5333a5lcpj.png"></p>
+<h3 class="topic">
+<a name="0sbjvlfkbe5is811q9bt3acotq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当 chunk 空闲时，其M状态不存在，只有 AP 状态，原本是用户数据区的地方存储了四&#13;
+个指针，指针 fd 指向后一个空闲的 chunk，而 bk 指向前一个空闲的 chunk，ptmalloc 通过这 两个指针将大小相近的 chunk 连成一个双向链表。对于 large bin 中的空闲 chunk，还有两个 指针，fd_nextsize 和 bk_nextsize，这两个指针用于加快在 large bin 中查找最近匹配的空闲 chunk。不同的 chunk 链表又是通过 bins 或者 fastbins 来组织的（bins 和 fastbins 在 3.2.3.3 中介绍）。</a>
+</h3>
+<h3 class="topic">
+<a name="3ng54jk3sq3hdu8cst2vf7a9c5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;chunk的空间复用</a>
+</h3>
+<h3 class="topic">
+<a name="51j0ovn34d32p26lns882bfsp7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;即使用响铃的下一个chunk的pre_size字段作为本chunk的用户空间使用</a>
+</h3>
+<h3 class="topic">
+<a name="2cgtjphqa0ddmlv9r0jplbtbo1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;故而实际上，32位中一个使用中的 chunk 的大小的计算公式应该是： in_use_size = (用户请求大小+ 8 - 4 ) align to 8B，这里加 8 是因为需要存储 prev_size 和 size， 但又因为向下一个 chunk&ldquo;借&rdquo;了 4B，所以要减去 4。最后，因为空闲的 chunk 和使用中的 chunk 使用的是同一块空间。所以肯定要取其中最大者作为实际的分配空间。即最终的分配 空间 chunk_size = max(in_use_size, 16)。</a>
+</h3>
+<h3 class="topic">
+<a name="3g2qdp5q6q03vd1dug4978o1k1">&nbsp;&nbsp;&nbsp;&nbsp;空闲的chunk的容器</a>
+</h3>
+<h3 class="topic">
+<a name="1r3cfiakipj8qtcgj54bu91bp3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bins</a>
+</h3>
+<h3 class="topic">
+<a name="25nfgvi6qjn7m52c27tubbad6n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ptmalloc 一共 维护了 128 个 bin，并使用一个数组来存储这些 bin（如下图所示）</a>
+</h3>
+<h3 class="topic">
+<a name="0780k27gpogef31lrrfcbqqapv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/4d5loahvlmtmi4glcqvuat3h3c.png"></p>
+<h3 class="topic">
+<a name="3ai2vfn5gvfjg6c46uvj31255n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当空闲的 chunk 被链接到 bin 中的时候，ptmalloc 会把表示该 chunk 是否处于使用中的&#13;
+标志 P 设为 0（注意，这个标志实际上处在下一个 chunk 中），同时 ptmalloc 还会检查它前 后的 chunk 是否也是空闲的，如果是的话，ptmalloc 会首先把它们合并为一个大的 chunk， 然后将合并后的 chunk 放到 unstored bin 中。要注意的是，并不是所有的 chunk 被释放后就 立即被放到 bin 中。ptmalloc 为了提高分配的速度，会把一些小的的 chunk 先放到一个叫做 fast bins 的容器内。</a>
+</h3>
+<h3 class="topic">
+<a name="7dmr0g747stskafd5nn72b5f2m">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;chunk被释放后，pamalloc会尝试将其与相邻空闲chunk合并，如果合并发生会将合并后的chunk放进unsortedbin中</a>
+</h3>
+<h3 class="topic">
+<a name="4hp6s4p39hplagch1v30aels72">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fast bin</a>
+</h3>
+<h3 class="topic">
+<a name="5pupblisqfmg83a2vvk3i96gmd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;不大于max_fast （默认值为 64B）的 chunk 被释放后，首先会被放到 fast bins 中</a>
+</h3>
+<h3 class="topic">
+<a name="4s4kbtqj7ujfnb33to5ea8jknt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fast bins 中的 chunk 并不改变它的使用标志 P。这样也就无法将它们合并</a>
+</h3>
+<h3 class="topic">
+<a name="3tcj2fqrd13id11iq1c1rlog7u">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当需要给用 户分配的 chunk 小于或等于max_fast 时，ptmalloc 首先会在 fast bins 中查找相应的空闲块， 然后才会去查找bins中的空闲chunk</a>
+</h3>
+<h3 class="topic">
+<a name="10go925mkphuj9qhtajjcnh57v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在某个特定的时候，ptmalloc会遍历fast bins中的chunk，将相邻的空闲 chunk 进行合并，并将合并后的 chunk 加入 unsorted bin 中，然后再将 usorted bin 里的 chunk 加入 bins 中。</a>
+</h3>
+<h3 class="topic">
+<a name="3ok9np3qeauk9idslsn12faug2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Unsorted bin</a>
+</h3>
+<h3 class="topic">
+<a name="54drr7a925lui17dfcpbvp3hch">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unsorted bin 的队列使用 bins 数组的第一个</a>
+</h3>
+<h3 class="topic">
+<a name="0sk041espr909bkc07vnbqp3t9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果被用户释放的 chunk 大于max_fast，&#13;
+或者 fast bins 中的空闲 chunk 合并后，这些 chunk 首先会被放到 unsorted bin 队列中</a>
+</h3>
+<h3 class="topic">
+<a name="17pt7k2ul67luf497an0girhr9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当内存释放时，chunk进入fastbin或Unsortedbin，主要依据被释放的chunk的大小而定</a>
+</h3>
+<h3 class="topic">
+<a name="4ghj2lkg1qrp6ecnpdsjvan29d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当fastbin中的chunk合并时，合并后的chunk进入Unsorted bin中</a>
+</h3>
+<h3 class="topic">
+<a name="4ojot1s44ii9dikhjsfrg5pt9h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在进行malloc 操作的时候，如果在 fast bins 中没有找到合适的 chunk，则 ptmalloc 会先在 unsorted bin 中查找合适的空闲 chunk，然后才查找 bins。</a>
+</h3>
+<h3 class="topic">
+<a name="1ej7g2995m461h6i3n1p6nk0c3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当malloc申请时，查找合适chunk的顺序如下&#13;
+fastbin-&gt;Unsortedbin-&gt;bin-&gt;topchunk-&gt;使用系统调用扩大topchunk&#13;
+如果Unsortedbin中没有合适的chunk，则会将Unsortedbin中所有的chunk按大小加入对应的bins中</a>
+</h3>
+<h3 class="topic">
+<a name="2t8nc6ovr26na45m56nnhjlqmj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果 unsorted bin 不能满足分配要求。malloc 便会将 unsorted bin 中的 chunk 加入 bins 中。然后再从 bins 中继续进行查找和分配过程</a>
+</h3>
+<h3 class="topic">
+<a name="05hjtd96d8md185dsehadp5u76">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unsorted bin 可以看做是 bins 的一个缓冲区，增加它只是为了加快分配速度</a>
+</h3>
+<h3 class="topic">
+<a name="6dqsseegf1n56t9ac9b58k8bj6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;不按上述方法组织的3种chunk</a>
+</h3>
+<h3 class="topic">
+<a name="2n496kufo1bvscdq020u1gforv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;top chunk</a>
+</h3>
+<h3 class="topic">
+<a name="5m410o4e5v44hgnpp3k5ccdppn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;top chunk 对于主分配区和非主分配区是不一样的。</a>
+</h3>
+<h3 class="topic">
+<a name="0s8fbpelhb952kgeb247i3f4b3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对于非主分配区</a>
+</h3>
+<h3 class="topic">
+<a name="6nfdbl09stojg2ne62v2l5kmrl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对于非主分配区会预先从 mmap 区域分配一块较大的空闲内存模拟 sub-heap，通过管&#13;
+理 sub-heap 来响应用户的需求，因为内存是按地址从低向高进行分配的，在空闲内存的最 高处，必然存在着一块空闲 chunk，叫做 top chunk。</a>
+</h3>
+<h3 class="topic">
+<a name="3u07mh5h8rg8mc4br4e5h97qon">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;非主分配区通过mmap分配heap</a>
+</h3>
+<h3 class="topic">
+<a name="37g3giidt400bgkc1lprtn6jt8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当 bins 和 fast bins 都不能满足分配需 要的时候，ptmalloc会设法在top chunk中分出一块内存给用户，如果top chunk本身不够大， 分配程序会重新分配一个 sub-heap，并将 top chunk 迁移到新的 sub-heap 上，新的 sub-heap 与已有的 sub-heap 用单向链表连接起来，然后在新的 top chunk 上分配所需的内存以满足分 配的需要，实际上，top chunk 在分配时总是在 fast bins 和 bins 之后被考虑，所以，不论 top chunk 有多大，它都不会被放到 fast bins 或者是 bins 中</a>
+</h3>
+<h3 class="topic">
+<a name="2rdvaia5vial7sbkmtgfh6tclg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当fastbin bins均不能满足内存分配需求，则会分割topchunk用于满足内存申请需求，如果topchunk大小不够，程序会重新分配堆区，形成新的topchunk&#13;
+topchunk不会被放在fastbin或bins中</a>
+</h3>
+<h3 class="topic">
+<a name="4dffe9ct5e6mu8v2gv9m2fl977">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Top chunk 的大小是随着分配和回 收不停变换的，如果从 top chunk 分配内存会导致 top chunk 减小，如果回收的 chunk 恰好 与 top chunk 相邻，那么这两个 chunk 就会合并成新的 top chunk，从而使 top chunk 变大。 如果在 free 时回收的内存大于某个阈值，并且 top chunk 的大小也超过了收缩阈值，ptmalloc 会收缩 sub-heap，如果 top-chunk 包含了整个 sub-heap，ptmalloc 会调用 munmap 把整个 sub-heap 的内存返回给操作系统。</a>
+</h3>
+<h3 class="topic">
+<a name="677tgdru9808cj6jrquo9ejco0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对于主分配区</a>
+</h3>
+<h3 class="topic">
+<a name="75n8dd8jnvpgj3leo7ra1vhdn1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;由于主分配区是唯一能够映射进程 heap 区域的分配区，它可以通过 sbrk()来增大或是&#13;
+收缩进程 heap 的大小，ptmalloc 在开始时会预先分配一块较大的空闲内存（也就是所谓 的 heap），主分配区的 top chunk 在第一次调用 malloc 时会分配一块(chunk_size + 128KB) align 4KB 大小的空间作为初始的 heap，用户从 top chunk 分配内存时，可以直接取出一块内 存给用户</a>
+</h3>
+<h3 class="topic">
+<a name="4776el7fimm1mcbrjh9bfdsafh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;主分配区中可以通过直接从topchunk中取出内存从而满足内存分配需求</a>
+</h3>
+<h3 class="topic">
+<a name="01kvnta6cc9sv9oivlqeslckod">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在回收内存时，回收的内存恰好与 top chunk 相邻则合并成新的 top chunk，当该 次回收的空闲内存大小达到某个阈值，并且 top chunk 的大小也超过了收缩阈值，会执行内 存收缩，减小 top chunk 的大小，但至少要保留一个页大小的空闲内存，从而把内存归还给 操作系统。如果向主分配区的 top chunk 申请内存，而 top chunk 中没有空闲内存，ptmalloc 会调用 sbrk()将的进程 heap 的边界 brk 上移，然后修改 top chunk 的大小。</a>
+</h3>
+<h3 class="topic">
+<a name="4mf4fsjmrtr0h8cnlpq7ueucfm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;主分配区中如果topchunk不够用，会使用sbrk()将进程的heap边界brk上移，进一步增大topchunk的大小</a>
+</h3>
+<h3 class="topic">
+<a name="76lladj3ekpigdl2dufnlagnhl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mmaped chunk</a>
+</h3>
+<h3 class="topic">
+<a name="54glrciqvddhilahb39th974e3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当需要分配的 chunk 足够大，而且 fast bins 和 bins 都不能满足要求，甚至 top chunk 本&#13;
+身也不能满足分配需求时，ptmalloc 会使用mmap 来直接使用内存映射来将页映射到进程空 间。这样分配的 chunk 在被 free 时将直接解除映射，于是就将内存归还给了操作系统，再 次对这样的内存区的引用将导致 segmentation fault 错误。这样的 chunk 也不会包含在任何bin中</a>
+</h3>
+<h3 class="topic">
+<a name="4bvn86mhib2gg2s1qt75ggkta3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当fatbin Unsortedbin bins topchunk的大小均不足以满足申请需求时，可以直接使用mmap的方式获得被映射的页内存，这样的chunk被释放后会直接解除映射，直接将内存归还给操作系统</a>
+</h3>
+<h3 class="topic">
+<a name="4i5r3jrathe726gaheg753me6p">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;last remainder</a>
+</h3>
+<h3 class="topic">
+<a name="2t1qnd2haegck6cpn3e1kgk6l6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Last remainder 是另外一种特殊的 chunk，就像 top chunk 和mmaped chunk 一样，不会&#13;
+在任何 bins 中找到这种 chunk。当需要分配一个 small chunk，但在 small bins 中找不到合适 的 chunk，如果 last remainder chunk 的大小大于所需的 small chunk 大小，last remainder chunk 被分裂成两个chunk，其中一个chunk返回给用户，另一个chunk变成新的last remainder chuk</a>
+</h3>
+<h3 class="topic">
+<a name="7n8an06vsks6nc9aropkqooc9r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;一般位于Unsorted bin中</a>
+</h3>
+<h3 class="topic">
+<a name="4u27bnjr5d0bbca10mnpippudc">&nbsp;&nbsp;&nbsp;&nbsp;sbrk与mmap</a>
+</h3>
+<h3 class="topic">
+<a name="41n1g7i1ud8rappd5b05sm4v2g">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;从进程的内存布局可知，.bss 段之上的这块分配给用户程序的空间被称为 heap （堆）。&#13;
+start_brk 指向 heap 的开始，而 brk 指向 heap 的顶部。可以使用系统调用 brk()和 sbrk()来增 加标识 heap 顶部的 brk 值，从而线性的增加分配给用户的 heap 空间。在使 malloc 之前， brk的值等于start_brk，也就是说heap大小为0</a>
+</h3>
+<h3 class="topic">
+<a name="06njnnd744hjhprp5solgkqp8k">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;指针start_brk 和brk分别指向heap的开始和顶部，可以通过sbrk() brk()增加brk的值，从而增大heap&#13;
+第一次malloc之前start_brk=brk，heap大小为0</a>
+</h3>
+<h3 class="topic">
+<a name="3gukk90fhqc6b9houe32n4qs39">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;首次malloc时</a>
+</h3>
+<h3 class="topic">
+<a name="70b3ikkndu87asr50a1fqqr41s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;若请求的空间小于 mmap 分配阈值（mmap threshold，默认值为 128KB）时</a>
+</h3>
+<h3 class="topic">
+<a name="67vvcrd97nf9h7eg8hh394cibn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;主分配区会调用 sbrk()增加一块大小为 (128 KB + chunk_size) align 4KB 的空间作为 heap。</a>
+</h3>
+<h3 class="topic">
+<a name="4lsq8rr8j0rt1aqrqkj4nmv18d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;非主分配区会调用 mmap 映射一块大小为 HEAP_MAX_SIZE（32 位系统上默认为1MB，64 位系统上默认为64MB）的空间作为 sub-heap。</a>
+</h3>
+<h3 class="topic">
+<a name="5ma5cmdb1rkj76lkgjrv32pmih">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;以上的heap和sub-heap就是前面所说的 ptmalloc 所维护的分配空间，当用户请求内存分配时，首先会在这个区 域内找一块合适的 chunk 给用户。当用户释放了 heap 中的 chunk 时，ptmalloc 又会使用 fast bins 和 bins 来组织空闲 chunk。以备用户的下一次分配</a>
+</h3>
+<h3 class="topic">
+<a name="5u1l37i051gf6ul9m1cjhmh2rh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;若需要分配的 chunk 大小小于mmap 分配阈值，而 heap 空间又不够</a>
+</h3>
+<h3 class="topic">
+<a name="72vq39ebebdoh3e4tv21n2qaed">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;则此时主分配区会通过 sbrk()调用来增加 heap 大小</a>
+</h3>
+<h3 class="topic">
+<a name="5amfcf5ci5trsg4mj70gk2slcd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;非主分配区会调用mmap 映射一块新的 sub-heap</a>
+</h3>
+<h3 class="topic">
+<a name="74tqhq3pf10f8bdtrpj4q25085">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;以上措施均是增加 top chunk 的大小，每次 heap 增 加的值都会对齐到 4KB。</a>
+</h3>
+<h3 class="topic">
+<a name="6rbgjao5km7j0slv30sbcr2ul4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当用户的请求超过mmap 分配阈值，并且主分配区使用 sbrk()分配失败的时候，或是非主分配区在 top chunk 中不能分配到需要的内存时</a>
+</h3>
+<h3 class="topic">
+<a name="68sta5ht5arqi5ceeiri3fp8ek">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ptmalloc 会尝试使用mmap()直接映射一 块内存到进程内存空间。使用 mmap()直接映射的 chunk 在释放时直接解除映射，而不再属 于进程的内存空间。任何对该内存的访问都会产生段错误。而在 heap 中或是 sub-heap 中分 配的空间则可能会留在进程内存空间内，还可以再次引用（当然是很危险的）。</a>
+</h3>
+<h3 class="topic">
+<a name="49bsla2bmr08rei38vssbfnsvv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当 ptmalloc munmap chunk 时，如果回收的 chunk 空间大小大于mmap 分配阈值的当前值，并且小于 DEFAULT_MMAP_THRESHOLD_MAX（32 位系统默认为 512KB，64 位系统默认 为 32MB），ptmalloc 会把 mmap 分配阈值调整为当前回收的 chunk 的大小，并将 mmap 收 缩阈值（mmap trim threshold）设置为mmap 分配阈值的 2 倍。这就是 ptmalloc 的对mmap 分配阈值的动态调整机制，该机制是默认开启的，当然也可以用mallopt()关闭该机制</a>
+</h3>
+<h3 class="topic">
+<a name="4gd06d4na95n6pjtbfj5a45ohe">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mmap分配阈值的动态调整机制</a>
+</h3>
+<h3 class="topic">
+<a name="5fafist23g3919773eie9pkkrf">&nbsp;&nbsp;&nbsp;内存分配概述</a>
+</h3>
+<h3 class="topic">
+<a name="5no4sehdr22d1es8loh400mksj">&nbsp;&nbsp;&nbsp;&nbsp;对于分配算法</a>
+</h3>
+<h3 class="topic">
+<a name="4fd4sevgscg50mubrlnqu6if5a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1. 分配算法概述，以 32 系统为例，64 位系统类似。&#13;
+小于等于 64 字节：用 pool 算法分配。&#13;
+64 到 512 字节之间：在最佳匹配算法分配和 pool 算法分配中取一种合适的。 &#13;
+大于等于 512 字节：用最佳匹配算法分配。&#13;
+大于等于mmap 分配阈值（默认值 128KB）：根据设置的 mmap 的分配策略进行分配， 如果没有开启mmap 分配阈值的动态调整机制，大于等于 128KB 就直接调用mmap&#13;
+分配。否则，大于等于mmap 分配阈值时才直接调用mmap()分配。</a>
+</h3>
+<h3 class="topic">
+<a name="5a1gk25nt38j1se9124707q0mj">&nbsp;&nbsp;&nbsp;&nbsp;ptmalloc 的响应用户内存分配要求的具体步骤为:</a>
+</h3>
+<h3 class="topic">
+<a name="0bidrchf3rpvtuljh7896nsu7l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1) 获取分配区的锁，为了防止多个线程同时访问同一个分配区，在进行分配之前需要 取得分配区域的锁。线程先查看线程私有实例中是否已经存在一个分配区，如果存 在尝试对该分配区加锁，如果加锁成功，使用该分配区分配内存，否则，该线程搜 索分配区循环链表试图获得一个空闲（没有加锁）的分配区。如果所有的分配区都 已经加锁，那么 ptmalloc 会开辟一个新的分配区，把该分配区加入到全局分配区循 环链表和线程的私有实例中并加锁，然后使用该分配区进行分配操作。开辟出来的 新分配区一定为非主分配区，因为主分配区是从父进程那里继承来的。开辟非主分 配区时会调用mmap()创建一个 sub-heap，并设置好 top chunk。</a>
+</h3>
+<h3 class="topic">
+<a name="7qjgfc0b683kodubd890oeebhs">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2) 将用户的请求大小转换为实际需要分配的 chunk 空间大小</a>
+</h3>
+<h3 class="topic">
+<a name="7lvc8ms26l26ttd6eclh3sr4hm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3) 判断所需分配chunk的大小是否满足chunk_size &lt;= max_fast (max_fast 默认为 64B)， 如果是的话，则转下一步，否则跳到第 5 步。</a>
+</h3>
+<h3 class="topic">
+<a name="758onsql2o3f3nv5692l1ne3t0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4) 首先尝试在 fast bins 中取一个所需大小的 chunk 分配给用户。如果可以找到，则分配结束。否则转到下一步。</a>
+</h3>
+<h3 class="topic">
+<a name="4hvlvj7862epi9jmpth6n3taje">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;说明malloc时fastbin时第一个被用于尝试满足申请需求的</a>
+</h3>
+<h3 class="topic">
+<a name="2ntto7tc5hcr7sh46nqknvr31c">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;要求大小精确匹配</a>
+</h3>
+<h3 class="topic">
+<a name="0or6ek6nr9ntdqn2k3ao6okstc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5) 判断所需大小是否处在 small bins 中，即判断 chunk_size &lt; 512B 是否成立。如果 chunk 大小处在 small bins 中，则转下一步，否则转到第 7步。</a>
+</h3>
+<h3 class="topic">
+<a name="3kdri2vg3m6qf2q8oomfogmdcl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6) 根据所需分配的 chunk 的大小，找到具体所在的某个 small bin，从该 bin 的尾部摘 取一个恰好满足大小的 chunk。若成功，则分配结束，否则，转到下一步。</a>
+</h3>
+<h3 class="topic">
+<a name="1n8812j1f1cpv1m5tei3ni5qm4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;smallbin第二个用于尝试满足申请需求</a>
+</h3>
+<h3 class="topic">
+<a name="0i8920594fjjofeinfff3itf94">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;要求大小精确匹配</a>
+</h3>
+<h3 class="topic">
+<a name="4dn42okdtvfsh0n2ec2djjb0lj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;7) 到了这一步，说明需要分配的是一块大的内存，或者 small bins 中找不到合适的 chunk。于是，ptmalloc 首先会遍历 fast bins 中的 chunk，将相邻的 chunk 进行合并， 并链接到 unsorted bin 中，然后遍历 unsorted bin 中的 chunk，如果 unsorted bin 只 有一个 chunk，并且这个 chunk 在上次分配时被使用过，并且所需分配的 chunk 大 小属于 small bins，并且 chunk 的大小大于等于需要分配的大小，这种情况下就直 接将该 chunk 进行切割，分配结束，否则将根据 chunk 的空间大小将其放入 small bins 或是 large bins 中，遍历完成后，转入下一步。</a>
+</h3>
+<h3 class="topic">
+<a name="1s20k7v8tqsc1s134892piq24j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当smallbin无法满足申请需求-》遍历fastbin，合并其中相邻的chunk，将其链入Unsortedbin中-》尝试能否通过Unsorted bin中的chunk满足申请要求，如果能则分配结束若不能-》将Unsortedbin中chunk根据大小放入smallbin或largebin</a>
+</h3>
+<h3 class="topic">
+<a name="1gmu5ilv1ahb1ivronke4r5r8a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;此后Unsorted 和fastbin(?)被清空</a>
+</h3>
+<h3 class="topic">
+<a name="5gv4iipa5crosfhi5q23vm3nq7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;8) 到了这一步，说明需要分配的是一块大的内存，或者 small bins 和 unsorted bin 中 都找不到合适的 chunk，并且 fast bins 和 unsorted bin 中所有的 chunk 都清除干净 了。从 large bins 中按照&ldquo;smallest-first，best-fit&rdquo;原则，找一个合适的 chunk，从 中划分一块所需大小的 chunk，并将剩下的部分链接回到 bins 中。若操作成功，则 分配结束，否则转到下一步</a>
+</h3>
+<h3 class="topic">
+<a name="19knbbogcaoh6l67deovn6phhf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在largebin中寻找合适的chunk，如果找到从largechunk中划分一块用于满足申请要求，剩余部分链入Unsortedbin中，如果largebin中没有满足要求的chunk</a>
+</h3>
+<h3 class="topic">
+<a name="32njdq1g61p9s68oh006q1lkm6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用largebin中的chunk满足分配要求，不要求chunk的大小精确匹配，仅仅需要遵守smallest-first best-fit原则即可</a>
+</h3>
+<h3 class="topic">
+<a name="7jl7o2jltnn33d5ejlhcq4bbpe">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;9) 如果搜索 fast bins 和 bins 都没有找到合适的 chunk，那么就需要操作 top chunk 来 进行分配了。判断 top chunk 大小是否满足所需 chunk 的大小，如果是，则从 top chunk 中分出一块来。否则转到下一步。</a>
+</h3>
+<h3 class="topic">
+<a name="7nkk4of79tl029jd4tgcgh3ras">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;尝试分割topchunk满足申请要求</a>
+</h3>
+<h3 class="topic">
+<a name="008dps2s6c0tk1v885ppu6dfmv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;10) 到了这一步，说明 top chunk 也不能满足分配要求，所以，于是就有了两个选择: 如 果是主分配区，调用 sbrk()，增加 top chunk 大小；如果是非主分配区，调用mmap 来分配一个新的 sub-heap，增加 top chunk 大小；或者使用mmap()来直接分配。在 这里，需要依靠 chunk 的大小来决定到底使用哪种方法。判断所需分配的 chunk 大小是否大于等于 mmap 分配阈值，如果是的话，则转下一步，调用mmap 分配， 否则跳到第 12 步，增加 top chunk 的大小。</a>
+</h3>
+<h3 class="topic">
+<a name="2baokue5gs5b98bmmffhdeqeud">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;需要判断申请的chunk的大小是是否大于mmap分配阈值，如果是，需要使用mmap()直接分配内存，如果不是，需要通过sbrk()或mmap增加tophcunk的大小</a>
+</h3>
+<h3 class="topic">
+<a name="1kluriu9bnmofk12l92bl94glh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;11) 使用mmap 系统调用为程序的内存空间映射一块 chunk_size align 4kB 大小的空间。 然后将内存指针返回给用户。</a>
+</h3>
+<h3 class="topic">
+<a name="7ba4l4f9bhjsdufh0t6mrdkhl5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;12) 判断是否为第一次调用malloc，若是主分配区，则需要进行一次初始化工作，分配一块大小为(chunk_size + 128KB) align 4KB 大小的空间作为初始的 heap。若已经初 始化过了，主分配区则调用 sbrk()增加 heap 空间，非主分配区则在 top chunk 中切 割出一个 chunk，使之满足分配需求，并将内存指针返回给用户。</a>
+</h3>
+<h3 class="topic">
+<a name="3856t31sv5ff7kq3uulsko0df4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对于主分配需要判断是否时第一次调用malloc，如果是第一次，则需要进行一次初始化的操作</a>
+</h3>
+<h3 class="topic">
+<a name="4scgv6ppqrf19d5835o58ipvgm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;总结</a>
+</h3>
+<h3 class="topic">
+<a name="78u8srae9uqm9fdtmt77i47r9s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;总结一下：根据用户请求分配的内存的大小，ptmalloc 有可能会在两个地方为用户&#13;
+分配内存空间。在第一次分配内存时，一般情况下只存在一个主分配区，但也有可能从 父进程那里继承来了多个非主分配区，在这里主要讨论主分配区的情况，brk 值等于 start_brk，所以实际上 heap 大小为 0，top chunk 大小也是 0。这时，如果不增加 heap 大小，就不能满足任何分配要求。所以，若用户的请求的内存大小小于mmap 分配阈值， 则 ptmalloc 会初始 heap。然后在 heap 中分配空间给用户，以后的分配就基于这个 heap 进行。若第一次用户的请求就大于 mmap 分配阈值，则 ptmalloc 直接使用 mmap()分配 一块内存给用户，而 heap 也就没有被初始化，直到用户第一次请求小于 mmap 分配阈 值的内存分配。第一次以后的分配就比较复杂了，简单说来，ptmalloc首先会查找fast bins， 如果不能找到匹配的 chunk，则查找 small bins。若还是不行，合并 fast bins，把 chunk 加入 unsorted bin，在 unsorted bin 中查找，若还是不行，把 unsorted bin 中的 chunk 全 加入 large bins 中，并查找 large bins。在 fast bins 和 small bins 中的查找都需要精确匹配， 而在 large bins 中查找时，则遵循&ldquo;smallest-first，best-fit&rdquo;的原则，不需要精确匹配。 若以上方法都失败了，则 ptmalloc 会考虑使用 top chunk。若 top chunk 也不能满足分配 要求。而且所需 chunk 大小大于 mmap 分配阈值，则使用 mmap 进行分配。否则增加 heap，增大 top chunk。以满足分配要求。</a>
+</h3>
+<h3 class="topic">
+<a name="6iqffg684290r2t3k0gi413hlh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;主分配区中，如果第一次申请的内存的大小就小于mmap分配阈值，则程序会初始化heap，将heap中的空间分配给用户，之后的分配就基于该heap进行，如果第一次申请的内存的大小就大于mmap分配阈值，则直接回调用mmap()分配内存给用户，此时主分配区中的heap就没有被初始化，即heap大小为0,start_brk=brl，没有topchunk，直到第一次申请小于mmap分配阈值的chunk</a>
+</h3>
+<h3 class="topic">
+<a name="7m5ng9cet5rv4vnkoqrd7d1nha">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;子主题 1</a>
+</h3>
+<h3 class="topic">
+<a name="1qc5th7d15d5m3f9gmi1vll50o">&nbsp;&nbsp;&nbsp;内存回收概述</a>
+</h3>
+<h3 class="topic">
+<a name="25h1rgf8mo7air3stq1qdo10pi">&nbsp;&nbsp;&nbsp;&nbsp;free() 函数接受一个指向分配区域的指针作为参数，释放该指针所指向的 chunk。而具&#13;
+体的释放方法则看该 chunk 所处的位置和该 chunk 的大小。free()函数的工作步骤如下：</a>
+</h3>
+<h3 class="topic">
+<a name="1g3lkd3bu2jibfokbt82f4okmv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1) free()函数同样首先需要获取分配区的锁，来保证线程安全。</a>
+</h3>
+<h3 class="topic">
+<a name="3umlv9tuimepqo973mra2rbcvk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2) 判断传入的指针是否为 0，如果为 0，则什么都不做，直接 return。否则转下一步。</a>
+</h3>
+<h3 class="topic">
+<a name="2914bnafi0aq8u3s4pdg88ft0d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3) 判断所需释放的 chunk 是否为 mmaped chunk，如果是，则调用 munmap()释放 mmaped chunk，解除内存空间映射，该该空间不再有效。如果开启了mmap 分配 阈值的动态调整机制，并且当前回收的 chunk 大小大于mmap 分配阈值，将mmap 分配阈值设置为该 chunk 的大小，将 mmap 收缩阈值设定为 mmap 分配阈值的 2 倍，释放完成，否则跳到下一步。</a>
+</h3>
+<h3 class="topic">
+<a name="5un6fkecoopc76v73e6r482247">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果该chunk来源于mmap()的直接分配，则之直接使用munmap()取消映射，操作系统收回内存，如果释放的chunk的大小大于mmap分配阈值，且mmap动态阈值调整机制开启，则会对mmap的分配阈值和收缩阈值进行修改</a>
+</h3>
+<h3 class="topic">
+<a name="6bhai9ud5hgkq1tjo2t11vfuj3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4) 判断 chunk 的大小和所处的位置，若 chunk_size &lt;= max_fast，并且 chunk 并不位于 heap 的顶部，也就是说并不与 top chunk 相邻，则转到下一步，否则跳到第 6 步。 （因为与 top chunk 相邻的小 chunk 也和 top chunk 进行合并，所以这里不仅需要 判断大小，还需要判断相邻情况）</a>
+</h3>
+<h3 class="topic">
+<a name="0m0jb5m8em4ck8a9umpaimc5nh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;需要判断两个点&#13;
+1、被释放chunk的大小&#13;
+2、被释放的chunk是否与topchunk相邻</a>
+</h3>
+<h3 class="topic">
+<a name="1glkqjj1l41im3qr6os9ldqiir">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5) 将 chunk 放到 fast bins 中，chunk 放入到 fast bins 中时，并不修改该 chunk 使用状 态位 P。也不与相邻的 chunk 进行合并。只是放进去，如此而已。这一步做完之后 释放便结束了，程序从 free()函数中返回。</a>
+</h3>
+<h3 class="topic">
+<a name="0ab56ttv74mmt6o1kahhhi14sa">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果chunk是fastbinchunk并且不与topchunk相邻，则之直接将chunk释放到对应大小的fastbin中，并且fastbinchunk被释放后不修改使用状态位P</a>
+</h3>
+<h3 class="topic">
+<a name="576j5g5jo57gvpu48ht3ve150l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6) 判断前一个 chunk 是否处在使用中，如果前一个块也是空闲块，则合并。并转下一 步。&#13;
+7) 判断当前释放 chunk 的下一个块是否为 top chunk，如果是，则转第 9 步，否则转 下一步。&#13;
+8) 判断下一个 chunk 是否处在使用中，如果下一个 chunk 也是空闲的，则合并，并将合并后的 chunk 放到 unsorted bin 中。注意，这里在合并的过程中，要更新 chunk 的大小，以反映合并后的 chunk 的大小。并转到第 10 步。</a>
+</h3>
+<h3 class="topic">
+<a name="0jhl1irocrlg6tq57f1b585e56">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对于chunk大小不在fastbin范围内的chunk，先判断前一个chunk是否为空闲，若是则合并，然后判断后一个chunk是否为topchunk若是则合并，若不是则判断后一个chunk是否空闲，如果是则合并，注意如果chunk合并的情况下(除了与topchunk合并)，合并后的chunk均会置入Unsortedbin</a>
+</h3>
+<h3 class="topic">
+<a name="4jg1qafjcdvkkfhe1gr0sjbeej">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;9) 如果执行到这一步，说明释放了一个与 top chunk 相邻的 chunk。则无论它有多大， 都将它与 top chunk 合并，并更新 top chunk 的大小等信息。转下一步。</a>
+</h3>
+<h3 class="topic">
+<a name="0t1trncjidl53ic45ieaj6atjh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;10) 判断合并后的 chunk 的大小是否大于 FASTBIN_CONSOLIDATION_THRESHOLD（默认 64KB），如果是的话，则会触发进行 fast bins 的合并操作，fast bins 中的 chunk 将被 遍历，并与相邻的空闲 chunk 进行合并，合并后的 chunk 会被放到 unsorted bin 中。 fast bins 将变为空，操作完成之后转下一步。</a>
+</h3>
+<h3 class="topic">
+<a name="0a7o6cnom2hbqcugl78ecsrmqi">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果而合并后的chunk（包括两个普通空闲chunk合并以及与topchunk合并）大小大于某值，则会触发fastbin中的chunk进行合并，合并后的chunk置入Unsortedbin，fastbin将置空</a>
+</h3>
+<h3 class="topic">
+<a name="098fmebamf34bahda2c95a2h93">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;11) 判断 top chunk 的大小是否大于mmap 收缩阈值（默认为 128KB），如果是的话，对 于主分配区，则会试图归还 top chunk 中的一部分给操作系统。但是最先分配的 128KB 空间是不会归还的，ptmalloc 会一直管理这部分内存，用于响应用户的分配 请求；如果为非主分配区，会进行 sub-heap 收缩，将 top chunk 的一部分返回给操 作系统，如果 top chunk 为整个 sub-heap，会把整个 sub-heap 还回给操作系统。做 完这一步之后，释放结束，从 free() 函数退出。可以看出，收缩堆的条件是当前 free 的 chunk 大小加上前后能合并 chunk 的大小大于 64k，并且要 top chunk 的大 小要达到mmap 收缩阈值，才有可能收缩堆。</a>
+</h3>
+<h3 class="topic">
+<a name="2ntbk6v549qemfvv2eulhq46jf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;判断此时topchunk大小，如果大于mmap收缩阈值，则会将topchunk中部分内存归还系统，因为如果topcuhnk过大，说明此时程序需要使用的堆空间大小较小，系统会回收部分用不到的内存</a>
+</h3>
+<h3 class="topic">
+<a name="1clg9tbeslkss5gc94lo51nblo">&nbsp;&nbsp;&nbsp;配置选项概述</a>
+</h3>
+<h3 class="topic">
+<a name="3o4klh03a5uo73iue5a8f0a65o">&nbsp;&nbsp;&nbsp;&nbsp;Ptmalloc 主要提供以下几个配置选项用于调优，这些选项可以通过mallopt()进行设置</a>
+</h3>
+<h3 class="topic">
+<a name="6esud3eban862k5n3c3ivu3k9a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;M_MXFAST：用于标识fastbin chunk的最大小</a>
+</h3>
+<h3 class="topic">
+<a name="50qi9v56s7dfd81csoeka0bipn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/5detp244i9g53g2iofu13ll3tu.png"></p>
+<h3 class="topic">
+<a name="5m2g69ccajot5qn242gnae6hs8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;M_TRIM_THRESHOLD：用于标识mmap收缩阈值</a>
+</h3>
+<h3 class="topic">
+<a name="3nbj990nf6e6q4jb66qk1no330">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/6lvh48lpf9674ucv1ct6p9isjp.png"></p>
+<h3 class="topic">
+<a name="2jg13nkpi8ue4lstu0clc1rf98">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/6a60qqus1evb4j3khlb136ljfj.png"></p>
+<h3 class="topic">
+<a name="2pu49u8q8f8fbpkqituon50dgu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;M_MMAP_THRESHOLD：用于标识mmap分配阈值</a>
+</h3>
+<h3 class="topic">
+<a name="4p8c5a1ccksc6e1rjlmrkohlbp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/0lthlte1mrd1denmd3tlqcso7g.png"></p>
+<h3 class="topic">
+<a name="7pt51g4al2251hi55lsktsr7t5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当申请内存的大小大于mmap分配阈值时，malloc相当于mmap()，free相当于munmap()，通过mmap()申请的内存是释放后直接返回给系统们不会被ptamlloc进行缓存管理，但是mmap()申请的空间是恶适合于长时间运行的程序的较大的内存块需求</a>
+</h3>
+<h3 class="topic">
+<a name="08mpcgrgiih7a54j9t32d7dn7t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;M_MMAP_MAX：用于标识程序中通过mmap分配的内存块的最大限制</a>
+</h3>
+<h3 class="topic">
+<a name="6jvjb8n0fum9nlip2ld2g7f9q4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/17919b11duc4qmaroppoath9hd.png"></p>
+<h2 class="topic">
+<a name="0clo134qbi13ctb76ruaem0u8q">总结</a>
+</h2>
+<h3 class="topic">
+<a name="5ge7nlkj192iromc888gbuq9vf">&nbsp;获取指定内存地址的方法</a>
+</h3>
+<h3 class="topic">
+<a name="2rdj8pu7lkt6gtao0ai55h00t8">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/2013k1f2beck6ug90ep39p4vkr.png"></p>
+<h3 class="topic">
+<a name="7fghpb4hp1aj68rd1rdagochav">&nbsp;&nbsp;&nbsp;直接寻找地址</a>
+</h3>
+<h3 class="topic">
+<a name="0akrt5jh0s4lbf0clc0d1ppkd0">&nbsp;&nbsp;&nbsp;&nbsp;程序中已经给出了相关变量或者函数的地址了。这时候，我们就可以直接进行利用了。&#13;
+这种情形往往适用于程序没有开启 PIE 的情况。</a>
+</h3>
+<h3 class="topic">
+<a name="1v347rc0mqq17re22pmhjghj7j">&nbsp;&nbsp;&nbsp;泄露地址</a>
+</h3>
+<h3 class="topic">
+<a name="3hotkidf251re5cejvmmhbqm2a">&nbsp;&nbsp;&nbsp;&nbsp;一般会泄露一些敏感的指针</a>
+</h3>
+<h3 class="topic">
+<a name="1ogm6sjjgpttdq2jthuhmfsd76">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/4bqqkr3kv8jkbq5837jpnon7l8.png"></p>
+<h3 class="topic">
+<a name="5sn553o3u0foqqo6s8jo0f525q">&nbsp;&nbsp;&nbsp;推测地址</a>
+</h3>
+<h3 class="topic">
+<a name="53ll2mv3s3jk7avm2rsfmrtuiq">&nbsp;&nbsp;&nbsp;&nbsp;一般基于符号之间存在固定偏移这一假设进行推测</a>
+</h3>
+<h3 class="topic">
+<a name="0ucuq5d3j8cd8cs3fq9ts9jh7u">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;推测栈中的地址</a>
+</h3>
+<h3 class="topic">
+<a name="5ot7g6e6pi7sbiseclbehoko6v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关于栈上的地址，其实我们大多时候并不需要具体的栈地址，但是我们可以根据栈的寻址方式，推测出栈上某个变量相对于 EBP 的位置。</a>
+</h3>
+<h3 class="topic">
+<a name="57us6pntojgb51354g0inf9ppe">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;推测glibc的地址（主要是函数的地址）</a>
+</h3>
+<h3 class="topic">
+<a name="7s1h12rgqvdmki48ohvrfftslo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;有libc</a>
+</h3>
+<h3 class="topic">
+<a name="0lbbl2kmj0het15u0ucpvni70s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/2le671euo763dm6u508ol7s4cq.png"></p>
+<h3 class="topic">
+<a name="0njgi4baqhkido5fe23l5l1h6s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;无libc</a>
+</h3>
+<h3 class="topic">
+<a name="6v18hf4mc494fhmonvevek3jn2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/6iahgrugla5tuqik11l1rq113j.png"></p>
+<h3 class="topic">
+<a name="37vame25vidjfkmptf2m6es01h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;推测堆中的地址</a>
+</h3>
+<h3 class="topic">
+<a name="2vrthfan6j762ds11tn7nep72b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关于堆的一些地址的推测，这就需要我们比较详细地知道堆里分配了多少内存，目前泄漏出的内存地址是哪一块，进而获取堆的基地址，以及堆中相关的内存地址。</a>
+</h3>
+<h3 class="topic">
+<a name="7itu01h4gtm2akfksdpma3gprj">&nbsp;&nbsp;&nbsp;猜测地址</a>
+</h3>
+<h3 class="topic">
+<a name="2acmtef62l96t10orrlme807b1">&nbsp;&nbsp;&nbsp;&nbsp;在一些比较奇怪的情况下，我们可能可以使用如下的方式&#13;
+使用一些暴力的方法来获取地址，比如 32 位时，地址随机化的空间比较小。&#13;
+当程序被特殊部署时，其不同的库被加载的位置可能会比较特殊。我们可以在本地尝试，然后猜测远程的情况。</a>
+</h3>
+<h3 class="topic">
+<a name="1kbkse2j853cdjcr309q99h1fd">&nbsp;获得shell的方法</a>
+</h3>
+<h3 class="topic">
+<a name="0kn6fikun1ikdk1i5mrrpeljjb">&nbsp;&nbsp;我们获取到的 shell 一般有两种形式&#13;
+直接可交互的 shell&#13;
+将 shell 绑定到指定 ip 的指定端口&#13;
+下面总结几种常见的获取 shell 的方式。</a>
+</h3>
+<h3 class="topic">
+<a name="0qf0gq7rv9ertp6uei6nlguemu">&nbsp;&nbsp;&nbsp;shellcode</a>
+</h3>
+<h3 class="topic">
+<a name="5j03td9qv7sta08l3luliopn5b">&nbsp;&nbsp;&nbsp;&nbsp;在利用 shellcode 获取 shell 时，基本要求就是我们能够将 shellcode 布置在可写可执行的内存区域中。因此，在没有可写可执行的内存区域的时候，我们需要利用mprotect 等函数设置相关内存的权限。&#13;
+此外，有时候可能 shellcode 中的字符必须满足某些要求，比如可打印字符，字母，数字等等。</a>
+</h3>
+<h3 class="topic">
+<a name="211kbsfg7enr0au6ksal2vqcg7">&nbsp;&nbsp;&nbsp;system</a>
+</h3>
+<h3 class="topic">
+<a name="0d63htddu2kajgc9svevnj5507">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/3s4aossc2aqh92pred1g603f17.png"></p>
+<h3 class="topic">
+<a name="40acofs3bdnfs87sadsu6sdj01">&nbsp;&nbsp;&nbsp;execve</a>
+</h3>
+<h3 class="topic">
+<a name="2hd7ro4k86b2t860rravnf34kp">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/2tlb47c0ucjkisrkcfnmvgbhlg.png"></p>
+<h3 class="topic">
+<a name="3tg7vtkm2hpj7nuaprghfu3dl2">&nbsp;&nbsp;&nbsp;syscall</a>
+</h3>
+<h3 class="topic">
+<a name="38i7as644789ccj0hndo5554q5">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/3c1cghs82ubuhc111v6gb30otr.png"></p>
+<h3 class="topic">
+<a name="2q7kagd43gussn5mgjddsooov4">&nbsp;劫持程序执行流程</a>
+</h3>
+<h3 class="topic">
+<a name="61hakt19mk06m3kpvjcu7b5a7r">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/2v8nde4h3uji959618poc04e46.png"></p>
+<h2 class="topic">
+<a name="0mts1qtes0r64q3r2uega8i076">canary绕过技术</a>
+</h2>
+<h3 class="topic">
+<a name="3866anfjokh2f1mpe8f3l5ilus">&nbsp;泄露栈中的 Canary</a>
+</h3>
+<h3 class="topic">
+<a name="4ac72lsp6u3nklihu9dsf894d1">&nbsp;&nbsp;原理</a>
+</h3>
+<h3 class="topic">
+<a name="491u9d8p8paism98h5m8gk07du">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/418e5ppeujll30cn0ttomtdepi.png"></p>
+<h3 class="topic">
+<a name="2gkvjsjrj6ekcq0kuiu63ule2s">&nbsp;&nbsp;示例</a>
+</h3>
+<h3 class="topic">
+<a name="4c2t2u04j8skrjknjdhc1sl4qq">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/5mpsmcpo1h2q7dorseoj6nkkgh.png"></p>
+<h3 class="topic">
+<a name="5fkkoja8jd6tqhn1k5j9ipbrin">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/3a13p4ql1r5vqvc9snerliji36.png"></p>
+<h3 class="topic">
+<a name="72mmnd92775r0u53j83ae3a2v5">&nbsp;one-by-one 爆破 Canary</a>
+</h3>
+<h3 class="topic">
+<a name="2ebj1bp2i1cu725jesq6e6pe01">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="pwn%E6%80%BB%E7%BB%93_files/4kj9arago70kl5p1bderqlnih9.png"></p>
+<h3 class="topic">
+<a name="7q2dneeog080pmi1svtnfifv4s">&nbsp;劫持__stack_chk_fail函数</a>
+</h3>
+<h3 class="topic">
+<a name="13hcn3oe5gpk6mppmo4l0mkhqv">&nbsp;&nbsp;已知 Canary 失败的处理逻辑会进入到 __stack_chk_failed 函数，__stack_chk_failed 函数是一个普通的延迟绑定函数，可以通过修改 GOT 表劫持这个函数。&#13;
+参见 ZCTF2017 Login，利用方式是通过 fsb 漏洞篡改 __stack_chk_fail 的 GOT 表，再进行 ROP 利用</a>
+</h3>
+<h3 class="topic">
+<a name="1o704tvou1m8d2an79atsfb0ki">&nbsp;覆盖 TLS 中储存的 Canary 值</a>
+</h3>
+<h3 class="topic">
+<a name="34po28tbkifi3oe38b85b7vp79">&nbsp;&nbsp;已知 Canary 储存在 TLS 中，在函数返回前会使用这个值进行对比。当溢出尺寸较大时，可以同时覆盖栈上储存的 Canary 和 TLS 储存的 Canary 实现绕过。&#13;
+参见 StarCTF2018 babystack</a>
+</h3>
+</body>
+</html>

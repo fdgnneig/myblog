@@ -1,0 +1,520 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>CTF PWN5</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="39i44b5hhp0j5l7qmidtqu272k">CTF PWN5</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="CTF PWN5_files/images/CTF PWN5.jpg"></div>
+<h2 class="topic">
+<a name="5e255dc8d7beotfjgifm3hgtfc">pwn_by_example_5_ret2libc2</a>
+</h2>
+<h3 class="topic">
+<a name="7bejc3crhq4el62msh0rrh669l">&nbsp;检查程序安全机制和程序属性</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN5_files/3e7amg12i4fhuun36m5knj3fsl.png"></p>
+<h3 class="topic">
+<a name="3gb0vanl5l97ddk2rfurqt3s9j">&nbsp;和之前的程序一样，gets()存在漏洞</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN5_files/53f4hl7cej9f52kvp3l8bl7n28.png"></p>
+<h3 class="topic">
+<a name="349ohnplei8mnmv74gpm9ud22e">&nbsp;程序中存在system()函数，但是参数不符合要求</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN5_files/0m5n0a3aj15jndgn12b3d8se71.png"></p>
+<h3 class="topic">
+<a name="3n44rskpodsdppq7b3un6o7t6a">&nbsp;搜索可执行程序进程地址空间中的'/bin/sh'字符串，发现'/bin/sh'字符串存于共享库libc.so中，因为该共享库支持随机基址加载（即存在编译选项pic），所以该地址不能直接使用</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN5_files/4qv7kampq4h9ecd27sbhtg0lp8.png"></p>
+<h3 class="topic">
+<a name="6sr3jjvo0l2o52t5kba8k763df">&nbsp;&nbsp;注意存在pie安全保护机制的理解问题</a>
+</h3>
+<h3 class="topic">
+<a name="2j44bnft16ri82bkcv4jnchma9">&nbsp;&nbsp;&nbsp;https://www.cnblogs.com/Spider-spiders/p/8798628.html</a>
+</h3>
+<h3 class="topic">
+<a name="6h6n09beeetav0fkm7t2og0gh2">&nbsp;&nbsp;&nbsp;https://www.cnblogs.com/zUotTe0/p/10463396.html</a>
+</h3>
+<h3 class="topic">
+<a name="3mmae5dddnss2g8tshv65d7s2e">&nbsp;&nbsp;&nbsp;&nbsp;PIE为ASLR的一部分，ASLR为系统功能，PIE则为编译选项。</a>
+</h3>
+<h3 class="topic">
+<a name="7atnsn7o621eh8i5eav5b3h3qu">&nbsp;&nbsp;&nbsp;https://bbs.ichunqiu.com/thread-43627-1-1.html</a>
+</h3>
+<h3 class="topic">
+<a name="54p9o1g5u068bfju19frojaq6q">&nbsp;&nbsp;关于aslr和pie如何发挥作用的一些猜测</a>
+</h3>
+<h3 class="topic">
+<a name="580peit8l4m78oc41kv2i3eebq">&nbsp;&nbsp;&nbsp;根据网上查找的资料pie用于使得linux中可执行文件支持随机基址加载（即不会加载到默认基址0x08048000），pic用于支持linux共享库的随机基址加载</a>
+</h3>
+<h3 class="topic">
+<a name="35qeu77ls2gfd4oal1sd6m01q8">&nbsp;&nbsp;&nbsp;pie和pic是与编译选项有关，作用于特定可执行文件或共享库（类似于windows中pe文件中的0x4081 和0x0081决定了pe是否支持随机基址）</a>
+</h3>
+<h3 class="topic">
+<a name="7dtu6623etvkh1ptjhhjs069g8">&nbsp;&nbsp;&nbsp;对于alsr，是一种系统提供的机制，可以使得程序堆、栈、共享库加载基址（windows中为dll）随机化</a>
+</h3>
+<h3 class="topic">
+<a name="2h6ufuqegejhl8cmcvgfk95v06">&nbsp;&nbsp;&nbsp;aslr是系统默认开启的，其能否发挥作用取决于具体程序（可执行文件或共享库）有没有在编译过程中使用了pie 或pic</a>
+</h3>
+<h3 class="topic">
+<a name="7brridheab1eakai3t240fn15u">&nbsp;&nbsp;&nbsp;在正常pwn的过程中，如果可执行程序动态链接并且自身未开启pie，则可以使用可执行程序中的指令的地址覆盖返回地址，但是能否使用共享库中的指令地址作为返回地址，取决于该共享库是否开启了pic</a>
+</h3>
+<h3 class="topic">
+<a name="501gelk0prbrsi72t7hmvcvbt9">&nbsp;&nbsp;ASLR与PIE的区别</a>
+</h3>
+<h3 class="topic">
+<a name="2hqfd0ncobdpr62600debm56nk">&nbsp;&nbsp;&nbsp;aslr</a>
+</h3>
+<h3 class="topic">
+<a name="3rodssp8mnm8bu06jgg8qt0t1l">&nbsp;&nbsp;&nbsp;&nbsp;操作系统体提供的功能</a>
+</h3>
+<h3 class="topic">
+<a name="2oo0avu696fgil31jrr4pvc4pj">&nbsp;&nbsp;&nbsp;&nbsp;作用于可执行文件装入内存中时</a>
+</h3>
+<h3 class="topic">
+<a name="4879patmbm5bs40lktcgnjijq6">&nbsp;&nbsp;&nbsp;&nbsp;能够随机化stack、heap、libraries的基址</a>
+</h3>
+<h3 class="topic">
+<a name="29atlk2etbgmomhalon250o3bs">&nbsp;&nbsp;&nbsp;&nbsp;ASLR有0/1/2三种级别，其中0表示ASLR未开启，1表示随机化stack、libraries，2还会随机化heap</a>
+</h3>
+<h3 class="topic">
+<a name="75qrqlp6atlpl45l4emtmb4afg">&nbsp;&nbsp;&nbsp;pie</a>
+</h3>
+<h3 class="topic">
+<a name="3bdq969r6ao98tua8gug57heqk">&nbsp;&nbsp;&nbsp;&nbsp;编译器选项</a>
+</h3>
+<h3 class="topic">
+<a name="51h0oefdhimosffcb648lv59pn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PIE选项编译出来的ELF可执行文件用file命令查看会显示其为so</a>
+</h3>
+<h3 class="topic">
+<a name="1okb3pa8mhcdqk3vfmbnjvrce5">&nbsp;&nbsp;&nbsp;&nbsp;作用于可执行文件的编译过程，用于生成支持在任意基址加载代码</a>
+</h3>
+<h3 class="topic">
+<a name="21mmmp2q6nqi3g9gc4gqooio1e">&nbsp;&nbsp;&nbsp;&nbsp;随机化elf装载内存的基址（该基址是代码段、plt、got、data等共同的基址，所以某种角度说，可以随机化可执行文件各个区段的基址）</a>
+</h3>
+<h3 class="topic">
+<a name="70csi1ctg68d4uq1jecac6l6ij">&nbsp;&nbsp;&nbsp;&nbsp;当aslr=0时，即使pie开启，elf加载基址也不会变</a>
+</h3>
+<h3 class="topic">
+<a name="1uubut3j6fqv9261m9jv4s3ksa">&nbsp;&nbsp;&nbsp;当aslr=1 没有开启pie时</a>
+</h3>
+<h3 class="topic">
+<a name="63tvavt9p0o9g9huatipcbcr8o">&nbsp;&nbsp;&nbsp;&nbsp;程序加载基址不变，但是程序进程中栈基址和共享库基址会变</a>
+</h3>
+<h3 class="topic">
+<a name="45htki4o9r7chq51pno8vofcfg">&nbsp;&nbsp;&nbsp;当aslr=2 开启pie时</a>
+</h3>
+<h3 class="topic">
+<a name="7rqtetu5q3mn2sj3gp2uj3jn58">&nbsp;&nbsp;&nbsp;&nbsp;程序加载基址、堆、栈、共享库基址均会变</a>
+</h3>
+<h3 class="topic">
+<a name="7lu5sr932tujle4qunc5i6eg2u">&nbsp;&nbsp;&nbsp;当aslr=1 开启pie时</a>
+</h3>
+<h3 class="topic">
+<a name="6glp39uj4ffm6lo3c03b2v3lrl">&nbsp;&nbsp;&nbsp;&nbsp;按照asltr的定义，heap基址不会发生变化，但是由于pie开启，程序加载基址随机化，heap基址于加载基址偏移一定，则实际上heap的基址也会发生变化</a>
+</h3>
+<h3 class="topic">
+<a name="74nlhlg55mqgedipv72a6pptpr">&nbsp;&nbsp;&nbsp;https://www.cnblogs.com/rec0rd/p/7646857.html</a>
+</h3>
+<h3 class="topic">
+<a name="0v3n8om4b3pld4sp7rou6f3khj">&nbsp;使用ROPgadget获取当前可执行程序中的gadget</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN5_files/4re1am9m9i67nujugue6ko7qeq.png"></p>
+<h3 class="topic">
+<a name="4q4fq57c8tmkas0u46nh1up6qf">&nbsp;&nbsp;注意如果该指令后加参数 --ropchain，则剋直接根据存在的gadget生成一条rop链，功能是获得shell</a>
+</h3>
+<h3 class="topic">
+<a name="62g2hks0n9b5inffkfrc7s7vr0">&nbsp;使用pwntools中的ROP模块可以自动寻找gadget</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN5_files/2r87ere58iaossh1ok64svtd9s.png"></p>
+<h3 class="topic">
+<a name="0cvodrlmns0rongujpqrv1m22b">&nbsp;&nbsp;在本题中因为可执行程序中虽然有system函数，但是没有字符串'/bin/sh'作为参数使用，所以漏洞利用的思路是将溢出点的返回地址覆盖为gets函数，然后将'/bin/sh'字符串读取到程序的bss数据段，之后再调用system函数，并将bss数据段中的'/bin/sh'作为参数调用</a>
+</h3>
+<h3 class="topic">
+<a name="047kdik26oevi6ubusrn56plai">&nbsp;&nbsp;用于从plt表中获取gets函数的地址</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN5_files/289qbn9p7lv1i4fq50cuknjuch.png"></p>
+<h3 class="topic">
+<a name="6h4cv6rl8ejnccqb83qmdhgab8">&nbsp;&nbsp;&nbsp;用于作为gets函数的返回地址，此时使用pwntools中的ROP对象获取一个gadget的地址，通过rop.search(8)获得的gadget可以是 pop ret，当程序从gets中返回，然后执行pop ret即可跳过栈中gets的参数，开始执行system函数</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN5_files/3co41d2ornjn27p3dpgfhaqv6a.png"></p>
+<h3 class="topic">
+<a name="0nvm6hg3d4nq7gce8frhfgn6o6">&nbsp;&nbsp;&nbsp;&nbsp;用于作为gets()的参数，即将输入的字符串保存到bsss段+0x100的地址处</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN5_files/04hk984odgsih79ost69kn9n8k.png"></p>
+<h3 class="topic">
+<a name="1c3kfbqak8j2pbinc7dpnl4n2n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用于表示system函数时的地址，该数据之后的内容aaaa用于占位system函数返回地址，之后数据用于作为system函数的参数，即bss+0x100位置处保存的'/bin/sh'</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN5_files/1pt87jbl9hjniuh0106dc4shbv.png"></p>
+<h3 class="topic">
+<a name="0idt9avnu537nod06uie9aktq3">&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN5_files/3qdn187lpecusap2p49ib980o8.png"></p>
+<h3 class="topic">
+<a name="6ch4o02jjfjgk833qgu5qhtvqe">&nbsp;注意本题与ret2libc1的唯一区别在于，ret2libc1中的'/bin/sh'字符串在可执行文件中存在，并且ret2libc1中pie没有开启，说明该字符串地址固定，可以直接作为函数system参数使用，</a>
+</h3>
+<h3 class="topic">
+<a name="2pgkvjcuveitpttvn0v0rfnuk0">&nbsp;&nbsp;但是在ret2libc2中'/bin/sh'仅存在于libc.so共享库中，因为该库可以随机基址加载，所以字符串的地址不固定，不能直接使用，需要将溢出点的返回地址先覆盖为gets函数地址，然后将'/bin/sh'字符串保存到bss段中，然后再以该字符串作为参数调用system函数</a>
+</h3>
+<h3 class="topic">
+<a name="0ofogl4hnserhlpcpctl8gbdsk">&nbsp;PIE与ASLR</a>
+</h3>
+<p class="summary">(<a href="#3n44rskpodsdppq7b3un6o7t6a">搜索可执行程序进程地址空间中的'/bin/sh'字符串，发现'/bin/sh'字符串存于共享库libc.so中，因为该共享库支持随机基址加载（即存在编译选项pic），所以该地址不能直接使用</a>)</p>
+<h2 class="topic">
+<a name="1g4cuqfmk5ca40ruar4p6f9o2o">pwn_by_example_6_ret2libc3</a>
+</h2>
+<h3 class="topic">
+<a name="13gt4c1gjdgbi2sd7mg61cgsji">&nbsp;本题在解题过程中是从远程服务器上下载了指定题目，所以如果想要成功利用ret2libc技巧需要判断当前服务器端所使用的libc的版本，从而确定指定函数在该版本libc中的位置</a>
+</h3>
+<h3 class="topic">
+<a name="0bomtrjfmntpsdnmm5ovl2sf7s">&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN5_files/73aqlqahn15iuusfs8mec5vih6.png"></p>
+<h3 class="topic">
+<a name="002o3v22m5o85t5b00k00ievbg">&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN5_files/771qtsrc48albgidjdk2uuu0r3.png"></p>
+<h3 class="topic">
+<a name="7cbjr1usnhu3j1i8uv2971hlbm">&nbsp;&nbsp;程序中PIE没有开，说明程序中text段中的地址固定，进一步got表plt表中地址是不变的</a>
+</h3>
+<h3 class="topic">
+<a name="6o8kdcsdub7jciol85qve3g4qv">&nbsp;可执行文件中没有用到system函数</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN5_files/4ojqthhc1pj6gv20f0bflcb2cd.png"></p>
+<h3 class="topic">
+<a name="6lpnpp4pfcavckge8kttci60gh">&nbsp;使用cyclic测试溢出的偏移为112</a>
+</h3>
+<h3 class="topic">
+<a name="2cirmcnm4tfp0p7sdoq42go0sa">&nbsp;exp编写过程</a>
+</h3>
+<h3 class="topic">
+<a name="45ks8hbht5stpkitgejf9qhkhn">&nbsp;&nbsp;当前exp</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN5_files/2ecfo2ptfd1ca1mp3vh5rjqkpu.png"></p>
+<h3 class="topic">
+<a name="23h5ecpmd5gcugo675n7ksirq6">&nbsp;&nbsp;&nbsp;执行效果</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN5_files/593917muf0if4j810a1ea84g0e.png"></p>
+<h3 class="topic">
+<a name="7mfr8uhmf6qmufkf4lvra1osgh">&nbsp;&nbsp;&nbsp;&nbsp;此时已经确定了溢出点的返回地址偏移，使用sendlineafter，将返回地址处覆盖为plt表中puts函数的地址，用于执行puts函数，而put函数的参数为puts函数在got表中的地址，通过这条指令，可以输出puths函数在内存中的地址</a>
+</h3>
+<h3 class="topic">
+<a name="3vgangfebj092drhu9ek20dkdg">&nbsp;&nbsp;&nbsp;&nbsp;通过理解plt表和got表的实际内容，结合pwntools官网的资料可知&#13;
+elf.plt、elf.got均是根据名称输出对应plt表项或got表项的地址&#13;
+&#13;
+本题中&#13;
+p32(elf.plt['puts'])得到plt表项首地址，该地址对应的内存中存放指令&#13;
+jmp *(puts@GOT)&#13;
+p32(elf.got['puts'])表示got表项的首地址，该地址对应内存存放puts函数的地址</a>
+</h3>
+<h3 class="topic">
+<a name="2i18qq689cdq1rkdrq6rak1tk5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pwntools官网的资料</a>
+</h3>
+<h3 class="topic">
+<a name="01rjuphssuvdn8hs5jno5fe112">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pwntools官网中的例子</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN5_files/0lfkdhrkc5ntb9bip527gvjf5d.png"></p>
+<h3 class="topic">
+<a name="22e5m7knh6fgjk6krirm2b205i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN5_files/1lrmc5mrqpoukkjiigsugucsb1.png"></p>
+<h3 class="topic">
+<a name="6mmn9mk0m3eah94dh2ka03ro40">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN5_files/6d3vklirol5eo69dghm1bsteq9.png"></p>
+<h3 class="topic">
+<a name="2smfm8io31dkrbshtfkddptl0v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN5_files/36tk63lnkuc750vckcom5lntro.png"></p>
+<h3 class="topic">
+<a name="648qgiiqlr5oc0k7ur2k8gk6ur">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;根据官方文档elf.symbols是根据符号输出一个符号的地址</a>
+</h3>
+<h3 class="topic">
+<a name="3u651snebmfdgqckb4fg5pscv3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;此时要注意plt表与got表概念与内容</a>
+</h3>
+<h3 class="topic">
+<a name="746ov3qtp0sp03emkpvovdnusc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;GOT表</a>
+</h3>
+<h3 class="topic">
+<a name="7r9u5c3hajo9qd3r9fipvtmh5l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;其中保存函数或数据的地址，当plt表存在时，保存函数地址的部分称为got.plt，保存数据地址的部分称为got</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN5_files/2s474d4scf5urma8srd393icdc.png"></p>
+<h3 class="topic">
+<a name="2qvv7f730j3nml4b9hnmn4oniv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PLT表</a>
+</h3>
+<h3 class="topic">
+<a name="7qpg33m5jejd4gnuht376u6lap">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;每一个外部函数都对应一个plt表项，plt表项中存放的是指令，第一条指令是跳转到got表项中的地址处执行指令，当程序刚开始运行，got表中存放的是 plt项中push n指令的地址，调用外部函数时，会调用jmp 指令，然后继续执行push n及其后面的指令，从而以正确函数地址填充got表</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN5_files/228v91ru4udn2fdegcrt1ovv8p.png"></p>
+<h3 class="topic">
+<a name="4ik96s7lvfunebkacatlqo44nu">&nbsp;&nbsp;上面exp基础上设置上下文为调试状态</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN5_files/5c60jifd3b7ofqe0mfvtkptcu3.png"></p>
+<h3 class="topic">
+<a name="1sc23k80js9nkrtdps1bqgvjnl">&nbsp;&nbsp;&nbsp;执行效果</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN5_files/658q9orbc5ro21c72rrrpdsmlr.png"></p>
+<h3 class="topic">
+<a name="7m5k6lv2lkkq7tubqbb1u35utf">&nbsp;&nbsp;上面exp基础上设置运行参数</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN5_files/7r1ei3htvt5a409o191ola03gt.png"></p>
+<h3 class="topic">
+<a name="4k3o6jmmopvc7kuseuj14093ra">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN5_files/6tac5u0o5lme93f044qs6n0duk.png"></p>
+<h3 class="topic">
+<a name="20ptv9cdqsndc9a488b0elg2gd">&nbsp;&nbsp;&nbsp;&nbsp;由此的得知puts函数地址的低三位即与libc共享库首地址的偏移为0xca0</a>
+</h3>
+<h3 class="topic">
+<a name="6gj90cpbnntot7rh3e3apq42fr">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN5_files/3tlkhj67d874fqd9cd6v3shpj1.png"></p>
+<h3 class="topic">
+<a name="3cqigqvsm26fhnlbv383mpk0q4">&nbsp;&nbsp;使用mov指令将程序对应的libc库重命名为libc.so</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN5_files/61f8abnkljt46inohom7bmsg1o.png"></p>
+<h3 class="topic">
+<a name="7pkhksafqqs4a7mcrb5pqv4ivl">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN5_files/4t5sd1msvtahe8abvtmrn9oh78.png"></p>
+<h3 class="topic">
+<a name="240lbpeg5fl4kv0297i5u63tuc">&nbsp;&nbsp;&nbsp;这里有个问题libc.symbols['system']获得的是函数的在所在共享库中的偏移吗？？？如果是那么官网中的例子中.symbols与.plt的输出是一样的如何解释？</a>
+</h3>
+<h3 class="topic">
+<a name="23iev5cd0al3k0ankefcb2iksl">&nbsp;&nbsp;&nbsp;&nbsp;pwntools官网中的例子</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN5_files/1c7kc8nquk28cg9vcl3t8qkthe.png"></p>
+<h3 class="topic">
+<a name="03961i9guvsos6dccggovii95d">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN5_files/4du3oakkfpj1s9ruqhl1n3qigg.png"></p>
+<h3 class="topic">
+<a name="0aqmurhi8kerumgpl6og5fs179">&nbsp;&nbsp;&nbsp;&nbsp;根据官方文档elf.symbols是根据符号输出一个符号的地址</a>
+</h3>
+<h3 class="topic">
+<a name="2967gcbm5958rt132p0uvblo9m">&nbsp;&nbsp;&nbsp;感觉这里用&#13;
+got中获得的函数地址-elf.symbols&#13;
+最后获得libc的基地址很奇怪，暂时当作一个用法</a>
+</h3>
+<h3 class="topic">
+<a name="31q6jqmibljdcqqa2afa28pukr">&nbsp;&nbsp;&nbsp;&nbsp;关于符号表中的符号值</a>
+</h3>
+<h3 class="topic">
+<a name="761adccqs54ug6fgt2va9ajsop">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对于中间文件，符号表中的符号值等于对应符号在其所在段中的偏移</a>
+</h3>
+<h3 class="topic">
+<a name="2k9rqlp1tmaddc5cvmek3b64mr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;所以这里 puts函数地址-elf.symblos['puts']也许是合理的</a>
+</h3>
+<h3 class="topic">
+<a name="3km7c9i090fh2qm22iheedi18k">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对于可执行文件，符号表中的符号值等于符号的虚拟地址</a>
+</h3>
+<h3 class="topic">
+<a name="1ehr7pcr44bllefp1g2s76ck9f">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;符号值</a>
+</h3>
+<h3 class="topic">
+<a name="06gejquaof4cpka6spe6gtuhbp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN5_files/4h6k6ngn7g04dr4do978o7cpfr.png"></p>
+<h3 class="topic">
+<a name="7hku1dfbc9pq2e5s4irk391i5f">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN5_files/5acnq26i9kc7l8c63gdltea2l0.png"></p>
+<h3 class="topic">
+<a name="3s9fqm4epdiui0qosdvmmpsej3">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN5_files/3fgbc0v50hvcdlnh9ii409gc45.png"></p>
+<h3 class="topic">
+<a name="6h0au2e0vhe1hqmaimjsaglkpb">&nbsp;&nbsp;&nbsp;使用gdb将可执行程序跑起来，然后输出libc的地址和搜索'/bin/sh'字符串，然后计算出libc中的'/bin/sh'字符串距离libc模块首地址的偏移</a>
+</h3>
+<h3 class="topic">
+<a name="07vp4uk1tit7jddp77lki8trov">&nbsp;&nbsp;&nbsp;注意此时只有本地的libc版本与服务器中libc版本一致，才能使用gdb调试程序并且搜索'/bin/sh'字符串</a>
+</h3>
+<h3 class="topic">
+<a name="5q3v5pb0elmav64c20mm3aefjn">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN5_files/5rbr6bekl0hfid0n8ra4on5u7h.png"></p>
+<h3 class="topic">
+<a name="6lreicqo1aepb11gj1d4qth509">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN5_files/6en6essamsbhepkk0e3vggueh2.png"></p>
+<h3 class="topic">
+<a name="6iiapsreff8t9cqro6egd64k60">&nbsp;&nbsp;报错，进行调试，根据异常时栈中情况，发现可能是第二次溢出时，溢出数据长度多了8个字节</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN5_files/0jjugs5rsmbmmpfmi2b95ddh9f.png"></p>
+<h3 class="topic">
+<a name="3992ukp97fj4ei2t2ve12tpibq">&nbsp;&nbsp;&nbsp;修改后成功溢出</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN5_files/13gjjgp5as36ju4tqi81de0cjh.png"></p>
+<h3 class="topic">
+<a name="6f3jufglmltvqo9dt398bu9jsg">&nbsp;本题中因为开启了nx，所以栈中不能执行代码，因为可执行程序中没有调用system函数，所以不能直接返回到system上执行，所以本题重点在随机基址加载的libc中定位system函数的地址</a>
+</h3>
+<h3 class="topic">
+<a name="0549p74sj9irlo6jndfp76vs24">&nbsp;&nbsp;此时就需要定位libc中的system函数的地址，首先需要确定服务器中libc.so的版本</a>
+</h3>
+<h3 class="topic">
+<a name="79rh8knvr0q8ksem8clfrsbr8o">&nbsp;&nbsp;&nbsp;可以通过打印可执行文件中的puts函数的地址，（puts函数是libc提供的)通过puts函数地址的后三位特征查找对应的libc库的版本，本例中该值为0xca0</a>
+</h3>
+<h3 class="topic">
+<a name="3p5tbr16m8tdkf0uvjc5oo2jrc">&nbsp;&nbsp;确定libc版本后，可以将对应版本的libc库下载到本地，与可执行文件和exp放在一个目录下，在exp中即可打开该库，获得该库中的信息 即 elf=ELF('libc.so')</a>
+</h3>
+<h3 class="topic">
+<a name="5c8d949r91qkvvnhf9uusn3r45">&nbsp;&nbsp;libc库默认是支持随机基址加载的，所以要定位其中的sys函数的地址们就需要先定位libc库的加载基址，可以通过之前获得的&#13;
+puts函数的地址-elf.symbols[puts]&#13;
+得到libc中的加载基址，然后加上system函数的偏移(elf.symbols[system])，得到system函数的地址</a>
+</h3>
+<h3 class="topic">
+<a name="6fn69g06jjrlvo0skh3s3htht4">&nbsp;本例中如果程序中没有system 也可以获得libc中的execve函数地址，从而执行execve('/bin/sh') 获得shell</a>
+</h3>
+<h2 class="topic">
+<a name="7parsih8arg4kjmrou463crjnh">pwn_by_example_7_b0verfl0w (jmp esp)</a>
+</h2>
+<h3 class="topic">
+<a name="7ci5skto1icphvdfbphbvf8jje">&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN5_files/7ihtepgkeu554oikd68h2v8btg.png"></p>
+<h3 class="topic">
+<a name="25ku70ik05ri10ququ6rr5d1hf">&nbsp;关键函数fgets，该函数约束了保存的数据的长度 50</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN5_files/2idtdoj72nbn5n5ed8tat3m18q.png"></p>
+<h3 class="topic">
+<a name="3id8bbmcmemt23cc1u29qnb6n5">&nbsp;pwntools自动生成的shellcode长度为44字节 而被溢出的栈内容和大小如下&#13;
+s                       0x20字节&#13;
+ebp                  4字节&#13;
+returnaddress  4字节&#13;
+总共40个字节栈空间不能容纳44字节的shellcode，所以需要使用更短的shellcode</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN5_files/4v3rm21iglqaa56jdb6f90tc68.png"></p>
+<h3 class="topic">
+<a name="6t4pkpomtn7v25qu3hbdd2a58f">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN5_files/0ksa6j93es9gtqt75i2lhg5tce.png"></p>
+<h3 class="topic">
+<a name="5adu6poeitgtq7ihh4iep3lh0p">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN5_files/3tak5r4l92p8cb05ofsnt6a660.png"></p>
+<h3 class="topic">
+<a name="6tibdntc5fbirnobbor2abb6c1">&nbsp;通过ROPgadget搜索可执行文件中的 jmp esp跳板指令</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN5_files/3732f2qifu9svd8jl1nsbroarj.png"></p>
+<h3 class="topic">
+<a name="21aqefata57m8jmvmhc03id1re">&nbsp;通过asm将汇编转换为shllcode形式，其中可以看到shellcode共4字节</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN5_files/36plbqk49ureulr6densjvec6g.png"></p>
+<h3 class="topic">
+<a name="01nkc0iod13llqj309497u9f0s">&nbsp;sendlineafter是指当程序输出指定字符串之后，将指定的字符串作为输入，使程序继续执行</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN5_files/1301fvi163lmgkklv19b6784km.png"></p>
+<h3 class="topic">
+<a name="56jtvi3nm2umsm35qh8q8lg09m">&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN5_files/3kl4sm1slfc7vuim66vcto3mh4.png"></p>
+<h3 class="topic">
+<a name="5oapce37hd54sosog8l446mue4">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN5_files/0he1afook60593svbtuik8e4m6.png"></p>
+<h3 class="topic">
+<a name="1cjjro3ntepljt1var8vm8op24">&nbsp;本案例中可以往0x20字节的内存空间复制50字节的数据，所以存在栈溢出，其且本例中没有开启nx所以可以将shellcode复制到栈空间中保存并执行，</a>
+</h3>
+<h3 class="topic">
+<a name="3kd0g721en586sio9o39c2e621">&nbsp;&nbsp;当溢出发生时，栈的情况如下&#13;
+s缓冲区              0x20字节&#13;
+ebp                    4字节&#13;
+returnaddress    4字节</a>
+</h3>
+<h3 class="topic">
+<a name="6f69drudtphtssb4ilcrl30iv4">&nbsp;&nbsp;&nbsp;因为returnaddress中必须使用特定地址覆盖，所以pwntools中提供的44字节shllecode会被returnaddress截断，此时有两种解决思路</a>
+</h3>
+<h3 class="topic">
+<a name="59id1dqm90cjp4r4imbmb5d6ad">&nbsp;&nbsp;&nbsp;&nbsp;使用较短的shellcode（本例中使用了较短的shellcode）</a>
+</h3>
+<h3 class="topic">
+<a name="75o04n72hpgvujpk5gkctg217p">&nbsp;&nbsp;&nbsp;&nbsp;自己构造shellcode，在returnaddress内存之前设置跳转指令，跳过returnaddress</a>
+</h3>
+<h3 class="topic">
+<a name="08p35vkqfq6004ge81c4rbjh7m">&nbsp;&nbsp;&nbsp;&nbsp;如果returnaddress处的地址数据解释为指令后不会影响shellcode执行，就不用管他，直接执行过去即可</a>
+</h3>
+<h3 class="topic">
+<a name="2uhle8u0a92b9laj15dr6ca6k1">&nbsp;&nbsp;本例中使用了较短的shellcode，即&#13;
+s缓冲区              0x20字节&#13;
+ebp                    4字节&#13;
+returnaddress    4字节&#13;
+&#13;
+s缓冲区+ebp一共32+4字节的空间用于存储shellcode，使用jmp esp的地址覆盖returnaddress，当jmp esp执行之后，程序会在returnaddress 之后的栈空间中继续执行指令，此时需要布置栈中returnaddress之后的数据，使程序往回跳转到s缓冲区首地址开始执行shellcode，此时有两种思路</a>
+</h3>
+<h3 class="topic">
+<a name="0ooo8124bbjl3cqn14bpkd7v4b">&nbsp;&nbsp;&nbsp;returnaddress之后的数据布置为跳转指令，根据当前eip与s缓冲区首地址之间的固定偏移进行跳转</a>
+</h3>
+<h3 class="topic">
+<a name="12f9igipgppntcoro6kp6vnqv2">&nbsp;&nbsp;&nbsp;&nbsp;jmp 固定偏移</a>
+</h3>
+<h3 class="topic">
+<a name="11c455pav745a4prfa5fr699to">&nbsp;&nbsp;&nbsp;returnaddress之后的数据布置为 esp增减指令+jmp esp指令，returnaddress处的数据返回后，esp指向returnaddress之后的内存空间，此时esp距离s缓冲区首地址的偏移为0x20+4+4=0x28字节，故只要使用指令sub esp,0x28  jmp esp即可开始执行shellcode</a>
+</h3>
+<h3 class="topic">
+<a name="4l7g9l3ch47013t216uqike5q0">&nbsp;&nbsp;&nbsp;&nbsp;sub esp,0x28  jmp esp</a>
+</h3>
+<h3 class="topic">
+<a name="1qrm6qlsdmcj4n6j5c9ph15di2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;本例使用方法</a>
+</h3>
+<h3 class="topic">
+<a name="0533l610sui3m798mtk5cbsteq">&nbsp;&nbsp;以上通过溢出在栈中布置为如下格式   &#13;
+shellcode &#13;
+jmp esp指令的地址&#13;
+sub esp,0x28&#13;
+jmp esp&#13;
+注意以上数据长度整体不能超过50字节</a>
+</h3>
+</body>
+</html>

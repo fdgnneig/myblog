@@ -1,0 +1,428 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>CTF PWN17</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="3j8dq9qgurrfmffrobl6enmgi3">CTF PWN17</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="CTF PWN17_files/images/CTF PWN17.jpg"></div>
+<h2 class="topic">
+<a name="13mt388l3rb5es9d04glvdahmg">整数溢出漏洞</a>
+</h2>
+<h3 class="topic">
+<a name="5015bps1gl5dm9svjle5gkvoe8">&nbsp;64位下gcc5.4中数据类型所表示的数据范围</a>
+</h3>
+<h3 class="topic">
+<a name="6a20juarp486q6ujqvqq625ufm">&nbsp;&nbsp;数据类型所表示的数据范围是由编译器决定的</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN17_files/6r28p969tno9n11bs4s5q63ri7.png"></p>
+<h3 class="topic">
+<a name="1gbsjorgjr5a94a9t7srj9lg13">&nbsp;整数溢出的原理</a>
+</h3>
+<h3 class="topic">
+<a name="36fqejh593s3ioa66lukc2nfju">&nbsp;&nbsp;上界溢出：即因为加法运算而溢出</a>
+</h3>
+<h3 class="topic">
+<a name="7d418p3n5qj6c3aurnm0ve0l7a">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN17_files/68m75dqn0n30sn9tnovosjclce.png"></p>
+<h3 class="topic">
+<a name="0vvlmds1m7mpb6ro9lbpfqr2hc">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN17_files/14nuiqknvl3qma2gba4os68dpg.png"></p>
+<h3 class="topic">
+<a name="0ni86ldfikd33ugkf75hga9qs6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0x7fff + 1</a>
+</h3>
+<h3 class="topic">
+<a name="28i6oqt9a2rti98fnsfheilfqs">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;所以 add 0x7fff, 1 == 0x8000，这种上界溢出对无符号整型就没有影响，但是在有符号短整型中，0x7fff 表示的是 32767，但是 0x8000 表示的是 -32768，用数学表达式来表示就是在有符号短整型中 32767+1 == -32768。</a>
+</h3>
+<h3 class="topic">
+<a name="4us8ven9mgj1nff4432ks40k9d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;即&#13;
+对于无符号短整型没有影响（ 0x7fff, 1 == 0x8000）&#13;
+对有符号短整型有影响（32767+1 == -32768)</a>
+</h3>
+<h3 class="topic">
+<a name="0kjffj2m64vri6jnemmlbqbkd4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0xffff + 1</a>
+</h3>
+<h3 class="topic">
+<a name="15ocmlmsfabap6d4h8128uu09b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN17_files/79508vbplme1a5bj13t1ltkg2g.png"></p>
+<h3 class="topic">
+<a name="071l08o271eprv2cajikhgm9uh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对于无符号短整型数有影响 0xffff == 65535, 65535 + 1 == 0&#13;
+对于有符号短整型数无影响 0xffff==-1，-1 + 1 == 0</a>
+</h3>
+<h3 class="topic">
+<a name="7mcn0iu2dkq6hicr4qf7jsfjm5">&nbsp;&nbsp;下界溢出：即因为减法运算而溢出</a>
+</h3>
+<h3 class="topic">
+<a name="0lpk6do150chpqk7oc8jtoak3h">&nbsp;&nbsp;&nbsp;sub 0x0000, 1 == 0xffff对于有符号正确，对于无符号错误&#13;
+sub 0x8000, 1 == 0x7fff对于无符号正确，对于有符号错误</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN17_files/7um2ulhc6u0dvgpf6l9fctekcc.png"></p>
+<h3 class="topic">
+<a name="135nu7ejd48898857iork5cae7">&nbsp;实例</a>
+</h3>
+<h3 class="topic">
+<a name="4m4dleqqc16meu0onr93pv8ool">&nbsp;&nbsp;未限制整数的范围（比如给无符号数赋值负数）</a>
+</h3>
+<h3 class="topic">
+<a name="58v2ruu08lh4n5slpjt1pr09mh">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN17_files/2pqq45t5cf9gjnthpggomfjf3i.png"></p>
+<h3 class="topic">
+<a name="0fq843ti0geqssoars3t8l5po8">&nbsp;&nbsp;错误的类型转换（即形参于实参类型不同，传参的过程会发生类型转换）</a>
+</h3>
+<h3 class="topic">
+<a name="7h9jhqo35j84nr3fqdjsnnupt9">&nbsp;&nbsp;&nbsp;范围大的变量赋值给范围小的变量</a>
+</h3>
+<h3 class="topic">
+<a name="352lbf9sp32dqun50n36vkehdl">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN17_files/5r6hna4v8ntm3cqks7ujtlo8ei.png"></p>
+<h3 class="topic">
+<a name="73e80euh40dc9nqml09asa73k0">&nbsp;&nbsp;&nbsp;只做了单边限制（只针对有符号的类型）</a>
+</h3>
+<h3 class="topic">
+<a name="4pv6vk0kot75d7sv9n99p1980b">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN17_files/4gk1nm663kdlhsap7fdbna6l63.png"></p>
+<h3 class="topic">
+<a name="3d8gig57prl1977685rgec9mlo">&nbsp;例题</a>
+</h3>
+<h3 class="topic">
+<a name="1quc1us0kdueebgqf007mi4fni">&nbsp;&nbsp;题目：Pwnhub 故事的开始 calc</a>
+</h3>
+<h2 class="topic">
+<a name="4lrlherb413llsrl070flom7bu">IO FILE</a>
+</h2>
+<h3 class="topic">
+<a name="0sshkugca5ti570ab1a0qfca3i">&nbsp;介绍</a>
+</h3>
+<h3 class="topic">
+<a name="17gf1uhi3i48qtjc72mogmrlrt">&nbsp;&nbsp;FILE结构体</a>
+</h3>
+<h3 class="topic">
+<a name="2ovt6l6np34ktjj2saeg86ckep">&nbsp;&nbsp;&nbsp;用于描述文件的结构，在执行fopen时会被创建，并保存在堆中，一般使用一个指针接收fopen返回值，从而指向file结构体</a>
+</h3>
+<h3 class="topic">
+<a name="50h9h7til1pvigheci2vvjvhju">&nbsp;&nbsp;&nbsp;&nbsp;FILE结构定义在libio.h中</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN17_files/3tgn3d28f5h2ptjftvajlr7bb2.png"></p>
+<h3 class="topic">
+<a name="7728kg8f5kd4mm8v0u2hph0849">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN17_files/44o6gko2mjhnqvdobooihsf7dm.png"></p>
+<h3 class="topic">
+<a name="7e0k669alv7ba0e5c10d84uf9q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN17_files/31im2ueh4gfbd5m9jihlnooo08.png"></p>
+<h3 class="topic">
+<a name="2oirs2vj2f5eeifkhcoss5cfqk">&nbsp;&nbsp;fread函数</a>
+</h3>
+<h3 class="topic">
+<a name="6mvo99u49bmibf7ncc2k2bfsam">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN17_files/6afs97g5kmu7nkufi91ahtv7lh.png"></p>
+<h3 class="topic">
+<a name="7vo6kq3ei9dc5jhbkkvaguldv2">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN17_files/6qs4q23hgpj283aeiu3tsfi901.png"></p>
+<h3 class="topic">
+<a name="4ap7qd62gl3reqmhtf8dccmkoe">&nbsp;&nbsp;fwrite函数</a>
+</h3>
+<h3 class="topic">
+<a name="3uf9kmvh836ac70f8ihgknpkmo">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN17_files/0nva198if80kgpr8b2ib8aua16.png"></p>
+<h3 class="topic">
+<a name="4vqmjphnr51gvafg104qoqq08t">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN17_files/3oe45m9pphq5nb0cbg41q31ng8.png"></p>
+<h3 class="topic">
+<a name="4oiuugagvjgjdhlj49mk6etb16">&nbsp;&nbsp;fopen函数</a>
+</h3>
+<h3 class="topic">
+<a name="1kv5vrdthjbk35romu53qhm58i">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN17_files/5ris2jm1q9pvohlllkfqu76bg6.png"></p>
+<h3 class="topic">
+<a name="05945mhaqkmten0metob27m5km">&nbsp;&nbsp;&nbsp;&nbsp;调用malloc 分配FILE结构体内存空间-》初始化vtable</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN17_files/6cpbrub8m6t9l8rsd0c531h2vi.png"></p>
+<h3 class="topic">
+<a name="2q36itjofuoth8d3hmaecqhbld">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将新的FILE结构体链入FILE链表中-》调用open系统调用打开文件</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN17_files/44vndm6s7m99qmmj3s0ipj96h5.png"></p>
+<h3 class="topic">
+<a name="6m0kjc958i9439dcaiqrnmt9g5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN17_files/0fbskpack6ug3k7vhs6488t72t.png"></p>
+<h3 class="topic">
+<a name="7t5q1o3mehj0rf5qac6badvrns">&nbsp;&nbsp;fclose函数</a>
+</h3>
+<h3 class="topic">
+<a name="0i2kfo723l5mufb1bgp7n2uqv8">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN17_files/46vid8vsle72cq63u5ef2pg70s.png"></p>
+<h3 class="topic">
+<a name="3mgrvbuk441re0amhav29l7pdk">&nbsp;&nbsp;&nbsp;&nbsp;将FILE结构体从链表中脱链-》调用系统调用close关闭文件-》调用free释放之前的FILE结构体</a>
+</h3>
+<h3 class="topic">
+<a name="6a36qjobplboglo7uuipp7p9v8">&nbsp;&nbsp;printf和puts函数</a>
+</h3>
+<h3 class="topic">
+<a name="3560n9f66hns37lctvi8gnhfs7">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN17_files/4noccams4vc43kq1rc4047564r.png"></p>
+<h3 class="topic">
+<a name="6mhe2308nibdirpket2lsjdv4d">&nbsp;FSOP</a>
+</h3>
+<h3 class="topic">
+<a name="4j3ftvusoh9g6dl78pbtmgo264">&nbsp;&nbsp;原理</a>
+</h3>
+<h3 class="topic">
+<a name="53oah6c4beufpan425836p341t">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN17_files/2lpvmgo7s062snmqgmaaveqdth.png"></p>
+<h3 class="topic">
+<a name="3oseb0nl486p572unqlablju0t">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN17_files/1p494v2ji2d06ksna6huqctkke.png"></p>
+<h3 class="topic">
+<a name="7pskjsjk689g0fraqmdm6jeuuv">&nbsp;&nbsp;示例</a>
+</h3>
+<h3 class="topic">
+<a name="1unpu6reiq8qhjv3nrtq84n3re">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN17_files/14im005d5v6gkqcrpivj0i53bq.png"></p>
+<h3 class="topic">
+<a name="72imlgv75nm5fjk0v5n0heo95t">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN17_files/25lr09eb1qtrugfdp21up8ijq1.png"></p>
+<h3 class="topic">
+<a name="59cqf4juub2om4ej5ccmv80cpu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN17_files/33iu53m4959gq0qurkog4fv8g2.png"></p>
+<h3 class="topic">
+<a name="4bedp178mv03je9lg80e9d6gt1">&nbsp;伪造vtable劫持程序流程</a>
+</h3>
+<h3 class="topic">
+<a name="77t1ddappcngmba6r3luvhpruu">&nbsp;&nbsp;简介</a>
+</h3>
+<h3 class="topic">
+<a name="5kln4thoo0dsuhfhqukk1v983q">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN17_files/62m7vt52bc2clc1135nf5fiku4.png"></p>
+<h3 class="topic">
+<a name="5o47nsvqt0q0vjc0mjjgrp4e0f">&nbsp;&nbsp;示例</a>
+</h3>
+<h3 class="topic">
+<a name="6vro0lmh1f6vemi7qhc16p76me">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN17_files/1n94k0ntgrjdgpt5qtslgsepec.png"></p>
+<h3 class="topic">
+<a name="7d1rab3fvfohqsac2l6tk70vjv">&nbsp;&nbsp;&nbsp;&nbsp;修改vtable中的函数指针</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN17_files/64vtmlstadn2ballqljr2g8res.png"></p>
+<h3 class="topic">
+<a name="7f0hrqfjpgl357nm00iq6436pn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;修改vtable中的函数指针，且指定vtable中的函数执行时指定其第一个参数</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN17_files/1jjdjae5bae2nq3avrd5d53u8f.png"></p>
+<h3 class="topic">
+<a name="7c5q7mvap4h2fnlt2fppv0nihf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;修改FILE结构体中的vtable字段，使其指向fake_vtable</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN17_files/7d7vorhq65heur17869aeg7bpp.png"></p>
+<h3 class="topic">
+<a name="0soclpqesk9m8b45sgkbmh70sl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果不存在fopen获得的FILE结构体，可以尝试修改stdin\stdout\stderr等位于libc.so中FILE结构体</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN17_files/2qucombgaklgq4e5oknti5dgn9.png"></p>
+<h3 class="topic">
+<a name="5fb1ugkc1ib6q286or80k44490">&nbsp;&nbsp;实例</a>
+</h3>
+<h3 class="topic">
+<a name="038ec8o81331ub34t8urgc315p">&nbsp;&nbsp;&nbsp;2018 HCTF the_end</a>
+</h3>
+<h3 class="topic">
+<a name="329adhi1k0pekk5lbs1mgsvf46">&nbsp;&nbsp;&nbsp;&nbsp;程序基本信息</a>
+</h3>
+<h3 class="topic">
+<a name="7eme06kjli4etu2ed0vaffc377">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN17_files/37jd3t8ekv5f746dus9agl02d9.png"></p>
+<h3 class="topic">
+<a name="699eabc3n2sgdf7req6p8eo1ks">&nbsp;&nbsp;&nbsp;&nbsp;利用思路</a>
+</h3>
+<h3 class="topic">
+<a name="7og0dq5ke91tlpf0ko0np84966">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN17_files/7j636aaqrjat87nin8lnda774q.png"></p>
+<h3 class="topic">
+<a name="41uda48hijn4a9hq5r4a1t57jl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN17_files/2kn25ago99c4mcadrv37e14dmo.png"></p>
+<h3 class="topic">
+<a name="7fpvl6ckbnt2g352jsftad5e5i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN17_files/7rnp8oln0bi2gsuutfc155rfp6.png"></p>
+<h3 class="topic">
+<a name="3k9ncdkgliiqjmi1c8tqo8mr8t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN17_files/1i2jk6b28sf7ja2sep1rvemsj2.png"></p>
+<h3 class="topic">
+<a name="5kle5jku8q3irdirp78varqe1o">&nbsp;&nbsp;&nbsp;&nbsp;exp</a>
+</h3>
+<h3 class="topic">
+<a name="1k70vcn7iaa2i2j9o294nq869m">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN17_files/7m39sg62pg9goha6aaggjnl6i0.png"></p>
+<h3 class="topic">
+<a name="0j2tp307k5iks4p830tnqkluhq">&nbsp;glibc 2.24下 IO_FILE 的利用</a>
+</h3>
+<h3 class="topic">
+<a name="60hhcv74ip798nqh1tb10h9eg9">&nbsp;&nbsp;介绍</a>
+</h3>
+<h3 class="topic">
+<a name="6bd3h6koha11fpqp1qplsu4aei">&nbsp;&nbsp;&nbsp;glibc2.24版本之后添加了对IO_FILE_plus的vtable的检测，看vtable是否指向正确得内存空间</a>
+</h3>
+<h3 class="topic">
+<a name="2n3t6kaallrv829egugrja7lhv">&nbsp;&nbsp;&nbsp;&nbsp;判断vtable是否指向指定的内存范围</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN17_files/6i31lgu3ebqmp4lm78vu4icr90.png"></p>
+<h3 class="topic">
+<a name="5rjqbij5nfv86obs8s24lul8du">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果未指向指定内存范围，调用_IO_vtable_check函数判断vtable的合法性</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN17_files/24gip6tvd8gcp08fvhoo738vao.png"></p>
+<h3 class="topic">
+<a name="14d3f9dhcu7p2rjfnpb3biketa">&nbsp;&nbsp;新的利用技术</a>
+</h3>
+<h3 class="topic">
+<a name="1f18n176sa1fkvpjtpv9be6cjo">&nbsp;&nbsp;&nbsp;fileno 与缓冲区的相关利用</a>
+</h3>
+<h3 class="topic">
+<a name="6ge8vmnvlubddpvvf9cpk9n26c">&nbsp;&nbsp;&nbsp;&nbsp;原理</a>
+</h3>
+<h3 class="topic">
+<a name="4qt658do8bfm6ui3qumfl2bl1b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过修改FILE结构体中的char* _IO_buf_base;	&#13;
+char* _IO_buf_end;字段，可以指定IO操作时读写的内存地址</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN17_files/4u5vnte5570l48ou5viqiqei9s.png"></p>
+<h3 class="topic">
+<a name="7o625u4ish64scvo10ku7b59kg">&nbsp;&nbsp;&nbsp;&nbsp;示例</a>
+</h3>
+<h3 class="topic">
+<a name="04jcpcm81blh9dvguvpqv0fest">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN17_files/37o32re35i4vg6qcu6am1ufop2.png"></p>
+<h3 class="topic">
+<a name="0kp1jak1941nk0bmhku9alfa8m">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN17_files/3o1ickf3l7gfep9qhauhuogioi.png"></p>
+<h3 class="topic">
+<a name="42rfovsbv10be7kj5ui56ro5v9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN17_files/4c8g6spa3hkhuo6rvcf8ebgn79.png"></p>
+<h3 class="topic">
+<a name="4qvbh20pqliacdm7k3m7onp0ct">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;io操作的内存被重定向到全局变量中</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN17_files/21t83kevi942prisnfbsp19ruk.png"></p>
+<h3 class="topic">
+<a name="7lirp4fslt1lh9em5lae7el578">&nbsp;&nbsp;&nbsp;_IO_str_jumps -&gt; overflow</a>
+</h3>
+<h3 class="topic">
+<a name="75bdusqsoji475gn82vog5a6a8">&nbsp;&nbsp;&nbsp;&nbsp;原理</a>
+</h3>
+<h3 class="topic">
+<a name="19frvjlcit44f9skk944jsi33d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;原本vtable指向_IO_file_jumps结构体（该结构体即为函数指针结构体），同时内存中也有一个_IO_str_jumps结构体，该结构体中也保存这函数指针，如果vtable指向该结构体，则该不会被检测</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN17_files/40n5qi5hgmll6k60jqofuruv0s.png"></p>
+<h3 class="topic">
+<a name="1puvs5dtkgi8ck76uhlsbtig2g">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN17_files/62ksns9f9an4ipso7b1lo27m80.png"></p>
+<h3 class="topic">
+<a name="5i2nl645e4nauf264129nd9os8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN17_files/4lne15q5b1vjn7j9flg0tsrvtl.png"></p>
+<h3 class="topic">
+<a name="21nke022ugn9v9kur7qqilofk5">&nbsp;&nbsp;&nbsp;&nbsp;示例</a>
+</h3>
+<h3 class="topic">
+<a name="094v814j7bai0qn4droiggb2fb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN17_files/389ubct21b0oina5tpt34fr060.png"></p>
+<h3 class="topic">
+<a name="6vbpdui0erj52qq6uu0t34ag24">&nbsp;&nbsp;&nbsp;_IO_str_jumps -&gt; finish</a>
+</h3>
+<h3 class="topic">
+<a name="1dgvcvv90v8d6nvd9tdtk4gu0s">&nbsp;&nbsp;&nbsp;&nbsp;原理</a>
+</h3>
+<h3 class="topic">
+<a name="2gs3d25viu36f8oft7c18vna6p">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN17_files/7s57pc4bfeij1k2ds7gtj4v7pb.png"></p>
+<h3 class="topic">
+<a name="01prj4ht0okcgp5q9ufm2al3d0">&nbsp;&nbsp;&nbsp;&nbsp;示例</a>
+</h3>
+<h3 class="topic">
+<a name="3cm3tih0rilmglhe9fd3hkpvp6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN17_files/76glnrc86c5o9q46fcbsoah9u8.png"></p>
+</body>
+</html>

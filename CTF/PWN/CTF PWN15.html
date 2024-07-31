@@ -1,0 +1,718 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>CTF PWN15</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="2m30b016vesudjbkm7vj002tdk">CTF PWN15</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="CTF PWN15_files/images/CTF PWN15.jpg"></div>
+<h2 class="topic">
+<a name="13a8mno8bi0tflc5jddljr7t1k">Glibc内存管理Ptmalloc2源代码分析 </a>
+</h2>
+<h3 class="topic">
+<a name="74caqq6qkq9f8fl5tqk0i1ebj7">&nbsp;基础知识</a>
+</h3>
+<h3 class="topic">
+<a name="1ol54o3t7jtpv48pr89u5sgv95">&nbsp;&nbsp;x86平台linux进程内存布局</a>
+</h3>
+<h3 class="topic">
+<a name="1psvma70g7r30tqqprc56ipmou">&nbsp;&nbsp;&nbsp;32位模式下进程内存经典布局</a>
+</h3>
+<h3 class="topic">
+<a name="2fqn5gkfiv50maa220rekuqfj9">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN15_files/797vnhe6epevgb2o0pvam8g6d4.png"></p>
+<h3 class="topic">
+<a name="5h7hqj6rkv2dt2v0s01ei3sh88">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;特点：mmap区域向内存高地址方向扩展 内核版本2.6.7之前使用&#13;
+问题：导致堆空间只有1gb虚拟地址空间可以使用&#13;
+问题根源：32位模式下地址空间限制造成的</a>
+</h3>
+<h3 class="topic">
+<a name="2afndgkmgsu215d91llv7jecv9">&nbsp;&nbsp;&nbsp;32位模式下进程内存默认布局</a>
+</h3>
+<h3 class="topic">
+<a name="2hcraiitf7131u6bkeh9scr5sr">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN15_files/4evlvqrvpu15fp3jf9bckl957e.png"></p>
+<h3 class="topic">
+<a name="6qk8tne3oeiicjmudm23plhph4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;特点：栈是有界的，mmap区域向内存低地址空间扩展，堆、栈、mmap的起始地址在虚拟地址空间中都存在随机偏移&#13;
+内核版本2.6.7之后引入&#13;
+改变mmap区域内存扩展方向，有助于mmap和堆的内存分配管理</a>
+</h3>
+<h3 class="topic">
+<a name="5id127p0nunn5odjh06idf7b9j">&nbsp;&nbsp;&nbsp;64位模式下进程内存布局</a>
+</h3>
+<h3 class="topic">
+<a name="2meo6sj9gt3bjud9kfaftuqtjj">&nbsp;&nbsp;&nbsp;&nbsp;采用经典内存布局（mmap区域向高内存地址方向扩展）</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN15_files/5gblhghrtbto0s5ctvgktpv05q.png"></p>
+<h3 class="topic">
+<a name="6060oj8k0lrm5rrcutjlci2lt9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;理论上栈顶、mmap首地址如图中标注所示，但实际上栈和mmap区域首地址每次启动时存在随机性，用于缓解缓冲区溢出攻击的威胁，当然存在系统设置关闭这种随机性</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN15_files/4od9k317j89m527dv2jcj1eru3.png"></p>
+<h3 class="topic">
+<a name="41ri5bsop65ca478s85f5g6gsn">&nbsp;&nbsp;操作系统内存分配相关函数</a>
+</h3>
+<h3 class="topic">
+<a name="5g93fu69158a5dmpp6id6e5btf">&nbsp;&nbsp;&nbsp;有关heap的函数：操作系统提供brk()系统调用 c运行库提供sbrk()	&#13;
+有关mmap的函数：操作系统提供mmap() munmap()</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN15_files/2nv2ivoe7gkebkic1hfnritech.png"></p>
+<h3 class="topic">
+<a name="2cckrhkrc14a7sa8jr6dc9tsuk">&nbsp;&nbsp;&nbsp;&nbsp;heap相关函数</a>
+</h3>
+<h3 class="topic">
+<a name="61h4hia9poilq064rdnlfsneoi">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN15_files/1v44jrca95p2v7311fm2b51tih.png"></p>
+<h3 class="topic">
+<a name="7j40f9slscm2vh4vcjkhcd2lct">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN15_files/19q3rdoeh0p3n89513c4pee05u.png"></p>
+<h3 class="topic">
+<a name="2unuq94de29kp7ajtf4rld244c">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;内核数据结构中的mm_struct中的相关字段</a>
+</h3>
+<h3 class="topic">
+<a name="63hbtir4dkvpmi6s0mlqqivlj7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;start_code、end_code</a>
+</h3>
+<h3 class="topic">
+<a name="2m130i9pvh85ia6p3ub306vmmd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;标识代码段的起始和结尾</a>
+</h3>
+<h3 class="topic">
+<a name="083587nrfbu68ilm29ngtpo3ie">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;start_data、end_data</a>
+</h3>
+<h3 class="topic">
+<a name="461mv7g3f2np8kf9pptgj77bsc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;标识数据端的开始和结尾</a>
+</h3>
+<h3 class="topic">
+<a name="53o3vio8ng0oihk6jkbvubmaj7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;start_stack</a>
+</h3>
+<h3 class="topic">
+<a name="2nbet8o25fqnrioj8hj1e8d9av">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;标识栈的起始地址</a>
+</h3>
+<h3 class="topic">
+<a name="77n9jj2ju27nklirtoqoprkofk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;start_brk、brk</a>
+</h3>
+<h3 class="topic">
+<a name="7k127kmdhg0da8m3o2v7hj8em5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;标识进程动态内存分配的起始地址 和终止地址</a>
+</h3>
+<h3 class="topic">
+<a name="07qvgdmu9nmgl8fjvcs6q5j994">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;brk()函数通过增大brk值从而扩展当前堆的大小</a>
+</h3>
+<h3 class="topic">
+<a name="3cjaf23t18fp5dint5jd3f3s8j">&nbsp;&nbsp;&nbsp;&nbsp;mmap相关函数</a>
+</h3>
+<h3 class="topic">
+<a name="3fck9srgjp8ub9ro6t8ct331sd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN15_files/2fn8h0gguk802cke13snntmouh.png"></p>
+<h3 class="topic">
+<a name="677rpp4g0faagetbithql8q6mn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN15_files/6h2di15jo8c819n56445ngrsc7.png"></p>
+<h3 class="topic">
+<a name="6d1r3m9ugb3vbgmhr650hhrjut">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;主要是mmap函数和munmap函数，mmap函数主要是将文件或对象映射如内存</a>
+</h3>
+<h3 class="topic">
+<a name="7f8kb9v9ohsavg7iionb7mmu4h">&nbsp;概述</a>
+</h3>
+<h3 class="topic">
+<a name="3vhhk9scgq2v5n1i2qjjq9096b">&nbsp;&nbsp;内存动他管理的一般描述：因为程序内存需求是变化的，并且系统内存空间有限，所以需要内存管理程序分配和回收内存</a>
+</h3>
+<h3 class="topic">
+<a name="01d3tb16d18r8n99te7cncjd4f">&nbsp;&nbsp;&nbsp;内存管理方法</a>
+</h3>
+<h3 class="topic">
+<a name="2spots220goknsljtbnfsgh80t">&nbsp;&nbsp;&nbsp;&nbsp;c风格的内存管理方法</a>
+</h3>
+<h3 class="topic">
+<a name="6ons7lbj0mbqm10er06qmafjuv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN15_files/6fu4mmdo8c3ujbl4q99f4j20vv.png"></p>
+<h3 class="topic">
+<a name="59liqetdj65dfnnrptinnnlcmt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;缺点在于对于需要长期存储的程序，数据的生存周期较长，c风格内存管理可能不适用，所以此类程序一般自己实现内存管理规则</a>
+</h3>
+<h3 class="topic">
+<a name="1rejk9m08m0eusaipsg51mipeb">&nbsp;&nbsp;&nbsp;&nbsp;池式内存管理</a>
+</h3>
+<h3 class="topic">
+<a name="546156jgqtfpm80o4msjuuhrth">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN15_files/7fr4en9jdoo2skibqgq5uqt1oe.png"></p>
+<h3 class="topic">
+<a name="5m6ek4k6lh3ht79g1jctrgid09">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN15_files/2k7dbf8f9uscagdk6srm264vh2.png"></p>
+<h3 class="topic">
+<a name="6iv815v77t9f6n8o6de37hmesu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;基于这样一种内存管理思想，将程序的运行划分为若干阶段，针对每一个阶段设置一个内存池，程序运行在指定阶段时，只能从对应内存池中申请空间满足使用需求，当程序该阶段执行完毕，则对应内存池释放</a>
+</h3>
+<h3 class="topic">
+<a name="0bqahsa5tq2u865lf83fk0den1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;不同内存池根据对应阶段的时间长短不同，持续的时间也不同，例如apache服务器程序中，存在持续时间为服务器存在期的内存池，存在持续时间为连接存在期的内存池（专供程序连接时使用）存在持续时间为请求存在其的内存池</a>
+</h3>
+<h3 class="topic">
+<a name="0ihiqhtjqo5g82s2reb2mduavs">&nbsp;&nbsp;&nbsp;&nbsp;引用计数</a>
+</h3>
+<h3 class="topic">
+<a name="5kt4okmqubietvfhtpq086r1u4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN15_files/3ko65oba28o5ch3c4v6l2bi1mf.png"></p>
+<h3 class="topic">
+<a name="6rgbhqe4icu3a0do1b38r618sq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;类似于windows内核结构体中的引用计数，在java perl等高级语言中用于内存管理</a>
+</h3>
+<h3 class="topic">
+<a name="649a55u75vbm3mn8cms12t16me">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN15_files/47s19loaupdaqklp1sgkera1ja.png"></p>
+<h3 class="topic">
+<a name="24cmetqft9pg6kcrqdij8fodeo">&nbsp;&nbsp;&nbsp;&nbsp;垃圾收集</a>
+</h3>
+<h3 class="topic">
+<a name="714lvhpptgde7pmvl8n10mbms2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN15_files/2clou89uv251mfg929h41vin2a.png"></p>
+<h3 class="topic">
+<a name="1396qrek0u2us5rcna7drhddau">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;全自动的释放不再使用的数据结构所占内存</a>
+</h3>
+<h3 class="topic">
+<a name="0u8ifh6m6jj47g0i8p5hvcail8">&nbsp;&nbsp;&nbsp;&nbsp;一些思考</a>
+</h3>
+<h3 class="topic">
+<a name="4ftd0ut95gigaoo2o7i5q1nlck">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;不同类型的内存管理方式最终导致的内存问题可能不同，最终表现在漏洞层面上即部分内存管理方式可以有效缓解传统的堆栈溢出漏洞，同时也可能带来新的漏洞类型</a>
+</h3>
+<h3 class="topic">
+<a name="58nqsdo8cvjk2oilr9upttga5q">&nbsp;&nbsp;&nbsp;内存管理器设计目标</a>
+</h3>
+<h3 class="topic">
+<a name="4refqg80kat2jhc1mkad86drf0">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN15_files/3np61fdi96b962fhvabepgimi0.png"></p>
+<h3 class="topic">
+<a name="4iss73lu1ik1g6o5cm39ee3tdh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN15_files/6kk4kqrf013hdlf4lnvjj2rgld.png"></p>
+<h3 class="topic">
+<a name="738m07sfmoel0qaf11e8h5fe83">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN15_files/0cjn4d1pnqdvtpgp5qek50cb4f.png"></p>
+<h3 class="topic">
+<a name="3llp6ld3gvfrrvdtccfbd3q857">&nbsp;&nbsp;&nbsp;常见的c内存管理程序(TCMalloc具有优势，ptmalloc属于GNU Malloc)</a>
+</h3>
+<h3 class="topic">
+<a name="68q3imha6qgqoam84squ520823">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN15_files/5a6d1vk7285fn6faipjrbuo5em.png"></p>
+<h3 class="topic">
+<a name="0aqbrkt6tp9p59gddv63l666g1">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN15_files/1icjifer17jcm0e58vt22r8hn2.png"></p>
+<h3 class="topic">
+<a name="3n09302o4vspqnfch1m5hgr4u7">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN15_files/59glp73glec3r5ltq9n14f5pp0.png"></p>
+<h3 class="topic">
+<a name="1hid3sq5d72nn9rfofhpg4omib">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN15_files/2sm5npc4e72lok01ljp04rrl9b.png"></p>
+<h3 class="topic">
+<a name="37vut2t13j4jcgsk93rm6hfdn7">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN15_files/681fjtaeq0sqhen47dtnjt8rdn.png"></p>
+<h3 class="topic">
+<a name="3p0hpl8d00rfa724cv85p87dsn">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN15_files/0a4gcdfe6cfobvepl8di1kgfu9.png"></p>
+<h3 class="topic">
+<a name="30k99aql2sj8aovar7spq10hqe">&nbsp;&nbsp;Ptmalloc内存管理概述</a>
+</h3>
+<h3 class="topic">
+<a name="3rj87n1c7rft2sa1pq42hfm2uc">&nbsp;&nbsp;&nbsp;概述</a>
+</h3>
+<h3 class="topic">
+<a name="3vnmddh0o8u06sfp4fmm5jom4i">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN15_files/3581g9qbeqpgfmo75urpdic88g.png"></p>
+<h3 class="topic">
+<a name="01a11pl47e4o96384c569gm0te">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;早期存在多线程支持的问题，后经过改进ptmalloc支持多先线程，会从操作系统中申请一块较大的内存，然后管理该块内存，对于释放的内存并不直接返回给系统而是进行管理，用于应对之后的内存申请需求</a>
+</h3>
+<h3 class="topic">
+<a name="5cto0vgu5oi629ga4kacdnikjm">&nbsp;&nbsp;&nbsp;内存管理的设计假设</a>
+</h3>
+<h3 class="topic">
+<a name="5p3v85nseuo3521ljgceel1ls5">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN15_files/7p481rraioojeo9ggjpp614961.png"></p>
+<h3 class="topic">
+<a name="2h198ni15fbhff209avq20pfdp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;就是一些ptmalloc内存管理的要点和前提条件</a>
+</h3>
+<h3 class="topic">
+<a name="26pe7mgu9emdta3akc0vutmgrq">&nbsp;&nbsp;&nbsp;内存管理数据结构概述</a>
+</h3>
+<h3 class="topic">
+<a name="4km0jqc3nk2l0agf4662hbkufn">&nbsp;&nbsp;&nbsp;&nbsp;Main_arena和non_mian_arena</a>
+</h3>
+<h3 class="topic">
+<a name="4b0k8gn006b9nevekjitg811bq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN15_files/6nlcpg2p96bsdjpgk7h9bkl2hd.png"></p>
+<h3 class="topic">
+<a name="1pt9of344dp8offn2cv3irdof4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN15_files/0tokr9l11qm9ej7cmcpjqvunr3.png"></p>
+<h3 class="topic">
+<a name="7t24f2qlgj5n5h8f0f0m342v92">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;一个进程只有一个主分配区，如果是存在多个线程，则会存在多个对应的非主分配区，对应概念可以在之前笔记中的malloc相关数据结构中查看</a>
+</h3>
+<h3 class="topic">
+<a name="75f0rute0auh1dlt86fbbmnjd8">&nbsp;&nbsp;&nbsp;&nbsp;chunk的组织</a>
+</h3>
+<h3 class="topic">
+<a name="2a05jva1nf43n442sj9cf70a00">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;主要内容查看之前关于chunk的学习，这里仅就几个重点进行记录</a>
+</h3>
+<h3 class="topic">
+<a name="6t1gfk1f9joidup4supqthp3h0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ptmalloc 分配的第一个块总是将 P 设为 1，以防止程序引用到不存在的区域。</a>
+</h3>
+<h3 class="topic">
+<a name="22k4maibi18gebjs3rto094s2g">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用中的chunk</a>
+</h3>
+<h3 class="topic">
+<a name="0o5ohkm1u481nkhr7hajnf9rhm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN15_files/082p30jr1t5mmdobnrcqrn5otg.png"></p>
+<h3 class="topic">
+<a name="67l71c6rfso3a33iahgpjsk8hj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;空闲中的chunk</a>
+</h3>
+<h3 class="topic">
+<a name="29doem8g4h36icdcu9tsj1acs2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN15_files/1kv06lppes50pk1f5s23ofes1e.png"></p>
+<h3 class="topic">
+<a name="6dalv41j9mk5mtmsflqmvo7au5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当 chunk 空闲时，其M状态不存在，只有 AP 状态，原本是用户数据区的地方存储了四&#13;
+个指针，指针 fd 指向后一个空闲的 chunk，而 bk 指向前一个空闲的 chunk，ptmalloc 通过这 两个指针将大小相近的 chunk 连成一个双向链表。对于 large bin 中的空闲 chunk，还有两个 指针，fd_nextsize 和 bk_nextsize，这两个指针用于加快在 large bin 中查找最近匹配的空闲 chunk。不同的 chunk 链表又是通过 bins 或者 fastbins 来组织的（bins 和 fastbins 在 3.2.3.3 中介绍）。</a>
+</h3>
+<h3 class="topic">
+<a name="4i3kgvsgm2e9tkd46vooj5162k">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;chunk的空间复用</a>
+</h3>
+<h3 class="topic">
+<a name="5mfpq2e6u78ckocfjft39c0tlq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;即使用响铃的下一个chunk的pre_size字段作为本chunk的用户空间使用</a>
+</h3>
+<h3 class="topic">
+<a name="6l7kqo093hia8ufm8olmu4b687">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;故而实际上，32位中一个使用中的 chunk 的大小的计算公式应该是： in_use_size = (用户请求大小+ 8 - 4 ) align to 8B，这里加 8 是因为需要存储 prev_size 和 size， 但又因为向下一个 chunk&ldquo;借&rdquo;了 4B，所以要减去 4。最后，因为空闲的 chunk 和使用中的 chunk 使用的是同一块空间。所以肯定要取其中最大者作为实际的分配空间。即最终的分配 空间 chunk_size = max(in_use_size, 16)。</a>
+</h3>
+<h3 class="topic">
+<a name="68v0mq1q2df3ekh2s9l98d15j0">&nbsp;&nbsp;&nbsp;&nbsp;空闲的chunk的容器</a>
+</h3>
+<h3 class="topic">
+<a name="1o7fvijp47lf8fk6tc1h88e0b4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bins</a>
+</h3>
+<h3 class="topic">
+<a name="6prkvlck3isbs46nc8cmd03arg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ptmalloc 一共 维护了 128 个 bin，并使用一个数组来存储这些 bin（如下图所示）</a>
+</h3>
+<h3 class="topic">
+<a name="5dgrg3h342cul6rvjtdaollhmj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN15_files/66d9elk3bdh4ivf5p02ojin6d6.png"></p>
+<h3 class="topic">
+<a name="5bv8ovflks06m9438ov7cedujt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当空闲的 chunk 被链接到 bin 中的时候，ptmalloc 会把表示该 chunk 是否处于使用中的&#13;
+标志 P 设为 0（注意，这个标志实际上处在下一个 chunk 中），同时 ptmalloc 还会检查它前 后的 chunk 是否也是空闲的，如果是的话，ptmalloc 会首先把它们合并为一个大的 chunk， 然后将合并后的 chunk 放到 unstored bin 中。要注意的是，并不是所有的 chunk 被释放后就 立即被放到 bin 中。ptmalloc 为了提高分配的速度，会把一些小的的 chunk 先放到一个叫做 fast bins 的容器内。</a>
+</h3>
+<h3 class="topic">
+<a name="3dpmg6hekf3df78hkl9sg4t06a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;chunk被释放后，pamalloc会尝试将其与相邻空闲chunk合并，如果合并发生会将合并后的chunk放进unsortedbin中</a>
+</h3>
+<h3 class="topic">
+<a name="7ibeg1ab2r3vvvgp32ea08kj5m">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fast bin</a>
+</h3>
+<h3 class="topic">
+<a name="44j45caah3d31suosdco58hsqd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;不大于max_fast （默认值为 64B）的 chunk 被释放后，首先会被放到 fast bins 中</a>
+</h3>
+<h3 class="topic">
+<a name="2alh5m2n5c501dmopqune49pa6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fast bins 中的 chunk 并不改变它的使用标志 P。这样也就无法将它们合并</a>
+</h3>
+<h3 class="topic">
+<a name="5e5t557tl4go286ihdpkcf20i1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当需要给用 户分配的 chunk 小于或等于max_fast 时，ptmalloc 首先会在 fast bins 中查找相应的空闲块， 然后才会去查找bins中的空闲chunk</a>
+</h3>
+<h3 class="topic">
+<a name="4nk50bg1blu75i3voqh1ge9r1a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在某个特定的时候，ptmalloc会遍历fast bins中的chunk，将相邻的空闲 chunk 进行合并，并将合并后的 chunk 加入 unsorted bin 中，然后再将 usorted bin 里的 chunk 加入 bins 中。</a>
+</h3>
+<h3 class="topic">
+<a name="0hopkafiqb2msj61jv895oq4mq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Unsorted bin</a>
+</h3>
+<h3 class="topic">
+<a name="2db9nl8faebdlfi09bkle53lp1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unsorted bin 的队列使用 bins 数组的第一个</a>
+</h3>
+<h3 class="topic">
+<a name="0idenkv4etphkmvpphehiqsp52">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果被用户释放的 chunk 大于max_fast，&#13;
+或者 fast bins 中的空闲 chunk 合并后，这些 chunk 首先会被放到 unsorted bin 队列中</a>
+</h3>
+<h3 class="topic">
+<a name="0nktfclpqjc3e9a25fmjvgq5ic">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当内存释放时，chunk进入fastbin或Unsortedbin，主要依据被释放的chunk的大小而定</a>
+</h3>
+<h3 class="topic">
+<a name="6aen7e5hu2ntqflcjuq1lknq5s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当fastbin中的chunk合并时，合并后的chunk进入Unsorted bin中</a>
+</h3>
+<h3 class="topic">
+<a name="45961qea2a5rt5q3ai2ve535nu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在进行malloc 操作的时候，如果在 fast bins 中没有找到合适的 chunk，则 ptmalloc 会先在 unsorted bin 中查找合适的空闲 chunk，然后才查找 bins。</a>
+</h3>
+<h3 class="topic">
+<a name="0s0ld5spr27pg1vpu1i31m2k9h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当malloc申请时，查找合适chunk的顺序如下&#13;
+fastbin-&gt;Unsortedbin-&gt;bin-&gt;topchunk-&gt;使用系统调用扩大topchunk&#13;
+如果Unsortedbin中没有合适的chunk，则会将Unsortedbin中所有的chunk按大小加入对应的bins中</a>
+</h3>
+<h3 class="topic">
+<a name="2mlaa6k45pqq5c14vopipgs2o2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果 unsorted bin 不能满足分配要求。malloc 便会将 unsorted bin 中的 chunk 加入 bins 中。然后再从 bins 中继续进行查找和分配过程</a>
+</h3>
+<h3 class="topic">
+<a name="564830svcujh16ot6ve8kj95r4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unsorted bin 可以看做是 bins 的一个缓冲区，增加它只是为了加快分配速度</a>
+</h3>
+<h3 class="topic">
+<a name="0uealo10ujc30s5kr2fpg2r5gq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;不按上述方法组织的3种chunk</a>
+</h3>
+<h3 class="topic">
+<a name="7977bo5givuq0opac9a8iflr9o">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;top chunk</a>
+</h3>
+<h3 class="topic">
+<a name="6pr25nanu4h0f1nh0lsorf4lvd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;top chunk 对于主分配区和非主分配区是不一样的。</a>
+</h3>
+<h3 class="topic">
+<a name="14n16csajo9i4v7qqaqsplto55">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对于非主分配区</a>
+</h3>
+<h3 class="topic">
+<a name="36nucre7uke18jfas4nubi820b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对于非主分配区会预先从 mmap 区域分配一块较大的空闲内存模拟 sub-heap，通过管&#13;
+理 sub-heap 来响应用户的需求，因为内存是按地址从低向高进行分配的，在空闲内存的最 高处，必然存在着一块空闲 chunk，叫做 top chunk。</a>
+</h3>
+<h3 class="topic">
+<a name="50dqcic85vjghkm8bv9i9js745">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;非主分配区通过mmap分配heap</a>
+</h3>
+<h3 class="topic">
+<a name="422iubvov0rn2blr76i0hidjpb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当 bins 和 fast bins 都不能满足分配需 要的时候，ptmalloc会设法在top chunk中分出一块内存给用户，如果top chunk本身不够大， 分配程序会重新分配一个 sub-heap，并将 top chunk 迁移到新的 sub-heap 上，新的 sub-heap 与已有的 sub-heap 用单向链表连接起来，然后在新的 top chunk 上分配所需的内存以满足分 配的需要，实际上，top chunk 在分配时总是在 fast bins 和 bins 之后被考虑，所以，不论 top chunk 有多大，它都不会被放到 fast bins 或者是 bins 中</a>
+</h3>
+<h3 class="topic">
+<a name="7ckhiocbcgcen5kjv3uhfp3cmm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当fastbin bins均不能满足内存分配需求，则会分割topchunk用于满足内存申请需求，如果topchunk大小不够，程序会重新分配堆区，形成新的topchunk&#13;
+topchunk不会被放在fastbin或bins中</a>
+</h3>
+<h3 class="topic">
+<a name="5iudvsgg7g7ngats6rcg80ugd0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Top chunk 的大小是随着分配和回 收不停变换的，如果从 top chunk 分配内存会导致 top chunk 减小，如果回收的 chunk 恰好 与 top chunk 相邻，那么这两个 chunk 就会合并成新的 top chunk，从而使 top chunk 变大。 如果在 free 时回收的内存大于某个阈值，并且 top chunk 的大小也超过了收缩阈值，ptmalloc 会收缩 sub-heap，如果 top-chunk 包含了整个 sub-heap，ptmalloc 会调用 munmap 把整个 sub-heap 的内存返回给操作系统。</a>
+</h3>
+<h3 class="topic">
+<a name="4vaunjp4fhtj3onondmi35g370">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对于主分配区</a>
+</h3>
+<h3 class="topic">
+<a name="5sv7vmpf9929mfrispm2jmp7kk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;由于主分配区是唯一能够映射进程 heap 区域的分配区，它可以通过 sbrk()来增大或是&#13;
+收缩进程 heap 的大小，ptmalloc 在开始时会预先分配一块较大的空闲内存（也就是所谓 的 heap），主分配区的 top chunk 在第一次调用 malloc 时会分配一块(chunk_size + 128KB) align 4KB 大小的空间作为初始的 heap，用户从 top chunk 分配内存时，可以直接取出一块内 存给用户</a>
+</h3>
+<h3 class="topic">
+<a name="6hai15hflmafe6knjf495shq77">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;主分配区中可以通过直接从topchunk中取出内存从而满足内存分配需求</a>
+</h3>
+<h3 class="topic">
+<a name="1cl6oogmd1lk5fgu0oqn3kvvnq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在回收内存时，回收的内存恰好与 top chunk 相邻则合并成新的 top chunk，当该 次回收的空闲内存大小达到某个阈值，并且 top chunk 的大小也超过了收缩阈值，会执行内 存收缩，减小 top chunk 的大小，但至少要保留一个页大小的空闲内存，从而把内存归还给 操作系统。如果向主分配区的 top chunk 申请内存，而 top chunk 中没有空闲内存，ptmalloc 会调用 sbrk()将的进程 heap 的边界 brk 上移，然后修改 top chunk 的大小。</a>
+</h3>
+<h3 class="topic">
+<a name="50d3jo7mjia92ip7j8b33rr2as">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;主分配区中如果topchunk不够用，会使用sbrk()将进程的heap边界brk上移，进一步增大topchunk的大小</a>
+</h3>
+<h3 class="topic">
+<a name="6grr5ag0vi286t77pr91gqmeri">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mmaped chunk</a>
+</h3>
+<h3 class="topic">
+<a name="5dj7ebeg9ra2ri999o59j8b27t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当需要分配的 chunk 足够大，而且 fast bins 和 bins 都不能满足要求，甚至 top chunk 本&#13;
+身也不能满足分配需求时，ptmalloc 会使用mmap 来直接使用内存映射来将页映射到进程空 间。这样分配的 chunk 在被 free 时将直接解除映射，于是就将内存归还给了操作系统，再 次对这样的内存区的引用将导致 segmentation fault 错误。这样的 chunk 也不会包含在任何bin中</a>
+</h3>
+<h3 class="topic">
+<a name="1saoog88d8v9d2drpsa7t05g50">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当fatbin Unsortedbin bins topchunk的大小均不足以满足申请需求时，可以直接使用mmap的方式获得被映射的页内存，这样的chunk被释放后会直接解除映射，直接将内存归还给操作系统</a>
+</h3>
+<h3 class="topic">
+<a name="4selkdm09qafckvvs3qdjf234o">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;last remainder</a>
+</h3>
+<h3 class="topic">
+<a name="277ojdm2js9gu6q16pl4m6j1c3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Last remainder 是另外一种特殊的 chunk，就像 top chunk 和mmaped chunk 一样，不会&#13;
+在任何 bins 中找到这种 chunk。当需要分配一个 small chunk，但在 small bins 中找不到合适 的 chunk，如果 last remainder chunk 的大小大于所需的 small chunk 大小，last remainder chunk 被分裂成两个chunk，其中一个chunk返回给用户，另一个chunk变成新的last remainder chuk</a>
+</h3>
+<h3 class="topic">
+<a name="6c8a5acio94nuldeq9vin566e1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;一般位于Unsorted bin中</a>
+</h3>
+<h3 class="topic">
+<a name="053oo31jvtmsjb7o6mdk2r1dof">&nbsp;&nbsp;&nbsp;&nbsp;sbrk与mmap</a>
+</h3>
+<h3 class="topic">
+<a name="7qaudfib2tu27svrjmaus6qfcq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;从进程的内存布局可知，.bss 段之上的这块分配给用户程序的空间被称为 heap （堆）。&#13;
+start_brk 指向 heap 的开始，而 brk 指向 heap 的顶部。可以使用系统调用 brk()和 sbrk()来增 加标识 heap 顶部的 brk 值，从而线性的增加分配给用户的 heap 空间。在使 malloc 之前， brk的值等于start_brk，也就是说heap大小为0</a>
+</h3>
+<h3 class="topic">
+<a name="315p0uudm0ejlupgdl5r5gvnh1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;指针start_brk 和brk分别指向heap的开始和顶部，可以通过sbrk() brk()增加brk的值，从而增大heap&#13;
+第一次malloc之前start_brk=brk，heap大小为0</a>
+</h3>
+<h3 class="topic">
+<a name="55306kp365vc64qqdkk2lmpu00">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;首次malloc时</a>
+</h3>
+<h3 class="topic">
+<a name="5ij8nple2qo7d5bk0ipjetu4q5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;若请求的空间小于 mmap 分配阈值（mmap threshold，默认值为 128KB）时</a>
+</h3>
+<h3 class="topic">
+<a name="4oi9rk30666h1i074oaeqqsurp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;主分配区会调用 sbrk()增加一块大小为 (128 KB + chunk_size) align 4KB 的空间作为 heap。</a>
+</h3>
+<h3 class="topic">
+<a name="2aqbhg0mpp79nugp6ldrjsuhsf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;非主分配区会调用 mmap 映射一块大小为 HEAP_MAX_SIZE（32 位系统上默认为1MB，64 位系统上默认为64MB）的空间作为 sub-heap。</a>
+</h3>
+<h3 class="topic">
+<a name="5224fv483h20mqk8fgo1ehgsl1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;以上的heap和sub-heap就是前面所说的 ptmalloc 所维护的分配空间，当用户请求内存分配时，首先会在这个区 域内找一块合适的 chunk 给用户。当用户释放了 heap 中的 chunk 时，ptmalloc 又会使用 fast bins 和 bins 来组织空闲 chunk。以备用户的下一次分配</a>
+</h3>
+<h3 class="topic">
+<a name="57fgt3g0348080gahlep5e2k0m">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;若需要分配的 chunk 大小小于mmap 分配阈值，而 heap 空间又不够</a>
+</h3>
+<h3 class="topic">
+<a name="0ica6e9dh6t1770slv2tv7nj9j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;则此时主分配区会通过 sbrk()调用来增加 heap 大小</a>
+</h3>
+<h3 class="topic">
+<a name="0form2dv4127u7tpkbhfu06fga">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;非主分配区会调用mmap 映射一块新的 sub-heap</a>
+</h3>
+<h3 class="topic">
+<a name="20rngl2g7bqui9u186f74mqbpo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;以上措施均是增加 top chunk 的大小，每次 heap 增 加的值都会对齐到 4KB。</a>
+</h3>
+<h3 class="topic">
+<a name="06mjla75uk511fc9df9g3dbp90">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当用户的请求超过mmap 分配阈值，并且主分配区使用 sbrk()分配失败的时候，或是非主分配区在 top chunk 中不能分配到需要的内存时</a>
+</h3>
+<h3 class="topic">
+<a name="02gorbbsk74j78509s0d0mu9lt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ptmalloc 会尝试使用mmap()直接映射一 块内存到进程内存空间。使用 mmap()直接映射的 chunk 在释放时直接解除映射，而不再属 于进程的内存空间。任何对该内存的访问都会产生段错误。而在 heap 中或是 sub-heap 中分 配的空间则可能会留在进程内存空间内，还可以再次引用（当然是很危险的）。</a>
+</h3>
+<h3 class="topic">
+<a name="6ph7tj13o1qnsnusd6pc3qqfu3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当 ptmalloc munmap chunk 时，如果回收的 chunk 空间大小大于mmap 分配阈值的当前值，并且小于 DEFAULT_MMAP_THRESHOLD_MAX（32 位系统默认为 512KB，64 位系统默认 为 32MB），ptmalloc 会把 mmap 分配阈值调整为当前回收的 chunk 的大小，并将 mmap 收 缩阈值（mmap trim threshold）设置为mmap 分配阈值的 2 倍。这就是 ptmalloc 的对mmap 分配阈值的动态调整机制，该机制是默认开启的，当然也可以用mallopt()关闭该机制</a>
+</h3>
+<h3 class="topic">
+<a name="0iv8hohhv6pcufr1i6h92gacir">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mmap分配阈值的动态调整机制</a>
+</h3>
+<h3 class="topic">
+<a name="6fg8f08no2lucn6scmbqbt01ia">&nbsp;&nbsp;&nbsp;内存分配概述</a>
+</h3>
+<h3 class="topic">
+<a name="75q83l4jv6o4ciol4ctuic5lbm">&nbsp;&nbsp;&nbsp;&nbsp;对于分配算法</a>
+</h3>
+<h3 class="topic">
+<a name="5hvahbehop56tsj58cf1u7gs05">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1. 分配算法概述，以 32 系统为例，64 位系统类似。&#13;
+小于等于 64 字节：用 pool 算法分配。&#13;
+64 到 512 字节之间：在最佳匹配算法分配和 pool 算法分配中取一种合适的。 &#13;
+大于等于 512 字节：用最佳匹配算法分配。&#13;
+大于等于mmap 分配阈值（默认值 128KB）：根据设置的 mmap 的分配策略进行分配， 如果没有开启mmap 分配阈值的动态调整机制，大于等于 128KB 就直接调用mmap&#13;
+分配。否则，大于等于mmap 分配阈值时才直接调用mmap()分配。</a>
+</h3>
+<h3 class="topic">
+<a name="2a6jcd5uinvqvodclrv3g54v2g">&nbsp;&nbsp;&nbsp;&nbsp;ptmalloc 的响应用户内存分配要求的具体步骤为:</a>
+</h3>
+<h3 class="topic">
+<a name="0revjpcgspvfgtfmmbiq4072nv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1) 获取分配区的锁，为了防止多个线程同时访问同一个分配区，在进行分配之前需要 取得分配区域的锁。线程先查看线程私有实例中是否已经存在一个分配区，如果存 在尝试对该分配区加锁，如果加锁成功，使用该分配区分配内存，否则，该线程搜 索分配区循环链表试图获得一个空闲（没有加锁）的分配区。如果所有的分配区都 已经加锁，那么 ptmalloc 会开辟一个新的分配区，把该分配区加入到全局分配区循 环链表和线程的私有实例中并加锁，然后使用该分配区进行分配操作。开辟出来的 新分配区一定为非主分配区，因为主分配区是从父进程那里继承来的。开辟非主分 配区时会调用mmap()创建一个 sub-heap，并设置好 top chunk。</a>
+</h3>
+<h3 class="topic">
+<a name="6bch2326bojcojvn3cln3mgo5f">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2) 将用户的请求大小转换为实际需要分配的 chunk 空间大小</a>
+</h3>
+<h3 class="topic">
+<a name="7bj8lr8pb33ejeu1fq4e7df4hm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3) 判断所需分配chunk的大小是否满足chunk_size &lt;= max_fast (max_fast 默认为 64B)， 如果是的话，则转下一步，否则跳到第 5 步。</a>
+</h3>
+<h3 class="topic">
+<a name="3mkalnl5rac3n4jg4dpjcdq9jh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4) 首先尝试在 fast bins 中取一个所需大小的 chunk 分配给用户。如果可以找到，则分配结束。否则转到下一步。</a>
+</h3>
+<h3 class="topic">
+<a name="4fcinbp1dcieva4i4ehqatdg97">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;说明malloc时fastbin时第一个被用于尝试满足申请需求的</a>
+</h3>
+<h3 class="topic">
+<a name="6gorgqr8v6l96ma04t7975hd53">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;要求大小精确匹配</a>
+</h3>
+<h3 class="topic">
+<a name="6b9qkcbmlnhf2vtc78v6hkk04q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5) 判断所需大小是否处在 small bins 中，即判断 chunk_size &lt; 512B 是否成立。如果 chunk 大小处在 small bins 中，则转下一步，否则转到第 7步。</a>
+</h3>
+<h3 class="topic">
+<a name="41tt2168vake0rb28vemkjluao">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6) 根据所需分配的 chunk 的大小，找到具体所在的某个 small bin，从该 bin 的尾部摘 取一个恰好满足大小的 chunk。若成功，则分配结束，否则，转到下一步。</a>
+</h3>
+<h3 class="topic">
+<a name="23dlin1hrej9p10o8n08e8chsn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;smallbin第二个用于尝试满足申请需求</a>
+</h3>
+<h3 class="topic">
+<a name="312rbs67ob8hntf7q3950cognq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;要求大小精确匹配</a>
+</h3>
+<h3 class="topic">
+<a name="1h3s4jtupjl4ofcc6130mditob">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;7) 到了这一步，说明需要分配的是一块大的内存，或者 small bins 中找不到合适的 chunk。于是，ptmalloc 首先会遍历 fast bins 中的 chunk，将相邻的 chunk 进行合并， 并链接到 unsorted bin 中，然后遍历 unsorted bin 中的 chunk，如果 unsorted bin 只 有一个 chunk，并且这个 chunk 在上次分配时被使用过，并且所需分配的 chunk 大 小属于 small bins，并且 chunk 的大小大于等于需要分配的大小，这种情况下就直 接将该 chunk 进行切割，分配结束，否则将根据 chunk 的空间大小将其放入 small bins 或是 large bins 中，遍历完成后，转入下一步。</a>
+</h3>
+<h3 class="topic">
+<a name="1lev7aghh4al516834m4detka5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当smallbin无法满足申请需求-》遍历fastbin，合并其中相邻的chunk，将其链入Unsortedbin中-》尝试能否通过Unsorted bin中的chunk满足申请要求，如果能则分配结束若不能-》将Unsortedbin中chunk根据大小放入smallbin或largebin</a>
+</h3>
+<h3 class="topic">
+<a name="2vuo8sca2a8e608knptq1f0has">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;此后Unsorted 和fastbin(?)被清空</a>
+</h3>
+<h3 class="topic">
+<a name="0s8nue5ibk1rvr4fbl8k2h95m7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;8) 到了这一步，说明需要分配的是一块大的内存，或者 small bins 和 unsorted bin 中 都找不到合适的 chunk，并且 fast bins 和 unsorted bin 中所有的 chunk 都清除干净 了。从 large bins 中按照&ldquo;smallest-first，best-fit&rdquo;原则，找一个合适的 chunk，从 中划分一块所需大小的 chunk，并将剩下的部分链接回到 bins 中。若操作成功，则 分配结束，否则转到下一步</a>
+</h3>
+<h3 class="topic">
+<a name="0h9da7epk86acq0kesktnrk8vq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在largebin中寻找合适的chunk，如果找到从largechunk中划分一块用于满足申请要求，剩余部分链入Unsortedbin中，如果largebin中没有满足要求的chunk</a>
+</h3>
+<h3 class="topic">
+<a name="43cb30up5i28pj7rtvloa5ipfm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用largebin中的chunk满足分配要求，不要求chunk的大小精确匹配，仅仅需要遵守smallest-first best-fit原则即可</a>
+</h3>
+<h3 class="topic">
+<a name="3r6cdu94risnb76861i8kv5fr7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;9) 如果搜索 fast bins 和 bins 都没有找到合适的 chunk，那么就需要操作 top chunk 来 进行分配了。判断 top chunk 大小是否满足所需 chunk 的大小，如果是，则从 top chunk 中分出一块来。否则转到下一步。</a>
+</h3>
+<h3 class="topic">
+<a name="0pdu1l5uiei080h30sk8umsk4v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;尝试分割topchunk满足申请要求</a>
+</h3>
+<h3 class="topic">
+<a name="4htbhlqrttgmco821nqmktkdgr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;10) 到了这一步，说明 top chunk 也不能满足分配要求，所以，于是就有了两个选择: 如 果是主分配区，调用 sbrk()，增加 top chunk 大小；如果是非主分配区，调用mmap 来分配一个新的 sub-heap，增加 top chunk 大小；或者使用mmap()来直接分配。在 这里，需要依靠 chunk 的大小来决定到底使用哪种方法。判断所需分配的 chunk 大小是否大于等于 mmap 分配阈值，如果是的话，则转下一步，调用mmap 分配， 否则跳到第 12 步，增加 top chunk 的大小。</a>
+</h3>
+<h3 class="topic">
+<a name="6mp3c9kjl8dib8ascj3npd4thp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;需要判断申请的chunk的大小是是否大于mmap分配阈值，如果是，需要使用mmap()直接分配内存，如果不是，需要通过sbrk()或mmap增加tophcunk的大小</a>
+</h3>
+<h3 class="topic">
+<a name="4egaih47lhor3ac60ksnqbr7ov">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;11) 使用mmap 系统调用为程序的内存空间映射一块 chunk_size align 4kB 大小的空间。 然后将内存指针返回给用户。</a>
+</h3>
+<h3 class="topic">
+<a name="0ijfbsl93e8o48hmu8gc5hk06d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;12) 判断是否为第一次调用malloc，若是主分配区，则需要进行一次初始化工作，分配一块大小为(chunk_size + 128KB) align 4KB 大小的空间作为初始的 heap。若已经初 始化过了，主分配区则调用 sbrk()增加 heap 空间，非主分配区则在 top chunk 中切 割出一个 chunk，使之满足分配需求，并将内存指针返回给用户。</a>
+</h3>
+<h3 class="topic">
+<a name="6p408kltbtj54t7jcjgscngcef">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对于主分配需要判断是否时第一次调用malloc，如果是第一次，则需要进行一次初始化的操作</a>
+</h3>
+<h3 class="topic">
+<a name="6pebkhrhs34ig21dk77d15c9u0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;总结</a>
+</h3>
+<h3 class="topic">
+<a name="720ers0flbk0f57q57gliqd503">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;总结一下：根据用户请求分配的内存的大小，ptmalloc 有可能会在两个地方为用户&#13;
+分配内存空间。在第一次分配内存时，一般情况下只存在一个主分配区，但也有可能从 父进程那里继承来了多个非主分配区，在这里主要讨论主分配区的情况，brk 值等于 start_brk，所以实际上 heap 大小为 0，top chunk 大小也是 0。这时，如果不增加 heap 大小，就不能满足任何分配要求。所以，若用户的请求的内存大小小于mmap 分配阈值， 则 ptmalloc 会初始 heap。然后在 heap 中分配空间给用户，以后的分配就基于这个 heap 进行。若第一次用户的请求就大于 mmap 分配阈值，则 ptmalloc 直接使用 mmap()分配 一块内存给用户，而 heap 也就没有被初始化，直到用户第一次请求小于 mmap 分配阈 值的内存分配。第一次以后的分配就比较复杂了，简单说来，ptmalloc首先会查找fast bins， 如果不能找到匹配的 chunk，则查找 small bins。若还是不行，合并 fast bins，把 chunk 加入 unsorted bin，在 unsorted bin 中查找，若还是不行，把 unsorted bin 中的 chunk 全 加入 large bins 中，并查找 large bins。在 fast bins 和 small bins 中的查找都需要精确匹配， 而在 large bins 中查找时，则遵循&ldquo;smallest-first，best-fit&rdquo;的原则，不需要精确匹配。 若以上方法都失败了，则 ptmalloc 会考虑使用 top chunk。若 top chunk 也不能满足分配 要求。而且所需 chunk 大小大于 mmap 分配阈值，则使用 mmap 进行分配。否则增加 heap，增大 top chunk。以满足分配要求。</a>
+</h3>
+<h3 class="topic">
+<a name="7cgpin9t5142vn7rg8dhpfpgms">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;主分配区中，如果第一次申请的内存的大小就小于mmap分配阈值，则程序会初始化heap，将heap中的空间分配给用户，之后的分配就基于该heap进行，如果第一次申请的内存的大小就大于mmap分配阈值，则直接回调用mmap()分配内存给用户，此时主分配区中的heap就没有被初始化，即heap大小为0,start_brk=brl，没有topchunk，直到第一次申请小于mmap分配阈值的chunk</a>
+</h3>
+<h3 class="topic">
+<a name="0anstpcmu68357cqrkcgmc51dq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;子主题 1</a>
+</h3>
+<h3 class="topic">
+<a name="0ejmq12qoqocr8mo1fkkd3d3bg">&nbsp;&nbsp;&nbsp;内存回收概述</a>
+</h3>
+<h3 class="topic">
+<a name="12pp82sbrl7l3o50aflktpcvad">&nbsp;&nbsp;&nbsp;&nbsp;free() 函数接受一个指向分配区域的指针作为参数，释放该指针所指向的 chunk。而具&#13;
+体的释放方法则看该 chunk 所处的位置和该 chunk 的大小。free()函数的工作步骤如下：</a>
+</h3>
+<h3 class="topic">
+<a name="6crh2b7c76p5600m4cl4avjvhu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1) free()函数同样首先需要获取分配区的锁，来保证线程安全。</a>
+</h3>
+<h3 class="topic">
+<a name="5eicckv3q8f3p9f884viq0h18g">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2) 判断传入的指针是否为 0，如果为 0，则什么都不做，直接 return。否则转下一步。</a>
+</h3>
+<h3 class="topic">
+<a name="3snmpt31mli1jhl5nimf825hqn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3) 判断所需释放的 chunk 是否为 mmaped chunk，如果是，则调用 munmap()释放 mmaped chunk，解除内存空间映射，该该空间不再有效。如果开启了mmap 分配 阈值的动态调整机制，并且当前回收的 chunk 大小大于mmap 分配阈值，将mmap 分配阈值设置为该 chunk 的大小，将 mmap 收缩阈值设定为 mmap 分配阈值的 2 倍，释放完成，否则跳到下一步。</a>
+</h3>
+<h3 class="topic">
+<a name="71oma6ol5l83afqqi1vafkvpu1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果该chunk来源于mmap()的直接分配，则之直接使用munmap()取消映射，操作系统收回内存，如果释放的chunk的大小大于mmap分配阈值，且mmap动态阈值调整机制开启，则会对mmap的分配阈值和收缩阈值进行修改</a>
+</h3>
+<h3 class="topic">
+<a name="1uq9mia2qkuenpdmo8spof7759">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4) 判断 chunk 的大小和所处的位置，若 chunk_size &lt;= max_fast，并且 chunk 并不位于 heap 的顶部，也就是说并不与 top chunk 相邻，则转到下一步，否则跳到第 6 步。 （因为与 top chunk 相邻的小 chunk 也和 top chunk 进行合并，所以这里不仅需要 判断大小，还需要判断相邻情况）</a>
+</h3>
+<h3 class="topic">
+<a name="543je6el1iavk9agnu3beoscei">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;需要判断两个点&#13;
+1、被释放chunk的大小&#13;
+2、被释放的chunk是否与topchunk相邻</a>
+</h3>
+<h3 class="topic">
+<a name="7l5eaacmlcbebqgbu582lvlni1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5) 将 chunk 放到 fast bins 中，chunk 放入到 fast bins 中时，并不修改该 chunk 使用状 态位 P。也不与相邻的 chunk 进行合并。只是放进去，如此而已。这一步做完之后 释放便结束了，程序从 free()函数中返回。</a>
+</h3>
+<h3 class="topic">
+<a name="1kdac3tr9bv02cdrhj44k74k7o">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果chunk是fastbinchunk并且不与topchunk相邻，则之直接将chunk释放到对应大小的fastbin中，并且fastbinchunk被释放后不修改使用状态位P</a>
+</h3>
+<h3 class="topic">
+<a name="2ddnd3ubk9ufs8m0vctm6b1t6r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6) 判断前一个 chunk 是否处在使用中，如果前一个块也是空闲块，则合并。并转下一 步。&#13;
+7) 判断当前释放 chunk 的下一个块是否为 top chunk，如果是，则转第 9 步，否则转 下一步。&#13;
+8) 判断下一个 chunk 是否处在使用中，如果下一个 chunk 也是空闲的，则合并，并将合并后的 chunk 放到 unsorted bin 中。注意，这里在合并的过程中，要更新 chunk 的大小，以反映合并后的 chunk 的大小。并转到第 10 步。</a>
+</h3>
+<h3 class="topic">
+<a name="0fnnmrv9kjkhek8tjbqu1f2nr9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对于chunk大小不在fastbin范围内的chunk，先判断前一个chunk是否为空闲，若是则合并，然后判断后一个chunk是否为topchunk若是则合并，若不是则判断后一个chunk是否空闲，如果是则合并，注意如果chunk合并的情况下(除了与topchunk合并)，合并后的chunk均会置入Unsortedbin</a>
+</h3>
+<h3 class="topic">
+<a name="0hia97r5vmcsceblns7fd0pmvd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;9) 如果执行到这一步，说明释放了一个与 top chunk 相邻的 chunk。则无论它有多大， 都将它与 top chunk 合并，并更新 top chunk 的大小等信息。转下一步。</a>
+</h3>
+<h3 class="topic">
+<a name="22h0q89i5soak1j1oiak1lbesf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;10) 判断合并后的 chunk 的大小是否大于 FASTBIN_CONSOLIDATION_THRESHOLD（默认 64KB），如果是的话，则会触发进行 fast bins 的合并操作，fast bins 中的 chunk 将被 遍历，并与相邻的空闲 chunk 进行合并，合并后的 chunk 会被放到 unsorted bin 中。 fast bins 将变为空，操作完成之后转下一步。</a>
+</h3>
+<h3 class="topic">
+<a name="2a3lnfcqulacqmbgi4c3qphg5e">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果而合并后的chunk（包括两个普通空闲chunk合并以及与topchunk合并）大小大于某值，则会触发fastbin中的chunk进行合并，合并后的chunk置入Unsortedbin，fastbin将置空</a>
+</h3>
+<h3 class="topic">
+<a name="0l3ifdborb9g6847vuqs5aqpur">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;11) 判断 top chunk 的大小是否大于mmap 收缩阈值（默认为 128KB），如果是的话，对 于主分配区，则会试图归还 top chunk 中的一部分给操作系统。但是最先分配的 128KB 空间是不会归还的，ptmalloc 会一直管理这部分内存，用于响应用户的分配 请求；如果为非主分配区，会进行 sub-heap 收缩，将 top chunk 的一部分返回给操 作系统，如果 top chunk 为整个 sub-heap，会把整个 sub-heap 还回给操作系统。做 完这一步之后，释放结束，从 free() 函数退出。可以看出，收缩堆的条件是当前 free 的 chunk 大小加上前后能合并 chunk 的大小大于 64k，并且要 top chunk 的大 小要达到mmap 收缩阈值，才有可能收缩堆。</a>
+</h3>
+<h3 class="topic">
+<a name="21cqch1fv59tmfor5s1lsuvb4s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;判断此时topchunk大小，如果大于mmap收缩阈值，则会将topchunk中部分内存归还系统，因为如果topcuhnk过大，说明此时程序需要使用的堆空间大小较小，系统会回收部分用不到的内存</a>
+</h3>
+<h3 class="topic">
+<a name="6b1ccgper7dlqtg7i5kudrv6vt">&nbsp;&nbsp;&nbsp;配置选项概述</a>
+</h3>
+<h3 class="topic">
+<a name="478jj57blmeo4b4o2sa5h4u95f">&nbsp;&nbsp;&nbsp;&nbsp;Ptmalloc 主要提供以下几个配置选项用于调优，这些选项可以通过mallopt()进行设置</a>
+</h3>
+<h3 class="topic">
+<a name="4d1a4occj420prqeigihv67j8c">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;M_MXFAST：用于标识fastbin chunk的最大小</a>
+</h3>
+<h3 class="topic">
+<a name="1e6tt7pmdti7po5ujkpbumml8v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN15_files/5erbe6cidmv5p785mmj4p7hn9e.png"></p>
+<h3 class="topic">
+<a name="0gjscnsb8eduvv4ur27i71me10">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;M_TRIM_THRESHOLD：用于标识mmap收缩阈值</a>
+</h3>
+<h3 class="topic">
+<a name="5ng10ejsd0jr0odhjsaelf076s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN15_files/3n491ijcolbua5scfur49hknqc.png"></p>
+<h3 class="topic">
+<a name="4q4eoscfuss5tkaa4t50ccu8na">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN15_files/48d0kmq685k4q3hrturl5e1q82.png"></p>
+<h3 class="topic">
+<a name="2a38gkcfgl83gpuferm9ehf4ir">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;M_MMAP_THRESHOLD：用于标识mmap分配阈值</a>
+</h3>
+<h3 class="topic">
+<a name="3bc4n91atg1bko9g05l9ll1a69">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN15_files/1nitqb5jil8tk0j8kpotec7dku.png"></p>
+<h3 class="topic">
+<a name="0umk4ldm3rfnopkm0r4rk4robv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当申请内存的大小大于mmap分配阈值时，malloc相当于mmap()，free相当于munmap()，通过mmap()申请的内存是释放后直接返回给系统们不会被ptamlloc进行缓存管理，但是mmap()申请的空间是恶适合于长时间运行的程序的较大的内存块需求</a>
+</h3>
+<h3 class="topic">
+<a name="15tdjesremuuh8q6niodrk1f7j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;M_MMAP_MAX：用于标识程序中通过mmap分配的内存块的最大限制</a>
+</h3>
+<h3 class="topic">
+<a name="1numoh0gb5m0odg22agr77j327">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN15_files/5fq170a14uuhe4dk8dpj1f6fkr.png"></p>
+</body>
+</html>

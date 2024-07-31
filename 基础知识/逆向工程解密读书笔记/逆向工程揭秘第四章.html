@@ -1,0 +1,120 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>逆向工程揭秘第四章</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="4rgn293b1s2nu75c9hemi8717g">逆向工程揭秘第四章</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%8F%AD%E7%A7%98%E7%AC%AC%E5%9B%9B%E7%AB%A0_files/images/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%8F%AD%E7%A7%98%E7%AC%AC%E5%9B%9B%E7%AB%A0.jpg"></div>
+<h2 class="topic">
+<a name="61l47mhqbncr31oa6lap4ftuua">4.1不同的逆向方法</a>
+</h2>
+<h3 class="topic">
+<a name="697rpce2b6fnoi7vqs1i6dft5g">&nbsp;4.1.1离线代码分析(静态分析)</a>
+</h3>
+<h3 class="topic">
+<a name="6qva7ome64362dqilrn3f71b5l">&nbsp;4.1.2现场代码分析(动态分析)</a>
+</h3>
+<h2 class="topic">
+<a name="4re20g3v3dim5s6fvo0bm9931h">4.2反汇编器 ILDasm</a>
+</h2>
+<h3 class="topic">
+<a name="7d9p31qjuccrtdrloobokp6st7">&nbsp;将二进制流转化为汇编语言</a>
+</h3>
+<h3 class="topic">
+<a name="1d0idkh4bhuoqams8v8vgbtq7b">&nbsp;ILDasm针对MSIL(微软.net平台的中间语言)的反汇编器</a>
+</h3>
+<h2 class="topic">
+<a name="7fo2abvk8lja6f6p0p60v4r84g">4.3调试器</a>
+</h2>
+<h3 class="topic">
+<a name="3vcuqtm2a3itsvotloiq7b4mri">&nbsp;调试器内在要求</a>
+</h3>
+<h3 class="topic">
+<a name="6s50ssfvi537at5b02m35lt2pl">&nbsp;&nbsp;强大的反汇编器</a>
+</h3>
+<h3 class="topic">
+<a name="5li06epo949bfg3hojh70gg23u">&nbsp;&nbsp;软件和硬件断点</a>
+</h3>
+<h3 class="topic">
+<a name="7i9p3oet6pvuac1o4p75q6bt5b">&nbsp;&nbsp;寄存器和内存视图</a>
+</h3>
+<h3 class="topic">
+<a name="524kc057qo7tds86ju026op11j">&nbsp;&nbsp;进程信息</a>
+</h3>
+<h3 class="topic">
+<a name="2683r57d2epn0unkal6bscpg9t">&nbsp;分类</a>
+</h3>
+<h3 class="topic">
+<a name="33sdh8gkf0jvp55k3c3ujecqnn">&nbsp;&nbsp;用户模式调试器</a>
+</h3>
+<h3 class="topic">
+<a name="2biritmt9c6pmqd29jtgpvnumc">&nbsp;&nbsp;&nbsp;优点是易于安装使用功能</a>
+</h3>
+<h3 class="topic">
+<a name="456na91i8lavmr69o74kefqc4m">&nbsp;&nbsp;&nbsp;缺点是仅能观察一个进程的用户模式的代码</a>
+</h3>
+<h3 class="topic">
+<a name="6h5141o3dcamajd0ajkuecmp6b">&nbsp;&nbsp;&nbsp;od</a>
+</h3>
+<h3 class="topic">
+<a name="45i17ca6kovbqfceh9v1cp2cf2">&nbsp;&nbsp;内核模式调试器</a>
+</h3>
+<h3 class="topic">
+<a name="2vcbla3htjhk2fv5nd9gf5q0td">&nbsp;&nbsp;&nbsp;允许无限制地控制目标程序,对系统中的发生的每一件事均提供完整的视图,不论其发生在应用代码中还是操作系统代码中</a>
+</h3>
+<h3 class="topic">
+<a name="1oenctbqes7enphsdo4832ga6t">&nbsp;&nbsp;&nbsp;不是运行在操作系统上的程序,而是与系统的内核处于同等地位的组件,能够在任意时刻停止整个系统的运行并观察它</a>
+</h3>
+<h3 class="topic">
+<a name="5rmpmq2m0a6adarke8ar326f8d">&nbsp;&nbsp;&nbsp;提供了系统的完整面貌和所有正在运行的进程的状况</a>
+</h3>
+<h3 class="topic">
+<a name="1ubh7n1kgmum5gi18c2i765jm8">&nbsp;&nbsp;&nbsp;最强大的功能是设置底层断点的能力</a>
+</h3>
+<h3 class="topic">
+<a name="5o4g0tp0n9ul8kig5p37l8ofai">&nbsp;&nbsp;&nbsp;会破坏与其共处的操作系统的稳定性,内核模式的调试器打开后,系统会处于冻结状态,没有任何正在运行的线程</a>
+</h3>
+<h3 class="topic">
+<a name="03rqt7ra41r1ivn1koj8q6rvrn">&nbsp;&nbsp;&nbsp;windbg</a>
+</h3>
+<h3 class="topic">
+<a name="6vdc0uqc6f14n4psmjder4inal">&nbsp;&nbsp;&nbsp;softice</a>
+</h3>
+<h3 class="topic">
+<a name="2gv32ms062ikpduq311sa9m4o8">&nbsp;&nbsp;&nbsp;在虚拟机上进行内核调试</a>
+</h3>
+<h2 class="topic">
+<a name="0grsv6u5fhqdt8lmlsaqr4mt66">4.4反编译器</a>
+</h2>
+<h3 class="topic">
+<a name="1elmkp3bmbi8j6bmhsr66k0gh6">&nbsp;从二进制代码得到类似高级语言源码的表示</a>
+</h3>
+<h3 class="topic">
+<a name="2ladkktqsk1aospo44jgqr61ej">&nbsp;不可能完全恢复原始代码,因为编译过程中会从源程序中删除一些信息</a>
+</h3>
+<h2 class="topic">
+<a name="76ibro1i1h3qs7um90nkt86p2m">4.5系统监控工具</a>
+</h2>
+<h2 class="topic">
+<a name="0kfvhot0q07mh0lgv83q23vomp">4.6修补工具</a>
+</h2>
+<h3 class="topic">
+<a name="01cjjhf8rmqk9ltgkg37sii35g">&nbsp;修改二进制可执行程序中的代码改变其行为的过程</a>
+</h3>
+<h2 class="topic">
+<a name="04i7ne1c1dldcdbmrbummlsb0j">4.7其他类型的逆向工具</a>
+</h2>
+<h3 class="topic">
+<a name="3951eul2t9sq4622v8ijt8nt4p">&nbsp;可执行程序转储工具</a>
+</h3>
+<h2 class="topic">
+<a name="6lbae8dbenqtt5efj74vv54i7k">4.8结论</a>
+</h2>
+</body>
+</html>

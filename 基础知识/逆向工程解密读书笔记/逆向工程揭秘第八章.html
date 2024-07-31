@@ -1,0 +1,351 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>逆向工程揭秘第八章</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="0g101jjt2kghcguun7t847a6sq">逆向工程揭秘第八章</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%8F%AD%E7%A7%98%E7%AC%AC%E5%85%AB%E7%AB%A0_files/images/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%8F%AD%E7%A7%98%E7%AC%AC%E5%85%AB%E7%AB%A0.jpg"></div>
+<h2 class="topic">
+<a name="2m98jqtmcgpk718ap1har14i12">8.1恶意软件的分类</a>
+</h2>
+<h3 class="topic">
+<a name="16s9f4as3f36uih7abq92u2jhl">&nbsp;8.1.1病毒</a>
+</h3>
+<h3 class="topic">
+<a name="4eplie3adab776peobt9j1b3k2">&nbsp;&nbsp;定义：具有自我复制能力的程序，通常具有一定的恶意目的</a>
+</h3>
+<h3 class="topic">
+<a name="7no5okidapk9vfl0456sesaiko">&nbsp;&nbsp;特点：通常将自身附在可执行程序文件上，之后逐渐将自己复制到被感染计算机中的多个可执行文件上</a>
+</h3>
+<h3 class="topic">
+<a name="7h20ufs7eq26jnc4n7abvcdde1">&nbsp;&nbsp;利用互联网作为传播的恶意软件通常被称为蠕虫</a>
+</h3>
+<h3 class="topic">
+<a name="0m5bqfic72e2gplm986lt9ejh2">&nbsp;8.1.2蠕虫</a>
+</h3>
+<h3 class="topic">
+<a name="7gpb3gcas776m7t85okqs8gm81">&nbsp;&nbsp;与病毒主要区别在于其通过网络进行自我复制，复制的过程不需要人的直接参与，复制可以在后台进行</a>
+</h3>
+<h3 class="topic">
+<a name="75iprvn33fal3po43ijmaqe8mn">&nbsp;&nbsp;传播途径</a>
+</h3>
+<h3 class="topic">
+<a name="4lp3ti8j50sktjc2q7q3skea7f">&nbsp;&nbsp;&nbsp;通过软件漏洞</a>
+</h3>
+<h3 class="topic">
+<a name="7km5l1ofcb9gatj9bqelbsp484">&nbsp;&nbsp;&nbsp;&nbsp;将自身隐藏在网络数据包中</a>
+</h3>
+<h3 class="topic">
+<a name="1kr33uan1dn08b1kfajbsku4l2">&nbsp;&nbsp;&nbsp;&nbsp;几乎不需要终端用户操作</a>
+</h3>
+<h3 class="topic">
+<a name="1graso82glbugfs1jcc6m534se">&nbsp;&nbsp;&nbsp;通过电子邮件</a>
+</h3>
+<h3 class="topic">
+<a name="08t7qfc3gu9hachbukdnqvfcil">&nbsp;&nbsp;&nbsp;&nbsp;与具体的电子邮件程序有关</a>
+</h3>
+<h3 class="topic">
+<a name="317qk5t28qmvv82jdeua1sf2be">&nbsp;&nbsp;&nbsp;&nbsp;通常扫描用户的联系人列表，并将自身通过邮件进行群发，以期望收件人打开蠕虫附件</a>
+</h3>
+<h3 class="topic">
+<a name="1d0c01p617q7akl9nv5jqiog55">&nbsp;8.1.3木马</a>
+</h3>
+<h3 class="topic">
+<a name="2a7fdcsgh0qqki4d1v449k4pkf">&nbsp;&nbsp;定义：表面上没有异常，实际包含恶意代码的文件</a>
+</h3>
+<h3 class="topic">
+<a name="730k01oc9rq6p0re6slkl7kasm">&nbsp;&nbsp;实现方法</a>
+</h3>
+<h3 class="topic">
+<a name="5jin9mksebklp7ekui76vee5ns">&nbsp;&nbsp;&nbsp;将恶意单元模块嵌入到良性程序中，从而隐藏攻击目的</a>
+</h3>
+<h3 class="topic">
+<a name="2iffhrbp5b4g7o7fpuh1u39jpv">&nbsp;&nbsp;&nbsp;通过欺骗使用户相信该文件没有危害</a>
+</h3>
+<h3 class="topic">
+<a name="191hrva3c9v7p3lias41k2eu9u">&nbsp;&nbsp;&nbsp;&nbsp;windows中文件类型是由扩展名决定的，通过编写较长的扩展名，从而利用windows文件名部分显示的机制，隐藏真实的文件类型，诱使用户执行</a>
+</h3>
+<h3 class="topic">
+<a name="5btdpd08t5pd20vef1cvdrrnr0">&nbsp;&nbsp;&nbsp;&nbsp;同时需要修改windows下默认的文件图像图标显示</a>
+</h3>
+<h3 class="topic">
+<a name="3tnghdsvkk044cjrg29csr84v1">&nbsp;8.1.4后门</a>
+</h3>
+<h3 class="topic">
+<a name="4g4q2nk0nm9r2lsepb8aqnage0">&nbsp;&nbsp;定义：能够创建访问信道供攻击者连接、控制、侦查受害者系统的恶意软件</a>
+</h3>
+<h3 class="topic">
+<a name="41nj0oeb11t670tal7fieo1nme">&nbsp;&nbsp;形式</a>
+</h3>
+<h3 class="topic">
+<a name="56ikvmorboi28rtca99uihf5a5">&nbsp;&nbsp;&nbsp;单独的后门程序</a>
+</h3>
+<h3 class="topic">
+<a name="3hsvs32t6ufaois7mvttdpkmro">&nbsp;&nbsp;&nbsp;软件开发者隐藏的后门程序</a>
+</h3>
+<h3 class="topic">
+<a name="5t8nng1tsh1p2mren3d25l0bnj">&nbsp;8.1.5移动代码</a>
+</h3>
+<h3 class="topic">
+<a name="6pi43kd6q8vhb3fdu66tauie4j">&nbsp;&nbsp;定义：是可以移动的程序，并且可以在很多系统上运行而不需要终端用用户显式地在系统上安装，目前大多数此种程序用于丰富用户网页浏览体验而设计，一般是用户在网站上下载程序并运行于终端系统</a>
+</h3>
+<h3 class="topic">
+<a name="1577dt6p1q3jko9gc25a8jhlff">&nbsp;&nbsp;其只是一种代码发布方式</a>
+</h3>
+<h3 class="topic">
+<a name="6cfjiuo50289rib00p7asmtllu">&nbsp;&nbsp;&nbsp;Java脚本文件常以源代码形式发布</a>
+</h3>
+<h3 class="topic">
+<a name="6ft6kiogabfr7acpqjc3334ri0">&nbsp;&nbsp;&nbsp;ActiveX组件常以普通PE可执行程序发布</a>
+</h3>
+<h3 class="topic">
+<a name="6qhikc0omi8tvhbilj9948a3ji">&nbsp;&nbsp;&nbsp;java应用小程序常用字节码的形式表示，比较容易被反编译和实施逆向工程</a>
+</h3>
+<h3 class="topic">
+<a name="48jkhk1l5em313ft9mtsi16nj6">&nbsp;8.1.6广告软件和间谍软件</a>
+</h3>
+<h3 class="topic">
+<a name="78nkro91777j654nuv88adogbc">&nbsp;&nbsp;收集用户有关浏览习惯和购物习惯的统计数据，并使用这些信息给用户针对性的广告提示</a>
+</h3>
+<h2 class="topic">
+<a name="1lq49algc91h59hcce50ltm0ck">8.2粘人的软件</a>
+</h2>
+<h3 class="topic">
+<a name="1d3u51sedk8j4ifa0fb32ittvb">&nbsp;恶意软件防止用户删除的方式</a>
+</h3>
+<h3 class="topic">
+<a name="5qebdgcald97s2tdtneg5rhdvh">&nbsp;&nbsp;首先在系统中安装注册表键值，使用键值指示操作系统启动后立即运行该恶意程序，恶意程序运行过程中不断监视这些键值，保证键值不备用户删除（即使被删除了也可以立即恢复键值）</a>
+</h3>
+<h3 class="topic">
+<a name="7ftmipt2d1op6h8262fo0cllp6">&nbsp;&nbsp;恶意程序可能同时运行两个进程，两个进程之间相互监视，其中一个被终止，另一个立即启动，则从程序总是在运行，用户无法删除（操作系统不允许删除正在运行的程序）</a>
+</h3>
+<h3 class="topic">
+<a name="5cev81mn87bvp7bm7cg63ctkb8">&nbsp;&nbsp;将恶意软件引擎的拷贝传播到各种各样的组件中(比如浏览器插件)，此类组件都能确保其他组件不被删除，如果有组件被卸载，立即对损坏的组件进行重新安装</a>
+</h3>
+<h2 class="topic">
+<a name="77nrq76c59c6qgpst07sfuplrd">8.3未来的恶意软件</a>
+</h2>
+<h3 class="topic">
+<a name="7pl8g9ddnagqm1256abur1ql8c">&nbsp;8.3.1盗取信息的蠕虫</a>
+</h3>
+<h3 class="topic">
+<a name="1q7a31eq1atmjfdkvu4tthf0v7">&nbsp;&nbsp;即勒索软件</a>
+</h3>
+<h3 class="topic">
+<a name="0dpd2ugq1h8j3gbsj8o4smjmh0">&nbsp;8.3.2 BIOS/固件恶意软件</a>
+</h3>
+<h3 class="topic">
+<a name="45npqug2rspmb3d6t758ambhb1">&nbsp;&nbsp;即恶意软件可以修改最底层的系统组件，从而驻留在操作系统内核当中</a>
+</h3>
+<h3 class="topic">
+<a name="2k997f8pberbh4mk6pldq25fa8">&nbsp;&nbsp;恶意程序可以感染的计算机最底层的硬件是CPU和其他使用可升级固件的硬件设备</a>
+</h3>
+<h3 class="topic">
+<a name="41urso1eg1ckm4kvgcbsrtciam">&nbsp;&nbsp;大多数CPU可以运行非常低级的代码，此种代码使用微指令编写，可以实现所有该CPU架构支持的汇编语言指令</a>
+</h3>
+<h3 class="topic">
+<a name="3pd40golcpmttdgtpraus7e913">&nbsp;&nbsp;在处理器中运行的微指令代码就称为固件</a>
+</h3>
+<h3 class="topic">
+<a name="259trt6fvaqlgselh1ite1rkbc">&nbsp;&nbsp;有关网络，存储器适配器等硬件通常是基于可编程微控制器的，支持用户可更新的固件</a>
+</h3>
+<h3 class="topic">
+<a name="7kpda15ttdk8h73ucr5mu7k2md">&nbsp;&nbsp;intel处理器的固件更新文件是加密后发布的，解密密钥隐藏在处理器内部，所以难以知道固件更新文件的具体内容</a>
+</h3>
+<h3 class="topic">
+<a name="01iqscmpcn69ocu1reg0ct5kvn">&nbsp;&nbsp;恶意固件可以作为较大的恶意程序的一部分，并用于隐藏这个恶意程序，不被安全程序和反病毒程序发现</a>
+</h3>
+<h2 class="topic">
+<a name="49mrd26nanjgu709stk3p8m631">8.4恶意软件的使用</a>
+</h2>
+<h3 class="topic">
+<a name="108qacnapjf6rr9qpn1og5eikl">&nbsp;恶意软件最典型的用途</a>
+</h3>
+<h3 class="topic">
+<a name="2kuhtght2kpjmdmmnntbgctp1o">&nbsp;&nbsp;后门访问</a>
+</h3>
+<h3 class="topic">
+<a name="5k9c7lvp229pa2emqa5d7tn5d3">&nbsp;&nbsp;服务拒绝攻击（DoS）</a>
+</h3>
+<h3 class="topic">
+<a name="54r1e2atf4673d7pp30d9nb3f0">&nbsp;&nbsp;汪达尔行为（故意实施破坏）</a>
+</h3>
+<h3 class="topic">
+<a name="4r5b9spdo629nda5eon8g9k5lj">&nbsp;&nbsp;资源盗用</a>
+</h3>
+<h3 class="topic">
+<a name="2l6d3jfibl9naeuaj7c88ui5cc">&nbsp;&nbsp;&nbsp;获得计算力与网络带宽</a>
+</h3>
+<h3 class="topic">
+<a name="1iuph1q5bdmk71si3ogjmfjosa">&nbsp;&nbsp;信息盗用</a>
+</h3>
+<h2 class="topic">
+<a name="764jmcc830mqk5h85u9meoe8q7">8.5恶意软件的弱点</a>
+</h2>
+<h3 class="topic">
+<a name="4egj3l535dntv7buq6p9ufil68">&nbsp;恶意软件容易被实施逆向工程</a>
+</h3>
+<h3 class="topic">
+<a name="7773bdb1dsop8e81ih96juu168">&nbsp;一旦恶意软件被发现，研究人员会开始对其进行代码逆向，可以使用一些系统工具（网络监测程序、文件检测程序）最有效的方法是代码分析</a>
+</h3>
+<h3 class="topic">
+<a name="6jt6thbki60jf24iumobhov9rh">&nbsp;恶意软件作者常会使用反逆向技术试图使代码分析复杂化，但是反逆向技术本身存在一定局限性，只能在一定程度上将逆向的过程复杂化，但不能从根本上阻止逆向分析</a>
+</h3>
+<h2 class="topic">
+<a name="13v0mvifvokieaev7mh0gss89u">8.6多态</a>
+</h2>
+<h3 class="topic">
+<a name="7q766u4iqgfa74uece268a2j21">&nbsp;反病毒程序实施反病毒最简单的方法是匹配病毒的特征码</a>
+</h3>
+<h3 class="topic">
+<a name="170thfkv9sb2o60srriqkl1a12">&nbsp;多态：一种用于对抗基于特征码的识别程序的技术</a>
+</h3>
+<h3 class="topic">
+<a name="5q48s42s1pmk3ggi4nc2vnkfa5">&nbsp;&nbsp;基本原理：以一种能够保持程序原来功能的方法对程序代码进行随机编码或加密</a>
+</h3>
+<h3 class="topic">
+<a name="4paej65jg83hd9mbbaqqd9f0bh">&nbsp;&nbsp;最简单的方法是使用随即密钥对程序进行加密，在运行程序时再解密</a>
+</h3>
+<h3 class="topic">
+<a name="7kdiq18do5nv76pj57dd1or9m3">&nbsp;&nbsp;缺陷</a>
+</h3>
+<h3 class="topic">
+<a name="62dn6m06m8avmmligbalk4j3gd">&nbsp;&nbsp;&nbsp;反病毒程序可能是在内存中扫描病毒特征码，内存中程序是以未加密的形式出现的，反病毒程序可以将其与病毒特征码进行匹配</a>
+</h3>
+<h3 class="topic">
+<a name="4tufhcgu1glp3vgmgfuc0bt2lh">&nbsp;&nbsp;&nbsp;病毒自己给自己解密的代码是静态的，如果这段解密代码可以被反病毒程序作为该恶意软件的特征码，则病毒可以被识别</a>
+</h3>
+<h3 class="topic">
+<a name="7uesk023fcmjed72jf41bhefs5">&nbsp;&nbsp;缺陷的解决方法</a>
+</h3>
+<h3 class="topic">
+<a name="0ugoi0m9agn3ji2bgaa1abge2f">&nbsp;&nbsp;&nbsp;将解密用的代码（或者整个程序）中的某些单元打乱，在改变程序的特征码的同时还保持程序原有的功能</a>
+</h3>
+<h3 class="topic">
+<a name="3av73jqllipqus26gocgft0t4h">&nbsp;&nbsp;&nbsp;比如将代码中对寄存器的使用随机化（在程序不同的运行阶段对寄存器的使用是相互独立的时，可以改变相关寄存器的使用，甚至可以将基堆栈帧指针EBP改为使用另一个通用寄存器）</a>
+</h3>
+<h3 class="topic">
+<a name="1aft4see2s4uqlmjlrm490pk0e">&nbsp;&nbsp;&nbsp;在对程序的改动程度确定的情况下，可以编写一个相关例程，用于在程序运行时随机使用特定的寄存器（只要该改变程序中二进制代码的相关字节），该例程可以使用硬编码实现</a>
+</h3>
+<h3 class="topic">
+<a name="0fttjemdf0ovm7rg0ont0iel2e">&nbsp;&nbsp;&nbsp;具体的方法是存储一个预定义字节的列表，可以按规定的方式修改这个列表，然后程序可以在自我复制过程中随机选择可用的组合，生成唯一的机器码序列</a>
+</h3>
+<h3 class="topic">
+<a name="137434t1e4ncb2re5i4g2dd6b9">&nbsp;&nbsp;&nbsp;该方法需要创建一个关于可修改的具体的代码字节的硬编码信息表，所以它只适用于大部分程序都以某种方式加密或编码的情况</a>
+</h3>
+<h3 class="topic">
+<a name="7s3863jp4iqt4f5c3qa4e5ir4p">&nbsp;&nbsp;&nbsp;在进入以这种方式实现多态的函数之前，所有的寄存器都必须要保存和恢复</a>
+</h3>
+<h2 class="topic">
+<a name="077imu05q1ok5m48eco0gd6n6n">8.7变形</a>
+</h2>
+<h3 class="topic">
+<a name="4pame95ekr9tr9o39040gee7gp">&nbsp;多态只能对恶意软件的解密代码做非常肤浅的修改，防病毒程序依然有很多方法识别出经多态处理的代码(通过分析恶意程序代码和提取某些高级信息)</a>
+</h3>
+<h3 class="topic">
+<a name="7osp0rso6e5umusskvi115ik5u">&nbsp;此时变形出现了，变形可以在每一次复制的时候该改变整个恶意程序，而不仅仅是在解密引擎中对程序进行加密和做轻微的修改</a>
+</h3>
+<h3 class="topic">
+<a name="2om81pth2v1hmm0obhrq76oi1b">&nbsp;变形需要一个强大的代码分析引擎，并且将其嵌入到恶意程序中，变形引擎可以对恶意程序做大量的修改（包括整个恶意程序和变形引擎本身）</a>
+</h3>
+<h3 class="topic">
+<a name="1tfj4se89acpogg96l5th67tpi">&nbsp;变形引擎能够进行修改的类型</a>
+</h3>
+<h3 class="topic">
+<a name="5r6f9p1dqgve3pah6l7i90ucal">&nbsp;&nbsp;指令和寄存器的选择</a>
+</h3>
+<h3 class="topic">
+<a name="56qstdqm8j7mpb7rls9of16b09">&nbsp;&nbsp;&nbsp;通过全面分析整个恶意程序，生成新的代码，变形引擎可以随机处理代码中的大量参数，包括指令的选择（通常使用多种指令完成同一操作）和寄存器的选择</a>
+</h3>
+<h3 class="topic">
+<a name="64ol6ji4ujlnaes6bd0ai9i0se">&nbsp;&nbsp;指令排序</a>
+</h3>
+<h3 class="topic">
+<a name="7q9mac6iab2216lti0e10a5gn5">&nbsp;&nbsp;&nbsp;只要指令之间没有依赖关系，变形引擎可以随机改变函数中的指令顺序</a>
+</h3>
+<h3 class="topic">
+<a name="2l8vncla48krrc3f254sh44mi6">&nbsp;&nbsp;条件取反</a>
+</h3>
+<h3 class="topic">
+<a name="21knecqfmvoq47fpmmtup1q722">&nbsp;&nbsp;&nbsp;变形引擎将程序中的一些条件测试语句的条件取反，即利用&ldquo;不相等&rdquo;的语句来替代&ldquo;相等&rdquo;的语句，条件取反会导致程序代码大范围地重新排列，需要重新安排放进函数内的条件块</a>
+</h3>
+<h3 class="topic">
+<a name="5mdd0dp1220pdglesjhtgom65c">&nbsp;&nbsp;垃圾插入</a>
+</h3>
+<h3 class="topic">
+<a name="7gakbm36v2r85as0hutdm7lrm8">&nbsp;&nbsp;&nbsp;在程序中随机插入一些垃圾指令，并操作一些不相关数据，目的是进一步迷惑反病毒</a>
+</h3>
+<h3 class="topic">
+<a name="5oscmli2iogiiregjoo9cq713b">&nbsp;&nbsp;函数次序</a>
+</h3>
+<h3 class="topic">
+<a name="3b5s3kbvmfgtqqsfl30je5c91t">&nbsp;&nbsp;&nbsp;随机排列函数的次序（在对函数功能不产生影响的情况下）可以增加识别恶意程序的难度</a>
+</h3>
+<h2 class="topic">
+<a name="2b25g4q9cfvgc666rrk2trctsr">8.8建立安全的环境</a>
+</h2>
+<h3 class="topic">
+<a name="4p6j4kts6u8pblvk0p9vef4f9k">&nbsp;在进行针对恶意软件的逆向分析时，可以使用没有与任何网络进行连接的逆向专用机，也可以使用虚拟机，但是要保证该虚拟机与主机与网络彻底隔离，可以使用刻录dvd或cd的形式复制转移恶意程序，从而防止恶意软件的自我复制</a>
+</h3>
+<h2 class="topic">
+<a name="7am2ktpfknmpg48u6ogc78b0no">8.9Backdoor.Hacarmy.D</a>
+</h2>
+<h3 class="topic">
+<a name="0ung755e4933e5qo85ao5ci68a">&nbsp;8.9.1脱壳可执行文件</a>
+</h3>
+<h3 class="topic">
+<a name="20c3gn9trtgd7m6kr6pdetq1pd">&nbsp;&nbsp;可执行程序的加壳程序是对可执行程序适当压缩或加密的程序，这种压缩或加密变换对终端用户是透明的，只要一启动，程序就在内存中自动恢复未加壳的状态</a>
+</h3>
+<h3 class="topic">
+<a name="3b7i5nfgd5se09hvg5jgon3aaq">&nbsp;&nbsp;有的加壳程序试图对程序加密以避开调试器和反汇编程序，有的加壳程序仅仅通过压缩减小二进制文件的大小（例如UPX，可以通过UPX程序实现对加壳程序的解压缩）</a>
+</h3>
+<h3 class="topic">
+<a name="5p3s7qtkd32mqd1f4b2lj0uk6f">&nbsp;&nbsp;有的时候对程序自动脱壳是不可能的，此时需要直面加壳程序</a>
+</h3>
+<h3 class="topic">
+<a name="5l48p61l908ds0kms6g2ad7aim">&nbsp;8.9.2初次印象</a>
+</h3>
+<h3 class="topic">
+<a name="2a2odf71d5o4qrcc4jr29t7r1t">&nbsp;&nbsp;启动运行时没有相关显示</a>
+</h3>
+<h3 class="topic">
+<a name="59naleds8a2efqn9ie07t3bell">&nbsp;&nbsp;将可执行程序从文件目录中删除，并多出伪装的进程</a>
+</h3>
+<h3 class="topic">
+<a name="05fibpl4pjqgoknm5sdm0euucl">&nbsp;8.9.3初次安装</a>
+</h3>
+<h3 class="topic">
+<a name="4ig17uriadvr65ktlfl7vhl3tg">&nbsp;8.9.4初始化通信设置</a>
+</h3>
+<h3 class="topic">
+<a name="1en85n1dc8o31v1pci46quj9t1">&nbsp;8.9.5连接到服务器</a>
+</h3>
+<h3 class="topic">
+<a name="1eb415fgeflea8vkuq8kno8esv">&nbsp;8.9.6连接信道</a>
+</h3>
+<h3 class="topic">
+<a name="5scqsoni1bbk1du6jbrdbprdt1">&nbsp;8.9.7与后门进行通信</a>
+</h3>
+<h3 class="topic">
+<a name="3g21gj10osloeaho8kdn0leks4">&nbsp;8.9.8运行SOCK4服务器</a>
+</h3>
+<h3 class="topic">
+<a name="6m3l2tk5aedd47fljfma7fht5p">&nbsp;8.9.9清理犯罪现场</a>
+</h3>
+<h2 class="topic">
+<a name="5kst1bi3ucj9tl21mkh1an2i2d">8.10 The Backdoor.hacarmy.D命令参考</a>
+</h2>
+<h3 class="topic">
+<a name="5auua0dnuvh9mn1juu3f96cfm6">&nbsp;通过删除注册表项对可执行文件进行删除</a>
+</h3>
+<h2 class="topic">
+<a name="7ndrkmjuudbupe69cfe828mano">8.11结论</a>
+</h2>
+</body>
+</html>

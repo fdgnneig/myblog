@@ -1,0 +1,217 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>逆向工程揭秘第七章</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="2jtudcjel918rm5a5lgpb0apuh">逆向工程揭秘第七章</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%8F%AD%E7%A7%98%E7%AC%AC%E4%B8%83%E7%AB%A0_files/images/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%8F%AD%E7%A7%98%E7%AC%AC%E4%B8%83%E7%AB%A0.jpg"></div>
+<h2 class="topic">
+<a name="5adqe2jubp7ik7ifrk1rp4mmcc">7.1定义问题</a>
+</h2>
+<h2 class="topic">
+<a name="71pmv91sbt3mii4qe55jc92sc5">7.2漏洞</a>
+</h2>
+<h3 class="topic">
+<a name="20n1ut19jrjts1f9sqvgvs2hpk">&nbsp;本质上是程序的漏洞或缺陷</a>
+</h3>
+<h3 class="topic">
+<a name="325q6d3q950nfopjv472itsv0t">&nbsp;利用漏洞的基本思想:让程序接受到无法预料的数据</a>
+</h3>
+<h3 class="topic">
+<a name="2dfpdpnn5kle3lp590m3obtnvf">&nbsp;7.2.1堆栈溢出</a>
+</h3>
+<h3 class="topic">
+<a name="62528tjd02msaobnp6ljbnn90t">&nbsp;&nbsp;产生原因:忘记对输入的数据进行边界检查</a>
+</h3>
+<h3 class="topic">
+<a name="6l8tiuvg1grgbtd8r63dvkkt0q">&nbsp;&nbsp;程序不能根据要传递信息量的大小动态分配堆栈空间</a>
+</h3>
+<h3 class="topic">
+<a name="5v99kbdaooofkece6l11k9gkbr">&nbsp;&nbsp;典型的缓冲区溢出包括</a>
+</h3>
+<h3 class="topic">
+<a name="7h3b45tv8d6v94gkpt8e5959le">&nbsp;&nbsp;&nbsp;一段作为有效载荷的代码序列</a>
+</h3>
+<h3 class="topic">
+<a name="3dvocqhptjsccvo8b4fatnl4kf">&nbsp;&nbsp;&nbsp;一个作为返回地址的指向代码起始地址的指针</a>
+</h3>
+<h3 class="topic">
+<a name="2hpcno8fvbsb32gfnvod9mvr09">&nbsp;&nbsp;关键问题:如何确定目标程序当前的堆栈地址?</a>
+</h3>
+<h3 class="topic">
+<a name="5k83aati0s5ko0eondi898je4i">&nbsp;&nbsp;&nbsp;一般是根据经验或事实的猜测</a>
+</h3>
+<h3 class="topic">
+<a name="0a2h2u3kjbm8gteieg0d42cp6s">&nbsp;&nbsp;常见的确认方法</a>
+</h3>
+<h3 class="topic">
+<a name="5jjfkodno52ljad5inhka4pr9e">&nbsp;&nbsp;&nbsp;确认函数堆栈的大小,对于具有较大缓冲区,并且把缓冲区的内容放在堆栈中的函数,具有缓冲区溢出漏洞的可能性较高,因为这样的函数倾向于在堆栈中有较大的局部变量区域  可以通过在函数开始部分通过寻找 SUB ESP指令来确认(说明堆栈中存储较大的缓冲区)</a>
+</h3>
+<h3 class="topic">
+<a name="4g59dmk2m1mgn1t73oc196idrb">&nbsp;&nbsp;&nbsp;找到指向缓冲区内存空间的指针所在的位置(经常为使用功能类似[EBP-0x200] [ESP-0x200]这样的操作数的LEA指令中,并且这里的常数接近或者等于所查找的那个堆栈空间的大小,这里就是通过取地址运算符lea将堆栈的首地址传入到寄存器中作为指针使用)</a>
+</h3>
+<h3 class="topic">
+<a name="7t6vu6d19ocm55ntqiblqt70at">&nbsp;&nbsp;&nbsp;确认访问这个缓冲区块的代码考虑了读入数据的大小问题</a>
+</h3>
+<h3 class="topic">
+<a name="4esir1ffm0s0k949dl5fmeh3ff">&nbsp;&nbsp;&nbsp;&nbsp;对堆栈写入数据进行长度检查的方法</a>
+</h3>
+<h3 class="topic">
+<a name="4o8qjodtrqlneqeto7le2d1u1n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;内置实现:即常用函数在win的程序库中均有实现,通过内置(类似于内联函数)将函数的实现代码编译进源文件中,使得功能得以实现</a>
+</h3>
+<h3 class="topic">
+<a name="5i3hjc8gci511qgpebvnbvdnk1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意:任何在堆栈变量地址上出现的函数循环都是值得深入研究的(  比如    sub esp,0x64  lea edx,[esp-0x64] 这里是将栈顶上升,分配出64字节的内存空间,然后将栈顶的地址传入edx寄存器中 )</a>
+</h3>
+<h3 class="topic">
+<a name="02uq8obb3h82dn7fflpqoif3hi">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;堆栈检查:利用编译器自动生成的堆栈检查,其主要的思想是在最后一个局部变量和函数的返回地址之间(因为调用方式不同,所以与函数返回地址邻近的局部变量可以使最后一个,可以是第一个)压入一个cookie,函数返回到主调函数之前要检验这个cookie,如果被修改,则终止程序的运行,从而确保返回地址没有被恶意代码重写,</a>
+</h3>
+<h3 class="topic">
+<a name="0v1fo3etbgh3rgvjnss7trpimp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这里的cookie必须是为随机数,使得攻击者事先不能知道其值,防止其将cookie覆盖为正确的值</a>
+</h3>
+<h3 class="topic">
+<a name="3tkv6gup626s710ec5pnts0989">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%8F%AD%E7%A7%98%E7%AC%AC%E4%B8%83%E7%AB%A0_files/457s9mi0hb2tqs8ttv9poo21p7.png"></p>
+<h3 class="topic">
+<a name="0fjocsm2t953qnkf9ksipiob3h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%8F%AD%E7%A7%98%E7%AC%AC%E4%B8%83%E7%AB%A0_files/5nfauvb1rg8obgkbkqror8sc31.png"></p>
+<h3 class="topic">
+<a name="031dfre0pr261gac5e4chbi8c9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;此种机制已经被大量编译器实现</a>
+</h3>
+<h3 class="topic">
+<a name="1g43ri2mgs3i60inf9dobsh7jr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在windows中cookie保存在一个受保护的模块的全局变量中(通常为_security_cookie)</a>
+</h3>
+<h3 class="topic">
+<a name="7jg2rs3hs5rnaavk02tvrc66jp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这种验证也存在绕过机制</a>
+</h3>
+<h3 class="topic">
+<a name="129tarr0pc4fcimvc8dsgnr2le">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;不可执行内存:某些处理器支持定义不可执行的内存页,即内存页只能用于存储地址,处理器不能执行存储在其中的代码</a>
+</h3>
+<h3 class="topic">
+<a name="541gkjd8tki7m046l1shn8hep1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;很多新的处理器以及操作系统已经支持该功能</a>
+</h3>
+<h3 class="topic">
+<a name="4uojgv9p3obuf2vlng70ohveuc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;不能完全避免缓冲区溢出,只要发现一段容易受到攻击的代码,常用的方法是修改函数的返回地址使其指向一个众所周知的帮助攻击者获得进程控制权的函数,,这样可以避开不可执行堆栈的问题,但是需要投入更多的可开发</a>
+</h3>
+<h3 class="topic">
+<a name="7ba2dqk7thou5ht5fkgd26d469">&nbsp;7.2.2堆溢出</a>
+</h3>
+<h3 class="topic">
+<a name="3g1od083a5p2c0ck67e2vt1r5a">&nbsp;&nbsp;主要思想与栈溢出相同：程序接收到一个长度不可预知的数据，并将这个数据拷贝到一个不足以容纳他的缓冲区中，导致程序重写内存堆块后面的地址空间</a>
+</h3>
+<h3 class="topic">
+<a name="11c01ccjj0kpp92drq4u2bfp3s">&nbsp;&nbsp;通常堆采用链表的形式组织，实际数据块之前或之后存有指向相邻数据块的指针，一般进行堆溢出时可能破坏链表，使得链表管理器遍历链表时导致程序崩溃</a>
+</h3>
+<h3 class="topic">
+<a name="4rsevodnf8jcd5praneiu5uv5q">&nbsp;&nbsp;在链表中，当一个数据项被释放，需要在该被释放的项上取得该项钱去项和后继项的地址，并以此为依据重写钱去项和后继项的头部，从而保证链表的完整</a>
+</h3>
+<h3 class="topic">
+<a name="35h62ri5aboa4co3o6o728tecc">&nbsp;&nbsp;通过重写链表中一个项前驱成员和后继成员的值，攻击者可以控制重写进程中的关键内存地址（重写只在被重写项被释放的时候才会发生）</a>
+</h3>
+<h3 class="topic">
+<a name="18hdojne98v5fq10momom2l88j">&nbsp;&nbsp;堆块的大小总是动态计算的，与栈空间必须预先申请固定大小的空间不同，所以堆溢出不如栈溢出那样普遍</a>
+</h3>
+<h3 class="topic">
+<a name="7hv5cfd99b7uh3hu4ja3nb1i3s">&nbsp;&nbsp;具体的漏洞流程不是很明白</a>
+</h3>
+<h3 class="topic">
+<a name="3fedbcfit5gpl80rrp99mr5g0f">&nbsp;7.2.3字符串过滤程序</a>
+</h3>
+<h3 class="topic">
+<a name="1n0aiptdgvjt6vv2qoitv2s8sp">&nbsp;&nbsp;大部分溢出攻击与字符串相关</a>
+</h3>
+<h3 class="topic">
+<a name="5gttdqhckj8spajt8ubossd0ku">&nbsp;&nbsp;win32位的程序中多数字符串时Unicode的</a>
+</h3>
+<h3 class="topic">
+<a name="46q3chq1bb21kpjogrg9ctum37">&nbsp;&nbsp;攻击者传入的字符串在进入被攻击的函数之前被从内部转换成了Unicode码，此时的Unicode码就会成为可以利用的壳代码，实际上攻击者提供的么每一个操作码字节在转化成Unicode的过程中都会添加一个零字节</a>
+</h3>
+<h3 class="topic">
+<a name="6thh38kbqlv4h1lleccckb2l66">&nbsp;&nbsp;有时可以写出转换成Unicode码之后还能使用的壳代码，</a>
+</h3>
+<h3 class="topic">
+<a name="620kg5r5p1lslchqrd584010v8">&nbsp;&nbsp;做一个攻击者真不容易</a>
+</h3>
+<h3 class="topic">
+<a name="4o9vv7r1v0tem8skifokce8h2i">&nbsp;7.2.4整数溢出</a>
+</h3>
+<h3 class="topic">
+<a name="5numo5ft105i02ij75kva5n7ih">&nbsp;&nbsp;一种特殊类型的溢出错误，会导致缓冲区溢出</a>
+</h3>
+<h3 class="topic">
+<a name="2a6gs5a47ejlupqm6qpkv3heuh">&nbsp;&nbsp;常发生在程序从外部世界接收了某个长度的数据块</a>
+</h3>
+<h3 class="topic">
+<a name="02sjr81lgloh70rs2em20jh65p">&nbsp;&nbsp;主要造成漏洞的原因是没有对输入的整数实行范围检查</a>
+</h3>
+<h3 class="topic">
+<a name="1103f2po7ml95eqk7928l39ijs">&nbsp;&nbsp;IA-32汇编语言中有两个条件代码组（用在不同的CPU标志位上）</a>
+</h3>
+<h3 class="topic">
+<a name="77v5f569s65cvd2urm6j1snnhd">&nbsp;&nbsp;&nbsp;比较有符号变量</a>
+</h3>
+<h3 class="topic">
+<a name="5smdostn4nld2cgt2nqhe62c2c">&nbsp;&nbsp;&nbsp;&nbsp;使用JG(jump if greater)表示编译器把参与比较的参数当作有符号整数</a>
+</h3>
+<h3 class="topic">
+<a name="17nvubr9vmtim4204m31iq8r0q">&nbsp;&nbsp;&nbsp;比较无符号变量</a>
+</h3>
+<h3 class="topic">
+<a name="7pne2fju9eehtdfeahb3m2ab1f">&nbsp;&nbsp;&nbsp;&nbsp;使用JA(jump if above)表示编译器把参与比较的参数当作有符号整数或是简单的转换成无符号数</a>
+</h3>
+<h3 class="topic">
+<a name="1ij9kjrm0tcnsqu1p63781q6m4">&nbsp;&nbsp;使用有符号数比较缓冲区长度是危险的，输入的数据可能会绕过缓冲区长度检查</a>
+</h3>
+<h3 class="topic">
+<a name="03ij8i12hd44np5hd74nj9hnqi">&nbsp;&nbsp;&nbsp;因为缓冲区长度变量只能是0或正整数，当缓冲区长度作为有符号数存储时比较操作可能会产生无法预知的后果，</a>
+</h3>
+<h3 class="topic">
+<a name="23ngl8916r86n8523obcfi0bcn">&nbsp;&nbsp;&nbsp;把缓冲区长度作为输入的函数不能使用负值，所以会将任何一个负数当作是极大的正数进行处理</a>
+</h3>
+<h3 class="topic">
+<a name="2na9jlbajjukdcr3u6l4ug7fgf">&nbsp;&nbsp;当程序从堆栈或寄存器中获取缓冲区的长度并将其作为一个参数参与内存内容拷贝等操作的时候，如果该堆栈或寄存器中的值被人恶意修改(比如极大时，会引起相关计算结果发生溢出)，程序运行会发生崩溃</a>
+</h3>
+<h3 class="topic">
+<a name="6cr1k11ntpppt7bsa9ivgudsa3">&nbsp;&nbsp;此种漏洞的解决方法是将缓冲区的长度当作无符号的短整型数据，使用32位寄存器作算术运算，从而排除了溢出的可能</a>
+</h3>
+<h3 class="topic">
+<a name="4btsqe9ss39s1c5750i0v4uq7h">&nbsp;7.2.5类型转换错误</a>
+</h3>
+<h3 class="topic">
+<a name="3ccogl39cmcac9dq637tcvaptf">&nbsp;&nbsp;程序开发人员有时不能完全理解所使用的程序设计语言的语义，当某些输入数为特定数据类型时，程序会执行数据类型的转换，会发生类型转换错误</a>
+</h3>
+<h3 class="topic">
+<a name="4vce6mkkd6no4bcq9i5lriniss">&nbsp;&nbsp;当内存分配函数中表示缓冲区长度的参数为有符号短整型时，此时若将该参数转换为一个较长的数据类型时，该参数的符号会被扩展</a>
+</h3>
+<h3 class="topic">
+<a name="1451h11relfjp5omeumnush6pc">&nbsp;&nbsp;符号扩展意味着如果缓冲区长度参数的最高为为1的话，该缓冲区长度参数将会被转换成负的32位数</a>
+</h3>
+<h3 class="topic">
+<a name="7qgp13r53q5ipbl2nti5esnjil">&nbsp;&nbsp;此时通常会在分配的空间大小上引起溢出错误，导致空间分配失败</a>
+</h3>
+<h3 class="topic">
+<a name="748alb0nqdegb5ip9vm7bqqc4q">&nbsp;&nbsp;解决这些问题只需要把缓冲区的长度定义为无符号短整型，使编译调用处理无符号短整型的函数对参数进行处理，此时如果进行符号扩展，则最高位使用0进行扩展，使得转换前后的数值保持相同</a>
+</h3>
+<h2 class="topic">
+<a name="5lj2pnddr39lui06uf1d076dlt">7.3案例研究：IIS索引服务漏洞</a>
+</h2>
+<h3 class="topic">
+<a name="39k0r3tiulnj70e7jpslqm6r58">&nbsp;没有很看懂，需要先回去复习汇编语言</a>
+</h3>
+<h2 class="topic">
+<a name="6hrquh6ued2in5ejrlvl3uhbg7">7.4结论 </a>
+</h2>
+<h3 class="topic">
+<a name="496igruvklhqmltlmp5i3v8i7e">&nbsp;www.phrack.org网站的在线杂志Phrack有大量关于攻击技术和非法使用漏洞的资源及技术文章</a>
+</h3>
+</body>
+</html>

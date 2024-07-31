@@ -1,0 +1,1140 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>CTF PWN day2</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="0b4a0i1d1pempl4afn7600lmrc">CTF PWN day2</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="CTF PWN_files/images/CTF PWN day2.jpg"></div>
+<h2 class="topic">
+<a name="29b6tvemrs0kvdpo4nhrdqsift">栈溢出利用方法</a>
+</h2>
+<h3 class="topic">
+<a name="637d94scd3ln9bni2jntqnh1v5">&nbsp;修改返回地址，让其指向溢出数据中的一段指令（shellcode）</a>
+</h3>
+<h3 class="topic">
+<a name="35kv4jpno02j8nt56tuu46bmnt">&nbsp;修改返回地址，让其指向内存中已有的某个函数（return2libc）</a>
+</h3>
+<h3 class="topic">
+<a name="1697onm08s35bci8lhmkuvu7pi">&nbsp;&nbsp;如果函数使用到的字符串参数在内存中找不到，可以将该字符串加到环境变量中，再通过getenv()等函数来确定地址</a>
+</h3>
+<h3 class="topic">
+<a name="267tv64pctjck5d48s72c3rf6b">&nbsp;修改返回地址，让其指向内存中已有的一段指令（ROP）</a>
+</h3>
+<h3 class="topic">
+<a name="24816l22rac1krvl3pj3bjdbgr">&nbsp;&nbsp;gadget：小工具</a>
+</h3>
+<h3 class="topic">
+<a name="4s4pcldd8itiecuqd9ue8gk888">&nbsp;&nbsp;&nbsp;如何搜索gadget？  工具ROPgadget、rp++、ropeme或grep等文本匹配工具</a>
+</h3>
+<h3 class="topic">
+<a name="718suv0hvj0n3qb704gtdfgesu">&nbsp;&nbsp;注意与wiindows不同的点：linxu中系统调用的方式</a>
+</h3>
+<h3 class="topic">
+<a name="46jibu3fqgnk1paejs79ul9eib">&nbsp;&nbsp;&nbsp;linxu中函系统调用方式</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN_files/6cmmtob2q37hjcakse5vntvt89.png"></p>
+<h3 class="topic">
+<a name="1gbrhb9aja5kogab6772hmh9ok">&nbsp;&nbsp;&nbsp;&nbsp;寻找gadget</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN_files/4n9ppv8sr2v2q0s5ath82een5a.png"></p>
+<h3 class="topic">
+<a name="1v1lfs0iv001c3ljvieu6gpsqp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;系统调用的参数传递</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN_files/17hcb0v2flikft850imtok609t.png"></p>
+<h3 class="topic">
+<a name="6ntbcn6lbsqqrdmentti8n5p82">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;系统调用的参数传递</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN_files/5dnrdoctobvr9nun9185pq7219.png"></p>
+<h3 class="topic">
+<a name="1b4nf3j3sctv5n4lvqauqumcr7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;shellcode起始位置的寻址</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN_files/000l541feqqefvjokdfogtkea9.png"></p>
+<h3 class="topic">
+<a name="5b17j2cmhasqgihtcfjku1b035">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;此时理想的shellcode结构</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN_files/5qbfa85m9ruajorpbjoteo1tlk.png"></p>
+<h3 class="topic">
+<a name="1qc6f29oua4op06ll1tao3r277">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果函数参数存在0x0，而可以使用多条gadget计算出该参数</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN_files/0c2otc9iqnmkpbfnogpqme5de9.png"></p>
+<h3 class="topic">
+<a name="2ifgdpn7q3580kkesjpote2mre">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以使用获得ebp值的gadget，以此获得被溢出的栈空间的地址信息</a>
+</h3>
+<h3 class="topic">
+<a name="30rlu79kdj49svhpnis66rg1jj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当不存在合适的gadget时，需要多个gadget组合使用达到目的</a>
+</h3>
+<h3 class="topic">
+<a name="4c2of9rl2mackf0baddirte96b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;要小心 gadget 是否会破坏前面各个 gadget 已经实现的部分</a>
+</h3>
+<h3 class="topic">
+<a name="1d5asfijnc77ak3smdhj1l887i">&nbsp;修改某个被调用函数的地址，让其指向另一个函数（hijack GOT）</a>
+</h3>
+<h3 class="topic">
+<a name="1i2qq1vss9q555362hmoaa2d60">&nbsp;&nbsp;注意与windows不同的点：linxu程序中外部函数的调用方法</a>
+</h3>
+<h3 class="topic">
+<a name="7b3f0fjo7vc4rn506rldbdkchd">&nbsp;&nbsp;&nbsp;GOT和PLT表</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN_files/0n4qlgfrnhe7t7aq8ca72n17o1.png"></p>
+<h3 class="topic">
+<a name="7qkrdbcet64phjfumgl3abso5m">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN_files/01uv4h1lciov9lde4bn5tr01p6.png"></p>
+<h3 class="topic">
+<a name="3c82ge70vqiobg8gf4uqdvie4l">&nbsp;&nbsp;&nbsp;函数通过GOT、PLT被调用的过程</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN_files/78cv5vavfugquodpif09ts09aq.png"></p>
+<h3 class="topic">
+<a name="3c9ge6ojeh5h9qav38tfcudog8">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN_files/49sg5tctlrglc3chqmlb3dp4pi.png"></p>
+<h3 class="topic">
+<a name="0ep64nkmmkia5uf62o3qvnke5p">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN_files/6h61jlda2cp1la9fnspp217ep3.png"></p>
+<h3 class="topic">
+<a name="4cd6tiaafdd8trsi9rjh8b5j3b">&nbsp;&nbsp;&nbsp;确定被覆盖函数的PLT表项的地址</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN_files/5abnpkmkt3lcpo9kmq5qf3mqhj.png"></p>
+<h3 class="topic">
+<a name="13n2c8tdjceq7cnu5b2uqvk9ra">&nbsp;&nbsp;&nbsp;&nbsp;确定覆盖函数的内存地址：通常通过与被覆盖函数之间的偏移进行定位</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN_files/33sk3s9aq9s9h2vidia07bkej7.png"></p>
+<h3 class="topic">
+<a name="4acod1vcrg16a10r0f0d1e4gms">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过ROP修改GOT表中的内容</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN_files/2pvcj6i6tip0grvnr04ttpj5nk.png"></p>
+<h3 class="topic">
+<a name="0fnno6knf4tngcati58de6vfp8">&nbsp;资料来源</a>
+</h3>
+<h3 class="topic">
+<a name="38k4bpesphjb5c9i24hn0o20mq">&nbsp;&nbsp;https://zhuanlan.zhihu.com/p/25816426</a>
+</h3>
+<h3 class="topic">
+<a name="1ji5lnjh61n5jpoj8i5ck5ocv4">&nbsp;&nbsp;https://zhuanlan.zhihu.com/p/25892385</a>
+</h3>
+<h3 class="topic">
+<a name="0td7rki4pv2916hbv65t4b6go8">&nbsp;总结</a>
+</h3>
+<h3 class="topic">
+<a name="6c9eo86r656oui6kkp5v7id178">&nbsp;&nbsp;问题：对于linux下程序的加载连接运行等不了解</a>
+</h3>
+<h3 class="topic">
+<a name="2rtj83anr4k0hckrtbfr9rcm0t">&nbsp;&nbsp;解决：阅读程序员的自我修养一书</a>
+</h3>
+<h2 class="topic">
+<a name="3jnrnu1bi7m9joj4fsb96616qm">程序员的自我修养</a>
+</h2>
+<h3 class="topic">
+<a name="779jsp55rdn9364prrnga5l9pk">&nbsp;第一部分-简介（即第一章）</a>
+</h3>
+<h3 class="topic">
+<a name="0pb8mgsqi909c31udrleb8m1du">&nbsp;&nbsp;硬件简单概念</a>
+</h3>
+<h3 class="topic">
+<a name="5o5c3eqkndp5kl2cg4k7qenv8r">&nbsp;&nbsp;&nbsp;总体基础结构 CPU 内存 io设备</a>
+</h3>
+<h3 class="topic">
+<a name="4s48hlon3rlqiugouh0r23lna2">&nbsp;&nbsp;&nbsp;总线</a>
+</h3>
+<h3 class="topic">
+<a name="0qkrudb6th84ji59tfgh72brcp">&nbsp;&nbsp;&nbsp;北桥芯片</a>
+</h3>
+<h3 class="topic">
+<a name="3o385jn8g68i1dghkut087io0u">&nbsp;&nbsp;&nbsp;&nbsp;用于协调cpu 内存 高速图形设备进行快速数据交换</a>
+</h3>
+<h3 class="topic">
+<a name="1ntmibtjbgq4pmphccs35lu5hj">&nbsp;&nbsp;&nbsp;南桥芯片</a>
+</h3>
+<h3 class="topic">
+<a name="0tus7hebonssjuued6uobh4ahm">&nbsp;&nbsp;&nbsp;&nbsp;用于处理低速设备设备的数据交换</a>
+</h3>
+<h3 class="topic">
+<a name="50rsrsdimss0khh2537lrgii1v">&nbsp;&nbsp;&nbsp;对称多处理器</a>
+</h3>
+<h3 class="topic">
+<a name="7v3fc7re0a0atun0bh73efn7fr">&nbsp;&nbsp;&nbsp;多核处理器</a>
+</h3>
+<h3 class="topic">
+<a name="0uihi44rua3dmnemksg1o92vtu">&nbsp;&nbsp;计算机软件体系结构</a>
+</h3>
+<h3 class="topic">
+<a name="336hr07sgarpr3ivbeolpndkrq">&nbsp;&nbsp;&nbsp;按层次结构设计</a>
+</h3>
+<h3 class="topic">
+<a name="7gdbqptiethue6t8rpmca1s3bo">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN_files/2l9bat8m7hie9n878p5at8ueep.png"></p>
+<h3 class="topic">
+<a name="2ntp9upqdm9lgflnqrvaur29v2">&nbsp;&nbsp;&nbsp;接口</a>
+</h3>
+<h3 class="topic">
+<a name="538mjiqd89lnkb06ih7cun1kov">&nbsp;&nbsp;&nbsp;&nbsp;不同层次之间的通讯协议</a>
+</h3>
+<h3 class="topic">
+<a name="03jki65tpbn5qo9339pnvq376e">&nbsp;&nbsp;&nbsp;应用程序白编程接口</a>
+</h3>
+<h3 class="topic">
+<a name="7vijpem073lba7ujqqqpsd4n4m">&nbsp;&nbsp;&nbsp;&nbsp;运行时库提供给应用程序使用</a>
+</h3>
+<h3 class="topic">
+<a name="6v0u6c4fivreh8b9htaog7q6oc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN_files/1mh7mrup08o8usp905e6s2r22v.png"></p>
+<h3 class="topic">
+<a name="7f0eejh3rffej9joaaj3k34uao">&nbsp;&nbsp;&nbsp;系统调用接口</a>
+</h3>
+<h3 class="topic">
+<a name="0bl2mdm6gd2e7jrlus97auahlv">&nbsp;&nbsp;&nbsp;&nbsp;操作系统提供给运行时库使用</a>
+</h3>
+<h3 class="topic">
+<a name="4r9nckh647e6mtdflp3i8c3dnk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通常以软件中断方式提供</a>
+</h3>
+<h3 class="topic">
+<a name="68e2igc03m0m21h9rej96i0lv7">&nbsp;&nbsp;&nbsp;硬件规格</a>
+</h3>
+<h3 class="topic">
+<a name="52oktrtp85ep0vlqbj4nejb5h1">&nbsp;&nbsp;&nbsp;&nbsp;硬件提供给操作系统内核使用</a>
+</h3>
+<h3 class="topic">
+<a name="37q40ffeuffa83v69noiu7cv0i">&nbsp;&nbsp;操作系统运行机制</a>
+</h3>
+<h3 class="topic">
+<a name="06evf1aie8ntaki9oe7og97n2p">&nbsp;&nbsp;&nbsp;多任务-》进程-》抢占式</a>
+</h3>
+<h3 class="topic">
+<a name="7vod799b27erfq66gvd7a39rho">&nbsp;&nbsp;&nbsp;硬件驱动程序</a>
+</h3>
+<h3 class="topic">
+<a name="5mbpd3llheokbr7mp6svr0dubo">&nbsp;&nbsp;&nbsp;&nbsp;是对硬件操作方法的封装</a>
+</h3>
+<h3 class="topic">
+<a name="21eum91i5q5esjjun4brpcjbpv">&nbsp;&nbsp;&nbsp;&nbsp;硬盘扇区结构</a>
+</h3>
+<h3 class="topic">
+<a name="394a968ac0u2jq0hf822gcu5pd">&nbsp;&nbsp;&nbsp;&nbsp;硬件驱动程序通过读写IO端口寄存器向硬件发出硬件命令</a>
+</h3>
+<h3 class="topic">
+<a name="7utqetldk9dil9021v8ipgjiqb">&nbsp;&nbsp;&nbsp;虚拟地址</a>
+</h3>
+<h3 class="topic">
+<a name="264ihfjd4mp444ia1hqml5e8fl">&nbsp;&nbsp;&nbsp;&nbsp;实现进程隔离</a>
+</h3>
+<h3 class="topic">
+<a name="3ai18c2qic8csdefnaupcv4e4f">&nbsp;&nbsp;&nbsp;内存分段</a>
+</h3>
+<h3 class="topic">
+<a name="3a5fhh0g5u19evbhqjri7csqkr">&nbsp;&nbsp;&nbsp;内存分页</a>
+</h3>
+<h3 class="topic">
+<a name="1rfjgdvc3n1okn5g25r192a0lv">&nbsp;&nbsp;&nbsp;&nbsp;使用MMU硬件从而实现内存分页映射</a>
+</h3>
+<h3 class="topic">
+<a name="57pcaveqnl5qhv18v62oa6egdp">&nbsp;&nbsp;线程与进程</a>
+</h3>
+<h3 class="topic">
+<a name="01n0mvje1s5140abgsm48mskcf">&nbsp;&nbsp;&nbsp;线程</a>
+</h3>
+<h3 class="topic">
+<a name="1pnp7fqlk729jhkiljrfc6nubc">&nbsp;&nbsp;&nbsp;&nbsp;程序执行流的最小单元</a>
+</h3>
+<h3 class="topic">
+<a name="69m2bq8tpcqao819j6j30ab60l">&nbsp;&nbsp;&nbsp;&nbsp;组成</a>
+</h3>
+<h3 class="topic">
+<a name="2cpd101cbipean4fd2kq05pmfs">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;线程id</a>
+</h3>
+<h3 class="topic">
+<a name="0vfp8q1jcs5n8lggretckleu9m">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当前指令指针</a>
+</h3>
+<h3 class="topic">
+<a name="25q2r8jnjf451kkd942paqi6os">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;寄存器集合</a>
+</h3>
+<h3 class="topic">
+<a name="4bfelhh546244t5is7jeg2hd35">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;堆栈</a>
+</h3>
+<h3 class="topic">
+<a name="7d9nhnf5i88qskvjd6lesch7gc">&nbsp;&nbsp;&nbsp;进程与线程关系</a>
+</h3>
+<h3 class="topic">
+<a name="2n47if7i77ee937vrnilfm66i0">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN_files/3evq4dn2g3ljg8kfpsfl9f215l.png"></p>
+<h3 class="topic">
+<a name="3jqdqrvhgrhkf10djkl25adctp">&nbsp;&nbsp;&nbsp;线程的私有内存空间</a>
+</h3>
+<h3 class="topic">
+<a name="6r2r3dnt9sqem0tk198gv0cp3f">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN_files/0f3b134ieq5m27qqov4s2id9rj.png"></p>
+<h3 class="topic">
+<a name="1ctdiugflufbm1gmnutdrsgh9p">&nbsp;&nbsp;&nbsp;线程调度与优先级</a>
+</h3>
+<h3 class="topic">
+<a name="4ok23i229051dj5m785n0mehru">&nbsp;&nbsp;&nbsp;&nbsp;线程调度：同一个处理器中切换不同线程的行为</a>
+</h3>
+<h3 class="topic">
+<a name="06ibga51mrplo9q9j5d64foqms">&nbsp;&nbsp;&nbsp;&nbsp;线程调度的状态和转换关系</a>
+</h3>
+<h3 class="topic">
+<a name="7jggocec8pqae55gf7bqo30ocb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN_files/5nhj3etg03dtmo549q9cmaffsp.png"></p>
+<h3 class="topic">
+<a name="5vunr79adi7l4u90tvke0dtje4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN_files/6lv9et187udc9h2353ac27o5gv.png"></p>
+<h3 class="topic">
+<a name="2imsrq5thrmq2ahpb2ejfaln93">&nbsp;&nbsp;&nbsp;&nbsp;线程调度算法</a>
+</h3>
+<h3 class="topic">
+<a name="7t60dktmu7ek8nkfv5lkshg3l5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;优先级调动和轮转法</a>
+</h3>
+<h3 class="topic">
+<a name="0vofeqmlpj2v8ke0etm6ivudnn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IO密集型线程</a>
+</h3>
+<h3 class="topic">
+<a name="1fk01tqtgts39l5kg73sl0bbhg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;会发生频繁等待</a>
+</h3>
+<h3 class="topic">
+<a name="5ol76mjefg7ng77p34ld3u65el">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CPU密集型线程</a>
+</h3>
+<h3 class="topic">
+<a name="6iifdtm988ttm5d8743gsv60b4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;很少等待，常常运行到时间片耗尽</a>
+</h3>
+<h3 class="topic">
+<a name="4gt1c46urqugmjetjbbo3ocjuj">&nbsp;&nbsp;&nbsp;&nbsp;线程饿死与线程优先级变动</a>
+</h3>
+<h3 class="topic">
+<a name="7qbjv6mcsmh3i87tk03q1o05o0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN_files/4aan4ujdivo7lovkfr125pdf82.png"></p>
+<h3 class="topic">
+<a name="7o6mufpthb0gnr0cudubd6jhu6">&nbsp;&nbsp;&nbsp;&nbsp;可抢占线程与不可抢占线程</a>
+</h3>
+<h3 class="topic">
+<a name="0u3iho53cupgtgtsp8ggbeevun">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;不可抢占线程需要主动放弃时间片，否则无法进程调度</a>
+</h3>
+<h3 class="topic">
+<a name="5bqh3en8du685va7jhmvfa0nsr">&nbsp;&nbsp;&nbsp;linux多线程</a>
+</h3>
+<h3 class="topic">
+<a name="6di3b09tdtien56hi87spoh88s">&nbsp;&nbsp;&nbsp;&nbsp;执行实体称为任务</a>
+</h3>
+<h3 class="topic">
+<a name="7qgffekdkpq8e4vjchl115gq13">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;类比单线程的进程</a>
+</h3>
+<h3 class="topic">
+<a name="5evri4caj75fft8187vqlqfb6f">&nbsp;&nbsp;&nbsp;&nbsp;不同任务可以共享内存空间</a>
+</h3>
+<h3 class="topic">
+<a name="3i7ecl2adk66b29k55ckhv4lbm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;实际上构成了一个多任务的进程，类比一个多线程的进程</a>
+</h3>
+<h3 class="topic">
+<a name="46hl5d0t15piqultrcmb5o914n">&nbsp;&nbsp;&nbsp;&nbsp;创建新任务的api</a>
+</h3>
+<h3 class="topic">
+<a name="4ukjncbh7vuna3io2q4107hbi1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN_files/5in04n37a12pq6nt6f92fks5nd.png"></p>
+<h3 class="topic">
+<a name="7s5inr3eia1h446kbn47ao0pne">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通常使用fork和exec结合，产生一个新任务</a>
+</h3>
+<h3 class="topic">
+<a name="6hhr3i2vngrsmc6dtq023kqlas">&nbsp;&nbsp;&nbsp;&nbsp;写时复制</a>
+</h3>
+<h3 class="topic">
+<a name="7jf78aubnl8l0dnopli54ce5b6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN_files/5d94mfr9abc1n7ptgvoc4h3n7a.png"></p>
+<h3 class="topic">
+<a name="3eu8mrbmdkcuvr6haj8p7kl269">&nbsp;&nbsp;&nbsp;线程安全</a>
+</h3>
+<h3 class="topic">
+<a name="0h2ae8ktn5lkd1imp813b18coi">&nbsp;&nbsp;&nbsp;&nbsp;竞争与原子操作</a>
+</h3>
+<h3 class="topic">
+<a name="41it0tsb9sa50ah1eu5b8emmiv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;原子操作只能实现简单功能，存在局限</a>
+</h3>
+<h3 class="topic">
+<a name="13c7j2uroauugkhovu2tilvlc2">&nbsp;&nbsp;&nbsp;&nbsp;同步与锁</a>
+</h3>
+<h3 class="topic">
+<a name="4t382fckk2ujcnqc1rvkjmu6a0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;二元信号量</a>
+</h3>
+<h3 class="topic">
+<a name="7u0grlhtl107h6oobjt5cdk3to">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;信号量</a>
+</h3>
+<h3 class="topic">
+<a name="7abf760h0047g90qarl1knfj82">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;一个信号量可以被一个线程获取，由另一个线程释放</a>
+</h3>
+<h3 class="topic">
+<a name="7bp75fr00rvgra88ujmror91j1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;跨进程可见</a>
+</h3>
+<h3 class="topic">
+<a name="2s70okeoiiaqcslhn9rtmtom37">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;互斥体</a>
+</h3>
+<h3 class="topic">
+<a name="2pak5bn491ac6fvok7oq90a6k4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;哪个线程获得了互斥体，就由哪个线程释放</a>
+</h3>
+<h3 class="topic">
+<a name="12f16avfq4aj2t23u4jcr6rfjt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;跨进程可见</a>
+</h3>
+<h3 class="topic">
+<a name="37l66qmp68lo15mtu9kebj9hc7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;临界区</a>
+</h3>
+<h3 class="topic">
+<a name="65nl6iu9t5cdi2hd0i9sbirj5o">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;只能作用于本进程中的同步，其他进程无法获取或释放本进程的临界区</a>
+</h3>
+<h3 class="topic">
+<a name="4c2pc82hbmneft8tcul0atoc2k">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;读写锁</a>
+</h3>
+<h3 class="topic">
+<a name="7n8p3tr34u5qo4f7l8ngtb2eu1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;有两种获取读写锁方式，用于进一步细化线程同步</a>
+</h3>
+<h3 class="topic">
+<a name="1mbltpih84dit4ltekme4am670">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN_files/7nequdrc2ocntcbh28lbg7me8a.png"></p>
+<h3 class="topic">
+<a name="0geq1lallurjgbl95td6hn87tj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;条件变量</a>
+</h3>
+<h3 class="topic">
+<a name="63fdt9rjh4tfvjf8rnj340udkg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;让所有线程等待一个事件，事件发生后，所有线程一起恢复执行</a>
+</h3>
+<h3 class="topic">
+<a name="31uhpt8evf8j3hqp4dcqjs727s">&nbsp;&nbsp;&nbsp;&nbsp;可重入</a>
+</h3>
+<h3 class="topic">
+<a name="362b9o7e5ko8d3lshi35m6gej2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;重入</a>
+</h3>
+<h3 class="topic">
+<a name="0r8tt1f4ljlpsv02bdpn93j6rj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;一个函数执行完成前又一次进入函数执行</a>
+</h3>
+<h3 class="topic">
+<a name="1grpvtdtu51kp58pl4dv3kpgse">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;导致重入的原因</a>
+</h3>
+<h3 class="topic">
+<a name="171nomk55a4goisg7bkh27kvf7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN_files/5k1cs168ll2bluk1g119s90mtr.png"></p>
+<h3 class="topic">
+<a name="7nubfgrt3ad0lknevru31562a0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可重入</a>
+</h3>
+<h3 class="topic">
+<a name="70i71d7uofvtmegs7job4g5que">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可重入函数发生冲入后不会产生不良后果，可以在多线程程序中安全使用</a>
+</h3>
+<h3 class="topic">
+<a name="7bi53jjjev5afj4u4qh5l5hqil">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可重入函数条件</a>
+</h3>
+<h3 class="topic">
+<a name="3ir3jhifdm9p0iq84jm66q6sjv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN_files/17uue9lqiedfia5p4kt594v7oi.png"></p>
+<h3 class="topic">
+<a name="79grp60elgtfktu5npr6l0b5b6">&nbsp;&nbsp;&nbsp;&nbsp;过度优化</a>
+</h3>
+<h3 class="topic">
+<a name="0qq4bg18ujhb2nuijq86rdnfj2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;优化可能产生的影响</a>
+</h3>
+<h3 class="topic">
+<a name="684p64iu4vghval04ucuic9buq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将变量缓存到寄存器但不写回内存</a>
+</h3>
+<h3 class="topic">
+<a name="1kqff0ig1tbq5mq6eviblc3k8j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;调整指令执行顺序</a>
+</h3>
+<h3 class="topic">
+<a name="54colpesk5224klrt7f9aokv0n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;解决方案</a>
+</h3>
+<h3 class="topic">
+<a name="04hroas152lo3innku5ri51dp7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;volatile变量</a>
+</h3>
+<h3 class="topic">
+<a name="4ui24g6dcon6s4k54qloa08i04">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;barrier指令（CPU提供）</a>
+</h3>
+<h3 class="topic">
+<a name="3ncpogqp4fukom9bag8el05b79">&nbsp;&nbsp;&nbsp;三种多线程模型</a>
+</h3>
+<h3 class="topic">
+<a name="5ipoq3927u07kck722md5hbfht">&nbsp;&nbsp;&nbsp;&nbsp;一对一模型</a>
+</h3>
+<h3 class="topic">
+<a name="1sen01euaf894t1si7vhvqk0m0">&nbsp;&nbsp;&nbsp;&nbsp;多对一模型</a>
+</h3>
+<h3 class="topic">
+<a name="4rr8655f8h57c8af4d11ovgs24">&nbsp;&nbsp;&nbsp;&nbsp;多对多模型</a>
+</h3>
+<h3 class="topic">
+<a name="1kbq5v1okc52qt4epvrtjok4jd">&nbsp;第二部分-静态链接</a>
+</h3>
+<h3 class="topic">
+<a name="48d45qnotb6t9dbi5j09e8imf3">&nbsp;&nbsp;第二章编译和链接</a>
+</h3>
+<h3 class="topic">
+<a name="0280tq1gk2kff4saujrggg6lrl">&nbsp;&nbsp;&nbsp;从 .c 的源代码到可执行文件 .out，需要经过</a>
+</h3>
+<h3 class="topic">
+<a name="1q3p96i4ne6bpg6npql5s27b2t">&nbsp;&nbsp;&nbsp;&nbsp;预处理</a>
+</h3>
+<h3 class="topic">
+<a name="5jfggnsdlmbbdjnpc864lj91ef">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.c +.h-&gt;.i</a>
+</h3>
+<h3 class="topic">
+<a name="1f0mbcs3v61obulmvjlcihkmr8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN_files/5oqc5splbfku5nigi9p9cruj4o.png"></p>
+<h3 class="topic">
+<a name="58tf95q92j57n6fsk12a23hlvg">&nbsp;&nbsp;&nbsp;&nbsp;编译</a>
+</h3>
+<h3 class="topic">
+<a name="2vls32rpg2nqf1ac1h01pknebm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;产生汇编代码文件 .i-&gt;.s</a>
+</h3>
+<h3 class="topic">
+<a name="6b6tkuq6si4dkq1lje7on6udcm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;预编译和编译程序：ccl</a>
+</h3>
+<h3 class="topic">
+<a name="1ed5n46vv4f6pgs2rap194faqd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;具体流程</a>
+</h3>
+<h3 class="topic">
+<a name="2n85ii365e41u9395f4v6p0nqa">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;扫描（词法分析）</a>
+</h3>
+<h3 class="topic">
+<a name="10vafp4t39rc9i42e85p7u02f9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;源代码输入扫描器，将原代码字符序列分割成一系列的记号</a>
+</h3>
+<h3 class="topic">
+<a name="1bcu3jvcocvkp3v56g5tk9f913">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;语法分析</a>
+</h3>
+<h3 class="topic">
+<a name="5lfdnlhm4744vga7fuu6lr0ip0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;根据记号，使用语法分析器，产生语法树，即以表达式为节点的树</a>
+</h3>
+<h3 class="topic">
+<a name="1c57mumf825o1o3fvr7ml8aj1q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;语义分析</a>
+</h3>
+<h3 class="topic">
+<a name="21qa0ls1i11lbmthlrbq6pgck4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;编译器所能分析的语义是静态语义，即在编译器可以确定的语义，对应的动态语义就是运行期间才能确定的语义</a>
+</h3>
+<h3 class="topic">
+<a name="40sr9iif3mdqc5sk5gmflu9c4q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;语义分析通常是针对语法树进行</a>
+</h3>
+<h3 class="topic">
+<a name="20iqo7iv9usacakvllmpo9mau1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;声明和类型的匹配</a>
+</h3>
+<h3 class="topic">
+<a name="7f3rh17ftcjgarin5dvagev3eq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;类型的转换</a>
+</h3>
+<h3 class="topic">
+<a name="14fadvi4d7n5ll98dd9bc53pb0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;经过语义分析，语法树上的表达式均被标识了类型</a>
+</h3>
+<h3 class="topic">
+<a name="6c7olepo5j2fplaenfhuroo97g">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;源代码优化</a>
+</h3>
+<h3 class="topic">
+<a name="17ve7obs0odn9lrl4tp9ik3slc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用源码优化器，在源码级别进行优化</a>
+</h3>
+<h3 class="topic">
+<a name="0mkd7fd1u3e7mrrc3nrql7hi78">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;源码优化器将整个语法树转为中间代码，从而进行优化</a>
+</h3>
+<h3 class="topic">
+<a name="181hm2b5m87rqoep7cttadfefb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;中间代码的格式</a>
+</h3>
+<h3 class="topic">
+<a name="7kq2akdmk0sp7d3jmgkq2s9shd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;三地址码</a>
+</h3>
+<h3 class="topic">
+<a name="301a1noh5kr7qg79nc7epifj6q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p-代码</a>
+</h3>
+<h3 class="topic">
+<a name="351nlcl03dicoeo58lbbij9100">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;代码生成和目标代码优化</a>
+</h3>
+<h3 class="topic">
+<a name="4sieum3oo3nngjj6ljdq64foda">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用代码生成器和机器代码优化器</a>
+</h3>
+<h3 class="topic">
+<a name="7jo7uc9lb5d179kskm45hfhqh5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;前者将中间代码转化为机器码，该过程依赖于目标机器架构</a>
+</h3>
+<h3 class="topic">
+<a name="669idc36gdd47e1isjr9t2b3vh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;后者完成机器代码的优化，可能包括使用合适的寻址方式，使用位移替代乘法等</a>
+</h3>
+<h3 class="topic">
+<a name="2cucelb2dco277kdqg4qtqc6fi">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;经过编译生成的中间文件中，如果指令中使用了其他模块的函数或地址，则指令中对应位置会空下，等到链接过程中有链接器进行填充，即重定位</a>
+</h3>
+<h3 class="topic">
+<a name="117u5qtplfpgbh6ftegh1ka448">&nbsp;&nbsp;&nbsp;&nbsp;汇编</a>
+</h3>
+<h3 class="topic">
+<a name="6r2je2af4kffp0m8k74o6srev1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将汇编代码修改为机器码 .s-&gt;.o</a>
+</h3>
+<h3 class="topic">
+<a name="7bmk8enektoqp4alk0g72vvac2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;仅仅根据对应关系逐个翻译即可，不涉及代码优化等</a>
+</h3>
+<h3 class="topic">
+<a name="53ppkiatr88c2fhuq5bp47pjbr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;汇编器：as</a>
+</h3>
+<h3 class="topic">
+<a name="2jfube43ek7vi13dec92vg0evm">&nbsp;&nbsp;&nbsp;&nbsp;链接</a>
+</h3>
+<h3 class="topic">
+<a name="7ilmadn93jpvgta05flepo6q2k">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将多个中间文件进行链接 .o-&gt;.out</a>
+</h3>
+<h3 class="topic">
+<a name="2kfgi36o63p2634kf6g800qn1e">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;主要目的在于：由于主模块运行过程中会使用到其他模块中的函数或变量，所以需要在主程序中定位其他模块中的函数和变量的地址，链接过程就是将其他模块中的函数或变量的地址写入源代码中，保证程序的正常执行</a>
+</h3>
+<h3 class="topic">
+<a name="39fdiocgj3cg1alo5q02sfdmlg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;目标文件和库（常见为运行时库）一起链接成可执行文件</a>
+</h3>
+<h3 class="topic">
+<a name="6k8m6b0h98ge96vb2sf9012ssu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;链接器：ld</a>
+</h3>
+<h3 class="topic">
+<a name="3ka5tc6kr8ce29b165q5cvtf27">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;程序不同模块间的通讯有两类：模块间的函数调用、模块间的变量访问，通过在源码中使用符号可以进行模块间通讯</a>
+</h3>
+<h3 class="topic">
+<a name="4ia6do1ica42rmshhlt8m2lemg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;链接主要是将模块之间相互引用的部分处理好，从而使模块间可以正常衔接</a>
+</h3>
+<h3 class="topic">
+<a name="411i16cnemqad2n1n4aa11ovd5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;静态链接的具体流程</a>
+</h3>
+<h3 class="topic">
+<a name="3pourkcc0lhg14au6147isg7ef">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;地址和空间分配</a>
+</h3>
+<h3 class="topic">
+<a name="5edpmpc1al2thrr314d0ducb8l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;符号决议</a>
+</h3>
+<h3 class="topic">
+<a name="3rdb9e4pmtsvlc57foebsrlu13">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;重定位</a>
+</h3>
+<h3 class="topic">
+<a name="2anqh915c0tcgmiauov76a1irt">&nbsp;&nbsp;第三章目标文件</a>
+</h3>
+<h3 class="topic">
+<a name="055t7obfbjb91iuskc66d5e8l4">&nbsp;&nbsp;&nbsp;目标文件是源代码经过比编译得到的文件（.o或&middot;obj），从结构上看已经是可执行文件的格式，仅仅是没有经过链接，有的符号或地址还没有被调整</a>
+</h3>
+<h3 class="topic">
+<a name="4qrediltijaqptrgnk15rqmv68">&nbsp;&nbsp;&nbsp;动态链接库和静态链接库（windows和linux下均按照可执行文件格式进行存储）</a>
+</h3>
+<h3 class="topic">
+<a name="1fe50ki67f6gquojl6j3v0qr3m">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN_files/137t5l7be327i8fd6oupl000pg.png"></p>
+<h3 class="topic">
+<a name="397v1f3c9gk7so5qu821vvfem0">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN_files/579s9lb1t7pot2ad5629294m7t.png"></p>
+<h3 class="topic">
+<a name="08cckbgpiilgap9ql57n8t4odu">&nbsp;&nbsp;&nbsp;ELF格式的文件种类</a>
+</h3>
+<h3 class="topic">
+<a name="2g1fq2sjjtg9fks66ovmpumctc">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN_files/2l2fi8uq3vftcbr16v2dpapa3k.png"></p>
+<h3 class="topic">
+<a name="33pcu59siais0tdk600tsmeq87">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN_files/3n2ek7ri9fh7o17qbo4h5h6nbd.png"></p>
+<h3 class="topic">
+<a name="6jfpqio4lultov3clnasn7jj52">&nbsp;&nbsp;&nbsp;&nbsp;查看指定文件的文件格式</a>
+</h3>
+<h3 class="topic">
+<a name="0tcl6q4hor9p01bbj539s73n08">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN_files/20oots7qll3637qd3qjdm5esj2.png"></p>
+<h3 class="topic">
+<a name="5oul2b37618h7p48bashmmlltu">&nbsp;&nbsp;&nbsp;目标文件的格式</a>
+</h3>
+<h3 class="topic">
+<a name="3lljajet796jm0j27bodvvaktb">&nbsp;&nbsp;&nbsp;&nbsp;文件头</a>
+</h3>
+<h3 class="topic">
+<a name="51r6o0149n6sdim9ub40u51b91">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;其中包块段表</a>
+</h3>
+<h3 class="topic">
+<a name="2e2vjvrn4eig6q8ulqb9o3tta0">&nbsp;&nbsp;&nbsp;&nbsp;.text</a>
+</h3>
+<h3 class="topic">
+<a name="1h9bp4u8u5quaofhus6v6esfil">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;保存指令机器码</a>
+</h3>
+<h3 class="topic">
+<a name="1t0nn63pr7gnk98oicb7cfqbng">&nbsp;&nbsp;&nbsp;&nbsp;.data</a>
+</h3>
+<h3 class="topic">
+<a name="46rippucs122ednro6pj6n64fl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;已经初始化的全局变量和局部静态变量</a>
+</h3>
+<h3 class="topic">
+<a name="3l6t2s1qqa9cjtbfmaepj0krsr">&nbsp;&nbsp;&nbsp;&nbsp;.rodata</a>
+</h3>
+<h3 class="topic">
+<a name="1ts98q9pjmesj0m7a95enlamr1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;存放只读数据和字符串常量</a>
+</h3>
+<h3 class="topic">
+<a name="6h8c4dmipgdui00rnk95en36hj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;有的编译期间将字符串常量放在data中</a>
+</h3>
+<h3 class="topic">
+<a name="4d0e014tbqpbtbj5ln3gk39579">&nbsp;&nbsp;&nbsp;&nbsp;.bss</a>
+</h3>
+<h3 class="topic">
+<a name="6uvtucs4j5rbotchalrs9llci9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;未初始化的全局变量和局部静态变量</a>
+</h3>
+<h3 class="topic">
+<a name="4dprogkku6h0qpuuhh8e8rja4l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在程序运行期间会占用内存，但是在文件中不占内存，使用bss为了记录未初始化的全局变量和局部静态变量的大小总和</a>
+</h3>
+<h3 class="topic">
+<a name="6c5c887ifm688uf0m1hsgpdus7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;有的编译器不将未初始化的全局变量放在bss段，仅保留一个符号，等最后链接的时在bss中分配空间</a>
+</h3>
+<h3 class="topic">
+<a name="5c05eab54p5jquhssi1bm1pmh4">&nbsp;&nbsp;&nbsp;&nbsp;其他数据段</a>
+</h3>
+<h3 class="topic">
+<a name="1hl0p636ajdqv5csq20v831jgp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN_files/6vjb1b56l2au7jshem9pnsbjg0.png"></p>
+<h3 class="topic">
+<a name="392ta4jncn80vbvoh4nbn2g1e6">&nbsp;&nbsp;&nbsp;&nbsp;elf中表即端，一个数据表往往就是个段，所有的段均在段表中被描述</a>
+</h3>
+<h3 class="topic">
+<a name="4pkkved36cgmadrjmg8i32nf85">&nbsp;&nbsp;&nbsp;&nbsp;系统指定的段以.开头，一个elf中可以存在重名段</a>
+</h3>
+<h3 class="topic">
+<a name="1s5096b2me84jlh93dq8b18hrp">&nbsp;&nbsp;&nbsp;elf文件格式</a>
+</h3>
+<h3 class="topic">
+<a name="1eajuj9vh9rfc81qvg3tofpv4s">&nbsp;&nbsp;&nbsp;&nbsp;基本结构 问题文件头 段表 其他段或表</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN_files/5inoncblanajropt8d94eaksjm.png"></p>
+<h3 class="topic">
+<a name="0gvt7djjdtti71vv6cdhq3c414">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;文件头</a>
+</h3>
+<h3 class="topic">
+<a name="7enqub6a3sifme18e6gevp2k52">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;有32位和64位的，主要结构相同，成员大小不同</a>
+</h3>
+<h3 class="topic">
+<a name="2bv4p4gangsj1v2n0kivsqo46c">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN_files/0mjllmc1iu4iklea0r02c5i2te.png"></p>
+<h3 class="topic">
+<a name="6i1qls2v6rnve0srpljleja8br">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;是一个结构体，具体成员和意义如下</a>
+</h3>
+<h3 class="topic">
+<a name="2vdseujq9nmcfooin5bvearhg5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN_files/1dbpk0d0464tmec6sktqbgu631.png"></p>
+<h3 class="topic">
+<a name="4u4ivls5qdkq8gb2uuguj1t3jr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN_files/46v8osbcd9648cjt8gntruhnns.png"></p>
+<h3 class="topic">
+<a name="6q9kce199094mgi290inbqg375">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;书72页</a>
+</h3>
+<h3 class="topic">
+<a name="6etsdn09e5i08qnj6ug00nkfa1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;段表</a>
+</h3>
+<h3 class="topic">
+<a name="24503a1dnct9aaj5rnhtv23t6c">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;是一个结构体数组，一个数组元素代表一个段的信息，第0个元素无效</a>
+</h3>
+<h3 class="topic">
+<a name="23ueod0p6635b7n660n8pd0o62">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;书76页</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN_files/2jo45gccocilrh60tvffcd9f70.png"></p>
+<h3 class="topic">
+<a name="3rnr070g4acsn86rsj98ehh7b3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;段的类型</a>
+</h3>
+<h3 class="topic">
+<a name="4cefso2cjsode5pa93qejmq0f2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN_files/4pgn5gei0il1c28as1nbj3h415.png"></p>
+<h3 class="topic">
+<a name="573h8pi0qq40u8afnhs9rbon78">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN_files/7ejq694ug92j4ub97pfurddsoo.png"></p>
+<h3 class="topic">
+<a name="2e5rcglgbldjcpuu5vnvrtilfs">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;段的标志位</a>
+</h3>
+<h3 class="topic">
+<a name="6a3g3tqn6pappkpq49jqmgv3um">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN_files/04h5cthdklr8igpm6s8jboh0t5.png"></p>
+<h3 class="topic">
+<a name="2bmd1v3a6toic5cfdgffr0hhg7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;段的链接信息</a>
+</h3>
+<h3 class="topic">
+<a name="2mnk94lljim4sl0r6u2e7rd4pq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN_files/5jn5m35htvg4c299ho48f912es.png"></p>
+<h3 class="topic">
+<a name="2jomcb0al42djlufr8lfurh2rg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;重定位表(.rel.text   .rel.data)</a>
+</h3>
+<h3 class="topic">
+<a name="7lfhsp9a4v4hqg5joth5cbpt0u">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.rel.data 存储.data的重定位信息&#13;
+.rel.text 存储.text的重定位信息</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN_files/4itip5m5o8bkmlguofqh4rniv3.png"></p>
+<h3 class="topic">
+<a name="0dj5vsmd6rjqjn0d8s50bu1po1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对于每一个需要重定位的段，都有一个重定位表与之对应</a>
+</h3>
+<h3 class="topic">
+<a name="2tucahrrktfn5rs2l63rs5dc6r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;重定位表的结构</a>
+</h3>
+<h3 class="topic">
+<a name="3g5tp9sckri9s0i2me7rjsscs9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN_files/707vcsa0f3fq1b8gsd83c55gqa.png"></p>
+<h3 class="topic">
+<a name="377nd2gj875dna73lre9ncbbqq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN_files/3dkfedk0mv6enuia24r6g0a12g.png"></p>
+<h3 class="topic">
+<a name="3tkf1km6j19vjeh2r56shobf3i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;字符串表</a>
+</h3>
+<h3 class="topic">
+<a name="0b5gdfev2iol3f1qj5j0b8o9an">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;elf中字符串集种保存在一个段中</a>
+</h3>
+<h3 class="topic">
+<a name="5c7jdtoqg614t4qv5pjj98mraq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;分类</a>
+</h3>
+<h3 class="topic">
+<a name="4u6adb7phfcr2bt9ohruh4i8pb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;字符串表（.strtab）</a>
+</h3>
+<h3 class="topic">
+<a name="1ae2thp9ushenhn4nju7rvj72s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;保存普通字符串</a>
+</h3>
+<h3 class="topic">
+<a name="1vvoqj3q8rkmsso8he67nh40hi">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;段表字符串表（.shstrtab）</a>
+</h3>
+<h3 class="topic">
+<a name="3o43o6pc87uorauc2v4imj1bir">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;保存段名</a>
+</h3>
+<h3 class="topic">
+<a name="0n0i84oisaut3a325otn3u3u3t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;相关资料</a>
+</h3>
+<h3 class="topic">
+<a name="4kivi1fr9fphait7glkb4bl8ms">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://blog.csdn.net/u011298001/article/details/84938070</a>
+</h3>
+<h3 class="topic">
+<a name="3fu75mb85rkok55er969k80tea">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN_files/0grpph6v7feb5861effotefdsu.png"></p>
+<h3 class="topic">
+<a name="77g4v7lju1ghcq66oeii0mlrfj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN_files/03nvogr5dvkm8d50tr3f6dhrni.png"></p>
+<h3 class="topic">
+<a name="689p64ooqujdab4hqsatoodd3v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意因为字符串表保存不定长字符串，所以不是一个结构体数组结构，而是由多条以0x00结尾的字符串数据的集合，所以索引字符串表中的字符串的所谓&ldquo;下标&rdquo;就是指定字符串相对于字符串表首地址的偏移，而不是数组下标的概念</a>
+</h3>
+<h3 class="topic">
+<a name="7esjfppdjgu2uv88hsbo2d1re0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;符号表</a>
+</h3>
+<h3 class="topic">
+<a name="16f9jtuu4nbtafu913cfh5o2g5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;符号相关概念</a>
+</h3>
+<h3 class="topic">
+<a name="4ss6nti17304s747bsae3spku8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;符号为多个目标文件的链接提供依据</a>
+</h3>
+<h3 class="topic">
+<a name="6kiv7scblpmqhaernfqoiakgoq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;符号值</a>
+</h3>
+<h3 class="topic">
+<a name="5fab93tfr6tt4c4jmmihlcs1uv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对于函数和变量，符号值即为他们的地址</a>
+</h3>
+<h3 class="topic">
+<a name="0nv862qdvp9a416gajofe3e2tj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;符号表中的符号类型</a>
+</h3>
+<h3 class="topic">
+<a name="2jt5pr14cge8301nvjm29jvqcr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;链接过程只与前两种符号有关</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN_files/24ivdcrjmnii1b0jnmvttdg445.png"></p>
+<h3 class="topic">
+<a name="47tmgvl1keb5vtknlkhs8qn8l7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;符号表结构</a>
+</h3>
+<h3 class="topic">
+<a name="1qb9bijaf6fpgomt858uten5gn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;是一个结构体数组，每一个元素对应一个符号，第0个元素无效</a>
+</h3>
+<h3 class="topic">
+<a name="55ihefhu914hsb8pf4sl1tvoib">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN_files/37bd9btj8o0o3ohppcvjv0ntn7.png"></p>
+<h3 class="topic">
+<a name="6tkbgtph56iu109smvvnr858p4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意结构体中前三个成员大小均为4字节  第四、五成员数据类型均为unsigned char所以各占1字节，最后一个成员数据类型为Elf32_Half，占2字节，故该结构题一共占16字节</a>
+</h3>
+<h3 class="topic">
+<a name="26tr1ppd2nufbe2gf5h3trqign">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意st_name所谓的符号名在字符串表中的下标指的是指定字符串相对于字符串首地址的偏移，而不是类似数组下标的概念</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN_files/5k7reqbptctrf4fm34rs5qsuuv.png"></p>
+<h3 class="topic">
+<a name="7m2deh7rg0s5q2mstquucbl8jo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;符号类型与绑定信息</a>
+</h3>
+<h3 class="topic">
+<a name="4dsn6avlcsf87c2edurakumcel">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN_files/19vnlhp4s76907n3cuf6rg6ocg.png"></p>
+<h3 class="topic">
+<a name="58hg42n7944o1fo73lbs6i53in">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN_files/49558olerf8a7sf72nkeiuchbh.png"></p>
+<h3 class="topic">
+<a name="0htorj51rg7agkpcanvm97ddn3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;符号所在段</a>
+</h3>
+<h3 class="topic">
+<a name="52s0tq5ojeeite4qbh8sqo0hiv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN_files/4ej6je4ve7vrgfoud8m7kp4ntt.png"></p>
+<h3 class="topic">
+<a name="0dsfpgjoe3cnhohfm97qoij42l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;符号值</a>
+</h3>
+<h3 class="topic">
+<a name="2c2rfv56ja6efnrn7639d7bas7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN_files/3303t9pes145tomlvma6a9ctue.png"></p>
+<h3 class="topic">
+<a name="7be7nrgdgclqku5jaah6t033l5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN_files/21o6aouhfkpe0vtq64q8pkeedu.png"></p>
+<h3 class="topic">
+<a name="6oprv8ckcvv6lonmu3ffavbki6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;特殊符号</a>
+</h3>
+<h3 class="topic">
+<a name="102qslib4v1ilu3qviavlgd5n5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在链接过程中产生，可以在源码中直接使用，不用定义</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN_files/0l0da9p6re6gtd6qg5e0ptcgt1.png"></p>
+<h3 class="topic">
+<a name="0mkgchdn6dsa7hqk4de38t9v27">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;符号修饰与函数签名</a>
+</h3>
+<h3 class="topic">
+<a name="77srlc3jnln5aj7e83ibvsv2p9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;c++符号修饰</a>
+</h3>
+<h3 class="topic">
+<a name="55lp86rhodfothkb3sd617u31c">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;c++源代码编译后形成的目标文件中，会将函数名和变量名进行修饰，形成符号名，从而避免链接过程产生符号重定义的问题</a>
+</h3>
+<h3 class="topic">
+<a name="3ofsqvt686a6e0binkpthndjt0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;extern "C"</a>
+</h3>
+<h3 class="topic">
+<a name="0mas2ihplpmkbta444rfen22be">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;放弃使用c++的符号修饰机制</a>
+</h3>
+<h3 class="topic">
+<a name="0rev7chb8f3duoapnueatks37h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;强符号与弱符号</a>
+</h3>
+<h3 class="topic">
+<a name="34kl0c1m7vjvqrg6q7odk64gb7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对于cc++ 编译器默认的初始化了的全局变量为强符号，未初始化的全局变量为弱符号</a>
+</h3>
+<h3 class="topic">
+<a name="13mpn4vmk3pr7t5flk6g4d0vob">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;定义一个弱符号</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN_files/7bpfkp245m1nvo3fp2hn929mtl.png"></p>
+<h3 class="topic">
+<a name="3rhrs5friaru4h1gg65iprsce9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用规则</a>
+</h3>
+<h3 class="topic">
+<a name="3a38t8udbanf6gkkhngcs93s6o">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN_files/6lr7101ort0jisii2c80d7clsi.png"></p>
+<h3 class="topic">
+<a name="377qs6n0a4se0m9cbp7v65dl28">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;强引用和弱引用</a>
+</h3>
+<h3 class="topic">
+<a name="0gr1i74iajrj9qer8uahkespoi">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;针对目标文件对外部符号的引用而言的，当进行链接时，如果外部符号未定义 ，链接器报符号未定义错误，此时为强引用，否则为弱引用</a>
+</h3>
+<h3 class="topic">
+<a name="6f8hgtik6701hsjkrso820t17l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;书92</a>
+</h3>
+<h3 class="topic">
+<a name="1u3lllv5up6gp3pse4besd5fkl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;声明一个弱引用</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN_files/3ilgvk5mdm6lcm8e9lcd5mlgp2.png"></p>
+<h3 class="topic">
+<a name="2jtl3b1aum91g55bqlo3r459lc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;书82</a>
+</h3>
+<h3 class="topic">
+<a name="5tscoikgiufglbp9e0ghfmaoke">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;调试信息</a>
+</h3>
+<h3 class="topic">
+<a name="4e9q3a1a6gjhlmph9hb2gkgu31">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用于源码调试，可能会占用大量内存空间</a>
+</h3>
+<h3 class="topic">
+<a name="65nekn4a38p0r7mtejr17me3at">&nbsp;&nbsp;&nbsp;工具使用</a>
+</h3>
+<h3 class="topic">
+<a name="0m9bq7t4hr5r9ind2s27kguj0i">&nbsp;&nbsp;&nbsp;&nbsp;查看目标文件的结构和内容</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN_files/4ql5o2j13sa1afdvor53rarmu4.png"></p>
+<h3 class="topic">
+<a name="0fmjrom0e8rkd64ce603c5e950">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;查看代码段、数据段、bss段的长度</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN_files/3rboeglmqphs1ltqjv6sktqdco.png"></p>
+<h3 class="topic">
+<a name="1gfsb5dfjl37agpateirvesu6s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;查看代码段的信息</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN_files/4r18vilbuvk61rqiae708i21qf.png"></p>
+<h3 class="topic">
+<a name="2korltlv4vo4kjfa8dk1q1egfa">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;查看data和rodata段</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN_files/08no6fvqri9r1loc32s1nmgbbk.png"></p>
+<h3 class="topic">
+<a name="011ng4i2bvt1nlo3i8gqk8rbm2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将二进文件作为目标文件的一个段</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN_files/7q09ipj0untq15gd6ne71p72af.png"></p>
+<h3 class="topic">
+<a name="50aln8cm6ghefe2l5hndasmh0t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将数据放到指定段中</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN_files/1etro5cangvh53r7ap56e2d977.png"></p>
+<h3 class="topic">
+<a name="02dsdif9s9uo2jnop33026e0e2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;查看文件头</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN_files/463p0mm4fmvuif08ajlnck9q51.png"></p>
+<h3 class="topic">
+<a name="2h6sfi5esres39vhig35cmi82i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;输出段表内容</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN_files/1urh4as3k8v9uc52fjkfupt9mq.png"></p>
+<h3 class="topic">
+<a name="1b6qtnhr2df2cuvvpp0fgp0cmi">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;查看符号信息</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN_files/7l4e1olfo2k95ntab38k729b63.png"></p>
+<h3 class="topic">
+<a name="3ol024ea13957qgea5n0cjg89q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;查看符号</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN_files/56uv3qg17qnclnq72cpee1rev5.png"></p>
+<h3 class="topic">
+<a name="3k8lper7n5j9l4v1dv4h4mifbq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;解析被修饰过的函数名</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN_files/136n87909k9g0eukgib9jhp31g.png"></p>
+<h3 class="topic">
+<a name="7ijrjac6u7jcfhjo8e07ud07hj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;编译过程中产生调试信息</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN_files/3ugoqktcr4a9n476o43fjddnhd.png"></p>
+<h3 class="topic">
+<a name="4onaajv98ebkj6er57mrjh0nt8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;去掉elf文件中的调试信息</a>
+</h3>
+<p class="topicImage">
+<img src="CTF PWN_files/2d2qvjdvj9lqo6k0lh56r8id4q.png"></p>
+<h3 class="topic">
+<a name="7irj2msdhjr5pbbi0ujh16fovr">&nbsp;&nbsp;第四章静态链接</a>
+</h3>
+<h3 class="topic">
+<a name="1t9k7ftmp1qrrr5cvi87cc1u71">&nbsp;&nbsp;&nbsp;elf文件默认的程序入口为0x08048000</a>
+</h3>
+<h3 class="topic">
+<a name="0h6jn76u5lgv26r4uqcuk4bgae">&nbsp;&nbsp;&nbsp;暂略</a>
+</h3>
+<h2 class="topic">
+<a name="3ge1eetj7ctdigfulnvl3ltem0">动态链接与静态链接对应的表名</a>
+</h2>
+<h3 class="topic">
+<a name="3e2fn1mh074cksjm1d7mtliic0">&nbsp;动态链接</a>
+</h3>
+<h3 class="topic">
+<a name="4r5lm1kmgi34q2i0c8vgcf4cla">&nbsp;&nbsp;动态链接符号表</a>
+</h3>
+<h3 class="topic">
+<a name="0o05pf1r82m5ngsojbrsfrl8bs">&nbsp;&nbsp;&nbsp;.dynsym</a>
+</h3>
+<h3 class="topic">
+<a name="0r2bscjtp11goitjv9gnifqkcf">&nbsp;&nbsp;动态链接字符串表</a>
+</h3>
+<h3 class="topic">
+<a name="7hpfk6sin7ondb3lrblug7saev">&nbsp;&nbsp;&nbsp;.dynstr</a>
+</h3>
+<h3 class="topic">
+<a name="25ublo8vab0o5h9ooeef2perlm">&nbsp;&nbsp;动态链接重定位表</a>
+</h3>
+<h3 class="topic">
+<a name="52cago08652bsl1e6drl92391q">&nbsp;&nbsp;&nbsp;.rel.dyn  .rel. plt</a>
+</h3>
+<h3 class="topic">
+<a name="1mt83hedj5qkl3lks7edka7433">&nbsp;静态链接</a>
+</h3>
+<h3 class="topic">
+<a name="6o6dashp66ahr2qb2uk8equj5o">&nbsp;&nbsp;静态链接符号表</a>
+</h3>
+<h3 class="topic">
+<a name="2b298fspe6hptual92cq871780">&nbsp;&nbsp;&nbsp;.symtab</a>
+</h3>
+<h3 class="topic">
+<a name="64la7f2g1jqf1qq5fvfkust78f">&nbsp;&nbsp;静态链接字符串表</a>
+</h3>
+<h3 class="topic">
+<a name="598c79vffhr95rrmafdu9ai2ba">&nbsp;&nbsp;&nbsp;.strtab</a>
+</h3>
+<h3 class="topic">
+<a name="4rnep1551vlfodpc8eg3119913">&nbsp;&nbsp;静态链接重定位表</a>
+</h3>
+<h3 class="topic">
+<a name="5mtibvfq0f3hu4rbkm3vc92qid">&nbsp;&nbsp;&nbsp;.rel.text  .rel.data</a>
+</h3>
+</body>
+</html>

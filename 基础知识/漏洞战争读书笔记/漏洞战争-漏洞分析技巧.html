@@ -1,0 +1,949 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>漏洞战争-漏洞分析技巧</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="7te7hb78193l7femrml3qp773g">漏洞战争-漏洞分析技巧</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="%E6%BC%8F%E6%B4%9E%E6%88%98%E4%BA%89-%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E6%8A%80%E5%B7%A7_files/images/%E6%BC%8F%E6%B4%9E%E6%88%98%E4%BA%89-%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E6%8A%80%E5%B7%A7.jpg"></div>
+<h2 class="topic">
+<a name="5e4n9u051o3kv008dlcd4ke9oj">栈溢出漏洞分析</a>
+</h2>
+<h3 class="topic">
+<a name="1u5o6e219h6eannftd2f7im02e">&nbsp;基于栈回溯的漏洞分析方法</a>
+</h3>
+<h3 class="topic">
+<a name="1tb3jegtc0d4oh66agqspv9d8n">&nbsp;基于字符串定位的漏洞分析</a>
+</h3>
+<h3 class="topic">
+<a name="5t29mps7agq773t5sba7qc6icg">&nbsp;&nbsp;使用ida可以查看指定文件的所有字符串信息，如果能够确定特定字符串与漏洞触发直接相关（一般的情况是漏洞产生于处理特定字符串及其所代表的数据的过程中），则可以通过ida的交叉引用功能，定位漏洞代码</a>
+</h3>
+<h3 class="topic">
+<a name="7siuluqb1ltq7urrekf5cv01sa">&nbsp;&nbsp;&nbsp;实例：CVE-2010-2883中adobe reader对SING表数据解析过程中存在栈溢出漏洞</a>
+</h3>
+<h3 class="topic">
+<a name="7vkh29381fboha8491573c6v3j">&nbsp;基于污点追踪思路的漏洞分析方法</a>
+</h3>
+<h3 class="topic">
+<a name="0k0ipuptbeh737h609qpab6cp4">&nbsp;&nbsp;栈溢出过程中一定存在内存拷贝操作，且拷贝内存的字节数一般大于栈空间实际大小，拷贝内存的字节数可以作为污点，在调试过程中追踪其来源，如果是文件格式解析漏洞，则污点数据可能存在于poc文件的特定数据结构中，或者Exploit代码中</a>
+</h3>
+<h3 class="topic">
+<a name="16kp0posllcsv08t7rdiqo3dl6">&nbsp;&nbsp;&nbsp;实例：CVE-2011-0104 书52页</a>
+</h3>
+<h3 class="topic">
+<a name="7s3ppabes25un93o4n58fafm14">&nbsp;针对ActiveX控件的漏洞分析</a>
+</h3>
+<h3 class="topic">
+<a name="3ek8j0tdlnfd8s9lr6sdkm47cl">&nbsp;&nbsp;对ActiceX控件中的函数调试跟进</a>
+</h3>
+<h3 class="topic">
+<a name="2svt6giuigbrk09nlgofmv60u9">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%88%98%E4%BA%89-%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E6%8A%80%E5%B7%A7_files/2c4fmre7kiag8j8vutnjjr3qsr.png"></p>
+<h3 class="topic">
+<a name="0roovdhqp61kdr6m53gqvgebav">&nbsp;&nbsp;&nbsp;&nbsp;书61页</a>
+</h3>
+<h3 class="topic">
+<a name="4e5qpk4oth8fojb8id0pu9s9aj">&nbsp;基于OffVis工具的Office漏洞分析</a>
+</h3>
+<h3 class="topic">
+<a name="3ig5p9ik05a3raagfqmr0l3p3l">&nbsp;&nbsp;可以使用工具OffVis分析office文件格式，结合调试过程中的污点数据（可能包括返回地址、操作内存字节数等），查找污点数据在文件中对应的数据结构，结合动态、静态调试，理解程序对该数据结构的操作，找到文件中引起异常的数据结构</a>
+</h3>
+<h3 class="topic">
+<a name="23lg1l7flkhrgltmov1qchqaif">&nbsp;&nbsp;&nbsp;书71页</a>
+</h3>
+<h3 class="topic">
+<a name="052mge1f8gi5kcub007839um10">&nbsp;定位产生栈溢出的指令（rep movs等）</a>
+</h3>
+<h3 class="topic">
+<a name="0ar2e2uapo6n1glah2pr23u91n">&nbsp;&nbsp;通过触发异常定位异常指令，确定异常指令所在函数crashfun，在该crashfun入口处下断，并在栈顶处下内存写入断点</a>
+</h3>
+<h3 class="topic">
+<a name="7vlv7u4fdibsa6v4gubulmnn8f">&nbsp;&nbsp;&nbsp;书53页</a>
+</h3>
+<h3 class="topic">
+<a name="06aipu1jahh86en6vt6eu7ln09">&nbsp;当异常函数因为对应模块未加载而无法下断时，使用immdbg先加载指定模块并下断异常函数，之后打开poc</a>
+</h3>
+<h3 class="topic">
+<a name="4d585o6ldtn2iju5o1ok9nc6ik">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%88%98%E4%BA%89-%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E6%8A%80%E5%B7%A7_files/3om4eofjqaakdkrd83vl8vl7n5.png"></p>
+<h3 class="topic">
+<a name="5kcopbqgslvu9u8rbhn1d6q7s4">&nbsp;&nbsp;&nbsp;书67页</a>
+</h3>
+<h3 class="topic">
+<a name="0hpif7rv3r045ct111q9eanikj">&nbsp;通过指令运行记录功能，记录漏洞版本和补丁版本指令执行不同点，从而发现漏洞指令</a>
+</h3>
+<h2 class="topic">
+<a name="47bd45q66htk0ie10vecv1q2tg">堆溢出漏洞分析</a>
+</h2>
+<h3 class="topic">
+<a name="5apuvmepa74eegvqh3e6gsp3q7">&nbsp;使用系统提供的堆调试机制 书79页</a>
+</h3>
+<h3 class="topic">
+<a name="778mbnhtbr4cnqld2r70hk7seb">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%88%98%E4%BA%89-%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E6%8A%80%E5%B7%A7_files/3b0tc9mvlivu0raopn66i1ckkk.png"></p>
+<h3 class="topic">
+<a name="2epavrthkec53uo1kv8b9brg9s">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%88%98%E4%BA%89-%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E6%8A%80%E5%B7%A7_files/0otf0lma8v2ngt6spki3d1mru3.png"></p>
+<h3 class="topic">
+<a name="5rj0qv0tebjoqsbl7qkjkm7v3q">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%88%98%E4%BA%89-%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E6%8A%80%E5%B7%A7_files/639ejc056e0pukr5fvb7nj0btq.png"></p>
+<h3 class="topic">
+<a name="6bvhbros4rg3lb8ftlg6ita8oh">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%88%98%E4%BA%89-%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E6%8A%80%E5%B7%A7_files/1jpqpnj4mr2p8tk7t6sb8ig5rp.png"></p>
+<h3 class="topic">
+<a name="0f3lki636qt844jfpdm3452igr">&nbsp;&nbsp;&nbsp;注意这里参数应该是+hpa</a>
+</h3>
+<h3 class="topic">
+<a name="19deoer4l5vbvcr8df4qg6h6t7">&nbsp;基于页堆的堆漏洞调试方法</a>
+</h3>
+<h3 class="topic">
+<a name="5h1quj6f5dt791h91u7pu290nm">&nbsp;&nbsp;本质是通过页堆，让程序可以断在发生堆溢出的指令上，然后根据当前栈中数据进行栈回溯分析，关于导致溢出的数据来源，需要分析对应文件的文件格式，理解其数据结构的含义</a>
+</h3>
+<h3 class="topic">
+<a name="7t4mn2fc53ko4csr4j3o7ddb8r">&nbsp;基于导图推算的漏洞分析方法</a>
+</h3>
+<h3 class="topic">
+<a name="65draiupbep37sf7159qlb5dpq">&nbsp;&nbsp;本质是当异常发生时，逆向追溯导致异常的寄存器中的值的根源在哪里，类似于污点分析，最终需要将异常数据的来源归因于触发异常的文件的特定数据结构，这也需要触发异常的文件的文件格式有所理解</a>
+</h3>
+<h3 class="topic">
+<a name="2ljdbvotralh166rac6acq9me5">&nbsp;&nbsp;&nbsp;分析结果常常为异常数据在内存中的变量传播路径</a>
+</h3>
+<h3 class="topic">
+<a name="0vdg6lj18g7cac5abr58q5et1p">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%88%98%E4%BA%89-%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E6%8A%80%E5%B7%A7_files/08u3ncijebpp9c6i9cjtqoe3sf.png"></p>
+<h3 class="topic">
+<a name="1lcl07b4prg8tj83rlp7iuocvf">&nbsp;&nbsp;&nbsp;这个过程可以使用条件记录断点记录各个变量的值</a>
+</h3>
+<h3 class="topic">
+<a name="7hdmuja2liq5poin25b953pe22">&nbsp;&nbsp;&nbsp;实例：CVE-2012-0003 书目104页</a>
+</h3>
+<h3 class="topic">
+<a name="50hcfq03ds5hnomjjobung53qv">&nbsp;基于HTC的漏洞分析方法</a>
+</h3>
+<h3 class="topic">
+<a name="4kd8qr2q0ivefi758qm9krf0ml">&nbsp;&nbsp;htc即堆尾检查，可以用于检测是否发生堆溢出，如果发生，在哪个堆块中发生</a>
+</h3>
+<h3 class="topic">
+<a name="3b6ho2lmdfeuu9ngd2jtrmmptk">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%88%98%E4%BA%89-%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E6%8A%80%E5%B7%A7_files/6fbvj547mrg7r0198d33djgcgp.png"></p>
+<h3 class="topic">
+<a name="3oakq5p8scsprpto26vt27727a">&nbsp;&nbsp;&nbsp;书130页</a>
+</h3>
+<h3 class="topic">
+<a name="0h9sv7m5d5p1mb5ktkkf0v2jea">&nbsp;&nbsp;使用堆尾检查确定发生溢出的堆块过后，可以使用页堆，确定复制数据的指令</a>
+</h3>
+<h3 class="topic">
+<a name="2oauc6r3qcb58qt21ghgfedjvh">&nbsp;&nbsp;&nbsp;如果定位到复制数据的指令，可以在该指令处下断，段下后记录复制数据的目标内存的首地址，之后f9继续运行，因为有堆页存在，指令断在发生堆溢出的那一次数据复制，此时可以得到目标内存的最后地址，两者相减，可以确定下该堆块原本的大小</a>
+</h3>
+<h3 class="topic">
+<a name="34msgtli4133e0co7k30v9cb48">&nbsp;&nbsp;&nbsp;&nbsp;溢出发生的内存操作数-堆块原本大小=溢出了多少个字节，这种方法确定溢出的字节数，不用进行大量调试，比较方便</a>
+</h3>
+<h3 class="topic">
+<a name="3pf82h2g5c7p3g7p6u80e75l75">&nbsp;基于HPA的漏洞分析方法</a>
+</h3>
+<h3 class="topic">
+<a name="0njb3jb70cpmnpk7i52doq34vp">&nbsp;如何断住动态加载的模块中的指令？</a>
+</h3>
+<h3 class="topic">
+<a name="7cpeaurt6u2pnqtm3ac99a41d1">&nbsp;&nbsp;被下断的指令所在的模块在程序一开始并没有被加载，，而是随着程序打开poc而被动态加载的，这种情况应该如何调试？</a>
+</h3>
+<h3 class="topic">
+<a name="4vn875h89oeofqqnq5v90610hk">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%88%98%E4%BA%89-%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E6%8A%80%E5%B7%A7_files/7iqhuqalqn33uuof2qrhdhtsg7.png"></p>
+<h3 class="topic">
+<a name="4csvq2otrjc0502nfn7apvo2l7">&nbsp;开启WinDBG的子进程调试</a>
+</h3>
+<h3 class="topic">
+<a name="46ru30qtqop5qgolh442i80shv">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%88%98%E4%BA%89-%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E6%8A%80%E5%B7%A7_files/50363irj1b07re7ner7dgegv17.png"></p>
+<h3 class="topic">
+<a name="27hjicfme8ciu78gfl5dgnktem">&nbsp;通过信息泄露实现漏洞利用</a>
+</h3>
+<h3 class="topic">
+<a name="5sq7rg29n1k8acl1rtefr6gqhb">&nbsp;&nbsp;通过信息泄露可以绕过DEP和ASLR</a>
+</h3>
+<h3 class="topic">
+<a name="5i3n2pkmmt8beor1s81a673lrk">&nbsp;&nbsp;&nbsp;书149页</a>
+</h3>
+<h3 class="topic">
+<a name="3e6o2h5er41odkl01c2a6dum6r">&nbsp;&nbsp;&nbsp;可以进行重点调试分析</a>
+</h3>
+<h3 class="topic">
+<a name="36pssss8t50md8q201kvb9ti0s">&nbsp;javascript中的函数大多能在jscript.dll中找到对应的API名称</a>
+</h3>
+<h3 class="topic">
+<a name="3m80tdedhfm8phc4q8e8l7gup8">&nbsp;&nbsp;书151</a>
+</h3>
+<h3 class="topic">
+<a name="0nj14ni9ihekslak6nbodd03tj">&nbsp;分析到152页</a>
+</h3>
+<h3 class="topic">
+<a name="4vjoa4shi84s8qlfi0nsib3m14">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%88%98%E4%BA%89-%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E6%8A%80%E5%B7%A7_files/16jhfs1i3lqo6gnb1dc1dtsh7q.png"></p>
+<h2 class="topic">
+<a name="08m7rp6pntd9de30mrp2084ite">整数溢出漏洞分析</a>
+</h2>
+<h3 class="topic">
+<a name="1l367tqm408j0ckgcp4k4vt93e">&nbsp;基于堆分配记录的漏洞分析方法</a>
+</h3>
+<h3 class="topic">
+<a name="05f7b67jk1k80bkot4ac99rbnq">&nbsp;&nbsp;定位JavaScript函数对应的ie函数</a>
+</h3>
+<h3 class="topic">
+<a name="3laia1rebriblhmtf7mbo4r1v5">&nbsp;&nbsp;&nbsp;在站点www.geoffchappell.com中进行搜索，该网站提供ie类及其属性方法的列表，可以在该站点中搜索js相关函数名，看能否匹配ie的方法</a>
+</h3>
+<h3 class="topic">
+<a name="6bu5hggubqi845klvottbmo8ap">&nbsp;&nbsp;&nbsp;&nbsp;使用google hacking</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%88%98%E4%BA%89-%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E6%8A%80%E5%B7%A7_files/6m6ujo5v9u2vvfpb5j5rbhsb1o.png"></p>
+<h3 class="topic">
+<a name="1nnq3051p9kvu5bpsku2b98oh2">&nbsp;&nbsp;&nbsp;如果已知js函数对应的ie函数在哪个模块中，可以使用ida加载该模块，然后根据js函数名检索该模块的导出函数</a>
+</h3>
+<h3 class="topic">
+<a name="691bjpvkevo236vlcnucp5o024">&nbsp;&nbsp;&nbsp;&nbsp;可以通过搜索引擎获知被搜索的函数位于哪个模块中</a>
+</h3>
+<h3 class="topic">
+<a name="1thqhs6he6aq9dpfrmkrjrcofe">&nbsp;&nbsp;定位到js函数对应的ie函数后，可以在调试过程中对该函数下断，从而进行调试</a>
+</h3>
+<h3 class="topic">
+<a name="5e4j1n4790ssmise9a2k7rj1re">&nbsp;&nbsp;书168页</a>
+</h3>
+<h3 class="topic">
+<a name="05bqddq6rqnfaovv17ksu388ig">&nbsp;因为整数溢出漏洞常常带来的后果就是以被溢出的数据进行内存操作，从而导致堆或栈溢出，所以堆页等堆栈溢出调试方法也常用于该类型漏洞的调试</a>
+</h3>
+<h3 class="topic">
+<a name="50pid0qhv7khjcck702hmnrjlr">&nbsp;基于条件记录断点的漏洞分析方法</a>
+</h3>
+<h3 class="topic">
+<a name="1ei90rh68d4pf1tbc32dv9pfqb">&nbsp;&nbsp;如果漏洞产生于程序的伪计算机字节指令，即类似于java的虚拟机指令，此时每一条虚拟指令往往对应汇编中的一个函数调用，而多条虚拟指令对应的函数的地址往往会形成一张表，调用虚拟指令往往是通过过访问函数地址表的形式进行，访问函数地址表往往是通过[函数表首地址+虚拟指令序号*4]的方式进行&#13;
+即call [函数表首地址+虚拟指令序号*4]</a>
+</h3>
+<h3 class="topic">
+<a name="4r1ca6febttvk88f7tp05p2h6u">&nbsp;&nbsp;&nbsp;对于这种情况可以在函数调用的位置设置条件记录断点，从而记录异常发生在哪个虚拟指令对应的函数中的</a>
+</h3>
+<h3 class="topic">
+<a name="5lf37m0m14ql3egq8dsfhbt01q">&nbsp;&nbsp;&nbsp;&nbsp;书185页</a>
+</h3>
+<h3 class="topic">
+<a name="5vpvohqpgroqijstki42qvn7at">&nbsp;&nbsp;如果要下断点的指令所在的模块是动态加载的，则有之前讨论的两种方法下断点，书中说提出的方法是先加载对应模块，在模块中下断，然后再运行对应程序，此方法实际实验中不能成功，具体措施需要进一步讨论</a>
+</h3>
+<h3 class="topic">
+<a name="5le9639g0tsp5919veuj3qvip6">&nbsp;&nbsp;&nbsp;模块动态加载，所以模块基址每次不同，所以下断不能使用特定地址，需要计算被下断指令距离模块首地址的偏移，以此寻址下断指令</a>
+</h3>
+<h3 class="topic">
+<a name="79fbu2jdetck5k2mv819q5svc6">&nbsp;&nbsp;&nbsp;&nbsp;书185页</a>
+</h3>
+<h3 class="topic">
+<a name="62sc7v8kd3vu0kp0d2g97ned2j">&nbsp;&nbsp;这种情况常需要查询特定虚拟指令序号对应的虚拟指令是什么，功能是什么</a>
+</h3>
+<h3 class="topic">
+<a name="7jm33sqn1vver18ugvb692sqn3">&nbsp;&nbsp;如果要弄清虚拟指令进行了哪些操作，可以将条件记录断点设置在call [函数表首地址+虚拟指令序号*4]指令前后，记录虚拟栈栈顶的数据在虚拟指令执行前后的变化</a>
+</h3>
+<h3 class="topic">
+<a name="7prpnb9fb64dbtkufqtunbain6">&nbsp;&nbsp;&nbsp;可以通过调试某一条虚拟指令对应的函数，从而确定虚拟栈栈顶的位置</a>
+</h3>
+<h3 class="topic">
+<a name="00h0i97tndl4qhs3367vf378ot">&nbsp;&nbsp;&nbsp;&nbsp;书189页</a>
+</h3>
+<h3 class="topic">
+<a name="3h9f0d0ifaepgesplkkccjnsm1">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%88%98%E4%BA%89-%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E6%8A%80%E5%B7%A7_files/6ujs34gabpidglg58mb01cm3kf.png"></p>
+<h3 class="topic">
+<a name="2jb43aoi2qh68l37c5l4p450gb">&nbsp;&nbsp;有的时候BinDiff不能够匹配补丁前和补丁后的漏洞函数，此时需要分析补丁前后相关数据结构，从而定位对应漏洞函数</a>
+</h3>
+<h3 class="topic">
+<a name="6m5hm7q3nonet9lgio74phhct8">&nbsp;&nbsp;书178页</a>
+</h3>
+<h3 class="topic">
+<a name="2of89rvmflgpjphcmhahfqvacd">&nbsp;基于源码调试的漏洞分析方法</a>
+</h3>
+<h3 class="topic">
+<a name="6gctvrcm5rsa4tip5ao1uf7doa">&nbsp;&nbsp;在windbg中设置火狐浏览器的符号路径从而进行源码调试</a>
+</h3>
+<h3 class="topic">
+<a name="7aol3ttl2np9qj6g2efil32lt5">&nbsp;&nbsp;&nbsp;书目197页</a>
+</h3>
+<h3 class="topic">
+<a name="57eibfbr116blu1ms5g9mao968">&nbsp;&nbsp;&nbsp;直接通过火狐官方符号服务器得到的符号信息一般都是最新版本地软件对应的符号，所以会丢失部分旧版本中函数对应的符号，该函数可能就是旧版本中存在漏洞的函数，此时可能需要手动编译对应旧版本的软件</a>
+</h3>
+<h3 class="topic">
+<a name="24ag0144ctn4a2ppmjj9j6sgaf">&nbsp;基于类函数定位的漏洞分析方法</a>
+</h3>
+<h3 class="topic">
+<a name="33gdsuhr05vo5iuda5h77aji0e">&nbsp;&nbsp;针对poc中用于触发漏洞的javascript函数或类成员，可可以在IDA中的函数窗口使用Alt+T的组合键搜索指定函数名称，从而在ida中定位触发异常的函数，然后在调试器中动态调试漏洞触发的过程</a>
+</h3>
+<h3 class="topic">
+<a name="0q691iok35jml7kckrlcq8gs5e">&nbsp;&nbsp;&nbsp;书214页</a>
+</h3>
+<h2 class="topic">
+<a name="3jp4u2ilfr8qup951fvfefm3t7">格式化字符串漏洞</a>
+</h2>
+<h3 class="topic">
+<a name="62qv1r6l35sbplgh9b0jm374n3">&nbsp;漏洞原理</a>
+</h3>
+<h3 class="topic">
+<a name="2tc29asgvhhdatt3q0f7rbd46e">&nbsp;&nbsp;printf、fprintf、vprintf、sprintf使用%s和%x从堆栈中或内存中输出数据，使用%n向任意地址写入任意数据</a>
+</h3>
+<h3 class="topic">
+<a name="3l3u5jm8m003nas4na7kpbqvgb">&nbsp;&nbsp;使用%123x控制输出的字节数，使用%n将输出字节数写入到指定内存地址</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%88%98%E4%BA%89-%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E6%8A%80%E5%B7%A7_files/35j2rsroe0ccou25vb7643r2nq.png"></p>
+<h3 class="topic">
+<a name="6jo9arf3b82jk3hgh2goq7sbmr">&nbsp;通过源码对比分析漏洞</a>
+</h3>
+<h3 class="topic">
+<a name="441f31lc6v8akkevnklu9lmt6h">&nbsp;&nbsp;对于linux系统函数的漏洞，通过对比补丁前后函数源码可以进行漏洞分析</a>
+</h3>
+<h3 class="topic">
+<a name="756egg3m5l5svm2bsv0l3qdi1h">&nbsp;基于输出消息的漏洞定位方法</a>
+</h3>
+<h3 class="topic">
+<a name="38ipd4pcqmighlc2dpa07n0dt8">&nbsp;&nbsp;格式化字符串漏洞中触发漏洞的函数往往就是输出文本的函数，从而如果能够在程序漏洞模块搜索输出的字符串，即可定位漏洞函数</a>
+</h3>
+<h3 class="topic">
+<a name="58r5t2nmb2eleir2kjcremid5q">&nbsp;&nbsp;&nbsp;书目237页</a>
+</h3>
+<h2 class="topic">
+<a name="42dtnugmdpbamapcq5m0ps3jgv">双重释放漏洞分析</a>
+</h2>
+<h3 class="topic">
+<a name="77p57dm7ndp58vjq7sju6lbbps">&nbsp;漏洞原理</a>
+</h3>
+<h3 class="topic">
+<a name="35c05i3t2b21f3rlebvun7b1he">&nbsp;&nbsp;对一个内存块进行两次释放导致的，当堆块被重复释放之前，堆块的释放引起了被释放堆块的堆块合并，从而堆头信息和前后向指针被修改，此时再次继续堆块释放，可能会导致内存访异常</a>
+</h3>
+<h3 class="topic">
+<a name="4qol0v2n7urtqth1sitdvei3pg">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%88%98%E4%BA%89-%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E6%8A%80%E5%B7%A7_files/5l8dv0p4bet5cuj2bnnbtuo008.png"></p>
+<h3 class="topic">
+<a name="2e5pf90dlm2sbv3nte81cutuh3">&nbsp;&nbsp;&nbsp;&nbsp;书246页</a>
+</h3>
+<h3 class="topic">
+<a name="0sl276g93f5sdsm7voamj3p2r0">&nbsp;&nbsp;此种函数利用思路为通过占坑的方式将被释放的内存填充自己的代码，程序如果要进行双重释放，就需要再次引用被释放的内存的数据，可能取对应内存值作为虚表指针，然后通过虚表指针引用虚函数并调用，从而劫持程序流程</a>
+</h3>
+<h3 class="topic">
+<a name="7tn08523l05qn8ffmct3ra0cki">&nbsp;&nbsp;&nbsp;注意对于双重释放漏洞、释放重引用漏洞，若要漏洞利用，需要知道被释放的对象的大小，从而方便申请相同大小的内存，从而占坑</a>
+</h3>
+<h3 class="topic">
+<a name="6btk2jholurqe5vhrfggro50io">&nbsp;通过栈回溯和堆状态判断漏洞类型</a>
+</h3>
+<h3 class="topic">
+<a name="2td5kfed7ama5n0trsg0ig99gl">&nbsp;&nbsp;触发异常时，通过栈回溯分析漏洞触发时的函数调用过程（在双重释放漏洞中，触发漏洞共的函数常为free()），然后下断点，在漏洞被触发前断下，单步调试，查看内存地址的性质，可以发现程序调用被释放内存的证据</a>
+</h3>
+<h3 class="topic">
+<a name="2brmi4gah2vifufpra8k54nbee">&nbsp;&nbsp;&nbsp;书248</a>
+</h3>
+<h3 class="topic">
+<a name="0k6k1sjjm9ldhi80uml8u8g3os">&nbsp;静态分析攻击样本</a>
+</h3>
+<h3 class="topic">
+<a name="4iho6ms2glunsf1uq0nn3l2rg0">&nbsp;&nbsp;使用JPEXS反编译器将.swf文件进行反编译，该文件可以用于嵌入到网页文件中，从而进行漏洞利用， .swf文件格式与Flash程序相关</a>
+</h3>
+<h3 class="topic">
+<a name="0fkvn9cenf9ko02mdjpi7pf2kl">&nbsp;基于ROP指令地址的反向追踪</a>
+</h3>
+<h3 class="topic">
+<a name="2et7nfd5di5qa0qjp1n8pva41k">&nbsp;&nbsp;书265页</a>
+</h3>
+<h3 class="topic">
+<a name="0kp3ttlhgobe6f7au98batc5er">&nbsp;&nbsp;当漏洞触发异常后，进行栈回溯，可能发现当前栈中数据较少，或者对栈中返回地址进行下断会断下多次，此时栈中数据可能已经因为异常的发生而被破坏</a>
+</h3>
+<h3 class="topic">
+<a name="5bhuvg9p6kcdnn7mcllbd4mlpc">&nbsp;&nbsp;&nbsp;可以使用windbg中的条件记录断点记录指定指令的执行次数，见漏洞分析工具的使用</a>
+</h3>
+<h3 class="topic">
+<a name="5gho4grplg77kkj1ckdich9732">&nbsp;&nbsp;此时需要换一种思路动态调试异常的发生</a>
+</h3>
+<h3 class="topic">
+<a name="6ci1fhvg4fvh32e0s4gh241p9p">&nbsp;&nbsp;&nbsp;当存在漏洞利用样本时，可能其中构造的ROP块的内存地址是固定的，所以可以对该地址进行下断，当漏洞被成功利用，rop链开始执行之后程序断下，此时可以利用栈回溯，分析当前栈帧中函数调用过程，从而逆向找到漏洞的触发点（可以通过检测内存是否被释放判断双重释放是否发生）</a>
+</h3>
+<h2 class="topic">
+<a name="7i5u6acrrputfs6oa8jfo8drd2">释放重引用漏洞分析</a>
+</h2>
+<h3 class="topic">
+<a name="1gr0m4imo236qgj4r5t2gu73be">&nbsp;通过动态调试快速定位漏洞源码</a>
+</h3>
+<h3 class="topic">
+<a name="2tuq74tlo07kprnu56rgutf953">&nbsp;&nbsp;当使用windbg调试火狐浏览器时，如果指定了浏览器的符号表的地址，可以进行源码调试，过程中可以得到对应指令的源码行数和文件路径</a>
+</h3>
+<h3 class="topic">
+<a name="66ula28enm0o1n4d2bk0m4i79m">&nbsp;&nbsp;动态调试过程中可以根据这些源码信息去源码网站上找到对应代码进行分析</a>
+</h3>
+<h3 class="topic">
+<a name="6mhlj2hr42rclgqjldrenonf59">&nbsp;使用HPA快速定位漏洞对象</a>
+</h3>
+<h3 class="topic">
+<a name="6b9f80k8780q3acfa0nlcbhgdl">&nbsp;&nbsp;因为uaf漏洞的关键是使用已经释放的堆空间，所以开启页堆，可以在引用已经释放的内存空间时将指令断下 ，结合断下时堆栈信息，推测是哪个类对象被释放重引用</a>
+</h3>
+<h3 class="topic">
+<a name="1agnd7tbdbrdjr22m8gegdmsbv">&nbsp;&nbsp;&nbsp;书288页</a>
+</h3>
+<h3 class="topic">
+<a name="4dv5a57fnqicng7du296ue762b">&nbsp;逆向ie引擎对js代码的解析</a>
+</h3>
+<h3 class="topic">
+<a name="5eqiuge3faheffo0e707mdamkk">&nbsp;&nbsp;本质上是查找js代码中的函数在汇编指令中对应的操作，找到js函数在系统对应模块中的处理函数</a>
+</h3>
+<h3 class="topic">
+<a name="5ipn56nmeaqtnoc6tufmv3gtgh">&nbsp;&nbsp;&nbsp;书290页</a>
+</h3>
+<h3 class="topic">
+<a name="0rci7ldfj7g9fedjc4odas6vkb">&nbsp;&nbsp;使用windbg中的x命令查找函数名，结合？ *通配符进行使用，从而在动态调试过程中找到与js函数对应的函数</a>
+</h3>
+<h3 class="topic">
+<a name="5b3i09jqk0rauojclk3d0d9r1c">&nbsp;&nbsp;主要的分析方法是使用windbg中的查找功能，找到js函数底层模块中的实现函数，然后在此类函数上下条件记录断点，通过日志结果，理解js函数底层的实现方式</a>
+</h3>
+<h3 class="topic">
+<a name="4e5ge3u46fr3heijda3r9to6id">&nbsp;&nbsp;调试ie中的js函数：利用浏览器自带的开发人员工具</a>
+</h3>
+<h3 class="topic">
+<a name="35dr03rlqdbbgutqlmhaea1u6q">&nbsp;&nbsp;&nbsp;书305页</a>
+</h3>
+<h3 class="topic">
+<a name="7nqnvov1nuectsv6knu7ka3q8l">&nbsp;给js代码添加调试信息</a>
+</h3>
+<h3 class="topic">
+<a name="2iu4urdbdcspn64l0hmtqmgtn7">&nbsp;&nbsp;javascript编写的Poc中，在js代码中添加一些调试信息，然后在windbg中使用条件记录断点输出对应调试信息</a>
+</h3>
+<h3 class="topic">
+<a name="326v8ej3ttifpg4cudm7vp5as5">&nbsp;&nbsp;&nbsp;书 311页</a>
+</h3>
+<h3 class="topic">
+<a name="49cjed33fhr6jkkchnci6adb1l">&nbsp;使用peepdf分析PDF恶意样本</a>
+</h3>
+<h3 class="topic">
+<a name="2ai3i1tb7mmli754u1288t88k9">&nbsp;&nbsp;书326页</a>
+</h3>
+<h3 class="topic">
+<a name="3qbcb1ik7cbprtn81a5es01k5h">&nbsp;分析ActiveScript虚拟机源码辅助漏洞分析</a>
+</h3>
+<h3 class="topic">
+<a name="2g8rmft9j139hjv9m681n38nmk">&nbsp;&nbsp;对于Adobe Flash Player的漏洞，经常发生浏览器中，当使用msf生成Adobe Flash Player漏洞的Exploit时，生成的文件一般为.swf格式，该文件一般用于嵌入到HTML代码中，从而触发漏洞</a>
+</h3>
+<h3 class="topic">
+<a name="6mh31ps1cgka4ar3pr830t9eta">&nbsp;&nbsp;.swf文件中使用的编程语言为ActiveScript，msf生成的exploit.swf也提供as源码，可以分析该文件中的ActiveScript代码判断漏洞触发流程</a>
+</h3>
+<h3 class="topic">
+<a name="4fms7up132nefavfjenmg35lf1">&nbsp;&nbsp;&nbsp;ActiveScript为Adobe提供的编程语言，可以参考Adobe官方提供的参考文档</a>
+</h3>
+<h3 class="topic">
+<a name="5fbuurlcfu3hv1k74n11vh8h89">&nbsp;&nbsp;因为Adobe Flash Player没有符号表，为了在调试过程中理解触发漏洞的ActiveScript函数对应的汇编指令的执行（比如定位uaf中被释放重引用的类对象）可以使用已有的ActiveScript开源项目的代码进行分析</a>
+</h3>
+<h3 class="topic">
+<a name="1094vsc2l6pibf7hgglp8258bb">&nbsp;&nbsp;&nbsp;此时选用的开源项目是avmplus，是一个ActiveScript的虚拟机，同时也是Adobe所使用的虚拟机，通过对该项目的分析，可以得到explot如何触发漏洞的具体过程</a>
+</h3>
+<h3 class="topic">
+<a name="1pg67tvvapc3bqpaqi2pueg7gd">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%88%98%E4%BA%89-%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E6%8A%80%E5%B7%A7_files/4quofe4bb5gp0tb0ulu0aujhj5.png"></p>
+<h3 class="topic">
+<a name="5kj0cccb7tvabg5rntv19q9u5k">&nbsp;&nbsp;具体操作而言，就是在开源项目源码中搜索指定的数据结构名和函数名，从而确定单一的ActiveScript函数底层执行原理</a>
+</h3>
+<h3 class="topic">
+<a name="5t43e3o4milsu1an5j4a9hepq8">&nbsp;&nbsp;&nbsp;了解ActiceScript函数底层实现原理之后，可以找到系统中处理对应函数的模块，将该模块进行静态反编译，从而寻找漏洞触发代码，这一个过程可能需要一定搜索技巧，可以从ActiceScript函数本身的特征出发，在系统特定模块中搜索该特征</a>
+</h3>
+<h3 class="topic">
+<a name="1hbf9ltvtib19es0n0nfm3hi1n">&nbsp;&nbsp;&nbsp;&nbsp;书348页</a>
+</h3>
+<h3 class="topic">
+<a name="1s08vonhhrvi2gsaa7l9jv84kj">&nbsp;&nbsp;&nbsp;&nbsp;可以搜索指定函数的机器码或字符串</a>
+</h3>
+<h3 class="topic">
+<a name="0q1d53ssko7u8btderc8pglshm">&nbsp;&nbsp;ida中定位到指定模块中触发漏洞的关键函数之后，可以计算该函数到模块基址的偏移，从而在动态调试时定位到关键函数，从而观察漏洞的触发流程</a>
+</h3>
+<h3 class="topic">
+<a name="6q0f20f0j59qbjca62i3lju3na">&nbsp;&nbsp;&nbsp;书351页</a>
+</h3>
+<h3 class="topic">
+<a name="1f3ru2h6gifc8eofemvk5dcslh">&nbsp;&nbsp;书340页</a>
+</h3>
+<h2 class="topic">
+<a name="2r2aojggta8hmo9vgf57ova61u">数组越界访问漏洞分析</a>
+</h2>
+<h3 class="topic">
+<a name="7g92bh2a0qbarm3dvt86a3dufa">&nbsp;漏洞原理</a>
+</h3>
+<h3 class="topic">
+<a name="5r6ljsoc1hfc5rsssmtfooc1jf">&nbsp;&nbsp;与溢出漏洞相比，溢出漏洞往往是数组越界写操作的结果，而数组越界访问漏洞可能是包含读或写的操作</a>
+</h3>
+<h3 class="topic">
+<a name="667gbtrlmlrb9i4ojckuavched">&nbsp;漏洞利用思路</a>
+</h3>
+<h3 class="topic">
+<a name="21id9dj9682ej29debk05accnp">&nbsp;&nbsp;通过数组越界访问，可能造成信息泄露，通过越界访问可以获得指定数据结构的值（一般为程序中的内存地址），从而确定模块加载基址，以此构造rop链执行代码，例如对可变参数数组的访问存在数组越界访问漏洞。</a>
+</h3>
+<h3 class="topic">
+<a name="0gjrq2l7012vqoskqtbi9vcq0l">&nbsp;&nbsp;&nbsp;书373页</a>
+</h3>
+<h3 class="topic">
+<a name="6nbrodvm8qf96921lt9vag9mos">&nbsp;通过Perl脚本辅助分析样本</a>
+</h3>
+<h3 class="topic">
+<a name="6acl5rgn4d8tn4dfog6vl9698d">&nbsp;&nbsp;通过Perl脚本将完成样本中加密数据的解密工作</a>
+</h3>
+<h3 class="topic">
+<a name="2oobsnqkennvmthjvvjm66h7sc">&nbsp;&nbsp;&nbsp;书367页</a>
+</h3>
+<h3 class="topic">
+<a name="4bo30fc5lg4k7ual90bk2j528n">&nbsp;搭建服务器重现漏洞场景</a>
+</h3>
+<h3 class="topic">
+<a name="0pltrgvbpk2otgujc6f7suulh5">&nbsp;&nbsp;书371页</a>
+</h3>
+<h3 class="topic">
+<a name="5ahcmvn50ir0po45q337dnuu4l">&nbsp;通过修改样本代码定位漏洞</a>
+</h3>
+<h3 class="topic">
+<a name="6t1jfqi0amurkp9fk7mcfq8ttu">&nbsp;&nbsp;部分Exploit通用性较好，执行之后不会产生异常，直接执行恶意代码，此时可以通过修改exp中的指令，从而在漏洞利用之前触发异常，方便跟踪调试漏洞触发过程</a>
+</h3>
+<h3 class="topic">
+<a name="41rvij2ot0lkpt83i94p51ujsc">&nbsp;&nbsp;&nbsp;当exp为.swf文件时，可以修改其中的ActiceScropt代码，然后重新编译出.swf（使用Adobe Flash Player）见书375</a>
+</h3>
+<h3 class="topic">
+<a name="7dc6h2vtafuj7b1lnjvash48pt">&nbsp;&nbsp;书371页</a>
+</h3>
+<h3 class="topic">
+<a name="2m7ckadekesd6jpjeu5fkf2li3">&nbsp;利用AdobeFlashPlayer漏洞进行攻击的一般套路</a>
+</h3>
+<h3 class="topic">
+<a name="4i6auv7qmobh2hm554ft8bphgh">&nbsp;&nbsp;html和.swf文件均在服务端</a>
+</h3>
+<h3 class="topic">
+<a name="5396vne4j2jr0ph2sg50sjqg8k">&nbsp;&nbsp;&nbsp;htlm文件中加载swf文件</a>
+</h3>
+<h3 class="topic">
+<a name="3ckjosoafo6sum916hl7qi1ki5">&nbsp;&nbsp;&nbsp;swf文件中，解密指定网址，从该网址下载盗号木马，执行漏洞利用程序</a>
+</h3>
+<h3 class="topic">
+<a name="1id4ht6euo4o1flv3t18jm2v98">&nbsp;&nbsp;&nbsp;&nbsp;为了方便分析，下载盗号木马的网址，设置为本服务端</a>
+</h3>
+<h3 class="topic">
+<a name="5jbjok8kp8vhh0ev6b82f81gr2">&nbsp;&nbsp;被攻击主机访问服务端的html文件，触发漏洞</a>
+</h3>
+<h3 class="topic">
+<a name="5ec2fqabka8q0mrc8cfeep0l8k">&nbsp;通过搜索指令序列分析补丁</a>
+</h3>
+<h3 class="topic">
+<a name="37i8ovo3etj62vsgu5ke6m2om6">&nbsp;&nbsp;通过计算补丁前产生漏洞的指令距离模块基址的偏移，可以在ida中定位该指令，并且弄清漏洞指令所在的函数</a>
+</h3>
+<h3 class="topic">
+<a name="1lj7sqqka3p17ars5qn52gma8l">&nbsp;&nbsp;BinDiff工具做补丁比较时可能发现漏洞函数在新版本呢中已经被移除，无法匹配的情况，此时可以</a>
+</h3>
+<h3 class="topic">
+<a name="5mt3svh9ktoiad3df105rcppto">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%88%98%E4%BA%89-%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E6%8A%80%E5%B7%A7_files/1odkl6cffbk95kd41oesiitpqc.png"></p>
+<h3 class="topic">
+<a name="0lugaej04mb34qmv3og6n1mndd">&nbsp;&nbsp;书371页</a>
+</h3>
+<h3 class="topic">
+<a name="0m8nt1iko908gt292mtakh9415">&nbsp;基于源码对比和跟踪的漏洞分析方法</a>
+</h3>
+<h3 class="topic">
+<a name="367oafp4jmekqibgebb5noqtqa">&nbsp;&nbsp;如果能够获取到漏洞程序源码，可以使用补丁比较的方式，确定与触发漏洞相关的数据结构或变量，然后在源码中搜索此数据结构的定义，弄清其含义，然后看漏洞函数对该数据结构的处理，从而弄清漏洞原因</a>
+</h3>
+<h3 class="topic">
+<a name="0q039eqhkhi1om7p79tfhueien">&nbsp;&nbsp;&nbsp;书383</a>
+</h3>
+<h2 class="topic">
+<a name="643kfu08mokh5f83k9tacvckh2">内核漏洞分析</a>
+</h2>
+<h3 class="topic">
+<a name="60ubm9tt7vooi93va583a59080">&nbsp;内核漏洞简述</a>
+</h3>
+<h3 class="topic">
+<a name="7k0hgc1jf6g8l0oa7phv7c4qn6">&nbsp;&nbsp;Windows用户态中存在的漏洞类型有可能出现于内核中，而其中主要漏洞类型包括缓冲区溢出、内存篡改、UAF等，利用内核漏洞通常是为了达到拒绝服务、本地权限提升、远程代码执行等目的，为了实现以上功能就必须执行0环的shellcode，一般通过修改内核空间的内存数据从而执行0环的shellcode。&#13;
+&#13;
+内核中代码的执行类似于mfc窗口程序的执行，都是由事件消息驱动，所以一般三环程序可以通过特定的api（比如DeviceIoControl或Read、WriteFile）向内核发送特定的IO控制码或irp消息，内核通过设备对象接收消息，然后根据消息种类的不同，调用不同的irp派遣函数进行处理，而内核漏洞常常出现在接收特定消息的派遣函数中，比如派遣函数对输入缓冲区没有进行检验等。&#13;
+&#13;
+内核漏洞的利用常常是通过修改内核中特定的数据结构实现的，一般分为三种：任意地址写任意数据、固定地址写任意数据、任意地址写固定数据，通过内核数据修改，可以将SSDT或HalDispatchTable表中的函数指针修改为shellcode的起始地址，从而通过内核api的调用以0环权限执行shellcode代码。&#13;
+&#13;
+shellcode的执行可以将当前进程的权限进行提升从而完全控制系统，也可以恢复安全软件在内核中的Hook，从而绕过安全软件的限制，进一步可以通过在内核中构造调用门等门描述符，通过汇编指令修改段选择子从而实现3环到0环权限的自由切换。</a>
+</h3>
+<h3 class="topic">
+<a name="4phj0tsqm585n05gfcsd25992r">&nbsp;内核漏洞分析基本套路</a>
+</h3>
+<h3 class="topic">
+<a name="6d4nbs5t4tnmddtc2tnpp40vnh">&nbsp;&nbsp;书398</a>
+</h3>
+<h3 class="topic">
+<a name="0tdl3crmm4un3jjr0k2adjc6a8">&nbsp;&nbsp;确定当前驱动的IoControlCode</a>
+</h3>
+<h3 class="topic">
+<a name="0d50f841qsr0kma1s9augqd9hf">&nbsp;&nbsp;&nbsp;test即为驱动test.sys的文件名</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%88%98%E4%BA%89-%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E6%8A%80%E5%B7%A7_files/5nq7dkejma0jv91buvoenbfcs1.png"></p>
+<h3 class="topic">
+<a name="3g2bb5h95n15i6ijp9g498jtld">&nbsp;&nbsp;根据搜索结果确定irp分发例程</a>
+</h3>
+<h3 class="topic">
+<a name="3a65su47a282b68gisi4d6op8q">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%88%98%E4%BA%89-%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E6%8A%80%E5%B7%A7_files/2hugjnorrmbor6lb7d4fe8miot.png"></p>
+<h3 class="topic">
+<a name="55k8ci99lb7a58s9vslp6g0ib1">&nbsp;&nbsp;分析分发IRP例程的反汇编，找到特定io控制码的处理函数，分析漏洞原理</a>
+</h3>
+<h3 class="topic">
+<a name="41kpaa8c6s6kg773sfha04pa36">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%88%98%E4%BA%89-%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E6%8A%80%E5%B7%A7_files/6v6iu1ecpdshgbtqf5gvigpgos.png"></p>
+<h3 class="topic">
+<a name="7s5kbdffq798kurrg2a0goafa8">&nbsp;内核漏洞利用基本套路</a>
+</h3>
+<h3 class="topic">
+<a name="75mt9jr4foge1fujbqcbqdkfjc">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%88%98%E4%BA%89-%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E6%8A%80%E5%B7%A7_files/6uuu61utke30rb66se0qn9gla1.png"></p>
+<h3 class="topic">
+<a name="6sccpj1nb34nh4t2dpvc12rpts">&nbsp;&nbsp;&nbsp;书405</a>
+</h3>
+<h3 class="topic">
+<a name="1hdn0i6c51igg7sjrsr2vhtflt">&nbsp;&nbsp;注意一般内核漏洞的利用程序可以为3环程序</a>
+</h3>
+<h3 class="topic">
+<a name="7p1rbvgtv95o1hi9i0igc3arfm">&nbsp;&nbsp;&nbsp;windows内核漏洞利用程序常常是exe</a>
+</h3>
+<h3 class="topic">
+<a name="63b33vmbhdv8oa4pue5kpqlh6m">&nbsp;基于导出函数和IO控制码的追踪分析</a>
+</h3>
+<h3 class="topic">
+<a name="7ro67l73f3m2jbvscogoleljjm">&nbsp;&nbsp;当获取exp后，分析exp原代码，发现exp会加载存在漏洞的dll，并从中导出存在漏洞的函数，然后调用该函数，进行漏洞利用</a>
+</h3>
+<h3 class="topic">
+<a name="0hng25ggug3eukecm881ujtisb">&nbsp;&nbsp;找到存在漏洞的模块，分析其对应导出函数，发现对应导出函数最终调用了系统函数NtDeviceIoControlFile,所以可以确定漏洞函数通过向内核发送io控制码与内核通讯</a>
+</h3>
+<h3 class="topic">
+<a name="1svhak73telv4d57l1n8trpva8">&nbsp;&nbsp;&nbsp;DeviceIoControl就是通过ntdll.dll中的NtDeviceIoControlFile与内核打交道的</a>
+</h3>
+<h3 class="topic">
+<a name="6if81enmveb38qertt7p6hb6oj">&nbsp;&nbsp;找到接受对应io控制码的驱动（.sys），使用ida进行反编译，从其中的DriverEntry函数开始，追踪io控制码分发函数，最终找到特定io控制码的处理函数</a>
+</h3>
+<h3 class="topic">
+<a name="5a94uemuifao7vqqpeiui5ug4o">&nbsp;&nbsp;分析该处理函数，了解漏洞原因，也可以进行动态调试，还原漏洞触发过程</a>
+</h3>
+<h3 class="topic">
+<a name="7ne2k3neq34jjo51ra6kmejmq7">&nbsp;&nbsp;&nbsp;漏洞函数到模块基址的偏移一般不变，可以利用这一点通过ida分析结果，定位动态调试时漏洞函数的位置</a>
+</h3>
+<h3 class="topic">
+<a name="6gja5m6phgddof39k4orkv1ooa">&nbsp;&nbsp;书414</a>
+</h3>
+<h3 class="topic">
+<a name="2v0ffo6g9hsqepj5brvvg44ivd">&nbsp;从利用代码到漏洞函数的定位分析</a>
+</h3>
+<h3 class="topic">
+<a name="4c2jsu9nk4945jd9q33ildp0qj">&nbsp;&nbsp;通过分析漏洞利用代码，发现触发漏洞io控制码，查询处理该io控制码的函数，在驱动中查找该函数并进行分析</a>
+</h3>
+<h3 class="topic">
+<a name="7alkrsdssds3v3mjgu5le8fq22">&nbsp;&nbsp;&nbsp;书目423</a>
+</h3>
+<h3 class="topic">
+<a name="4b7qis1so5evtt005l3ijlmgti">&nbsp;通过IDA定义结构体辅助分析</a>
+</h3>
+<h3 class="topic">
+<a name="4o0rnhadk4dgoqocejt1ututdo">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%88%98%E4%BA%89-%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E6%8A%80%E5%B7%A7_files/3g7k1hea9avk9jo6cdlcs619ru.png"></p>
+<h3 class="topic">
+<a name="1g51g6qvq9urd980hs1bevsgpf">&nbsp;&nbsp;书428</a>
+</h3>
+<h3 class="topic">
+<a name="2vcdc07vqkqcvmb243v8nrqs9b">&nbsp;基于IOCTL处理函数自动追踪记录的分析方法</a>
+</h3>
+<h3 class="topic">
+<a name="3j6vum9hsm0ba8fljvc9kfjo0h">&nbsp;&nbsp;从poc中得到触发漏洞的IOCTRL，然后在NtDeviceIoControlFile函数处下条件断点，当IOCTRL为特定值时断下</a>
+</h3>
+<h3 class="topic">
+<a name="62bq4fog8i045ruhjl8u7fqeic">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%88%98%E4%BA%89-%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E6%8A%80%E5%B7%A7_files/0ru7d56qm2g88h6j3o736b14p2.png"></p>
+<h3 class="topic">
+<a name="1529kc6dp1vlpslj8k5mtn5fvm">&nbsp;&nbsp;windbg中使用wt指令追踪函数调用流程，即显示当前指令之后各个函数调用的顺序</a>
+</h3>
+<h3 class="topic">
+<a name="7p6emdcvfsblo4hd36lme1fq4t">&nbsp;&nbsp;分析被调用的函数最终可以发现漏洞原因</a>
+</h3>
+<h3 class="topic">
+<a name="42abff03ametkmpp9reh68sovu">&nbsp;&nbsp;书441</a>
+</h3>
+<h2 class="topic">
+<a name="3fv288n90g1mghuhgd4btjgh2q">Android平台漏洞分析</a>
+</h2>
+<h3 class="topic">
+<a name="6idjlbsblt1jcevon1ncamtltl">&nbsp;常见漏洞分析方法</a>
+</h3>
+<h3 class="topic">
+<a name="1non9tgrgeeqgumcbhhsifap52">&nbsp;&nbsp;《安卓软件安全与逆向分析》</a>
+</h3>
+<h3 class="topic">
+<a name="04a933vk3lt4o8fh36rb7mfmsu">&nbsp;&nbsp;APK静态分析：JEB</a>
+</h3>
+<h3 class="topic">
+<a name="6bdcvd492gjv1fq2c3rde89v91">&nbsp;&nbsp;&nbsp;书467</a>
+</h3>
+<h3 class="topic">
+<a name="6pne89g2jjoidi6vv7ao4b6aat">&nbsp;&nbsp;smali动态调试</a>
+</h3>
+<h3 class="topic">
+<a name="6mghja6rd78ojrgmpdabdfukgh">&nbsp;&nbsp;&nbsp;IDA</a>
+</h3>
+<h3 class="topic">
+<a name="3ukvoqng31g04aa491gfn868ni">&nbsp;&nbsp;&nbsp;JEB</a>
+</h3>
+<h3 class="topic">
+<a name="6u8i3aq6qi4a2lpolg7480akv5">&nbsp;&nbsp;&nbsp;Android Studio</a>
+</h3>
+<h3 class="topic">
+<a name="691va7mg37ok8f62svd6hqv822">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%88%98%E4%BA%89-%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E6%8A%80%E5%B7%A7_files/57cuepcnef0epnugv80bm8rev2.png"></p>
+<h3 class="topic">
+<a name="18brs98bav3gos6b7avhoc0ri6">&nbsp;&nbsp;&nbsp;书468</a>
+</h3>
+<h3 class="topic">
+<a name="7nmckm5a1q11l0a38r7h1nr54q">&nbsp;&nbsp;so库动态调试</a>
+</h3>
+<h3 class="topic">
+<a name="7tr0alr3fa8vdv6j1rrh13etdq">&nbsp;&nbsp;&nbsp;SO文件是Linux下共享库文件，它的文件格式被称为ELF文件格式。由于Android操作系统的底层基于Linux系统，所以SO文件可以运行在Android平台上。&#13;
+Android系统也同样开放了C/C++接口供开发者开发Native程序。由于基于虚拟机的编程语言JAVA更容易被人反编译，因此越来越多的应用将其中的核心代码以C/C++为编程语言，并且以SO文件的形式供上层JAVA代码调用，以保证安全性。</a>
+</h3>
+<h3 class="topic">
+<a name="4nl9e2koia5apar4uprhs8tl8t">&nbsp;&nbsp;&nbsp;&nbsp;类比windows中的dll</a>
+</h3>
+<h3 class="topic">
+<a name="40ch9c1hqgr8c5ic9u3ks716ss">&nbsp;&nbsp;&nbsp;使用IDA</a>
+</h3>
+<h3 class="topic">
+<a name="2ei55frh8ms7mgk6fmuuf4n96b">&nbsp;&nbsp;&nbsp;&nbsp;书474页</a>
+</h3>
+<h3 class="topic">
+<a name="4kpp3hj3f95qjdstb4jr925490">&nbsp;&nbsp;补丁源码对比</a>
+</h3>
+<h3 class="topic">
+<a name="3t2mjqrnfkabhjn7kpmtr940vm">&nbsp;&nbsp;&nbsp;书475</a>
+</h3>
+<h3 class="topic">
+<a name="15phai8rfdmvhti2488oc61oo9">&nbsp;&nbsp;&nbsp;安卓源码在线阅读网站</a>
+</h3>
+<h3 class="topic">
+<a name="3oo6pj9bpnrbic1tdetucsngh7">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%88%98%E4%BA%89-%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E6%8A%80%E5%B7%A7_files/2spj7q8sob8ktavd1ij7oavuba.png"></p>
+<h3 class="topic">
+<a name="49ga9l02907ctsvh017jmipbsp">&nbsp;&nbsp;&nbsp;安卓系统漏洞列表</a>
+</h3>
+<h3 class="topic">
+<a name="1jfsaspkcs08965hc11iimiqfc">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%88%98%E4%BA%89-%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E6%8A%80%E5%B7%A7_files/37kpf1q777hief0nnkla85sptn.png"></p>
+<h3 class="topic">
+<a name="6j38r7q69qob93q2nkke2u3j0t">&nbsp;&nbsp;系统java源码调试</a>
+</h3>
+<h3 class="topic">
+<a name="545jror4v6kjnmrabdlo3pugam">&nbsp;&nbsp;&nbsp;安卓系统开发语言</a>
+</h3>
+<h3 class="topic">
+<a name="5icjkmmfdtbjksjsv6hvtctr5g">&nbsp;&nbsp;&nbsp;&nbsp;安卓开发主要分两部分：&#13;
+1、应用开发，应用部分，也就是常说的apk，是用java语言编写。&#13;
+2、底层开发，底层部分，都是由C/C++编写的。</a>
+</h3>
+<h3 class="topic">
+<a name="0rv4gii4gkfoqh9ujfg4p9j37j">&nbsp;&nbsp;&nbsp;书477</a>
+</h3>
+<h3 class="topic">
+<a name="751cdqh44jas4iq9r8ugsckvbf">&nbsp;&nbsp;系统c/c++源码调试</a>
+</h3>
+<h3 class="topic">
+<a name="4c27lh8fgft4228v9o9arebl9f">&nbsp;&nbsp;&nbsp;书486</a>
+</h3>
+<h3 class="topic">
+<a name="5c0ehvam15f5qv2h2ugtp71spp">&nbsp;&nbsp;安卓内核源码调试</a>
+</h3>
+<h3 class="topic">
+<a name="2h715kq1el8k29js37po9tj5pt">&nbsp;&nbsp;&nbsp;书488</a>
+</h3>
+<h3 class="topic">
+<a name="48pru7hr187gbr81n6rokh463f">&nbsp;&nbsp;安卓平台的漏洞分析的优势在于源码可得，针对系统漏洞可以找到源码进行分析</a>
+</h3>
+<h3 class="topic">
+<a name="4l95t3ppevbk883tnvj529v58h">&nbsp;&nbsp;ARM指令中0x00600060是一条滑板指令，而地址0x00600060页也常用于堆喷射覆盖的目的地址</a>
+</h3>
+<h3 class="topic">
+<a name="46ebgggh9d2q5n9kpcr8linius">&nbsp;&nbsp;&nbsp;0x5005e1a0也是一条滑板指令</a>
+</h3>
+<h3 class="topic">
+<a name="1lpi3rvolqnkrnp5i74m493cti">&nbsp;安卓签名机制</a>
+</h3>
+<h3 class="topic">
+<a name="2tmamrodnvsiri4c122omo3l0j">&nbsp;&nbsp;书503</a>
+</h3>
+<h3 class="topic">
+<a name="4em09ugn8dleg8hhgeag79lpeg">&nbsp;静态逆向分析</a>
+</h3>
+<h3 class="topic">
+<a name="43f11h07r1fa4dvda5fejnqhiv">&nbsp;&nbsp;使用JEB分析apk包</a>
+</h3>
+<h3 class="topic">
+<a name="2qapheqm3dsi13mfhl28r3cdlm">&nbsp;&nbsp;找到APK包的主Activity</a>
+</h3>
+<h3 class="topic">
+<a name="61rb2a42t5nor30h0v3eiovpng">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%88%98%E4%BA%89-%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E6%8A%80%E5%B7%A7_files/5tlbsc9lu3n8b2em7sjavqnus3.png"></p>
+<h3 class="topic">
+<a name="0ihrda0ru92o884u37ut9pdn3o">&nbsp;&nbsp;一般会涉及加密算法的识别</a>
+</h3>
+<h3 class="topic">
+<a name="3mdbb69gsoes5v3kdhhk9iju44">&nbsp;安卓系统签名漏洞</a>
+</h3>
+<h3 class="topic">
+<a name="6t7c6kv5paek413l5vtrci4cs8">&nbsp;&nbsp;书502</a>
+</h3>
+<h3 class="topic">
+<a name="1mgbq8rtjup4agru3e4shrfvlq">&nbsp;安卓浏览器的uaf漏洞</a>
+</h3>
+<h3 class="topic">
+<a name="5slfbnu6bfd6cmpm3cock2u8ep">&nbsp;&nbsp;也是用堆喷射完成漏洞利用</a>
+</h3>
+<h3 class="topic">
+<a name="1nk4plebl5tn7ckjcjn8ll05g0">&nbsp;&nbsp;书516</a>
+</h3>
+<h3 class="topic">
+<a name="3igd37t03p17klv11n9umfai0v">&nbsp;通过内核源码调试分析漏洞</a>
+</h3>
+<h3 class="topic">
+<a name="77rfco3cchj8ccr5ruc2a8cmat">&nbsp;&nbsp;书528</a>
+</h3>
+<h3 class="topic">
+<a name="3osfn9necduieb3532jnua6cpk">&nbsp;&nbsp;&nbsp;没看懂</a>
+</h3>
+<h3 class="topic">
+<a name="4bsn2trscpf6kj7s6v703tfq82">&nbsp;&nbsp;获取安卓内核源码进行静态分析</a>
+</h3>
+<h3 class="topic">
+<a name="7gteolmgeu3bgcistl2dmobd7g">&nbsp;&nbsp;通过gdb进行安卓内核源码调试</a>
+</h3>
+<h2 class="topic">
+<a name="130hfe77dk1fv5kfpcmvu8vp4l">其他类型的漏洞分析</a>
+</h2>
+<h3 class="topic">
+<a name="78nrfoejajem2vcq0eb4phmn1k">&nbsp;类型混淆漏洞</a>
+</h3>
+<h3 class="topic">
+<a name="2v0pl3t7u6mip12ms3t9bmh6nl">&nbsp;&nbsp;主要是将a数据类型当作b数据类型进行解析引用，可能导致非法数据访问，进而执行任意代码</a>
+</h3>
+<h3 class="topic">
+<a name="3jjusci0ahea5956khsntdk278">&nbsp;&nbsp;&nbsp;这里的数据类型可能是传统意义的编程语言数据类型，也可以是类对象等数据结构</a>
+</h3>
+<h3 class="topic">
+<a name="7d3gaesiaa39i7pshah6ln6gdq">&nbsp;&nbsp;java沙箱</a>
+</h3>
+<h3 class="topic">
+<a name="7lmaitla80osi03fie7fams08u">&nbsp;&nbsp;&nbsp;java代码可以在本地执行，也可以通过网页加载执行，即Applet小程序，而java沙箱用于限制网络上的java程序通过网页在本地执行的权限</a>
+</h3>
+<h3 class="topic">
+<a name="4tk21m13hnpl266vn1aaihem56">&nbsp;&nbsp;java漏洞相关资料</a>
+</h3>
+<h3 class="topic">
+<a name="0cfqmfmj2tciumca9jn4bdjgel">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%88%98%E4%BA%89-%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E6%8A%80%E5%B7%A7_files/0mgtnnjnc3tuns3747e0phqnnq.png"></p>
+<h3 class="topic">
+<a name="3c0129f3mk0b266siu8gk8uuae">&nbsp;&nbsp;书555页</a>
+</h3>
+<h3 class="topic">
+<a name="222o6sr3g5i09ca3jrdkjl6gom">&nbsp;沙盒逃逸漏洞</a>
+</h3>
+<h3 class="topic">
+<a name="4arm5fqfclblceirokr50noul8">&nbsp;&nbsp;ie沙盒</a>
+</h3>
+<h3 class="topic">
+<a name="7g5onmn7c6f4s4fldac8e01j0a">&nbsp;&nbsp;&nbsp;即ie浏览器中的一种保护机制，通过设置完整性级别限制ie进程对安全对象的访问</a>
+</h3>
+<h3 class="topic">
+<a name="2f3792c70s30n6paerq4hpvfo4">&nbsp;&nbsp;&nbsp;&nbsp;沙盒逃逸即突破这种安全访问限制，从而以高权限访问系统对象，执行代码</a>
+</h3>
+<h3 class="topic">
+<a name="17us1j8jkgva4s6r7e2m8ijnj9">&nbsp;&nbsp;&nbsp;ie沙盒的攻击面</a>
+</h3>
+<h3 class="topic">
+<a name="531vht6hcqm96jf26bkst9l03g">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%88%98%E4%BA%89-%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E6%8A%80%E5%B7%A7_files/53v4k43tpas5mo8do0286lehi0.png"></p>
+<h3 class="topic">
+<a name="3g41juo8bdnoarrnbtjj1hfsrt">&nbsp;&nbsp;&nbsp;相关资料</a>
+</h3>
+<h3 class="topic">
+<a name="6v1jk3kt3edle7agsgtrjf6ciu">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E6%88%98%E4%BA%89-%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E6%8A%80%E5%B7%A7_files/6bhnk0367aii4th987uej0b4kd.png"></p>
+<h3 class="topic">
+<a name="5k8qo1ej7u67khtlrub9tqcqbc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;书568</a>
+</h3>
+<h3 class="topic">
+<a name="41o2pst4q8pjrhq98kibguilbm">&nbsp;&nbsp;书564页</a>
+</h3>
+<h3 class="topic">
+<a name="56c4520afjb7a2sabs0qcp6rg2">&nbsp;竞争条件漏洞</a>
+</h3>
+<h3 class="topic">
+<a name="49uq40q3sjv6hku4hmfo9f72o2">&nbsp;&nbsp;竞争条件漏洞即由于多个对象（进程/线程）同时操作同一个资源，导致系统执行违背原有逻辑设定的行为</a>
+</h3>
+<h3 class="topic">
+<a name="0d4mukm3l8pdvtakd5jfc9pg2c">&nbsp;&nbsp;&nbsp;常见于各类IO操作，如文件操作，网络访问等</a>
+</h3>
+<h3 class="topic">
+<a name="01uo5ieqotsk05io5p96r2ckf2">&nbsp;&nbsp;&nbsp;常见于linux和内核层，web和windows也有</a>
+</h3>
+<h3 class="topic">
+<a name="0bqhlvfo1datsjh43ehe626geg">&nbsp;&nbsp;书572</a>
+</h3>
+</body>
+</html>
