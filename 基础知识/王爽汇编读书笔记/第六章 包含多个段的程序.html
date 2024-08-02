@@ -1,0 +1,96 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>第六章 包含多个段的程序</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="2s13eq92c1a5b233m7ctjroein">第六章 包含多个段的程序</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="%E7%AC%AC%E5%85%AD%E7%AB%A0 %E5%8C%85%E5%90%AB%E5%A4%9A%E4%B8%AA%E6%AE%B5%E7%9A%84%E7%A8%8B%E5%BA%8F_files/images/%E7%AC%AC%E5%85%AD%E7%AB%A0 %E5%8C%85%E5%90%AB%E5%A4%9A%E4%B8%AA%E6%AE%B5%E7%9A%84%E7%A8%8B%E5%BA%8F.jpg"></div>
+<h2 class="topic">
+<a name="38m2agb5ej45eosrhaaesfooeo">取得程序所需安全的内存空间</a>
+</h2>
+<h3 class="topic">
+<a name="0v374os5fc318hh8uju8ue6rug">&nbsp;1、加载程序的时候为程序分配</a>
+</h3>
+<h3 class="topic">
+<a name="0igohf5sl227rvk0bntvapviaj">&nbsp;&nbsp;在源程序中定义相应的段来进行空间的获取</a>
+</h3>
+<h3 class="topic">
+<a name="2dimoc8vnoha9e8m59c8vvqt4h">&nbsp;2、程序执行过程中向系统申请</a>
+</h3>
+<h2 class="topic">
+<a name="6s0b5a59ncctli1hmnk1iqrbrg">6.1 在代码段中使用数据</a>
+</h2>
+<h3 class="topic">
+<a name="4hk1u6qoolf44vbvvofboodfin">&nbsp;dw：定义字型数据，定义的数据之间使用 , 相间隔</a>
+</h3>
+<h3 class="topic">
+<a name="05gq6jstl8cjvl0bg14ogohul8">&nbsp;在代码段中定义的数据，其存放位置一般在所有代码的前面，即psp后面，即cs:0     即ds+10h:0</a>
+</h3>
+<h3 class="topic">
+<a name="6rnjuskl7cj3b9uek77fgr4and">&nbsp;程序入口  start:         end start</a>
+</h3>
+<h3 class="topic">
+<a name="2btlr62ni482401ekkqgahd5or">&nbsp;&nbsp;可以改变可执行文件中的描述信息，伪指令end描述了程序的结束以及程序的入口，并以此设置csip</a>
+</h3>
+<h3 class="topic">
+<a name="6uporicl2ctld9nlc7ecqpgcgq">&nbsp;程序框架</a>
+</h3>
+<h3 class="topic">
+<a name="3mc584i2tn50eknlc0poflfviv">&nbsp;&nbsp;assume cs:code</a>
+</h3>
+<h3 class="topic">
+<a name="4h69ta4nn4e6go6c2busjr38l2">&nbsp;&nbsp;code segment</a>
+</h3>
+<h3 class="topic">
+<a name="6e6bcsuoj2rphmuiacc9pkmpo3">&nbsp;&nbsp;data</a>
+</h3>
+<h3 class="topic">
+<a name="5fruqttnedicdlidg0ra3ait1o">&nbsp;&nbsp;start: code</a>
+</h3>
+<h3 class="topic">
+<a name="4vok4tvtu538f4sf9f28cilnrq">&nbsp;&nbsp;end start</a>
+</h3>
+<h2 class="topic">
+<a name="1njr1ggcn7817g1pkcoconr939">6.2在代码段中使用栈</a>
+</h2>
+<h3 class="topic">
+<a name="5shos4p5o15dsuth8rj1mufge2">&nbsp;通过在源程序中定义数据以取得一段空间，将该空间当做栈空间使用，将ss:sp指向相应的栈顶</a>
+</h3>
+<h2 class="topic">
+<a name="7c9a60kcfuitic4qlvn2gec6kf">6.3将数据 代码 栈放入不同的段</a>
+</h2>
+<h3 class="topic">
+<a name="7p3sp0vfp7d2ifi1go3ufgmjdp">&nbsp;问题</a>
+</h3>
+<h3 class="topic">
+<a name="6l5d2sb96agdschh2pe9dhq1tc">&nbsp;&nbsp;1、显得混乱</a>
+</h3>
+<h3 class="topic">
+<a name="5g8ib9k8j0etf3tosbqgotihjv">&nbsp;&nbsp;2、当代码加数据加栈的长度超高64kb时无法放进一个段中（针对8086处理器地址总线宽度为16）</a>
+</h3>
+<h3 class="topic">
+<a name="5uagpe7htop8saa0dqlm0e8gfu">&nbsp;类似于定义代码段，定义多个段在其中定义相关数据，取得内存空间，用作数据段或栈段</a>
+</h3>
+<h3 class="topic">
+<a name="1t5o6b69mqfdu2sfb4spuc7sue">&nbsp;&nbsp;在使用时，代码段中引用数据段或栈段时，使用对应段名所代表的段地址（段名在编译的过程中直接作为数值处理），将其传递给段寄存器从而引用段中内容</a>
+</h3>
+<h3 class="topic">
+<a name="5m3egq9ik3bmaso111n10uj4tp">&nbsp;&nbsp;&nbsp;涉及段寄存器的赋值仍需要时使用一个寄存器进行中转，不能将数据直接传递给段寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="42m0fo6psfkjklvhpdvkljbl26">&nbsp;&nbsp;cpu如何处理相应数据完全取决于csip sssp ds等寄存器的设置</a>
+</h3>
+<h3 class="topic">
+<a name="4fjk632kt0tp0hbo6pqdi73u88">&nbsp;数据段和栈段在程序加载后实际占据的内存空间以16字节为单元，若指定的数据少于十六字节的整数倍，则其余各内存空间使用0填充</a>
+</h3>
+<h3 class="topic">
+<a name="34hrct2cumnt00qpc98euqdp0q">&nbsp;&nbsp;但是有一个问题，当数据段或栈段的定义位于程序最后时，该数据段或栈段中的数据与定义的一致，不存在少于16字节整数倍的数据以零补齐的情况</a>
+</h3>
+</body>
+</html>

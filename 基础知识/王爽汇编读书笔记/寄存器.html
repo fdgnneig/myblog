@@ -1,0 +1,330 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>寄存器</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="27epqd4v2ef2sh573ggvmb0mq0">寄存器</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="%E5%AF%84%E5%AD%98%E5%99%A8_files/images/%E5%AF%84%E5%AD%98%E5%99%A8.jpg"></div>
+<h2 class="topic">
+<a name="1tpu18vmclsraou4ntu9u2rkrj">段地址与偏移地址</a>
+</h2>
+<h3 class="topic">
+<a name="301p6t38jbj5cm73ev2lb9r33p">&nbsp;cpu可以使用不同的段地址与偏移地址形成同一个物理地址</a>
+</h3>
+<h2 class="topic">
+<a name="5u6t34p508csgkltu76kvvhpl3">数据溢出</a>
+</h2>
+<h3 class="topic">
+<a name="0jmp2h4mfnqo0evs5ualhqe3h5">&nbsp;超出存储空间容量的数据位由高到低被丢弃</a>
+</h3>
+<h3 class="topic">
+<a name="75c30eg601kr9orckak0urrpoo">&nbsp;数据传输或运算时，指令的两个操作对象的位数应当一致例如mov ax bl时错误的</a>
+</h3>
+<h2 class="topic">
+<a name="16ueubp4cumnbli5vemtg2tpgt">十六进制数据储存</a>
+</h2>
+<h3 class="topic">
+<a name="7ggqbagkajm4ketkk2id226vjg">&nbsp;四个二进制位表示一个十六进制数据，一个字节的内存空间的数据可以表示2个十六位进制数据位，8086cpu一个寄存器两个字节，可以表示4个十六进制数据位</a>
+</h3>
+<h3 class="topic">
+<a name="40ujmnrtnhpl544kh7es0a307s">&nbsp;十六进制H</a>
+</h3>
+<h3 class="topic">
+<a name="03ehv8gl8196d39a0fmiuuo554">&nbsp;二进制B</a>
+</h3>
+<h2 class="topic">
+<a name="7anjmrc5331nshob7eq8gccf45">CPU结构</a>
+</h2>
+<h3 class="topic">
+<a name="5jq67gie62hb8vm6f7ii7fge9r">&nbsp;运算器：进行信息处理</a>
+</h3>
+<h3 class="topic">
+<a name="41vandfpv5cd4hgs0vqmni77f7">&nbsp;控制器：控制各个器件进行工作</a>
+</h3>
+<h3 class="topic">
+<a name="4jkbif0ceft853imenvje7d4l9">&nbsp;寄存器：进行信息储存</a>
+</h3>
+<h3 class="topic">
+<a name="2sf0pivhhge4fik2q7terl13kj">&nbsp;&nbsp;汇编程序员主要使用的器件，可以使用指令读写，以控制cpu</a>
+</h3>
+<h3 class="topic">
+<a name="0jsj314i46fhhcui7d9ptrt2d7">&nbsp;&nbsp;&nbsp;8086cpu有14个寄存器 AX BX CX DX SI DI SP BP IP CS SS DS ES PSW</a>
+</h3>
+<h3 class="topic">
+<a name="1l6tdbd0r6q05cf7j5nacd59oh">&nbsp;cup内部通过总线将上面三者相连，称为内部总线，cpu与其他器件相连的总线，称为外部总线</a>
+</h3>
+<h2 class="topic">
+<a name="5h709tnotqsuvo6kc72df7mfa9">通用寄存器</a>
+</h2>
+<h3 class="topic">
+<a name="2ecr72cn945590bvogns7018mf">&nbsp;8086cpu所有通用寄存器为16位寄存器，存放两个字节数据</a>
+</h3>
+<h3 class="topic">
+<a name="1kq3d1g0tcnu1ca0mmihrh4p94">&nbsp;AX BX CX DX</a>
+</h3>
+<h3 class="topic">
+<a name="4bb5j2grpcpj1jqoi47eofn616">&nbsp;四个通用寄存器均可以分成两个独立的8位寄存器使用</a>
+</h3>
+<h3 class="topic">
+<a name="7ni6udr3ihie6iba5a7pv4bh7t">&nbsp;&nbsp;AX:AH AL</a>
+</h3>
+<h3 class="topic">
+<a name="0ihbo836usrb5u4q7dla9ra7fg">&nbsp;&nbsp;&nbsp;AH：ax寄存器由左至右的高8位组成 内存编号分别为15 14 13 12 11 10 9 8</a>
+</h3>
+<h3 class="topic">
+<a name="4l75l2fuepahe07ri2vvp1j34o">&nbsp;&nbsp;&nbsp;AL：ax寄存器由左至右的低8位组成 内存编号分别为7 6 5 4 3 2 1 0</a>
+</h3>
+<h3 class="topic">
+<a name="6qj6f1rabst6596o1uefhj99cs">&nbsp;&nbsp;.....</a>
+</h3>
+<h2 class="topic">
+<a name="0uln7vd55uqb7ejf1a3haei7lk">字在寄存器中的存储</a>
+</h2>
+<h3 class="topic">
+<a name="6rqlivori31ksghuk54c4nb824">&nbsp;数据尺寸</a>
+</h3>
+<h3 class="topic">
+<a name="3ruln2to36s8g4b5d4idoskk8c">&nbsp;&nbsp;字节：8个二进制位，可以储存在8位寄存器中</a>
+</h3>
+<h3 class="topic">
+<a name="40abflk5ru31s0lb6p0hf78b8b">&nbsp;&nbsp;字：16个二进制位，两个字节，分别称为高位字节与低位字节，可以存储在一个16位寄存器中，高位字节存储到高8位寄存器，低位字节存储到低8位寄存器</a>
+</h3>
+<h2 class="topic">
+<a name="4si2old6qgul7a7lkkj0e4b39v">物理地址</a>
+</h2>
+<h3 class="topic">
+<a name="439vhfkh620bbrbhhjeba1nup6">&nbsp;定义：内存空间中每一个内存单元在该空间实际的地址编号</a>
+</h3>
+<h2 class="topic">
+<a name="3biaub5pknfdd9v9f8d4006qaa">十六位结构cpu</a>
+</h2>
+<h3 class="topic">
+<a name="2rkgtuh9mi3tfbrsb6dlsmm402">&nbsp;特点</a>
+</h3>
+<h3 class="topic">
+<a name="3vhq6qroddq0o0jc2n9bbs8qej">&nbsp;&nbsp;1、运算器一次最多可以处理16位数据</a>
+</h3>
+<h3 class="topic">
+<a name="602224ojfam2vlipit8s0ing9j">&nbsp;&nbsp;2、寄存器的最大宽度为16位</a>
+</h3>
+<h3 class="topic">
+<a name="3tp8n5e1du0nb6q4gbp53ubvpc">&nbsp;&nbsp;3、寄存器和运算器之间的通路为16位（内部总线为16位）</a>
+</h3>
+<h3 class="topic">
+<a name="44dsbiruaq8rt4knf5ipr5s5gs">&nbsp;8086内部能够一次性处理、传输、暂时储存的信息的最大长度为16位</a>
+</h3>
+<h2 class="topic">
+<a name="4c0p73ui7chp985bfdb2rv1hjb">8086cpu给出物理地址的方法</a>
+</h2>
+<h3 class="topic">
+<a name="28qov332cmrlq3au5jk3d0u6m1">&nbsp;8086cpu地址总线宽度为20位，寻址能力为1MB（2的20次方）</a>
+</h3>
+<h3 class="topic">
+<a name="6ok4hs8d3dh6qq555249adefh5">&nbsp;8086cpu内部最大处理数据位数为16位，通过两个16位地址合成一个20位的物理地址</a>
+</h3>
+<h3 class="topic">
+<a name="42n3jssfuqd0lg1ddanq5f9lr6">&nbsp;&nbsp;两个16位地址分别为段地址、偏移地址</a>
+</h3>
+<h3 class="topic">
+<a name="3ggkljs1mj6mi3dnbtsmsojmlu">&nbsp;&nbsp;通过地址加法器将两个16位地址合成一个20位物理地址</a>
+</h3>
+<h3 class="topic">
+<a name="0ssms4dk0usf93svihk15all4r">&nbsp;&nbsp;&nbsp;地址加法：物理地址=段地址*16+偏移地址  物理地址H=段地址H*10H+偏移地址H</a>
+</h3>
+<h3 class="topic">
+<a name="6jpoo358l00f6gs3onkui8b7f6">&nbsp;&nbsp;&nbsp;段地址*16相当于左移四位，二进制数据左移一位相当于原数据乘以2 左移N位相当于原数据乘以2的N次方</a>
+</h3>
+<h3 class="topic">
+<a name="4rgi5c76u1s1qhec4fr7707f1n">&nbsp;&nbsp;&nbsp;十六位数据左移一位相当于原数据乘以16 左移N位相当于原数据乘以16的N次方 </a>
+</h3>
+<h3 class="topic">
+<a name="19jbnjkdaso91ks398kbh0gpqt">&nbsp;&nbsp;&nbsp;右移相当于除</a>
+</h3>
+<h3 class="topic">
+<a name="531h19ptml4nnq2l2e6afq4vmu">&nbsp;&nbsp;通过内部总线将20位物理地址送入输入输出控制电路</a>
+</h3>
+<h3 class="topic">
+<a name="3fq68rpi7otjihblq9rm6bfp6f">&nbsp;&nbsp;输入输出控制电路将20位物理地址送上外部总线的地址总线中，之后传送到存储器</a>
+</h3>
+<h2 class="topic">
+<a name="4l4g7o3bcd0rstrh2n1sk72qmn">&ldquo;段地址*16+偏移地址=物理地址&rdquo;的本质含义</a>
+</h2>
+<h3 class="topic">
+<a name="2tjadj59bn40if09hmhp05tnu6">&nbsp;基础地址+偏移地址=物理地址</a>
+</h3>
+<h2 class="topic">
+<a name="2mp0sc4vost7ffoh1kteno2ami">段的概念</a>
+</h2>
+<h3 class="topic">
+<a name="26ft1f4rvkl6k6hqk4nrksagqu">&nbsp;内存中段的概念来源于物理地址=段地址*16+偏移地址，可以自行指定，将若干个连续的内存地址看成是一个段</a>
+</h3>
+<h3 class="topic">
+<a name="5gu9vetkqbki7tfkg9e8kr1f3v">&nbsp;&nbsp;起始地址：段地址*16，说明起始地址一定是16的倍数，即10h的倍数</a>
+</h3>
+<h3 class="topic">
+<a name="5lidj5t5iuc3vse730j5ah3m7e">&nbsp;&nbsp;偏移地址：该地址为16位，寻址能力为2的16次方，可以寻址的内存数量为2的16次方个，所以一个段的长度最大为64kb 变化范围为0至FFFFH</a>
+</h3>
+<h2 class="topic">
+<a name="7bqvi62qponh5tr4o760prsm80">段寄存器</a>
+</h2>
+<h3 class="topic">
+<a name="1es2cl59mqb69o5cjk8ribe7dg">&nbsp;专门用于存储段地址的寄存器为段寄存器（8086cpu寄存器均为16位）</a>
+</h3>
+<h3 class="topic">
+<a name="5mehkugcq4slnkhi8e97ofh1ai">&nbsp;&nbsp;cs 针对指令</a>
+</h3>
+<h3 class="topic">
+<a name="56vcsjb7o0m7snj2j4ovnv7rf4">&nbsp;&nbsp;&nbsp;cs:ip</a>
+</h3>
+<h3 class="topic">
+<a name="6egq0i08ihq9lujetudjrovdto">&nbsp;&nbsp;ds  针对数据</a>
+</h3>
+<h3 class="topic">
+<a name="4l17s0kgdioj937juol6aq213h">&nbsp;&nbsp;ss  针对栈</a>
+</h3>
+<h3 class="topic">
+<a name="703thvpjfukjvn6s9m43uqd59r">&nbsp;&nbsp;&nbsp;ss:sp</a>
+</h3>
+<h3 class="topic">
+<a name="025ubcmbap49bcgiauusuid5mf">&nbsp;&nbsp;es</a>
+</h3>
+<h2 class="topic">
+<a name="7ci1sdoh9fehpfcee8tf5291u0">cs与ip</a>
+</h2>
+<h3 class="topic">
+<a name="61l6u82808kpkv72n9o0oqj0ha">&nbsp;cs：代码段寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="3igbq8gpfag2lerpdc58594h6c">&nbsp;ip：指令指针寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="5fpd93vuc20qa5s4571d7346rd">&nbsp;cs:ip为当前cpu要读取的指令的地址，任意时刻，cs:ip地址指向的内容被当做指令执行</a>
+</h3>
+<h3 class="topic">
+<a name="65o86a1358mvd68uig013f6esv">&nbsp;指令执行顺序</a>
+</h3>
+<h3 class="topic">
+<a name="449rgrmm1hv3cobdj9uiqjcg3q">&nbsp;&nbsp;将csip中的内容送入地址加法器得到物理地址</a>
+</h3>
+<h3 class="topic">
+<a name="79k6m97fergt66q1ubn9jpebla">&nbsp;&nbsp;将物理地址通过内部总线送入输入输出控制电路</a>
+</h3>
+<h3 class="topic">
+<a name="21nf744kpr0dvsufi6ef10a0en">&nbsp;&nbsp;输入输出控制电路将物理地址送上地址总线</a>
+</h3>
+<h3 class="topic">
+<a name="7o2drosvr39d7atpid4d1uo7rk">&nbsp;&nbsp;通过数据总线将对应内存单元csip中的机器指令送入cpu</a>
+</h3>
+<h3 class="topic">
+<a name="2etdlv26bedon37r8tsv2t10ro">&nbsp;&nbsp;输入输出控制电路将机器指令指令送入指令缓冲器</a>
+</h3>
+<h3 class="topic">
+<a name="2b13ntmji87t5c1ed2c41kcub7">&nbsp;&nbsp;cpu读取机器指令，cpu每读取一个字节的机器指令，ip自动增加1，以指向将要读取的下一条指令</a>
+</h3>
+<h3 class="topic">
+<a name="4aspdqrk5vi7ll95pjop8mefgf">&nbsp;&nbsp;cpu执行指令</a>
+</h3>
+<h3 class="topic">
+<a name="5pr2p2cnbu9jvt4v1ogbbet3eh">&nbsp;8086cpu加电启动或复位之后csip被设置为cs=ffffh ip=0000h，所以开机后8086cpu第一条执行的语句在ffff0h中</a>
+</h3>
+<h2 class="topic">
+<a name="0hqcs9dd6s66lul3e94qhqsblo">修改csip的指令</a>
+</h2>
+<h3 class="topic">
+<a name="28kmjnr15ka4isb5o5fsn5jhog">&nbsp;mov 指令不能用于设置寄存器cs ip的值，只有转移指令才能才能修该，比如jmp</a>
+</h3>
+<h3 class="topic">
+<a name="7vhseb4aafsnb8hq3l5kvh8cio">&nbsp;&nbsp;jmp指令</a>
+</h3>
+<h3 class="topic">
+<a name="1nk1ivo34eb42eomer9jsv3eg1">&nbsp;&nbsp;&nbsp;jmp 目的段地址：目的偏移地址 （注意此处的jmp指令用法仅是debug软件中的一种指令，并不是汇编指令，不能出现在汇编源代码中）</a>
+</h3>
+<h3 class="topic">
+<a name="4cjbr4c977q4impapmm30iahq9">&nbsp;&nbsp;&nbsp;jmp 某一合法寄存器（将该寄存器中的值用于改写ip寄存器）（该语句是合法的汇编指令，可以出现在汇编源程序中）</a>
+</h3>
+<h2 class="topic">
+<a name="60lveuqtr0q2i3vj0v6e0elrok">代码段</a>
+</h2>
+<h3 class="topic">
+<a name="3ifis0viciofjqmn75q975oeb8">&nbsp;将一组内存单元定义为一个段，将长度为N（N&lt;=64kb）的一组代码存放于一组地址连续，起始地址为16的倍数的内存单元中，并将csip指向该段内存的其实内存单元，由此定义一个代码段</a>
+</h3>
+<h2 class="topic">
+<a name="7ev99141f4jodc0rbjvmffl206">debug的用法</a>
+</h2>
+<h3 class="topic">
+<a name="1gbf98dq529srpe5sui2gfjd0l">&nbsp;r 用于查看改变寄存器中的内容</a>
+</h3>
+<h3 class="topic">
+<a name="79n91qganb47butejilklmp1j9">&nbsp;&nbsp;r ax 12h</a>
+</h3>
+<h3 class="topic">
+<a name="6vsb24fq4pkgh5tn73b32mif3a">&nbsp;d用于查看内存中的内容</a>
+</h3>
+<h3 class="topic">
+<a name="0vtfogrrktsu7rvsdvc9nv7hcq">&nbsp;&nbsp;d 段地址:偏移地址（自动列出128个内存单元的内容）</a>
+</h3>
+<h3 class="topic">
+<a name="2epp3m8rmbejnmtvj4t71o1vda">&nbsp;&nbsp;d （直接打开预设地址处的内存中的内容）</a>
+</h3>
+<h3 class="topic">
+<a name="0vifppjmhcs2qt8ag9k56mk60i">&nbsp;&nbsp;d 段地址：起始偏移地址 结尾偏移地址</a>
+</h3>
+<h3 class="topic">
+<a name="7kes34muhc7cfbdu1i5lo24p5k">&nbsp;&nbsp;d 段寄存器：偏移地址</a>
+</h3>
+<h3 class="topic">
+<a name="02kk2enu4b6o30q9l75vm4qigd">&nbsp;&nbsp;&nbsp;d cs:0       d ss:0     d ds:0</a>
+</h3>
+<h3 class="topic">
+<a name="3qb0tkckbcc71b7a4aua1d6msk">&nbsp;e用于改写内存中的内容</a>
+</h3>
+<h3 class="topic">
+<a name="1ddh20ng0rcta6fdhtrlf7mter">&nbsp;&nbsp;e 起始地址 数据 数据 数据 数据</a>
+</h3>
+<h3 class="topic">
+<a name="5kiu7s1cch9lqhe1trsanjcgqe">&nbsp;&nbsp;&nbsp;数据表示字符时 'a'   表示字符串"asd"  也可以使用十六进制的数写入机器码</a>
+</h3>
+<h3 class="topic">
+<a name="5d2cc5o75i65bebti4ml0k7e86">&nbsp;&nbsp;&nbsp;这里的起始地址可以使用段寄存器代替</a>
+</h3>
+<h3 class="topic">
+<a name="6gdkoj1c9191h3c18sj99knqa5">&nbsp;u用于将内存中的机器指令翻译为汇编指令</a>
+</h3>
+<h3 class="topic">
+<a name="48lqogu9fupd6ll4vvbnmnhpqn">&nbsp;&nbsp;u 段地址：偏移地址</a>
+</h3>
+<h3 class="topic">
+<a name="73fqv1bc70q801g2tmi2jqg4p9">&nbsp;&nbsp;&nbsp;这里的段地址可以使用段寄存器代替</a>
+</h3>
+<h3 class="topic">
+<a name="5lrnmn8tk3klilijbqdg1443oe">&nbsp;t用于执行一条机器指令</a>
+</h3>
+<h3 class="topic">
+<a name="7i61d03l9gidu7jvohg0k9bbcb">&nbsp;a用于以汇编指令格式在内存中写入一条机器指令</a>
+</h3>
+<h3 class="topic">
+<a name="27drgkv6omd888bm9aohs3vo2s">&nbsp;&nbsp; a 段地址：偏移地址</a>
+</h3>
+<h3 class="topic">
+<a name="1c6otlq6qgfk2nucr4hhm9a3v3">&nbsp;&nbsp;&nbsp;这里的段地址也可以使用段寄存器替代</a>
+</h3>
+<h3 class="topic">
+<a name="6heakf0105eit5tu5vi5j9e8u7">&nbsp;&nbsp;也可以使用预设的地址进行写入</a>
+</h3>
+<h3 class="topic">
+<a name="3tbrepjr4ctgcj4ui7tnqa777t">&nbsp;p用于执行每一个汇编程序的最后一条指令，或者跳过循环语句，即将循环语句的部分全部执行完，直达cx=0（针对loop指令使用）</a>
+</h3>
+<h3 class="topic">
+<a name="3hmbh6oe1g72kafhd93qlom8et">&nbsp;g 偏移地址 执行当前cs:ip执行的指令一直到cs:偏移地址（指令默认段地址存在cs中）</a>
+</h3>
+<h3 class="topic">
+<a name="0t9oinlco1ajh0tts9n59gp73l">&nbsp;&nbsp;g 段地址:偏移地址  也可以使用</a>
+</h3>
+</body>
+</html>

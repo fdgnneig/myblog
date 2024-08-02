@@ -1,0 +1,237 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>寄存器（内存访问）</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="7h950run5nobmlokkon61oc3g5">寄存器（内存访问）</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="%E5%AF%84%E5%AD%98%E5%99%A8%EF%BC%88%E5%86%85%E5%AD%98%E8%AE%BF%E9%97%AE%EF%BC%89_files/images/%E5%AF%84%E5%AD%98%E5%99%A8%EF%BC%88%E5%86%85%E5%AD%98%E8%AE%BF%E9%97%AE%EF%BC%89.jpg"></div>
+<h2 class="topic">
+<a name="4h4q7ht0gu3gb5h54mp3r4njjo">8086cpu的入栈出栈操作均以字为单位进行</a>
+</h2>
+<h2 class="topic">
+<a name="000qqkm8kgmmqrdk8ucugno7eb">8086cpu不支持将数据直接送入段寄存器中，比如使用mov 段寄存器 数据，故应使用一个寄存器进行中转</a>
+</h2>
+<h2 class="topic">
+<a name="2i82qfnqq9j002gpe2hm7bfv0s">mov指令	</a>
+</h2>
+<h3 class="topic">
+<a name="4hhsqs8kj3gkmkp025f6bqpbna">&nbsp;将数据直接放入寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="7htucchdfr2oovoa34t0kn38dl">&nbsp;将一个寄存器中的内容放入另一个寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="26psjd3h568ciu8dqpsp5dq4ch">&nbsp;将内存单元中的数据放入寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="2kge7k7l7eeo1r8m0pntsji9om">&nbsp;注意mov指令不指出直接将数据从一个内存单元传输到另一个内存单元</a>
+</h3>
+<h2 class="topic">
+<a name="5q7vg2i75rg45l8b5usfe386fh">内存中字的存储</a>
+</h2>
+<h3 class="topic">
+<a name="5q449h8d37fq5ldqbjc4ha259g">&nbsp;使用十六位寄存器存储一个字</a>
+</h3>
+<h3 class="topic">
+<a name="1gf6pesv5g6ogg7c5hee1jsoje">&nbsp;使用两个地址连续的内存单元</a>
+</h3>
+<h3 class="topic">
+<a name="7nc717pgu0fo4h5qqo2u7c4mpk">&nbsp;&nbsp;字的低位字节存储在低地址单元中</a>
+</h3>
+<h3 class="topic">
+<a name="4basl95m15srqr37s1novftuii">&nbsp;&nbsp;字的高位字节存储在高地址单元中</a>
+</h3>
+<h3 class="topic">
+<a name="00ogrpat77lnf9f5osmhvc07h4">&nbsp;&nbsp;以上两个内存单元被看成为一个字单元</a>
+</h3>
+<h2 class="topic">
+<a name="1l1938ilknds2lj665drndock5">DS与[address]</a>
+</h2>
+<h3 class="topic">
+<a name="29fug0pc5vcahvqethk7jlkult">&nbsp;ds寄存器通常用于存放要访问数据的段地址</a>
+</h3>
+<h3 class="topic">
+<a name="2c0s3dpgaj42qsofi7kmuh07q1">&nbsp;使用[ ]表示偏移地址，其段地址默认在ds寄存器中，执行时会自动取出</a>
+</h3>
+<h3 class="topic">
+<a name="1p95ug1gg6jagmolljj11iv2dr">&nbsp;mov ax 1000h  mov ds ax  mov ax [0]</a>
+</h3>
+<h2 class="topic">
+<a name="14lqhv61lduk22rpm3ju9o39ci">字的传送</a>
+</h2>
+<h3 class="topic">
+<a name="5fju864n0bbc0a490flo76bqe1">&nbsp;使用mov指令将字型数据存放当寄存器中（8086cpu的寄存器均为16位）</a>
+</h3>
+<h2 class="topic">
+<a name="62n44hndtoog3n91mc1qgrqjqr">mov add sub指令</a>
+</h2>
+<h3 class="topic">
+<a name="3qsddm24fmp8a750ip0556kuke">&nbsp;mov</a>
+</h3>
+<h3 class="topic">
+<a name="31gfsej2t0d5hum0hucbdfrlve">&nbsp;&nbsp;mov 寄存器，数据</a>
+</h3>
+<h3 class="topic">
+<a name="7088quhm516353u67m23ubupfp">&nbsp;&nbsp;mov 寄存器，寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="7h2i0bdn42c1eb7g0b15qjl8nt">&nbsp;&nbsp;mov 寄存器，内存单元</a>
+</h3>
+<h3 class="topic">
+<a name="0oeh0273o4dcs8bmb4gamddh3r">&nbsp;&nbsp;mov 内存单元，寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="4j1et369v3d4t413amnpmkv4ro">&nbsp;&nbsp;mov 段寄存器，寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="6g7va74th7jgn53kqgrrkvktfd">&nbsp;&nbsp;mov 寄存器，段寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="0u9bmpf45a3gjdjl09gc0j3u2l">&nbsp;&nbsp;mov 内存单元，段寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="57rcb63c5f1anc8ihqb71l3sna">&nbsp;&nbsp;mov 段寄存器，内存单元</a>
+</h3>
+<h3 class="topic">
+<a name="0s9lgdt2u5k3ic4th43s6jgpeu">&nbsp;&nbsp;mov 内存单元，数据</a>
+</h3>
+<h3 class="topic">
+<a name="22vfo3004calkv9kkfgbesra55">&nbsp;&nbsp;&nbsp;使用该语句时注意使用byte ptr（字节）或word ptr（字）指定需要处理的数据的大小</a>
+</h3>
+<h3 class="topic">
+<a name="4ufe2vumtogvshiabpq0q30rt3">&nbsp;add（类似）相加</a>
+</h3>
+<h3 class="topic">
+<a name="5k2jdvnhnmfc7p6aum897uadms">&nbsp;sub（类似）相减</a>
+</h3>
+<h2 class="topic">
+<a name="6fcm44at028ng725tosl74u18t">数据段</a>
+</h2>
+<h3 class="topic">
+<a name="7t9446o8tjh39olhjs3sjs24n6">&nbsp;将一组长度为N（N&lt;=64KB）,地址连续，起始地址为16的倍数的内存空间专门当做存储数据的内存空间</a>
+</h3>
+<h3 class="topic">
+<a name="561dpjbq25k06q6jt6ppcqducl">&nbsp;使用ds寄存器存放该段内存空间的段地址，使用相关指令可以访问该数据段中的具体单元</a>
+</h3>
+<h2 class="topic">
+<a name="016sbs761glrm09o21o3jhsr17">栈</a>
+</h2>
+<h3 class="topic">
+<a name="69jukcqqi7md0kg6nat2idfm6r">&nbsp;一种具有特殊访问方式的存储空间，后进先出</a>
+</h3>
+<h3 class="topic">
+<a name="1fhpmrtmgo3qk7a3kgsuoq4jk4">&nbsp;&nbsp;入栈</a>
+</h3>
+<h3 class="topic">
+<a name="0i8vek9jt3j584o7qj71299oj0">&nbsp;&nbsp;出栈</a>
+</h3>
+<h2 class="topic">
+<a name="3ccehavvubhose2q3156lafl78">cpu提供的栈机制</a>
+</h2>
+<h3 class="topic">
+<a name="0flcjah4hg3pgmqv2vq6731qv6">&nbsp;8086cpu的入栈与出栈操作均是以字为单位</a>
+</h3>
+<h3 class="topic">
+<a name="4icrqsu1a9hp6651bfnttpofau">&nbsp;&nbsp;push ax：将寄存器ax中的内容入栈</a>
+</h3>
+<h3 class="topic">
+<a name="45bie34kfcgchbuautvmfkgaso">&nbsp;&nbsp;&nbsp;执行过程（先变化栈顶指针后进行数据传输）（入栈时栈顶从高地址向低地址方向增长）</a>
+</h3>
+<h3 class="topic">
+<a name="7btm108it6344abhvkvb8mvgs4">&nbsp;&nbsp;&nbsp;&nbsp;1、sp=sp-2 ss:sp指向当前栈顶前面的字单元，该字单元成为新的栈顶</a>
+</h3>
+<h3 class="topic">
+<a name="790mpf4jjv9j5ilen1gja79brn">&nbsp;&nbsp;&nbsp;&nbsp;2、将ax中的内容送进ss:sp指向的内存单元处，此时ss:sp指向新的栈顶</a>
+</h3>
+<h3 class="topic">
+<a name="5qq3v7u5gqfcnmrvuoqrego085">&nbsp;&nbsp;pop ax：将栈顶元素的内容取出送进ax</a>
+</h3>
+<h3 class="topic">
+<a name="75dmquprib3p6ukjcilh90smmn">&nbsp;&nbsp;&nbsp;执行过程（先将数据出栈，然后变化栈顶指针）（栈顶从低地址向高地址方向增长）</a>
+</h3>
+<h3 class="topic">
+<a name="5i240bs3kjm17gulr3traefuqj">&nbsp;&nbsp;&nbsp;&nbsp;1、将ss:sp指向的内存字单元中的内容传入ax寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="6p94daqf8f5j60vvbl45vg7acd">&nbsp;&nbsp;&nbsp;&nbsp;2、sp=sp+2,ss:sp指向栈顶字单元下面的字单元</a>
+</h3>
+<h3 class="topic">
+<a name="3tb4jgnfn0rgrfb4ebolo9k8ll">&nbsp;ss:sp始终指向栈顶元素，进行入栈出栈时从ss:sp得到栈顶地址</a>
+</h3>
+<h3 class="topic">
+<a name="2os1uigq8ho09fmsqcti3rpcfp">&nbsp;&nbsp;栈空时栈顶是栈空间最高地址的下一单元，ss:sp也指向该内存单元</a>
+</h3>
+<h2 class="topic">
+<a name="1m86l2o5rcgkehp6q4sdmp1klt">栈顶超界问题</a>
+</h2>
+<h3 class="topic">
+<a name="57fe6dkgv6phlufqt20jc0u1c0">&nbsp;push入栈超界</a>
+</h3>
+<h3 class="topic">
+<a name="7fdg6s3rbvjprpaoqqm06s8dlu">&nbsp;pop出栈超界</a>
+</h3>
+<h3 class="topic">
+<a name="21lgp51gdtkk4lqsd1rej4cr8f">&nbsp;8086cpu不提供栈边界的检测，只能自己操作的时候注意</a>
+</h3>
+<h2 class="topic">
+<a name="1ceobq6u91l210e4dtfiaol4ar">push pop指令</a>
+</h2>
+<h3 class="topic">
+<a name="2lbf2aovi483gbuumadtk33e38">&nbsp;操作对象可以是</a>
+</h3>
+<h3 class="topic">
+<a name="36kp3evlbobl62mv6j8j6n0gqo">&nbsp;&nbsp;寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="26lk1kae8kkaibvjl62tckpvqo">&nbsp;&nbsp;段寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="4ag59kn0u9n0dkvvte1u22e8fu">&nbsp;&nbsp;&nbsp;push ds   pop cs</a>
+</h3>
+<h3 class="topic">
+<a name="1amgohsklkbdqubekn6rsf67ui">&nbsp;&nbsp;内存单元</a>
+</h3>
+<h3 class="topic">
+<a name="3n425bdpvq9ned951qq4581qmv">&nbsp;&nbsp;&nbsp;mov ax,1000h  mov ds,ax   push [0]  pop[2]</a>
+</h3>
+<h3 class="topic">
+<a name="4sbr72rkkngj3sqo2p3a4bfbj6">&nbsp;&nbsp;&nbsp;&nbsp;这里的push [0]相当于 push ds:[0]，因为ds中的地址是汇编指令操作数据时默认的数据段地址</a>
+</h3>
+<h3 class="topic">
+<a name="2cua9fkk1a6e50r6i9fi4aileh">&nbsp;本质上是一种内存传送指令，在寄存器与内存之间传送数据</a>
+</h3>
+<h3 class="topic">
+<a name="44bc27ji5g7llb0hdvnqqnht5e">&nbsp;push与pop指令改变sp的值，sp是十六位寄存器，所以栈顶的变化范围为0-ffffh</a>
+</h3>
+<h3 class="topic">
+<a name="5blg8q0n8qc0ludak04i8mea2g">&nbsp;&nbsp;类比于将一组内存单元定义为一个段，段的长度不能超过64kb，是因为当段地址确定之后，偏移地址是一个16位数，有2的16次方中可能的数值</a>
+</h3>
+<h2 class="topic">
+<a name="7nog7bvkvj89hurpontle5im5i">栈段</a>
+</h2>
+<h3 class="topic">
+<a name="3o1nk31i3nvcd78dhqt9egc88g">&nbsp;将一组长度为N（N&lt;=64KB）,地址连续，起始地址为16的倍数的内存空间专门当做栈空间</a>
+</h3>
+<h3 class="topic">
+<a name="4eed10q63ajlnigb9es7ftue85">&nbsp;使用ss:sp寄存器存放该段内存空间的段地址以及偏移地址，通过设置ss:sp的值设置相应的栈顶</a>
+</h3>
+<h2 class="topic">
+<a name="4s2puc30m5gi6os1is0ptr1tfd">关于段的思考</a>
+</h2>
+<h3 class="topic">
+<a name="7qjgeg32ovrb5h60creienpth1">&nbsp;一个段可以即使数据段也是代码段也是栈段，也可能同时均不是，取决于ds cs ss的指向</a>
+</h3>
+<h2 class="topic">
+<a name="1fcjbt38n6jr460b3cjt06e84d">由于中断机制，所有位于改变寄存器ss内容的指令的下一条指令都会由于上一条指令通过命令t单步执行而默认被执行</a>
+</h2>
+<h3 class="topic">
+<a name="2q7ego5ussj8scf95jdstr9h97">&nbsp;即如果改变ss寄存器的指令被执行，则其下面的一条指令也会被执行</a>
+</h3>
+</body>
+</html>

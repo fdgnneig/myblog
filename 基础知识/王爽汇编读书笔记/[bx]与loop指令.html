@@ -1,0 +1,165 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>[bx]与loop指令</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="41434e5e7fthll0ddfnalpmb0e">[bx]与loop指令</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="[bx]%E4%B8%8Eloop%E6%8C%87%E4%BB%A4_files/images/[bx]%E4%B8%8Eloop%E6%8C%87%E4%BB%A4.jpg"></div>
+<h2 class="topic">
+<a name="0r8ikv6h93e631e507ksu503du">在汇编源程序中，数据不能以字母开头，需要在前面加0</a>
+</h2>
+<h2 class="topic">
+<a name="5emq6md41t0966v362hrijcqac">描述一个内存单元</a>
+</h2>
+<h3 class="topic">
+<a name="1sv5106kkkar2hst95a5ttig8u">&nbsp;1、内存单元的地址：使用[0] [bx] 等表示偏移地址，ds等表示段地址</a>
+</h3>
+<h3 class="topic">
+<a name="5ke7t052c6s8o58d8rmi683bpa">&nbsp;2、内存单元的长度：由具体指令中其他操作对象决定</a>
+</h3>
+<h2 class="topic">
+<a name="3fs8m11qngl80ut0h4llo4jkrr">[bx]表示一个内存单元，其偏移地址在寄存器bx中，使用时如果没有指定段地址，则默认段地址存放于ds中</a>
+</h2>
+<h2 class="topic">
+<a name="2r3eunpi597a7hks31alaeced7">loop 循环指令，循环次数与cx寄存器中的数值有关</a>
+</h2>
+<h2 class="topic">
+<a name="7vqreh5j1jof1viefr8c4vpfoj">inc bx 意味bx中的内容加1</a>
+</h2>
+<h2 class="topic">
+<a name="5ssc4hlp37h4oo1n89icc5khqd">5.1[bx]</a>
+</h2>
+<h3 class="topic">
+<a name="2l3lvncuqa3pq9t5i3v0cndml0">&nbsp;mov ax,[bx]</a>
+</h3>
+<h3 class="topic">
+<a name="5gvaoa3qrv6e6q7b823t2bfn5n">&nbsp;mov [bx],ax</a>
+</h3>
+<h2 class="topic">
+<a name="6tmcnicbokrrau0dggid46fesr">5.2 loop指令</a>
+</h2>
+<h3 class="topic">
+<a name="2n8j6gbnc9275ola38o5dlov4e">&nbsp;loop 标号	</a>
+</h3>
+<h3 class="topic">
+<a name="4apmcjqkj4915e6qgpn29b1h74">&nbsp;&nbsp;执行过程</a>
+</h3>
+<h3 class="topic">
+<a name="4l3ninobl1to89nhl4jpp1lgsc">&nbsp;&nbsp;&nbsp;1、cx=cx-1</a>
+</h3>
+<h3 class="topic">
+<a name="2gbo5i60mlem0n5lab7v3bk3g0">&nbsp;&nbsp;&nbsp;2、判断cx中的值，不为零则转移到标号除执行，否则向下执行</a>
+</h3>
+<h3 class="topic">
+<a name="3jasmf9slef1taeenkcv4r26nj">&nbsp;寄存器cx中通常存放要循环的次数，且作用于与该cx之后最近的loop指令</a>
+</h3>
+<h3 class="topic">
+<a name="221pfj77an0g6h90167bedkd13">&nbsp;三个要点</a>
+</h3>
+<h3 class="topic">
+<a name="1s6f4blsnq0rjv1q11dq15ilk3">&nbsp;&nbsp;cx中存放循环次数</a>
+</h3>
+<h3 class="topic">
+<a name="14jkej7tlpa8ul8t9i7bhe5qup">&nbsp;&nbsp;loop指令中的标号所标识的地址要在前面</a>
+</h3>
+<h3 class="topic">
+<a name="10i1bpitn2jemaccp95e43vq18">&nbsp;&nbsp;要执行的程序段，写在标号与loop指令的中间</a>
+</h3>
+<h2 class="topic">
+<a name="0lgi6gqlgprqf1bluml859sid4">5.3 在debug中跟踪用loop指令实现的循环程序</a>
+</h2>
+<h3 class="topic">
+<a name="120k305260iao6stnnia1h0el5">&nbsp;进行loop运算的时候注意相关数据的大小不要超出存储单元的限制</a>
+</h3>
+<h3 class="topic">
+<a name="7qus4u9omln670gprbbbv9h279">&nbsp;&nbsp;字节型数据 0~255(2^8)  字型数据 0~65535(2^16)</a>
+</h3>
+<h2 class="topic">
+<a name="18dlnflf33m61ht7nao1jit8t4">5.4 debug与汇编编译器masm对指令的不同处理</a>
+</h2>
+<h3 class="topic">
+<a name="6hk5qe4f8icagsegsrcrpfvoki">&nbsp;在debug中直接使用a命令输入汇编指令，debug将 mov ax,[0] 中的[0]当做内存单元的偏移地址为[0]来处理</a>
+</h3>
+<h3 class="topic">
+<a name="6fmiocsdriustqncv3snsre9kf">&nbsp;在汇编源程序中的mov ax,[0]中的 [0]被编译器masm当做mov ax,0中的常量0来处理</a>
+</h3>
+<h3 class="topic">
+<a name="7e8k31ftkhov78bbpf8l91l7gq">&nbsp;&nbsp;在汇编源程序中如何使用指令访问内存单元	</a>
+</h3>
+<h3 class="topic">
+<a name="1uv1sfn65b29t5hicct9u8r0pu">&nbsp;&nbsp;&nbsp;1、使用寄存器bx(也可使用其他通用寄存器)存储内存单元偏移地址，段地址默认在ds中 </a>
+</h3>
+<h3 class="topic">
+<a name="41vpm84k2re0ddtpl0aarae4uf">&nbsp;&nbsp;&nbsp;&nbsp;mov ax,[bx]</a>
+</h3>
+<h3 class="topic">
+<a name="1aaa9i59siqpga6s5adaaqjli8">&nbsp;&nbsp;&nbsp;2、使用[idata]表示内存单元的偏移地址，需要显式支出内存单元的段地址所在的寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="2e0h4fpsiqi5o7lro3lqilpmk8">&nbsp;&nbsp;&nbsp;&nbsp;mov ax,ds:[0]</a>
+</h3>
+<h3 class="topic">
+<a name="1a24g1uq42dqpfcqr70a9839bs">&nbsp;&nbsp;&nbsp;3、结合以上两种方法，使用bx表示偏移地址，显式指出段地址所在寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="6jt1as89jdtn3769jvoe8t2570">&nbsp;&nbsp;&nbsp;&nbsp;mov ax,ds:[bx]</a>
+</h3>
+<h2 class="topic">
+<a name="0o3anqbstme7e0clegb3q63103">5.5 loop和[bx]的联合应用&middot;</a>
+</h2>
+<h3 class="topic">
+<a name="093aoj0rlulh6ps85cstrc82d8">&nbsp;编程时考虑内容</a>
+</h3>
+<h3 class="topic">
+<a name="5sfve2j1pf71l6bk2gq3c5hfub">&nbsp;&nbsp;1、结果是否超过寄存器或内存空间存储范围</a>
+</h3>
+<h3 class="topic">
+<a name="2en1su0c215bd6nhr77mma6unv">&nbsp;&nbsp;2、操作的内存与寄存器数据位数是否相等</a>
+</h3>
+<h3 class="topic">
+<a name="18eun64ksqoe28ce5j81obt41q">&nbsp;&nbsp;&nbsp;八位数据累加到十六位寄存器中，为了不在相加在目标寄存器高八位或低八位的过程中出现数据超界的问题，先使用一个十六位寄存器保存该八位数据，然后使用十六位寄存器之间的累加解决问题</a>
+</h3>
+<h2 class="topic">
+<a name="43cp1su18is8nn7d482vf39qav">5.6 段前缀</a>
+</h2>
+<h3 class="topic">
+<a name="1drjqt5v5usbg41tn3be0u7k1a">&nbsp;mov ax,ds:[bx]</a>
+</h3>
+<h3 class="topic">
+<a name="4ciqknkfgaa71ut4dfrm5qm0pn">&nbsp;mov ax,cs:[bx]</a>
+</h3>
+<h3 class="topic">
+<a name="73om5fc6tpctal2qcn97iguvcn">&nbsp;mov ax,ss:[bx]</a>
+</h3>
+<h3 class="topic">
+<a name="6kslo68n928hgjm2sjd640u3cg">&nbsp;mov ax,es:[bx]</a>
+</h3>
+<h3 class="topic">
+<a name="3lj0bsng47puvlcmusrg5r7ahj">&nbsp;&nbsp;当然此时可以用常量表示偏移地址</a>
+</h3>
+<h3 class="topic">
+<a name="155fbqrf82vfddio4krk5t3btn">&nbsp;访问内存的语句中，用于显式指出内存单元的段地址的ds cs ss es称为段前缀</a>
+</h3>
+<h2 class="topic">
+<a name="5v7vl50ul69ltt78m0r1p5nmpn">5.7 一段安全的空间&middot;</a>
+</h2>
+<h3 class="topic">
+<a name="4v2qeba7ps5v8ugr8upqcj8blp">&nbsp;在不确定一段内存空间中是否存放重要数据或代码的时候不能随意向其中写入数据</a>
+</h3>
+<h3 class="topic">
+<a name="2hb703uv8mrvqrthqvj82huu28">&nbsp;&nbsp;此时应使用操作系统分配给我们的内存空间</a>
+</h3>
+<h3 class="topic">
+<a name="4gm06omcq3rohsas7e1rpa1fon">&nbsp;一般的pc机中dos模式下，0:200~0:2ff  256个字节的内存空间是安全的，使用之前可以查看对应内容是否为0，若是则可以安全使用</a>
+</h3>
+<h3 class="topic">
+<a name="1hd5novuj9fp1ikbs6ma1ur82k">&nbsp;进行数据在两段内存单元之间的传输时，有时需要改变内存物理地址的表示方法，以便使用同一循环操作该两个内存空间的读写</a>
+</h3>
+</body>
+</html>

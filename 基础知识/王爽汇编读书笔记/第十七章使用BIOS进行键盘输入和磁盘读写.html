@@ -1,0 +1,65 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>第十七章使用BIOS进行键盘输入和磁盘读写</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="04pq4klu5uncu9gqqnbaov7im3">第十七章使用BIOS进行键盘输入和磁盘读写</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="%E7%AC%AC%E5%8D%81%E4%B8%83%E7%AB%A0%E4%BD%BF%E7%94%A8BIOS%E8%BF%9B%E8%A1%8C%E9%94%AE%E7%9B%98%E8%BE%93%E5%85%A5%E5%92%8C%E7%A3%81%E7%9B%98%E8%AF%BB%E5%86%99_files/images/%E7%AC%AC%E5%8D%81%E4%B8%83%E7%AB%A0%E4%BD%BF%E7%94%A8BIOS%E8%BF%9B%E8%A1%8C%E9%94%AE%E7%9B%98%E8%BE%93%E5%85%A5%E5%92%8C%E7%A3%81%E7%9B%98%E8%AF%BB%E5%86%99.jpg"></div>
+<h2 class="topic">
+<a name="2feses1pbh16vvcug8l4irr607"></a>
+</h2>
+<p class="topicImage">
+<img src="%E7%AC%AC%E5%8D%81%E4%B8%83%E7%AB%A0%E4%BD%BF%E7%94%A8BIOS%E8%BF%9B%E8%A1%8C%E9%94%AE%E7%9B%98%E8%BE%93%E5%85%A5%E5%92%8C%E7%A3%81%E7%9B%98%E8%AF%BB%E5%86%99_files/79mu3uopamto48favq9ad2jqlr.png"></p>
+<h2 class="topic">
+<a name="327satvvc1dmglq9e5gedt6iv1"></a>
+</h2>
+<p class="topicImage">
+<img src="%E7%AC%AC%E5%8D%81%E4%B8%83%E7%AB%A0%E4%BD%BF%E7%94%A8BIOS%E8%BF%9B%E8%A1%8C%E9%94%AE%E7%9B%98%E8%BE%93%E5%85%A5%E5%92%8C%E7%A3%81%E7%9B%98%E8%AF%BB%E5%86%99_files/22pmkks8pdp73acc4cksau692e.png"></p>
+<h2 class="topic">
+<a name="0m6c2a3e4donhdjlrqim0taats"></a>
+</h2>
+<p class="topicImage">
+<img src="%E7%AC%AC%E5%8D%81%E4%B8%83%E7%AB%A0%E4%BD%BF%E7%94%A8BIOS%E8%BF%9B%E8%A1%8C%E9%94%AE%E7%9B%98%E8%BE%93%E5%85%A5%E5%92%8C%E7%A3%81%E7%9B%98%E8%AF%BB%E5%86%99_files/6csdrkllals3u2nufn153i9795.png"></p>
+<h2 class="topic">
+<a name="20kjfr7ieqnb6kgusmm5gmriqi"></a>
+</h2>
+<p class="topicImage">
+<img src="%E7%AC%AC%E5%8D%81%E4%B8%83%E7%AB%A0%E4%BD%BF%E7%94%A8BIOS%E8%BF%9B%E8%A1%8C%E9%94%AE%E7%9B%98%E8%BE%93%E5%85%A5%E5%92%8C%E7%A3%81%E7%9B%98%E8%AF%BB%E5%86%99_files/0m66pb8oh8a7v3v6c794vg5tvn.png"></p>
+<h2 class="topic">
+<a name="69tld68qs4f2rbquahlfl01l9p"></a>
+</h2>
+<p class="topicImage">
+<img src="%E7%AC%AC%E5%8D%81%E4%B8%83%E7%AB%A0%E4%BD%BF%E7%94%A8BIOS%E8%BF%9B%E8%A1%8C%E9%94%AE%E7%9B%98%E8%BE%93%E5%85%A5%E5%92%8C%E7%A3%81%E7%9B%98%E8%AF%BB%E5%86%99_files/04u62kqth6oju7r1frfpm5m35b.png"></p>
+<h2 class="topic">
+<a name="1g08o3jmp7iujfsc059hn72sa8"></a>
+</h2>
+<p class="topicImage">
+<img src="%E7%AC%AC%E5%8D%81%E4%B8%83%E7%AB%A0%E4%BD%BF%E7%94%A8BIOS%E8%BF%9B%E8%A1%8C%E9%94%AE%E7%9B%98%E8%BE%93%E5%85%A5%E5%92%8C%E7%A3%81%E7%9B%98%E8%AF%BB%E5%86%99_files/2ebh0fm07g2o77ebcjgkgi0bvr.png"></p>
+<h3 class="topic">
+<a name="3skq8mbno0b4vmom7qlirm6kh3">&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%AC%AC%E5%8D%81%E4%B8%83%E7%AB%A0%E4%BD%BF%E7%94%A8BIOS%E8%BF%9B%E8%A1%8C%E9%94%AE%E7%9B%98%E8%BE%93%E5%85%A5%E5%92%8C%E7%A3%81%E7%9B%98%E8%AF%BB%E5%86%99_files/6higbjjeq050og8v4n5fi347ou.png"></p>
+<h3 class="topic">
+<a name="6k5aen95k0t6pvjmbefhlah5f5">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%AC%AC%E5%8D%81%E4%B8%83%E7%AB%A0%E4%BD%BF%E7%94%A8BIOS%E8%BF%9B%E8%A1%8C%E9%94%AE%E7%9B%98%E8%BE%93%E5%85%A5%E5%92%8C%E7%A3%81%E7%9B%98%E8%AF%BB%E5%86%99_files/1bb0blq44ucvtvmvih6ukd9rda.png"></p>
+<h3 class="topic">
+<a name="60bb8vv7q3jbmrmp6nu0n1m4kv">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%AC%AC%E5%8D%81%E4%B8%83%E7%AB%A0%E4%BD%BF%E7%94%A8BIOS%E8%BF%9B%E8%A1%8C%E9%94%AE%E7%9B%98%E8%BE%93%E5%85%A5%E5%92%8C%E7%A3%81%E7%9B%98%E8%AF%BB%E5%86%99_files/2ijan2j33lm5stqmamqaenq92g.png"></p>
+<h3 class="topic">
+<a name="3rsf6js340ba3dqa8bent482ph">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%AC%AC%E5%8D%81%E4%B8%83%E7%AB%A0%E4%BD%BF%E7%94%A8BIOS%E8%BF%9B%E8%A1%8C%E9%94%AE%E7%9B%98%E8%BE%93%E5%85%A5%E5%92%8C%E7%A3%81%E7%9B%98%E8%AF%BB%E5%86%99_files/250vpumbasa08o1fk0m6mh6cs7.png"></p>
+</body>
+</html>

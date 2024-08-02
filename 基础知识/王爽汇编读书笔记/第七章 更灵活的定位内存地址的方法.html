@@ -1,0 +1,198 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>第七章 更灵活的定位内存地址的方法</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="340alk3m35cvh2e41rsfl2cgiv">第七章 更灵活的定位内存地址的方法</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="%E7%AC%AC%E4%B8%83%E7%AB%A0 %E6%9B%B4%E7%81%B5%E6%B4%BB%E7%9A%84%E5%AE%9A%E4%BD%8D%E5%86%85%E5%AD%98%E5%9C%B0%E5%9D%80%E7%9A%84%E6%96%B9%E6%B3%95_files/images/%E7%AC%AC%E4%B8%83%E7%AB%A0 %E6%9B%B4%E7%81%B5%E6%B4%BB%E7%9A%84%E5%AE%9A%E4%BD%8D%E5%86%85%E5%AD%98%E5%9C%B0%E5%9D%80%E7%9A%84%E6%96%B9%E6%B3%95.jpg"></div>
+<h2 class="topic">
+<a name="1jaqqjnkfou449iod7gvf2s10k">7.1 and和or指令</a>
+</h2>
+<h3 class="topic">
+<a name="1sm06lh21or75ne9cv8lm37dbp">&nbsp;and 逻辑与，进行按位与运算：只有两个操作数的二进制位均为1时运算结果才为1，其余情况为0</a>
+</h3>
+<h3 class="topic">
+<a name="7hgdl73d455es457tb6e58459m">&nbsp;&nbsp;mov al,01100011b  and al,00111011b</a>
+</h3>
+<h3 class="topic">
+<a name="2f3g4sugg9qh58btd7k5dr3vet">&nbsp;&nbsp;&nbsp;通过该指令可以将操作对象的某位设置为0</a>
+</h3>
+<h3 class="topic">
+<a name="3443pv935ouaqf5cvhnltlq8gh">&nbsp;or 逻辑或，进行按位或运算：只有两个操作数的二进制位均为0时运算结果才为0，其余情况为1</a>
+</h3>
+<h3 class="topic">
+<a name="0hbhsmfin86dqcniosl2e2ught">&nbsp;&nbsp;mov al,01100011b  or al,00111011b</a>
+</h3>
+<h3 class="topic">
+<a name="0hq65t9i1594q87dhs118v7674">&nbsp;&nbsp;&nbsp;通过该指令可以将操作对象的某位设置为1</a>
+</h3>
+<h2 class="topic">
+<a name="1pai9kjm9vhgpa97madokthit5">7.2关于ascii码</a>
+</h2>
+<h2 class="topic">
+<a name="017foim2u5u0nv7cia3s030c7a">7.3以字符形式给出的数据</a>
+</h2>
+<h3 class="topic">
+<a name="22rm6kj6qpusfd21qhsm83t3rr">&nbsp;db 'unIX'</a>
+</h3>
+<h3 class="topic">
+<a name="20tsj3tat3j4fe7al8897et7kp">&nbsp;&nbsp;db表示定义单字节型数据，用'...'的形式指明数据以字符方式给出，编译器将其转化为相应的ascii码</a>
+</h3>
+<h3 class="topic">
+<a name="7buud9aclubjfvbj35jhpnt46i">&nbsp;&nbsp;&nbsp;一个字符占一个字节的空间</a>
+</h3>
+<h3 class="topic">
+<a name="32ctvg6cr74dg1m9mm4lc7t4se">&nbsp;mov ax ,'a'</a>
+</h3>
+<h3 class="topic">
+<a name="5n24hg2cat72a1ju6gk43akf1d">&nbsp;&nbsp;相当于 mov ax,61h</a>
+</h3>
+<h2 class="topic">
+<a name="7p27rmpocvjgv08koqps6np9eq">7.4大小写转换问题</a>
+</h2>
+<h3 class="topic">
+<a name="3eb5qeq8c85hbih053f6a8g4ga">&nbsp;大写字母+20h=小写字母</a>
+</h3>
+<h3 class="topic">
+<a name="10dsqesafbt47ipdtcsaovaeqa">&nbsp;对于同一字母的大小写，除第五位（大写字母第五位为0，小写字母第五位为1），其余各二进制位均相同</a>
+</h3>
+<h3 class="topic">
+<a name="4q4dce9vtst3l790ba1ftq8d7t">&nbsp;&nbsp;由于该性质，使用and或or指令可以转换字母的大小写</a>
+</h3>
+<h3 class="topic">
+<a name="7j7ivvec767rbscrojjdee58a8">&nbsp;&nbsp;&nbsp;转成大写字母add al,11011111b</a>
+</h3>
+<h3 class="topic">
+<a name="0bbt05bf205u22u1j1m0lqpfib">&nbsp;&nbsp;&nbsp;转成小写字母or al,00100000b</a>
+</h3>
+<h2 class="topic">
+<a name="0kmh0emkfgqb02e0mp55suhgks">7.5[bx+idata]</a>
+</h2>
+<h3 class="topic">
+<a name="0k6mj8irtb8k7mii8fhqtiiklo">&nbsp;[bx+idata]表示内存单元的偏移地址为bx寄存器中的值加idata</a>
+</h3>
+<h3 class="topic">
+<a name="72lmhjh3qqs86vc7mn91omkrd5">&nbsp;&nbsp;指令格式</a>
+</h3>
+<h3 class="topic">
+<a name="4d2o7k4rf5fah6s75fscd09vk6">&nbsp;&nbsp;&nbsp;mov ax,[idata+bx]</a>
+</h3>
+<h3 class="topic">
+<a name="2865a0hjmfmbivualspg7mg0ho">&nbsp;&nbsp;&nbsp;mov ax,idata[bx]</a>
+</h3>
+<h3 class="topic">
+<a name="5k3fmj7hlgpclg9bh5jei5o5jc">&nbsp;&nbsp;&nbsp;mov ax,[bx].200</a>
+</h3>
+<h3 class="topic">
+<a name="7chuvg89u7k7u37htvhhor2ubv">&nbsp;&nbsp;&nbsp;以上三种格式是等价的</a>
+</h3>
+<h2 class="topic">
+<a name="7ndg4knran6prol8fl6dglnan2">7.6 用[bx+idata]的方式进行数组的处理</a>
+</h2>
+<h3 class="topic">
+<a name="73d6lkicd3fssrg7fnf2d8qsai">&nbsp;使用这种表示内存地址方法，可以将要处理的数据看成更高级的数据结构 比如数组</a>
+</h3>
+<h3 class="topic">
+<a name="7kmcth2gvu28crhraskd4krr4r">&nbsp;&nbsp;[idata+bx]idata可以表示不同行，bx使用循环从0-n表示列，可以表示寻址一个idata行n列的数组</a>
+</h3>
+<h2 class="topic">
+<a name="7mgkpq2m385s12cbtclp7ql0r5">7.7si与di</a>
+</h2>
+<h3 class="topic">
+<a name="06o5qd2mrjfr9g040nvrampqfg">&nbsp;是8086CPU中与bx功能相近的寄存器，每个寄存器不能分成两个8位寄存器使用，经常用于[]中表示内存单元的偏移地址</a>
+</h3>
+<h2 class="topic">
+<a name="40dmu6anoeqpsu508m7f54em5a">7.8[bx+si]和[bx+di]</a>
+</h2>
+<h3 class="topic">
+<a name="1ic7cjsfijskdi5b298jut3429">&nbsp;表示某一内存单元的偏移地址是寄存器bx中的值加上si中的值</a>
+</h3>
+<h3 class="topic">
+<a name="3kmv6u2h1dh5rrhgas5c3gi45n">&nbsp;&nbsp;指令格式</a>
+</h3>
+<h3 class="topic">
+<a name="4egnohlbnvt0lt9hiqrroog1e7">&nbsp;&nbsp;&nbsp;[bx][si]</a>
+</h3>
+<h3 class="topic">
+<a name="2qsf2cv05bqvp23159v0m3hmeb">&nbsp;&nbsp;&nbsp;[bx][di]</a>
+</h3>
+<h2 class="topic">
+<a name="18b93pf5kurrukrqlqhr1jtiv5">7.9[bx+si+idata]和[bx+di+idata]</a>
+</h2>
+<h3 class="topic">
+<a name="71rke5bu9v08hcjabivv9rofqi">&nbsp;指令格式</a>
+</h3>
+<h3 class="topic">
+<a name="3emijcqt2de17cq0n7o0tf8qgg">&nbsp;&nbsp;mov ax,[bx+200+si]</a>
+</h3>
+<h3 class="topic">
+<a name="2qtusfkpnu7k29s48g4e6tiacb">&nbsp;&nbsp;mov ax,[200+bx+si]</a>
+</h3>
+<h3 class="topic">
+<a name="5lbftifm7vchgh66r9098407kk">&nbsp;&nbsp;mov ax,200[bx][si]</a>
+</h3>
+<h3 class="topic">
+<a name="1s1i7gbkcthde597dr09g1dpa9">&nbsp;&nbsp;mov ax,[bx].200[si]</a>
+</h3>
+<h3 class="topic">
+<a name="5ms5vsrqdd2kluaa44pupm5c55">&nbsp;&nbsp;mov ax,[bx][si].200</a>
+</h3>
+<h3 class="topic">
+<a name="14l1eitj6qu6thuhamh6asr9pv">&nbsp;两个变量一个用于定位行，作为外层循环的变量，一个用于定位列，作为内层循环的变量，常量一般用于定位相对于起始列的开始修改的列</a>
+</h3>
+<h2 class="topic">
+<a name="50mkdsu6ofo5me4hetut2fntbq">7.10不同寻址方式的灵活使用</a>
+</h2>
+<h3 class="topic">
+<a name="0c1evphnuit6k8pqesmt42cvvp">&nbsp;目的：从更加结构化的角度看待所要处理的数据</a>
+</h3>
+<h3 class="topic">
+<a name="65d50heu33nt306g0limipkd7u">&nbsp;&nbsp;在使用[bx+si]寻址二维数组时（bx表示行数，指向下一行add bx,16   si表示列数，指向下一列add si,1）需要使用二重循环（外层循环进行行数的遍历，内层循环进行列数的遍历），循环由外层进入内层时，需要将外层循环次数cx保存起来（一般使用dx寄存器进行保存），并将内层循环的循环次数赋值给cx ，当内层循环结束，回到外层循环时，需要将之前保留的外层循环的cx值重新写入cx，以不妨碍外层循环的次数</a>
+</h3>
+<h3 class="topic">
+<a name="5noskkh2hreli5bjlhaui97h94">&nbsp;&nbsp;&nbsp;mov cx,4  ；外层循环的次数</a>
+</h3>
+<h3 class="topic">
+<a name="4rnd1l3ih424r13ubjsa8n76mp">&nbsp;&nbsp;&nbsp;s0:mov dx,cx ；保存外层循环的次数</a>
+</h3>
+<h3 class="topic">
+<a name="7udtehjmpibjsrusd1a7bfb4b4">&nbsp;&nbsp;&nbsp;mov cx,3；设置内层循环的次数</a>
+</h3>
+<h3 class="topic">
+<a name="02aukfo55a19epai6j0e8a2j0i">&nbsp;&nbsp;&nbsp;s:代码  ；执行内层循环代码</a>
+</h3>
+<h3 class="topic">
+<a name="63ggtsarfchme28plnkl1sjfjr">&nbsp;&nbsp;&nbsp;loop s</a>
+</h3>
+<h3 class="topic">
+<a name="0mftl3ft43o3m3mtcflh8is1rc">&nbsp;&nbsp;&nbsp;mov cx,dx  ；内层循环结束，回复cx为外层循环的次数</a>
+</h3>
+<h3 class="topic">
+<a name="59vb8ic9o3e5sr1nidmlk4na3q">&nbsp;&nbsp;&nbsp;loop s0</a>
+</h3>
+<h3 class="topic">
+<a name="38oq8d918m99fm0fd0v0u55pq3">&nbsp;&nbsp;保存外层循环的次数不仅可以使用dx，也可以使用内存单元（此时需要在源代码中开辟新的内存空间，一般是一个字，因为需要保存十六位寄存器cx的值），毕竟cpu中寄存器的数量有限</a>
+</h3>
+<h3 class="topic">
+<a name="12h6ck2okr64q773iullrd0c5e">&nbsp;&nbsp;&nbsp;mov ds:[idata],cx；保存cx</a>
+</h3>
+<h3 class="topic">
+<a name="3c6mocvumfg7bu98c6njlivrl4">&nbsp;&nbsp;&nbsp;mov cx,ds[idata] ；恢复cx</a>
+</h3>
+<h3 class="topic">
+<a name="4nbh35611gi8s1s2mteis1jjsk">&nbsp;&nbsp;保存外层循环次数时因为是暂存数据，一般暂存数据使用栈进行，不需要记忆相应的物理地址</a>
+</h3>
+<h3 class="topic">
+<a name="62ulasvkkdgsj4eir9lmbah0pn">&nbsp;&nbsp;&nbsp;push cx ；保存</a>
+</h3>
+<h3 class="topic">
+<a name="5u5o54c7mgftp0qbdsue74o3in">&nbsp;&nbsp;&nbsp;pop cx ；恢复</a>
+</h3>
+</body>
+</html>

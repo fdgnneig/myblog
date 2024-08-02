@@ -1,0 +1,150 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>第四章第一个程序</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="7t3gum7p3kitumiccupcnrusj5">第四章第一个程序</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%AC%AC%E4%B8%80%E4%B8%AA%E7%A8%8B%E5%BA%8F_files/images/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%AC%AC%E4%B8%80%E4%B8%AA%E7%A8%8B%E5%BA%8F.jpg"></div>
+<h2 class="topic">
+<a name="5mi5ot0ga01r669ug1rv8m5sg7">debug中默认所有数据均使用十六进制保存，但是汇编源码中需要指定数据的进制，否则默认是16进制 比如使用B表示数据是二进制，不加后缀表示为10进制，均会在编译的过程中转换为16进制</a>
+</h2>
+<h2 class="topic">
+<a name="68jd01trpko15ca54cqgetam3s">源程序从写出到执行的过程</a>
+</h2>
+<h3 class="topic">
+<a name="4abuqa8dg3n1l06nmiherrb3na">&nbsp;编写汇编源程序</a>
+</h3>
+<h3 class="topic">
+<a name="6rpu490b0rlcul34g1gb3mheti">&nbsp;对源程序进行编译连接</a>
+</h3>
+<h3 class="topic">
+<a name="0vl9je4rki6bm4fkj64345a56n">&nbsp;&nbsp;可执行程序包括1、程序源码（机器码）和数据 2、相关描述信息</a>
+</h3>
+<h3 class="topic">
+<a name="48lo1n431ho39s2nip62fruo23">&nbsp;执行可执行程序</a>
+</h3>
+<h2 class="topic">
+<a name="4mj3blvhepk8cgfbt9i7noimn9">源程序</a>
+</h2>
+<h3 class="topic">
+<a name="70jc4tqsu1tgiiqhb93elnvhc2">&nbsp;伪指令：没有对应的机器指令，并不被cpu执行只被编译器执行</a>
+</h3>
+<h3 class="topic">
+<a name="0kd4p23i1986nrrp1glrmet6o5">&nbsp;&nbsp;code segment          code ends</a>
+</h3>
+<h3 class="topic">
+<a name="1rvv578ekjmqf943q1342asi1t">&nbsp;&nbsp;&nbsp;用于定义一个段</a>
+</h3>
+<h3 class="topic">
+<a name="21png9af4qaki0dr9iqf9drkta">&nbsp;&nbsp;end </a>
+</h3>
+<h3 class="topic">
+<a name="5kssllvbnjhdc4vvtdb5bvqq3m">&nbsp;&nbsp;&nbsp;汇编程序结束标志</a>
+</h3>
+<h3 class="topic">
+<a name="6caom7h59sdro2civpke4i5sj3">&nbsp;&nbsp;assume cs:code</a>
+</h3>
+<h3 class="topic">
+<a name="5bo2vim3kh380qjlc4l1jmprfr">&nbsp;&nbsp;&nbsp;假设某一寄存器与程序中的某一段相关联</a>
+</h3>
+<h3 class="topic">
+<a name="74ufo12vou77mo377irt6g4nqu">&nbsp;源程序中的程序</a>
+</h3>
+<h3 class="topic">
+<a name="212rboa415msmker7klq4384o1">&nbsp;&nbsp;指汇编指令</a>
+</h3>
+<h3 class="topic">
+<a name="60fdp72m8slgri6ee62kmp52a1">&nbsp;标号</a>
+</h3>
+<h3 class="topic">
+<a name="6vd78pmn7f3v2bdnb26oj0g6sv">&nbsp;&nbsp;例如code，一个标号代表了一个地址，经常用于表示段地址</a>
+</h3>
+<h3 class="topic">
+<a name="0p9ejqjdc3cjf3ip0bji6lquj0">&nbsp;程序的结构</a>
+</h3>
+<h3 class="topic">
+<a name="5f2oink4004htecfcnfkua3jt9">&nbsp;程序返回</a>
+</h3>
+<h3 class="topic">
+<a name="5bu24p3mk5d2v9c346tai5p963">&nbsp;&nbsp;一个程序结束之后要将cpu的控制权交还给使她得以运行的程序</a>
+</h3>
+<h3 class="topic">
+<a name="118r7j8eiiv5qqnohh8vf9vntv">&nbsp;&nbsp;mov ax,4c00h   int 21h </a>
+</h3>
+<h3 class="topic">
+<a name="5ot51pcgjqmgl2u78b57vjkrim">&nbsp;语法错误与逻辑错误</a>
+</h3>
+<h3 class="topic">
+<a name="38ugepsodm9f43qf5lcqnrg970">&nbsp;&nbsp;前者会在编译的过程中被发现，后者不会只会在运行过程中被发现</a>
+</h3>
+<h2 class="topic">
+<a name="44dp1ho77h7lf9unbehfueqbdp">编辑源程序</a>
+</h2>
+<h2 class="topic">
+<a name="7r0g37dvcc9r8bgfd16tlj6cgm">编译</a>
+</h2>
+<h2 class="topic">
+<a name="6q9q79nislap1q9ogrrh89n46l">连接</a>
+</h2>
+<h3 class="topic">
+<a name="0kctrn3uigbecpqlb3j1frjh01">&nbsp;一般用于将多个源程序组合为一个可执行文件</a>
+</h3>
+<h3 class="topic">
+<a name="45rrhhmpf1j37a03hvd61cva2o">&nbsp;也可用于将调用的子程序连接到可执行文件中</a>
+</h3>
+<h3 class="topic">
+<a name="1k99gjaenisrk4vtgsn7m77r8l">&nbsp;将相关信息处理为可执行信息</a>
+</h3>
+<h2 class="topic">
+<a name="6ou5vvad4tp031g8kpc9mg87d3">简化方式进行的编译与连接</a>
+</h2>
+<h2 class="topic">
+<a name="4tc9c6a400r019fbk29g3nm4je">1.exe的执行</a>
+</h2>
+<h2 class="topic">
+<a name="17ta8c6e9la7b3in39j317ec4l">谁将可执行文件中的程序装在进入内存并使它运行</a>
+</h2>
+<h3 class="topic">
+<a name="6m7k8j5hd3gsgi3kilduu967g0">&nbsp;操作系统提供shell程序，用户通过该程序进行计算机系统的操作</a>
+</h3>
+<h3 class="topic">
+<a name="2cqap4b96q9fn4tao8eq1l386p">&nbsp;&nbsp;shell程序完成其他程序的调用，并将cs:ip指向该程序第一条指令，该程序运行完成后程序返回至shell程序</a>
+</h3>
+<h2 class="topic">
+<a name="1bksg6g5jbusuvrc9qt6jjsum4">程序执行过程中的跟踪</a>
+</h2>
+<h3 class="topic">
+<a name="13hc0ocnbm6tb4nr8q0m4hl3vn">&nbsp;使用debug将程序加载进入内存，使用单步执行命令执行程序，查看每一条程序的结果</a>
+</h3>
+<h3 class="topic">
+<a name="1b3iqdnd720k61spfd7tshda15">&nbsp;debug将可执行文件载入内存之后，cx中存放程序的长度</a>
+</h3>
+<h3 class="topic">
+<a name="7ik1699dviatj16c3aoe1k99qt">&nbsp;&nbsp;cx中的内容在程序一开始时程序的长度，但是之后可以改变， 作为loop的循环次数，其改变不代表程序长度的改变</a>
+</h3>
+<h3 class="topic">
+<a name="0d12afivrbpiv4dg3no0087u40">&nbsp;在一段起始地址为sa:0000(偏移地址为0)的内存空闲区开始，sa:0000-sa+10h:0000存放程序前缀（psp）dos利用该数据区与被加载程序通信，此时段地址sa存放在ds寄存器中</a>
+</h3>
+<h3 class="topic">
+<a name="18a4q35go0ljuts80nehsnt7la">&nbsp;&nbsp;程序加载后，ds中存放程序所在内存区的段地址，该内存区偏移地址为0，该内存区前256个字节存放文件前缀（psp）用于与操作系统进行通讯，从256个字节之后的空间中存放着程序</a>
+</h3>
+<h3 class="topic">
+<a name="4kjlpv4518cpkvnaqkv25m0f8n">&nbsp;&nbsp;说明程序开头的内存单元的偏移地址均为0</a>
+</h3>
+<h3 class="topic">
+<a name="3hjdp7jlp9ip8vhohc03j7gpp8">&nbsp;从地址sa+10h:0000开始存放程序，cs:ip指向此时的程序开始地址sa+10h:0000</a>
+</h3>
+<h3 class="topic">
+<a name="5qok1nemqvhmrng8a64k0a2e2o">&nbsp;当到达指令int 21h时，需要使用p指令结束程序运行</a>
+</h3>
+<h3 class="topic">
+<a name="1nadde4qcg7i14099sqa7otq35">&nbsp;程序调用顺序 command调用debug，debug调用1.exe，返回顺序相反</a>
+</h3>
+</body>
+</html>

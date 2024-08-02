@@ -1,0 +1,261 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>第十三章 int指令</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="3u6sj322nhi7148an2ita5a5g8">第十三章 int指令</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="%E7%AC%AC%E5%8D%81%E4%B8%89%E7%AB%A0 int%E6%8C%87%E4%BB%A4_files/images/%E7%AC%AC%E5%8D%81%E4%B8%89%E7%AB%A0 int%E6%8C%87%E4%BB%A4.jpg"></div>
+<h2 class="topic">
+<a name="0qfbr0indpd90q11s6u01gggqg">自减运算符 dec</a>
+</h2>
+<h2 class="topic">
+<a name="5s04h69bbqujibs5ibj3fqkc78">int指令会引发内中断，int类型中断是内中断的中断源之一</a>
+</h2>
+<h2 class="topic">
+<a name="7i5mdle7hu5gnr5tm33ru0jfpm">13.1int指令</a>
+</h2>
+<h3 class="topic">
+<a name="03q41du1cc4vucndio2o6nqgl2">&nbsp;int n指令的执行相当于引发一个n号中断的中断过程</a>
+</h3>
+<h3 class="topic">
+<a name="5o4ioueqgl0c3n8ubc6mn7ef8a">&nbsp;&nbsp;具体过程</a>
+</h3>
+<h3 class="topic">
+<a name="0b0qqunb66gcbs2223b70iof5b">&nbsp;&nbsp;&nbsp;获取中断类型码n</a>
+</h3>
+<h3 class="topic">
+<a name="52icje3dutbqu8u0kl5b3b3gpq">&nbsp;&nbsp;&nbsp;标志寄存器入栈  pushf</a>
+</h3>
+<h3 class="topic">
+<a name="4pm0j64tdf61jui8nob5no7fsu">&nbsp;&nbsp;&nbsp;cs入栈  push cs</a>
+</h3>
+<h3 class="topic">
+<a name="44ds6rp16g2mrqqk4njdpjuqil">&nbsp;&nbsp;&nbsp;ip入栈  push ip</a>
+</h3>
+<h3 class="topic">
+<a name="5jl7immakls7mmsk2c2ehae9pl">&nbsp;&nbsp;&nbsp;（ip）=（n*4）（cs）=（n*4+2）</a>
+</h3>
+<h3 class="topic">
+<a name="5n8pqdn18s51e9ogf7oosk54v4">&nbsp;可以在程序中使用int n调用任意一个中断进行中断过程并执行中断处理程序</a>
+</h3>
+<h3 class="topic">
+<a name="15v3mkg1ir05gu4icev9rimq6r">&nbsp;&nbsp;注意可以使用 '  '表示要传输的字符 例mov byte ptr es:[12*160+36*2],'!'  表示向屏幕中数输出'!'字符</a>
+</h3>
+<h3 class="topic">
+<a name="4pdljfo86oplvcu4n2ohnuo6qa">&nbsp;实际上int与call类似，也可以调用一段程序</a>
+</h3>
+<h3 class="topic">
+<a name="7u8goeaeojjk2rfv9p8gfmmjr9">&nbsp;系统有时会将一些一定功能的子程序以中断处理程序的方式提供给应用程序调用，可以使用int指令调用这些子程序，可以将中断处理程序简称为中断例程</a>
+</h3>
+<h2 class="topic">
+<a name="0b7caovrm3c0ktmc8lcr14flho">13.2编写供应用程序调用的中断例程</a>
+</h2>
+<h3 class="topic">
+<a name="2jmurviq72pgj52mbp4nc5d363">&nbsp;中断处理程序的编写</a>
+</h3>
+<h3 class="topic">
+<a name="1k0am4v4stlem6e8qmi0n322ve">&nbsp;&nbsp;1、保存用到的寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="6mihcd6odealee1cabo3fe0aq5">&nbsp;&nbsp;&nbsp;是否需要保存并恢复寄存器中的值针对具体问题具体分析，有的中断例程需要通过寄存器返回一些值，则不能将该寄存器保存再返回</a>
+</h3>
+<h3 class="topic">
+<a name="02pe51eusn40ugovvoapq2eh43">&nbsp;&nbsp;&nbsp;有些中断例程使用了其他寄存器作为中间结果储存单元，则需要将该寄存器先保存后恢复，以避免寄存器冲突（例如经常用作循环次数的cx寄存器）</a>
+</h3>
+<h3 class="topic">
+<a name="4o2i6h980npi099kjolk3d2ms8">&nbsp;&nbsp;2、处理中断</a>
+</h3>
+<h3 class="topic">
+<a name="18mveibsvu91963m9jp7o1a0cp">&nbsp;&nbsp;3、恢复用到的寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="4sp95qk517t6c4i33f6vdoa94p">&nbsp;&nbsp;4、用iret指令返回（有的中断处理程序执行的结果是返回到操作系统，这类中断程序可以不使用iret，可以直接使用mov ax,4c00h int 21h）</a>
+</h3>
+<h3 class="topic">
+<a name="2dmdaqrbqeknumf29k12rqpc4u">&nbsp;&nbsp;&nbsp;即</a>
+</h3>
+<h3 class="topic">
+<a name="08dah23om1mna73pvnpldl5fst">&nbsp;&nbsp;&nbsp;&nbsp;pop ip    ;恢复ip</a>
+</h3>
+<h3 class="topic">
+<a name="148q4ife2sc73u9ntcm2jqk6n6">&nbsp;&nbsp;&nbsp;&nbsp;pop cs    ;恢复cs</a>
+</h3>
+<h3 class="topic">
+<a name="6mqi1ifrthbero1q31h3mu7njb">&nbsp;&nbsp;&nbsp;&nbsp;popf    ;恢复标志寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="63a4au20aq327ferr69i6bees3">&nbsp;&nbsp;&nbsp;通常与硬件自动完成的中断过程配合使用，使得cpu继续执行中断前的指令</a>
+</h3>
+<h3 class="topic">
+<a name="2jh4f4c1blg6sv2lca359ptslv">&nbsp; int 与iret的配合使用使得调用中断例程以及返回调用程序成为可能，</a>
+</h3>
+<h3 class="topic">
+<a name="1cgaafc920np5mqjk6vreq13dg">&nbsp;&nbsp;使用类似于call和ret</a>
+</h3>
+<h3 class="topic">
+<a name="6gn7le2ptmspffgio6am07b8eh">&nbsp;中断例程的安装程序一般结构</a>
+</h3>
+<h3 class="topic">
+<a name="2j0lnktdecns0utge9afquelbn">&nbsp;&nbsp;使用rep movsb将中断例程程序复制到指定的内存空间</a>
+</h3>
+<h3 class="topic">
+<a name="0csicje71b538c99fd1av858lv">&nbsp;&nbsp;根据中断类型码设置中断向量表，将对应中断类型码的表项设置为中断例程的入口地址</a>
+</h3>
+<h3 class="topic">
+<a name="7qat3rcptqhhjhghda73g29n2j">&nbsp;&nbsp;中断例程代码</a>
+</h3>
+<h2 class="topic">
+<a name="4jvs5d4g46f1gdnaad1m7gqj5s">13.3对int、iret和栈的深入理解</a>
+</h2>
+<h3 class="topic">
+<a name="1k0qjqqvvk3tlf7uha5dq6u3gs">&nbsp;三者联合使用，可以调用中断程序达到loop指令或jmp指令的功能</a>
+</h3>
+<h3 class="topic">
+<a name="7abskf973lbshlinrcr4cmevrg">&nbsp;&nbsp;原理：进行中断处理函数调用的时候，先要执行中断过程，该过程中会将此时的标志寄存器 、cs、 ip依次入栈，如果在被调用的中断处理函数中改变栈中的cs ip(这里一般用bp表示栈的偏移地址，因为其默认的段寄存器是ss)，使用指定的位移修改偏移地址ip，然后使用iret返回到原函数中（iret执行时会将ip cs 标志寄存器分别出栈恢复），就可以通过调用中断函数达成程序执行跳转的目的</a>
+</h3>
+<h3 class="topic">
+<a name="2vhb24in7j1lqsbiikcn8v3812">&nbsp;&nbsp;&nbsp;中断函数表示循环的例子</a>
+</h3>
+<h3 class="topic">
+<a name="7lh1anlc6v864mrujo0igbaj07">&nbsp;&nbsp;&nbsp;&nbsp;lp:push bp;将需要使用的bp寄存器入栈保存</a>
+</h3>
+<h3 class="topic">
+<a name="14j9a3k57c175c1eo3ku6u6gak">&nbsp;&nbsp;&nbsp;&nbsp;mov bp,sp;将此时栈顶的偏移地址传给bp</a>
+</h3>
+<h3 class="topic">
+<a name="4dpcgp060ec7f9cs2qh76jjq39">&nbsp;&nbsp;&nbsp;&nbsp;dec cx cx自减1</a>
+</h3>
+<h3 class="topic">
+<a name="2e7ck22768nsjai8g9q8g88flh">&nbsp;&nbsp;&nbsp;&nbsp;jcxz ok  判断循环是否结束</a>
+</h3>
+<h3 class="topic">
+<a name="4njbq0mmlqea547mkntlt3t1j7">&nbsp;&nbsp;&nbsp;&nbsp;add [bp+2],bx  将bx中的需要跳转的位移加到栈空间中保存ip的字单元</a>
+</h3>
+<h3 class="topic">
+<a name="2f5a5ie5kroa7t72u85jhfu921">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;此时栈空间的内容为</a>
+</h3>
+<h3 class="topic">
+<a name="3646mvjlgp3c860keqdiniq9r7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;栈顶 bp</a>
+</h3>
+<h3 class="topic">
+<a name="6t7g6uuclpichs9ff5apf6j9hk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip</a>
+</h3>
+<h3 class="topic">
+<a name="2tt7u19cheo7mrgsl6vgafred0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cs</a>
+</h3>
+<h3 class="topic">
+<a name="3q5ljauov1mf7s8u3aairipf1t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;标志寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="3tomcfma60r813gb6icnj3qd06">&nbsp;&nbsp;&nbsp;&nbsp;ok:pop bp ;恢复bp的值，栈顶变为ip</a>
+</h3>
+<h3 class="topic">
+<a name="0egg80mvgt7d4hecp5hmjo7i3r">&nbsp;&nbsp;&nbsp;&nbsp;iret   ;依次从栈中恢复ip cs 标志寄存器的值</a>
+</h3>
+<h3 class="topic">
+<a name="5r8m56fov0ffajvqu9hlikh2rh">&nbsp;&nbsp;&nbsp;中断函数表示jmp即在循环的基础上，取消cx自减以及jcxz跳转的指令，使得每一次执行中断程序均使用位移对ip进行改写</a>
+</h3>
+<h2 class="topic">
+<a name="5vitf4nvjm1i6mcr4r71kgkn4t">13.4BIOS和DOS提供的中断例程</a>
+</h2>
+<h3 class="topic">
+<a name="28asmh9afnm8ou81nvqmf3m945">&nbsp;bios在系统板的ROM中存放，主要有以下几个部分组成</a>
+</h3>
+<h3 class="topic">
+<a name="27k53emj2ali32uvppvdlkmmij">&nbsp;&nbsp;1、硬件系统的检测和初始化程序</a>
+</h3>
+<h3 class="topic">
+<a name="5233fv6ednedot47ruaqga8qp3">&nbsp;&nbsp;2、外部中断和内部中断的中断例程</a>
+</h3>
+<h3 class="topic">
+<a name="2893qnqd52vduqbeqobialbihl">&nbsp;&nbsp;3、用于对硬件设备进行io操作的中断例程</a>
+</h3>
+<h3 class="topic">
+<a name="45i9hasdf9b0f3s7rplu9pcqgo">&nbsp;&nbsp;4、其他和硬件系统相关的中断例程</a>
+</h3>
+<h3 class="topic">
+<a name="4n84thuqvbvrhaf99vu1pd49s1">&nbsp;dos提供的中断例程就是操作系统向程序员提供的编程资源</a>
+</h3>
+<h3 class="topic">
+<a name="40hn3d313s0q753p1hte11bno4">&nbsp;可以使用int指令直接调用dos与bios提供的中断指令</a>
+</h3>
+<h3 class="topic">
+<a name="0tle8dcaq8r8d4f8jpuin0d1oq">&nbsp;&nbsp;与硬件相关的dos中断例程中一般均调用了bios的中断例程</a>
+</h3>
+<h3 class="topic">
+<a name="4be3qvnq9g60scvgmh6q93h5hb">&nbsp;一个中断例程中往往包含多个子程序</a>
+</h3>
+<h3 class="topic">
+<a name="69ngv425b3cil22g86n87n1utg">&nbsp;&nbsp;在dos与bios提供的中断例程中不仅需要使用int 中断类型码 来调用相应中断程序，还需要用ah来传递内部子程序的编号</a>
+</h3>
+<h2 class="topic">
+<a name="3n72j0rkj98uoad3nvo7fcsqu3">13.5BIOS和DOS中断例程的安装过程</a>
+</h2>
+<h3 class="topic">
+<a name="2oj8kq5c9sj46koqmm32ep4dpj">&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img height="279" src="%E7%AC%AC%E5%8D%81%E4%B8%89%E7%AB%A0 int%E6%8C%87%E4%BB%A4_files/113tk8s3d8aesct662tju63li1.PNG" width="752"></p>
+<h2 class="topic">
+<a name="6qvaes3fbbhvfquj7l3iqs5jm8">13.6BIOS中断例程应用</a>
+</h2>
+<h3 class="topic">
+<a name="4jimht8n8lbdoq3j59asveudb9">&nbsp;int 10h是bios提供的中断例程，包含了多个与屏幕输出相关的子程序</a>
+</h3>
+<h3 class="topic">
+<a name="2uadp100bo3it89ilarfl71hda">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img height="334" src="%E7%AC%AC%E5%8D%81%E4%B8%89%E7%AB%A0 int%E6%8C%87%E4%BB%A4_files/3d2t57k9526k9b007ajfvkqid6.PNG" width="849"></p>
+<h3 class="topic">
+<a name="36gep1tk5jm156ta90rok9i6m1">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img height="186" src="%E7%AC%AC%E5%8D%81%E4%B8%89%E7%AB%A0 int%E6%8C%87%E4%BB%A4_files/12qqv4ofckrp9lr3j71itd1ue5.PNG" width="854"></p>
+<h3 class="topic">
+<a name="64g42h8kug0s1qinh0cf84lip4">&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img height="650" src="%E7%AC%AC%E5%8D%81%E4%B8%89%E7%AB%A0 int%E6%8C%87%E4%BB%A4_files/0chsp9kr2tdpo7rd3126rbuqrc.PNG" width="665"></p>
+<h2 class="topic">
+<a name="7dc463mna4c9pbav8paa59cm46">13.7dos中断例程应用</a>
+</h2>
+<h3 class="topic">
+<a name="2smcjg7djoouqthep0gsgdgvc9">&nbsp;int 21h是dos提供的中断例程，一般使用的时候是调用其4ch号功能，即程序返回</a>
+</h3>
+<h3 class="topic">
+<a name="3aqg01oib0heikbjtmocjeodf2">&nbsp;&nbsp;mov ah,4ch</a>
+</h3>
+<h3 class="topic">
+<a name="4khruipqeedg6qngc9r248998v">&nbsp;&nbsp;mov al,0</a>
+</h3>
+<h3 class="topic">
+<a name="0dnl4k64hb22n2ekjhvdhabqan">&nbsp;&nbsp;&nbsp;以上两句等效于mov ax,4c00h</a>
+</h3>
+<h3 class="topic">
+<a name="2q6ku1isrqc60rsguktcalmo54">&nbsp;&nbsp;int 21h</a>
+</h3>
+<h3 class="topic">
+<a name="7dt8ghff9bgvobndagi3n64r82">&nbsp;int 21h 功能号为9的时候，调用在光标位置显示字符串的功能</a>
+</h3>
+<h3 class="topic">
+<a name="3ju9sta15vpb7uvklm363eifai">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img height="942" src="%E7%AC%AC%E5%8D%81%E4%B8%89%E7%AB%A0 int%E6%8C%87%E4%BB%A4_files/7a2e3tk34s9sd8mv357rll6srd.PNG" width="696"></p>
+<h3 class="topic">
+<a name="2321s17m5n66k9tfbi96ordg07">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img height="163" src="%E7%AC%AC%E5%8D%81%E4%B8%89%E7%AB%A0 int%E6%8C%87%E4%BB%A4_files/1agrol3ieu6v4r3jjd7dkjur87.PNG" width="790"></p>
+<h2 class="topic">
+<a name="2b4vlrtkiv2nnd6afmg1unh5l5">实验13 编写应用中断例程</a>
+</h2>
+</body>
+</html>

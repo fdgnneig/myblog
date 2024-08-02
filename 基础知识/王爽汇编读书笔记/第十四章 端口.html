@@ -1,0 +1,183 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>第十四章 端口</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="0toa03ael4971hb3160le2qcnb">第十四章 端口</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="%E7%AC%AC%E5%8D%81%E5%9B%9B%E7%AB%A0 %E7%AB%AF%E5%8F%A3_files/images/%E7%AC%AC%E5%8D%81%E5%9B%9B%E7%AB%A0 %E7%AB%AF%E5%8F%A3.jpg"></div>
+<h2 class="topic">
+<a name="06n5ljbkosirhb6n32a0lb8llb">cpu通过总线连接</a>
+</h2>
+<h3 class="topic">
+<a name="30jkhl1v86u5cn6obanv6kqte5">&nbsp;各种存储器（ram rom）芯片</a>
+</h3>
+<h3 class="topic">
+<a name="063s5d64o1eevr7k12vjl0nbgo">&nbsp;&nbsp;这里注意各种储存器在cpu进行操纵的时候作为内存对待，也就是内存单元，</a>
+</h3>
+<h3 class="topic">
+<a name="12uqckbtrot7vticdncogdnc1i">&nbsp;&nbsp;&nbsp;但是cpu操纵内存单元的读写首先需要通过与其相连结的储存器芯片，将相关指令、相关地址、相关数据分别通过总线发送给存储器芯片，芯片通过这这些数据进行读写内存</a>
+</h3>
+<h3 class="topic">
+<a name="4kfhl4c60kk10jnbf0405v27hu">&nbsp;各种接口卡（网卡、显卡）上的芯片</a>
+</h3>
+<h3 class="topic">
+<a name="2rtpg3le28c61m7ss6lqjhbvlr">&nbsp;主板上的接口芯片</a>
+</h3>
+<h3 class="topic">
+<a name="6qjc9bnj2t8q3iici9b79dkno8">&nbsp;其他芯片，用来储存相关系统信息</a>
+</h3>
+<h2 class="topic">
+<a name="6hqmlpta8r1q6a8aeq9j7bvap5">后三种芯片中均有一组可以由cpu读写的寄存器，由如下特征</a>
+</h2>
+<h3 class="topic">
+<a name="3l5lqc29mj343tmm8d5r7bm8k7">&nbsp;1、与cpu的总线相连（通过芯片）</a>
+</h3>
+<h3 class="topic">
+<a name="12fpl8647vhunql6o7e2jntfdk">&nbsp;2、cpu通过控制线向这些寄存器发出针对其所在芯片的读写命令</a>
+</h3>
+<h2 class="topic">
+<a name="2ner0urr6m0lnqigsr0cprvlsu">此类芯片中的寄存器被cpu当作端口，进行统一编址，建立一个端口地址空间</a>
+</h2>
+<h2 class="topic">
+<a name="7e0n5kgf3qsuusciio1olnoiku">cpu可以直接读写三个地方的数据</a>
+</h2>
+<h3 class="topic">
+<a name="22bmj8ij37hb9cdhivrvlseij8">&nbsp;cpu内部寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="1urk189sk4k4km85j96juum7pp">&nbsp;内存单元</a>
+</h3>
+<h3 class="topic">
+<a name="3qc321r8sm248q61tba8v9emnm">&nbsp;端口</a>
+</h3>
+<h2 class="topic">
+<a name="246aoo6g230kl2q9u9eupgmd18">14.1端口的读写</a>
+</h2>
+<h3 class="topic">
+<a name="3d7hfri1e6rt77uica7gq387fc">&nbsp;端口地址通过地址总线传送 pc系统中最多可以定义64kb不同的端口，端口地址范围为0~65535</a>
+</h3>
+<h3 class="topic">
+<a name="4ufks04vhuom79vm5pv9l8c90p">&nbsp;端口读写指令</a>
+</h3>
+<h3 class="topic">
+<a name="74d36vlugqlq08qlpmiipmsf8j">&nbsp;&nbsp;in</a>
+</h3>
+<h3 class="topic">
+<a name="52ohtlavcm470pegks6i6sdn70">&nbsp;&nbsp;&nbsp;in al,60h ;从60h端口读入一个字节的数据送入al中</a>
+</h3>
+<h3 class="topic">
+<a name="748gqqciit8bmddbuttcl4qrqv">&nbsp;&nbsp;out</a>
+</h3>
+<h3 class="topic">
+<a name="1p41vf4bt590v9ep5r7tk3k0pt">&nbsp;&nbsp;&nbsp;out 60h,al ;向60h端口写入一al中的数据</a>
+</h3>
+<h3 class="topic">
+<a name="4j5c9lfh789c6o3aj217fmi0n7">&nbsp;&nbsp;in out 指令中只能使用ax或al来存放从端口中读入的数据或发送到端口的数据</a>
+</h3>
+<h3 class="topic">
+<a name="5fe41jqjbqetienj7ijalk6o0n">&nbsp;&nbsp;&nbsp;访问8位端口 使用al</a>
+</h3>
+<h3 class="topic">
+<a name="5e3q44mu1mufv7sts3mfkmdmfg">&nbsp;&nbsp;&nbsp;访问16位端口 使用ax</a>
+</h3>
+<h3 class="topic">
+<a name="50t7c2441f13iunsr9spcddkhm">&nbsp;&nbsp;端口地址的表示形式</a>
+</h3>
+<h3 class="topic">
+<a name="4lfjr0ub4566k6tslts1gj1dl0">&nbsp;&nbsp;&nbsp;端口地址在0~255时使用数字表示端口地址	</a>
+</h3>
+<h3 class="topic">
+<a name="6jc7f51vqcftrj8ps1k8ll9tdf">&nbsp;&nbsp;&nbsp;&nbsp;in al,20h</a>
+</h3>
+<h3 class="topic">
+<a name="30ppqa7od64s7abjggmt68fuh9">&nbsp;&nbsp;&nbsp;端口地址在256~65535时端口号在dx中	</a>
+</h3>
+<h3 class="topic">
+<a name="2ich6rduej6l3003te2vgk0vt3">&nbsp;&nbsp;&nbsp;&nbsp;mov dx,3f8h</a>
+</h3>
+<h3 class="topic">
+<a name="19qm50olac60q3ooj6pip10aq8">&nbsp;&nbsp;&nbsp;&nbsp;in al,dx</a>
+</h3>
+<h2 class="topic">
+<a name="1100o53jpgb24br4l16p0vg28n">14.2cmos ram芯片</a>
+</h2>
+<h3 class="topic">
+<a name="4homfu9sh7iunpbofhei57c7mu">&nbsp;</a>
+</h3>
+<h3 class="topic">
+<a name="7v4jsgm9c750jobg7lid3mchml">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%AC%AC%E5%8D%81%E5%9B%9B%E7%AB%A0 %E7%AB%AF%E5%8F%A3_files/1b9m6bithn8gdakshnle4mpfpd.png"></p>
+<h2 class="topic">
+<a name="1p497vm5gnjiucne8k8ias5i1i">14.3shl和shr指令</a>
+</h2>
+<h3 class="topic">
+<a name="0h7llbapknbr1rpmkna6kb8a31">&nbsp;逻辑移位指令</a>
+</h3>
+<h3 class="topic">
+<a name="5qvpe0854ggp7qbgpvl07sqh52">&nbsp;&nbsp;shl：逻辑左移指令</a>
+</h3>
+<h3 class="topic">
+<a name="39g3hk12hd7imk014i1lpcernm">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<h3 class="topic">
+<a name="64k1u1asfj84u0j1279kn25j92">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%AC%AC%E5%8D%81%E5%9B%9B%E7%AB%A0 %E7%AB%AF%E5%8F%A3_files/6v475dvf3hgqqa2j34179qk858.png"></p>
+<h3 class="topic">
+<a name="08avuln51rmdcr5cvd7bnnj6a4">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<h3 class="topic">
+<a name="76g2pn74jjo71gi9b9ufpv7uur">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%AC%AC%E5%8D%81%E5%9B%9B%E7%AB%A0 %E7%AB%AF%E5%8F%A3_files/4u1gd0eahr7e4pja8e9bd3ier8.png"></p>
+<h3 class="topic">
+<a name="0v6um4koqnlgcb9ojicdg0pujm">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<h3 class="topic">
+<a name="09krn26ra6tnl7ta74jq35v34q">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%AC%AC%E5%8D%81%E5%9B%9B%E7%AB%A0 %E7%AB%AF%E5%8F%A3_files/1ruqb96jfbovu8j0va10gt0a99.png"></p>
+<h3 class="topic">
+<a name="3jkb83vifd07b2p7mru9iupm0h">&nbsp;&nbsp;shr：逻辑右移指令</a>
+</h3>
+<h3 class="topic">
+<a name="5vt5dl0funjocdt96u6jdnd2ic">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%AC%AC%E5%8D%81%E5%9B%9B%E7%AB%A0 %E7%AB%AF%E5%8F%A3_files/5jiij69oll0veo38mb6i2kod84.png"></p>
+<h3 class="topic">
+<a name="5954vf8jkffcvq1k8d9f16j27h">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%AC%AC%E5%8D%81%E5%9B%9B%E7%AB%A0 %E7%AB%AF%E5%8F%A3_files/5v47cjh6v7kudptvs8c7tvvem2.png"></p>
+<h2 class="topic">
+<a name="6bpqgstipohl3nu6anlq4711df"></a>
+</h2>
+<p class="topicImage">
+<img src="%E7%AC%AC%E5%8D%81%E5%9B%9B%E7%AB%A0 %E7%AB%AF%E5%8F%A3_files/0m7qdo7fesjnl7mqm9haotckod.png"></p>
+<h3 class="topic">
+<a name="04giuqdvvrb8ulqde71ps5e9qa">&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%AC%AC%E5%8D%81%E5%9B%9B%E7%AB%A0 %E7%AB%AF%E5%8F%A3_files/2n8h2fihd5ocash9llaa1a08ab.png"></p>
+<h3 class="topic">
+<a name="7luu8vmvafip8oibq9kr0dufcn">&nbsp;使用逻辑移位指令对从cmos ram中读取到的月的信息进行处理，可以输出十进制的计算机中月份信息</a>
+</h3>
+<h2 class="topic">
+<a name="4s9rdngsjb0s5aaklkufeg3e7p"></a>
+</h2>
+<p class="topicImage">
+<img src="%E7%AC%AC%E5%8D%81%E5%9B%9B%E7%AB%A0 %E7%AB%AF%E5%8F%A3_files/0nr8sg5vbktpsrcpkebkg1i8a8.png"></p>
+</body>
+</html>

@@ -1,0 +1,326 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>第十二章 内中断</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="0vksntonibc3u3o1o4tj9h7pr3">第十二章 内中断</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="%E7%AC%AC%E5%8D%81%E4%BA%8C%E7%AB%A0 %E5%86%85%E4%B8%AD%E6%96%AD_files/images/%E7%AC%AC%E5%8D%81%E4%BA%8C%E7%AB%A0 %E5%86%85%E4%B8%AD%E6%96%AD.jpg"></div>
+<h2 class="topic">
+<a name="2s6i9tn7v9bj6ps2thvljalls5">中断过程</a>
+</h2>
+<h3 class="topic">
+<a name="1u4e9j8abmnt1led7sgilvgepe">&nbsp;1、产生中断信息</a>
+</h3>
+<h3 class="topic">
+<a name="5uth8ja5921s9pg9379f6om7gq">&nbsp;2、cpu硬件自动执行中断过程</a>
+</h3>
+<h3 class="topic">
+<a name="2qk67khb02rbsns725vp7o6b45">&nbsp;3、执行中断处理程序</a>
+</h3>
+<h2 class="topic">
+<a name="0hisv3jo8vjmfim7k2ck4to3n6">中断信息</a>
+</h2>
+<h3 class="topic">
+<a name="2ftpfljvfugiv2la6fsbgim52f">&nbsp;含义：cpu执行完成当前指令之后，不再执行接下来的指令，而执行一种从cpu外部发送过来或cpu内部产生的特殊信息，这种信息一旦被cpu检测到则立即处理，此类信息称之为中断信息</a>
+</h3>
+<h3 class="topic">
+<a name="21tncn3gmb11j3p66a7pn48bhk">&nbsp;是一种为了易于理解而采用的逻辑上的说法，是几个具有先后顺序的硬件操作所产生的事件的统一描述</a>
+</h3>
+<h3 class="topic">
+<a name="7uric9pirlih1isl6potgfpgb8">&nbsp;中断信息一旦出现要求cpu马上进行某种处理，并提供了该种处理所必须的参数</a>
+</h3>
+<h3 class="topic">
+<a name="0j0baencje2rsvnrkdj6cn91qr">&nbsp;可以来源于cpu内部也可以来源于cpu外部，这里主要讨论产生于cpu内部的中断指令</a>
+</h3>
+<h2 class="topic">
+<a name="42ev4c7hc20i9729aol0004vgp">12.1内中断的产生</a>
+</h2>
+<h3 class="topic">
+<a name="0d6ocahu88140160a87mam0l60">&nbsp;对于8086cpu以下情况时cpu会产生需要立即处理的中断信息</a>
+</h3>
+<h3 class="topic">
+<a name="5jpdtvs7ku7p8k2hctcf387e6l">&nbsp;&nbsp;中断源：除法错误（比如执行div指令产生除法溢出） 中断信息码 0</a>
+</h3>
+<h3 class="topic">
+<a name="3rgtctcl6vhv6pc2nuso09gosc">&nbsp;&nbsp;中断源: 单步执行 中断信息码 1</a>
+</h3>
+<h3 class="topic">
+<a name="3f3muu9fen6dk92b7hl640jr6v">&nbsp;&nbsp;中断源： 执行into指令  中断信息码 4</a>
+</h3>
+<h3 class="topic">
+<a name="7b0pbj4solivu7crevsq5a9c0m">&nbsp;&nbsp;中断源： 执行int指令  （该指令为int n  n为字节型立即数，是提供给cpu的中断类型码）</a>
+</h3>
+<h3 class="topic">
+<a name="0n4fdpbf4phjf7ct582hp25jbi">&nbsp;中断信息中必须包含中断信息产生的来源的编码，以方便cpu对不同原因的中断信息做不同处理</a>
+</h3>
+<h3 class="topic">
+<a name="5hbe5e8v0ok45gq2g7p5tbge89">&nbsp;&nbsp;8086cpu使用中断类型码的数据标识中断信息的来源，</a>
+</h3>
+<h3 class="topic">
+<a name="0fa8lqrqhq3olamdmiq21nmf0e">&nbsp;&nbsp;&nbsp;中断信息码   字节型数据  可以表示256种中断信息的来源 </a>
+</h3>
+<h3 class="topic">
+<a name="34b1p871mpub89c9uveokaqr5h">&nbsp;&nbsp;&nbsp;中断信息的来源称为中断源</a>
+</h3>
+<h2 class="topic">
+<a name="217ccgmij1i3egtvh1c084dtbu">12.2中断处理程序</a>
+</h2>
+<h3 class="topic">
+<a name="2vjvloc7uo3jgr3r79li253hao">&nbsp;我们编写的用来处理中断信息的程序被称为中断处理程序</a>
+</h3>
+<h3 class="topic">
+<a name="4rusa2j4hkbig20hvn0l0uscbu">&nbsp;对于不同的中断信息需要编写不同的中断处理程序</a>
+</h3>
+<h3 class="topic">
+<a name="21at4nnhvslbke6pvgiq70gtus">&nbsp;cpu根据中断信息的不同执行不同的中断处理程序，而中断信息码的作用是定位对应的中断处理程序，即根据中断信息码（字节型数据 8位）改写csip，使得其指向中断处理程序的第一个字节</a>
+</h3>
+<h2 class="topic">
+<a name="4ckgp2vbb0htpoj454i27i3gbj">12.3中断向量表</a>
+</h2>
+<h3 class="topic">
+<a name="3dtsfocsq30m4h6a6qsbdreevs">&nbsp;中断向量：即中断处理程序的入口内存地址</a>
+</h3>
+<h3 class="topic">
+<a name="4bu264ken8vi4p5uqna56iahfq">&nbsp;cpu根据中断类型码通过中断向量表找到中断处理程序的入口地址</a>
+</h3>
+<h3 class="topic">
+<a name="4bujplk2pmpdvgupdfk0bgd8g1">&nbsp;中断向量表在内存中保存，存放256个中断源对应的处理程序入口，包含中断类型码以及中断向量两部分</a>
+</h3>
+<h3 class="topic">
+<a name="4gmuud62m7oliqkv277se7r5q2">&nbsp;8086pc机中中断向量表指定放在内存地址0处从0000：0000到0000：03ff的1024个单元中存放中断向量表，8086cpu必从该地址中读取中断向量表</a>
+</h3>
+<h3 class="topic">
+<a name="4qb0q64p30migcocop6hpblo8u">&nbsp;&nbsp;8086支持256个中断，实际上系统要处理的中断远没有达到256个，所以中断向量表中很多单元是空的</a>
+</h3>
+<h3 class="topic">
+<a name="7pkmu72loielva9eo572s4162s">&nbsp;&nbsp;&nbsp;一般来说0000:0200到0000:02ff的256个字节的空间所对应的中断向量表项是空的，操作系统与应用程序均不占用</a>
+</h3>
+<h3 class="topic">
+<a name="05ukv95r1m6ivgbe47qhuuit3i">&nbsp;中断向量表中，一个表项存放一个中断向量，即一个内存地址，一个表项占两个字，高地址字存放段地址，低地址字存放偏移地址</a>
+</h3>
+<h2 class="topic">
+<a name="4plvrqp9b4ce0e56o2elqe32io">12.4中断过程 </a>
+</h2>
+<h3 class="topic">
+<a name="4belu72pkr7qigkp37mlgoc5jq">&nbsp;含义：使用中断类型码找到中断向量，并使用其设置csip，该过程称之为中断过程（该过程由cpu硬件自动完成）</a>
+</h3>
+<h3 class="topic">
+<a name="174mkdvhmmjlun1h8be4h8d1co">&nbsp;使用中断向量设置csip之前需要将原来的csip保存起来，在中断程序执行完成之后还需要返回到原来的执行点继续执行（参照call指令的执行情况）</a>
+</h3>
+<h3 class="topic">
+<a name="4fuko9efkmmun9cbid6ajlrq4m">&nbsp;收到中断信息之后，中断过程为</a>
+</h3>
+<h3 class="topic">
+<a name="5uou7ujmvj2v6j0agron2b1baq">&nbsp;&nbsp;1、从中断信息中取得中断类型码N </a>
+</h3>
+<h3 class="topic">
+<a name="6a0ceqkbnicnd0di7ifh4sm6n2">&nbsp;&nbsp;&nbsp;取得N</a>
+</h3>
+<h3 class="topic">
+<a name="39gr3lj1hlbekhsc5d557pv8nl">&nbsp;&nbsp;2、标志寄存器入栈（因为中断的过程中要改变标志寄存器的值，故将其先保存在栈中）</a>
+</h3>
+<h3 class="topic">
+<a name="5lc871uocss5nhjh0113ad8vfp">&nbsp;&nbsp;&nbsp;pushf</a>
+</h3>
+<h3 class="topic">
+<a name="1jfgn5c7jbhmbdqslu7m5btutv">&nbsp;&nbsp;3、设置标志寄存器的第八位tf和第九位if的值为0（后面介绍）</a>
+</h3>
+<h3 class="topic">
+<a name="0h7k0mbtvus42788lvjjlkeb9c">&nbsp;&nbsp;&nbsp;TF=0 IF=0</a>
+</h3>
+<h3 class="topic">
+<a name="5etgcm4bps7bf36l6nii830255">&nbsp;&nbsp;4、cs的内容入栈</a>
+</h3>
+<h3 class="topic">
+<a name="30da1kn1pb1llhsprftb1igcgc">&nbsp;&nbsp;&nbsp;push cs</a>
+</h3>
+<h3 class="topic">
+<a name="3ga1c4ftjqr848m7692t9a721m">&nbsp;&nbsp;5、ip的内容入栈</a>
+</h3>
+<h3 class="topic">
+<a name="39oe5k766li6jg8gvl6uj70svg">&nbsp;&nbsp;&nbsp;push ip</a>
+</h3>
+<h3 class="topic">
+<a name="4ie7cl5pa60c0n3atu4o9nenf2">&nbsp;&nbsp;6、从内存为N*4以及N*4+2的两个字单元中读取中断处理程序的入口地址设置ip和cs</a>
+</h3>
+<h3 class="topic">
+<a name="5ogoriu9gt2oqndj3clpo1p423">&nbsp;&nbsp;&nbsp;（ip）=（N*4） (CS)=(N*4+2)</a>
+</h3>
+<h2 class="topic">
+<a name="1gj26is9fvcpfhle42bnl38ooo">12.5中断处理程序和iret指令</a>
+</h2>
+<h3 class="topic">
+<a name="51g19omv4ckc55ebo503ktar1c">&nbsp;由于cpu随时有可能检测到中断信息</a>
+</h3>
+<h3 class="topic">
+<a name="6j5o35mdkja7q42djnf42ja9oa">&nbsp;&nbsp;所以中断处理程序必须一直储存在内存某段空间中</a>
+</h3>
+<h3 class="topic">
+<a name="6frr4ho6grq03abnu7n4obq596">&nbsp;&nbsp;所以中断向量必须储存在对应的中断向量表的表项中</a>
+</h3>
+<h3 class="topic">
+<a name="1qldn433bfaug2ttsj9o4ufon7">&nbsp;中断处理程序的编写</a>
+</h3>
+<h3 class="topic">
+<a name="2i9nu3srdcooj8curi45d3aoa7">&nbsp;&nbsp;1、保存用到的寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="4bc77q63f94o3gn1p37f0031la">&nbsp;&nbsp;2、处理中断</a>
+</h3>
+<h3 class="topic">
+<a name="2rs5msqvcf0uds53vopi8uuc8t">&nbsp;&nbsp;3、恢复用到的寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="2isp4643j4m91oocjctbsigkp3">&nbsp;&nbsp;4、用iret指令返回（有的中断处理程序执行的结果是返回到操作系统，这类中断程序可以不使用iret，可以直接使用mov ax,4c00h int 21h）</a>
+</h3>
+<h3 class="topic">
+<a name="3c19ni450138n9dvce95jck2t0">&nbsp;&nbsp;&nbsp;即</a>
+</h3>
+<h3 class="topic">
+<a name="5av69ovrea9krhdrih44ii0ib2">&nbsp;&nbsp;&nbsp;&nbsp;pop ip    ;恢复ip</a>
+</h3>
+<h3 class="topic">
+<a name="6u103rcgl0dbm3758er16plnje">&nbsp;&nbsp;&nbsp;&nbsp;pop cs    ;恢复cs</a>
+</h3>
+<h3 class="topic">
+<a name="66sltnv36alv14861osrdpk0ek">&nbsp;&nbsp;&nbsp;&nbsp;popf    ;恢复标志寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="6g7hr24pum574mtpdk47aauo1o">&nbsp;&nbsp;&nbsp;通常与硬件自动完成的中断过程配合使用，使得cpu继续执行中断前的指令</a>
+</h3>
+<h2 class="topic">
+<a name="2f7ir6drpqp4hjvjnthmo10cgr">12.6除法错误中断的处理</a>
+</h2>
+<h3 class="topic">
+<a name="20307qmljtma5a7450d3ebvt9f">&nbsp;即0号中断</a>
+</h3>
+<h3 class="topic">
+<a name="3rkpojsa2m5o29ji3mcmsm3lle">&nbsp;&nbsp;中断结果：显示提示信息&ldquo;Divide overflow&rdquo;返回到操作系统中</a>
+</h3>
+<h2 class="topic">
+<a name="5jb9tdb93sseqm0tn0ccbhq5sq">12.7编程处理0号中断</a>
+</h2>
+<h3 class="topic">
+<a name="0f7u3kvgrluo62jevscvbqndf2">&nbsp;功能 ：在屏幕中间显示&ldquo;overflow&rdquo;然后返回到操作系统</a>
+</h3>
+<h3 class="topic">
+<a name="4s0egqr2sdki21muf76s8br17e">&nbsp;如何将一段程序成为N号中断程序的处理程序</a>
+</h3>
+<h3 class="topic">
+<a name="0to0i191pcuiel0f7od4ctumgu">&nbsp;&nbsp;即将其入口地址放入中断向量表的N号表项中</a>
+</h3>
+<h2 class="topic">
+<a name="33ajugpr50hbctaaj2s64j956h">12.8安装（指将一段程序放进指定的内存空间，待以后作为中断处理程序）</a>
+</h2>
+<h3 class="topic">
+<a name="4jhhuqausmj02ajsgbe7kjsfgh">&nbsp;将一段程序转移到指定的内存空间可以使用movsb或movsw指令（结合rep指令）</a>
+</h3>
+<h3 class="topic">
+<a name="4g5692g2flmhqee1s91e7eshcr">&nbsp;&nbsp;设置es:di指向目的地址</a>
+</h3>
+<h3 class="topic">
+<a name="4dctte7195ovtnv7sa5svhjg65">&nbsp;&nbsp;设置ds:si指向代码源地址</a>
+</h3>
+<h3 class="topic">
+<a name="74r5kpqe13sb12g8appcdjfs0q">&nbsp;&nbsp;设置cx为传输长度（即代码的长度）</a>
+</h3>
+<h3 class="topic">
+<a name="0e5amnktv0igk893id7mfl5apo">&nbsp;&nbsp;&nbsp;使用-符号将两个标号相减用于表示程序段do0的长度</a>
+</h3>
+<h3 class="topic">
+<a name="7f40l4u8tbt0hr0keh0k029hf0">&nbsp;&nbsp;&nbsp;&nbsp;mov cx,offset do0end-offset do0</a>
+</h3>
+<h3 class="topic">
+<a name="5lvr206a446sa4hmifp5f8jiv6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img height="171" src="%E7%AC%AC%E5%8D%81%E4%BA%8C%E7%AB%A0 %E5%86%85%E4%B8%AD%E6%96%AD_files/0trjmcqmf2k47s27ar7cngfftp.PNG" width="359"></p>
+<h3 class="topic">
+<a name="1hc7m0dvuq8frcq5u3tvnnqgq3">&nbsp;&nbsp;&nbsp;-是编译器识别的符号，编译器将其用于两个常数的减法，汇编编译器可以处理表达式即mov ax,(5+3)*5/10等效于mov ax,4</a>
+</h3>
+<h3 class="topic">
+<a name="15m15usjutt2opah0udesoi0t9">&nbsp;&nbsp;设置传输方向为正</a>
+</h3>
+<h3 class="topic">
+<a name="3gn36a75lcb1oecjcnvm812d9n">&nbsp;&nbsp;rep movsb</a>
+</h3>
+<h3 class="topic">
+<a name="3r82lkpdca6spfd2elt9uguncv">&nbsp;&nbsp;&nbsp;将特定字节数的内存内容进行移动的时候使用movsb和rep指令</a>
+</h3>
+<h2 class="topic">
+<a name="0bk46pnr4tsd9p7tfe9lrn0h5f">12.9do0</a>
+</h2>
+<h3 class="topic">
+<a name="1oshurkvngshmugebou4tdb0cd">&nbsp;设置显存空间中间位置的偏移地址</a>
+</h3>
+<h3 class="topic">
+<a name="5p9jmh6skvqj54lakqea3aga27">&nbsp;&nbsp;mov di,12*160+36*2</a>
+</h3>
+<h2 class="topic">
+<a name="5kitdu9hjug20qnn6vaqk4nk7s">12.10 设置中断向量</a>
+</h2>
+<h3 class="topic">
+<a name="5k9vobb9v73f6q13u2r75ph7uu">&nbsp;将中断向量表中的0表项(从0:0开始的两个字单元)设置为中断处理函数的入口地址0:0200</a>
+</h3>
+<h2 class="topic">
+<a name="5cqql9s9sksedfnre62j90f5su">12.11单步中断</a>
+</h2>
+<h3 class="topic">
+<a name="1shht54b82esnrjq30gpkcp5rb">&nbsp;cpu在执行完成一条指令之后，如果检测到标志寄存器的tf位值为1，则产生单步中断</a>
+</h3>
+<h3 class="topic">
+<a name="1iiiu7pb4he2thtiubu5a42tlo">&nbsp;&nbsp;中断过程</a>
+</h3>
+<h3 class="topic">
+<a name="2i07otg5mikg4hsrc4do8jatu8">&nbsp;&nbsp;&nbsp;取得中断类型码1</a>
+</h3>
+<h3 class="topic">
+<a name="2qd18oe4tj0j5vv9q9tmeumv3o">&nbsp;&nbsp;&nbsp;标志寄存器入栈</a>
+</h3>
+<h3 class="topic">
+<a name="203s7qorkckmdjnscsg28ui89b">&nbsp;&nbsp;&nbsp;tf=0 if=0</a>
+</h3>
+<h3 class="topic">
+<a name="5tlifpejph5keqkfvng5otoj4r">&nbsp;&nbsp;&nbsp;cs入栈</a>
+</h3>
+<h3 class="topic">
+<a name="0e5jh5fbs21t6e17k4p52j9all">&nbsp;&nbsp;&nbsp;ip入栈</a>
+</h3>
+<h3 class="topic">
+<a name="7pl187q1pltoct653rppk44bar">&nbsp;&nbsp;&nbsp;（ip）=（1*4），（cs）=（1*4+2）</a>
+</h3>
+<h3 class="topic">
+<a name="3b15qjoqobaugtos91voenug12">&nbsp;单步中断的机理就是当标志寄存器的tf位为1的时候，cpu执行完成当前指令之后会取得中断类型码1，转而执行中断处理程序，在debug中单步执行指令t中中断处理程序的功能是显示当前寄存器的内容，并等待进一步的指令输入</a>
+</h3>
+<h3 class="topic">
+<a name="3789dnbnpe4oj2sbbc13orh3qh">&nbsp;&nbsp;由于中断处理函数也是一个程序，由于tf=1所以cpu进行了单步中断，执行了单步中断处理函数，但是如果当单步中断处理函数执行的时候tf仍等于1则会造成只能执行处理程序的第一条指令之后再次进行中断，所以在执行中断处理函数之前的中断过程中，会先将tf设置为0，保证处理函数的正确运行</a>
+</h3>
+<h2 class="topic">
+<a name="2cd1p0pgdskv8a5gqfcscp9kpe">12.12响应中断的特殊情况</a>
+</h2>
+<h3 class="topic">
+<a name="3q4mnpt29j2qnc8lkvu23j2bng">&nbsp;有的时候，cpu执行完成当前指令之后，即使检测到中断信息，也不会响应中断（执行中断过程，执行中断处理程序）</a>
+</h3>
+<h3 class="topic">
+<a name="6d3fjvi68jrbfp4p5mfc44spnu">&nbsp;&nbsp;例如</a>
+</h3>
+<h3 class="topic">
+<a name="11f39b3ra3drmqes3162aps7dr">&nbsp;&nbsp;&nbsp;在执行设置ss寄存器的指令执行完成后，cpu不响应单步中断，接着执行该指令的下一条语句之后才进行中断</a>
+</h3>
+<h3 class="topic">
+<a name="0onaa5341tovfpn6q5t7k1q861">&nbsp;&nbsp;&nbsp;&nbsp;原因：响应中断需要进行中断过程，需要将标志寄存器、cs、ip入栈，如果由于以上三者的入栈改变了ss值而不改变sp的值，sssp就会指向错误的栈顶</a>
+</h3>
+<h3 class="topic">
+<a name="0qmihtikd0c7hahj0vlt91volo">&nbsp;&nbsp;&nbsp;&nbsp;所以，在执行完成ss之后不会响应中断，提供了一个机会使得sssp被连续设置，所以设置sp的指令需要紧跟在设置ss的指令之后</a>
+</h3>
+<h2 class="topic">
+<a name="4t0v8b2dhm6hrp2kcqnj5jkj06">实验12 编写零号中断处理程序</a>
+</h2>
+</body>
+</html>

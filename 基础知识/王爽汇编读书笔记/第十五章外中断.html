@@ -1,0 +1,129 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>第十五章外中断</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="1n0sb2fqpcq94musg6o4u74g1b">第十五章外中断</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="%E7%AC%AC%E5%8D%81%E4%BA%94%E7%AB%A0%E5%A4%96%E4%B8%AD%E6%96%AD_files/images/%E7%AC%AC%E5%8D%81%E4%BA%94%E7%AB%A0%E5%A4%96%E4%B8%AD%E6%96%AD.jpg"></div>
+<h2 class="topic">
+<a name="4jmtfko95dj6dsbejsq25ars32">主要是关于cpu如何处理外部设备的输入输出的</a>
+</h2>
+<h3 class="topic">
+<a name="3gp6oguvbnq97gnm41id38836s">&nbsp;主要的两个问题</a>
+</h3>
+<h3 class="topic">
+<a name="5h68d8kggj2gugm5kggbbvfunk">&nbsp;&nbsp;cpu如何得知外设的输入？</a>
+</h3>
+<h3 class="topic">
+<a name="16d0cojvs65t829tf4rp0pta1g">&nbsp;&nbsp;cpu从何处得到外设的输入？</a>
+</h3>
+<h2 class="topic">
+<a name="7d77jcc3g78pekmtricbdg89r3"></a>
+</h2>
+<p class="topicImage">
+<img src="%E7%AC%AC%E5%8D%81%E4%BA%94%E7%AB%A0%E5%A4%96%E4%B8%AD%E6%96%AD_files/0libk34sbpgct55e99id30lkrg.png"></p>
+<h3 class="topic">
+<a name="43v774tof2rjomon3vtmd66cgt">&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%AC%AC%E5%8D%81%E4%BA%94%E7%AB%A0%E5%A4%96%E4%B8%AD%E6%96%AD_files/0p0tuio9ohk32f10oeb7gs01od.png"></p>
+<h2 class="topic">
+<a name="0k3l7ppa8mkc55qqq73n44884j"></a>
+</h2>
+<p class="topicImage">
+<img src="%E7%AC%AC%E5%8D%81%E4%BA%94%E7%AB%A0%E5%A4%96%E4%B8%AD%E6%96%AD_files/5l3096ohrbmum9tm32hu9k6l68.png"></p>
+<h3 class="topic">
+<a name="13r39umpu6tknotrl36p8nqo58">&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%AC%AC%E5%8D%81%E4%BA%94%E7%AB%A0%E5%A4%96%E4%B8%AD%E6%96%AD_files/4fnadi0jg6ellbq8s65h8kfn65.png"></p>
+<h3 class="topic">
+<a name="4pfpk5pcdols678o8d2ja5hp52">&nbsp;类型</a>
+</h3>
+<h3 class="topic">
+<a name="7h4b1k12ooo7vfd3iae81iumeh">&nbsp;&nbsp;可屏蔽中断</a>
+</h3>
+<h3 class="topic">
+<a name="21lk648cclhcagg3c798h3o2uo">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%AC%AC%E5%8D%81%E4%BA%94%E7%AB%A0%E5%A4%96%E4%B8%AD%E6%96%AD_files/2avej978pm507r9pdd6o35c7gp.png"></p>
+<h3 class="topic">
+<a name="2d09ruo93jfvnkjd5hc321f4fc">&nbsp;&nbsp;&nbsp;中断过程</a>
+</h3>
+<h3 class="topic">
+<a name="5b410r42qa45fqb28qk2likr0n">&nbsp;&nbsp;&nbsp;&nbsp;获取中断类型码（针对外中断，中断类型码通过地址总线送入cpu，而内中断的中断类型码在cpu内部产生）</a>
+</h3>
+<h3 class="topic">
+<a name="6ji9mcthqj9qdg3ckqola142ji">&nbsp;&nbsp;&nbsp;&nbsp;标志寄存器入栈 if=0 tf=0</a>
+</h3>
+<h3 class="topic">
+<a name="66vq704urnro64u37ka6j6ip8t">&nbsp;&nbsp;&nbsp;&nbsp;cs入栈</a>
+</h3>
+<h3 class="topic">
+<a name="2rd45mgchfnls6g1mt8oqoephj">&nbsp;&nbsp;&nbsp;&nbsp;ip入栈</a>
+</h3>
+<h3 class="topic">
+<a name="1urjgr51qhs0d4lh0vo5ifuuva">&nbsp;&nbsp;&nbsp;&nbsp;（ip）=（n*4）（cs）=（n*4+2）</a>
+</h3>
+<h3 class="topic">
+<a name="5rk0987v3ib62i1hqdldpkklju">&nbsp;&nbsp;&nbsp;中断过程中将if标志位设置为0是为了在进入中断程序之后，禁止其他可屏蔽中断执行</a>
+</h3>
+<h3 class="topic">
+<a name="081rcn163c6j13jrnheib32a2e">&nbsp;&nbsp;&nbsp;如果需要在执行中断程序时处理可屏蔽程序，可以用指令将if设置为1	</a>
+</h3>
+<h3 class="topic">
+<a name="6d3q5368oa6bbivbllobd9k5bi">&nbsp;&nbsp;&nbsp;&nbsp;sti  设置if=1</a>
+</h3>
+<h3 class="topic">
+<a name="7n3s4q6k8ha6ph8lfqt9730jmq">&nbsp;&nbsp;&nbsp;&nbsp;cli 设置if=0</a>
+</h3>
+<h3 class="topic">
+<a name="6fcl307mtn0d9bak6nttpqlq1n">&nbsp;&nbsp;不可屏蔽中断</a>
+</h3>
+<h3 class="topic">
+<a name="57i1hu1cju9h05iunqc53udel5">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%AC%AC%E5%8D%81%E4%BA%94%E7%AB%A0%E5%A4%96%E4%B8%AD%E6%96%AD_files/6u8mmh35a58p20qgkdg4eh7223.png"></p>
+<h3 class="topic">
+<a name="4ifp574ktkfomj7e3dfn22j7k6">&nbsp;&nbsp;&nbsp;中断过程</a>
+</h3>
+<h3 class="topic">
+<a name="4rhshjuopfij6stm0bg2thkdp8">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%AC%AC%E5%8D%81%E4%BA%94%E7%AB%A0%E5%A4%96%E4%B8%AD%E6%96%AD_files/0c3gm8jafi5l65lhtkac5cends.png"></p>
+<h3 class="topic">
+<a name="43v59ki8s9g1cdl4jtd5bib24u">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%AC%AC%E5%8D%81%E4%BA%94%E7%AB%A0%E5%A4%96%E4%B8%AD%E6%96%AD_files/08252t4hsujbkk493po519m5eo.png"></p>
+<h2 class="topic">
+<a name="6b3tufudk5gsnfa674nr1s8523"></a>
+</h2>
+<p class="topicImage">
+<img src="%E7%AC%AC%E5%8D%81%E4%BA%94%E7%AB%A0%E5%A4%96%E4%B8%AD%E6%96%AD_files/3rk6puc7thvrda79rl38m78bvl.png"></p>
+<h2 class="topic">
+<a name="0lmha4i143vuteijtne4ar5lh8"></a>
+</h2>
+<p class="topicImage">
+<img src="%E7%AC%AC%E5%8D%81%E4%BA%94%E7%AB%A0%E5%A4%96%E4%B8%AD%E6%96%AD_files/068v5jpgpgh41dajnh28vo8b2p.png"></p>
+<h2 class="topic">
+<a name="0v2mhq8im4pt7tcpt87esd4850"></a>
+</h2>
+<p class="topicImage">
+<img src="%E7%AC%AC%E5%8D%81%E4%BA%94%E7%AB%A0%E5%A4%96%E4%B8%AD%E6%96%AD_files/3a2n8rhpau21a6d4bbuekfls8h.png"></p>
+<h2 class="topic">
+<a name="04iskqjpgg3fpb7p00rehtqoag"></a>
+</h2>
+<p class="topicImage">
+<img src="%E7%AC%AC%E5%8D%81%E4%BA%94%E7%AB%A0%E5%A4%96%E4%B8%AD%E6%96%AD_files/2v87f3vasq5bj1mg6mt8c5d035.png"></p>
+</body>
+</html>

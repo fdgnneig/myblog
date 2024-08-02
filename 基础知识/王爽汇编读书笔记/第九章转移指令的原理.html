@@ -1,0 +1,303 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>第九章转移指令的原理</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="2esdk57pn16p86hc75fk1rkrvq">第九章转移指令的原理</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="%E7%AC%AC%E4%B9%9D%E7%AB%A0%E8%BD%AC%E7%A7%BB%E6%8C%87%E4%BB%A4%E7%9A%84%E5%8E%9F%E7%90%86_files/images/%E7%AC%AC%E4%B9%9D%E7%AB%A0%E8%BD%AC%E7%A7%BB%E6%8C%87%E4%BB%A4%E7%9A%84%E5%8E%9F%E7%90%86.jpg"></div>
+<h2 class="topic">
+<a name="3naa3q21kisguenuaf4oilj049">定义：可以修改ip，或同时修改csip的指令统称转移指令</a>
+</h2>
+<h2 class="topic">
+<a name="1conqkb455rsd0tib6lf5pv7pe">分类</a>
+</h2>
+<h3 class="topic">
+<a name="3g95qfs164tijs3eghokifp46p">&nbsp;段内转移，只修改ip （jmp ax）</a>
+</h3>
+<h3 class="topic">
+<a name="0135qmmd69st6j36fgcdjhfah0">&nbsp;&nbsp;短转移：ip修改范围为-128-127</a>
+</h3>
+<h3 class="topic">
+<a name="0318qjgda3p41nt3r9m1oeig7j">&nbsp;&nbsp;近转移：ip修改范围-32768-32767</a>
+</h3>
+<h3 class="topic">
+<a name="3nkgrnf0061ls66c17hnl6kck8">&nbsp;段间转移，同时修改csip（jmp 1000:0）</a>
+</h3>
+<h2 class="topic">
+<a name="45kfdfd4a7a8hk61ntme8nt0q6">分类2</a>
+</h2>
+<h3 class="topic">
+<a name="6dlk19n8k37amdkil9vi4g5nf2">&nbsp;无条件转移指令（jmp）</a>
+</h3>
+<h3 class="topic">
+<a name="5ttrcq99ueosf0dntrnvs9k8ne">&nbsp;条件转移指令</a>
+</h3>
+<h3 class="topic">
+<a name="3pnkmk142umbmjcrv2t9b5lfbb">&nbsp;循环指令</a>
+</h3>
+<h3 class="topic">
+<a name="2clhvhe67mapf0kqaug4jut2ru">&nbsp;过程</a>
+</h3>
+<h3 class="topic">
+<a name="6cdi7t66b0il11dtns5dm7ot55">&nbsp;中断</a>
+</h3>
+<h2 class="topic">
+<a name="1ra9eb26ucp8feanid0he68cmu">9.1操作符offset（伪指令）</a>
+</h2>
+<h3 class="topic">
+<a name="1g2r9eobf07h6k06lc49adcsgq">&nbsp;功能：取得标号的偏移地址</a>
+</h3>
+<h3 class="topic">
+<a name="3modlfnu4j8eoau32pcc5ne3hd">&nbsp;&nbsp;例如start:mov ax,offset start 相当于将程序开始位置内存单元的偏移地址0赋值给ax 相当于 mov ax,0</a>
+</h3>
+<h2 class="topic">
+<a name="1jtd4u4419pk13vf1j0k4o4n97">9.2jmp指令</a>
+</h2>
+<h3 class="topic">
+<a name="2ch3pu93ekn3i8av101lchv1ss">&nbsp;是无条件转移指令，可以只修改ip，也可以同时修改csip</a>
+</h3>
+<h3 class="topic">
+<a name="7jipnclj5m7qn0jcs1j2gph5jv">&nbsp;需要给出的信息</a>
+</h3>
+<h3 class="topic">
+<a name="044kk8ft8gufbrs0ra2g9g8vgb">&nbsp;&nbsp;转移的目的地址</a>
+</h3>
+<h3 class="topic">
+<a name="01liigselk532e1up43fpv5l6g">&nbsp;&nbsp;转移的距离	</a>
+</h3>
+<h3 class="topic">
+<a name="126kgbh8tquf3qi3t1o4jemffm">&nbsp;&nbsp;&nbsp;段间转移</a>
+</h3>
+<h3 class="topic">
+<a name="7k6acnesklccnj6hjlci87akln">&nbsp;&nbsp;&nbsp;段内短转移</a>
+</h3>
+<h3 class="topic">
+<a name="40305votlv5l6jr7pmtm0ok7bc">&nbsp;&nbsp;&nbsp;段内近转移</a>
+</h3>
+<h2 class="topic">
+<a name="086k1ovmnd751u7lm5qtuu10vh">9.3根据位移进行转移的jmp指令</a>
+</h2>
+<h3 class="topic">
+<a name="5cnrkmt860k27iv4cnmtnt2qo6">&nbsp;jmp short 标号</a>
+</h3>
+<h3 class="topic">
+<a name="707dsrllimhdu5novivjjafcua">&nbsp;&nbsp;是一种段内短转移</a>
+</h3>
+<h3 class="topic">
+<a name="7b274bm1uo5j28aq1jjuu260ig">&nbsp;&nbsp;&nbsp;向前最多越过128个字节</a>
+</h3>
+<h3 class="topic">
+<a name="18qq1kkvp107fqan8u1e488ufv">&nbsp;&nbsp;&nbsp;向后最多越过127个字节</a>
+</h3>
+<h3 class="topic">
+<a name="495hg1rq376cf9g11t214vomg1">&nbsp;&nbsp;一般来说，汇编指令中的立即数（idata）均会在对应的机器指令中出现，无论是一个内存单元的地址还是一个数据（因为cpu需要对其进行处理）</a>
+</h3>
+<h3 class="topic">
+<a name="34ik08pia306fcnnp9cti51qsm">&nbsp;&nbsp;但是在jmp short 标号的机器指令中没有目的地址出现，说明此时jmp指令不需要目的地址即可实现修改ip，实现指令跳转</a>
+</h3>
+<h3 class="topic">
+<a name="0agr1r1rbgp5gefet66kt1k0f8">&nbsp;&nbsp;jmp short 标号  指令的执行过程中不给出目的地址，但是给出相应的ip需要转移的位移</a>
+</h3>
+<h3 class="topic">
+<a name="5v14l9dc9v84ikdnbm1qfenngv">&nbsp;&nbsp;&nbsp;jmp short 标号的功能为 ip=ip+8位位移</a>
+</h3>
+<h3 class="topic">
+<a name="1vll2uo77e1pgh3j69mdof93pj">&nbsp;&nbsp;&nbsp;8位位移=标号处的地址-jmp指令后的第一个字节的地址</a>
+</h3>
+<h3 class="topic">
+<a name="2jddg23hj3cd5spgkodej9q5ks">&nbsp;&nbsp;&nbsp;8位位移表示范围为-128-127 使用补码表示</a>
+</h3>
+<h3 class="topic">
+<a name="3nqu6o1alh93a974qrg8s3u7em">&nbsp;&nbsp;&nbsp;具体位移由编译程序编译时算出</a>
+</h3>
+<h3 class="topic">
+<a name="7l9q5v7cv79h617qdcgdo819if">&nbsp;jmp near ptr 标号</a>
+</h3>
+<h3 class="topic">
+<a name="2ive9kodh7jbf4pmqdg1rbsckb">&nbsp;&nbsp;功能为ip=ip+16位位移（参照jmp short的情况）</a>
+</h3>
+<h2 class="topic">
+<a name="7f3utl409lbt7kpunsf89e1kkn">9.4转移的目的地址在指令中的jmp指令</a>
+</h2>
+<h3 class="topic">
+<a name="7bh9156355ba7a8u1ib33ri666">&nbsp;jmp far ptr 标号 </a>
+</h3>
+<h3 class="topic">
+<a name="0o3hd9mpaj2k3idqok1frqtlmt">&nbsp;&nbsp;段间转移，也称为远转移</a>
+</h3>
+<h3 class="topic">
+<a name="14gaj552i4bt7qah50mt8fp6lv">&nbsp;&nbsp;&nbsp;功能将csip均设置为标号所在的地址的段地址偏移地址</a>
+</h3>
+<h3 class="topic">
+<a name="3it1h4a29qn335pggbqd16lhga">&nbsp;&nbsp;&nbsp;在机器指令中包括了目的地址的段地址和偏移地址和</a>
+</h3>
+<h3 class="topic">
+<a name="0mipugvt6ttfdrdpt5e5cqdp80">&nbsp;&nbsp;&nbsp;&nbsp;段地址储存在高地址内存</a>
+</h3>
+<h3 class="topic">
+<a name="396ltb2d6h114ppmvf410s2pec">&nbsp;&nbsp;&nbsp;&nbsp;偏移地址存在低地址内存</a>
+</h3>
+<h3 class="topic">
+<a name="1oid79m5nvotmj690g3r0b1du9">&nbsp;注意 db 256 dup (0)指令在debug中会被解释为相应的若干条汇编指令</a>
+</h3>
+<h2 class="topic">
+<a name="23m4bep2s3hepnste25bit53qm">9.5转移地址在寄存器中的jmp指令</a>
+</h2>
+<h3 class="topic">
+<a name="10ve00ef084rfdsiia6oue7jdk">&nbsp;jmp 十六位reg（通用寄存器）</a>
+</h3>
+<h3 class="topic">
+<a name="60jh2dtntr7k4t94k17t3dvh65">&nbsp;&nbsp;功能ip=十六位reg中的值</a>
+</h3>
+<h3 class="topic">
+<a name="59etns4n24jvivde5joa1lbpi3">&nbsp;&nbsp;是一种段内转移，转移范围类似于jmp near ptr，均可以表示十六位位移的转移</a>
+</h3>
+<h3 class="topic">
+<a name="7fra9fvkvcr4329vomg025sddv">&nbsp;&nbsp;详见第二章</a>
+</h3>
+<h2 class="topic">
+<a name="4buh5f8vq4cdgknocauls4u2du">9.6转移地址在内存中的jmp指令</a>
+</h2>
+<h3 class="topic">
+<a name="5lsr01br9or8d4kka5ufbu8dni">&nbsp;jmp word ptr 内存单元地址（段内转移）</a>
+</h3>
+<h3 class="topic">
+<a name="49vjhr34aarupmfnq91kt8k2u8">&nbsp;&nbsp;功能：内存单元地址处的字单元中的内容是目的地址的偏移地址</a>
+</h3>
+<h3 class="topic">
+<a name="5bcv4h6ebepa2h8fliutkq40kb">&nbsp;&nbsp;由于是一个字单元表示偏移地址，故可转移的范围同段内近转移相同，可以进行16位的偏移</a>
+</h3>
+<h3 class="topic">
+<a name="306qmdnbu52s6ph7kp51ab1pef">&nbsp;&nbsp;jmp word ptr ds:[0]</a>
+</h3>
+<h3 class="topic">
+<a name="2q4qt9eoa5sullq8egcnvlfpgj">&nbsp;jmp dword ptr 内存单元地址（段间转移）</a>
+</h3>
+<h3 class="topic">
+<a name="40phbscrsk9m882t7b77aiq0kb">&nbsp;&nbsp;使用两个字单元表示目的地址，高地址处的字单元中的内容是目的地址的段地址，低地址处的字段元储存目的地址的偏移地址</a>
+</h3>
+<h3 class="topic">
+<a name="1ne3n4bkqgsv2png5rtcabkmb2">&nbsp;&nbsp;可以进行段间转移，不过还是有转移范围的限制</a>
+</h3>
+<h3 class="topic">
+<a name="60uk0ggv9d1rua1h61vv22u91j">&nbsp;&nbsp;内存单元的地址可以以任意形式给出</a>
+</h3>
+<h2 class="topic">
+<a name="7fjt7oar7d3v3lf5gf560gan6l">9.7jcxz指令</a>
+</h2>
+<h3 class="topic">
+<a name="65oampn1ebdjtaijs3ahnd65ci">&nbsp;有条件转移指令，所有的有条件转移指令均是段内短转移（8位位移），转移范围为-128-127，机器码中包含转移的位移而不是目的地址</a>
+</h3>
+<h3 class="topic">
+<a name="2ufhgjr98b0hv1lj58i5k9p4i9">&nbsp;&nbsp;jcxz 标号 （如果cx=0，则转移到标号处执行）</a>
+</h3>
+<h3 class="topic">
+<a name="0dj2eahu88i2j9eelr7lvfd444">&nbsp;&nbsp;&nbsp;当cx=0时，ip=ip+8位位移</a>
+</h3>
+<h3 class="topic">
+<a name="65vt9p932lmgr731s7jmgsd8so">&nbsp;&nbsp;&nbsp;8位位移=标号处的地址-jcxz指令后的第一个字节的地址</a>
+</h3>
+<h3 class="topic">
+<a name="5qbv0re8dvemeqjojs5ubo731g">&nbsp;&nbsp;&nbsp;8位位移的转移范围为-128-127，使用补码表示</a>
+</h3>
+<h3 class="topic">
+<a name="1pltq996ikqu6pjncj0lmsetfo">&nbsp;该语句有点类似于c语言中的if语句，不过其判断依据只能为cx是否为0</a>
+</h3>
+<h2 class="topic">
+<a name="27s3k42gidbkamtpi8u0qj80m7">9.8loop指令</a>
+</h2>
+<h3 class="topic">
+<a name="3dl18givdrp8ci831k6bi4vdld">&nbsp;循环指令，所有的循环指令均是段内短转移，机器码中包含转移的位移而不是转移的目的地址，ip的修改范围为-128-127</a>
+</h3>
+<h3 class="topic">
+<a name="7vvl15ljtbaspol8onvok9dguq">&nbsp;&nbsp;loop 标号</a>
+</h3>
+<h3 class="topic">
+<a name="321joa544npkn3b5ktqs75gn82">&nbsp;&nbsp;&nbsp;1、cx=cx-1</a>
+</h3>
+<h3 class="topic">
+<a name="46cqlo6e5m2525mmd130tkalvf">&nbsp;&nbsp;&nbsp;2、如果cx!=0则转移到标号处执行（ip=ip+8位位移），如果cx=0，则向下执行</a>
+</h3>
+<h3 class="topic">
+<a name="5o9msri26m1lg7hjor1ckragis">&nbsp;&nbsp;&nbsp;8位位移=标号处的地址-loop指令后的第一个字节的地址</a>
+</h3>
+<h3 class="topic">
+<a name="1t9jgflm34p8b59v0fn48qsfjr">&nbsp;&nbsp;&nbsp;8位位移的范围为-128-127</a>
+</h3>
+<h3 class="topic">
+<a name="5maoma9f4kdaipnnro0ciet1ls">&nbsp;&nbsp;&nbsp;具体位移由编译程序在编译时计算出</a>
+</h3>
+<h2 class="topic">
+<a name="0i3aj5h6ccgiku689hqr6pobc3">9.9根据位移进行转移的意义</a>
+</h2>
+<h3 class="topic">
+<a name="170haujh2ihfh553posmqknlrk">&nbsp;按位移进行转移	，目的地址不存在于机器指令中（只有段间转移在机器码中可以出现转移的目的地址）</a>
+</h3>
+<h3 class="topic">
+<a name="2n86bapso3f2ohk096i1sdklel">&nbsp;&nbsp;jmp short 标号</a>
+</h3>
+<h3 class="topic">
+<a name="4atv8o41q4u0s4tfq71v8ukjoh">&nbsp;&nbsp;jmp near ptr 标号</a>
+</h3>
+<h3 class="topic">
+<a name="0vngva5b1r3of2g98mm8e68fib">&nbsp;&nbsp;jcxz 标号</a>
+</h3>
+<h3 class="topic">
+<a name="0iu15plev9olaaophdcn2ck207">&nbsp;&nbsp;loop 标号</a>
+</h3>
+<h3 class="topic">
+<a name="2pcsm1njigsirq1s3m1nsbj5h2">&nbsp;意义：方便程序段在内存中的浮动装配，只涉及相对位移，不涉及具体的目的地址，故只要两个代码的相对位置不同，就可以正确执行</a>
+</h3>
+<h2 class="topic">
+<a name="4g387si5jajfftmh1q9mfc94na">9.10编译器对转移位移超界的检测</a>
+</h2>
+<h3 class="topic">
+<a name="6n3oi24qvhd4ms5ll8ae4f3hf2">&nbsp;根据位移进行转移的指令存在一定转移范围，如果超过该指令允许的转移范围，编译时编译器报错</a>
+</h3>
+<h2 class="topic">
+<a name="0ahfsgkg1al8kdkmrlqdok31al">形如jmp 2000:0010的指令只能在debug中使用，并不是一个汇编指令，不能出现在汇编源码中</a>
+</h2>
+<h2 class="topic">
+<a name="5jpm6qh3kpsaa6qhmotja7r5ch">试验8, 分析一个奇怪的程序</a>
+</h2>
+<h3 class="topic">
+<a name="1lgub66s4ukslhu7rcor1ggje3">&nbsp;nop指令是伪指令，用于表示指令为空，占一个字节大小</a>
+</h3>
+<h2 class="topic">
+<a name="3ce7uqku6esbcf2r5ar9rdbbhg">试验9 根据材料编程</a>
+</h2>
+<h3 class="topic">
+<a name="1n87tpenpj69civg6ele30ielf">&nbsp;80X25彩色字符模式显示缓冲区 B8000H~BFFFFH，向该内存空间写入数据，写入的数据立即显示在显示屏上</a>
+</h3>
+<h3 class="topic">
+<a name="4f0spottvaqn3lm4fmng38m5qu">&nbsp;&nbsp;显示缓冲区分为8页，每页4KB默认显示第0页的内容，即B8000H~B8F9FH中的4000个字节显示在显示屏上</a>
+</h3>
+<h3 class="topic">
+<a name="1qk8n0suc4677q0e8ichcv13ka">&nbsp;&nbsp;&nbsp;偏移000~09f对应显示器上的第一行（80个字符占160个字节）</a>
+</h3>
+<h3 class="topic">
+<a name="0h2rv4f0hb0gnr3ts81jshqg79">&nbsp;&nbsp;&nbsp;偏移0a0~13f对应显示器上的第二行</a>
+</h3>
+<h3 class="topic">
+<a name="6ricghvam52u1h5b5bdnealmbf">&nbsp;&nbsp;&nbsp;偏移140~1df对应显示器上的第三行</a>
+</h3>
+<h3 class="topic">
+<a name="3m33236qgf6hiud0hjiom3oa0i">&nbsp;显示器可以显示25行，每行80个字符每个字符有256种属性</a>
+</h3>
+<h3 class="topic">
+<a name="2jscdflt824pnrkc2340hn0qao">&nbsp;一个字符在缓冲区占两个字节，分别用于存放字符的ascii码以及属性</a>
+</h3>
+<h3 class="topic">
+<a name="5ou8ullfmr7g8q24f2bdu1me6v">&nbsp;注意 ：当直接将数据传送到寄存器或内存单元中时，前者有寄存器可以显示处理数据的长度，后者则没有，只有通过byte ptr或word ptr来指定需要处理的数据的长度</a>
+</h3>
+<h3 class="topic">
+<a name="2rmtusolbn35g8ges45sdcmp5d">&nbsp;注意，在汇编远吗中出现数据的时候，如果数据以字母开头，需要在字母之前加上0，如果数据为16进制且其中存在字母，注意在数据末尾加上h，以表示是一个十六进制数据，如果是10进制数可以直接写，编译器将其转化为16进制显示在debug中</a>
+</h3>
+</body>
+</html>

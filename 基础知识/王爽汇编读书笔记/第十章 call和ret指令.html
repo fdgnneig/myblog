@@ -1,0 +1,447 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>第十章 call和ret指令</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="271ibcfbsjeblopfg5bg6ibd0q">第十章 call和ret指令</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="%E7%AC%AC%E5%8D%81%E7%AB%A0 call%E5%92%8Cret%E6%8C%87%E4%BB%A4_files/images/%E7%AC%AC%E5%8D%81%E7%AB%A0 call%E5%92%8Cret%E6%8C%87%E4%BB%A4.jpg"></div>
+<h2 class="topic">
+<a name="1dje7ss2102j7c1n8plmbc071e">call指令与ret指令均是转移指令，均可用于修改ip或同时修改cs:ip,经常共同使用用于实现子程序的设计</a>
+</h2>
+<h2 class="topic">
+<a name="0pqrt1enjlek063oe4afntmt9j">10.1ret与retf（使用过程类似于pop）</a>
+</h2>
+<h3 class="topic">
+<a name="2mqg33d7aqekpc1ggpt83davof">&nbsp;ret指令用栈中的数据修改ip的内容，实现近转移（提供十六位的位移）</a>
+</h3>
+<h3 class="topic">
+<a name="4mi1n0b5gjdn5n5ks5l1ui6kaf">&nbsp;&nbsp;执行过程</a>
+</h3>
+<h3 class="topic">
+<a name="1rpt2onsc3vunj7lqph6v3ca8d">&nbsp;&nbsp;&nbsp;1、(ip)=((ss)*16+(sp))</a>
+</h3>
+<h3 class="topic">
+<a name="6hkirugogdoeo0em5guh9a2imq">&nbsp;&nbsp;&nbsp;2、(sp)=(sp)+2  这里相当于栈顶向高地址移动，相当于原来栈顶的字单元已经出栈</a>
+</h3>
+<h3 class="topic">
+<a name="6vc14bi6sttp4q5612qppibv5q">&nbsp;&nbsp;相当于pop ip</a>
+</h3>
+<h3 class="topic">
+<a name="6vs02430cson8gjiffb3fndd9r">&nbsp;retf指令用栈中的数据修改cs和ip的内容，从而实现段间转移也称远转移（类似于jmp far ptr）</a>
+</h3>
+<h3 class="topic">
+<a name="49hsiis8dp0mjngoag7fncatah">&nbsp;&nbsp;执行过程</a>
+</h3>
+<h3 class="topic">
+<a name="2nih5mrpdnaj6odhv9s3j6f3sg">&nbsp;&nbsp;&nbsp;1、(ip)=((ss)*16+(sp)) 栈顶第一个字单元用于设置ip寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="25uvh7p0m7re58d8fkii7305au">&nbsp;&nbsp;&nbsp;2、(sp)=(sp)+2 栈顶向下移动，该栈顶字单元出栈</a>
+</h3>
+<h3 class="topic">
+<a name="7r98s20d9moghge2b63pu7h1lg">&nbsp;&nbsp;&nbsp;&nbsp;出入栈的操作均以字为单位，所以这里执行完pop后需要将sp向高地址移动两个字节</a>
+</h3>
+<h3 class="topic">
+<a name="6pniea6d0646dj0v7av0053ivt">&nbsp;&nbsp;&nbsp;3、(cs)=((ss)*16+(sp)) 当前的栈顶字单元用于设置cs寄存器的值</a>
+</h3>
+<h3 class="topic">
+<a name="327qg8nb9e0vno39llgb1suhlq">&nbsp;&nbsp;&nbsp;4、(sp)=(sp)+2 栈顶向下移动，该栈顶字单元出栈</a>
+</h3>
+<h3 class="topic">
+<a name="44891qgil0spptupt8cscus0pc">&nbsp;&nbsp;相当与 pop ip  pop cs</a>
+</h3>
+<h2 class="topic">
+<a name="7jj46dn21m68lnvt1evqa0trdn">10.2call指令</a>
+</h2>
+<h3 class="topic">
+<a name="7b2vep0soe2vc9lce4uuiq13r6">&nbsp;操作</a>
+</h3>
+<h3 class="topic">
+<a name="6373n5e2adcoh5mnqvgc0v1jt4">&nbsp;&nbsp;1、将当前的ip或csip压入栈中</a>
+</h3>
+<h3 class="topic">
+<a name="18lceh8vnfnf5cs7oslpj2rtu0">&nbsp;&nbsp;2、转移</a>
+</h3>
+<h3 class="topic">
+<a name="3rjer187rr4n2kqrl53d6nf8f5">&nbsp;不能实现短转移，除此之外，与jmp指令实现转移的方法原理相同</a>
+</h3>
+<h2 class="topic">
+<a name="76ijm0lulpsf1d2u600f3c0mfa">10.3根据位移进行转移的call指令（机器指令中没有目的地址）</a>
+</h2>
+<h3 class="topic">
+<a name="372ec10oniiql9jk13rl97nngr">&nbsp;call 标号（将当前的ip压入栈之后，转到标号处执行指令）</a>
+</h3>
+<h3 class="topic">
+<a name="2tdh95fbosfd6k3fa8jhhnor7d">&nbsp;&nbsp;操作</a>
+</h3>
+<h3 class="topic">
+<a name="7g7sl3bovl9t3buduj8tkmelbd">&nbsp;&nbsp;&nbsp;1、(sp)=(sp)-2 </a>
+</h3>
+<h3 class="topic">
+<a name="1v234iinfllojd6pp3rflt9mfh">&nbsp;&nbsp;&nbsp;&nbsp;开拓栈空间</a>
+</h3>
+<h3 class="topic">
+<a name="1ffh8ji9qrau8pdsljbe621r28">&nbsp;&nbsp;&nbsp;2、((ss)*16+(sp))=(ip)</a>
+</h3>
+<h3 class="topic">
+<a name="3v8epvme5vu4e42k2c4putia5e">&nbsp;&nbsp;&nbsp;&nbsp;注意这这里入栈的ip是call指令后第一个内存单元的偏移地址，因为在call指令执行之前，在将call指令读入指令缓冲区的过程中，ip的值已经变化，开始指向下一条指令，将call指令的下一条指令的偏移地址保存起来是为了在执行完call指令标号处的代码之后使用ret跳转回来，继续执行call指令之后的代码</a>
+</h3>
+<h3 class="topic">
+<a name="2atdvmboesq5b04b3ko2v5ucob">&nbsp;&nbsp;&nbsp;3、(ip)=(ip)+十六位位移</a>
+</h3>
+<h3 class="topic">
+<a name="2htl5pc9vfbd45r1qrh1a1guu7">&nbsp;&nbsp;&nbsp;&nbsp;十六位位移=标号处的地址-call指令后的第一个字节的地址</a>
+</h3>
+<h3 class="topic">
+<a name="22han6eshd16ks966fcfckbd3g">&nbsp;&nbsp;&nbsp;&nbsp;16位位移范围为-32768-32767，使用补码表示，</a>
+</h3>
+<h3 class="topic">
+<a name="2140k5j4d58d2fk1le1gfj4t3v">&nbsp;&nbsp;&nbsp;&nbsp;十六位位移由编译程序在编译时算出</a>
+</h3>
+<h3 class="topic">
+<a name="4tdt13r1t78d8fa6koog3firre">&nbsp;&nbsp;相当于</a>
+</h3>
+<h3 class="topic">
+<a name="2pndpf9o7u3uhpd1cts40nq32f">&nbsp;&nbsp;&nbsp;push ip</a>
+</h3>
+<h3 class="topic">
+<a name="7028trblqke17thf8rq6be2tgi">&nbsp;&nbsp;&nbsp;jmp near ptr 标号 </a>
+</h3>
+<h2 class="topic">
+<a name="4unms87lbre9gdovv57e5nrkbd">10.4转移的目的地址在指令中的call指令</a>
+</h2>
+<h3 class="topic">
+<a name="0bo5cba3noe0s1g7udand7mko5">&nbsp;call far ptr 标号（依次将cs ip寄存器的值压入栈中，转到标号处执行指令，实现段间转移）</a>
+</h3>
+<h3 class="topic">
+<a name="0porutj68c4strl6em7a7v6bpe">&nbsp;&nbsp;操作</a>
+</h3>
+<h3 class="topic">
+<a name="4aj613nd05ujfcnanf6ckg272o">&nbsp;&nbsp;&nbsp;1、(sp)=(sp)-2 栈顶上移，进行入栈准备</a>
+</h3>
+<h3 class="topic">
+<a name="1ja6d1vcj06ntta9cg5orsi02i">&nbsp;&nbsp;&nbsp;2、((ss)*16+(sp))=(cs) 先将cs入栈</a>
+</h3>
+<h3 class="topic">
+<a name="49cul85no6prq6lgcse1q0rr6d">&nbsp;&nbsp;&nbsp;3、(sp)=(sp)-2  栈顶再次上移，准备将ip入栈</a>
+</h3>
+<h3 class="topic">
+<a name="5g5jf3d8klps3u3eihci51k23u">&nbsp;&nbsp;&nbsp;4、((ss)*16+(sp))=(ip)</a>
+</h3>
+<h3 class="topic">
+<a name="3jn9lshpitihnttmlh6am6u3ld">&nbsp;&nbsp;&nbsp;(cs)=标号所在的段的段地址</a>
+</h3>
+<h3 class="topic">
+<a name="0emun2bikb3plat13l41565a3a">&nbsp;&nbsp;&nbsp;(ip)=标号所在的段中的偏移地址</a>
+</h3>
+<h3 class="topic">
+<a name="1h4hipnm5lpr0q5qmo1no9lcit">&nbsp;&nbsp;相当于</a>
+</h3>
+<h3 class="topic">
+<a name="6lg3bin0f8sf6nonbu1bo0c7t6">&nbsp;&nbsp;&nbsp;push cs</a>
+</h3>
+<h3 class="topic">
+<a name="3j095cme7fpfq0fk8r72v374n5">&nbsp;&nbsp;&nbsp;push ip</a>
+</h3>
+<h3 class="topic">
+<a name="29ih251jo7in5qldfqnj4ikqe1">&nbsp;&nbsp;&nbsp;jmp far ptr 标号</a>
+</h3>
+<h2 class="topic">
+<a name="1uq3vv2enn1nt4tce639ss6tsb">10.5转移地址在寄存器中的call指令（机器指令中没有目的地址，只能实现近转移）</a>
+</h2>
+<h3 class="topic">
+<a name="15b7ltt1kgocqk2jdfqgtobii6">&nbsp;call 16位reg（只能实现近转移，进行十六位转移，转移范围为-23768-23767）</a>
+</h3>
+<h3 class="topic">
+<a name="232n4jc29nreflq7isqre1dn0i">&nbsp;&nbsp;功能</a>
+</h3>
+<h3 class="topic">
+<a name="40jmlnddti8iml1isvnoj9k99f">&nbsp;&nbsp;&nbsp;1、(sp)=(sp)-2</a>
+</h3>
+<h3 class="topic">
+<a name="5npakr8k741ng7olln838nu2nk">&nbsp;&nbsp;&nbsp;2、((ss)*16+(sp))=(ip)</a>
+</h3>
+<h3 class="topic">
+<a name="0lpftks8kdoagau6ak757spm8c">&nbsp;&nbsp;&nbsp;3、(ip)=(16位reg)</a>
+</h3>
+<h3 class="topic">
+<a name="0e1nhinmufqqhmjipogsdcvoac">&nbsp;&nbsp;相当于</a>
+</h3>
+<h3 class="topic">
+<a name="6nlriqqupcpogt9obmi6tplnuc">&nbsp;&nbsp;&nbsp;push  ip</a>
+</h3>
+<h3 class="topic">
+<a name="3e8nlctpih2c5j1d91cb8t0pqc">&nbsp;&nbsp;&nbsp;jmp 16位reg</a>
+</h3>
+<h2 class="topic">
+<a name="3mk5vckohoerv17ldv15o2srrg">10.6转移地址在内存中的call指令（机器指令中没有目的地址，根据内单元的大小不同，可以实现段内近转移或段间转移）</a>
+</h2>
+<h3 class="topic">
+<a name="088to75p0m8o6pcqbur3a0tkc4">&nbsp;call word ptr 内存单元地址（只能实现近转移，进行十六位转移，转移范围为-23768-23767）</a>
+</h3>
+<h3 class="topic">
+<a name="2v0gql2icnpsu7ogbpd752tmhq">&nbsp;&nbsp;相当于 </a>
+</h3>
+<h3 class="topic">
+<a name="1lr7u3iqkr6eurs5p3nqti1sdn">&nbsp;&nbsp;&nbsp;push ip</a>
+</h3>
+<h3 class="topic">
+<a name="53l8ipk362ru9defsfarejgjuu">&nbsp;&nbsp;&nbsp;jmp word ptr 内存单元地址</a>
+</h3>
+<h3 class="topic">
+<a name="7kj3kpoga1vd977chvb8e3ub22">&nbsp;call dword ptr 内存单元地址</a>
+</h3>
+<h3 class="topic">
+<a name="4ct14s8tesbs3ehiqj5l3ckl50">&nbsp;&nbsp;相当于</a>
+</h3>
+<h3 class="topic">
+<a name="1alj1prl7s4u2m52j3dtkpbi4g">&nbsp;&nbsp;&nbsp;push cs</a>
+</h3>
+<h3 class="topic">
+<a name="42tu0f4se6lt432kbomlab08hv">&nbsp;&nbsp;&nbsp;push ip</a>
+</h3>
+<h3 class="topic">
+<a name="5tv56tj1aikatfqmqgcaf2nr4r">&nbsp;&nbsp;&nbsp;jmp dword ptr 内存单元地址</a>
+</h3>
+<h3 class="topic">
+<a name="2od8nth0mk12t5304hdvchbhbu">&nbsp;&nbsp;&nbsp;&nbsp;双字的高地质单元中存放cs 低地址单元中存放ip</a>
+</h3>
+<h2 class="topic">
+<a name="3r2psk6ta0vnbcsgcf4jmp4ttm">10.7call和ret的配合使用</a>
+</h2>
+<h3 class="topic">
+<a name="2bo11ceprsfqtlq0t87o49g0ui">&nbsp;配合使用实现子程序机制</a>
+</h3>
+<h3 class="topic">
+<a name="3elvuiilla1sgff1sm096ubgqj">&nbsp;&nbsp;写一个具有一定功能的程序段，称之为子程序，需要的时候使用call指令执行，执行完成之后，由于子程序的最后有ret指令，可以使用之前由于call指令所以入栈的ip值重新设置ip，使得子程序执行完成后转到call指令后面的指令继续执行</a>
+</h3>
+<h3 class="topic">
+<a name="0ot11ccoq7k1ru6m68mjjf3mhg">&nbsp;&nbsp;&nbsp;子程序框架：</a>
+</h3>
+<h3 class="topic">
+<a name="096k4uvbin3qql74q7o1d2bi9u">&nbsp;&nbsp;&nbsp;&nbsp;标号</a>
+</h3>
+<h3 class="topic">
+<a name="492eu9pcopgf8r1tec4jn7nqdh">&nbsp;&nbsp;&nbsp;&nbsp;指令</a>
+</h3>
+<h3 class="topic">
+<a name="6g555sdo26uprpklhn9pfcnr2v">&nbsp;&nbsp;&nbsp;&nbsp;ret</a>
+</h3>
+<h3 class="topic">
+<a name="587t8dqpq9hhn2q22l174hsu33">&nbsp;&nbsp;&nbsp;具有子程序的源程序框架</a>
+</h3>
+<h3 class="topic">
+<a name="2gjk4holbra7modau95jm5re7n">&nbsp;&nbsp;&nbsp;&nbsp;assume cs:code</a>
+</h3>
+<h3 class="topic">
+<a name="53uhgefou2s6qoae3vq29r6b61">&nbsp;&nbsp;&nbsp;&nbsp;code segment</a>
+</h3>
+<h3 class="topic">
+<a name="3p70ar0310tn8t6fdpbt5me327">&nbsp;&nbsp;&nbsp;&nbsp;main：</a>
+</h3>
+<h3 class="topic">
+<a name="2d0qgesnvvvq5id7edple1th75">&nbsp;&nbsp;&nbsp;&nbsp;..</a>
+</h3>
+<h3 class="topic">
+<a name="10gram65j6suqc6hvmjfqrekfq">&nbsp;&nbsp;&nbsp;&nbsp;call sub1</a>
+</h3>
+<h3 class="topic">
+<a name="4ssj3ispibg8j49fv3qekjg1ev">&nbsp;&nbsp;&nbsp;&nbsp;mov ax,4c00h</a>
+</h3>
+<h3 class="topic">
+<a name="3rpdima65jhb9pmnng8od7j85f">&nbsp;&nbsp;&nbsp;&nbsp;int 21h</a>
+</h3>
+<h3 class="topic">
+<a name="19fjej4m2tti45dbqg67pomdm4">&nbsp;&nbsp;&nbsp;&nbsp;sub1:</a>
+</h3>
+<h3 class="topic">
+<a name="58e1277j0vs3c28jst8cdgvhti">&nbsp;&nbsp;&nbsp;&nbsp;..</a>
+</h3>
+<h3 class="topic">
+<a name="5jkqeu3q1r9jc9eaen7sjdp81e">&nbsp;&nbsp;&nbsp;&nbsp;ret</a>
+</h3>
+<h2 class="topic">
+<a name="16v5b25026kda2m2mf047somlt">10.8mul指令</a>
+</h2>
+<h3 class="topic">
+<a name="2phh2cd5b1e7b038dagh0n4f34">&nbsp;是乘法指令</a>
+</h3>
+<h3 class="topic">
+<a name="3aa2t4old2fpbmckphpp09chs9">&nbsp;&nbsp;注意事项</a>
+</h3>
+<h3 class="topic">
+<a name="0a1pktk0dq9mdvmkai3mnocemv">&nbsp;&nbsp;&nbsp;两个相乘的数	</a>
+</h3>
+<h3 class="topic">
+<a name="28v752dfi3eq8bvvl22n2elsh9">&nbsp;&nbsp;&nbsp;&nbsp;均为8位	</a>
+</h3>
+<h3 class="topic">
+<a name="75orh8vjj5qmif790kcu6n7eo2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;一个乘数默认放在al中，另一个放在8为reg或内存字节单元中</a>
+</h3>
+<h3 class="topic">
+<a name="1trhrf84todn8d7mke5pi7h6lg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;结果默认放在ax中</a>
+</h3>
+<h3 class="topic">
+<a name="42b6dc3n71jfmtnp0cchltcco2">&nbsp;&nbsp;&nbsp;&nbsp;均为16位</a>
+</h3>
+<h3 class="topic">
+<a name="7qjhu7762mnjhcb5tilb07l6cm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;一个乘数默认在ax中，另一个默认在16位reg或内存字单元中</a>
+</h3>
+<h3 class="topic">
+<a name="7slctorqc2t4cltogiuled67ih">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;结果高位默认在dx中，低位默认在ax中</a>
+</h3>
+<h3 class="topic">
+<a name="1lv99bg4uaj2n49okb6jeo50a2">&nbsp;&nbsp;&nbsp;&nbsp;若相乘的两个数位数不相等，需要将两个数均转化为同样位数的数，以位数较大者位标准</a>
+</h3>
+<h3 class="topic">
+<a name="06htof70sut64o47eo453nabas">&nbsp;&nbsp;格式</a>
+</h3>
+<h3 class="topic">
+<a name="0ckn1v60s65hor1ptjarhqc592">&nbsp;&nbsp;&nbsp;mul reg</a>
+</h3>
+<h3 class="topic">
+<a name="4icrpmcgo57bibmqg0o5lgim54">&nbsp;&nbsp;&nbsp;mul 内存单元</a>
+</h3>
+<h3 class="topic">
+<a name="0pmhfa0a83ghkpif6a204dn01o">&nbsp;&nbsp;&nbsp;&nbsp;mul word ptr 内存单元（针对十六位乘法）</a>
+</h3>
+<h3 class="topic">
+<a name="406di92fot363mn58j1a48tv87">&nbsp;&nbsp;&nbsp;&nbsp;mul byte ptr 内存单元（针对八位乘法）</a>
+</h3>
+<h3 class="topic">
+<a name="56ju7gv0n8ljubko86816ql1sf">&nbsp;&nbsp;&nbsp;&nbsp;内存单元可以使用多种寻址方式表示</a>
+</h3>
+<h2 class="topic">
+<a name="4s5fsd57jk26sodin5e4i85q2q">10.9模块化程序设计</a>
+</h2>
+<h3 class="topic">
+<a name="3vg4tacdi2ot0hlhtnlujpdd1v">&nbsp;call 以及ret提供了可能性</a>
+</h3>
+<h3 class="topic">
+<a name="1u60966mnrp87u7da8026tcs5r">&nbsp;将现实问题转化为相互关联的不同层次的子问题</a>
+</h3>
+<h2 class="topic">
+<a name="3ii8u91tp11fl1tdjf1nuqrgoe">10.10参数和结果的传递的问题</a>
+</h2>
+<h3 class="topic">
+<a name="153vl4rbkh0rr5esqpaf9fpg5d">&nbsp;如何储存子程序需要的参数以及子程序产生的返回值</a>
+</h3>
+<h3 class="topic">
+<a name="4b7819v78mkr0f31al2n12kjeq">&nbsp;&nbsp;可以使用寄存器存储</a>
+</h3>
+<h3 class="topic">
+<a name="34mqbprt7fc19ia113sgdntc64">&nbsp;&nbsp;&nbsp;调用者将参数送入参数寄存器，子程序从参数寄存器中读取参数</a>
+</h3>
+<h3 class="topic">
+<a name="55ehtbvi37hpikl7s6nenaiv7l">&nbsp;&nbsp;&nbsp;调用者从结果寄存器中读取结果，子程序将结果写入结果寄存器</a>
+</h3>
+<h2 class="topic">
+<a name="2m21n9u9skj275dkeea45scq2n">10.11批量数据的传递</a>
+</h2>
+<h3 class="topic">
+<a name="5tm2jqaqsle7ma9nhejfn2ils1">&nbsp;当参数或返回值有多个的时候，寄存器不够用于存储所有的参数以及返回值，此时将数据批量放在内存中，将其所在的内存空间的首地址放在寄存器中，传递给需要的子程序</a>
+</h3>
+<h3 class="topic">
+<a name="5sdapuvkv5tlqvfbp1mbsdbuvb">&nbsp;在批量数据传递时，还可以使用栈来传递参数，详见附注4</a>
+</h3>
+<h2 class="topic">
+<a name="3nqg1gujsendnrti4h96gmfkbi">10.12寄存器冲突的问题</a>
+</h2>
+<h3 class="topic">
+<a name="48128ingtponm3ov4cm8e48br3">&nbsp;jmp指令是无条件转移指令，如果jmp指令的标号位于jmp指令之前  且    在标号与jmp指令之间加上jcxz 指令，当cx=0时跳出jmp，可以达到while死循环配合if(cx=0){break}的效果</a>
+</h3>
+<h3 class="topic">
+<a name="6kvl3qbaiebr3s9i647bbapao5">&nbsp;&nbsp;s:</a>
+</h3>
+<h3 class="topic">
+<a name="1k5cb67pmtdai69c4pbuag2rk1">&nbsp;&nbsp;..</a>
+</h3>
+<h3 class="topic">
+<a name="1lebi0je0r7ti3bgf4mot4dbdc">&nbsp;&nbsp;jcxz ok</a>
+</h3>
+<h3 class="topic">
+<a name="70kguftrvluk5ffsdurcb9t3lo">&nbsp;&nbsp;jmp s</a>
+</h3>
+<h3 class="topic">
+<a name="0rtdc00v4n8ss0u827c2fon40r">&nbsp;&nbsp;ok:ret</a>
+</h3>
+<h3 class="topic">
+<a name="2ejbsighchgfot5qa315gfefce">&nbsp;与之相对的loop指令更像是循环次数已知的for循环</a>
+</h3>
+<h3 class="topic">
+<a name="34vakr39585kg9l4b7iak6ddib">&nbsp;产生冲突</a>
+</h3>
+<h3 class="topic">
+<a name="77jm2r5h5ebf9cee42777iq91b">&nbsp;&nbsp;例如主程序中使用loop循环，cx中存放c循环次数，但是在该函数调用的子函数中，使用了jcxz指令用于需要对cx进行复制以判断是否应该返回，主函数与子函数均使用了cx寄存器，导致寄存器冲突</a>
+</h3>
+<h3 class="topic">
+<a name="1fsbt33d027ultc0nfj76aone2">&nbsp;解决方案</a>
+</h3>
+<h3 class="topic">
+<a name="2kfgf7veoomlmrpbedqullcrvb">&nbsp;&nbsp;编写调用子程序时注意子程序中会不会用到产生冲突的寄存器，如果有，调用者换用别的寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="7p922pj7g3h33jude2avblmeud">&nbsp;&nbsp;&nbsp;不成立，当子程序很多时，调用程序的编写会很困难</a>
+</h3>
+<h3 class="topic">
+<a name="1jponlh6avbd47vlqkvikm82t3">&nbsp;&nbsp;编写子程序时，不要使用会产生冲突的寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="4mc6i8ppl1d34a0ofhfeslkv05">&nbsp;&nbsp;&nbsp;不成立，因为编写子程序时不知道其调用程序的情况</a>
+</h3>
+<h3 class="topic">
+<a name="61r31irt37ot9d5640d314p2ak">&nbsp;&nbsp;在子程序的开始使用栈将子程序中所有会用到的寄存器的内容保存起来，在子程序返回之前再进行恢复，即使用栈进行寄存器状态的保存与回复</a>
+</h3>
+<h3 class="topic">
+<a name="6r80nm2ur96kkv9qt1uivdg8a0">&nbsp;&nbsp;&nbsp;子程序标准框架</a>
+</h3>
+<h3 class="topic">
+<a name="3b040ct9ash1p3frrcb35tdp71">&nbsp;&nbsp;&nbsp;&nbsp;子程序开始：子程序使用的寄存器入栈</a>
+</h3>
+<h3 class="topic">
+<a name="62rrnah5c1u3po5pdqq8an8l9k">&nbsp;&nbsp;&nbsp;&nbsp;子程序内容</a>
+</h3>
+<h3 class="topic">
+<a name="7uqhb9a2sfo9ej3mnjf73qh18s">&nbsp;&nbsp;&nbsp;&nbsp;子程序中使用的寄存器出栈（注意寄存器入栈与出栈顺序相反，才能将原寄存器的内容恢复）</a>
+</h3>
+<h3 class="topic">
+<a name="3aka7hpujmhb0hgj0ptuuq1tiq">&nbsp;&nbsp;&nbsp;&nbsp;返回（ret）（retf）</a>
+</h3>
+<h2 class="topic">
+<a name="28cf75ke9soho06qciucoj55n0">实验10 编写子程序</a>
+</h2>
+<h3 class="topic">
+<a name="6dgcs68o9rnvuflqa7hakh23pp">&nbsp;1、显示字符串  SY10_1.ASM</a>
+</h3>
+<h3 class="topic">
+<a name="7b3n35dpogc1fvg12tg41i36v1">&nbsp;2、解决除法溢出的问题  SY10_2.ASM</a>
+</h3>
+<h3 class="topic">
+<a name="50qg2nnerem4m7ad866soono3r">&nbsp;&nbsp;除法溢出问题</a>
+</h3>
+<h3 class="topic">
+<a name="1u70blm3ujts9eamb0me9id09n">&nbsp;&nbsp;&nbsp;当除数位8位，被除数位16位时，div 除数 使用al存储商，商的范围为0~255，当被除数足够大而除数足够小时，商会超过8位寄存器al的表示范围</a>
+</h3>
+<h3 class="topic">
+<a name="50undhp5f6feegd7edmipr089o">&nbsp;&nbsp;&nbsp;当除数位16位，被除数位32位时，div 除数 使用ax存储商，商的范围为0~65535，当被除数足够大而除数足够小时，商会超过16位寄存器ax的表示范围</a>
+</h3>
+<h3 class="topic">
+<a name="1jd4l4n33s8lrnm575ssgtlmq6">&nbsp;&nbsp;除法溢出问题将引起cpu内部错误，在debug中单步执行该div指令会显示 divide overflow</a>
+</h3>
+<h3 class="topic">
+<a name="5pnloiebcet5en56o17rrdjlog">&nbsp;&nbsp;要求SY10_2.ASM进行不会产生溢出的除法运算，被除数为dword， 除数为word  ， 商为dword（分别储存在两个寄存器中而不是ax中）</a>
+</h3>
+<h3 class="topic">
+<a name="4kc5bqamu0pqcuqh9ra9eh13o5">&nbsp;3、数值显示</a>
+</h3>
+<h3 class="topic">
+<a name="0ilvu0fr82nrb0oabsobqthmsr">&nbsp;&nbsp;程序功能：将word型数据转变为表示十进制数的字符串，字符串已0位结尾符</a>
+</h3>
+</body>
+</html>

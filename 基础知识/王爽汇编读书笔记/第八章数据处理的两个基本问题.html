@@ -1,0 +1,312 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>第八章数据处理的两个基本问题</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="1pscma9vpouqihchl5t79pu9ht">第八章数据处理的两个基本问题</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="%E7%AC%AC%E5%85%AB%E7%AB%A0%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86%E7%9A%84%E4%B8%A4%E4%B8%AA%E5%9F%BA%E6%9C%AC%E9%97%AE%E9%A2%98_files/images/%E7%AC%AC%E5%85%AB%E7%AB%A0%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86%E7%9A%84%E4%B8%A4%E4%B8%AA%E5%9F%BA%E6%9C%AC%E9%97%AE%E9%A2%98.jpg"></div>
+<h2 class="topic">
+<a name="4oh3snm77qipv0eviugdbti8mq">1、处理的数据在什么地方</a>
+</h2>
+<h2 class="topic">
+<a name="3a0kt180bd953tbpd2etkk0obj">2、要处理的数据有多长</a>
+</h2>
+<h2 class="topic">
+<a name="4pt5k2i92bgujlmd6klfcgavdq">描述性符号</a>
+</h2>
+<h3 class="topic">
+<a name="106osd331ujfjsm3ek665b58en">&nbsp;reg（寄存器）ax bx cx dx (以上四个包括其自身高低8位寄存器) sp bp si di </a>
+</h3>
+<h3 class="topic">
+<a name="59msnmv9mhlgif960139kcqjhp">&nbsp;sreg（段寄存器）cs ss ds es</a>
+</h3>
+<h2 class="topic">
+<a name="3nss1oem08vfrs5914oec6pmvc">8.1 bx si di bp</a>
+</h2>
+<h3 class="topic">
+<a name="46ervp8lnmvrlgm8l77bo2a1bj">&nbsp;1、8086cpu中只有这四个寄存器可以用于[ ]中用于内存单元寻址</a>
+</h3>
+<h3 class="topic">
+<a name="7gsrbjrd76u3tohta5vqk15698">&nbsp;2、[..]中四个寄存器可以单个出现，也可以有四种组合形式（不包括使用idata的情况)</a>
+</h3>
+<h3 class="topic">
+<a name="4hqvjjjff8ns720pjedd9dlv20">&nbsp;&nbsp;[bx+si]</a>
+</h3>
+<h3 class="topic">
+<a name="7esl7t40mm6ivmpaodc03vii4i">&nbsp;&nbsp;[bx+di]</a>
+</h3>
+<h3 class="topic">
+<a name="2i98kj7d95uvu7eo7cp3hb8110">&nbsp;&nbsp;[bp+si]</a>
+</h3>
+<h3 class="topic">
+<a name="1pi81jmdp1nfjcbng7rep7d9pd">&nbsp;&nbsp;[bp+di]</a>
+</h3>
+<h3 class="topic">
+<a name="7i3icmvrid8p19dhfnhfl7i2j4">&nbsp;&nbsp;具有相同字母的不能同时使用</a>
+</h3>
+<h3 class="topic">
+<a name="3v7oue0n10e3a6mcce37e0ec98">&nbsp;3、在[..]中出现bp且没有在指令中显式给出段地址寄存器，则段地址默认在寄存器ss中</a>
+</h3>
+<h2 class="topic">
+<a name="5v5gsqkrac2a7sipu5cojb4v05">8.2机器指令处理的数据在什么地方</a>
+</h2>
+<h3 class="topic">
+<a name="6e3a3pg3q77mj3puvlvdm41hgk">&nbsp;数据处理类型</a>
+</h3>
+<h3 class="topic">
+<a name="5c4riqg26d7a39tars5p3kaass">&nbsp;&nbsp;读取</a>
+</h3>
+<h3 class="topic">
+<a name="0svkir60s36799j1l7f1u8tqvr">&nbsp;&nbsp;写入</a>
+</h3>
+<h3 class="topic">
+<a name="6easrrtqo2rba6i31m89oe9c0a">&nbsp;&nbsp;运算</a>
+</h3>
+<h3 class="topic">
+<a name="5vn6gdeuvasq1ecn1g5jdsojla">&nbsp;指令执行前数据可能的位置</a>
+</h3>
+<h3 class="topic">
+<a name="701k3kg5dvoq7c3c4lhiu49bvk">&nbsp;&nbsp;cpu内部</a>
+</h3>
+<h3 class="topic">
+<a name="7l1fsmfktqftg0r8t2qu6aav3i">&nbsp;&nbsp;&nbsp;寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="60gshetmumqajg23rkm6r2iq2p">&nbsp;&nbsp;&nbsp;指令缓冲器（针对直接包括在机器指令的数据）</a>
+</h3>
+<h3 class="topic">
+<a name="2u1p1o3tt6qjhvp1ejod2s9rs9">&nbsp;&nbsp;内存</a>
+</h3>
+<h3 class="topic">
+<a name="7gekj7epeqvujch8a6unfjuvcj">&nbsp;&nbsp;端口</a>
+</h3>
+<h2 class="topic">
+<a name="3s8eiapqjllql25dqag3othoq4">8.3汇编语言中数据位置的表达</a>
+</h2>
+<h3 class="topic">
+<a name="0m1eai6b8r4hf7lb1qm0lsfo4d">&nbsp;立即数（idata）：直接包含在机器指令中的数据（指令执行前位于指令缓冲区）</a>
+</h3>
+<h3 class="topic">
+<a name="1q5rtt0gfh4i2vdu7kngn6l5ln">&nbsp;寄存器：储存在寄存器中的数据</a>
+</h3>
+<h3 class="topic">
+<a name="3sji7a30o2na2ro3pkle20qg9l">&nbsp;段地址（sa）和偏移地址（ea）：处理的数据在内存中,[x]的格式给出ea ，sa在段寄存器中</a>
+</h3>
+<h3 class="topic">
+<a name="32faovn993fken1evb1n87fnte">&nbsp;&nbsp;段寄存器默认为ds（非dp，当dp时默认为ss）</a>
+</h3>
+<h3 class="topic">
+<a name="4gqb6ta2toqecvmb92j53biu0c">&nbsp;&nbsp;段寄存器可以显性给出</a>
+</h3>
+<h2 class="topic">
+<a name="16mlt2alf740moti7381eeqis5">8.4寻址方式</a>
+</h2>
+<h3 class="topic">
+<a name="35d74ugf0odktednqsvf0u7jah">&nbsp;定义：可以使用多种方式给定内存单元的偏移地址的地址表示方式</a>
+</h3>
+<h3 class="topic">
+<a name="4oik0it8e4h4ld200lhi7e88ol">&nbsp;&nbsp;直接寻址：[idata]</a>
+</h3>
+<h3 class="topic">
+<a name="1hg4ek3ovqimff0u7r4etg62ii">&nbsp;&nbsp;寄存器间接寻址:</a>
+</h3>
+<h3 class="topic">
+<a name="1hqn2ues1074urq9td8r9re1nb">&nbsp;&nbsp;&nbsp;[bx]</a>
+</h3>
+<h3 class="topic">
+<a name="6dfqf5d7m95pfsvmqnmnlqfd2t">&nbsp;&nbsp;&nbsp;[si]</a>
+</h3>
+<h3 class="topic">
+<a name="2ej2m37etq2s75pg0v1f8e81n8">&nbsp;&nbsp;&nbsp;[bi]</a>
+</h3>
+<h3 class="topic">
+<a name="1ofirp6oj667tg17pfu9vg3uqj">&nbsp;&nbsp;&nbsp;[bp]</a>
+</h3>
+<h3 class="topic">
+<a name="5eco2tk43tqqtrpuf43fcrsrtl">&nbsp;&nbsp;寄存器相对寻址</a>
+</h3>
+<h3 class="topic">
+<a name="0k97rcptj1o3u40g8ldqbjs3mu">&nbsp;&nbsp;&nbsp;在寄存器间接寻址的基础上加上idata</a>
+</h3>
+<h3 class="topic">
+<a name="7mmc2ga44p5ba6parpkdtv37m7">&nbsp;&nbsp;&nbsp;&nbsp;用于结构体[bx].idata</a>
+</h3>
+<h3 class="topic">
+<a name="17vfj30tc2eq9h8rh36b3r80i5">&nbsp;&nbsp;&nbsp;&nbsp;用于数组 idata[si]  idata[di]</a>
+</h3>
+<h3 class="topic">
+<a name="1dv3uftsfmvqpg6oliu3pd56pg">&nbsp;&nbsp;&nbsp;&nbsp;用于二维数组[bx][idata]</a>
+</h3>
+<h3 class="topic">
+<a name="6s1qgv9k4pm36k4kh46qctmua3">&nbsp;&nbsp;基址变址寻址</a>
+</h3>
+<h3 class="topic">
+<a name="20b31hpv7jugcpkutj42poclhe">&nbsp;&nbsp;&nbsp;[bx+si]</a>
+</h3>
+<h3 class="topic">
+<a name="602uk6milcpdblc04v484hf8aj">&nbsp;&nbsp;&nbsp;[bx+di]</a>
+</h3>
+<h3 class="topic">
+<a name="3vroi8m43hpo3kol10o3ieve1j">&nbsp;&nbsp;&nbsp;[bp+si]</a>
+</h3>
+<h3 class="topic">
+<a name="05041apuj6i76htpbslg3l4ju1">&nbsp;&nbsp;&nbsp;[bp+di]</a>
+</h3>
+<h3 class="topic">
+<a name="0u8d5go79hjd4br0ijpnfn7sp6">&nbsp;&nbsp;&nbsp;用于二维数组[bx][si]</a>
+</h3>
+<h3 class="topic">
+<a name="02rqi5ij769grisj1pfvs6gipn">&nbsp;&nbsp;相对基址变址寻址</a>
+</h3>
+<h3 class="topic">
+<a name="5l8hk91ak7oc99095i5mpopbti">&nbsp;&nbsp;&nbsp;在基址变址寻址的基础上加idata</a>
+</h3>
+<h3 class="topic">
+<a name="5g9afbd06c850lrt6cior681cm">&nbsp;&nbsp;&nbsp;&nbsp;用于表格（结构）中的数组项：[bx].idata[si]</a>
+</h3>
+<h3 class="topic">
+<a name="61i0hfmk2n993f0ejc32him4mj">&nbsp;&nbsp;&nbsp;&nbsp;用于二维数组：idata[bx][si]</a>
+</h3>
+<h2 class="topic">
+<a name="1fbib9ual8fsckdd673q5o4j51">8.5指令要处理的数据有多长</a>
+</h2>
+<h3 class="topic">
+<a name="107i3lafb0s2s0g5ps66iundpq">&nbsp;8086cpu中可以处理两种尺寸的数据byte（字节）word（字）</a>
+</h3>
+<h3 class="topic">
+<a name="1v468atc5a9eisgbiad2t17j3p">&nbsp;指定数据处理长度的方法</a>
+</h3>
+<h3 class="topic">
+<a name="4ppe0i5cmukbd8nlnm1nhh65e7">&nbsp;&nbsp;通过寄存器名指明要处理的数据的尺寸</a>
+</h3>
+<h3 class="topic">
+<a name="67m84lhk5ejbm8f5uh9jr24mf6">&nbsp;&nbsp;&nbsp;mov ax,..进行字操作</a>
+</h3>
+<h3 class="topic">
+<a name="2ipge8l1bpjuvirs7vl4umlovu">&nbsp;&nbsp;&nbsp;mov al,.. 进行字节操作</a>
+</h3>
+<h3 class="topic">
+<a name="2iqjeng5sfaknmj1o7c1kv2mh8">&nbsp;&nbsp;在没有寄存器名时，使用操作符X ptr指明内存单元的长度 ，X可能为word或byte</a>
+</h3>
+<h3 class="topic">
+<a name="2ovg69d840et1ifk7hrb3db1s0">&nbsp;&nbsp;&nbsp;mov word ptr ds:[0],1    (inc add sub)</a>
+</h3>
+<h3 class="topic">
+<a name="4d4i4naqmcc4ahjo87kunk1m3l">&nbsp;&nbsp;&nbsp;mov byte ptr ds:[0],1  (inc add sub)</a>
+</h3>
+<h3 class="topic">
+<a name="0r0d4sh03rni6rf10d691t36ap">&nbsp;&nbsp;其他方法</a>
+</h3>
+<h3 class="topic">
+<a name="6brmqbr0c4l37ofhee4tc6rspq">&nbsp;&nbsp;&nbsp;pop 与push等栈操作默认只进行字操作</a>
+</h3>
+<h3 class="topic">
+<a name="7en6nuldo7s2r9sui3qqnqrtjr">&nbsp;&nbsp;&nbsp;&nbsp;8086cpu的出入栈操作均以字为单位进行</a>
+</h3>
+<h2 class="topic">
+<a name="414okk2ptoin6mb660gtkljnvj">8.6寻址方式的综合应用</a>
+</h2>
+<h3 class="topic">
+<a name="4b0jvh8qg7q6na0if7pata82n8">&nbsp;使用[bx+si+idata]可以将需要操作的数据结构化，一个结构化数据中有多个数据项，每个数据项的类型不相同，可以使用[bx+si+idata]访问结构体中的数据，dx定位整个结构体，idata定位结构体中的某一个数据项，用si定位数据项中的每一个元素，即[bx].idata        [bx].idata[si] 类似于c语言中结构体数组元素的引用</a>
+</h3>
+<h2 class="topic">
+<a name="6au642bv72p7fqo53u3je2d5u7">8.7div指令</a>
+</h2>
+<h3 class="topic">
+<a name="4e76eopkovk37gf4b0ot2rmedf">&nbsp;除法指令</a>
+</h3>
+<h3 class="topic">
+<a name="73dtstcsuvusuhasbm8ods5oga">&nbsp;&nbsp;div reg(可能为8位或十六位)     div 内存单元</a>
+</h3>
+<h3 class="topic">
+<a name="7l3brkvg47omri3p3a7jjn74l4">&nbsp;&nbsp;div byte ptr ds:[0](除数为8位)</a>
+</h3>
+<h3 class="topic">
+<a name="5g1oblpl0v57lq3579l24josjq">&nbsp;&nbsp;div word ptr es:[0](除数为16位)</a>
+</h3>
+<h3 class="topic">
+<a name="56bpqda4h6s8gbrhlmcdll2d3d">&nbsp;注意事项</a>
+</h3>
+<h3 class="topic">
+<a name="1m1bdbqupjs9g14mqcqvsvc6aa">&nbsp;&nbsp;1、除数：有8位（最大为255）和16位（最大为65535）两种，储存在内存单元（可以使用多种寻址方法表示）或寄存器（可以是十六寄存器或八位寄存器）中</a>
+</h3>
+<h3 class="topic">
+<a name="79op2c8g002pkr5eft7p82i555">&nbsp;&nbsp;2、被除数：默认放在ax或ax和dx中，</a>
+</h3>
+<h3 class="topic">
+<a name="0vhl61l5sts4v6vqa0bgqpou8u">&nbsp;&nbsp;&nbsp;当除数为八位，被除数则为16位（最大为65535），默认在ax中存放</a>
+</h3>
+<h3 class="topic">
+<a name="7apa3j7kfo8ln5ilur7d44c27o">&nbsp;&nbsp;&nbsp;当除数为16位，被除数则为32位，被除数在ax和dx中存放，dx存放高16位，ax存放低16位</a>
+</h3>
+<h3 class="topic">
+<a name="1pc4q0db7rebt884kli9sen5t5">&nbsp;&nbsp;3、商：</a>
+</h3>
+<h3 class="topic">
+<a name="1opu84lpett8lgt07tp6slkhj2">&nbsp;&nbsp;&nbsp;除数为8位时，al储存商 ah储存余数</a>
+</h3>
+<h3 class="topic">
+<a name="7n5s9bg4bsi0mlvivokjq54fea">&nbsp;&nbsp;&nbsp;除数为16位时，ax存放商，dx存放余数</a>
+</h3>
+<h2 class="topic">
+<a name="29tp4v7be78d2r55jti4vk7fa6">8.8伪指令dd</a>
+</h2>
+<h3 class="topic">
+<a name="7ea8c7ust49gptbbqu5l75k5rd">&nbsp;用于定义双字类型（dword）的数据，该数据大小为两个字型数据，四个字节型数据，占32个二进制位，8个十六进制</a>
+</h3>
+<h3 class="topic">
+<a name="7ka3rqrru60l3ipjbk3sk9jt5c">&nbsp;&nbsp;四个二进制位等于一个十六进制位</a>
+</h3>
+<h3 class="topic">
+<a name="2p6jtgck387oqfn5hob4etrrh5">&nbsp;&nbsp;&nbsp;一个字节 八个二进制位 两个十六进制位</a>
+</h3>
+<h3 class="topic">
+<a name="7l2renn0v3sbqe700tpvr18n63">&nbsp;&nbsp;&nbsp;一个字 两个字节 十六个二进制位 四个十六进制位</a>
+</h3>
+<h3 class="topic">
+<a name="4m7suv8vcft6haqdo25hn1auue">&nbsp;&nbsp;&nbsp;一个双字 两个字 四个字节 三十二个二进制位 八个十六进制位</a>
+</h3>
+<h2 class="topic">
+<a name="3cpu4k9m3ag9k4d9ojdrgs0d5m">8.9伪指令dup</a>
+</h2>
+<h3 class="topic">
+<a name="57c7c7d8bcblmglnebel1nd6rv">&nbsp;与伪指令dd dw db配合使用，进行数据的重复</a>
+</h3>
+<h3 class="topic">
+<a name="2ug73gurseogg48ik6j99fmv86">&nbsp;&nbsp;db 3 dup (0) 等价于 db 0,0,0</a>
+</h3>
+<h3 class="topic">
+<a name="5i35jone73gfbfaalnas7lc0hp">&nbsp;&nbsp;db 2 dup（0,1,2） 等价于db 0,1,2,0,1,2</a>
+</h3>
+<h3 class="topic">
+<a name="1j8hquonqiddgt853c49l4j46f">&nbsp;&nbsp;db 2 dup ('abc','ABC')等价于db 'abcABCabcABC'</a>
+</h3>
+<h3 class="topic">
+<a name="4234nsb460rbv9dsknngtmj6l2">&nbsp;可以用于开辟大量的内存空间</a>
+</h3>
+<h3 class="topic">
+<a name="1md35m5k6bg9m6vrocndsvijul">&nbsp;&nbsp;db 200 dup (0)用于定义200字节连续的内存空间</a>
+</h3>
+<h2 class="topic">
+<a name="7c3ala1qfsmvvpkbe5o7f9akif">总结</a>
+</h2>
+<h3 class="topic">
+<a name="3mp6vhga5ie2grir5upr8vafnh">&nbsp;db代表字节类型数据</a>
+</h3>
+<h3 class="topic">
+<a name="6scj09tctjt7uiagqibfu9f5st">&nbsp;dw代表字类型数据</a>
+</h3>
+<h3 class="topic">
+<a name="4ulc4dt8e1tpk0cj8hq80pr5is">&nbsp;dd代表双字类型数据</a>
+</h3>
+<h2 class="topic">
+<a name="03eqnqajqti6gte5hb02igoc9m">试验7 寻址方式在结构化数据访问中的应用</a>
+</h2>
+</body>
+</html>

@@ -1,0 +1,758 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>第十一章 标志寄存器</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="67d8gcqrkc39qbfgn6k4pon629">第十一章 标志寄存器</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="%E7%AC%AC%E5%8D%81%E4%B8%80%E7%AB%A0 %E6%A0%87%E5%BF%97%E5%AF%84%E5%AD%98%E5%99%A8_files/images/%E7%AC%AC%E5%8D%81%E4%B8%80%E7%AB%A0 %E6%A0%87%E5%BF%97%E5%AF%84%E5%AD%98%E5%99%A8.jpg"></div>
+<h2 class="topic">
+<a name="0du73q5tq0nn4n9qc701em9gsd">自增指令inc  自减指令dec</a>
+</h2>
+<h2 class="topic">
+<a name="51b8tmptdp94g2sdrjmjhu2lkj">标志寄存器</a>
+</h2>
+<h3 class="topic">
+<a name="4u06cioj698djk2mj14kedf7mb">&nbsp;功能</a>
+</h3>
+<h3 class="topic">
+<a name="4jab2s13ul5530b71f9md10ia8">&nbsp;&nbsp;1、用来储存相关指令的某些执行结果</a>
+</h3>
+<h3 class="topic">
+<a name="5pif2696l68a7c501gl11qce9p">&nbsp;&nbsp;2、用来为cpu执行相关指令提供行为依据</a>
+</h3>
+<h3 class="topic">
+<a name="4vd5cl9rsiijfgp9pio6ob1k3p">&nbsp;&nbsp;3、用来控制cpu的相关工作方式</a>
+</h3>
+<h3 class="topic">
+<a name="323mmf3n0r44rh96qqf3mbntgo">&nbsp;8086cpu中的标志寄存器有十六位，其中存储的信息通常被称为程序状态字（psw），称之为flag</a>
+</h3>
+<h3 class="topic">
+<a name="0qi9hqdnd7vc8jm2rmtdti4dum">&nbsp;&nbsp;与一般寄存器的区别</a>
+</h3>
+<h3 class="topic">
+<a name="4njl9jafnv4qregcblj6ep9tlo">&nbsp;&nbsp;&nbsp;一般寄存器中整个寄存器用于存储数据，整个寄存器拥有一个含义</a>
+</h3>
+<h3 class="topic">
+<a name="2cn3ls813fnfh9l21gh39kvt1i">&nbsp;&nbsp;&nbsp;标志寄存器flag按位起作用，每一位有专门的含义，用以记录特定的信息</a>
+</h3>
+<h3 class="topic">
+<a name="4b7364q3lmi6i4063e6uhcka25">&nbsp;&nbsp;&nbsp;&nbsp;1 3 5 12 13 14 15位没有被使用，不具有意义，而0 2 4 6 7 8 9 10 11位均具有特殊的含义</a>
+</h3>
+<h3 class="topic">
+<a name="7ihibqoth0plgshujqiubdhv1l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0 cf</a>
+</h3>
+<h3 class="topic">
+<a name="1559s6qf3lc47vbof2e64ok01e">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1</a>
+</h3>
+<h3 class="topic">
+<a name="5s3slok9cqau37bdoo64ikvud4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2 pf</a>
+</h3>
+<h3 class="topic">
+<a name="3vh3lfno0hbr6j5ak0gmj1f4ug">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3</a>
+</h3>
+<h3 class="topic">
+<a name="6g969e0qtoc02egf3tdji88u18">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4 af</a>
+</h3>
+<h3 class="topic">
+<a name="38qo66jd31mkqvea96pq860klt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5</a>
+</h3>
+<h3 class="topic">
+<a name="26t2u2r0pu454nic39h6uucri1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6 zf</a>
+</h3>
+<h3 class="topic">
+<a name="73clq6f5hbqlt9e7m2v6ha7lde">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;7 sf</a>
+</h3>
+<h3 class="topic">
+<a name="59srbue3afnkshhbdouqfej577">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;8 tf</a>
+</h3>
+<h3 class="topic">
+<a name="56h88jc258cbvjk01815ti6ohu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;9 if</a>
+</h3>
+<h3 class="topic">
+<a name="3s36mp73jkcd3cbo9s5rr8ctm7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;10 df</a>
+</h3>
+<h3 class="topic">
+<a name="4sjihbpc4he4alo22ld5vum9d8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;11 of</a>
+</h3>
+<h3 class="topic">
+<a name="5jt0pk9rhp2jh1a05rjkucihav">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;12</a>
+</h3>
+<h3 class="topic">
+<a name="33paa83m65bit4p26vgh9q8ljt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;13</a>
+</h3>
+<h3 class="topic">
+<a name="1mpae0lu2iihqr8ujavpk6hgi9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;14</a>
+</h3>
+<h3 class="topic">
+<a name="6fncuenrrks85qt3sal9i7h9nm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;15</a>
+</h3>
+<h3 class="topic">
+<a name="32hhgrrnak9dpdr4schls7di6u">&nbsp;在8086cpu中</a>
+</h3>
+<h3 class="topic">
+<a name="350i8t21n3clivjohn1dgghgdl">&nbsp;&nbsp;有的指令影响标志寄存器，大多数是运算指令，比如add  sub mul  div  inc  or  and </a>
+</h3>
+<h3 class="topic">
+<a name="47e0i09cfu210e8evni7mhmm7h">&nbsp;&nbsp;有的指令对标志寄存器没有影响,大都是传送指令，比如mov  push  pop</a>
+</h3>
+<h2 class="topic">
+<a name="71cn820ktof17fkgdirqumvgh8">11.1zf标志</a>
+</h2>
+<h3 class="topic">
+<a name="3b2lkcbr8h5dfqoftdfd5m8a6r">&nbsp;位于flag的第六位，是零标志位，执行相关指令之后</a>
+</h3>
+<h3 class="topic">
+<a name="5gsauj1cf11mj51vg9egn5jmje">&nbsp;&nbsp;其结果为0，则zf=1</a>
+</h3>
+<h3 class="topic">
+<a name="6565lelqtqvkuj3hutmeehk5pm">&nbsp;&nbsp;其结果不为0，则zf=0</a>
+</h3>
+<h3 class="topic">
+<a name="3nk1e7u7o1v2vurobt1soi73ch">&nbsp;标记相关指令的计算结果是否为0，如果为0，zf=1表示ture，如果不是0，zf=0表示该指令计算结果不为0</a>
+</h3>
+<h3 class="topic">
+<a name="633qluorc963o00975sjnba1ss">&nbsp;&nbsp;注意这里的是否为0是指执行之后对应运算数据的二进制位是否全部为为0，即在数值上表示为0，而不是字符'0'</a>
+</h3>
+<h2 class="topic">
+<a name="4aj9ar2fbeilu9mp9avm1h8h92">11.2pf标志</a>
+</h2>
+<h3 class="topic">
+<a name="446bmce5vp94lrlrp83f85a0s6">&nbsp;位于flag的第二位，奇偶标志位，执行相关指令之后</a>
+</h3>
+<h3 class="topic">
+<a name="3l4hohbkm6peu7advp5ikq09eg">&nbsp;&nbsp;所有bit位中1的个数如果为偶数，则pf=1</a>
+</h3>
+<h3 class="topic">
+<a name="4vtanbls490elpaun9k3cstavb">&nbsp;&nbsp;所有bit位中1的个数如果为奇数，则pf=0</a>
+</h3>
+<h2 class="topic">
+<a name="3n7j76mi0fmnr6i4cb05krokim">11.3sf标志</a>
+</h2>
+<h3 class="topic">
+<a name="4rspvbdpb8r1itl2b2s0hceksk">&nbsp;位于flag的第七位，符号标识位，执行相关指令之后</a>
+</h3>
+<h3 class="topic">
+<a name="02lr0lobj3k0crrnoln57k47hn">&nbsp;&nbsp;结果为负，sf=1</a>
+</h3>
+<h3 class="topic">
+<a name="3lma880hl8i346gpmlt33u4j93">&nbsp;&nbsp;结果非负，sf=0</a>
+</h3>
+<h3 class="topic">
+<a name="1t0i3ttd9l91h8edrhvgkmfj8k">&nbsp;计算机中通常使用补码表示有符号数据，计算机中的一个数据可以看作有符号数，也可以看成无符号数</a>
+</h3>
+<h3 class="topic">
+<a name="0tc5vkkho8pe2j0eqmdhkg0he9">&nbsp;&nbsp;00000001b可以看作无符号数1，或有符号数+1</a>
+</h3>
+<h3 class="topic">
+<a name="429gms8d12c0t387eblm5jtq0s">&nbsp;&nbsp;10000001b可以看作无符号数129，可以看作有符号数-127</a>
+</h3>
+<h3 class="topic">
+<a name="7ouopfl0afotibfgrm5mnobbpc">&nbsp;可以将一个二进制的数据当作无符号数运算，也可以当作有符号数运算</a>
+</h3>
+<h3 class="topic">
+<a name="70l1kt79acrj0046tv0l64uhf7">&nbsp;&nbsp;注意就运算结果的二进制表现形式来看，两者均相同，但是对于该结果的解读可以有无符号型和有符号型两种，关键在于程序需要那种结果</a>
+</h3>
+<h3 class="topic">
+<a name="2vkgsmurhjufg9eih8rn0bnbsb">&nbsp;sf指令记录了指令结果的正负，当需要处理有符号型数据时，通过该标志可以知道该数的正负，当处理无符号型数据的时候，sf没有意义，虽然有关指令会影响其值</a>
+</h3>
+<h3 class="topic">
+<a name="4pm8sgk9aiigh8b9u9d83jggqu">&nbsp;&nbsp;add等指令一定会影响到sf的值，但是sf是否有意义，取决于指令进行的是有符号数运算还是无符号数运算，前者可以用sf表示运算结果的正负，后者sf信息没有意义</a>
+</h3>
+<h3 class="topic">
+<a name="0vq0et7s6gvdcvttrebb53nsqh">&nbsp;有的指令会影响多个标记为，比如sub al,al  执行之后</a>
+</h3>
+<h3 class="topic">
+<a name="55lhvj0tu94duidn2h6ie67om1">&nbsp;&nbsp;zf=1（结果为0）</a>
+</h3>
+<h3 class="topic">
+<a name="7ou616jilkck52qs603pvmmoqt">&nbsp;&nbsp;pf=1（1位个数为偶数）</a>
+</h3>
+<h3 class="topic">
+<a name="1ego16r0ij5ag9uuu3mumcrc4r">&nbsp;&nbsp;sf=0（运算结果为非负）</a>
+</h3>
+<h2 class="topic">
+<a name="0u7k9m89jktnsflg97ce9gjefk">11.4 cf标志</a>
+</h2>
+<h3 class="topic">
+<a name="0illtlhjpr9mho0i3jicgdfec5">&nbsp;位于flag的第0位，进位标志位，进行无符号数运算的时候、</a>
+</h3>
+<h3 class="topic">
+<a name="5r3a4fa3el6afkt9c86cvskh03">&nbsp;&nbsp;记录运算结果的最高有效位向更高位的进位值（针对加法）</a>
+</h3>
+<h3 class="topic">
+<a name="35m2ef8359jjoqtaq752h2lr7q">&nbsp;&nbsp;&nbsp;mov al,98h</a>
+</h3>
+<h3 class="topic">
+<a name="3behbjtsk6e07ag2cs6r0g6vs5">&nbsp;&nbsp;&nbsp;add al,al</a>
+</h3>
+<h3 class="topic">
+<a name="7cm8r012qt7oettaivj0hb39o3">&nbsp;&nbsp;&nbsp;&nbsp;执行之后，因为98h+98h=130h，不能在8位寄存器上储存，所以al中只储存低位30h，更高进位保存在flag的cf1中即cf=1</a>
+</h3>
+<h3 class="topic">
+<a name="5upr7r8a3b8bopjt3vdbd6kc1i">&nbsp;&nbsp;&nbsp;add al,al</a>
+</h3>
+<h3 class="topic">
+<a name="52lnmlpgo7g241sbpidp99cpbl">&nbsp;&nbsp;&nbsp;&nbsp;由于指令执行之前al=30h 指令执行之后，al=60h，更高位的进位为0，cf=0</a>
+</h3>
+<h3 class="topic">
+<a name="62pv7bp3hjioo6hv66b2v84gmf">&nbsp;&nbsp;&nbsp;针对加法运算，cf=1则加法运算产生进位， cf=0则加法运算不产生进位</a>
+</h3>
+<h3 class="topic">
+<a name="72mqj0njgflu6mct7rvgr81nhn">&nbsp;&nbsp;&nbsp;&nbsp;两个n位数相加，如果结果是n+1位数，则该n+1位一定是1，即进位一定进1</a>
+</h3>
+<h3 class="topic">
+<a name="5p6emliprdnjjkdc7kep7duhak">&nbsp;&nbsp;记录运算结果的最高有效位从更高位的借位值（针对减法）（这个涉及补码，不太清楚）</a>
+</h3>
+<h3 class="topic">
+<a name="1ng8gptjh2mepkr6uv8gllrb58">&nbsp;&nbsp;&nbsp;mov al,97h</a>
+</h3>
+<h3 class="topic">
+<a name="2ltlo62ivcadguiid1ftjkh8bp">&nbsp;&nbsp;&nbsp;sub al,98h</a>
+</h3>
+<h3 class="topic">
+<a name="4crnr67qj6ej4ptclfctj09gns">&nbsp;&nbsp;&nbsp;&nbsp;执行之后 （al)=ffh (cf)=1,cf记录了向更高位的借位值</a>
+</h3>
+<h3 class="topic">
+<a name="7v1s3flldhbl350o7pi5po2u8j">&nbsp;&nbsp;&nbsp;sub al,al</a>
+</h3>
+<h3 class="topic">
+<a name="1otakthue983ahjjvlcc23njhs">&nbsp;&nbsp;&nbsp;&nbsp;执行之后 (al)=0 (cf)=0,cf记录了向更高位的借值</a>
+</h3>
+<h3 class="topic">
+<a name="6afnml849b268b3uagpgkrpsu3">&nbsp;&nbsp;&nbsp;针对减法运算，cf=1则减法运算产生借位， cf=0则减法运算不产生进位</a>
+</h3>
+<h2 class="topic">
+<a name="0nqlu7nq3r49slqgkusd15c6r5">11.5of标志</a>
+</h2>
+<h3 class="topic">
+<a name="06qea8200gfbl1kq6lun3q8nnu">&nbsp;溢出</a>
+</h3>
+<h3 class="topic">
+<a name="3honja3j8kphq88nal2uk8u796">&nbsp;&nbsp;进行有符号数的运算时，如果结果超过了机器所能表示的范围，称之为溢出（注意此时的溢出仅仅针对有符号数运算而言）</a>
+</h3>
+<h3 class="topic">
+<a name="3l2ma9havb7hid1q50hmr2svqt">&nbsp;机器所能表示的范围</a>
+</h3>
+<h3 class="topic">
+<a name="6mmeembbvrlgb51v7dks0h0mgd">&nbsp;&nbsp;8位寄存器或内存单元</a>
+</h3>
+<h3 class="topic">
+<a name="1mkip4ri5el98bvlmct2en7m0e">&nbsp;&nbsp;&nbsp;有符号数的表示范围-128~127</a>
+</h3>
+<h3 class="topic">
+<a name="1pnmhtoldj9a3l6ugkkui76u72">&nbsp;&nbsp;&nbsp;&nbsp;溢出情况1</a>
+</h3>
+<h3 class="topic">
+<a name="44u7rvtjdadtem43rck796qupf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mov al,98</a>
+</h3>
+<h3 class="topic">
+<a name="78ia30faha1ngkpq96l5e0frnu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;add al,99</a>
+</h3>
+<h3 class="topic">
+<a name="26lo900f6mlnfpge3e0emvc8ue">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;此时该运算的结果位197，超过了机器所能表示的8位有符号数的范围</a>
+</h3>
+<h3 class="topic">
+<a name="0fkg3q9ehj11mi5n38gh4e7bse">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该指令执行结果为（al）=0c5h 因为al中储存有符号数，c5h是有符号数-59的补码 相当于99+98=-59</a>
+</h3>
+<h3 class="topic">
+<a name="68c2smefoe0bbseb5fp0m64qq3">&nbsp;&nbsp;&nbsp;&nbsp;溢出情况2</a>
+</h3>
+<h3 class="topic">
+<a name="2j2vfgop497jgnc4749fe3vht4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mov al,0f0h ;0f0h为有符号数-16的补码</a>
+</h3>
+<h3 class="topic">
+<a name="2ome2af8gpn4j9smjf0dktjdar">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mov al,088h ；088h为有符号数-120的补码，两者的相加结果为-136 ，超过了8位有符号数能够表示的范围</a>
+</h3>
+<h3 class="topic">
+<a name="4ba0j12d0im6t8j02or5udt0od">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该指令执行结果为（al）=78h 因为al中储存有符号数，78h是有符号数-120 相当于-16+-120=78</a>
+</h3>
+<h3 class="topic">
+<a name="44gtvqc84tkjmdsl5gd6kfuf8i">&nbsp;&nbsp;16位寄存器或字单元</a>
+</h3>
+<h3 class="topic">
+<a name="5298r9969q75r65in58eol50bb">&nbsp;位于flag的第11位，溢出标志位，进行有符号数运算的时候</a>
+</h3>
+<h3 class="topic">
+<a name="337jq3ohvmr13mn4nuod0hll6j">&nbsp;&nbsp;运算发生了溢出，of=1</a>
+</h3>
+<h3 class="topic">
+<a name="5ir53q9hsah063ui5hrq5311ks">&nbsp;&nbsp;&nbsp;有符号数的表示范围-32768~32767</a>
+</h3>
+<h3 class="topic">
+<a name="6h94t65fgema1qcrd910t5qv0r">&nbsp;&nbsp;运算没有发生溢出，of=0</a>
+</h3>
+<h2 class="topic">
+<a name="0qpvn7sq1olir5pa7m5t0krb30">注意针对cf与of</a>
+</h2>
+<h3 class="topic">
+<a name="1pb1na4ibhjuck4j1tas83p8aq">&nbsp;cf对应无符号数的运算</a>
+</h3>
+<h3 class="topic">
+<a name="09oliqc0jb1s2c28o08l84n99s">&nbsp;of对应有符号数的运算</a>
+</h3>
+<h3 class="topic">
+<a name="1e0bhbpbjkf59ichk2n9po0lm7">&nbsp;对于mov al,98 add al,99指令，执行的时候包含了两种含义，</a>
+</h3>
+<h3 class="topic">
+<a name="1e6uabe7llk760355705bm8pns">&nbsp;&nbsp;1、作为无符号整数运算，cf=0，因为8位数作为无符号整数是表示范围0~255，本语句没有超过表示范围，不产生进位</a>
+</h3>
+<h3 class="topic">
+<a name="6qeno2moqi2950c1nju0g9ejo2">&nbsp;&nbsp;2、作为有符号整数运算，of=1，因为其结果197超过了8位有符号数的表示范围-128~127，发生了溢出</a>
+</h3>
+<h3 class="topic">
+<a name="2lc2f1bghbt6nhot1ffbnl2oi7">&nbsp;对于mov al,0f0h  add al,88h</a>
+</h3>
+<h3 class="topic">
+<a name="5gdtv3efb01gn2nftd37e26ohn">&nbsp;&nbsp;cf=1</a>
+</h3>
+<h3 class="topic">
+<a name="3egvodkpkfds2ohkdc8u4qja27">&nbsp;&nbsp;of=1</a>
+</h3>
+<h3 class="topic">
+<a name="17l3uhqmui7toc4lv356ft8ucm">&nbsp;mov al,0f0h  add al,78h</a>
+</h3>
+<h3 class="topic">
+<a name="4skcdq0i30e5ft4p2dljooq2dk">&nbsp;&nbsp;cf=1</a>
+</h3>
+<h3 class="topic">
+<a name="0bfpntkbrnsh1p19djrfgtadld">&nbsp;&nbsp;of=0</a>
+</h3>
+<h2 class="topic">
+<a name="7to6nsqs8ct51kotm9uvv1s6i2">11.6adc指令</a>
+</h2>
+<h3 class="topic">
+<a name="71cmuhgm93ee9enlcoi2t329td">&nbsp;abc是带进位加法指令</a>
+</h3>
+<h3 class="topic">
+<a name="7ejgckd73383ci66nur2rml5nt">&nbsp;格式</a>
+</h3>
+<h3 class="topic">
+<a name="408e3ur7ptugcr9gi8sutk1hk5">&nbsp;&nbsp;adc 操作对象1，操作对象2</a>
+</h3>
+<h3 class="topic">
+<a name="58opp3es4mvod3ffnjfeobu5pa">&nbsp;功能</a>
+</h3>
+<h3 class="topic">
+<a name="21e8ir8jnu15pkqe1tjr5gph50">&nbsp;&nbsp;操作对象1=操作对象1+操作对象2+cf</a>
+</h3>
+<h3 class="topic">
+<a name="251ibmerib73m1n5tgujo8ggqt">&nbsp;例如</a>
+</h3>
+<h3 class="topic">
+<a name="2sa5mhjv4s8t7famqeata3a6mt">&nbsp;&nbsp;mov ax,1 add ax,ax adc ax,3    ax=ax+3+cf=2+3+0</a>
+</h3>
+<h3 class="topic">
+<a name="5m4qfainoaqrjljms4jdhjtsp2">&nbsp;&nbsp;mov al,98h  add al,al  adc al,3  al=al+3+cf=30h+3+1=34h</a>
+</h3>
+<h3 class="topic">
+<a name="1ts5qntjl0pmvep3e5c5dprasg">&nbsp;类比于add指令多加了一个cf</a>
+</h3>
+<h3 class="topic">
+<a name="2nalumjermcloet5kmbqnareu7">&nbsp;adc指令在执行中会加上cf的值，而cf的值是由adc前面的指令决定的，</a>
+</h3>
+<h3 class="topic">
+<a name="7jhsl9f2cmec4sc616go5n34nu">&nbsp;&nbsp;如果cf的值是被sub指令是设置的，cf表示借位值</a>
+</h3>
+<h3 class="topic">
+<a name="06djpgb2mq4i5c3t2fns424vln">&nbsp;&nbsp;如果cf的值是被add指令是设置的，cf表示进位值</a>
+</h3>
+<h3 class="topic">
+<a name="23qpbk495iqoo4ndtq9s5um901">&nbsp;进行加法运算的顺序1、低位相加 2、高位相加再加上地位相加产生的进位值</a>
+</h3>
+<h3 class="topic">
+<a name="5d4dfsjl7mlkmqboh1lrlmod5l">&nbsp;&nbsp;而adc提供了一种使得高位相加并加上低位相加产生的进位的机制</a>
+</h3>
+<h3 class="topic">
+<a name="3dnlts6tcdas0t9c7dhnbomc15">&nbsp;add ax,bx 等效于 add al,bl  adc ah,bh</a>
+</h3>
+<h3 class="topic">
+<a name="756nevtginbebtp01gmtracps5">&nbsp;&nbsp;add与adc指令相配合可以进行更大数据的加法运算</a>
+</h3>
+<h3 class="topic">
+<a name="043cjf069qtqlisovhb989nk6t">&nbsp;&nbsp;&nbsp;例如</a>
+</h3>
+<h3 class="topic">
+<a name="6r37u6j09pn2c5su9ecpm41uel">&nbsp;&nbsp;&nbsp;&nbsp;计算1ef000h+201000h 结果的高十六位放在ax中，低十六位放在bx中</a>
+</h3>
+<h3 class="topic">
+<a name="3g8sv39rnlptrhg7bp0ksj2ska">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mov ax,001eh ;储存第一个数的高十六位</a>
+</h3>
+<h3 class="topic">
+<a name="6ik8b4pgo4flk580lpeaohd3op">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mov bx,0f000h  ;储存第一个数的低十六位</a>
+</h3>
+<h3 class="topic">
+<a name="3d4jckn5vfcolchi622mtsq83p">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;add bx,1000h ;两个数的低十六位相加，进位在cf中</a>
+</h3>
+<h3 class="topic">
+<a name="4vtrpsaeurtr0ptc21fb80ugeh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;adc ax,0020h  两个书的高十六位相加再加上低十六位的进位</a>
+</h3>
+<h3 class="topic">
+<a name="4aedcpdv0qpormephr37go37af">&nbsp;adc指令执行之后，也可能产生进位值，所以也会对cf进行设置，由于这种特点所以可以对任意大小的数进行加法运算</a>
+</h3>
+<h3 class="topic">
+<a name="1bkg3bm91kugb4s6jg3ls4qakl">&nbsp;&nbsp;计算1ef0001000h+2010001ef0h,结果放在ax（高十六位），bx (次高十六位) ，cx（低十六位）</a>
+</h3>
+<h3 class="topic">
+<a name="5bfjae7hol8ch90li87seqg0ik">&nbsp;&nbsp;&nbsp;mov ax,001eh</a>
+</h3>
+<h3 class="topic">
+<a name="2tp9s94icsofcps2009c4ca8la">&nbsp;&nbsp;&nbsp;&nbsp;参数1的高16位</a>
+</h3>
+<h3 class="topic">
+<a name="7lg7iupes8e3o2mi95dbtepfuu">&nbsp;&nbsp;&nbsp;mov bx,0f000h</a>
+</h3>
+<h3 class="topic">
+<a name="5cbivm40sdd1o2vqfpkdg66r0q">&nbsp;&nbsp;&nbsp;&nbsp;参数1的次高16位</a>
+</h3>
+<h3 class="topic">
+<a name="480jqg5por805tat7vr30iptl3">&nbsp;&nbsp;&nbsp;mov cx,1000h</a>
+</h3>
+<h3 class="topic">
+<a name="33j0c7f3eemucc94eankk2nnio">&nbsp;&nbsp;&nbsp;&nbsp;参数1的低16位</a>
+</h3>
+<h3 class="topic">
+<a name="4d7jbntg0gn6s2vvcamr6le3qi">&nbsp;&nbsp;&nbsp;add cx,1ef0h </a>
+</h3>
+<h3 class="topic">
+<a name="6m08d9ja8flc420t6m98psqa8o">&nbsp;&nbsp;&nbsp;&nbsp;参数2的低16位</a>
+</h3>
+<h3 class="topic">
+<a name="1cifb2448c61ejk0mofi3mdb47">&nbsp;&nbsp;&nbsp;adc bx,1000h</a>
+</h3>
+<h3 class="topic">
+<a name="4rbpntiec07n0hpgpt8rekf0iv">&nbsp;&nbsp;&nbsp;&nbsp;参数2的次高16位</a>
+</h3>
+<h3 class="topic">
+<a name="0qlm5n5uke6ga0jfuoeg5i8hg5">&nbsp;&nbsp;&nbsp;adc ax,0020h</a>
+</h3>
+<h3 class="topic">
+<a name="42eh4so9sp28lrepl6vi9smkgk">&nbsp;&nbsp;&nbsp;&nbsp;参数2的高16位</a>
+</h3>
+<h3 class="topic">
+<a name="3m1a9l2ejstqgbgnsuso57ufdk">&nbsp;可以对两个128位数据进行相加的子程序（使用mov指令分别读入第一个数据存储单元的八个字单元的数据，使用adc分别将第一个数据的八个字单元与第二个数据的八个字单元相加，结果存储在第二个数据的八个字单元中）(注意使用abc指令进行相加的时候实是从低位到高位，这样才能正确设置cf的进位)</a>
+</h3>
+<h3 class="topic">
+<a name="7629d4hm6j99s4i3ji3js4trhg">&nbsp;&nbsp;inc指令以及loop指令不影响cf位</a>
+</h3>
+<h2 class="topic">
+<a name="0pikhfpgc2ja2hs078enid0bvn">11.7sbb指令</a>
+</h2>
+<h3 class="topic">
+<a name="07trirllqqae6gveodgahl6bc6">&nbsp;带借位减法指令，利用了cf位上的记录的借位值</a>
+</h3>
+<h3 class="topic">
+<a name="7hlbv8qsba3ludr36p7rk6hcm8">&nbsp;格式</a>
+</h3>
+<h3 class="topic">
+<a name="6k2rd303rildn8dd2i806e31jn">&nbsp;&nbsp;sbb 操作对象1，操作对象2</a>
+</h3>
+<h3 class="topic">
+<a name="4503tutuj2o6rkj46kdjmcds0m">&nbsp;功能</a>
+</h3>
+<h3 class="topic">
+<a name="2l8ojac12ckvi943o0itvki4rs">&nbsp;&nbsp;操作对象1=操作对象1-操作对象2-cf</a>
+</h3>
+<h3 class="topic">
+<a name="5putmjugqattb85v6hhm12jfea">&nbsp;执行完成sbb指令之后，将对cf进行设置，利用sbb指令可以进行任意大的数据进行减法运算</a>
+</h3>
+<h3 class="topic">
+<a name="27e2g4i8tn1ngka5lcdd5tgrqr">&nbsp;例如计算003e1000h-00202000h,结果放在ax，bx中</a>
+</h3>
+<h3 class="topic">
+<a name="4v8610ml00m6b8n6fg5ig9jh66">&nbsp;&nbsp;mov bx,1000h</a>
+</h3>
+<h3 class="topic">
+<a name="23jt5nci3r6su65ks6o88fc1ov">&nbsp;&nbsp;&nbsp;将被减数的低16位放在bx中</a>
+</h3>
+<h3 class="topic">
+<a name="4q3ve61bp0i88v0t6bccfjugg1">&nbsp;&nbsp;mov ax,003eh</a>
+</h3>
+<h3 class="topic">
+<a name="3424dkgqt5gsfnqt9eue8ge2pg">&nbsp;&nbsp;&nbsp;将被减数的高16位放在ax中</a>
+</h3>
+<h3 class="topic">
+<a name="3or0rpv7curo9eiqfmjbqgot67">&nbsp;&nbsp;sub bx,2000h</a>
+</h3>
+<h3 class="topic">
+<a name="64qdcol0jten1e9bpd5r1cltik">&nbsp;&nbsp;&nbsp;被减数的低十六位减去减数的低十六位</a>
+</h3>
+<h3 class="topic">
+<a name="1i1p7u1ff2qu1029bo5itb8ndg">&nbsp;&nbsp;sbb ax,0020h</a>
+</h3>
+<h3 class="topic">
+<a name="40vqa7ujtefl4383fgg9363jhh">&nbsp;&nbsp;&nbsp;被减数的高十六位减去减数的高十六位，再减去借位</a>
+</h3>
+<h3 class="topic">
+<a name="42f1rpau1ocur8fitdgekbtkia">&nbsp;应用思路与adc相同</a>
+</h3>
+<h2 class="topic">
+<a name="6fg0vse9cu09ue2r1usaoa8kpn">11.8cmp指令</a>
+</h2>
+<h3 class="topic">
+<a name="5r6r6b8tumcrdvd4lepincgtim">&nbsp;比较指令，功能相当于减法指令，只是不保存结果，指令执行完成后，会对标志寄存器产生影响，其他指令通过识别这些被影响的标志寄存器的值比较结果</a>
+</h3>
+<h3 class="topic">
+<a name="058l9dlqlq0hm2a59t3mjv3vgi">&nbsp;格式</a>
+</h3>
+<h3 class="topic">
+<a name="6shc0d94bh7ikbb1laih5oatq6">&nbsp;&nbsp;cmp 操作对象1,操作对象2</a>
+</h3>
+<h3 class="topic">
+<a name="28h111gjl1phthiq3jlitruesk">&nbsp;&nbsp;&nbsp;这里的操作对象可以是十六位或8位的寄存器，也可以是指定数据长度的内存单元</a>
+</h3>
+<h3 class="topic">
+<a name="4o9spprjids6pthrpsmteq0ens">&nbsp;功能</a>
+</h3>
+<h3 class="topic">
+<a name="04qs39t1f2mmuh65802s69kril">&nbsp;&nbsp;计算操作对象1-操作对象2，根据结果对标志寄存器进行设置,包括 zf（结果是否为0） pf（运算结果中二进制位为1的数量是否为偶数） sf （运算结果是否为负）cf （记录进位或借位值）of（是否发生溢出）</a>
+</h3>
+<h3 class="topic">
+<a name="6cetbn4a797ltjmmp2ra6sfook">&nbsp;例如cmp ax,ax</a>
+</h3>
+<h3 class="topic">
+<a name="6u9l6lpb0h7ckjg1e6ogputj2u">&nbsp;&nbsp;执行结果</a>
+</h3>
+<h3 class="topic">
+<a name="4eiampo6cotosob5b8k5b2715c">&nbsp;&nbsp;&nbsp;zf=1 pf=1 sf=0 cf=0 of=0</a>
+</h3>
+<h3 class="topic">
+<a name="1j92k3s183o8vvt852hf9kmitp">&nbsp;&nbsp;&nbsp;注意ax中的值仍为执行该指令之前的值，不会因为cmp指令就会使ax=0，因为cmp指令不保存运算结果，只进行减法运算</a>
+</h3>
+<h3 class="topic">
+<a name="0fb91j93g2do3t22t5mmmcrpkk">&nbsp;同add sub一样，可以对无符号数进行比较，也可以针对有符号数进行比较</a>
+</h3>
+<h3 class="topic">
+<a name="2275g68cujdve2g6o5i2epp4la">&nbsp;根据减法的运算性质以及标志寄存器的特定含义，可以是使用cmp指令对两个操作对象的值的大小进行对比</a>
+</h3>
+<h3 class="topic">
+<a name="5hchphessnhei17661qa0p92us">&nbsp;&nbsp;cmp ax,bx（针对无符号数进行比较）</a>
+</h3>
+<h3 class="topic">
+<a name="3ij4vkn6femm1k8p2no2e4ff22">&nbsp;&nbsp;&nbsp;zf=1,说明（ax）=（bx） 说明（ax）-（bx）=0</a>
+</h3>
+<h3 class="topic">
+<a name="51pmo9me9hskru3ai1ui2mpae1">&nbsp;&nbsp;&nbsp;zf=0,说明（ax）!=（bx）</a>
+</h3>
+<h3 class="topic">
+<a name="5lmah40gflb3pbkhhvtao7c0v5">&nbsp;&nbsp;&nbsp;cf=1,说明（ax）&lt;（bx）说明（ax）-（bx）有借位</a>
+</h3>
+<h3 class="topic">
+<a name="5jvqg2t95af8rikgi2frmcr7l7">&nbsp;&nbsp;&nbsp;cf=0,说明（ax）&gt;=（bx）</a>
+</h3>
+<h3 class="topic">
+<a name="39v8g7jmu2vtj8a2akv93u5k01">&nbsp;&nbsp;&nbsp;cf=0并且zf=0,说明（ax）&gt;（bx）</a>
+</h3>
+<h3 class="topic">
+<a name="2mu47uslgsv2qg33i4re6e682h">&nbsp;&nbsp;&nbsp;cf=1或zf=1,说明（ax）&lt;=（bx）</a>
+</h3>
+<h3 class="topic">
+<a name="3ri0h9evgmkffndk21e2u31qp5">&nbsp;&nbsp;cmp ah,bh(针对有符号数进行比较)</a>
+</h3>
+<h3 class="topic">
+<a name="3h1sclsac3udv528kllsi8asfn">&nbsp;&nbsp;&nbsp;zf=1 说明（ah）=（bh）</a>
+</h3>
+<h3 class="topic">
+<a name="2oseeui5ppms3l88ttjk72qppm">&nbsp;&nbsp;&nbsp;zf=0,说明（ah）!=（bh）</a>
+</h3>
+<h3 class="topic">
+<a name="4efo16g2f6hnvmakoel1nnec89">&nbsp;&nbsp;&nbsp;sf=1(说明实际结果为负)且of=0（说明结果没有溢出） （ah）&lt;（bh）</a>
+</h3>
+<h3 class="topic">
+<a name="4soun26umagu1sb3fr2e1g2tkg">&nbsp;&nbsp;&nbsp;&nbsp;由于结果没有溢出，所以实际结果的正负与逻辑结果的正负相同</a>
+</h3>
+<h3 class="topic">
+<a name="6sb2qgbcfinmlp3g6qbl5hlhgm">&nbsp;&nbsp;&nbsp;sf=1(说明实际结果为负)且of=1（说明结果有溢出）（ah）&gt;（bh）</a>
+</h3>
+<h3 class="topic">
+<a name="4pe88jv7q8reghonb45ti8r0eh">&nbsp;&nbsp;&nbsp;&nbsp; 说明是由于溢出导致实际结果为负，如果由于溢出导致实际结果为负，则逻辑上的结果必为正</a>
+</h3>
+<h3 class="topic">
+<a name="6l77bhjnp10b4tktkakctnjcu3">&nbsp;&nbsp;&nbsp;sf=1(说明实际结果为非负)且of=1（说明结果有溢出）（ah）&lt;（bh）</a>
+</h3>
+<h3 class="topic">
+<a name="2dea4n2t97eu0v890ibaov13jd">&nbsp;&nbsp;&nbsp;&nbsp; 说明是由于溢出导致实际结果为正，如果由于溢出导致实际结果为正，则逻辑上的结果必为负</a>
+</h3>
+<h3 class="topic">
+<a name="3d1jk1sruft97a26fhk6eipl1u">&nbsp;&nbsp;&nbsp;sf=0(说明实际结果为非负)且of=0（说明结果没有溢出）（ah）&gt;=（bh）</a>
+</h3>
+<h3 class="topic">
+<a name="5emh1ntoi3l8a2qf2o3eqk4drt">&nbsp;&nbsp;&nbsp;&nbsp;由于结果没有溢出，所以实际结果的正负与逻辑结果的正负相同</a>
+</h3>
+<h3 class="topic">
+<a name="1487idei9ee975107114t2mf2j">&nbsp;&nbsp;由于使用cmp进行两个数字的比较的过程中，两个操作对象的差值可能造成溢出，导致实际结果的正负与逻辑结果的正负不符，所以需要在考虑到是否溢出的前提下进行针对有符号数的比较（如果不发生溢出，则实际结果的正负与逻辑结果的正负相同）</a>
+</h3>
+<h2 class="topic">
+<a name="50pik7ruk0603c6c3tbbsa54qg">11.9检测比较结果的条件转移指令（根据cmp指令的运行结果，即对标志寄存器的改变进行工作的指令）</a>
+</h2>
+<h3 class="topic">
+<a name="3vm4v2uui3mgmjvo1m4ults1um">&nbsp;转移针对修改ip，条件指在一定情况下修改ip</a>
+</h3>
+<h3 class="topic">
+<a name="539m3d0pkqtadbseisgoqnf1fe">&nbsp;所有条件转移指令的转移范围均是8个二进制位的有符号数-128~127</a>
+</h3>
+<h3 class="topic">
+<a name="4pgt1b1tmbastskn3puuc1m4ea">&nbsp;以下条件转移指令检测标志寄存器的相关标志位（可以被cmp指令修改），以此决定是否修改ip 所以经常与cmp指令联合使用，表示根据比较结果决定是否进行转移（达到某种if的作用）</a>
+</h3>
+<h3 class="topic">
+<a name="2gm7lqf0oo9vrh5ceg6vpib6us">&nbsp;&nbsp;分类</a>
+</h3>
+<h3 class="topic">
+<a name="5os9do1m8k7osr3rqirfs2g98r">&nbsp;&nbsp;&nbsp;根据无符号数的比较结果进行转移的条件转移指令（检测zf cf的值）</a>
+</h3>
+<h3 class="topic">
+<a name="3n933ccqdgh9htq7vuvd2n86hn">&nbsp;&nbsp;&nbsp;&nbsp;cmp ax,bx（针对无符号数进行比较结果进行转移）</a>
+</h3>
+<h3 class="topic">
+<a name="5pk4ljnaed5dqtsi62cenngnjr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;je  标号  等于则转移  检测 zf=1,说明（ax）=（bx） 说明（ax）-（bx）=0</a>
+</h3>
+<h3 class="topic">
+<a name="5255prs1inr94f7qsn7trf4jbg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;jne 标号  不等于则转移 检测zf=0,说明（ax）!=（bx）</a>
+</h3>
+<h3 class="topic">
+<a name="0d5ga3nuanuvpjcf99uagscg70">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;jb 标号  小于则转移  检测cf=1,说明（ax）&lt;（bx）说明（ax）-（bx）有借位</a>
+</h3>
+<h3 class="topic">
+<a name="1gfjk19pki4k5k6utbms4id862">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;jnb 标号  不小于则转移  检测cf=0,说明（ax）&gt;=（bx）</a>
+</h3>
+<h3 class="topic">
+<a name="01d394dd7qplp3tavhrs3j6v4m">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ja 标号  大于则转移  检测cf=0并且zf=0,说明（ax）&gt;（bx）</a>
+</h3>
+<h3 class="topic">
+<a name="6kvl1k385hf491n490p9nctq8l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;jna 标号  不大于则转移  检测cf=1或zf=1,说明（ax）&lt;=（bx）</a>
+</h3>
+<h3 class="topic">
+<a name="6qlbn80scu13ej0b8i9qiih27q">&nbsp;&nbsp;&nbsp;根据有符号数的比较结果进行转移的条件转移指令（检测zf sf of的值）</a>
+</h3>
+<h3 class="topic">
+<a name="34cj5i688015nos7rlte5qpaca">&nbsp;&nbsp;&nbsp;&nbsp;针对有符号数的比较结果进行转移的条件转移指令应用原理与上面类似</a>
+</h3>
+<h2 class="topic">
+<a name="2pnouje9v1gflvbmv26orrqrvb">11.10 df标志与串传送指令</a>
+</h2>
+<h3 class="topic">
+<a name="4pr46n3u7orkbimrlri40ermb9">&nbsp;df  位于flag第十位，方向标志符，在串处理指令中，控制每次操作后si di的增减</a>
+</h3>
+<h3 class="topic">
+<a name="144ua9kl36323cn0rb5s7vs19m">&nbsp;&nbsp;df=0 每次操作后si di 递增</a>
+</h3>
+<h3 class="topic">
+<a name="0mf5fveau35ugb713qa0okhm94">&nbsp;&nbsp;df=1每次操作后si di 递减</a>
+</h3>
+<h3 class="topic">
+<a name="686noucrlpqselm1vo11ajp25i">&nbsp;串传送指令</a>
+</h3>
+<h3 class="topic">
+<a name="79ngq4vtpe9eut5ufd3ov4525q">&nbsp;&nbsp;movsb	(将ds:si指向的内存单元的字节送入es:di中，然后递增或递减di si)</a>
+</h3>
+<h3 class="topic">
+<a name="7sdh01omb0sec0cflg8tpgr748">&nbsp;&nbsp;&nbsp;相当于</a>
+</h3>
+<h3 class="topic">
+<a name="5nrfn0pdb33ueclp28qman0j7e">&nbsp;&nbsp;&nbsp;&nbsp;((es*16)+(di))=((ds*16)+(si))（传送字节的内容）</a>
+</h3>
+<h3 class="topic">
+<a name="43lhn47djshsrrkvms5rj5obfq">&nbsp;&nbsp;&nbsp;&nbsp;if (df)=0  (si)=(si)+1  (di)=(di)+1</a>
+</h3>
+<h3 class="topic">
+<a name="33p588lsp8n9d0m42gd3g2bmba">&nbsp;&nbsp;&nbsp;&nbsp;if (df)=1  (si)=(si)-1  (di)=(di)-1</a>
+</h3>
+<h3 class="topic">
+<a name="1o5ll10925939c5el67g1pg03n">&nbsp;&nbsp;movsw	(将ds:si指向的内存单元的字单元送入es:di中，然后递增2或递减2 di si)</a>
+</h3>
+<h3 class="topic">
+<a name="2ku1u553igaifjr6c9g4t6e63p">&nbsp;&nbsp;&nbsp;相当于</a>
+</h3>
+<h3 class="topic">
+<a name="1l2ovn9lsr7qe33dp9ppi5cuta">&nbsp;&nbsp;&nbsp;&nbsp;((es*16)+(di))=((ds*16)+(si))（传送字单元的内容）</a>
+</h3>
+<h3 class="topic">
+<a name="3kqtb1qcrgoekvdn7j95bf6ige">&nbsp;&nbsp;&nbsp;&nbsp;if (df)=0  (si)=(si)+2  (di)=(di)+2</a>
+</h3>
+<h3 class="topic">
+<a name="4u8gdn58f1st5enhj4233uj9o4">&nbsp;&nbsp;&nbsp;&nbsp;if (df)=1  (si)=(si)-2  (di)=(di)-2</a>
+</h3>
+<h3 class="topic">
+<a name="38lkbt580tma0bjtch8nu6vql4">&nbsp;&nbsp;rep</a>
+</h3>
+<h3 class="topic">
+<a name="7ltdqh0v8f0kuknq6nd3o0evci">&nbsp;&nbsp;&nbsp;根据cx的值重复执行后面的串传送指令，经常与movsb和movsw联合使用，用于实现(cx)个字符的传送</a>
+</h3>
+<h3 class="topic">
+<a name="0dofeoaa300m8ojskl88jta409">&nbsp;&nbsp;&nbsp;&nbsp;rep movsb</a>
+</h3>
+<h3 class="topic">
+<a name="39s6s7iph4v7ru6t8h5la7s3oc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;相当于</a>
+</h3>
+<h3 class="topic">
+<a name="0a4b0bgfhlo25urjurlt0cllkf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;s:movsb</a>
+</h3>
+<h3 class="topic">
+<a name="3s4243rrj8iiu3vkm5h3d86ia5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;loop s</a>
+</h3>
+<h3 class="topic">
+<a name="2v9m6a87n7rs7pql5o6i8gn0j2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;传送cx个字节</a>
+</h3>
+<h3 class="topic">
+<a name="2d682rkav8dfm6lso40psfi3t8">&nbsp;&nbsp;&nbsp;&nbsp;rep movsw</a>
+</h3>
+<h3 class="topic">
+<a name="21n452u383dua12t3ngi1ielea">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;相当于</a>
+</h3>
+<h3 class="topic">
+<a name="3rutmqj1ejin12dp82i79f6s8v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;s:movsw</a>
+</h3>
+<h3 class="topic">
+<a name="6gvbkj7gpr9isgbpujk5fm9po8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;loop s</a>
+</h3>
+<h3 class="topic">
+<a name="6rjvak6j6vq2lmaq9am87lsrcl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;传送cx*2个字节</a>
+</h3>
+<h3 class="topic">
+<a name="0drb9si9of5l5dkgfgp733jd59">&nbsp;设置df位的值</a>
+</h3>
+<h3 class="topic">
+<a name="2am4tid993lh4e74f726nr8n0q">&nbsp;&nbsp;cld</a>
+</h3>
+<h3 class="topic">
+<a name="1gbvvpfs3oehs5la2ddji0f078">&nbsp;&nbsp;&nbsp;将标志寄存器的df位设置为0</a>
+</h3>
+<h3 class="topic">
+<a name="44340ec1ggm1gvk19irbp8pnsn">&nbsp;&nbsp;std</a>
+</h3>
+<h3 class="topic">
+<a name="2o8l7q1fk3d426dp13ploe77pr">&nbsp;&nbsp;&nbsp;将标志寄存器的df位设置为1</a>
+</h3>
+<h2 class="topic">
+<a name="5l0m380t6861k4g44vvroldtcp">11.11pushf与popf</a>
+</h2>
+<h3 class="topic">
+<a name="7gb7sekkg8t0ri3aj1pnepknrb">&nbsp;pushf将标志寄存器的值压栈</a>
+</h3>
+<h3 class="topic">
+<a name="220i4t51o1i73ssg2hb3ebl7c3">&nbsp;popf从栈中弹出数据，送入标志寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="2rjf61gnr75g6v6p221kmgco5c">&nbsp;两种指令提供了直接访问标志寄存器的方法，可以将预设的标志寄存器的值先入栈，然后使用popf将标志寄存器设置成我们需要的值</a>
+</h3>
+<h2 class="topic">
+<a name="135pd6vu3p3isp6duidhv6d2lj">11.12标志寄存器在debug中的表示</a>
+</h2>
+<h3 class="topic">
+<a name="0p82joo28rm7osn2sqjlhubir4">&nbsp;按照有意义的各个标志位单独表示</a>
+</h3>
+<h3 class="topic">
+<a name="10gmqhbrfgqkjodd97gs978e83">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img height="423" src="%E7%AC%AC%E5%8D%81%E4%B8%80%E7%AB%A0 %E6%A0%87%E5%BF%97%E5%AF%84%E5%AD%98%E5%99%A8_files/6jjkjrs39d4luoltvi5regdlcv.PNG" width="692"></p>
+<h2 class="topic">
+<a name="50etamllco7vfr06jodk7r6c5l">实验11.编写子程序</a>
+</h2>
+</body>
+</html>
