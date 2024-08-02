@@ -1,0 +1,996 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>class34day0316（MFC）</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="4pv9n86fhg7o5oq7dv7675u4fb">class34day0316（MFC）</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="class34day0316%EF%BC%88MFC%EF%BC%89_files/images/class34day0316%EF%BC%88MFC%EF%BC%89.jpg"></div>
+<h2 class="topic">
+<a name="4qp6ismdi1q2fcu09i676vi0ri">MFC第二天</a>
+</h2>
+<h3 class="topic">
+<a name="5e72r1luileimc3f1792qj65jk">&nbsp;mfc复习</a>
+</h3>
+<h3 class="topic">
+<a name="7crk06h67du2h4uuic804psovh">&nbsp;&nbsp;项目属性-》链接器-》系统-》子系统</a>
+</h3>
+<h3 class="topic">
+<a name="4inelu867ajtpsg1enbqf9lth7">&nbsp;&nbsp;&nbsp;可以更改当前项目是窗口程序还是控制台程序&#13;
+区别在于入口程序不同 前者为WinMain 后者为main</a>
+</h3>
+<h3 class="topic">
+<a name="0g9ung7q2hjkc75j0duqlnc3v2">&nbsp;&nbsp;手动创建mfc程序</a>
+</h3>
+<h3 class="topic">
+<a name="6nl3cj6vr4nd00lj9mhg5grs21">&nbsp;&nbsp;添加对话框步骤</a>
+</h3>
+<h3 class="topic">
+<a name="0c8p1lqepmuosa6m01ve8gk6d8">&nbsp;&nbsp;&nbsp;注意：在类向导中</a>
+</h3>
+<h3 class="topic">
+<a name="6mvkl3rd9vg3vb02n9m7tc9g9k">&nbsp;&nbsp;&nbsp;&nbsp;虚函数选项中需要注意OnInitDialog()</a>
+</h3>
+<h3 class="topic">
+<a name="5mf5utqfeke5dno93gag9k8gff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该函数可以进行对话框的初始化</a>
+</h3>
+<h3 class="topic">
+<a name="265qrt5c2ahq61th1lr5j4qf92">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;虚函数选项中是基类中可以重写的虚函数，在子类中添加虚函数可以重写基类的虚函数</a>
+</h3>
+<h3 class="topic">
+<a name="4svghsp5ns7r43988bg3tami8h">&nbsp;&nbsp;&nbsp;&nbsp;可以在成员变量选项卡中找到控件的id 可以为相应控件添加变量（值或项）</a>
+</h3>
+<h3 class="topic">
+<a name="7abt2og921kgpj84deagj7cd5m">&nbsp;&nbsp;&nbsp;&nbsp;可以查看窗口类中的方法（函数）</a>
+</h3>
+<h3 class="topic">
+<a name="28fr3fslnnd4fnqvhbvso96f9n">&nbsp;&nbsp;&nbsp;&nbsp;可以添加MFC类</a>
+</h3>
+<h3 class="topic">
+<a name="26e7vrt00tsaajcp898ghcf18v">&nbsp;&nbsp;解决对话框项目中有中文导致bug的方法</a>
+</h3>
+<h3 class="topic">
+<a name="5fahjju46q2il5f5f46gdhhs8s">&nbsp;&nbsp;&nbsp;在当前项目的对话框cpp中删除所有控件id中的中文，&#13;
+使用替换进行修改时需要 选择修改范围为当前项目</a>
+</h3>
+<h3 class="topic">
+<a name="1ked6qbupi5b8lrrt7mc8uqsh6">&nbsp;控件使用</a>
+</h3>
+<h3 class="topic">
+<a name="5spou4cflbro7scfapapsd6igh">&nbsp;&nbsp;进度条、滑块（使用滑块控制进度条进度）</a>
+</h3>
+<h3 class="topic">
+<a name="45a9afqm6jsvfkd66m8kg98o0j">&nbsp;&nbsp;&nbsp;在对话框中添加进度条以及滑块控件</a>
+</h3>
+<h3 class="topic">
+<a name="5o7m8pp2emu5ba3furcp7ekofq">&nbsp;&nbsp;&nbsp;为进度条绑定变量（进度条只能绑定控件变量）</a>
+</h3>
+<h3 class="topic">
+<a name="4nn0kmqkuh14qpqur9oeabi8kg">&nbsp;&nbsp;&nbsp;&nbsp;CProgressCtrl m_Progress;</a>
+</h3>
+<h3 class="topic">
+<a name="41upqkc1edp78cjuegkdplvn9e">&nbsp;&nbsp;&nbsp;为滑块绑定变量	（绑定控件控件）</a>
+</h3>
+<h3 class="topic">
+<a name="67sj66nime8p1fsh9f9uk2ccjn">&nbsp;&nbsp;&nbsp;&nbsp;CSliderCtrl m_Slider;</a>
+</h3>
+<h3 class="topic">
+<a name="7qg6n24ojbvbd2ovbkduk19ete">&nbsp;&nbsp;&nbsp;在对话框中添加 WM_HSCROLL消息的处理函数，因为滑块被触发的时候会向主窗口发送该消息，所以主窗口中要有对应消息的处理函数</a>
+</h3>
+<h3 class="topic">
+<a name="4mikqnsrbas7tci5tm2mvj9od8">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img height="193" src="class34day0316%EF%BC%88MFC%EF%BC%89_files/2d0ol9gnlil1f8t7pfmu08d93q.png" width="232"></p>
+<h3 class="topic">
+<a name="3q497542a3hgcqqljbkuujrvi0">&nbsp;&nbsp;&nbsp;在处理函数中先获取滑块位置（GetPos），后以此设置进度条位置（SetPos）</a>
+</h3>
+<h3 class="topic">
+<a name="21jrsrtq26l4l3srfqq23p6b37">&nbsp;&nbsp;&nbsp;&nbsp;//获取滑块位置 设置进度条&#13;
+int x = m_Slider.GetPos();&#13;
+m_Progress.SetPos(x);</a>
+</h3>
+<h3 class="topic">
+<a name="1uvqbktpe8aq9b80b3gbue283m">&nbsp;&nbsp;&nbsp;可以在OnInitDialog()函数中使用SetRange（0，1000）分别设置滑块和进度条的位置范围，（通过绑定控件调用Set函数）</a>
+</h3>
+<h3 class="topic">
+<a name="4emal0dufo5tr6tvhvlljs71k1">&nbsp;&nbsp;&nbsp;&nbsp;//设置滑块和进度条控件的移动范围&#13;
+m_Progress.SetRange(0, 1000);&#13;
+m_Slider.SetRange(0, 1000);</a>
+</h3>
+<h3 class="topic">
+<a name="52vakmrlcg1rte14a93q0429v1">&nbsp;&nbsp;静态文本框 图片（两者控件均为static）编辑框</a>
+</h3>
+<h3 class="topic">
+<a name="4kmcrarlfvkt82tubpjafu4q3u">&nbsp;&nbsp;按下按钮，将编辑框的内容复制到静态文本框中</a>
+</h3>
+<h3 class="topic">
+<a name="51abm1b1sptfdc5l836f15grog">&nbsp;&nbsp;&nbsp;为编辑框绑定值类型变量 cstring</a>
+</h3>
+<h3 class="topic">
+<a name="0ni37btm864lcclesouc3mggqd">&nbsp;&nbsp;&nbsp;&nbsp;//静态编辑框绑定变量&#13;
+CString m_editString;</a>
+</h3>
+<h3 class="topic">
+<a name="6olruhsb3m3at4plv3si254rlg">&nbsp;&nbsp;&nbsp;为文本框绑定值类型变量 cstring</a>
+</h3>
+<h3 class="topic">
+<a name="66r82jjsnbln0bj146i0jd6tak">&nbsp;&nbsp;&nbsp;&nbsp;//静态文本响应函数&#13;
+CString m_static1;</a>
+</h3>
+<h3 class="topic">
+<a name="3kjp7idmpia3kt8mvpolnsvh6g">&nbsp;&nbsp;&nbsp;&nbsp;注意添加静态类型控件时需要修改控件id，不能为默认的，因为之后默认的控件id WM_STATIC会被重复使用，导致对该类控件的绑定不能完成</a>
+</h3>
+<h3 class="topic">
+<a name="3l0vtgq9ahjra80b6gdiq25j6f">&nbsp;&nbsp;&nbsp;为特定按钮设置响应函数</a>
+</h3>
+<h3 class="topic">
+<a name="1j7pkpdl5379421r2e9440evs2">&nbsp;&nbsp;&nbsp;&nbsp;设置控件事件处理函数有三种方法</a>
+</h3>
+<h3 class="topic">
+<a name="2qu45o3mq62gamcd4p54q78b3b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在窗口中右键-类向导-命令-找到该按钮的控件id-选择需要按钮响应的消息，添加处理程序</a>
+</h3>
+<h3 class="topic">
+<a name="7mkmdlj1furplq1kh6ik5q9786">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;因为按钮作为标准控件，被触发时会向主窗口发送WM_COMMAND消息，所以在主窗口命令的页签下面可以指定WM_COMMAND消息相关的控件的处理函数</a>
+</h3>
+<h3 class="topic">
+<a name="5l12efckrl7t8c01kkpbr6tbso">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在控件上右键-添加事件处理程序-确定控件id与需要相应的控件对应的消息，指定事件处理函数名称，添加编辑</a>
+</h3>
+<h3 class="topic">
+<a name="7u1lbosfet4jna3e9slalae019">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这种方法的好处在于可以指定事件处理函数的函数名</a>
+</h3>
+<h3 class="topic">
+<a name="5cm9vveg88p5hl4uqunrllptfc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对于按钮，可以双击按钮，直接生成针对点击的事件处理函数</a>
+</h3>
+<h3 class="topic">
+<a name="3hac9284rr7unk16re7v2skqkr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这种方法的缺点在于不能指定事件处理函数的名称</a>
+</h3>
+<h3 class="topic">
+<a name="41dbjffgal5u3fi4rbttskituk">&nbsp;&nbsp;&nbsp;将数据从界面上获取到绑定变量</a>
+</h3>
+<h3 class="topic">
+<a name="7l3bvu23llfq4i7orlacgl1pal">&nbsp;&nbsp;&nbsp;&nbsp;//获取界面数据到变量上&#13;
+UpdateData(TRUE);</a>
+</h3>
+<h3 class="topic">
+<a name="1bvmn1iu0fq1u4oj36ibmoppik">&nbsp;&nbsp;&nbsp;将编辑框的文本变量赋值给静态文本框，</a>
+</h3>
+<h3 class="topic">
+<a name="11uqe1o0nneqg54hjpod9qujl2">&nbsp;&nbsp;&nbsp;&nbsp;//将文本框内容复制到静态文本框中&#13;
+m_static1 =  m_editString;</a>
+</h3>
+<h3 class="topic">
+<a name="3nki96uoupa5t1appo22er3inm">&nbsp;&nbsp;&nbsp;更新变量数据到界面上</a>
+</h3>
+<h3 class="topic">
+<a name="033nje70b9ftg3jtm6fbia3sib">&nbsp;&nbsp;&nbsp;&nbsp;//更新变量数据到界面&#13;
+UpdateData(FALSE);</a>
+</h3>
+<h3 class="topic">
+<a name="4tiegdomaci8ttk4un1g2khuri">&nbsp;&nbsp;&nbsp;编辑框可以设置属性允许接收回车符以及允许多行显示，就可以分行输入多行数据</a>
+</h3>
+<h3 class="topic">
+<a name="0molm1k3o161rgg6c7ih3h938k">&nbsp;&nbsp;&nbsp;&nbsp;Multiline</a>
+</h3>
+<h3 class="topic">
+<a name="0pvidkqstis1m16natjs2avl2o">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;多行显示</a>
+</h3>
+<h3 class="topic">
+<a name="73bu3v05sk4vc4cquint4d59h0">&nbsp;&nbsp;&nbsp;&nbsp;Want Return</a>
+</h3>
+<h3 class="topic">
+<a name="35t13ossfjcd2p2r9pqlfkca7i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;允许回车符</a>
+</h3>
+<h3 class="topic">
+<a name="03fgauodcv3n5giq75iolme2oj">&nbsp;&nbsp;随时间循环切换静态图片</a>
+</h3>
+<h3 class="topic">
+<a name="03skrs36kbvoqf8sl8orqrrfdr">&nbsp;&nbsp;&nbsp;添加Picture Control控件，控件默认ID为IDC_STATIC，为防止与其他静态类型空间相同，需要更改，且为了显示图片，需要将Type改为bitmap类型</a>
+</h3>
+<h3 class="topic">
+<a name="4j2futfptn7g29tmb8c0ena9gu">&nbsp;&nbsp;&nbsp;导入位图资源，在资源窗口找到位图资源id，将Picture Control控件的image属性设置为位图资源id，则图片添加成功</a>
+</h3>
+<h3 class="topic">
+<a name="7c40skufq7hnnhrrl316dvctbt">&nbsp;&nbsp;&nbsp;为Picture Control绑定控件</a>
+</h3>
+<h3 class="topic">
+<a name="3nhg75kh3692gjsrlq94br3ver">&nbsp;&nbsp;&nbsp;&nbsp;默认只能绑定CStatic类型的控件</a>
+</h3>
+<h3 class="topic">
+<a name="6c3g6p2ifel1kped0tac8eaqq2">&nbsp;&nbsp;&nbsp;&nbsp;// 静态图片绑定控件&#13;
+CStatic m_pic;</a>
+</h3>
+<h3 class="topic">
+<a name="0ctj4d02te0afc6trp47ppntg1">&nbsp;&nbsp;&nbsp;在OnInitDialog()函数使用SetTimer()设置定时器</a>
+</h3>
+<h3 class="topic">
+<a name="10cv471sptmvasrfhorbnrsvop">&nbsp;&nbsp;&nbsp;&nbsp;//设置定时器  可以导致每个100秒窗口消息队列中产生一个 WM_TIMER消息，其消息id为 0x1000&#13;
+SetTimer(&#13;
+  0x1000,//ID&#13;
+  1000,  //毫秒&#13;
+  0 //回调函数&#13;
+);</a>
+</h3>
+<h3 class="topic">
+<a name="2imv7vg05otg5ohdnovqlsk4va">&nbsp;&nbsp;&nbsp;&nbsp;参数1 定时器id</a>
+</h3>
+<h3 class="topic">
+<a name="3f4pei3hncjoai6db8hrgfl2gj">&nbsp;&nbsp;&nbsp;&nbsp;参数2 间隔多少毫秒</a>
+</h3>
+<h3 class="topic">
+<a name="01q3c05hpp26nj2kvptpoa0fqv">&nbsp;&nbsp;&nbsp;&nbsp;参数3 回调函数 一般为0 调用自己</a>
+</h3>
+<h3 class="topic">
+<a name="2e09vtl5rvlieepr6scf0aon0s">&nbsp;&nbsp;&nbsp;为对话框窗口响应WM_TIMER消息创建处理函数</a>
+</h3>
+<h3 class="topic">
+<a name="727j97iu7n36j23fac6avn6u4k">&nbsp;&nbsp;&nbsp;&nbsp;WM_TIMER定时器消息:是指定一段时间后定时器给窗口发送的消息</a>
+</h3>
+<h3 class="topic">
+<a name="454hk77i7tf1d6pjsq5hl8ac4t">&nbsp;&nbsp;&nbsp;&nbsp;可以使消息处理函数中每隔一定时间被执行一次</a>
+</h3>
+<h3 class="topic">
+<a name="0fvok0q0cjj45lj1vaibs95jdc">&nbsp;&nbsp;&nbsp;在处理函数中 设置如果定时器id匹配，则进行图片切换</a>
+</h3>
+<h3 class="topic">
+<a name="0s8g79ucd7gkgmh9njsu7bqvid">&nbsp;&nbsp;&nbsp;&nbsp;定义CBitmap类的对象</a>
+</h3>
+<h3 class="topic">
+<a name="5l1p059kj9p62kudj9bhe9ksq6">&nbsp;&nbsp;&nbsp;&nbsp;通过CBitmap类的对象调用LoadBitmapW函数载入位图资源 参数为位图资源id</a>
+</h3>
+<h3 class="topic">
+<a name="74uiva0kvj3p3ek0t10j9g227u">&nbsp;&nbsp;&nbsp;&nbsp;通过绑定控件调用SetBitmap函数将图片设置为响应的类图资源，参数为位图资源类对象</a>
+</h3>
+<h3 class="topic">
+<a name="2qboh2sr4j38iqcnct5gavsivg">&nbsp;&nbsp;&nbsp;&nbsp;if (nIDEvent == 0x1000)&#13;
+{&#13;
+  static int n = 0;&#13;
+   //切换图片&#13;
+  CBitmap bitmap;&#13;
+  if (n % 2 == 0)&#13;
+  {//加载位图&#13;
+    bitmap.LoadBitmapW(IDB_BITMAP1);&#13;
+  }&#13;
+  else {&#13;
+    bitmap.LoadBitmapW(IDB_BITMAP2);&#13;
+  }&#13;
+  n++;&#13;
+  //将位图资源设置在静态变量处显示&#13;
+  m_pic.SetBitmap(bitmap);&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="6gjlhjkvkhqdsd1dtf5lf3hqtd">&nbsp;&nbsp;comboBox组合框</a>
+</h3>
+<h3 class="topic">
+<a name="7b2ct8ibm1lbeqr6emb7c4v5vj">&nbsp;&nbsp;&nbsp;为组合框绑定控件</a>
+</h3>
+<h3 class="topic">
+<a name="60g25ijmh10t8j7ms2crl5jbkk">&nbsp;&nbsp;&nbsp;&nbsp;CComboBox m_Combox;</a>
+</h3>
+<h3 class="topic">
+<a name="1afsmfb0tgfddmrp5eg7l8vo16">&nbsp;&nbsp;&nbsp;在初始化函数中为组合框设置初始值</a>
+</h3>
+<h3 class="topic">
+<a name="3f7630uandb2oi4ksa756sl4o8">&nbsp;&nbsp;&nbsp;&nbsp;使用绑定控件调用AddString函数，为组合框添加数据选项</a>
+</h3>
+<h3 class="topic">
+<a name="418b66rck6b922c36f3sbo85ha">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;m_Combox.AddString(L"移动");&#13;
+m_Combox.AddString(L"电信");&#13;
+m_Combox.AddString(L"网通");</a>
+</h3>
+<h3 class="topic">
+<a name="24aa4bvmjdkuotb207devolss4">&nbsp;&nbsp;&nbsp;&nbsp;调用SelectString(0,"电信")；将电信设置为组合框默认第一个显示</a>
+</h3>
+<h3 class="topic">
+<a name="6frhp7m5ckbdu5guui5tbbm6fr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;m_Combox.SelectString(0, L"电信");</a>
+</h3>
+<h3 class="topic">
+<a name="2of6mnneqlbp28gcsj1ighdi35">&nbsp;&nbsp;&nbsp;&nbsp;GetCurSel()函数用于返回当前选择到组合框中的哪一项，返回值是组合框中的索引 0代表第一项，1代表第二项</a>
+</h3>
+<h3 class="topic">
+<a name="2q3f3omqevko85noklv6conicr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;int x = m_Combox.GetCurSel();</a>
+</h3>
+<h3 class="topic">
+<a name="4iklf9ik1ah2qv1qklb5klvmbi">&nbsp;&nbsp;&nbsp;&nbsp;GetWindowTextW()获取组合框中文本的内容</a>
+</h3>
+<h3 class="topic">
+<a name="2iv1dnv70e0skspbaobrvl5dff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CString s;	 &#13;
+m_Combox.GetWindowTextW(s);</a>
+</h3>
+<h3 class="topic">
+<a name="78ehbq7tvti4obgju7vp9pgl5g">&nbsp;&nbsp;&nbsp;&nbsp;组合框中属性Sort可以对组合框中的内容进行排序</a>
+</h3>
+<h3 class="topic">
+<a name="5ce1edbudigjekakt9nuht34sp">&nbsp;消息反射机制</a>
+</h3>
+<h3 class="topic">
+<a name="4fgjkck5vkbv1mthp0h82l8a66">&nbsp;&nbsp;一般子控件被触发，发出的消息均会发送给父窗口，父窗口会将消息进行处理</a>
+</h3>
+<h3 class="topic">
+<a name="3hbpv75f8jpc7f6iojc8pb4a16">&nbsp;&nbsp;消息反射机制是父窗口接收到子控件消息后，再将消息发送给子控件，使消息在子控件中进行处理的机制</a>
+</h3>
+<h3 class="topic">
+<a name="0a35iimlthh5gvs9gsj3nk11q4">&nbsp;&nbsp;消息反射机制就是利用控件的派生类以及对应类型的绑定控件将指定消息发送给控件派生类中的函数（进行过重写）进行处理</a>
+</h3>
+<h3 class="topic">
+<a name="6opacmnttjmefd0h9o7ov35cpi">&nbsp;高级控件</a>
+</h3>
+<h3 class="topic">
+<a name="1dov211j9fnl0pfbndm3h03llu">&nbsp;&nbsp;Tab控件（选项卡）</a>
+</h3>
+<h3 class="topic">
+<a name="1v932t7kocpjat27b06b5lvkp6">&nbsp;&nbsp;&nbsp;在对话框中共拖拽一个Tab 控件</a>
+</h3>
+<h3 class="topic">
+<a name="2f8fh18e08ohfiupg7stq8eigh">&nbsp;&nbsp;&nbsp;&nbsp;选项卡之间的切换实际上是多个窗口之间的切换</a>
+</h3>
+<h3 class="topic">
+<a name="12pa0suu4jmkfun3iffaontddq">&nbsp;&nbsp;&nbsp;绑定控件变量</a>
+</h3>
+<h3 class="topic">
+<a name="17ac886ppnd6m84v0hsf6mdi2p">&nbsp;&nbsp;&nbsp;&nbsp;CTabCtrl m_tabctrl;</a>
+</h3>
+<h3 class="topic">
+<a name="6ncs7ejke8hutr50ogehbkfmso">&nbsp;&nbsp;&nbsp;添加多个对话框资源</a>
+</h3>
+<h3 class="topic">
+<a name="3ntfd72kas7jhe7su6fffiemr3">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class34day0316%EF%BC%88MFC%EF%BC%89_files/7frrpv4l4r54b9m0ocflglqfkc.png"></p>
+<h3 class="topic">
+<a name="2fa7ggcr7u4rhgq6jekkdaj6qu">&nbsp;&nbsp;&nbsp;为每个对话框执行添加类</a>
+</h3>
+<h3 class="topic">
+<a name="09t9vlbrqu6s9np72ss1qup97a">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class34day0316%EF%BC%88MFC%EF%BC%89_files/5onenou68dhg6tnssge6btuu3m.png"></p>
+<h3 class="topic">
+<a name="6c3i5jbk5khvddt9k40cpdmsmp">&nbsp;&nbsp;&nbsp;设置每个对话框资源的属性</a>
+</h3>
+<h3 class="topic">
+<a name="14kdcbpc8ib73blqbl589kloel">&nbsp;&nbsp;&nbsp;&nbsp;边框选择无边框</a>
+</h3>
+<h3 class="topic">
+<a name="7nsn672t0nc866kekr2pf8u848">&nbsp;&nbsp;&nbsp;&nbsp;窗口类型设置为子窗口</a>
+</h3>
+<h3 class="topic">
+<a name="1e2sp9ebi218pctm669mtilf97">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class34day0316%EF%BC%88MFC%EF%BC%89_files/1gtdtmofsiqfu6i1ccs0o1ba0n.png"></p>
+<h3 class="topic">
+<a name="1a5n9tfha4751qroo214h2qhi5">&nbsp;&nbsp;&nbsp;为tab控件添加派生类myTab，基类设置为 CTabCtrl</a>
+</h3>
+<h3 class="topic">
+<a name="5hpjei8vg2tuust3j8qaocj1id">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class34day0316%EF%BC%88MFC%EF%BC%89_files/1d556ua5fdhiqpg4rjkgepiuju.png"></p>
+<h3 class="topic">
+<a name="0gfuii3am9njgco7e00p2mscda">&nbsp;&nbsp;&nbsp;&nbsp;要使用消息反射机制，将消息（鼠标点击选项卡）交给控件类自己处理</a>
+</h3>
+<h3 class="topic">
+<a name="3v57m1tvjghqes5dh2gbo7sn9u">&nbsp;&nbsp;&nbsp;将绑定控件的类型设置为添加的派生类</a>
+</h3>
+<h3 class="topic">
+<a name="6v6vm1kr4if576tae8hlesksdq">&nbsp;&nbsp;&nbsp;&nbsp;myTab m_tabctrl;</a>
+</h3>
+<h3 class="topic">
+<a name="1p0k7puhvqau9v67psdbpvubh5">&nbsp;&nbsp;&nbsp;在派生类中设置对话框类的动态数组的指针，用于储存选项卡的页面</a>
+</h3>
+<h3 class="topic">
+<a name="292nr37ci0o927039icbiets59">&nbsp;&nbsp;&nbsp;&nbsp;//保存对话框指针&#13;
+vector&lt;CDialogEx * &gt; m_pDlg;</a>
+</h3>
+<h3 class="topic">
+<a name="0ejh3u2dh2c42838vo6hp9c26f">&nbsp;&nbsp;&nbsp;在派生类中设置InitDialog()函数，在函数中初始化选项卡对应的对话框（使用对应的对话框类指针new出对话框、使用对话框指针调用Create函数，指定参数为对话框资源id，对话框指针压入动态数组）</a>
+</h3>
+<h3 class="topic">
+<a name="46r95f2lvffkar2gfv0hoa2095">&nbsp;&nbsp;&nbsp;&nbsp;void myTab::InitDlg()&#13;
+{&#13;
+  //为选项卡设置名称&#13;
+  this-&gt;InsertItem(0, L"对话框1");&#13;
+  this-&gt;InsertItem(1, L"对话框2");&#13;
+  this-&gt;InsertItem(2, L"对话框3");&#13;
+&#13;
+  //创建3个对话框&#13;
+  MyDlg1 *m1 = new MyDlg1;&#13;
+  MyDlg2 *m2 = new MyDlg2;&#13;
+  MyDlg3 *m3 = new MyDlg3;&#13;
+  &#13;
+ m1-&gt;Create(IDD_DIALOG1);&#13;
+  m2-&gt;Create(IDD_DIALOG2);&#13;
+  m3-&gt;Create(IDD_DIALOG3);&#13;
+	&#13;
+  //将选项卡对话框指针压入动态数组&#13;
+  m_pDlg.push_back(m1);&#13;
+  m_pDlg.push_back(m2);&#13;
+  m_pDlg.push_back(m3);&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="3aev917bk9nkqe62bqnd0rn55q">&nbsp;&nbsp;&nbsp;&nbsp;在对话框初始化函数设置显示选项卡标题</a>
+</h3>
+<h3 class="topic">
+<a name="6kkpcm7isr49khfv4s3jnmkqse">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this-&gt;InsertItem(选项卡编号,选项卡标题);</a>
+</h3>
+<h3 class="topic">
+<a name="2ps6dm84cugackghjrkqbo2rog">&nbsp;&nbsp;&nbsp;在派生类中设置显示ShowDlg()函数用于显示选项卡对应对话框</a>
+</h3>
+<h3 class="topic">
+<a name="5fjhu7ldnsdsqb313ptcjlfsd3">&nbsp;&nbsp;&nbsp;&nbsp;该函数参数为n，标识显示第几个对话框，内部将对应的对话框显示，并隐藏其他的几个窗口</a>
+</h3>
+<h3 class="topic">
+<a name="6ka2u6pee4fvuk3c1t3pd1la14">&nbsp;&nbsp;&nbsp;&nbsp;void myTab::ShowDlg(int n)&#13;
+{&#13;
+	CRect rt;&#13;
+	//获得客户区窗口矩形，不太懂&#13;
+	this-&gt;GetClientRect(rt);&#13;
+	//定义客户区窗口矩形，不太懂&#13;
+	rt.DeflateRect(2, 35, -20, -20);&#13;
+	for (int i = 0; i &lt; m_pDlg.size(); i++)&#13;
+	{&#13;
+		if (i == n)//参数n为要显示下标为n的选项卡对应的窗口&#13;
+		{&#13;
+			m_pDlg[n]-&gt;ShowWindow(SW_SHOW);&#13;
+			m_pDlg[n]-&gt;MoveWindow(rt);&#13;
+		}&#13;
+		else &#13;
+			m_pDlg[i]-&gt;ShowWindow(SW_HIDE);&#13;
+	}&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="3cirbuu7aaduuec7s7trv6d5bp">&nbsp;&nbsp;&nbsp;&nbsp;在显示对话框函数中</a>
+</h3>
+<h3 class="topic">
+<a name="043vjp29hpohe4tek1m5dutco6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;定义四边形类</a>
+</h3>
+<h3 class="topic">
+<a name="120vl8059tjb8clnqaup34dn65">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;先获取当前对话框窗口</a>
+</h3>
+<h3 class="topic">
+<a name="3djuql95qa098g37k0kg10djaa">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;设置选项卡窗口位置</a>
+</h3>
+<h3 class="topic">
+<a name="53erti2bcgf2j0grcrpbsrpeb4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在显示对话框窗口的时候进行移动，避免后面的选项卡被挡住</a>
+</h3>
+<h3 class="topic">
+<a name="12ltattkp8e6e0o63sqqmkbi89">&nbsp;&nbsp;&nbsp;在类向导中，类名选择派生类，消息选择=TCN_SELCHANGE（即选项卡触发的消息）,添加处理函数，使得对该消息的处理在派生类内部实现</a>
+</h3>
+<h3 class="topic">
+<a name="2f5n7nsev3ja5d4eeemockjj5k">&nbsp;&nbsp;&nbsp;&nbsp;void myTab::OnTcnSelchange(NMHDR *pNMHDR, LRESULT *pResult)&#13;
+{&#13;
+	//获取当前选中的选项卡的标号&#13;
+	int sel = this-&gt;GetCurSel();&#13;
+	ShowDlg(sel);&#13;
+	*pResult = 0;&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="7pvii3psbcbqgf8s19kpv82bp7">&nbsp;&nbsp;&nbsp;在对话框窗口（父窗口）初始化函数（OnInitDialog）中调用选项卡初始化函数，调用显示选项卡函数</a>
+</h3>
+<h3 class="topic">
+<a name="4ddesep6sinkp816sgu7m0prjb">&nbsp;&nbsp;&nbsp;&nbsp;以此在父窗口就显示选项卡的第一页</a>
+</h3>
+<h3 class="topic">
+<a name="0gb888lv8otl1804jfrhhgk5ci">&nbsp;&nbsp;list控件</a>
+</h3>
+<h3 class="topic">
+<a name="5luio4a7ufmhupqc28jks1u1vv">&nbsp;&nbsp;&nbsp;使用list需要将View属性改成Report</a>
+</h3>
+<h3 class="topic">
+<a name="5jttjjo3jojtuct5u1fvjmkqfs">&nbsp;&nbsp;&nbsp;绑定控件</a>
+</h3>
+<h3 class="topic">
+<a name="29a4vjhe9ske4sto4or382bphn">&nbsp;&nbsp;&nbsp;&nbsp;CListCtrl m_list;</a>
+</h3>
+<h3 class="topic">
+<a name="3d47q7gf1m21mrao3heneprld4">&nbsp;&nbsp;&nbsp;在OnInitDialog()函数中对list内容进行初始化，使用绑定控件调用函数</a>
+</h3>
+<h3 class="topic">
+<a name="23fqe8hog1f68ess7geo71vcoq">&nbsp;&nbsp;&nbsp;&nbsp;使用InsertColumn函数进行列的插入</a>
+</h3>
+<h3 class="topic">
+<a name="3tdc8hio56f09cdkoask1brv56">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;m_list.InsertColumn(0, L"姓名", 0, 80);&#13;
+m_list.InsertColumn(1, L"性别", 0, 80);&#13;
+m_list.InsertColumn(2, L"籍贯", 0, 80);</a>
+</h3>
+<h3 class="topic">
+<a name="7a528ksb0n1r6a52k3et8103ha">&nbsp;&nbsp;&nbsp;&nbsp;使用InsertItem添加行内容</a>
+</h3>
+<h3 class="topic">
+<a name="13at866urviitn5himibdvumj1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意原生的api不能直接一次插入一行，可以自己封装相关控件函数</a>
+</h3>
+<h3 class="topic">
+<a name="0j9hed7nbmqo0hlea52oj5ti1a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;m_list.InsertItem(0, L"小明");</a>
+</h3>
+<h3 class="topic">
+<a name="1r0m77hriavq3dg2mqh35a0hmq">&nbsp;&nbsp;&nbsp;&nbsp;使用SetItemText设置单元文本</a>
+</h3>
+<h3 class="topic">
+<a name="0map1s7qvb5g5knairg23ua3l7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;m_list.SetItemText(0, 1, L"男");&#13;
+m_list.SetItemText(0, 2, L"上海");</a>
+</h3>
+<h3 class="topic">
+<a name="22loll5p8f1qtdhahhvrg6t2kt">&nbsp;&nbsp;&nbsp;&nbsp;//添加行&#13;
+m_list.InsertItem(1, L"小李");&#13;
+//设置单元文本&#13;
+m_list.SetItemText(1, 1, L"男");&#13;
+m_list.SetItemText(1, 2, L"北京");</a>
+</h3>
+<h3 class="topic">
+<a name="3df7g4f2j732uhtskeogug2jku">&nbsp;&nbsp;tree控件</a>
+</h3>
+<h3 class="topic">
+<a name="1jj248mjb561ajtt2d3jn07cc2">&nbsp;&nbsp;&nbsp;设置相关属性</a>
+</h3>
+<h3 class="topic">
+<a name="3ed55mb6uol7lp5ckblfgju23k">&nbsp;&nbsp;&nbsp;&nbsp;Has Buttons根节点前面的加号</a>
+</h3>
+<h3 class="topic">
+<a name="3151do5ulgai8m96jaan9rt68i">&nbsp;&nbsp;&nbsp;&nbsp;Has Lines节点上之间的连线</a>
+</h3>
+<h3 class="topic">
+<a name="7d33fs0q6gh7hg1hmrdunodpt4">&nbsp;&nbsp;&nbsp;&nbsp;Lines At Root根节点之间的连线</a>
+</h3>
+<h3 class="topic">
+<a name="12dguo2m2mdoe651arokp8ddql">&nbsp;&nbsp;&nbsp;添加绑定控件</a>
+</h3>
+<h3 class="topic">
+<a name="4gemn6m5h1l7skon17n4n9s92o">&nbsp;&nbsp;&nbsp;&nbsp;CTreeCtrl m_tree;</a>
+</h3>
+<h3 class="topic">
+<a name="0pb938rugmubg32fh1qj92f6pb">&nbsp;&nbsp;&nbsp;在对话框初始化函数（OnInitDialog）中对tree控件进行初始化(对于根节点，需要定义HTREEITEM类成员接收根节点的句柄)</a>
+</h3>
+<h3 class="topic">
+<a name="00gkb6rfu2ktsepliolrdqt8g3">&nbsp;&nbsp;&nbsp;&nbsp;添加节点</a>
+</h3>
+<h3 class="topic">
+<a name="3lv59m0742f7g648dbonds41k5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;HTREEITEM hRoot = m_tree.InsertItem(L"中国");&#13;
+HTREEITEM hRoot2 = m_tree.InsertItem(L"北京", hRoot);</a>
+</h3>
+<h3 class="topic">
+<a name="2959mlj66u3on6dsqcsttogpvo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;第二个参数为空，则创建的节点是根节点</a>
+</h3>
+<h3 class="topic">
+<a name="0p7uj4ujpj3ctn25i34d23prlp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;第二个参数不为空，则创建的的节点为该节点的子节点</a>
+</h3>
+<h3 class="topic">
+<a name="2gibar5p9ceo6525l6pgset16f">&nbsp;&nbsp;&nbsp;&nbsp;添加父节点下面的子节点</a>
+</h3>
+<h3 class="topic">
+<a name="21jkavvie55rtq0emuihc9cqls">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;m_tree.InsertItem(L"昌平", hRoot2);&#13;
+m_tree.InsertItem(L"上海", hRoot);&#13;
+m_tree.InsertItem(L"广州", hRoot);</a>
+</h3>
+<h3 class="topic">
+<a name="0gk09ftfeufbqp2chrc9i7pdpe">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;第二个参数为父节点</a>
+</h3>
+<h3 class="topic">
+<a name="2hj46oijfk42b8isl0r7bv3pff">&nbsp;资源使用</a>
+</h3>
+<h3 class="topic">
+<a name="7eam3kr696fssnj11qd3ren8j1">&nbsp;&nbsp;状态栏</a>
+</h3>
+<h3 class="topic">
+<a name="2gbahpfrbhnqevlgt6kl1b1ke0">&nbsp;&nbsp;&nbsp;有意思的是，在添加资源的界面中没有 CStatusBar相关选项，在控件中也没有</a>
+</h3>
+<h3 class="topic">
+<a name="2nuo0tb5g4r170uu1ha8md8dls">&nbsp;&nbsp;&nbsp;在对话框中类创建状态栏成员对象</a>
+</h3>
+<h3 class="topic">
+<a name="2qtlcr2l1d6qlvr6tpsndb42gf">&nbsp;&nbsp;&nbsp;&nbsp;CStatusBar m_status;</a>
+</h3>
+<h3 class="topic">
+<a name="106d4psjlhkrq14c9mg76d2id0">&nbsp;&nbsp;&nbsp;在对话框初始化函数中</a>
+</h3>
+<h3 class="topic">
+<a name="5gdtuepb2cni2ss3lk1ap4mj9j">&nbsp;&nbsp;&nbsp;&nbsp;创建状态栏</a>
+</h3>
+<h3 class="topic">
+<a name="0jj47fe3mf4rm4j1q6a4e2ev5k">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;m_status.Create(this);</a>
+</h3>
+<h3 class="topic">
+<a name="330sngstpe6njetm0dsbphhjdo">&nbsp;&nbsp;&nbsp;&nbsp;分割窗口</a>
+</h3>
+<h3 class="topic">
+<a name="6savut2p9ugm5b4ir8v9mgcj6m">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//分割窗口 3个&#13;
+UINT arr[3] = { 1,2,3 };&#13;
+m_status.SetIndicators(arr, 3);</a>
+</h3>
+<h3 class="topic">
+<a name="05au72juh6t7fjoevjr4hg0pk1">&nbsp;&nbsp;&nbsp;&nbsp;设置窗口的大小</a>
+</h3>
+<h3 class="topic">
+<a name="7mv6peva68hnq6l91t3f3uje03">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//设置窗口大小&#13;
+m_status.SetPaneInfo(0, 1, 0, 100);&#13;
+m_status.SetPaneInfo(1, 2, 0, 100);&#13;
+m_status.SetPaneInfo(2, 3, 0, 100);</a>
+</h3>
+<h3 class="topic">
+<a name="1u2p2q0ifdkstasa1nbfn9tlt2">&nbsp;&nbsp;&nbsp;&nbsp;设置文本</a>
+</h3>
+<h3 class="topic">
+<a name="7jtfjoha0atnk4gu0diktu7qla">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//设置文本&#13;
+m_status.SetPaneText(0, L"时间");&#13;
+m_status.SetPaneText(1, L"hello");&#13;
+m_status.SetPaneText(2, L"字符");</a>
+</h3>
+<h3 class="topic">
+<a name="1n5ccjq5pg1fkc3b0lujcaioai">&nbsp;&nbsp;&nbsp;&nbsp;使用R函数创建更新</a>
+</h3>
+<h3 class="topic">
+<a name="7d9jv17o0sfs1mq8s3joj4gji9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RepositionBars(AFX_IDW_CONTROLBAR_FIRST, AFX_IDW_CONTROLBAR_LAST, 0);</a>
+</h3>
+<h3 class="topic">
+<a name="65rdlj4qiu8k32sdi2i6obo3d7">&nbsp;&nbsp;工具栏（toolbar）是资源而不是控件</a>
+</h3>
+<h3 class="topic">
+<a name="1tb4k9ki4g1p3i9t41hnrj91ai">&nbsp;&nbsp;&nbsp;在资源中创建工具栏资源</a>
+</h3>
+<h3 class="topic">
+<a name="6nqejko31o26a65s9eegg4e4od">&nbsp;&nbsp;&nbsp;&nbsp;该资源响应command消息</a>
+</h3>
+<h3 class="topic">
+<a name="4a4aiv8bfpovob3372avb7d3lv">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class34day0316%EF%BC%88MFC%EF%BC%89_files/730r15nmds5ds6vpt3oboqau4l.png"></p>
+<h3 class="topic">
+<a name="63t5sbgndtjgilosmvu5cmfgb2">&nbsp;&nbsp;&nbsp;在对话框类中添加工具栏类成员对象</a>
+</h3>
+<h3 class="topic">
+<a name="1a73f5rmu9ijs01g29cal36hdn">&nbsp;&nbsp;&nbsp;&nbsp;CToolBar m_bar;</a>
+</h3>
+<h3 class="topic">
+<a name="3immnireh86el5ud6s5p099nef">&nbsp;&nbsp;&nbsp;在主菜单初始化函数中，使用成员对象创建工具栏, 加载菜单栏资源（可以用位图资源作为加载对象，也可以使用自定义的工具栏资源作为加载对象）</a>
+</h3>
+<h3 class="topic">
+<a name="2od4i7hskdqf1vju33npqoga48">&nbsp;&nbsp;&nbsp;&nbsp;//创建工具栏&#13;
+m_bar.Create(this); &#13;
+// 加载图片的工具栏图标&#13;
+//m_bar.LoadBitmapW(IDB_BITMAP3);&#13;
+//自定义绘制的工具栏图标&#13;
+m_bar.LoadToolBar(IDR_TOOLBAR1);</a>
+</h3>
+<h3 class="topic">
+<a name="7kcccjnm99bgnphooh0hlf3f16">&nbsp;&nbsp;&nbsp;调用R函数重新显示工具栏</a>
+</h3>
+<h3 class="topic">
+<a name="0i6c1a4ap6adpsthi82lk8dp2n">&nbsp;&nbsp;&nbsp;&nbsp;RepositionBars(AFX_IDW_CONTROLBAR_FIRST, AFX_IDW_CONTROLBAR_LAST, 0);</a>
+</h3>
+<h3 class="topic">
+<a name="5jrjr0bkt74g29l8qm38qgogcs">&nbsp;&nbsp;&nbsp;设计工具栏按键消息处理函数（工具栏按键被触发后，会发送WM_COMMAND消息）</a>
+</h3>
+<h3 class="topic">
+<a name="5r4mtccklo85n9b0726m64d6nf">&nbsp;&nbsp;&nbsp;&nbsp;void CMy06控件使用Dlg::OnRangerButton(UINT Id)&#13;
+{	&#13;
+//这里ID_BUTTON32774是工具栏第一个按钮的资源id，之后每个按键的资源id依次加1&#13;
+switch (Id - ID_BUTTON32774)&#13;
+  {&#13;
+  case 0:&#13;
+	MessageBox(L"第一点击");&#13;
+	break;&#13;
+  case 1:&#13;
+	MessageBox(L"第二点击");&#13;
+	break;&#13;
+  }&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="0d01gfae170i9713cp81ubuch2">&nbsp;&nbsp;&nbsp;在映射关系中，设置WM_COMMAND命令与工具栏资源id的范围以及处理函数的映射关系（关键）</a>
+</h3>
+<h3 class="topic">
+<a name="1tkn1lg19vf2aa5suljh3u67ld">&nbsp;&nbsp;&nbsp;&nbsp;//id范围   void fun(UINT ID);自己添加的有关工具栏按键的响应&#13;
+//参数为资源的起始id,资源的终止id,对应的消息处理函数名&#13;
+ON_COMMAND_RANGE(ID_BUTTON32774, ID_BUTTON32778, &amp;CMy06控件使用Dlg::OnRangerButton)</a>
+</h3>
+<h3 class="topic">
+<a name="1jdqrav2o8ta6bhib81lc3pdhm">&nbsp;&nbsp;&nbsp;由于工具栏只是资源不是控件的原因，所以不能绑定控件，不能直接设置处理函数，需要手动添加控件，手动添加消息处理函数，手动在映射关系中指定对应命令与函数的关系</a>
+</h3>
+<h3 class="topic">
+<a name="31p6950n324abj21igaht4b862">&nbsp;&nbsp;菜单（注意菜单不是控件，而是资源）</a>
+</h3>
+<h3 class="topic">
+<a name="1v7s82vs15mpt3eb1tlhoo67uf">&nbsp;&nbsp;&nbsp;新建菜单资源，设计菜单形式</a>
+</h3>
+<h3 class="topic">
+<a name="7kpv95fnv7a23lgjuffir6eves">&nbsp;&nbsp;&nbsp;创建菜单</a>
+</h3>
+<h3 class="topic">
+<a name="6fi297aq38p0727gud10sakeoq">&nbsp;&nbsp;&nbsp;&nbsp;在主窗口上创建菜单</a>
+</h3>
+<h3 class="topic">
+<a name="4atrgjsnn2nt811scfrhn379cp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在主窗口的属性中，将窗口资源id加入到Menu属性中</a>
+</h3>
+<h3 class="topic">
+<a name="6i9ufl4nulnisa2a3idalh7evn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class34day0316%EF%BC%88MFC%EF%BC%89_files/06rhvl2j5vg6gs9j849aqhma94.png"></p>
+<h3 class="topic">
+<a name="1vdaslbt3oqr27n2clc6bul4j1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;总之在对话框中，使用资源</a>
+</h3>
+<h3 class="topic">
+<a name="4grimua4ha5merso4856qo8guf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;或是控件或对话框的属性中设置资源iid</a>
+</h3>
+<h3 class="topic">
+<a name="4edfdf6u881pp9vlfg3sgsglnq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;或是在对话框初始化函数或是消息处理函数</a>
+</h3>
+<h3 class="topic">
+<a name="0ikpog33am4coauthpmsml45fe">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;创建资源类对象</a>
+</h3>
+<h3 class="topic">
+<a name="1t54nq5takcbeq105afp0qlc55">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Load相应资源</a>
+</h3>
+<h3 class="topic">
+<a name="5rahg4n3grcms2mtk6pnnca5im">&nbsp;&nbsp;&nbsp;&nbsp;设置弹出菜单（右键点击list控件，弹出菜单）</a>
+</h3>
+<h3 class="topic">
+<a name="2cfs6ud8kdqhd37kjtqd13ksei">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在控件属性的闪电编号处可以看见该控件可以相应的消息，双击即可添加处理函数，当该消息发生时，使用对应的消息处理函数处理</a>
+</h3>
+<h3 class="topic">
+<a name="40dvhj0met01sike59v5eqslfi">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class34day0316%EF%BC%88MFC%EF%BC%89_files/613gqs4rqinarr9hibv1267smi.png"></p>
+<h3 class="topic">
+<a name="4mvhkti9i8cci8is4lqnqu9mkl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;为list控件添加右击单击的消息处理函数</a>
+</h3>
+<h3 class="topic">
+<a name="15c2mhivkm9vmpuvtn6at3hhlt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在处理函数中</a>
+</h3>
+<h3 class="topic">
+<a name="7qknrn396q2h4of9gr9n11pkfc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;定义菜单类对象</a>
+</h3>
+<h3 class="topic">
+<a name="068j99h9qimbuheh5gvfmipr6l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CMenu menu;</a>
+</h3>
+<h3 class="topic">
+<a name="79tn1pgsa0lq9khfa2lbj00ho5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;加载菜单资源</a>
+</h3>
+<h3 class="topic">
+<a name="3jbdh7bt07m886448b05r9e1j7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;menu.LoadMenuW(IDR_MENU1);</a>
+</h3>
+<h3 class="topic">
+<a name="38efdj98rs1mk5c30q0cbq79j9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该函数返回值是顶级菜单的句柄，可以接受</a>
+</h3>
+<h3 class="topic">
+<a name="43rqfts8oi3lkmlesd3n48miin">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;获取下拉菜单指针</a>
+</h3>
+<h3 class="topic">
+<a name="5t8rqt2gn42n5hm246t4fjkf1g">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CMenu *pSubMenu = menu.GetSubMenu(0);</a>
+</h3>
+<h3 class="topic">
+<a name="6eorb4c9uaelr3t78ddqifu8re">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;获取当前鼠标位置并保存</a>
+</h3>
+<h3 class="topic">
+<a name="7j9nnapiv8giqmeum91ddj0plk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DWORD wparam = GetMessagePos();&#13;
+//鼠标位置x轴值&#13;
+DWORD x = LOWORD(wparam);&#13;
+//鼠标位置y轴值&#13;
+DWORD y = HIWORD(wparam);&#13;
+POINT pt = { x,y };</a>
+</h3>
+<h3 class="topic">
+<a name="7ivfcsf9ro74d8vmc33ih43i3j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将鼠标位置转换为屏幕的坐标</a>
+</h3>
+<h3 class="topic">
+<a name="2rn6efjbtikmnv0imdp8uo4i77">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ClientToScreen()</a>
+</h3>
+<h3 class="topic">
+<a name="0fi14s8vgo4cpj6appuinruc6r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这一步好像不用也可以弹出菜单，没有弄懂</a>
+</h3>
+<h3 class="topic">
+<a name="06h3motkcbtm2crlr8l75mo7a7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;弹出下拉菜单</a>
+</h3>
+<h3 class="topic">
+<a name="2c1iq8uef92eiachbbai4hqe4t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pSubMenu-&gt;TrackPopupMenu(TPM_LEFTALIGN, pt.x, pt.y, this, 0);&#13;
+*pResult = 0;</a>
+</h3>
+<h3 class="topic">
+<a name="2b3hv1430qpfqvnn9croemovcl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;参数TPM_LEFTALIGN为左对齐 </a>
+</h3>
+<h3 class="topic">
+<a name="27s0hv3ar9686thsbi7vh8ie2m">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;给菜单中的选项设置消息处理函数</a>
+</h3>
+<h3 class="topic">
+<a name="69dvos27circph1cc8sf5cn8gh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;菜单中的选项类似于按钮，存在自己的资源id，在选项处-右键-添加事件处理程序-设置对应消息类型（command）-设置类列表（一般为对话框类）-设置消息处理函数名，针对菜单选项进行相关消息处理</a>
+</h3>
+<h3 class="topic">
+<a name="6t8jbg4j1cjs6q6olt9jdc29e2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;代码实例</a>
+</h3>
+<h3 class="topic">
+<a name="48ai6tmrjrggakupnd1cmfcp31">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//菜单栏的&ldquo;打开&rdquo;按钮对应的消息映射&#13;
+ON_COMMAND(ID_32771, &amp;CMy06控件使用Dlg::OnOpenFile)</a>
+</h3>
+<h3 class="topic">
+<a name="62a8s72vhvgnr77u7p5n9ae0tp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;void CMy06控件使用Dlg::OnOpenFile()&#13;
+{&#13;
+	MessageBox(L"Open");&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="2ov89utru7lsjan1tj6vefn6np">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class34day0316%EF%BC%88MFC%EF%BC%89_files/799jcaqq67fa7r324msta9mjuj.png"></p>
+<h3 class="topic">
+<a name="1sahidqerlrgc8mqti5lu97ava">&nbsp;高级控件的封装</a>
+</h3>
+<h3 class="topic">
+<a name="07qui5qk4h7691ooh66v43rupf">&nbsp;&nbsp;对控件的的封装需要给控件添加派生类，在派生类中对该控件原有的api进程封装，常常使用变参函数</a>
+</h3>
+<h3 class="topic">
+<a name="1m3nb18d91j2ctq304jnolj5dc">&nbsp;&nbsp;变参函数的使用-声明与定义</a>
+</h3>
+<h3 class="topic">
+<a name="5g6v9u8dnn4f06756giakbi8nd">&nbsp;&nbsp;&nbsp;需要使用变参的时候,使用...作为形参</a>
+</h3>
+<h3 class="topic">
+<a name="2ffriqoerqkrnm2htd5v2v1lsr">&nbsp;&nbsp;&nbsp;需要使用到四个宏</a>
+</h3>
+<h3 class="topic">
+<a name="5din0l4i2hpmnkrg110cjjigme">&nbsp;&nbsp;&nbsp;&nbsp;va_list</a>
+</h3>
+<h3 class="topic">
+<a name="6l12cskqepso1at7dq4b351kns">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;typedef char* va_list;//实际上就是char*</a>
+</h3>
+<h3 class="topic">
+<a name="4ksn29drf3up9ls6oa45l0ibba">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用于读取变参</a>
+</h3>
+<h3 class="topic">
+<a name="3j8ecvikqv6adhnq21pmg03f2p">&nbsp;&nbsp;&nbsp;&nbsp;va_start</a>
+</h3>
+<h3 class="topic">
+<a name="3ktbk89395g85fs1t66dolp3a7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;设置读取变参数的起点</a>
+</h3>
+<h3 class="topic">
+<a name="02cr6kth310o13ic9k4vt1tfmj">&nbsp;&nbsp;&nbsp;&nbsp;va_arg</a>
+</h3>
+<h3 class="topic">
+<a name="1g7thrvre723teagukr7245fep">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将变参强转为某一格式，并返回</a>
+</h3>
+<h3 class="topic">
+<a name="4o4h7kqtsbft0vn8fsuo5df1go">&nbsp;&nbsp;&nbsp;&nbsp;va_end(va);</a>
+</h3>
+<h3 class="topic">
+<a name="5u0coleiqigt7va220irrs3vu0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;变参使用结束</a>
+</h3>
+<h3 class="topic">
+<a name="0dh0ngenkvtm0kkdtrvk7vscii">&nbsp;&nbsp;&nbsp;仿造printf函数</a>
+</h3>
+<h3 class="topic">
+<a name="2ofaiufkurv3fhbi80auad43th">&nbsp;&nbsp;&nbsp;&nbsp;//变参函数&#13;
+//仿造printf函数&#13;
+void func(DWORD count, ...)&#13;
+{&#13;
+	//用于读取变参&#13;
+	va_list va;&#13;
+	//设置读取变参数的起点&#13;
+	va_start(va, count);&#13;
+	for (int i = 0; i &lt; count; i++)&#13;
+	{&#13;
+		//将变参强转为某一格式，并返回&#13;
+		char *arg = va_arg(va, char*);&#13;
+		int arg2 = va_arg(va, int);&#13;
+		printf("[%d] = %s %d \n", i, arg, arg2);&#13;
+	}&#13;
+	//变餐使用结束&#13;
+	va_end(va);&#13;
+}&#13;
+&#13;
+int main()&#13;
+{&#13;
+	func(4, "hello",90, "good", 80,"hahah",70, "你好",20);&#13;
+	&#13;
+	getchar();&#13;
+}&#13;
+</a>
+</h3>
+<h3 class="topic">
+<a name="4aaj9h9oii9m7a33kvlp4ck1c0">&nbsp;&nbsp;&nbsp;变参函数原理</a>
+</h3>
+<h3 class="topic">
+<a name="38srq90j2u7i2e65arj5bfmqiu">&nbsp;&nbsp;&nbsp;&nbsp;由于函数调用的时候参数依次入栈</a>
+</h3>
+<h3 class="topic">
+<a name="4pj8apbvunm6q4ae2ddgerl3t2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;va_list va;va是指向栈中第一个参数的指针</a>
+</h3>
+<h3 class="topic">
+<a name="6cbdf7e8oosbqmisb6j3qpd761">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;根据变参传入的count参数确定栈中有几个参数</a>
+</h3>
+<h3 class="topic">
+<a name="0m5smm4ccmddbrdqq8u4vg9g6l">&nbsp;&nbsp;封装tab控件</a>
+</h3>
+<h3 class="topic">
+<a name="4p5v5ftltn2q1uq2fo9l7s5vfn">&nbsp;&nbsp;&nbsp;目的将tab控件设置选项卡名称的函数以及设置选项卡对话框的函数封装起来，使得同时可以设置多个选项卡名称或为选项卡设置多个窗口页面</a>
+</h3>
+<h3 class="topic">
+<a name="2if50t09nf115ea46tcnmlgl3q">&nbsp;&nbsp;&nbsp;封装设置选项卡名称的函数</a>
+</h3>
+<h3 class="topic">
+<a name="6f8g2o5i37akcveqrcp1gj4aqk">&nbsp;&nbsp;&nbsp;&nbsp;void myTab::InsetItems(DWORD count, ...)&#13;
+{&#13;
+	va_list va;&#13;
+	va_start(va, count);&#13;
+	for (int i = 0; i &lt; count; i++)&#13;
+	{&#13;
+		TCHAR *Table = va_arg(va, TCHAR *);&#13;
+		//插入标题&#13;
+		this-&gt;InsertItem(i, Table);&#13;
+	}&#13;
+	va_end(va);&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="0kkbaps9n8cihjdhcj5dos20h0">&nbsp;&nbsp;&nbsp;&nbsp;插入选项卡卡标题的变参函数</a>
+</h3>
+<h3 class="topic">
+<a name="3fslmr6ov7ruii1sue3i1grglu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;设置基本的va宏</a>
+</h3>
+<h3 class="topic">
+<a name="686j8nmba05qicm1m0uqdco25a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在变参函数中循环接收传入的参数</a>
+</h3>
+<h3 class="topic">
+<a name="7f4qkgddesss7rb213hus815uq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;根据传入的参数调用api设置Tab的选项卡标题</a>
+</h3>
+<h3 class="topic">
+<a name="33u5chkje3t81lp4urd5vn874b">&nbsp;&nbsp;&nbsp;封装设置选项卡窗口页面的函数</a>
+</h3>
+<h3 class="topic">
+<a name="3tefom7gpt8qsmu4jc5ta22q9n">&nbsp;&nbsp;&nbsp;&nbsp;void myTab::InsetDlg(DWORD count, ...)&#13;
+{&#13;
+	va_list va;&#13;
+	va_start(va, count);&#13;
+	for (int i = 0; i &lt; count; i++)&#13;
+	{&#13;
+		//得到对话框句柄&#13;
+		CDialogEx *pDlg = va_arg(va, CDialogEx *);&#13;
+		//得到对话框资源id&#13;
+		UINT Id = va_arg(va, UINT);&#13;
+		//根据对话框句柄和对话框资源id设置窗口&#13;
+		pDlg-&gt;Create(Id);&#13;
+		//将窗口句柄压入动态数组&#13;
+		m_pDlg.push_back(pDlg);&#13;
+	}&#13;
+	va_end(va);&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="42t02iqmtnk3g13qb4tp8bu2bk">&nbsp;&nbsp;&nbsp;&nbsp;创建对话框的变参函数</a>
+</h3>
+<h3 class="topic">
+<a name="7s90ejhu09e0h5e9svtfkcfioo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;根据传入的对话框指针（可以用new 函数创建窗口指针）和对话框资源id，循环读取，调用api创建窗口</a>
+</h3>
+<h3 class="topic">
+<a name="24522bktkagmrshnemmun4hun4">&nbsp;&nbsp;&nbsp;在父窗口初始化函数中调用两个变参函数，为主窗口创建tab类控件</a>
+</h3>
+<h3 class="topic">
+<a name="3tsdppi8dm70pihkib06sb26tk">&nbsp;&nbsp;&nbsp;&nbsp;	//使用封装后的tab控件函数设置选项卡标题&#13;
+	m_tabctrl.InsetItems(3, L"文件", L"编辑", L"视图");&#13;
+	//使用封装后的tab控件函数设置选项卡窗口&#13;
+	m_tabctrl.InsetDlg(3,&#13;
+		new MyDlg1, IDD_DIALOG1,&#13;
+		new MyDlg2, IDD_DIALOG2,&#13;
+		new MyDlg3, IDD_DIALOG3);&#13;
+	//显示第一个选项卡窗口&#13;
+	m_tabctrl.ShowDlg(0);</a>
+</h3>
+<h3 class="topic">
+<a name="48l7gmu7l0pjherqgo1j9tghf9">&nbsp;&nbsp;任务：封装list控件</a>
+</h3>
+<h3 class="topic">
+<a name="6va9pev75s0mavne13dbvesop5">&nbsp;&nbsp;&nbsp;还未完成</a>
+</h3>
+</body>
+</html>

@@ -1,0 +1,1130 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>class52day0429（调试与异常第一天）</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="7md3lfb0if3t5s5ch78vpn8fum">class52day0429（调试与异常第一天）</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="class52day0429%EF%BC%88%E8%B0%83%E8%AF%95%E4%B8%8E%E5%BC%82%E5%B8%B8%E7%AC%AC%E4%B8%80%E5%A4%A9%EF%BC%89_files/images/class52day0429%EF%BC%88%E8%B0%83%E8%AF%95%E4%B8%8E%E5%BC%82%E5%B8%B8%E7%AC%AC%E4%B8%80%E5%A4%A9%EF%BC%89.jpg"></div>
+<h2 class="topic">
+<a name="2mmueckb84sh3d4296n74huq7m">windbg的使用</a>
+</h2>
+<h3 class="topic">
+<a name="2op5h9b1vlfulf5cijl4rfl677">&nbsp;微软提供的内核级调试器</a>
+</h3>
+<h3 class="topic">
+<a name="760bgjfsiss3hjm7h52f6nhvh0">&nbsp;建立调试环境</a>
+</h3>
+<h3 class="topic">
+<a name="1rn560g7k10c00452hgl2q27f3">&nbsp;&nbsp;直接调试方式</a>
+</h3>
+<h3 class="topic">
+<a name="2p2kqco18432evn5rtra8bh5va">&nbsp;&nbsp;&nbsp;file&mdash;&mdash;》打开可执行文件</a>
+</h3>
+<h3 class="topic">
+<a name="3bei8o4td015khnoi986t9l36s">&nbsp;&nbsp;&nbsp;可执行程序&mdash;&mdash;》右键发送到</a>
+</h3>
+<h3 class="topic">
+<a name="05s7f3i3jqdf9ocr3mrkvrfloc">&nbsp;&nbsp;&nbsp;&nbsp;设置方法</a>
+</h3>
+<h3 class="topic">
+<a name="1evfenonfb8g8p88jch9ksgr3n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;任务管理器中使用shell Sendto</a>
+</h3>
+<h3 class="topic">
+<a name="3pgbaf67seen8m7v31q6tco875">&nbsp;&nbsp;附加调试方式（file-》attachtoprocess）</a>
+</h3>
+<h3 class="topic">
+<a name="7mpbn82sfi7luo7ppjqsl5bgpu">&nbsp;&nbsp;&nbsp;侵入式</a>
+</h3>
+<h3 class="topic">
+<a name="7b2o29kuqoivtkga9mi6m5o5rt">&nbsp;&nbsp;&nbsp;&nbsp;不勾选noninvasivs</a>
+</h3>
+<h3 class="topic">
+<a name="2kiaquhpp310ooqstt0107b7tg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;f5进程可以继续运行，可以点击按钮暂停进程运行</a>
+</h3>
+<h3 class="topic">
+<a name="11a49gbc3gda0jsm0mt2rv24a5">&nbsp;&nbsp;&nbsp;非侵入式</a>
+</h3>
+<h3 class="topic">
+<a name="5b00nrtg9r8l2dqolll0lp8s29">&nbsp;&nbsp;&nbsp;&nbsp;勾选noninvasive</a>
+</h3>
+<h3 class="topic">
+<a name="77mroiqnlncqi3cp62su2vj76m">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将被调试程序所有的线程挂起，可以查看进程的虚拟内存空间</a>
+</h3>
+<h3 class="topic">
+<a name="59d5b52o8dd41u7eieet33bhb5">&nbsp;&nbsp;&nbsp;&nbsp;这种模式也可以用于查看一个已经在Debugger控制下运行的进程</a>
+</h3>
+<h3 class="topic">
+<a name="06qomts6mran6gqe01r6lrooot">&nbsp;&nbsp;&nbsp;侵入式与非侵入式的区别能否控制程序执行流程以及更改虚拟内存中的值，后者不可以</a>
+</h3>
+<h3 class="topic">
+<a name="2ukrtkq3lhtt7gucp7h310gqir">&nbsp;&nbsp;内核调试方式</a>
+</h3>
+<h3 class="topic">
+<a name="0i9elcavuc75gornji131vfmi3">&nbsp;&nbsp;&nbsp;暂时用不到</a>
+</h3>
+<h3 class="topic">
+<a name="6hq1mkgka1e66k6qn8q298hr9t">&nbsp;调试符号</a>
+</h3>
+<h3 class="topic">
+<a name="5va5nfn28brt4tdkgpm3u1q54m">&nbsp;&nbsp;包含了源码的信息</a>
+</h3>
+<h3 class="topic">
+<a name="04j3oq4k27aaie3fpaugfr124d">&nbsp;&nbsp;&nbsp;变量名、函数名等</a>
+</h3>
+<h3 class="topic">
+<a name="1b7is2cggct796nccgjr65jpb1">&nbsp;&nbsp;如果有源码可以设置源码路径，从而对源码进行调试</a>
+</h3>
+<h3 class="topic">
+<a name="1u6e28kcsdlhc8a6bu0p2v130a">&nbsp;&nbsp;没有调试符号则在汇编代码中只能显示汇编代码，不能显示源码中变量名函数名等辅助调试信息</a>
+</h3>
+<h3 class="topic">
+<a name="1j2kkskqaagh310avm25fmhbd4">&nbsp;&nbsp;Symbol File Path</a>
+</h3>
+<h3 class="topic">
+<a name="2s9ge3govd8tklrkqgbmaft6vs">&nbsp;&nbsp;&nbsp;设置路径</a>
+</h3>
+<h3 class="topic">
+<a name="5fe0mcg6l4pitv0445am0va0tb">&nbsp;&nbsp;&nbsp;勾选reload复选框</a>
+</h3>
+<h3 class="topic">
+<a name="1bsl22c61rc1m11nqrkoaua6k6">&nbsp;&nbsp;&nbsp;命令行执行指令.reload /f进行符号文件的载入</a>
+</h3>
+<h3 class="topic">
+<a name="632umjcjst64gd8d1k5peno8p8">&nbsp;&nbsp;设置符号</a>
+</h3>
+<h3 class="topic">
+<a name="23eqto6q01f30ncq7lhoeu0ou8">&nbsp;&nbsp;&nbsp;程序依赖的dll</a>
+</h3>
+<h3 class="topic">
+<a name="4rcba893uk4s8cjt82igul16h6">&nbsp;&nbsp;&nbsp;&nbsp;多数为windows自带的dll，所以在windows官方下载pbd文件</a>
+</h3>
+<h3 class="topic">
+<a name="0th8v3i3dicdv3a6c0rb9svrqs">&nbsp;&nbsp;&nbsp;自己程序的dll</a>
+</h3>
+<h3 class="topic">
+<a name="3lo42vg05dhobaj50olu3gjvv0">&nbsp;&nbsp;&nbsp;&nbsp;在生成程序的时候勾选同时生成pbd，将pbd路径在windbg中进行设置</a>
+</h3>
+<h3 class="topic">
+<a name="4nv6nn8uvmrtb97a17jsuatol0">&nbsp;&nbsp;&nbsp;srv*d:\symbolslocal*http://msdl.microsoft.com/download/symbols</a>
+</h3>
+<h3 class="topic">
+<a name="1nij03ml2ea1g8nbagpfhf5s4k">&nbsp;&nbsp;&nbsp;&nbsp;如果自己的项目有pbd文件，则将文件路径写在前面的路径中，如果程序使用到没有本地没有的windows程序pbd，windbg会从后面的网址中下载</a>
+</h3>
+<h3 class="topic">
+<a name="5cv60lefi8qs6ro6fqqke91m7k">&nbsp;命令</a>
+</h3>
+<h3 class="topic">
+<a name="0i4n8eecr6fuctit8jn6bkneli">&nbsp;&nbsp;命令类型</a>
+</h3>
+<h3 class="topic">
+<a name="0o859lmmu1550q1q9o3cqf925n">&nbsp;&nbsp;&nbsp;常规命令</a>
+</h3>
+<h3 class="topic">
+<a name="15umlheqhsojiciqtio65qasc5">&nbsp;&nbsp;&nbsp;&nbsp;d t u b</a>
+</h3>
+<h3 class="topic">
+<a name="28uhn56ilik0ob1e8c0lmabdfi">&nbsp;&nbsp;&nbsp;元命令</a>
+</h3>
+<h3 class="topic">
+<a name="7dpvaji7e3bvf6068c8mo6acu6">&nbsp;&nbsp;&nbsp;&nbsp;.reload</a>
+</h3>
+<h3 class="topic">
+<a name="6l3vphk5gcj3q97nefsq9ubi33">&nbsp;&nbsp;&nbsp;扩展命令</a>
+</h3>
+<h3 class="topic">
+<a name="2uku41us8t5s8polks7r5hlr4f">&nbsp;&nbsp;&nbsp;&nbsp;以叹号开头，是第三方提供的指令，在windbg中以dll方式存在，类似于插件</a>
+</h3>
+<h3 class="topic">
+<a name="7abpt9f7cjvjj0qn71jtkig5f4">&nbsp;&nbsp;命令栏</a>
+</h3>
+<h3 class="topic">
+<a name="1au432b25b76dmrfp8u97jcoav">&nbsp;&nbsp;&nbsp;前缀</a>
+</h3>
+<h3 class="topic">
+<a name="5va7mhdoht4t79o69ej5a3q8ra">&nbsp;&nbsp;&nbsp;&nbsp;0:kd&gt;</a>
+</h3>
+<h3 class="topic">
+<a name="2d2n5ek5hmc7vf72jim88k1cek">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;正在进行内核调试</a>
+</h3>
+<h3 class="topic">
+<a name="5dfth0vqkc3nhetbb3pc48bo9t">&nbsp;&nbsp;&nbsp;&nbsp;Lkd&gt;</a>
+</h3>
+<h3 class="topic">
+<a name="5cvf90q4aa2ee9hmmeev2s2jme">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;非侵入式调试</a>
+</h3>
+<h3 class="topic">
+<a name="5hlgd7l56n6mbv64edsdrk0psj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;进行本地内核调试</a>
+</h3>
+<h3 class="topic">
+<a name="48v1aqrdkkabugohpm5ucc8e0v">&nbsp;&nbsp;常用指令</a>
+</h3>
+<h3 class="topic">
+<a name="7p1df32heb1qg6ruthni0gcqlg">&nbsp;&nbsp;&nbsp;b（断点）</a>
+</h3>
+<h3 class="topic">
+<a name="7nvkq86terhgs4l1cjacq0uttn">&nbsp;&nbsp;&nbsp;&nbsp;bp</a>
+</h3>
+<h3 class="topic">
+<a name="2kuaviu9ugfor8umpdr0eoruaf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bp main</a>
+</h3>
+<h3 class="topic">
+<a name="111qf7lttu24i52blu0buoll4m">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在main函数上下断点</a>
+</h3>
+<h3 class="topic">
+<a name="454jq2opit7ecjtn1km4gvs23v">&nbsp;&nbsp;&nbsp;&nbsp;bu</a>
+</h3>
+<h3 class="topic">
+<a name="04ad9ica1oeihedib6jf14rilh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;与bp差不多</a>
+</h3>
+<h3 class="topic">
+<a name="2t11pio52ilkiq3cg2uitnmagj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;推荐使用</a>
+</h3>
+<h3 class="topic">
+<a name="5hl8hqqeg7783cfamfr2665kj8">&nbsp;&nbsp;&nbsp;&nbsp;ba</a>
+</h3>
+<h3 class="topic">
+<a name="6tdbt0rhiot5c1avifrv6hu8ae">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对内存访问下断点</a>
+</h3>
+<h3 class="topic">
+<a name="6ju3g122u2rlqiosjt3uglm3fo">&nbsp;&nbsp;&nbsp;&nbsp;bl</a>
+</h3>
+<h3 class="topic">
+<a name="41pjp5emiibm7pric0r6av7ttq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;查看当前断点列表</a>
+</h3>
+<h3 class="topic">
+<a name="37sibc11l30ahdioicjupc5hhq">&nbsp;&nbsp;&nbsp;&nbsp;be</a>
+</h3>
+<h3 class="topic">
+<a name="64ma28p49i4sei71p76stdk0ae">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;开启断点</a>
+</h3>
+<h3 class="topic">
+<a name="4icclb3fvrsh6juvt2aevbnn89">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以使用鼠标点击操作</a>
+</h3>
+<h3 class="topic">
+<a name="7c2ugm3qap2gpkvd4i1g0oebjv">&nbsp;&nbsp;&nbsp;&nbsp;bc</a>
+</h3>
+<h3 class="topic">
+<a name="7vv6iv6bcmh6t1r2t4o97op4u6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;清除断点</a>
+</h3>
+<h3 class="topic">
+<a name="29rqq4den8lso0icmnc9qrbjil">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以使用鼠标点击操作</a>
+</h3>
+<h3 class="topic">
+<a name="1cfelom4vc38r76224ifibd6br">&nbsp;&nbsp;&nbsp;d（查看数据）</a>
+</h3>
+<h3 class="topic">
+<a name="5lkkt7d74g15h5ks5gtngta505">&nbsp;&nbsp;&nbsp;&nbsp;db 内存地址</a>
+</h3>
+<h3 class="topic">
+<a name="3fg6fqa814nt0cqgeiklqn87ep">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;显示一个字节</a>
+</h3>
+<h3 class="topic">
+<a name="7329cfi6pkaie3tertqm6bedrf">&nbsp;&nbsp;&nbsp;&nbsp;dw</a>
+</h3>
+<h3 class="topic">
+<a name="20rnq26h9oej43i9rmvlh0tjvh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;以word格式显示数据</a>
+</h3>
+<h3 class="topic">
+<a name="1m2puc9rps9vbu9hvpqs9rbbe5">&nbsp;&nbsp;&nbsp;&nbsp;dd</a>
+</h3>
+<h3 class="topic">
+<a name="5drkrjlit6h69lcqvsn5hcq2gi">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;以double格式显示数据</a>
+</h3>
+<h3 class="topic">
+<a name="7h1a4e7lgffu5eug0hnosncemf">&nbsp;&nbsp;&nbsp;&nbsp;dq</a>
+</h3>
+<h3 class="topic">
+<a name="22r3mmfggsn7n7ur4sdjnbunc0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;以四字形式显示数据</a>
+</h3>
+<h3 class="topic">
+<a name="5i1c44k8n0rs7nr085qmasi11v">&nbsp;&nbsp;&nbsp;&nbsp;da</a>
+</h3>
+<h3 class="topic">
+<a name="4i65jbf4d5kb55tbnlb5h1m8k6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;以ascii形式显示数据</a>
+</h3>
+<h3 class="topic">
+<a name="0b6mlhhlsmpl930qbnqlkqbvqm">&nbsp;&nbsp;&nbsp;&nbsp;dt</a>
+</h3>
+<h3 class="topic">
+<a name="5dccdo1phort8i4mk6k5578c8s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;查看结构体</a>
+</h3>
+<h3 class="topic">
+<a name="44fvrn52ds19nvte6bbkurv035">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dt 结构体名称</a>
+</h3>
+<h3 class="topic">
+<a name="6iula4b68bk39h69ie3fere2de">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;参数_d</a>
+</h3>
+<h3 class="topic">
+<a name="7npg77e6g88041vlr5sp4fd2fa">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;展开数据结构</a>
+</h3>
+<h3 class="topic">
+<a name="4up9k3mgdn8e0oh89lv4u6bpdr">&nbsp;&nbsp;&nbsp;e</a>
+</h3>
+<h3 class="topic">
+<a name="2sfq7n5bn0ied9e94iberv2niv">&nbsp;&nbsp;&nbsp;&nbsp;修改数据</a>
+</h3>
+<h3 class="topic">
+<a name="4ltbu4lt6vdgolisrjjbgurv82">&nbsp;&nbsp;&nbsp;&nbsp;eb</a>
+</h3>
+<h3 class="topic">
+<a name="7ij1v6ebrg53kvhpbi5ebb4ifj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;以字节方式修改目的数据</a>
+</h3>
+<h3 class="topic">
+<a name="04vt94l096m2du9me73k9ip1u1">&nbsp;&nbsp;&nbsp;寄存器相关指令</a>
+</h3>
+<h3 class="topic">
+<a name="307hplam6dib2sh4jl9mbjp2uv">&nbsp;&nbsp;&nbsp;&nbsp;主要用于查看线程环境</a>
+</h3>
+<h3 class="topic">
+<a name="529r8fq9p2fuvj7e7d3gr97uth">&nbsp;&nbsp;&nbsp;&nbsp;~2 r</a>
+</h3>
+<h3 class="topic">
+<a name="5k05gram9qo1h7j2dat7m9nhae">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;查看2号线程的寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="5u891qcost6nkmfmq4dfsv0ar9">&nbsp;&nbsp;&nbsp;&nbsp;~* R</a>
+</h3>
+<h3 class="topic">
+<a name="439ab77upfl9ql68go6sheulne">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;查看所有线程的寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="7ilon245nlpu9qgsjf47697msa">&nbsp;&nbsp;&nbsp;模块</a>
+</h3>
+<h3 class="topic">
+<a name="02o2s2g7c0t6ima225f2iasu29">&nbsp;&nbsp;&nbsp;&nbsp;lm</a>
+</h3>
+<h3 class="topic">
+<a name="3pjknsabtmqd1p213kv30hu957">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;查看所有的模块</a>
+</h3>
+<h3 class="topic">
+<a name="4r4e2jjr3btac3s08cq06clebq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;同时显示对应模块是否有符号载入</a>
+</h3>
+<h3 class="topic">
+<a name="0kpo0ne835h9li3orlnh9o71p2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以点击模块名查看模块信息</a>
+</h3>
+<h3 class="topic">
+<a name="25gi2h1fhm6clg83hjg5em04fq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对应指令：lmDvm模块名</a>
+</h3>
+<h3 class="topic">
+<a name="3cnp98v770luda7lhjcjksct6m">&nbsp;&nbsp;&nbsp;r</a>
+</h3>
+<h3 class="topic">
+<a name="3lrbpfpv2ttobtfrggfjrtj593">&nbsp;&nbsp;&nbsp;&nbsp;显示和修改寄存器中的值</a>
+</h3>
+<h3 class="topic">
+<a name="3kllve0lob7ve08il495thg5us">&nbsp;&nbsp;&nbsp;&nbsp;r eax=0</a>
+</h3>
+<h3 class="topic">
+<a name="0425597lsu961nvb333dl6vkvf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;修改eax寄存器的值为0</a>
+</h3>
+<h3 class="topic">
+<a name="1gu5b0625b7979mch47ho3plas">&nbsp;&nbsp;&nbsp;内核相关指令</a>
+</h3>
+<h3 class="topic">
+<a name="1bn0uvtjc4r8v8deglsh9lj0mb">&nbsp;&nbsp;&nbsp;&nbsp;暂时未用到</a>
+</h3>
+<h3 class="topic">
+<a name="3v3tbnmdbaborc68kkad12mhf2">&nbsp;&nbsp;&nbsp;f10步过</a>
+</h3>
+<h3 class="topic">
+<a name="31a2ocvnh1b9ccrjhm35udson3">&nbsp;&nbsp;&nbsp;f11步入</a>
+</h3>
+<h3 class="topic">
+<a name="72s4be5mj0q6vbcqhf6cf8q9at">&nbsp;&nbsp;&nbsp;f5执行</a>
+</h3>
+<h3 class="topic">
+<a name="2qbjj2lmfgfu1pdjaivpdbujkf">&nbsp;&nbsp;&nbsp;.cls</a>
+</h3>
+<h3 class="topic">
+<a name="6f03ilh1afitu0gth25d6gn4hf">&nbsp;&nbsp;&nbsp;&nbsp;清屏</a>
+</h3>
+<h3 class="topic">
+<a name="343mi502it5e4n8irv7f0nejd6">&nbsp;&nbsp;&nbsp;kp</a>
+</h3>
+<h3 class="topic">
+<a name="7o1mhj8k8dk7mt2sncl7481at3">&nbsp;&nbsp;&nbsp;&nbsp;显示当前线程的堆栈调用，并显示所有参数</a>
+</h3>
+<h3 class="topic">
+<a name="5vo3tgb926l3lpkgu8gs9el2bd">&nbsp;双机调试</a>
+</h3>
+<h3 class="topic">
+<a name="557oph3ac27tqctrv5ip12smmv">&nbsp;&nbsp;用于调试另一个系统（虚拟机）</a>
+</h3>
+<h3 class="topic">
+<a name="24pa6b2ocdh78i927tr0ugqcvv">&nbsp;&nbsp;开启一个处于调试状态的系统</a>
+</h3>
+<h3 class="topic">
+<a name="707gt2epmf6kpdep242vl8t8du">&nbsp;&nbsp;idt如果可以正常输出，则说明调试符号载入成功</a>
+</h3>
+<h3 class="topic">
+<a name="565ir2nshdhl66iu0u0gqrgk6n">&nbsp;windbg使用</a>
+</h3>
+<h3 class="topic">
+<a name="175cl7f1o7nclqni4kru6cmd55">&nbsp;&nbsp;https://www.it131.org/2069.html</a>
+</h3>
+<h3 class="topic">
+<a name="2i4m6sc702brgj8lnorup7so5d">&nbsp;&nbsp;http://www.cnblogs.com/yizhu2000/archive/2009/04/02/1427646.html</a>
+</h3>
+<h2 class="topic">
+<a name="7ot7t62aubfvhupbmvq3rk20me">中断与异常处理</a>
+</h2>
+<h3 class="topic">
+<a name="7svq8pk9hhf3aolbvj9dum08so">&nbsp;让处理器转向正常控制流之外的操作</a>
+</h3>
+<h3 class="topic">
+<a name="4rkcsuh6d2njk8kfj9emq8cdrg">&nbsp;中断</a>
+</h3>
+<h3 class="topic">
+<a name="36erha19lr0j7gimevgavdspue">&nbsp;&nbsp;通常由外部硬件产生</a>
+</h3>
+<h3 class="topic">
+<a name="4qhlsoqmlboi96mfdg5g5ud8ql">&nbsp;&nbsp;是一个异步事件</a>
+</h3>
+<h3 class="topic">
+<a name="6mooq292fho4cg2cvm66msfs0c">&nbsp;&nbsp;&nbsp;不会阻塞，处理器可以不进行处理</a>
+</h3>
+<h3 class="topic">
+<a name="1d2pb15gec8mui1ea5ffnc10l1">&nbsp;&nbsp;程序被动处理</a>
+</h3>
+<h3 class="topic">
+<a name="3spp82jbl5j319499eq19f9oaq">&nbsp;异常</a>
+</h3>
+<h3 class="topic">
+<a name="7cqvhja4uarbqq6dsd15l06ngg">&nbsp;&nbsp;程序执行过程中内部产生</a>
+</h3>
+<h3 class="topic">
+<a name="78qeqe3co3ee4vhl59l0dte333">&nbsp;&nbsp;是一个同步事件</a>
+</h3>
+<h3 class="topic">
+<a name="25gdgp85iebng2rl6k2gb1llms">&nbsp;&nbsp;&nbsp;会阻塞，处理器必须处理</a>
+</h3>
+<h3 class="topic">
+<a name="3rn1ougnp4hj96egq9ugsp7ubq">&nbsp;&nbsp;程序主动处理</a>
+</h3>
+<h3 class="topic">
+<a name="7g33v3o87llfavk389b0um3g40">&nbsp;idt表</a>
+</h3>
+<h3 class="topic">
+<a name="2cvm82e0nv8isb580qsu97cm0p">&nbsp;&nbsp;windows中中断异常统一管理，每种中断或异常发生时当前指令的执行就会转到特定的陷阱处理器中</a>
+</h3>
+<h3 class="topic">
+<a name="7oe9eklaho5r06ell6bg246p1q">&nbsp;&nbsp;各种陷阱处理器组成一张表，这样表即idt，表中元素下标即为中断的序号，存储的是一种特殊结构（可以通过其找到陷阱处理程序）</a>
+</h3>
+<h3 class="topic">
+<a name="302hp7bp0dg0ulkeg6ha306me8">&nbsp;&nbsp;windbg中可以通过 !idt /a可以查看当前系统的idt表</a>
+</h3>
+<h3 class="topic">
+<a name="5sai0ifharr27cuinhnr52n2g2">&nbsp;&nbsp;cpu中有一个48位寄存器（即idtr寄存器）保存idt的基址和长度，windbg分别使用 idtr和 idtl查看IDT的基址和长度</a>
+</h3>
+<h3 class="topic">
+<a name="1fl1fpj7mpln10kgu2t40l2ctm">&nbsp;&nbsp;&nbsp;32位系统中，一个中断描述符的大小是8个字节，idt数组大小为7ff，数组最多有256个元素（0~255个元素），意味着最多有256个中断处理程序</a>
+</h3>
+<h3 class="topic">
+<a name="09fsftclerqp0eku65uepqsdk1">&nbsp;&nbsp;PC-Hunter工具</a>
+</h3>
+<h3 class="topic">
+<a name="4vn3mv7kk8ahjgs3thdit7cmum">&nbsp;&nbsp;&nbsp;可以用于查看内核信息，可以查看idt表的内容</a>
+</h3>
+<h3 class="topic">
+<a name="520ud2pm5fbe34gh1istvu7l01">&nbsp;&nbsp;常见异常类型</a>
+</h3>
+<h3 class="topic">
+<a name="6hrqi6inj8hesjasgd1t2k5ilv">&nbsp;&nbsp;&nbsp;1 硬件断点</a>
+</h3>
+<h3 class="topic">
+<a name="434hquu43518a017m3pnugj80g">&nbsp;&nbsp;&nbsp;3 软件断点</a>
+</h3>
+<h3 class="topic">
+<a name="4fhjbpg92miikgh2tioa0h9dqt">&nbsp;&nbsp;&nbsp;e 内存访问断点</a>
+</h3>
+<h3 class="topic">
+<a name="6fbdebqk45jkg1tg0qfddf7a7c">&nbsp;异常分为3类</a>
+</h3>
+<h3 class="topic">
+<a name="5d32q1kj2la7gp0lit2u4dcpgc">&nbsp;&nbsp;错误</a>
+</h3>
+<h3 class="topic">
+<a name="0g15oscsjs8jd21k62uu1u4iaa">&nbsp;&nbsp;&nbsp;通常可以被纠正</a>
+</h3>
+<h3 class="topic">
+<a name="6kfkvkghd62db2o94ieqtb6mfo">&nbsp;&nbsp;&nbsp;即已经执行的指令，但是指令没有执行成功，eip指向当前的错误指令</a>
+</h3>
+<h3 class="topic">
+<a name="7c4irluhrorrqnfa6hpbj1m32p">&nbsp;&nbsp;&nbsp;线程环境中保留的eip指向的是产生错误的代码</a>
+</h3>
+<h3 class="topic">
+<a name="2nt21cjo39g8ae9q9pl50pa827">&nbsp;&nbsp;&nbsp;内存访问错误（EXCEPTION_ACCESS_VIOLATION）、除零异常是错误类异常</a>
+</h3>
+<h3 class="topic">
+<a name="4r085gcra79s9uu3h1jq2m4hnn">&nbsp;&nbsp;&nbsp;&nbsp;即内存断点的实现原理</a>
+</h3>
+<h3 class="topic">
+<a name="2h2v19q19lb36cvfj0681sigu7">&nbsp;&nbsp;陷阱</a>
+</h3>
+<h3 class="topic">
+<a name="75d7cuuo78jsfj3i6cbre312ll">&nbsp;&nbsp;&nbsp;通常可以被纠正</a>
+</h3>
+<h3 class="topic">
+<a name="1eejc9emns70jfg6bffr8pnv2b">&nbsp;&nbsp;&nbsp;异常指令已经被执行，eip指向当前指令的下一条指令</a>
+</h3>
+<h3 class="topic">
+<a name="601nnugfojufb31dl84m575kn5">&nbsp;&nbsp;&nbsp;线程环境中保留的eip指向产生错误代码的下一条的代码</a>
+</h3>
+<h3 class="topic">
+<a name="6ev207e2lkgctfvefb9q2eovh1">&nbsp;&nbsp;&nbsp;例如：软件断点（int 3） 单步异常(tf)  硬件读写断点</a>
+</h3>
+<h3 class="topic">
+<a name="70v4nkgsiptgesmrmnjgqpvv32">&nbsp;&nbsp;终止</a>
+</h3>
+<h3 class="topic">
+<a name="55b4i1dvp3k6bd46e2i181hle5">&nbsp;&nbsp;&nbsp;程序无法恢复执行，程序崩溃</a>
+</h3>
+<h3 class="topic">
+<a name="2tjp37te75foda44t1ik2i54mt">&nbsp;&nbsp;&nbsp;操作系统直接蓝屏</a>
+</h3>
+<h2 class="topic">
+<a name="2bdskkc45ikrkgcomk54rdhrta">windows异常处理机制</a>
+</h2>
+<h3 class="topic">
+<a name="3u25r1s3fvqpq43lab2f8u5qmd">&nbsp;主要用于将错误的处理和程序逻辑分割开</a>
+</h3>
+<h3 class="topic">
+<a name="0og7bnria2r301ilnorah4h9b4">&nbsp;是操作系统提供的机制，由vs提供关键字用以调用</a>
+</h3>
+<h3 class="topic">
+<a name="679r2tei2n8rnjm7bthhddrvtk">&nbsp;SEH</a>
+</h3>
+<h3 class="topic">
+<a name="42jinnvlbe32u1qr29p2o1bg14">&nbsp;&nbsp;_try</a>
+</h3>
+<h3 class="topic">
+<a name="7sd19kr32388u7dlkcjrgutegu">&nbsp;&nbsp;_except</a>
+</h3>
+<h3 class="topic">
+<a name="2m6dn3ghta89vkur3r88cokdvb">&nbsp;&nbsp;_finally</a>
+</h3>
+<h3 class="topic">
+<a name="1phfmam9p9s00otjt5s93rbc5d">&nbsp;&nbsp;_leave</a>
+</h3>
+<h3 class="topic">
+<a name="3l0sk7sllqsgqsldoo5natnoou">&nbsp;&nbsp;以上四个是vs的关键字，而不是c++异常处理的关键字（try catch throw）</a>
+</h3>
+<h3 class="topic">
+<a name="3prhnah1qfqftfouu3sjt6qgqq">&nbsp;&nbsp;使用方式</a>
+</h3>
+<h3 class="topic">
+<a name="3psgu482imu7k3k6fagnbegoe7">&nbsp;&nbsp;&nbsp;终结异常处理</a>
+</h3>
+<h3 class="topic">
+<a name="2l7dito1vjupkrsdm35tapjhbq">&nbsp;&nbsp;&nbsp;&nbsp;_try+_finally+_leave</a>
+</h3>
+<h3 class="topic">
+<a name="0r8l0fvcb16b50tugpktvkf642">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;无论try中是是否产生异常，finally中的程序均会被执行</a>
+</h3>
+<h3 class="topic">
+<a name="0ps4cagbg6rc20h12o6uj3tnk9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;try与finally之间必须有{}</a>
+</h3>
+<h3 class="topic">
+<a name="1acv643hfn92ca3qvj5h8pj7fg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果在try执行return 0; finally中的代码仍会被执行，无论以何种代码层（return break 。。。）的方式退出，</a>
+</h3>
+<h3 class="topic">
+<a name="7hjkr3r3223i2bsvkm2q0ec5sa">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;但是如果通过ExitProcess方式退出，则finally中的函数不会被执行</a>
+</h3>
+<h3 class="topic">
+<a name="38hn85umbpaq569ucr4gvm26tm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;try退出方式</a>
+</h3>
+<h3 class="topic">
+<a name="3lma6pkedp77je2aau92877vnm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;非正常</a>
+</h3>
+<h3 class="topic">
+<a name="1ehk7v7ufmpf6e8dde6f42jc8a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;goto break continue return</a>
+</h3>
+<h3 class="topic">
+<a name="722t96jo72ul885p5mtvp0cv48">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;为了从_try退出后继续执行_finally块，函数会产生较多的代码，所以应该使用正常方式退出_try</a>
+</h3>
+<h3 class="topic">
+<a name="0ll0i62s14kjh9io6m4lm0f9up">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;正常方式</a>
+</h3>
+<h3 class="topic">
+<a name="5cnotcvtgt6e556506d1m1sd4r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_leave</a>
+</h3>
+<h3 class="topic">
+<a name="54vptc22vqtdsdtcro4ql97a2c">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以在finally中使用AbnormalTermination()函数判断try中是正常退出还是非正常退出</a>
+</h3>
+<h3 class="topic">
+<a name="65iv9ckn29k6g0k8t7jskqfghn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该函数若返回true，则正常退出</a>
+</h3>
+<h3 class="topic">
+<a name="09rc9fqpm2ivhjsntktrounto8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;返回false，则非成正常退出</a>
+</h3>
+<h3 class="topic">
+<a name="0fte7tt9pj4s0sofin5mlm1pcv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该函数只能放在_finally中被使用</a>
+</h3>
+<h3 class="topic">
+<a name="7at8p8hqo6e0l6oi40qbdbih5q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通常用于资源的统一释放</a>
+</h3>
+<h3 class="topic">
+<a name="7bbfk77ol64meh52vvci7kr916">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;作用域以线程位单位，每个线程均维护自己的seh程序</a>
+</h3>
+<h3 class="topic">
+<a name="7vc6i81o3rl2hu5c3a3e9fgl7v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_try _finally可以用于改变程序执行流程，当_try中出现错误，则该块中错误代码之后的代码不会被执行，会直接执行finally中代码</a>
+</h3>
+<h3 class="topic">
+<a name="2af6t6hu1hclqeirrsdh089vra">&nbsp;&nbsp;&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="5p3m6aloaor4ld0th8kgajdsam">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#include &lt;iostream&gt;&#13;
+#include &lt;windows.h&gt;&#13;
+&#13;
+// 关键字: __try  _finally __leave&#13;
+// 作用： 通常用于进行资源的统一释放&#13;
+// 作用域： 以线程为单位，每一个线程都维护了自己的 SEH 程序&#13;
+&#13;
+int main()&#13;
+{&#13;
+	__try&#13;
+	{&#13;
+		// 这个括号不可以省略，必须加上&#13;
+		printf("__try { ... }\n");&#13;
+&#13;
+	// 使用跳转语句进行【非正常】的退出， goto break continue return &#13;
+	goto jmp_ret;&#13;
+&#13;
+	// 因为非正常退出会产生较大的代码，应该使用 __level 进行【正常退出】&#13;
+	__leave;&#13;
+	}&#13;
+	__finally&#13;
+	{&#13;
+		// __finally 块中的内容，无论何种方式退出，都会执行&#13;
+		// 调用 ExitProcess() 一类的函数不会执行这个代码块&#13;
+		printf("__finally { ... }\n");&#13;
+&#13;
+	// 使用 AbnormalTermination 判断是否正常退出&#13;
+	// 这个函数只能在终止处理块中被使用，否则报错&#13;
+	if (AbnormalTermination())&#13;
+		printf("非正常退出\n");&#13;
+	else&#13;
+		printf("正常退出\n");&#13;
+	}&#13;
+	// AbnormalTermination();&#13;
+	// 跳转到函数的结尾&#13;
+jmp_ret:&#13;
+	return 0;&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="6pmm5574f0iuc474rnpddf6dnu">&nbsp;&nbsp;&nbsp;结构化异常处理</a>
+</h3>
+<h3 class="topic">
+<a name="10opfric9tcc6o4lpb2h3j1tkt">&nbsp;&nbsp;&nbsp;&nbsp;_try+_except+异常过滤表达式</a>
+</h3>
+<h3 class="topic">
+<a name="68mug0nu8m5vgeb9j7enc1kunt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_try中存放可能会产生异常的代码</a>
+</h3>
+<h3 class="topic">
+<a name="44a3er0l71oaoda675r9ljlatm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;过滤表达式可以用于对异常的种类进行判断，可以是任意形式的表达式，但是表达式的结果只能为以下几种情况</a>
+</h3>
+<h3 class="topic">
+<a name="7r8crmn2phk7piv6v066lf0m81">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;EXCEPTION_EXECUTE_HANDLER(1)</a>
+</h3>
+<h3 class="topic">
+<a name="1ersqku047p4iked53jhl8hgie">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;表示执行_except块内容，只有过滤表达式值为1时，_except中的函数才会被执行</a>
+</h3>
+<h3 class="topic">
+<a name="5eohp6g6d3154b31csb0eho7ab">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;会改变程序执行流程,因为当错误产生时，程序不会执行_try中错误代码之后的程序，会转移到_except中执行代码</a>
+</h3>
+<h3 class="topic">
+<a name="6ps4t89a3r6diil9f9ujdsq8tr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;EXCEPTION_CONTINUE_SEARCH(0)</a>
+</h3>
+<h3 class="topic">
+<a name="1nq6jg4ls6493vrpr5j6b1o9ul">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当前不处理，将异常传递给外层异常处理函数</a>
+</h3>
+<h3 class="topic">
+<a name="6qnnbas881lfr90qbtmj5i6ctt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;常作为无法进行异常处理时结尾</a>
+</h3>
+<h3 class="topic">
+<a name="5bmn1innt5rv4liquhjs6tf183">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;EXCEPTION_CONTINUE_EXECUTION (-1)</a>
+</h3>
+<h3 class="topic">
+<a name="6pg2ecjhvl2djgg31gc4pti8vu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;继续执行，尝试重新运行try块的内容</a>
+</h3>
+<h3 class="topic">
+<a name="1eh69bejntu726sbcrmn6gpj58">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;常用于异常成功处理，重新运行错误代码</a>
+</h3>
+<h3 class="topic">
+<a name="43i4qr8lml1r1nfhp5d0uft0fm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果异常类型为错误，可以直接使用该宏重新运行代码</a>
+</h3>
+<h3 class="topic">
+<a name="2di5bc614vj98ui3a25ug491go">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果异常类型为陷阱，因为此时eip执行异常代码的下一条执行，所以需要将eip重新设置使其指向错误代码，之后重新执行</a>
+</h3>
+<h3 class="topic">
+<a name="3i2d0aat5dskfget6589jo990e">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在异常过滤表达式可以获取产生的异常的类型和异常产生时的线程环境，可以通过这两个信息，从而对异常进行处理</a>
+</h3>
+<h3 class="topic">
+<a name="1hrpnrk57ff1nc416g8nvsbobv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以将各种异常处理机制用作反调试，即特意产生异常，之后在异常处理中将异常恢复</a>
+</h3>
+<h3 class="topic">
+<a name="0v4u4vpjk2fog0dfo6gltj73f0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;作用域以线程位单位，每个线程均维护自己的seh程序</a>
+</h3>
+<h3 class="topic">
+<a name="4vehoui5ffeb4g4ojrou1gu76b">&nbsp;&nbsp;&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="1juqi5bcfma29anbs88v75s88o">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#include &lt;iostream&gt;&#13;
+#include &lt;windows.h&gt;&#13;
+&#13;
+// 关键字： __try  __except&#13;
+// 作用： 如果 __try 产生了异常，就对他进行相应的处理&#13;
+// 作用域：  以线程为单位，每一个线程都维护了自己的 SEH 程序&#13;
+&#13;
+// 异常过滤函数(异常的类型，异常的信息[异常类型\线程环境])&#13;
+DWORD ExceptionFilter(DWORD ExceptionCode, PEXCEPTION_POINTERS ExceptionInfo)&#13;
+{&#13;
+	// 筛选出当前能够处理的异常类型&#13;
+	if (ExceptionCode == EXCEPTION_INT_DIVIDE_BY_ZERO)&#13;
+	{&#13;
+		// 产生异常的原因是因为 ecx 寄存器为 0，修改就可以了&#13;
+		ExceptionInfo-&gt;ContextRecord-&gt;Ecx = 2;&#13;
+&#13;
+		// 因为异常已经被处理了，所以尝试重新执行&#13;
+		//注意这里因为是除0错误，属于异常中的错误，线程环境中eip指向发生错误的指令&#13;
+		//故异常修改之后可以直接再次运行错误指令，但是对于陷阱类异常，还需要调整eip的指向&#13;
+		return EXCEPTION_CONTINUE_EXECUTION;&#13;
+	}&#13;
+	else&#13;
+	{&#13;
+		printf("ExceptionCode:%X\n", ExceptionCode);&#13;
+	&#13;
+		// 当前无法处理的异常&#13;
+		return EXCEPTION_CONTINUE_SEARCH;&#13;
+	}&#13;
+}&#13;
+&#13;
+int main()&#13;
+{&#13;
+	int number = 10;&#13;
+&#13;
+	__try&#13;
+	{&#13;
+		__try&#13;
+		{&#13;
+			// 除零错误&#13;
+			number /= 0;&#13;
+		}&#13;
+&#13;
+		// 过滤表达式可以用于对异常的种类进行判断，可以是任意&#13;
+		// 形式的表达式，但是表达式的结果只能是下面的几种情况&#13;
+		// - EXCEPTION_EXECUTE_HANDLER(1): 表示执行 __except 块的内容&#13;
+		// - EXCEPTION_CONTINUE_SEARCH(0): 当前不处理，查找上一层处理函数&#13;
+		// - EXCEPTION_CONTINUE_EXECUTION(-1): 继续执行，不相信出错了，重新运行（没用）&#13;
+&#13;
+		// 两个特殊的函数和用法&#13;
+		// - GetExceptionCode，只能用于异常过滤表达式和 except 块中&#13;
+		// - GetExceptionInformation，只能用于过滤表达式&#13;
+		__except (ExceptionFilter(GetExceptionCode(), GetExceptionInformation()))&#13;
+		{&#13;
+			// 异常处理块只有 EXCEPTION_EXECUTE_HANDLER 才会被执行&#13;
+			printf("__except (EXCEPTION_EXECUTE_HANDLER)\n");&#13;
+		}&#13;
+		// 输出 number 的值&#13;
+		printf("number = %d\n", number);&#13;
+	}&#13;
+	__except (EXCEPTION_EXECUTE_HANDLER)&#13;
+	{&#13;
+		// 内层无法处理的异常会传递给外层&#13;
+		printf("外层 SEH 处理了异常\n");&#13;
+	}&#13;
+	return 0;&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="30m7ridhl9ns93p5qom1870r8c">&nbsp;&nbsp;重要函数</a>
+</h3>
+<h3 class="topic">
+<a name="5b301rne87rm4cta60ct34fo08">&nbsp;&nbsp;&nbsp;GetExceptionCode</a>
+</h3>
+<h3 class="topic">
+<a name="3sdohj5vlhnodttiv9rbj69ooi">&nbsp;&nbsp;&nbsp;&nbsp;只能用在异常过滤表达式和_except中</a>
+</h3>
+<h3 class="topic">
+<a name="3iaipfmt6hrhu780hsrf67t1ku">&nbsp;&nbsp;&nbsp;&nbsp;用于获取异常类型码</a>
+</h3>
+<h3 class="topic">
+<a name="7us28nvoc8a2toop61a8q46mil">&nbsp;&nbsp;&nbsp;GetExceptionInformation</a>
+</h3>
+<h3 class="topic">
+<a name="1ivmrtm6lk2uvmb7rqbk1mpe7g">&nbsp;&nbsp;&nbsp;&nbsp;只能用在异常过滤表达式中</a>
+</h3>
+<h3 class="topic">
+<a name="7267488dp0qkbj9nq32pc3o4mg">&nbsp;&nbsp;&nbsp;&nbsp;获取异常产生时的异常的线程环境</a>
+</h3>
+<h3 class="topic">
+<a name="31fbibhaelbtnq3haaia6khkuf">&nbsp;UEH</a>
+</h3>
+<h3 class="topic">
+<a name="0aj54qlrt2l0d1moe50ge3d80h">&nbsp;&nbsp;系统提供了默认的ueh函数，用户可以进行更改</a>
+</h3>
+<h3 class="topic">
+<a name="7evisunfiakgo6e7er2folqtlu">&nbsp;&nbsp;使用SetUnhandledExceptionFilter函数注册顶层异常处理程序</a>
+</h3>
+<h3 class="topic">
+<a name="0ue22h2mivh7sjatddrflak3jn">&nbsp;&nbsp;&nbsp;该函数参数为一个回调函数的指针</a>
+</h3>
+<h3 class="topic">
+<a name="5a576ug9thoa1eglq9kpnihoi0">&nbsp;&nbsp;&nbsp;&nbsp;回调函数参数为线程环境的结构体(EXCEPTION_POINTERS)的指针</a>
+</h3>
+<h3 class="topic">
+<a name="36t3j25i1vfkohod4j93v6dn4t">&nbsp;&nbsp;&nbsp;在回调函数中对异常类型进行判断并进行处理</a>
+</h3>
+<h3 class="topic">
+<a name="43r1tq52abao9vojvclsgatt6i">&nbsp;&nbsp;&nbsp;&nbsp;如果可以处理异常，则返回EXCEPTION_CONTINUE_EXECUTION，将错误代码重新执行（注意返回前eip需要在错误代码处）</a>
+</h3>
+<h3 class="topic">
+<a name="7t2gkb9a4kqrjc875tjoka61e8">&nbsp;&nbsp;&nbsp;&nbsp;如果不能处理异常，返回EXCEPTION_CONTINUE_SEARCH，将错误传递给外层进行错误处理</a>
+</h3>
+<h3 class="topic">
+<a name="3qp65m0t3nv856sgf4amd6l7ob">&nbsp;&nbsp;&nbsp;回调函数原型</a>
+</h3>
+<h3 class="topic">
+<a name="4oglfgtnoegg1jat2qeaubbpbc">&nbsp;&nbsp;&nbsp;&nbsp;LONG WINAPI TopLevelHandler(EXCEPTION_POINTERS *ExceptionInfo)</a>
+</h3>
+<h3 class="topic">
+<a name="6kq72o013c7sc794525knsp0td">&nbsp;&nbsp;&nbsp;在回调函数中进行错误类型的判断和错误的处理</a>
+</h3>
+<h3 class="topic">
+<a name="24kmbn68fj5017ek2ceur4s2fu">&nbsp;&nbsp;顶层异常处理函数只有程序处于非调试状态才能使用（即双击运行exe的才执行）</a>
+</h3>
+<h3 class="topic">
+<a name="4ras1r5jrnd06ikimnjbcqvifn">&nbsp;&nbsp;&nbsp;可以用于反调试</a>
+</h3>
+<h3 class="topic">
+<a name="2vvg9b74dck9tua3avhrnjrcid">&nbsp;&nbsp;作用域是全局的，与进程相关，只有一个，被保存在一个全局变量中</a>
+</h3>
+<h3 class="topic">
+<a name="06a49qtiq0rvjhe8kip9mgaeq5">&nbsp;&nbsp;如果所有的SEH都不能处理异常，就会被调用，即执行顺序在SEH之后</a>
+</h3>
+<h3 class="topic">
+<a name="7rhd6l4g13gjj4nkc1rfeu2cvt">&nbsp;&nbsp;通常用于执行错误信息的收集工作</a>
+</h3>
+<h3 class="topic">
+<a name="2eergn01fff11m1263q5s2ms37">&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="0omut154pr3l2favg3s84k5j9j">&nbsp;&nbsp;&nbsp;#include &lt;iostream&gt;&#13;
+#include &lt;windows.h&gt;&#13;
+&#13;
+// UEH: 顶层异常处理程序，如果所有的SEH都不能处理异常，就会被调用&#13;
+//      系统提供了一个默认的UEH函数，用户可以自己进行更改&#13;
+// 作用域：进程相关，只有一个，被保存在一个全局变量中&#13;
+// 注意： 当程序处于非调试状态才可以被调用，可用于[反调试]&#13;
+&#13;
+// 顶层异常处理程序&#13;
+LONG WINAPI TopLevelHandler(EXCEPTION_POINTERS *ExceptionInfo)&#13;
+{&#13;
+	// 筛选异常类型，能够处理的只有整数除零异常&#13;
+	if (EXCEPTION_INT_DIVIDE_BY_ZERO == ExceptionInfo-&gt;ExceptionRecord-&gt;ExceptionCode)&#13;
+	{&#13;
+		// 修改 ecx 进行操作&#13;
+		ExceptionInfo-&gt;ContextRecord-&gt;Ecx = 2;&#13;
+		//重新执行错误代码&#13;
+		return EXCEPTION_CONTINUE_EXECUTION;&#13;
+	}&#13;
+	// 无法处理则返回继续搜索，直到没有异常处理程序可以处理该异常&#13;
+	return EXCEPTION_CONTINUE_SEARCH;&#13;
+}&#13;
+&#13;
+int main()&#13;
+{&#13;
+	int number = 10;&#13;
+&#13;
+	// 注册一个顶层异常处理程序&#13;
+	SetUnhandledExceptionFilter(TopLevelHandler);&#13;
+&#13;
+	__try&#13;
+	{&#13;
+		// 一个异常，不能被 SEH 进行处理&#13;
+		number /= 0;&#13;
+	}&#13;
+	// 将异常传递给下一层&#13;
+	//此时不存在下一层seh，所以根据顺序错误会传递给ueh执行&#13;
+	__except(EXCEPTION_CONTINUE_SEARCH)&#13;
+	{&#13;
+		// 永远不会调用&#13;
+		printf("__except(EXCEPTION_CONTINUE_SEARCH)\n");&#13;
+	}&#13;
+&#13;
+	printf("numebr = %d\n", number);&#13;
+	system("pause");&#13;
+&#13;
+	return 0;&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="7b4ra36hqalfu8hkrpekh52d7m">&nbsp;VEH</a>
+</h3>
+<h3 class="topic">
+<a name="4ltodp8b7pbepgfqeibr0drdlj">&nbsp;&nbsp;使用函数进行注册</a>
+</h3>
+<h3 class="topic">
+<a name="5nanh49etmribi92do0n5vo7j8">&nbsp;&nbsp;&nbsp;AddVectoredExceptionHandler</a>
+</h3>
+<h3 class="topic">
+<a name="7lda7msb6febcr32glcfcnenj9">&nbsp;&nbsp;&nbsp;&nbsp;参数</a>
+</h3>
+<h3 class="topic">
+<a name="0b1u5e6qq04b3k6bhjjvdhou2q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;异常处理函数被调用的顺序</a>
+</h3>
+<h3 class="topic">
+<a name="62m72h79ncosq7b9rpt4109rn9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;因为VEH可能有多个，会形成一个链表，该参数指定了当前注册的VEH是否是在该链表的头部</a>
+</h3>
+<h3 class="topic">
+<a name="41133aasdt8o288qvkagb1trs9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;异常处理回调函数的指针</a>
+</h3>
+<h3 class="topic">
+<a name="2jstspntgep82bard3pfsarhua">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该回调函数的参数为线程环境结构体的指针</a>
+</h3>
+<h3 class="topic">
+<a name="0bognfs0rv3mmvqq2umj9rk9fk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;回调函数原型</a>
+</h3>
+<h3 class="topic">
+<a name="7m077p36bbe3lrf5t8poc907l3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LONG WINAPI VectoredExceptionHandler(EXCEPTION_POINTERS *ExceptionInfo)</a>
+</h3>
+<h3 class="topic">
+<a name="23if43ve053rs5l4s4vo14c4fb">&nbsp;&nbsp;使用函数进行移除</a>
+</h3>
+<h3 class="topic">
+<a name="6ufp4nab67eg71ithren1qbs6t">&nbsp;&nbsp;&nbsp;RemoveVectoredExceptionHandler</a>
+</h3>
+<h3 class="topic">
+<a name="03vj159u6j4hggqoo0lcr3b5j2">&nbsp;&nbsp;&nbsp;&nbsp;参数</a>
+</h3>
+<h3 class="topic">
+<a name="241j1ips0bsr4be9fkvt1cqvm9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;回调函数名</a>
+</h3>
+<h3 class="topic">
+<a name="7g0t8hhh0tm7umhtmabsjfg8fl">&nbsp;&nbsp;作用域	：进程相关，存在一个全局链表中</a>
+</h3>
+<h3 class="topic">
+<a name="72qfs5290kei69s7qhdq6he1ds">&nbsp;&nbsp;VEH是第一个被调用的异常处理函数，先于SEH</a>
+</h3>
+<h3 class="topic">
+<a name="67lqid07c4k5i79h8bvqt67p5g">&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="2r8f5vi7pcen0bm74l8jir6dh5">&nbsp;&nbsp;&nbsp;#include &lt;iostream&gt;&#13;
+#include &lt;windows.h&gt;&#13;
+&#13;
+// VEH: 向量化异常处理&#13;
+// 作用域：进程相关，存在一个全局的链表中&#13;
+// 注意： 第一个被调用的异常处理函数，先于 SEH&#13;
+&#13;
+// 向量化异常处理函数&#13;
+LONG WINAPI VectoredExceptionHandler(EXCEPTION_POINTERS *ExceptionInfo)&#13;
+{&#13;
+	// 筛选异常类型，能够处理的只有整数除零异常&#13;
+	if (EXCEPTION_INT_DIVIDE_BY_ZERO == ExceptionInfo-&gt;ExceptionRecord-&gt;ExceptionCode)&#13;
+	{&#13;
+		// 修改 ecx 进行操作&#13;
+		ExceptionInfo-&gt;ContextRecord-&gt;Ecx = 2;&#13;
+		return EXCEPTION_CONTINUE_EXECUTION;&#13;
+		//return EXCEPTION_CONTINUE_SEARCH;&#13;
+	}&#13;
+	// 无法处理&#13;
+	return EXCEPTION_CONTINUE_SEARCH;&#13;
+}&#13;
+&#13;
+int main()&#13;
+{&#13;
+	int number = 10;&#13;
+&#13;
+	// 参数一： 添加的位置是否是链表头部&#13;
+	// 参数二： 提供一个异常处理程序&#13;
+	AddVectoredExceptionHandler(TRUE, VectoredExceptionHandler);&#13;
+&#13;
+	//如果veh成功处理异常，则_except中的代码不会被执行，因为veh先于seh处理异常&#13;
+	//只有当veh无法处理异常时，_exccept中的代码才会被执行&#13;
+	__try&#13;
+	{&#13;
+		// 一个异常，不能被 SEH 进行处理&#13;
+		number /= 0;&#13;
+	}&#13;
+	// 将异常传递给下一层&#13;
+	__except (EXCEPTION_EXECUTE_HANDLER)&#13;
+	{&#13;
+		// 被调用的异常处理块&#13;
+		printf("__except(EXCEPTION_EXECUTE_HANDLER)\n");&#13;
+	}&#13;
+	// 移除一个注册的异常处理函数 VEH&#13;
+	RemoveVectoredExceptionHandler(VectoredExceptionHandler);&#13;
+&#13;
+	printf("numebr = %d\n", number);&#13;
+&#13;
+	return 0;&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="3vccpehhgiqb3s5rsedmm427i6">&nbsp;VCH</a>
+</h3>
+<h3 class="topic">
+<a name="6l5qamhfir9k3evk8hkr8to632">&nbsp;&nbsp;使用函数进行注册</a>
+</h3>
+<h3 class="topic">
+<a name="2j38i2m357jfuu8h958kl0eppt">&nbsp;&nbsp;&nbsp;AddVectoredContinueHandler</a>
+</h3>
+<h3 class="topic">
+<a name="27hpq71mf7vk7q8sd4or40t52v">&nbsp;&nbsp;&nbsp;&nbsp;参数</a>
+</h3>
+<h3 class="topic">
+<a name="05j6ua3ambquvuacos351icm56">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;异常处理函数被调用的顺序</a>
+</h3>
+<h3 class="topic">
+<a name="3o5ojc3gmv0ohbcq6b9bp40a4t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;因为VCH可能有多个，会形成一个链表，该参数指定了当前注册的VCH是否是在该链表的头部</a>
+</h3>
+<h3 class="topic">
+<a name="2a9brn31pv1upo327t49v5ns1d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;异常处理回调函数的指针</a>
+</h3>
+<h3 class="topic">
+<a name="43bqrj2np2612hq9je45pavgqs">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该回调函数的参数为线程环境结构体的指针</a>
+</h3>
+<h3 class="topic">
+<a name="0sfv48cejalmbdbajso4pncaek">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;回调函数原型</a>
+</h3>
+<h3 class="topic">
+<a name="5p76jue42l5o9l2guefkmvfk83">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LONG WINAPI VectoredContinueHandler(EXCEPTION_POINTERS *ExceptionInfo) </a>
+</h3>
+<h3 class="topic">
+<a name="32qs4dbu1sc22vdq9m1o8f1j4f">&nbsp;&nbsp;使用函数进行移除</a>
+</h3>
+<h3 class="topic">
+<a name="73lse5bjlqi7j265csrmo9eev6">&nbsp;&nbsp;&nbsp;RemoveVectoredContinueHandler(VectoredContinueHandler);</a>
+</h3>
+<h3 class="topic">
+<a name="63a2kj8sjng86f2mhb6gjd0kn6">&nbsp;&nbsp;&nbsp;&nbsp;参数</a>
+</h3>
+<h3 class="topic">
+<a name="7ejm0b8lubbousqm818smrh0r9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;回调函数名</a>
+</h3>
+<h3 class="topic">
+<a name="7irj9tcia4jse5qe8hhl9buvj8">&nbsp;&nbsp;作用域与进程相关，和VEH共同保存在一个全局的链表中</a>
+</h3>
+<h3 class="topic">
+<a name="3uer4767utnabiqtbmqbepbkdg">&nbsp;&nbsp;vch是最后一个被调用的，并且只有异常已经被处理时才会被调用</a>
+</h3>
+<h3 class="topic">
+<a name="518l37bhk1pkhva3sbb50a3jli">&nbsp;&nbsp;VCH只会在异常被处理的时候被调用，如果异常没有被处理程序会崩溃</a>
+</h3>
+<h3 class="topic">
+<a name="4ne5i7asskjebarfhsdojt4ui9">&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="4sb6dbm15rqkddcdjgb85p7u1o">&nbsp;&nbsp;&nbsp;#include &lt;iostream&gt;&#13;
+#include &lt;windows.h&gt;&#13;
+&#13;
+// VCH: 向量化异常处理&#13;
+// 作用域：进程相关，和 VEH 共同存在一个全局的链表中&#13;
+// 注意： VCH 是最后一个被调用的，并且只有异常被处理了才调用&#13;
+&#13;
+// 向量化异常处理函数VEH&#13;
+LONG WINAPI VectoredExceptionHandler(EXCEPTION_POINTERS *ExceptionInfo)&#13;
+{&#13;
+	printf("call VectoredExceptionHandler()\n");&#13;
+	ExceptionInfo-&gt;ContextRecord-&gt;Ecx = 2;&#13;
+&#13;
+	//这里的ExceptionContinueSearch是except定义的结构体，与EXCEPTION_CONTINUE_SEARCH宏值均为1&#13;
+	return ExceptionContinueSearch;&#13;
+	//return EXCEPTION_CONTINUE_EXECUTION;&#13;
+}&#13;
+&#13;
+// 向量化异常处理函数VCH&#13;
+LONG WINAPI VectoredContinueHandler(EXCEPTION_POINTERS *ExceptionInfo) &#13;
+{&#13;
+	printf("call VectoredContinueHandler()\n");&#13;
+	return EXCEPTION_CONTINUE_SEARCH;&#13;
+}&#13;
+&#13;
+&#13;
+// 顶层异常处理函数UEH&#13;
+LONG WINAPI TopLevelHandler(EXCEPTION_POINTERS *ExceptionInfo)&#13;
+{&#13;
+	printf("call TopLevelHandler()\n");&#13;
+	ExceptionInfo-&gt;ContextRecord-&gt;Ecx = 2;&#13;
+	return EXCEPTION_CONTINUE_EXECUTION;&#13;
+}&#13;
+&#13;
+// SEH 的过滤表达式&#13;
+DWORD ExceptionFilter(PEXCEPTION_POINTERS Exception)&#13;
+{&#13;
+	Exception-&gt;ContextRecord-&gt;Ecx = 2;&#13;
+	printf("call ExceptionFilter()\n");&#13;
+	return EXCEPTION_CONTINUE_EXECUTION;&#13;
+}&#13;
+&#13;
+int main()&#13;
+{&#13;
+	int number = 10;&#13;
+&#13;
+	// 参数一： 添加的位置是否是链表头部&#13;
+	// 参数二： 提供一个异常处理程序&#13;
+	AddVectoredContinueHandler(TRUE, VectoredContinueHandler);&#13;
+	AddVectoredExceptionHandler(TRUE, VectoredExceptionHandler);&#13;
+	SetUnhandledExceptionFilter(TopLevelHandler);&#13;
+&#13;
+	// number /= 0;&#13;
+&#13;
+	__try&#13;
+	{&#13;
+		// 一个异常，不能被 SEH 进行处理&#13;
+		number /= 0;&#13;
+&#13;
+		// 不执行 EXCEPTION_EXECUTE_HANDLER&#13;
+	}&#13;
+	// 将异常传递给下一层&#13;
+	//__except (ExceptionFilter(GetExceptionInformation()))&#13;
+	__except (EXCEPTION_CONTINUE_SEARCH)&#13;
+&#13;
+	{&#13;
+		// 不被调用的异常处理块&#13;
+		printf("__except(EXCEPTION_CONTINUE_SEARCH)\n");&#13;
+	}&#13;
+&#13;
+	// 移除一个注册的异常处理函数 VEH&#13;
+	RemoveVectoredContinueHandler(VectoredContinueHandler);&#13;
+	RemoveVectoredExceptionHandler(VectoredExceptionHandler);&#13;
+&#13;
+	printf("numebr = %d\n", number);&#13;
+&#13;
+	system("pause");&#13;
+	return 0;&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="3c2c72j6c7nhn94bv6rg9am8st">&nbsp;异常处理的执行顺序</a>
+</h3>
+<h3 class="topic">
+<a name="5g4gvse68teckfrvhfd48kilqi">&nbsp;&nbsp;veh-》seh-》ueh-》vch（当异常被处理之后，vch才会执行）</a>
+</h3>
+<h3 class="topic">
+<a name="326fmqfemvhbbr9u0737n552iv">&nbsp;&nbsp;如果一个异常被处理，则不会将异常传递给下一个异常处理机制</a>
+</h3>
+<h3 class="topic">
+<a name="2pejahvvfp2mnq0u0dgh2p5vlu">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class52day0429%EF%BC%88%E8%B0%83%E8%AF%95%E4%B8%8E%E5%BC%82%E5%B8%B8%E7%AC%AC%E4%B8%80%E5%A4%A9%EF%BC%89_files/0o5n4vu4q3sis86pujbrli21ci.png"></p>
+<h3 class="topic">
+<a name="7qvdlbn8pkj7pqmdo4rree2hdh">&nbsp;&nbsp;&nbsp;注意所有的VEH均无法处理异常时，会依序调用seh</a>
+</h3>
+<h3 class="topic">
+<a name="7f7dm7t9omg6il6mde9blvu4km">&nbsp;为了正确处理异常，一方面需要修改代码，另一方面需要修改函数返回值</a>
+</h3>
+<h3 class="topic">
+<a name="45b5j9e71rktshv64enkv4c4vh">&nbsp;注意ueh系统默认提供，如果程序没有专门进行异常处理，执行错误时的弹窗是ueh的执行结果，自己也可以设置异常处理程序</a>
+</h3>
+</body>
+</html>

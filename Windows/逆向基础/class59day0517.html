@@ -1,0 +1,630 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>class59day0517（软件逆向第四天）</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="3kr42dr50n6obf91ba3umrc93h">class59day0517（软件逆向第四天）</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="class59day0517_files/images/class59day0517%EF%BC%88%E8%BD%AF%E4%BB%B6%E9%80%86%E5%90%91%E7%AC%AC%E5%9B%9B%E5%A4%A9%EF%BC%89.jpg"></div>
+<h2 class="topic">
+<a name="0f8d9bhl3nlvc9j3jqmfd99ned">vc下的c++逆向分析之数据</a>
+</h2>
+<h3 class="topic">
+<a name="6p4e6kvgld3hmh60ju29ajqts1">&nbsp;常量</a>
+</h3>
+<h3 class="topic">
+<a name="455mj9m1bepgnvnvg6en090hfq">&nbsp;&nbsp;形式</a>
+</h3>
+<h3 class="topic">
+<a name="6ii06oea098iqqovv8s3fnnb8m">&nbsp;&nbsp;&nbsp;宏</a>
+</h3>
+<h3 class="topic">
+<a name="34283p1k5vqnv0g73st26o26pu">&nbsp;&nbsp;&nbsp;const</a>
+</h3>
+<h3 class="topic">
+<a name="6qbfm4ah204ltqs4k037elrgl5">&nbsp;&nbsp;&nbsp;枚举</a>
+</h3>
+<h3 class="topic">
+<a name="7v5f4cqosqdpasilsmn70vtoj2">&nbsp;&nbsp;&nbsp;结构体常量</a>
+</h3>
+<h3 class="topic">
+<a name="36ohmokml85j6o7u4cqfe64l3p">&nbsp;&nbsp;&nbsp;。。。。。</a>
+</h3>
+<h3 class="topic">
+<a name="6152ucgun61a3hqgnjm87miak2">&nbsp;&nbsp;使用ida分析</a>
+</h3>
+<h3 class="topic">
+<a name="7m6583qekakom95uf4dga3bav2">&nbsp;&nbsp;&nbsp;ida反编译窗口与十六进制窗口存在数据对应关系，可以在数据窗口中设置与哪个反汇编窗口挂钩</a>
+</h3>
+<h3 class="topic">
+<a name="237l79u1srdp41r6eqcmmnt9a8">&nbsp;&nbsp;&nbsp;在ida十六进制窗口修改数据和保存修改均可以使用F2快捷键</a>
+</h3>
+<h3 class="topic">
+<a name="38je8kpdtsd3g8j63j3kpiodmr">&nbsp;&nbsp;&nbsp;&nbsp;也可以右键</a>
+</h3>
+<h3 class="topic">
+<a name="6i34pjbpo7bh0qjlro823o6a8n">&nbsp;&nbsp;&nbsp;普通常量（整型、字符型）的数据会直接编译到OPCode中，可以使用上述方法直接修改</a>
+</h3>
+<h3 class="topic">
+<a name="1juqas0hsbj9rogmq54m8fb7gt">&nbsp;&nbsp;&nbsp;&nbsp;例如mov [ebp-8],1等</a>
+</h3>
+<h3 class="topic">
+<a name="2rvad4mdkn5m9boont81bjhvkp">&nbsp;&nbsp;&nbsp;枚举常量、宏均是直接编译到OPCode中</a>
+</h3>
+<h3 class="topic">
+<a name="4bpkbkf2nafvre7alc21dl5euu">&nbsp;&nbsp;&nbsp;字符串常量（定义指针指向字符串常量char*p="hello"）保存在常量区，即rdata段</a>
+</h3>
+<h3 class="topic">
+<a name="77dbmic567r75m3pvnngqpgtgk">&nbsp;&nbsp;&nbsp;&nbsp;在OPCode中保存的是字符串的虚拟地址（va）</a>
+</h3>
+<h3 class="topic">
+<a name="062oragchso21b1ppfspekg7t6">&nbsp;&nbsp;&nbsp;&nbsp;如果程序使用了随即基址，则此处需要重定位</a>
+</h3>
+<h3 class="topic">
+<a name="5ere00thorfiahljeo579vpsih">&nbsp;&nbsp;&nbsp;浮点数常量与字符串常量类似，保存在rdata中，OPCode中保存的是浮点数常量的虚拟地址（va）</a>
+</h3>
+<h3 class="topic">
+<a name="55guvfen2s7ekcrd8g2re6uebt">&nbsp;&nbsp;&nbsp;结构体数据根据字段拆分，单独保存在数据区，opcode中仅保存数据的地址</a>
+</h3>
+<h3 class="topic">
+<a name="03e1eojannme441fb9mu71r54t">&nbsp;&nbsp;&nbsp;&nbsp;在release版本中，同一结构体的多个字段在数据区不一定相邻存放，没有明显判断为结构体的特征，只能根据数据用途推断其是否为结构体</a>
+</h3>
+<h3 class="topic">
+<a name="1n9e1gi5htol5abhqh1oa6d79g">&nbsp;&nbsp;总结</a>
+</h3>
+<h3 class="topic">
+<a name="335or1q7bmj05vrfjegim1c9td">&nbsp;&nbsp;&nbsp;部分简单常量直接编译到opcode中（整型 字符型）</a>
+</h3>
+<h3 class="topic">
+<a name="1un31opvjqvh38tpimehpnaqb7">&nbsp;&nbsp;&nbsp;部分数据存放于数据段，opcode中使用的是地址（va）</a>
+</h3>
+<h3 class="topic">
+<a name="4uih0aarj6t51357r7hvabfiof">&nbsp;字符串（数组被字符串初始化）</a>
+</h3>
+<h3 class="topic">
+<a name="6pnef04dndsij683jj34f4ebgc">&nbsp;&nbsp;字符串在程序数据区以四个字节为单位进行进行存储</a>
+</h3>
+<h3 class="topic">
+<a name="48trrdoggov8hdkvf5lft7u7u8">&nbsp;&nbsp;&nbsp;ida操作</a>
+</h3>
+<h3 class="topic">
+<a name="4vdh6eel93a8m0u0h1g8a50k64">&nbsp;&nbsp;&nbsp;&nbsp;ida数据区中，选中dw的数据类型（即字符串的四个字节的单位），按d可以转换ida解析该段数据的方法，转换为db dd等方式，即可以将dw数据类型拆分为多个db显示</a>
+</h3>
+<h3 class="topic">
+<a name="3p4obpjkp9nj2iepghrovim39t">&nbsp;&nbsp;&nbsp;&nbsp;选中数据首部，右键-》相关按键，可以将其转化为字符串的显示形式</a>
+</h3>
+<h3 class="topic">
+<a name="1q0jr2jgdieef2b6oi825l5usp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;或使用快捷键a</a>
+</h3>
+<h3 class="topic">
+<a name="47e8qesu575r543ck3b459h359">&nbsp;&nbsp;ascii字符串以四个字节为单位将字符串传输到程序中的堆空间中，以此在程序中被使用</a>
+</h3>
+<h3 class="topic">
+<a name="3kij9jc9kj3ug744pq918k6pko">&nbsp;&nbsp;unicode字符符串通过串操作（rep movsb）将esi地址处的字符串保存到edi地址处 </a>
+</h3>
+<h3 class="topic">
+<a name="2qgbbqe1ivptv5p30eparg3o4f">&nbsp;&nbsp;string字符串</a>
+</h3>
+<h3 class="topic">
+<a name="37o7vutbdtgfmoigik5vp0rch4">&nbsp;&nbsp;&nbsp;是一个类对象，类的对象调用类方法时需要使用ecx传递this指针，通过ecx中的地址，可以找到string类对象的地址，一般定义类对象时均需要调用类的构造函数</a>
+</h3>
+<h3 class="topic">
+<a name="4aqkhbh6g0a7fsrgoret45vc9j">&nbsp;&nbsp;&nbsp;&nbsp;ecx中保存着this指针，即string类对象的地址，可以在od的数据窗口中查看类对象的数据结构&#13;
+（因为类对象的数据结构体字段多为指针，所以数据窗口中使用地址方式解析数据）</a>
+</h3>
+<h3 class="topic">
+<a name="11knlu4v5trhdf7s6a8mmh9epo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;第一个四字节 是  指针  指针的值为指向本结构体的内存空间首地址</a>
+</h3>
+<h3 class="topic">
+<a name="39j3rfrmima08208gir3o2ga5j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;第二个字节 是 指针  指向堆中的字符串</a>
+</h3>
+<h3 class="topic">
+<a name="36jbv3qp3oje0se7v72ip22omp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果字符串长度比较短，则此处连带后面几个cc用于保存字符串的ascii</a>
+</h3>
+<h3 class="topic">
+<a name="0ekb3dr2r357mkg6uh40smg6dq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用四字节cct填充</a>
+</h3>
+<h3 class="topic">
+<a name="5e8b3278d9t9rdch740h12vg1k">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用四字节cct填充</a>
+</h3>
+<h3 class="topic">
+<a name="6tuig6su3vo3m8i67lvkg6u8op">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用四字节cct填充</a>
+</h3>
+<h3 class="topic">
+<a name="5591n0hbmbgegmoarn2l0loirb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;字符串长度</a>
+</h3>
+<h3 class="topic">
+<a name="2rre98jro2rk9q4irecgvrqlnh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;包括最后的'\0'</a>
+</h3>
+<h3 class="topic">
+<a name="2k0aijgaj0uhlht3cmu9de80o1">&nbsp;&nbsp;&nbsp;&nbsp;某些选择题中string结构体的大小为0x1c</a>
+</h3>
+<h3 class="topic">
+<a name="415l27d783k4oavikst1qn9the">&nbsp;&nbsp;&nbsp;如果此时要分析string类对象的结构体，需要使用od进行动态调试</a>
+</h3>
+<h3 class="topic">
+<a name="3qkde3h8252lu0dgsqa9eru2lg">&nbsp;&nbsp;CString字符串</a>
+</h3>
+<h3 class="topic">
+<a name="1hsodph3bu961b843apns3iuuh">&nbsp;&nbsp;&nbsp;也是一个类对象，调用类方法时会使用ecx传this指针，通过this找到类对象的内存地址，分析其数据结构</a>
+</h3>
+<h3 class="topic">
+<a name="2he1o9qd7vcrstd8gvd9ef6hiv">&nbsp;&nbsp;&nbsp;&nbsp;数据结构中保存一个指针，指向cstring对应的字符串</a>
+</h3>
+<h3 class="topic">
+<a name="5m9di4v48tp7cc10hsphj04dhc">&nbsp;指针和引用</a>
+</h3>
+<h3 class="topic">
+<a name="0aafreb9q5cf416qbqhk7t7g8p">&nbsp;&nbsp;指针和引用的区别</a>
+</h3>
+<h3 class="topic">
+<a name="767drckmv23sl0p0iied3oee66">&nbsp;&nbsp;&nbsp;引用和被引用对象共享内存空间，一经引用不能修改</a>
+</h3>
+<h3 class="topic">
+<a name="69elhbla1bfc6b3dp04k6k6chr">&nbsp;&nbsp;两者在汇编的层面上无法区分，均是使用lea获得局部变量的地址，再使用mov将局部变量地址赋值给另一个局部变量，后者即为指针或引用</a>
+</h3>
+<h3 class="topic">
+<a name="1qnm2l0jmvkp1tn7oaqo8qlvrl">&nbsp;详情图片可见老师笔记</a>
+</h3>
+<h2 class="topic">
+<a name="6la37p18svereau1ne8npvvt0i">vc下的c++逆向分析之代码</a>
+</h2>
+<h3 class="topic">
+<a name="4ttefq6thht5j3o3471lvo6btg">&nbsp;类的静态函数和友元函数调用时不需要ecx传递this指针，调用过程与普通函数一样</a>
+</h3>
+<h3 class="topic">
+<a name="5uo1ga3d6252l4f3a8jc178quu">&nbsp;构造函数/析构函数/普通成员函数</a>
+</h3>
+<h3 class="topic">
+<a name="5olkh2k9hag20kuseid3l9ng91">&nbsp;&nbsp;调用此类函数之前，使用lea给ecx传入类对象的this指针，之后使用call调用成员函数</a>
+</h3>
+<h3 class="topic">
+<a name="6epq7tjtfo5iu3gcimg73lr0s7">&nbsp;&nbsp;直接通过代码一般无法区别构造和析构函数，通常通过函数调用的位置去推测，调用顺序靠前的函数一般是构造函数，最后调用到往往是析构函数</a>
+</h3>
+<h3 class="topic">
+<a name="13k4a44pnqaa9avo8aqa4p2lim">&nbsp;&nbsp;当代码中使用类对象时，一般在构造函数之前会调用CheckForDebuggerJustMyCode函数，该函数之前ecx也会被赋值，且使用的是mov进行赋值</a>
+</h3>
+<h3 class="topic">
+<a name="5tvksf3v0jafupf6l1na30f0lu">&nbsp;&nbsp;&nbsp;该函数之后一般才是使用lea赋值ecx并且 调用构造函数等成员函数</a>
+</h3>
+<h3 class="topic">
+<a name="32trk0u1sh5pmbn7vqbme60m1t">&nbsp;&nbsp;&nbsp;调用CheckForDebuggerJustMyCode函数的特征</a>
+</h3>
+<h3 class="topic">
+<a name="4foasgdjnfcrhqf6pc1eb9j37p">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class59day0517_files/27pn2nh34ih7rjd2adctstdm90.png"></p>
+<h3 class="topic">
+<a name="4m54rk2uupt02tid5nm2a2q3jk">&nbsp;&nbsp;&nbsp;&nbsp;后两条语句往往是调用类的构造函数</a>
+</h3>
+<h3 class="topic">
+<a name="453fs4n13nrgvkjs67efv6mabl">&nbsp;&nbsp;&nbsp;&nbsp;并且函数内部多会调用GetCurrentThreadId()</a>
+</h3>
+<h3 class="topic">
+<a name="5luc68bujf8ja6i8h9apfhjfl7">&nbsp;虚函数</a>
+</h3>
+<h3 class="topic">
+<a name="5rf1ku0apsqlelkeldhq8gfdts">&nbsp;&nbsp;注意只有通过指针或引用调用虚函数，才能多态，才会访问虚函数表</a>
+</h3>
+<h3 class="topic">
+<a name="71ihge1iv0k5i7n9bca96t57t3">&nbsp;&nbsp;直接通过类对象调用虚函数</a>
+</h3>
+<h3 class="topic">
+<a name="2ti7qdgmqvqhr8ljq8lkh43t8e">&nbsp;&nbsp;&nbsp;不会产生多态的效果，不需要访问虚函数表</a>
+</h3>
+<h3 class="topic">
+<a name="7odfpvg5g7urlmsjdbum1lqcju">&nbsp;&nbsp;&nbsp;汇编代码形式类似于调用普通成员函数  lea ecx,xxx  call</a>
+</h3>
+<h3 class="topic">
+<a name="0hnissr73eapdvsd836fh0u0ld">&nbsp;&nbsp;通过指针调用虚函数</a>
+</h3>
+<h3 class="topic">
+<a name="37hvgjmlaav49hulp27cu6osms">&nbsp;&nbsp;&nbsp;一个c++类对象，若该类存在虚函数，则该对象前四个字节为虚函数表指针，指向一个虚函数表，表中均是虚函数的地址</a>
+</h3>
+<h3 class="topic">
+<a name="3sbvd7hns4q0e08ufsgk4cbvll">&nbsp;&nbsp;&nbsp;此时需要访问虚函数表</a>
+</h3>
+<h3 class="topic">
+<a name="4ruc8229d7jtakj3g6f7c32kbp">&nbsp;&nbsp;&nbsp;&nbsp;在调用虚函数之前，需要将对象地址解引用，得到虚函数表地址，再将虚函数表地址解引用，得到具体虚函数地址，最后调用虚函数，</a>
+</h3>
+<h3 class="topic">
+<a name="2lkp45be1nm47rik9hh4s68100">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class59day0517_files/0s9j4gjtpv69u1ulnvhfob38af.png"></p>
+<h3 class="topic">
+<a name="2dphbi5k1882qagngb6e2l0s0t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1：eax获得this指针</a>
+</h3>
+<h3 class="topic">
+<a name="4v0vs72oo5c0u3vu2hu0h1kmal">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2：将this指针解引用，获得虚函数表指针</a>
+</h3>
+<h3 class="topic">
+<a name="066b4gfmmpbgdoom9i31cjv215">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3：使用ecx传递this指针</a>
+</h3>
+<h3 class="topic">
+<a name="1ukdhq199scnekbs0sm4vr0a03">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4：虚函数表指针结解引用，获得虚函数地址</a>
+</h3>
+<h3 class="topic">
+<a name="50shkft6n0pgbb7shnnte9gf30">&nbsp;&nbsp;&nbsp;特征：call eax为调用虚函数</a>
+</h3>
+<h3 class="topic">
+<a name="3qlrraks32g6hr8t5glvjbilc7">&nbsp;带子类的虚函数</a>
+</h3>
+<h3 class="topic">
+<a name="10redne224p4ec5mapo72amj8h">&nbsp;&nbsp;使用父类指针指向子类对象，父类指针调用虚函数，调用的是子类的虚函数</a>
+</h3>
+<h3 class="topic">
+<a name="1gbcrple0em70kp5v63tos2d8o">&nbsp;&nbsp;子类对象的构造函数中会调用父类的构造函数，符合c++的类的构造函数规则</a>
+</h3>
+<h3 class="topic">
+<a name="5oqps3t7ag01ane0mm8fsa06mb">&nbsp;&nbsp;&nbsp;同样父类构造被调用之前也会调用CheckForDebuggerJustMyCode</a>
+</h3>
+<h3 class="topic">
+<a name="6p903ha1h671qaajcus1ui88te">&nbsp;&nbsp;&nbsp;父类构造函数在子类构造函数中被调用，是使用mov将ecx赋值为this指针，这一点和CheckForDebuggerJustMyCode是相同的</a>
+</h3>
+<h3 class="topic">
+<a name="2pkj9ha26rhd6cs9e6ocgr04ri">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class59day0517_files/4fj28mf7qkp7rhoedm3r45ld8h.png"></p>
+<h3 class="topic">
+<a name="376s6nrdnqnrbr8fv3b2dq9g7s">&nbsp;&nbsp;使用类对象调用虚函数不会产生多态效果，不会访问虚函数表</a>
+</h3>
+<h3 class="topic">
+<a name="7i9fnedq77mbrt9ki1h90fq3h8">&nbsp;&nbsp;通过父类指针（指向子类对象）调用虚函数</a>
+</h3>
+<h3 class="topic">
+<a name="10vtocenrhje3c1ae67kannkql">&nbsp;&nbsp;&nbsp;虚函数的调用与不带子类情况的类似，也需要进行两次解引用，从this指针的解引用中获得虚函数表指针，从虚函数表中取得函数地址，（一般赋值到eax中）然后调用虚函数（call eax）</a>
+</h3>
+<h3 class="topic">
+<a name="45d9koteu0rpj8f19hpm4dte44">&nbsp;全局类对象</a>
+</h3>
+<h3 class="topic">
+<a name="6kb1puitl49o1f2p1m4eknkgvv">&nbsp;&nbsp;全局对象在main函数中调用成员函数</a>
+</h3>
+<h3 class="topic">
+<a name="50s0c4mbqf7ofmdu5853okargm">&nbsp;&nbsp;&nbsp;使用mov将类对象地址（this指针）置于ecx中，然后调用成员函数</a>
+</h3>
+<h3 class="topic">
+<a name="2mrod56t9954jbs0sa3eebf8nu">&nbsp;&nbsp;&nbsp;函数调用之前也会调用 CheckForDebuggerJustMyCode&#13;
+两者赋值ecx的方法都是mov</a>
+</h3>
+<h3 class="topic">
+<a name="57ke3ad9s3mqbm6svoqsnur1b9">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class59day0517_files/61od5e7ton8i59rt7tnatrci3t.png"></p>
+<h3 class="topic">
+<a name="74knfvurjbpl84hn7cfe1ojm44">&nbsp;&nbsp;注意全局类对象的构造函数执行在main函数之前（在vs调试中使用initterm函数进行构造），析构在main函数之后，此种函数使用vs分析是最方便的，因为可以加载符号</a>
+</h3>
+<h3 class="topic">
+<a name="15gsr4c8t2fh6ejsq9jp775lgo">&nbsp;&nbsp;&nbsp;构造函数原型</a>
+</h3>
+<h3 class="topic">
+<a name="6qniq9o26k9bgq4jjt2cjh7omk">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class59day0517_files/3ttebic3av2490ibnhsg2634ke.png"></p>
+<h3 class="topic">
+<a name="4obc3ul798cr6bpp90ob08q25c">&nbsp;&nbsp;&nbsp;找到全局对象的构造函数被调用的位置</a>
+</h3>
+<h3 class="topic">
+<a name="60vn3fv6la4v3e1duno1mm3p42">&nbsp;&nbsp;&nbsp;&nbsp;当全局对象对应的类在main函数内部存在对应的对象时</a>
+</h3>
+<h3 class="topic">
+<a name="5ud2461p6b9a22c9n09obupfgk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以通过ida找到main函数内该类的构造函数，然后通过该构造函数的交叉引用，判断除了main函数，还有哪个位置调用了该构造函数，该位置若在main函数之前，则为全局对象在main函数外调用构造函数的位置</a>
+</h3>
+<h3 class="topic">
+<a name="41t3816sm5ljpjkuib6p4v8j4m">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class59day0517_files/6nupj6tpr6t6c84sa8h02dbfii.png"></p>
+<h3 class="topic">
+<a name="45hpf5slksn9fbp5hh4df98d71">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1为该类的构造函数</a>
+</h3>
+<h3 class="topic">
+<a name="1lgm2qu56qld9d5674l572st1f">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2为main函数中调用该构造函数</a>
+</h3>
+<h3 class="topic">
+<a name="409k6cue95f82tuc02rmgvt78c">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3为main函数之前调用该构造函数，即为全局对象调用构造函数的位置</a>
+</h3>
+<h3 class="topic">
+<a name="6ie0eemcnkjncbcqc6ktfoogdl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过ida地址可以找到od中对应的地址，然后通过栈回溯，可以找到全局对象的构造函数是在哪个位置被调用的</a>
+</h3>
+<h3 class="topic">
+<a name="0esluvd46sdkquo8l5htrpj1du">&nbsp;&nbsp;&nbsp;&nbsp;当全局对象对应的类在main函数中没有对应的对象</a>
+</h3>
+<h3 class="topic">
+<a name="2qii29691la2cbcucclrb0k2sj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;因为ida中main函数中没有对应类的构造函数的交叉引用，所以很难确定对应类全局对象调用构造函数的位置</a>
+</h3>
+<h3 class="topic">
+<a name="0holfsq51v9q3s9a37c13qh0vp">&nbsp;使用mov将ecx赋值为this指针并且调用类方法的情况有三种</a>
+</h3>
+<h3 class="topic">
+<a name="2a0rn45q38okdb62ead3hubd5q">&nbsp;&nbsp;全局类对象在main函数中调用成员函数</a>
+</h3>
+<h3 class="topic">
+<a name="70cqmfqherocrvbkbubne1uim9">&nbsp;&nbsp;父类的构造函数在子类的构造函数中被调用</a>
+</h3>
+<h3 class="topic">
+<a name="27hrr9rmnr92767qgvsdirh4hb">&nbsp;&nbsp;CheckForDebuggerJustMyCode函数在类构造函数之前被调用</a>
+</h3>
+<h3 class="topic">
+<a name="2g7mem79uooqlalpe01325qj8p">&nbsp;普通成员函数的调用一般适用lea 对ecx进行赋值，之后调用成员函数</a>
+</h3>
+<h2 class="topic">
+<a name="10sbf120rtugil7tdhacmqqhso">vc下的c++逆向分析之数据结构</a>
+</h2>
+<h3 class="topic">
+<a name="4rlic691jeoghvjg9aodht0khf">&nbsp;vector</a>
+</h3>
+<h3 class="topic">
+<a name="2sa1k1em64v23pua33l3vajs29">&nbsp;&nbsp;ida中也可以通过看向上跳的执行流程判当前代码是否是循环</a>
+</h3>
+<h3 class="topic">
+<a name="6qh8i4l9im7eoaic0ksn77cps9">&nbsp;&nbsp;vector在内存中的结构体</a>
+</h3>
+<h3 class="topic">
+<a name="67h02uufn0i80g76ee1n8a3di4">&nbsp;&nbsp;&nbsp;第一个四字节：一个指针的地址，该指针指向本vector结构体的内存首地址，即指针指向结构体自身</a>
+</h3>
+<h3 class="topic">
+<a name="6si1b6qljnnn72h9tq0pae81o8">&nbsp;&nbsp;&nbsp;第二个四字节：一个指针，指向的堆空间存放vector中第一个元素</a>
+</h3>
+<h3 class="topic">
+<a name="3ojoson7vvljv8qfmi69k3ljvo">&nbsp;&nbsp;&nbsp;第三个四字节：一个指针，指向vector保存元素的堆空间的下边界（堆空间边界值为fdfdfdfd）</a>
+</h3>
+<h3 class="topic">
+<a name="29a54nvrjrhr3mqh3bbsh8lsge">&nbsp;&nbsp;&nbsp;第四个四字节</a>
+</h3>
+<h3 class="topic">
+<a name="4ntnde6i6jg4sv4b1nv9cd7psv">&nbsp;&nbsp;&nbsp;&nbsp;vector数据元素堆空间的最后地址，一般与上一个字段值相等</a>
+</h3>
+<h3 class="topic">
+<a name="0fbvvs7korrit1ol52acsqiefv">&nbsp;&nbsp;&nbsp;可以自己构建结构体解析vector，以验证猜测</a>
+</h3>
+<h3 class="topic">
+<a name="5rho81iu20v4hfgvgpj6182l3f">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class59day0517_files/2folul8tpen4kfis2d7ft021ka.png"></p>
+<h3 class="topic">
+<a name="6s2s0cioi0decrpbbsrib76a51">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class59day0517_files/2khkp0m1f1viokr9t72mralltf.png"></p>
+<h3 class="topic">
+<a name="6l24o0jh74cecerun353fmmt0e">&nbsp;&nbsp;&nbsp;&nbsp;当进行pop时，第三个结构体字段会被修改，会减少4，如果之后有有push，第三个参数会再增加4</a>
+</h3>
+<h3 class="topic">
+<a name="4cv5nfjs38fg2bjpcj0b6abas5">&nbsp;&nbsp;使用迭代器遍历vector</a>
+</h3>
+<h3 class="topic">
+<a name="32rq8aakruih7r8lrje9el7sg0">&nbsp;&nbsp;&nbsp;迭代器也是一个类对象，创建一个类对象也需要调用迭代器的构造函数</a>
+</h3>
+<h3 class="topic">
+<a name="3qihuf8mi15ndr3247i0e3l4cf">&nbsp;&nbsp;&nbsp;流程</a>
+</h3>
+<h3 class="topic">
+<a name="4t36eds1da6r1tgm3sqkkjgvdi">&nbsp;&nbsp;&nbsp;&nbsp;将迭代器内存空间初始化为0</a>
+</h3>
+<h3 class="topic">
+<a name="6k855ru333hcosks8fij2r65c5">&nbsp;&nbsp;&nbsp;&nbsp;调用vector的begin，给迭代器对象赋值</a>
+</h3>
+<h3 class="topic">
+<a name="2qon7v2o0ill1h7ie1qujja1eb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;begin迭代器对象结构</a>
+</h3>
+<h3 class="topic">
+<a name="5eo05g4lq6jdkjo3u3ou9drgv8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;第一个四字节  指针  指向一个结构体</a>
+</h3>
+<h3 class="topic">
+<a name="42p89t5ofgttglgbg2iemnqibp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;指针 指向vector对象</a>
+</h3>
+<h3 class="topic">
+<a name="7b7u2972aqmm87csrv9ef8tndp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;指针 指向自己</a>
+</h3>
+<h3 class="topic">
+<a name="5rsar24v8mbs9h6fcvurcl89aa">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;第二个四字节</a>
+</h3>
+<h3 class="topic">
+<a name="347maj8vrgm0c5e0qmlih2gj1i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该迭代器是end迭代器时</a>
+</h3>
+<h3 class="topic">
+<a name="773udg5r4584s52jhf3lh30d28">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;存疑，表达的应该是当该结构体表示一个end结构体时，该字段才有意义</a>
+</h3>
+<h3 class="topic">
+<a name="3v5r1jg616gg338ep0103r6qbp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;第三个四字节  指针</a>
+</h3>
+<h3 class="topic">
+<a name="48j313k6n923s85r6pe4m63spf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;指向vector对象的数据元素起始地址</a>
+</h3>
+<h3 class="topic">
+<a name="4ag443unrg3lcgdeoaea0760js">&nbsp;&nbsp;&nbsp;&nbsp;调用vector的end</a>
+</h3>
+<h3 class="topic">
+<a name="3fs4jd6fs6rtofaqvgo0b07m7h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;会返回一个end迭代器</a>
+</h3>
+<h3 class="topic">
+<a name="7hcu71l6t2eiqfp8jr62npvec3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;结构</a>
+</h3>
+<h3 class="topic">
+<a name="0frsjudmqvtaskt6tg47nufeh0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;第一个四字节  指针  指向一个结构体</a>
+</h3>
+<h3 class="topic">
+<a name="0ch3jno7ck94sg0el64ksdc6jd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;指针 指向vector对象</a>
+</h3>
+<h3 class="topic">
+<a name="6kr9sgvkdt1jcs8ve2gdf1q12o">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;指针 指向自己</a>
+</h3>
+<h3 class="topic">
+<a name="56cgrh6dnrhtqmgksl423haqct">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;第二个四字节</a>
+</h3>
+<h3 class="topic">
+<a name="3qs1ugcvbbqabct6lff4fvmm11">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;指针， 指向是begin迭代器</a>
+</h3>
+<h3 class="topic">
+<a name="25e9iitfs2huics7e9ibkuaain">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;第三个四字节  指针</a>
+</h3>
+<h3 class="topic">
+<a name="3rq9rjoc190me5l48k6tb9qu6g">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;指向vector对象的数据元素结束地址</a>
+</h3>
+<h3 class="topic">
+<a name="7mf31g5vbo1ib47qgr46f994ea">&nbsp;&nbsp;&nbsp;&nbsp;调用迭代器的!=符号重载</a>
+</h3>
+<h3 class="topic">
+<a name="44babkd25hmnsjlrls4jll4aja">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;参数为begin迭代器对象和end迭代器对象</a>
+</h3>
+<h3 class="topic">
+<a name="4kvjo0ggn43vrfa350067reot2">&nbsp;&nbsp;&nbsp;&nbsp;释放end迭代器</a>
+</h3>
+<h3 class="topic">
+<a name="2jjqp3tjg9pb77gojc1sdi7io0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;即将end结构体第一个字段清零</a>
+</h3>
+<h3 class="topic">
+<a name="4a5ibmroekl92igvu7k09eeg70">&nbsp;&nbsp;&nbsp;&nbsp;迭代器的*符号重载</a>
+</h3>
+<h3 class="topic">
+<a name="542di6m1gbjodnj1m0ac0h2f7r">&nbsp;&nbsp;&nbsp;&nbsp;调用迭代器自增的符号重载</a>
+</h3>
+<h3 class="topic">
+<a name="1901c1jdanshj1dt0q7efd9gct">&nbsp;&nbsp;&nbsp;使用迭代器遍历会导致很大的内存开支</a>
+</h3>
+<h3 class="topic">
+<a name="5rsgevn6lru8v6f03bqkqfbsbl">&nbsp;&nbsp;两个指针（指向相同类型数据）相减，得到的是两个地址之间允许存放的该类数据的个数</a>
+</h3>
+<h3 class="topic">
+<a name="2uu2dlkihao7fr0um766el3s6o">&nbsp;&nbsp;&nbsp;即数组的两个元素的地址相减</a>
+</h3>
+<h3 class="topic">
+<a name="7dg94d1vlljkbaavnfc8s4rd6j">&nbsp;list</a>
+</h3>
+<h3 class="topic">
+<a name="6ee1lkaqna737379643ur5mb4m">&nbsp;map</a>
+</h3>
+<h2 class="topic">
+<a name="4n7fsnofnvg62m9u1rqqqfsqp2">vs2015~vs2017编译的c程序入口点相对于vs2013发生变化，不能直接从第二个call函数看到3个push，其特征是调用三个函数，获得获得三个main函数参数，之后再调用main函数</a>
+</h2>
+<h3 class="topic">
+<a name="2kj1nv8lqlul7138e5g3tu24fb">&nbsp;vs2013生成的程序刚开始有两个call 第一个call为初始化安全cookie函数，进入第二个call，通过观察三个push可以找到main函数</a>
+</h3>
+<h3 class="topic">
+<a name="0k07kmrchq0m0lk4mjaojnabnh">&nbsp;vs2015~2017程序入口点</a>
+</h3>
+<h3 class="topic">
+<a name="12379pjj4cjkj9m5trhdka7vih">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class59day0517_files/5avdd5i09anji0gvl0ckcn6da7.png"></p>
+<h3 class="topic">
+<a name="30q035k0u20is8uqkg6vrkodsd">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class59day0517_files/69jq1p35c443tqcv0o2k11dp5e.png"></p>
+<h3 class="topic">
+<a name="445jedqp4ant3ubq2vq7d89hjr">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class59day0517_files/2kfgeu7unj7k03h9voisp3vgjv.png"></p>
+<h3 class="topic">
+<a name="2h4d5nt9dv6t2hqjef54gnee0l">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class59day0517_files/34bscncuealu28pdr8ekbm9djd.png"></p>
+<h3 class="topic">
+<a name="7cl00jl5m138rk84dhe200oc17">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class59day0517_files/18udra60cmnetrurbc7q2dui1t.png"></p>
+<h2 class="topic">
+<a name="43d74fv701qh2gu5228kup8rcu">在ida的函数窗口右键-》quick filter可以直接查询函数名称</a>
+</h2>
+<h2 class="topic">
+<a name="28vfq1fitu70ce4reh1rmd3j5v">可以通过ida地址和od地址的相互转换，找到ida中指令在od中的显示</a>
+</h2>
+<h3 class="topic">
+<a name="08fteb30o2ffksdkj8j2dvk5vr">&nbsp;od中寻址内存地址可以选择以va或rva寻址</a>
+</h3>
+<h3 class="topic">
+<a name="2vvv4q4osb4fa1i9pv7o4tsiki">&nbsp;od与ida中同一代码地址的转换</a>
+</h3>
+<h3 class="topic">
+<a name="4jvodokpbkh3f2mgo3jvl0cr9a">&nbsp;&nbsp;相同区段，在ida和od中rva是一样的</a>
+</h3>
+<h3 class="topic">
+<a name="7eu7tid17llrcfvav3finecnch">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class59day0517_files/5q6jalgt7oo0qhts0mm2dggvfa.png"></p>
+<h3 class="topic">
+<a name="429r4ii0pa4t27pag5t4p6jt8f">&nbsp;&nbsp;同一指令，在od中ida中rva也是相同的</a>
+</h3>
+<h3 class="topic">
+<a name="3qiq9jq8jvpccajelvac2srm1f">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class59day0517_files/1m9frokiu4ms9m2thqgmqcltt5.png"></p>
+<h3 class="topic">
+<a name="1ugs9g7p6b8ae8ftccdcqgsq47">&nbsp;&nbsp;关键是找到代码区段的段地址</a>
+</h3>
+<h2 class="topic">
+<a name="070gl49rfopvh26vfjjjicgh3a">在od的中文搜索引擎界面中，使用ctrl+f5可以模糊查询对应字符串，使用b/n可以向下查找   z/p可以向上查找</a>
+</h2>
+<h2 class="topic">
+<a name="18t86dig5h0s2ktm0qk0l3cns5">安全cookie</a>
+</h2>
+<h3 class="topic">
+<a name="367j4u30hngq6kp9rb9vv2hsqu">&nbsp;是一个计算出的四字节数据</a>
+</h3>
+<h3 class="topic">
+<a name="3es7pe41sn336vuqgg2f317f79">&nbsp;根据当前系统时间、线程id等计算出来，每次运行时该至都不一样，一般在函数刚开始进行计算，在函数末尾进行检查</a>
+</h3>
+<h3 class="topic">
+<a name="1vep04tig2hni0ab086fgp5mfb">&nbsp;cookie值存放在全局地址中，计算出来后置于eax ，再将eax与esp进行异或，结果保存在局部变量中，程序结束后将eax（其中保存有全局地址中的cookie）与esp异或，得到的数据与之前保存的局部变量做对比，此举可以保证程序运行过程中栈不被修改，即esp在程序运行前和运行后地址不变</a>
+</h3>
+<h3 class="topic">
+<a name="28bjf64oke9qr72488odtvhvdt">&nbsp;&nbsp;此举对程序漏洞利用造成阻碍</a>
+</h3>
+<h3 class="topic">
+<a name="5jgbotanpe3cg84v83efupcnnu">&nbsp;有时安全cookie的使用会发生在main函数执行核心代码之前</a>
+</h3>
+<h3 class="topic">
+<a name="257b996mojr2cqlcrqfa77b197">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class59day0517_files/7aqc556ugqnhuu0fggt9siv6j5.png"></p>
+<h2 class="topic">
+<a name="3vjjjufchic8d840ofcbt9psg1">编译特征</a>
+</h2>
+<h3 class="topic">
+<a name="6gcbp8rvca7s2kpuvit1lab0om">&nbsp;vs中的链接器版本</a>
+</h3>
+<h3 class="topic">
+<a name="3e5l7nepmud53ik81nh74j3gpq">&nbsp;&nbsp;6.&nbsp;VS版本对应的链接器版本&#13;
+VC6.0&nbsp;&shy;&gt;&nbsp;6.0 VC2003&nbsp;&shy;&gt;&nbsp;7.0 Vs2005&nbsp;&shy;&gt;&nbsp;8.0&#13;
+Vs2008&nbsp;&shy;&gt;&nbsp;9.0 Vs2010&nbsp;&shy;&gt;&nbsp;10.0 Vs2012&nbsp;&shy;&gt;&nbsp;11.0 Vs2013&nbsp;&shy;&gt;&nbsp;12.0 Vs2015&nbsp;&shy;&gt;&nbsp;14.0 Vs2017&nbsp;&shy;&gt;&nbsp;14.1 Vs2019&nbsp;&shy;&gt;&nbsp;14.2</a>
+</h3>
+<h3 class="topic">
+<a name="37c9gdht1v9k5tl2kj5fst0l3q">&nbsp;cdcdcdcd</a>
+</h3>
+<h3 class="topic">
+<a name="27a41j18fjnngdv6bcoifoihf5">&nbsp;&nbsp;堆的初始值</a>
+</h3>
+<h3 class="topic">
+<a name="1jrm1dh2tf99jripi73egj8l3i">&nbsp;dfdfdfdf</a>
+</h3>
+<h3 class="topic">
+<a name="3gti9n4iq6vprt1pjmts2bglt5">&nbsp;&nbsp;堆的边界</a>
+</h3>
+<h3 class="topic">
+<a name="6u0kb0l7o7236obsenu00oive2">&nbsp;cccccccc</a>
+</h3>
+<h3 class="topic">
+<a name="42c19nvbs06pnbhlrgj5hav8n2">&nbsp;&nbsp;栈的初始值</a>
+</h3>
+</body>
+</html>

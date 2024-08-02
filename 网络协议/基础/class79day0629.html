@@ -1,0 +1,524 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>class79day0629（协议分析第二天）</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="0fhlqapm27rloqujpc0jorh8sn">class79day0629（协议分析第二天）</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="class79day0629_files/images/class79day0629%EF%BC%88%E5%8D%8F%E8%AE%AE%E5%88%86%E6%9E%90%E7%AC%AC%E4%BA%8C%E5%A4%A9%EF%BC%89.jpg"></div>
+<h2 class="topic">
+<a name="007uui9m5nkd3dbjis2o2v3s2v">网络协议</a>
+</h2>
+<h3 class="topic">
+<a name="174moken56nlh6rnfblba9c9t6">&nbsp;udp协议</a>
+</h3>
+<h3 class="topic">
+<a name="1fr5jcuutmout2jpud82okt6aj">&nbsp;&nbsp;rfc768</a>
+</h3>
+<h3 class="topic">
+<a name="0if5g5f651ce9dhuis5e7h7756">&nbsp;&nbsp;与tcp区别</a>
+</h3>
+<h3 class="topic">
+<a name="4l4te21fno8eacevv4h6d5fhdf">&nbsp;&nbsp;&nbsp;提供高速的数据传输，不会正式建立和结束主机之间的连接</a>
+</h3>
+<h3 class="topic">
+<a name="6avuekcg74ub49j22i2ceodh02">&nbsp;&nbsp;&nbsp;不能确保udp数据能够最终到达目的地</a>
+</h3>
+<h3 class="topic">
+<a name="76u0qhibj1dkv6ndevtfc976is">&nbsp;&nbsp;&nbsp;传输速度比tcp高，占用系统资源较少</a>
+</h3>
+<h3 class="topic">
+<a name="42ocnj93mvacuroh3sfshons4b">&nbsp;&nbsp;依赖udp的应用层协议</a>
+</h3>
+<h3 class="topic">
+<a name="70b053cpfn7344ntmb5tdvcdsd">&nbsp;&nbsp;&nbsp;dns</a>
+</h3>
+<h3 class="topic">
+<a name="34u6v21faocommg9ivedeunuml">&nbsp;&nbsp;&nbsp;dhcp</a>
+</h3>
+<h3 class="topic">
+<a name="17f03mrkpu3e43rebp35op91j5">&nbsp;&nbsp;&nbsp;以上协议内部提供保证数据传输正确性的方法</a>
+</h3>
+<h3 class="topic">
+<a name="4okhijr2i95o4jtio5bi7e51l3">&nbsp;&nbsp;格式</a>
+</h3>
+<h3 class="topic">
+<a name="5j40por3rp639nip1hm8g61ef5">&nbsp;&nbsp;&nbsp;源端口</a>
+</h3>
+<h3 class="topic">
+<a name="1sf974e0fqj2g4vcsm1enmom05">&nbsp;&nbsp;&nbsp;目的端口</a>
+</h3>
+<h3 class="topic">
+<a name="6c18pf7eas6ice074d64m1pfk9">&nbsp;&nbsp;&nbsp;数据包长度</a>
+</h3>
+<h3 class="topic">
+<a name="5iut2ssppii5q35039opadvuse">&nbsp;&nbsp;&nbsp;校验和</a>
+</h3>
+<h3 class="topic">
+<a name="3h99v90qf5n1kuenhmnlh8jotp">&nbsp;&nbsp;基于udp的局域网聊天工具</a>
+</h3>
+<h3 class="topic">
+<a name="6nnf5udjh0pe2qb2caoso6v8cr">&nbsp;&nbsp;&nbsp;使用飞秋进行虚拟机与主机聊天</a>
+</h3>
+<h3 class="topic">
+<a name="2h8acnja75fa626i9c95vu8voa">&nbsp;&nbsp;&nbsp;&nbsp;udp抓包</a>
+</h3>
+<h3 class="topic">
+<a name="7kvb5krqld5r0v9nqm0p7fsg7k">&nbsp;&nbsp;&nbsp;使用vs工程，在主机发送udp数据包，模拟飞秋客户端，与虚拟机中的飞秋聊天</a>
+</h3>
+<h3 class="topic">
+<a name="6oo392egcdfrdgiffrcjbrahbv">&nbsp;&nbsp;&nbsp;流程</a>
+</h3>
+<h3 class="topic">
+<a name="4jblbhfro042mk9rrssc526463">&nbsp;&nbsp;&nbsp;&nbsp;捕获过滤器 -&gt;udp</a>
+</h3>
+<h3 class="topic">
+<a name="4egpm38g0ttm4voqrlfk2f6d36">&nbsp;&nbsp;&nbsp;&nbsp;过滤显示指定两个ip地址之间的通讯</a>
+</h3>
+<h3 class="topic">
+<a name="3car97idbahmh4lfd6t1e9muvm">&nbsp;&nbsp;&nbsp;&nbsp;追踪udp流,快速找到udp传输的信息</a>
+</h3>
+<h3 class="topic">
+<a name="7qbg8o9jb3s1d3mitbi510teo5">&nbsp;&nbsp;&nbsp;&nbsp;将从流追踪中找到的数据包以ascii形式复制下来，在vs代码中保存为字符串，使用代码模拟聊天软件给虚拟机发udp包</a>
+</h3>
+<h3 class="topic">
+<a name="2fo922ta7o3s97vtr5pietjl1e">&nbsp;&nbsp;&nbsp;&nbsp;分析得到的数据包字符串，删除部分内容，发送udp包，查看结果，分析那些dup包中的那些数据最后会显示在聊天工具中</a>
+</h3>
+<h3 class="topic">
+<a name="5jcbrktn1j7s1ahh1s7tbf95p5">&nbsp;http协议</a>
+</h3>
+<h3 class="topic">
+<a name="3d0vfndgr95sm7uk9ghkhno10l">&nbsp;&nbsp;万维网：一种基于因特网的分布式信息查询系统，因特网是以tcp/ip协议为基址的一种组网方式</a>
+</h3>
+<h3 class="topic">
+<a name="70j83mh5scu570o980n1k7f6p6">&nbsp;&nbsp;http：超文本传输协议</a>
+</h3>
+<h3 class="topic">
+<a name="6gqr7r6i4fr3lsi5f7l2cb6b5s">&nbsp;&nbsp;&nbsp;由客户端（浏览器）向服务端（服务器）请求由超文本标记语言（HTML）所编辑的网页</a>
+</h3>
+<h3 class="topic">
+<a name="67hvjqirig9722np5ss1kl2hh9">&nbsp;&nbsp;该协议目前版本1.1</a>
+</h3>
+<h3 class="topic">
+<a name="1v3ullc9h3ehhblsf69s2uokq4">&nbsp;&nbsp;基于tcp协议</a>
+</h3>
+<h3 class="topic">
+<a name="7g5t68sh4s19kutsirk9ohgevb">&nbsp;&nbsp;http url</a>
+</h3>
+<h3 class="topic">
+<a name="4bta7qe0nvj0ff798knvinn981">&nbsp;&nbsp;&nbsp;统一资源定位，通过描述资源的位置从而标识资源</a>
+</h3>
+<h3 class="topic">
+<a name="65q7mcg2ub26k6iebncrvhc9h5">&nbsp;&nbsp;&nbsp;格式</a>
+</h3>
+<h3 class="topic">
+<a name="2nm5sus254dci27evt9ujrpgfo">&nbsp;&nbsp;&nbsp;&nbsp;http://host[":"port][绝对路径]</a>
+</h3>
+<h3 class="topic">
+<a name="10gm66d4eq9ece8om33c766une">&nbsp;&nbsp;报文格式</a>
+</h3>
+<h3 class="topic">
+<a name="7e71b8a0ndcf15h7t0ljd5rgbl">&nbsp;&nbsp;&nbsp;面向文本的报文格式，报文中的每个字段都是ascii串，各个字段长度不确定</a>
+</h3>
+<h3 class="topic">
+<a name="3i9go5p7slo21sj8j38q2b23eh">&nbsp;&nbsp;&nbsp;报文有两种类型</a>
+</h3>
+<h3 class="topic">
+<a name="5tqtb9654u92mhq5tqmeqhe6uk">&nbsp;&nbsp;&nbsp;&nbsp;请求报文</a>
+</h3>
+<h3 class="topic">
+<a name="6saaj91bpupigt6e5rehp4rvsa">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;请求行</a>
+</h3>
+<h3 class="topic">
+<a name="6gft81l891vs22rgbrthtu1rri">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;请求方法</a>
+</h3>
+<h3 class="topic">
+<a name="7c621afnn6fqfn2eihg1u93kkj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;GET</a>
+</h3>
+<h3 class="topic">
+<a name="3tfb7b32603nqa920p498p1gp9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;从服务器获取数据</a>
+</h3>
+<h3 class="topic">
+<a name="0u8gvq0nsjmjap43ns6dsdbftg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;POST</a>
+</h3>
+<h3 class="topic">
+<a name="0dh3i3jfd9c3bjgq98cpai8a4q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;以表单的方式提交数据到服务器</a>
+</h3>
+<h3 class="topic">
+<a name="0lvt5u7cu4qff9898d6b42vvs5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;HEAD</a>
+</h3>
+<h3 class="topic">
+<a name="0addnebnbsvf8uvq9dgvk0ran1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PUT</a>
+</h3>
+<h3 class="topic">
+<a name="38c55i9po8lbc48la5glke2dar">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DELETE</a>
+</h3>
+<h3 class="topic">
+<a name="0b23bpm0g3bgvb2ca8eujmgg8f">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OPTIONS</a>
+</h3>
+<h3 class="topic">
+<a name="591j6jhsmi2qb6d75r43gjvpv3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TRACE</a>
+</h3>
+<h3 class="topic">
+<a name="4glf8kba2ge0lnh7a4s5mftebu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CONNECT</a>
+</h3>
+<h3 class="topic">
+<a name="4sbub4cl0ibbc8inbv6s2118gl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;url字段</a>
+</h3>
+<h3 class="topic">
+<a name="4d4cb1uk9083rcsebdabhva29a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;http协议版本</a>
+</h3>
+<h3 class="topic">
+<a name="763g6m42tr7mg312f9251stj9c">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;请求头</a>
+</h3>
+<h3 class="topic">
+<a name="7sh7k98ajl6atq1u1v71cnmaa5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;由  关键字:值  对构成</a>
+</h3>
+<h3 class="topic">
+<a name="4l91upefo3btc15iehi612p020">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用于通知服务端有关客户端请求的信息</a>
+</h3>
+<h3 class="topic">
+<a name="0kfff4foj8v7p0irrvnfa3o2mu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;空行</a>
+</h3>
+<h3 class="topic">
+<a name="684qb0jpejs7ipvhg42dhomtuf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;请求数据</a>
+</h3>
+<h3 class="topic">
+<a name="1k8ntvr4uqvdopbs809ovbsrbq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;一般在POST方法中使用，不在GET方法中使用</a>
+</h3>
+<h3 class="topic">
+<a name="33kdkpkd6fotthadmdbnf3b9re">&nbsp;&nbsp;&nbsp;&nbsp;响应报文（与请求报文格式相同，只是使用了状态信息替换了请求信息）</a>
+</h3>
+<h3 class="topic">
+<a name="2dq05cn286cqqci3otpk6d4ek6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;状态行</a>
+</h3>
+<h3 class="topic">
+<a name="7ccuieoifof4jorrcn4emkemjd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;协议版本</a>
+</h3>
+<h3 class="topic">
+<a name="3mo3t2gg4h2bv7ec3b4h4cgfhv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;状态码</a>
+</h3>
+<h3 class="topic">
+<a name="54e4mnmqj31dk6qa1monqj8vfl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;是3位数字</a>
+</h3>
+<h3 class="topic">
+<a name="2g1aaarp2mnmchg601ske08hpp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;200~299表示成功</a>
+</h3>
+<h3 class="topic">
+<a name="7eovb1hfe947u0tnpmc4gqffkf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;300~399表示资源重定向</a>
+</h3>
+<h3 class="topic">
+<a name="3qnfspq22u4o8cbgenvp0sldft">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;400~499表示客户端请求出错</a>
+</h3>
+<h3 class="topic">
+<a name="192oejv45aoo6813f7tugc07jq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;500~599表示服务端出错</a>
+</h3>
+<h3 class="topic">
+<a name="7154i7cgd4fv8uajrhjt4ac05n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;常见状态码</a>
+</h3>
+<h3 class="topic">
+<a name="7afjjuthlp8lmsqsqmv1ohtve6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;200</a>
+</h3>
+<h3 class="topic">
+<a name="76sj3ogss59pilmlpiek134v8c">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;响应成功</a>
+</h3>
+<h3 class="topic">
+<a name="29hgulbb5b8s2gehbbb52pclvu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;302</a>
+</h3>
+<h3 class="topic">
+<a name="1s2ap79amu49gjhq1imr5s7u6a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;跳转，需要重定向</a>
+</h3>
+<h3 class="topic">
+<a name="4qai4a54ut6bo1ghslokipla2q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;400</a>
+</h3>
+<h3 class="topic">
+<a name="0fbjcr5v7p5mgu84jpnt6u10rt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;客户端请求语法错误，不能被服务器识别</a>
+</h3>
+<h3 class="topic">
+<a name="0ofp3fcmbhsodnsckpqhe17dv8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;403</a>
+</h3>
+<h3 class="topic">
+<a name="1n2dkf0er5dqk5169hsb4tdre7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;服务器收到消息，拒绝提供服务</a>
+</h3>
+<h3 class="topic">
+<a name="111e2pkrju2sm2ht29mijl0k2v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;404</a>
+</h3>
+<h3 class="topic">
+<a name="3fuoko0v99odv1eo6qlq9ogb7v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;请求的资源不存在</a>
+</h3>
+<h3 class="topic">
+<a name="5oj7ael1s1e24kog0lhtml0n7e">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;500</a>
+</h3>
+<h3 class="topic">
+<a name="4kk8m7lomb2hegmgjkg8lggt03">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;服务器内部错误</a>
+</h3>
+<h3 class="topic">
+<a name="3860h00mu1f49mp001shgjqt1r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;状态码描述</a>
+</h3>
+<h3 class="topic">
+<a name="1a4bj2ue9t4u09orjiok0aamh2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;响应头</a>
+</h3>
+<h3 class="topic">
+<a name="148oebmsebqtt0tbtf8ed747k9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通知客户端有关服务器响应的信息</a>
+</h3>
+<h3 class="topic">
+<a name="6lllh9k1bk1ul3e0qfcmuo0nnr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;其中</a>
+</h3>
+<h3 class="topic">
+<a name="12shvnfq3d8nlq32fok5mda3ur">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Context-type</a>
+</h3>
+<h3 class="topic">
+<a name="2586qvq8jopmh3ivvijcnq7i00">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;响应正文的类型</a>
+</h3>
+<h3 class="topic">
+<a name="2ao44u5e6rcoc0kl1hbesh0d90">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;http报文头的信息必须是asii，但是后面的数据可以是任意格式，该字段标识响应数据的类型，有文本 图片 音乐等多种 总称为MIME type</a>
+</h3>
+<h3 class="topic">
+<a name="4o3l0k4no7cn8reeubi996pe7u">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;空行</a>
+</h3>
+<h3 class="topic">
+<a name="732tsufgimi9ffprvv5fgoeg32">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;响应数据</a>
+</h3>
+<h3 class="topic">
+<a name="4eroh491a748m4pftdtjrvgqlj">&nbsp;&nbsp;&nbsp;http协议包大小不确定</a>
+</h3>
+<h3 class="topic">
+<a name="1p0r5jm11gag51387nhhql5skt">&nbsp;&nbsp;http报头信息必须是ascii</a>
+</h3>
+<h3 class="topic">
+<a name="24a29cpt8sipbbrtif37guipe1">&nbsp;&nbsp;传输的数据的编码方式可以自行指定</a>
+</h3>
+<h3 class="topic">
+<a name="4tltla7inre0lkrvd98a4hg29e">&nbsp;&nbsp;从http包中提取出网页内容</a>
+</h3>
+<h3 class="topic">
+<a name="47100vh6udlhacdvqq6vrh947p">&nbsp;&nbsp;&nbsp;在http的错误码为200的包中，在数据包中的html代码字段右键，导出分组字节流，将数据保存为html信息</a>
+</h3>
+<h3 class="topic">
+<a name="2145rfth4t46ub6pp16o8qjn7h">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class79day0629_files/2frrjuiit265oje9lbgh9smb1l.png"></p>
+<h2 class="topic">
+<a name="7mmrjp7320njkejtjkaetqkufv">协议分析实战</a>
+</h2>
+<h3 class="topic">
+<a name="7ac1mq4q2t4fmb0l8k7m7q90d0">&nbsp;跟踪远程木马流量</a>
+</h3>
+<h3 class="topic">
+<a name="3p2uq98f2c26k2f813msg7ooa3">&nbsp;&nbsp;统计木马有几组会话，有几个端口，端口情况</a>
+</h3>
+<h3 class="topic">
+<a name="6tdafb1em4db5frjic42hbf4fb">&nbsp;&nbsp;&nbsp;统计-》会话</a>
+</h3>
+<h3 class="topic">
+<a name="151mqtgdvfh3d5h85i09ccrtqo">&nbsp;&nbsp;&nbsp;&nbsp;ipv4是1个会话  tcp有8个会话</a>
+</h3>
+<h3 class="topic">
+<a name="37a38b7c7n0f1qlka7sbrajton">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;说明tcp流跟踪有8个流 0~7</a>
+</h3>
+<h3 class="topic">
+<a name="5f1ng96ab2iju42900od2abt0m">&nbsp;&nbsp;&nbsp;&nbsp;同时可以查看不同的端口</a>
+</h3>
+<h3 class="topic">
+<a name="1jphvo2pi8h0ldik7lrg805tc7">&nbsp;&nbsp;&nbsp;会话是一个什么概念，不同的会话如何区分</a>
+</h3>
+<h3 class="topic">
+<a name="4sur3lqbnnaj1gmmk5h94v3gh9">&nbsp;&nbsp;&nbsp;&nbsp;一个会话的内涵可能是服务器与客户端数据包交互过程中一组序号连续的tcp包按时间排序产生的内容</a>
+</h3>
+<h3 class="topic">
+<a name="45rikh9vdak2j74thipleesgkh">&nbsp;&nbsp;编辑显示过滤器，给每一个对话的第一个数据包找到，右键-》对话着色，给每一个对话进行上色</a>
+</h3>
+<h3 class="topic">
+<a name="3e4cm5h2t7i7n3iqtl2psfkcmv">&nbsp;&nbsp;通过追踪流，可以以会话（即流的方式）为单位显示数据</a>
+</h3>
+<h3 class="topic">
+<a name="1ivujbiauhimefi324cpee0kb0">&nbsp;&nbsp;&nbsp;在流中点中指定信息，可以在数据包中高亮对应的数据包</a>
+</h3>
+<h3 class="topic">
+<a name="0kikh3davsboi74u1q8e06k94s">&nbsp;&nbsp;&nbsp;注意从数据包中复制出来数据的时候，需要使用原始数据格式，不能使用ascii</a>
+</h3>
+<h3 class="topic">
+<a name="2d4ns4q5s0floaqm3dpuo2537h">&nbsp;&nbsp;&nbsp;如果复制出来的数据中有多余数据，可以放在010editor进行进一步的清除操作</a>
+</h3>
+<h3 class="topic">
+<a name="53l52gu0rib5k85uo1de84ji4h">&nbsp;大黑阔ctf</a>
+</h3>
+<h3 class="topic">
+<a name="258g1mm0ujqkgq3qboci4p94l4">&nbsp;&nbsp;统计-》会话</a>
+</h3>
+<h3 class="topic">
+<a name="70i9hceqfvhctf0onqmvh4f9i6">&nbsp;&nbsp;&nbsp;找到主要进行通讯的ip双方</a>
+</h3>
+<h3 class="topic">
+<a name="030lj094j25b2ad10qag2rvgki">&nbsp;&nbsp;&nbsp;找到主要端口</a>
+</h3>
+<h3 class="topic">
+<a name="3pk2c29ell8is06hgdttocs8u9">&nbsp;&nbsp;统计-》端点</a>
+</h3>
+<h3 class="topic">
+<a name="5qk8ou60mmkfl23gcaf7f624j2">&nbsp;&nbsp;通过设置显示过滤器，将保存有两人的聊天信息的数据包过滤显示出来，并根据时间排序，得到聊天内容</a>
+</h3>
+<h3 class="topic">
+<a name="6oca7va4q4l4afebfglovktvrs">&nbsp;&nbsp;设置过滤器</a>
+</h3>
+<h3 class="topic">
+<a name="4equila3pokss7dcp6sggq4n88">&nbsp;&nbsp;&nbsp;过滤指定长度的数据包</a>
+</h3>
+<h3 class="topic">
+<a name="2v1easv79b039c6n2v0u1u2rt9">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class79day0629_files/4vokv9nd0fmhl8hg3rl0iccf02.png"></p>
+<h3 class="topic">
+<a name="482ant69bhk0jv16r7i2j2b32u">&nbsp;&nbsp;&nbsp;过滤指定ip地址的数据包</a>
+</h3>
+<h3 class="topic">
+<a name="54pr0csbr2erl89l3tffb9355p">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class79day0629_files/24enh9js3r3vnofm358jddukgh.png"></p>
+<h3 class="topic">
+<a name="60r5scggotn7h2utptvvdpk4hh">&nbsp;&nbsp;使用导出分组字节流，直接将数据数据包中的数据导出出来</a>
+</h3>
+<h3 class="topic">
+<a name="26u02sgul4osgdlr49gbfcgshm">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class79day0629_files/0djkk013fnce8pnc7c4ds29j7h.png"></p>
+<h3 class="topic">
+<a name="5a1i3obdeq9r1vi373sv9utvgu">&nbsp;邮件</a>
+</h3>
+<h3 class="topic">
+<a name="6rq0sjl5ipca69dc2tos180mk9">&nbsp;&nbsp;如果所有数据不在一个数据包中保存，无法使用导出分组字节流</a>
+</h3>
+<h3 class="topic">
+<a name="3vg3m281j203vh4fd9on1a06qc">&nbsp;&nbsp;一般将整个数据包从流追踪中导出出来，然后放在010editor中删除多于字符</a>
+</h3>
+<h3 class="topic">
+<a name="0i2o9cilgvigegiu41h7q7tqoh">&nbsp;&nbsp;邮件的图片传输过程中，可以在相关数据包中找到图片加密方式</a>
+</h3>
+<h3 class="topic">
+<a name="2lf03r46adr7r9keh2ftplfuq0">&nbsp;&nbsp;&nbsp;base64</a>
+</h3>
+<h3 class="topic">
+<a name="37db6nvdjedvbq85op8vk098lo">&nbsp;&nbsp;在010editor中删除图片二进制文件中的换行符</a>
+</h3>
+<h3 class="topic">
+<a name="1kdsv8uf37f2sat1vcrju7e8ue">&nbsp;&nbsp;&nbsp;ctrl+f   0d0a</a>
+</h3>
+<h3 class="topic">
+<a name="3e1jp394jhc6bl1l4hp2pgubnf">&nbsp;&nbsp;&nbsp;搜索 替换 将0d0a 替换为空</a>
+</h3>
+<h3 class="topic">
+<a name="3co1pbu46a9boj7jitub69mm2q">&nbsp;&nbsp;&nbsp;脚本 脚本存储库 搜索base64 安装base64解码脚本</a>
+</h3>
+<h3 class="topic">
+<a name="7ofra67f2bm5bo3nkob5kb8d7a">&nbsp;&nbsp;&nbsp;&nbsp;安装之后运行脚本</a>
+</h3>
+<h3 class="topic">
+<a name="2eqbplsk2mh6o0u4t7hol6ka9b">&nbsp;极光行动</a>
+</h3>
+<h3 class="topic">
+<a name="6pl3g8g4miq0f6ll32a9gkitse">&nbsp;&nbsp;从流量开始</a>
+</h3>
+<h3 class="topic">
+<a name="6905lhm27rh3evjto93tfa2nmc">&nbsp;&nbsp;&nbsp;识别请求内容</a>
+</h3>
+<h3 class="topic">
+<a name="6qli05rksd7vean37ta6fa63gc">&nbsp;&nbsp;&nbsp;识别重定向内容</a>
+</h3>
+<h3 class="topic">
+<a name="4vgugeeaki5p991q5bdes7lb47">&nbsp;&nbsp;&nbsp;什么情况下发起了另一次会话</a>
+</h3>
+<h3 class="topic">
+<a name="3d22dptn7re7175e2jn91d1mnb">&nbsp;&nbsp;&nbsp;在新会话中的敏感信息</a>
+</h3>
+<h3 class="topic">
+<a name="5knvtu9k4jq2l8djvrhu31m0a8">&nbsp;&nbsp;找到恶意代码</a>
+</h3>
+<h3 class="topic">
+<a name="08v9d0b27g4i748rb0fdg2uso2">&nbsp;&nbsp;&nbsp;根据数据包猜测是使用什么技术实现的</a>
+</h3>
+<h3 class="topic">
+<a name="6cqoceqv4doe3lkrv3ljors5ed">&nbsp;&nbsp;&nbsp;搭建环境验证猜想</a>
+</h3>
+<h3 class="topic">
+<a name="2tvmhh7ij3iorno7rjs43epmuj">&nbsp;&nbsp;挖掘出这个漏洞</a>
+</h3>
+<h3 class="topic">
+<a name="4kq4anim74t9cbopikib98upck">&nbsp;&nbsp;&nbsp;找到溢出点</a>
+</h3>
+<h3 class="topic">
+<a name="5gpnnjn0cdjt3utfi96pt03p7c">&nbsp;&nbsp;&nbsp;找到poc</a>
+</h3>
+<h3 class="topic">
+<a name="189bfjjkss2cf6q2ar4mc9jcpo">&nbsp;&nbsp;分析流程</a>
+</h3>
+<h3 class="topic">
+<a name="3rl9jpig7lv77b1bpablk21l1i">&nbsp;&nbsp;&nbsp;环境搭建</a>
+</h3>
+<h3 class="topic">
+<a name="3c49llq6b19v9hhqt4l1ehsk99">&nbsp;&nbsp;&nbsp;&nbsp;ie6命中率最高</a>
+</h3>
+<h3 class="topic">
+<a name="6u9slnu2vb5khkktdl27777jp4">&nbsp;&nbsp;&nbsp;&nbsp;phpstudy搭建php网站，将从流量中得到的恶意html放在网站根目录中</a>
+</h3>
+<h3 class="topic">
+<a name="030o27920gs4qbe28onm2qas7o">&nbsp;&nbsp;&nbsp;&nbsp;使用暴雷漏洞的漏洞环境访问该网站，触发漏洞</a>
+</h3>
+<h3 class="topic">
+<a name="64vcuvo1qda1vssqrj99f4ko3v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意访问服务器的恶意页面时，需要访问从流量中提取出的被重定向的网址</a>
+</h3>
+<h3 class="topic">
+<a name="1e1a2ehahlchjpki1i3g4rmlh0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;访问该网址之后，进行堆喷，如果正常可以使得ie崩溃，导致shellcode执行</a>
+</h3>
+<h3 class="topic">
+<a name="3j69m1uud7rhm0kbh3url7j6om">&nbsp;&nbsp;&nbsp;&nbsp;崩溃之后使用od 或 windbg 附加，查看溢出点附近的汇编代码</a>
+</h3>
+<h3 class="topic">
+<a name="1rif27huds7pp41cuull2n514h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;记住溢出点的偏移</a>
+</h3>
+<h3 class="topic">
+<a name="60oak2nb26pt8gq4qqnmocng7o">&nbsp;&nbsp;&nbsp;&nbsp;使用ida 交叉引用，分析溢出点</a>
+</h3>
+<h3 class="topic">
+<a name="49gas085h14uiq9kkqqpca2df2">&nbsp;&nbsp;&nbsp;&nbsp;需要分析为什么需要使用重定位</a>
+</h3>
+<h3 class="topic">
+<a name="3kjukgd7g7rfarieg3np876opf">&nbsp;&nbsp;分析过程截图</a>
+</h3>
+<h3 class="topic">
+<a name="0v4s6i9mcmrjfvafvbnl5gej26">&nbsp;&nbsp;&nbsp;崩溃</a>
+</h3>
+<h3 class="topic">
+<a name="29s9pn4s2mka3aecvdo3968vft">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class79day0629_files/3r03amo0r72ah8ca3lipaouatq.png"></p>
+<h3 class="topic">
+<a name="75hqf63dh6umdcodaa0vok67ma">&nbsp;&nbsp;&nbsp;错误截图</a>
+</h3>
+<h3 class="topic">
+<a name="0fvjbuaggc67bc1ve5lsf532vg">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class79day0629_files/405l329naivsiov7jggku6uk69.png"></p>
+<h3 class="topic">
+<a name="69n3cl8htu57n7i16j29foghr1">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class79day0629_files/6ifj7t0l72umni5o9oe5l963ii.png"></p>
+<h2 class="topic">
+<a name="0e3hre2g92g7h03tjn9fue8c4k">查看端口命令</a>
+</h2>
+<h3 class="topic">
+<a name="643356oelhlke3cvl213tegc4e">&nbsp;netstat -noa</a>
+</h3>
+</body>
+</html>

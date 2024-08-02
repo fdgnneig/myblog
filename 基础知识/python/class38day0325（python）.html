@@ -1,0 +1,1094 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>class38day0325（python）</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="0c0j7dluma5f4bpd3dqppmns0p">class38day0325（python）</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="class38day0325%EF%BC%88python%EF%BC%89_files/images/class38day0325%EF%BC%88python%EF%BC%89.jpg"></div>
+<h2 class="topic">
+<a name="080h5t1nk0693hcdco2unuraj0">面向对象的解释型语言</a>
+</h2>
+<h2 class="topic">
+<a name="7n9bkcuvdjcsb1mc1cao6mnotb">一切即对象</a>
+</h2>
+<h2 class="topic">
+<a name="30vgg4buke3iue7gf5se1f5neb">ptyhon特点</a>
+</h2>
+<h3 class="topic">
+<a name="7o2qeo62629h05abrjdnslekei">&nbsp;main函数</a>
+</h3>
+<h3 class="topic">
+<a name="71b7vrchcgmf4n0k7s8mi89ht4">&nbsp;&nbsp;python中如果代码没有首行缩进，表示其运行在当前主函数中</a>
+</h3>
+<h3 class="topic">
+<a name="22eq3h1grjtova68needc758c7">&nbsp;强制缩进</a>
+</h3>
+<h3 class="topic">
+<a name="4jk4arv2aq1ds5k45gkb1pgedv">&nbsp;&nbsp;所有没有缩进的代码（非函数定义和类定义）都会在载入时自动执行，相当于在main函数中</a>
+</h3>
+<h3 class="topic">
+<a name="4u4r1jl7kdie114lp02ksc09s8">&nbsp;&nbsp;同一个语句块需要强制缩进，否则会报错</a>
+</h3>
+<h2 class="topic">
+<a name="500ru2s32ods6l504hruhbctgn">解释型语言使用过程</a>
+</h2>
+<h3 class="topic">
+<a name="3c98k9n5optv71kjhu8dg6teah">&nbsp;源代码-》解释器-》字节码-》解释器执行字节码，并读取下一条指令</a>
+</h3>
+<h2 class="topic">
+<a name="7qt106rrnv154e8n3g54t0kubd">开发环境兼容</a>
+</h2>
+<h3 class="topic">
+<a name="3nvn64oe33av7hu2ak24d9cral">&nbsp;2.x版本与3.x版本互不兼容，2.x即将停止更新，课程主要教授3.6版本的python</a>
+</h3>
+<h2 class="topic">
+<a name="6o891em1nb8os4qmk6j31chofc">第一个程序</a>
+</h2>
+<h3 class="topic">
+<a name="13ngpjo8f110ihcalqt0vkqc19">&nbsp;所有没有缩进的代码（非函数定义和类定义）都会在载入时自动执行，相当于在main函数中</a>
+</h3>
+<h3 class="topic">
+<a name="43kqh3mkus694r6rtjmkhqm7l2">&nbsp;python中每写一行代码需要缩进一次</a>
+</h3>
+<h3 class="topic">
+<a name="2n82rdvraok6c5ikogrjeup823">&nbsp;#开头表示注释</a>
+</h3>
+<h3 class="topic">
+<a name="3h89sc5vblegt6ardbmod3t4o6">&nbsp;没有缩进表示写到main函数中</a>
+</h3>
+<h3 class="topic">
+<a name="5m32297rvcm34k818prvkoq75b">&nbsp;一条语句是以换行符结尾，而非;</a>
+</h3>
+<h2 class="topic">
+<a name="7e7u5v2ek7dtlqotiouclbbkq0">数据类型</a>
+</h2>
+<h3 class="topic">
+<a name="02msp74lj4t71uhe6stl762b1n">&nbsp;使用type可以看到类型</a>
+</h3>
+<h3 class="topic">
+<a name="5rq2o46v3fg230tlu7qhffv56m">&nbsp;&nbsp;print(type('sdsdsd'))</a>
+</h3>
+<h3 class="topic">
+<a name="0ai3m403jp5vc2693u10c8moqi">&nbsp;&nbsp;print(type(123))</a>
+</h3>
+<h3 class="topic">
+<a name="06o8tmlth7ebvpj9v5v4nl4u0q">&nbsp;&nbsp;print(type(0.22))</a>
+</h3>
+<h3 class="topic">
+<a name="7itsf63fkq2455nghj34pi3p92">&nbsp;整型</a>
+</h3>
+<h3 class="topic">
+<a name="7bdnc6fou16rvmujbv325c5354">&nbsp;&nbsp;int（long）</a>
+</h3>
+<h3 class="topic">
+<a name="5mnu1cgvsi71ebrf9sm70lbl3b">&nbsp;&nbsp;&nbsp;在3.x中只有整型int类型数据，没有long</a>
+</h3>
+<h3 class="topic">
+<a name="69qqk680ok612rvp3oc6h6q990">&nbsp;&nbsp;可以表示无限长度的数据</a>
+</h3>
+<h3 class="topic">
+<a name="68vvi3mhk3tq77it7pfvd5g2l8">&nbsp;浮点类型</a>
+</h3>
+<h3 class="topic">
+<a name="0omrib5hgmlpsvspalh6dlehkb">&nbsp;&nbsp;float</a>
+</h3>
+<h3 class="topic">
+<a name="4vfmbm4rmotc7limionodej5pk">&nbsp;复数</a>
+</h3>
+<h3 class="topic">
+<a name="7qcgr42l800uqqp6mq6e1ln66j">&nbsp;&nbsp;complex</a>
+</h3>
+<h3 class="topic">
+<a name="5qenu41kbpl8kdpp9911p73ch4">&nbsp;字符串string</a>
+</h3>
+<h3 class="topic">
+<a name="7s7roib9o04iiknbq7p7pbjiov">&nbsp;&nbsp;单引号、双引号、三引号表示字符串</a>
+</h3>
+<h3 class="topic">
+<a name="01uij7or8fg8picv41h2unsrui">&nbsp;&nbsp;&nbsp;区别</a>
+</h3>
+<h3 class="topic">
+<a name="75bcim9n5bckscb3ck2gecjuev">&nbsp;&nbsp;&nbsp;&nbsp;如果字符串中有的单引号，则使用双引号表示整个字符串可以避免在字符串中使用转义字符\'</a>
+</h3>
+<h3 class="topic">
+<a name="2bmdcq2uiiagn92mjgkchc2qei">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;str4_ = "We all know that 'A' and 'B' are two capital letters."</a>
+</h3>
+<h3 class="topic">
+<a name="2qu3h5oqrs9idcb1n5kaqp7jn3">&nbsp;&nbsp;&nbsp;&nbsp;如果字符串中有的双引号，则使用单引号表示整个字符串可以避免在字符串中使用转义字符\"</a>
+</h3>
+<h3 class="topic">
+<a name="7uq2ubqj74gmc78ta7mh405u5d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;str5 ='The teacher said: "Practice makes perfect" is a very famous proverb.'</a>
+</h3>
+<h3 class="topic">
+<a name="18pefmilup3cbrqkvinh4uve2v">&nbsp;&nbsp;&nbsp;&nbsp;如果一个字符串想写成多行并以多行形式输出，可以使用三个单引号或三个双引号，从而避免使用换行符( \n )以及连字符( \ )</a>
+</h3>
+<h3 class="topic">
+<a name="0jle57pbu41c8df6dbheif2j9d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&gt;&gt;&gt; str1 = """List of name:&#13;
+... Hua Li&#13;
+... Chao Deng&#13;
+... """</a>
+</h3>
+<h3 class="topic">
+<a name="7pebdqieoef31lggmams1h8ha8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;也可以用来加注释</a>
+</h3>
+<h3 class="topic">
+<a name="2q5is43kl955hc7momennui17k">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"""&#13;
+注释&#13;
+"""</a>
+</h3>
+<h3 class="topic">
+<a name="003efrs1h8si5onvvj71qj91mn">&nbsp;&nbsp;python中没有字符类型数据</a>
+</h3>
+<h3 class="topic">
+<a name="6c6ugcs7d9fog0o4v21lclrv9o">&nbsp;布尔类型</a>
+</h3>
+<h3 class="topic">
+<a name="40pjjfcon5eup8chvlohuk30p8">&nbsp;&nbsp;True False</a>
+</h3>
+<h3 class="topic">
+<a name="33lrv6q1tq08vb280dcsi6sc41">&nbsp;空值</a>
+</h3>
+<h3 class="topic">
+<a name="29l9h9avrvf5lct995lvp6jvvt">&nbsp;&nbsp;None</a>
+</h3>
+<h3 class="topic">
+<a name="2uuvdc6qqroa5k95tgu7mlpkha">&nbsp;列表（有序列表）list</a>
+</h3>
+<h3 class="topic">
+<a name="7g2ehohfju4o0k7g7qkcdmqqf3">&nbsp;&nbsp;类似于c++中的vector，但比vector更加强大</a>
+</h3>
+<h3 class="topic">
+<a name="6i2jn8f8fbcj5h2dv4qn01khhr">&nbsp;&nbsp;使用[]定义</a>
+</h3>
+<h3 class="topic">
+<a name="1sv6rq3g69so5u0n2j8pmvkk4c">&nbsp;&nbsp;&nbsp;L=[1,2,3,4,5,6,7]</a>
+</h3>
+<h3 class="topic">
+<a name="7ccg8k9tct1hjooe3q2patdfhe">&nbsp;&nbsp;使用下标引用并修改</a>
+</h3>
+<h3 class="topic">
+<a name="2h4ccvgnl62ru8tck1qt4iq584">&nbsp;&nbsp;&nbsp;L[0]=99</a>
+</h3>
+<h3 class="topic">
+<a name="5549atnn2sm3j0egtvelrlb9th">&nbsp;&nbsp;列表可以嵌套</a>
+</h3>
+<h3 class="topic">
+<a name="2igrn4g9cval7rukenffo95h5i">&nbsp;&nbsp;&nbsp;L[0]=['A','B','C']</a>
+</h3>
+<h3 class="topic">
+<a name="6gld4412esh9kqvfku70m2amep">&nbsp;&nbsp;&nbsp;访问嵌套列表的时候</a>
+</h3>
+<h3 class="topic">
+<a name="3588lbjvubj1hf15hkmn5raldr">&nbsp;&nbsp;&nbsp;&nbsp;L[0][1]#访问到的是B</a>
+</h3>
+<h3 class="topic">
+<a name="2tav3gt66re6g5o9fjpksu23d3">&nbsp;&nbsp;列表中可以存贮不同类型数据（包括列表）</a>
+</h3>
+<h3 class="topic">
+<a name="564u5tbs92sduvfkihnr92nb3k">&nbsp;&nbsp;&nbsp;L[2]="asfd"</a>
+</h3>
+<h3 class="topic">
+<a name="01vnq3bci09vqn6vhp3m9qm9gs">&nbsp;&nbsp;使用list将其他数据类型转换为列表</a>
+</h3>
+<h3 class="topic">
+<a name="63a6ru7rih5qhrjqodm2usb8ac">&nbsp;&nbsp;&nbsp;L=list("hello 15pb")</a>
+</h3>
+<h3 class="topic">
+<a name="24j3h6go2m4mu3uucf7ei158pb">&nbsp;&nbsp;对list的操作</a>
+</h3>
+<h3 class="topic">
+<a name="1cmr7ft2hu7vfv50ujteg18ss9">&nbsp;&nbsp;&nbsp;求长度</a>
+</h3>
+<h3 class="topic">
+<a name="2pv05dncr528e6sud6ph1ulc50">&nbsp;&nbsp;&nbsp;&nbsp;L=[2,3,4,5,6]&#13;
+pirnt(len(L))</a>
+</h3>
+<h3 class="topic">
+<a name="3ce6kirgshsohmfd65868agoh8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;返回的是列表中元素个数</a>
+</h3>
+<h3 class="topic">
+<a name="5ka1oj8h1u035vgna8vh6inmes">&nbsp;&nbsp;&nbsp;拼接</a>
+</h3>
+<h3 class="topic">
+<a name="0646hp3jhjajget7ihvbmojgl0">&nbsp;&nbsp;&nbsp;&nbsp;print([1,2]+[3,4])</a>
+</h3>
+<h3 class="topic">
+<a name="44snov7om66ec0sg78aufmmd1p">&nbsp;&nbsp;&nbsp;&nbsp;print([1,2]*3)</a>
+</h3>
+<h3 class="topic">
+<a name="7fkfegrsjn7ckmphouon7q27pq">&nbsp;&nbsp;&nbsp;比较</a>
+</h3>
+<h3 class="topic">
+<a name="02coveu7u4brgcqus3imi7q3qa">&nbsp;&nbsp;&nbsp;&nbsp;print('a' in [1,2])</a>
+</h3>
+<h3 class="topic">
+<a name="4q8qn9v94349d9nuvq6q195cr8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用 in 在列表中寻找'a'，print的结果是TRUE或FALSE</a>
+</h3>
+<h3 class="topic">
+<a name="0os30g0b1negpvr3p01tc6vnef">&nbsp;&nbsp;&nbsp;&nbsp;if [1,2,3,4]==[2,3,4,5]:&#13;
+	print("相等")</a>
+</h3>
+<h3 class="topic">
+<a name="0qk4tm76jlte9ce8t079ntuvvj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;此种比较方式只在2.7中支持</a>
+</h3>
+<h3 class="topic">
+<a name="7qsccftk8vmo54c8pcqddjsbjq">&nbsp;&nbsp;&nbsp;求最值</a>
+</h3>
+<h3 class="topic">
+<a name="6pkaa33hdkkqi8f53juu92q4pm">&nbsp;&nbsp;&nbsp;&nbsp;L=[1,2,3,4,4,5]&#13;
+print(max(L))</a>
+</h3>
+<h3 class="topic">
+<a name="3jl8nhc23kimgbhsim66f2mg5l">&nbsp;&nbsp;&nbsp;&nbsp;求最小值为min</a>
+</h3>
+<h3 class="topic">
+<a name="0p2fe9japgm2kqqh0cs90se0rk">&nbsp;&nbsp;list自带的方法</a>
+</h3>
+<h3 class="topic">
+<a name="4snhtek0k51te4fubjsp5gu1od">&nbsp;&nbsp;&nbsp;增删改查</a>
+</h3>
+<h3 class="topic">
+<a name="0mpkcj6fpr5limsicpnrlt56l4">&nbsp;&nbsp;&nbsp;&nbsp;L=[1,2,3,4]</a>
+</h3>
+<h3 class="topic">
+<a name="4r60t6m6cmsm3gl6bsd0mngfhv">&nbsp;&nbsp;&nbsp;&nbsp;L.append('a')</a>
+</h3>
+<h3 class="topic">
+<a name="2f0q225p1cg7thhh87aiccqkfv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在列表末尾添加元素</a>
+</h3>
+<h3 class="topic">
+<a name="2g8ss8ntf8lrm2f6rbdt1mcv63">&nbsp;&nbsp;&nbsp;&nbsp;L.insert(0,'c')</a>
+</h3>
+<h3 class="topic">
+<a name="1rvf90uo9m1d0ua90g5o6in5re">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在列表指定位置添加元素</a>
+</h3>
+<h3 class="topic">
+<a name="2p79opaqlkk2n42r2fieuj7jon">&nbsp;&nbsp;&nbsp;&nbsp;L.extend([1,2,3,4,5])</a>
+</h3>
+<h3 class="topic">
+<a name="4mdt8ob5lq7727ukn6bjc81ijp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用于在列表末尾一次性追加另一个序列中的多个值（用新列表扩展原来的列表）。</a>
+</h3>
+<h3 class="topic">
+<a name="3as9tpd9ung2t4si7fsgdta3rf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;也可以使用另一个列表名作为参数</a>
+</h3>
+<h3 class="topic">
+<a name="60ru1kkbgo8f7mb7t6nmro1il7">&nbsp;&nbsp;&nbsp;&nbsp;L.pop()</a>
+</h3>
+<h3 class="topic">
+<a name="02q3uo61227c9g8e4g0ta253bh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;删除列表中最后一个元素</a>
+</h3>
+<h3 class="topic">
+<a name="7sg489a37fmr3som1odarck467">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该函数的返回值为被删除的数，而不是删除后的list列表</a>
+</h3>
+<h3 class="topic">
+<a name="5k4leuotdet4948c6a6i5nmd2c">&nbsp;&nbsp;&nbsp;&nbsp;L.pop(7)</a>
+</h3>
+<h3 class="topic">
+<a name="43g7smcmkom0fbpv1ai6takrud">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;删除列表种下标为7的元素</a>
+</h3>
+<h3 class="topic">
+<a name="4g9fef14nvc73hme5ih1esdi9n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该函数的返回值为被删除的数，而不是删除后的list列表</a>
+</h3>
+<h3 class="topic">
+<a name="3gkacmbelb281lf5br8ugarl9v">&nbsp;&nbsp;&nbsp;&nbsp;L.remove('a')</a>
+</h3>
+<h3 class="topic">
+<a name="1gomgqjptolnv0fqajbog0g5p1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;函数用于移除列表中某个值的第一个匹配项</a>
+</h3>
+<h3 class="topic">
+<a name="5go64mmo68bohrajcs8hv2d91r">&nbsp;&nbsp;&nbsp;&nbsp;L[0]="ABCD"</a>
+</h3>
+<h3 class="topic">
+<a name="1psjie3m0g3sacua91rp8jat0g">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;修改列表指定项</a>
+</h3>
+<h3 class="topic">
+<a name="2jiujsqvre0tb7vo1v8i0e9ksl">&nbsp;&nbsp;&nbsp;&nbsp;index=L.index('a')</a>
+</h3>
+<h3 class="topic">
+<a name="1c646dc73nl84vpn6pq06s8tee">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;方法检测字符串中是否包含子字符串 str</a>
+</h3>
+<h3 class="topic">
+<a name="6dkvo36m357ljlaa8s7p0abshn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;str.index(str, beg=0, end=len(string))</a>
+</h3>
+<h3 class="topic">
+<a name="3qe10na43tpd8a5lnaefm47tni">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以指定开始索引位置和结束索引位置</a>
+</h3>
+<h3 class="topic">
+<a name="6r3ne55ts4kj4nu431t0eo2as6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;存在返回对应子字符串的下标，否则抛出异常</a>
+</h3>
+<h3 class="topic">
+<a name="0brf3i8mvu047ciilrksi97j0i">&nbsp;&nbsp;&nbsp;排序</a>
+</h3>
+<h3 class="topic">
+<a name="29jiqsri7l0sh9oftnbqs0tej8">&nbsp;&nbsp;&nbsp;&nbsp;L.sort()</a>
+</h3>
+<h3 class="topic">
+<a name="68uqvet6h8917ncju22c0j0eh3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;列表升序排序（默认是升序）</a>
+</h3>
+<h3 class="topic">
+<a name="4d4h2cf2bk94d4rtfb2sgptl2q">&nbsp;&nbsp;&nbsp;&nbsp;L.sort(reverse=True)</a>
+</h3>
+<h3 class="topic">
+<a name="6lvvgso1hci17t70f6tb28vge5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;列表降序排序</a>
+</h3>
+<h3 class="topic">
+<a name="7qaneu00fvu86d1tusrvfuf30u">&nbsp;&nbsp;&nbsp;逆序</a>
+</h3>
+<h3 class="topic">
+<a name="7b63c680ptsoobv0guqntu0d8p">&nbsp;&nbsp;&nbsp;&nbsp;L.reverse()</a>
+</h3>
+<h3 class="topic">
+<a name="7kd0t451lm31ecophds0v55qh9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将列表中的元素逆序排放</a>
+</h3>
+<h3 class="topic">
+<a name="0ur9ddf4afp7hg07mfed6hc9lv">&nbsp;&nbsp;&nbsp;切片</a>
+</h3>
+<h3 class="topic">
+<a name="5cpl5v64ve97p1d1rkfgt789v4">&nbsp;&nbsp;&nbsp;&nbsp;L=[1,2,3,4,5,6,7]&#13;
+L2=L[0:4:2]&#13;
+#表示从下标0~4（包含0，不包含4），2表示步进2,从开始位置（这里是0），每隔2位输出一次，则会输出0 2下标对应的元素 </a>
+</h3>
+<h3 class="topic">
+<a name="0dcfm5e7bo71nsiji1rq1krj4k">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[start:stop:step]</a>
+</h3>
+<h3 class="topic">
+<a name="7mrclen9focvr31921subel4hn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;start:切片初始位置的下标（包含该位置）</a>
+</h3>
+<h3 class="topic">
+<a name="3bub4anptomkugfhm7aanks2sh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;stop：切片结束位置下标（不包含该位置）</a>
+</h3>
+<h3 class="topic">
+<a name="0ho1aroabkuhjkqchpgn3o2omm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;setp为步进，为正则从左往右切片（start要小于stop），为负则从右往左切片（start要大于stop)</a>
+</h3>
+<h3 class="topic">
+<a name="5ds04agtcods84gpi0ukie8l9p">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;stop可以是-1 表示最后一个L[0:-1:2]</a>
+</h3>
+<h3 class="topic">
+<a name="1e15vqor3fholnari2vonrpeuk">&nbsp;&nbsp;&nbsp;list生成</a>
+</h3>
+<h3 class="topic">
+<a name="56ngl26rk6thfjmn44tlau3jan">&nbsp;&nbsp;&nbsp;&nbsp;L=list(range(0,100,2))</a>
+</h3>
+<h3 class="topic">
+<a name="6e293otdmoth2mn7pa4t864tru">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;range(x,y,z)</a>
+</h3>
+<h3 class="topic">
+<a name="0k0ch2pc1v90o0kvcdm20jatcf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x是起始位置</a>
+</h3>
+<h3 class="topic">
+<a name="7r34i1ikdq3ebplvn09oem5l3o">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;包括该值</a>
+</h3>
+<h3 class="topic">
+<a name="4ek50t108b14c3j0uv9e3i1qf0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;y是终止位置</a>
+</h3>
+<h3 class="topic">
+<a name="0kjf37idqs16epe627gk5b57ce">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;不包括该值</a>
+</h3>
+<h3 class="topic">
+<a name="1av837aa0gocdocu89ag3o8mjk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;z是步进</a>
+</h3>
+<h3 class="topic">
+<a name="59irqr0o7a4moptmvah7m8vq71">&nbsp;&nbsp;&nbsp;列表遍历（使用enumerate）</a>
+</h3>
+<h3 class="topic">
+<a name="18gn7c2k61dgd4a535ssp4alf3">&nbsp;&nbsp;&nbsp;&nbsp;for index,value in enumerate(L):&#13;
+    print(index,value)</a>
+</h3>
+<h3 class="topic">
+<a name="1lr96t4ps4heu1pr80b6ga4ca0">&nbsp;&nbsp;list的去重</a>
+</h3>
+<h3 class="topic">
+<a href="https://blog.csdn.net/qq_33304418/article/details/82667114" name="1pm0j8pf8dtkvedapgbk9alv2t">&nbsp;&nbsp;&nbsp;https://blog.csdn.net/qq_33304418/article/details/82667114</a>
+</h3>
+<h3 class="topic">
+<a name="5ltmt6roi6dl8grvs5q47fqdp9">&nbsp;&nbsp;&nbsp;基础方法：</a>
+</h3>
+<h3 class="topic">
+<a name="7psll6he5n8l7g3ep31k5ast6o">&nbsp;&nbsp;&nbsp;&nbsp;使用set函数</a>
+</h3>
+<h3 class="topic">
+<a name="5jmti9bdm2c4piv4jnr3dcgt97">&nbsp;&nbsp;&nbsp;&nbsp;    lis = [10, 3, 2, 7, 4, 7, 1, 9, 2, 10]&#13;
+    lis2 = list()&#13;
+    for li in lis:&#13;
+        if li not in lis2:&#13;
+            lis2.append(li)</a>
+</h3>
+<h3 class="topic">
+<a name="69u20m3vinne081ua474o6j54d">&nbsp;元组tuple</a>
+</h3>
+<h3 class="topic">
+<a name="7gmuvtvpmd3inqqv7r5nsvrl8n">&nbsp;&nbsp;类似于list，但是一经初始化，其值就不能被修改</a>
+</h3>
+<h3 class="topic">
+<a name="1vcs8bpd1thrqd4e0ksi230g96">&nbsp;&nbsp;定义</a>
+</h3>
+<h3 class="topic">
+<a name="5p71jk711vimvgomitfjujnjqq">&nbsp;&nbsp;&nbsp;t=(1,2,3,4,5)#定义使用()&#13;
+print(t[0])&#13;
+#t[1]=99  会报错，不能被修改</a>
+</h3>
+<h3 class="topic">
+<a name="4a73rlef53hp0l1bpci4ertud0">&nbsp;&nbsp;数据引用</a>
+</h3>
+<h3 class="topic">
+<a name="2ngkfmq1e9nk6qsfgcjhefp6oj">&nbsp;&nbsp;&nbsp;使用方括号    元组名[下标]</a>
+</h3>
+<h3 class="topic">
+<a name="7qnuhu7k1l4a8repbnv5g4jsl7">&nbsp;&nbsp;单个元素的元祖，必须用,隔开，表示元祖，否则会被定义为int类型数据</a>
+</h3>
+<h3 class="topic">
+<a name="2n52rtnlu2dv96ghditrk28c3v">&nbsp;&nbsp;&nbsp;t=(1,)&#13;
+print(type(t))</a>
+</h3>
+<h3 class="topic">
+<a name="7jh88546na1ua2jlm4sbsdh63b">&nbsp;字典dictionary</a>
+</h3>
+<h3 class="topic">
+<a name="2d86fljbh5uas1p19k6b2g5jh7">&nbsp;&nbsp;键值对key:value（类似于c++中的map）</a>
+</h3>
+<h3 class="topic">
+<a name="0f9nu35ed8s4afjvml2jncntg1">&nbsp;&nbsp;&nbsp;其中键必须是不可变类型（int str tuple），值可以为任意类型</a>
+</h3>
+<h3 class="topic">
+<a name="4r02dih984cj5dn590u5guvm0f">&nbsp;&nbsp;定义</a>
+</h3>
+<h3 class="topic">
+<a name="73vbc6d4af059vo69gtc4lplje">&nbsp;&nbsp;&nbsp;{1:'a' ,2:'b' ,3:'c'}</a>
+</h3>
+<h3 class="topic">
+<a name="02kb33dmntj9nbgl7eol1dk76n">&nbsp;&nbsp;访问</a>
+</h3>
+<h3 class="topic">
+<a name="36dl7l4e54qcj3rkjcur74m7ct">&nbsp;&nbsp;&nbsp;d[3]</a>
+</h3>
+<h3 class="topic">
+<a name="63uoqud2rhocteec81vudi358c">&nbsp;&nbsp;添加</a>
+</h3>
+<h3 class="topic">
+<a name="3fk70o80c1g0ke1v8fp8ocfuik">&nbsp;&nbsp;&nbsp;d['key']="value"</a>
+</h3>
+<h3 class="topic">
+<a name="47skdnv9f6qnl1qif8nsjp1s9h">&nbsp;&nbsp;字典遍历</a>
+</h3>
+<h3 class="topic">
+<a name="7cjqskltfmjo2hc936cc0jqi0u">&nbsp;&nbsp;&nbsp;print(d.item()))</a>
+</h3>
+<h3 class="topic">
+<a name="2mf5i4i8q145q3ouvbge7bbilq">&nbsp;&nbsp;&nbsp;&nbsp;以列表的的形式返回可遍历的(键，值)元组数组</a>
+</h3>
+<h3 class="topic">
+<a name="7khs13rcpg2clr640tcb9k11o8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;输出形式:[(键1,值1),(键2,值2),(键3,值3),(键4,值4)]</a>
+</h3>
+<h3 class="topic">
+<a name="76i4metpapmf6mvkfiue6r6u2h">&nbsp;&nbsp;&nbsp;for key,values in  dict.items():&#13;
+    print key,values</a>
+</h3>
+<h3 class="topic">
+<a name="31kr26alvnhrpjtevjdql2k6q0">&nbsp;&nbsp;&nbsp;&nbsp;遍历字典列表</a>
+</h3>
+<h3 class="topic">
+<a name="3l7sfak36vug335dip5d10l1ic">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;键1 值1&#13;
+键2 值2&#13;
+键3 值3</a>
+</h3>
+<h3 class="topic">
+<a name="51lut77kspaid3uo43aeq2amu4">&nbsp;&nbsp;拷贝</a>
+</h3>
+<h3 class="topic">
+<a name="59uhhcv9hdh7e1k0ta2fg8523n">&nbsp;&nbsp;&nbsp;浅拷贝</a>
+</h3>
+<h3 class="topic">
+<a name="38ia9vcbueopojn1v6rhsju100">&nbsp;&nbsp;&nbsp;&nbsp;直接使用赋值运算符进行赋值，两个字典变量的地址是一样的</a>
+</h3>
+<h3 class="topic">
+<a name="59nam1o0sjl0ms3v3481n96bvt">&nbsp;&nbsp;&nbsp;深拷贝</a>
+</h3>
+<h3 class="topic">
+<a name="0ahfcqsnk0q8g5mao7pj6idg3g">&nbsp;&nbsp;&nbsp;&nbsp;使用 d=dl.copy()</a>
+</h3>
+<h3 class="topic">
+<a name="4ke0f7e6p6fqfdkqnrac4alc1q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;两个地址变量的值不一样，重新生成了一个相同的字典变量</a>
+</h3>
+<h3 class="topic">
+<a name="4lvs5p5a0e9ktbquai66cdort5">&nbsp;&nbsp;如果出现相同的键，则会覆盖前一个值</a>
+</h3>
+<h3 class="topic">
+<a name="39n8k8dg57s20c7a7fjoa537mi">&nbsp;&nbsp;如果访问的键不存在，会报错</a>
+</h3>
+<h3 class="topic">
+<a name="15e5lb13drfdbm66qhpuq8jgio">&nbsp;不可变类型（指同一个内存空间中的值不能改变）</a>
+</h3>
+<h3 class="topic">
+<a name="7hk224pek6hgen9jrdiolrmtj6">&nbsp;&nbsp;int string float tuple</a>
+</h3>
+<h3 class="topic">
+<a name="4obi6nuhr2scqso7gohifhlici">&nbsp;&nbsp;不可变数据类型： 当该数据类型的对应变量的值发生了改变，那么它对应的内存地址也会发生改变，对于这种数据类型，就称不可变数据类型。</a>
+</h3>
+<h3 class="topic">
+<a name="6e7uj059jjff2h33iucjcuosq9">&nbsp;&nbsp;number =1&#13;
+print(hex(id(number)))&#13;
+number =2&#13;
+print(hex(id(number)))</a>
+</h3>
+<h3 class="topic">
+<a name="0q0tnrek5pmeu3m4ohookcejoh">&nbsp;&nbsp;&nbsp;number类似于一个指针，被不同值赋值，指向不同的变量</a>
+</h3>
+<h3 class="topic">
+<a name="7pq5gu8h8u761g4sctrdlhrs38">&nbsp;&nbsp;&nbsp;内存空间中的值不被改变，但此类型数据类似与指针，其指向的空间不能发生变化，但是指向可以变化</a>
+</h3>
+<h3 class="topic">
+<a name="69r0mqr0mbr3lbklbts1mckgb5">&nbsp;&nbsp;元祖中的每一个元素、每一个int srting变量均可以看成是一个指针，指向静态内存地址，指针指向可变，内存地址值不变</a>
+</h3>
+<h3 class="topic">
+<a name="0176onqdmn9oogo5hg3q74d642">&nbsp;&nbsp;如果是元组是不可变数据类型，其中元素值如果发生变化，则其内存地址会发生变化，</a>
+</h3>
+<h3 class="topic">
+<a name="483llo8949r6roct28h3d84hm9">&nbsp;&nbsp;&nbsp;当元组中的元素为列表时，列表是可变类型，改变元祖中列表中的元素值，列表的内存地址不会发生变化，这是也由于列表本身的可变类型决定的，列表在元组中的地址的值没有改变，所以也就意味着元组没有发生变化。</a>
+</h3>
+<h3 class="topic">
+<a name="1hmemv014irtirh9dsdrfbpn11">&nbsp;可变类型（指同一个内存空间中的值可以改变）</a>
+</h3>
+<h3 class="topic">
+<a name="02p748cj21s0ti39s5oqetqhjp">&nbsp;&nbsp;list dict set（结合）</a>
+</h3>
+<h3 class="topic">
+<a name="701ufgu753su32btdq5mj91ud2">&nbsp;&nbsp;可变数据类型    ：当该数据类型的对应变量的值发生了改变，那么它对应的内存地址不发生改变，对于这种数据类型，就称可变数据类型。</a>
+</h3>
+<h3 class="topic">
+<a name="3gq5ft31tam71r2i6uo91esicl">&nbsp;&nbsp;L=[1,2,3]&#13;
+pirnt(hex(id(L)))&#13;
+L[0]=1&#13;
+pirnt(hex(id(L)))</a>
+</h3>
+<h3 class="topic">
+<a name="77u7s5ttscrfplm4pj8cek0n2g">&nbsp;&nbsp;&nbsp;地址不会发生变化</a>
+</h3>
+<h3 class="topic">
+<a name="6jdsfq1uhnivularfbbv1idd4m">&nbsp;多个数的交换</a>
+</h3>
+<h3 class="topic">
+<a name="6eq9k24r2v182iqe5ojo499rc7">&nbsp;&nbsp;a=1&#13;
+b=2&#13;
+c=3&#13;
+a,b,c=c,a,b</a>
+</h3>
+<h2 class="topic">
+<a name="4hfnjmkmjuhh6t53m6137t4q3n">变量的定义</a>
+</h2>
+<h3 class="topic">
+<a name="5g2e5g9audtcoksr3psdl6qr18">&nbsp;不需要定义，不需要写变量类型，但是需要初始化，会根据初始化的值自动转换类型</a>
+</h3>
+<h3 class="topic">
+<a name="6f3hh185clh74h0hil7pdgn5js">&nbsp;类似于指针，可以使用相同的标识符名称表示多种不同类型的数据，类似于指针，指向不同类型的数据</a>
+</h3>
+<h2 class="topic">
+<a name="277o9e870gr4gtkcr5034g559t">标识符命名</a>
+</h2>
+<h3 class="topic">
+<a name="2mfe5nd3r6suvpnas2t6tsngk7">&nbsp;标识符命名规则与c++相同</a>
+</h3>
+<h3 class="topic">
+<a name="6839cqhe0r9lhevngtkdu75i4q">&nbsp;&nbsp;字母、数字、下划线</a>
+</h3>
+<h3 class="topic">
+<a name="7g9omlri9it4ttfpqplr1rr0sv">&nbsp;&nbsp;数字不能开头</a>
+</h3>
+<h3 class="topic">
+<a name="3pp9sbh5d1ul9gefajpffn1lg3">&nbsp;&nbsp;不能为关键字</a>
+</h3>
+<h3 class="topic">
+<a name="5pm5id3ic6seol64dndfa82hdo">&nbsp;&nbsp;区分大小写</a>
+</h3>
+<h2 class="topic">
+<a name="2huobnsih7pq8tq2mlor6uiah1">输入输出</a>
+</h2>
+<h3 class="topic">
+<a name="67vo45kehc93otgqh60t1ndvep">&nbsp;print</a>
+</h3>
+<h3 class="topic">
+<a name="263ddii968ode7l6oqbkmob6cj">&nbsp;&nbsp;输出</a>
+</h3>
+<h3 class="topic">
+<a name="4kcspt41ikqgoks28noolkr70r">&nbsp;&nbsp;print("%d %s %f"%(3,"hello",0.111))</a>
+</h3>
+<h3 class="topic">
+<a name="3bsul6ghmsu91khvd1ekud3fde">&nbsp;&nbsp;&nbsp;类似c语言，但是需要使用%()将输出变量与格式控制符隔开</a>
+</h3>
+<h3 class="topic">
+<a name="2vibkh1023pj510olm7cmklg03">&nbsp;&nbsp;格式控制符可以用于拼接字符串</a>
+</h3>
+<h3 class="topic">
+<a name="03bre1c59aiifs03pmsj38fle0">&nbsp;&nbsp;&nbsp;str="%s %d %s"%("hello",15,"pb")&#13;
+pirnt(str)</a>
+</h3>
+<h3 class="topic">
+<a name="7na69so2vsc8bnkbeqjkv2rs92">&nbsp;input</a>
+</h3>
+<h3 class="topic">
+<a name="44ju1mmlta0ksebrfnj3ssov9q">&nbsp;&nbsp;输入</a>
+</h3>
+<h3 class="topic">
+<a name="0e2ji9ld12dq22ujmvt8n56d3v">&nbsp;&nbsp;a=input('输入一个数字')</a>
+</h3>
+<h3 class="topic">
+<a name="349cm16e88p2aole9o3r20mlr6">&nbsp;&nbsp;3.x版本中，所有input得到的结果都是字符串，如果需要接收数字，需要使用eval函数&#13;
+(使用eval必须输入一个数字，否则报错)</a>
+</h3>
+<h3 class="topic">
+<a name="7d2fb7n93qsj9d63rvgp4hnetp">&nbsp;&nbsp;&nbsp;a=eval(input('输入一个数字'))</a>
+</h3>
+<h3 class="topic">
+<a name="770lk6fu53ah37cj0lebh4f0i3">&nbsp;&nbsp;&nbsp;&nbsp;通过eval函数自动转换数据类型</a>
+</h3>
+<h2 class="topic">
+<a name="621utvcjbjl8r91qffr9vfmt8n">运算符</a>
+</h2>
+<h3 class="topic">
+<a name="5efjr1kg40d3odi2uvbuv5g8gc">&nbsp;大部分与c一样</a>
+</h3>
+<h3 class="topic">
+<a name="6gfcuc6gkned1prfb0rfjjo14v">&nbsp;python不一样的</a>
+</h3>
+<h3 class="topic">
+<a name="4ihcdohq11vod6loouh28kcqco">&nbsp;&nbsp;逻辑运算符</a>
+</h3>
+<h3 class="topic">
+<a name="7lbq6ee2pg61mubjlges006v2s">&nbsp;&nbsp;&nbsp;and</a>
+</h3>
+<h3 class="topic">
+<a name="39h2g5s9qo9hvjhfmq72gnon96">&nbsp;&nbsp;&nbsp;or</a>
+</h3>
+<h3 class="topic">
+<a name="76kktimjcrhf0hpnm8pkja1qpn">&nbsp;&nbsp;&nbsp;not</a>
+</h3>
+<h3 class="topic">
+<a name="466rvqjnjvp8fcci3s5d47ila9">&nbsp;&nbsp;关系运算符</a>
+</h3>
+<h3 class="topic">
+<a name="2cq6crlpau0n7e5jjcb2pl2h8g">&nbsp;&nbsp;&nbsp;&lt;&gt;</a>
+</h3>
+<h3 class="topic">
+<a name="23bc9sr5p7locu56efa7tf9t1t">&nbsp;&nbsp;&nbsp;&nbsp;不等于，在3.x版本中不能使用</a>
+</h3>
+<h3 class="topic">
+<a name="3ohuljg1b2d3l7hju7g6urps5e">&nbsp;&nbsp;算术运算符</a>
+</h3>
+<h3 class="topic">
+<a name="4lfsi2d3h9386h85ckd53uv543">&nbsp;&nbsp;&nbsp;**</a>
+</h3>
+<h3 class="topic">
+<a name="0faqg2s47khrskkjpa1trihlu2">&nbsp;&nbsp;&nbsp;&nbsp;幂运算</a>
+</h3>
+<h3 class="topic">
+<a name="3c3g4vikl28olojabuhnra6v8e">&nbsp;&nbsp;&nbsp;&nbsp;print(5**3)</a>
+</h3>
+<h3 class="topic">
+<a name="74fvn9tr498flt0cnhgq6fqa9d">&nbsp;&nbsp;&nbsp;//</a>
+</h3>
+<h3 class="topic">
+<a name="2gilrd07tc62h0j8ub3g6keovr">&nbsp;&nbsp;&nbsp;&nbsp;取整除,只保留商的整数部分</a>
+</h3>
+<h3 class="topic">
+<a name="6vvo2qe7bmsbbpdjqf5suauu13">&nbsp;&nbsp;&nbsp;&nbsp;pirnt(5//3)</a>
+</h3>
+<h3 class="topic">
+<a name="3k237n3tuiklf6gsjhlmd18k32">&nbsp;&nbsp;身份判断</a>
+</h3>
+<h3 class="topic">
+<a name="7jl6jaa9k4404i1v4lspg3393j">&nbsp;&nbsp;&nbsp;is</a>
+</h3>
+<h3 class="topic">
+<a name="5397ri634smlah3jkh70q68vrh">&nbsp;&nbsp;&nbsp;&nbsp;比较变量的内存地址</a>
+</h3>
+<h3 class="topic">
+<a name="6lcisnm1t8oh4e1lbfajiaofsa">&nbsp;&nbsp;&nbsp;&nbsp;print('a'is'a')</a>
+</h3>
+<h3 class="topic">
+<a name="1i15ccvmnnlo8mn581sd8in0er">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;输出true或false</a>
+</h3>
+<h3 class="topic">
+<a name="1pv08aa16f6jon9jn31vldn2gi">&nbsp;&nbsp;成员运算</a>
+</h3>
+<h3 class="topic">
+<a name="40a5fo6ip9k2g70jplmpcm7919">&nbsp;&nbsp;&nbsp;in</a>
+</h3>
+<h3 class="topic">
+<a name="4ja3rhuac2bo7oc0kc4qdgvg2b">&nbsp;&nbsp;&nbsp;&nbsp;运算符左侧的内容是否在右边出现过</a>
+</h3>
+<h3 class="topic">
+<a name="29s8pf6n608f46js9lmls6uk1s">&nbsp;&nbsp;&nbsp;&nbsp;print('a'in'abcd')</a>
+</h3>
+<h3 class="topic">
+<a name="3lel6fc6muk7flihn2npgta62j">&nbsp;运算符优先级</a>
+</h3>
+<h3 class="topic">
+<a name="3dd77f4cn0osugb5rjaap8thsv">&nbsp;&nbsp;一般加()即可</a>
+</h3>
+<h2 class="topic">
+<a name="7g9fqijdq2vrqd0kvceqs752db">三大结构</a>
+</h2>
+<h3 class="topic">
+<a name="34r5cv1sk1ovgibghrjb5je8bb">&nbsp;选择</a>
+</h3>
+<h3 class="topic">
+<a name="4v9bcbkvjhr2a131hs6b77kuih">&nbsp;&nbsp;python中没有switch case</a>
+</h3>
+<h3 class="topic">
+<a name="060g8jmen9hng8amf8a8jvggi0">&nbsp;&nbsp;if</a>
+</h3>
+<h3 class="topic">
+<a name="1vhnd65fu18jvnte8ebi2mvqf2">&nbsp;&nbsp;if -else</a>
+</h3>
+<h3 class="topic">
+<a name="258mov81p3cb27k4dri1k44dml">&nbsp;&nbsp;if elif else </a>
+</h3>
+<h3 class="topic">
+<a name="2m9tjopfiu9ae327amct56oqbv">&nbsp;&nbsp;&nbsp;number =eval(input("输入一个数字："))&#13;
+if number==1://语句块的首句后面必须加:&#13;
+	printf("输入1")//语句块必须加tab，否则会报错&#13;
+elif:&#13;
+	print("输入的是2")&#13;
+else:&#13;
+	print("输入的是其他")</a>
+</h3>
+<h3 class="topic">
+<a name="10u7uimjm2q4d1850l9fdacb8r">&nbsp;循环</a>
+</h3>
+<h3 class="topic">
+<a name="6vktq56cf22vcr2jha9jvqbjmc">&nbsp;&nbsp;没有do-while</a>
+</h3>
+<h3 class="topic">
+<a name="0bj56mkf41rcbc90ir3sdbdkp1">&nbsp;&nbsp;while</a>
+</h3>
+<h3 class="topic">
+<a name="34tk50o8ubi9vlil464pr4qhso">&nbsp;&nbsp;&nbsp;count =1&#13;
+while count&lt;10:&#13;
+	print(count,end=" ")#end参数默认是用换行结束，这里可以指定不换行&#13;
+	count+=1</a>
+</h3>
+<h3 class="topic">
+<a name="3tcd1oiqona033adaqgm8bekgj">&nbsp;&nbsp;for</a>
+</h3>
+<h3 class="topic">
+<a name="0ja2ds6u3oli8flnpbdh059crd">&nbsp;&nbsp;&nbsp;for i in "abcdef":&#13;
+	prin(i)</a>
+</h3>
+<h3 class="topic">
+<a name="633qgn0g3ja5vughnsaceqvhvu">&nbsp;&nbsp;&nbsp;与c语言存在区别</a>
+</h3>
+<h3 class="topic">
+<a name="58735njicqebioh374ih4bv448">&nbsp;&nbsp;&nbsp;&nbsp;循环变量被分别赋值为序列中的每一项，直到序列结束</a>
+</h3>
+<h3 class="topic">
+<a name="1kspapuc40bmkhcnhdvrcma9ge">&nbsp;&nbsp;&nbsp;L=['苹果','香蕉','凤梨']&#13;
+for i in range(len(L)):&#13;
+	print(L(i))</a>
+</h3>
+<h3 class="topic">
+<a name="43pfr27cl6o9it8b5k6srq0315">&nbsp;&nbsp;&nbsp;&nbsp;range(len(L))等同于range(3) 即0 1 2</a>
+</h3>
+<h3 class="topic">
+<a name="0k7f4d259npk4uck1amejrepu7">&nbsp;&nbsp;&nbsp;通过enumitem遍历list</a>
+</h3>
+<h3 class="topic">
+<a name="65omncdb9au4j8qcie32046j80">&nbsp;&nbsp;&nbsp;&nbsp;for index,value in enumerate(L):&#13;
+    print(index,value)</a>
+</h3>
+<h3 class="topic">
+<a name="6s3asn5foja7t51mo7ju0nfb28">&nbsp;&nbsp;&nbsp;列表生成式</a>
+</h3>
+<h3 class="topic">
+<a name="4tcgahcnlms288mg1lv9hp614l">&nbsp;&nbsp;&nbsp;&nbsp;l=[x+2 for x in range(0,20) if x%2==0]</a>
+</h3>
+<h3 class="topic">
+<a name="2q6pi88aqjn3ei4aps28eh5h6v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该列表中存贮0-20（不包括20）中所有的偶数</a>
+</h3>
+<h3 class="topic">
+<a name="3j05a8egvffctmrhq3v3guq6dh">&nbsp;&nbsp;&nbsp;&nbsp;规则，for前面是生成规则，for后面可以加过滤语句</a>
+</h3>
+<h3 class="topic">
+<a name="3evlue4hfq2t2iirl6qt7i54bi">&nbsp;&nbsp;&nbsp;&nbsp;L=['hello',"15pb","haha"]&#13;
+L1=[x.lower for x in L]</a>
+</h3>
+<h3 class="topic">
+<a name="7dassagima9tn5n8qq35p37hp2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将L中所有元素转为小写保存在L1中</a>
+</h3>
+<h3 class="topic">
+<a name="119f5hg4bapoibjc80ncis2f1d">&nbsp;&nbsp;&nbsp;字典遍历</a>
+</h3>
+<h3 class="topic">
+<a name="1jnuv89ane1s2inadi0gfrdalp">&nbsp;&nbsp;&nbsp;&nbsp;d={'a':1,'b':2,'c':3}&#13;
+for key,value in d.item():&#13;
+	print(key value)</a>
+</h3>
+<h3 class="topic">
+<a name="6gm63268on57qhc6q4es0mnmnr">&nbsp;&nbsp;&nbsp;for-else</a>
+</h3>
+<h3 class="topic">
+<a name="03dtbu43paihqcopajf1eqsb6e">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class38day0325%EF%BC%88python%EF%BC%89_files/48a5g7ned6s4vbecpuv9k7oum7.png"></p>
+<h3 class="topic">
+<a name="6anj5c8mk1n7ptkcedkqvihpbs">&nbsp;&nbsp;&nbsp;while-else</a>
+</h3>
+<h3 class="topic">
+<a name="1nou82t8so8s68gn63p8fcfk7q">&nbsp;&nbsp;&nbsp;for的三种迭代方式</a>
+</h3>
+<h3 class="topic">
+<a name="3eedd6n7tl7kq40c8gjb9rnosu">&nbsp;&nbsp;&nbsp;&nbsp;通过序列项迭代</a>
+</h3>
+<h3 class="topic">
+<a name="6qgrspplsi1kn3siuecvdckji5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;namelist = ['科比','毛线','小鸟','星爷']&#13;
+for i in namelist:&#13;
+    print(i)</a>
+</h3>
+<h3 class="topic">
+<a name="0iuh6s3ebm5mg22lqadmsra5ea">&nbsp;&nbsp;&nbsp;&nbsp;通过索引迭代</a>
+</h3>
+<h3 class="topic">
+<a name="743b34mlmumkhgahpb5bckitr9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;namelist = ['科比','毛线','小鸟','星爷']&#13;
+for i in range(len(namelist)):&#13;
+    print(namelist[i])</a>
+</h3>
+<h3 class="topic">
+<a name="00ml3i0357gn74qfn8tb8aueti">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rang(len(namelist))生成的迭代变量的范围为namelist下标的范围</a>
+</h3>
+<h3 class="topic">
+<a name="0g78k4uioe37u282cramh75gla">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这里len(namelist)的值为4，则range(4)会生成序列0 1 2 3</a>
+</h3>
+<h3 class="topic">
+<a name="65288gngsge7m3uqv9ssgaqb75">&nbsp;&nbsp;&nbsp;&nbsp;通过序列项和索引迭代</a>
+</h3>
+<h3 class="topic">
+<a name="492t6dabkr23kr4eah40bku9bj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;namelist = ['科比','毛线','小鸟','星爷']&#13;
+for i,eachLee in enumerate(namelist):&#13;
+    print("%d %s" % (i+1,eachLee))</a>
+</h3>
+<h3 class="topic">
+<a name="7e6pr2419tets31mfgfsfmlup7">&nbsp;控制语句（与c/c++中一样）</a>
+</h3>
+<h3 class="topic">
+<a name="09etq5ghrbdcroed52j6igrb6d">&nbsp;&nbsp;break</a>
+</h3>
+<h3 class="topic">
+<a name="4lgeupn2c5qgnhdv6h86q50deg">&nbsp;&nbsp;continue</a>
+</h3>
+<h3 class="topic">
+<a name="0kvqi2cfge25vnhvb22v8khne0">&nbsp;&nbsp;例子：判断10~20的素数</a>
+</h3>
+<h3 class="topic">
+<a name="0c33ageub3urm9enfgvb1g92sp">&nbsp;&nbsp;&nbsp;for number in range(10,21)  #生成10~20范围内的数&#13;
+	for i in range(2,number):	&#13;
+		if number%i==0:&#13;
+			break&#13;
+	else:	#else可以与for联合使用，如果有break，则本次else不会执行面，如果for循环执行完毕而没有执行到break，则执行else&#13;
+		print("输出素数")</a>
+</h3>
+<h2 class="topic">
+<a name="65o4tbf436aqm6gan2s48sc7b1">函数</a>
+</h2>
+<h3 class="topic">
+<a name="6h213aepoqt9tssh4fpsjknfgd">&nbsp;通过def关键字定义</a>
+</h3>
+<h3 class="topic">
+<a name="37csaoe7rsiacbonoel571gmpm">&nbsp;函数如果没有返回值默认返回None</a>
+</h3>
+<h3 class="topic">
+<a name="5n8lr2pfdn9if0obin6g64vgeq">&nbsp;&nbsp;def fun3():&#13;
+	pass#用于表示该函数什么都不干，用于占位&#13;
+	#在这也可以用return None</a>
+</h3>
+<h3 class="topic">
+<a name="47mlqrd3vd6vh8lm8krprggu4g">&nbsp;函数的全局变量</a>
+</h3>
+<h3 class="topic">
+<a name="4fb1itmhsii8k185cdsb1ie9ft">&nbsp;&nbsp;函数内访问时需要声明特定变量为全局变量</a>
+</h3>
+<h3 class="topic">
+<a name="0bdquor2ljt9f24tivu5muceg8">&nbsp;&nbsp;&nbsp;global的用法</a>
+</h3>
+<h3 class="topic">
+<a name="3lgvfrn87uc1tbnh0379n60q46">&nbsp;&nbsp;&nbsp;&nbsp;如果函数外有全局变量，则函数中声明global，使用的函数外全局变量</a>
+</h3>
+<h3 class="topic">
+<a name="7iu6megdpu2lhe7jnh7qdumv3j">&nbsp;&nbsp;&nbsp;&nbsp;如果函数外没有全局变量，函数内使用global会定义一个全局变量</a>
+</h3>
+<h3 class="topic">
+<a name="5tf836v57k6tgp08jh01m6e92f">&nbsp;&nbsp;g_number =100&#13;
+def fun4():&#13;
+	g_number1=99#定义一个局部变量&#13;
+	#如果需要使用去全局变量需要声明&#13;
+	global g_number&#13;
+	g_number=99&#13;
+&#13;
+print(fun(g_number))</a>
+</h3>
+<h3 class="topic">
+<a name="1buu1quqpdpq571mmge3m41h8t">&nbsp;&nbsp;&nbsp;这里这个print是不是有问题</a>
+</h3>
+<h3 class="topic">
+<a name="5c8pifikcof8t7qmq9607jq0gd">&nbsp;函数定义</a>
+</h3>
+<h3 class="topic">
+<a name="6pq6c931jsje15gsf0o74ogfdt">&nbsp;&nbsp;函数参数不需要类型</a>
+</h3>
+<h3 class="topic">
+<a name="1gptvsikcd8ad69bloq2q47okl">&nbsp;&nbsp;&nbsp;def fun(arg):&#13;
+	return arg+2&#13;
+print(fun(5))</a>
+</h3>
+<h3 class="topic">
+<a name="78a9dbd8d1j2a4upcthb1covls">&nbsp;&nbsp;参数可以有默认参数</a>
+</h3>
+<h3 class="topic">
+<a name="7tphf64rj3da1vu0tnkdq57tqa">&nbsp;&nbsp;&nbsp;类似于c++</a>
+</h3>
+<h3 class="topic">
+<a name="5oubj5sng37tlf0pk8h8pt0i8s">&nbsp;&nbsp;&nbsp;def fun1(arg1,arg2=99):&#13;
+	return arg1+arg2</a>
+</h3>
+<h3 class="topic">
+<a name="050fntur12fiveh5l8cnoe3h3p">&nbsp;&nbsp;参数可以是复杂类型</a>
+</h3>
+<h3 class="topic">
+<a name="6urpdbns8gpfh5eph32io9fqq3">&nbsp;&nbsp;&nbsp;def fun2(arg)&#13;
+	return arg[0:3]</a>
+</h3>
+<h3 class="topic">
+<a name="1i48gnhtqnncamg0fgh9pmoteb">&nbsp;&nbsp;&nbsp;&nbsp;这里函数实参应该为一个列表或元组，返回的是一个列表或元祖的切片</a>
+</h3>
+<h3 class="topic">
+<a name="5rnleps71g46qckptqv6q4hbd0">&nbsp;&nbsp;&nbsp;&nbsp;注意在使用时因为参数没有类型，所以需要其他途径说明该函数需要接收的参数类型</a>
+</h3>
+<h3 class="topic">
+<a name="7ttr07mmdrq9fbl94mil4d1shv">&nbsp;变长参数</a>
+</h3>
+<h3 class="topic">
+<a name="6eff94t62img7ubqou560bv5dr">&nbsp;&nbsp;参数类型用*表示</a>
+</h3>
+<h3 class="topic">
+<a name="64kibin4lgettf87bbg9m4p7or">&nbsp;&nbsp;参数以元祖方式传递</a>
+</h3>
+<h3 class="topic">
+<a name="3jouocvt1omds17md8ral6mhm7">&nbsp;&nbsp;def fun7(*arg):&#13;
+	print(arg)&#13;
+&#13;
+fun7(1,2,3,4,5,6)</a>
+</h3>
+<h3 class="topic">
+<a name="5d7jpvlbu6b64pnosso7otg8tm">&nbsp;&nbsp;可以类比于c++中的变长参数，只是参数必须使用元组传递</a>
+</h3>
+<h3 class="topic">
+<a name="38l48v47l4jav439eadr4gg26p">&nbsp;使用关键字参数</a>
+</h3>
+<h3 class="topic">
+<a name="03bnj4tetau8hjgjhtngnqjt28">&nbsp;&nbsp;参数类型用**表示</a>
+</h3>
+<h3 class="topic">
+<a name="61qvj0b1jf0ihgsnnuu2pnhqgr">&nbsp;&nbsp;参数以字典方式传递，即参数实际上是一个键值对</a>
+</h3>
+<h3 class="topic">
+<a name="7jfh9osoahf8qf9kkf684fq2g0">&nbsp;&nbsp;&nbsp;键值对</a>
+</h3>
+<h3 class="topic">
+<a name="77s7esc2dh3lj7i8u6s7u81r78">&nbsp;&nbsp;def fun8(**arg)&#13;
+	print(arg)&#13;
+&#13;
+fun8(name='明'，age=18，id=1234，sex='男')</a>
+</h3>
+<h3 class="topic">
+<a name="69u2a4ib5tp41te9l80ng4l3u6">&nbsp;模块化编程（类似于c中使用其他文件的函数，可以直接使用其他.py文件中的函数）(被引用的.py问价即称为模块)</a>
+</h3>
+<h3 class="topic">
+<a name="5dj5kh43u3ki5lt157o7f15s65">&nbsp;&nbsp;三种方式包含模块</a>
+</h3>
+<h3 class="topic">
+<a name="7l2c40o23gcjg87nki08722csm">&nbsp;&nbsp;&nbsp;import 模块名 &#13;
+模块名.函数名(参数)</a>
+</h3>
+<h3 class="topic">
+<a name="23agbmq8roiphujfjqlkfqsctu">&nbsp;&nbsp;导入指定函数或变量</a>
+</h3>
+<h3 class="topic">
+<a name="7ahsd0nad6uugp7vh66c3rklge">&nbsp;&nbsp;&nbsp;from 模块名 import 函数名&#13;
+直接使用函数名</a>
+</h3>
+<h3 class="topic">
+<a name="63vefpmpqeg1b53cbbalh0k58a">&nbsp;&nbsp;导入模块中所有的变量，函数，类</a>
+</h3>
+<h3 class="topic">
+<a name="3brtrcljt6ap7n3lbc5r6k5kpq">&nbsp;&nbsp;&nbsp;from 模块名 import*&#13;
+直接使用</a>
+</h3>
+<h3 class="topic">
+<a name="63569lhvhqh9h15kpj7aokh9hm">&nbsp;&nbsp;模块中的主函数会在该模块被导入的时候被执行</a>
+</h3>
+<h3 class="topic">
+<a name="5gh80dftq78se6re34ulhcg1lg">&nbsp;&nbsp;&nbsp;模块中的语句：print("我是模块%s"%(_name_))</a>
+</h3>
+<h3 class="topic">
+<a name="6dg19sojdhvars6mjl7njpco5v">&nbsp;&nbsp;&nbsp;&nbsp;直接执行模块，则_name_打印出_main_</a>
+</h3>
+<h3 class="topic">
+<a name="5t1c5tjf5ae60il4tsljmb2em6">&nbsp;&nbsp;&nbsp;&nbsp;该模块被包含，包含该模块的主程序执行时，该语句打印出被导入的模块的模块名</a>
+</h3>
+<h3 class="topic">
+<a name="56mhpqji2hma9isq4oj4q6l1nv">&nbsp;&nbsp;&nbsp;_name_可以用于编写只在模块中运行的测试代码</a>
+</h3>
+<h3 class="topic">
+<a name="6jnjeehpjrf3im6h7nfr7qtjpb">&nbsp;&nbsp;&nbsp;&nbsp;if_name_==_main_:&#13;
+	#写测试代码</a>
+</h3>
+<h2 class="topic">
+<a name="646agitasdu99mobse3mu75iqb">切片</a>
+</h2>
+<h3 class="topic">
+<a name="6pmgs5vhbtrc5j04i8o9s2kl8u">&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class38day0325%EF%BC%88python%EF%BC%89_files/0veu95jo7sghscashgti5vviip.png"></p>
+<h2 class="topic">
+<a name="5f9n7nr7knetfv8v394i1srp4u">tips</a>
+</h2>
+<h3 class="topic">
+<a name="3tdmt3detpf2e7ihg3gt985169">&nbsp;ctrl+q查看帮助文档</a>
+</h3>
+<h3 class="topic">
+<a name="5liiafp8v7kbp1t9lmdqd0euip">&nbsp;cmd的执行路径需要更改为3.6版本的</a>
+</h3>
+<h3 class="topic">
+<a name="2lrj9bq302cnfglnf454gofmg0">&nbsp;ctrl+/可以进行多行注释</a>
+</h3>
+<h3 class="topic">
+<a name="5r1nna8e4c1i6ule3hqjhu81hq">&nbsp;ctrl+s保存</a>
+</h3>
+<h3 class="topic">
+<a name="3detlq5q38gl16kmpdl2s8vn3o">&nbsp;ctrl+z撤销</a>
+</h3>
+<h3 class="topic">
+<a name="1r0q1t8h5ao86rujljku7sjg41">&nbsp;dir函数</a>
+</h3>
+<h3 class="topic">
+<a name="0uoes6db00jvo3qr3con23tmph">&nbsp;&nbsp;dir() 函数不带参数时，返回当前范围内的变量、方法和定义的类型列表；带参数时，返回参数的属性、方法列表。如果参数包含方法__dir__()，该方法将被调用。如果参数不包含__dir__()，该方法将最大限度地收集参数信息。</a>
+</h3>
+<h3 class="topic">
+<a name="4634bsos5qgodkogmkdn669i4a">&nbsp;help()函数</a>
+</h3>
+<h3 class="topic">
+<a name="4us9g8isdrfv1ac3fh8cg843uh">&nbsp;&nbsp;help() 函数用于查看函数或模块用途的详细说明。</a>
+</h3>
+<h3 class="topic">
+<a name="094kh9am0d4u68o8lt1r73vtq8">&nbsp;type函数</a>
+</h3>
+<h3 class="topic">
+<a name="1i0m4tnghlh8le7t7o0k26mem2">&nbsp;&nbsp;用于查看特定变量的类型</a>
+</h3>
+</body>
+</html>

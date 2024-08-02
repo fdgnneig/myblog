@@ -1,0 +1,720 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>class21day0220</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="2c8c8f0v6assbd0cnduo1l680u">class21day0220</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="class21day0220_files/images/class21day0220.jpg"></div>
+<h2 class="topic">
+<a name="2d8c0v35e3d0dhssbs64q696n3">c语言复习第三天</a>
+</h2>
+<h3 class="topic">
+<a name="3jbvd0p86aiconuiq478tvj62l">&nbsp;使用枚举</a>
+</h3>
+<h3 class="topic">
+<a name="55b54i6s88ub2b10hi8ke29i9h">&nbsp;&nbsp;放在c++中讲</a>
+</h3>
+<h3 class="topic">
+<a name="7d9kg00o7q1gg0oe0h5029nqa7">&nbsp;使用结构体</a>
+</h3>
+<h3 class="topic">
+<a name="7ktq79pv9hj6uhgq35ttjguo6t">&nbsp;&nbsp;typedef关键字</a>
+</h3>
+<h3 class="topic">
+<a name="499ueacga2213nf73o27ta2o6k">&nbsp;&nbsp;&nbsp;为一个已经存在的类型取别名</a>
+</h3>
+<h3 class="topic">
+<a name="39ln5gjhqr9ra92mnqem0utdl7">&nbsp;&nbsp;&nbsp;&nbsp;该类型原来的类型名仍可以使用</a>
+</h3>
+<h3 class="topic">
+<a name="7ta232ln2kqf6m1r60lr9lgfni">&nbsp;&nbsp;&nbsp;语法：tpedef 原来类型 类型别名</a>
+</h3>
+<h3 class="topic">
+<a name="05qh9huso91eb2eofnchrh8c8c">&nbsp;&nbsp;&nbsp;&nbsp;typedef int myint；</a>
+</h3>
+<h3 class="topic">
+<a name="3ii06h2cff0gpdkurjdj1ha937">&nbsp;&nbsp;typedef struct my_struct{&#13;
+int num;&#13;
+}my_struct_type;</a>
+</h3>
+<h3 class="topic">
+<a name="53vgf1eoj1aaa1v6ma2imfjmjc">&nbsp;&nbsp;&nbsp;之后可以使用my_struct_type直接定义结构体变量</a>
+</h3>
+<h3 class="topic">
+<a name="7kk9mqkt3q5219aucjc36frc4f">&nbsp;&nbsp;在c语言中使用结构体必须加上struct，除非使用了typedef进行了取别名</a>
+</h3>
+<h3 class="topic">
+<a name="3mbuhsb376c7mur77v7cnailkn">&nbsp;&nbsp;结构体的定义</a>
+</h3>
+<h3 class="topic">
+<a name="1m99et53imf89ht1jvvv4m5530">&nbsp;&nbsp;&nbsp;struct _STUDENT{&#13;
+char name[20];&#13;
+unsigned int age;&#13;
+}；</a>
+</h3>
+<h3 class="topic">
+<a name="6sssem9fo038pmc7akkvriv2bh">&nbsp;&nbsp;结构体的定义并且定义一个结构体变量并初始化</a>
+</h3>
+<h3 class="topic">
+<a name="20lgq5qe9r1jf1kk6bvlimjbns">&nbsp;&nbsp;&nbsp;struct _STUDENT{&#13;
+char name[20];&#13;
+unsigned int age;&#13;
+}xiaofang，xiaogang={"xiaogang",30}；&#13;
+//两个结构体变量均是全局变量</a>
+</h3>
+<h3 class="topic">
+<a name="6n41ae3sacbme00mfc8svjeh72">&nbsp;&nbsp;结构体的初始化</a>
+</h3>
+<h3 class="topic">
+<a name="0dn8euuoctfnmo50dr7gi274mr">&nbsp;&nbsp;&nbsp;struct _STUDENT  xiaoming={"xioaming",18};</a>
+</h3>
+<h3 class="topic">
+<a name="4278h26gmmkta21abvic2k60qs">&nbsp;&nbsp;&nbsp;struct _STUDENT  xiaoming={0};//可以使用{0}将结构体整体初始化</a>
+</h3>
+<h3 class="topic">
+<a name="36brk9ad3chm13mv3lpgfifpli">&nbsp;&nbsp;使用typedef为结构体变量取别名</a>
+</h3>
+<h3 class="topic">
+<a name="3l3pifm0imoniv7s155sgttja2">&nbsp;&nbsp;&nbsp;typedef struct _TEACHER{&#13;
+char name[20];&#13;
+unsigned int age;&#13;
+}TEACHER,*PTEACHER；&#13;
+&#13;
+TEACHER teacher;</a>
+</h3>
+<h3 class="topic">
+<a name="2u2mos4mha34ma6gb4ckstdgl8">&nbsp;&nbsp;&nbsp;typedef struct _TEACHER TEACHER</a>
+</h3>
+<h3 class="topic">
+<a name="0t2841an72bikp6lnehvm90m1q">&nbsp;&nbsp;&nbsp;&nbsp;对结构体变量类型进行取别名</a>
+</h3>
+<h3 class="topic">
+<a name="1ge9k5jliqpu14fgqd526a23a3">&nbsp;&nbsp;&nbsp;typedef (struct _TEACHER*) PTEACHER</a>
+</h3>
+<h3 class="topic">
+<a name="6dml1kh8cdfan702amufrjti4m">&nbsp;&nbsp;&nbsp;&nbsp;对结构体变量指针进行取别名</a>
+</h3>
+<h3 class="topic">
+<a name="7ju6d648vieo2ii0aoposqhj3p">&nbsp;&nbsp;因为TEACHER 与struct _STUDENT内容相同，所以可以不用单独定义TEACHER，而是利用typedef进行取别名</a>
+</h3>
+<h3 class="topic">
+<a name="6usvfieern2di30r63edt3ai97">&nbsp;&nbsp;访问与修改</a>
+</h3>
+<h3 class="topic">
+<a name="194e089ass2utsli03nemgrkin">&nbsp;&nbsp;&nbsp;使用结构体变量访问</a>
+</h3>
+<h3 class="topic">
+<a name="6q5vq56o74fji8s04ehmkffg26">&nbsp;&nbsp;&nbsp;&nbsp;. 分量运算符</a>
+</h3>
+<h3 class="topic">
+<a name="3cv7q7sk7jd2au6qb74jt9hoto">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TEACHER teacher = { "zhao", 1 }; &#13;
+teacher.age = 10;</a>
+</h3>
+<h3 class="topic">
+<a name="20m22as7j1qgnher9qls4p8bhj">&nbsp;&nbsp;&nbsp;使用结构体指针访问</a>
+</h3>
+<h3 class="topic">
+<a name="4u4ehpe7i496v0n0719dlfg4hb">&nbsp;&nbsp;&nbsp;&nbsp;-&gt;分量运算符</a>
+</h3>
+<h3 class="topic">
+<a name="52idvsohq7m26hce9fpo49gtr2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TEACHER teacher = { "zhao", 1 }, *pteacher = &amp;teacher;&#13;
+pteacher-&gt;age = 10;</a>
+</h3>
+<h3 class="topic">
+<a name="00up1h4j9vogj1461knfoq0h1p">&nbsp;&nbsp;&nbsp;TEACHER teacher={"zhao",1},*pteacher=&amp;teacher;&#13;
+TEACHER *p,p2; //注意p是一个是结构体指针，p2是一个结构体变量</a>
+</h3>
+<h3 class="topic">
+<a name="2kt4sr93ogang5ve278e475h0c">&nbsp;&nbsp;结构体大小计算</a>
+</h3>
+<h3 class="topic">
+<a name="73s777tmsj8s9hvvt5uagnjirj">&nbsp;&nbsp;&nbsp;计算结构体大小</a>
+</h3>
+<h3 class="topic">
+<a name="01jhn6vidf1pnug0bm4lrd7cb9">&nbsp;&nbsp;&nbsp;&nbsp;struct MYSTRUCT&#13;
+{ &#13;
+char s;      //0    1&#13;
+short st;   //2     2     4      &#13;
+int n;        //4     4     8&#13;
+double d; //8     8     16&#13;
+long l;      //16    4     20&#13;
+} //整个结构体的大小为20(8) =&gt;24</a>
+</h3>
+<h3 class="topic">
+<a name="3h923sf6ifee6netol6gq4n4m1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;结构体大小24</a>
+</h3>
+<h3 class="topic">
+<a name="7er7b58d4f8k1vgougj3l11tc4">&nbsp;&nbsp;&nbsp;&nbsp;struct MYSTRUCT2&#13;
+{                    //偏移   数据长度&#13;
+char s[3];      //0           3           &#13;
+double st;   	//8            8         16&#13;
+short n;        //16          2          18&#13;
+int d; 			//18(4)=&gt;20      4     24&#13;
+char s2[3];    //24+3       27&#13;
+} //结构体整体的大小 = 27(8)=&gt;32</a>
+</h3>
+<h3 class="topic">
+<a name="0fiaonqve0vn49e2gs0hfpf55n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;结构体大小32</a>
+</h3>
+<h3 class="topic">
+<a name="41ngpvrnfkmi48ds5umngtav1h">&nbsp;&nbsp;&nbsp;&nbsp;计算过程主要是将每一个成员与结构体首字节的偏移算出来，然后在该偏移的基础上加上成员变量类型所占的内存空间，看能否作为下一个成员变量在结构体中存储的偏移地址，如果满足倍数要求，直接储存，如果不满足则需要进行内存对齐</a>
+</h3>
+<h3 class="topic">
+<a name="20ieu44lddn8ng438m1o8oj7lj">&nbsp;&nbsp;&nbsp;结构体内存对齐计算原则</a>
+</h3>
+<h3 class="topic">
+<a name="0vtreg6kt4m46m545q8o23ti3n">&nbsp;&nbsp;&nbsp;&nbsp;https://blog.csdn.net/shanghx_123/article/details/79679726</a>
+</h3>
+<h3 class="topic">
+<a name="17v6462tiktvhp4q10rep7v4uj">&nbsp;&nbsp;&nbsp;&nbsp;每一个成员所在结构体中的偏移都是自己数据类型大小的倍数</a>
+</h3>
+<h3 class="topic">
+<a name="3bijvnb7adbkqfmua4m8j73iti">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;比如int c c所在的偏移是sizeof(int)=&gt;4的倍数</a>
+</h3>
+<h3 class="topic">
+<a name="700ogj75ok0tu1702b80t6muut">&nbsp;&nbsp;&nbsp;&nbsp;整个结构体的大小，他的对齐力度就是结构体内最大的数据类型大小的倍数</a>
+</h3>
+<h3 class="topic">
+<a name="5o2neav2dergfg7vlk48svaub0">&nbsp;使用联合体（即共用体）</a>
+</h3>
+<h3 class="topic">
+<a name="793s5kuim75idopk2skgfhua28">&nbsp;&nbsp;定义：union u{int n，double d；char c;}</a>
+</h3>
+<h3 class="topic">
+<a name="6cms32k516qak41uifa3pgbenm">&nbsp;&nbsp;&nbsp;可以根据不同的情况对数据进行不同的解释</a>
+</h3>
+<h3 class="topic">
+<a name="19pf5hcb7m677kfmhib59nou7t">&nbsp;&nbsp;&nbsp;通常将联合体定义在结构体中使用</a>
+</h3>
+<h3 class="topic">
+<a name="72snbm6a53lthpf2qa0gg4c50t">&nbsp;&nbsp;&nbsp;&nbsp;struct message&#13;
+{&#13;
+//当前的消息类型&#13;
+int type;&#13;
+union u&#13;
+{&#13;
+//描述文字信息的结构&#13;
+struct text{int n;} t;&#13;
+//描述图片信息的结构&#13;
+struct pic{int n;} p;&#13;
+//描述视频信息的结构&#13;
+struct media{int n;}m;&#13;
+//描述音频信息的结构&#13;
+struct voice{int n;}v;&#13;
+};&#13;
+};&#13;
+&#13;
+int main(){&#13;
+&#13;
+struct message msg;&#13;
+if(msg.type==声音)&#13;
+	msg.v;&#13;
+else if(msg.type==视频)&#13;
+	msg.m;&#13;
+return 0;&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="2junbg1u4ifbuitoj29gqd079l">&nbsp;&nbsp;访问和修改</a>
+</h3>
+<h3 class="topic">
+<a name="6s0bbvev8uce7aunobebo7d0ur">&nbsp;&nbsp;&nbsp;在同一时刻，联合体中应该只有一个类型是有意义的，但是可以访问所有成员</a>
+</h3>
+<h3 class="topic">
+<a name="487nn89qv92gh6m56fhsd7ru6p">&nbsp;&nbsp;&nbsp;访问方式和结构体相同</a>
+</h3>
+<h3 class="topic">
+<a name="1gaensntkuldr6n9iekq3kl856">&nbsp;&nbsp;大小计算</a>
+</h3>
+<h3 class="topic">
+<a name="1ao4i0n99ngmcamnlo8cijdo3k">&nbsp;&nbsp;&nbsp;就是联合体中最大类型所占的字节数</a>
+</h3>
+<h3 class="topic">
+<a name="2481ac2c4req5tn0vjn9bs1g7p">&nbsp;函数的定义和使用</a>
+</h3>
+<h3 class="topic">
+<a name="1vrt5ot4hsd5nev7sm9lhcfkjo">&nbsp;&nbsp;函数的定义</a>
+</h3>
+<h3 class="topic">
+<a name="529fh6hj7jtj4d7de8gaktjco6">&nbsp;&nbsp;&nbsp;三部分</a>
+</h3>
+<h3 class="topic">
+<a name="0tk84jdvgpm6g1u0ahaklv9r20">&nbsp;&nbsp;&nbsp;&nbsp;返回值类型</a>
+</h3>
+<h3 class="topic">
+<a name="4gbnip7d7paecbd96h104j8f6s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;就是函数调用表达式的结果</a>
+</h3>
+<h3 class="topic">
+<a name="389kg5fhl88gr7kqp973mm281f">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;函数实际返回类型必须和函数返回类型相同</a>
+</h3>
+<h3 class="topic">
+<a name="4cu892nk49bun605f9hnhdia3d">&nbsp;&nbsp;&nbsp;&nbsp;函数名</a>
+</h3>
+<h3 class="topic">
+<a name="3qsqa8818n5ngu63mtqq8oej38">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;是函数的标识，命名规则和变量相同</a>
+</h3>
+<h3 class="topic">
+<a name="4flbj1v33lq7ib76q10799bgbp">&nbsp;&nbsp;&nbsp;&nbsp;参数列表</a>
+</h3>
+<h3 class="topic">
+<a name="1g8kenim0l0aedp7f5qb5tqoua">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;描述了调用函数需要是传入的参数类型和参数个数</a>
+</h3>
+<h3 class="topic">
+<a name="6dupic3rudf9q984n350ngj25v">&nbsp;&nbsp;&nbsp;声明和定义</a>
+</h3>
+<h3 class="topic">
+<a name="27l6dh5tmii1hjlgosrg8cuk16">&nbsp;&nbsp;&nbsp;&nbsp;一般函数使用是先声明后定义</a>
+</h3>
+<h3 class="topic">
+<a name="6krbqtphea1sqkq1skudptugoh">&nbsp;&nbsp;&nbsp;&nbsp;声明的意义在于告诉编译器当前存在这样一个调用函数</a>
+</h3>
+<h3 class="topic">
+<a name="3qip59spsebqfde1ifvmo3qepf">&nbsp;&nbsp;&nbsp;&nbsp;当函数定义写在函数调用之前，可以不用进行函数声明</a>
+</h3>
+<h3 class="topic">
+<a name="0l96ih7pn3g7aup91n9uh7391h">&nbsp;&nbsp;&nbsp;&nbsp;函数声明一般放在.h文件中，函数的实现放在函数.c文件中</a>
+</h3>
+<h3 class="topic">
+<a name="1dgrnh7gdi5lqapl9sebp53a6b">&nbsp;&nbsp;&nbsp;&nbsp;定义就是在声明的基础上用{}写出函数的实现</a>
+</h3>
+<h3 class="topic">
+<a name="6mj70p38qnpht5hri9q25c21jl">&nbsp;&nbsp;&nbsp;函数的使用顺序</a>
+</h3>
+<h3 class="topic">
+<a name="407dc4fq8d45f1fs8be8p3s06j">&nbsp;&nbsp;&nbsp;&nbsp;声明-定义-调用</a>
+</h3>
+<h3 class="topic">
+<a name="5v31eqtpuu9i2s5joci5n7c4oo">&nbsp;&nbsp;形参和实参</a>
+</h3>
+<h3 class="topic">
+<a name="28c9gs8aba857ile2a1f0o5j1j">&nbsp;&nbsp;&nbsp;形参</a>
+</h3>
+<h3 class="topic">
+<a name="36l72149ctddvsav4emlg8gtlo">&nbsp;&nbsp;&nbsp;&nbsp;是形式参数，是函数内使用的值，实际上就是实参的拷贝</a>
+</h3>
+<h3 class="topic">
+<a name="7tivghq4occekv1ra84v8cajku">&nbsp;&nbsp;&nbsp;实参</a>
+</h3>
+<h3 class="topic">
+<a name="4icso0v5l84ahl98r6vlei4ka9">&nbsp;&nbsp;&nbsp;&nbsp;是实际参数，传入的具体的值，可以是变量，可以是字面值</a>
+</h3>
+<h3 class="topic">
+<a name="10r3d3b10nt05t8d7gg1slp7q0">&nbsp;&nbsp;不同类型的参数传递</a>
+</h3>
+<h3 class="topic">
+<a name="0la2l7cvpf4301eerca4sgm42a">&nbsp;&nbsp;&nbsp;数组的传参</a>
+</h3>
+<h3 class="topic">
+<a name="424ko0neuki7a8rt6ne116jlpb">&nbsp;&nbsp;&nbsp;&nbsp;一维数组传参</a>
+</h3>
+<h3 class="topic">
+<a name="7e574ojqsc12qnmqvv013pkldn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;int arr[10]={0};&#13;
+show(arr);//arr-&gt;&amp;arr[0]-&gt;int*&#13;
+&#13;
+//则show()函数的原型应该为&#13;
+void show(int *p,int number)&#13;
+//使用该函数原型也可以是，用法一样 void show(int arr[],int number)&#13;
+{&#13;
+&#13;
+}&#13;
+//因为数组在传参的过程中会发生降级，实际传入的是元素类型对应的指针，在show函数内部无法通过该指针获得数组的大小，所以需要将数组大小传进去</a>
+</h3>
+<h3 class="topic">
+<a name="38qjehtd1enes80ubi18ulnfj2">&nbsp;&nbsp;&nbsp;&nbsp;二维数组传参</a>
+</h3>
+<h3 class="topic">
+<a name="2a89sv2i4dsaq2h7al201k674h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;int arr[10][20]={0};&#13;
+show(arr);&#13;
+void show(int (*p)[20],int number)&#13;
+//写法2void show(int arr[][20],int number)&#13;
+{	&#13;
+for(i:0-20)&#13;
+{&#13;
+	for(j:0-number)	&#13;
+	{&#13;
+	arr[i][j];&#13;
+	}&#13;
+}&#13;
+&#13;
+&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="7lneg35nvfvmtucce7pnca5sco">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;int arr[10][20] = { 0 };&#13;
+arr[0]-&gt;int[20] //arr[0]是一个拥有20个int类型元素的一维数组&#13;
+arr-&gt;&amp;arr[0] -&gt;int(*p)[20]&#13;
+</a>
+</h3>
+<h3 class="topic">
+<a name="1lu1nd9midqonrt1u1284e8ndt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果要在这里使用列值针，可以使用  *arr为列值针赋初值  int*p=*arr（等价于*(&amp;arr[0])  等价于对第一个一维数组的数组首地址解引用，的，得到二维数组第一个元素的地址）</a>
+</h3>
+<h3 class="topic">
+<a name="1ivr7fi31da7ss513g729d2lit">&nbsp;&nbsp;&nbsp;基本类型的传参</a>
+</h3>
+<h3 class="topic">
+<a name="70gmksviar1bm2b7phrfcqur4f">&nbsp;&nbsp;&nbsp;&nbsp;简单 略</a>
+</h3>
+<h3 class="topic">
+<a name="662k45njptmtn6ispr7hatuq7r">&nbsp;&nbsp;&nbsp;结构体的传参</a>
+</h3>
+<h3 class="topic">
+<a name="779l0o8fsj0vmnkm6mfjv9ae8l">&nbsp;&nbsp;&nbsp;&nbsp;值传递（不推荐使用）结构体内数据内容过多时传参需要大量空间</a>
+</h3>
+<h3 class="topic">
+<a name="1cmmjhq98uncoi12ci4niqgtdn">&nbsp;&nbsp;&nbsp;&nbsp;指针传递（推荐使用）不管结构体实际多大，占用的大小都是指针的大小，是4字节或8字节，逆向分析过程中，指针传参相对规定容易分析</a>
+</h3>
+<h3 class="topic">
+<a name="28ludckk7lu4v964gi8030saqt">&nbsp;&nbsp;&nbsp;函数的传参</a>
+</h3>
+<h3 class="topic">
+<a name="2kisna6qnav5k6fkrg6heu8ogb">&nbsp;&nbsp;&nbsp;&nbsp;通常用于进行windows编程以及c++STL编程</a>
+</h3>
+<h3 class="topic">
+<a name="6vfmnl50rm6n80t7plg1knjbib">&nbsp;&nbsp;&nbsp;&nbsp;函数传参实际上传递的是函数的指针</a>
+</h3>
+<h3 class="topic">
+<a name="6juehab4gd62d0f079c7koebrt">&nbsp;&nbsp;&nbsp;&nbsp;实例：int add(int x,int y){return x+y;}&#13;
+          int max(int x,int y){return x&gt;y?x:y;}&#13;
+          int mul(int x,int y){returnx*y;}&#13;
+&#13;
+int calc(int x,int y,int(*fun)(int,int))&#13;
+{&#13;
+		return fun(x,y);&#13;
+}&#13;
+&#13;
+int main(){&#13;
+//可以使用calc调用三个原型相同的函数&#13;
+calc(1,2,add);&#13;
+calc(1,2,max);&#13;
+calc(1,2,mul);&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="6ikm8vlngij3hj0if4rt5sr4qf">&nbsp;&nbsp;c语言的传参方式</a>
+</h3>
+<h3 class="topic">
+<a name="12fe4p56ot0mjern3g7n1kadcl">&nbsp;&nbsp;&nbsp;值传递</a>
+</h3>
+<h3 class="topic">
+<a name="66i1biq8q3331j82elkmuu6g6b">&nbsp;&nbsp;&nbsp;&nbsp;不能通过形参修改实参</a>
+</h3>
+<h3 class="topic">
+<a name="4ebbn8r530rq4jsoc7eavnv6d8">&nbsp;&nbsp;&nbsp;指针传递</a>
+</h3>
+<h3 class="topic">
+<a name="5vuhs47e2sdrs4ld7ah12a6q9q">&nbsp;&nbsp;&nbsp;&nbsp;可以通过形参间接修改实参</a>
+</h3>
+<h3 class="topic">
+<a name="0b9ojt88h4jomb3rk3nm3tn58o">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;因为传参的本质还是将实参指针变量的值复制一份给了形参，函数内部通过形参解引用间接改变实参</a>
+</h3>
+<h3 class="topic">
+<a name="06jeum0ucabgkjbhdq135mf9gd">&nbsp;函数递归</a>
+</h3>
+<h3 class="topic">
+<a name="07g5q2jriuktiq8rflkntdm5p1">&nbsp;&nbsp;定义：函数之间的互相调用（可以是函数调用自己调用自己，可以是两个函数之间相互调用）</a>
+</h3>
+<h3 class="topic">
+<a name="0pg7qn2cc9sj7e0k5prgjd7t58">&nbsp;&nbsp;结束条件</a>
+</h3>
+<h3 class="topic">
+<a name="0pckmf0pnh44ov3h9307leqlcq">&nbsp;&nbsp;&nbsp;函数递归需要结束条件，否则会程序会崩溃，即栈溢出</a>
+</h3>
+<h3 class="topic">
+<a name="0b5chjemoa7th7kt9ckkepqgqf">&nbsp;&nbsp;从效率上讲，能够使用循环的尽量不要使用递归</a>
+</h3>
+<h3 class="topic">
+<a name="05c8o1u5d7kbn4um7v58p1v5do">&nbsp;内联函数</a>
+</h3>
+<h3 class="topic">
+<a name="31ok1910omhapt17pq7jkstvgb">&nbsp;&nbsp;inline ：在函数声明前使用inline函数可以将函数声明为内联函数，如果函数过于庞大，即使添加了内联函数，编译器不会作为内联函数处理，如果函数较小，编译器也会自动设置为内联函数</a>
+</h3>
+<h3 class="topic">
+<a name="1t0r1igbruo1sl2vno1u70k34h">&nbsp;&nbsp;优点：内联函数的原理是直接将函数展开在当前位置（即将相关代码直接拷贝到调用该函数的位置），进行函数调用会造成较大的系统成本（空间初始化保存局部变量信息），通过展开的内联函数，可以不进行函数调用，直接执行函数</a>
+</h3>
+<h3 class="topic">
+<a name="11obqkriln9vkevh9fisatl2d9">&nbsp;&nbsp;缺点：容易造成调用内联函数的函数段的代码膨胀</a>
+</h3>
+<h3 class="topic">
+<a name="5n102c6aqs1bon0a19qk27mftb">&nbsp;预处理指令</a>
+</h3>
+<h3 class="topic">
+<a name="7dm278mo2k1tk9q0s4oi1pca6o">&nbsp;&nbsp;文件包含</a>
+</h3>
+<h3 class="topic">
+<a name="6vh3j90am9mc7h520do0qfpvtf">&nbsp;&nbsp;&nbsp;#include：本质上是将文件内的数据粘贴到指令所在的位置</a>
+</h3>
+<h3 class="topic">
+<a name="4f3rhef3u2ki9i6up5uhka86p4">&nbsp;&nbsp;&nbsp;&nbsp;inlcude&lt;&gt;</a>
+</h3>
+<h3 class="topic">
+<a name="36s23up2mmi441lc7va3resdu1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在系统标准头文件目录查找头文件</a>
+</h3>
+<h3 class="topic">
+<a name="6j28v8jedhc6iujh7tdif2d4gk">&nbsp;&nbsp;&nbsp;&nbsp;include""</a>
+</h3>
+<h3 class="topic">
+<a name="4g4utvo7hlnc49qivsal598oi1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;优先在工作目录找头文件，找不到再去系统标准头文件目录中查找</a>
+</h3>
+<h3 class="topic">
+<a name="72im7re964crg7qtehbnf6drqh">&nbsp;&nbsp;&nbsp;防止头文件重复包含的方法</a>
+</h3>
+<h3 class="topic">
+<a name="4ac4gge27sslippjg8rsd9260d">&nbsp;&nbsp;&nbsp;&nbsp;文件重复包含可能造成变量的重定义</a>
+</h3>
+<h3 class="topic">
+<a name="6bgcglmndpii6k1kirsbmb4tab">&nbsp;&nbsp;&nbsp;&nbsp;方法1#pragma once  是vs提供的，不能跨平台</a>
+</h3>
+<h3 class="topic">
+<a name="5qvrd7pdavnojqmhr4vnsve704">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对应文件只能被编译一次</a>
+</h3>
+<h3 class="topic">
+<a name="45pihcr3rg3up9u5vc57i4qt5j">&nbsp;&nbsp;&nbsp;&nbsp;方法二</a>
+</h3>
+<h3 class="topic">
+<a name="26qd5t8tbls72apirs2qkqpj8a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#ifndef FUN_H_//如果宏FUN_H_没有被定义&#13;
+#define FUN_H_//则定义一下&#13;
+int number=10; //同时也定义number&#13;
+#ifend</a>
+</h3>
+<h3 class="topic">
+<a name="5mj71mqkmr690njuqllnr64voj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;其实就是条件编译</a>
+</h3>
+<h3 class="topic">
+<a name="32bac78k5v6e7tc3e3sh9n0t6h">&nbsp;&nbsp;宏定义</a>
+</h3>
+<h3 class="topic">
+<a name="5emi768dsvbp1d420flallprg0">&nbsp;&nbsp;&nbsp;#define</a>
+</h3>
+<h3 class="topic">
+<a name="6ujc8qn9it9cp75qn60hetuea8">&nbsp;&nbsp;&nbsp;&nbsp;有参宏</a>
+</h3>
+<h3 class="topic">
+<a name="5onerj3v2um0c10kq8gtmn0ssj">&nbsp;&nbsp;&nbsp;&nbsp;无参宏</a>
+</h3>
+<h3 class="topic">
+<a name="4m82fglr30k0210vvfd8lhi2v0">&nbsp;&nbsp;条件编译</a>
+</h3>
+<h3 class="topic">
+<a name="7inrqsifjma4qpt9pm7anu2nt9">&nbsp;&nbsp;&nbsp;//当前如果属于debug模式，编译器就会自动生成#define _DEBUG&#13;
+&#13;
+#ifdef __DEBUG  //如果处于debug模式，编译器会将第一个print编译&#13;
+print("dubug模式下");&#13;
+#else&#13;
+print("release模式下");&#13;
+#endif</a>
+</h3>
+<h3 class="topic">
+<a name="1oinhm6ri0985rjhu2enl41pt1">&nbsp;&nbsp;&nbsp;常用于针对不同的版本编译以不同的代码</a>
+</h3>
+<h3 class="topic">
+<a name="3diuk6v98fsnk7onjaj2p9mv39">&nbsp;&nbsp;特殊的宏（常用于定位错误和调试使用的宏）</a>
+</h3>
+<h3 class="topic">
+<a name="6bq6b74egg1r3r1i8pai3be3rh">&nbsp;&nbsp;&nbsp;_LINE_当前所在的代码行数</a>
+</h3>
+<h3 class="topic">
+<a name="5cibm367q64daioegqkq1ianb1">&nbsp;&nbsp;&nbsp;_FUNCTION_ 当前所在哪一个函数内部</a>
+</h3>
+<h3 class="topic">
+<a name="315s0637titl3mb15sgleuj4d9">&nbsp;&nbsp;&nbsp;_DEBUG 如果定义了就处于调试模式</a>
+</h3>
+<h3 class="topic">
+<a name="69sg87g7hq5g6ourvi5r1jh9hj">&nbsp;&nbsp;&nbsp;_CPLUSPLUS 如果有定义就代表使用的是c++编译器</a>
+</h3>
+<h3 class="topic">
+<a name="2irouocb0j6dqi9c3tpun2rcm6">&nbsp;文件操作</a>
+</h3>
+<h3 class="topic">
+<a name="06fohibq7rugt970r0qa4htsnm">&nbsp;&nbsp;打开和关闭</a>
+</h3>
+<h3 class="topic">
+<a name="5qfp7mh4lnnmbs8mb4jggbca67">&nbsp;&nbsp;&nbsp;fopen fopen_s</a>
+</h3>
+<h3 class="topic">
+<a name="3u5s4qdtm1p3ipbehqbknjf1pf">&nbsp;&nbsp;&nbsp;打开方式</a>
+</h3>
+<h3 class="topic">
+<a name="34fjrl1gqsit5rnd16pr0u8rvk">&nbsp;&nbsp;&nbsp;&nbsp;"r"</a>
+</h3>
+<h3 class="topic">
+<a name="4kaacqqa7mmcm165rab3k5fl23">&nbsp;&nbsp;&nbsp;&nbsp;"w"</a>
+</h3>
+<h3 class="topic">
+<a name="4rk8tod11kd0r3f1sepgf16tqu">&nbsp;&nbsp;&nbsp;&nbsp;"r+"可读可写</a>
+</h3>
+<h3 class="topic">
+<a name="3f956p7o16gnviqhuj594vjrg7">&nbsp;&nbsp;&nbsp;&nbsp;"w+" 可读可写，文件存在时会覆盖</a>
+</h3>
+<h3 class="topic">
+<a name="7qbopclb2m4kd0tj4o4r74lmgp">&nbsp;&nbsp;&nbsp;&nbsp;"b"二进制方式打开，区别在于换行对应的是\n,还是\r\n(二进制方式)</a>
+</h3>
+<h3 class="topic">
+<a name="458dmcrc7au19rs6coa6q6skre">&nbsp;&nbsp;&nbsp;&nbsp;二进制操作和打开方式相关吗？</a>
+</h3>
+<h3 class="topic">
+<a name="0jh5mo7jvttnt4feqdkka0e25a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;没有关系</a>
+</h3>
+<h3 class="topic">
+<a name="0lafel3dth1rfp3t68h0u22ps4">&nbsp;&nbsp;&nbsp;关闭</a>
+</h3>
+<h3 class="topic">
+<a name="1t6kqo5k69j91e8u8nce8f34f1">&nbsp;&nbsp;&nbsp;&nbsp;fclose();</a>
+</h3>
+<h3 class="topic">
+<a name="6euitlm5pa67urbje42p4p0qv8">&nbsp;&nbsp;操作文件内容</a>
+</h3>
+<h3 class="topic">
+<a name="1muad1ed6mfl1sp8uvqiis23v6">&nbsp;&nbsp;&nbsp;fgetc fputc</a>
+</h3>
+<h3 class="topic">
+<a name="6emfa50if6o9u5032168fnr7hs">&nbsp;&nbsp;&nbsp;fgets gputs</a>
+</h3>
+<h3 class="topic">
+<a name="4fmgouv3qhu5ue7c6snm4tfmm4">&nbsp;&nbsp;&nbsp;fprintf（写） fscanf（读）</a>
+</h3>
+<h3 class="topic">
+<a name="4de7d98ljgbq3tga2k5furulmi">&nbsp;&nbsp;&nbsp;fread fwrite</a>
+</h3>
+<h3 class="topic">
+<a name="3cl27aos6bakks47kg9feffml0">&nbsp;&nbsp;&nbsp;&nbsp;以二进制方式读写文件</a>
+</h3>
+<h3 class="topic">
+<a name="3dum3hmvcfh14avm6ijrda4lml">&nbsp;&nbsp;&nbsp;&nbsp;即使没有以"b"的方式打开文件，也可以使用这两个函数</a>
+</h3>
+<h3 class="topic">
+<a name="0ibd3uh11uc99tfk7st7rs9h0a">&nbsp;&nbsp;&nbsp;&nbsp;fread(读到哪里，读几组，每组多大，从哪个文件中读);</a>
+</h3>
+<h3 class="topic">
+<a name="0defsqcv7aqpt9q01jq09lv6a6">&nbsp;&nbsp;&nbsp;&nbsp;fwrite(写什么数据，写几组，每组多大，写到哪个文件);</a>
+</h3>
+<h3 class="topic">
+<a name="4svi32p66j8728nhi7m3rkv8c8">&nbsp;&nbsp;绝对路径和相对路径</a>
+</h3>
+<h3 class="topic">
+<a name="1dm0so1am66ush13i70vbl26ic">&nbsp;&nbsp;&nbsp;绝对路径</a>
+</h3>
+<h3 class="topic">
+<a name="0gbchoji50860kod2oha9m1lob">&nbsp;&nbsp;&nbsp;&nbsp;从磁盘根目录开始计算的路径</a>
+</h3>
+<h3 class="topic">
+<a name="3dg8n48b7992l2mpj9kkss0jlq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;c:\windwos\Systen32\calc.exe</a>
+</h3>
+<h3 class="topic">
+<a name="3no6gvan5534qbaiq4pv76f8r9">&nbsp;&nbsp;&nbsp;相对路径</a>
+</h3>
+<h3 class="topic">
+<a name="71aqv8v2mbtapq654qdl7d94r8">&nbsp;&nbsp;&nbsp;&nbsp;相对于某一个路径的其他路径</a>
+</h3>
+<h3 class="topic">
+<a name="4gimqpaf7n21s38ekmano8el7f">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;以目前所在的路径维基准</a>
+</h3>
+<h3 class="topic">
+<a name="7ubr88lrdud05m8atrurrci5t8">&nbsp;&nbsp;&nbsp;&nbsp;. 表示当前路径</a>
+</h3>
+<h3 class="topic">
+<a name="2q8891vgnu4bjlot0fglbnrr71">&nbsp;&nbsp;&nbsp;&nbsp;.. 表示当前目录的上一级目录</a>
+</h3>
+<h3 class="topic">
+<a name="4k81u8utg5fph7obk7a14civ2c">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;C:\Users&gt;cd ..\Windows\System32&#13;
+C:\Windows\System32&gt;</a>
+</h3>
+<h3 class="topic">
+<a name="4bm8ohbrqlc5b8fs4tgnveblo5">&nbsp;其他标准函数</a>
+</h3>
+<h3 class="topic">
+<a name="1qgmr6tp4n6o8p0ind9v434di6">&nbsp;&nbsp;time.h</a>
+</h3>
+<h3 class="topic">
+<a name="3h2g7siujesvmt10a8998afu05">&nbsp;&nbsp;&nbsp;colock();获取当前CPU时间</a>
+</h3>
+<h3 class="topic">
+<a name="67fjr4ucclhumrjddn1sgpalv2">&nbsp;&nbsp;rand.h或 stdlib.h</a>
+</h3>
+<h3 class="topic">
+<a name="6ej39mm0b775s4lginn9knqve5">&nbsp;&nbsp;&nbsp;rand() 用于生成一个伪随机数,使用前应该初始随机数种子</a>
+</h3>
+<h3 class="topic">
+<a name="483ni7jg1jn7aqast5avvvskmv">&nbsp;&nbsp;&nbsp;srand()  设置随机数种子</a>
+</h3>
+<h3 class="topic">
+<a name="7v9piimbuj0ilsd7fodcm0ki21">&nbsp;&nbsp;&nbsp;&nbsp;#include&lt;time.h&gt;&#13;
+srand((unsigned int)time(0));</a>
+</h3>
+<h3 class="topic">
+<a name="0vcd6li4j6vfq5s0a00099v0ha">&nbsp;&nbsp;&nbsp;&nbsp;设置随机数种子的函数不能放在for等循环中，应该放在初始化的地方，并且只调用一次</a>
+</h3>
+<h3 class="topic">
+<a name="6r7jtjahl6tm415ddf21gkg3np">&nbsp;&nbsp;conio.h</a>
+</h3>
+<h3 class="topic">
+<a name="3jp1np7ao831grmts9h6tp7ah3">&nbsp;&nbsp;&nbsp;_getch();</a>
+</h3>
+<h3 class="topic">
+<a name="3o64gn5mqfrvhjlapj9v553igt">&nbsp;&nbsp;&nbsp;&nbsp;无回显接受用户输入</a>
+</h3>
+<h3 class="topic">
+<a name="4k4oekdi82ubotpv05m3hgkb0t">&nbsp;&nbsp;&nbsp;_kbhit();</a>
+</h3>
+<h3 class="topic">
+<a name="7qa94na8habj3di3v7nag7p4v7">&nbsp;&nbsp;&nbsp;&nbsp;用于判断当前案件的击键状态（是否按下）</a>
+</h3>
+<h3 class="topic">
+<a name="1q8s70d78b93dvckordrpvrp9u">&nbsp;&nbsp;ctype.h（用于进行一些判断）</a>
+</h3>
+<h3 class="topic">
+<a name="7m4v1qr9q4nnp65de2t5ld85hs">&nbsp;&nbsp;&nbsp;isaplha</a>
+</h3>
+<h3 class="topic">
+<a name="6s2ecmsgbbchjc5tf06aq1ibag">&nbsp;&nbsp;&nbsp;&nbsp;判断是否是要给字母</a>
+</h3>
+<h3 class="topic">
+<a name="6feg162aapd6nok0jardhvb0qk">&nbsp;&nbsp;&nbsp;isdigit</a>
+</h3>
+<h3 class="topic">
+<a name="37m2gomds5ig68tn4ck7p2sbju">&nbsp;&nbsp;&nbsp;&nbsp;判断是否是数字</a>
+</h3>
+<h3 class="topic">
+<a name="5tqlps1or00drrn8h2lo02vp85">&nbsp;&nbsp;&nbsp;islower</a>
+</h3>
+<h3 class="topic">
+<a name="252fqn0nhtcnir825hj5c82u6o">&nbsp;&nbsp;&nbsp;&nbsp;判断是不是小写</a>
+</h3>
+<h3 class="topic">
+<a name="0cun8v8f958hkbr70qi5bp0i7m">&nbsp;&nbsp;&nbsp;tolower</a>
+</h3>
+<h3 class="topic">
+<a name="3ph9mvvcmrv9p7biqjlhbkii4i">&nbsp;&nbsp;&nbsp;&nbsp;将大写字母转换为小写</a>
+</h3>
+<h3 class="topic">
+<a name="4ste6gq2gfar5thp0cd455osjf">&nbsp;&nbsp;limits.h(不同编译器下不同类型的最大值或最小值)</a>
+</h3>
+<h3 class="topic">
+<a name="3f9c5bhaucibohjr8bajmu0pk8">&nbsp;一般当指针类型表示过于复杂时</a>
+</h3>
+<h3 class="topic">
+<a name="67bgrvnds7lmislkd9bq7a8e2j">&nbsp;&nbsp;1、可以使用typedef</a>
+</h3>
+<h3 class="topic">
+<a name="7l9fhdaogoh2ncjfej48iosn32">&nbsp;&nbsp;2、可以使用auto 自动转换类型auto</a>
+</h3>
+<h3 class="topic">
+<a name="7ap1knn17jsounfkd25j17ml0m">&nbsp;&nbsp;&nbsp;int arr[10][20][30];&#13;
+auto parr=arr;&#13;
+&#13;
+for(ijk三重循环嵌套)&#13;
+{&#13;
+使用parr[i][j][k];&#13;
+}&#13;
+</a>
+</h3>
+<h3 class="topic">
+<a name="15i9j23d1c0ps3kh5ai9lnqa2q">&nbsp;&nbsp;&nbsp;&nbsp;这个很牛逼</a>
+</h3>
+</body>
+</html>

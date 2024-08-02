@@ -1,0 +1,969 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>class39day0326（python第二天）</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="2hf0g8gs74q7ogvtpmch72h3ik">class39day0326（python第二天）</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="class39day0326%EF%BC%88python%E7%AC%AC%E4%BA%8C%E5%A4%A9%EF%BC%89_files/images/class39day0326%EF%BC%88python%E7%AC%AC%E4%BA%8C%E5%A4%A9%EF%BC%89.jpg"></div>
+<h2 class="topic">
+<a name="72jhbnheid7hj745sqccqbddpm">复习</a>
+</h2>
+<h3 class="topic">
+<a name="71rgh2p3l8vlj3ai8tjt0hk3fk">&nbsp;python是面向对象的解释型语言</a>
+</h3>
+<h3 class="topic">
+<a name="6ojfut97l5mj8e78uj0rke09ob">&nbsp;选择结构的关键字</a>
+</h3>
+<h3 class="topic">
+<a name="5qnvsrrdhuqjk109knfh8doi0n">&nbsp;&nbsp;if</a>
+</h3>
+<h3 class="topic">
+<a name="6r7kv02tef93ah2eq4p9iie26v">&nbsp;&nbsp;elif</a>
+</h3>
+<h3 class="topic">
+<a name="1c1umbdbe9svlo5qh30f629btr">&nbsp;&nbsp;else</a>
+</h3>
+<h3 class="topic">
+<a name="7fuek4pmsljgsmm7mm27jh6p73">&nbsp;循环结构关键字</a>
+</h3>
+<h3 class="topic">
+<a name="3qm3mob74ag3da0du8f5lheaem">&nbsp;&nbsp;for</a>
+</h3>
+<h3 class="topic">
+<a name="1qq9q6knr76om6k12m5onp3b1b">&nbsp;&nbsp;while</a>
+</h3>
+<h3 class="topic">
+<a name="7q80h9mmi6erdmdvdgmt3uf8n4">&nbsp;&nbsp;else</a>
+</h3>
+<h3 class="topic">
+<a name="3541ua5g9p2atqrr03t58gcjqd">&nbsp;列表生成式</a>
+</h3>
+<h3 class="topic">
+<a name="25c1u1qrfs75d4vk2iqu0qqn37">&nbsp;&nbsp;I=[x+2 for x in range(0,20) if x%2==0]</a>
+</h3>
+<h3 class="topic">
+<a name="4h280fbdoqiuilv173tjrffcdf">&nbsp;&nbsp;for 前面是列表生成规则，for后面是列生成</a>
+</h3>
+<h3 class="topic">
+<a name="7q6k8kd5astelv2v0d04gkpv01">&nbsp;切片</a>
+</h3>
+<h3 class="topic">
+<a name="4inqs4f78feov6o2fgptevv1am">&nbsp;&nbsp;切片可以针对list使用，也可以针对tuple使用，还可以针对字符串使用</a>
+</h3>
+<h3 class="topic">
+<a name="5q03rdg59863ks53vhqbh9jqeh">&nbsp;&nbsp;l2=l[star:stop:step]</a>
+</h3>
+<h3 class="topic">
+<a name="1jrusr89ag9o34t20tdr7l3ssu">&nbsp;函数定义</a>
+</h3>
+<h3 class="topic">
+<a name="2psuqdncgjp91vpsj8jb8m5ito">&nbsp;&nbsp;def 函数名 (参数):&#13;
+	缩进</a>
+</h3>
+<h3 class="topic">
+<a name="7h7fjnh16r8vt4fui46jmun9um">&nbsp;变长参数</a>
+</h3>
+<h3 class="topic">
+<a name="7284hs162soirl9i1rvfkdognd">&nbsp;&nbsp;def fun(*arg):&#13;
+	print(arg)</a>
+</h3>
+<h3 class="topic">
+<a name="1mjs5kpn387lo2qqli7hf0lqur">&nbsp;&nbsp;&nbsp;必须使用元组进行传参</a>
+</h3>
+<h3 class="topic">
+<a name="60t015ha35k9gduius15010hch">&nbsp;使用关键字参数</a>
+</h3>
+<h3 class="topic">
+<a name="177uavmte25bbo0gg4igekvvcm">&nbsp;&nbsp;def fun(**arg):&#13;
+	print(arg)</a>
+</h3>
+<h3 class="topic">
+<a name="3pplom3gdorie4ls82c49254pk">&nbsp;&nbsp;&nbsp;必须使用字典方式传参</a>
+</h3>
+<h3 class="topic">
+<a name="068rbbcsv4b8npbjfapekp7cvg">&nbsp;_name_变量可以作为测试代码的标识</a>
+</h3>
+<h3 class="topic">
+<a name="1t9l9lqaap4f7knb75lnd19urb">&nbsp;&nbsp;作为模块运行的时候，为main函数</a>
+</h3>
+<h3 class="topic">
+<a name="5v2cu754acep6mbjkkkghrsh25">&nbsp;&nbsp;作为模块使用的时候，为对应的模块名</a>
+</h3>
+<h2 class="topic">
+<a name="66aa5oh6e8cn0ii7hpe0smtgdm">类和对象</a>
+</h2>
+<h3 class="topic">
+<a name="1j8lco30s5t80tm801hanbsulq">&nbsp;思想：高内聚 低耦合</a>
+</h3>
+<h3 class="topic">
+<a name="4r0qfnptsrea57kdrbbq6adne3">&nbsp;python中的对象称为实例</a>
+</h3>
+<h3 class="topic">
+<a name="4ml9j2q2a9flnujdtqc7sqiitp">&nbsp;类的定义</a>
+</h3>
+<h3 class="topic">
+<a name="5a7aoqju9bfpucn7rba9iikslk">&nbsp;&nbsp;class 类名(父类):&#13;
+	缩进</a>
+</h3>
+<h3 class="topic">
+<a name="3sf28k93qbsps1eiqpvrq5fsg5">&nbsp;&nbsp;&nbsp;class Base(object):&#13;
+	books=[]&#13;
+	count=0&#13;
+	def_init_(self,name,age): #构造函数&#13;
+		self.name=name&#13;
+		self.age=age&#13;
+	def_del_(self): #析构函数&#13;
+		pass</a>
+</h3>
+<h3 class="topic">
+<a name="0ba780qd54ch50sdojrdm4812l">&nbsp;&nbsp;&nbsp;&nbsp;self类似于this指针</a>
+</h3>
+<h3 class="topic">
+<a name="62qr92g66srmlvsjdp2b1fksn9">&nbsp;&nbsp;&nbsp;&nbsp;_init_是构造函数</a>
+</h3>
+<h3 class="topic">
+<a name="7h33ij9pobm9du4tv8eidbjklb">&nbsp;&nbsp;&nbsp;&nbsp;_del_是析构函数</a>
+</h3>
+<h3 class="topic">
+<a name="5910gl0s4j4ulv9nb5v9qdgg5u">&nbsp;&nbsp;&nbsp;&nbsp;book和count类似于c++中的静态成员变量，属于整个类，为类数据属性</a>
+</h3>
+<h3 class="topic">
+<a name="53c3cacdih1r1j3gr6f85bp54t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;类数据属性可以通过类名访问</a>
+</h3>
+<h3 class="topic">
+<a name="6m7nf4c9fr9aiac0ejgvf53fbk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Base.count=99</a>
+</h3>
+<h3 class="topic">
+<a name="76relivknaa5reo6u56vg234sa">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;类数据属性可以通过实例进行访问</a>
+</h3>
+<h3 class="topic">
+<a name="0nj0bopgc1mv0gorl7spau4n4n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;obj = Base("小明"，18)&#13;
+print(obj.count)</a>
+</h3>
+<h3 class="topic">
+<a name="4k3a7rrndfcbod47vnk6s90196">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;类数据属性可以通过实例修改，但是会造成类数据属性不一致，如果由类实例点出的类数据属性被修改了，但是通过类名点出的数据属性没有修改</a>
+</h3>
+<h3 class="topic">
+<a name="00jp909gi1v4130alcuv0dacsn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;类数据属性可以动态添加，新增的类数据属性可以被类和所有实例共有</a>
+</h3>
+<h3 class="topic">
+<a name="70tc6s24heuimtp2eimng174v2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Base.id=99</a>
+</h3>
+<h3 class="topic">
+<a name="7gtsh00bj6cpqpt5016q139v85">&nbsp;&nbsp;&nbsp;&nbsp;name和age为实例数据属性,是通过self点出来的</a>
+</h3>
+<h3 class="topic">
+<a name="5j6g1o0p5ebdgr7thg8j5afd3i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;不能通过类名访问（修改）实例数据属性，只能通过实例访问（修改）</a>
+</h3>
+<h3 class="topic">
+<a name="3sruua68nmqrvelocu83mi4qq6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;实例数据属性可以动态添加,但是添加的实例数据只属于对应实例，其他实例没有该实例数据属性</a>
+</h3>
+<h3 class="topic">
+<a name="3b3qiojof47j1u791f8mpe473f">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;obj.id=9990&#13;
+print(obj.id)</a>
+</h3>
+<h3 class="topic">
+<a name="7tg32llt71nler6pllm9v0seb8">&nbsp;&nbsp;所有的类均继承自object，3.x默认继承，2.x需要手动继承</a>
+</h3>
+<h3 class="topic">
+<a name="3tmptmqsvdtksrtc1trknc5g3o">&nbsp;&nbsp;如果没有设置构造、析构函数，python会提供一个默认的构造、析构函数</a>
+</h3>
+<h3 class="topic">
+<a name="4q1o56emvi19lgq4mg83icentc">&nbsp;类的特殊属性（继承自object，故所有的类都有）</a>
+</h3>
+<h3 class="topic">
+<a name="06dtq0pr4ucug0asbq6818sfgc">&nbsp;&nbsp;class obj():&#13;
+	pass</a>
+</h3>
+<h3 class="topic">
+<a name="4h08mgdpkoh90da43n6646mkqm">&nbsp;&nbsp;&nbsp;obj.__doc__</a>
+</h3>
+<h3 class="topic">
+<a name="5if9i2n5hdf3i7jrkm0i6pdkgg">&nbsp;&nbsp;&nbsp;&nbsp;类的文档字符串</a>
+</h3>
+<h3 class="topic">
+<a name="53u5sqp9ftppc4f0739cbgddiu">&nbsp;&nbsp;&nbsp;obj.__classs__</a>
+</h3>
+<h3 class="topic">
+<a name="10pq5vr2gfped5bibhj2m8me30">&nbsp;&nbsp;&nbsp;&nbsp;类对象的类型</a>
+</h3>
+<h3 class="topic">
+<a name="5msp1bma5tsafcrvl761b5pbec">&nbsp;&nbsp;&nbsp;obj.__name__</a>
+</h3>
+<h3 class="topic">
+<a name="2ti236sj6nqotta9oqo5bop6ue">&nbsp;&nbsp;&nbsp;&nbsp;类的类名，字符串</a>
+</h3>
+<h3 class="topic">
+<a name="01jp7t3hibnapskhu19925c8nn">&nbsp;&nbsp;&nbsp;obj.__dict__</a>
+</h3>
+<h3 class="topic">
+<a name="52608d10ohbrpkf6sfskjospa3">&nbsp;&nbsp;&nbsp;&nbsp;类的字典，看到类中有哪些属性和方法</a>
+</h3>
+<h3 class="topic">
+<a name="681f4j89vv2hsd91u607cv8tmv">&nbsp;&nbsp;&nbsp;obj.__bases__</a>
+</h3>
+<h3 class="topic">
+<a name="7ltuov2m6v34hestkae53vkpm2">&nbsp;&nbsp;&nbsp;&nbsp;类的所有父类组成的元组</a>
+</h3>
+<h3 class="topic">
+<a name="0s24gs3lgvpdai5l0rlprdjffp">&nbsp;&nbsp;&nbsp;obj._module__</a>
+</h3>
+<h3 class="topic">
+<a name="31t99lnd16f1kunrketep0blb0">&nbsp;&nbsp;&nbsp;&nbsp;类所属的模块</a>
+</h3>
+<h3 class="topic">
+<a name="1ms4ud4ns7qut8qcjcj4s80prg">&nbsp;&nbsp;注意以上属性可以通过类名或类对象进行访问</a>
+</h3>
+<h3 class="topic">
+<a name="479o3lq8h1p1tq8pqn5dlhq9mb">&nbsp;类中的方法</a>
+</h3>
+<h3 class="topic">
+<a name="56e24hifb43kol9fb51ballv8q">&nbsp;&nbsp;实例方法</a>
+</h3>
+<h3 class="topic">
+<a name="1kijn2gsl6jkemrs94ut6ebjmm">&nbsp;&nbsp;&nbsp;class obj()&#13;
+	def _init_(self,name):&#13;
+		self.name=name&#13;
+	def fun(sef):&#13;
+		print("实例方法")</a>
+</h3>
+<h3 class="topic">
+<a name="0au75t8pasu7rpjrc654299ga8">&nbsp;&nbsp;&nbsp;只能通过实例访问的方法</a>
+</h3>
+<h3 class="topic">
+<a name="37fd9qe2risdhuds7bddkr8gpp">&nbsp;&nbsp;&nbsp;&nbsp;构造、析构等</a>
+</h3>
+<h3 class="topic">
+<a name="0u2bgumeej0s36q6sgfq6tfknl">&nbsp;&nbsp;&nbsp;实例方法第一个参数为self</a>
+</h3>
+<h3 class="topic">
+<a name="64ilnjopcdj675hv4lb5ku3ru0">&nbsp;&nbsp;&nbsp;&nbsp;代表调用该方法的实例本身</a>
+</h3>
+<h3 class="topic">
+<a name="42evq8qh8ojj942qn2lrf6bn1k">&nbsp;&nbsp;静态方法</a>
+</h3>
+<h3 class="topic">
+<a name="79cuaeoa2fa7n0r2j01atr5sco">&nbsp;&nbsp;&nbsp;@staticmethod&#13;
+def static_fun():&#13;
+	print("静态方法")</a>
+</h3>
+<h3 class="topic">
+<a name="4taaul861jeaqh2mupl2sdjekt">&nbsp;&nbsp;&nbsp;使用@staticmethod修饰，参数没有限制，可以没有参数</a>
+</h3>
+<h3 class="topic">
+<a name="4dhvecc6sg0bfpg90nbur5am05">&nbsp;&nbsp;&nbsp;使用类名进行调用</a>
+</h3>
+<h3 class="topic">
+<a name="7mgsi742i4qgb6d382he6atl9p">&nbsp;&nbsp;类方法</a>
+</h3>
+<h3 class="topic">
+<a name="00jh8cqvta70covd3kk8nm6kkk">&nbsp;&nbsp;&nbsp;@classmethod&#13;
+def class_fun(cls):&#13;
+	print("类方法")</a>
+</h3>
+<h3 class="topic">
+<a name="1tugsma93vl67kmdqck31jjfj4">&nbsp;&nbsp;&nbsp;使用@classmethod修饰定义</a>
+</h3>
+<h3 class="topic">
+<a name="5ol91m66805m8vedhciffjjpr3">&nbsp;&nbsp;&nbsp;第一参数必须为cls</a>
+</h3>
+<h3 class="topic">
+<a name="4ib60g2npt18tg15fglh75t600">&nbsp;&nbsp;&nbsp;使用类名调用</a>
+</h3>
+<h3 class="topic">
+<a name="156hujcakqbl8fbcd7lp80gmq0">&nbsp;&nbsp;&nbsp;常用于访问类的相关属性</a>
+</h3>
+<h3 class="topic">
+<a name="4vj1sien4cpodgqq7isrru6bbn">&nbsp;&nbsp;类方法和静态方法似乎没有什么区别</a>
+</h3>
+<h3 class="topic">
+<a name="74fidprr09436d1lj88d8u1dk5">&nbsp;&nbsp;&nbsp;不需要访问类成员或实例成员可以使用静态方法</a>
+</h3>
+<h3 class="topic">
+<a name="1fv4s8t9grdj891r2864snd4ka">&nbsp;&nbsp;&nbsp;需要访问类成员使用类方法</a>
+</h3>
+<h3 class="topic">
+<a name="53lqpuc4d3e53d9aqi9dh01hkc">&nbsp;访问控制权限</a>
+</h3>
+<h3 class="topic">
+<a name="6udr2u87tflnef6bkdcoujmu5d">&nbsp;&nbsp;单下划线_代表模块级私有</a>
+</h3>
+<h3 class="topic">
+<a name="75eklpvkqsglj41ncdvsmsh558">&nbsp;&nbsp;&nbsp;在模块中以_开头的变量、函数为模块私有，无法通过   from 模块名 import*导入其他程序使用</a>
+</h3>
+<h3 class="topic">
+<a name="6jd972f25vrn0uof1hhikcohk4">&nbsp;&nbsp;&nbsp;但是仍可以通过     import 模块名 &#13;
+                        	模块名.函数名(参数)  的方式导入</a>
+</h3>
+<h3 class="topic">
+<a name="690gdgmhnff4kvugn6pug8ptjf">&nbsp;&nbsp;双下划线实现一定程度上的私有</a>
+</h3>
+<h3 class="topic">
+<a name="2vagd1pqc7a18q6mekjdgtqbbe">&nbsp;&nbsp;&nbsp;class obj()&#13;
+	def _init_(self,name):&#13;
+		self.__name=name&#13;
+&#13;
+b=obj("小明")&#13;
+b.__name 无法访问</a>
+</h3>
+<h3 class="topic">
+<a name="0suq5hpilqfj8d1hbrevjhkgka">&nbsp;&nbsp;&nbsp;&nbsp;此时通过 b.__name访问不到</a>
+</h3>
+<h3 class="topic">
+<a name="2cbcdcip4k8g99b7bsftqme2rb">&nbsp;&nbsp;&nbsp;&nbsp;通过某种方法是可以访问到的</a>
+</h3>
+<h3 class="topic">
+<a name="09sfp831ld2pn94vhococ59vik">&nbsp;&nbsp;约定俗称在类中添加单下滑线，表示该变量或方法私有，虽然可以访问，但是请把该变量当成私有</a>
+</h3>
+<h3 class="topic">
+<a name="7eclpsa5oe2j0kv1eq1b61b5kj">&nbsp;&nbsp;双下划线开头且结尾的变量可以访问，但是多为系统定义且存在特殊意义，一般不要定义此类数据成员</a>
+</h3>
+<h3 class="topic">
+<a name="0phs4qcgjl57v2q28159c58rvq">&nbsp;继承</a>
+</h3>
+<h3 class="topic">
+<a name="2tk36c8kvs78fr3n3pmlkdla3j">&nbsp;&nbsp;可以单继承，可以多继承</a>
+</h3>
+<h3 class="topic">
+<a name="6d60orr9n9kc4nf94uicntlm01">&nbsp;&nbsp;&nbsp;class obj()在括号内写一个或多个父类类名</a>
+</h3>
+<h3 class="topic">
+<a name="0kq8824ksoucqo59dlf8etr2iv">&nbsp;&nbsp;可以使用 issubclass(子类名，父类名)判断某个类是否继承自其他类</a>
+</h3>
+<h3 class="topic">
+<a name="7p7n5djtao7rs3tcs6hcr6utaj">&nbsp;&nbsp;&nbsp;函数返回值为true或false</a>
+</h3>
+<h3 class="topic">
+<a name="093lfvsh632iqln87t1n7l8431">&nbsp;&nbsp;如果子类存在构造函数，则会执行子类的构造，不会执行父类的构造</a>
+</h3>
+<h3 class="topic">
+<a name="679v74o477int4a7htr12ogh7k">&nbsp;&nbsp;如果子类没有构造函数，会调用父类的构造函数，此时若要实例化子类的对象，需要传入父类对应的参数，否则会出错</a>
+</h3>
+<h3 class="topic">
+<a name="7ncsf1fro9vt99656th1bv1au9">&nbsp;&nbsp;如果子类构造中显式调用父类构造（在子类中通过父类名点出父类构造函数）子类父类的构造函数均会被调用</a>
+</h3>
+<h3 class="topic">
+<a name="48vpes2ovpsr6laftfiuka7ara">&nbsp;&nbsp;&nbsp;class Base(object):&#13;
+    def __init__(self,name):&#13;
+        self.name = name&#13;
+&#13;
+class Child(Base):&#13;
+    def __init__(self,name):&#13;
+        # 显示调用父类，&#13;
+        Base.__init__(self,name)</a>
+</h3>
+<h3 class="topic">
+<a name="0rqvp8hgm332brfl0d7e7f4kc3">&nbsp;&nbsp;子类中会继承父类的所有方法和属性，子类也可以覆盖父类同名的属性和方法，有时需要在子类中访问父类的一些属性，这时候需要用到super</a>
+</h3>
+<h3 class="topic">
+<a name="54iu3ppn378sqt60k6cbi6cfg2">&nbsp;&nbsp;二义性的问题</a>
+</h3>
+<h3 class="topic">
+<a name="5kvc1gfaicinakm6io5q5pinh8">&nbsp;&nbsp;&nbsp;当两个父类中有同名函数或变量</a>
+</h3>
+<h3 class="topic">
+<a name="3vqsts31mq5redqdp1usbmrss7">&nbsp;&nbsp;&nbsp;当出现菱形继承时</a>
+</h3>
+<h3 class="topic">
+<a name="1la71k8dg8su9isbs1vlee4buo">&nbsp;&nbsp;&nbsp;&nbsp;可以多继承，则会出现菱形继承的问题，在孙子类访问爷爷类的成员数据时，孙子类先继承哪个父类，就是使用该父类中继承自爷爷类的数据成员</a>
+</h3>
+<h3 class="topic">
+<a name="24ck7ffim8mfi2r03kovvqccv6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;class Base(object):&#13;
+    def __init__(self,name):&#13;
+        self.name = name&#13;
+class A(Base):&#13;
+    def __init__(self):&#13;
+        Base.__init__(self,"我是A")&#13;
+class B(Base):&#13;
+    def __init__(self):&#13;
+        Base.__init__(self,"我是B")&#13;
+class C(B,A):&#13;
+    pass&#13;
+&#13;
+obj = C()&#13;
+print(obj.name) #如果B继承在前，则输出的是"我是B"，否则输出"我是A"</a>
+</h3>
+<h2 class="topic">
+<a name="68gtqqi3tsk5envha0apd5l8dq">异常</a>
+</h2>
+<h3 class="topic">
+<a name="5ieebgcu765h4qhhjh5hbbe8em">&nbsp;python允许程序编写者得到异常并处理，使得程序还能够继续执行</a>
+</h3>
+<h3 class="topic">
+<a name="16v1at4tf8bg12dkiabe6nqn4v">&nbsp;如果知道异常类型，可以直接捕获异常，并进行异常处理，程序不会停止</a>
+</h3>
+<h3 class="topic">
+<a name="0ftacqjdqvcs48lto5psec8or9">&nbsp;&nbsp;try：&#13;
+	print(a)&#13;
+except NameError:&#13;
+	pass#这里针对异常不做处理，直接跳过&#13;
+print("15pb")</a>
+</h3>
+<h3 class="topic">
+<a name="408cco46upc2g52ft097l59roo">&nbsp;如果捕获的异常与实际异常类型不符，则无法捕获该异常</a>
+</h3>
+<h3 class="topic">
+<a name="493s4di8bi4fogthpf5oh2og29">&nbsp;&nbsp;try:&#13;
+	l=[1,2,3]&#13;
+	l[5]&#13;
+except NameError:&#13;
+	pass&#13;
+print("15pb")</a>
+</h3>
+<h3 class="topic">
+<a name="7lcpo8hroclr1nq803qfbqs62v">&nbsp;&nbsp;&nbsp;这里错误异常的种类是IndecError，检测到的异常与指定的异常不符，不能执行异常处理程序，程序运行停止</a>
+</h3>
+<h3 class="topic">
+<a name="236gqe0md7r88iu4t0rnvrhm1u">&nbsp;主动抛出异常raise</a>
+</h3>
+<h3 class="topic">
+<a name="1c4t08oe2ai0js6tavhk2g7kll">&nbsp;&nbsp;name=input("输入一个名字")&#13;
+if name=="haha"&#13;
+	raise NameError("输入名字错误")</a>
+</h3>
+<h3 class="topic">
+<a name="6fk2fqunuqol89lt4ncv7vn75o">&nbsp;&nbsp;&nbsp;这里可以指定错误信息</a>
+</h3>
+<h3 class="topic">
+<a name="7mvnls1og6b7pfoukkmin7v5vn">&nbsp;&nbsp;try:&#13;
+	name=input("输入一个名字")&#13;
+	if name=="haha"&#13;
+		raise NameError("输入名字错误")&#13;
+except NameError as msg: &#13;
+	print(msg)</a>
+</h3>
+<h3 class="topic">
+<a name="3e84i42qpis7void4lfvn3eq8o">&nbsp;&nbsp;&nbsp;主动抛出异常之后可以进行捕获，并输出指定的错误提示信息</a>
+</h3>
+<h3 class="topic">
+<a name="0htg4vbmugkvhasj1qkcu2u7am">&nbsp;try-finally</a>
+</h3>
+<h3 class="topic">
+<a name="10t3ha957b662afsghhoj8tsbd">&nbsp;&nbsp;不管捕捉到什么错误，无论错误是不是发生，退出try后，finally之后的代码必须执行</a>
+</h3>
+<h3 class="topic">
+<a name="267l6ii5unharlo5f3susqma70">&nbsp;&nbsp;一般用于直接关闭文件，或者断开网络连接</a>
+</h3>
+<h3 class="topic">
+<a name="0nsomp2gc3bh1u3largjk0a420">&nbsp;&nbsp;try:&#13;
+	print(a)&#13;
+finally:&#13;
+	print("终结语句块")</a>
+</h3>
+<h3 class="topic">
+<a name="6ghvv403lvgsbd8a3neirupquk">&nbsp;常见异常类型</a>
+</h3>
+<h3 class="topic">
+<a name="5dni3v36ihlsrnekgf8e4cc2rj">&nbsp;&nbsp;Exception</a>
+</h3>
+<h3 class="topic">
+<a name="37tigkuhs4kc2dvp7ept04q6q1">&nbsp;&nbsp;&nbsp;常规错误的基类</a>
+</h3>
+<h3 class="topic">
+<a name="7s0h8v0b20eote517lr0dkqnvl">&nbsp;&nbsp;&nbsp;可以用于捕获常见异常</a>
+</h3>
+<h3 class="topic">
+<a name="75jrtg00kj8ico5bhe91jdu38k">&nbsp;&nbsp;&nbsp;try:&#13;
+    open()&#13;
+except Exception as msg:&#13;
+    print(msg)</a>
+</h3>
+<h3 class="topic">
+<a name="36m04juqj9vn4lsht3c7it9pgj">&nbsp;&nbsp;BaseException</a>
+</h3>
+<h3 class="topic">
+<a name="3bhni25i3upkrr1rg9e0oh01qp">&nbsp;&nbsp;&nbsp;所有异常的基类</a>
+</h3>
+<h3 class="topic">
+<a name="2nkff3vh81errf8uabfdsulmpc">&nbsp;&nbsp;&nbsp;可以用于捕获常见异常</a>
+</h3>
+<h2 class="topic">
+<a name="4emaui0nrlmmtm3emhhieffmum">特殊函数</a>
+</h2>
+<h3 class="topic">
+<a name="52i8d6qh84hob14l6vb2661hpt">&nbsp;filter(过滤器)</a>
+</h3>
+<h3 class="topic">
+<a name="6v0ghpg6egge5quhvf39vcdmch">&nbsp;&nbsp;filter() 函数用于过滤序列，过滤掉不符合条件的元素，返回由符合条件元素组成的新列表。&#13;
+&#13;
+该接收两个参数，第一个为函数，第二个为序列，序列的每个元素作为参数传递给函数进行判，然后返回 True 或 False，最后将返回 True 的元素放到新列表中。</a>
+</h3>
+<h3 class="topic">
+<a name="5k8outv28pugrlr2ouvdtr0veb">&nbsp;&nbsp;filter(funcname,list)</a>
+</h3>
+<h3 class="topic">
+<a name="7fjvpcjjobo621at7poevmo5i0">&nbsp;&nbsp;&nbsp;第一个参数为函数名，该函数为回调函数，参数只有一个，返回值为BOOL</a>
+</h3>
+<h3 class="topic">
+<a name="5ssijr19fvp05n6faufl6ihicq">&nbsp;&nbsp;&nbsp;第二个参数为一个序列，可以使用列表生成式传参</a>
+</h3>
+<h3 class="topic">
+<a name="5t35mpgufqmjnu9diudcledkio">&nbsp;&nbsp;&nbsp;&nbsp;[x for x in range(50)]</a>
+</h3>
+<h3 class="topic">
+<a name="7c17v7hvea72r4nb88ebhhuluj">&nbsp;&nbsp;&nbsp;该函数会对序列中的项依次执行回调函数，并将结果为true的组成一个序列返回</a>
+</h3>
+<h3 class="topic">
+<a name="2j3cc7uo7u91g8n1hnr5rt465t">&nbsp;&nbsp;&nbsp;def filter_fun(arg):&#13;
+    return arg%2==0&#13;
+L = list(filter(filter_fun,[x for x in range(50)]))&#13;
+print(L)</a>
+</h3>
+<h3 class="topic">
+<a name="1krkbuvcpoh9u82tkvurvgeeus">&nbsp;&nbsp;&nbsp;&nbsp;取得0-49中所有的偶数的数值作为一个list</a>
+</h3>
+<h3 class="topic">
+<a name="1ldu4qeme3o15obej90ardq9mo">&nbsp;map</a>
+</h3>
+<h3 class="topic">
+<a name="7khbvs6amdcq9p424hhtfb7nr1">&nbsp;&nbsp;map(funcname,list)</a>
+</h3>
+<h3 class="topic">
+<a name="1livhfr2tfgggdn54t9ns95tkd">&nbsp;&nbsp;&nbsp;map() 会根据提供的函数对指定序列做映射。&#13;
+第一个参数 function 以参数序列中的每一个元素调用 function 函数，返回包含每次 function 函数返回值的新列表。</a>
+</h3>
+<h3 class="topic">
+<a name="532685t6urbp7e9ht57tg3l08k">&nbsp;&nbsp;&nbsp;回调函数参数只有一个，返回值可以为任意类型</a>
+</h3>
+<h3 class="topic">
+<a name="30ianc7q1f6ouece46nbggf95n">&nbsp;&nbsp;&nbsp;python中只有字符串没有字符，则数字与字符之间的转换可以使用相关函数</a>
+</h3>
+<h3 class="topic">
+<a name="7cmijo5e96qluhqrgujfnhg8hj">&nbsp;&nbsp;&nbsp;对序列中的项依次执行回调函数，执行结果组成一个list返回，map支持多序列</a>
+</h3>
+<h3 class="topic">
+<a name="7a06kat63tdkslbmdpfa46e6hj">&nbsp;&nbsp;&nbsp;&nbsp;与filter的区别在于map可以返回所有经回调函数处理过的结果，而filter只能返回函数执行结果为true的序列项</a>
+</h3>
+<h3 class="topic">
+<a name="422je7oa74q2lp2nobpailkhlq">&nbsp;&nbsp;&nbsp;def map_fun(arg):&#13;
+	return arg.lower()  #转换为小写，upper()为转换为大写&#13;
+L=list（map(map_fun,[chr(x) for x in range(65,91)])）&#13;
+print(L)</a>
+</h3>
+<h3 class="topic">
+<a name="4ogbheggm9ui3cjcbh2kees2og">&nbsp;&nbsp;&nbsp;&nbsp;将数转为大写字母，在map_fun函数中将大写字母转为i小写字母</a>
+</h3>
+<h3 class="topic">
+<a name="3vivals09cha4ml0n7s3791vks">&nbsp;reduce</a>
+</h3>
+<h3 class="topic">
+<a name="2bg0mqlfb1og8ncotsavsh1h4i">&nbsp;&nbsp;reduce() 函数会对参数序列中元素进行累积。&#13;
+&#13;
+函数将一个数据集合（链表，元组等）中的所有数据进行下列操作：使用传给 reduce 中的函数 function（有两个参数）先对集合中的第 1、2 个元素进行操作，得到的结果再与第三个数据用 function 函数运算，最后得到一个结果。</a>
+</h3>
+<h3 class="topic">
+<a name="7kp3dqftoitctou7p76hadj8ji">&nbsp;&nbsp;from functools import*</a>
+</h3>
+<h3 class="topic">
+<a name="4s4sbrevm582q4k97qn0dreen2">&nbsp;&nbsp;&nbsp;需要导入模块</a>
+</h3>
+<h3 class="topic">
+<a name="5nnfmkth4akp3pqp7403s4qgva">&nbsp;&nbsp;类似于数组或列表</a>
+</h3>
+<h3 class="topic">
+<a name="63o5m4b0rgk7ub1mdililuqmak">&nbsp;&nbsp;reduce(funname,list)</a>
+</h3>
+<h3 class="topic">
+<a name="2hm7dfjlk7vskgo3f1i9pjuf2d">&nbsp;&nbsp;&nbsp;回调函数参数有两个，返回一个整数</a>
+</h3>
+<h3 class="topic">
+<a name="7t3asp6ee5q1lpqhno71det56t">&nbsp;&nbsp;reduce会从序列中取出两个数进行回调函数计算，得到的结果再从序列中取出下一个带入回调函数</a>
+</h3>
+<h3 class="topic">
+<a name="3vc93rtrg74l8f5kpladgegp0k">&nbsp;&nbsp;from functools import*&#13;
+def reduce_fun(arg1,arg2):&#13;
+	return arg1+arg2&#13;
+number=reduce(reduce_fun,[x for x in range(1,101)])</a>
+</h3>
+<h3 class="topic">
+<a name="4nahsi0jmb4q6kjdfijimdefs1">&nbsp;&nbsp;&nbsp;从1加到100</a>
+</h3>
+<h3 class="topic">
+<a name="4d8ath5ufosgvl63blkarsukgn">&nbsp;字符与数字间的转换</a>
+</h3>
+<h3 class="topic">
+<a name="72sevsvj9bodigl7rbeu1h7kva">&nbsp;&nbsp;print(ord('A'))</a>
+</h3>
+<h3 class="topic">
+<a name="1ic9socdf4j36gjj4596fqg0mi">&nbsp;&nbsp;&nbsp;字符串转数字</a>
+</h3>
+<h3 class="topic">
+<a name="7fm6jjiu3eq9sgdgja9mn9rs3t">&nbsp;&nbsp;&nbsp;只能转一个</a>
+</h3>
+<h3 class="topic">
+<a name="5dlg62amqdgp5gpsldb7urjpq5">&nbsp;&nbsp;print(chr(65))</a>
+</h3>
+<h3 class="topic">
+<a name="4okgsi3a5v10vbonq9p192p5a9">&nbsp;&nbsp;&nbsp;数字转字符</a>
+</h3>
+<h3 class="topic">
+<a name="01tbhokphhhlhn737vgp0g2b31">&nbsp;&nbsp;&nbsp;只能转一个</a>
+</h3>
+<h3 class="topic">
+<a name="143o5g7k2s36pvt0q6mgs4q4kh">&nbsp;&nbsp;print(str(11))</a>
+</h3>
+<h3 class="topic">
+<a name="33h3jb2vuhcuq4hu8fftspqckt">&nbsp;&nbsp;&nbsp;将数字转化为字符串，使用字符串格式保存</a>
+</h3>
+<h3 class="topic">
+<a name="0pkmukmigcq4qqms2elav2k6cr">&nbsp;字母大小写转换</a>
+</h3>
+<h3 class="topic">
+<a name="7r0te76rcrnoaa29qemfpuodrt">&nbsp;&nbsp;lower()</a>
+</h3>
+<h3 class="topic">
+<a name="7f3j03ufnmlno3gcasi5ac87oe">&nbsp;&nbsp;upper()</a>
+</h3>
+<h2 class="topic">
+<a name="482aj07ln2mcogu7veaei41i2g">匿名函数lambda</a>
+</h2>
+<h3 class="topic">
+<a name="77bn17vk7tc0okkq4gao7jqm5j">&nbsp;用于创建一个最小的函数</a>
+</h3>
+<h3 class="topic">
+<a name="657mo5oi4bc81559hmthg5qisu">&nbsp;proc=lambda x,y:x+y  类似于返回一个函数指针，:前为参数，:后为函数返回值&#13;
+print(proc(1,2))</a>
+</h3>
+<h3 class="topic">
+<a name="28b9o4gr61rbk4pilgilchc0rc">&nbsp;lambda与三个特殊函数结合使用</a>
+</h3>
+<h3 class="topic">
+<a name="47tsh80jvq0g9s2sm9b3o94567">&nbsp;&nbsp;print(list(filter(lambda x:x%2==0,range(50))))</a>
+</h3>
+<h3 class="topic">
+<a name="71jehfhl6i76movm4jlkrqi8a6">&nbsp;&nbsp;print(list(map(lambda x:x.lower(),[chr(x) for x in range(65,91)])))</a>
+</h3>
+<h3 class="topic">
+<a name="7qmoucvqllkg4mhfnq4766tc4e">&nbsp;&nbsp;print(reduce(lambda x,y:x+y,range(1,101)) )</a>
+</h3>
+<h2 class="topic">
+<a name="5hir7759r5e7ke5mqvm8snq39l">嵌套函数</a>
+</h2>
+<h3 class="topic">
+<a name="3alrgtvktmdmifk08m5v8oua4p">&nbsp;def fun(arg):&#13;
+	def inner(arg2):&#13;
+		#保存外部的环境信息，闭包&#13;
+		return arg+arg2&#13;
+	#返回内部函数&#13;
+	return inner&#13;
+f=fun(6)&#13;
+print(f(5))</a>
+</h3>
+<h3 class="topic">
+<a name="6raacbonqbcq4eod2s9ieuitjp">&nbsp;&nbsp;被返回的函数仍然带有其作用域中的环境信息，被称为闭包</a>
+</h3>
+<h3 class="topic">
+<a name="6bholq539tpv9nl7dse8cuaeqs">&nbsp;装饰器</a>
+</h3>
+<h3 class="topic">
+<a name="3s4soegrkpe09deva46kj1o06q">&nbsp;&nbsp;作用：装饰器的作用就是为已经存在的函数或对象添加额外的功能。</a>
+</h3>
+<h3 class="topic">
+<a name="1riaqqjeh2fus1034qd2k5ocme">&nbsp;&nbsp;&nbsp;外层函数返回的是里层函数的函数指针，即内层函数本身被返回</a>
+</h3>
+<h3 class="topic">
+<a name="3oe0ea7ie1ebqlt0q4bmm3vnbf">&nbsp;&nbsp;def w1(old_fun):&#13;
+    def inner(arg1,arg2):&#13;
+        # 校验&#13;
+        if(type(arg1)!=int):&#13;
+            raise NameError("不是整形")#为old_fun函数提供数据合法性检验&#13;
+        # 调用旧函数&#13;
+        return old_fun(arg1,arg2) #最后调用old_fun&#13;
+    return inner&#13;
+@w1  #这个语法糖的意义在于 fun=w1(fun)      w1函数将其内部函数返回回来，其内部函数除了会执行fun函数，进行数据合法性检验&#13;
+#则在该函数执行时，可以运行装饰器为函数添加额外的数据合法性检验的功能&#13;
+def fun(arg1,arg2):&#13;
+    return  arg1+arg2&#13;
+&#13;
+print(fun("hello","15pb"))#执行之后，数据非法，会抛出错误</a>
+</h3>
+<h3 class="topic">
+<a name="4obfhongeib8hupj4og6k5vdla">&nbsp;&nbsp;&nbsp;装饰器理解重要！！！！！</a>
+</h3>
+<h2 class="topic">
+<a name="3ufldlnn5c1f17la6b1a5550va">常用模块</a>
+</h2>
+<h3 class="topic">
+<a name="5vlanckn9qof2kgir65poumrha">&nbsp;时间模块</a>
+</h3>
+<h3 class="topic">
+<a name="291dpd1m4gds4mk8267slmvif0">&nbsp;&nbsp;python中时间表示方式</a>
+</h3>
+<h3 class="topic">
+<a name="40ejfi3g2h9gs1beqc5gulguuh">&nbsp;&nbsp;&nbsp;时间戳</a>
+</h3>
+<h3 class="topic">
+<a name="5tvo4k1a1q25rdtf0jrmplqraq">&nbsp;&nbsp;&nbsp;元组</a>
+</h3>
+<h3 class="topic">
+<a name="29alnk7719h2b43cbo94mo5mv0">&nbsp;&nbsp;&nbsp;字符串</a>
+</h3>
+<h3 class="topic">
+<a name="69lq9vvs65r2gmb46b45f5bfbu">&nbsp;&nbsp;time模块</a>
+</h3>
+<h3 class="topic">
+<a name="097kbt9cniojreebokqibd5ekd">&nbsp;&nbsp;&nbsp;import time</a>
+</h3>
+<h3 class="topic">
+<a name="792vhlll0k170ikbo0t92r51bl">&nbsp;&nbsp;&nbsp;print(time.time())</a>
+</h3>
+<h3 class="topic">
+<a name="2ulsehuirv5hsaj00i1dbchh8e">&nbsp;&nbsp;&nbsp;&nbsp;打印时间戳</a>
+</h3>
+<h3 class="topic">
+<a name="5r8oc96bj3al40itece91936sd">&nbsp;&nbsp;&nbsp;print(time.localtime())</a>
+</h3>
+<h3 class="topic">
+<a name="5cra3j7otamgq9hn1pr01si4hg">&nbsp;&nbsp;&nbsp;&nbsp;打印时间元组</a>
+</h3>
+<h3 class="topic">
+<a name="07b5qgkbdi6764ibeonre10cbs">&nbsp;&nbsp;&nbsp;time.sleep(1)</a>
+</h3>
+<h3 class="topic">
+<a name="2l3tbn0ldsjthdj3jstamn40dh">&nbsp;&nbsp;&nbsp;&nbsp;睡眠，以秒为的单位</a>
+</h3>
+<h3 class="topic">
+<a name="6suvrp8f6djpmll81raqftbaqo">&nbsp;&nbsp;&nbsp;str1 = time.strftime("%Y-%m-%d %H:%M:%S",time.localtime())&#13;
+print(str1)</a>
+</h3>
+<h3 class="topic">
+<a name="1p0araf46ls5j1cb4elv3aj9mj">&nbsp;&nbsp;&nbsp;&nbsp;元组转字符串</a>
+</h3>
+<h3 class="topic">
+<a name="2tp93eivti6fk389k34g21dvtj">&nbsp;&nbsp;datetime模块</a>
+</h3>
+<h3 class="topic">
+<a name="4qtrte3qupoik14duhhu33usdi">&nbsp;&nbsp;&nbsp;from datetime import *</a>
+</h3>
+<h3 class="topic">
+<a name="5bpifdmfqb2mh8kes03lepght2">&nbsp;&nbsp;&nbsp;重新封装了time模块，提供了更多的接口</a>
+</h3>
+<h3 class="topic">
+<a name="0ultt5g0qla6beh6nu4i9l856q">&nbsp;&nbsp;&nbsp;&nbsp;date类</a>
+</h3>
+<h3 class="topic">
+<a name="2ihi881n8dn9vh0tabj1aabh2o">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print(date.today())</a>
+</h3>
+<h3 class="topic">
+<a name="436c6kent015dookl63vq4m872">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;获取当前时间</a>
+</h3>
+<h3 class="topic">
+<a name="40bj983iqjbs615bgnb3fe51c4">&nbsp;&nbsp;&nbsp;&nbsp;time类</a>
+</h3>
+<h3 class="topic">
+<a name="1ulk5uacq4hpkgaj1jvs1g2tab">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print(time(3,2))</a>
+</h3>
+<h3 class="topic">
+<a name="3lg5skva0kb5j4vf0nkg7j8mk7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;设置时间</a>
+</h3>
+<h3 class="topic">
+<a name="7oj1e88bqg0249dr64g6s4geml">&nbsp;&nbsp;&nbsp;&nbsp;datetime类</a>
+</h3>
+<h3 class="topic">
+<a name="2r23ol7dkka859p7v54mmtl3gd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dt = datetime.now()&#13;
+print(dt)</a>
+</h3>
+<h3 class="topic">
+<a name="6pqn1p9i9k4vvj3lbdd4c8kcs4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;获取当前时间</a>
+</h3>
+<h3 class="topic">
+<a name="6nfn6d4qtugar0ajna70714fdn">&nbsp;&nbsp;&nbsp;&nbsp;timedelta类</a>
+</h3>
+<h3 class="topic">
+<a name="3eod25hoqjfn77gv9097osrl13">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dt1 = dt + timedelta(days=-1) # 昨天&#13;
+dt2 = dt + timedelta(days=1) # 明天&#13;
+print("昨天",dt1)&#13;
+print("今天",dt)&#13;
+print("明天",dt2)</a>
+</h3>
+<h3 class="topic">
+<a name="2qajc632u6hlbd2bj2l5bh97rr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以进行时间的计算</a>
+</h3>
+<h3 class="topic">
+<a name="6mnfdk2ledb6ite7t2e1bjnb25">&nbsp;&nbsp;&nbsp;&nbsp;tzinfo类</a>
+</h3>
+<h3 class="topic">
+<a name="42se34krpd3nf2ljskidth8qud">&nbsp;随机数模块</a>
+</h3>
+<h3 class="topic">
+<a name="2oqu4rh1ajoq8mji05c21f6dll">&nbsp;&nbsp;import random</a>
+</h3>
+<h3 class="topic">
+<a name="4jmv25hhosjdk0lfsbkm9l4s80">&nbsp;&nbsp;产生某个范围内的随机数</a>
+</h3>
+<h3 class="topic">
+<a name="6mjj7kl552aef798i5d2gj7fn8">&nbsp;&nbsp;&nbsp;验证码，生成六个字符由字母数组成</a>
+</h3>
+<h3 class="topic">
+<a name="416lruu5tqtb2l89m4o1qu2is8">&nbsp;&nbsp;&nbsp;&nbsp;#定义一个string用于接收产生的验证码&#13;
+code = ""&#13;
+for x in range(6):#循环六次&#13;
+    number = random.randrange(4)&#13;
+    # 偶数产生数字，奇数产生字符&#13;
+    if number%2==0:&#13;
+        temp = random.randrange(0,9)&#13;
+        # int -&gt; srt&#13;
+        code += str(temp)&#13;
+    else:&#13;
+        temp = random.randrange(65,91)&#13;
+        code += chr(temp)&#13;
+print(code)</a>
+</h3>
+<h3 class="topic">
+<a name="6ccn502ugkf72pfnsekdhr363k">&nbsp;&nbsp;&nbsp;random.randrange ([start,] stop [,step])</a>
+</h3>
+<h3 class="topic">
+<a name="7sbhpgul91d4d2do3ko30iok6m">&nbsp;&nbsp;&nbsp;&nbsp;start -- 指定范围内的开始值，包含在范围内，缺省值为1。</a>
+</h3>
+<h3 class="topic">
+<a name="0mtm3qrsgjlp2mcbsekmpnugbl">&nbsp;&nbsp;&nbsp;&nbsp;stop -- 指定范围内的结束值，不包含在范围内。</a>
+</h3>
+<h3 class="topic">
+<a name="1nulh3k96t4o16o3loacle4thm">&nbsp;&nbsp;&nbsp;&nbsp;step -- 指定递增基数。</a>
+</h3>
+<h3 class="topic">
+<a name="2mvcfakbmj0tphgjdb99tac9h6">&nbsp;os模块</a>
+</h3>
+<h3 class="topic">
+<a name="16b1ikn42jshrbbh1drepmikci">&nbsp;&nbsp;文件和目录的操作</a>
+</h3>
+<h3 class="topic">
+<a name="64ke1e6hc2p7et8otp6mgdsp3f">&nbsp;&nbsp;import os</a>
+</h3>
+<h3 class="topic">
+<a name="39l03ps94hoqdc1bskt5ifj8ol">&nbsp;&nbsp;遍历模块</a>
+</h3>
+<h3 class="topic">
+<a name="5ikorprfs0k39p54i07b62qp7k">&nbsp;&nbsp;&nbsp;os.listdir()</a>
+</h3>
+<h3 class="topic">
+<a name="6tvi5f8ak6p3bk470kqi96bdl0">&nbsp;&nbsp;&nbsp;&nbsp;遍历路径</a>
+</h3>
+<h3 class="topic">
+<a name="49nk2bcrc72is2o4ggf4d1kha2">&nbsp;&nbsp;&nbsp;os.path.isfile()</a>
+</h3>
+<h3 class="topic">
+<a name="7tfmj9tj2ifdotloqjvsfkvimr">&nbsp;&nbsp;&nbsp;&nbsp;判断是不是文件</a>
+</h3>
+<h3 class="topic">
+<a name="2invv0h83t4c36704gehjohsj9">&nbsp;&nbsp;&nbsp;os.path.splitext(allpath)</a>
+</h3>
+<h3 class="topic">
+<a name="10e7im0622ri7e8gduo5vs4pa9">&nbsp;&nbsp;&nbsp;&nbsp;获得扩展名</a>
+</h3>
+<h3 class="topic">
+<a name="66lpm0vr698g1e8ashrhhtbnj7">&nbsp;&nbsp;&nbsp;import os&#13;
+for path in os.listdir("E:\\"):#遍历E盘下的文件&#13;
+    # 完整路径&#13;
+    allpath = "E:\\"+path#将路径拼接为完整路径&#13;
+    if os.path.isfile(allpath): #如果路径对应的文件&#13;
+        print(os.path.splitext(allpath))#打印文件扩展名&#13;
+        print("file:%s"%allpath)#打印文件路径&#13;
+    else:&#13;
+        print("dir:%s"%allpath)#打印目录路径</a>
+</h3>
+<h3 class="topic">
+<a name="0sf7u778ira338qg8r9pa35tb5">&nbsp;&nbsp;文件操作</a>
+</h3>
+<h3 class="topic">
+<a name="06a8rb6elq0habf7rd3mlkcoud">&nbsp;&nbsp;&nbsp;打开文件并写入</a>
+</h3>
+<h3 class="topic">
+<a name="2g9odoemiibofmkgh82t22s80v">&nbsp;&nbsp;&nbsp;&nbsp;f = open("1.txt","w+")&#13;
+f.write("hello world")&#13;
+f.close()</a>
+</h3>
+<h3 class="topic">
+<a name="6q54a0pt1rsd8a04ad6538t6dk">&nbsp;&nbsp;&nbsp;获取文件大小并读取指定大小文件内容</a>
+</h3>
+<h3 class="topic">
+<a name="3h859i4kl2468ft75tjq4n2aud">&nbsp;&nbsp;&nbsp;&nbsp;f = open("1.txt","r+")&#13;
+f.seek(0,os.SEEK_END)&#13;
+size = f.tell()&#13;
+f.seek(0,os.SEEK_SET)&#13;
+buff = f.read(size)&#13;
+print(buff)</a>
+</h3>
+<h3 class="topic">
+<a name="1s3gmcs58rig93fhbhmdi2nceg">&nbsp;struct模块</a>
+</h3>
+<h3 class="topic">
+<a name="1ntd3vl103jg9emioc3jun3ddr">&nbsp;&nbsp;该模块用于实现python字节流与c语言结构体之间的转换</a>
+</h3>
+<h3 class="topic">
+<a name="25vj1ti9q63gvlchckapk4i4s2">&nbsp;&nbsp;python无法直接操作内存，当需要将python中的数据以某种格式存放在内存，就需要对python内存进行操作</a>
+</h3>
+<h3 class="topic">
+<a name="0j2j84su6ohlnr9gtadda7e1oo">&nbsp;&nbsp;关键函数</a>
+</h3>
+<h3 class="topic">
+<a name="75cggr5mtu9h5e19nj7a8g9fsv">&nbsp;&nbsp;&nbsp;pack</a>
+</h3>
+<h3 class="topic">
+<a name="6avsmdgv0a6m8g62e706vrkrf7">&nbsp;&nbsp;&nbsp;&nbsp;打包函数：将python中的数据根据指定格式打包为字节流</a>
+</h3>
+<h3 class="topic">
+<a name="5p0ognt6d8c8b4rovgo0stfqgv">&nbsp;&nbsp;&nbsp;&nbsp;返回值为指定格式的字节流</a>
+</h3>
+<h3 class="topic">
+<a name="5j9g00p91j6p35jinsb609qkm4">&nbsp;&nbsp;&nbsp;&nbsp;import  struct&#13;
+s = struct.pack("ii%ds"%(1024),1,10,b"hello")&#13;
+print(s)</a>
+</h3>
+<h3 class="topic">
+<a name="76btnten5dgm1l33taj6nv0qqm">&nbsp;&nbsp;&nbsp;unpack</a>
+</h3>
+<h3 class="topic">
+<a name="454igqblpsp40oe1eagc1f3oca">&nbsp;&nbsp;&nbsp;&nbsp;解包函数：将指定格式的字节流转化为元组，供python使用</a>
+</h3>
+<h3 class="topic">
+<a name="0b66ia1b1de0vcvialg1is7bi1">&nbsp;&nbsp;&nbsp;&nbsp;返回值为元组</a>
+</h3>
+<h3 class="topic">
+<a name="6g3bo6285gms7jqj32ljkb0ti9">&nbsp;&nbsp;&nbsp;&nbsp;msg_type,msg_len,msg_buff = struct.unpack("ii1024s",s)&#13;
+print(msg_type,msg_len,msg_buff)</a>
+</h3>
+<h3 class="topic">
+<a name="302u5tk7rjjfalolk6qepujt8p">&nbsp;&nbsp;格式化字符串</a>
+</h3>
+<h3 class="topic">
+<a name="04vrui2r92h7ucmvb5fvk9h99f">&nbsp;&nbsp;&nbsp;用于在打包、解包的过程中定义数据类型和内存布局机制</a>
+</h3>
+<h3 class="topic">
+<a name="776qu5orsi8mr535h63gpeolcf">&nbsp;&nbsp;&nbsp;C语言中的int对应</a>
+</h3>
+<h3 class="topic">
+<a name="4l2iairabljog3dfnpaf6l0317">&nbsp;&nbsp;&nbsp;&nbsp;i</a>
+</h3>
+<h3 class="topic">
+<a name="73lmc2j6it9sti28q5g4lfivjq">&nbsp;&nbsp;&nbsp;C语言中的long对应</a>
+</h3>
+<h3 class="topic">
+<a name="5alhrekhnqrnq11ne5708nd2um">&nbsp;&nbsp;&nbsp;&nbsp;l</a>
+</h3>
+<h3 class="topic">
+<a name="33oi1a00ddlsd4f6g82dr033h8">&nbsp;&nbsp;&nbsp;c语言中的char[]对应</a>
+</h3>
+<h3 class="topic">
+<a name="238cqjodmpnaouprlqkq2bk6pj">&nbsp;&nbsp;&nbsp;&nbsp;s</a>
+</h3>
+<h2 class="topic">
+<a name="145ai52uppganiunqrh6fpr5rg">调试</a>
+</h2>
+<h3 class="topic">
+<a name="59bo28tbv35uh8uspg5igonsds">&nbsp;下断点</a>
+</h3>
+<h3 class="topic">
+<a name="42233lrg4u6v8b4uerqt6peogf">&nbsp;f7单步步入</a>
+</h3>
+<h3 class="topic">
+<a name="5q83g46u85eb5csaler2leok7q">&nbsp;f8单步步过</a>
+</h3>
+</body>
+</html>

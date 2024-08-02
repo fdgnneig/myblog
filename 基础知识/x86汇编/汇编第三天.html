@@ -1,0 +1,588 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>汇编第三天</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="0msebfona6k4jkbcmv0jj6blt3">汇编第三天</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="%E6%B1%87%E7%BC%96%E7%AC%AC%E4%B8%89%E5%A4%A9_files/images/%E6%B1%87%E7%BC%96%E7%AC%AC%E4%B8%89%E5%A4%A9.jpg"></div>
+<h2 class="topic">
+<a name="3n5v4qd5a3u2ac4rs2r5uoa1hi">复习</a>
+</h2>
+<h3 class="topic">
+<a name="390ckaot9nllasg9f9vr0r1d7d">&nbsp;8086寻址方式</a>
+</h3>
+<h3 class="topic">
+<a name="24iii30q6dg4q4a4h3p8mcumda">&nbsp;&nbsp;立即数寻址</a>
+</h3>
+<h3 class="topic">
+<a name="1jp3f26e2fdkf1vmbjstqvjcq9">&nbsp;&nbsp;寄存器寻址</a>
+</h3>
+<h3 class="topic">
+<a name="7e1fdace38bf07c3etfanqhgf7">&nbsp;&nbsp;存储器寻址</a>
+</h3>
+<h3 class="topic">
+<a name="7cq281e5ekvlgegnptjtegjnvd">&nbsp;&nbsp;&nbsp;直接寻址</a>
+</h3>
+<h3 class="topic">
+<a name="7lanl3qtrnejqv7ofgacbkrqde">&nbsp;&nbsp;&nbsp;寄存器间接寻址</a>
+</h3>
+<h3 class="topic">
+<a name="12v80bg45teejamisbcdtqmfj3">&nbsp;&nbsp;&nbsp;寄存器相对寻址</a>
+</h3>
+<h3 class="topic">
+<a name="2eeja20fskbckute3i3qs6hog2">&nbsp;&nbsp;&nbsp;基址变址寻址</a>
+</h3>
+<h3 class="topic">
+<a name="5isqt1kpq6m421iaggecrvhbhj">&nbsp;&nbsp;&nbsp;相对基址变址寻址</a>
+</h3>
+<h3 class="topic">
+<a name="0njl6lkku82ttggmb5p5jn2quh">&nbsp;cmp指令功能</a>
+</h3>
+<h3 class="topic">
+<a name="786rg2dc7f2ke4tm7mb0g8pp1s">&nbsp;&nbsp;目的操作数减源操作数，根据得到的结果设置标志位，不保留结果</a>
+</h3>
+<h3 class="topic">
+<a name="0hgb0d0rvr4klgti7c9hehpbc8">&nbsp;&nbsp;特别是是设置符号位sf，结果位负，SF=1，结果为正，SF=0</a>
+</h3>
+<h3 class="topic">
+<a name="3j9p49t669hvscd0sr98r6sunn">&nbsp;je/jne的作用</a>
+</h3>
+<h3 class="topic">
+<a name="3ik45rsldiuqjq8p66greo0lnq">&nbsp;&nbsp;je：检查zf是否为1，是就跳转</a>
+</h3>
+<h3 class="topic">
+<a name="4f7th27878sn4gil122gqacg62">&nbsp;&nbsp;jne：检查zf是否为0，是就跳转</a>
+</h3>
+<h3 class="topic">
+<a name="4adpn71n3fl5ol1q3q45u1ae9n">&nbsp;movsb、movsw、movsd区别</a>
+</h3>
+<h3 class="topic">
+<a name="3gjnuoag9v61fpuobk6e3jaa2u">&nbsp;&nbsp;movsb一次移动一个字节</a>
+</h3>
+<h3 class="topic">
+<a name="03jh3fvegaakbbkufbllvvq8nl">&nbsp;&nbsp;&nbsp;edi+1 esi+1</a>
+</h3>
+<h3 class="topic">
+<a name="13ghhekoaejl4ipsm9ai23bqjl">&nbsp;&nbsp;movsw一次移动2个字节</a>
+</h3>
+<h3 class="topic">
+<a name="6cr9r27d7n453uv1rkampsoopg">&nbsp;&nbsp;&nbsp;edi+2 esi+2</a>
+</h3>
+<h3 class="topic">
+<a name="50dmgfl9s170qif02vf3l1b5l0">&nbsp;&nbsp;movsd一次移动4个字节</a>
+</h3>
+<h3 class="topic">
+<a name="16f5qq1tsi8cbatg0mgbu105k4">&nbsp;&nbsp;&nbsp;edi+4 esi+4</a>
+</h3>
+<h3 class="topic">
+<a name="1knvoco3rhhqohandfllfr7rsh">&nbsp;call指令的作用，执行流程是什么</a>
+</h3>
+<h3 class="topic">
+<a name="690i725arpeq0v2an5b814007p">&nbsp;&nbsp;用于子程序调用</a>
+</h3>
+<h3 class="topic">
+<a name="0toenk6fiucvnlteggl105kcc9">&nbsp;&nbsp;push ip&#13;
+jmp xxx</a>
+</h3>
+<h3 class="topic">
+<a name="3gj6mo64vjfqqrcnskolco74gv">&nbsp;ret</a>
+</h3>
+<h3 class="topic">
+<a name="49dnmbt30mm540au86lnkgvt1a">&nbsp;&nbsp;子程序返回</a>
+</h3>
+<h3 class="topic">
+<a name="5ttbf80ra6o4lq4mqtksgj69ng">&nbsp;&nbsp;pop ip</a>
+</h3>
+<h3 class="topic">
+<a name="5uiahsd2lkm0g01jtk2uisac0i">&nbsp;&nbsp;如果其后存在参数</a>
+</h3>
+<h3 class="topic">
+<a name="4dre01dop0trfeved6jvago0nu">&nbsp;&nbsp;&nbsp;则pop eip   add esp,xxx</a>
+</h3>
+<h2 class="topic">
+<a name="4n28v2sv1cgsbov8o78t6c650m">比较指令</a>
+</h2>
+<h3 class="topic">
+<a name="5a9gj2ajl2svufbilrll9cjr2c">&nbsp;cmp指令</a>
+</h3>
+<h3 class="topic">
+<a name="7tb1lb1ktdmsdrdemrh7qibfi2">&nbsp;&nbsp;目的操作数减源操作数，根据得到的结果设置标志位，不保留结果</a>
+</h3>
+<h3 class="topic">
+<a name="2pcl96g1jig2gmbsarmkgr8tc6">&nbsp;&nbsp;特别是是设置符号位sf，结果位负，SF=1，结果为正，SF=0</a>
+</h3>
+<h3 class="topic">
+<a name="4dopeh29mg4sgcdhk2njdu714o">&nbsp;&nbsp;常结合使用条件跳转</a>
+</h3>
+<h3 class="topic">
+<a name="10su8pavg0gjkpu0asj5mi7tkl">&nbsp;&nbsp;判断两个数是否相等</a>
+</h3>
+<h3 class="topic">
+<a name="1rhvmsge2r15k02kmq0sqnpsqo">&nbsp;&nbsp;&nbsp;即判断ZF标志位是否为1，如果为1，则两数相等，如果为0，则两数不相等</a>
+</h3>
+<h3 class="topic">
+<a name="5qvbsc5meaj662e9f77687u0a5">&nbsp;&nbsp;比较两个数大小</a>
+</h3>
+<h3 class="topic">
+<a name="3isv8n0tu9eusq89vvtp49ukhg">&nbsp;&nbsp;&nbsp;产生借位cf置为1 否则cf=0</a>
+</h3>
+<h3 class="topic">
+<a name="7r427is5n2toatfnpi1mvg5shh">&nbsp;&nbsp;&nbsp;超出有符号数范围 of置为1</a>
+</h3>
+<h3 class="topic">
+<a name="7qsohou6brab0hk7d76567ts62">&nbsp;&nbsp;&nbsp;结果是负数则sf=1  结果为正数或0则sf=0</a>
+</h3>
+<h3 class="topic">
+<a name="7ice66ohgui83p37oda9cuvojq">&nbsp;&nbsp;&nbsp;比较两个有符号数的大小，需要看of和sf</a>
+</h3>
+<h3 class="topic">
+<a name="3fmpk1ig4uat2bmbtkoh5tuj6i">&nbsp;&nbsp;&nbsp;&nbsp;如果没有溢出（of==0）则sf的值是正确的</a>
+</h3>
+<h3 class="topic">
+<a name="678tev4gq2fs2akhchr7o7sluh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;若sf==1 则被减数&lt;减数</a>
+</h3>
+<h3 class="topic">
+<a name="321tt2bc3es4grkckgk0nlpclf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;若sf==0 则被减数&gt;=减数</a>
+</h3>
+<h3 class="topic">
+<a name="3lkeefeb05o7atgphvc4bhv7g7">&nbsp;&nbsp;&nbsp;&nbsp;如果有溢出（of==1） sf的值是错误的，应该相反</a>
+</h3>
+<h3 class="topic">
+<a name="34s5i7lb7a1ud3tkerojunislf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;此时若sf==0，则sf应该取反即sf==1 被减数&lt;减数</a>
+</h3>
+<h3 class="topic">
+<a name="3gmhb4taq0gsih3ae5ki8mj2vn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;此时若sf==1，则sf应该取反即sf==0 被减数&gt;=减数</a>
+</h3>
+<h3 class="topic">
+<a name="4jljl36u25td9kk8439m7puglj">&nbsp;&nbsp;&nbsp;&nbsp;还可以结合zf</a>
+</h3>
+<h3 class="topic">
+<a name="73ig78tlkgo3ene7p42ppbfp7m">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;大于</a>
+</h3>
+<h3 class="topic">
+<a name="2oahm051en2qhe3fon52kn0243">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;of==sf &amp;&amp; zf==0</a>
+</h3>
+<h3 class="topic">
+<a name="7mj2tvr0m67kpfrt08gbgs1lag">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;小于</a>
+</h3>
+<h3 class="topic">
+<a name="6rusihrc7dc84ddnhdhiapalrj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;of!=sf</a>
+</h3>
+<h3 class="topic">
+<a name="4pk3ujv3op65ehh2ku4o0eju1s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;大于等于</a>
+</h3>
+<h3 class="topic">
+<a name="4cn6u1o026rm38ubvbc96e2afb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;of==sf</a>
+</h3>
+<h3 class="topic">
+<a name="2o58ga4elsr8ol40j0aamgerqp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;小于等于</a>
+</h3>
+<h3 class="topic">
+<a name="0s9e6jpgegt306vp6cgm6maa4f">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;of!=sf||zf==1</a>
+</h3>
+<h3 class="topic">
+<a name="244v1j8oiuodsaj21hh7t9l7de">&nbsp;&nbsp;&nbsp;无符号数的比较</a>
+</h3>
+<h3 class="topic">
+<a name="0t3e19olbnh0hl2379rt4o48bd">&nbsp;&nbsp;&nbsp;&nbsp;结合cf和zf</a>
+</h3>
+<h3 class="topic">
+<a name="0oo2o4bolh354cj0ok6pqt6g56">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;大于</a>
+</h3>
+<h3 class="topic">
+<a name="1jf995eeacvkmg2q1m8ikvgo72">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cf==0 &amp;&amp; zf==0</a>
+</h3>
+<h3 class="topic">
+<a name="0dm9u61367bg6t3pjokbejs8q3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;小于</a>
+</h3>
+<h3 class="topic">
+<a name="4ajusnst0hl6v79abk4h0sical">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cf==1</a>
+</h3>
+<h3 class="topic">
+<a name="6cks07tjcdqufji1renalt4l2r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;大于等于</a>
+</h3>
+<h3 class="topic">
+<a name="3t7efkl3esb1fqrba8jheiki13">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cf==0</a>
+</h3>
+<h3 class="topic">
+<a name="05cv2o0vsl83tsov4aeiq4m620">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;小于等于</a>
+</h3>
+<h3 class="topic">
+<a name="4e18u6q9q1m0jdmjrp4p9acosn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cf==1||zf==1</a>
+</h3>
+<h3 class="topic">
+<a name="1hfnep5oiutrv8buk1dun2c6kb">&nbsp;jcc指令</a>
+</h3>
+<h3 class="topic">
+<a name="7k0egcr3ofgrk19ghui8vf06i9">&nbsp;&nbsp;jcc指令根据flags的标记位进行跳转</a>
+</h3>
+<h3 class="topic">
+<a name="49d45en4gaak7au63hoot2pm4m">&nbsp;&nbsp;无符号数计算结果为依据的跳转</a>
+</h3>
+<h3 class="topic">
+<a name="7i1949s4dttae556256o8v2sfo">&nbsp;&nbsp;&nbsp;主要涉及CF标志位</a>
+</h3>
+<h3 class="topic">
+<a name="1ck2msq4155nfp02qnllgbaetg">&nbsp;&nbsp;&nbsp;涉及 a b</a>
+</h3>
+<h3 class="topic">
+<a name="2lg8mfdqelht69cco2jjqq6vvb">&nbsp;&nbsp;有符号数计算结果为依据的跳转</a>
+</h3>
+<h3 class="topic">
+<a name="5ai0h2ql8kr37iktkuu5n1f4ho">&nbsp;&nbsp;&nbsp;主要涉及SF标志位</a>
+</h3>
+<h3 class="topic">
+<a name="5n7cfsaira5ep9dq6llebriq7v">&nbsp;&nbsp;&nbsp;涉及 l g</a>
+</h3>
+<h3 class="topic">
+<a name="13cuqqms544r9f33lcl11049ga">&nbsp;&nbsp;分为有符号数（主要根据of跳转）和无符号数（主要根据cf跳转）</a>
+</h3>
+<h3 class="topic">
+<a name="1duukhsk3d6ei1efqfsoqjm0nj">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B1%87%E7%BC%96%E7%AC%AC%E4%B8%89%E5%A4%A9_files/0n2p94mgcl1urdepoo7al42koj.png"></p>
+<h2 class="topic">
+<a name="0q5j1ootjggm9b0uthe1l3g7t2">调用约定</a>
+</h2>
+<h3 class="topic">
+<a name="0011k1s9lh4skgisc3gdt9ac2a">&nbsp;约定函数的传参入栈的顺序</a>
+</h3>
+<h3 class="topic">
+<a name="32uopiemkcg1oj9i799l30vbm6">&nbsp;约定函数指定完毕后由谁来平衡堆栈</a>
+</h3>
+<h3 class="topic">
+<a name="1ttqriie72oem2sf2npj1pdobv">&nbsp;_cdecl</a>
+</h3>
+<h3 class="topic">
+<a name="6u1sq8gj4ghg4ievdbbu1fbk65">&nbsp;&nbsp;c语言调用约定</a>
+</h3>
+<h3 class="topic">
+<a name="3gsji431rr9uciq36ublch2kcc">&nbsp;&nbsp;vs关键字</a>
+</h3>
+<h3 class="topic">
+<a name="6mg8mej2dmcrh2l7megd14d5va">&nbsp;&nbsp;&nbsp;void _cdecl fun(int a,int b)&#13;
+{&#13;
+	return a+b;&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="5rllk228i8mbih0em48q1fkqvj">&nbsp;&nbsp;从右往左将参数依次入栈</a>
+</h3>
+<h3 class="topic">
+<a name="767r2ec5imk2h551g3os6t3bo7">&nbsp;&nbsp;函数调用方负责平衡堆栈</a>
+</h3>
+<h3 class="topic">
+<a name="6iedhog85o8pcpbubntok1s5v4">&nbsp;&nbsp;&nbsp;是一般的c运行库程序的特征</a>
+</h3>
+<h3 class="topic">
+<a name="40gm10k6ft7sib0upuvhdcubb7">&nbsp;_stdcall</a>
+</h3>
+<h3 class="topic">
+<a name="2v48r7jvfng7jacv3iufdpmu1e">&nbsp;&nbsp;标准调用约定</a>
+</h3>
+<h3 class="topic">
+<a name="12cm8f5apm0u7gdoeqnn4igtl0">&nbsp;&nbsp;windows api中使用 WINAPI CALLBACK宏用于表示stdcall</a>
+</h3>
+<h3 class="topic">
+<a name="14nogjpcs0o5ds1l4o7dh7qpgh">&nbsp;&nbsp;从右往左将参数依次入栈</a>
+</h3>
+<h3 class="topic">
+<a name="1a4u4ajtlec5h75v1gk16drb5k">&nbsp;&nbsp;由被调用函数自己平衡堆栈</a>
+</h3>
+<h3 class="topic">
+<a name="4t41330897e9987pcddte9g2ja">&nbsp;_fastcall</a>
+</h3>
+<h3 class="topic">
+<a name="6nfmmpmvp97hqsj8kkkqk4vni2">&nbsp;&nbsp;快速调用</a>
+</h3>
+<h3 class="topic">
+<a name="4msknk9kpjssjfomk0c2cutp12">&nbsp;&nbsp;在x86中</a>
+</h3>
+<h3 class="topic">
+<a name="4pml7qg2c6d1gdsui2ov2833gm">&nbsp;&nbsp;&nbsp;左边开始的两个不大于4字节（DWORD）的参数分别放在ECX和EDX寄存器，其余的参数仍旧自右向左压栈传送</a>
+</h3>
+<h3 class="topic">
+<a name="61itmrhel9t2959tbaal1tsj34">&nbsp;&nbsp;&nbsp;由被调用函数自己平衡堆栈</a>
+</h3>
+<h3 class="topic">
+<a name="74j9ibqq3sv38lhel6sia7ueso">&nbsp;&nbsp;在x64中 也称x64调用约定</a>
+</h3>
+<h3 class="topic">
+<a name="70gi76c1oqiqnj8a9qe30tvj5k">&nbsp;&nbsp;&nbsp;从右往左传参，前面四个参数由rcx rdx r8 r9传参</a>
+</h3>
+<h3 class="topic">
+<a name="7jm7pbjfrb6tbepsbj7j0qqcl4">&nbsp;&nbsp;&nbsp;由调用函数平衡堆栈</a>
+</h3>
+<h3 class="topic">
+<a name="2a2mptls2u53afm6f8o8f8da21">&nbsp;&nbsp;&nbsp;x64调用约定虽然前四个参数通过寄存器传递，但是栈中仍然为该四个参数留下了内存空间，称为shadow space</a>
+</h3>
+<h3 class="topic">
+<a name="6n5ro8stg8sthk460aojbh27ta">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B1%87%E7%BC%96%E7%AC%AC%E4%B8%89%E5%A4%A9_files/371ab8gb9o10bjqf5ori3qufr3.png"></p>
+<h3 class="topic">
+<a name="7jjc8n3dq0qes7fl5p3330l7os">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B1%87%E7%BC%96%E7%AC%AC%E4%B8%89%E5%A4%A9_files/1l1k7ugv7ndcdk1i2k0n74atub.png"></p>
+<h3 class="topic">
+<a name="3uq1b2tshg9ql9p61mh1gpja7r">&nbsp;_thiscall</a>
+</h3>
+<h3 class="topic">
+<a name="66hjk507ht9rnnrv1n6bl8sif3">&nbsp;&nbsp;类函数调用</a>
+</h3>
+<h3 class="topic">
+<a name="046v8e4m98gpc3b321bbh3hvne">&nbsp;&nbsp;是成员函数中this指针的传递方法</a>
+</h3>
+<h3 class="topic">
+<a name="60tghculu4puiiac0b4pqgro4u">&nbsp;&nbsp;参数从右往左依次入栈，使用ecx传递类对象的地址</a>
+</h3>
+<h3 class="topic">
+<a name="75cdb7qpdtsvfrkhmnrdi4edgc">&nbsp;&nbsp;由被调用函数自己平衡堆栈</a>
+</h3>
+<h2 class="topic">
+<a name="4d27nfqm3dk7r1hltdsljrsa52">函数调用</a>
+</h2>
+<h3 class="topic">
+<a name="7jhc2c3vt78qjlokcmqs12d3oa">&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="5oq9vts0o5rvaqn898nq8lfj33">&nbsp;&nbsp;.386  ;表示使用386指令集&#13;
+.model flat,stdcall      ;内存为平坦模式，使用标准调用约定,win32程序必须是stdcall&#13;
+option casemap:none    ;区分大小写&#13;
+&#13;
+include msvcrt.inc     ;包含windows运行时库&#13;
+includelib msvcrt.lib    ;包含实际的代码&#13;
+&#13;
+.data  &#13;
+&#13;
+.code&#13;
+&#13;
+;通过栈传递参数&#13;
+;fun1(int a,int b,intc){return a+b+c}&#13;
+fun1 proc&#13;
+	;函数内访问参数，当esp发生变化的时候（进行pop或push），参数的位置会发生改变&#13;
+	;[esp-4]等是局部变量&#13;
+	;[esp]中存放返回地址	&#13;
+	mov eax,[esp+4];参数1&#13;
+	add eax,[esp+8];参数2&#13;
+	add eax,[esp+0ch];参数3&#13;
+	;返回值就是eax&#13;
+	ret 0ch;平衡堆栈的三个参数&#13;
+fun1 endp&#13;
+&#13;
+;开辟栈帧 通过ebp访问参数&#13;
+fun2 proc&#13;
+	push ebp ;保存旧的ebp&#13;
+	mov ebp,esp  ;将栈顶与栈底相同&#13;
+	&#13;
+	sub esp,20h;申请20字节的局部变量空间&#13;
+	&#13;
+	mov eax,[ebp+8];参数1，这里因为进入函数后push ebp进栈，所以esp指向ebp所在的栈，如果需要访问参数，需要+8&#13;
+	add eax,[esp+0ch]&#13;
+	add eax,[esp+10]&#13;
+	mov [ebp-4],eax;将结果放入第一个局部变量&#13;
+		&#13;
+	mov esp,ebp;释放局部变量&#13;
+	pop ebp&#13;
+	ret;fun2在由调用者平衡堆栈&#13;
+fun2 endp&#13;
+&#13;
+main:&#13;
+	;调用自定义函数&#13;
+	;fun(1,2,3)&#13;
+	push 3&#13;
+	push 2&#13;
+	push 1&#13;
+	;call fun1&#13;
+	call fun2&#13;
+	add esp 0chp;由调用者平衡堆栈&#13;
+&#13;
+	ret&#13;
+end main ;mian函数结束&#13;
+end ;文件结束</a>
+</h3>
+<h3 class="topic">
+<a name="033vuvnrb2a8uk525kfa01e8q6">&nbsp;分类</a>
+</h3>
+<h3 class="topic">
+<a name="5af5o16lc32ip7tkejuclv8lob">&nbsp;&nbsp;直接通过esp访问参数与局部变量</a>
+</h3>
+<h3 class="topic">
+<a name="7ovkn1b4m9rqoh1c790smkf1fe">&nbsp;&nbsp;通过栈帧即ebp访问函数参数与局部变量</a>
+</h3>
+<h2 class="topic">
+<a name="1augnjku1fcsvm5u250mi9dj3o">cpu科普</a>
+</h2>
+<h3 class="topic">
+<a name="07qn0c0jd1oqk8k10mvlncs91t">&nbsp;关键</a>
+</h3>
+<h3 class="topic">
+<a name="23s488lqfn76uqm2iksutbtru6">&nbsp;&nbsp;8086</a>
+</h3>
+<h3 class="topic">
+<a name="0ob4m1qp7gqdus4928s6u5ti86">&nbsp;&nbsp;80386</a>
+</h3>
+<h3 class="topic">
+<a name="0acoqob1bbjamlru6b1hoin128">&nbsp;&nbsp;&nbsp;多了两个段寄存器 FS GS</a>
+</h3>
+<h3 class="topic">
+<a name="1nrqlpj20g0btga76ra82p5en4">&nbsp;&nbsp;X64汇编</a>
+</h3>
+<h3 class="topic">
+<a name="7jd0egm8eo7asfhntv81q1o8m7">&nbsp;&nbsp;&nbsp;Intel64与AMD64指令集完全一样，两个指令集统称为x64指令集</a>
+</h3>
+<h3 class="topic">
+<a name="3j3girf7n8ert0ugqohsnp6to7">&nbsp;&nbsp;&nbsp;所有的寄存器扩展为64位</a>
+</h3>
+<h3 class="topic">
+<a name="470tb4lhqm804etfd63vv91bj9">&nbsp;&nbsp;&nbsp;&nbsp;支持eax ax ah al等</a>
+</h3>
+<h3 class="topic">
+<a name="1v7dbhsqa0hpgr8rcl74bu0hv8">&nbsp;&nbsp;&nbsp;&nbsp;即向下兼容</a>
+</h3>
+<h3 class="topic">
+<a name="6t5tnvoq2d1gvvd0oudee9odcc">&nbsp;&nbsp;&nbsp;x64多了8个通用寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="19d1r099lilkcdchl4koc7ig6d">&nbsp;&nbsp;&nbsp;&nbsp;r8~r15</a>
+</h3>
+<h3 class="topic">
+<a name="5m92ch1pk3l4h9uo7h1r03psb9">&nbsp;&nbsp;&nbsp;&nbsp;每一个此类寄存器都有</a>
+</h3>
+<h3 class="topic">
+<a name="1iihjno93hu26pbm5ouem5bf27">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;此类寄存器还可以细分</a>
+</h3>
+<h3 class="topic">
+<a name="06l4cmb84jrc98bqt7ajpoape4">&nbsp;&nbsp;&nbsp;多了8个128位XMM寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="4rtmjasalvop3lm62bgj2ivgt7">&nbsp;&nbsp;x64传参发生变化</a>
+</h3>
+<h3 class="topic">
+<a name="00r4gfnifqem7jpo0t9ksrae5h">&nbsp;&nbsp;&nbsp;使用X64调用约定</a>
+</h3>
+<h2 class="topic">
+<a name="607g3ai20m6gaqujla5psi135u">裸函数使用（重点）</a>
+</h2>
+<h3 class="topic">
+<a name="1376l0e87jpdrm67o7jkrraof8">&nbsp;普通函数即使函数为空，在汇编层面也存在属于该函数的汇编指令，而裸函数不仅函数为空，汇编层面也没有汇编指令</a>
+</h3>
+<h3 class="topic">
+<a name="44arr2p1ft5t0h12mdh8p6dqnm">&nbsp;#include "pch.h"&#13;
+#include &lt;iostream&gt;&#13;
+//裸函数&#13;
+void fun() {&#13;
+&#13;
+}&#13;
+//裸函数：没有任何代码的函数，函数返回需要自己使用内联汇编实现&#13;
+void _declspec(naked)fun1() {&#13;
+&#13;
+}&#13;
+&#13;
+int main()&#13;
+{&#13;
+	fun();//该函数汇编里面存在代码&#13;
+	fun1();//裸函数汇编没有任何代码&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="0b3oihphhq5skh08po8k3lc59d">&nbsp;裸函数</a>
+</h3>
+<h3 class="topic">
+<a name="5lubosbgf79s8b8c2i4dm2lt7b">&nbsp;&nbsp;注意事项：必须显示返回 ret，不允许使用return语句</a>
+</h3>
+<h3 class="topic">
+<a name="3n0ckc4se8635fekmt2cjgao2e">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B1%87%E7%BC%96%E7%AC%AC%E4%B8%89%E5%A4%A9_files/1l88qovo7re7k9t55ic84n82tp.png"></p>
+<h2 class="topic">
+<a name="2sc9m2876d0flq26oihvmr6ded">x86混合编程（重点）</a>
+</h2>
+<h3 class="topic">
+<a name="4gv3utv6hr528m65npimc1occo">&nbsp;在vs中在c++代码中插入汇编代码</a>
+</h3>
+<h3 class="topic">
+<a name="47gjqufqgb148t373nuierfsme">&nbsp;种类</a>
+</h3>
+<h3 class="topic">
+<a name="2hlhmfc16d86pbflnfkeibi01s">&nbsp;&nbsp;内联汇编</a>
+</h3>
+<h3 class="topic">
+<a name="5i6hui8l4hf6a0a2cnap33oind">&nbsp;&nbsp;行内联汇编</a>
+</h3>
+<h3 class="topic">
+<a name="1v5knugf3ra2aeouq481h9j2ul">&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="5q9vh3sn11hn6f3cqc8qommgll">&nbsp;&nbsp;#include "pch.h"&#13;
+#include &lt;iostream&gt;&#13;
+//x86内联汇编&#13;
+int main()&#13;
+{&#13;
+	int number = 10;&#13;
+	//行内联汇编&#13;
+	_asm mov[number], 99;&#13;
+	//块内联汇编&#13;
+	_asm{&#13;
+		mov eax, 10;&#13;
+		mov ebx, 10;&#13;
+	}&#13;
+	//硬编码&#13;
+	//将机器码E9（对应jmp）硬编码 后面的0000为地址，编译出来的结果是jmp 到下一条指令中&#13;
+	//硬编码可以用于左代码混淆&#13;
+	//如果只用第三个0，会导致 该语句后面的代码错乱&#13;
+	_asm _emit 0xE9;&#13;
+	_asm _emit 0x0;&#13;
+	_asm _emit 0x0;&#13;
+	_asm _emit 0x0;&#13;
+	_asm _emit 0x0;&#13;
+}</a>
+</h3>
+<h2 class="topic">
+<a name="4g25pqj8th32bnis5lf988qg2m">x64混合编程（重点）</a>
+</h2>
+<h3 class="topic">
+<a name="0vu6mltjfrg5d9k6j1uvdhkpvh">&nbsp;https://www.cnblogs.com/talenth/p/9135626.html</a>
+</h3>
+<h3 class="topic">
+<a name="0hianh867a7ioi19dfbp4tpjao">&nbsp;#include "pch.h"&#13;
+#include &lt;iostream&gt;&#13;
+//x内64联汇编&#13;
+&#13;
+//一、在工程中添加文件，后缀名为.asmw&#13;
+//.code&#13;
+//fun proc&#13;
+//	xor rax,rax&#13;
+//	add rax,rcx&#13;
+//  add rax,rdx&#13;
+//	ret    //fun endp&#13;
+//end&#13;
+&#13;
+//二、声明这个函数&#13;
+extern "C" int fun(int a, int b);&#13;
+&#13;
+//三、在asm文件中右键-》属性-》常规-&gt;&ldquo;从生成中排除&rdquo;选择&ldquo;否&rdquo;，&ldquo;项类型&rdquo;选择&ldquo;自定义生成工具&rdquo;，然后点击应用。&#13;
+//四、&ldquo;常规&rdquo;下面就会出现&ldquo;自定义生成工具&rdquo;的条目，，设置&ldquo;命令行&rdquo;为  ml64 /Fo $(IntDir)%(fileName).obj /c %(fileName).asm，&#13;
+//设置输出为 $(IntDir)%(fileName).obj，&#13;
+//五、生成工程&#13;
+int main()&#13;
+{&#13;
+	int n = fun(1, 2);&#13;
+	printf("%d", n);&#13;
+}</a>
+</h3>
+<h2 class="topic">
+<a name="7bh388kem3tku9vo12v65tpgp9">int默认是有符号数</a>
+</h2>
+</body>
+</html>

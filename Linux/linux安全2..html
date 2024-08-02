@@ -1,0 +1,1311 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>class76day0625（linux安全第二天）</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="2f9747nqht8mjipq4738lmke2s">class76day0625（linux安全第二天）</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="linux%E5%AE%89%E5%85%A82._files/images/class76day0625%EF%BC%88linux%E5%AE%89%E5%85%A8%E7%AC%AC%E4%BA%8C%E5%A4%A9%EF%BC%89.jpg"></div>
+<h2 class="topic">
+<a name="1n9gdsi7ogltv1sdhn3p0ktlu3">linux下的程序开发工具</a>
+</h2>
+<h3 class="topic">
+<a name="6263bm9d7jpiohggh07dp1tsgm">&nbsp;gcc/g++</a>
+</h3>
+<h3 class="topic">
+<a name="2psjjrcqprdaeap3kgv0ad75go">&nbsp;&nbsp;gcc：c语言编译器</a>
+</h3>
+<h3 class="topic">
+<a name="7bal6kijaq80o610binl1gnd5p">&nbsp;&nbsp;g++：c++编译器</a>
+</h3>
+<h3 class="topic">
+<a name="0fj82ukatvt6ukbdnei3pctihn">&nbsp;常用的编译选项</a>
+</h3>
+<h3 class="topic">
+<a name="7mp3dcqndvbrs8b2gl0dqeng73">&nbsp;&nbsp;流程</a>
+</h3>
+<h3 class="topic">
+<a name="0e70ok69nsolo8c5orpgvuqlo2">&nbsp;&nbsp;&nbsp;使用vim在指定路径创建一个c语言文件</a>
+</h3>
+<h3 class="topic">
+<a name="6312lbr9mpd6u7ujufirohotd9">&nbsp;&nbsp;&nbsp;&nbsp;vim test.c</a>
+</h3>
+<h3 class="topic">
+<a name="5351tqpnfc87ok14c8bi4p1haj">&nbsp;&nbsp;&nbsp;使用c语言编译器编译</a>
+</h3>
+<h3 class="topic">
+<a name="2n4np9cl3jfj5chffpneik42pd">&nbsp;&nbsp;&nbsp;&nbsp;gcc test.c</a>
+</h3>
+<h3 class="topic">
+<a name="3umpd3798rdokc0cvdclif3b5v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;直接编译链接、生成a.cout可执行文件</a>
+</h3>
+<h3 class="topic">
+<a name="58gtf0ac8kueqh135lsasupumk">&nbsp;&nbsp;&nbsp;&nbsp;如果要执行可执行文件，需要指定文件路径./a.out</a>
+</h3>
+<h3 class="topic">
+<a name="7icc0ivnbnmjncflvuajf494g1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果不指定路径，则系统在环境变量PATH下寻找test.c文件，如果找不到，则报错</a>
+</h3>
+<h3 class="topic">
+<a name="25f4lkhi742roplasjeac2qnan">&nbsp;&nbsp;&nbsp;&nbsp;如果gcc 直接编译链接，若c程序中引用了其他.c文件中的函数，则不能直接进行编译链接，需要将两个.c程序均生中间文件，然后使用中间文件进行gcc指令操作</a>
+</h3>
+<h3 class="topic">
+<a name="1u6ccstl683fb99popjackt3sb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gcc -c test.c</a>
+</h3>
+<h3 class="topic">
+<a name="2b0jlgf3eo7ekqli3br31e06u9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;只生成中间文件test.o  不链接</a>
+</h3>
+<h3 class="topic">
+<a name="130467cu06a8dtlh3n0pq9cr0n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gcc -c test2.c</a>
+</h3>
+<h3 class="topic">
+<a name="27edei12fl2t0f95q9r7mbdssh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;只生成中间文件test2.o  不链接</a>
+</h3>
+<h3 class="topic">
+<a name="10158ur2l35n7a35m7ppecotno">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gcc test.o test2.o</a>
+</h3>
+<h3 class="topic">
+<a name="33rmhfgj47a2qqsl9g1tjuuusd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将两个中间文件链接，生成a.out可执行程序</a>
+</h3>
+<h3 class="topic">
+<a name="17p1rpfo09re9ov3u39fp4psf2">&nbsp;&nbsp;&nbsp;&nbsp;gcc -m32</a>
+</h3>
+<h3 class="topic">
+<a name="61iq52mcoko6lr6ljer7dvhb7q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在64位的系统上编译出32位的程序. 需要先安装的c/c++库 </a>
+</h3>
+<h3 class="topic">
+<a name="45ohep1fvsvo6i7i50iai9o8lp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;需要给gcc安装多平台的库，使其支持win32 win64程序编译</a>
+</h3>
+<h3 class="topic">
+<a name="4k8fofd8i50jl1j1b9ka2rc9bf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sudo apt-get install gcc-multilib g++-multilib</a>
+</h3>
+<h3 class="topic">
+<a name="4t57e81ck3klddkdvj6eq3att1">&nbsp;&nbsp;&nbsp;&nbsp;gcc -o</a>
+</h3>
+<h3 class="topic">
+<a name="082fpoqs54jm04b0lc692re2kp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;指定目标文件的名称</a>
+</h3>
+<h3 class="topic">
+<a name="72v1sv7gg11125e8fn89qva9re">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gcc -c test.c -c test2.c -o test.out</a>
+</h3>
+<h3 class="topic">
+<a name="5bhh9mdlm3a9r1tuuqieh87skr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这种用法是错误的</a>
+</h3>
+<h3 class="topic">
+<a name="4vj98jlhm1vv7r5arcc800bbso">&nbsp;&nbsp;&nbsp;&nbsp;gcc -static</a>
+</h3>
+<h3 class="topic">
+<a name="0nbtanhkuppe7u6a7evkq9aark">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;静态编译</a>
+</h3>
+<h3 class="topic">
+<a name="6s38qov3sok54411k4b9to1mhj">&nbsp;&nbsp;&nbsp;&nbsp;gcc -share</a>
+</h3>
+<h3 class="topic">
+<a name="0p670on9m9ltar1imlp6ugjv36">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;动态编译</a>
+</h3>
+<h3 class="topic">
+<a name="35au76srba59gt45bhufr8rir5">&nbsp;&nbsp;&nbsp;&nbsp;gcc -shared</a>
+</h3>
+<h3 class="topic">
+<a name="5949221p9q31mpbh5mbgf79pnm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;编译成共享库，类似于windows的dll</a>
+</h3>
+<h3 class="topic">
+<a name="7bc8prjnq2hggojoka7oal5ir7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gcc -shared -fpic</a>
+</h3>
+<h3 class="topic">
+<a name="1bdal4tpv7c3316us03mibs3hp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-fpic与重定位相关</a>
+</h3>
+<h3 class="topic">
+<a name="7nnsp4v92gu6o1lr3fkccrd499">&nbsp;&nbsp;&nbsp;&nbsp;gcc -o1~-o5</a>
+</h3>
+<h3 class="topic">
+<a name="5sequsopq173r4p8oijcdhpitb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;指定优化程度</a>
+</h3>
+<h3 class="topic">
+<a name="6l9s1319lvg4ej85nqvs0hr919">&nbsp;&nbsp;&nbsp;&nbsp;gcc -g</a>
+</h3>
+<h3 class="topic">
+<a name="2sfj9fncothtol9qv8q2bpsig3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;生成调试信息</a>
+</h3>
+<h3 class="topic">
+<a name="4perl4amdg6lb7abmhbmv57mtt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果要源码调试，则需要使用</a>
+</h3>
+<h3 class="topic">
+<a name="7g9dr0oua6a74m4lpfo2drnbe2">&nbsp;&nbsp;&nbsp;源码编译管理工具</a>
+</h3>
+<h3 class="topic">
+<a name="4tsjrndh68u9feahsttcsj9k2j">&nbsp;&nbsp;&nbsp;&nbsp;通过编写脚本(.sh为后缀)，从而执行多条gcc指令</a>
+</h3>
+<h3 class="topic">
+<a name="08gaoulcf5tbbvq43egj87rilg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vim make.sh</a>
+</h3>
+<h3 class="topic">
+<a name="6ulm03sr92eur9mj14gciejdd1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gcc -c test.c -o tset.o</a>
+</h3>
+<h3 class="topic">
+<a name="0t3evekpmfih4vhi94bv05f3ba">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gcc -c test2.c -o tset2.o</a>
+</h3>
+<h3 class="topic">
+<a name="5e59r5i0ukhba1354mn49f032b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gcc test.o test2.o -o test.out</a>
+</h3>
+<h3 class="topic">
+<a name="5f4ub1jo485oo7clcfu6kvjcv3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;chomd 755 maek.sh</a>
+</h3>
+<h3 class="topic">
+<a name="0poo1d2ftd83rn59qjrkg2406i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;赋予执行权限</a>
+</h3>
+<h3 class="topic">
+<a name="08m9quer95h915eqkfqp06eggk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;./make.sh</a>
+</h3>
+<h3 class="topic">
+<a name="0koe2dqpshfnd1n6k8e82uvgm7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;执行脚本</a>
+</h3>
+<h3 class="topic">
+<a name="1rg72rdvtqnb84k017a7l5ugj0">&nbsp;&nbsp;&nbsp;&nbsp;问题在于，上面的方法如果项目涉及的.c文件很多，脚本会将所有.c文件全部重新编译链接，会导致速度很慢</a>
+</h3>
+<h3 class="topic">
+<a name="292ou4nuuu4533fru64ccjdgjc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;理想情况是如果修改了哪个c文件，才重新编译哪个文件，不要重新编译所有文件</a>
+</h3>
+<h3 class="topic">
+<a name="31q1qk47vgtbhhgk0qedkqcm98">&nbsp;&nbsp;&nbsp;&nbsp;通过工具实现</a>
+</h3>
+<h3 class="topic">
+<a name="7iukn4uutp1rc6qr5dimk6g9q0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;make工具</a>
+</h3>
+<h3 class="topic">
+<a name="448rip76mjb68mrcpml9mgcnab">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;是一个源码的编译工具</a>
+</h3>
+<h3 class="topic">
+<a name="16v1rs0h85td8napfvnm1lkhrn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将一些编译规则放在MakeFile文件中，make运行起来之后，自动读取文件中的规则编译源码</a>
+</h3>
+<h3 class="topic">
+<a name="1mnftaouk86usakl7hkm2qtjj1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;规则两行组成</a>
+</h3>
+<h3 class="topic">
+<a name="4ld5mrl7j8a3e15hopm4gn3q25">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;目标文件：依赖文件</a>
+</h3>
+<h3 class="topic">
+<a name="695t88795rugf400ooavejee7j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将依赖文件生成目标文件的命令</a>
+</h3>
+<h3 class="topic">
+<a name="4fttuuu81000ecf1cboesb0taa">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;规则的执行逻辑</a>
+</h3>
+<h3 class="topic">
+<a name="2gkf0qn6kcfmeqqniqlf2n8de8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;自上而下执行</a>
+</h3>
+<h3 class="topic">
+<a name="2on3f5c2ke19k8jnd0up4o6keb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;示例</a>
+</h3>
+<h3 class="topic">
+<a name="746e4m37p23ta6844hl8fntg31">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mkdir obj</a>
+</h3>
+<h3 class="topic">
+<a name="1q16qs8qgkpbgctvcpil2m9i09">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用于保存中间文件</a>
+</h3>
+<h3 class="topic">
+<a name="7pn047g1td4frr2roareb1h5s7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mkdir bin</a>
+</h3>
+<h3 class="topic">
+<a name="3tdjjfl2g36hdctarqed2s3hsh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用于保存生成的二进制文件</a>
+</h3>
+<h3 class="topic">
+<a name="3hiuip3ranrhn7llbbv2d10tv9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vim MakeFile</a>
+</h3>
+<h3 class="topic">
+<a name="2l73nl5gtd50qdocphho8hd4ka">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;test.out:test.o,test2.o&#13;
+	gcc test.o,test2.o -o test.out&#13;
+&#13;
+test.o:test.c&#13;
+	gcc -c test.c -o test.o&#13;
+&#13;
+test2.o:test2.c&#13;
+	gcc -c test2.c -o test2.o</a>
+</h3>
+<h3 class="topic">
+<a name="3qcep47mtf2nr0usocotedt0us">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;test.out:test.o,test2.o</a>
+</h3>
+<h3 class="topic">
+<a name="1vc51sf56lbch03f5lq3104gft">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果没有在当前路径找到test.o，则向下找规则，看有没有生成test.o目标文件的规则，有则执行该规则生成test.o，无则报错</a>
+</h3>
+<h3 class="topic">
+<a name="34bgct0jf1en1rtr706oksud2k">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;make</a>
+</h3>
+<h3 class="topic">
+<a name="0osd1t562mvocivmmv0i52o23g">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;执行make指令，执行MakeFile文件中的规则</a>
+</h3>
+<h3 class="topic">
+<a name="7emdqa2uorn112h88qe00qem38">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;make中可以使用变量</a>
+</h3>
+<h3 class="topic">
+<a name="53gg9jmig50b592g3a2ilpm4mq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sources = test.c test2.c&#13;
+obj = test.o test2.o&#13;
+target = test.out&#13;
+&#13;
+${target}:${obj}&#13;
+	gcc ${obj} -o {target}&#13;
+&#13;
+${obj}:${sources}&#13;
+	gcc -c ${sources}</a>
+</h3>
+<h3 class="topic">
+<a name="25c6ap9cq9vn7urgajj6ujo38p">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用变量的缺点在于当修改一个.c文件时，会将所有.c文件编译一次</a>
+</h3>
+<h3 class="topic">
+<a name="76f53j5mbk5t4vb0lgqcu04m11">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;make中存在伪对象</a>
+</h3>
+<h3 class="topic">
+<a name="1l5vdpmvfck974r8d1srng7cuj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对于make中的伪对象，即make规则中只有目标项，没有依赖项，通过指令  &ldquo;make 目标项&rdquo;，可以调用规则中伪对象之后的指令</a>
+</h3>
+<h3 class="topic">
+<a name="3qjs6po00c8v6fq1u6t0ean9lg">&nbsp;&nbsp;&nbsp;&nbsp;在make之上，部分工具提供了更抽象的源码管理</a>
+</h3>
+<h3 class="topic">
+<a name="7svn6ih69376eda0asf2ui54ld">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;qmake</a>
+</h3>
+<h3 class="topic">
+<a name="4o2rett6b9d5o2ejocmtr41ind">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;存在一个pro文件</a>
+</h3>
+<h3 class="topic">
+<a name="4sark28c6dl7mobsqusfev00kr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在make基础上提供里更高级的语法</a>
+</h3>
+<h3 class="topic">
+<a name="7u6p53kbm8shqgv8jppflhpsbi">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cmake</a>
+</h3>
+<h3 class="topic">
+<a name="5e2lj9trp7mtv1i54dfll99tl6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;clion中使用的就是cmake</a>
+</h3>
+<h3 class="topic">
+<a name="4i19c1ff2ubsdjv609ojp49s3n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;提供高级的规则，根据规则生成MakeFile文件 ，使用make指令执行编译指令</a>
+</h3>
+<h3 class="topic">
+<a name="5l6vg53pl86ek748up2urql2d1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;automake</a>
+</h3>
+<h3 class="topic">
+<a name="6qv9ca4rk6e7k7gf3lhcabt1cq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;./configure</a>
+</h3>
+<h3 class="topic">
+<a name="4btdkvt0v156t2dulthanuf6ur">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用于检查编译环境，并生成MakeFile，最后通过make生成文件</a>
+</h3>
+<h3 class="topic">
+<a name="688taqf3u2o3p4iia0suo4lv44">&nbsp;&nbsp;&nbsp;usr目录中保存可以使用的各种资源</a>
+</h3>
+<h3 class="topic">
+<a name="4g607vt0p7ooet31bshtm9h495">&nbsp;&nbsp;&nbsp;&nbsp;bin目录</a>
+</h3>
+<h3 class="topic">
+<a name="25771fokom2433bg9lbne0vtlf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;二进制目录</a>
+</h3>
+<h3 class="topic">
+<a name="7f60sb9jinv0prh36ndj23dpic">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;linux中可执行文件一般没有后缀名</a>
+</h3>
+<h3 class="topic">
+<a name="4ttm98jdrjk33bci32t32e1vmo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;一般用于保存生成的可执行文件</a>
+</h3>
+<h3 class="topic">
+<a name="52rd690kb3n2fmcljiitii5d6t">&nbsp;&nbsp;&nbsp;&nbsp;lib</a>
+</h3>
+<h3 class="topic">
+<a name="76e3qle78cokn636g73np6v982">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;静态库，导入库</a>
+</h3>
+<h3 class="topic">
+<a name="2he553jm81arhb51d0cd1spuv3">&nbsp;&nbsp;&nbsp;&nbsp;include</a>
+</h3>
+<h3 class="topic">
+<a name="659tcdgs4o0u1tbvlmc2ap9s07">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;头文件</a>
+</h3>
+<h3 class="topic">
+<a name="1ft5q6caucj1ja3vq321lf1elc">&nbsp;gdb调试器</a>
+</h3>
+<h3 class="topic">
+<a name="71vgs4g8jjhs9fslbsgaao1gdu">&nbsp;&nbsp;断点设置</a>
+</h3>
+<h3 class="topic">
+<a name="5rms45ioh50mrcj4h9bu8t7pp8">&nbsp;&nbsp;&nbsp;断点设置</a>
+</h3>
+<h3 class="topic">
+<a name="7mqnd576bi0dt1eq9tskhcfiq2">&nbsp;&nbsp;&nbsp;&nbsp;b</a>
+</h3>
+<h3 class="topic">
+<a name="363krcthekv7s41lk7a964qsal">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;b 函数名</a>
+</h3>
+<h3 class="topic">
+<a name="751rov437frdtle3u0e20ns599">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;b 源码的行号</a>
+</h3>
+<h3 class="topic">
+<a name="0e3vsju2b5i76lgu98jrgg1u5e">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;b *地址</a>
+</h3>
+<h3 class="topic">
+<a name="5tblti05ubom5v3q42fda32lo8">&nbsp;&nbsp;运行命令</a>
+</h3>
+<h3 class="topic">
+<a name="2e36pqi7st1kjh4g9gbqs6q6rk">&nbsp;&nbsp;&nbsp;直接运行</a>
+</h3>
+<h3 class="topic">
+<a name="1gccl7hf6tpjc3q1gjmhfcalu7">&nbsp;&nbsp;&nbsp;&nbsp;r 或run</a>
+</h3>
+<h3 class="topic">
+<a name="1f09td1tfag66dljrkf7sq5n0e">&nbsp;&nbsp;&nbsp;单步步入</a>
+</h3>
+<h3 class="topic">
+<a name="181tnmm7j3j1gq3gmad9ttsbki">&nbsp;&nbsp;&nbsp;&nbsp;s</a>
+</h3>
+<h3 class="topic">
+<a name="1n1upnm5mqecivvjag1sf3cq1v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;源码级单步步入</a>
+</h3>
+<h3 class="topic">
+<a name="03n4ca98assrjl8prgq71mo3kp">&nbsp;&nbsp;&nbsp;&nbsp;si</a>
+</h3>
+<h3 class="topic">
+<a name="6l4k3vpprl68ccn0g5bm7bqe58">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;汇编级的单步步入</a>
+</h3>
+<h3 class="topic">
+<a name="6bjav0f6472j81uup27m9afpv1">&nbsp;&nbsp;&nbsp;单步步过</a>
+</h3>
+<h3 class="topic">
+<a name="3pjft67k7b1lbt4qdbf79jkifi">&nbsp;&nbsp;&nbsp;&nbsp;n</a>
+</h3>
+<h3 class="topic">
+<a name="49mefft5nle9aqelprh9vt8jh7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;源码级</a>
+</h3>
+<h3 class="topic">
+<a name="0dlkhsisv9rabdq8oq1ivrsnjp">&nbsp;&nbsp;&nbsp;&nbsp;ni</a>
+</h3>
+<h3 class="topic">
+<a name="46pvfuoabmi4h8pm9tqp222ooa">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;汇编级</a>
+</h3>
+<h3 class="topic">
+<a name="3tg9tgkifiahe93bc8f713hb40">&nbsp;&nbsp;&nbsp;直接按enter默认为输入上一次的指令</a>
+</h3>
+<h3 class="topic">
+<a name="16jsb88np256nn0n3sb067ueo7">&nbsp;&nbsp;查看数据</a>
+</h3>
+<h3 class="topic">
+<a name="2lud3jvhjsfplppmsk1b1vrdmb">&nbsp;&nbsp;&nbsp;查看变量</a>
+</h3>
+<h3 class="topic">
+<a name="12bl3fkn9e3toteihlbaa9cqlc">&nbsp;&nbsp;&nbsp;&nbsp;print 变量名</a>
+</h3>
+<h3 class="topic">
+<a name="5mbe7p9m0gu75eb9hku82h8g4s">&nbsp;&nbsp;&nbsp;&nbsp;printf</a>
+</h3>
+<h3 class="topic">
+<a name="52eqp2qrpah79jglt7unls6bna">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;具体用法看帮助</a>
+</h3>
+<h3 class="topic">
+<a name="5sn7fd0mn07dum1nt1voj1utuv">&nbsp;&nbsp;&nbsp;查看内存</a>
+</h3>
+<h3 class="topic">
+<a name="43l2934echbsvacuqkdp7rjb7k">&nbsp;&nbsp;&nbsp;&nbsp;x /16bx buff</a>
+</h3>
+<h3 class="topic">
+<a name="3298ab9shji462h74hpnmt8djj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;即：x /个数大小格式 地址</a>
+</h3>
+<h3 class="topic">
+<a name="59uctq9qikvleh6osi6ln7ktok">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;显示16个元素</a>
+</h3>
+<h3 class="topic">
+<a name="09rn1kv8nmrtk6brvm6qc9h61i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;按照字节b显示数据</a>
+</h3>
+<h3 class="topic">
+<a name="3ivfitcjvbmcsna3nfe2a6f8gr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以为w 按照字显示数据</a>
+</h3>
+<h3 class="topic">
+<a name="17k7o9o9c5kna5hmmntffjr4lm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以为g 显示8字节数据</a>
+</h3>
+<h3 class="topic">
+<a name="7ctna1ukjr1bslhfgj724djq3j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;按照十六进制x显示</a>
+</h3>
+<h3 class="topic">
+<a name="4l7iklkimuhjfft56talo880f5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以为d 十进制显示数据</a>
+</h3>
+<h3 class="topic">
+<a name="3p5jcriqnbnopddk90kd1devfg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以为s 按照字符串显示数据</a>
+</h3>
+<h3 class="topic">
+<a name="56l6j0fos9ho3qginj4bhue4tn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以为i 按照汇编指令显示数据</a>
+</h3>
+<h3 class="topic">
+<a name="5057djl0hu8pahbpjr4lcgsprl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%AE%89%E5%85%A82._files/2v6lsnbcjqc61816knh7b3oko2.png"></p>
+<h3 class="topic">
+<a name="1vu77s09k0qsggv4fgq1d0g9io">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;按照汇编指令显示数据</a>
+</h3>
+<h3 class="topic">
+<a name="4uskg9keum90224m3cb4q9oc53">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pwndbg&gt; x/10i (0x0A3E+0x55dc43694000) &#13;
+   0x55dc43694a3e:  push   rbp&#13;
+   0x55dc43694a3f:  mov    rbp,rsp&#13;
+   0x55dc43694a42:  lea    rdi,[rip+0xd7]        # 0x55dc43694b20&#13;
+   0x55dc43694a49:  call   0x55dc436947d0</a>
+</h3>
+<h3 class="topic">
+<a name="012q0ob2sdf75mpserhaqitb1t">&nbsp;&nbsp;&nbsp;查看反汇编</a>
+</h3>
+<h3 class="topic">
+<a name="2k12qrr1dvof8p1trd93rghrb8">&nbsp;&nbsp;&nbsp;&nbsp;disassemble 函数名</a>
+</h3>
+<h3 class="topic">
+<a name="0h7atnt1sidhg806l754itkp7m">&nbsp;&nbsp;&nbsp;&nbsp;disassemble main</a>
+</h3>
+<h3 class="topic">
+<a name="2vdbt4onpsp5k39tj6ddk5pucv">&nbsp;&nbsp;&nbsp;查看源码</a>
+</h3>
+<h3 class="topic">
+<a name="2es7pqmp1mc93n5f703qmn16na">&nbsp;&nbsp;&nbsp;&nbsp;list</a>
+</h3>
+<h3 class="topic">
+<a name="629pgubv3lgd4k44kokt1j8jtm">&nbsp;&nbsp;&nbsp;layout</a>
+</h3>
+<h3 class="topic">
+<a name="0ckd4an1tmlukd061q2cn37tki">&nbsp;&nbsp;&nbsp;&nbsp;可以同时查看源码和反汇编</a>
+</h3>
+<h3 class="topic">
+<a name="4vepsc183vnqu59rvaapv8qlm2">&nbsp;&nbsp;&nbsp;&nbsp;layout asm</a>
+</h3>
+<h3 class="topic">
+<a name="22na43t954s69oqt4j52sq9ejr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;查看汇编窗口</a>
+</h3>
+<h3 class="topic">
+<a name="66u2mu47ge42khs8t3l3guuq75">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这里的汇编显示AT&amp;T格式</a>
+</h3>
+<h3 class="topic">
+<a name="5vudmg7j9364r2tiidjpcqjair">&nbsp;&nbsp;&nbsp;&nbsp;src</a>
+</h3>
+<h3 class="topic">
+<a name="2a6n0ruvoaen7pvrj0hgf6hclm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;源码窗口</a>
+</h3>
+<h3 class="topic">
+<a name="7jfeogp5gqq6pjfs596mrt8455">&nbsp;&nbsp;&nbsp;&nbsp;regs</a>
+</h3>
+<h3 class="topic">
+<a name="1makf1ighqsv7scac2uq4r0rka">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;寄存器窗口</a>
+</h3>
+<h3 class="topic">
+<a name="22ljrttsh65gm8srpqv5kns3t1">&nbsp;&nbsp;&nbsp;&nbsp;split</a>
+</h3>
+<h3 class="topic">
+<a name="00h728m1r2ig6tt3qlp9pq0vbl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;同时查看源码、反汇编窗口</a>
+</h3>
+<h3 class="topic">
+<a name="39umihvsrbu3iqmf1v8hfnbtmv">&nbsp;&nbsp;查看信息命令</a>
+</h3>
+<h3 class="topic">
+<a name="4rmbi88fpi7tv4l0hus8bug8ir">&nbsp;&nbsp;&nbsp;info 信息对象</a>
+</h3>
+<h3 class="topic">
+<a name="70bktbk1hn0t9respvdcfpbu1n">&nbsp;&nbsp;&nbsp;&nbsp;查看断点</a>
+</h3>
+<h3 class="topic">
+<a name="3qtd09vhu7h4n7qbkteh3f3pe6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;info breakpoints</a>
+</h3>
+<h3 class="topic">
+<a name="66ar30s4gfqctrh6c8aqupt1k1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;或 i b</a>
+</h3>
+<h3 class="topic">
+<a name="39ojqinkoccolgmoet6g6uikfr">&nbsp;&nbsp;退出调试器</a>
+</h3>
+<h3 class="topic">
+<a name="3mp3p5i3redmf11n8nvc5terqr">&nbsp;&nbsp;&nbsp;q</a>
+</h3>
+<h3 class="topic">
+<a name="02pgbt2h356fvgkj1i4bca1ciu">&nbsp;&nbsp;流程</a>
+</h3>
+<h3 class="topic">
+<a name="2u40bonfpit1c29hovd78sunn1">&nbsp;&nbsp;&nbsp;gdb a.out</a>
+</h3>
+<h3 class="topic">
+<a name="7eemr1h83npshjv76v6i8s453i">&nbsp;&nbsp;&nbsp;b main</a>
+</h3>
+<h3 class="topic">
+<a name="6g9p0huc01npimks5bvqg9412h">&nbsp;&nbsp;&nbsp;&nbsp;在main函数下断点</a>
+</h3>
+<h3 class="topic">
+<a name="4qkvanq366v4df8530hbaspq5b">&nbsp;&nbsp;&nbsp;info breakpoints</a>
+</h3>
+<h3 class="topic">
+<a name="4vcu23np909psntp07qi14hueo">&nbsp;&nbsp;&nbsp;&nbsp;插查看断点信息</a>
+</h3>
+<h3 class="topic">
+<a name="2pbmo0sp8p3m86s8genugh5uv2">&nbsp;&nbsp;&nbsp;run 或r</a>
+</h3>
+<h3 class="topic">
+<a name="0b2bo6c1topubfl1jqckb4t2qq">&nbsp;&nbsp;&nbsp;&nbsp;运行起来</a>
+</h3>
+<h3 class="topic">
+<a name="0406qqdodaq9j73idugr6eri2v">&nbsp;&nbsp;&nbsp;list</a>
+</h3>
+<h3 class="topic">
+<a name="1tkajpbtvgaesgonlin5m2apob">&nbsp;&nbsp;&nbsp;&nbsp;查看源码</a>
+</h3>
+<h3 class="topic">
+<a name="4kn45pr7npackbc2m79rssdnm2">&nbsp;&nbsp;&nbsp;set disassembly-flavor intel</a>
+</h3>
+<h3 class="topic">
+<a name="3e3cqajjpb6t07pfbq1fa8hjme">&nbsp;&nbsp;&nbsp;&nbsp;设置汇编以intel汇编格式显示</a>
+</h3>
+<h3 class="topic">
+<a name="6lnr8u5o733t6hqosrjm37jo8v">&nbsp;&nbsp;&nbsp;layout asm</a>
+</h3>
+<h3 class="topic">
+<a name="05he1836t6jh7ejdnc3a6cveig">&nbsp;&nbsp;&nbsp;&nbsp;显示反汇编窗口</a>
+</h3>
+<h3 class="topic">
+<a name="7e55kkhbgs386mdmlbgqoq7j5h">&nbsp;&nbsp;&nbsp;print 变量名</a>
+</h3>
+<h3 class="topic">
+<a name="77s5i4min189gfbecu7b9ms1br">&nbsp;&nbsp;&nbsp;x /16bx buff</a>
+</h3>
+<h3 class="topic">
+<a name="0snudeese486igo2jdvnlrb44h">&nbsp;&nbsp;&nbsp;disassemble main</a>
+</h3>
+<h3 class="topic">
+<a name="68faqvl3mgahp6fu0oivrt3ofg">&nbsp;&nbsp;&nbsp;&nbsp;显示main函数的反汇编</a>
+</h3>
+<h3 class="topic">
+<a name="5kmfl6o84l9jebnhqqouaqi50d">&nbsp;&nbsp;&nbsp;q</a>
+</h3>
+<h3 class="topic">
+<a name="33oh0dpnf8ikv62gmt6jjbpa3t">&nbsp;&nbsp;&nbsp;&nbsp;退出</a>
+</h3>
+<h3 class="topic">
+<a name="1ki6q31du05etatckfplg6d189">&nbsp;&nbsp;gdb中按回车会继续执行之前执行过的最后一条指令</a>
+</h3>
+<h3 class="topic">
+<a name="35o6mn1mugpdurvc1e8ed32kbo">&nbsp;&nbsp;查看当前程序中的区段</a>
+</h3>
+<h3 class="topic">
+<a name="69hs940rmdrsrkt66c91vosgfa">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%AE%89%E5%85%A82._files/0jm6dlauplb66ldf5le5nanuh3.png"></p>
+<h3 class="topic">
+<a name="5bteoqcrlusabq2tvhl5o11ctj">&nbsp;&nbsp;查看堆信息</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%AE%89%E5%85%A82._files/497ue0442lukl9isdto8nhv0sp.png"></p>
+<h2 class="topic">
+<a name="0dami8ng95mqpsnkkgs28hl7kf">linux下的文件、进程、线程、共享库、网络编程</a>
+</h2>
+<h3 class="topic">
+<a name="3ar38qk6nmr9pup4jcfjelnj0d">&nbsp;linux文件编程</a>
+</h3>
+<h3 class="topic">
+<a name="38l865i4e1km7oq6v7j39ib9br">&nbsp;&nbsp;win与linux区别</a>
+</h3>
+<h3 class="topic">
+<a name="5evqtbef20if0fh6lrf7vj5qf8">&nbsp;&nbsp;&nbsp;linux api参数少</a>
+</h3>
+<h3 class="topic">
+<a name="0np8ggmsinps5o2u4a16k14s6i">&nbsp;&nbsp;&nbsp;linux操作资源是使用文件描述符 ，windows中使用句柄</a>
+</h3>
+<h3 class="topic">
+<a name="7msudnorkbl2fp9fpc6edheqho">&nbsp;&nbsp;&nbsp;linux下api操作，绝大多数可以使用文件i/o来完成</a>
+</h3>
+<h3 class="topic">
+<a name="1fa5qmbliv8mj8dv1insgs691t">&nbsp;&nbsp;&nbsp;&nbsp;linux中一切皆文件</a>
+</h3>
+<h3 class="topic">
+<a name="2rdnrapii2242lsbrq8sldnlg2">&nbsp;&nbsp;&nbsp;&nbsp;获取系统中的某些信息，可以通过读写文件完成</a>
+</h3>
+<h3 class="topic">
+<a name="1ibcs84fujkgld4abgu8pf6gck">&nbsp;&nbsp;&nbsp;linux下文件操作的api较为简单</a>
+</h3>
+<h3 class="topic">
+<a name="1rv0chqfh5h8n918f63j0sac9r">&nbsp;&nbsp;linux文件操作有两种</a>
+</h3>
+<h3 class="topic">
+<a name="43a2rju7l9pbmpjooqgk2456u5">&nbsp;&nbsp;&nbsp;文件流</a>
+</h3>
+<h3 class="topic">
+<a name="2t71mg1pva55gklspb32b8qllh">&nbsp;&nbsp;&nbsp;&nbsp;fopen fread gets fgets scanf fflush puts fputs printf</a>
+</h3>
+<h3 class="topic">
+<a name="0th4lp80q3mq7btg6mibnm9ln5">&nbsp;&nbsp;&nbsp;&nbsp;即c库函数</a>
+</h3>
+<h3 class="topic">
+<a name="6085rh94altj9mknscq4h44p7r">&nbsp;&nbsp;&nbsp;&nbsp;文件流示例代码</a>
+</h3>
+<h3 class="topic">
+<a name="2j898s4d65ki3qg2kgnm428slq">&nbsp;&nbsp;&nbsp;&nbsp;https://www.cnblogs.com/52php/p/5724372.html</a>
+</h3>
+<h3 class="topic">
+<a name="7d81t1bcuv5j954aj0janakgc9">&nbsp;&nbsp;&nbsp;&nbsp;https://www.cnblogs.com/52php/p/5724378.html</a>
+</h3>
+<h3 class="topic">
+<a name="3ggrqb09jl4rvhert5akq7tfrs">&nbsp;&nbsp;&nbsp;文件描述符</a>
+</h3>
+<h3 class="topic">
+<a name="0t4aemiukq81a8ld8p63b5u7b7">&nbsp;&nbsp;&nbsp;&nbsp;open（可以打开文件，可以创建一文件） creat read write</a>
+</h3>
+<h3 class="topic">
+<a name="5dr25evvaj1fdkc19bu01sahvn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;read函数</a>
+</h3>
+<h3 class="topic">
+<a name="5q1hnco95vdne2iapp2fngp26l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;包含头文件： &lt;unistd.h&gt;</a>
+</h3>
+<h3 class="topic">
+<a name="0nelono7cqp7nf7s1k4krich92">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%AE%89%E5%85%A82._files/244r1g8vko4k5m1imi08ogis4c.png"></p>
+<h3 class="topic">
+<a name="7i27eoh2ead6i5jde3abjv9sdb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;数据 ：fd-》buf</a>
+</h3>
+<h3 class="topic">
+<a name="4qpi72l2f35gv25be9gc70l3hv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当fd为0时表示将键盘输入读取到buf中</a>
+</h3>
+<h3 class="topic">
+<a name="5bcaccmealop9g7m5mp0m4sq3b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fd也可以通过open()函数获取，从而表示任意一个文件，从而将文件中的数据读入buf中</a>
+</h3>
+<h3 class="topic">
+<a name="5f1lb53np14iiceqj7jo7bm33f">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    int fd = open("1.txt" ,&#13;
+            O_CREAT|O_RDWR,&#13;
+            S_IRWXU|S_IRWXG|S_IRWXO);</a>
+</h3>
+<h3 class="topic">
+<a name="08lqkppqam7f33vq003o8r5o6s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;write函数</a>
+</h3>
+<h3 class="topic">
+<a name="23q8jshechpa5fpcabap49ofcm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;包含头文件： &lt;unistd.h&gt;</a>
+</h3>
+<h3 class="topic">
+<a name="62t73tuvv7grvimn7n127vqof5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%AE%89%E5%85%A82._files/78o7c8sooejaqesec2mtqju44c.png"></p>
+<h3 class="topic">
+<a name="2qpvhvg8g97k0md5ne1mlbaqb0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;数据buf-》fd</a>
+</h3>
+<h3 class="topic">
+<a name="2f3k18m0btl5puj7ea6g4vnq2h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当fd为1时表示将buf中的数据输出到屏幕上</a>
+</h3>
+<h3 class="topic">
+<a name="1e8ic0pqqvd53rlurr9dv740u8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fd也可以通过open()函数获取，从而表示任意一个文件，从而将buf中的数据写入文件中</a>
+</h3>
+<h3 class="topic">
+<a name="3cuv27hf6oianb7nurhk2no6aa">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    int fd = open("1.txt" ,&#13;
+            O_CREAT|O_RDWR,&#13;
+            S_IRWXU|S_IRWXG|S_IRWXO);</a>
+</h3>
+<h3 class="topic">
+<a name="6af0sfqrnf2vmrnfe2dhkb6mtg">&nbsp;&nbsp;&nbsp;&nbsp;即linux原生api</a>
+</h3>
+<h3 class="topic">
+<a name="1oerpnc26pcpe6l9s9ut9ejk4m">&nbsp;&nbsp;&nbsp;&nbsp;示例代码</a>
+</h3>
+<h3 class="topic">
+<a name="5gavsqru4r4pqkioemls6s8n7l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#include &lt;iostream&gt;&#13;
+#include &lt;unistd.h&gt;&#13;
+#include &lt;fcntl.h&gt;&#13;
+#include &lt;cstring&gt;&#13;
+&#13;
+int main() {&#13;
+&#13;
+    int fd = open("1.txt" ,&#13;
+            O_CREAT|O_RDWR,&#13;
+            S_IRWXU|S_IRWXG|S_IRWXO);&#13;
+    if( fd == 0){&#13;
+        // 打印最后一次错误信息&#13;
+        printf("%s", strerror(errno));&#13;
+        return 0;&#13;
+    }&#13;
+&#13;
+    write(fd,"hello",6);&#13;
+    lseek(fd , 0, SEEK_SET);&#13;
+&#13;
+    char buff[100];&#13;
+    read(fd , buff , 100);&#13;
+    printf("buff = %s\n",buff);&#13;
+&#13;
+    close(fd);&#13;
+    return 0;&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="6aus4suvdf5ialu2tumdp51laa">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%AE%89%E5%85%A82._files/78qoi2on52tasu7oes6h3580mv.png"></p>
+<h3 class="topic">
+<a name="4vgeu9sfeiec0guk4vojlust27">&nbsp;&nbsp;使用clion编写代码</a>
+</h3>
+<h3 class="topic">
+<a name="6inri3c2h5khrsb5jsnerb161d">&nbsp;&nbsp;&nbsp;一个工程会提供两个文件</a>
+</h3>
+<h3 class="topic">
+<a name="3nlassuj1tlvirc95jmnq18k8h">&nbsp;&nbsp;&nbsp;&nbsp;源码文件</a>
+</h3>
+<h3 class="topic">
+<a name="3na9r91khubo1dsuc13vln77bu">&nbsp;&nbsp;&nbsp;&nbsp;cmakefile编译规则的文件</a>
+</h3>
+<h3 class="topic">
+<a name="3sguc9me5jaiqfmldgn24be8h2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用#进行注释</a>
+</h3>
+<h3 class="topic">
+<a name="20jkktvgp1fa7dc8airseec7eq">&nbsp;&nbsp;&nbsp;需要包含头文件unistd.h</a>
+</h3>
+<h3 class="topic">
+<a name="6nnf651pu3bbn6llj3n3qrkchn">&nbsp;&nbsp;&nbsp;&nbsp;#include &lt;unistd.h&gt;</a>
+</h3>
+<h3 class="topic">
+<a name="67s43v089mktno4a9fictamcjo">&nbsp;&nbsp;&nbsp;如果报错使用alt+回车可以出现bug修改提示</a>
+</h3>
+<h3 class="topic">
+<a name="6ek96m59vv7scbeh38otcr7du0">&nbsp;&nbsp;&nbsp;ctrl+q可显示clion帮助文档</a>
+</h3>
+<h3 class="topic">
+<a name="79ab9e7ce1cujfgjmjbj5pp1cf">&nbsp;&nbsp;&nbsp;&nbsp;也可以在终端中使用man进行linux 的api查询</a>
+</h3>
+<h3 class="topic">
+<a name="6lv7r0802l9ol2e93ecnfnu2ep">&nbsp;&nbsp;&nbsp;注意可执行程序的生成目录和当前工程目录可能不是一个目录</a>
+</h3>
+<h3 class="topic">
+<a name="61pf5046tfhk4pj83u9m36oltr">&nbsp;linux进程操作</a>
+</h3>
+<h3 class="topic">
+<a name="21ph2a06c1p6s819jb9me3o9gt">&nbsp;&nbsp;针对进程操作有两类</a>
+</h3>
+<h3 class="topic">
+<a name="44kgfv8u8cikvlbj2k1rpng450">&nbsp;&nbsp;&nbsp;查看搜索进程信息</a>
+</h3>
+<h3 class="topic">
+<a name="264f5925tl68tm943eara5tnaj">&nbsp;&nbsp;&nbsp;&nbsp;ps </a>
+</h3>
+<h3 class="topic">
+<a name="28ahnge33tb6ve2l9pukknq9au">&nbsp;&nbsp;&nbsp;&nbsp;top</a>
+</h3>
+<h3 class="topic">
+<a name="2uagoie2ile7l39hotbu5hi11p">&nbsp;&nbsp;&nbsp;&nbsp;htop</a>
+</h3>
+<h3 class="topic">
+<a name="0fvd4302j44r1ru3guor5trepv">&nbsp;&nbsp;&nbsp;&nbsp;pstree</a>
+</h3>
+<h3 class="topic">
+<a name="7ttjahb4ohqm20j1belikj448o">&nbsp;&nbsp;&nbsp;&nbsp;pgrep</a>
+</h3>
+<h3 class="topic">
+<a name="5nj0ajdfve08sc0ethcqmnjsfs">&nbsp;&nbsp;&nbsp;杀死进程</a>
+</h3>
+<h3 class="topic">
+<a name="5bpcd0sjo9l78b1p2u4qv0dei6">&nbsp;&nbsp;&nbsp;&nbsp;kill</a>
+</h3>
+<h3 class="topic">
+<a name="79ff0udqrqjqb8skl2occdfmgg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;kill -9 pid</a>
+</h3>
+<h3 class="topic">
+<a name="23h3f862fsrs9i1gh06nfol08l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;9是linux中的进程终止的信号</a>
+</h3>
+<h3 class="topic">
+<a name="0dt5folqe9ce1uv7ti26veh5ci">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;给指定pid的进程发终止信号</a>
+</h3>
+<h3 class="topic">
+<a name="09fru66u9dk5er881ij445td8n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;killall</a>
+</h3>
+<h3 class="topic">
+<a name="1069au0uofui0omlicgtsvemi2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;killall 进程名称</a>
+</h3>
+<h3 class="topic">
+<a name="5r0119m5ocdjdpr6tjp678m8oj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pkill</a>
+</h3>
+<h3 class="topic">
+<a name="5f1e082l8o2194g638u97771s1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;和killall一样</a>
+</h3>
+<h3 class="topic">
+<a name="0ginhdu5bnl19f47tc3cl6eu69">&nbsp;linux proc文件系统</a>
+</h3>
+<h3 class="topic">
+<a name="05anpgvhm9rcl3ki9du2em2ph3">&nbsp;&nbsp;在内核中构建一个虚拟文件系统，当内核运行的时候，会将内核关键数据以文件的方式呈现在/proc目录下中的一些特定文件中，相当于将不可见的内核数据结构以可视化方式展示</a>
+</h3>
+<h3 class="topic">
+<a name="3p1l8164udi7mtitc3nmram46g">&nbsp;&nbsp;注意：根目录下/sys目录表示sys文件系统，与proc文件系统相同，该系统也是虚拟文件系统，在硬盘中不存在，是内核中数据结构的可视化接口</a>
+</h3>
+<h3 class="topic">
+<a name="5vpfuqe1bgqtlp5bu8ev8n1s92">&nbsp;&nbsp;&nbsp;区别在于/proc中的数据只能读，但是/sysy中的数据可以读写，从而设置内核中的数据</a>
+</h3>
+<h3 class="topic">
+<a name="03mp82103pvf4sca9j25p4ore9">&nbsp;&nbsp;常用proc目录</a>
+</h3>
+<h3 class="topic">
+<a name="4g56jgj39cbha2giriqadtvlvb">&nbsp;&nbsp;&nbsp;/proc/N</a>
+</h3>
+<h3 class="topic">
+<a name="1uf38vlur3unb4b411tk9i1d9a">&nbsp;&nbsp;&nbsp;&nbsp;以数字为名称的文件夹表示一个进程，数字为对应进程的pid，一个进程终止后，对应的文件夹不存在了</a>
+</h3>
+<h3 class="topic">
+<a name="7qchk7ev8rcdbunaad8dnshhdc">&nbsp;&nbsp;&nbsp;/proc/N/cmdline</a>
+</h3>
+<h3 class="topic">
+<a name="0l62r63q33om7lfj0tsrsj2b9k">&nbsp;&nbsp;&nbsp;&nbsp;进程的启动命令</a>
+</h3>
+<h3 class="topic">
+<a name="0rrfe6cq9he57qlcb6ht4jd265">&nbsp;&nbsp;&nbsp;/proc/N/maps</a>
+</h3>
+<h3 class="topic">
+<a name="5sngkev974cg50e1i6i4p5g0vs">&nbsp;&nbsp;&nbsp;&nbsp;进程的内存映射信息</a>
+</h3>
+<h3 class="topic">
+<a name="2h9925a4o65hplhmqi6d4ccbvg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该进程的内存分布信息</a>
+</h3>
+<h3 class="topic">
+<a name="0udpu5hcoeob954vaf0rh7v1fs">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;包括主模块以及进程其他程序模块</a>
+</h3>
+<h3 class="topic">
+<a name="7as39d21s49m533ttfguqvlecj">&nbsp;&nbsp;&nbsp;/proc/N/status</a>
+</h3>
+<h3 class="topic">
+<a name="6i13ibkoagkb6afg0mi2vfsa2o">&nbsp;&nbsp;&nbsp;&nbsp;保存进程相关信息</a>
+</h3>
+<h3 class="topic">
+<a name="54pp5rsjrj1k58c389lf9iofup">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;包括进程名称等信息</a>
+</h3>
+<h3 class="topic">
+<a name="5kfvfh0c9iir9vf1lc55053cp9">&nbsp;&nbsp;&nbsp;/proc/N/mem</a>
+</h3>
+<h3 class="topic">
+<a name="74p9m8msq6j76l5ukpnieldgdu">&nbsp;&nbsp;&nbsp;&nbsp;进程拥有的虚拟内存</a>
+</h3>
+<h3 class="topic">
+<a name="0amsbg5cp3qc3ge4upoqaf8iqh">&nbsp;&nbsp;&nbsp;/proc/sys</a>
+</h3>
+<h3 class="topic">
+<a name="14r9sne2855t4tr8o5e9901ucg">&nbsp;&nbsp;&nbsp;&nbsp;该目录是可写的，可以通过它来访问和修改内核的参数</a>
+</h3>
+<h3 class="topic">
+<a name="5ltdsi9h6qtdo1gi022p0h5n6u">&nbsp;&nbsp;获得linux命令源码</a>
+</h3>
+<h3 class="topic">
+<a name="67gnpp0v2fm9euqkl0dk2us8rk">&nbsp;&nbsp;&nbsp;which ps</a>
+</h3>
+<h3 class="topic">
+<a name="5gfmn4bn84t1hosdnji0jocvs3">&nbsp;&nbsp;&nbsp;&nbsp;找到ps命令在哪个路径</a>
+</h3>
+<h3 class="topic">
+<a name="4b0dqf6ena491vh7269vfg2k8c">&nbsp;&nbsp;&nbsp;&nbsp;得到路径为/bin/ps</a>
+</h3>
+<h3 class="topic">
+<a name="0e1fn916o54fc02ujgdtoc21an">&nbsp;&nbsp;&nbsp;dpkg -s /bin/ps</a>
+</h3>
+<h3 class="topic">
+<a name="6vato797ilh5tgrcbaqucsebkg">&nbsp;&nbsp;&nbsp;&nbsp;找到ps命令是使用的是哪个源码包</a>
+</h3>
+<h3 class="topic">
+<a name="0f87ajq1f90m8uog1s8flnjcqt">&nbsp;&nbsp;&nbsp;sudo apt-get source 源码包名称</a>
+</h3>
+<h3 class="topic">
+<a name="2i1hcaork74sv3uf0dqci54mfl">&nbsp;&nbsp;&nbsp;&nbsp;根据名称 下载源码包</a>
+</h3>
+<h3 class="topic">
+<a name="7d3f7ploeqs6rq0kjag2lcmt4e">&nbsp;&nbsp;&nbsp;&nbsp;下载过程中需要指定代码源,将源配置到配置文件中</a>
+</h3>
+<h3 class="topic">
+<a name="7pbo89mr2s6vtpcmhhpimfc7di">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vim /etc/apt/sources.list</a>
+</h3>
+<h3 class="topic">
+<a name="32mb3tj63ksotg71pmbt7gbs2j">&nbsp;&nbsp;&nbsp;tar -xcf 源码包名称</a>
+</h3>
+<h3 class="topic">
+<a name="69mfbqns2g6ivkt77u38a9dmeh">&nbsp;&nbsp;&nbsp;&nbsp;将源码包解压到指定路径</a>
+</h3>
+<h3 class="topic">
+<a name="57gbcunkc4vd7eipog6v91hgo6">&nbsp;&nbsp;&nbsp;使用clion导入解压后的文件夹</a>
+</h3>
+<h3 class="topic">
+<a name="76n9t0lj8ou9r0lmpim093sg2p">&nbsp;&nbsp;&nbsp;&nbsp;在clion欢迎界面有一个 import source project的选项</a>
+</h3>
+<h3 class="topic">
+<a name="5530mff4nackr37rh5jlo1m9kf">&nbsp;&nbsp;&nbsp;使用ps命令，找到ps命令会输出的字符串，在源码包中查找该字符串</a>
+</h3>
+<h3 class="topic">
+<a name="56omlm74v1e7ngdv9ukpoa8u9c">&nbsp;&nbsp;&nbsp;&nbsp;clion的目录界面中右键 -》find in path</a>
+</h3>
+<h3 class="topic">
+<a name="394vr0poaursitvcf4fisu5f9h">&nbsp;&nbsp;&nbsp;找到对应函数名，右键查找该函数的调用者</a>
+</h3>
+<h3 class="topic">
+<a name="71iudcooj9sd0a5untpsmheue8">&nbsp;&nbsp;&nbsp;&nbsp;右键函数名-》find usages</a>
+</h3>
+<h3 class="topic">
+<a name="7lj5e3n6n1f46uqtkf7p4uoti1">&nbsp;&nbsp;&nbsp;重复向上查找函数i调用者，可以找到ps命令的main函数</a>
+</h3>
+<h3 class="topic">
+<a name="5r3krctaf9hn25h4bhqmppvvgo">&nbsp;&nbsp;&nbsp;详细流程可以看书</a>
+</h3>
+<h3 class="topic">
+<a name="1j4s72it0vuhdk32k6h6gsmokt">&nbsp;&nbsp;分析源码包</a>
+</h3>
+<h3 class="topic">
+<a name="3d8dleuu2ejtrjvj9jn2srkemi">&nbsp;&nbsp;&nbsp;静态分析源码</a>
+</h3>
+<h3 class="topic">
+<a name="3pcji4v910nc64ff3o1pj3csut">&nbsp;&nbsp;&nbsp;&nbsp;导入clion</a>
+</h3>
+<h3 class="topic">
+<a name="38mae9mbadcpb1vp0lnclfh5mp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;import source project</a>
+</h3>
+<h3 class="topic">
+<a name="7i4ncftlridd9ng0s4fsnldlgs">&nbsp;&nbsp;&nbsp;&nbsp;通过字符串搜索找到关键代码</a>
+</h3>
+<h3 class="topic">
+<a name="07bnt3qq0ac76e5k24l4fk45jo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用ps命令会输出的字符串，查找关键点</a>
+</h3>
+<h3 class="topic">
+<a name="77b89ocvrpie99v2uru3k7d90l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在关键点查找引用该关键点的位置，一般可以找到源码</a>
+</h3>
+<h3 class="topic">
+<a name="6jm031d4b5ofejr7jh2d7mke5m">&nbsp;&nbsp;&nbsp;动态分析源代码</a>
+</h3>
+<h3 class="topic">
+<a name="11af8ndgcveshn3so2obs96p0u">&nbsp;&nbsp;&nbsp;&nbsp;。。。。。。</a>
+</h3>
+<h3 class="topic">
+<a name="11vq75kkqnrmfacd83rcbs96me">&nbsp;&nbsp;代码：遍历进程</a>
+</h3>
+<h3 class="topic">
+<a name="1ct600uh75hers1c9ukhmb2mbi">&nbsp;&nbsp;&nbsp;进程信息保存咋iproc虚拟文件系统中，每一进程都有一个数字命名的文件夹在此目录中，文件夹的名称就是进程id，只要遍历这些文件夹，就能遍历所有进程</a>
+</h3>
+<h3 class="topic">
+<a name="11j1v1ekdi0t2i7ke3bcjt5i2c">&nbsp;&nbsp;&nbsp;步骤</a>
+</h3>
+<h3 class="topic">
+<a name="6am9p8m10fu3n5tn7pqja8ni4e">&nbsp;&nbsp;&nbsp;&nbsp;打开文件夹</a>
+</h3>
+<h3 class="topic">
+<a name="13ilumvf4s11edl4h9e957mstu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DIR* dir=opendir("/proc")&#13;
+若dir为空打开失败&#13;
+if(dir==null)&#13;
+</a>
+</h3>
+<h3 class="topic">
+<a name="3b55u7k2u8lnvcgisr43dg3s5t">&nbsp;&nbsp;&nbsp;&nbsp;读取文件夹中的一项数据</a>
+</h3>
+<h3 class="topic">
+<a name="76smhei1gjvjv19eus4fffo3td">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;struct dirent * ent=nullptr;&#13;
+while(ent=readdir(dir))&#13;
+{&#13;
+if(ent-&gt;d_name[0]&lt;"0"||ent-&gt;d_name[0]&gt;"9")&#13;
+{continue;}&#13;
+print("%s",ent-&gt;d_name)&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="1c98go6rsmub7pifn3fvgeqnq7">&nbsp;&nbsp;&nbsp;&nbsp;获得pid对应进程名称</a>
+</h3>
+<h3 class="topic">
+<a name="7l83o9ru5mgkgssdf7hluv0tch">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//进程名保存在status中</a>
+</h3>
+<h3 class="topic">
+<a name="7qonm3ndqtd4697ce3ae8ugjhs">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//1、打开文件</a>
+</h3>
+<h3 class="topic">
+<a name="0tesb47fl5b94georkj5773n4u">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//2、格式化读取文件内容,即通过fscanf</a>
+</h3>
+<h3 class="topic">
+<a name="4b93qr275ekgra0q9gn0c7gfi1">&nbsp;&nbsp;&nbsp;代码：进程遍历</a>
+</h3>
+<h3 class="topic">
+<a name="5vh6lal65snmusv7peemb2g7ir">&nbsp;&nbsp;&nbsp;&nbsp;#include &lt;iostream&gt;&#13;
+#include &lt;dirent.h&gt;&#13;
+#include &lt;errno.h&gt;&#13;
+#include &lt;string.h&gt;&#13;
+#include &lt;fcntl.h&gt;&#13;
+&#13;
+int main() {&#13;
+    // 遍历出系统中所有的进程&#13;
+    // 进程信息保存在／ｐｒｏｃ虚拟文件系统中。&#13;
+    //　在此目录中每一个进程都有一个文件夹，&#13;
+    // 文件夹的名字就是进程的id&#13;
+    // 只要遍历出这些文件夹就能遍历出所有进程&#13;
+    // 1. 打开文件夹&#13;
+    DIR* dir = opendir("/proc");&#13;
+    if( dir == NULL){&#13;
+        printf("打开文件夹失败:%s\n",strerror(errno));&#13;
+        return 0;&#13;
+    }&#13;
+    //　2.　读取文件夹中一项数据&#13;
+    struct dirent * ent = nullptr;&#13;
+    char path[266];&#13;
+&#13;
+    while( ent = readdir(dir) )&#13;
+    {&#13;
+        if(ent-&gt;d_name[0]&lt;'0' || ent-&gt;d_name[0]&gt;'9'){&#13;
+            continue;&#13;
+        }&#13;
+        printf("pid = %s ",ent-&gt;d_name);&#13;
+        // 3. 获取ｐｉｄ对应的进程名&#13;
+        //　进程名保存在/proc／pid/status中&#13;
+        //　Name:	test.out&#13;
+        //  Umask:	0002&#13;
+        //  State:	S (sleeping)&#13;
+        //  Tgid:	41647&#13;
+        //　3.1　打开文件&#13;
+        //  3.2 格式化读取文件内容&#13;
+        snprintf(path,266,"/proc/%s/status",ent-&gt;d_name);&#13;
+&#13;
+        FILE* f = fopen(path,"r");&#13;
+        if( f== NULL){&#13;
+            printf("打开文件失败:%s\n",strerror(errno));&#13;
+            continue;&#13;
+        }&#13;
+        fscanf(f,"Name: %s",path);&#13;
+        printf("name=%s\n", path);&#13;
+        fclose(f);&#13;
+    }&#13;
+    closedir(dir);&#13;
+&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="3nipeav8gonq3t88khs2laj4gl">&nbsp;&nbsp;读写其他进程的内存</a>
+</h3>
+<h3 class="topic">
+<a name="6a63l05lfco5g0f52tu6k3nfja">&nbsp;&nbsp;&nbsp;通过proce文件系统的mem文件，该文件表示一个进程的虚拟内存空间，是虚拟出来文件，磁盘中并不实际存在该文件，当对该文件进行读写的时候，系统会转换为向驱动发送相关信息，操作进程内存</a>
+</h3>
+<h3 class="topic">
+<a name="4tif55ufbbkrdn0cva7ev4rbdp">&nbsp;&nbsp;&nbsp;代码：读写其他进程（需要以管理员身份运行，可以在clion命令行窗口中使用管理员权限运行工程生成的可执行文件）</a>
+</h3>
+<h3 class="topic">
+<a name="3hhom79cv6sjukjh34jn5c68ja">&nbsp;&nbsp;&nbsp;&nbsp;流程</a>
+</h3>
+<h3 class="topic">
+<a name="4q7424bcav2r1ulghg6fj8m0o0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;一个进程的内存读写接口是在proc/pid/mem文件中，续写该文件，就能读写该进程内存</a>
+</h3>
+<h3 class="topic">
+<a name="32sdf7kaa9f03r4c6g4oca83a2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;拼接文件路径</a>
+</h3>
+<h3 class="topic">
+<a name="018slkuuvrlvce6ep1q0fu053g">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;打开文件</a>
+</h3>
+<h3 class="topic">
+<a name="4qfr9ot03o3p2gn0401g6q6brr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;open</a>
+</h3>
+<h3 class="topic">
+<a name="6op0dr2r777ab93ak9kcgu0i0t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;定位的内存读写位置</a>
+</h3>
+<h3 class="topic">
+<a name="2geoa8nu8karm87a5t005ud6f1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lseek64</a>
+</h3>
+<h3 class="topic">
+<a name="6b8o6evdkbtjahg4c020a5sktn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;参数</a>
+</h3>
+<h3 class="topic">
+<a name="0ut53kubb9u324v0c8laf5i33t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;文件描述符</a>
+</h3>
+<h3 class="topic">
+<a name="0079u257gpocume2ikjpsjpbhq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;文件偏移</a>
+</h3>
+<h3 class="topic">
+<a name="4k7iekc09739ep3rhuiu3crord">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;seek_set</a>
+</h3>
+<h3 class="topic">
+<a name="27h15u8irkmcaudt1gtaeirljc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;向目标内存中写数据</a>
+</h3>
+<h3 class="topic">
+<a name="6s7t593s38vfr9n2161eodh1rv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;write</a>
+</h3>
+<h3 class="topic">
+<a name="7vu7vmd8dd14k7sk5n8da42569">&nbsp;&nbsp;&nbsp;&nbsp;代码：读写其他进程内存</a>
+</h3>
+<h3 class="topic">
+<a name="6j63p93hllahoftltedmmcc8q6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#include &lt;iostream&gt;&#13;
+#include &lt;fcntl.h&gt;&#13;
+#include &lt;error.h&gt;&#13;
+#include &lt;string.h&gt;&#13;
+#include &lt;unistd.h&gt;&#13;
+&#13;
+int main() {&#13;
+    int pid;&#13;
+    void* addr;&#13;
+&#13;
+    printf("pid&gt;");&#13;
+    scanf("%d",&amp;pid);&#13;
+&#13;
+    printf("地址&gt;");&#13;
+    scanf("%p", &amp;addr);&#13;
+&#13;
+    // 读写的方法:&#13;
+    // 一个进程的内存的接口是&#13;
+    // 在 /proc／pid/mem文件中&#13;
+    //　读写该文件，就能够读写一个进程的内存&#13;
+    char path[266];&#13;
+    snprintf(path,sizeof(path),"/proc/%d/mem",pid);&#13;
+    int fd = open(path,O_CREAT|O_RDWR,0);&#13;
+    if(fd == -1){&#13;
+        printf("打开文件失败:%s\n",strerror(errno));&#13;
+        return 0;&#13;
+    }&#13;
+    &#13;
+    lseek64(fd ,(__off64_t)addr,SEEK_SET);&#13;
+    write(fd,"15PB\n",6);&#13;
+&#13;
+    close(fd);&#13;
+&#13;
+    return 0;&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="5hludlttbcronhp7or73r4bshs">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%AE%89%E5%85%A82._files/23k0ajcupuht3e7c7m2q02q29u.png"></p>
+<h3 class="topic">
+<a name="4brsuub2a2c7a2vi3uht2p90qn">&nbsp;共享库</a>
+</h3>
+<h3 class="topic">
+<a name="4inkraptm5tvn6e6avohbp0png">&nbsp;&nbsp;就是win中的dll</a>
+</h3>
+<h3 class="topic">
+<a name="7842svkkq1ft3ivtcr1qjb80q1">&nbsp;&nbsp;linux中制作一个dll</a>
+</h3>
+<h3 class="topic">
+<a name="2fs90v04aa14a4s3pn7ivjta76">&nbsp;&nbsp;&nbsp;流程</a>
+</h3>
+<h3 class="topic">
+<a name="0ot1qq4c6vno53pbq76svnkavl">&nbsp;&nbsp;&nbsp;&nbsp;创建要一个文件夹，用于保存共享库</a>
+</h3>
+<h3 class="topic">
+<a name="16bglq4dqg97gi798u41re5lg3">&nbsp;&nbsp;&nbsp;&nbsp;打开gedit</a>
+</h3>
+<h3 class="topic">
+<a name="5dmltp6tgl1tf3oja5dgk4v17i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;编写fun.c  fun.h文件，前者保存导出函数的实现，后者保存导出函数的声明</a>
+</h3>
+<h3 class="topic">
+<a name="0mg8obedmpetrc9tkf072n6itl">&nbsp;&nbsp;&nbsp;&nbsp;编译共享库</a>
+</h3>
+<h3 class="topic">
+<a name="60v8pihe6hqvdfcs8f7mu1tpe0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gcc -shared -fpic 源文件名 -o lib目标文件名.so&#13;
+ (一定要加上`lib`前缀和`.so`后缀)</a>
+</h3>
+<h3 class="topic">
+<a name="6dj198moru8q1ocbvsbv1l59d9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gcc -shared -fpic func.c -o libfun.so</a>
+</h3>
+<h3 class="topic">
+<a name="017ed5hjdr2aam2eqlem3u54rb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意命名规则lib  .so</a>
+</h3>
+<h3 class="topic">
+<a name="6rat5vgu9kn57454tc22qjmj70">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;以上指令也可以通过编写脚本从而完成</a>
+</h3>
+<h3 class="topic">
+<a name="41hd6qcv100pqjk81j19832fq7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;默认情况下，源码中的所有函数均被导出，只有加了static的函数，不会被导出，即使被导出，也无法被外部函数使用</a>
+</h3>
+<h3 class="topic">
+<a name="3l15uu1ej2e8q4dikja9kdjvjk">&nbsp;&nbsp;&nbsp;&nbsp;使用共享库</a>
+</h3>
+<h3 class="topic">
+<a name="27m6rn68otb79fa5a8jknieae5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;需要将so文件复制到usr/lib中，这样程序执行时才能找到so文件</a>
+</h3>
+<h3 class="topic">
+<a name="0ki082inb073sloachu7m3n1tq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;隐式调用</a>
+</h3>
+<h3 class="topic">
+<a name="39ll1jumdsuimoc24i9u35tqtq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;需要在可执行文件中包含so文件的.h文件</a>
+</h3>
+<h3 class="topic">
+<a name="6qk6fiakb11483e6tfvdesgokl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#include &lt;fun.h&gt;</a>
+</h3>
+<h3 class="topic">
+<a name="1tldutvmql39iqscnn05m1lki7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;直接使用函数</a>
+</h3>
+<h3 class="topic">
+<a name="6njh6h2c150o6tu1653rpbqpea">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;编译可执行程序的代码时需要指定lib库文件路径和名称</a>
+</h3>
+<h3 class="topic">
+<a name="7bkat2domnj5s05e6534bd04oa">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gcc main.c -I../so -L../so -lfun</a>
+</h3>
+<h3 class="topic">
+<a name="36ake74k90c9178ptrevrbnmiq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-I ../so</a>
+</h3>
+<h3 class="topic">
+<a name="5jh25c9m5f91grgufmbrp956ob">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过 `-I`来指定库的头文件目录</a>
+</h3>
+<h3 class="topic">
+<a name="0mthl1vhqt297gu5cei4cf15vm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;大写i</a>
+</h3>
+<h3 class="topic">
+<a name="03ohj9bdo74qk0bqkn8384lntg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-L../so</a>
+</h3>
+<h3 class="topic">
+<a name="2msud6htmfmq93nnnuul1bn5ac">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过`-L`来指定库文件所在路径</a>
+</h3>
+<h3 class="topic">
+<a name="7qba9jukh521nt0bng4t73m7e2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;大写L</a>
+</h3>
+<h3 class="topic">
+<a name="31q8csh1930o29i97640047oa4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-lfun</a>
+</h3>
+<h3 class="topic">
+<a name="68k9vnh0gsmsn9k5326bsbvvjl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过`-l`来指定要进行链接的库文件的名字(名字要去掉`lib`前缀和`.so`后缀)</a>
+</h3>
+<h3 class="topic">
+<a name="0vtjtv3mec3hlk9oggoa9nagd0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;小写L</a>
+</h3>
+<h3 class="topic">
+<a name="1bpc53gjljgericis6li70656j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这里的..表示上级目录</a>
+</h3>
+<h3 class="topic">
+<a name="0oqg4ddul0tej90c6b6b6jron0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gcc main.c -I/home/ez/testso/so -L/home/ez/testso/so -lfun</a>
+</h3>
+<h3 class="topic">
+<a name="7hstfrcmvdikbm8hd8v6f53uih">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果共享库文件头 共享库文件 均与.c文件在同一个目录。则可以使用</a>
+</h3>
+<h3 class="topic">
+<a name="62pjar0jfgk77le368tcr5mt4l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gcc test.c -I. -L. -lfun</a>
+</h3>
+<h3 class="topic">
+<a name="0t91r70qt0k8b2l2irt5ge1rv0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.表示当前目录</a>
+</h3>
+<h3 class="topic">
+<a name="4v0aachqttj627id6orintdshr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%AE%89%E5%85%A82._files/5jr41b442unb4o5an14n8tabk5.png"></p>
+<h3 class="topic">
+<a name="483dqcahov27m3hvps4l6b55se">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;显式调用</a>
+</h3>
+<h3 class="topic">
+<a name="3bop9u1us78tqk3j2re5h0qqak">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dl_open</a>
+</h3>
+<h3 class="topic">
+<a name="52h27p02o5caaevlipl8jp1qt6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;加载共享库，相当于LoadLibrary</a>
+</h3>
+<h3 class="topic">
+<a name="7casuagtrkd4m0lirgtm2kvh83">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dl_sym</a>
+</h3>
+<h3 class="topic">
+<a name="1j023ut4s4613phl2h6vi0vduf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;获得共享库中的导出函数，相当于GetProcAddress</a>
+</h3>
+<h3 class="topic">
+<a name="6kad0kvln6revrbkqsu6b6lulj">&nbsp;&nbsp;在lion中使用共享库</a>
+</h3>
+<h3 class="topic">
+<a name="7gulmldf8lf1dqj2hbvoha3rl1">&nbsp;&nbsp;&nbsp;在clion工程的cmake文件中设置编译规则，为程序添加动态库</a>
+</h3>
+<h3 class="topic">
+<a name="76ej6lcskbqvsbsp9sfmmcsv1s">&nbsp;&nbsp;&nbsp;&nbsp;# 添加头文的目录&#13;
+INCLUDE_DIRECTORIES('../so')&#13;
+&#13;
+# 设置库文件的所在目录&#13;
+LINK_DIRECTORIES('../so')&#13;
+&#13;
+# 添加库文件（不需要前缀和后缀）&#13;
+# fun =&gt; libfun.so&#13;
+LINK_LIBRARIES(fun)</a>
+</h3>
+<h3 class="topic">
+<a name="4edc1qqqg09uhdqre0uj01fe98">&nbsp;&nbsp;ldd  a.out</a>
+</h3>
+<h3 class="topic">
+<a name="41os1tqg1kt429drqohp4ij6ba">&nbsp;&nbsp;&nbsp;查看可执行文件依赖于那些共享库</a>
+</h3>
+<h3 class="topic">
+<a name="2c0av4nmce1et6gsejhlh3r6ad">&nbsp;线程和网络编程</a>
+</h3>
+<h3 class="topic">
+<a name="185047k3ejm5a6pvq3dihberdo">&nbsp;&nbsp;线程就是使用c的库函数 _beginthread</a>
+</h3>
+</body>
+</html>

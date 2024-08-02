@@ -1,0 +1,835 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>class82day0703(安卓安全第三天)</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="2isd20iqla2oevl6l0viqtepeh">class82day0703(安卓安全第三天)</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="class82day0703_files/images/class82day0703(%E5%AE%89%E5%8D%93%E5%AE%89%E5%85%A8%E7%AC%AC%E4%B8%89%E5%A4%A9).jpg"></div>
+<h2 class="topic">
+<a name="49f2ldukn6e0r3r08tboc73n47">安卓逆向的分析方法</a>
+</h2>
+<h3 class="topic">
+<a name="10n892verteumj2eu4bhkhmfg7">&nbsp;字符串分析法</a>
+</h3>
+<h3 class="topic">
+<a name="7bq52h3cbd69mf3lavi0up7jla">&nbsp;日志分析法</a>
+</h3>
+<h3 class="topic">
+<a name="0phgd1krflkjmb9vmj12a3hhe4">&nbsp;动态调试smali 动态调试so文件</a>
+</h3>
+<h3 class="topic">
+<a name="1dfs27k81tm612q5t4o2k01sku">&nbsp;api下断（调试so 对linux api下断）栈回溯分析</a>
+</h3>
+<h2 class="topic">
+<a name="6q2sovisaggakifnkr072i46pj">字符串分析法</a>
+</h2>
+<h3 class="topic">
+<a name="0b2a7me1f28u3fe2mpr6dcmspj">&nbsp;破解步骤</a>
+</h3>
+<h3 class="topic">
+<a name="53peiajke0pbi59ihc57i7gut1">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class82day0703_files/4ahvpahd5lvoaf605qdfsnv8de.png"></p>
+<h3 class="topic">
+<a name="5r4b2vgvlm2k5pqk9k6sfno7kr">&nbsp;使用androidKiller</a>
+</h3>
+<h3 class="topic">
+<a name="51i5opal131flmbcplrimvevk5">&nbsp;&nbsp;在工程搜索中可以搜索字符，需要将文本转成unicode</a>
+</h3>
+<h3 class="topic">
+<a name="7i63r0f39ru8g50n0askerfhe9">&nbsp;androidstdio生成的程序在目录E:\AndroidStdioProject\app\build\outputs\apk\debug</a>
+</h3>
+<h3 class="topic">
+<a name="0nh2oijd3v3ofet1ld8ceqrfnc">&nbsp;完成修改后，进行编译</a>
+</h3>
+<h3 class="topic">
+<a name="4jgq3tuvbeue8f97a0l2g15mkp">&nbsp;&nbsp;编译过程中程序，资源属性很可能出问题，如果出现了，可以将对应文件的资源的出错属性进行删除</a>
+</h3>
+<h3 class="topic">
+<a name="04oajc1g8fo3murf4llkv7gd6g">&nbsp;编译完成之后将apk程序在虚拟手机中进行安装</a>
+</h3>
+<h3 class="topic">
+<a name="5b45g3rtsv09k67keqscimrvu0">&nbsp;&nbsp;注意需要将手机中原来的程序删除，因为程序重新编译后签名信息发生变化，则不能覆盖安装</a>
+</h3>
+<h3 class="topic">
+<a name="3o4t2h5c65eu13d2a74ip8c0f8">&nbsp;&nbsp;第二次破解之后可以直接覆盖安装</a>
+</h3>
+<h3 class="topic">
+<a name="15gfa24i3hojirggo89jhpv0r0">&nbsp;如果搜索到资源的id，可以通过搜索资源id，找到资源的名称，再搜索资源名称，找到资源本体</a>
+</h3>
+<h3 class="topic">
+<a name="2agmlnoajd2pac19c43n1ps34u">&nbsp;&nbsp;public.xml 是androidkill自己生成的，如果在表中寻找到的资源的名称需要再次进行工程搜索，才能找到真正的资源</a>
+</h3>
+<h2 class="topic">
+<a name="2vs8pt2h2hp68ea37si9e03ean">smali</a>
+</h2>
+<h3 class="topic">
+<a name="6056h9cl1cgqhlu9knffvm9e4s">&nbsp;是运行在Android Dalvik虚拟机上的指令集对应的汇编语言</a>
+</h3>
+<h3 class="topic">
+<a name="0r7ihalhctufj0e5hf3p26nnke">&nbsp;#注释</a>
+</h3>
+<h3 class="topic">
+<a name="1mq8qig8c9fan2aad0lvf4csis">&nbsp;if-eqz</a>
+</h3>
+<h3 class="topic">
+<a name="3niodqm8hmc0ke9m4dsqgudcpa">&nbsp;&nbsp;如果为0的判断</a>
+</h3>
+<h3 class="topic">
+<a name="0uvalr32c0tarfdbooj7hgp6kc">&nbsp;:cond_2</a>
+</h3>
+<h3 class="topic">
+<a name="28uqgoq8v5kapclm69j81c4o0j">&nbsp;&nbsp;标号</a>
+</h3>
+<h3 class="topic">
+<a name="0mrtuh6rdlgavtnp445bbjfnbm">&nbsp;数据类型</a>
+</h3>
+<h3 class="topic">
+<a name="1qfnrn210a84fjkrfuse76l7tf">&nbsp;&nbsp;在smali代码中数据类型以类型描述符表示</a>
+</h3>
+<h3 class="topic">
+<a name="70hk0e0dli0pc9c9fdvunt5rpf">&nbsp;&nbsp;基本数据类型</a>
+</h3>
+<h3 class="topic">
+<a name="2ktvaui1aric3h49ncae6plvgd">&nbsp;&nbsp;&nbsp;int</a>
+</h3>
+<h3 class="topic">
+<a name="32fmpq9e26h18u1opho5fauefr">&nbsp;&nbsp;&nbsp;&nbsp;I</a>
+</h3>
+<h3 class="topic">
+<a name="5h5ssbp00mdieoo6ll8d75il32">&nbsp;&nbsp;&nbsp;float</a>
+</h3>
+<h3 class="topic">
+<a name="0stnp981po25de13qg8v7bmob9">&nbsp;&nbsp;&nbsp;&nbsp;F</a>
+</h3>
+<h3 class="topic">
+<a name="7n8vnabap4be5ni433fdace7rh">&nbsp;&nbsp;&nbsp;boolean</a>
+</h3>
+<h3 class="topic">
+<a name="2iqlrq6sd16m2arojqm5pfonsf">&nbsp;&nbsp;&nbsp;&nbsp;Z</a>
+</h3>
+<h3 class="topic">
+<a name="3g88r41rp44pgi80nbpd5tqc3p">&nbsp;&nbsp;&nbsp;long	</a>
+</h3>
+<h3 class="topic">
+<a name="7phns9r7b7m97tk4m1944t5t7i">&nbsp;&nbsp;&nbsp;&nbsp;J</a>
+</h3>
+<h3 class="topic">
+<a name="141eq4rr68cjr7c20542fabk7h">&nbsp;&nbsp;&nbsp;void</a>
+</h3>
+<h3 class="topic">
+<a name="769484bk10sj3urojd5kcvufft">&nbsp;&nbsp;&nbsp;&nbsp;V</a>
+</h3>
+<h3 class="topic">
+<a name="7fojuq6ha9b21iquk0e93ms6qf">&nbsp;&nbsp;&nbsp;...</a>
+</h3>
+<h3 class="topic">
+<a name="3t6hnumecaldlag0sb04icpk33">&nbsp;&nbsp;引用类型</a>
+</h3>
+<h3 class="topic">
+<a name="35fiqrktv88pk1ll1quhpk5reb">&nbsp;&nbsp;&nbsp;对象类型</a>
+</h3>
+<h3 class="topic">
+<a name="6fhbvr0cssoa5th4ik65kij34e">&nbsp;&nbsp;&nbsp;&nbsp;String</a>
+</h3>
+<h3 class="topic">
+<a name="53eu71l4fj4gqom3rhk8a201a9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ljava/lang/String;      #类的完整路径</a>
+</h3>
+<h3 class="topic">
+<a name="50r31dju2ag6f3et3knrfrc76n">&nbsp;&nbsp;&nbsp;&nbsp;形式</a>
+</h3>
+<h3 class="topic">
+<a name="5o54h1brne3tb358ckhmcaf8dq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;L包名/对象类名;</a>
+</h3>
+<h3 class="topic">
+<a name="6bhu64kidnr4npmrhmqdu50s39">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;L表示对象类型</a>
+</h3>
+<h3 class="topic">
+<a name="6d15oka82ffnegitn1v3b45od4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;表示对象名的结束</a>
+</h3>
+<h3 class="topic">
+<a name="4l34b3o600hagbbs0ekn20hkud">&nbsp;&nbsp;&nbsp;数组类型</a>
+</h3>
+<h3 class="topic">
+<a name="3ur45ai2pjsgl4emkh5925scsn">&nbsp;&nbsp;&nbsp;&nbsp;int[]</a>
+</h3>
+<h3 class="topic">
+<a name="39d049rk7169nqr1iivu3ht61e">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[I</a>
+</h3>
+<h3 class="topic">
+<a name="0od0bv9tlbj0bsikilrbv39sa8">&nbsp;&nbsp;&nbsp;&nbsp;int[][]</a>
+</h3>
+<h3 class="topic">
+<a name="4if75uquvtptusl5v4s3mmi6lr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[[I</a>
+</h3>
+<h3 class="topic">
+<a name="25ue1i6u1af02uljbg6u0j0frk">&nbsp;&nbsp;&nbsp;&nbsp;String[]</a>
+</h3>
+<h3 class="topic">
+<a name="13rb1mspeqiqg0i9svs04hffrv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Ljava/lang/String;</a>
+</h3>
+<h3 class="topic">
+<a name="7f1lt0l6pn88qtk6n1jvhjrsfb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;String类型数组</a>
+</h3>
+<h3 class="topic">
+<a name="6p20fmida8nab3jkpva2jcr8kj">&nbsp;&nbsp;&nbsp;&nbsp;形式</a>
+</h3>
+<h3 class="topic">
+<a name="6kkq0qn90rj570kda06a42dq7h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[数据类型+类型描述符</a>
+</h3>
+<h3 class="topic">
+<a name="6vmv8u2cq0ucrok07at67ei58d">&nbsp;类的字段和方法表示</a>
+</h3>
+<h3 class="topic">
+<a name="6s9no18e8iqcpk0jo20jhbdpie">&nbsp;&nbsp;字段</a>
+</h3>
+<h3 class="topic">
+<a name="43vg2d9rjm48hqr5ff0dd7rg2b">&nbsp;&nbsp;&nbsp;MainActivity类中的num字段（类型为int）</a>
+</h3>
+<h3 class="topic">
+<a name="3balv53b56oukvopa5v9cf513h">&nbsp;&nbsp;&nbsp;&nbsp;MainActivity.num</a>
+</h3>
+<h3 class="topic">
+<a name="4vru2mi3jea1ddr19kp4kalrk6">&nbsp;&nbsp;&nbsp;表示方法</a>
+</h3>
+<h3 class="topic">
+<a name="082cn9qoj0hjbohv95b8ia8bm9">&nbsp;&nbsp;&nbsp;&nbsp;所在类-&gt;字段名:字段类型</a>
+</h3>
+<h3 class="topic">
+<a name="2muohmesto46q679puigpuuess">&nbsp;&nbsp;&nbsp;&nbsp;Lcom/bluelesson/MainAcctivity;-&gt;num:I</a>
+</h3>
+<h3 class="topic">
+<a name="7oggvl4r6s4eiuli9e1dn9ambl">&nbsp;&nbsp;&nbsp;&nbsp;Lcom/bluelesson/Test;-&gt;name:Ljava/lang/String</a>
+</h3>
+<h3 class="topic">
+<a name="3su6lokb0v7k9pqt59ol2l38ms">&nbsp;&nbsp;方法</a>
+</h3>
+<h3 class="topic">
+<a name="6r131gfli1n2epn0alob06h2ui">&nbsp;&nbsp;&nbsp;表示方法：所在类-&gt;方法名(参数类型)返回类型</a>
+</h3>
+<h3 class="topic">
+<a name="0cdr9v5gau8l9dmlmrfi2ha5b0">&nbsp;&nbsp;&nbsp;String中的equals方法</a>
+</h3>
+<h3 class="topic">
+<a name="3i3dv8m11i2pi6vre3e5vr7fsp">&nbsp;&nbsp;&nbsp;&nbsp;Ljava/lang/String;-&gt;equals(Ljava/lang/Object;)Z</a>
+</h3>
+<h3 class="topic">
+<a name="5f3205mcejsm1l48snut3avc3v">&nbsp;寄存器（即变量）传参与局部变量</a>
+</h3>
+<h3 class="topic">
+<a name="57jmptlgedvfu3gc9f09u2lk9h">&nbsp;&nbsp;指定寄存器数量</a>
+</h3>
+<h3 class="topic">
+<a name="231cd16u7omn6rli4833ajknl9">&nbsp;&nbsp;&nbsp;.registers</a>
+</h3>
+<h3 class="topic">
+<a name="51esnbjqmg9fuk7an02tvannu7">&nbsp;&nbsp;&nbsp;.locals</a>
+</h3>
+<h3 class="topic">
+<a name="0eg2ngii6n70e1vo959s4oid54">&nbsp;&nbsp;参数调用规则</a>
+</h3>
+<h3 class="topic">
+<a name="03rtu5cnsj1s0vu8pkfkhmn7ks">&nbsp;&nbsp;&nbsp;一个方法被调用，方法的参数被置于最后n个寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="227aucasdmtbcfqoernuin4j6g">&nbsp;&nbsp;&nbsp;&nbsp;一个方法有两个参数，方法中公有5个寄存器，则参数将置于最后两个寄存器v3 v4中</a>
+</h3>
+<h3 class="topic">
+<a name="1k3chmvncd8tprrccbtc7t6cgj">&nbsp;&nbsp;&nbsp;非静态方法中的第一个参数总是调用该方法的对象的指针</a>
+</h3>
+<h3 class="topic">
+<a name="65nj9e18duumo7llgjl381jk94">&nbsp;&nbsp;所有的寄存器都是32位的，Long Double类型数据是64位，需要使用两个寄存器进行保存，传参过程中默认占用两个寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="5v6h44avd943kul728dj9e7l0g">&nbsp;寄存器（即变量）命名方式</a>
+</h3>
+<h3 class="topic">
+<a name="6la1q9493m2el4gtrpkj9ocnsa">&nbsp;&nbsp;v命名方式</a>
+</h3>
+<h3 class="topic">
+<a name="1qkh7m6vdveen24gme0u5b92o2">&nbsp;&nbsp;&nbsp;一般用于表示局部变量  v0 v1 v2...</a>
+</h3>
+<h3 class="topic">
+<a name="4ptirn6no91o14o9peh85s08cg">&nbsp;&nbsp;p命名方式</a>
+</h3>
+<h3 class="topic">
+<a name="3rhak6bl6t2hro96kd7btfll13">&nbsp;&nbsp;&nbsp;一般用于表示参数 p0 p1 p2...</a>
+</h3>
+<h3 class="topic">
+<a name="663vuootjbig39ijertg73p4tt">&nbsp;&nbsp;&nbsp;p0是方法中的第一个参数寄存器，一般用于传递调用方法的对象的this指针</a>
+</h3>
+<h3 class="topic">
+<a name="1uv7t25novh5gqe2mdc6vhbem3">&nbsp;&nbsp;可以使用任意一种方式引用参数寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="10qmi9vlb7j6vkk8sq6pra2ssk">&nbsp;汇编指令</a>
+</h3>
+<h3 class="topic">
+<a name="19k4jsujgoh3fp0hplg447je49">&nbsp;&nbsp;算数运算</a>
+</h3>
+<h3 class="topic">
+<a name="2ih0bqomd769epk2l6esl1pctr">&nbsp;&nbsp;&nbsp;加</a>
+</h3>
+<h3 class="topic">
+<a name="551lj7888m5urmeekalmj1b4cd">&nbsp;&nbsp;&nbsp;&nbsp;add-int v4,v0,p1</a>
+</h3>
+<h3 class="topic">
+<a name="6racegape7u58mmlvj8v0m1hno">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;v4=v0+v1</a>
+</h3>
+<h3 class="topic">
+<a name="5hlo8ihs4fp8muhfhe1b1ttde3">&nbsp;&nbsp;&nbsp;减</a>
+</h3>
+<h3 class="topic">
+<a name="42gdjtlcnprk7ljsk38mki0ien">&nbsp;&nbsp;&nbsp;&nbsp;sub-int v4,v0,p1</a>
+</h3>
+<h3 class="topic">
+<a name="48ria1d0o0afiiirnb9n42c759">&nbsp;&nbsp;&nbsp;乘</a>
+</h3>
+<h3 class="topic">
+<a name="41lh600812rrns68khm3n9ujmp">&nbsp;&nbsp;&nbsp;&nbsp;mul-int v4,v0,p1</a>
+</h3>
+<h3 class="topic">
+<a name="2kal2o50ijdqvrak57ro5eisdm">&nbsp;&nbsp;&nbsp;除</a>
+</h3>
+<h3 class="topic">
+<a name="09l35h01gfl8ekurivibbjar9e">&nbsp;&nbsp;&nbsp;&nbsp;div-int v4,v0,p1</a>
+</h3>
+<h3 class="topic">
+<a name="3n28pavr4oo8grv8dd2ivu170e">&nbsp;&nbsp;&nbsp;取余</a>
+</h3>
+<h3 class="topic">
+<a name="5evqjtk26avfrg0qbb89r17djh">&nbsp;&nbsp;&nbsp;&nbsp;rem-int v4,v0,p1</a>
+</h3>
+<h3 class="topic">
+<a name="7gekm2b3kabau46096j11gp4i9">&nbsp;&nbsp;数据定义</a>
+</h3>
+<h3 class="topic">
+<a name="067v08ci7r094d8pmga4bdrpk8">&nbsp;&nbsp;&nbsp;赋值</a>
+</h3>
+<h3 class="topic">
+<a name="2aibk4p2l99aare11bdiv8qaig">&nbsp;&nbsp;&nbsp;&nbsp;move v0,p1</a>
+</h3>
+<h3 class="topic">
+<a name="3ae34e1v8ljj0023g7682ol8p0">&nbsp;&nbsp;&nbsp;定义常量</a>
+</h3>
+<h3 class="topic">
+<a name="04ihvna8jfl7onjdim1tmira0h">&nbsp;&nbsp;&nbsp;&nbsp;const/4 v1,0x1</a>
+</h3>
+<h3 class="topic">
+<a name="2huqa5ok966a2rehbr131ej34b">&nbsp;&nbsp;&nbsp;定义常量字符串</a>
+</h3>
+<h3 class="topic">
+<a name="65q6p2eu3bciguvk3585sdgtls">&nbsp;&nbsp;&nbsp;&nbsp;const-string v2,"Mainctivity"</a>
+</h3>
+<h3 class="topic">
+<a name="2v8tk59pa3s9id0fj8bo5st75q">&nbsp;&nbsp;&nbsp;定义局部变量 boolean类型，寄存器声明</a>
+</h3>
+<h3 class="topic">
+<a name="5h7q7rbk16fvl91knpnjjl8i4m">&nbsp;&nbsp;&nbsp;&nbsp;.local v1,"b1":Z</a>
+</h3>
+<h3 class="topic">
+<a name="2kqeq21is54hqs2h2ri697v88p">&nbsp;&nbsp;&nbsp;&nbsp;该指令等同于 boolean bl；即变量的名称为&ldquo;bl&rdquo; 类型为布尔，用寄存器符号v1表示</a>
+</h3>
+<h3 class="topic">
+<a name="7rt21rsddniqfg19sh51npgi1i">&nbsp;&nbsp;数据操作指令</a>
+</h3>
+<h3 class="topic">
+<a name="6b3jt5odfndb7cpk2a7mhguehl">&nbsp;&nbsp;&nbsp;move destinationn,source</a>
+</h3>
+<h3 class="topic">
+<a name="7g5rlgnh5nnhbh8j6252i6i9cb">&nbsp;&nbsp;&nbsp;&nbsp;根据操作的字节码和类型不同，move后面添加不同的后缀</a>
+</h3>
+<h3 class="topic">
+<a name="4s5dq9fdqa22htmhs095kclltk">&nbsp;&nbsp;&nbsp;move vA,vB</a>
+</h3>
+<h3 class="topic">
+<a name="1v8uhugo20bra5un9tfe7i6p04">&nbsp;&nbsp;&nbsp;&nbsp;vb寄存器赋值给va寄存器，都为4位</a>
+</h3>
+<h3 class="topic">
+<a name="20rvdgmil6ru0apioa4dj8cjf9">&nbsp;&nbsp;&nbsp;move-result-object vAA</a>
+</h3>
+<h3 class="topic">
+<a name="645r6gsiiik8fv3etvf97929fo">&nbsp;&nbsp;&nbsp;&nbsp;将上一个invoke类型指令操作的对象赋值给vAA</a>
+</h3>
+<h3 class="topic">
+<a name="0s9n5iiht173ivk07hufq38b4p">&nbsp;&nbsp;&nbsp;......</a>
+</h3>
+<h3 class="topic">
+<a name="6lr73np5kmvupi7dcpj36tbtua">&nbsp;&nbsp;返回指令</a>
+</h3>
+<h3 class="topic">
+<a name="7962fbus2s71636b6icil9ddnk">&nbsp;&nbsp;&nbsp;return-void</a>
+</h3>
+<h3 class="topic">
+<a name="6mttrr4obsl4n37mkbce6dhbam">&nbsp;&nbsp;&nbsp;&nbsp;返回void</a>
+</h3>
+<h3 class="topic">
+<a name="7cpdj4hinfi3efi4n4aq8n8cvc">&nbsp;&nbsp;&nbsp;return vAA</a>
+</h3>
+<h3 class="topic">
+<a name="33es889i7nqd6d81snhvtcpqbh">&nbsp;&nbsp;&nbsp;&nbsp;返回一个32位的非对象类型的值，返回寄存器为8位</a>
+</h3>
+<h3 class="topic">
+<a name="4rajra9oj2u49hdntl6squ0e8f">&nbsp;&nbsp;&nbsp;return-wide vAA</a>
+</h3>
+<h3 class="topic">
+<a name="23evkhuu2kse7f7304r5j5aqho">&nbsp;&nbsp;&nbsp;&nbsp;返回一个64位非对象的值，返回寄存器为8位</a>
+</h3>
+<h3 class="topic">
+<a name="7snshb50jiadco9m6ud5va6l8k">&nbsp;&nbsp;&nbsp;return-object vAA</a>
+</h3>
+<h3 class="topic">
+<a name="5kog1mfij3bp74ned3bgolbhg9">&nbsp;&nbsp;&nbsp;&nbsp;返回一个对象类型</a>
+</h3>
+<h3 class="topic">
+<a name="0sdam4i5dmdntmlup4d0h8lbif">&nbsp;&nbsp;字符串操作</a>
+</h3>
+<h3 class="topic">
+<a name="338390csebkste92kvm57btulv">&nbsp;&nbsp;&nbsp;const-string v0,"字符串或unicode码"</a>
+</h3>
+<h3 class="topic">
+<a name="3p53ohdqv8gbcld4m87604b71d">&nbsp;&nbsp;&nbsp;cont v2,资源编号</a>
+</h3>
+<h3 class="topic">
+<a name="2657hn41i2kpbopl0k0qmhuikk">&nbsp;&nbsp;选择结构</a>
+</h3>
+<h3 class="topic">
+<a name="7g5hhsuqvskfqdaqne47dkc7cj">&nbsp;&nbsp;&nbsp;if-条件 v0 v1, :cond_xx</a>
+</h3>
+<h3 class="topic">
+<a name="2cftn8a86u5s486n1e8o24mkh4">&nbsp;&nbsp;&nbsp;&nbsp;如果  v0&lt;条件&gt;v1 成立则跳转到cond_x</a>
+</h3>
+<h3 class="topic">
+<a name="3rnr5ca6utdtanua375emf3ot8">&nbsp;&nbsp;&nbsp;例如</a>
+</h3>
+<h3 class="topic">
+<a name="1v7lehfkthbvjiocimsji56rjg">&nbsp;&nbsp;&nbsp;&nbsp;if-eq va,vb,:cond_1</a>
+</h3>
+<h3 class="topic">
+<a name="23mj75jkiutf7a2e88gcmrf56l">&nbsp;&nbsp;&nbsp;eq</a>
+</h3>
+<h3 class="topic">
+<a name="5v9r372qua5cg3v6rea8kl4vrm">&nbsp;&nbsp;&nbsp;&nbsp;等于</a>
+</h3>
+<h3 class="topic">
+<a name="4nbjks3l51meop9llf7fsgmpgq">&nbsp;&nbsp;&nbsp;ne</a>
+</h3>
+<h3 class="topic">
+<a name="0qorqh3snulaksod4tk4780n4a">&nbsp;&nbsp;&nbsp;&nbsp;不等于</a>
+</h3>
+<h3 class="topic">
+<a name="2mnbfhli1s6t3sht4ndpcig1jf">&nbsp;&nbsp;&nbsp;lt</a>
+</h3>
+<h3 class="topic">
+<a name="1hen1r97kot69p23knjnammftk">&nbsp;&nbsp;&nbsp;&nbsp;小于</a>
+</h3>
+<h3 class="topic">
+<a name="2pf1af3gt29vg0k2sfoop2eucn">&nbsp;&nbsp;&nbsp;le</a>
+</h3>
+<h3 class="topic">
+<a name="5sajjh3u1s1ig8kb6kgncumq4t">&nbsp;&nbsp;&nbsp;&nbsp;小于等于</a>
+</h3>
+<h3 class="topic">
+<a name="1t2v50m3cr2u1qm30uhgnanjvq">&nbsp;&nbsp;&nbsp;gt</a>
+</h3>
+<h3 class="topic">
+<a name="549hl7rj19dgtm3gu6m8a55qae">&nbsp;&nbsp;&nbsp;&nbsp;大于</a>
+</h3>
+<h3 class="topic">
+<a name="6lq112m5k0c1p4tqvcoqqhgf46">&nbsp;&nbsp;&nbsp;ge</a>
+</h3>
+<h3 class="topic">
+<a name="24rlt58j5u9ih565u1e218l9la">&nbsp;&nbsp;&nbsp;&nbsp;大于等于</a>
+</h3>
+<h3 class="topic">
+<a name="581b1rvs7v3f56l3ds9tsoltp5">&nbsp;&nbsp;&nbsp;eqz</a>
+</h3>
+<h3 class="topic">
+<a name="7e76a912u3a0br4mg8qaiteivf">&nbsp;&nbsp;&nbsp;&nbsp;等于0</a>
+</h3>
+<h3 class="topic">
+<a name="3gj2vjtk3c1mlcm51pgblta835">&nbsp;&nbsp;&nbsp;nez</a>
+</h3>
+<h3 class="topic">
+<a name="366dv5q0a543e67n7k4c19vh2u">&nbsp;&nbsp;&nbsp;&nbsp;不等于0</a>
+</h3>
+<h3 class="topic">
+<a name="2v53200kbgep0eqnkevvajhhtv">&nbsp;&nbsp;循环结构</a>
+</h3>
+<h3 class="topic">
+<a name="4t5b46lesbkkk8ka9ce9hlqa3f">&nbsp;&nbsp;&nbsp;通过无条件跳转语句goto实现的</a>
+</h3>
+<h3 class="topic">
+<a name="6mfptple8r9sr6f4vho18vcpql">&nbsp;&nbsp;&nbsp;&nbsp;:goto_1&#13;
+if_&lt;条件&gt;v0 v1,:cond_2&#13;
+goto:  gotot_1&#13;
+:cond_2</a>
+</h3>
+<h3 class="topic">
+<a name="4cjdora3lqi258tk3moal3cgdr">&nbsp;&nbsp;&nbsp;&nbsp;:cond_1&#13;
+if_&lt;条件&gt;v0 v1,:cond_1</a>
+</h3>
+<h3 class="topic">
+<a name="7f4mm3vm1c9nk8f0c8ahas85gh">&nbsp;&nbsp;分支结构</a>
+</h3>
+<h3 class="topic">
+<a name="33cg9iq887jpqclc9hchsgh095">&nbsp;&nbsp;&nbsp;case值连续递增</a>
+</h3>
+<h3 class="topic">
+<a name="7gmpf6elo5cl4nep980ac0letj">&nbsp;&nbsp;&nbsp;&nbsp;关键字packed-switch</a>
+</h3>
+<h3 class="topic">
+<a name="4lh2p202sa2ck0nh069h39sksg">&nbsp;&nbsp;&nbsp;case可以为任意值</a>
+</h3>
+<h3 class="topic">
+<a name="5jt2nsbmr9onfdajre47dtp7lg">&nbsp;&nbsp;&nbsp;&nbsp;关键字sparse-switch</a>
+</h3>
+<h3 class="topic">
+<a name="0lqn3tv2ao27d2dlh394pm1k4e">&nbsp;&nbsp;&nbsp;注意smali中case值的列表在swtich-case所在函数的最末尾，标识其位置的标号一般放在switch关键字后面</a>
+</h3>
+<h3 class="topic">
+<a name="3pckcmdq1bv2t7ev60glk5gqdm">&nbsp;&nbsp;内部类</a>
+</h3>
+<h3 class="topic">
+<a name="3sseemd8r23dcgbq4js5mkpm17">&nbsp;&nbsp;&nbsp;内部类会单独生成一个smali文件</a>
+</h3>
+<h3 class="topic">
+<a name="5fuonnt3u8r5fpa8gdatbmlqnb">&nbsp;&nbsp;&nbsp;文件命名规则</a>
+</h3>
+<h3 class="topic">
+<a name="16hhc5g4prqs7oaskcqnh7ruhm">&nbsp;&nbsp;&nbsp;&nbsp;内部类所在的外部类类名$内部类类名</a>
+</h3>
+<h3 class="topic">
+<a name="5q7ehs9n2rk3jnnkhnubmptbae">&nbsp;&nbsp;&nbsp;内部类默认生成的构造函数会将外部类的this指针传入到内部类中</a>
+</h3>
+<h3 class="topic">
+<a name="3gn8gg4g51had0icug3741otnj">&nbsp;&nbsp;匿名内部类</a>
+</h3>
+<h3 class="topic">
+<a name="18qhpjiqpoidkimtbqpj5cp34j">&nbsp;&nbsp;&nbsp;会单独生成smali文件</a>
+</h3>
+<h3 class="topic">
+<a name="0i6q9mhirgv3du1uttol7ft3sl">&nbsp;&nbsp;&nbsp;文件命名规则</a>
+</h3>
+<h3 class="topic">
+<a name="30thm67bnpefgvmgn2tnv2kjom">&nbsp;&nbsp;&nbsp;&nbsp;匿名类所在外部类的类名$匿名类的序号</a>
+</h3>
+<h3 class="topic">
+<a name="1tguk1ka6m524jl3seih9ueqg1">&nbsp;&nbsp;内部类访问外部类的私有变量</a>
+</h3>
+<h3 class="topic">
+<a name="7t3a4fmehb49e9e2pc4tdtfp60">&nbsp;&nbsp;&nbsp;访问外部类的共有成员时，与外部类一样</a>
+</h3>
+<h3 class="topic">
+<a name="4lhv5q4bqcdqcdtptrpiuqmcrv">&nbsp;&nbsp;&nbsp;访问外部类私有成员时，内部类中生成类似于access$100的方法，用于获取成员值</a>
+</h3>
+<h3 class="topic">
+<a name="6hcs8dkesh13lod5prdmqps07k">&nbsp;&nbsp;外部类访问内部类的私有变量</a>
+</h3>
+<h3 class="topic">
+<a name="5279ecr4f05nlvodf6ptk9p2ua">&nbsp;&nbsp;&nbsp;外部类中产生类似于access$002的方法，用于获取变量的值</a>
+</h3>
+<h2 class="topic">
+<a name="69blpct6sa2nhjnejcsueqk4lc">AndroidKiller反编译出现问题的解决方法</a>
+</h2>
+<h3 class="topic">
+<a name="2ss0t8nb2vjd5koal9047qi3i0">&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class82day0703_files/5pmnpm3lfj3l52a1avb974mom0.png"></p>
+<h2 class="topic">
+<a name="3tqdpv2qnh3vrp250kn5k1pr37">AndroidKiller日志分析：捕鱼游戏</a>
+</h2>
+<h3 class="topic">
+<a name="1j6i9a6kriv9eqr8b8ad8u9fbn">&nbsp;搜索</a>
+</h3>
+<h3 class="topic">
+<a name="7t82902n0ggp9i3bq588sbo65c">&nbsp;日志</a>
+</h3>
+<h3 class="topic">
+<a name="2qrngrvcmgr7o8v8l59jpaqa94">&nbsp;&nbsp;将捕鱼游戏的日志过滤出来</a>
+</h3>
+<h3 class="topic">
+<a name="0c0va2nl4d49jc1rjfqpbnetcr">&nbsp;&nbsp;点击购买，出现新的日志信息，由下到上分析日志，找到关键判断</a>
+</h3>
+<h3 class="topic">
+<a name="2b2orv4sjen3lgv19i0d85molj">&nbsp;&nbsp;在下拉框中可以选择同一个文件的函数</a>
+</h3>
+<h3 class="topic">
+<a name="2bjv14q8ks2o4k9m0fvltrc3j5">&nbsp;&nbsp;替换关键函数中的内容 将payFailed的内容替换为paySuccess的内容</a>
+</h3>
+<h3 class="topic">
+<a name="5ubdl6g0mb11uu89q2mlo7ntq8">&nbsp;&nbsp;&nbsp;实际上两个函数的内容差不多，均是对两个函数的调用，只要将两个函数的参数对调，就可以破解该函数</a>
+</h3>
+<h3 class="topic">
+<a name="31i3u388q7sdpaoui9fbneh712">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class82day0703_files/5g87ok2r57tb6q625v4v2lqbbm.png"></p>
+<h3 class="topic">
+<a name="2me5imba9offcu9mko99sd0jjt">&nbsp;避免支付界面弹窗</a>
+</h3>
+<h3 class="topic">
+<a name="00v485vhcem72u40nik59h1m4i">&nbsp;&nbsp;老师给的游戏版本不包括弹窗</a>
+</h3>
+<h3 class="topic">
+<a name="5m8o6hvl97rt2kn1a83uu9v82k">&nbsp;利用源码中的发送消息过程，使用toast输出自己想输出的字符</a>
+</h3>
+<h3 class="topic">
+<a name="5km7k1hevv2hilia1vapk0ndhi">&nbsp;&nbsp;只要将原本输出的&ldquo;购买成功&rdquo;的字符串改成自己想输出的内容即可</a>
+</h3>
+<h3 class="topic">
+<a name="1aisn1lird1il3ss2j0q1qpbo6">&nbsp;在开始界面插入提示信息</a>
+</h3>
+<h3 class="topic">
+<a name="0ms3b89tvinli863gl98jboi81">&nbsp;&nbsp;在入口类中的 onCteate函数中   &#13;
+右键 -》插入toast，可以直接插入toast的smali汇编</a>
+</h3>
+<h3 class="topic">
+<a name="2238iamaj56e4b0kvkplvvru1v">&nbsp;注意</a>
+</h3>
+<h3 class="topic">
+<a name="04fil6r30u0kci8nrjqd48851q">&nbsp;&nbsp;有的游戏购买机制位于游戏客户端，称为内购，可以进行破解</a>
+</h3>
+<h3 class="topic">
+<a name="56ga4uc53vuci2kbgua5dcs83f">&nbsp;&nbsp;进行游戏破解的时候最好使用新的模拟器设备</a>
+</h3>
+<h2 class="topic">
+<a name="6ehl9mr9rpduef8jv76u8b7mdk">大圣觉醒游戏</a>
+</h2>
+<h3 class="topic">
+<a name="20dneoo0r6ekn6ks00c414eum2">&nbsp;已经破解内购</a>
+</h3>
+<h3 class="topic">
+<a name="178uk32sjoo4t6i3dmmauqf6h3">&nbsp;&nbsp;搜索购买字符串，将关键判断的switch-case中，购买成功和购买失败的case值互换即可</a>
+</h3>
+<h3 class="topic">
+<a name="2dfdupd483i8de9u2vr5s2ui8h">&nbsp;购买接口使用到了中国移动咪咕游戏的接口，目前看，只有允许该界面弹出，才能正常购买，不能购买</a>
+</h3>
+<h2 class="topic">
+<a name="5d0ms7603ffmsn23h43282uc0q">环境配置</a>
+</h2>
+<h3 class="topic">
+<a name="4m13n8p4t833j288f1ijieinau">&nbsp;夜神模拟器adb连接</a>
+</h3>
+<h3 class="topic">
+<a name="1g1t64701cl3dkoas782k67i5p">&nbsp;&nbsp;用于分析游戏</a>
+</h3>
+<h3 class="topic">
+<a name="36fntd1doe191b1tcvrkqqfg1n">&nbsp;&nbsp;需要将夜神模拟器中的adb、sdk中的adb，以及androidkiller的adb，三者保持一致</a>
+</h3>
+<h2 class="topic">
+<a name="7h0klktur1qvqccj17u3kg7ui0">动态调试smali代码</a>
+</h2>
+<h3 class="topic">
+<a name="32c07tb09m914d0h6ek8fc721h">&nbsp;需要用到插件smaliidea插件</a>
+</h3>
+<h3 class="topic">
+<a name="5ee9hlqfo9ccjv19nbvoq2e8rg">&nbsp;&nbsp;将插件导入到AndroidStdio中</a>
+</h3>
+<h3 class="topic">
+<a name="6k0vb25bnj7c17astuhldi70fp">&nbsp;导入smali工程</a>
+</h3>
+<h3 class="topic">
+<a name="02fvoqh0s5a4k5qg6cbi7ofbd9">&nbsp;&nbsp;smali工程来源于androiddiller的目录，将对应目录的project导入 androidstido</a>
+</h3>
+<h3 class="topic">
+<a name="0pqvpa5n77fi1131mk6u6na2i6">&nbsp;&nbsp;使用AndroidStdio导入AndroidKiller生成的smali包&#13;
+当时从外部包中导入项目时&#13;
+注意导入时不要使用Gradle选项，否则工程不能直接浏览</a>
+</h3>
+<h3 class="topic">
+<a name="1rn3oin3mfbi7j85bb8l8p79nt">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class82day0703_files/0rjoml3afci723tavi5onmdq1g.png"></p>
+<h3 class="topic">
+<a name="60hrbl0brv4kigh8r0ko68car3">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class82day0703_files/3ro8vlntfa0ttsa9m4in48jfvd.png"></p>
+<h3 class="topic">
+<a name="07ao8a4fks8abrcm0pc7ugces7">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class82day0703_files/5obsd0o0bit30t6a0dorb9bthg.png"></p>
+<h3 class="topic">
+<a name="4gbb4a21vopei1m1qmdld54dak">&nbsp;&nbsp;导入包的过程中直接创建新项目，默认使用了Gradle选项，也可以直接显示讲工程显示从Android切换到Project</a>
+</h3>
+<h3 class="topic">
+<a name="3chbjml6b4lkqcv1a36c7qj4do">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class82day0703_files/1js7p9hqcvauggmo36bng1jveu.png"></p>
+<h3 class="topic">
+<a name="2rmibiiis090rc8ldqd566svag">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class82day0703_files/28ak193065ad2oo2jdho5nulim.png"></p>
+<h3 class="topic">
+<a name="17njpfkjtunarlmdu7slm0kdc3">&nbsp;找到对应断点，下断点调试</a>
+</h3>
+<h3 class="topic">
+<a name="1cvvk4n80ndoins11rud1r6u9j">&nbsp;安装apk，并以调试方式与运行apk</a>
+</h3>
+<h3 class="topic">
+<a name="0hulkee8u3lfijq1eu50i3p8gt">&nbsp;&nbsp;注意如果包名和入口类名的关系</a>
+</h3>
+<h3 class="topic">
+<a name="22hrs3jq47bk5h0q82r0uhfan0">&nbsp;&nbsp;这一过程使用adb命令，命令执行的路径下需要有被安装的apk程序</a>
+</h3>
+<h3 class="topic">
+<a name="56pdoi1c0u1eqibf8cgodn75q1">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class82day0703_files/1qha2l3gecao7lbjio2as3on5b.png"></p>
+<h3 class="topic">
+<a name="60ejprrv2a5vce8lllpt6vhm8v">&nbsp;打开monitor，修改调试端口</a>
+</h3>
+<h3 class="topic">
+<a name="1qf2l30sjcca6gt2tm3ndcm3c0">&nbsp;&nbsp;一般默认的端口就是8700</a>
+</h3>
+<h3 class="topic">
+<a name="4ivvaa8cvjvl4ree2lna90ul16">&nbsp;在AndroidStdio中添加新的调试配置，调试端口为8700</a>
+</h3>
+<h3 class="topic">
+<a name="1l0ii87126ctbamllmc8amcufh">&nbsp;&nbsp;动态调试过程中存在调用栈，可以查看</a>
+</h3>
+<h3 class="topic">
+<a name="21bbfocu180oiist82hi3l0l8a">&nbsp;点击AndroidStdio中得到调试按钮，与虚拟设备中被调试的进程进行链接</a>
+</h3>
+<h3 class="topic">
+<a name="1fle1ir4g39r55vd3ekkt0ri50">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class82day0703_files/39dcscifm9le2o9df6buq2emj0.png"></p>
+<h2 class="topic">
+<a name="6vvo21ajtvjnu1kp91e16anvk3">动态附加调试smali</a>
+</h2>
+<h3 class="topic">
+<a name="4e5ujcl97khm0ruv8c4e179o6i">&nbsp;前提条件：apk中的清单文件中application标签中有debug属性&nbsp;&nbsp; android:debuggable="true"&nbsp;</a>
+</h3>
+<h3 class="topic">
+<a name="7ivil7qvu3r9f9na65p0bvb14t">&nbsp;需要关闭monitor</a>
+</h3>
+<h3 class="topic">
+<a name="4ga8c41a3lbs0avaij37gd3usg">&nbsp;需要首先运行一下apk，&#13;
+然后调试方式启动apk&nbsp;&nbsp; adb&nbsp;shell&nbsp;am&nbsp;start&nbsp;&shy;D&nbsp;&shy;n&nbsp;com.bluelesson.apkcrackme/.MainActivity&nbsp;&nbsp; 在AndroidStudio中直接附加进程&nbsp;&nbsp;</a>
+</h3>
+<h3 class="topic">
+<a name="7tsp784sa1dghsp6rvm9tnfcka">&nbsp;使用的仍然是smali工程进行调试</a>
+</h3>
+<h3 class="topic">
+<a name="45gd5e4ctq8d04krjbs27ii0m6">&nbsp;&nbsp;注意使用的smali工程需要是AndroidKiller安装在模拟器上的对应版本，才能成功断下</a>
+</h3>
+<h3 class="topic">
+<a name="63jviq3di8u6jf1hd2eep6th38">&nbsp;&nbsp;被调试的app一般将断点设置在入口类的onCreate函数中，如果被调试程序抛跑起来了，可以通过在模拟器中回到桌面，重新进入app从而再次触发onCreate中的断点</a>
+</h3>
+<h2 class="topic">
+<a name="1t461evot65o71vc52p01253nf">ctf题目</a>
+</h2>
+<h2 class="topic">
+<a name="3jv7ljh7rnvf62i96iug8rhhf7">分析细节</a>
+</h2>
+<h3 class="topic">
+<a name="7qeju0bo6h0tb1cb9951928vjk">&nbsp;从反编译的源码中得到资源id，需要讲资源id转为十六进制，再进行搜索</a>
+</h3>
+<h3 class="topic">
+<a name="2atp206nb3jcc2q294u8ap6pv0">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class82day0703_files/00qstaef66uet0lkessdh0st09.png"></p>
+<h3 class="topic">
+<a name="630iacl0sgnchm5pilssk457fi">&nbsp;通过smali与源码的函数关联，找到源码中包含对于滚字符串环的函数</a>
+</h3>
+<h3 class="topic">
+<a name="3m96k4gr4jah4i31du93gib09v">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class82day0703_files/66ogut7eo9etijjtfl25itc65o.png"></p>
+<h3 class="topic">
+<a name="0akobihhk7clslf6phhgpotcf7">&nbsp;通过反汇编界面的搜索功能找到 smali关键位置在反汇编器代码中位置</a>
+</h3>
+<h3 class="topic">
+<a name="5go0v7pu2mao0j2mukedsjnre3">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class82day0703_files/16nnc71g77fs13643keiob0gv7.png"></p>
+<h3 class="topic">
+<a name="7g3jsnpd52vudl7eeglf3nkaf4">&nbsp;&nbsp;注意这个搜索功能比较坑，部分搜索结果不会自己展开显示，需要点击展开，在对应的文件中搜索结果可能也不会高亮，需要自己区比较</a>
+</h3>
+<h3 class="topic">
+<a name="4hs60b2bs65c1sme9vunar85h2">&nbsp;根据androidkiller中的地址，找到对应函数在androidstdio中的地址，从而实现下断调试</a>
+</h3>
+<h3 class="topic">
+<a name="532v0op0n481ahdu24fim9cr1k">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class82day0703_files/2so99t1vhqofc4ls1rpsqc18ci.png"></p>
+<h3 class="topic">
+<a name="7gd7095k15bu4vpjq1ltk5tkip">&nbsp;有的时候应用app与AndroidStdio的动态调试链接可以正常建立，但是app被调试后处于黑屏，且AndroidStdio中的断点没有被触发，可能只是app自身的问题</a>
+</h3>
+<h3 class="topic">
+<a name="4t8r7lphgr00hkjkojsuv578vq">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class82day0703_files/5b1lnrpeo9utrbj5cdpsgbtgmj.png"></p>
+<h3 class="topic">
+<a name="2ioepkrhu917rht7lj58fhi6ik">&nbsp;&nbsp;这种情况下只能通过在源文件中插入Smali代码输出一些调试信息，从而判断程序的执行情况，可能的情况是程序已经运行，但是没有在断点处断下</a>
+</h3>
+<h2 class="topic">
+<a name="7pe49ukd5ebrfjdop6p25l4n6g">环境搭建</a>
+</h2>
+<h3 class="topic">
+<a name="1qf5c5tck3qvqf6qo2budtglkk">&nbsp;实现夜神模拟器和AnsroidStdio联动</a>
+</h3>
+<h3 class="topic">
+<a name="3ocrmf5l4653qck0voq37b70vb">&nbsp;&nbsp;同时保持AndroidStido自身的avd可以正确运行</a>
+</h3>
+<h3 class="topic">
+<a name="6qqqc6vb6pg12jed0be6b29g1v">&nbsp;实现monitor可以识别夜神模拟器</a>
+</h3>
+<h3 class="topic">
+<a name="4rvd3co55207k0hrq99rpn3h3l">&nbsp;&nbsp;注意如果要使得monitor识别夜神模拟器设备，需要先打开moitor，然后打开夜神模拟器</a>
+</h3>
+<h3 class="topic">
+<a name="1f15baqlbucuckv9ghd0c8fjrd">&nbsp;实现AndriodKiller识别夜神模拟器</a>
+</h3>
+<h3 class="topic">
+<a name="3u4kv6euj5b9lo62lhhdt5af31">&nbsp;&nbsp;https://blog.csdn.net/weixin_44538399/article/details/91419126</a>
+</h3>
+<h3 class="topic">
+<a name="7f1at0u4199fepo2r727arbeah">&nbsp;&nbsp;操作步骤：&#13;
+1、下载好模拟器后，先打开模拟器，在设置里的关于平板电脑的版本号按7下以上，会有toast提示，然后进入开发者选项，打开usb调试&#13;
+2、打开cmd，进入到模拟器的安装目录D:\Program Files\Nox\bin，我的是夜神，进的是这个目录，不同模拟器不同用户路径会不一样。进入后，运行：nox_adb.exe connect 127.0.0.1:62001&#13;
+3、打开Androidkiller后，cmd命令 进入到androidkiller 的安装目录C:\Users\ZF\Desktop\AndroidKiller__v1.3.1\AndroidKiller_v1.3.1\bin\adb，执行命令：adb connect 127.0.0.1：62001&#13;
+&#13;
+4、最后在androidkiller里刷新一下，就可以连接上模拟器了</a>
+</h3>
+<h3 class="topic">
+<a name="4opq3g98ajpbi1o1peqonjpb05">&nbsp;&nbsp;其实就是模拟器中adb程序的端口与AndroidKiller程序的端口不相同</a>
+</h3>
+<h3 class="topic">
+<a name="7mjmk9hcg6jna87ronouobuv42">&nbsp;夜神模拟器进入开发者模式</a>
+</h3>
+<h3 class="topic">
+<a name="0do41m93b17keg4g7h2cc8a39m">&nbsp;&nbsp;https://www.yeshen.com/faqs/Sy1F0plff</a>
+</h3>
+<h2 class="topic">
+<a name="3mqon73t5eup9d7f788tcl6f1f">动态调试流程1</a>
+</h2>
+<h3 class="topic">
+<a name="06776t3kdlrrbc8hr8gadlom6s">&nbsp;还是不太懂 使用adb为硬件设备调试启动app时，如何区分包名与 启动的类是不是在同一个路径下</a>
+</h3>
+<h3 class="topic">
+<a name="4lmr86gj1sg3srjc1r2bhdj1re">&nbsp;动态调试游戏最好使用夜神</a>
+</h3>
+</body>
+</html>

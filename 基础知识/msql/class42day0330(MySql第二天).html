@@ -1,0 +1,1052 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>class42day0330(MySql第二天)</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="267r7oc3p6tmruedih8duqoi28">class42day0330(MySql第二天)</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="class42day0330(MySql%E7%AC%AC%E4%BA%8C%E5%A4%A9)_files/images/class42day0330(MySql%E7%AC%AC%E4%BA%8C%E5%A4%A9).jpg"></div>
+<h2 class="topic">
+<a name="6pov80eu6qg1jt699kijl07bsb">复习</a>
+</h2>
+<h3 class="topic">
+<a name="6upmsk5177muqgaukt4u797ok8">&nbsp;创建数据库</a>
+</h3>
+<h3 class="topic">
+<a name="3qupv1lnv0ho7v1043joedqp4r">&nbsp;&nbsp;create database chatroom;</a>
+</h3>
+<h3 class="topic">
+<a name="1p84s9ktkuvr5g8i7acludskav">&nbsp;修改</a>
+</h3>
+<h3 class="topic">
+<a name="2547blkfn9egp3gt5i19npa81b">&nbsp;&nbsp;alter database chatroom charset=utf16;</a>
+</h3>
+<h3 class="topic">
+<a name="5359losij6m1c4ndddti28l8k2">&nbsp;删除</a>
+</h3>
+<h3 class="topic">
+<a name="2mvn6v4uc9f3b6i9k7nhm6rk6m">&nbsp;&nbsp;drop database chatroom;</a>
+</h3>
+<h3 class="topic">
+<a name="0tmr7ero72996t3bb8mh9lng8r">&nbsp;创建表</a>
+</h3>
+<h3 class="topic">
+<a name="792h28vi8jgu8ntsr5e3tb84cb">&nbsp;&nbsp;create table user_table(&#13;
+	字段名 类型名 约束 not null，&#13;
+	字段名1 类型名1 ，&#13;
+)；</a>
+</h3>
+<h3 class="topic">
+<a name="4q22mfoc0ortfa29lii078tocd">&nbsp;修改表</a>
+</h3>
+<h3 class="topic">
+<a name="220kd97s4em5lg0kqaa10o9ia5">&nbsp;&nbsp;添加字段</a>
+</h3>
+<h3 class="topic">
+<a name="0eklnevsq305lbdkpui01f9r44">&nbsp;&nbsp;&nbsp;alter table 表名&#13;
+	add column 字段名 字段类型 after 字段名；</a>
+</h3>
+<h3 class="topic">
+<a name="5941nu0mpgq1vs5i2n0je0kg3c">&nbsp;&nbsp;修改字段(modify修改字段类型 change修改字段名)</a>
+</h3>
+<h3 class="topic">
+<a name="6ku8m4hs2ksf602riff6o8j8ao">&nbsp;&nbsp;&nbsp;alter table 表名&#13;
+	modify column 字段名 类型 约束；&#13;
+alter table 表名&#13;
+	change column 字段名 新字段名 类型 约束；&#13;
+alter table 表名 --删除字段&#13;
+	drop 字段名；&#13;
+drop table; --删除表</a>
+</h3>
+<h3 class="topic">
+<a name="41qvh0q1mftqs568hfjeldoo38">&nbsp;数据插入</a>
+</h3>
+<h3 class="topic">
+<a name="1vjdpnuksetbbmbhdobpopjmq5">&nbsp;&nbsp;insert into 表名(字段名，...)values(值，..),(值,....);</a>
+</h3>
+<h3 class="topic">
+<a name="7cpaa1vcq06nv6adqp8p4aa19g">&nbsp;数据更新</a>
+</h3>
+<h3 class="topic">
+<a name="0e414el7t0ojkg2k80bg8qa1g9">&nbsp;&nbsp;use 数据库名&#13;
+update 表名&#13;
+	set host='%'&#13;
+	where user='root';</a>
+</h3>
+<h3 class="topic">
+<a name="30ggc00cme5omblirt0gosfg49">&nbsp;主键约束</a>
+</h3>
+<h3 class="topic">
+<a name="2qjpj45ibkcq4d9e9sc9nbblna">&nbsp;&nbsp;如果将id和名字作为主键，可以id相同但名字不同，可以名字相同id不同，但是不能名字和id均相同</a>
+</h3>
+<h3 class="topic">
+<a name="7ad3kvot8hqf5i9ui9tkeur17e">&nbsp;&nbsp;primary key</a>
+</h3>
+<h3 class="topic">
+<a name="0cj0mlhd9uj7kr5ma592c33ifc">&nbsp;唯一约束</a>
+</h3>
+<h3 class="topic">
+<a name="1gbuo6kjus9tbecl5untstiia4">&nbsp;&nbsp;unique key</a>
+</h3>
+<h3 class="topic">
+<a name="66vdjemkiilp9lv27smru63ikg">&nbsp;非空约束</a>
+</h3>
+<h3 class="topic">
+<a name="65ug8n1qqqpo7e8kpl50cuud4h">&nbsp;&nbsp;not null</a>
+</h3>
+<h3 class="topic">
+<a name="06a6fiq7ob9ng4ef7od6gnshh2">&nbsp;默认约束</a>
+</h3>
+<h3 class="topic">
+<a name="7b6f4100o31rt1migfbshjkr4s">&nbsp;&nbsp;default</a>
+</h3>
+<h3 class="topic">
+<a name="67iitbb42d0v3ke0phq6cltjlm">&nbsp;外键约束</a>
+</h3>
+<h3 class="topic">
+<a name="6gda76dhqej84iso2l22aj3dbe">&nbsp;&nbsp;注意，本表中的一个字段设置外键约束，绑定其他表的一个字段，则其他表中被绑定的字段必须是该字段所在表的主键</a>
+</h3>
+<h3 class="topic">
+<a name="5hc01eq5dtgsla2oiglm9t9u3q">&nbsp;&nbsp;这样的目的是从本表中每一个外键查询另一个表中对应字段时，因为字段为另一个表中的主键，所以可以查询到另一张表中唯一对应的记录</a>
+</h3>
+<h3 class="topic">
+<a name="52ifl7936hchjdgsrljgh89sv7">&nbsp;&nbsp;foregin key (字段名) references 表名 (字段名)</a>
+</h3>
+<h3 class="topic">
+<a name="1bjhkpgtsh8c58mgdqnhn4tco1">&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="1flon990eg1a67519mqulmc7h8">&nbsp;&nbsp;create table if not exists user_table(&#13;
+	user_id int not null,&#13;
+	user_name varchar(50),&#13;
+	user_sex enum('男','女') default '男'&#13;
+	primary key(user_id), --主键约束&#13;
+	unique key(user_name)--唯一约束&#13;
+);&#13;
+alter table user_table&#13;
+	modify column user_id int auto_increment first;--id自动增长&#13;
+&#13;
+alter table user_table&#13;
+	add user_pass varchar(50) not null after user_id; --添加非空约束的密码&#13;
+&#13;
+insert into user_table&#13;
+	(user_name,user_pass)&#13;
+	values('小明',MD5('123')),--MD5方式存存储密码&#13;
+	          ('小丽','hello');</a>
+</h3>
+<h2 class="topic">
+<a name="7vmqtc7o713m896291jr2oik0t">数据的查询</a>
+</h2>
+<h3 class="topic">
+<a name="54q698qooghf5te3r237u0chai">&nbsp;基本架构</a>
+</h3>
+<h3 class="topic">
+<a name="7d2trf0b86n3u3q3h617be33dl">&nbsp;&nbsp;select 字段名,from 表名&#13;
+	where &#13;
+	order by</a>
+</h3>
+<h3 class="topic">
+<a name="36aj5cdlb5g8ht2dv2831jl81s">&nbsp;简单查询</a>
+</h3>
+<h3 class="topic">
+<a name="1v8k71erejmvd3torv8hi63hhe">&nbsp;&nbsp;select * from user_table;</a>
+</h3>
+<h3 class="topic">
+<a name="03b3tjp0ut7shjjhlft4q5tftk">&nbsp;&nbsp;select user_name,user_pass from user_table;</a>
+</h3>
+<h3 class="topic">
+<a name="4e2ecm86bb4365e5ehevuqp9ml">&nbsp;&nbsp;select user_name as 用户名 from user_table;</a>
+</h3>
+<h3 class="topic">
+<a name="20a562vgfmenu6stq60rhbk01s">&nbsp;&nbsp;&nbsp;取别名</a>
+</h3>
+<h3 class="topic">
+<a name="1va54hm96gchc1b14nq0bnj1cq">&nbsp;&nbsp;select distinct user_pass from user_table;</a>
+</h3>
+<h3 class="topic">
+<a name="6o5p7c5uj4r6bpqpu9di34flmf">&nbsp;&nbsp;&nbsp;去重</a>
+</h3>
+<h3 class="topic">
+<a name="6k8tlnkrhu9afv3r7nftrtvd5d">&nbsp;按条件查询(具体的需要参考资料)</a>
+</h3>
+<h3 class="topic">
+<a name="02fjmm3s0nb4h386hchvs511b2">&nbsp;&nbsp;selete user_name from user_table&#13;
+	where user_id = 1;</a>
+</h3>
+<h3 class="topic">
+<a name="0npmureo7cbs99etc9o2lmcmj1">&nbsp;&nbsp;selete user_name as 用户名from user_table&#13;
+	where user_id = 1;</a>
+</h3>
+<h3 class="topic">
+<a name="5b5je6dndi7jb638chj2egma1r">&nbsp;&nbsp;selete from user_table&#13;
+	--order by 1 --按照第一列排序&#13;
+	--order by user_name --按照user_name进行排序</a>
+</h3>
+<h3 class="topic">
+<a name="01bvc0p0uv1bi8th6pcq02sfml">&nbsp;&nbsp;select * from user_table&#13;
+	where user_id between 4 and 5;</a>
+</h3>
+<h3 class="topic">
+<a name="1kvddt0hq27ra2as9oncl8seca">&nbsp;&nbsp;select * from user_table&#13;
+	where user_id &gt;= 4 and user_id &lt;= 5;</a>
+</h3>
+<h3 class="topic">
+<a name="31esp06pgg5p7efs52eii5ij1k">&nbsp;&nbsp;select * from user_table&#13;
+	where user_id in (3,4,5);</a>
+</h3>
+<h3 class="topic">
+<a name="7i5ljm78eg3h73i1vli9eei221">&nbsp;&nbsp;select * from user_table&#13;
+	where user_name like "xiao%";</a>
+</h3>
+<h3 class="topic">
+<a name="4do0b08tcpord4vvp00qjcukg4">&nbsp;&nbsp;&nbsp;模糊查询</a>
+</h3>
+<h3 class="topic">
+<a name="6qq67iafiddech3bssque2i9fu">&nbsp;&nbsp;select * from user_table&#13;
+	where  user_sex = '男'&#13;
+	order by user_id asc;</a>
+</h3>
+<h3 class="topic">
+<a name="6rilc8vhv7eavbnfa32448m9ao">&nbsp;&nbsp;&nbsp;对查询结果进行排序</a>
+</h3>
+<h3 class="topic">
+<a name="4uumpludgo1gl1u1ld7nmtvlve">&nbsp;&nbsp;按条件查询有很多条件可以使用</a>
+</h3>
+<h3 class="topic">
+<a name="1cg85u7fjc2adqm1m8vpc199pg">&nbsp;&nbsp;&nbsp;比较运算符</a>
+</h3>
+<h3 class="topic">
+<a name="4rlunl6bjt8t13pfg7gnvgd6t4">&nbsp;&nbsp;&nbsp;&nbsp;&lt; &gt; =</a>
+</h3>
+<h3 class="topic">
+<a name="6ovafgrkf1g5l90nn3cpa9o107">&nbsp;&nbsp;&nbsp;&nbsp;between  and</a>
+</h3>
+<h3 class="topic">
+<a name="7n9id2o6j98ent99gsfiquljia">&nbsp;&nbsp;&nbsp;&nbsp;LIKE</a>
+</h3>
+<h3 class="topic">
+<a name="53ejuetj3nt7n8bhq78ml2snm1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;%</a>
+</h3>
+<h3 class="topic">
+<a name="4o93cm2hi6qrmjacqdoh6nn17p">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用于匹配任意长度的字符</a>
+</h3>
+<h3 class="topic">
+<a name="54eeledkgl44mpppbgn1kj9mv0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_n</a>
+</h3>
+<h3 class="topic">
+<a name="78155td9d9pbo7pvbuahekhscm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用于匹配单一字符</a>
+</h3>
+<h3 class="topic">
+<a name="2ng2jgmkt39auur89ped5aq425">&nbsp;&nbsp;&nbsp;&nbsp;正则表达式</a>
+</h3>
+<h3 class="topic">
+<a name="312sdomdkutlupbfu5g0mqqego">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;带REGEXP的查询</a>
+</h3>
+<h3 class="topic">
+<a name="3u8fbs7dtou76r6fv94p8g7mhp">&nbsp;&nbsp;&nbsp;&nbsp;...具体的看资料</a>
+</h3>
+<h3 class="topic">
+<a name="278drpakaeff4blvs76t9cfpk2">&nbsp;&nbsp;&nbsp;逻辑运算符</a>
+</h3>
+<h3 class="topic">
+<a name="6mk46iabquu0o8rh5gfd1rujad">&nbsp;&nbsp;&nbsp;&nbsp;and</a>
+</h3>
+<h3 class="topic">
+<a name="04htm8jr8s02ktisdcjh4bueo0">&nbsp;&nbsp;&nbsp;&nbsp;or</a>
+</h3>
+<h3 class="topic">
+<a name="5spilgf3i4ru4fsea2jai73k72">&nbsp;&nbsp;&nbsp;&nbsp;not</a>
+</h3>
+<h3 class="topic">
+<a name="2fa06e5c92k960mvku7ohjo0l6">&nbsp;高级查询</a>
+</h3>
+<h3 class="topic">
+<a name="68ro8kv00uj7nuj5sj79qqt5qn">&nbsp;&nbsp;聚合函数</a>
+</h3>
+<h3 class="topic">
+<a name="5cm5i2kd6152b5ds2iru1jpnk1">&nbsp;&nbsp;&nbsp;select count(*) from user_table;</a>
+</h3>
+<h3 class="topic">
+<a name="67hth1gff7h8ge4m2s0d49htn6">&nbsp;&nbsp;&nbsp;select max(user_id) from user_table;</a>
+</h3>
+<h3 class="topic">
+<a name="27ll5ceo19r3trd2fmge2cfjuf">&nbsp;&nbsp;&nbsp;select min(user_id) from user_table;</a>
+</h3>
+<h3 class="topic">
+<a name="5291j6vcile7hg29m00q4bp1qm">&nbsp;&nbsp;&nbsp;select avg(user_id) from user_table;</a>
+</h3>
+<h3 class="topic">
+<a name="6jk3ghvg6qhvcffofcdvl4s7aa">&nbsp;&nbsp;&nbsp;select sum(user_id) from user_table;</a>
+</h3>
+<h3 class="topic">
+<a name="5d0t5kvllrmvrhdnj1b0aacv1g">&nbsp;分组查询</a>
+</h3>
+<h3 class="topic">
+<a name="74s4ita25qk43hcam7fnsuig57">&nbsp;&nbsp;group by关键字</a>
+</h3>
+<h3 class="topic">
+<a name="4htbh8oqof3rhlph9fp7v5jhhv">&nbsp;&nbsp;&nbsp;注意group by中不能使用where 会报错，如果要指定条件，只能使用having 而且条件的指定只能针对group by的字段</a>
+</h3>
+<h3 class="topic">
+<a name="22u79ehe4kh31gdib8pntjftas">&nbsp;&nbsp;select user_sex, count(*) from user_table&#13;
+	group by user_sex; </a>
+</h3>
+<h3 class="topic">
+<a name="0je8h3u79iughd8oani04o9kfl">&nbsp;&nbsp;&nbsp;查询性别为男和女的记录分别有多少条</a>
+</h3>
+<h3 class="topic">
+<a name="248klflp00j3hnn37v3fubl298">&nbsp;&nbsp;&nbsp;group by user_sex可以看作是将原来的表根据性别分成来两张表</a>
+</h3>
+<h3 class="topic">
+<a name="2b4lfihkikrpeekudo3815allp">&nbsp;&nbsp;select user_id, count(*) from user_table&#13;
+	group by user_id&#13;
+	having user_id &lt;5;</a>
+</h3>
+<h3 class="topic">
+<a name="25onpmheg2g204ogo960pdh9k8">&nbsp;&nbsp;&nbsp; 在分组中使用having 进行过滤，不能使用where</a>
+</h3>
+<h3 class="topic">
+<a name="4ovghunu4ecdnbq7hf737ccj4q">&nbsp;多表查询</a>
+</h3>
+<h3 class="topic">
+<a name="52i573bk2clq7h1verlo2ptbmr">&nbsp;&nbsp;交叉链接</a>
+</h3>
+<h3 class="topic">
+<a name="7oca1rpnuaov31gu2dpmga3c17">&nbsp;&nbsp;内连接</a>
+</h3>
+<h3 class="topic">
+<a name="1a6fl59d7m7mr8vi37a54nnd43">&nbsp;&nbsp;&nbsp;select * from 表1, 表2&#13;
+	where 表1.id = 表2.id</a>
+</h3>
+<h3 class="topic">
+<a name="2fi5oagc7oet1ac5245g8l01m4">&nbsp;&nbsp;外连接</a>
+</h3>
+<h3 class="topic">
+<a name="4ae51uejikla6bchjj40ool5ir">&nbsp;&nbsp;&nbsp;左外连接</a>
+</h3>
+<h3 class="topic">
+<a name="18jno5q91lcjre0ko1ilrqt321">&nbsp;&nbsp;&nbsp;&nbsp;显示左表中所有匹配到记录</a>
+</h3>
+<h3 class="topic">
+<a name="27uivfr0j6kksbeq1co641qj68">&nbsp;&nbsp;&nbsp;&nbsp;select * from 表1 left join 表2&#13;
+	on 表1.id = 表2.id</a>
+</h3>
+<h3 class="topic">
+<a name="5o6f2iuqnea6torn43mi8fcppd">&nbsp;&nbsp;&nbsp;右外连接</a>
+</h3>
+<h3 class="topic">
+<a name="35nu1efft9ct976k4nv7iqikh2">&nbsp;&nbsp;&nbsp;&nbsp;显示右表中所有匹配到记录</a>
+</h3>
+<h3 class="topic">
+<a name="5infe652gs46p2p5803i3fslvg">&nbsp;&nbsp;&nbsp;&nbsp;select * from 表1 right join 表2&#13;
+	on 表1.id = 表2.id</a>
+</h3>
+<h3 class="topic">
+<a name="0m0mm3aqdr82qd4ncajm8v5tum">&nbsp;子查询</a>
+</h3>
+<h3 class="topic">
+<a name="4eeet1frmsppe4c8t08ga2bs68">&nbsp;&nbsp;注意内层查询中不能加；否则会报错</a>
+</h3>
+<h3 class="topic">
+<a name="3b4d9j54ff74teknp1ba9br66s">&nbsp;&nbsp;in关键字</a>
+</h3>
+<h3 class="topic">
+<a name="1d2m5q1llrkh4p3js3vbdqg61m">&nbsp;&nbsp;&nbsp;内层返回一个序列，该序列中的值将供外层语句比较操作</a>
+</h3>
+<h3 class="topic">
+<a name="1pv4b1eb4blu7h26e8p63l9a55">&nbsp;&nbsp;exists</a>
+</h3>
+<h3 class="topic">
+<a name="1n929gqlgkcfcvnrarhapjvscc">&nbsp;&nbsp;&nbsp;内层返回真假，为真的时候外层才会执行</a>
+</h3>
+<h3 class="topic">
+<a name="2hruekh8hg8ms21j41bgrtiorl">&nbsp;&nbsp;all</a>
+</h3>
+<h3 class="topic">
+<a name="3kpv8lncnb6a4m2946sje3vdco">&nbsp;&nbsp;&nbsp;允许创建一个表达式对子查询的返回值进行比较，要求满足内层子查询中的所有比较条件，就返回一个结果作为外层查询语句</a>
+</h3>
+<h3 class="topic">
+<a name="1lskrc0eem7kfl8vj9t9g0b76l">&nbsp;&nbsp;any</a>
+</h3>
+<h3 class="topic">
+<a name="0f7pu3qqgvdv45k1rrdufc03cn">&nbsp;&nbsp;&nbsp;允许创建一个表达式对子查询的返回值进行比较，只要满足内层子查询中的任意一个比较条件，就返回一个结果作为外层查询语句</a>
+</h3>
+<h3 class="topic">
+<a name="5uhp75e1obp5dv6icindtcd3jj">&nbsp;&nbsp;all和any均返回序列，两者均允许使用比较运算符进行比较</a>
+</h3>
+<h3 class="topic">
+<a name="3jtc1uipi4omu2scc4qc3agbnc">&nbsp;&nbsp;&nbsp;&gt;</a>
+</h3>
+<h3 class="topic">
+<a name="2ji28qoph6g7vjb5ru6m4dolb9">&nbsp;&nbsp;&nbsp;&lt;</a>
+</h3>
+<h3 class="topic">
+<a name="2q3ivt0k9s715b40rjp6cdglke">&nbsp;&nbsp;&nbsp;&gt;=</a>
+</h3>
+<h3 class="topic">
+<a name="26brojc46jfehe6df11ved4654">&nbsp;&nbsp;&nbsp;&lt;=</a>
+</h3>
+<h3 class="topic">
+<a name="4cok2qk5a91kkr80623u4n0gfi">&nbsp;&nbsp;&nbsp;=</a>
+</h3>
+<h3 class="topic">
+<a name="4fdqvseuno6b70il1rp8kjdbh4">&nbsp;&nbsp;&nbsp;!=</a>
+</h3>
+<h3 class="topic">
+<a name="42eh3fhs2qe9f1kk3fls761ng8">&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="3q8kmum8rvnb3tfcuaqjdbe4r3">&nbsp;&nbsp;&nbsp;select * from user_table&#13;
+	where user_id = (&#13;
+		select user_id from user_chat_table&#13;
+			where chat_id = 3;&#13;
+		)；</a>
+</h3>
+<h3 class="topic">
+<a name="6jvik155noevsn2875753tl5tq">&nbsp;&nbsp;&nbsp;&nbsp;查询聊天室 = 3 的所有用户 </a>
+</h3>
+<h3 class="topic">
+<a name="45e7fo02v4dp621p5sbm8aqhq5">&nbsp;&nbsp;&nbsp;select * from user_table,user_chat_table&#13;
+	where chat_id = 3 and user_table.user_id  = user_chat_table = user_id;&#13;
+</a>
+</h3>
+<h3 class="topic">
+<a name="5tcom52j4l05i48m301s2egog9">&nbsp;&nbsp;&nbsp;&nbsp;内连接方式</a>
+</h3>
+<h2 class="topic">
+<a name="6do035rk8hdjot2s77q8go2d7g">范式理论</a>
+</h2>
+<h3 class="topic">
+<a name="0nglp2ck8fcvtb6hcpsa3t63fd">&nbsp;数据的完整性和正确性</a>
+</h3>
+<h3 class="topic">
+<a name="0jpslhrrshtkdkls5dr2d3p6gt">&nbsp;&nbsp;通过约束实现</a>
+</h3>
+<h3 class="topic">
+<a name="4mqd4l1e0oo6i27lrnc8dpnta3">&nbsp;数据臃肿度和冗余度</a>
+</h3>
+<h3 class="topic">
+<a name="3uhunukekkcuoi02e92t5jvu7m">&nbsp;&nbsp;通过范式理论实现</a>
+</h3>
+<h3 class="topic">
+<a name="0ph8frn25gi9g55cev7op8nss0">&nbsp;目前存在六种范式，关系是层层递进的，只有满足第一范式的基础上才会去考虑第二范式</a>
+</h3>
+<h3 class="topic">
+<a name="6tqgnkahih66dta14a9qkah9sa">&nbsp;&nbsp;第一范式</a>
+</h3>
+<h3 class="topic">
+<a name="2o39tvgc8kcir8hjm0d9aluo48">&nbsp;&nbsp;&nbsp;同一中不能有多个值，每一列中的值都是不可分割的</a>
+</h3>
+<h3 class="topic">
+<a name="2efdt8sboj9tr5nmu5tkil65jd">&nbsp;&nbsp;第二范式</a>
+</h3>
+<h3 class="topic">
+<a name="35isqhnv0t1vabhdk1q6k887ak">&nbsp;&nbsp;&nbsp;确保表中的每一列都和主键相关，一个表只描述一件事</a>
+</h3>
+<h3 class="topic">
+<a name="27ofr6bgh7nfseb0hpjv6totgq">&nbsp;&nbsp;第三范式</a>
+</h3>
+<h3 class="topic">
+<a name="59c4vtktbh1taqroa2b6ie6vbj">&nbsp;&nbsp;&nbsp;确保表中每一列都和主键直接相关，不是间接相关</a>
+</h3>
+<h3 class="topic">
+<a name="0uq06eqlpqkoov1jff9frp3d7d">&nbsp;&nbsp;数据库的设计只要满足前三个范式</a>
+</h3>
+<h3 class="topic">
+<a name="6ccicn6j8phjars2m4kqmstl3r">&nbsp;设计数据库的模型</a>
+</h3>
+<h3 class="topic">
+<a name="01otq0dam0tv09r3slk2t98pf9">&nbsp;&nbsp;er模型</a>
+</h3>
+<h3 class="topic">
+<a name="0qq9cglkq3fb4ssu8t4bam0vtv">&nbsp;&nbsp;&nbsp;即实体关系图</a>
+</h3>
+<h3 class="topic">
+<a name="4jjl4kk0331soudhvk9769soo8">&nbsp;&nbsp;&nbsp;方形</a>
+</h3>
+<h3 class="topic">
+<a name="3nr8g4ftplnl0joj1786hfp19c">&nbsp;&nbsp;&nbsp;&nbsp;表示实体</a>
+</h3>
+<h3 class="topic">
+<a name="4s3s75g3kv91kk84jkmi2h6qjk">&nbsp;&nbsp;&nbsp;椭圆形</a>
+</h3>
+<h3 class="topic">
+<a name="60r2ge8tdc5m9997npj70o4ab3">&nbsp;&nbsp;&nbsp;&nbsp;表示实体属性</a>
+</h3>
+<h3 class="topic">
+<a name="50k1r0eqgdd48sifrjm85209h3">&nbsp;&nbsp;&nbsp;菱形</a>
+</h3>
+<h3 class="topic">
+<a name="22dkmf9dvbinru39h13p3mkopc">&nbsp;&nbsp;&nbsp;&nbsp;表示实体之间的关系</a>
+</h3>
+<h3 class="topic">
+<a name="3d67iba4n2q6msh9r8qmd809hr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;一对一</a>
+</h3>
+<h3 class="topic">
+<a name="2rk7v1hhrkfv735rpf3eegbs2t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;一对多</a>
+</h3>
+<h3 class="topic">
+<a name="5c1pg9n57g4imqng9oonnn46ia">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;多对多</a>
+</h3>
+<h3 class="topic">
+<a name="4uhu92hkuj3teeo5p8vvna02ri">&nbsp;&nbsp;聊天室的结构</a>
+</h3>
+<h3 class="topic">
+<a name="3rsm32rnh5odnmvb15t72od42h">&nbsp;&nbsp;&nbsp;用户表</a>
+</h3>
+<h3 class="topic">
+<a name="2iqrc0bbj0v6r49jn58uk7dpj8">&nbsp;&nbsp;&nbsp;聊天室表</a>
+</h3>
+<h3 class="topic">
+<a name="79tm9b3hegt3ria3ftk9f5kpad">&nbsp;&nbsp;&nbsp;用户与聊天室关系表</a>
+</h3>
+<h3 class="topic">
+<a name="7hr6s22jkfkfmsg4lq6jvr7slj">&nbsp;&nbsp;&nbsp;&nbsp;用户id</a>
+</h3>
+<h3 class="topic">
+<a name="3rqmfal0bqr8k78fdj2nvmd78d">&nbsp;&nbsp;&nbsp;&nbsp;聊天室id</a>
+</h3>
+<h3 class="topic">
+<a name="5bqu3n0j6g3i9tfjvq19l8qfh6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;一般作为主键</a>
+</h3>
+<h3 class="topic">
+<a name="5af5lg8bqfki81bim5b5odrusv">&nbsp;&nbsp;&nbsp;用户与用户间的关系</a>
+</h3>
+<h3 class="topic">
+<a name="71otfiupo192h29g3ubci66j2p">&nbsp;&nbsp;&nbsp;&nbsp;多对多</a>
+</h3>
+<h2 class="topic">
+<a name="37pljm5ei1p2l4oft6pu652vh0">数据库编程</a>
+</h2>
+<h3 class="topic">
+<a name="7rh94gdpor8hke62foktvu3dcm">&nbsp;c/c++</a>
+</h3>
+<h3 class="topic">
+<a name="00ec8bqdtd0fmeljt66g6ersud">&nbsp;&nbsp;需要使用mysql提供的dll和lib</a>
+</h3>
+<h3 class="topic">
+<a name="2p3o1e3l9r35jcrore21n3t932">&nbsp;&nbsp;注意在vs2017中不要执行该库中init函数和end函数</a>
+</h3>
+<h3 class="topic">
+<a name="7dct68ac26cggvrkmtd242548f">&nbsp;&nbsp;步骤</a>
+</h3>
+<h3 class="topic">
+<a name="2ahhi8c4t88jj876gb1sk1c1g8">&nbsp;&nbsp;&nbsp;将MySQL中的库复制出来（include lib），加入到vs2017相应工程的根目录中</a>
+</h3>
+<h3 class="topic">
+<a name="7k4cssgb7si5rv65rmcq5rj1mn">&nbsp;&nbsp;&nbsp;&nbsp;将dll放在当前目录下</a>
+</h3>
+<h3 class="topic">
+<a name="3ja76q2i8fl2741und0a462tvm">&nbsp;&nbsp;&nbsp;在vs中include dll 以及包含lib库</a>
+</h3>
+<h3 class="topic">
+<a name="2lhqv2lb5e7h62llifbtoun5nj">&nbsp;&nbsp;&nbsp;&nbsp;#include"./mysql/inlude/mysql.h"&#13;
+#pragma comment(lib,".\\xxxxxxxxx")</a>
+</h3>
+<h3 class="topic">
+<a name="6vmn6f5cg8ig58rv9eqhiggell">&nbsp;&nbsp;&nbsp;初始化MYSQL结构体</a>
+</h3>
+<h3 class="topic">
+<a name="6rog1epmt6jl68t67ide133p18">&nbsp;&nbsp;&nbsp;连接数据库</a>
+</h3>
+<h3 class="topic">
+<a name="73uh2hbr7a2vsrgqce0tq8s6kt">&nbsp;&nbsp;&nbsp;&nbsp;函数参数</a>
+</h3>
+<h3 class="topic">
+<a name="36jeflevooghkapnkr7irq38lv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MYSQL结构体</a>
+</h3>
+<h3 class="topic">
+<a name="3ff9u04djauno0sb64mku7k5i5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;主机ip</a>
+</h3>
+<h3 class="topic">
+<a name="35dsj78l8lq3oesp39ci15v8sp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用户名</a>
+</h3>
+<h3 class="topic">
+<a name="7japrfkkkse455qk50n37vne9e">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;密码</a>
+</h3>
+<h3 class="topic">
+<a name="771qk6esgfm29ruousm60327vq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;数据库名</a>
+</h3>
+<h3 class="topic">
+<a name="24sj660l3er21blrvb1nd64ar5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;端口号（默认3306）</a>
+</h3>
+<h3 class="topic">
+<a name="3o9ebqvb2ur24671rtrte1pqtv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0</a>
+</h3>
+<h3 class="topic">
+<a name="5i6c3klio63plhcfnmuj84hn01">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;套接字</a>
+</h3>
+<h3 class="topic">
+<a name="2aq236fmq0k4vgmeuhbauss1k3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0</a>
+</h3>
+<h3 class="topic">
+<a name="3c40jf9qq3dvrgd645qb2s4kcp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;套接字</a>
+</h3>
+<h3 class="topic">
+<a name="1ec34gc58hst520ne4pc2sc54a">&nbsp;&nbsp;&nbsp;判断执行是否错误</a>
+</h3>
+<h3 class="topic">
+<a name="0uhf9hijf3tbbsuqj8h4u4v98c">&nbsp;&nbsp;&nbsp;执行SQL语句</a>
+</h3>
+<h3 class="topic">
+<a name="65a928el4gevf43h45sso0kvag">&nbsp;&nbsp;&nbsp;&nbsp;函数参数</a>
+</h3>
+<h3 class="topic">
+<a name="4dj4ckcla8uv3mlu16c80814hr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MYSQL对象</a>
+</h3>
+<h3 class="topic">
+<a name="73k5bd015rc2v1m6sggiblavue">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SQL语句</a>
+</h3>
+<h3 class="topic">
+<a name="2tldii28ci10m4i1gbi2g09qf3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用""</a>
+</h3>
+<h3 class="topic">
+<a name="645kkq36delfqsn7pl691im9rh">&nbsp;&nbsp;&nbsp;判断执行是否错误</a>
+</h3>
+<h3 class="topic">
+<a name="75l0ta0uhku5k2215u8ocplftt">&nbsp;&nbsp;&nbsp;显示结果</a>
+</h3>
+<h3 class="topic">
+<a name="2slej0t01m5j3raqvjcianlrs5">&nbsp;&nbsp;&nbsp;&nbsp;使用MYSQL_RES结构体存储执行结果</a>
+</h3>
+<h3 class="topic">
+<a name="5jmc0fusfsaucb8ib3ifqvduv9">&nbsp;&nbsp;&nbsp;&nbsp;显示结果结构体中有多少个字段</a>
+</h3>
+<h3 class="topic">
+<a name="6jdd6k0uv0cc8fuk3gm9lag6h2">&nbsp;&nbsp;&nbsp;&nbsp;使用MYSQL_FIELD结构体获取字段</a>
+</h3>
+<h3 class="topic">
+<a name="5l0aop23vhfbs6s1732gh4ken7">&nbsp;&nbsp;&nbsp;&nbsp;使用循环打印字段</a>
+</h3>
+<h3 class="topic">
+<a name="0u71uhu5umuhfenci9oi14d6c6">&nbsp;&nbsp;&nbsp;使用MYSQL_ROW（是一个二维指针）获取行数据</a>
+</h3>
+<h3 class="topic">
+<a name="25h8e970d1b96br6psjcudsfbj">&nbsp;&nbsp;&nbsp;&nbsp;函数参数为结果结果体</a>
+</h3>
+<h3 class="topic">
+<a name="3l1942mulvtfhceo858vs09t6d">&nbsp;&nbsp;&nbsp;&nbsp;使用嵌套循环输出行数据</a>
+</h3>
+<h3 class="topic">
+<a name="0k1h5v39nkrl8rbh1nkrkv7ndn">&nbsp;&nbsp;&nbsp;关闭sql</a>
+</h3>
+<h3 class="topic">
+<a name="0mq1jkciipaalrron97b2hgukv">&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="06kn7kb25mnh2nke1aa76fgb86">&nbsp;&nbsp;&nbsp;// 包含头文件，静态库&#13;
+#include "./mysql/include/mysql.h"&#13;
+#pragma comment(lib,".\\mysql\\lib\\libmysql.lib")&#13;
+&#13;
+int main()&#13;
+{&#13;
+	// 初始化MYSQL 结构体&#13;
+	MYSQL mysql = {};&#13;
+	mysql_init(&amp;mysql);&#13;
+&#13;
+	// 连接数据库&#13;
+	mysql_real_connect(&amp;mysql,&#13;
+		"192.168.133.129",&#13;
+		"root",&#13;
+		"15pb",&#13;
+		"chatroom",&#13;
+		3306, 0, 0);&#13;
+	if (mysql_errno(&amp;mysql))&#13;
+	{&#13;
+		printf("%s", mysql_error(&amp;mysql));&#13;
+		getchar();&#13;
+	}&#13;
+	// 执行sql语句&#13;
+	mysql_query(&amp;mysql, "set names gbk;");&#13;
+	mysql_query(&amp;mysql, "select * from user_table;");&#13;
+	if (mysql_errno(&amp;mysql))&#13;
+	{&#13;
+		printf("%s", mysql_error(&amp;mysql));&#13;
+		getchar();&#13;
+	}&#13;
+&#13;
+	// 显示结果&#13;
+&#13;
+	//获取结果&#13;
+	MYSQL_RES *pRes = mysql_store_result(&amp;mysql);&#13;
+&#13;
+	//显示字段&#13;
+	int count = mysql_num_fields(pRes);&#13;
+	//获取字段&#13;
+	MYSQL_FIELD *pfiled = mysql_fetch_fields(pRes);&#13;
+	for (int i = 0; i &lt; count; i++)&#13;
+	{&#13;
+		printf("%30s", pfiled[i].name);&#13;
+	}&#13;
+	printf("\n");&#13;
+&#13;
+	//获取数据&#13;
+	MYSQL_ROW prow;&#13;
+	while (prow =mysql_fetch_row(pRes))&#13;
+	{&#13;
+		for (int i = 0; i &lt; count; i++)&#13;
+		{&#13;
+			printf("%30s",prow[i]);&#13;
+		}&#13;
+		printf("\n");&#13;
+	}&#13;
+	mysql_close(&amp;mysql);&#13;
+	&#13;
+	getchar();&#13;
+&#13;
+&#13;
+    &#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="7ftoqomtdg2gpt80jgp8a8u1cv">&nbsp;python</a>
+</h3>
+<h3 class="topic">
+<a name="2o4balb881undisl6dutekropl">&nbsp;&nbsp;函数</a>
+</h3>
+<h3 class="topic">
+<a name="6gsi2v3n3j9i2bufu2rcjgq3cr">&nbsp;&nbsp;&nbsp;子主题 1</a>
+</h3>
+<h3 class="topic">
+<a name="7bq5nmi32jbc0qiijgt33ul1ub">&nbsp;&nbsp;对象</a>
+</h3>
+<h3 class="topic">
+<a name="7j272em3ar5lqfgi8v5rlfvnt4">&nbsp;&nbsp;&nbsp;子主题 1</a>
+</h3>
+<h3 class="topic">
+<a name="1rum1240rgrevd9rumh4rt6s87">&nbsp;&nbsp;在python中安装mysql模块</a>
+</h3>
+<h3 class="topic">
+<a name="1s9v5l0npv4t9kn8ikd075g13f">&nbsp;&nbsp;&nbsp;在pychram中安装pymysql模块</a>
+</h3>
+<h3 class="topic">
+<a name="72chj5rivaqvdboeg9o4t3purd">&nbsp;&nbsp;&nbsp;&nbsp;setting中</a>
+</h3>
+<h3 class="topic">
+<a name="47nkc0h12dvlrf4ufu9n7hh6hg">&nbsp;&nbsp;导入模块</a>
+</h3>
+<h3 class="topic">
+<a name="3s53p3f91unep1470la67ci85a">&nbsp;&nbsp;&nbsp;import pymysql</a>
+</h3>
+<h3 class="topic">
+<a name="3ch72h8h0394apumlonqcv9dmv">&nbsp;&nbsp;连接数据库</a>
+</h3>
+<h3 class="topic">
+<a name="1dl4p1litoq2o2dq9riissd7gl">&nbsp;&nbsp;&nbsp;查看参数可以按住ctrl，点击</a>
+</h3>
+<h3 class="topic">
+<a name="0ogqn9d17lv77irp621rid6uhd">&nbsp;&nbsp;&nbsp;参数</a>
+</h3>
+<h3 class="topic">
+<a name="48sf4odjbk96jf90qqqvn2lsvj">&nbsp;&nbsp;&nbsp;&nbsp;主机ip</a>
+</h3>
+<h3 class="topic">
+<a name="15pbdbd40ecduhenf6d3fvapr8">&nbsp;&nbsp;&nbsp;&nbsp;用户名</a>
+</h3>
+<h3 class="topic">
+<a name="2kp6r9f96d2m729gcjmbr90hnh">&nbsp;&nbsp;&nbsp;&nbsp;密码</a>
+</h3>
+<h3 class="topic">
+<a name="1rcg5hfn6vojk20bbate5ietcq">&nbsp;&nbsp;&nbsp;&nbsp;数据库名</a>
+</h3>
+<h3 class="topic">
+<a name="7hbd5qiss8l0tms56a2voorqhp">&nbsp;&nbsp;&nbsp;&nbsp;端口名</a>
+</h3>
+<h3 class="topic">
+<a name="67daaf45gv65hs407akt6m6g25">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;默认为3306</a>
+</h3>
+<h3 class="topic">
+<a name="5u9gpd648aoh68a1ojdv9pf99j">&nbsp;&nbsp;&nbsp;返回值为连接对象，通过连接对象可以获取游标对象</a>
+</h3>
+<h3 class="topic">
+<a name="4h0i7e380p1al873aiscs6kj9k">&nbsp;&nbsp;获取游标对象</a>
+</h3>
+<h3 class="topic">
+<a name="7g77dfi71cg2fabflnoc60nt3h">&nbsp;&nbsp;通过游标对象执行sql语句</a>
+</h3>
+<h3 class="topic">
+<a name="4ufbndn4b1plm3fp98dtvp64ru">&nbsp;&nbsp;&nbsp;sql语句需要使用""</a>
+</h3>
+<h3 class="topic">
+<a name="36o02tb82s5fvfvoi3o3f8lbsi">&nbsp;&nbsp;&nbsp;execute</a>
+</h3>
+<h3 class="topic">
+<a name="0ecmf3m7acgebu2dvcs8b7q5hm">&nbsp;&nbsp;&nbsp;&nbsp;执行sql</a>
+</h3>
+<h3 class="topic">
+<a name="2fs852n9hdiupp39t41tes0566">&nbsp;&nbsp;&nbsp;commit</a>
+</h3>
+<h3 class="topic">
+<a name="5rbr276gi2ck7hi6ro858l4ngh">&nbsp;&nbsp;&nbsp;&nbsp;提交sql</a>
+</h3>
+<h3 class="topic">
+<a name="68c7g1hu7evvqaqg33ko30ht72">&nbsp;&nbsp;获取结果，结果以元组形式存放</a>
+</h3>
+<h3 class="topic">
+<a name="1eke8enr41ukgqncr67ufmutr2">&nbsp;&nbsp;打印数据</a>
+</h3>
+<h3 class="topic">
+<a name="4quvr8jeefuu951d8rionkh93p">&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="35881l3a6c57k0pncip2jbm5m4">&nbsp;&nbsp;&nbsp;# coding:utf-8&#13;
+&#13;
+import pymysql&#13;
+# 连接数据库&#13;
+con = pymysql.connect(host = '192.168.133.129',&#13;
+                user='root',&#13;
+                password='15pb',&#13;
+                database='chatroom',&#13;
+                port = 3306&#13;
+                )&#13;
+# 获取游标的对象&#13;
+cursor = con.cursor()&#13;
+&#13;
+# 执行sql语句&#13;
+sql = """&#13;
+insert into user_table(user_name,user_pass,user_sex)&#13;
+		values('%s','%s','%s');"""%("xiao","12345","男")&#13;
+cursor.execute(sql)&#13;
+# 提交数据&#13;
+con.commit()&#13;
+&#13;
+# 查询语句&#13;
+cursor.execute("select * from user_table;")&#13;
+# 提交数据&#13;
+con.commit()&#13;
+&#13;
+# 获取结果&#13;
+res = cursor.fetchall()&#13;
+for x in res:&#13;
+    print(x)</a>
+</h3>
+<h3 class="topic">
+<a name="22vrnl989hhq47958o437kphrp">&nbsp;数据库中数据的来源有很多，需要在不同语言的环境下执行sql语句</a>
+</h3>
+<h3 class="topic">
+<a name="4kk7sqpglgqijhcu1hvp4cn6iv">&nbsp;在主机中访问sql数据库，需要将数据库中的mysql表中的host设置为%连接，关闭防火墙，重启mysql服务器</a>
+</h3>
+<h2 class="topic">
+<a name="0u14sq443rbmqpmkm378t715td">项目指导</a>
+</h2>
+<h3 class="topic">
+<a name="2c2hgrc2fovjs59ncagl6ve69t">&nbsp;用户表</a>
+</h3>
+<h3 class="topic">
+<a name="121b60kuusc27fgsu6cpe7ca1j">&nbsp;&nbsp;属性</a>
+</h3>
+<h3 class="topic">
+<a name="7516us5gn8sst265ji9ueviu44">&nbsp;&nbsp;&nbsp;id</a>
+</h3>
+<h3 class="topic">
+<a name="1dfrpsmbdrp241bqddc0hgpjv0">&nbsp;&nbsp;&nbsp;name</a>
+</h3>
+<h3 class="topic">
+<a name="6ompp0np4k9uoshp0vs5fm30il">&nbsp;&nbsp;&nbsp;pass</a>
+</h3>
+<h3 class="topic">
+<a name="21lra4k1g977l49fgqafkh424g">&nbsp;聊天室表</a>
+</h3>
+<h3 class="topic">
+<a name="5idnjs44fqsk2j58som207davg">&nbsp;&nbsp;属性</a>
+</h3>
+<h3 class="topic">
+<a name="0molbuh1s90tlqv6ndfd7t1ro4">&nbsp;&nbsp;&nbsp;id</a>
+</h3>
+<h3 class="topic">
+<a name="7i94hppjet4v0m77vu7lombp18">&nbsp;&nbsp;&nbsp;name</a>
+</h3>
+<h3 class="topic">
+<a name="4mq6reslf2bojd3hg74arr4i7r">&nbsp;用户与聊天室关系表</a>
+</h3>
+<h3 class="topic">
+<a name="3fjj2hit21uto82d0issel8uei">&nbsp;&nbsp;属性</a>
+</h3>
+<h3 class="topic">
+<a name="247d7geabhr9rsnbe21vnndrc1">&nbsp;&nbsp;&nbsp;user_id</a>
+</h3>
+<h3 class="topic">
+<a name="6ck5dc5buhj7jrteiu1jccj7jv">&nbsp;&nbsp;&nbsp;&nbsp;与用户表id关联</a>
+</h3>
+<h3 class="topic">
+<a name="7h8imaen30jehle823an767qko">&nbsp;&nbsp;&nbsp;chatroom_id</a>
+</h3>
+<h3 class="topic">
+<a name="33o0our0053ka0ma6oqo3lth6h">&nbsp;&nbsp;&nbsp;&nbsp;与聊天室表id关联</a>
+</h3>
+<h3 class="topic">
+<a name="16stlgg0rboagvscfqori7p5nm">&nbsp;使用sql设计以上表</a>
+</h3>
+<h3 class="topic">
+<a name="43lrajv92ttaqfiofoh1v8sq7b">&nbsp;&nbsp;建三张表</a>
+</h3>
+<h3 class="topic">
+<a name="29j76p134lcqd5dvq2fhp53nlt">&nbsp;&nbsp;&nbsp;用户</a>
+</h3>
+<h3 class="topic">
+<a name="31q3kan0hi57jr87bossir5gpa">&nbsp;&nbsp;&nbsp;&nbsp;create table user_table2(&#13;
+	user_id int not null auto_increment,&#13;
+	user_name varchar(50) not null,&#13;
+	user_pass varchar(50) not null,&#13;
+	user_sex enum('男','女') default '男',&#13;
+	primary key(user_id),&#13;
+	unique key(user_name)  #注意插的最后一个项不能加,&#13;
+)charset gbk;</a>
+</h3>
+<h3 class="topic">
+<a name="4tsop6u3c8rmkshacu7hk73o4a">&nbsp;&nbsp;&nbsp;聊天室</a>
+</h3>
+<h3 class="topic">
+<a name="4ifi3a4eu1cip21cl5k61f2nto">&nbsp;&nbsp;&nbsp;&nbsp;create table chat_table(&#13;
+	chat_id int not null auto_increment,&#13;
+	chat_name varchar(50) not null,&#13;
+	primaty key(chat_id)&#13;
+);</a>
+</h3>
+<h3 class="topic">
+<a name="499q5rfu6pnab2rm00jcliq1mg">&nbsp;&nbsp;&nbsp;关系表</a>
+</h3>
+<h3 class="topic">
+<a name="0ifqc06dejgt86lh7d7pj3l2lc">&nbsp;&nbsp;&nbsp;&nbsp;create	table user_chat_table(&#13;
+	user_id int,--需要设置外键约束&#13;
+	char_id int,--需要设置外键约束&#13;
+	primary key(user_id,chat_id)&#13;
+)</a>
+</h3>
+<h3 class="topic">
+<a name="41bamofik070n5ovaivhlm7bkr">&nbsp;&nbsp;针对关系表建立外键</a>
+</h3>
+<h3 class="topic">
+<a name="4enqaj0ev3lmde46c83mn1mkg6">&nbsp;&nbsp;&nbsp;可以在关系表创建的时候指定外键</a>
+</h3>
+<h3 class="topic">
+<a name="2ksi1k9g9j16iev5dgntdha6mj">&nbsp;&nbsp;&nbsp;可以在外部使用指定语句添加外键</a>
+</h3>
+<h3 class="topic">
+<a name="24v8f23o0mcbap9r29ghsonmtb">&nbsp;&nbsp;&nbsp;可以是使用navicat图形化编辑列表生成相应sql列表</a>
+</h3>
+<h3 class="topic">
+<a name="44mfus2kobcb6t1br5j7oprnoh">&nbsp;&nbsp;插入数据</a>
+</h3>
+<h3 class="topic">
+<a name="0mq5mio8ueedcl0o91jv5hj8kc">&nbsp;&nbsp;&nbsp;注册账号</a>
+</h3>
+<h3 class="topic">
+<a name="7akcqb8nqifct6id3kdogvec5o">&nbsp;&nbsp;&nbsp;&nbsp;insert into user_table(user_name,user_pass,user_sex)&#13;
+	value('xixi','123','男'),('lala','456','女')</a>
+</h3>
+<h3 class="topic">
+<a name="4h6r8t1ti28ul1ha6ec9032gt3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在python中可以使用'''  sql语句'''%("小明","123","男")进行用户注册</a>
+</h3>
+<h3 class="topic">
+<a name="2itbhhtji1fatb4as0tvtrm8t8">&nbsp;&nbsp;&nbsp;添加聊天室</a>
+</h3>
+<h3 class="topic">
+<a name="7ki1c9f76jqnk6d7cbpf0cij0l">&nbsp;&nbsp;&nbsp;&nbsp;insert into chat_table(chat_id,chat_name)&#13;
+	value(1001,'32期') ,(1002,'33期') </a>
+</h3>
+<h3 class="topic">
+<a name="3nk9g9bifg8hnfavpmo4nksk78">&nbsp;&nbsp;&nbsp;将账号添加到聊天室</a>
+</h3>
+<h3 class="topic">
+<a name="4a95hkepq4pt7iir1s5296lguf">&nbsp;&nbsp;&nbsp;&nbsp;select *from user_table&#13;
+	where user_name='小白'&#13;
+select *from chat_table&#13;
+	where	chat_name='32期'&#13;
+insert into user_chat_table(user_id,chat_id)&#13;
+	values(2,1001)</a>
+</h3>
+<h3 class="topic">
+<a name="3n8tckdg2u9ei9gb5ckn3afg2f">&nbsp;&nbsp;&nbsp;查询某人在哪个聊天室</a>
+</h3>
+<h3 class="topic">
+<a name="5mrcdd6h03mfnfdl0tsssji1i7">&nbsp;&nbsp;&nbsp;&nbsp;通过内连接</a>
+</h3>
+<h3 class="topic">
+<a name="3hjhj2mjmuecije3a3s8vnt2aa">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lala</a>
+</h3>
+<h3 class="topic">
+<a name="5t5pvqc0834ddh2qdf64nt7ak0">&nbsp;&nbsp;&nbsp;&nbsp;通过子查询</a>
+</h3>
+<h3 class="topic">
+<a name="33crf3bsun6bklqafvj19siofp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lala</a>
+</h3>
+<h3 class="topic">
+<a name="08ti07uqpbq7vog2u27ug0nm90">&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="5urntcnhkdbn7fbv192bb6bo1i">&nbsp;&nbsp;&#13;
+-- create table if not exists chat_table(&#13;
+-- 		chat_id int not null auto_increment,&#13;
+-- 		chat_name varchar(50) not null,&#13;
+-- 		primary key(chat_id)&#13;
+-- );&#13;
+&#13;
+# 聊天室与用户关系表&#13;
+&#13;
+-- create table if not exists user_chat_table(&#13;
+-- 			user_id int ,	&#13;
+-- 			chat_id int ,&#13;
+-- 		primary key(user_id,chat_id)&#13;
+-- );&#13;
+	&#13;
+# 设置外键 user_id 为 聊天室表的外键&#13;
+-- ALTER TABLE `user_chat_table` &#13;
+-- 		ADD CONSTRAINT `fk1` FOREIGN KEY (`user_id`) REFERENCES `user_table` (`user_id`);&#13;
+-- &#13;
+-- ALTER TABLE `user_chat_table` &#13;
+-- 	ADD CONSTRAINT `fk2` FOREIGN KEY (`chat_id`) REFERENCES `chat_talbe` (`chat_id`);&#13;
+-- &#13;
+&#13;
+#  操作聊天室&#13;
+# 注册账号&#13;
+&#13;
+-- insert into user_table(user_name,user_pass,user_sex)&#13;
+-- 		values('小白','12345','男'),('小兰','12345','女');&#13;
+&#13;
+&#13;
+# 添加聊天室&#13;
+-- insert into chat_table(chat_id,chat_name)&#13;
+-- 			values(1001,'32期极客基础交流群');&#13;
+ &#13;
+# 添加到聊天室&#13;
+-- select * from user_table		&#13;
+-- 		where user_name = '小白';&#13;
+-- select * from chat_table&#13;
+-- 		where chat_name = '32期极客基础交流群';&#13;
+&#13;
+-- insert into user_chat_table(user_id,chat_id)&#13;
+-- 			values(2,1001);&#13;
+&#13;
+&#13;
+-- 内连接查询&#13;
+-- select chat_id from user_table,user_chat_table&#13;
+-- 		where user_table.user_name = '小白' &#13;
+-- 					and user_table.user_id = user_chat_table.user_id;&#13;
+&#13;
+-- 子查询&#13;
+-- select chat_id from user_chat_table&#13;
+-- 		where user_id = (&#13;
+-- 				select user_id from user_table&#13;
+-- 						where user_name = '小白'&#13;
+-- );</a>
+</h3>
+<h2 class="topic">
+<a name="6s5posffgst7rk6a0hkpgeegkr">数据库备份</a>
+</h2>
+<h3 class="topic">
+<a name="6ftbv94tio0m327cnomvg580jg">&nbsp;详见资料</a>
+</h3>
+<h2 class="topic">
+<a name="6rur075oct5t5b646bc1gh7f1l">tips</a>
+</h2>
+<h3 class="topic">
+<a name="7mnkhsmblam7p62e6n8i9egval">&nbsp;表尽量设计好之后再进入数据插入，否则已有数据情况下修改表的属性，可能会报错</a>
+</h3>
+</body>
+</html>

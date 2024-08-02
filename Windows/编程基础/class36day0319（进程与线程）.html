@@ -1,0 +1,1265 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>class36day0319（进程与线程）</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="3qck0m04m8l6l0nhuo14q6mmmj">class36day0319（进程与线程）</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="class36day0319%EF%BC%88%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B%EF%BC%89_files/images/class36day0319%EF%BC%88%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B%EF%BC%89.jpg"></div>
+<h2 class="topic">
+<a name="5sk4dik889kacar8t66210nklm">线程</a>
+</h2>
+<h3 class="topic">
+<a name="45h8jtrjruej3ooo261l5h99ov">&nbsp;线程是进程中某一单一顺序的控制流，是运行中的程序的调度单位</a>
+</h3>
+<h3 class="topic">
+<a name="7v1e1vvp2dqd7rctim1hp2bd3v">&nbsp;&nbsp;同一个进程的多个线程相互平等</a>
+</h3>
+<h3 class="topic">
+<a name="05aj1naj3b2uht6i30ruk43gvi">&nbsp;&nbsp;主线程退出时其他线程均会退出</a>
+</h3>
+<h3 class="topic">
+<a name="01a8dt9ea2mtr7egaafnnv02gv">&nbsp;创建线程CreateThread()</a>
+</h3>
+<h3 class="topic">
+<a name="7k2s9040td3g9b8385amciuplk">&nbsp;&nbsp;该函数返回新线程句柄</a>
+</h3>
+<h3 class="topic">
+<a name="4vf1t8c976fqb48hfnugjsarpv">&nbsp;&nbsp;创建一个线程之后，不一定立即执行，需要等待分配时间片</a>
+</h3>
+<h3 class="topic">
+<a name="38ut44lu8cp46vuraa3qbh5ud5">&nbsp;&nbsp;参数</a>
+</h3>
+<h3 class="topic">
+<a name="18pgri5mvch96m7canbmde8d3g">&nbsp;&nbsp;&nbsp;安全描述符</a>
+</h3>
+<h3 class="topic">
+<a name="6a6fmro2fmca2v3u4vgfbcf6d1">&nbsp;&nbsp;&nbsp;&nbsp;NULL为默认安全描述符</a>
+</h3>
+<h3 class="topic">
+<a name="6gl7ngjjdtnpto58bocev70iov">&nbsp;&nbsp;&nbsp;栈的大小</a>
+</h3>
+<h3 class="topic">
+<a name="4rai7lbcmeggba9gg2ik59h9em">&nbsp;&nbsp;&nbsp;&nbsp;默认2M</a>
+</h3>
+<h3 class="topic">
+<a name="5jvujvucklbbokf6lhic9flmd7">&nbsp;&nbsp;&nbsp;&nbsp;每一个线程都有独立的栈</a>
+</h3>
+<h3 class="topic">
+<a name="67s6f84qa795dllr4siuime82j">&nbsp;&nbsp;&nbsp;&nbsp;0为默认栈大小</a>
+</h3>
+<h3 class="topic">
+<a name="7i7pkfm2gkjnfrce5784cp15jv">&nbsp;&nbsp;&nbsp;线程回调函数地址</a>
+</h3>
+<h3 class="topic">
+<a name="1vdf7ch5mc2emjnqpmeuhth2a3">&nbsp;&nbsp;&nbsp;&nbsp;线程执行的第一行代码</a>
+</h3>
+<h3 class="topic">
+<a name="3fu73k7iju1sn3hqkfmjkd9dl6">&nbsp;&nbsp;&nbsp;&nbsp;函数原型</a>
+</h3>
+<h3 class="topic">
+<a name="7ps51bmm5hqgr109udmn9j9bqr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DWORD WINAPI ThreadProc(LPVOID lparam)</a>
+</h3>
+<h3 class="topic">
+<a name="2hhqjgvmhn4d5hi5agcikjmk2f">&nbsp;&nbsp;&nbsp;附加参数</a>
+</h3>
+<h3 class="topic">
+<a name="3c6iqla0uiuf6seajmcdch8gf9">&nbsp;&nbsp;&nbsp;&nbsp;线程调用回调函数时作为lparam传给回调函数</a>
+</h3>
+<h3 class="topic">
+<a name="44bpvm25oa2ga0jke2m4c9e4e0">&nbsp;&nbsp;&nbsp;&nbsp;不用可以填0</a>
+</h3>
+<h3 class="topic">
+<a name="0ovdt9j706vmfv4p5ehkml81ts">&nbsp;&nbsp;&nbsp;创建标志</a>
+</h3>
+<h3 class="topic">
+<a name="1me7rd4ka3r64pobphvk4vgbv6">&nbsp;&nbsp;&nbsp;&nbsp;一般为0，立即执行</a>
+</h3>
+<h3 class="topic">
+<a name="3db8gm88a6q2n2i685gvato7v9">&nbsp;&nbsp;&nbsp;&nbsp;也可能为其他宏，比如使进程挂起的宏</a>
+</h3>
+<h3 class="topic">
+<a name="7s6h49qnr5f2ukgu1buud5obbr">&nbsp;&nbsp;&nbsp;线程id</a>
+</h3>
+<h3 class="topic">
+<a name="2rk2pmnjku5ssck51qjjgdn87b">&nbsp;&nbsp;&nbsp;&nbsp;可以不接收，填0</a>
+</h3>
+<h3 class="topic">
+<a name="1ng59f8c5nv0u0ihtpsa3gueps">&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="6eudatfj359hmqhklhv3mf4t5p">&nbsp;&nbsp;&nbsp;#include "pch.h"&#13;
+#include &lt;windows.h&gt;&#13;
+#include &lt;stdio.h&gt;&#13;
+&#13;
+//子线程的回调函数&#13;
+DWORD CALLBACK ThreadProc(LPVOID pArg)&#13;
+{&#13;
+	while (true)&#13;
+	{&#13;
+		printf("子线程 : TID:%d \n",GetCurrentThreadId()/*获取当前线程id*/);&#13;
+		Sleep(500);&#13;
+	}&#13;
+	return 0;&#13;
+}&#13;
+int main()&#13;
+{&#13;
+	//该变量用于接收创建线程的id&#13;
+	DWORD tid = 0;&#13;
+	// 创建一个线程&#13;
+	CreateThread(NULL,/*内核对象的安全描述符*/&#13;
+				 0,/*新线程栈的大小, 0表示默认大小*/&#13;
+				 ThreadProc,/*新线程的回调函数*/&#13;
+				 0,/*附加参数*/&#13;
+				 0,/*创建标志*/&#13;
+				 &amp;tid);/*接收新线程的id*/&#13;
+	//打开新线程得到线程句柄&#13;
+	HANDLE hThread = OpenThread(THREAD_SUSPEND_RESUME,/*申请的权限*/&#13;
+								FALSE,/*是否继承*/&#13;
+								tid);/*要打开的线程id*/&#13;
+	while ( true )&#13;
+	{&#13;
+		printf("主线程: TID:%d \n",GetCurrentThreadId()/*获取主线程id*/);&#13;
+		Sleep(2000);&#13;
+		printf("线程被挂起\n");&#13;
+		SuspendThread(hThread);		// 挂起线程&#13;
+		Sleep(1000);&#13;
+		printf("线程被恢复\n");&#13;
+		ResumeThread(hThread);		// 恢复线程&#13;
+	}&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="5ht14vqd0o2k3c8lsotlv2kdpl">&nbsp;主线程的回调函数可以修改</a>
+</h3>
+<h3 class="topic">
+<a name="2aknqvlbbt6ma02ammpg62s90d">&nbsp;&nbsp;默认为main函数</a>
+</h3>
+<h3 class="topic">
+<a name="48jmtbqvh5g34kbmrqffiuo6r1">&nbsp;&nbsp;主线程是exe打开时候会自动创建的线程</a>
+</h3>
+<h3 class="topic">
+<a name="73441geabo1pout3lrju9l5mk8">&nbsp;在一个main函数（主线程）中创建一个线程，则拥有了两个线程，两个线程中的代码同时执行</a>
+</h3>
+<h3 class="topic">
+<a name="6m65hmhl2s1elcm5car97g87js">&nbsp;&nbsp;注意这与两个进程是不一样的效果</a>
+</h3>
+<h3 class="topic">
+<a name="18k190ha8a7en53idpqsjss7fk">&nbsp;线程的信号</a>
+</h3>
+<h3 class="topic">
+<a name="37timdl16p12fukmtvc6mqv6uk">&nbsp;&nbsp;WaitForSingleObject 参数为内核对象句柄</a>
+</h3>
+<h3 class="topic">
+<a name="66djha2q72b4068ee7747u4d3u">&nbsp;&nbsp;线程结束的时候（即线程回调函数执行完毕返回），对应内核对象会处于激发态（信号为true）</a>
+</h3>
+<h3 class="topic">
+<a name="2m85jsfu9a4ftkirem8vn19rbv">&nbsp;&nbsp;等待函数没有接受到信号的时候会被阻塞，收到信号该函数会返回</a>
+</h3>
+<h3 class="topic">
+<a name="6rc73ll1kib4876c8f4bv7s9fu">&nbsp;遍历线程</a>
+</h3>
+<h3 class="topic">
+<a name="4s39rdj958qke3hclgom96i0g1">&nbsp;&nbsp;使用线程快照（类似于遍历模块）</a>
+</h3>
+<h3 class="topic">
+<a name="25fn02huf17e34b0b4oei0rnff">&nbsp;&nbsp;&nbsp;直接得到所有线程的消息，快照中一般不区分线程所属的进程</a>
+</h3>
+<h3 class="topic">
+<a name="17lo4gopnbiieqces2v0hr6i71">&nbsp;&nbsp;&nbsp;如果要区分，需要在得到的线程快照的消息中，使用该线程所属的进程的字段进行区分判断</a>
+</h3>
+<h3 class="topic">
+<a name="3v32g4tr6crea7fjm3s8bdndbt">&nbsp;暂停次数</a>
+</h3>
+<h3 class="topic">
+<a name="6i7f5t2ehfim0te6n9krcgc11e">&nbsp;&nbsp;创建一个线程，系统会将暂停计数初始化为1，在线程初始化完毕之后，会将暂停计数减1，</a>
+</h3>
+<h3 class="topic">
+<a name="0l5hs4qplkll8r7egan8b23pnl">&nbsp;&nbsp;每暂停一次，暂停次数会自增1，每恢复一次，暂停次数会自减1</a>
+</h3>
+<h3 class="topic">
+<a name="3qq1q563obdd8ets9tvnbannng">&nbsp;&nbsp;当暂停次数为0之后线程才会运行</a>
+</h3>
+<h3 class="topic">
+<a name="6cmp0618e77qknvlk2f4ik1qh9">&nbsp;伪句柄</a>
+</h3>
+<h3 class="topic">
+<a name="5gqlvj21a250cskssfk7qiosps">&nbsp;&nbsp;HANDLE  GetCurrentProcess();     返回值 0XFFFFFFFF   -1&#13;
+HANDLE  GetCurrentThread();      返回值 0XFFFFFFFE   -2</a>
+</h3>
+<h3 class="topic">
+<a name="05tdavh0infuh1req8u3qcn6kl">&nbsp;&nbsp;在进程或线程的回调函数中使用以上两个api获取本线程或进程的句柄得到的是一个伪句柄，其值为负数（-1或-2），该句柄只有在该进程或线程中才代表当前线程或进程的句柄，如果将伪句柄传递给其他进程或线程（例如子线程），则伪句柄代表的是接收伪句柄的进程或线程的句柄，根本原因在于伪句柄本身是一个负数值，用于代表其当前所在进程或线程，</a>
+</h3>
+<h3 class="topic">
+<a name="5dbubmn0moor8em8caf38foc0o">&nbsp;&nbsp;在子线程中使用主线程的方法</a>
+</h3>
+<h3 class="topic">
+<a name="2se3l4246efd4fo20i9inl3vop">&nbsp;&nbsp;&nbsp;直接将主线程的id传给子线程，并在子线程中通过OpenThread获得主线程的真句柄</a>
+</h3>
+<h3 class="topic">
+<a name="4dums33c0al4ulpkc4dpdk2og2">&nbsp;&nbsp;&nbsp;使用DuplicateHandle将伪句柄转为真句柄</a>
+</h3>
+<h3 class="topic">
+<a name="517moaui4fm18tiui7a88p1u7e">&nbsp;&nbsp;&nbsp;&nbsp;？？？？？</a>
+</h3>
+<h3 class="topic">
+<a name="4e8muag4rjui74dbf6s9d4hq7k">&nbsp;在c\c++中由于c运行库中部分函数使用了win32提供的TLS技术（一种用于存取线程相关数据的技术）所以在直接使用CreateThread()创建线程的时候，该函数不会进行c运行库的初始化，导致在创建的进程中使用TLS技术支持的函数时，存在被申请的内存在线程结束后没有被释放的问题，导致内存泄露</a>
+</h3>
+<h3 class="topic">
+<a name="2jb3qnf10l2nu3mqshobef86eu">&nbsp;&nbsp;故c c++中应避免使用CreateTherad和ExitThread函数创建线程</a>
+</h3>
+<h3 class="topic">
+<a name="2eenhdrp65mt696bgnt9inunqs">&nbsp;&nbsp;应使用_beginthreadex()和_endthreadex()用于创建线程和终止线程</a>
+</h3>
+<h3 class="topic">
+<a name="7sg31bkrnldigth8m3scua5s81">&nbsp;&nbsp;&nbsp;两函数需要包含process.h</a>
+</h3>
+<h3 class="topic">
+<a name="5kinagpldfvt1u4pkcml02vc79">&nbsp;&nbsp;&nbsp;参数与windows原生api相同</a>
+</h3>
+<h3 class="topic">
+<a name="7rpm8lg5m1g6djopb6rv4a8mli">&nbsp;&nbsp;&nbsp;此时对应线程回调函数的返回类型为 unsigned int，参数类型变成void*</a>
+</h3>
+<h3 class="topic">
+<a name="2a4u5dh33je047un57kb3akvbt">&nbsp;线程的退出</a>
+</h3>
+<h3 class="topic">
+<a name="72bfnfg998kdb49ojrkf90gpuo">&nbsp;&nbsp;通过主线程函数返回</a>
+</h3>
+<h3 class="topic">
+<a name="01u7u8nfeahg5nj9p6iqfeaaad">&nbsp;&nbsp;&nbsp;是保证线程所有的资源均被正确清理的唯一方式</a>
+</h3>
+<h3 class="topic">
+<a name="0u0af8spmh2hce45ftpb0cc13d">&nbsp;&nbsp;&nbsp;即在线程回调函数中自动退出</a>
+</h3>
+<h3 class="topic">
+<a name="3fjt6r4q3l7rcocb5d7dtgifhf">&nbsp;&nbsp;通过ExitThread</a>
+</h3>
+<h3 class="topic">
+<a name="472v6a66brk6lqdg0h53urtmj9">&nbsp;&nbsp;&nbsp;如果线程的回调函数中使用了c++类对象，则此种退出方法不会触发c++对象的析构函数，可能会造成资源泄露，故建议使用_endthreadex()</a>
+</h3>
+<h3 class="topic">
+<a name="3csnbkurjoplfqaqusetvb4l7p">&nbsp;&nbsp;通过TerminateThread</a>
+</h3>
+<h3 class="topic">
+<a name="7ossmbqeqvkbe220nn3g5qkr73">&nbsp;&nbsp;&nbsp;除了不会触发c++对象的析构之外，也不会执行线程栈的清理工作</a>
+</h3>
+<h3 class="topic">
+<a name="1r3n2d0imvqrltd84guutuaqbi">&nbsp;&nbsp;通过进程终止运行返回</a>
+</h3>
+<h3 class="topic">
+<a name="65qfl9062uq25h7fq1udumcmok">&nbsp;&nbsp;&nbsp;会导致所有线程突然终止，没有机会按照正确的流程执行清理操作</a>
+</h3>
+<h3 class="topic">
+<a name="7cuu81kqbtokhvabcfkdr1tl83">&nbsp;&nbsp;注意：线程的结束即线程的回调函数执行完毕，此时内核对象的信息从非激发态转为激发态，等待函数接收到激发态的信息会直接返回</a>
+</h3>
+<h3 class="topic">
+<a name="4jrp3a10teo4oprfgf6pcpv4u1">&nbsp;&nbsp;线程结束后并不代表内核线程对象被销毁</a>
+</h3>
+<h3 class="topic">
+<a name="5op1g1k2dq78fho8tth08tghge">&nbsp;&nbsp;&nbsp;内核对象都有引用计数，只有当引用计数为0时，内核对象才会被销毁</a>
+</h3>
+<h3 class="topic">
+<a name="556ii4as58r0ejqtvtmgntmf25">&nbsp;&nbsp;&nbsp;内核对象（包括进程、线程、文件、邮槽等）</a>
+</h3>
+<h3 class="topic">
+<a name="36tqerpeppdqi2n5v9ib7kocf9">&nbsp;&nbsp;&nbsp;线程内核对象在使用CreateThread()在主线程中创建之后，其引用计数为2，线程执行完毕，其引用计数减1，此时内核对象仍然存在，需要使用CloseHandle()在主线程中将线程对象关闭</a>
+</h3>
+<h3 class="topic">
+<a name="6mj02tnuddab7heoihr0r8nc9o">&nbsp;&nbsp;&nbsp;但是在实际应用中，一个进程的结束，会将该进程中句柄表所有的内核对象全部销毁，所以不需要专门执行CloseHandle()</a>
+</h3>
+<h3 class="topic">
+<a name="64hbjj30bsqr6l5msgdmlasa3j">&nbsp;内核对象的线程环境</a>
+</h3>
+<h3 class="topic">
+<a name="2mcqpl7ma9ob2i82oeqvi2kh3a">&nbsp;&nbsp;一个线程退出cpu时，需要保存一下自己的执行环境</a>
+</h3>
+<h3 class="topic">
+<a name="5f4evnbugpl0182f5o73iub673">&nbsp;&nbsp;&nbsp;保存在线程的栈中</a>
+</h3>
+<h3 class="topic">
+<a name="52svh3ordu0q0tkg4n1fl4o39o">&nbsp;&nbsp;一个线程要被执行了，首先需要将此线程的执行环境加载到cpu中</a>
+</h3>
+<h3 class="topic">
+<a name="0hmmarckpicraj3t1ee0l120af">&nbsp;&nbsp;&nbsp;从栈中将线程环境恢复</a>
+</h3>
+<h3 class="topic">
+<a name="2jtc3r8jta8o8m848iddujp9ji">&nbsp;&nbsp;所谓的线程环境基本就是cpu在执行此线程时的寄存器信息</a>
+</h3>
+<h3 class="topic">
+<a name="2djb8oh8ilc5ah4l7s4s2bjvje">&nbsp;&nbsp;线程环境</a>
+</h3>
+<h3 class="topic">
+<a name="0arkisbg48djerkfq35isd1n36">&nbsp;&nbsp;&nbsp;通过_CONTEXT结构体保存</a>
+</h3>
+<h3 class="topic">
+<a name="7dhbu4hs4efi7d1uj6bh1nrb6h">&nbsp;&nbsp;&nbsp;&nbsp;使用该结构体获取保存的线程环境时，需要设置相应的结构体字段才能进行获取</a>
+</h3>
+<h3 class="topic">
+<a name="01602r9rdipvcsfn8lbnsia1uv">&nbsp;&nbsp;&nbsp;通过GetThreadContext获取线程环境</a>
+</h3>
+<h3 class="topic">
+<a name="3e77fh1tvt2mm0hmks0ivd7ji0">&nbsp;&nbsp;&nbsp;通过SetThreadContext设置线程环境</a>
+</h3>
+<h3 class="topic">
+<a name="29lf22r0q1t927ust8td509ui9">&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="4tusm2q6cmptdag47tae2pm3g6">&nbsp;&nbsp;&nbsp;#include "pch.h"&#13;
+#include &lt;iostream&gt;&#13;
+#include "pch.h"&#13;
+#include &lt;windows.h&gt;&#13;
+#include &lt;stdio.h&gt;&#13;
+#include &lt;process.h&gt;&#13;
+&#13;
+unsigned int  CALLBACK ThreadProc(void* pArg)&#13;
+{&#13;
+	CONTEXT ct = { 0 };&#13;
+	while ( true )&#13;
+	{&#13;
+		//使用CONTEXT结构体获取保存的线程环境时，需要设置相应的结构体字段才能进行获取&#13;
+		ct.ContextFlags = CONTEXT_ALL;&#13;
+		//得到当前线程环境&#13;
+		GetThreadContext(GetCurrentThread(),//获取当前线程句柄&#13;
+						 &amp;ct);//用于保存线程环境的结构体&#13;
+		printf("eax=%08X eip=%08X\n",&#13;
+			   ct.Eax,//当前线程环境下eax寄存器的值  32位程序&#13;
+			   ct.Eip); //当前线程环境下eip寄存器的值  32位程序&#13;
+		Sleep(30);&#13;
+	}&#13;
+	return 0;&#13;
+}&#13;
+int main()&#13;
+{	//创建10个进程&#13;
+	for (int i = 0; i &lt; 10; ++i) {&#13;
+		_beginthreadex(NULL,//安全描述符&#13;
+					   0,//新进程栈大小&#13;
+					   ThreadProc,//回调函数&#13;
+					   0,//附加参数&#13;
+					   0,//创建标志&#13;
+					   0);//新线程id&#13;
+	}&#13;
+	//主线程这里如果不加while死循环，&#13;
+	//会导致子线程的执行会随着主线程执行完毕而结束执行&#13;
+}&#13;
+</a>
+</h3>
+<h3 class="topic">
+<a name="7o6iif5rt3mf5q2q3ag0r0u7as">&nbsp;线程的睡眠</a>
+</h3>
+<h3 class="topic">
+<a name="7c2roqkc9c130foohir0264ro5">&nbsp;&nbsp;线程在一段时间内不需要再获取CPU时间片，可以通过Sleep()函数实现</a>
+</h3>
+<h3 class="topic">
+<a name="2r7l0o9em8o47iks2egpg9cue1">&nbsp;&nbsp;Sleep()对线程的调度，不是一个具体时间而是一个近似值</a>
+</h3>
+<h3 class="topic">
+<a name="4knaiqqoaco9tq9j599q0867ov">&nbsp;线程的优先级</a>
+</h3>
+<h3 class="topic">
+<a name="3j7bq49j21793tp9omagicf6fq">&nbsp;&nbsp;0~31</a>
+</h3>
+<h3 class="topic">
+<a name="37v6kmihigl1f1dqda6rnjpa70">&nbsp;&nbsp;数值越大优先级越高</a>
+</h3>
+<h3 class="topic">
+<a name="6a26nrmn4hn73c2rr440mm71uh">&nbsp;&nbsp;低优先级的线程正在运行，假如高优先级的线程准备执行，会挂起低优先级的线程，直接给高优先级分配时间片</a>
+</h3>
+<h3 class="topic">
+<a name="7o1c7a9i27cobnucb4peh6keot">&nbsp;&nbsp;&nbsp;只要队列中存在高优先级的线程，就不会执行低优先级线程</a>
+</h3>
+<h3 class="topic">
+<a name="7ueq5vo6ksjvkffosivr7vrc6d">&nbsp;&nbsp;唯一的0优先级线程是系统提供的，用于将系统中所有内存闲置页面清零</a>
+</h3>
+<h3 class="topic">
+<a name="5ut77usbhu21p4g7p331imsdln">&nbsp;&nbsp;优先级的兼容性</a>
+</h3>
+<h3 class="topic">
+<a name="79uhh3n8m63qbb0dp14choqnu0">&nbsp;&nbsp;&nbsp;微软通过三种手段确保在不同的windows版本中优先级调度机制始终有效</a>
+</h3>
+<h3 class="topic">
+<a name="4uvms3ngrrnv4cm9ugd44duo8h">&nbsp;&nbsp;&nbsp;作为编程者，在调度优先级编程应该做到防御性编程，以预防可能优先级机制无效的情况</a>
+</h3>
+<h3 class="topic">
+<a name="7s3ktts7lji734mtgqucotphu5">&nbsp;&nbsp;综合计算线程优先级</a>
+</h3>
+<h3 class="topic">
+<a name="6nsjj7oi60opuuatj905hsbh2u">&nbsp;&nbsp;&nbsp;通过进程优先级和相对线程优先级综合计算线程优先级</a>
+</h3>
+<h3 class="topic">
+<a name="5megoojbhl8pjgtj3t6gs1nu89">&nbsp;&nbsp;&nbsp;进程优先级</a>
+</h3>
+<h3 class="topic">
+<a name="1rtfede2370ip2gtpgkfif12ki">&nbsp;&nbsp;&nbsp;&nbsp;是线程优先级的主基调，通过相对线程优先级得到线程优先级</a>
+</h3>
+<h3 class="topic">
+<a name="35p872hgt9ueklr6htoe2peiup">&nbsp;&nbsp;&nbsp;以上两者通过排列组合，得到线程优先级</a>
+</h3>
+<h3 class="topic">
+<a name="0hvg67k1rp43i5jt9olbhntl9p">&nbsp;&nbsp;改变优先级</a>
+</h3>
+<h3 class="topic">
+<a name="57nmj8c1nkjo4j7rgbojfffa50">&nbsp;&nbsp;&nbsp;在调用CreateProcecss时设置fdwCreate参数传入优先级</a>
+</h3>
+<h3 class="topic">
+<a name="0javeckfbaeldgo07gvgokmkik">&nbsp;&nbsp;&nbsp;&nbsp;SetPriorityClass改变优先级</a>
+</h3>
+<h3 class="topic">
+<a name="3dbrvsmdr494g73j4527pbo1aq">&nbsp;&nbsp;&nbsp;&nbsp;GetPriorityClass获取进程优先级</a>
+</h3>
+<h3 class="topic">
+<a name="7iprdfgcb7iq1ofjkkg06uc7v1">&nbsp;&nbsp;&nbsp;CreateThread函数没有提供设置线程优先级的参数</a>
+</h3>
+<h3 class="topic">
+<a name="6hc31g4lmj8mknm01uu4oieri3">&nbsp;&nbsp;&nbsp;&nbsp;SetThreadPriority设置线程优先级</a>
+</h3>
+<h3 class="topic">
+<a name="3kfthu23c8fba40h7f88jhjo9r">&nbsp;&nbsp;&nbsp;&nbsp;GetThreadPriority获取线程相对优先级</a>
+</h3>
+<h3 class="topic">
+<a name="5bv1j7m27gdplce76kmbe52it1">&nbsp;&nbsp;动态优先级</a>
+</h3>
+<h3 class="topic">
+<a name="3540aib94r1s8g3gpe0o494mbe">&nbsp;&nbsp;&nbsp;目的</a>
+</h3>
+<h3 class="topic">
+<a name="1ae4o2rnvr5h1h0rl5mvu3ilkg">&nbsp;&nbsp;&nbsp;&nbsp;为了及时响应紧急操作</a>
+</h3>
+<h3 class="topic">
+<a name="26l0c3kr3ifs1i3o7u1kh4ilh3">&nbsp;&nbsp;&nbsp;&nbsp;为了给饥饿线程分配时间片</a>
+</h3>
+<h3 class="topic">
+<a name="4gr18lr57v14lujro5lhprh35o">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;饥饿线程</a>
+</h3>
+<h3 class="topic">
+<a name="2051cbqlip80p840aofta17v4h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;不能被执行的低优先级线程</a>
+</h3>
+<h3 class="topic">
+<a name="7d97c7jej17b7v3ic914vchgil">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;win有动态调整优先级的机制 一般给饥饿线程+5优先级</a>
+</h3>
+<h3 class="topic">
+<a name="67ataiqfesh4952c3i3b4g6lue">&nbsp;&nbsp;&nbsp;动态优先级提升规则</a>
+</h3>
+<h3 class="topic">
+<a name="06gplb666h0hrinv681ap0bqkj">&nbsp;&nbsp;&nbsp;&nbsp;暂略详见资料79页</a>
+</h3>
+<h3 class="topic">
+<a name="5e10qrb2qe5j4srvabo5tfg5h2">&nbsp;调试技巧</a>
+</h3>
+<h3 class="topic">
+<a name="3p7e7c80eg68v3jhhk4h5v5qq5">&nbsp;&nbsp;多线程程序的调试可以打开线程调试窗口，以便看到当前正在运行哪一个线程</a>
+</h3>
+<h3 class="topic">
+<a name="6qtfvpmeq0o539rq2tth8ef6n4">&nbsp;相关api</a>
+</h3>
+<h3 class="topic">
+<a name="7njgm8m0mn7ourabt4b0jnjb5g">&nbsp;&nbsp;获得当前线程id</a>
+</h3>
+<h3 class="topic">
+<a name="3ullgdtvjdcf1o76afd0b9jsgf">&nbsp;&nbsp;&nbsp;GetCurrentThreadId()</a>
+</h3>
+<h3 class="topic">
+<a name="78o8aujotq3fp1qqe2nq4h24h1">&nbsp;&nbsp;创建线程</a>
+</h3>
+<h3 class="topic">
+<a name="5a1qf61qcpmoefalieit611uel">&nbsp;&nbsp;&nbsp;CreateThread()</a>
+</h3>
+<h3 class="topic">
+<a name="58abinnanj3b4o35ikv8gv1a91">&nbsp;&nbsp;打开线程</a>
+</h3>
+<h3 class="topic">
+<a name="7h3qvbl0l2ll8go2uvh3uiernj">&nbsp;&nbsp;&nbsp;OpenThread</a>
+</h3>
+<h3 class="topic">
+<a name="202u5fksdh362pj1cojah06vuj">&nbsp;&nbsp;&nbsp;&nbsp;申请的权限</a>
+</h3>
+<h3 class="topic">
+<a name="2s2ksa74ush7hnp5mtlc1k96mi">&nbsp;&nbsp;&nbsp;&nbsp;是否继承</a>
+</h3>
+<h3 class="topic">
+<a name="5p1ip8k8i36l0mibu1vrt7vib6">&nbsp;&nbsp;&nbsp;&nbsp;线程id</a>
+</h3>
+<h3 class="topic">
+<a name="1hlrqq66ujs1s4lk0caq7b4aqu">&nbsp;&nbsp;退出本线程</a>
+</h3>
+<h3 class="topic">
+<a name="7k29jp68abj44l4bamm5sejkmp">&nbsp;&nbsp;&nbsp;ExitThread</a>
+</h3>
+<h3 class="topic">
+<a name="26l795qd4838p4i1siidq53n8v">&nbsp;&nbsp;结束其他线程（需要本线程具有相应权限）</a>
+</h3>
+<h3 class="topic">
+<a name="4o6hd5cus7d3ucnr08hc40j6hv">&nbsp;&nbsp;&nbsp;TerminateThread</a>
+</h3>
+<h3 class="topic">
+<a name="7ot3v182jue255lsih7n274nnt">&nbsp;&nbsp;挂起线程（需要本线程具有相应权限）</a>
+</h3>
+<h3 class="topic">
+<a name="3r8a69j41qc1bpqhjh70th7gda">&nbsp;&nbsp;&nbsp;SuspendThread</a>
+</h3>
+<h3 class="topic">
+<a name="2vbbjfk82upa04vm7pt5f3ft4d">&nbsp;&nbsp;恢复线程（需要本线程具有相应权限）</a>
+</h3>
+<h3 class="topic">
+<a name="231kilbfn35456h7f21q44h0ch">&nbsp;&nbsp;&nbsp;ResumeTherad</a>
+</h3>
+<h2 class="topic">
+<a name="5p8p70repubjmd05gvr59gagvi">线程的同步</a>
+</h2>
+<h3 class="topic">
+<a name="5sq8o3p87gljbl38s6gpfmaacp">&nbsp;多线程引发的问题</a>
+</h3>
+<h3 class="topic">
+<a name="2fk3ik5t6l6oglfr57ulg1jmb7">&nbsp;&nbsp;两个或多个线程同时访问了共有的资源（同一个进程中所有的资源：全局变量、句柄、堆空间等），同一个资源在不同的线程中修改时出现不一致出现访问错误</a>
+</h3>
+<h3 class="topic">
+<a name="1ce23ljusftkfnfagerulu6oss">&nbsp;&nbsp;&nbsp;解决思路</a>
+</h3>
+<h3 class="topic">
+<a name="1a92qn0g458g3vgka8af7kvopc">&nbsp;&nbsp;&nbsp;&nbsp;共享资源在同一个时间只有一个线程可以访问，不论先后</a>
+</h3>
+<h3 class="topic">
+<a name="7hf86pm7ngcn7phaufqq3bbjpm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;互斥</a>
+</h3>
+<h3 class="topic">
+<a name="1vmbsoe3r0f801fb1kgcc9248s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;规定操作同一个资源的时候，在同一个时间段内，只有一个线程可以操作资源</a>
+</h3>
+<h3 class="topic">
+<a name="37prgs98h4sn7jmvrb5ih387bl">&nbsp;&nbsp;多个线程的执行有一定的逻辑顺序，必须先做什么，再做什么</a>
+</h3>
+<h3 class="topic">
+<a name="3phqpup1j26hshm5htu0ak27jg">&nbsp;&nbsp;&nbsp;解决思路</a>
+</h3>
+<h3 class="topic">
+<a name="29dikdnbi9t5e4qjb3sppeqrmc">&nbsp;&nbsp;&nbsp;&nbsp;保证线程执行的有序性</a>
+</h3>
+<h3 class="topic">
+<a name="5mvuec5436t2n53icgepd3us65">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;同步</a>
+</h3>
+<h3 class="topic">
+<a name="5vgbvqri4niu7dbalrt7rvltlf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;同步一般也是互斥的，不过有了有序的功能</a>
+</h3>
+<h3 class="topic">
+<a name="17g1tpa8gbmgrd37flp4snmq3m">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;互斥不一定能解决同步问题</a>
+</h3>
+<h3 class="topic">
+<a name="0ekt1aqjscm2qnmbbacvceg5cu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;线程按先后顺序操作进程资源</a>
+</h3>
+<h3 class="topic">
+<a name="4amov5ebjroupbk8q10pu37llj">&nbsp;使得线程间互斥的方法</a>
+</h3>
+<h3 class="topic">
+<a name="2dugq894oj3j8kjhsoe78h4l1i">&nbsp;&nbsp;等待函数</a>
+</h3>
+<h3 class="topic">
+<a name="1pab43ctk4o4ogs6clmoonmdb5">&nbsp;&nbsp;&nbsp;一个函数，用于等待一切可以等待内核对象</a>
+</h3>
+<h3 class="topic">
+<a name="6vljil5f3ooqe18js347tgvsfe">&nbsp;&nbsp;&nbsp;内核对象有两种状态</a>
+</h3>
+<h3 class="topic">
+<a name="1ii7lp27ar7qgb20l5to28dgkh">&nbsp;&nbsp;&nbsp;&nbsp;激发态</a>
+</h3>
+<h3 class="topic">
+<a name="6k08rle7si3uic1iilqjaigtui">&nbsp;&nbsp;&nbsp;&nbsp;非激发态</a>
+</h3>
+<h3 class="topic">
+<a name="11ne378o21a27qo6q9ovro4eqi">&nbsp;&nbsp;&nbsp;等待函数用于将某一个线程进入阻塞状态，直到该函数指定的内核对象处于激发状态</a>
+</h3>
+<h3 class="topic">
+<a name="5c0gsgfollposa0n1r4hc8sg97">&nbsp;&nbsp;&nbsp;&nbsp;比如当线程回调函数执行结束之后，线程内核对象被置为激发态，导致等待函数返回</a>
+</h3>
+<h3 class="topic">
+<a name="05uvee5321gdm3hh45sgjqfp2r">&nbsp;&nbsp;&nbsp;等待函数的返回值</a>
+</h3>
+<h3 class="topic">
+<a name="57roeuvns11k37km9mb3s2icnd">&nbsp;&nbsp;&nbsp;&nbsp;WAIT_ABANDONED</a>
+</h3>
+<h3 class="topic">
+<a name="69u7hv10pap080vss4i23hnca1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;互斥体的情况下有用</a>
+</h3>
+<h3 class="topic">
+<a name="5hh4b97dlaq7p7fg4a57deo7tf">&nbsp;&nbsp;&nbsp;&nbsp;WAIT_OBJECT_O</a>
+</h3>
+<h3 class="topic">
+<a name="3ejrs1svh0gp2gqvq7lvi5ipov">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;等到了内核对象被设置为激发态</a>
+</h3>
+<h3 class="topic">
+<a name="6uso8hvn9g4oma99p30lg4p9ud">&nbsp;&nbsp;&nbsp;&nbsp;WAIT_TIMEOUT</a>
+</h3>
+<h3 class="topic">
+<a name="30opor7tvb822nf8e4en6d5aql">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;超时了</a>
+</h3>
+<h3 class="topic">
+<a name="71a4m8a16t42hvipi6l10uji03">&nbsp;&nbsp;&nbsp;&nbsp;WAIT_FAILED</a>
+</h3>
+<h3 class="topic">
+<a name="2v4ur31hscul711ff1fhd721tj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;失败了</a>
+</h3>
+<h3 class="topic">
+<a name="0h5g2k25k5t79b4ls91i3j99jn">&nbsp;&nbsp;&nbsp;等待函数函数原型</a>
+</h3>
+<h3 class="topic">
+<a name="5774bnpd3mselnv1qr8i3e1vqt">&nbsp;&nbsp;&nbsp;&nbsp;DWORD WINAPI WaitForSingleObject(&#13;
+ _In_ HANDLE hHandle,//&#13;
+ _In_ DWORD dwMilliseconds //等待超时时间	&#13;
+) </a>
+</h3>
+<h3 class="topic">
+<a name="35dlneude8mglf20cbu69tejur">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;等待一个内核对象</a>
+</h3>
+<h3 class="topic">
+<a name="1v2078auetvtchirrng7676tae">&nbsp;&nbsp;&nbsp;&nbsp;WaitForMultipleObject(&#13;
+	_In_ DWORD nCount,//等待的数量&#13;
+	_In_reads_(nCount) CONST HANDLE *lpHandles,//等待的句柄的数组&#13;
+	_In_ BOOL dWaitAll,//是否等待全部&#13;
+	_In_ DWORD dwMilliseconds//等待时间&#13;
+);</a>
+</h3>
+<h3 class="topic">
+<a name="15h4skvqu6e87afuk8ok7c93pr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;等待多个内核对象</a>
+</h3>
+<h3 class="topic">
+<a name="6co5add7sgaa05opimhf4oit6v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;最多等待64个</a>
+</h3>
+<h3 class="topic">
+<a name="3v5nvh3uhm7prlsp76ukdnhfk9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果等待全部，就是等待所有内核对象均为激发态，等待函数就返回</a>
+</h3>
+<h3 class="topic">
+<a name="26qnuvq6160nasc5vf0u2oq2am">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果不等待全部，只要有要给内核对象激发态，等待函数返回</a>
+</h3>
+<h3 class="topic">
+<a name="492jvdm6ollu99997oir1bnjeq">&nbsp;&nbsp;原子操作</a>
+</h3>
+<h3 class="topic">
+<a name="50camgmvp18pe93goktld0hqht">&nbsp;&nbsp;&nbsp;定义</a>
+</h3>
+<h3 class="topic">
+<a name="6euc16rrhn7fh3num0svp8r96p">&nbsp;&nbsp;&nbsp;&nbsp;原子操作就是一个线程对于某一个资源做操作的时候能够保证没有其他线程能够对此类资源进行访问</a>
+</h3>
+<h3 class="topic">
+<a name="6a74hltkqu19rai46ldvclopnq">&nbsp;&nbsp;&nbsp;相关api</a>
+</h3>
+<h3 class="topic">
+<a name="1f4itacda9q958nv3sp8jlq482">&nbsp;&nbsp;&nbsp;&nbsp;InterlockedIncrement()</a>
+</h3>
+<h3 class="topic">
+<a name="3k2t2n4fv1p64uephgko4gftim">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;给一个整型变量自增1</a>
+</h3>
+<h3 class="topic">
+<a name="31d7d6ga1579nhad6s7r4cujdu">&nbsp;&nbsp;&nbsp;&nbsp;.......</a>
+</h3>
+<h3 class="topic">
+<a name="6jeklrrsg0l77d0smr0i5o85r6">&nbsp;&nbsp;&nbsp;原子操作函数使用范围比较窄，只能保证整数的算术运算是原子操作，当希望保护一段代码，使这段代码是原子操作，需要使用临界区解决问题</a>
+</h3>
+<h3 class="topic">
+<a name="0esefl6tthf1ptmi4hgn3lm56n">&nbsp;&nbsp;临界区</a>
+</h3>
+<h3 class="topic">
+<a name="7nctat54d8e33ihcs1nhr9l80d">&nbsp;&nbsp;&nbsp;相关api</a>
+</h3>
+<h3 class="topic">
+<a name="6o68r4n7jis6jr64o7t13nn2u9">&nbsp;&nbsp;&nbsp;&nbsp;初始化临界区</a>
+</h3>
+<h3 class="topic">
+<a name="3m08u75df7jtra382ik6fh01vb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;InitializeCriticalSection</a>
+</h3>
+<h3 class="topic">
+<a name="177oaf3etsads31hjk8fm3m689">&nbsp;&nbsp;&nbsp;&nbsp;销毁临界区</a>
+</h3>
+<h3 class="topic">
+<a name="36hgk16mee2f004ilnbba9fc63">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DeleteCriticalSection</a>
+</h3>
+<h3 class="topic">
+<a name="0sbev5q1bka99r1ckspgb542sa">&nbsp;&nbsp;&nbsp;&nbsp;进入临界区</a>
+</h3>
+<h3 class="topic">
+<a name="4ipeg83th7qmmfga0n10873tpn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;EnterCriticalSection</a>
+</h3>
+<h3 class="topic">
+<a name="74minaamj3giq89bgeunkecbct">&nbsp;&nbsp;&nbsp;&nbsp;离开临界区</a>
+</h3>
+<h3 class="topic">
+<a name="7f32rcanpsl6bfiibp4ffrbkf2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LeaveCriticalSection</a>
+</h3>
+<h3 class="topic">
+<a name="69vq97uv3j3rncsj36cvhu01ac">&nbsp;&nbsp;&nbsp;&nbsp;以上函数本身均是线程安全的，即相关进入、离开临界区的操作本身是原子操作</a>
+</h3>
+<h3 class="topic">
+<a name="0frohi9p6j1bvo7glnj23v3jdv">&nbsp;&nbsp;&nbsp;注意点</a>
+</h3>
+<h3 class="topic">
+<a name="6kd9agbhcov1ffd3lacn310mlv">&nbsp;&nbsp;&nbsp;&nbsp;如果要保证多个线程互斥地进入同一个临界区，则需要进入临界区与离开临界区的api调用的参数是同一个临界区结构体</a>
+</h3>
+<h3 class="topic">
+<a name="4sup5jetgk8fn16mikkngtj44o">&nbsp;&nbsp;&nbsp;&nbsp;如果一个线程执行进入临界区，执行代码，则在该线程执行完所有临界区代码之前，另一个进程无法进入该临界区，即使在第一个线程执行临界区代码中途耗尽时间片被切换出去，另一个线程会在临界区之前阻塞，直到第一个线程重新获得时间片，将临界区代码执行完毕</a>
+</h3>
+<h3 class="topic">
+<a name="1g75j8h0t686738u8pdunrigq9">&nbsp;&nbsp;&nbsp;&nbsp;如果一个线程离开临界区，同时有多个线程等待进入临界区，能进入临界区的线程是随机的</a>
+</h3>
+<h3 class="topic">
+<a name="019botnmlf1kv7s5cds8m837n0">&nbsp;&nbsp;&nbsp;缺点</a>
+</h3>
+<h3 class="topic">
+<a name="2s7cfkg5tjdpik4r0oec4ds5dc">&nbsp;&nbsp;&nbsp;&nbsp;当一个线程进入临界区，线程崩溃了，无法离开临界区，会造成其他线程一直等待进入临界区，形成死锁</a>
+</h3>
+<h3 class="topic">
+<a name="24m8qool3v5m47gcs9tfeiun0h">&nbsp;&nbsp;&nbsp;&nbsp;只在一个进程中有效，无法互斥多个进程中的线程</a>
+</h3>
+<h3 class="topic">
+<a name="5e3o8iq1h2pq9o9kmonnavm461">&nbsp;&nbsp;&nbsp;&nbsp;只能进行线程间互斥，无法线程间同步</a>
+</h3>
+<h3 class="topic">
+<a name="4rea1qplr35di6dv6bp521rqsc">&nbsp;&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="7tfbotvv8hr9fndhv4k5s8r246">&nbsp;&nbsp;&nbsp;&nbsp;#include "pch.h"&#13;
+#include &lt;windows.h&gt;&#13;
+#include &lt;stdio.h&gt;&#13;
+long g_n;&#13;
+//定义一个临界区结构体，必须使是全局的，因为需要在其他进程回调函数使用&#13;
+CRITICAL_SECTION g_ritical;&#13;
+&#13;
+DWORD WINAPI ThreadPro1(LPVOID lpThreadParameter) {&#13;
+	for (int i = 0; i &lt; 100000; i++)&#13;
+	{&#13;
+		EnterCriticalSection(&amp;g_ritical);//进入临界区&#13;
+		printf("线程1: ID:%d\n", GetCurrentThreadId());&#13;
+		g_n++;&#13;
+		LeaveCriticalSection(&amp;g_ritical);//离开临界区&#13;
+		//InterlockedIncrement(&amp;g_n);若仅进行算术运算，也可以使用原子操作函数&#13;
+	}&#13;
+	return 0;&#13;
+}&#13;
+DWORD WINAPI ThreadPro2(LPVOID lpThreadParameter) {&#13;
+	for (int i = 0; i &lt; 100000; i++)&#13;
+	{&#13;
+		EnterCriticalSection(&amp;g_ritical);//进入临界区&#13;
+		printf("线程2 TID:%d\n", GetCurrentThreadId());&#13;
+		g_n++;&#13;
+		LeaveCriticalSection(&amp;g_ritical);//离开临界区&#13;
+		//InterlockedIncrement(&amp;g_n);若仅进行算术运算，也可以使用原子操作函数	&#13;
+	}&#13;
+	return 0;&#13;
+}&#13;
+int main( ) {&#13;
+	//初始化临界区&#13;
+	InitializeCriticalSection(&amp;g_ritical);&#13;
+	//创建线程句柄，用于接收新创建的线程&#13;
+	HANDLE hThread1 = 0, hThread2;&#13;
+	//新创建线程&#13;
+	hThread1 = CreateThread(NULL, NULL, ThreadPro1, NULL, NULL, NULL);&#13;
+	hThread2 = CreateThread(NULL, NULL, ThreadPro2, NULL, NULL, NULL);&#13;
+&#13;
+	//等待函数，参数是线程句柄，只有当线程退出后（线程回调函数执行完毕），线程对象的信号会变成激发态，等待函数会返回&#13;
+	//第一个参数为内核对象的句柄，用于标识等待函数接收的是哪一个内核对象的信号&#13;
+	//第二个参数的意义在于一直等待，即该函数只有在对应的线程执行完毕，信号变为激发态的时候才会返回&#13;
+	//如果第二个参数设置位1000，效果是等待函数会等待1秒，1秒内接收到信号则返回，1秒后无论是否接收到信号，都会返回&#13;
+	//这两个函数在这里的意义在于保证两个子线程执行完毕之后（即线程回调函数return0，线程对象信号为激发态 ），主线程才会结束&#13;
+	WaitForSingleObject(hThread1, -1);&#13;
+	WaitForSingleObject(hThread2, -1);&#13;
+	printf("%d", g_n);	&#13;
+	//主线程中应该要有closehandle，从而将内核线程对象销毁&#13;
+	//但是在实际应用中，一个进程的结束，会将该进程中句柄表所有的内核对象全部销毁，所以不需要专门执行CloseHandle()&#13;
+	return 0;&#13;
+}&#13;
+</a>
+</h3>
+<h3 class="topic">
+<a name="0l0hlqq6inoum7bbu3bqs46qie">&nbsp;内核对象级别的线程同步</a>
+</h3>
+<h3 class="topic">
+<a name="45mh5hmc8b839v26p0u040ttj1">&nbsp;&nbsp;互斥体（也称互斥锁）（是内核对象，可以在多个进程间进行互斥）</a>
+</h3>
+<h3 class="topic">
+<a name="1gbqq3iuj0u2ehkq6pnp18bgu8">&nbsp;&nbsp;&nbsp;重要概念</a>
+</h3>
+<h3 class="topic">
+<a name="46tein9519ms1pkv61uo5oua4s">&nbsp;&nbsp;&nbsp;&nbsp;拥有者</a>
+</h3>
+<h3 class="topic">
+<a name="494h9ao5o4j8v3mb3rkfl4attv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当前线程是否拥有互斥体</a>
+</h3>
+<h3 class="topic">
+<a name="1a5g46etd500dgc2cq3ehen88f">&nbsp;&nbsp;&nbsp;&nbsp;信号</a>
+</h3>
+<h3 class="topic">
+<a name="77o4ca18mp5fg68ib3tpsqten8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用于标识当前互斥体是否可以被线程拥有</a>
+</h3>
+<h3 class="topic">
+<a name="4efclgk5tjik80aof12t40p6fn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当互斥体被线程拥有，没信号</a>
+</h3>
+<h3 class="topic">
+<a name="4nee1if2qnpnb1p08reb8u6fqo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;非激发态</a>
+</h3>
+<h3 class="topic">
+<a name="530srs3g17gol3tm9durlgmdrm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当互斥体被线程释放，则有信号</a>
+</h3>
+<h3 class="topic">
+<a name="4dnjht38c1ue2aruj4jfc6ulbo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;激发态</a>
+</h3>
+<h3 class="topic">
+<a name="14crdt8u4jalhmgi64tab5t3o3">&nbsp;&nbsp;&nbsp;&nbsp;等待函数WaitForSingleObject</a>
+</h3>
+<h3 class="topic">
+<a name="25takd5ub9g8j91pjrncrqk0gg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当互斥体有信号且等待函数处于阻塞状态，若当前有线程执行到等待函数，等待函数将返回，并把当前线程置为互斥体拥有着，使互斥体没有信号</a>
+</h3>
+<h3 class="topic">
+<a name="4bkgn2uaofugc89jce4su2ubsk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;即等待函数的副作用</a>
+</h3>
+<h3 class="topic">
+<a name="4avkdudvdi1pf0m4feik5dudml">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当线程调用ReleaseMutex()会使得互斥体释放，互斥体变为激发态，此时在等待的线程中随机选择一个线程，使得该线程拥有互斥体</a>
+</h3>
+<h3 class="topic">
+<a name="6fp7ko9rens66blp6lgqe8khdg">&nbsp;&nbsp;&nbsp;函数</a>
+</h3>
+<h3 class="topic">
+<a name="78hct0biv5dmv0itg1js3c3nuf">&nbsp;&nbsp;&nbsp;&nbsp;CreateMutex</a>
+</h3>
+<h3 class="topic">
+<a name="489rv6u7otpnkr42bbffska3is">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;返回值</a>
+</h3>
+<h3 class="topic">
+<a name="3as35jd7qv1p602na2icskn81l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;HANDLE 互斥体句柄</a>
+</h3>
+<h3 class="topic">
+<a name="1kbtt1vbpndqp62su4g7lgkrl3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;参数</a>
+</h3>
+<h3 class="topic">
+<a name="3er5jss6bcl6hvqc8825jm8v3i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;安全描述符</a>
+</h3>
+<h3 class="topic">
+<a name="15hndgnrnfpechru839tr3k93l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;一般填NULL，使用默认安全描述符</a>
+</h3>
+<h3 class="topic">
+<a name="6ihjstvvcq739ah4c6rd9f5v6f">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;是否被创建的线程拥有</a>
+</h3>
+<h3 class="topic">
+<a name="658jlo01ggmrf032up3vlers72">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;互斥体的名字，可以用于在其他地方打开互斥体</a>
+</h3>
+<h3 class="topic">
+<a name="6chskbnrghje7dt0snu71c2kur">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果不需要其他进程访问，不命名也可以</a>
+</h3>
+<h3 class="topic">
+<a name="7q9m3gt2usuvbsa2jb23f9hspj">&nbsp;&nbsp;&nbsp;&nbsp;OpenMutexW</a>
+</h3>
+<h3 class="topic">
+<a name="2qfouell6fguuegmg5f9k5vap2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;返回值</a>
+</h3>
+<h3 class="topic">
+<a name="0v47v51hg5r8hkp1aujpjv0cts">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;HANDLE 互斥体句柄</a>
+</h3>
+<h3 class="topic">
+<a name="17f4u505ssinoahhf4hfcfan0q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;参数</a>
+</h3>
+<h3 class="topic">
+<a name="0ecs8fpur3709l9j4rbu9sbu25">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;访问权限</a>
+</h3>
+<h3 class="topic">
+<a name="304f31gsbp356b3f8tch5l67fq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;此句柄能否被子进程继承</a>
+</h3>
+<h3 class="topic">
+<a name="1giuq14pc6f2a4ir1c3t6e5b84">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;互斥体的名称，根据名称打开一个互斥体</a>
+</h3>
+<h3 class="topic">
+<a name="3gqsfgq6cd8oueu9rc735qhfe6">&nbsp;&nbsp;&nbsp;&nbsp;ReleaseMutex</a>
+</h3>
+<h3 class="topic">
+<a name="3kp4dcbnqvq25j42pqa70pfm8u">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;返回值 BOOL</a>
+</h3>
+<h3 class="topic">
+<a name="1se2l55fuvabsa9mvjpjqbrlos">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;参数要释放的互斥体句柄</a>
+</h3>
+<h3 class="topic">
+<a name="2n1t5d7tja5nktskklnhbasjq7">&nbsp;&nbsp;&nbsp;&nbsp;CloseHandle</a>
+</h3>
+<h3 class="topic">
+<a name="317sfaqbpho2da7c7otpb135br">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;返回值 BOOL</a>
+</h3>
+<h3 class="topic">
+<a name="2et1e0umffi64gscbjbqbn77p4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;内核对象句柄</a>
+</h3>
+<h3 class="topic">
+<a name="0i0dfhdof09oi1i383qis4oqg4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用于将互斥体引用计数减1</a>
+</h3>
+<h3 class="topic">
+<a name="12sq0eirqvi456s19m0gf9ob2i">&nbsp;&nbsp;&nbsp;原理</a>
+</h3>
+<h3 class="topic">
+<a name="4kenvdmlv1g9t3rq9m7jccufqi">&nbsp;&nbsp;&nbsp;&nbsp;在某一个线程中执行等待函数，如果此时互斥锁没有拥有者（处于激发态，有信号，）则等待函数将互斥体的拥有着设置为当前线程，被拥有后，互斥体会处于非激发态（没有信号），等待函数会返回，执行下面的代码，此时直到当前线程释放互斥体，其他的线程均会在等待函数处被阻塞，不能执行等待函数之后的代码，当互斥体被释放，互斥体会重新处于激发态，则等待函数会将阻塞的任意一个线程置为互斥体拥有者</a>
+</h3>
+<h3 class="topic">
+<a name="1q4vkqavmo0bvdagb22egcmivh">&nbsp;&nbsp;&nbsp;缺点</a>
+</h3>
+<h3 class="topic">
+<a name="5tp0urq31qef626qkess602c4s">&nbsp;&nbsp;&nbsp;&nbsp;只能进行线程间互斥，无法线程间同步</a>
+</h3>
+<h3 class="topic">
+<a name="1annicfi1c088jd75llbbej9sj">&nbsp;&nbsp;&nbsp;&nbsp;只能被拥有者线程释放，多线程之间的不同回调函数的同步使用互斥体可能会出现问题</a>
+</h3>
+<h3 class="topic">
+<a name="5jas7vh0c7qhtu3bjvckkad9or">&nbsp;&nbsp;&nbsp;特点</a>
+</h3>
+<h3 class="topic">
+<a name="6kvujc7994bis22t9ke5elultu">&nbsp;&nbsp;&nbsp;&nbsp;当拥有互斥锁线程崩溃，系统会自动重置互斥体，将其分配给其他等待进程，从而避免死锁</a>
+</h3>
+<h3 class="topic">
+<a name="1r4l2fskjr2m5c02ilikrrqih8">&nbsp;&nbsp;&nbsp;&nbsp;互斥体有名字，所以可以跨进程使用</a>
+</h3>
+<h3 class="topic">
+<a name="4606hrvb3op20vi6eg25svi8pk">&nbsp;&nbsp;&nbsp;&nbsp;在使用上与临界区的使用步骤类似，被保护的代码放在等待函数到ReleaseMutex()之间</a>
+</h3>
+<h3 class="topic">
+<a name="5rcn8s8vj53u2q9hegh6kfad68">&nbsp;&nbsp;事件对象（为内核对象）</a>
+</h3>
+<h3 class="topic">
+<a name="72m2mbb3givj0q5skqv5i68bnm">&nbsp;&nbsp;&nbsp;事件对象包含</a>
+</h3>
+<h3 class="topic">
+<a name="3mgmarihmjdgld35r6b9v5nhba">&nbsp;&nbsp;&nbsp;&nbsp;使用计数？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？</a>
+</h3>
+<h3 class="topic">
+<a name="6r1hshneqks6lqdhsl97t47tfk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;实际上没有这个东西</a>
+</h3>
+<h3 class="topic">
+<a name="6qt4pgfkfif5066vuvqt9sucjq">&nbsp;&nbsp;&nbsp;&nbsp;自动重置或手动重置的BOOL值</a>
+</h3>
+<h3 class="topic">
+<a name="67aa6mqeqko7gb4m0kmm84e6sm">&nbsp;&nbsp;&nbsp;&nbsp;当前事件对象有没有被触发BOOL值</a>
+</h3>
+<h3 class="topic">
+<a name="20knpirudsahbmuk68kftds63d">&nbsp;&nbsp;&nbsp;使用流程</a>
+</h3>
+<h3 class="topic">
+<a name="408u6hlekqcce9iqu9fh244k0j">&nbsp;&nbsp;&nbsp;&nbsp;定义全局事件对象</a>
+</h3>
+<h3 class="topic">
+<a name="6too3lemarsmoo73qt6c3jfv7f">&nbsp;&nbsp;&nbsp;&nbsp;创建事件对象</a>
+</h3>
+<h3 class="topic">
+<a name="4haemcl18lsrf4agk7fep5lalv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CreateEvent</a>
+</h3>
+<h3 class="topic">
+<a name="3oakvptmsbitc2mkdcjcj9cf7c">&nbsp;&nbsp;&nbsp;&nbsp;在线程中设置函数等待事件信号</a>
+</h3>
+<h3 class="topic">
+<a name="4u5dghhop0os44r26tcjuso4m7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WaitForSingleObject()</a>
+</h3>
+<h3 class="topic">
+<a name="2goat40491etl1kg7fr5r5m48d">&nbsp;&nbsp;&nbsp;&nbsp;在另一个线程中设置事件，只有代码先执行了该线程，才能设置事件信号，则等待该信号的线程才能运行</a>
+</h3>
+<h3 class="topic">
+<a name="6r4svs925h06784e6ce4u2v3q3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SetEvent </a>
+</h3>
+<h3 class="topic">
+<a name="7fa8k9rvqaos6o1r6btgcqp93p">&nbsp;&nbsp;&nbsp;事件对象主要用于在一个工作线程中，通知另一个工作线程，某个事件已经完成，可以运行另一个线程</a>
+</h3>
+<h3 class="topic">
+<a name="2rsv9sf6hu06drjtei6eqql0ha">&nbsp;&nbsp;&nbsp;函数</a>
+</h3>
+<h3 class="topic">
+<a name="61t1hihfk0osh23mh9c3auh709">&nbsp;&nbsp;&nbsp;&nbsp;CreateEventW</a>
+</h3>
+<h3 class="topic">
+<a name="67a110mofpsvlp4g48mpp10mel">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;返回值</a>
+</h3>
+<h3 class="topic">
+<a name="4mov0fr3qsn4dierlffvl09c9h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;事件对象的句柄</a>
+</h3>
+<h3 class="topic">
+<a name="059vanej24719m8iru5rmbd5k9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;参数</a>
+</h3>
+<h3 class="topic">
+<a name="12od7rlfm320ice6s0kaudls38">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;安全描述符</a>
+</h3>
+<h3 class="topic">
+<a name="258mvs1v7gdiupb280cq308aum">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;手动设置事件状态还是自动设置事件状态</a>
+</h3>
+<h3 class="topic">
+<a name="32p6a122p892ro2o5drvc05oit">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;true：事件对象为手动设置，事件状态由程序员控制</a>
+</h3>
+<h3 class="topic">
+<a name="5rdk3hvq1qsqimtd7njjkki75t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;等待函数不会对事件信号产生影响</a>
+</h3>
+<h3 class="topic">
+<a name="2us9kaqbt8q0e5922h5p2gbabi">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;false：等待函数会产生副作用，当前状态为激发态导致等待函数返回后，自动将此事件设置为非激发态</a>
+</h3>
+<h3 class="topic">
+<a name="2fq5tj8vhe7jg511an48ab3mse">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;事件的初始状态是激发态还是非激发态</a>
+</h3>
+<h3 class="topic">
+<a name="6o2m3a5iqd6mmc44hgq0k6n1r6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;事件对象名称</a>
+</h3>
+<h3 class="topic">
+<a name="2s1gu702up5s2hmopgmol8ppvm">&nbsp;&nbsp;&nbsp;&nbsp;OpenEventA</a>
+</h3>
+<h3 class="topic">
+<a name="0u0dir36jfn8faikl1t7gn0uo1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;参数</a>
+</h3>
+<h3 class="topic">
+<a name="65hnfihso2mhagr1pts9picjp7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;访问权限</a>
+</h3>
+<h3 class="topic">
+<a name="7jj76fbut9nf4h0c4jvn0fcvgh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;能否被继承</a>
+</h3>
+<h3 class="topic">
+<a name="0fheuuop48inn57apvhbl0hfnl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;要打开的事件的名字</a>
+</h3>
+<h3 class="topic">
+<a name="21oeqh871v237n8nl28tib754c">&nbsp;&nbsp;&nbsp;&nbsp;SetEvent</a>
+</h3>
+<h3 class="topic">
+<a name="6chddt89k59d3phpc1j0kjmdc9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;参数：事件句柄</a>
+</h3>
+<h3 class="topic">
+<a name="35q81f0rjj9r8ai0gk9rencdlv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将事件对象设置为激发态</a>
+</h3>
+<h3 class="topic">
+<a name="7tv4fpp2tcb6oijhqln9j4fdnq">&nbsp;&nbsp;&nbsp;&nbsp;ResetEvent</a>
+</h3>
+<h3 class="topic">
+<a name="3lp139rb3tjsucfq435s8op1k7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;参数：事件句柄</a>
+</h3>
+<h3 class="topic">
+<a name="249jrdilmtunu4aiumt7it70an">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将事件对象设置为非激发态</a>
+</h3>
+<h3 class="topic">
+<a name="4luegsf9nl4i3gfgik8gauauem">&nbsp;&nbsp;&nbsp;&nbsp;PulseEvent</a>
+</h3>
+<h3 class="topic">
+<a name="2qgvtq9obamrtjsgk6va8fvd10">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;参数：事件句柄</a>
+</h3>
+<h3 class="topic">
+<a name="2h5boq03dvcmaa3d98r4iq1om8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;相当于一个事件脉冲，很快的速度先调用一下SetEvent，再调用一下ResetEvent</a>
+</h3>
+<h3 class="topic">
+<a name="5slddbbkr4s9082rpu8upqtkn9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对于手动设置事件</a>
+</h3>
+<h3 class="topic">
+<a name="5a7d6il693imokvkihdspbejlq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;唤醒所有等待此事件的线程，之后恢复为非激发态</a>
+</h3>
+<h3 class="topic">
+<a name="7mmb79q0ajn5lt7m02qcpo2vcq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对于自动设置事件</a>
+</h3>
+<h3 class="topic">
+<a name="377niboo1go2hj50861cjjq2ru">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;唤醒一个等待此事件的线程，之后恢复为非激发态</a>
+</h3>
+<h3 class="topic">
+<a name="6hp979sdp83gfb8o8ualmjtk13">&nbsp;&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="36hle6s72c8naa1908aaqakgpd">&nbsp;&nbsp;&nbsp;&nbsp;#include "pch.h"&#13;
+#include &lt;windows.h&gt;&#13;
+#include &lt;stdio.h&gt;&#13;
+//创建全局事件&#13;
+HANDLE g_hBeginLinkerEvent;&#13;
+DWORD WINAPI  Compiler(LPVOID pAge)&#13;
+{&#13;
+	printf("编译器线程: 正在编译文件:\n");&#13;
+	Sleep(1000);&#13;
+	printf("编译器线程: 编译完毕:\n");&#13;
+	// 就将开始链接的事件对象设置为有信号.&#13;
+	SetEvent(g_hBeginLinkerEvent);&#13;
+	return 0;&#13;
+}&#13;
+DWORD WINAPI  Linker(LPVOID pAge)&#13;
+{&#13;
+	printf("链接器已启动, 正在等待编译完毕...\n");&#13;
+	//因为创建的事件最开始是非激活的，所以该线程被阻塞在等待函数&#13;
+	//直到编译器线程执行SetEvent函数将事件对象设置为激发态，等待函数才能返回&#13;
+	WaitForSingleObject(g_hBeginLinkerEvent,-1);&#13;
+	printf("连接器线程: 正在链接文件:\n");&#13;
+	Sleep(500);&#13;
+	printf("连接器线程: 链接完毕:\n");&#13;
+	return 0;&#13;
+}&#13;
+int main()&#13;
+{&#13;
+	//创建事件&#13;
+	g_hBeginLinkerEvent =CreateEvent(NULL,&#13;
+				   	FALSE,/*是否手动设置信号,这里使用自动设置，即等待函数返回之后会将事件设置为非激活*/&#13;
+					FALSE,/*是否有初始信号，这里是设置事件对象初始为非激活状态*/&#13;
+					NULL);&#13;
+	//创建线程&#13;
+	CreateThread(0,0,Linker,0,0,0);&#13;
+	CreateThread(0,0,Compiler,0,0,0);&#13;
+	system("pause");&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="068j356ujs1ma16vhocl4n1jin">&nbsp;&nbsp;信号量（为内核对象）</a>
+</h3>
+<h3 class="topic">
+<a name="2nee66dfridhqfcbb7jsgodlks">&nbsp;&nbsp;&nbsp;互斥体可以看成是信号量的退化版，即只有一个锁孔的信号量</a>
+</h3>
+<h3 class="topic">
+<a name="741jk0gvihacvlfmuc60f9lsp7">&nbsp;&nbsp;&nbsp;&nbsp;信号量信号大小只有1的时候与互斥体是一样的</a>
+</h3>
+<h3 class="topic">
+<a name="6luo0g9plensmccm67fl7eb2gv">&nbsp;&nbsp;&nbsp;允许同一段时间内有多个线程同时操作同一个资源</a>
+</h3>
+<h3 class="topic">
+<a name="3i8dql0ugabh66jjfa8pnlcuv0">&nbsp;&nbsp;&nbsp;&nbsp;此类线程的个数是受到限制的</a>
+</h3>
+<h3 class="topic">
+<a name="0nrkjg3nkp2ntrkg2sghorjuj3">&nbsp;&nbsp;&nbsp;函数</a>
+</h3>
+<h3 class="topic">
+<a name="403jtf8vraf09th7mnbetgj67l">&nbsp;&nbsp;&nbsp;&nbsp;CreateSemaphore</a>
+</h3>
+<h3 class="topic">
+<a name="0j66ia0ldupc3itr395pc0k38r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;返回值</a>
+</h3>
+<h3 class="topic">
+<a name="0gvjciglejuqohrifq8u6ptb5l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;信号量句柄</a>
+</h3>
+<h3 class="topic">
+<a name="7ba8db5h8fcg7g1ee549sh0n54">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;参数</a>
+</h3>
+<h3 class="topic">
+<a name="76jdlc2pogk9fa12a18u4o6q7j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;安全描述符</a>
+</h3>
+<h3 class="topic">
+<a name="0gs8r54iv72vraoa1km8pa3b6d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;初始信号数量</a>
+</h3>
+<h3 class="topic">
+<a name="5mrovoo0lfikp164agqlongu67">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;最大信号数量</a>
+</h3>
+<h3 class="topic">
+<a name="6c6kvg5hdolplp9bhd0c7fmt3b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;能支持的最大信号量为0xffffffff/2</a>
+</h3>
+<h3 class="topic">
+<a name="15rn651dv53pj5v8i5d5ng6j4c">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;信号量名称</a>
+</h3>
+<h3 class="topic">
+<a name="3du86rj9q3gp31la5pqcbqb8ie">&nbsp;&nbsp;&nbsp;&nbsp;OpenSemaphore</a>
+</h3>
+<h3 class="topic">
+<a name="38dk1pvk049jh6ssoi5bk6n00p">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;访问权限</a>
+</h3>
+<h3 class="topic">
+<a name="7qo8er9q4plargmqua445is45f">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;此句柄能否被被继承</a>
+</h3>
+<h3 class="topic">
+<a name="3uetiov9hdrff1dbkena78ie5d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;要打开的信号量的名字</a>
+</h3>
+<h3 class="topic">
+<a name="54hjbp8grft9j6momtpi5hpfg9">&nbsp;&nbsp;&nbsp;&nbsp;ReleaseSemaphore</a>
+</h3>
+<h3 class="topic">
+<a name="307rpb1tejh2lgigc1g37i4lea">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;信号量句柄</a>
+</h3>
+<h3 class="topic">
+<a name="3ltn1ajghqrjp7g5coa4fcplp6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;解锁次数</a>
+</h3>
+<h3 class="topic">
+<a name="4cvmlb64r90t6gdrv9l1pae4hv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;传回原来的信号数</a>
+</h3>
+<h3 class="topic">
+<a name="0hca9p20ufr3usv41v178invf3">&nbsp;&nbsp;&nbsp;关键：信号量中的信号数量</a>
+</h3>
+<h3 class="topic">
+<a name="29qi9gn101pdb71rv0qch5dmv0">&nbsp;&nbsp;&nbsp;&nbsp;决定了可以有多少个线程同时操作一个资源</a>
+</h3>
+<h3 class="topic">
+<a name="39v9hcs1qj8918rjq2nt8hktuf">&nbsp;&nbsp;&nbsp;&nbsp;信号量释放的信号数不会超过最大信号数</a>
+</h3>
+<h3 class="topic">
+<a name="1n2gbj19ha5gt5loua16g9ahp1">&nbsp;&nbsp;&nbsp;信号数量不为0</a>
+</h3>
+<h3 class="topic">
+<a name="0jbihjbcg42smdf3ev15vhvud3">&nbsp;&nbsp;&nbsp;&nbsp;信号量处于激发状态</a>
+</h3>
+<h3 class="topic">
+<a name="04ftj60j2b9na0vjvf1o9a4qf1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;即可以使等待函数返回</a>
+</h3>
+<h3 class="topic">
+<a name="4ava062vqr3v55eqhrgn2s11r7">&nbsp;&nbsp;&nbsp;&nbsp;线程可以执行</a>
+</h3>
+<h3 class="topic">
+<a name="6mfgb4cuaeom6oojc361oknjt6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;调用等待函数，等待函数返回后</a>
+</h3>
+<h3 class="topic">
+<a name="19q3h1l8s4jh597sh689u09bkm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;信号数量减1</a>
+</h3>
+<h3 class="topic">
+<a name="7n5srnst4kmsg4sjegfki03dij">&nbsp;&nbsp;&nbsp;信号数量为0</a>
+</h3>
+<h3 class="topic">
+<a name="7q4i7p37k59icv341hv2ek3tcd">&nbsp;&nbsp;&nbsp;&nbsp;线程被阻塞，需要等到信号量有信号时才能执行</a>
+</h3>
+<h3 class="topic">
+<a name="6d0ml930pskcnoorljpaghe5di">&nbsp;&nbsp;&nbsp;&nbsp;直到有的进程执行了ReleaseSemaphore，会将信号数量+1</a>
+</h3>
+<h3 class="topic">
+<a name="723mlqic9a790ot32c8muc2pf1">&nbsp;&nbsp;&nbsp;与互斥体不同的是</a>
+</h3>
+<h3 class="topic">
+<a name="2lt4tp17ugpo4lcccbel84n7he">&nbsp;&nbsp;&nbsp;&nbsp;互斥体的等待与释放应该在同一个线程中成对出现</a>
+</h3>
+<h3 class="topic">
+<a name="47kt5u469ftkfafplifd30oorc">&nbsp;&nbsp;&nbsp;&nbsp;信号量的释放可以在任何一个线程中，从而使得其他线程得以执行</a>
+</h3>
+<h3 class="topic">
+<a name="2uk4qdtqisau2ko918i8vb64oh">&nbsp;&nbsp;线程越多，不一定效率越高，线程的切换也需要消耗大量资源</a>
+</h3>
+<h3 class="topic">
+<a name="6a1f4p8k8ashh2rru1s8tgs0ot">&nbsp;&nbsp;以上均为内核对象，且三者都有信号概念，均可以是使用WaitForSingleObject,来等待它们的信号</a>
+</h3>
+<h3 class="topic">
+<a name="3v1ucsik4mdg5de8bof1fr4tks">&nbsp;&nbsp;&nbsp;进程执行完毕-&gt;进程内核对象处于激发态-&gt;等待函数返回</a>
+</h3>
+<h3 class="topic">
+<a name="57t1m4gkclvrns8s4ocanaurtg">&nbsp;&nbsp;等待函数</a>
+</h3>
+<h3 class="topic">
+<a name="5ql1el542off90kttvk6ud7g5h">&nbsp;&nbsp;&nbsp;只能等待一个对象的等待函数</a>
+</h3>
+<h3 class="topic">
+<a name="7qt874gfigv881duejbvlu1flb">&nbsp;&nbsp;&nbsp;&nbsp;WaitForSingleObject()</a>
+</h3>
+<h3 class="topic">
+<a name="36jhh79no3cicf5lbvd9v9oa2v">&nbsp;&nbsp;&nbsp;等待多个对象的等待函数</a>
+</h3>
+<h3 class="topic">
+<a name="5r6or98geqp10ovnis3g5i6lgb">&nbsp;&nbsp;&nbsp;&nbsp;参数</a>
+</h3>
+<h3 class="topic">
+<a name="2kusb530sh2s0p2ttoufo7n84o">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;等待的数量</a>
+</h3>
+<h3 class="topic">
+<a name="6brtf3v84c1q6tlk8804np54eb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;等待的句柄的数组</a>
+</h3>
+<h3 class="topic">
+<a name="3e9gc2spmonpcl2kmsaq52s5ee">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;是否等待全部</a>
+</h3>
+<h3 class="topic">
+<a name="1i4gtuqm6ejr3fdh2h900avuhk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;等待时间</a>
+</h3>
+<h3 class="topic">
+<a name="77idsddlk1d49jebbo7mc34n37">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-1，一直等待</a>
+</h3>
+<h3 class="topic">
+<a name="65id1uaio0g6hi62nue070hch4">&nbsp;&nbsp;&nbsp;线程进程互斥体&#13;
+事件对象&#13;
+信号量均可以等待</a>
+</h3>
+<h3 class="topic">
+<a name="3j5sefph6dt8h5fd6hsnm1vebo">&nbsp;&nbsp;&nbsp;该函数对于不同的内核对象有不同的操作</a>
+</h3>
+<h3 class="topic">
+<a name="0fa2r7jkvcuvm021pc4gsioktv">&nbsp;&nbsp;&nbsp;&nbsp;如何发起异步io的任务</a>
+</h3>
+<h3 class="topic">
+<a name="1g7815t17csott9rnt8hepsf1c">&nbsp;&nbsp;&nbsp;&nbsp;如何接收io任务完成的通知</a>
+</h3>
+<h3 class="topic">
+<a name="64rlmqad6hr392kg15ui1f1ihg">&nbsp;&nbsp;&nbsp;&nbsp;一般不会通过开辟多个线程进程文件io，应使用操作系统提供的io操作</a>
+</h3>
+</body>
+</html>

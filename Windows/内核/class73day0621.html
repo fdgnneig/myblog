@@ -1,0 +1,531 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>class73day0621(内核编程第四天)</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="2962vr8329hk7manmkkjg38kf0">class73day0621(内核编程第四天)</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="class73day0621_files/images/class73day0621(%E5%86%85%E6%A0%B8%E7%BC%96%E7%A8%8B%E7%AC%AC%E5%9B%9B%E5%A4%A9).jpg"></div>
+<h2 class="topic">
+<a name="6m30dk5v4rilocn8h955goltsk">文件操作</a>
+</h2>
+<h3 class="topic">
+<a name="3snjnqbqn7f5uiv0fk623hdc3b">&nbsp;内核层中进行文件操作时，文件路径前需要加上\\??\\</a>
+</h3>
+<h3 class="topic">
+<a name="4vi245dc7lnhtnlj7kf8d138ic">&nbsp;api</a>
+</h3>
+<h3 class="topic">
+<a name="1rse1rjjfut50hqlfkhb3umn58">&nbsp;&nbsp;ZwCreateFile</a>
+</h3>
+<h3 class="topic">
+<a name="0pjrefdvjvr1981o7q4cvss1vu">&nbsp;&nbsp;&nbsp;需要提供一个对象属性结构体，其中包含路径</a>
+</h3>
+<h3 class="topic">
+<a name="30al9h470leanac6bbrplk5b28">&nbsp;&nbsp;&nbsp;可以打开文件，可以打开文件夹</a>
+</h3>
+<h3 class="topic">
+<a name="131v7vbpujtabmjc7atsmditsi">&nbsp;&nbsp;&nbsp;返回值一般都是状态码，不会返回句柄，句柄一般都是通过输出参数传出</a>
+</h3>
+<h3 class="topic">
+<a name="26pvk4j70dufdfpc5lv45gu8v2">&nbsp;&nbsp;&nbsp;参数</a>
+</h3>
+<h3 class="topic">
+<a name="7l0hhdd50lfle05c1nhn7kk0f5">&nbsp;&nbsp;&nbsp;&nbsp;输出文件句柄</a>
+</h3>
+<h3 class="topic">
+<a name="2nio49knnei0pilmbpfs9hdbug">&nbsp;&nbsp;&nbsp;&nbsp;请求的访问属性</a>
+</h3>
+<h3 class="topic">
+<a name="7i39ieo3oqvl8fo63m8hehki2h">&nbsp;&nbsp;&nbsp;&nbsp;对象描述</a>
+</h3>
+<h3 class="topic">
+<a name="1pdn0mhkmqv25mg2a40otr65od">&nbsp;&nbsp;&nbsp;&nbsp;返回创建的状态</a>
+</h3>
+<h3 class="topic">
+<a name="0ggmrn07mlmttedecv3ud7rv50">&nbsp;&nbsp;&nbsp;&nbsp;。。。。。</a>
+</h3>
+<h3 class="topic">
+<a name="29vr1quk2namp14b062nsvn2r3">&nbsp;&nbsp;ZwOpenFile</a>
+</h3>
+<h3 class="topic">
+<a name="2q67q26iokrhnvmm3s0c02vvvt">&nbsp;&nbsp;ZwReadFile</a>
+</h3>
+<h3 class="topic">
+<a name="0634kdt8bv67skmj8ku4cnl3m7">&nbsp;&nbsp;ZwWriteFIle</a>
+</h3>
+<h3 class="topic">
+<a name="203bga94l56vd9loumntb41po8">&nbsp;&nbsp;ZwQueryInformationFile</a>
+</h3>
+<h3 class="topic">
+<a name="2vtk7ao03v0q2tv7ak5gs6nsee">&nbsp;&nbsp;&nbsp;获取文件信息</a>
+</h3>
+<h3 class="topic">
+<a name="56inm9lsrl8fa893gk0jtdgub4">&nbsp;&nbsp;以上这些函数我们进行了一个封装，使用较为简单的参数就可以掉用</a>
+</h3>
+<h3 class="topic">
+<a name="3pneh5hc2282calo36j5mil6je">&nbsp;&nbsp;InitializeObjectAttributes</a>
+</h3>
+<h3 class="topic">
+<a name="2bkc6luhh61dbsi0aid7pfpg82">&nbsp;&nbsp;&nbsp;初始化对象属性结构体</a>
+</h3>
+<h3 class="topic">
+<a name="7itmabp36ltin6j079kanjd5u6">&nbsp;&nbsp;&nbsp;参数</a>
+</h3>
+<h3 class="topic">
+<a name="2ut1isbc443em2dtj762u2i7ht">&nbsp;&nbsp;&nbsp;&nbsp;。。。。。</a>
+</h3>
+<h3 class="topic">
+<a name="5sb14lpf2n3ukf801du0u7qjmh">&nbsp;&nbsp;&nbsp;&nbsp;。。。。</a>
+</h3>
+<h3 class="topic">
+<a name="6ck6n244naoetaqf3tv03ngkg8">&nbsp;&nbsp;文件遍历</a>
+</h3>
+<h3 class="topic">
+<a name="25nosptgfp4u9q3e72nts9f7tr">&nbsp;&nbsp;&nbsp;ZwQueryDirectoryFile ：用于遍历文件</a>
+</h3>
+<h3 class="topic">
+<a name="4keejekf0fcs87gbdkm71h813n">&nbsp;&nbsp;&nbsp;&nbsp;获取文件夹下的文件信息，获得的文件名称根据文件的不同而不同，说明获得的信息的结构体的大小是不一定的，需要通过结构体中的字段得到该结构体的大小</a>
+</h3>
+<h3 class="topic">
+<a name="5uiu2ddbihjrgbnmb6kh4084cb">&nbsp;&nbsp;&nbsp;经过封装，得到findfirstfile findnextfile</a>
+</h3>
+<h3 class="topic">
+<a name="08vmktgtu6lvm9n3k6k8bdute0">&nbsp;代码：文件操作</a>
+</h3>
+<h3 class="topic">
+<a name="7ff5dtk9k4tfoo7ee98m8urv26">&nbsp;&nbsp;流程</a>
+</h3>
+<h3 class="topic">
+<a name="01tgoen32lkmfk4cb5uee6tenk">&nbsp;&nbsp;&nbsp;driverentry</a>
+</h3>
+<h3 class="topic">
+<a name="09idlnnaodskuvbkihbm9jrnkn">&nbsp;&nbsp;&nbsp;&nbsp;手动插入一个断点</a>
+</h3>
+<h3 class="topic">
+<a name="351va8fd0fmblkc0gs477grvc7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;因为内核程序不会产生系统断点，需在代码中设置断点</a>
+</h3>
+<h3 class="topic">
+<a name="096d28mmlooeccbtamdmnui5a5">&nbsp;&nbsp;&nbsp;&nbsp;挂载卸载函数</a>
+</h3>
+<h3 class="topic">
+<a name="5o3p2pesu04tn49gc20b4qlt0e">&nbsp;&nbsp;&nbsp;driverunload</a>
+</h3>
+<h3 class="topic">
+<a name="59hjc7m6b879ftdjvvvuv77c2u">&nbsp;&nbsp;&nbsp;编写文件操作函数的封装函数</a>
+</h3>
+<h3 class="topic">
+<a name="7jvnjok9s0tvuaaivfr8em5qrv">&nbsp;&nbsp;&nbsp;打开已经存在的文件并创建一个目标文件</a>
+</h3>
+<h3 class="topic">
+<a name="6rba8up24fhr1bouijri9fttp0">&nbsp;&nbsp;&nbsp;&nbsp;注意路径最前面需要加"\\??\\"</a>
+</h3>
+<h3 class="topic">
+<a name="4fs67i7240oepvt5elhb9nggqf">&nbsp;&nbsp;&nbsp;查看原始文件大小，申请内存，并读取文件</a>
+</h3>
+<h3 class="topic">
+<a name="4qmdaepbmod6oqpl4oi32mptvm">&nbsp;&nbsp;&nbsp;&nbsp;申请内存需要使用非分页内存，不会被交换到硬盘空间</a>
+</h3>
+<h3 class="topic">
+<a name="68rnb1a07i1e6gmcvrgmro1sas">&nbsp;&nbsp;&nbsp;写入到目标文件中</a>
+</h3>
+<h3 class="topic">
+<a name="4cqims9ceo3m01p83lt6upfnh5">&nbsp;&nbsp;&nbsp;释放内存，关闭句柄</a>
+</h3>
+<h3 class="topic">
+<a name="4cvf4lhff1374db9r8olhrnciu">&nbsp;&nbsp;&nbsp;&nbsp;ZwClose</a>
+</h3>
+<h3 class="topic">
+<a name="12stn506m8lkui0dal773ld821">&nbsp;&nbsp;&nbsp;需要包含 ntifs.h头文件</a>
+</h3>
+<h3 class="topic">
+<a name="0rujhmkeufp9hlrotc1fcbadud">&nbsp;&nbsp;&nbsp;内存编程最好不要降低要求，将所有的警告解决，否则可能会产生大量bug</a>
+</h3>
+<h3 class="topic">
+<a name="75e57cs46f7te8479t4f9hhtna">&nbsp;&nbsp;&nbsp;在内核编程中如果不关闭句柄，可能会造成严重后果，相关文件的句柄没有被释放，该文件被占用，则不能使用文件</a>
+</h3>
+<h3 class="topic">
+<a name="5ssmpusibja2ro5g7o55ra7oti">&nbsp;&nbsp;&nbsp;windbg命令 .restart</a>
+</h3>
+<h3 class="topic">
+<a name="03hae5qnau99iodofvblhb6ff6">&nbsp;代码：文件遍历</a>
+</h3>
+<h2 class="topic">
+<a name="17f3ccf23uu1t4itd11clurao9">进程线程</a>
+</h2>
+<h3 class="topic">
+<a name="6c0up6jlc3tklhssuv4lrui1lo">&nbsp;进程内核对象</a>
+</h3>
+<h3 class="topic">
+<a name="7cv0168acjroi1g3e0k16hath2">&nbsp;&nbsp;即进程执行体块(是一个结构体，每一个进程由一个进程执行体块标识)</a>
+</h3>
+<h3 class="topic">
+<a name="4ecfsugver30rc478d2n7a5hop">&nbsp;&nbsp;&nbsp;即EPROCESS</a>
+</h3>
+<h3 class="topic">
+<a name="2ffl2a7lns7pul1k4bfbv2kpmv">&nbsp;&nbsp;不同版本系统eprocess结构不一样</a>
+</h3>
+<h3 class="topic">
+<a name="2lsb0ovf284ti2g8udkm35ql9i">&nbsp;&nbsp;&nbsp;使用wrk或windbg查看结构体字段，字段的具体含义没有官方文档</a>
+</h3>
+<h3 class="topic">
+<a name="3n3rm9lait1eibggos8ne8agcr">&nbsp;&nbsp;eprocess中的已验证字段</a>
+</h3>
+<h3 class="topic">
+<a name="51rfejvkfpev17odfaqsj1ipht">&nbsp;&nbsp;&nbsp;pcb</a>
+</h3>
+<h3 class="topic">
+<a name="5hbvkehvql4rdr1mbtvnkcod3n">&nbsp;&nbsp;&nbsp;&nbsp;是一个kprocess结构体</a>
+</h3>
+<h3 class="topic">
+<a name="1ho76tofre46u99l4s6uh58dkt">&nbsp;&nbsp;&nbsp;processlock</a>
+</h3>
+<h3 class="topic">
+<a name="23tghq2o06o19fgr6lmarga6be">&nbsp;&nbsp;&nbsp;&nbsp;操作eprocess的锁</a>
+</h3>
+<h3 class="topic">
+<a name="7krqkpd5m3tta0e3405oaqmfpa">&nbsp;&nbsp;&nbsp;createtime</a>
+</h3>
+<h3 class="topic">
+<a name="40dq42ft3elmdkbum35p47icsf">&nbsp;&nbsp;&nbsp;&nbsp;进程创建时间</a>
+</h3>
+<h3 class="topic">
+<a name="54buktghqk39cucd817kigo0jb">&nbsp;&nbsp;&nbsp;exittime</a>
+</h3>
+<h3 class="topic">
+<a name="0a0vitinnkiga3hkg5dntlhleu">&nbsp;&nbsp;&nbsp;&nbsp;进程退出时间</a>
+</h3>
+<h3 class="topic">
+<a name="22uo6ilq80os3d4ki7s6u4gjgo">&nbsp;&nbsp;&nbsp;DebugPort</a>
+</h3>
+<h3 class="topic">
+<a name="2nve323vv94ld5gmqqts3jj7dq">&nbsp;&nbsp;&nbsp;&nbsp;调试端口</a>
+</h3>
+<h3 class="topic">
+<a name="1rlmsnitdi3q8fi93svb1ug0mk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;和KiDispathException函数有关，与分发异常有关</a>
+</h3>
+<h3 class="topic">
+<a name="5ha50me114s91rg8h2ufioppjc">&nbsp;&nbsp;&nbsp;&nbsp;将调试端口置为0，可以用于反调试</a>
+</h3>
+<h3 class="topic">
+<a name="42slrssl10ferr2et0qb63ipp8">&nbsp;&nbsp;&nbsp;peb</a>
+</h3>
+<h3 class="topic">
+<a name="63nvh1fiuu80mu162fkp7fmcl6">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<h3 class="topic">
+<a name="16mhi91jgt9rc90ls9u51r2l9h">&nbsp;&nbsp;&nbsp;&nbsp;句柄表</a>
+</h3>
+<h3 class="topic">
+<a name="6ch1kdebrdgste0vdt9gdq8960">&nbsp;&nbsp;&nbsp;&nbsp;存放内核对象的句柄</a>
+</h3>
+<h3 class="topic">
+<a name="7v15s08us0joiiogpbrkfmjjui">&nbsp;&nbsp;&nbsp;子主题 8</a>
+</h3>
+<h3 class="topic">
+<a name="2hb7mmncp5qnahikt5qc9h947v">&nbsp;&nbsp;&nbsp;&nbsp;进程的令牌</a>
+</h3>
+<h3 class="topic">
+<a name="362c00lqavdm0o5s9kshvleted">&nbsp;&nbsp;kprocess的消息</a>
+</h3>
+<h3 class="topic">
+<a name="1l8dv3e4eula6pvjahkqjdbu71">&nbsp;&nbsp;&nbsp;Header</a>
+</h3>
+<h3 class="topic">
+<a name="7e64kdcaesv4m4t1ip8brmdlko">&nbsp;&nbsp;&nbsp;&nbsp;每一个可被等待的内核对象都有</a>
+</h3>
+<h3 class="topic">
+<a name="45nqid2t91rp5are9h5s7uscsk">&nbsp;&nbsp;&nbsp;页目录基址</a>
+</h3>
+<h3 class="topic">
+<a name="6ect86v18omdpe4vqlp4aui295">&nbsp;&nbsp;&nbsp;&nbsp;是不同进程隔离开的根本</a>
+</h3>
+<h3 class="topic">
+<a name="5ht8fnntldoecb7mkcrn1hbb36">&nbsp;&nbsp;&nbsp;&nbsp;进程切换即将该值填入cr3</a>
+</h3>
+<h3 class="topic">
+<a name="0p0t6470e55keufdiujblmt227">&nbsp;&nbsp;&nbsp;Addinity</a>
+</h3>
+<h3 class="topic">
+<a name="563ki7epsgfk0fubego8macvbq">&nbsp;&nbsp;&nbsp;&nbsp;亲和性</a>
+</h3>
+<h3 class="topic">
+<a name="7uv9uuonnf13sa6dg22emn9nsc">&nbsp;&nbsp;&nbsp;&nbsp;规定进程中的线程跑在哪个cpu中</a>
+</h3>
+<h3 class="topic">
+<a name="7c182ft6bocdavk3k6u01t5cjc">&nbsp;&nbsp;&nbsp;BasePriority</a>
+</h3>
+<h3 class="topic">
+<a name="40pisdi50kjr2vc8g66gdmb938">&nbsp;&nbsp;&nbsp;&nbsp;基础优先级</a>
+</h3>
+<h3 class="topic">
+<a name="2vflh1qur3gl8u0b1774j3oaem">&nbsp;&nbsp;&nbsp;&nbsp;线程调度相关</a>
+</h3>
+<h3 class="topic">
+<a name="4hind1i0sm4mevpadmn4a05t4i">&nbsp;&nbsp;操作进程的api</a>
+</h3>
+<h3 class="topic">
+<a name="6l71ucnlpuffcj90j7i27ge929">&nbsp;&nbsp;&nbsp;如果获得的是不是内核对象的句柄，在关闭内核对象的时候，不能用closehandle ，需要使用另一个函数，将进程的引用计数减一</a>
+</h3>
+<h3 class="topic">
+<a name="5274nro6vp9e0nsdpdl92s7phd">&nbsp;&nbsp;用户层没有暂停进程的操作，只有挂起线程的操作</a>
+</h3>
+<h3 class="topic">
+<a name="64o20u1h18kau2hlobove0ngkc">&nbsp;&nbsp;枚举进程的操作</a>
+</h3>
+<h3 class="topic">
+<a name="3dtd4hu5253898kcujgccqon7b">&nbsp;&nbsp;&nbsp;进程、线程id一定是4的整数倍</a>
+</h3>
+<h3 class="topic">
+<a name="7tg8ot36bm50jkiktj2upiim44">&nbsp;&nbsp;&nbsp;通过遍历所有可能的进程id，查询进程信息</a>
+</h3>
+<h3 class="topic">
+<a name="3mlhoq30fkcpc793pm6uou32r5">&nbsp;&nbsp;代码：操作进程</a>
+</h3>
+<h3 class="topic">
+<a name="7c200i3ob0ra452itljnenou45">&nbsp;&nbsp;&nbsp;需要声明现有函数才能对其进行使用</a>
+</h3>
+<h3 class="topic">
+<a name="10obr7q8k4oeobmhq9n5m113k3">&nbsp;&nbsp;&nbsp;声明暂停进程的api</a>
+</h3>
+<h3 class="topic">
+<a name="2jhtbluh860n1updggdsa1g3ad">&nbsp;&nbsp;&nbsp;&nbsp;实现暂停进程的函数</a>
+</h3>
+<h3 class="topic">
+<a name="6r606clf70l1lq6nvpmtkbqnj2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该函数中使用到前面的api</a>
+</h3>
+<h3 class="topic">
+<a name="0i7ig2otllg3eg2rv9igum1p5v">&nbsp;&nbsp;&nbsp;声明恢复进程的api</a>
+</h3>
+<h3 class="topic">
+<a name="3jhk2jp96jreh2f5e4iuictikt">&nbsp;&nbsp;&nbsp;&nbsp;实现恢复进程的函数</a>
+</h3>
+<h3 class="topic">
+<a name="0eqbbuj7fctblqe4pvpir3ql5r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该函数中使用到前面的api</a>
+</h3>
+<h3 class="topic">
+<a name="48vh9k5b5mc13sajklmkl8ooji">&nbsp;线程内核对象</a>
+</h3>
+<h3 class="topic">
+<a name="12hid7h1u1vbur95ti03if13r0">&nbsp;&nbsp;ETHREAD</a>
+</h3>
+<h3 class="topic">
+<a name="02d05qgo8vvp6aivutls7ioh3v">&nbsp;&nbsp;&nbsp;线程执行体块：该结构体代表一个线程</a>
+</h3>
+<h3 class="topic">
+<a name="65ev57hdbnhn5bd9iog3difgsv">&nbsp;&nbsp;字段</a>
+</h3>
+<h3 class="topic">
+<a name="4t585475gldfhbg53ldkmu5tuh">&nbsp;&nbsp;&nbsp;kthread</a>
+</h3>
+<h3 class="topic">
+<a name="0ardt0hgkerc8v8trihmkaio6k">&nbsp;&nbsp;&nbsp;&nbsp;teb</a>
+</h3>
+<h3 class="topic">
+<a name="0mlham2etfc78egstvr852m6va">&nbsp;&nbsp;&nbsp;&nbsp;系统服务表基址</a>
+</h3>
+<h3 class="topic">
+<a name="0jpp4q3eklsmvpucabosrutklg">&nbsp;&nbsp;&nbsp;&nbsp;等待的对象</a>
+</h3>
+<h3 class="topic">
+<a name="1a3q3vsd65tii0rf7o3aq67846">&nbsp;&nbsp;&nbsp;&nbsp;进0环后陷阱帧的地址</a>
+</h3>
+<h3 class="topic">
+<a name="0glsdmtlc96njee603doelpijv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;陷阱帧：在内核层中保存用户层线程环境的结构体</a>
+</h3>
+<h3 class="topic">
+<a name="61tkpatk9t2v6fbddijbjnhrvt">&nbsp;&nbsp;&nbsp;&nbsp;同一个进程地所有线程均通过链表连在一起</a>
+</h3>
+<h3 class="topic">
+<a name="7mjgb7qfql1ihrlnam155m1c2c">&nbsp;&nbsp;&nbsp;。。。</a>
+</h3>
+<h3 class="topic">
+<a name="7ha7c56j1tqpu2t16mjl0v94oc">&nbsp;&nbsp;操作线程的api</a>
+</h3>
+<h3 class="topic">
+<a name="3kq97puekpv08msmes0pn9cla1">&nbsp;&nbsp;&nbsp;创建线程</a>
+</h3>
+<h3 class="topic">
+<a name="08dfejee79o5ct8jq161hqts77">&nbsp;&nbsp;&nbsp;&nbsp;重要参数</a>
+</h3>
+<h3 class="topic">
+<a name="2hd1rp9d6qistcpfiq2gk2f4p4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;线程的回调函数地址</a>
+</h3>
+<h3 class="topic">
+<a name="5fdrr1fgsn3n37ml2ph3f98ecm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果ProcessHandle为nul则创建的是系统线程，或者可以指定在特定进程创建线程</a>
+</h3>
+<h3 class="topic">
+<a name="1ic1mr1alecctjbmq6qd7c1lrp">&nbsp;&nbsp;代码：操作线程</a>
+</h3>
+<h3 class="topic">
+<a name="31imem9n21b2l17vp11cc16pbs">&nbsp;&nbsp;&nbsp;创建线程</a>
+</h3>
+<h3 class="topic">
+<a name="3rc2qmstqo9djrq063fkthrdn2">&nbsp;&nbsp;&nbsp;线程的遍历</a>
+</h3>
+<h3 class="topic">
+<a name="49de5bbqtd9l46foqkh6nedg59">&nbsp;&nbsp;&nbsp;&nbsp;枚举线程</a>
+</h3>
+<h3 class="topic">
+<a name="3runkbm4va0vdmsk8slrpgsj1e">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;需要传进来一个进程的内核对象，通过遍历进程，从而遍历指定进程的线程</a>
+</h3>
+<h3 class="topic">
+<a name="1ckao5hvlpnu4094qr2l7qjsbc">&nbsp;&nbsp;&nbsp;&nbsp;需要指定枚举的是哪个进程的线程</a>
+</h3>
+<h2 class="topic">
+<a name="2b4j3t58pt05tg66mv4acdpat4">使用定时器</a>
+</h2>
+<h3 class="topic">
+<a name="07mldn1h7sqp4fsia0gkf42bdm">&nbsp;内核中有两种方法使用计数器</a>
+</h3>
+<h3 class="topic">
+<a name="4rvgt7hi2do0g4gslip5tib3el">&nbsp;方法1</a>
+</h3>
+<h3 class="topic">
+<a name="3k063d11pa9q1nde836tmcdo52">&nbsp;&nbsp;使用api</a>
+</h3>
+<h3 class="topic">
+<a name="3c7f7qffaubdsg49p04qbhjm60">&nbsp;&nbsp;&nbsp;IoInitializeTimer</a>
+</h3>
+<h3 class="topic">
+<a name="1rlpsag6vgutm5bns9b7mf5qe6">&nbsp;&nbsp;&nbsp;&nbsp;初始化定时器</a>
+</h3>
+<h3 class="topic">
+<a name="0vepfklpim94ha0s7qrc94a9vs">&nbsp;&nbsp;不能指定时间间隔，只能每个1秒运行一次</a>
+</h3>
+<h3 class="topic">
+<a name="0bvusf66bqigdhsk8kmlkmlvbl">&nbsp;&nbsp;该定时器调用的回调函数运行的irql是最高级，则回调函数不能运行在分页内存上</a>
+</h3>
+<h3 class="topic">
+<a name="1to3gthc03if1hgqv15d1k71eg">&nbsp;&nbsp;设置io计时器需要三个参数</a>
+</h3>
+<h3 class="topic">
+<a name="34saq11ki1e5iln775fcb3n77j">&nbsp;&nbsp;&nbsp;设备对象的指针</a>
+</h3>
+<h3 class="topic">
+<a name="6k85th2fsj1kduofv52qo5tvdf">&nbsp;&nbsp;&nbsp;&nbsp;所以需要创建设备对象</a>
+</h3>
+<h3 class="topic">
+<a name="4a7ndi1svsk7demek74d7abcac">&nbsp;&nbsp;&nbsp;计时器回调函数</a>
+</h3>
+<h3 class="topic">
+<a name="1bup2fe7v5a4pfk6is1r5hfn21">&nbsp;&nbsp;&nbsp;null</a>
+</h3>
+<h3 class="topic">
+<a name="6llr3us1fq1in9icurijhodjol">&nbsp;方法2</a>
+</h3>
+<h3 class="topic">
+<a name="3o5hi52obthgcue7dbhg1ahrrh">&nbsp;&nbsp;使用dpc定时器</a>
+</h3>
+<h3 class="topic">
+<a name="79tpcsg4as8ifannumtsoj51bq">&nbsp;&nbsp;&nbsp;可以指定时间间隔</a>
+</h3>
+<h3 class="topic">
+<a name="0j099foa35u2ktk53te5f6soni">&nbsp;&nbsp;&nbsp;但是定时器的回调只能执行一次，此时需要在回调函数中再次设置dpc定时器</a>
+</h3>
+<h3 class="topic">
+<a name="772nojsefd81q66pubh24qf0gl">&nbsp;代码：使用io定时器</a>
+</h3>
+<h3 class="topic">
+<a name="3mlvs59iji97famcspmuh99qnd">&nbsp;&nbsp;注意在卸载函数中关闭计时器、删除设备对象</a>
+</h3>
+<h2 class="topic">
+<a name="1b39012dhpi2vkno5bdea53fbq">休眠Sleep</a>
+</h2>
+<h3 class="topic">
+<a name="26n3sr7ekhau8k2vpsldslaptv">&nbsp;有三种方式使得线程进入等待状态（三个api）</a>
+</h3>
+<h3 class="topic">
+<a name="0ga1gl3tcsi8uqtrf2vptoslh9">&nbsp;&nbsp;子主题 1</a>
+</h3>
+<h3 class="topic">
+<a name="5p0kip4a8a3g7a4q3nibrtve7a">&nbsp;&nbsp;子主题 2</a>
+</h3>
+<h3 class="topic">
+<a name="3lu7qjlp1vmv26er98ld67a47i">&nbsp;&nbsp;子主题 3</a>
+</h3>
+<h2 class="topic">
+<a name="51lov5knu14c8sbvkp1h4crkpa">获取操作系统版本</a>
+</h2>
+<h2 class="topic">
+<a name="4dhnh6quld33t95bd30i9c5l6q">处理时间</a>
+</h2>
+<h3 class="topic">
+<a name="245lg0shf5ij36gvvcnhvctfcm">&nbsp;表示方式</a>
+</h3>
+<h3 class="topic">
+<a name="5faddd45tgd0t988qca9237ofo">&nbsp;&nbsp;1、时间戳</a>
+</h3>
+<h3 class="topic">
+<a name="6revb5drnc5rqmf18o2u9sbjah">&nbsp;&nbsp;2、将格林威治时间-&gt;转换为本地时间-》转换为时间结构体</a>
+</h3>
+<h2 class="topic">
+<a name="4p8nnu1dgrpod2qkt97n28kdpc">内核同步操作</a>
+</h2>
+<h3 class="topic">
+<a name="2hlq6c9d4g2n0bslk4d227bi2a">&nbsp;用户层</a>
+</h3>
+<h3 class="topic">
+<a name="3b9idu62ug0mebjaegepoovi3i">&nbsp;&nbsp;原子操作</a>
+</h3>
+<h3 class="topic">
+<a name="67vorva8cp1t1p402ctupdo0rb">&nbsp;&nbsp;临界区</a>
+</h3>
+<h3 class="topic">
+<a name="6koa5mp5de153s24bm0ibtntfi">&nbsp;&nbsp;互斥体</a>
+</h3>
+<h3 class="topic">
+<a name="681m3ln6d1sojjoskm7ie36rhp">&nbsp;&nbsp;事件对象</a>
+</h3>
+<h3 class="topic">
+<a name="0el6veks4a07iui1q4a3o7bran">&nbsp;&nbsp;信号量</a>
+</h3>
+<h3 class="topic">
+<a name="1b39mtt3nas53hqlrjghfo5m92">&nbsp;互斥没有顺序 同步在互斥基础上增加了顺序</a>
+</h3>
+<h3 class="topic">
+<a name="2vfdig2vl2egf6pogul42jomho">&nbsp;内核层与用户层是一样的，是同样的几种方式</a>
+</h3>
+<h2 class="topic">
+<a name="22d3tjjtnv7hjq04v5v1abv7m1">三种内核源代码来源：wrk、reatOS源代码 win2000源码</a>
+</h2>
+<h3 class="topic">
+<a name="4qcvdap3t7uj4vdq5jdouq25es">&nbsp;可以在源码中查找指定api是如何实现的</a>
+</h3>
+<h3 class="topic">
+<a name="7ap9rusoi17qnut2ii17plqtik">&nbsp;可以查特定结构体字段</a>
+</h3>
+<h2 class="topic">
+<a name="7n35s0cs7ms1u9etpo4u6dfl4e">线程切换的实质是线程环境的切换</a>
+</h2>
+<h2 class="topic">
+<a name="1s2906h2128dv974tliiqdodgh">同一个线程从3环切换到0环，3环的线程环境被保存在0环的陷阱帧，并将线程环境切换到0环的线程环境</a>
+</h2>
+<h2 class="topic">
+<a name="42pordlsmjm15abrb618cum9el">本节内容主要是字典类型知识，重点在于对存在代码的使用，详细资料查看教材以及韦神笔记</a>
+</h2>
+<h2 class="topic">
+<a name="7rmf52amsu0h2spbff89f0cumu">问题</a>
+</h2>
+<h3 class="topic">
+<a name="5lgdrjauv5ldr6j3rlc4d5mjgp">&nbsp;为什虚拟机中的驱动程序不结束，vs无法生成同名的驱动程序？</a>
+</h3>
+<h3 class="topic">
+<a name="23ukuublk5tf20pq0akra1smeq">&nbsp;&nbsp;因为双机调试的过程中，如果驱动程序仍然处于加载状态，则windbg会占用驱动程序的pdb文件，导致vs生成驱动程序时无法覆盖pdb符号文件，导致生成失败</a>
+</h3>
+<h3 class="topic">
+<a name="7a7i00sq1a896g206f8hsrcr67">&nbsp;为什么内核代码种可以使用memcpy等函数？</a>
+</h3>
+<h3 class="topic">
+<a name="10hl0n73tc4pn7mjb25g7pl67v">&nbsp;&nbsp;因为memcpy内部不涉及复杂的内存操作,所以可以用在驱动程序中</a>
+</h3>
+<h3 class="topic">
+<a name="3o5371sgmimiseo3atuthd9ddc">&nbsp;&nbsp;部分内部不涉及复杂原理的c语言库函数可以用在驱动程序中</a>
+</h3>
+</body>
+</html>

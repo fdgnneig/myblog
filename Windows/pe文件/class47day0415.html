@@ -1,0 +1,910 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>class47day0415（pe文件第一天）</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="2n7vs411av5ov9drvllav2hhqi">class47day0415（pe文件第一天）</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="class47day0415_files/images/class47day0415%EF%BC%88pe%E6%96%87%E4%BB%B6%E7%AC%AC%E4%B8%80%E5%A4%A9%EF%BC%89.jpg"></div>
+<h2 class="topic">
+<a name="5jtefqtu9hm3btsll4qea2e3pm">pe文件结构</a>
+</h2>
+<h3 class="topic">
+<a name="3hn61cboqnac9k4ie63383rhjd">&nbsp;文件是数据的集合，不同的文件具有不同的格式</a>
+</h3>
+<h3 class="topic">
+<a name="5vuuhtf9cdssfjbmp4pl2m3vsf">&nbsp;pe文件结构图</a>
+</h3>
+<h3 class="topic">
+<a name="30h9vkdhbapvh4s1v8pfaibktm">&nbsp;pe文件是windows平台可执行文件的格式</a>
+</h3>
+<h3 class="topic">
+<a name="1rbu2d4b0t0murrh5ni54h9nlq">&nbsp;&nbsp;可执行文件包括exe dll sys等</a>
+</h3>
+<h3 class="topic">
+<a name="57apr7qp66j0v9023pedhsgb7c">&nbsp;相关术语</a>
+</h3>
+<h3 class="topic">
+<a name="5b937h1m90sme2uuga88vadg6n">&nbsp;&nbsp;字段</a>
+</h3>
+<h3 class="topic">
+<a name="3q4qjsp9vpg8rrj0u9sod6jcnl">&nbsp;&nbsp;&nbsp;结构体中的一项</a>
+</h3>
+<h3 class="topic">
+<a name="0ru4sbdd4rn1v91svrl0qbjhbt">&nbsp;&nbsp;头</a>
+</h3>
+<h3 class="topic">
+<a name="2ipe1bn4733vfg7rd271ja779e">&nbsp;&nbsp;&nbsp;文件的说明部分</a>
+</h3>
+<h3 class="topic">
+<a name="2r5uvppsgt759i64oc8ubliru8">&nbsp;&nbsp;区段</a>
+</h3>
+<h3 class="topic">
+<a name="32sgme8q6frivpmlsum74kgo6q">&nbsp;&nbsp;&nbsp;pe文件中的数据段，不同类型的数据保存的在不同的区段中</a>
+</h3>
+<h3 class="topic">
+<a name="0d6sgrl8a0lg3549tcbirp3bti">&nbsp;&nbsp;偏移</a>
+</h3>
+<h3 class="topic">
+<a name="6g9u7iubtom33do6mlfkum5hgh">&nbsp;&nbsp;&nbsp;多用于文件，是指文件中的某个位置</a>
+</h3>
+<h3 class="topic">
+<a name="3v39v4p38c1p3j9end1jr01ano">&nbsp;&nbsp;镜像</a>
+</h3>
+<h3 class="topic">
+<a name="5soa39k2s93sldjlhs7pld2bc5">&nbsp;&nbsp;&nbsp;pe文件保存在磁盘等存储介质中</a>
+</h3>
+<h3 class="topic">
+<a name="14icu60p6inl2qghvjicj6u47d">&nbsp;&nbsp;映像</a>
+</h3>
+<h3 class="topic">
+<a name="0ihj6nq2dbr2rh9hjsojdc80nm">&nbsp;&nbsp;&nbsp;pe文件加载到内存中</a>
+</h3>
+<h3 class="topic">
+<a name="26u7d7o96cnr8c9s07qi2m1ekm">&nbsp;&nbsp;文件在内存中</a>
+</h3>
+<h3 class="topic">
+<a name="4s5eitqkp7onjh0ckbsm713d7j">&nbsp;&nbsp;&nbsp;加载基址</a>
+</h3>
+<h3 class="topic">
+<a name="7bgdi868iboq91tmt1kofnt3uv">&nbsp;&nbsp;&nbsp;&nbsp;文件在内存中的起始位置</a>
+</h3>
+<h3 class="topic">
+<a name="2piqa3hao2lnf3h2pgpgcue6il">&nbsp;&nbsp;&nbsp;虚拟地址</a>
+</h3>
+<h3 class="topic">
+<a name="0o686lhlhdo6k4jde2jhg9n2f9">&nbsp;&nbsp;&nbsp;&nbsp;进程的地址空间中的地址</a>
+</h3>
+<h3 class="topic">
+<a name="5vnu61qo1q336hfmndpe6qdeqn">&nbsp;&nbsp;&nbsp;相对虚拟地址</a>
+</h3>
+<h3 class="topic">
+<a name="1hna8pgljbdvodrgi4a94n2mna">&nbsp;&nbsp;&nbsp;&nbsp;相对于加载基址的偏移</a>
+</h3>
+<h3 class="topic">
+<a name="5d6qshr7suf2213amgll6igt4c">&nbsp;&nbsp;&nbsp;虚拟地址=加载基址+相对虚拟地址</a>
+</h3>
+<h3 class="topic">
+<a name="6ca0o7ofrtp6alds229oe3g7i1">&nbsp;&nbsp;如果文件在磁盘中</a>
+</h3>
+<h3 class="topic">
+<a name="2a850fuoo2bcs8akk5hpsf5gv7">&nbsp;&nbsp;&nbsp;文件基址</a>
+</h3>
+<h3 class="topic">
+<a name="06a524jvm0p6dcpqb2k6sqo2qp">&nbsp;&nbsp;&nbsp;文件地址</a>
+</h3>
+<h3 class="topic">
+<a name="0dfmk0q9l958h95q92nd0oa5sk">&nbsp;&nbsp;&nbsp;文件偏移</a>
+</h3>
+<h3 class="topic">
+<a name="5odk2k4mssb5597n4shjjgc0bk">&nbsp;&nbsp;&nbsp;文件地址=文件基址+文件偏移</a>
+</h3>
+<h3 class="topic">
+<a name="2h019t0e0n6f9iqns44tguv5aa">&nbsp;&nbsp;对齐</a>
+</h3>
+<h3 class="topic">
+<a name="386a3vqi3nd8dd22iatfjfuv0c">&nbsp;&nbsp;&nbsp;文件的对齐值一般为0x200h</a>
+</h3>
+<h3 class="topic">
+<a name="081e65cdqo53sjln1provbi7gi">&nbsp;&nbsp;&nbsp;pe映射到内存中后，对齐值一般是一个内存页的大小，一般为4kb ，即0x1000h</a>
+</h3>
+<h3 class="topic">
+<a name="2hgpac2esfgfc4051ocr87riht">&nbsp;&nbsp;&nbsp;无论是文件中还是内存中，区段的初始地址一定是对齐力度的整数倍</a>
+</h3>
+<h3 class="topic">
+<a name="12re6ovtut8c306ov7r32db99s">&nbsp;&nbsp;&nbsp;向上对齐</a>
+</h3>
+<h3 class="topic">
+<a name="4gjvce5oks0bpkofpso251m2nh">&nbsp;&nbsp;&nbsp;&nbsp;即如果一个区段为0x201h大小，则下一个区段起始位置为0x400h</a>
+</h3>
+<h3 class="topic">
+<a name="6c8fetedu8fq6o5f30o5g1pskr">&nbsp;&nbsp;&nbsp;对齐造成文件偏移和相对虚拟地址不同</a>
+</h3>
+<h3 class="topic">
+<a name="3pcg4at6c5amceaqrpoune725f">&nbsp;&nbsp;&nbsp;&nbsp;即造成文件从磁盘到内存中时，会导致变胖</a>
+</h3>
+<h3 class="topic">
+<a name="7m357orrckb8bplmaa1pafkptb">&nbsp;&nbsp;&nbsp;对齐的部分使用0填充</a>
+</h3>
+<h3 class="topic">
+<a name="09jqokjt46enb6uo1psd28p4vl">&nbsp;结构</a>
+</h3>
+<h3 class="topic">
+<a name="653g0sfmlhm862d2pptmh7qed8">&nbsp;&nbsp;调试信息就是附加数据，真正运行的时候在内存中是没有的</a>
+</h3>
+<h3 class="topic">
+<a name="5nse38828bgqss1mbcd4l598tr">&nbsp;&nbsp;头部</a>
+</h3>
+<h3 class="topic">
+<a name="7uegph1sn8bfpvmsvdalhnmin0">&nbsp;&nbsp;&nbsp;dos头</a>
+</h3>
+<h3 class="topic">
+<a name="3k2dt56pp0nb815ijlrf6vc971">&nbsp;&nbsp;&nbsp;nt头</a>
+</h3>
+<h3 class="topic">
+<a name="1b82c7fugs0m1a76g97ggpvnbo">&nbsp;&nbsp;&nbsp;&nbsp;当中有数据目录表</a>
+</h3>
+<h3 class="topic">
+<a name="01hmccqod210b2tm9pu93rv5tq">&nbsp;&nbsp;&nbsp;区段头表</a>
+</h3>
+<h3 class="topic">
+<a name="0odropvn6fou1097fb11piai8p">&nbsp;&nbsp;主体</a>
+</h3>
+<h3 class="topic">
+<a name="1eqrgehvdh3tm1rgtbkioh4psq">&nbsp;&nbsp;&nbsp;区段</a>
+</h3>
+<h3 class="topic">
+<a name="35m27djh6jb5uqiqbjfvtc1unn">&nbsp;&nbsp;&nbsp;&nbsp;与区段表中的区段一一对应</a>
+</h3>
+<h3 class="topic">
+<a name="4j8akl1a176184r09erq1lc7og">&nbsp;&nbsp;尾部</a>
+</h3>
+<h3 class="topic">
+<a name="3a7ac077dg5uefplbdu2nunnpa">&nbsp;&nbsp;&nbsp;调试信息</a>
+</h3>
+<h3 class="topic">
+<a name="1k0nbp576bmii89lppi4pkj18n">&nbsp;DOS头（_IMAGE_DOS_HEADERS）</a>
+</h3>
+<h3 class="topic">
+<a name="5iuek5jecmb1qfqg69u0ohaji9">&nbsp;&nbsp;主要是为了兼容性存在</a>
+</h3>
+<h3 class="topic">
+<a name="5lkj20hv4q3t40b64lvtj57e5t">&nbsp;&nbsp;存在相关提示信息，当pe文件在dos下运行，会显示相关报错信息</a>
+</h3>
+<h3 class="topic">
+<a name="7o2hmls0fodnmhul1f6lkbfch0">&nbsp;&nbsp;dos头结构体</a>
+</h3>
+<h3 class="topic">
+<a name="2it58pmnt9djoku1a1c9src6df">&nbsp;&nbsp;&nbsp;WORD e_magic</a>
+</h3>
+<h3 class="topic">
+<a name="7qf9snd3a1rp5ekn7m0dcebsb4">&nbsp;&nbsp;&nbsp;&nbsp;该值固定：0x5a4d  //MZ</a>
+</h3>
+<h3 class="topic">
+<a name="40ri7494k3o3v2a8mfktkujil1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;计算机中是小端存储，所以使用010editor看到的数据往往是4d5a</a>
+</h3>
+<h3 class="topic">
+<a name="78gsa5ui5cgtr2qh012186nnvd">&nbsp;&nbsp;&nbsp;&nbsp;是pe文件的重要字段，看文件的头两位是不是 MZ即可判断文件是不是pe文件</a>
+</h3>
+<h3 class="topic">
+<a name="2epe1jj879m71ci5771ko4o9ka">&nbsp;&nbsp;&nbsp;LONG e_lfanew</a>
+</h3>
+<h3 class="topic">
+<a name="2favvrbe7bo9lvne9mveenau0a">&nbsp;&nbsp;&nbsp;&nbsp;保存一个偏移量（相对于文件起始位置）（即相对于文件基址），指向nt头的位置</a>
+</h3>
+<h3 class="topic">
+<a name="7rrka3q45chheml1qgk4o913hb">&nbsp;&nbsp;实验修改dos头</a>
+</h3>
+<h3 class="topic">
+<a name="3vqt2oo5tikussdkieen7qjba9">&nbsp;&nbsp;&nbsp;在010editor中修改pe头中的两个重要字段回导致程序无法运行，修改其他字段则不会有什么影响（其他字段若被修改，只有在dos模式运行时才会产生影响）</a>
+</h3>
+<h3 class="topic">
+<a name="2o1nhli3mfiie0lgbllst5f706">&nbsp;&nbsp;&nbsp;只要不修改dos头中的两个关键数据，该程序均可以在windows下正常运行</a>
+</h3>
+<h3 class="topic">
+<a name="4uuc5dijljg4hvb7ikvau6otc4">&nbsp;DOS头与NT头之间有一部分区域，存储着一些被dos头使用的数据，这部分大小不确定，所以需要dos头的LONG e_lfanew字段指出NT头在文件中的偏移</a>
+</h3>
+<h3 class="topic">
+<a name="3f4o0a90a6khpomfglldki09ea">&nbsp;&nbsp;dos头与这部分空间并不重要，可以将pe头放在这里，甚至将dos头与pe头重合，实现一些特殊用途，比如缩小pe的体积</a>
+</h3>
+<h3 class="topic">
+<a name="5u9rthu3tokfggcuu23254gv73">&nbsp;nt头(_IMAGE_NT_HEADERS)</a>
+</h3>
+<h3 class="topic">
+<a name="649e3dfbunm4ddgql79dp13oqa">&nbsp;&nbsp;结构</a>
+</h3>
+<h3 class="topic">
+<a name="02r4qcfn7qigilh8trb24mvgq3">&nbsp;&nbsp;&nbsp;pe标识(四个字节) DWORD Signature</a>
+</h3>
+<h3 class="topic">
+<a name="1re6ldg5jn0sja707p9e2mrlso">&nbsp;&nbsp;&nbsp;&nbsp;是一个文件标识，值常为4550//PE，与之前魔数起到的作用相同，与魔数一起用于判断是否为pe文件</a>
+</h3>
+<h3 class="topic">
+<a name="7b58iqjl2bifk0ucje957g8av3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;代码：判断文件是不是pe文件格式</a>
+</h3>
+<h3 class="topic">
+<a name="6iis8seiughtkqhucfk4nfhm7a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;分别检测dos头中的e_magic和nt头的字段</a>
+</h3>
+<h3 class="topic">
+<a name="41lsd9urc2ku50dp67ga5v3m1j">&nbsp;&nbsp;&nbsp;文件头（20个字节）&#13;
+IMAGE_FILE_HEADER FileHeader</a>
+</h3>
+<h3 class="topic">
+<a name="5g2natnl9agqqpijmbktn1lmsn">&nbsp;&nbsp;&nbsp;&nbsp;是一个结构体，有七个字段，一共有20个字节</a>
+</h3>
+<h3 class="topic">
+<a name="5cpatacpcefbg9gptpsp4utojb">&nbsp;&nbsp;&nbsp;&nbsp;字段</a>
+</h3>
+<h3 class="topic">
+<a name="5c8h7vpdg8lpglmmh8nt23pjgm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;运行平台&#13;
+WORD Machine</a>
+</h3>
+<h3 class="topic">
+<a name="4mmdms409ar0vpmpfdvrtegrou">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;32位平台0x014c</a>
+</h3>
+<h3 class="topic">
+<a name="02onq98ah0v4cu76m5g5h0qnv4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;64位平台-》0x0200</a>
+</h3>
+<h3 class="topic">
+<a name="0rlmosejfs1lm5ni76n63vk7bk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;因为是编译型语言所以编译时需要在这里指定编译面向什么平台</a>
+</h3>
+<h3 class="topic">
+<a name="5v83sggsabu9200gqhv80a7kga">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;区段的数量&#13;
+WORD NumberOfSections</a>
+</h3>
+<h3 class="topic">
+<a name="336p9dhvaoal864i5g5jan422v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;文件创建时间&#13;
+TimeDateStamp</a>
+</h3>
+<h3 class="topic">
+<a name="7949k6s6vetsm8pm72639pcib8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;文件编译的时间 格林威治时间</a>
+</h3>
+<h3 class="topic">
+<a name="7ujgqvqda6n7mj6dunk934e08s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;符号表指针（无用）</a>
+</h3>
+<h3 class="topic">
+<a name="6qr5ka8fkb61b3o3op209m84tc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;符号数量（无用）</a>
+</h3>
+<h3 class="topic">
+<a name="6krdjuub8sudfqp63da0a5cpcb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;扩展头大小&#13;
+WORD SizeOfOptionalHeader</a>
+</h3>
+<h3 class="topic">
+<a name="5vfs5u8dtv54fehl135nc268n9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;扩展头大小不确定，需要在这里记录</a>
+</h3>
+<h3 class="topic">
+<a name="0tc470kloj2oijvur4k02jtbk0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;32位程序多位E0</a>
+</h3>
+<h3 class="topic">
+<a name="4foqlsrba8m1jo3vcd3jptec5a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;64位程序多为F0</a>
+</h3>
+<h3 class="topic">
+<a name="2j61jfpv6nibj1fprtgj32tg9k">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;文件属性&#13;
+WORD Characteristics</a>
+</h3>
+<h3 class="topic">
+<a name="74dnmsdufc63tta6r54ohu8j3v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;是一个标志位i，每一位都有意义，类似于efalgs</a>
+</h3>
+<h3 class="topic">
+<a name="4oqn52rt1ec0j3nkqa1p9locjs">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0x0001</a>
+</h3>
+<h3 class="topic">
+<a name="4nbll2ntv5gl69a2gh9nnm9a5g">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;重定义信息是否可以舍弃 1舍弃  0不舍弃</a>
+</h3>
+<h3 class="topic">
+<a name="220ujh8d80kcu6romrf433hlua">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果重定位信息被舍弃，则程序在内存中基址为0x400000</a>
+</h3>
+<h3 class="topic">
+<a name="3mu4h6gcfp51efh0larmkb1e6g">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果不舍弃，即使用重定位，文件基址不是0x400000</a>
+</h3>
+<h3 class="topic">
+<a name="7rv3adche833ih876tbr0bu6il">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0x0002</a>
+</h3>
+<h3 class="topic">
+<a name="4tqqvr300974mr8fa2a8k64739">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;文件是否为可执行文件</a>
+</h3>
+<h3 class="topic">
+<a name="64r4ptvdj7u7vj9tm5390k8iq8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对于中间文件（obj）也是pe格式的，但是该文件不可执行，则该位为0</a>
+</h3>
+<h3 class="topic">
+<a name="736420u0ouccjbr9aos964ou99">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0x1000</a>
+</h3>
+<h3 class="topic">
+<a name="7bppvnjvdom096vtckgovfvsuv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;32位程序多为0x1030</a>
+</h3>
+<h3 class="topic">
+<a name="5iovhhmpuoi8li18t2vh2a71km">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dll一般是0x0210</a>
+</h3>
+<h3 class="topic">
+<a name="4avsq6627qop3phnlbtsksh07d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;exe一般是 0x010f</a>
+</h3>
+<h3 class="topic">
+<a name="0b6ks4rm2jtl9vjeavbitudi76">&nbsp;&nbsp;&nbsp;&nbsp;实验：手工解析文件头</a>
+</h3>
+<h3 class="topic">
+<a name="26ss6c92m8svpc7hkidl1b8t88">&nbsp;&nbsp;&nbsp;扩展头&#13;
+IMAGE_OPTIONAL_HEADER32 OptionalHeader</a>
+</h3>
+<h3 class="topic">
+<a name="13j8cbc75pm6m7bv2a3bh8ict5">&nbsp;&nbsp;&nbsp;&nbsp;字段</a>
+</h3>
+<h3 class="topic">
+<a name="78e11uti44av2dbacklhffnao6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;标志位&#13;
+WORD Magic</a>
+</h3>
+<h3 class="topic">
+<a name="3itum7dah1uq9on2lojg59hode">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用于标志32位（10b）64位（20b）</a>
+</h3>
+<h3 class="topic">
+<a name="0aunn1a2tki0pcb4pht3636pqj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;所有代码区段的大小&#13;
+DWORD SizeOfCode</a>
+</h3>
+<h3 class="topic">
+<a name="5eb8ilgt9uo9htovvj3f79uaqu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;只是一个记录，修改不影响程序运行</a>
+</h3>
+<h3 class="topic">
+<a name="1mrb73ngk9fvbfjgldj26mt5nj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;程序执行入口&#13;
+DWORD AdderssOfEntryPoint</a>
+</h3>
+<h3 class="topic">
+<a name="6ftqo1f6ca7mnaqghq7a132q0e">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;是相对虚拟地址rav</a>
+</h3>
+<h3 class="topic">
+<a name="6ov7j3ctliopoc4cmhjscskkcb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;代码起始执行的位置</a>
+</h3>
+<h3 class="topic">
+<a name="73k7vlsjh81cbbc50umq8jlahb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;是传说中的oep  ep</a>
+</h3>
+<h3 class="topic">
+<a name="7crnj525uhcndj60jh1l0cn91n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意文件的入口函数并不是main函数，在main函数之前仍然有函数执行，一般可以通过main函数的参数数量找到main函数</a>
+</h3>
+<h3 class="topic">
+<a name="66p9vh76330v9fm8o29ti1dp6r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;程序载入默认基址&#13;
+DWORD ImageBase</a>
+</h3>
+<h3 class="topic">
+<a name="4ucqmqfk53qilf3p2tj2eba3j3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当程序不需要重定位，这里指定了文件在内存中的起始位置</a>
+</h3>
+<h3 class="topic">
+<a name="7ejkf4rnqhrv3tg67m4cj59h94">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果系统支持随机基址，则文件在内存中的基址可能发生变化</a>
+</h3>
+<h3 class="topic">
+<a name="4l2g62tna2kgoi8634rqgthrum">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这里的默认载入基址如果发生变化，程序中有的地址（比如全局变量的地址）是根据载入基址计算出来的虚拟地址（va），如果要保证程序的正常运行，同时需要修改文件中使用va寻址内容</a>
+</h3>
+<h3 class="topic">
+<a name="3p9vud4q0gj861icet2up89abn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;内存中的段对齐值&#13;
+DWORD SectionAlignment</a>
+</h3>
+<h3 class="topic">
+<a name="02q5lc0fhih92lkgf7kp63rsnl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;默认为0x1000</a>
+</h3>
+<h3 class="topic">
+<a name="2a5fb46m0a23ovtb6f228vklve">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;文件中的段对齐值&#13;
+DWORD FileAlignment</a>
+</h3>
+<h3 class="topic">
+<a name="4oiaqnajmdbvulc75d1g0ru8pq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;默认为0x200</a>
+</h3>
+<h3 class="topic">
+<a name="6otah6v9c86jt9rvjvkgum1sle">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;其值与编译器相关</a>
+</h3>
+<h3 class="topic">
+<a name="61c5a1kjquqfvqt29nltj7hdj8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果进行修改，会对程序执行产生影响，除非对与之关联的东西均进行修改</a>
+</h3>
+<h3 class="topic">
+<a name="32qhdnaq0q2jehrmi0iqhsaicb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果将其改成默认对齐值的倍数，且能够被内存的段对齐值整除，且不大于内存中的段对齐值，则程序仍然可以执行</a>
+</h3>
+<h3 class="topic">
+<a name="2fl2h3vcadtqhsbt4cfnug8bk1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;内存中映像的总大小&#13;
+DWORD SizeOfImage</a>
+</h3>
+<h3 class="topic">
+<a name="1uar3ij9hs2oq6b1cev2srpsgo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;文件在内存中所占的内存大小</a>
+</h3>
+<h3 class="topic">
+<a name="20ndb5slg6tbnui5prgnqeshk7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这里的大小进行了内存对齐</a>
+</h3>
+<h3 class="topic">
+<a name="4kgg99o9jei6d3c9ge11sabif0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对程序的运行有影响</a>
+</h3>
+<h3 class="topic">
+<a name="32rqlr14ij01qc2o0aesk3k0lq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;上下限会存在内存对齐取整的问题</a>
+</h3>
+<h3 class="topic">
+<a name="29hd0p5hu319da0th5npfi9u6h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;下限为</a>
+</h3>
+<h3 class="topic">
+<a name="40e15f8hil5o6lhr482ukvi1ub">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;。。</a>
+</h3>
+<h3 class="topic">
+<a name="2udeslpq77al5iqk8igb99vug7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;上限为</a>
+</h3>
+<h3 class="topic">
+<a name="7tsut34p3g6meldl6st8d0mtk2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;。。</a>
+</h3>
+<h3 class="topic">
+<a name="7uj5h7d17sc1n7ialcfm5los9p">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;各文件头的总大小&#13;
+DWORD SizeOfHeaders</a>
+</h3>
+<h3 class="topic">
+<a name="0uujununcpsvuafbe0api0joh5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dos头</a>
+</h3>
+<h3 class="topic">
+<a name="1t5vpaq718v2rirpg81tjfnbc5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ht头</a>
+</h3>
+<h3 class="topic">
+<a name="6vcu7qrhsjj41coditej6lc0q6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;区段表</a>
+</h3>
+<h3 class="topic">
+<a name="6vueq55htrj1lt7cf1sifultdf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用于寻址文件第一个区段</a>
+</h3>
+<h3 class="topic">
+<a name="55tnn1pnshtuvm90vrun1ppk91">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;文件子系统&#13;
+WORD Subsystem</a>
+</h3>
+<h3 class="topic">
+<a name="3iv50qetu9butaesqc39ilf6h8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用于标识文件的类型</a>
+</h3>
+<h3 class="topic">
+<a name="79guuh4uh8eajci4bvpon2nt09">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;驱动程序</a>
+</h3>
+<h3 class="topic">
+<a name="4fi6ngfb4o7ve5sb6phpee7hvb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1</a>
+</h3>
+<h3 class="topic">
+<a name="20s4dphvjesmg5hfgnjm6f4oki">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gui</a>
+</h3>
+<h3 class="topic">
+<a name="4ohah189iv3nd12mk8kbbv7e7v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2</a>
+</h3>
+<h3 class="topic">
+<a name="077l0ip9874u7p4ul4colcpfde">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;控制台</a>
+</h3>
+<h3 class="topic">
+<a name="3j40lnvnjg5lj42foflkkmbtbu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3</a>
+</h3>
+<h3 class="topic">
+<a name="19ppnumu4tp708hq4qulbkn6uq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dll标志位&#13;
+WORD DllCharacteristics</a>
+</h3>
+<h3 class="topic">
+<a name="0p7t59kotma024729ks61qjmpe">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;保存该文件的相关属性</a>
+</h3>
+<h3 class="topic">
+<a name="0mjb2rnj29rssbd9rsgbvcjk9r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;不仅仅用于描述dll</a>
+</h3>
+<h3 class="topic">
+<a name="58fh0llih2vu6705tu49012r0i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;每一位迷描述一个属性</a>
+</h3>
+<h3 class="topic">
+<a name="0n4lmeun8ft5drt37555baiefu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0x40</a>
+</h3>
+<h3 class="topic">
+<a name="25hkl31nq4il30rsdsqrhn49qc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果该为1，说明程序支持随即基址</a>
+</h3>
+<h3 class="topic">
+<a name="4s4tvov56njcleltln1cbo5c04">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果为0，说明程序不支持随机基址</a>
+</h3>
+<h3 class="topic">
+<a name="53l6olvhhlmm9tiiolod53hbil">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;与文件头中的文件属性的第一个标志位相辅相成</a>
+</h3>
+<h3 class="topic">
+<a name="7n3st7ggtbct2c1hri6tg08k74">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;数据目录表的数量&#13;
+DWORD NumberOfRvaAndSize</a>
+</h3>
+<h3 class="topic">
+<a name="731vkds8ri9lmqvmb5vabitoi2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;数据目录中的有效的元素的个数</a>
+</h3>
+<h3 class="topic">
+<a name="7nthcdk8igs3p022ionjoiqtv3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;数据目录表&#13;
+IMAGE_DATA_DIRECTORY DataDirectory[IMAGE_NUMBEROF_DIRECTORY_ENTRIED]</a>
+</h3>
+<h3 class="topic">
+<a name="7rrstiipvorrr1ntv7kbukk8os">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;是一个数组</a>
+</h3>
+<h3 class="topic">
+<a name="35hlvu8ilr6rfaem76sq4oa2mv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该宏值为0x10h，说明该数组有16个元素</a>
+</h3>
+<h3 class="topic">
+<a name="6v8l6s58638ab4abatdrrlao6j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;保存pe中各种表的地址和大小</a>
+</h3>
+<h3 class="topic">
+<a name="300sllv14uv6qd7ann4061hgif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;数组元素都是结构体（8个字节）</a>
+</h3>
+<h3 class="topic">
+<a name="60gu9a1nt0lfqifagsh2tahv5h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_IMAGE_DATA_DIRECTORY</a>
+</h3>
+<h3 class="topic">
+<a name="2g50cnru5nf15n3rorbmo0vjid">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;数据块的起始rva地址</a>
+</h3>
+<h3 class="topic">
+<a name="5pqncaih6kn0u24342ngvctjb3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;数据块大小</a>
+</h3>
+<h3 class="topic">
+<a name="5a5lcn6bsag09i1nd517kt6p3s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;数组下标对应</a>
+</h3>
+<h3 class="topic">
+<a name="4oml93n4bc6pujofus9mm5rmr7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0</a>
+</h3>
+<h3 class="topic">
+<a name="4ckfngb7drm9oli9rpvcoj9tvt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;导出表</a>
+</h3>
+<h3 class="topic">
+<a name="7ipkhmu8fqj2d64i5vvmtoo3mb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1</a>
+</h3>
+<h3 class="topic">
+<a name="5h8jplm30jbup7t92fl1399r9i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;导入表</a>
+</h3>
+<h3 class="topic">
+<a name="3rstg8scejc94o4vb44nlghpsm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2</a>
+</h3>
+<h3 class="topic">
+<a name="5pi6qnufjebfono2918igm60fp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;资源表</a>
+</h3>
+<h3 class="topic">
+<a name="0brblj39hv5eq1tu69du15ff8b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5</a>
+</h3>
+<h3 class="topic">
+<a name="4al5f8h3d627lqa5j8buiikci4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;重定位表</a>
+</h3>
+<h3 class="topic">
+<a name="6l531tck1b3ar13ag6vp6blda0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;9</a>
+</h3>
+<h3 class="topic">
+<a name="1lntk3lrmjheuf51thsopfufqj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TLS表</a>
+</h3>
+<h3 class="topic">
+<a name="1uqd97sjl8cd8rt5s9fu8vsajt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;12</a>
+</h3>
+<h3 class="topic">
+<a name="46c8k7q9tceb6loile9f3tskc4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IAT导入地址表</a>
+</h3>
+<h3 class="topic">
+<a name="4nqlbm0tsog1ee2ea1r5d3g1mv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用lordPE可以看到相关表的地址</a>
+</h3>
+<h3 class="topic">
+<a name="65dgjb479k18s2hc2ta08elt53">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;数据表中的数据存储在区段中，这里的数据目录表仅仅是对应数据的引导</a>
+</h3>
+<h3 class="topic">
+<a name="29onrq0md4pqd7u0qhbthsnmpf">&nbsp;区段头表_IMAGE_SECTION_HEADER</a>
+</h3>
+<h3 class="topic">
+<a name="4knnlcf7eoiuv5ge34ruq648fe">&nbsp;&nbsp;描述各个区段的属性</a>
+</h3>
+<h3 class="topic">
+<a name="08en2839gdp43mfho1in13fbtc">&nbsp;&nbsp;一个区段头表40个字节</a>
+</h3>
+<h3 class="topic">
+<a name="1jmhp9h5hfi0lvtunnoi6cgt21">&nbsp;&nbsp;寻址区段头表</a>
+</h3>
+<h3 class="topic">
+<a name="3rbih0rmk5djicq208f7in9h25">&nbsp;&nbsp;&nbsp;找到扩展头，扩展头的后面就是区段头表</a>
+</h3>
+<h3 class="topic">
+<a name="2m4smviheoi2muine6bmp3hekk">&nbsp;&nbsp;是一个结构体数组</a>
+</h3>
+<h3 class="topic">
+<a name="2cbb27c4k7rkquniba0v8ocmvc">&nbsp;&nbsp;&nbsp;结构体每一个元素为_IMAGE_SECTION_HEADER类型</a>
+</h3>
+<h3 class="topic">
+<a name="64lp45anbofs0lq15obkjp098b">&nbsp;&nbsp;每一个元素（区段头）描述一个区段的属性</a>
+</h3>
+<h3 class="topic">
+<a name="229sde4dv7uvhdv7ufhusigvai">&nbsp;&nbsp;该结构体数组以一个全为0的结构体结尾</a>
+</h3>
+<h3 class="topic">
+<a name="3oosqn9qdc8cpf119mgrfdo5jr">&nbsp;&nbsp;_IMAGE_SECTION_HEADER结构体结构</a>
+</h3>
+<h3 class="topic">
+<a name="639dk9ks8li96b0aciu9penv0l">&nbsp;&nbsp;&nbsp;区段的名字 &#13;
+BYTE Name[IMAGE_SIZEOF_SHORT_NAME]</a>
+</h3>
+<h3 class="topic">
+<a name="2o857qpmbcuvg9800bidv4j0ee">&nbsp;&nbsp;&nbsp;&nbsp;可以任意修改</a>
+</h3>
+<h3 class="topic">
+<a name="4qjr10vkftnj79830kadh70sid">&nbsp;&nbsp;&nbsp;&nbsp;8个字节</a>
+</h3>
+<h3 class="topic">
+<a name="29il85lse5cga15iu8mqkurii8">&nbsp;&nbsp;&nbsp;&nbsp;.text</a>
+</h3>
+<h3 class="topic">
+<a name="5mt245uul3itlu1s4gkqrtplbo">&nbsp;&nbsp;&nbsp;&nbsp;.rdata</a>
+</h3>
+<h3 class="topic">
+<a name="2ge4g16kijtcff6aalv9qjtk0j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;只读数据</a>
+</h3>
+<h3 class="topic">
+<a name="3vom828jebvcslb80jt8qael9f">&nbsp;&nbsp;&nbsp;&nbsp;.bss</a>
+</h3>
+<h3 class="topic">
+<a name="5g3f4i9bbk951m0vm18f56cjrc">&nbsp;&nbsp;&nbsp;&nbsp;.idata</a>
+</h3>
+<h3 class="topic">
+<a name="5gn51d5r0ac9r2ho457c0ovqu3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;导入表中的数据</a>
+</h3>
+<h3 class="topic">
+<a name="1tgkeele12u8o3jq1dhcp7p4r4">&nbsp;&nbsp;&nbsp;&nbsp;textbss</a>
+</h3>
+<h3 class="topic">
+<a name="6qh43emfktn7185qs0qsmc8bsj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;文件中不占用大小，内存中占用大小</a>
+</h3>
+<h3 class="topic">
+<a name="73gvvvjakb7lfovq0mk5cqv0f1">&nbsp;&nbsp;&nbsp;&nbsp;具体见资料p14</a>
+</h3>
+<h3 class="topic">
+<a name="70s1pktri6mqiftfe2g4hq0e4c">&nbsp;&nbsp;&nbsp;联合体Misc</a>
+</h3>
+<h3 class="topic">
+<a name="0teln89gtvc0f2nl64ua9gpr7c">&nbsp;&nbsp;&nbsp;&nbsp;有意义的为区段的大小&#13;
+DWORD VirtualSize </a>
+</h3>
+<h3 class="topic">
+<a name="3p8q0hbraa8qqiqbgi38tut27j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;不经过对齐，区段实际的大小</a>
+</h3>
+<h3 class="topic">
+<a name="3uuga3rgjdvo4gc5i745bcoioa">&nbsp;&nbsp;&nbsp;该区段的起始位置的相对于pe文件加载基址的相对虚拟地址RVA&#13;
+DWORD VirtualAddress</a>
+</h3>
+<h3 class="topic">
+<a name="275hs1miga7ccnit1mqtphk5l3">&nbsp;&nbsp;&nbsp;&nbsp;是相对虚拟地址转文件偏移的关键</a>
+</h3>
+<h3 class="topic">
+<a name="5icklk1r3e4bc1bm4rpoms8jjt">&nbsp;&nbsp;&nbsp;该区段在文件中的区段对齐大小&#13;
+DWORD SizeOfRawData</a>
+</h3>
+<h3 class="topic">
+<a name="1c6a9p8rdfc9osugd5katj6hft">&nbsp;&nbsp;&nbsp;该区段在文件中的偏移&#13;
+DWORD PointerToRawData</a>
+</h3>
+<h3 class="topic">
+<a name="6fg22aort4asc0en33u8l6u9ms">&nbsp;&nbsp;&nbsp;&nbsp;即该区段头部在文件中相对文件起始位置的偏移</a>
+</h3>
+<h3 class="topic">
+<a name="3mbd8oro8mn1a2bo0n9mvuj8t9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;是相对虚拟地址转文件偏移的关键</a>
+</h3>
+<h3 class="topic">
+<a name="39kd7arooflbvatlohmi9ukt42">&nbsp;&nbsp;&nbsp;区段的属性&#13;
+DWORD Characteristics</a>
+</h3>
+<h3 class="topic">
+<a name="2vbn54k3f6nfsmhthf600gb5pr">&nbsp;&nbsp;&nbsp;&nbsp;是标志位</a>
+</h3>
+<h3 class="topic">
+<a name="6j0imn53a6flmm8koohdodai22">&nbsp;&nbsp;&nbsp;&nbsp;可读可写可执行</a>
+</h3>
+<h3 class="topic">
+<a name="5eoe9ko5lh83o45psgtv8di0ov">&nbsp;&nbsp;&nbsp;&nbsp;使用010editor显示是一个结构体，每一位均是标记</a>
+</h3>
+<h3 class="topic">
+<a name="1t9ivqqb60ei320pealg1dgsh4">&nbsp;&nbsp;&nbsp;&nbsp;0x0000000e</a>
+</h3>
+<h3 class="topic">
+<a name="3h0aodjfh817a37d4jn3j02mqc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;表示可执行</a>
+</h3>
+<h3 class="topic">
+<a name="7v7v3ll319fredk55c1omgdqdq">&nbsp;使用代码解析头部信息</a>
+</h3>
+<h3 class="topic">
+<a name="7tnskri5d6lrsp25f420bs147t">&nbsp;&nbsp;将文件读取进入内存</a>
+</h3>
+<h3 class="topic">
+<a name="40thrm8mn8tlb8ttormkeu7vjh">&nbsp;&nbsp;&nbsp;打开文件</a>
+</h3>
+<h3 class="topic">
+<a name="101jkmg1obltmvneutjf8qp1td">&nbsp;&nbsp;&nbsp;&nbsp;fopen_s</a>
+</h3>
+<h3 class="topic">
+<a name="6jpfg1rd4vc9iethpracrvt1q9">&nbsp;&nbsp;&nbsp;获取文件大小</a>
+</h3>
+<h3 class="topic">
+<a name="1cg29g49g476geo74r8eeeo2nt">&nbsp;&nbsp;&nbsp;&nbsp;ftell</a>
+</h3>
+<h3 class="topic">
+<a name="3u4fi4ppqdqp5pvm2hc70caspk">&nbsp;&nbsp;&nbsp;&nbsp;注意使用fseek设置文件读写位置</a>
+</h3>
+<h3 class="topic">
+<a name="44h59qtie04jlf2q0vs6h5g9st">&nbsp;&nbsp;&nbsp;申请文件大小的空间</a>
+</h3>
+<h3 class="topic">
+<a name="3nnmokrhvsrjrnfpq6rlvisehi">&nbsp;&nbsp;&nbsp;&nbsp;new</a>
+</h3>
+<h3 class="topic">
+<a name="4locapiai02rqmqvp1lc1dvrvh">&nbsp;&nbsp;&nbsp;读文件到内存中</a>
+</h3>
+<h3 class="topic">
+<a name="24vgl9veicn9r84qoi12cfp72d">&nbsp;&nbsp;&nbsp;&nbsp;fread</a>
+</h3>
+<h3 class="topic">
+<a name="3tuuf0dlg8o7kb1hc98ltm612t">&nbsp;&nbsp;判断是否为pe文件</a>
+</h3>
+<h3 class="topic">
+<a name="1eauk3eb9vl484c3ee69c86fo2">&nbsp;&nbsp;&nbsp;判断dos头前两个字节是否为MZ</a>
+</h3>
+<h3 class="topic">
+<a name="4hfe2e991o2s57usem6ohvtsva">&nbsp;&nbsp;&nbsp;&nbsp;使用dos头的结构体解析文件</a>
+</h3>
+<h3 class="topic">
+<a name="7bul0ibit2ivsqjcnoolu22lhv">&nbsp;&nbsp;&nbsp;&nbsp;判断前两个字节是否为0x5a4d</a>
+</h3>
+<h3 class="topic">
+<a name="7h6q5t3q0dngagf8tbdk9mn3ie">&nbsp;&nbsp;&nbsp;判断nt头的前两个字节</a>
+</h3>
+<h3 class="topic">
+<a name="4vhi31sgjourqc52mgii94vdgq">&nbsp;&nbsp;&nbsp;&nbsp;从dos头中得到nt头偏移</a>
+</h3>
+<h3 class="topic">
+<a name="27l5bmd6u9heuholsq2qt0n84t">&nbsp;&nbsp;&nbsp;&nbsp;使用nt头类型的结构体解析得到的nt头首地址</a>
+</h3>
+<h3 class="topic">
+<a name="7c0t5fpv826jjum22sjv6e7ppe">&nbsp;&nbsp;&nbsp;&nbsp;判断前两个字节是否为0x00004550</a>
+</h3>
+<h3 class="topic">
+<a name="6tnk53lh0mrtkjidsoeebs1ak1">&nbsp;&nbsp;获取pe文件中重要信息</a>
+</h3>
+<h3 class="topic">
+<a name="479k72fghpm4iic3mcb9ee3l0e">&nbsp;&nbsp;&nbsp;文件中获得nt头的地址</a>
+</h3>
+<h3 class="topic">
+<a name="2mattg2g4eleamjsct37f6nnlj">&nbsp;&nbsp;&nbsp;入口点</a>
+</h3>
+<h3 class="topic">
+<a name="38u59ltgn0qnh521di35urlsmq">&nbsp;&nbsp;&nbsp;&nbsp;使用结构体引用打印出来</a>
+</h3>
+<h3 class="topic">
+<a name="1v0cqq9tjtut5rcl58uu3lk3ie">&nbsp;&nbsp;&nbsp;文件默认基址</a>
+</h3>
+<h3 class="topic">
+<a name="1i8f2ioe31fum7ifqa2ntsidrl">&nbsp;&nbsp;&nbsp;文件区段个数</a>
+</h3>
+<h3 class="topic">
+<a name="4m9un4l7mj2a1dapec63hp8mgg">&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="2uke8of2nd3ha3tqr2i7t1d3p3">&nbsp;&nbsp;&nbsp;#include "stdafx.h"&#13;
+#include &lt;Windows.h&gt;&#13;
+&#13;
+//将文件读取到内存中&#13;
+char* ReadFileToMemory(char* pFilePath)&#13;
+{&#13;
+	FILE* pFile;&#13;
+	fopen_s(&amp;pFile, pFilePath, "rb");&#13;
+	if (!pFile)&#13;
+	{&#13;
+		printf("文件打开失败\n");&#13;
+		return 0;&#13;
+	}&#13;
+	//获取文件大小&#13;
+	fseek(pFile, 0, SEEK_END);&#13;
+	int nSize = ftell(pFile);&#13;
+	char* pBuf = new char[nSize]{};&#13;
+	//读文件到内存中&#13;
+	fseek(pFile, 0, SEEK_SET);&#13;
+	fread(pBuf, nSize, 1, pFile);&#13;
+	//关闭文件&#13;
+	fclose(pFile);&#13;
+	return pBuf;&#13;
+}&#13;
+&#13;
+//判断是否是PE文件&#13;
+bool IsPeFile(char* pBuf)&#13;
+{&#13;
+	PIMAGE_DOS_HEADER pDos = (PIMAGE_DOS_HEADER)pBuf;&#13;
+	if (pDos-&gt;e_magic != IMAGE_DOS_SIGNATURE)//0x5A4D&#13;
+	{&#13;
+		return false;&#13;
+	}&#13;
+	//NT头&#13;
+	PIMAGE_NT_HEADERS pNt = &#13;
+		(PIMAGE_NT_HEADERS)&#13;
+		(pDos-&gt;e_lfanew + pBuf);&#13;
+	if (pNt-&gt;Signature != IMAGE_NT_SIGNATURE) //0x00004550&#13;
+	{&#13;
+		return false;&#13;
+	}&#13;
+	return true;&#13;
+}&#13;
+&#13;
+void ShowImportantInfo(char* pBuf)&#13;
+{&#13;
+	//获得dos头&#13;
+	PIMAGE_DOS_HEADER pDos = (PIMAGE_DOS_HEADER)pBuf;&#13;
+	//获得NT头&#13;
+	PIMAGE_NT_HEADERS pNt =&#13;
+		(PIMAGE_NT_HEADERS)&#13;
+		(pDos-&gt;e_lfanew + pBuf);&#13;
+&#13;
+	//入口点&#13;
+	printf("入口点：%08X\n", pNt-&gt;OptionalHeader.AddressOfEntryPoint);&#13;
+	//文件默认基址&#13;
+&#13;
+	//文件区段个数&#13;
+&#13;
+	//.....&#13;
+}&#13;
+&#13;
+int _tmain(int argc, _TCHAR* argv[])&#13;
+{&#13;
+	char* pBuf = ReadFileToMemory("RVAtoFOA  - 副本.exe");&#13;
+	if (IsPeFile(pBuf))&#13;
+	{&#13;
+		ShowImportantInfo(pBuf);&#13;
+	}&#13;
+	return 0;&#13;
+}&#13;
+</a>
+</h3>
+<h2 class="topic">
+<a name="7q9ho3g2rdi8hjfvid5v0n7joe">地址转换</a>
+</h2>
+<h3 class="topic">
+<a name="4nhv2709nipt9g76h2o2nel6g6">&nbsp;因为程序在存储器中偏移力度与在内存中的偏移力度不同，所以相同的代码在文件和内存中地址是不同的</a>
+</h3>
+<h3 class="topic">
+<a name="45egrhm3onb6hdpgkj5dgm8gma">&nbsp;如果已知一段数据相对于pe文件加载基址的相对虚拟地址，要求该数据相对于文件起始位置的文件偏移，可以使用以下方法</a>
+</h3>
+<h3 class="topic">
+<a name="4ejv68tcf457f5bq8m2qc43obp">&nbsp;寻找相应区段的数据在文件或内存中的地址</a>
+</h3>
+<h3 class="topic">
+<a name="5d97c3tkfkraceb0stscspldon">&nbsp;&nbsp;目标数据与区段首地址之间的偏移在内存或文件中是相同的</a>
+</h3>
+<h3 class="topic">
+<a name="27nocf2shhhostnqo6tumdh7to">&nbsp;&nbsp;区段的起始位置在文件或内存中都是已知的</a>
+</h3>
+<h3 class="topic">
+<a name="4g8qpvoj7omdlva970rk4e1ebt">&nbsp;&nbsp;&nbsp;均在区段头表的中描述对应区段的结构体中元素中</a>
+</h3>
+<h3 class="topic">
+<a name="6vps73g7p45fb0g05fd5inja71">&nbsp;&nbsp;判断目标数据在那个区段，需要遍历区段头表，看目标数据落入了那个区段的内存范围</a>
+</h3>
+<h3 class="topic">
+<a name="4md1ine5hkja4ockcd0gdj7814">&nbsp;&nbsp;首先得到目标数据相对与其区段起始位置的偏移</a>
+</h3>
+<h3 class="topic">
+<a name="27k0gqmlevkrhct8950d5loavl">&nbsp;&nbsp;该偏移加上文件中相应区段的首地址，可以得到目标数据在文件中的地址</a>
+</h3>
+<h3 class="topic">
+<a name="4uoi23d9tp3agm5v5ia451bq8n">&nbsp;&nbsp;&nbsp;类似，加上内存中的区段起始位置，得到目标数据在内存中的地址</a>
+</h3>
+<h3 class="topic">
+<a name="45s7ktbteakbeq16d7oengmv47">&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="1q6rsiqrl6ubnmfr0hssrd8i9f">&nbsp;&nbsp;//RVA --&gt; FOA&#13;
+DWORD RVAtoFOA(DWORD dwRVA, char* pBuf)&#13;
+{&#13;
+	//找到导出位置，数据目录表的第一项（下标0）&#13;
+	PIMAGE_DOS_HEADER pDos = (PIMAGE_DOS_HEADER)pBuf;&#13;
+	//NT头&#13;
+	PIMAGE_NT_HEADERS pNt =&#13;
+		(PIMAGE_NT_HEADERS)&#13;
+		(pDos-&gt;e_lfanew + pBuf);&#13;
+	//区段表首地址&#13;
+	PIMAGE_SECTION_HEADER pSec = IMAGE_FIRST_SECTION(pNt);&#13;
+	//区段表中的个数&#13;
+	DWORD dwCount = pNt-&gt;FileHeader.NumberOfSections;&#13;
+	for (int i = 0; i &lt; dwCount;i++)&#13;
+	{&#13;
+		if (dwRVA &gt;= pSec-&gt;VirtualAddress &amp;&amp; &#13;
+			dwRVA &lt; (pSec-&gt;VirtualAddress + pSec-&gt;SizeOfRawData))&#13;
+		{&#13;
+			return dwRVA - &#13;
+				pSec-&gt;VirtualAddress + pSec-&gt;PointerToRawData;&#13;
+		}&#13;
+		//下一个区段&#13;
+		pSec++;&#13;
+	}&#13;
+	return 0;&#13;
+}</a>
+</h3>
+<h2 class="topic">
+<a name="1lvkvlrac2n1f0uuu4lpautebv">问题：只有区段需要对齐，头不用对齐？</a>
+</h2>
+</body>
+</html>

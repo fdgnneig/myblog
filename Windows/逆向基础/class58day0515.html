@@ -1,0 +1,489 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>class58day0515（软件逆向第三天）</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="71r4uk6sg7hd8jtvfc6ngnvi8v">class58day0515（软件逆向第三天）</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="class58day0515_files/images/class58day0515%EF%BC%88%E8%BD%AF%E4%BB%B6%E9%80%86%E5%90%91%E7%AC%AC%E4%B8%89%E5%A4%A9%EF%BC%89.jpg"></div>
+<h2 class="topic">
+<a name="3ki6i16dfm19ha46hm8cilirt5">IDA基础介绍</a>
+</h2>
+<h3 class="topic">
+<a name="1jh1b5ni7c3empvg447bigfruu">&nbsp;使用Qt写界面，Qt可以跨平台</a>
+</h3>
+<h3 class="topic">
+<a name="2po5t3ie3l67kjiecveeqtursg">&nbsp;常见反汇编算法</a>
+</h3>
+<h3 class="topic">
+<a name="5sd90drdrsg0fqrifs1flbjtat">&nbsp;&nbsp;线性扫描反汇编</a>
+</h3>
+<h3 class="topic">
+<a name="20o7okicdhrt2e08e21f76peof">&nbsp;&nbsp;&nbsp;指定代码段的开始和结尾</a>
+</h3>
+<h3 class="topic">
+<a name="72u6aoqgomdl342c3jhd2r1ut3">&nbsp;&nbsp;&nbsp;从当前eip开始扫描，指定扫描行数</a>
+</h3>
+<h3 class="topic">
+<a name="0il27436oaou0i6orttd360pc3">&nbsp;&nbsp;&nbsp;缺点：当代码中存在数据时，如果将数据识别为指令，会导致后面的指令错位</a>
+</h3>
+<h3 class="topic">
+<a name="0o5djoisfab7hook602bgbkkni">&nbsp;&nbsp;递归下降反汇编</a>
+</h3>
+<h3 class="topic">
+<a name="46b0akresdbaedmuoa4u7ahq7g">&nbsp;&nbsp;&nbsp;ida使用</a>
+</h3>
+<h3 class="topic">
+<a name="23f2qvgbqshh9s36pbungp5acb">&nbsp;&nbsp;&nbsp;&nbsp;具有区分代码和数据的能力</a>
+</h3>
+<h3 class="topic">
+<a name="12uipcl44to9oa4bif61bch71m">&nbsp;&nbsp;&nbsp;遇到跳转分支指令、无条件跳转指令，会跳转到指定的分支流中进行反汇编</a>
+</h3>
+<h3 class="topic">
+<a name="5p1klgg0s2d5f1ang194h7ke16">&nbsp;&nbsp;&nbsp;遇到ret结束扫描</a>
+</h3>
+<h3 class="topic">
+<a name="5i9rut6r5pj779dormm2q40rcf">&nbsp;&nbsp;&nbsp;针对程序执行流程进行反汇编</a>
+</h3>
+<h3 class="topic">
+<a name="753lng8mm625o33pn8m0j67jir">&nbsp;ida存在插件，可以将汇编代码翻译成c语言代码，但是不能过度依赖</a>
+</h3>
+<h3 class="topic">
+<a name="7n29hi8lk9823e7hfem0v64kmo">&nbsp;基础目录</a>
+</h3>
+<h3 class="topic">
+<a name="6s981a35kn9f3eg78javtccht8">&nbsp;&nbsp;cfg目录</a>
+</h3>
+<h3 class="topic">
+<a name="0kpage1iqk7ntijie6q7e76mfa">&nbsp;&nbsp;&nbsp;包含各种配置文件</a>
+</h3>
+<h3 class="topic">
+<a name="7va85en8eqit9u1frp34viiv75">&nbsp;&nbsp;idc</a>
+</h3>
+<h3 class="topic">
+<a name="4midfijs98cno118rs6a8d8lub">&nbsp;&nbsp;ids</a>
+</h3>
+<h3 class="topic">
+<a name="6i3gbf2lajkva847178nv0j4jm">&nbsp;&nbsp;loaders</a>
+</h3>
+<h3 class="topic">
+<a name="2etjqrpvjj4k70letlq9mubma7">&nbsp;&nbsp;plugin</a>
+</h3>
+<h3 class="topic">
+<a name="1bdgpv1h3nij0gtjri0inoc72i">&nbsp;&nbsp;procs</a>
+</h3>
+<h3 class="topic">
+<a name="6upe8cfkfu6rjk4daqoqhk3kqe">&nbsp;&nbsp;sig</a>
+</h3>
+<h3 class="topic">
+<a name="1faub6gv21kurnvpn2v3dofknu">&nbsp;&nbsp;til</a>
+</h3>
+<h3 class="topic">
+<a name="0f1dmh9ag5rgrj79kbd9gv99ce">&nbsp;ida使用</a>
+</h3>
+<h3 class="topic">
+<a name="3nu219fji39imfkqg55n77p5as">&nbsp;&nbsp;能够识别出多种程序类型，在程序刚打开的时候，可以识别该程序是什么类型，选择对应类型进行使用</a>
+</h3>
+<h3 class="topic">
+<a name="5ad9h20oh9ckubmlsj904jmdar">&nbsp;&nbsp;ida进行分析过程中会生成5个文件（用于存储分析过程中的中中间结果）</a>
+</h3>
+<h3 class="topic">
+<a name="09skv69gfe8mk8mbd2htims3a1">&nbsp;&nbsp;&nbsp;id0</a>
+</h3>
+<h3 class="topic">
+<a name="66cp1f9j19a081p5l63e897o4c">&nbsp;&nbsp;&nbsp;id1</a>
+</h3>
+<h3 class="topic">
+<a name="667ra9sor05vqsukuqtstd8mnq">&nbsp;&nbsp;&nbsp;id2</a>
+</h3>
+<h3 class="topic">
+<a name="67dcv3jkodok80hk174hhkhm5h">&nbsp;&nbsp;&nbsp;nam</a>
+</h3>
+<h3 class="topic">
+<a name="65itepkqs44ajjc7ta5g6k8cn9">&nbsp;&nbsp;&nbsp;til</a>
+</h3>
+<h3 class="topic">
+<a name="67jhsjvlefmjatgcj3s0ukirdg">&nbsp;&nbsp;ida关闭的时候可以选择是否打包之前生成的5个文件</a>
+</h3>
+<h3 class="topic">
+<a name="23cb31i5p2o2tvo9rh4vgrkt0j">&nbsp;&nbsp;&nbsp;如果选择打包，5个文件会变成一个idb文件</a>
+</h3>
+<h3 class="topic">
+<a name="0eoi35ehvsn1e30fp59206c2sc">&nbsp;&nbsp;&nbsp;&nbsp;只需要idb文件就可以继续分析，不需要原程序</a>
+</h3>
+<h3 class="topic">
+<a name="27mprr7stp4fda4ve2b7i652ge">&nbsp;&nbsp;&nbsp;&nbsp;ida中对程序做的修改不会保存在源程序中</a>
+</h3>
+<h3 class="topic">
+<a name="4nu645pqk257icbqtaja1qmh04">&nbsp;&nbsp;如果已经有idb文件存在再用ida打开源程序，ida会提示是否打开idb文件，否则就覆盖idb文件</a>
+</h3>
+<h3 class="topic">
+<a name="115j2rlh92duh6m7t6lj377tl1">&nbsp;&nbsp;ida打开程序时，ida有时会显示该程序与本地某个pdb符号文件相关联，需要选择是否使用该符号文件解析该程序中的代码，一般被调试程序不会调试文件在本地，所有一般不使用对应pdb符号文件</a>
+</h3>
+<h3 class="topic">
+<a name="4kdj5bps409miqcimsq107bjv0">&nbsp;ida中的窗口</a>
+</h3>
+<h3 class="topic">
+<a name="66bj08h2c5fnejj7hguk1q1e66">&nbsp;&nbsp;文件内容条</a>
+</h3>
+<h3 class="topic">
+<a name="0d7bvdf12bn00dgnt8cis6dblu">&nbsp;&nbsp;&nbsp;可以预览pe文件中所有内容</a>
+</h3>
+<h3 class="topic">
+<a name="5tnunq40ivk7b89g2b7cenguns">&nbsp;&nbsp;&nbsp;其中粉色的是外部符号，一般是导入表</a>
+</h3>
+<h3 class="topic">
+<a name="7ii8imkdccirj4k1kbdblqeba0">&nbsp;&nbsp;&nbsp;棕色是未识别代码</a>
+</h3>
+<h3 class="topic">
+<a name="157s51n5nen4h9c4vfsk1n22s0">&nbsp;&nbsp;&nbsp;蓝色是主模块内容</a>
+</h3>
+<h3 class="topic">
+<a name="5oihli71ohttvuahlngi9do46h">&nbsp;&nbsp;反汇编窗口</a>
+</h3>
+<h3 class="topic">
+<a name="636e3vpvfc3egf3oru6dotm3ma">&nbsp;&nbsp;&nbsp;两种形式：图形界面、代码界面</a>
+</h3>
+<h3 class="topic">
+<a name="1ihj2a8u2merg65je00holg34m">&nbsp;&nbsp;&nbsp;图形界面</a>
+</h3>
+<h3 class="topic">
+<a name="3ko2kk838buu06o1biq2fa1b24">&nbsp;&nbsp;&nbsp;&nbsp;蓝色:无条件跳转</a>
+</h3>
+<h3 class="topic">
+<a name="1ooujomckne1tu1udfgr3m5fo4">&nbsp;&nbsp;&nbsp;&nbsp;红色：跳转失败</a>
+</h3>
+<h3 class="topic">
+<a name="4lb9u1m69hd5qqapceenbl0nhe">&nbsp;&nbsp;&nbsp;&nbsp;绿色：跳转成功</a>
+</h3>
+<h3 class="topic">
+<a name="2j53h2mhr4uob1cmfuog45pvfi">&nbsp;&nbsp;&nbsp;&nbsp;一般可以通过图形界面了解程序大致结构</a>
+</h3>
+<h3 class="topic">
+<a name="4dolfcldorem0orp63ffuev68i">&nbsp;&nbsp;&nbsp;代码界面</a>
+</h3>
+<h3 class="topic">
+<a name="428ercbqgd9ed9aoocsgje0k5c">&nbsp;&nbsp;&nbsp;&nbsp;快捷键：进入函数 回车</a>
+</h3>
+<h3 class="topic">
+<a name="30g5ral9u6t9rrgjk66k8pnbkg">&nbsp;&nbsp;&nbsp;&nbsp;前进：ctrl+回车</a>
+</h3>
+<h3 class="topic">
+<a name="3p35aqkuf52qvvaiqqq53f1k6g">&nbsp;&nbsp;&nbsp;&nbsp;后退：esc</a>
+</h3>
+<h3 class="topic">
+<a name="0f6hmlngvdn2vm53tilsmqa7is">&nbsp;&nbsp;&nbsp;&nbsp;能够保存所有的分析关键位置</a>
+</h3>
+<h3 class="topic">
+<a name="1775ioj4adrmrgu79e536i06sp">&nbsp;&nbsp;函数名窗口</a>
+</h3>
+<h3 class="topic">
+<a name="0ie90jgmapd840l1002nf14auc">&nbsp;&nbsp;&nbsp;列出所有识别出的函数</a>
+</h3>
+<h3 class="topic">
+<a name="7lk6b71s90ii0smvqovvin6api">&nbsp;&nbsp;十六进制窗口</a>
+</h3>
+<h3 class="topic">
+<a name="1gsnn39ohv7f1b0b7s83dtohso">&nbsp;&nbsp;&nbsp;在Hed View窗口汇总可以选择跟随某一个反汇编窗口，两者的查询位置同步变化</a>
+</h3>
+<h3 class="topic">
+<a name="7bs5p3m3flkcparqd6f8plfjhd">&nbsp;&nbsp;&nbsp;有很多的格式可以显示</a>
+</h3>
+<h3 class="topic">
+<a name="59hkfuhsel89mf9r5689v736lp">&nbsp;&nbsp;结构体窗口</a>
+</h3>
+<h3 class="topic">
+<a name="1p2800jaojl4p7nqefl46vcct8">&nbsp;&nbsp;导入表窗口</a>
+</h3>
+<h3 class="topic">
+<a name="3an0vo9539kh9n26mrffn0ds1n">&nbsp;&nbsp;&nbsp;Import</a>
+</h3>
+<h3 class="topic">
+<a name="41eqhilt41gg47qt29eh7s659t">&nbsp;&nbsp;&nbsp;存储的导入表的信息</a>
+</h3>
+<h3 class="topic">
+<a name="72ee973a6nh8p4je1sl9c17o3u">&nbsp;&nbsp;&nbsp;包括函数名和地址</a>
+</h3>
+<h3 class="topic">
+<a name="04bkh59gaeeh08irhttat21hq5">&nbsp;&nbsp;导出表信息</a>
+</h3>
+<h3 class="topic">
+<a name="41fv9i40ls6e97q29fp2u2lfer">&nbsp;&nbsp;&nbsp;一般exe程序只有一个start函数导出，即函数入口点</a>
+</h3>
+<h3 class="topic">
+<a name="69mc360lqr625si7fkrkhpa11f">&nbsp;&nbsp;脚本窗口</a>
+</h3>
+<h3 class="topic">
+<a name="3in3h75klj7fiup472vd13i1rg">&nbsp;&nbsp;&nbsp;默认支持python脚本</a>
+</h3>
+<h3 class="topic">
+<a name="0310ad91eciasjfafj2djtajhk">&nbsp;&nbsp;string窗口</a>
+</h3>
+<h3 class="topic">
+<a name="3o60cad1so556u3ufn1ktov072">&nbsp;&nbsp;&nbsp;不属于默认显示</a>
+</h3>
+<h3 class="topic">
+<a name="1794upbnkrr08adsjtegqk58np">&nbsp;&nbsp;signatures窗口</a>
+</h3>
+<h3 class="topic">
+<a name="1gslvabnr9888d8j43nle6krib">&nbsp;&nbsp;&nbsp;为程序添加特定库的信息，程序代码中包含在库中的函数会被识别出来，从而避免分析库中的函数</a>
+</h3>
+<h3 class="topic">
+<a name="0v8md6fgvujpuomnuf5mj38iq6">&nbsp;&nbsp;&nbsp;使用右键-》Apply New signtures挑选特定库（类似mfc库），进行添加</a>
+</h3>
+<h3 class="topic">
+<a name="1qps01hk7o2p4neo0edgh0jsq9">&nbsp;&nbsp;&nbsp;如果拥有被分析程序的符号文件（.pdb）则可以在ida加载被分析程序之后使用 file-》Load file-》PDB file，将pdb文件加载进来</a>
+</h3>
+<h3 class="topic">
+<a name="5edvs03ufnsrjhi6i34nmd3j3l">&nbsp;&nbsp;names窗口</a>
+</h3>
+<h3 class="topic">
+<a name="23upaf7ukbbnkmjb58r02t4152">&nbsp;&nbsp;&nbsp;列举识别到的所有的符号</a>
+</h3>
+<h3 class="topic">
+<a name="1ereibcsetr4a93bnhpdcicl03">&nbsp;&nbsp;&nbsp;f：识别出的函数</a>
+</h3>
+<h3 class="topic">
+<a name="115ihlp77v0e3kmu5p76qm08kp">&nbsp;&nbsp;&nbsp;&nbsp;灰色函数是库函数</a>
+</h3>
+<h3 class="topic">
+<a name="4nct61g9g9377kroma310isotk">&nbsp;&nbsp;&nbsp;箭头：导入函数</a>
+</h3>
+<h3 class="topic">
+<a name="3cm9qrja84d3p3gpnoh3vee3gm">&nbsp;&nbsp;&nbsp;a：字符画串</a>
+</h3>
+<h3 class="topic">
+<a name="58euds9mqnpi4fev166c1e4vo8">&nbsp;&nbsp;&nbsp;d：数据</a>
+</h3>
+<h3 class="topic">
+<a name="6lunoj6icq80r5345u2fteuhql">&nbsp;&nbsp;segment窗口</a>
+</h3>
+<h3 class="topic">
+<a name="1bgisqdl4cvgcqgve3ok3a0qrb">&nbsp;&nbsp;&nbsp;区段窗口</a>
+</h3>
+<h3 class="topic">
+<a name="3j6kmmgg8et2lie52u97nbhqmo">&nbsp;&nbsp;&nbsp;列出各个区段的信息</a>
+</h3>
+<h3 class="topic">
+<a name="4nhkusqq8nv1pm1lejkpo1dhd0">&nbsp;具体程序分析</a>
+</h3>
+<h3 class="topic">
+<a name="09amjs2ulc6ehlqthervg29sqo">&nbsp;&nbsp;分析局部变量</a>
+</h3>
+<h3 class="topic">
+<a name="0fedn05c8p00hnom2277bnvnm7">&nbsp;&nbsp;&nbsp;从程序最开始进行分析，一般会有初始化安全cookie函数，该函数进去之后，发现其会调用 各种系统api，不像是main函数</a>
+</h3>
+<h3 class="topic">
+<a name="2fpebcmqe7lfhg5ek0ok3su3rh">&nbsp;&nbsp;&nbsp;一般main函数有三个形参，且形参多为函数地址，以此进行main函数的寻找</a>
+</h3>
+<h3 class="topic">
+<a name="7k6fgjdsuhr26qi6lphnftdfnd">&nbsp;&nbsp;&nbsp;main函数一般套路</a>
+</h3>
+<h3 class="topic">
+<a name="08j9igkp2p5je6j8rrvb71uljq">&nbsp;&nbsp;&nbsp;&nbsp;开辟栈帧</a>
+</h3>
+<h3 class="topic">
+<a name="561lc4cp1od1tpar4phlcm9imn">&nbsp;&nbsp;&nbsp;&nbsp;保存寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="4o7g09s0ck54lhocvges5dfo9a">&nbsp;&nbsp;&nbsp;&nbsp;给开辟出的局部变量空间均填充cc</a>
+</h3>
+<h3 class="topic">
+<a name="21efdqdg0kc3j0n7n5suk57ldk">&nbsp;&nbsp;&nbsp;xmm寄存器一般和浮点数有关</a>
+</h3>
+<h3 class="topic">
+<a name="5t8thrnt8sqvm5bm0i9mjuudk8">&nbsp;&nbsp;&nbsp;&nbsp;将数据中的未识别的浮点数调整为浮点数形式，需要使用工具栏editor-》operand type-》number-》floating point</a>
+</h3>
+<h3 class="topic">
+<a name="26afouil4gtepdd0j91rh9rj6r">&nbsp;&nbsp;&nbsp;&nbsp;float 单精度浮点型</a>
+</h3>
+<h3 class="topic">
+<a name="6pjndapho03pdpagh7pm3tjh3s">&nbsp;&nbsp;&nbsp;&nbsp;double 双精度浮点型</a>
+</h3>
+<h3 class="topic">
+<a name="0ok1hgr0akr93kirrt918op5lt">&nbsp;&nbsp;&nbsp;&nbsp;函数在浮点数传参的时候，必须使用双精度浮点数，如果数据本身是单精度浮点数，需要转换为双精度浮点数后传参，并通过 sub esp,8  mov [esp],double，将浮点数入栈</a>
+</h3>
+<h3 class="topic">
+<a name="3hvvbt2khpperht9h623uq6f16">&nbsp;&nbsp;&nbsp;&nbsp;push double 与以上两条间的转换，称为代码混淆、代码膨胀，本质是等价代码替换</a>
+</h3>
+<h3 class="topic">
+<a name="5i5fdjuhs4j197e41q6d9fh48n">&nbsp;&nbsp;&nbsp;函数调用之前有mov esi,esp  &#13;
+函数调用之后会有cmp esp,esi，该指令后跟一个函数，以上代码目的是检查堆栈是否平衡</a>
+</h3>
+<h3 class="topic">
+<a name="1ag2nb34e3h0lfr39uh80sn5pd">&nbsp;&nbsp;&nbsp;总结</a>
+</h3>
+<h3 class="topic">
+<a name="77i06tva49157epj3qb51u8c1b">&nbsp;&nbsp;&nbsp;&nbsp;开始分析的时候，遇到了分析出的函数名，需要修改函数名为自己起的名字</a>
+</h3>
+<h3 class="topic">
+<a name="16n06ki75kl1if9apc6ld3bf19">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;快捷键：n</a>
+</h3>
+<h3 class="topic">
+<a name="04hlpsujiiatlgpmda960n8cm9">&nbsp;&nbsp;&nbsp;&nbsp;局部变量如果分析出用途，需要主动修改名称</a>
+</h3>
+<h3 class="topic">
+<a name="37kvggb3n5g55vs4dqsge2q69j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;快捷键：n</a>
+</h3>
+<h3 class="topic">
+<a name="0v7ratqp8esgp2iqenl4o1v6jk">&nbsp;&nbsp;&nbsp;&nbsp;人工识别出浮点数，但ida没有识别出，需要使用工具栏editor将其格式改为浮点数型</a>
+</h3>
+<h3 class="topic">
+<a name="1m92qkj0ufvte1odk37cknh1ii">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;editor-》Operand type -》number-》Floating point</a>
+</h3>
+<h3 class="topic">
+<a name="2vmeqs9kdfh66555bf0ch5u4h4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class58day0515_files/79gr528a4fusmhgbr2kisr4372.png"></p>
+<h3 class="topic">
+<a name="270d69ibhrb76854irh0aa4r3q">&nbsp;&nbsp;&nbsp;&nbsp;分析完成，使用f5查看伪代码，验证分析结果是否正确</a>
+</h3>
+<h3 class="topic">
+<a name="7hsb0d3qpbu51tmv0n8pkftp89">&nbsp;&nbsp;&nbsp;&nbsp;不同版本编译器生成的程序的起始部分的特征是不同的</a>
+</h3>
+<h3 class="topic">
+<a name="4c52u8f924jgq7gujbg41ivjq6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vs2013一般是</a>
+</h3>
+<h3 class="topic">
+<a name="0b05s550rm0tqs4svfvks8qmoi">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;首先：jmp跳转</a>
+</h3>
+<h3 class="topic">
+<a name="151oftlnd5k5v432v00ud5hki2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;其次：两个call函数（第一个为初始化安全cookie，第二个通向main函数）</a>
+</h3>
+<h3 class="topic">
+<a name="39g97m40u7ukip30mfphjd32k8">&nbsp;&nbsp;&nbsp;&nbsp;一般在找main函数可以尝试从下往上找，逐个查看call指令中被调用函数的代码，看是否符合main函数特征</a>
+</h3>
+<h3 class="topic">
+<a name="7fch7fu1h3jnmi672emnaa6n5b">&nbsp;&nbsp;&nbsp;教材有详细讲解</a>
+</h3>
+<h3 class="topic">
+<a name="3u36t5jjfoojtd3elj2m0sta3t">&nbsp;&nbsp;分析全局变量</a>
+</h3>
+<h3 class="topic">
+<a name="0b2ic0cnb2bpns88pumevkmku8">&nbsp;&nbsp;&nbsp;全局变量在函数中是以数据段的内存地址进行寻址的</a>
+</h3>
+<h3 class="topic">
+<a name="2rr6u0kuvdbn5k9f98j8dgugrp">&nbsp;&nbsp;&nbsp;cvtss2sd是一个与浮点数传输有关的指令</a>
+</h3>
+<h3 class="topic">
+<a name="4bks10jmjstt1tkv42ipf29jkm">&nbsp;&nbsp;&nbsp;&nbsp;一般用于浮点数赋值或保存</a>
+</h3>
+<h3 class="topic">
+<a name="5nqooec2vv8hf4q8h0fp90l2v2">&nbsp;&nbsp;&nbsp;教材有详细讲解</a>
+</h3>
+<h3 class="topic">
+<a name="5d3otl38ptedv95ds6us2er7f7">&nbsp;&nbsp;分析数组</a>
+</h3>
+<h3 class="topic">
+<a name="3tl339qj5apuuhng58hp589i4q">&nbsp;&nbsp;&nbsp;当寻址方式为相对基址变址寻址（esp+eax+18h）的时候，对应寻址的数据很可能是一个数组</a>
+</h3>
+<h3 class="topic">
+<a name="679nu0nc93sgls45a4b93vulus">&nbsp;&nbsp;&nbsp;一个数组的各个元素，可以看作是多个不相关联的变量，也可以看成是一个数组</a>
+</h3>
+<h3 class="topic">
+<a name="5r52ida16ldef0fcfenu42cf2e">&nbsp;&nbsp;&nbsp;&nbsp;看成数组时，可以回车，进入模拟栈，右键-》array，指定数组大小和数组每个元素大小，将数据以数组解释</a>
+</h3>
+<h3 class="topic">
+<a name="624adl9k6vb22ku1humvm8p91c">&nbsp;&nbsp;&nbsp;&nbsp;一般将数组保存在栈中，数组首元素在栈中内存地址最小的内存空间中保存，在设置数组时，需要在数组元素首地址的位置单击右键-》array，并选择数组元素数量</a>
+</h3>
+<h3 class="topic">
+<a name="0fh92338upgmmhtjvgup26bm47">&nbsp;&nbsp;&nbsp;教材有详细讲解</a>
+</h3>
+<h3 class="topic">
+<a name="7rma6ktn4tri4f9bnvcgslibvh">&nbsp;&nbsp;分析结构体</a>
+</h3>
+<h3 class="topic">
+<a name="7ad3unhe3f13f3uelr0bp0vldp">&nbsp;&nbsp;&nbsp;程序(debug版本)中函数与函数之间 变量与变量之间使用cc隔开，所以一般在程序结束前，会对cc进行检测，看本程序是否发生溢出</a>
+</h3>
+<h3 class="topic">
+<a name="2jqcujsn76v69dt3hrv29vvcrl">&nbsp;&nbsp;&nbsp;如果多个变量在程序中段内相隔比较接近，而且相关函数传参使用sub esp,0xch mov [esp],eax 的方式进行传参，则很可能该变量是一个结构体</a>
+</h3>
+<h3 class="topic">
+<a name="13pi2o3qkjkjlmn9go6d800afk">&nbsp;&nbsp;&nbsp;对于分析出的结构体，需要在结构体窗口中进行定义</a>
+</h3>
+<h3 class="topic">
+<a name="6mckp6p9eongv17jac9os0v8mg">&nbsp;&nbsp;&nbsp;&nbsp;结构体窗口中按键盘上的insert按钮，即可插入自己的结构体</a>
+</h3>
+<h3 class="topic">
+<a name="56t3pmbruq5fd5i1d4clmutbrj">&nbsp;&nbsp;&nbsp;&nbsp;在自己结构体中，按d，可以为结构体插入字段</a>
+</h3>
+<h3 class="topic">
+<a name="18ip8j6v1sdimh31sa8vb4481r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在字段上按d，可以切换字段的大小 db dw dd</a>
+</h3>
+<h3 class="topic">
+<a name="03qcn2lq17dfbj2eu44pd238bt">&nbsp;&nbsp;&nbsp;&nbsp;可以为字段重命名，标识具体字段内容</a>
+</h3>
+<h3 class="topic">
+<a name="6n1b8csumb429g1rb3g2rr9qpg">&nbsp;&nbsp;&nbsp;&nbsp;在数据段中选中多条数据（或者在结构体第一个字段的位置），alt+q，指定结构体类型，使用该结构体解释这段数据</a>
+</h3>
+<h3 class="topic">
+<a name="0t667261c7c09qoi44k9o8b0v8">&nbsp;&nbsp;&nbsp;main函数也可以这样调用</a>
+</h3>
+<h3 class="topic">
+<a name="7ij94l1neplqle70ft0nm8g8db">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class58day0515_files/02jocoj2pdogf2hkmfdpl4crs6.png"></p>
+<h3 class="topic">
+<a name="2444is48i3fftevvukq4c1aso5">&nbsp;&nbsp;&nbsp;&nbsp;上面最后一个call调用main函数，前三个call函数分别获得main函数的三个参数，并将返回值入栈，作为参数调用main函数</a>
+</h3>
+<h3 class="topic">
+<a name="6qh9pbcco3n71ovcj77it2m59f">&nbsp;&nbsp;&nbsp;教材有详细讲解</a>
+</h3>
+<h3 class="topic">
+<a name="2fum6g9t3j36018a1a82fjtipc">&nbsp;&nbsp;实例程序分析</a>
+</h3>
+<h3 class="topic">
+<a name="0qg93qi00q7rgl2kil7umjv5hm">&nbsp;&nbsp;&nbsp;找main函数的方法</a>
+</h3>
+<h3 class="topic">
+<a name="5414sclgn6820mqo0agocojicg">&nbsp;&nbsp;&nbsp;&nbsp;从入口点逐层分析</a>
+</h3>
+<h3 class="topic">
+<a name="559k81jhqedc4cjh4185bsa9ip">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;根据main三个参数的特征</a>
+</h3>
+<h3 class="topic">
+<a name="339updn5uddnm65hdgfh23joku">&nbsp;&nbsp;&nbsp;&nbsp;从导入函数、代码引用、回溯分析</a>
+</h3>
+<h3 class="topic">
+<a name="5rcatlpv9h7g22mllmvdr2lj3s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;比如从导入表中找到printf函数，mian函数调用了该函数，寻找printf函数的交叉引用位置（CODE_XREF）</a>
+</h3>
+<h3 class="topic">
+<a name="1jcj30ctam0p6askpbfv5v6e9j">&nbsp;&nbsp;&nbsp;&nbsp;敏感字符串、敏感数据进行回溯分析</a>
+</h3>
+<h3 class="topic">
+<a name="3v0pfh1v7u34trr6fntvli0dhk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用到string字符串等</a>
+</h3>
+<h3 class="topic">
+<a name="6qhhl8bk5khnuqg9uvs2jfpt2j">&nbsp;&nbsp;&nbsp;od和ida的结合分析</a>
+</h3>
+<h3 class="topic">
+<a name="21t24bu4e4njct0r83ir01dm9n">&nbsp;&nbsp;&nbsp;&nbsp;在sdk中0x111h是WM_COMMAND宏的值&#13;
+0x110h是WM_INITDIALOG宏消息</a>
+</h3>
+<h3 class="topic">
+<a name="4c38rfftvbudt2eaqbc0gh1qlo">&nbsp;&nbsp;&nbsp;&nbsp;有的时候ida分析会没有结果，此时需要使用od进行动态分析</a>
+</h3>
+<h3 class="topic">
+<a name="09p86anvqitsl1slps6um89dr0">&nbsp;&nbsp;&nbsp;&nbsp;od反汇编窗口中，需要查询某指令的操作数的值，可以在该指令处 右键-》数据窗口中跟随-》立即数</a>
+</h3>
+<h3 class="topic">
+<a name="4dt80q86s74jg49rsc7hnoi3b2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果右键-》数据窗口中跟随-》【选择】，数据窗口中显示的是汇编代码的二进制数据</a>
+</h3>
+<h3 class="topic">
+<a name="408ek0g42v7jpbila6u76s1mr6">&nbsp;&nbsp;&nbsp;&nbsp;在分析异常处理函数的回调函数的过程中使用ida更有优势</a>
+</h3>
+<h3 class="topic">
+<a name="3nraq613rnld9jnihj123h5mno">&nbsp;&nbsp;&nbsp;&nbsp;如果ida中没有将特定函数分析出来，可以使用工具栏-》editor-》code将函数头部为起始的数据解析为指令</a>
+</h3>
+<h3 class="topic">
+<a name="5ib7qrjqh6sdc6vsei0bjnsfvr">&nbsp;&nbsp;&nbsp;&nbsp;该例子会设置ueh函数，并主动出触发异常，在异常处理函数中将真正的密码设置到位，并且再一次执行密码比较操作，再次将输入的密码与真正的密码向比较</a>
+</h3>
+</body>
+</html>

@@ -1,0 +1,1457 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>class77day0626（linux安全第三天）</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="3tbicjccjtcl70hunkr8u70o7k">class77day0626（linux安全第三天）</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="linux%E5%AE%89%E5%85%A83_files/images/class77day0626%EF%BC%88linux%E5%AE%89%E5%85%A8%E7%AC%AC%E4%B8%89%E5%A4%A9%EF%BC%89.jpg"></div>
+<h2 class="topic">
+<a name="13eomrvgrl82a3fvbc0bmtqdos">linux网络编程</a>
+</h2>
+<h3 class="topic">
+<a name="0m68aichpb8skq2sjaleo7ibah">&nbsp;使用socket套接字</a>
+</h3>
+<h3 class="topic">
+<a name="6emadfbgqfnaubmbp1fq42rgl9">&nbsp;&nbsp;windows中网络编程流程是抄linux的</a>
+</h3>
+<h3 class="topic">
+<a name="0c0a6g9c8rhgi81kckolqf08i3">&nbsp;使用到大量头文件</a>
+</h3>
+<h3 class="topic">
+<a name="7ldnkm4dr2qtlt9h8ovaogsjpd">&nbsp;套接字函数名与windows是一样的</a>
+</h3>
+<h3 class="topic">
+<a name="2gjm13uhoajvdafpjids450mm8">&nbsp;流程(tcp服务器)</a>
+</h3>
+<h3 class="topic">
+<a name="59bfva9f4j97gire3oaebi0kap">&nbsp;&nbsp;socket()</a>
+</h3>
+<h3 class="topic">
+<a name="33c6bruj06j2m2cb7deu75uq6s">&nbsp;&nbsp;bind()</a>
+</h3>
+<h3 class="topic">
+<a name="5nsi4lgha8r5i8eh1ic41ffrg5">&nbsp;&nbsp;listen()</a>
+</h3>
+<h3 class="topic">
+<a name="7smr4hku5cds05hf4vbc0pq84u">&nbsp;&nbsp;accpet()</a>
+</h3>
+<h3 class="topic">
+<a name="7g61p7pqtg28ibmnqhe7q4eeqi">&nbsp;&nbsp;recv() send()</a>
+</h3>
+<h3 class="topic">
+<a name="7baqut6lormrr3lgljai4cahtb">&nbsp;&nbsp;close()</a>
+</h3>
+<h3 class="topic">
+<a name="3vb2qqp6g9hdq20dqjd2lp6n8c">&nbsp;流程（udp）</a>
+</h3>
+<h3 class="topic">
+<a name="0kk9irea8fpscpjn1imq09kq8h">&nbsp;&nbsp;与windows中差不多</a>
+</h3>
+<h2 class="topic">
+<a name="2bjmu3fro5dt9hkadp9qv0i6b7">可执行文件格式</a>
+</h2>
+<h3 class="topic">
+<a name="4v4kt0kmgs5tgkgfbcre3mpta7">&nbsp;android</a>
+</h3>
+<h3 class="topic">
+<a name="7fltaevpv9fqr3t5bljqsf2pvb">&nbsp;&nbsp;dex文件格式</a>
+</h3>
+<h3 class="topic">
+<a name="257bgsq0r2287dgf2fm7149lcc">&nbsp;ios</a>
+</h3>
+<h3 class="topic">
+<a name="5llep8lldjskenek2a8uvbejs8">&nbsp;&nbsp;Mach-0格式</a>
+</h3>
+<h3 class="topic">
+<a name="75u37a2ro65562dlvk330no8f8">&nbsp;windows</a>
+</h3>
+<h3 class="topic">
+<a name="6grgt4mg24lupfr6g0hhpq1c7s">&nbsp;&nbsp;PE文件格式</a>
+</h3>
+<h3 class="topic">
+<a name="66q6e55jd9n5dcl8okm7h9i3va">&nbsp;linux</a>
+</h3>
+<h3 class="topic">
+<a name="5meppat80bc7peqdr95e9o6pno">&nbsp;&nbsp;ELF文件格式</a>
+</h3>
+<h3 class="topic">
+<a name="5fviajp007f5do51t8j7d533gi">&nbsp;&nbsp;使用该文件格式的文件有</a>
+</h3>
+<h3 class="topic">
+<a name="54n29glockr0ccapcc29lplu19">&nbsp;&nbsp;&nbsp;可执行文件</a>
+</h3>
+<h3 class="topic">
+<a name="72am630u6i09pia8svptqbk8th">&nbsp;&nbsp;&nbsp;&nbsp;无扩展名</a>
+</h3>
+<h3 class="topic">
+<a name="3f2kcn37l8mour5d2j9goc34vl">&nbsp;&nbsp;&nbsp;可重定位目标文件</a>
+</h3>
+<h3 class="topic">
+<a name="4arauge5mh0c8ijhk150aqc8pl">&nbsp;&nbsp;&nbsp;&nbsp;即中间文件</a>
+</h3>
+<h3 class="topic">
+<a name="0o4b98dpevg21eoplgh9e9s14c">&nbsp;&nbsp;&nbsp;共享目标文件</a>
+</h3>
+<h3 class="topic">
+<a name="3h7clk6qfdeusfqgp30eerfmp2">&nbsp;&nbsp;&nbsp;&nbsp;即共享库文件，后缀名为.so</a>
+</h3>
+<h3 class="topic">
+<a name="2m82dggsj6fkfduerp1mvv32ut">&nbsp;&nbsp;&nbsp;核心转储文件</a>
+</h3>
+<h2 class="topic">
+<a name="71p4a7cq87cnn2lu2asuukr52d">pe文件结构</a>
+</h2>
+<h3 class="topic">
+<a name="5e37mbj9lpe5npc1b6j92ehts2">&nbsp;头部</a>
+</h3>
+<h3 class="topic">
+<a name="2mhchk205hdfchdbada8g3e5gm">&nbsp;&nbsp;dos头</a>
+</h3>
+<h3 class="topic">
+<a name="0mp8o4anuuu47jfs4usq98td6i">&nbsp;&nbsp;nt头</a>
+</h3>
+<h3 class="topic">
+<a name="07gg7339752nlg5gdpe5knpm89">&nbsp;&nbsp;&nbsp;文件头</a>
+</h3>
+<h3 class="topic">
+<a name="79pvk9284as5e5qpvgnibcmgj7">&nbsp;&nbsp;&nbsp;扩展头</a>
+</h3>
+<h3 class="topic">
+<a name="216mtd8klti9kkr6dnpebnajjn">&nbsp;&nbsp;&nbsp;&nbsp;数据目录表</a>
+</h3>
+<h3 class="topic">
+<a name="5midtuvlebj1h92ufn35n869fc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pe文件中各个表在文件中的位置和大小</a>
+</h3>
+<h3 class="topic">
+<a name="11lc1qcifec41b0m3ttvvqpvqi">&nbsp;&nbsp;区段头表</a>
+</h3>
+<h3 class="topic">
+<a name="04qhuefakqva8ckp8cmi9hih1i">&nbsp;&nbsp;各个区段的数据</a>
+</h3>
+<h3 class="topic">
+<a name="2lgjd546s0dm30cooefqfc2hqe">&nbsp;&nbsp;&nbsp;.text -代码段，保存代码</a>
+</h3>
+<h3 class="topic">
+<a name="0cq1m7gcj94hfqjbmsq5f1ql0i">&nbsp;&nbsp;&nbsp;.rdata -只读数据段，保存常量、导入表数据</a>
+</h3>
+<h3 class="topic">
+<a name="2plifinuce3ff8se94qfan4ig8">&nbsp;&nbsp;&nbsp;.data 数据段。保存全局变量初始值</a>
+</h3>
+<h3 class="topic">
+<a name="77sarqho24igdg9tj55bge88v6">&nbsp;&nbsp;&nbsp;.reloc 重定位段 保存重定位记录</a>
+</h3>
+<h3 class="topic">
+<a name="34elaq1tffm73fdk6kuq4duums">&nbsp;&nbsp;&nbsp;.rsrc 资源数据段 保存的是程序用到的资源</a>
+</h3>
+<h3 class="topic">
+<a name="53raopkka5t832oha296a0vb4e">&nbsp;&nbsp;&nbsp;.edata</a>
+</h3>
+<h3 class="topic">
+<a name="5ak5sqvppreh7gfo8mse8qg0et">&nbsp;&nbsp;&nbsp;&nbsp;导出表</a>
+</h3>
+<h3 class="topic">
+<a name="3qs7g90i2vdq304sm51k6jpbue">&nbsp;&nbsp;&nbsp;.idata</a>
+</h3>
+<h3 class="topic">
+<a name="72al897ktdrsvst9cq1a2m29n9">&nbsp;&nbsp;&nbsp;&nbsp;导入表</a>
+</h3>
+<h2 class="topic">
+<a name="3cce64648nvo8lb70igok5gkic">elf文件基本结构</a>
+</h2>
+<h3 class="topic">
+<a name="6l5obpah8l345l7smj5npcrcbv">&nbsp;文件头 ELF Header</a>
+</h3>
+<h3 class="topic">
+<a name="6h8e6i0737t4jtrlehmjvb1h5h">&nbsp;程序头表 Program Header Table</a>
+</h3>
+<h3 class="topic">
+<a name="18dchf69umgt3d1kvldcap43qn">&nbsp;&nbsp;是一个数组</a>
+</h3>
+<h3 class="topic">
+<a name="1u85h579ko7132b0metq8onsbf">&nbsp;代码段 .text</a>
+</h3>
+<h3 class="topic">
+<a name="33u2q8lgvna2d185pg63sa7v03">&nbsp;&nbsp;以二进制指令形式保存代码</a>
+</h3>
+<h3 class="topic">
+<a name="59r56tsccb5f5skkel1tg5e8ee">&nbsp;数据段 .data</a>
+</h3>
+<h3 class="topic">
+<a name="4p5a4m07l51jcngppjki06ha08">&nbsp;&nbsp;以二进制形式保存数据</a>
+</h3>
+<h3 class="topic">
+<a name="2suabhi022775nv7p979j7mu62">&nbsp;bss段 .bss</a>
+</h3>
+<h3 class="topic">
+<a name="7jook4jqdnp3qj39j0o8uavtti">&nbsp;&nbsp;以二进制形式保存数据</a>
+</h3>
+<h3 class="topic">
+<a name="4q5pchsf26ekhen35gd3s54g8f">&nbsp;区段头字符串表 .shstrtab</a>
+</h3>
+<h3 class="topic">
+<a name="7pb02o7lhpelsbke4clbki38h0">&nbsp;&nbsp;并非是表的形式，而是一个文件块，保存所有段表字符串内容，存储在 .shstrtab段中，可以通过文件头中的e_shstrndx字段在区段头表中找到该段对应的信息</a>
+</h3>
+<h3 class="topic">
+<a name="0ftqgk15qjjmd6s1aa5s11nhev">&nbsp;区段头表 Section Header Table</a>
+</h3>
+<h3 class="topic">
+<a name="25epkg8a6fsp8c3uf410qfa7of">&nbsp;&nbsp;是一个数组</a>
+</h3>
+<h3 class="topic">
+<a name="1su7bpdh162i6ekq4hnsrv3thk">&nbsp;&nbsp;注意在可执行程序中，即使没有区段头表，程序仍然可以正常运行</a>
+</h3>
+<h3 class="topic">
+<a name="089qubhtkrtgi55se8qt6a59d7">&nbsp;符号表 .symtab</a>
+</h3>
+<h3 class="topic">
+<a name="4snoph2aiij9gn3kgr0s7jq9ge">&nbsp;字符串表 .strtab</a>
+</h3>
+<h3 class="topic">
+<a name="5marb3mu16u5r8fh2aslle1mil">&nbsp;重定位表 .rel .text</a>
+</h3>
+<h3 class="topic">
+<a name="3d3f44fh27g509mqdubun8bth2">&nbsp;&nbsp;针对test段的重定位信息</a>
+</h3>
+<h3 class="topic">
+<a name="5dsfs64j7ho60jjob4eid1vh4u">&nbsp;重定位表 .rel .data</a>
+</h3>
+<h3 class="topic">
+<a name="7s2i2btmov0vgfc3203j5pr6d1">&nbsp;&nbsp;针对data段的重定位信息</a>
+</h3>
+<h3 class="topic">
+<a name="2ltb731euqg6m5pfl12lh2krau">&nbsp;除了 .text .data .bss，其他结构用于为链接器，加载器、调试器、操作系统等提供必要的信息</a>
+</h3>
+<h2 class="topic">
+<a name="0aq7ub0b4637fdmanj67k2bsm7">elf文件信息查看</a>
+</h2>
+<h3 class="topic">
+<a name="3f7bq6d0ejmsq6ultv25du78km">&nbsp;readelf 命令</a>
+</h3>
+<h3 class="topic">
+<a name="3c1ecjuctrno0qqi8rie0vtip7">&nbsp;&nbsp;用于查看指定elf文件信息</a>
+</h3>
+<h3 class="topic">
+<a name="4jfhiq3br9g4ss5l2g7kqgi5v4">&nbsp;&nbsp;流程</a>
+</h3>
+<h3 class="topic">
+<a name="37iu5cketbalh81m7mt8klnuhn">&nbsp;&nbsp;&nbsp;fie 文件名</a>
+</h3>
+<h3 class="topic">
+<a name="7nl0dv6fftschn0v3qrtk4mtrc">&nbsp;&nbsp;&nbsp;&nbsp;查看文件类型</a>
+</h3>
+<h3 class="topic">
+<a name="2t648n0qoq5o0mhn6ibt4fb6ap">&nbsp;&nbsp;&nbsp;readelf -a main.out</a>
+</h3>
+<h3 class="topic">
+<a name="57g30jkgh0ug54jg58ljvej62v">&nbsp;&nbsp;&nbsp;&nbsp;查看elf文件所有信息</a>
+</h3>
+<h3 class="topic">
+<a name="4irnp330p8uebm4amco4nqi046">&nbsp;使用010editor看elf文件（使用elf模板）</a>
+</h3>
+<h2 class="topic">
+<a name="6h4hebpl1vtp4afef6r0gl5kuk">elf文件头</a>
+</h2>
+<h3 class="topic">
+<a name="5dkhau96v7d6gh6ltuva7u7lhr">&nbsp;使用readelf查看elf文件头</a>
+</h3>
+<h3 class="topic">
+<a name="124b7csu9jspdf37o66ctd2bg6">&nbsp;&nbsp;readelf -h 文件名</a>
+</h3>
+<h3 class="topic">
+<a name="5sgu6vcld1o7fugs2ashfpt3r3">&nbsp;字段</a>
+</h3>
+<h3 class="topic">
+<a name="7mp8i0ld86143570m5hdf6q7r0">&nbsp;&nbsp;e_ident</a>
+</h3>
+<h3 class="topic">
+<a name="6gmfpss1cib7pdjl752enm1lut">&nbsp;&nbsp;&nbsp;elf文件的魔数</a>
+</h3>
+<h3 class="topic">
+<a name="706jsnjh14jtjiqka00da7bk8d">&nbsp;&nbsp;&nbsp;是一个十六字节长的数组</a>
+</h3>
+<h3 class="topic">
+<a name="3e7dqh3g2hv8cmhlt6th4578ik">&nbsp;&nbsp;&nbsp;&nbsp;第0~3字节</a>
+</h3>
+<h3 class="topic">
+<a name="0303huiqmh734hh4tl7f8q6a6j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0x7f 0x45 0x4c 0x46</a>
+</h3>
+<h3 class="topic">
+<a name="170i9n1v9a8qonu337k92pt0mg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;是控制字符和ELF字符的ASCII码</a>
+</h3>
+<h3 class="topic">
+<a name="7m9sf16767gigo2hsrdksoi75h">&nbsp;&nbsp;&nbsp;&nbsp;第4字节</a>
+</h3>
+<h3 class="topic">
+<a name="38io0ofh087q6k0hqk6863nug7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;表示文件类型</a>
+</h3>
+<h3 class="topic">
+<a name="5tfa22jdo73hbg80t15v9ad1dp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0</a>
+</h3>
+<h3 class="topic">
+<a name="2rtf7p4a38atpkcjf1rtlngvrs">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;无效文件</a>
+</h3>
+<h3 class="topic">
+<a name="73gr5cuhucajcfnljhjes06tvq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1</a>
+</h3>
+<h3 class="topic">
+<a name="18nn0dkbs86fislmg9ca20i2cc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;32位elf文件</a>
+</h3>
+<h3 class="topic">
+<a name="770ubcg202i3e143rdeqb71r19">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2</a>
+</h3>
+<h3 class="topic">
+<a name="3d0nfb7fchnjo4mih6e5j5pj1r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;64位elf文件</a>
+</h3>
+<h3 class="topic">
+<a name="0rfa74df2rrtako3c516brick4">&nbsp;&nbsp;&nbsp;&nbsp;第5字节</a>
+</h3>
+<h3 class="topic">
+<a name="5ocal1srjbbhjfga1hforq9h8q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;表示字节序</a>
+</h3>
+<h3 class="topic">
+<a name="6hm49qecktoql6eranllcfmvdb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0</a>
+</h3>
+<h3 class="topic">
+<a name="6ro3s3tomg90u7ab7upfg8tdpo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;无效格式</a>
+</h3>
+<h3 class="topic">
+<a name="2a38q4e0vqn5g14k9s6djerqvj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1</a>
+</h3>
+<h3 class="topic">
+<a name="41n00v9m42d4gesdbeu2flr64s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;小端字节序</a>
+</h3>
+<h3 class="topic">
+<a name="56i3bt5drjtsi4kno0mj04a01b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2</a>
+</h3>
+<h3 class="topic">
+<a name="2ckob5aohh869p1fqp92lcrf1j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;大端字节序</a>
+</h3>
+<h3 class="topic">
+<a name="6qrnvsra4e3o7r3puib3oc5m9p">&nbsp;&nbsp;&nbsp;&nbsp;第6字节</a>
+</h3>
+<h3 class="topic">
+<a name="29u9mdlmvtj3sj9j9d5j6ghgav">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;elf版本</a>
+</h3>
+<h3 class="topic">
+<a name="2b6savgfsvqu3ugqpe3om0idnj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;默认必须为1</a>
+</h3>
+<h3 class="topic">
+<a name="3lf5fnnjk5uodpiihii9ps8a8i">&nbsp;&nbsp;&nbsp;&nbsp;第7字节</a>
+</h3>
+<h3 class="topic">
+<a name="5tokauug3ek37jda6j1j7e35nm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;系统版本</a>
+</h3>
+<h3 class="topic">
+<a name="79furelq7b6b2588vfaeme7fqr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;默认为ELFOSABI_NONE 即0</a>
+</h3>
+<h3 class="topic">
+<a name="0t65q71p05kn401h0qft60gj9v">&nbsp;&nbsp;&nbsp;&nbsp;第8字节</a>
+</h3>
+<h3 class="topic">
+<a name="2meaj0vbfhsij54m3oie5h8f2h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ABI版本</a>
+</h3>
+<h3 class="topic">
+<a name="5k79cr2v9tjluv0kdto702m5l9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;默认为0</a>
+</h3>
+<h3 class="topic">
+<a name="1c16npilt6t5um07a9cdgp9nf0">&nbsp;&nbsp;&nbsp;&nbsp;以上字节在源文件中均有对应的宏</a>
+</h3>
+<h3 class="topic">
+<a name="6ra0rpbmdnr9v8igged5u8ta9a">&nbsp;&nbsp;&nbsp;&nbsp;其他字节均默认为0</a>
+</h3>
+<h3 class="topic">
+<a name="7p4gjenec7g786a0b1rrc8nbgb">&nbsp;&nbsp;e_type</a>
+</h3>
+<h3 class="topic">
+<a name="2hneklqjf4ccacif4l46quvakc">&nbsp;&nbsp;&nbsp;elf文件类型</a>
+</h3>
+<h3 class="topic">
+<a name="7e0fa4dr6nnpd6esa8rmpv84mj">&nbsp;&nbsp;&nbsp;0</a>
+</h3>
+<h3 class="topic">
+<a name="7lgo4t397sk9so3lpaldr95rl2">&nbsp;&nbsp;&nbsp;&nbsp;无效文件类型</a>
+</h3>
+<h3 class="topic">
+<a name="5lkecg1josv1c834dsiu0r18a5">&nbsp;&nbsp;&nbsp;1</a>
+</h3>
+<h3 class="topic">
+<a name="3k6e038ulopvv5h4qores9qqvt">&nbsp;&nbsp;&nbsp;&nbsp;可重定位目标文件</a>
+</h3>
+<h3 class="topic">
+<a name="07av17b472vgr3jcfl4nftb4u6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;由汇编器输出</a>
+</h3>
+<h3 class="topic">
+<a name="2t0l9o5gnjheb8k9vih2pinian">&nbsp;&nbsp;&nbsp;2</a>
+</h3>
+<h3 class="topic">
+<a name="33886757fp8if1f8nitq9gqosr">&nbsp;&nbsp;&nbsp;&nbsp;可执行文件</a>
+</h3>
+<h3 class="topic">
+<a name="459u41kp9dltbe3si6h3sikvs5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;由静态链接器输出</a>
+</h3>
+<h3 class="topic">
+<a name="5vup7885piekv0ovrfmnca4qq9">&nbsp;&nbsp;&nbsp;3</a>
+</h3>
+<h3 class="topic">
+<a name="6dmvns5gnk9h1t7946dmbhi1vb">&nbsp;&nbsp;&nbsp;&nbsp;共享目标文件</a>
+</h3>
+<h3 class="topic">
+<a name="5f9hk9v0c74q82p8q2g40s9sev">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;即共享库</a>
+</h3>
+<h3 class="topic">
+<a name="3hesd74a3d3726qi4dj7h6hlgj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;由静态链接器输出</a>
+</h3>
+<h3 class="topic">
+<a name="2faqduhnlq6drcptumk35k9fos">&nbsp;&nbsp;&nbsp;4</a>
+</h3>
+<h3 class="topic">
+<a name="7svnsmfhs79fctj19n67lu4ord">&nbsp;&nbsp;&nbsp;&nbsp;核心转储文件</a>
+</h3>
+<h3 class="topic">
+<a name="7askd30k2qplfn0k7931630ucg">&nbsp;&nbsp;&nbsp;在源文件中均有对应的宏</a>
+</h3>
+<h3 class="topic">
+<a name="3tomqnv7ga3jfpl1aonn005qmu">&nbsp;&nbsp;e_machine</a>
+</h3>
+<h3 class="topic">
+<a name="2hjbfjaqracgoen9d20842qm06">&nbsp;&nbsp;&nbsp;elf文件所在的机器类型</a>
+</h3>
+<h3 class="topic">
+<a name="2tm2q4402nvf82v4p7gf7oqm8d">&nbsp;&nbsp;&nbsp;3</a>
+</h3>
+<h3 class="topic">
+<a name="460t7br33bjn59f6kkbamkfeao">&nbsp;&nbsp;&nbsp;&nbsp;intel 80386</a>
+</h3>
+<h3 class="topic">
+<a name="50la3mf5tst203higd9pslg8fc">&nbsp;&nbsp;&nbsp;40</a>
+</h3>
+<h3 class="topic">
+<a name="2cp8086qa3o1dg3vgvjbntatm6">&nbsp;&nbsp;&nbsp;&nbsp;arm</a>
+</h3>
+<h3 class="topic">
+<a name="3lt72h6on4h64l7st6crcgqono">&nbsp;&nbsp;&nbsp;62</a>
+</h3>
+<h3 class="topic">
+<a name="6l2p979r80nreu06du2lltq9r6">&nbsp;&nbsp;&nbsp;&nbsp;amd x86-64</a>
+</h3>
+<h3 class="topic">
+<a name="15i9ftra6sie9vsia6r8j1t8e8">&nbsp;&nbsp;e_version</a>
+</h3>
+<h3 class="topic">
+<a name="68tpmkkohfa91775sta68sn76m">&nbsp;&nbsp;&nbsp;表示elf文件的版本</a>
+</h3>
+<h3 class="topic">
+<a name="56n50sclcqjuocv0eijm636emq">&nbsp;&nbsp;&nbsp;一般取值为1</a>
+</h3>
+<h3 class="topic">
+<a name="2ibrt99ke2fkbgdpcd3i9ehkf2">&nbsp;&nbsp;e_entry</a>
+</h3>
+<h3 class="topic">
+<a name="6ju25gdjvj1fq8beodspveigju">&nbsp;&nbsp;&nbsp;标志程序入口点线性地址，一般用于elf可执行文件中</a>
+</h3>
+<h3 class="topic">
+<a name="2nv3fnvr59vi2rtjejnmdv3spe">&nbsp;&nbsp;&nbsp;对于重定位目标文件，这里为0</a>
+</h3>
+<h3 class="topic">
+<a name="0b6gl7utluhpcemlvih2loggot">&nbsp;&nbsp;e_phoff</a>
+</h3>
+<h3 class="topic">
+<a name="2c0ap0dt1mpdtpkodbp0bp4os7">&nbsp;&nbsp;&nbsp;程序头表在elf文件中的偏移地址</a>
+</h3>
+<h3 class="topic">
+<a name="53jbpk7du8r0770qno23iqj2gr">&nbsp;&nbsp;e_shoff</a>
+</h3>
+<h3 class="topic">
+<a name="59jdb7kevi9ikp2lspbg8rv8ie">&nbsp;&nbsp;&nbsp;区段头表在elf文件中的偏移地址</a>
+</h3>
+<h3 class="topic">
+<a name="69k9h7qtea3p4cbllehl6qoa58">&nbsp;&nbsp;e_flags</a>
+</h3>
+<h3 class="topic">
+<a name="06srjt65gdj0bemri6o610a4on">&nbsp;&nbsp;&nbsp;elf文件平台相关属性，一般默认为0</a>
+</h3>
+<h3 class="topic">
+<a name="0glr4oenkca6rijqth69bac54i">&nbsp;&nbsp;e_ehsize</a>
+</h3>
+<h3 class="topic">
+<a name="7do8jhtaoo9l1o5j81aedc8i1i">&nbsp;&nbsp;&nbsp;表示elf文件头的大小</a>
+</h3>
+<h3 class="topic">
+<a name="4nj8vqf74lv4s65307aplnhtrg">&nbsp;&nbsp;e_phentsize</a>
+</h3>
+<h3 class="topic">
+<a name="4fcpe6g77840qcdua6dffckafi">&nbsp;&nbsp;&nbsp;程序头表数组中每个元素的大小</a>
+</h3>
+<h3 class="topic">
+<a name="5gbeacnbke8td56t254ntffg89">&nbsp;&nbsp;e_phnum</a>
+</h3>
+<h3 class="topic">
+<a name="7su0qe9v6nvjqtqel3si7e8fqu">&nbsp;&nbsp;&nbsp;程序头表数组中元素个数</a>
+</h3>
+<h3 class="topic">
+<a name="3c2q1t7c9cip7dbv6rpits444v">&nbsp;&nbsp;e_shentsize</a>
+</h3>
+<h3 class="topic">
+<a name="3dfbcmf3be8a02femq9vsdbacq">&nbsp;&nbsp;&nbsp;区段头表数组中每一个元素的大小</a>
+</h3>
+<h3 class="topic">
+<a name="7u6vva3qe76ib4v69ohipubs87">&nbsp;&nbsp;e_shnum</a>
+</h3>
+<h3 class="topic">
+<a name="3rb20jv4l3i5lsmf232idt92r0">&nbsp;&nbsp;&nbsp;区段头表数组中元素的个数</a>
+</h3>
+<h3 class="topic">
+<a name="42tbftdhrpkdmc5b40h2qnijp1">&nbsp;&nbsp;e_shstrndx</a>
+</h3>
+<h3 class="topic">
+<a name="72k7mvaf9emr81kt8nspc1i0tq">&nbsp;&nbsp;&nbsp;区段头字符串表 .shstrtab 所在段在区段头表中的索引，因为区段头表是一个数组，所以该字段值即为数组的下标</a>
+</h3>
+<h2 class="topic">
+<a name="2ie1rm6mo0f8keci5m1nnr9qbk">elf区段头表</a>
+</h2>
+<h3 class="topic">
+<a name="7oqtb8icnqh0qtvm9n4sbujkbr">&nbsp;区段头表本质上是一个数组，数组中的每一个元素（表项）都是一个结构体，记录一个段的相关信息</a>
+</h3>
+<h3 class="topic">
+<a name="0gm3so115rhtrloapqeelub44b">&nbsp;使用readelf查看elf区段头</a>
+</h3>
+<h3 class="topic">
+<a name="3up3qlr13ibh2100h7mjah2q1v">&nbsp;&nbsp;readelf -S 文件名</a>
+</h3>
+<h3 class="topic">
+<a name="5vlotrnkc6tekua9t62eglr88u">&nbsp;区段：elf文件加载前的数据块</a>
+</h3>
+<h3 class="topic">
+<a name="6qido9g8njb6ih9tc8u0vc2vhb">&nbsp;段表项的字段</a>
+</h3>
+<h3 class="topic">
+<a name="5nnmo5jqu4v8736g5vel3lu7au">&nbsp;&nbsp;sh_name</a>
+</h3>
+<h3 class="topic">
+<a name="1fpentga8fimkj6enobmjj1jsh">&nbsp;&nbsp;&nbsp;是一个4字节偏移</a>
+</h3>
+<h3 class="topic">
+<a name="6nur1ht1s4fgdi2g6o8ub9167u">&nbsp;&nbsp;&nbsp;该偏移是相对于区段头字符串表首部的偏移</a>
+</h3>
+<h3 class="topic">
+<a name="0139j7kgb8chluvrfs096vlqob">&nbsp;&nbsp;&nbsp;该偏移+区段头字符串表的偏移 得到该段的段名（保存在区段头字符串表中）</a>
+</h3>
+<h3 class="topic">
+<a name="4ucqni96iihc0tnrsahdf37u8s">&nbsp;&nbsp;sh_type</a>
+</h3>
+<h3 class="topic">
+<a name="1udvb4qisbrpmohg4jhe6ft6qh">&nbsp;&nbsp;&nbsp;表示段的类型</a>
+</h3>
+<h3 class="topic">
+<a name="20cvdbikto5ailu9p36tmhqbei">&nbsp;&nbsp;&nbsp;1</a>
+</h3>
+<h3 class="topic">
+<a name="0a4q58m3tn4enta6k9kld90pan">&nbsp;&nbsp;&nbsp;&nbsp;程序数据段，包括text段 data段</a>
+</h3>
+<h3 class="topic">
+<a name="6gttdv61tlln99attoico5uk68">&nbsp;&nbsp;&nbsp;2</a>
+</h3>
+<h3 class="topic">
+<a name="23colnjnc9829denfdjkid8k9f">&nbsp;&nbsp;&nbsp;&nbsp;符号段</a>
+</h3>
+<h3 class="topic">
+<a name="1d994niptnbadkbk1bsehhjr65">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;包括符号表段 .symtab</a>
+</h3>
+<h3 class="topic">
+<a name="2lo90q1p6f9q7pejot0uf5codu">&nbsp;&nbsp;&nbsp;3</a>
+</h3>
+<h3 class="topic">
+<a name="1se4bne72eerto9kb06m7u3d82">&nbsp;&nbsp;&nbsp;&nbsp;字符串段</a>
+</h3>
+<h3 class="topic">
+<a name="6jm95sbsgrn6sos75dr5acsvur">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;包括字符串表段 .strtab  区段头字符串表 .shstrtab</a>
+</h3>
+<h3 class="topic">
+<a name="0igp8g74ivhdd38irvk588mqu1">&nbsp;&nbsp;&nbsp;专门存放构造函数数组的段，存放析构函数数组的段........</a>
+</h3>
+<h3 class="topic">
+<a name="3t0ocn152m2oedq108dlterub2">&nbsp;&nbsp;&nbsp;有大量对应的宏</a>
+</h3>
+<h3 class="topic">
+<a name="41874jb45d0tpb9n0br072q8kj">&nbsp;&nbsp;sh_flags</a>
+</h3>
+<h3 class="topic">
+<a name="7n05omv1bce9ou7vtpmu5g85ib">&nbsp;&nbsp;&nbsp;表示段标志</a>
+</h3>
+<h3 class="topic">
+<a name="3824e722s8a8nv4mfndpqldalk">&nbsp;&nbsp;&nbsp;记录段的属性</a>
+</h3>
+<h3 class="topic">
+<a name="7sqg9c2a4aa68lpaejidqgh395">&nbsp;&nbsp;&nbsp;&nbsp;0</a>
+</h3>
+<h3 class="topic">
+<a name="7b9sfqeo59cav298jj419ge2ne">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;默认属性</a>
+</h3>
+<h3 class="topic">
+<a name="1bvallui1b98kph93tvtusvvqk">&nbsp;&nbsp;&nbsp;&nbsp;1</a>
+</h3>
+<h3 class="topic">
+<a name="5evg3baf4i8kfkqpvcmu7mj4u8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可写</a>
+</h3>
+<h3 class="topic">
+<a name="3r44g7pe1lv03m5rgl89mh9cti">&nbsp;&nbsp;&nbsp;&nbsp;2</a>
+</h3>
+<h3 class="topic">
+<a name="54imlirl1efq7mu8cnhml1agh3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;加载后需要为其分配内存空间</a>
+</h3>
+<h3 class="topic">
+<a name="7atllftg7gvpnqfdb9v9c7ros9">&nbsp;&nbsp;&nbsp;&nbsp;4</a>
+</h3>
+<h3 class="topic">
+<a name="228j6blttt9hh1ho8jrp0mifsh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可执行</a>
+</h3>
+<h3 class="topic">
+<a name="04pqleauanr2mbc265vj4u85es">&nbsp;&nbsp;&nbsp;一个段可能同时拥有多种属性</a>
+</h3>
+<h3 class="topic">
+<a name="6o0g9dsp52d4blb4el5ln7glv7">&nbsp;&nbsp;sh_addr</a>
+</h3>
+<h3 class="topic">
+<a name="207nkjktst51834cm0gjhoal2d">&nbsp;&nbsp;&nbsp;表示段加载后的线性地址</a>
+</h3>
+<h3 class="topic">
+<a name="65crtpekvsrtv5ktj8ki40taj7">&nbsp;&nbsp;&nbsp;在可重定位目标文件内，因为无法去确定虚拟地址，故默认为0</a>
+</h3>
+<h3 class="topic">
+<a name="3ar68tb89akrmfu3ollop628kt">&nbsp;&nbsp;sh_offset</a>
+</h3>
+<h3 class="topic">
+<a name="2m1jvofv37b4gqvocp41dh4vcl">&nbsp;&nbsp;&nbsp;段在文件内的偏移</a>
+</h3>
+<h3 class="topic">
+<a name="6nvesot86fk5dvjv8guro2o4fq">&nbsp;&nbsp;&nbsp;可以用于获得段在文件中的内容</a>
+</h3>
+<h3 class="topic">
+<a name="59detqoo57rt45av9he1k1o8b1">&nbsp;&nbsp;sh_size</a>
+</h3>
+<h3 class="topic">
+<a name="3oh7r43n997ekkajl3k8ca9ekp">&nbsp;&nbsp;&nbsp;段的大小，单位为字节</a>
+</h3>
+<h3 class="topic">
+<a name="5g3ffd1gpnnp4hur7v5otgtleu">&nbsp;&nbsp;&nbsp;如果段的类型是SHT_NOBITS,段内没有数据，段大小并非是指文件块的大小，而是指段加载后占用内存空间的大小，比如bss段</a>
+</h3>
+<h3 class="topic">
+<a name="2jgosuhac753fahdolmb02eee3">&nbsp;&nbsp;sh_link&amp;sh_info</a>
+</h3>
+<h3 class="topic">
+<a name="7aga8o2jdgu6fi5iokcephv5ol">&nbsp;&nbsp;&nbsp;用于描述链接信息</a>
+</h3>
+<h3 class="topic">
+<a name="7a7jsa9dv2abn8vi2nps4fitj8">&nbsp;&nbsp;&nbsp;对于符号表段</a>
+</h3>
+<h3 class="topic">
+<a name="4l28hgg6egg5l5bsnbv53cddkd">&nbsp;&nbsp;&nbsp;&nbsp;sh_link</a>
+</h3>
+<h3 class="topic">
+<a name="7oduka38tv5ohvrbsqrm82fd9s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;符号表使用的字符串表(strtab)所在段--对应--的段表项--在--区段头表中的索引</a>
+</h3>
+<h3 class="topic">
+<a name="724ub8budg4bldrqnmjuvrifd6">&nbsp;&nbsp;&nbsp;&nbsp;sh_info</a>
+</h3>
+<h3 class="topic">
+<a name="4ud4qm9gviedqfvtkufoifvgl7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;符号表内，最后一个局部符号--的--符号表项--在--符号表内的索引+1</a>
+</h3>
+<h3 class="topic">
+<a name="0b2rf1rgh62pamgjj9ohhm1l4j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该值一般是第一个全局符号的符号表项的索引，用于使链接器更快的定义到第一个全局符号</a>
+</h3>
+<h3 class="topic">
+<a name="5u4mpnj2hi9pr9skm10hvm6v26">&nbsp;&nbsp;&nbsp;对于重定位段</a>
+</h3>
+<h3 class="topic">
+<a name="1ontg151e4eedg1pd70dq08f26">&nbsp;&nbsp;&nbsp;&nbsp;sh_link</a>
+</h3>
+<h3 class="topic">
+<a name="2qss2ajbk8bfs2pn7689j653jh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;记录重定位所作用的--符号表段--对应的--区段头表项--在--区段头表中的索引 </a>
+</h3>
+<h3 class="topic">
+<a name="4fvc74uoo0bhig84qrga5kgbal">&nbsp;&nbsp;&nbsp;&nbsp;sh_info</a>
+</h3>
+<h3 class="topic">
+<a name="49nb562a32os7gu1djqfj5728h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;记录 重定位所作用的段--对应的--区段头表项--在区段头表中的索引</a>
+</h3>
+<h3 class="topic">
+<a name="3fnrmhqh96lbsjamfrpsgiql5d">&nbsp;&nbsp;&nbsp;对于其他不同类型的段， sh_link sh_info可能表示不同的意义</a>
+</h3>
+<h3 class="topic">
+<a name="0vntagt5hu9s6ur6lko77iad03">&nbsp;&nbsp;sh_addralign</a>
+</h3>
+<h3 class="topic">
+<a name="68b038hf8nhlt82qi6t8qt45ca">&nbsp;&nbsp;&nbsp;段对齐方式</a>
+</h3>
+<h3 class="topic">
+<a name="26j3il5760tcvv4a7meke9chpo">&nbsp;&nbsp;&nbsp;段的文件偏移必须是sh_addralign的整数倍</a>
+</h3>
+<h3 class="topic">
+<a name="1k2ph8godps9th42jdkgtgd2ik">&nbsp;&nbsp;&nbsp;sh_addralign的取值必须是2的整数幂</a>
+</h3>
+<h3 class="topic">
+<a name="51acb50l8ac6c5rbn96fe70kle">&nbsp;&nbsp;&nbsp;常见对齐值</a>
+</h3>
+<h3 class="topic">
+<a name="25lcgk2jr0jt5hsi0vpbp5dbgk">&nbsp;&nbsp;&nbsp;&nbsp;0</a>
+</h3>
+<h3 class="topic">
+<a name="2feakv3or6v5v36u9u6860g9kv">&nbsp;&nbsp;&nbsp;&nbsp;1</a>
+</h3>
+<h3 class="topic">
+<a name="1hit3ptkpcupd7dgq4jjc4ogg6">&nbsp;&nbsp;&nbsp;&nbsp;4</a>
+</h3>
+<h3 class="topic">
+<a name="073a5uvb7pum50pd4dsucjbeel">&nbsp;&nbsp;&nbsp;&nbsp;16</a>
+</h3>
+<h3 class="topic">
+<a name="79cv6ks20h6n6c4t5bn7vgpag0">&nbsp;&nbsp;&nbsp;&nbsp;32</a>
+</h3>
+<h3 class="topic">
+<a name="3i4ig1ccmpnh3vq8hd6gfje976">&nbsp;&nbsp;sh_entsize</a>
+</h3>
+<h3 class="topic">
+<a name="6hacjs5vdg44mmdtl7o5aso59u">&nbsp;&nbsp;&nbsp;当该段为符号表段或重定位表段时，该字段保存表段内表项的大小</a>
+</h3>
+<h3 class="topic">
+<a name="5ttiecpa2phtbaqa16d9sfh5gh">&nbsp;&nbsp;&nbsp;即一个符号表段或重定位表段中，表中元素的大小</a>
+</h3>
+<h2 class="topic">
+<a name="517via611cigqqu3s5nf9aa8n9">elf程序头表</a>
+</h2>
+<h3 class="topic">
+<a name="0gi3r2qo145226p2nepblsmbnl">&nbsp;程序头表管理当elf文件加载后， &#13;
+文件内的可加载段  到  内存映像的映射关系</a>
+</h3>
+<h3 class="topic">
+<a name="2n99v6eoe3a3bc8kn6sebf7foe">&nbsp;一般只有可执行文件包含程序头表</a>
+</h3>
+<h3 class="topic">
+<a name="0ps0jq9r2l9t84ekfa6io27afq">&nbsp;程序头表本质上是一个结构体数组，数组内每一个结构体称为一个程序头表项</a>
+</h3>
+<h3 class="topic">
+<a name="1e0b4dbm0r93s3deen82becec6">&nbsp;程序头表项用于描述 Segment对象（Segment的类型、对应文件偏移、大小、属性等）</a>
+</h3>
+<h3 class="topic">
+<a name="73tpna26snl4duf3oolkcq7363">&nbsp;&nbsp;Segment描述的是elf文件加载后的数据块，其中会保存区段加载之后的相关信息</a>
+</h3>
+<h3 class="topic">
+<a name="677brq8n7lfcmo0en36m34cqld">&nbsp;&nbsp;&nbsp;这里表项描述segmet、 segment描述加载后的数据块，结构比较难理解</a>
+</h3>
+<h3 class="topic">
+<a name="1p0s218r0mbi35k9esubdfv607">&nbsp;使用 readelf -l 文件名</a>
+</h3>
+<h3 class="topic">
+<a name="6rsjh8v6saugou6tlg7fejm9ds">&nbsp;&nbsp;可以查看文件程序头表的信息</a>
+</h3>
+<h3 class="topic">
+<a name="5imt6lu6jf2rugder28c0rbboc">&nbsp;程序头表项结构体的字段</a>
+</h3>
+<h3 class="topic">
+<a name="417ar0ubcrrokhi98mg5garm74">&nbsp;&nbsp;p_type</a>
+</h3>
+<h3 class="topic">
+<a name="3lvgr94r06dcigtvlj801oivlf">&nbsp;&nbsp;&nbsp;表示Segment的类型、加载的区段类型是PT_LOAD 此外还有很多其他类型的区段</a>
+</h3>
+<h3 class="topic">
+<a name="16938apil25m9p3hnmoqosi6hg">&nbsp;&nbsp;p_offset</a>
+</h3>
+<h3 class="topic">
+<a name="3eeektavmsln1n2tp8kvfc9s40">&nbsp;&nbsp;&nbsp;Segment对应的内容在文件中的偏移</a>
+</h3>
+<h3 class="topic">
+<a name="2ietna19iionq6pcmsfrusg2te">&nbsp;&nbsp;p_vaddr</a>
+</h3>
+<h3 class="topic">
+<a name="7qhsgvutqvsa8aoae94iq6920g">&nbsp;&nbsp;&nbsp;表示Segment在内存中的线性地址</a>
+</h3>
+<h3 class="topic">
+<a name="3td2gdamd169fl87htraugiav3">&nbsp;&nbsp;p_paddr</a>
+</h3>
+<h3 class="topic">
+<a name="5hjqe0rf9hlegbmgjaked2v9p2">&nbsp;&nbsp;&nbsp;表示Segment在内存中的物理地址</a>
+</h3>
+<h3 class="topic">
+<a name="7h1qqfr9mhkar14fs30du9cu0d">&nbsp;&nbsp;&nbsp;对于使用分页机制的系统，该项内容与p_vaddr相同</a>
+</h3>
+<h3 class="topic">
+<a name="3es3n30tampda6a33hpsaqhkpd">&nbsp;&nbsp;p_filez</a>
+</h3>
+<h3 class="topic">
+<a name="73pegkg3jmb0spi3bhp323hmd4">&nbsp;&nbsp;&nbsp;表示Segment在文件中的大小</a>
+</h3>
+<h3 class="topic">
+<a name="13h00crdj3b6t1jdrlp4shb6ao">&nbsp;&nbsp;p_memsz</a>
+</h3>
+<h3 class="topic">
+<a name="0d37cj49p6rp7bdjae0amcr51o">&nbsp;&nbsp;&nbsp;表示Segment在内存中的大小</a>
+</h3>
+<h3 class="topic">
+<a name="4utcc1em400jevqtn1d8fnf0k9">&nbsp;&nbsp;p_flags</a>
+</h3>
+<h3 class="topic">
+<a name="5pbs8jhrlhjhk9ioh64vs25p5h">&nbsp;&nbsp;&nbsp;表示Segment的权限属性标志</a>
+</h3>
+<h3 class="topic">
+<a name="78l514hucs10kmg06096470lsu">&nbsp;&nbsp;&nbsp;标志可以复合使用，一个区段可以拥有多种属性</a>
+</h3>
+<h3 class="topic">
+<a name="1alba3nsiaen7vb9cm2n7rnpiu">&nbsp;&nbsp;&nbsp;1</a>
+</h3>
+<h3 class="topic">
+<a name="0sku6k9ne86ro3ulor4djdju5h">&nbsp;&nbsp;&nbsp;&nbsp;可执行</a>
+</h3>
+<h3 class="topic">
+<a name="78abo0hgo6shu2abgokq4ln49b">&nbsp;&nbsp;&nbsp;2</a>
+</h3>
+<h3 class="topic">
+<a name="62uigdjq1n36edknpfqv88s4rg">&nbsp;&nbsp;&nbsp;&nbsp;可写</a>
+</h3>
+<h3 class="topic">
+<a name="4qqdd2ujf21gmgdr14dmimsir3">&nbsp;&nbsp;&nbsp;4</a>
+</h3>
+<h3 class="topic">
+<a name="2s3avagun1ot1a67nmojajgkei">&nbsp;&nbsp;&nbsp;&nbsp;可读</a>
+</h3>
+<h3 class="topic">
+<a name="37i9of88vj276c87s5qaaa4mku">&nbsp;&nbsp;p_align</a>
+</h3>
+<h3 class="topic">
+<a name="79v7dosd8n4ut3a3flfdf0as0l">&nbsp;&nbsp;&nbsp;表示Segment在内存中的对齐方式</a>
+</h3>
+<h2 class="topic">
+<a name="19m8lnvo3den6u36t9alnid9q6">elf符号表</a>
+</h2>
+<h3 class="topic">
+<a name="6v9dk4u36de3cs0fea55m9vi9f">&nbsp;程序中的符号：文件名、全局变量名、函数名等</a>
+</h3>
+<h3 class="topic">
+<a name="1u7fp48p9inrf55ciptvda0rgk">&nbsp;符号表有多个表项构成（即本质上是一个结构体数组），每一个符号表项记录了符号的名称、位置、类型等</a>
+</h3>
+<h3 class="topic">
+<a name="0jdqppuqnpq36n21qu07m1ohbk">&nbsp;符号表一般保存在.symtab段中</a>
+</h3>
+<h3 class="topic">
+<a name="3808f3l2pppi01s10d7dt5i226">&nbsp;使用readlf -s 文件名</a>
+</h3>
+<h3 class="topic">
+<a name="5l9ubqs38tkg2478kge7iic79i">&nbsp;&nbsp;查看elf文件的符号表信息</a>
+</h3>
+<h3 class="topic">
+<a name="17j97tjahke5q9tsdnfbm3i9em">&nbsp;结构体字段</a>
+</h3>
+<h3 class="topic">
+<a name="0qgclgbtcstvigv1lbu1kntrte">&nbsp;&nbsp;st_name</a>
+</h3>
+<h3 class="topic">
+<a name="7gppvk4j01a4f5k9t4ip1087jb">&nbsp;&nbsp;&nbsp;表示符号的名称</a>
+</h3>
+<h3 class="topic">
+<a name="5qgm9npkld90g2vq3q2pome29d">&nbsp;&nbsp;&nbsp;是一个四字节的字段，记录了符号名称字符串--在--字符串表--中的偏移 （该偏移还是相对于字符串表首地址的）</a>
+</h3>
+<h3 class="topic">
+<a name="0is74bbkrse53ic7k2n9meojlr">&nbsp;&nbsp;&nbsp;&nbsp;与段表字符串表相同，字符串表是一个文件块，保存所有的符号名称字符串的内容，保存在.strtab段中</a>
+</h3>
+<h3 class="topic">
+<a name="4a5vr94umf9hjl4elf9kij3bkb">&nbsp;&nbsp;st_value</a>
+</h3>
+<h3 class="topic">
+<a name="7qrchh9ldjqsa84oaa2dge1qub">&nbsp;&nbsp;&nbsp;记录符号的值</a>
+</h3>
+<h3 class="topic">
+<a name="3r6ug3oe25de0u4m3kdulu8kvg">&nbsp;&nbsp;&nbsp;在可重定位目标文件中</a>
+</h3>
+<h3 class="topic">
+<a name="25l3agg0lntipu72hh5sqhppl7">&nbsp;&nbsp;&nbsp;&nbsp;记录符号相对于所在段基地址的偏移量</a>
+</h3>
+<h3 class="topic">
+<a name="7jdia3r575ge0fnqme9nq7bq8q">&nbsp;&nbsp;&nbsp;在可执行文件中</a>
+</h3>
+<h3 class="topic">
+<a name="51pn8qifckb7992eoui44t3fgd">&nbsp;&nbsp;&nbsp;&nbsp;记录符号的线性地址</a>
+</h3>
+<h3 class="topic">
+<a name="44bi5f3nhqohjr676thalslksa">&nbsp;&nbsp;st_size</a>
+</h3>
+<h3 class="topic">
+<a name="62i06c5p9af0lc7vqrdiloi5tq">&nbsp;&nbsp;&nbsp;符号的大小，单位是字节</a>
+</h3>
+<h3 class="topic">
+<a name="666un02ght6ma9jjkjellfu5hh">&nbsp;&nbsp;st_info</a>
+</h3>
+<h3 class="topic">
+<a name="505g3t2mdb0u4eqtdlv9jg6bok">&nbsp;&nbsp;&nbsp;表示符号类型的绑定信息，大小为1个字节</a>
+</h3>
+<h3 class="topic">
+<a name="064oei9baump4fd35dvod0oq7c">&nbsp;&nbsp;&nbsp;低四位表示符号的类型</a>
+</h3>
+<h3 class="topic">
+<a name="4rs1nn9mg7j8i56kq8bk02255l">&nbsp;&nbsp;&nbsp;&nbsp;0</a>
+</h3>
+<h3 class="topic">
+<a name="6mhis7c7du5gs9tp9mpv5nvp4u">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;未知类型</a>
+</h3>
+<h3 class="topic">
+<a name="7plavfutln7vgpl0e4q5csnoko">&nbsp;&nbsp;&nbsp;&nbsp;1</a>
+</h3>
+<h3 class="topic">
+<a name="36dqn4niucd8lci4gjifdofrsp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;数据对象</a>
+</h3>
+<h3 class="topic">
+<a name="0sf1kf6ej1rddfqeomkg1h9rbn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;变量、数组名等</a>
+</h3>
+<h3 class="topic">
+<a name="6rr0g1n3s8vlu913png56hgnqa">&nbsp;&nbsp;&nbsp;&nbsp;2</a>
+</h3>
+<h3 class="topic">
+<a name="6hl5frjcs7jocohgj59bbbup0s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;函数</a>
+</h3>
+<h3 class="topic">
+<a name="19svvbgbrceisd3kgirfdrbrel">&nbsp;&nbsp;&nbsp;&nbsp;3</a>
+</h3>
+<h3 class="topic">
+<a name="47dhb59mbgpa7pvjqf5co0hjq1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;段</a>
+</h3>
+<h3 class="topic">
+<a name="58d5a6mblpr74249kaa8rnf2ke">&nbsp;&nbsp;&nbsp;&nbsp;4</a>
+</h3>
+<h3 class="topic">
+<a name="77jkpid11ku6qtgo25bldibb9j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;文件名</a>
+</h3>
+<h3 class="topic">
+<a name="3j54jvfi1gb872safti7rlj4a7">&nbsp;&nbsp;&nbsp;高四位表示符号的绑定信息</a>
+</h3>
+<h3 class="topic">
+<a name="6qa13d59brvk8dfisep4901o80">&nbsp;&nbsp;&nbsp;&nbsp;0</a>
+</h3>
+<h3 class="topic">
+<a name="4jnssrf3cm2ulndfj065hrnefj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;局部符号</a>
+</h3>
+<h3 class="topic">
+<a name="6jcmm41mhfpdksnj0q7fmpajcj">&nbsp;&nbsp;&nbsp;&nbsp;1</a>
+</h3>
+<h3 class="topic">
+<a name="4pd7cd20ftee4bfhi3r23bjbsl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;全局符号</a>
+</h3>
+<h3 class="topic">
+<a name="2p3smtdethd48asq4r2u7uon1m">&nbsp;&nbsp;&nbsp;&nbsp;2</a>
+</h3>
+<h3 class="topic">
+<a name="0ngeha9j7q3ur2bm41pcvum1ob">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;弱符号</a>
+</h3>
+<h3 class="topic">
+<a name="4hs1s745aebqp7j0v1lgsd5e71">&nbsp;&nbsp;st_other</a>
+</h3>
+<h3 class="topic">
+<a name="0chh4cj07b5tla7h90rerssshn">&nbsp;&nbsp;&nbsp;没有实际意义，默认为0</a>
+</h3>
+<h3 class="topic">
+<a name="3o24i0thh77omvkt1032e3nrv9">&nbsp;&nbsp;st_shndx</a>
+</h3>
+<h3 class="topic">
+<a name="6lfiv4s4vc3fr41spp9t2vnnmr">&nbsp;&nbsp;&nbsp;表示符号所在段对应的--区段表项--在--区段头表中的索引</a>
+</h3>
+<h3 class="topic">
+<a name="7uc37otic98egtullj1t1s7n7k">&nbsp;&nbsp;&nbsp;为0时</a>
+</h3>
+<h3 class="topic">
+<a name="0p41p09pr0bjvbn3c5eqtv4p50">&nbsp;&nbsp;&nbsp;&nbsp;表示符号未定义</a>
+</h3>
+<h3 class="topic">
+<a name="6cs0l8anfvp209gt71i6jp397l">&nbsp;&nbsp;&nbsp;为0xfff1时</a>
+</h3>
+<h3 class="topic">
+<a name="4vmlgkqvuphjijeva9qr5hgrba">&nbsp;&nbsp;&nbsp;&nbsp;表示符号的绝对值</a>
+</h3>
+<h3 class="topic">
+<a name="3599varosga53nniha63uj3dct">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;比如文件名</a>
+</h3>
+<h3 class="topic">
+<a name="3p93nd2m5tshmknu76msvqp2e7">&nbsp;&nbsp;&nbsp;为0xfff2时</a>
+</h3>
+<h3 class="topic">
+<a name="2a7drk45uh2isrnvenjo81q4ei">&nbsp;&nbsp;&nbsp;&nbsp;表示符号在COMMON块内，此时符号的st_value表示符号的对齐属性</a>
+</h3>
+<h2 class="topic">
+<a name="2gor8sgoccvqirarj40jbgfo60">elf重定位表</a>
+</h2>
+<h3 class="topic">
+<a name="0f944kf69evgtmvl63hsc7jb78">&nbsp;重定位表常见于可重定位的目标文件中</a>
+</h3>
+<h3 class="topic">
+<a name="10ma57ntuelmijt0557cfl7g82">&nbsp;&nbsp;静态链接生成的可执行文件一般不包含重定位表</a>
+</h3>
+<h3 class="topic">
+<a name="056karnvoqufjcird7hh9mbsh6">&nbsp;&nbsp;动态链接生成的可执行文件不在讨论范围内</a>
+</h3>
+<h3 class="topic">
+<a name="1p8ce4j3hcfitc73iqh7q7egll">&nbsp;重定位表一般保存在.rel开头的段内，重定位表实际上是结构体数组，每个结构体元素也称段表项</a>
+</h3>
+<h3 class="topic">
+<a name="3hdb2hmftsjd3p2nu8l0jd723s">&nbsp;&nbsp;一个重定位表项记录一条重定位信息，包括符号、位置、类型等信息</a>
+</h3>
+<h3 class="topic">
+<a name="1fm4dhhsgip2rp59fl63k6cl9l">&nbsp;一个需要重定位的段，就会对应一个重定位表</a>
+</h3>
+<h3 class="topic">
+<a name="20se9d3gn4dqavkguom9oljaub">&nbsp;使用 readlf -r 文件名 </a>
+</h3>
+<h3 class="topic">
+<a name="2qcvkpknjl30sled6vugj2qli7">&nbsp;&nbsp;查看elf文件重定位表的完整信息</a>
+</h3>
+<h3 class="topic">
+<a name="6mp3nsalv588da7l651gaclgf5">&nbsp;重定位表项的字段</a>
+</h3>
+<h3 class="topic">
+<a name="63dv450b4r3f9ontkvr4hq7j7o">&nbsp;&nbsp;r_offset</a>
+</h3>
+<h3 class="topic">
+<a name="19n3brvf4siu6cis9e7ddvf6sh">&nbsp;&nbsp;&nbsp;表示需要被重定位的数据所在的地址</a>
+</h3>
+<h3 class="topic">
+<a name="7mrurdtdr818piiu1ihc5jlqgv">&nbsp;&nbsp;&nbsp;&nbsp;对于可重定位目标文件</a>
+</h3>
+<h3 class="topic">
+<a name="6pbsf8ucflr5d4c26vc1gl1esq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;表示--重定位位置--相对于--被重定位段的基址--的偏移</a>
+</h3>
+<h3 class="topic">
+<a name="3h0oepl31ug1qg10iu98tfrlmh">&nbsp;&nbsp;&nbsp;&nbsp;对于可执行文件或共享目标文件</a>
+</h3>
+<h3 class="topic">
+<a name="29snpqjqtr2luovc9hdjfa1bjc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;表示重定位位置的线性地址</a>
+</h3>
+<h3 class="topic">
+<a name="7pgai2rs1146og943v8ht6n5qd">&nbsp;&nbsp;r_info</a>
+</h3>
+<h3 class="topic">
+<a name="68bb2e5cl67r23jrdrkkmqrg1i">&nbsp;&nbsp;&nbsp;描述重定位类型和符号</a>
+</h3>
+<h3 class="topic">
+<a name="6tbjvca14n2kuiud4tfehsrosd">&nbsp;&nbsp;&nbsp;低8位表示重定位类型</a>
+</h3>
+<h3 class="topic">
+<a name="58038u6g88dbh200rqnaej9t6d">&nbsp;&nbsp;&nbsp;高24位表示  重定位符号--对应的符号表项---在符号表内的索引</a>
+</h3>
+<h3 class="topic">
+<a name="5mkmkb29sb7p48ho0b8b0v51sj">&nbsp;每条重定位信息的含义</a>
+</h3>
+<h3 class="topic">
+<a name="2if1ffq5hvjej2ks5q12c8i8n4">&nbsp;&nbsp;使用r_info记录的符号的线性地址，根据重定位类型，更新r_offsetc处的内存信息</a>
+</h3>
+<h2 class="topic">
+<a name="0dvf6alg9bma3es7a8f1hv4r6m">elf串表</a>
+</h2>
+<h3 class="topic">
+<a name="69qbbklcjls30q555jopgl6mek">&nbsp;虽然称之为表，但实际上并非表的形式，而是一个文件区域</a>
+</h3>
+<h3 class="topic">
+<a name="4b97didhgigh0r35uo7c2o900j">&nbsp;该文件区域用存放elf文件中的字符串 ，文件中的字符串可能会被区段头表中的表项或者符号表中的表项所引用</a>
+</h3>
+<h3 class="topic">
+<a name="077h8b8tskrvsi1csgla4t5pg2">&nbsp;区段头表中的表项--或者--符号表中的表项中保存串表中指定字符串的位置</a>
+</h3>
+<h3 class="topic">
+<a name="2fs15r3lj8hvf0fkcv0uq1m9gf">&nbsp;使用命令 hexdump -C 文件名 -s 文件偏移 | more</a>
+</h3>
+<h3 class="topic">
+<a name="05h550rrh3kmk79dq8r8a9hdaf">&nbsp;&nbsp;查看文件中的段表字符串表</a>
+</h3>
+<h2 class="topic">
+<a name="6p8kd3sa3iuibmlfd1q4tej07n">elf文件格式</a>
+</h2>
+<h3 class="topic">
+<a name="3dpfefsjph40m9rv6urc4021ss">&nbsp;linux中可执行文件格式（直接可执行文件、中间文件、共享库文件）</a>
+</h3>
+<h3 class="topic">
+<a name="4oqghetnc5ts3hbq09kb38th9k">&nbsp;结构</a>
+</h3>
+<h3 class="topic">
+<a name="1dud2c3qsnr6fbm21nn43kk9ki">&nbsp;&nbsp;elf头</a>
+</h3>
+<h3 class="topic">
+<a name="24r7v38r6ef7c3d9r7c5av58vo">&nbsp;&nbsp;&nbsp;位于在文件头部</a>
+</h3>
+<h3 class="topic">
+<a name="0e5hana99uq7q3vraga34fot6b">&nbsp;&nbsp;&nbsp;描述整个文件是什么文件</a>
+</h3>
+<h3 class="topic">
+<a name="0qhdtpa23ojs98lujsqpof3jur">&nbsp;&nbsp;&nbsp;字段</a>
+</h3>
+<h3 class="topic">
+<a name="32rf3iq6n6grtfkrh5tqqm19fe">&nbsp;&nbsp;&nbsp;&nbsp;魔数文件标识</a>
+</h3>
+<h3 class="topic">
+<a name="20qadg22dscmp6r7is3g7rt24m">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;魔数和其他信息</a>
+</h3>
+<h3 class="topic">
+<a name="6uci9tr0te2tl1b7dtv5u07mv8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;是一个数组</a>
+</h3>
+<h3 class="topic">
+<a name="5cet6ufbuvnnhim9mtv8qos363">&nbsp;&nbsp;&nbsp;&nbsp;e_type</a>
+</h3>
+<h3 class="topic">
+<a name="11j8tl95cu3fvsbosj9444kvr6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;程序是32位还是64位</a>
+</h3>
+<h3 class="topic">
+<a name="6dsgi8d5g37qs6p5p61avlr3au">&nbsp;&nbsp;&nbsp;&nbsp;cpu平台</a>
+</h3>
+<h3 class="topic">
+<a name="0bcc5h93a31i0gq892v7961utn">&nbsp;&nbsp;&nbsp;&nbsp;程序入口地址</a>
+</h3>
+<h3 class="topic">
+<a name="5eprqhrts7lrkv26bc6kau88fr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;oep</a>
+</h3>
+<h3 class="topic">
+<a name="41caldk2i2ph5bi1a8n2efohd7">&nbsp;&nbsp;&nbsp;&nbsp;程序头文件偏移</a>
+</h3>
+<h3 class="topic">
+<a name="1fom1gju2acmjnkq98dk2jcdpl">&nbsp;&nbsp;&nbsp;&nbsp;区段头文件偏移</a>
+</h3>
+<h3 class="topic">
+<a name="06vs51got0rm52qgfej88mdv6q">&nbsp;&nbsp;&nbsp;&nbsp;elf文件字节数</a>
+</h3>
+<h3 class="topic">
+<a name="7tgsa1q3vkkdp4jpuv2praagem">&nbsp;&nbsp;&nbsp;&nbsp;程序头数组中每个元素的字节数</a>
+</h3>
+<h3 class="topic">
+<a name="7jf20i1omoa47lklvmshi8edr2">&nbsp;&nbsp;&nbsp;&nbsp;程序头元素个数</a>
+</h3>
+<h3 class="topic">
+<a name="29hiqv3ngldsdfdlabvae9ivai">&nbsp;&nbsp;&nbsp;&nbsp;区段头数组中每个元素的字节数</a>
+</h3>
+<h3 class="topic">
+<a name="5se962ieoofjnatfldqa7lnorb">&nbsp;&nbsp;&nbsp;&nbsp;区段头元素个数</a>
+</h3>
+<h3 class="topic">
+<a name="2bpepiqfv416051o0c2ndhg1o5">&nbsp;&nbsp;&nbsp;&nbsp;区段头字符串表在区段表中的下标</a>
+</h3>
+<h3 class="topic">
+<a name="5fpak9qpuf57fpgols76hbhqog">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;区段表中第几项用于保存去区段名称</a>
+</h3>
+<h3 class="topic">
+<a name="24eedkao3aqubc8ni21fi32lkc">&nbsp;&nbsp;程序头</a>
+</h3>
+<h3 class="topic">
+<a name="42oh4s44m9fq3isjo7suc5n58l">&nbsp;&nbsp;&nbsp;位于elf头之后，与elf头紧密相邻</a>
+</h3>
+<h3 class="topic">
+<a name="2nifs92m59i5b7qs72cii0g3am">&nbsp;&nbsp;&nbsp;段类型</a>
+</h3>
+<h3 class="topic">
+<a name="5camqpid4metoalncmug2l4i4d">&nbsp;&nbsp;&nbsp;&nbsp;程序头也可以被称之为一个段</a>
+</h3>
+<h3 class="topic">
+<a name="195e3uk67i3sf6tbead18tdp6k">&nbsp;&nbsp;&nbsp;&nbsp;程序头中的内容，决定了某一段会不会被加载到内存中</a>
+</h3>
+<h3 class="topic">
+<a name="1gmjuhbakh55iph32924vj2vcp">&nbsp;&nbsp;&nbsp;加载elf文件只需要使用到程序头，区段头在运行起来之后并没有用处</a>
+</h3>
+<h3 class="topic">
+<a name="2v55g1ppqjmj2d8r60qi3hkqgd">&nbsp;&nbsp;文件数据</a>
+</h3>
+<h3 class="topic">
+<a name="4ui7nf87sb3nhgj4otm49c5ph8">&nbsp;&nbsp;&nbsp;代码段</a>
+</h3>
+<h3 class="topic">
+<a name="76cau5mdjndsgf3hikr3b0uc78">&nbsp;&nbsp;&nbsp;数据段</a>
+</h3>
+<h3 class="topic">
+<a name="25or33da3vrhqvbaegv46bm2ho">&nbsp;&nbsp;&nbsp;bss</a>
+</h3>
+<h3 class="topic">
+<a name="0i1ptgvb9859ecd3qe6e9brga5">&nbsp;&nbsp;区段头字符串表</a>
+</h3>
+<h3 class="topic">
+<a name="0ojdo1h04jthmi6rrqo67gl21t">&nbsp;&nbsp;区段头</a>
+</h3>
+<h3 class="topic">
+<a name="18qmfppk85jm0ugsho45810pqh">&nbsp;&nbsp;&nbsp;位于文件末尾</a>
+</h3>
+<h3 class="topic">
+<a name="14tf9jncv940qd8o5ie67pgo6c">&nbsp;&nbsp;&nbsp;字段</a>
+</h3>
+<h3 class="topic">
+<a name="42hjonv6p75vbveu29vvionnms">&nbsp;&nbsp;&nbsp;&nbsp;区段名</a>
+</h3>
+<h3 class="topic">
+<a name="4jcci6n2nli55fv9p6a3t0oe4e">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;记录区段字符串表的索引值</a>
+</h3>
+<h3 class="topic">
+<a name="4746r13dhrphis35p2ct3dad7v">&nbsp;&nbsp;&nbsp;&nbsp;区段类型</a>
+</h3>
+<h3 class="topic">
+<a name="24kt9758l4qjadod0nnj4piquc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;决定了节区中保存什么数据</a>
+</h3>
+<h3 class="topic">
+<a name="174a4u6ba31c0pau3p7a9kc8qb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;所有原来pe文件中表的数据都是通过区段的方式提供的</a>
+</h3>
+<h3 class="topic">
+<a name="4ue0ujimbd8e3cinp1874bruad">&nbsp;&nbsp;&nbsp;&nbsp;区段数据在内存中的地址</a>
+</h3>
+<h3 class="topic">
+<a name="4bm91f3dbsatabar81q8s4i00l">&nbsp;&nbsp;&nbsp;&nbsp;区段数据在文件中的偏移</a>
+</h3>
+<h3 class="topic">
+<a name="640rjrani74q5qb81s2ojlj9tv">&nbsp;&nbsp;&nbsp;&nbsp;区段数据的实际大小</a>
+</h3>
+<h3 class="topic">
+<a name="1pq9hko0rb2c2pfbtebco79r0d">&nbsp;&nbsp;&nbsp;&nbsp;link</a>
+</h3>
+<h3 class="topic">
+<a name="6t9vq9ivcjar6ipgdh2vd1pfp4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;区段表的下标</a>
+</h3>
+<h3 class="topic">
+<a name="6631pdn5oj2nvm60uql57adhec">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用于得到另外一个区段表的位置</a>
+</h3>
+<h3 class="topic">
+<a name="1lf8iqpf8s1qejo6q5bgk1bb8l">&nbsp;&nbsp;&nbsp;&nbsp;info</a>
+</h3>
+<h3 class="topic">
+<a name="6jksr6tsptko5psqju9u8ril83">&nbsp;&nbsp;&nbsp;&nbsp;区段数据的对齐粒度</a>
+</h3>
+<h3 class="topic">
+<a name="3c4oqqbrgnmnur9lfqe9jmav52">&nbsp;&nbsp;&nbsp;即使整个填0或删除也不会影响程序的运行</a>
+</h3>
+<h3 class="topic">
+<a name="6rpp32e8foalomrhgvicqp9t5b">&nbsp;&nbsp;重定位相关信息</a>
+</h3>
+<h3 class="topic">
+<a name="5ihopv2h9lqi38c2r1m9li6dfq">&nbsp;&nbsp;&nbsp;在pe文件中，代码中使用全局变量和常量字符串，不会产生重定位</a>
+</h3>
+<h3 class="topic">
+<a name="1f5ubgm7gjn00j928cnrkm62ek">&nbsp;&nbsp;&nbsp;在elf文件中，全局变量和常量字符串不会产生重定位信息，但是其仍然是支持随即基址的</a>
+</h3>
+<h3 class="topic">
+<a name="4paafq5tfjdsj1l2ta5okkb076">&nbsp;&nbsp;&nbsp;&nbsp;其寻址全局变量是通过计算数据地址和当前指令的偏移，在访问该全局变量时，通过当前指令地址+偏移，得到全局变量地址</a>
+</h3>
+<h3 class="topic">
+<a name="5qt3ss6e6jldbf5fplfk275p1i">&nbsp;&nbsp;&nbsp;elf中的重定位表记录的是要进行动态链接的符号的重定位信息</a>
+</h3>
+<h3 class="topic">
+<a name="6v93f621trs34fcoc354orevdt">&nbsp;&nbsp;&nbsp;重定位表只在中间文件中存在，在可执行文件和共享库文件中不存在</a>
+</h3>
+<h3 class="topic">
+<a name="23ovfekau140jsk4jglulpc1da">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%AE%89%E5%85%A83_files/0e5v0g22ojt4nung5chn651svd.png"></p>
+<h3 class="topic">
+<a name="7mti95it5rauuh91lf0mvm4pgv">&nbsp;&nbsp;动态链接</a>
+</h3>
+<h3 class="topic">
+<a name="4c4ntv8ho4eocifrjie7chti8m">&nbsp;&nbsp;&nbsp;在pe文件中，使用其他文件的api，是通过 call [iat]</a>
+</h3>
+<h3 class="topic">
+<a name="2pi46vpj88bcq7lpkghetta6so">&nbsp;&nbsp;&nbsp;elf中有一个 DYMSYM的区段，其中保存着本elf文件需要加载共享库（so文件）</a>
+</h3>
+<h3 class="topic">
+<a name="47g6juh9bverajt1c1jjldcrnk">&nbsp;&nbsp;&nbsp;在elf文件中，调用其他文件中的函数，使用的是plt表，该表保存在代码段，其中存在jmp指令，jmp[rip+偏移] &ldquo;[rip+偏移]&rdquo;中保存对应api的地址  </a>
+</h3>
+<h3 class="topic">
+<a name="09btumra0ga8aqbaing3emiran">&nbsp;&nbsp;&nbsp;在一个so文件中通过符号表记录要导出的函数，符号表中存在符号结构体，记录符号相关内容</a>
+</h3>
+<h3 class="topic">
+<a name="4p1td3lifq4ejmjf6jfu2cvol9">&nbsp;&nbsp;&nbsp;&nbsp;该表中也保存导入相关信息</a>
+</h3>
+<h3 class="topic">
+<a name="6466aomn7l2lib5bghfcp6qrqj">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%AE%89%E5%85%A83_files/3gs0oiu5m5md1knq856jf3gsi6.png"></p>
+<h3 class="topic">
+<a name="47la7mrtanp6ifegbs23gijp5b">&nbsp;&nbsp;elf文件的符号表</a>
+</h3>
+<h3 class="topic">
+<a name="3eiqvtgnv1fcm1144irqm1cao4">&nbsp;&nbsp;&nbsp;elf文件的符号表分为符号表和动态符号表 无论是哪种表, 区段的数据都使用 Elf32_Sym 结构来保存符号的内容</a>
+</h3>
+<h3 class="topic">
+<a name="3fb0bmfh2oorohe1s9qh1ho9hb">&nbsp;&nbsp;修复重定位就是修复iat</a>
+</h3>
+<h3 class="topic">
+<a name="23gkls1ptkv5u3u4m5b28c8s4a">&nbsp;&nbsp;现在不在使用延迟加载的问题</a>
+</h3>
+<h3 class="topic">
+<a name="4jha0n8oijd0pojuiteuat2aeo">&nbsp;&nbsp;32位的程序头和64位程序头的结构不同</a>
+</h3>
+<h3 class="topic">
+<a name="0pq5i6stvg9hiul3i6jf344v9o">&nbsp;&nbsp;区段表在程序运行过程中没有用</a>
+</h3>
+<h2 class="topic">
+<a name="12lubvlc6ucsp6e1cf4c65mdvu">使用vs创建编译linux项目</a>
+</h2>
+<h3 class="topic">
+<a name="4orbkr6s1v9mvd7237f14vqn8f">&nbsp;如果没有创建linxux工程的选项，打开vs安装器，打开修改，勾选linux项目，安装</a>
+</h3>
+<h3 class="topic">
+<a name="164d9aa14bh3l6sv0k94lusseu">&nbsp;安装之后，无法直接生成代码，因为这里的原理是将本地vs代码上传到远程linux服务器，在服务器上编译代码并生成，并传回本地</a>
+</h3>
+<h3 class="topic">
+<a name="3sk2hov604cba2u1rp3p2fuedq">&nbsp;&nbsp;如果是调试，则会启用远程主机的gdb</a>
+</h3>
+<h3 class="topic">
+<a name="31em65iumogi4tp9amvdsthoeb">&nbsp;需要远程linux虚拟机开启ssh服务器</a>
+</h3>
+<h3 class="topic">
+<a name="5j0ifcfii6psdaq49trf9871k3">&nbsp;&nbsp;apt-get update openssh-server</a>
+</h3>
+<h3 class="topic">
+<a name="5cu8qbira5tof2ur9v0u8m5ns9">&nbsp;&nbsp;&nbsp;安装ssh服务器</a>
+</h3>
+<h3 class="topic">
+<a name="36eo4i0hudnhgmnmukki2tvm7a">&nbsp;&nbsp;sevice ssh start</a>
+</h3>
+<h3 class="topic">
+<a name="50nuq5ra265pc4fp8886fn4to4">&nbsp;&nbsp;&nbsp;开启ssh服务</a>
+</h3>
+<h3 class="topic">
+<a name="62eg0981m91pgimkc2tn2sjbgb">&nbsp;vs中设置远程linux主机 -》工具 选项 跨平台 </a>
+</h3>
+<h3 class="topic">
+<a name="0uhmgvtr91bc4eck1d0jj2kgi7">&nbsp;&nbsp;主机名</a>
+</h3>
+<h3 class="topic">
+<a name="3o1d85ucunjn4d6ae05d767034">&nbsp;&nbsp;&nbsp;即linux 虚拟机的 IP地址</a>
+</h3>
+<h3 class="topic">
+<a name="68bh0m8rsornp3feovg4tdhvg3">&nbsp;&nbsp;&nbsp;&nbsp;linux中使用ifconfig命令查看</a>
+</h3>
+<h3 class="topic">
+<a name="1tbshkbamjfjuur1gr7anop712">&nbsp;&nbsp;用户名</a>
+</h3>
+<h3 class="topic">
+<a name="45ak96glr167q4882fue3j0jtu">&nbsp;&nbsp;&nbsp;虚拟机中的用户名</a>
+</h3>
+<h3 class="topic">
+<a name="2b9bi0d03r6r52g9bhhv5opie3">&nbsp;&nbsp;端口号</a>
+</h3>
+<h3 class="topic">
+<a name="01l349igjk981nu99mt14e2aq3">&nbsp;&nbsp;&nbsp;默认就是22</a>
+</h3>
+<h3 class="topic">
+<a name="6u13hlcuuv5hdta73g09e0fp23">&nbsp;&nbsp;密码</a>
+</h3>
+<h3 class="topic">
+<a name="1agdqbng93d66jkojpao86tr4b">&nbsp;&nbsp;&nbsp;用户名对应的密码</a>
+</h3>
+<h3 class="topic">
+<a name="5pumbb55d6ggdmkck4gllk7tmp">&nbsp;最终项目会被生成到远程linux虚拟机中</a>
+</h3>
+<h3 class="topic">
+<a name="5k3312nlo7cteise2mc82lvv4d">&nbsp;详细过程可以参考老师笔记</a>
+</h3>
+<h3 class="topic">
+<a name="7q5ft7n9dfg3pm1ntima5spone">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%AE%89%E5%85%A83_files/2dnk1607p1iq4vh0oc3o49tk3r.png"></p>
+<h3 class="topic">
+<a name="3cfnaqr7kq2lek5u3blsgga7i3">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%AE%89%E5%85%A83_files/049h6pqe4bv3fgbflcdg84f20j.png"></p>
+<h3 class="topic">
+<a name="066blq5d7d549sh933tsuf0466">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="linux%E5%AE%89%E5%85%A83_files/31h8en9b2krj8rrlj421k87o3q.png"></p>
+<h2 class="topic">
+<a name="24kl09j8gg72quescnd00k7eb5">elf文件变形和加载分析</a>
+</h2>
+<h3 class="topic">
+<a name="5mbgg9s0kkhtm5kd3e6dm7slc4">&nbsp;变形原理</a>
+</h3>
+<h3 class="topic">
+<a name="4tv9ktrpgma4t6uv0mvd8sfdj7">&nbsp;&nbsp;elf中最重要的两张表，程序头表和区段头表</a>
+</h3>
+<h3 class="topic">
+<a name="5et62nh7lr6ks6jcpej51t6356">&nbsp;&nbsp;区段头表在程序加载过程中并未起作用</a>
+</h3>
+<h3 class="topic">
+<a name="5ph3qldeq2lho6incidepc4ipd">&nbsp;&nbsp;程序头表将LOAD类型的Segment 描述的内存块加载到内存中，并按照对应对齐方式映射到内存中</a>
+</h3>
+<h3 class="topic">
+<a name="7ur8e3pb76u6cuuvou67ohvb2m">&nbsp;&nbsp;从而对elf文件进行变形与修改，从而对抗调试器和反汇编器</a>
+</h3>
+<h2 class="topic">
+<a name="4vaq57gv908pl05ds91bcs30bt">编写代码解析elf文件结构</a>
+</h2>
+<h3 class="topic">
+<a name="4mm62o2vtooqbfgev4a9frv5u1">&nbsp;解析文件头</a>
+</h3>
+<h3 class="topic">
+<a name="6p711js598jqldpu7cgvd27t89">&nbsp;&nbsp;包含头文件 unistd.h   fcntl.h   errno   </a>
+</h3>
+<h3 class="topic">
+<a name="4bq82h092o2169ebfbd7nema2r">&nbsp;&nbsp;解析文件头</a>
+</h3>
+<h3 class="topic">
+<a name="5mbmtu5teld3itggontdqm326r">&nbsp;&nbsp;&nbsp;读取文件</a>
+</h3>
+<h3 class="topic">
+<a name="4ie2qse9ve8jfv102f0q9b28ac">&nbsp;&nbsp;&nbsp;获取文件大小</a>
+</h3>
+<h3 class="topic">
+<a name="066sshlpo2e06vqsabjo2l1u9d">&nbsp;&nbsp;&nbsp;将数据读入内存</a>
+</h3>
+<h3 class="topic">
+<a name="3f6l8emncheal4ktinmv0bmq91">&nbsp;&nbsp;&nbsp;关闭文件</a>
+</h3>
+<h3 class="topic">
+<a name="4vuedjgqcq0vtvc2qk5atnhoiq">&nbsp;&nbsp;&nbsp;打印文件头部</a>
+</h3>
+<h3 class="topic">
+<a name="17qi55r3j2mdit7gialk257f5u">&nbsp;&nbsp;&nbsp;&nbsp;需要包含elf.h</a>
+</h3>
+<h3 class="topic">
+<a name="6pjdmcubltu5f8vud4cocjv9ii">&nbsp;&nbsp;&nbsp;&nbsp;32位于64位的文件头部分字段的大小不同</a>
+</h3>
+<h3 class="topic">
+<a name="48dn4tvtqm45fhji9e89smn3u7">&nbsp;&nbsp;&nbsp;&nbsp;判断是否为elf文件</a>
+</h3>
+<h3 class="topic">
+<a name="0h7p34r7djmgvjrgmijhs5ea2g">&nbsp;&nbsp;解析区段头</a>
+</h3>
+<h3 class="topic">
+<a name="4v0i77dieih3g92od15d9g6nhv">&nbsp;&nbsp;解析程序头</a>
+</h3>
+<h3 class="topic">
+<a name="195djiok5gpg7p8nc1vq1orjuk">&nbsp;&nbsp;&nbsp;子主题 1</a>
+</h3>
+<h3 class="topic">
+<a name="1v0e8kpa0jsg6h6cok8lat2rsc">&nbsp;注意点</a>
+</h3>
+<h3 class="topic">
+<a name="068dumd5r2cc7ct4pcputdl2bf">&nbsp;&nbsp;(注意要将main.c的编译方式修改为utf8，才能正确显示)</a>
+</h3>
+<h3 class="topic">
+<a name="41pqqtib3bt4f5n6vaotdk6u4h">&nbsp;&nbsp;注意需要对于64位的elf文件，需要使用64位的解析方法解析</a>
+</h3>
+<h3 class="topic">
+<a name="0ha7vt7sqoetnknrjblnocpj5e">&nbsp;详细代码可以参考老师项目</a>
+</h3>
+<h2 class="topic">
+<a name="27ajlphs2l7buv6rcrb7sjcdil">elf中段即表，一个段中保存的就是一张表</a>
+</h2>
+<h2 class="topic">
+<a name="5nf2itb6pjjmtgme4kf773pj72">elf中的表多为结构体数组即大小是固定的</a>
+</h2>
+<h2 class="topic">
+<a name="58sfqcicpbbv8kt0gjo17lc02n">elf文件畸形</a>
+</h2>
+<h3 class="topic">
+<a name="5lo4i2smcsq7lkf3p9aqp9eg42">&nbsp;将elf文件的区段头，表等信息异或掉，不影响程序运行，但是可以使得分析程序无法分析</a>
+</h3>
+<h2 class="topic">
+<a name="7e3fskv6dejjeabq3ngurvi7g0">linux源码</a>
+</h2>
+<h3 class="topic">
+<a name="62jees379ljnkqg7needvq1fvh">&nbsp;https://elixir.bootlin.com/linux/v4.20.17/source</a>
+</h3>
+</body>
+</html>

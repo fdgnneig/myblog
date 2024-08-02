@@ -1,0 +1,1009 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>class26day0226</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="2kfncjbl0kdgsc3qmhgraaqch2">class26day0226</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="class26day0226_files/images/class26day0226.jpg"></div>
+<h2 class="topic">
+<a name="187tvet0c97i9jecbinlik545l">C++提高第五天</a>
+</h2>
+<h3 class="topic">
+<a name="0d2vpvrvm5uh971rt6dghrolsk">&nbsp;当同一个函数的以上三种函数类型同时存在的情况下，函数的调用顺序为</a>
+</h3>
+<h3 class="topic">
+<a name="33nvine29s6ngbjmtn827oqvv9">&nbsp;&nbsp;普通全局函数&gt;特化的函数模板&gt;函数模板</a>
+</h3>
+<h3 class="topic">
+<a name="6qel8ec2qkm76pp4e8tpssschj">&nbsp;&nbsp;因为全局函数所有参数类型是最准确而且函数已经生成了代码，所以优先级最高</a>
+</h3>
+<h3 class="topic">
+<a name="1dfqhstu9ka79ptl09mpj3lkp8">&nbsp;&nbsp;特化模板函数优先级次之，但是与函数模板相比，其参数调用会更确定</a>
+</h3>
+<h3 class="topic">
+<a name="4illf6eogsn4sqpmtud7hafdj2">&nbsp;模板</a>
+</h3>
+<h3 class="topic">
+<a name="00ipokoobqsam464vq8ol04nq3">&nbsp;&nbsp;函数模板</a>
+</h3>
+<h3 class="topic">
+<a name="6kr5cpado3t0pk7v86hmcfqrnt">&nbsp;&nbsp;&nbsp;函数模板</a>
+</h3>
+<h3 class="topic">
+<a name="2qf9loth0h59jir843s576umrf">&nbsp;&nbsp;&nbsp;&nbsp;template&lt;参数化类型名表&gt;&#13;
+返回类型 函数名 参数表&#13;
+{&#13;
+函数体&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="6jo2a1pj9jc27a3d9ctpjt8m2k">&nbsp;&nbsp;&nbsp;模板特化</a>
+</h3>
+<h3 class="topic">
+<a name="2i7g1ga5pqu39ov55hunggrecf">&nbsp;&nbsp;&nbsp;&nbsp;部分特殊参数类型不能符合通用函数的使用，需要为其单独定义模板</a>
+</h3>
+<h3 class="topic">
+<a name="4alavlgiqa35iibuuaaeet6vs2">&nbsp;&nbsp;&nbsp;&nbsp;template&lt;&gt;&#13;
+ 返回值类型 函数名&lt;需要特化的参数类型&gt;（参数列表）{&#13;
+balabalabala&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="2mvaji5d0aao86joifo9u1e0od">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;template后面的&lt;&gt;中的内容必须被清空，函数名称之后需要使用&lt;&gt;加上特化后的类型</a>
+</h3>
+<h3 class="topic">
+<a name="4jqepfg1sjj8il0mf794vsj1g3">&nbsp;&nbsp;&nbsp;&nbsp;函数模板的特化必须写在函数模板声明之后</a>
+</h3>
+<h3 class="topic">
+<a name="0epucvnor3v7o9ui9or6352soo">&nbsp;&nbsp;&nbsp;模板的全特化与偏特化</a>
+</h3>
+<h3 class="topic">
+<a name="756j0u5c3e63ivfvkhe0nc06kl">&nbsp;&nbsp;&nbsp;&nbsp;全特化</a>
+</h3>
+<h3 class="topic">
+<a name="28ntn126vgrardqf8fbtlb345p">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将模板中所有参数进行特化(即指定所有模板参数为特定参数)</a>
+</h3>
+<h3 class="topic">
+<a name="7hf4lk0df7sods7faooee36g34">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;c++使用全特化</a>
+</h3>
+<h3 class="topic">
+<a name="2nk906c69blnbriidiepesifa8">&nbsp;&nbsp;&nbsp;&nbsp;偏特化</a>
+</h3>
+<h3 class="topic">
+<a name="2pkp5904mpv15on4qog4es1162">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将模板中特定参数进行特化（(即指定部分模板参数为特定参数)）</a>
+</h3>
+<h3 class="topic">
+<a name="4brq3jgptpohu7gbhif6cki3fa">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;c++中不使用偏特化</a>
+</h3>
+<h3 class="topic">
+<a name="0fs8g7i7mmoveih2o2ph6r6ctu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;因为本质上就是函数重载，没有意义</a>
+</h3>
+<h3 class="topic">
+<a name="0f0nu6thq5dafvp5928npoi8f7">&nbsp;&nbsp;&nbsp;函数模板与模板函数</a>
+</h3>
+<h3 class="topic">
+<a name="1adu0e57b5fkeb94kgml7lkm9b">&nbsp;&nbsp;&nbsp;&nbsp;函数模板是对一组函数的描述，不是实际的函数，编译器不会为其生成代码</a>
+</h3>
+<h3 class="topic">
+<a name="28ocpamdbrguhucsrobq1qcrf4">&nbsp;&nbsp;&nbsp;&nbsp;模板函数是函数模板的实例化结果，是实际的函数</a>
+</h3>
+<h3 class="topic">
+<a name="3mkdvjpslsq4kg57j2ftgulljp">&nbsp;&nbsp;&nbsp;编写函数模板步骤</a>
+</h3>
+<h3 class="topic">
+<a name="4akocs898hspiddb1f07vskcbk">&nbsp;&nbsp;&nbsp;&nbsp;1、编写函数模板通常需要编写一个非模板函数，再进行修改</a>
+</h3>
+<h3 class="topic">
+<a name="7m1do7sae6pmcleheod5s6kns5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;int max(int x,int y)&#13;
+{&#13;
+return x&gt;y?x:y;&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="7gqq89ntgqk5q0vi9kqh1cepe0">&nbsp;&nbsp;&nbsp;&nbsp;2、使用template&lt;需要参数化的类型&gt;可以定义一个模板</a>
+</h3>
+<h3 class="topic">
+<a name="0im6gaii3776qacfm2ecjrpp7j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;template&lt;class T&gt;&#13;
+T max(T x,T y)&#13;
+{&#13;
+return x&gt;y?x:y;&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="29f3kh30tf7juh3383pien51eh">&nbsp;&nbsp;&nbsp;&nbsp;3、&lt;&gt;内使用class 或typename可以定义一个参数化的类型，class和typename完全没有区别（保留typename为了保持向下兼容）</a>
+</h3>
+<h3 class="topic">
+<a name="0jslcefl109nftvbjh727rbje6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;int main(){&#13;
+//隐式根据函数参数的类型生成模板函数&#13;
+int int_max=max(1,2);&#13;
+double double_max=max(1.1,2.2);&#13;
+&#13;
+//显式指定模板参数类型，显式生成对应类型的模板函数&#13;
+double double_max=max&lt;double&gt;(1.1,2.2);&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="3jkvrqdlihjrobq8ifvc07fmeh">&nbsp;&nbsp;&nbsp;函数模板调用顺序</a>
+</h3>
+<h3 class="topic">
+<a name="622q7i3v4spn2nau0akg845rd6">&nbsp;&nbsp;&nbsp;&nbsp;编译器发现了函数调用max</a>
+</h3>
+<h3 class="topic">
+<a name="1b8ae6o46a6dh5kd8emlr9n6cm">&nbsp;&nbsp;&nbsp;&nbsp;发现函数使用模板进行了定义</a>
+</h3>
+<h3 class="topic">
+<a name="1pe8csre7pasp4a0is7qqhkoh1">&nbsp;&nbsp;&nbsp;&nbsp;检查传入的类型是否匹配函数模板</a>
+</h3>
+<h3 class="topic">
+<a name="0qrjhqulq3s5kivvd5f14c35lc">&nbsp;&nbsp;&nbsp;&nbsp;如果匹配就生成一个对应的模板函数</a>
+</h3>
+<h3 class="topic">
+<a name="1c3m2s1s4dh0bfdloub09eeif1">&nbsp;&nbsp;&nbsp;&nbsp;将参数传递到生成的模板函数中</a>
+</h3>
+<h3 class="topic">
+<a name="0ss3ksfgn7ej6nrn97u6uf2ckj">&nbsp;&nbsp;&nbsp;比大小模板</a>
+</h3>
+<h3 class="topic">
+<a name="1gc70kqs6m9b58p49mijcqe5om">&nbsp;&nbsp;&nbsp;&nbsp;&#13;
+template&lt;class T&gt;&#13;
+T mmax(T x, T y)&#13;
+{&#13;
+	return x &gt; y ? x : y;&#13;
+}&#13;
+&#13;
+int main()&#13;
+{&#13;
+	// 1. 编译器发现调用了函数 mmax&#13;
+	// 2. 发现函数使用模板进行了定义&#13;
+	// 3. 检查传入的类型是否匹配函数模板&#13;
+	// 4. 如果匹配，就生成一个对应的模板函数&#13;
+	// 5. 将参数传递的生成的模板函数中&#13;
+	int int_max = mmax(1, 100);&#13;
+&#13;
+	// 使用函数名&lt;&gt;的形式显式的生成对应类型的模板函数&#13;
+	double double_max = mmax&lt;double&gt;(1.1, 1);&#13;
+	return 0;&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="5nnjk5gmpva4c37m4praa2k5pp">&nbsp;&nbsp;&nbsp;函数模板特化</a>
+</h3>
+<h3 class="topic">
+<a name="37hn51thqogee29ttktca89s7s">&nbsp;&nbsp;&nbsp;&nbsp;原max函数只能比较基本类型之间大小，不能比较类似字符串类对象这样的类型，所以需要对这些数据进行特化处理</a>
+</h3>
+<h3 class="topic">
+<a name="1mgg4ir13om1t1v6tbjs5u9keg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//原函数模板&#13;
+template&lt;class T&gt;&#13;
+T max(T x,T y)&#13;
+{&#13;
+	return x&gt;y?x:y;&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="39glvh1sh05vrg034j14le9tgl">&nbsp;&nbsp;&nbsp;&nbsp;函数是没有偏特化的，所以&lt;&gt;内的所有数据类型均需要被特化，将需要特化的数据代替函数内</a>
+</h3>
+<h3 class="topic">
+<a name="450cbfvr8q9gqcamr3kqm9c5et">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;template&lt;&gt;&#13;
+const char *max&lt;const char*&gt;(const char* x,const char* y)&#13;
+{&#13;
+return (strcmp(x,y)&gt;0)?x:y;&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="5tqn1i1g4s44latbk9ptqtko6d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;调用该特化模板的时候</a>
+</h3>
+<h3 class="topic">
+<a name="5fbods8iepeb4026mvo38avftl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const char*result =max&lt;const char*&gt;("123","234");</a>
+</h3>
+<h3 class="topic">
+<a name="4p64kbth1oevjq2616buggptid">&nbsp;&nbsp;&nbsp;&nbsp;对于对象，也可以使用运算符重载，使对象可以使用'&gt;'等运算符进行运算</a>
+</h3>
+<h3 class="topic">
+<a name="2nr7srfpbpg6gga9u78tdo4edm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;class OBJECT{&#13;
+private:&#13;
+	int number=10;&#13;
+public:&#13;
+	int get_number(){return number;}&#13;
+	//重载了&gt;运算符，此时可以直接使用之前的模板&#13;
+	//对两个obj进行比较&#13;
+	bool operator&gt;(OBJECT&amp; obj)&#13;
+	{&#13;
+	return this-&gt;number&gt;obj.number;&#13;
+	}&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="4md0gusrkfikobaide3oehrcdp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//更多时候，是为特定类类型定义一个模板特化，然后进行显式调用&#13;
+template&lt;&gt;&#13;
+OBJECT max&lt;OBJECT&gt;(OBJECT&amp; obj1,OBJECT&amp; obj2)&#13;
+{&#13;
+return obj1.get_number()&gt;obj2.get_number()?obj1:obj2;&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="3jh03vh1vltrsal9l7rht7tq01">&nbsp;&nbsp;&nbsp;函数调用匹配顺序</a>
+</h3>
+<h3 class="topic">
+<a name="5k4pl4t6th1tatvhvo027733sa">&nbsp;&nbsp;&nbsp;&nbsp;函数类型</a>
+</h3>
+<h3 class="topic">
+<a name="6b66uqddbmhbmdk666791ij6b0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;普通全局函数</a>
+</h3>
+<h3 class="topic">
+<a name="07gtdgujlol26i615l15540vh6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;特化的函数模板</a>
+</h3>
+<h3 class="topic">
+<a name="6r30lhlmt14o1rufi2gquk1a3a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;函数模板</a>
+</h3>
+<h3 class="topic">
+<a name="51bq3b6mgvp34flblhod3n4jb1">&nbsp;&nbsp;&nbsp;冒泡排序算法</a>
+</h3>
+<h3 class="topic">
+<a name="60rssvlr6nrrbhhijnbbrrfuf0">&nbsp;&nbsp;&nbsp;&nbsp;先写一个普通冒泡排序</a>
+</h3>
+<h3 class="topic">
+<a name="3rcf80j3q9ftlubdn98jlv7fqp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;参数：数组数组大小</a>
+</h3>
+<h3 class="topic">
+<a name="6s6i2oqpte4k2d5m4m8tpchoss">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;void sort(int *arr,int size)&#13;
+{&#13;
+	for(i=0,i&lt;size-1;i++)&#13;
+	{&#13;
+		for(int j=0;j&lt;size-i-1;j++)&#13;
+		{	&#13;
+			if(arr[j]&gt;arr[j+1])&#13;
+			{&#13;
+				int temp=arr[j];&#13;
+				arr[j]=arr[j+1];&#13;
+				arr[j+1]=temp;&#13;
+			}&#13;
+		}&#13;
+	}&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="3m9sc0i6sg24o1lggdkug02361">&nbsp;&nbsp;&nbsp;&nbsp;改写为函数模板</a>
+</h3>
+<h3 class="topic">
+<a name="01uvs06rgbj8p8eq58sud73ovf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;template&lt;class T&gt;&#13;
+void sort(T *arr,int size)&#13;
+{&#13;
+	for(i=0,i&lt;size-1;i++)&#13;
+	{&#13;
+		for(int j=0;j&lt;size-i-1;j++)&#13;
+		{	&#13;
+			if(arr[j]&gt;arr[j+1])&#13;
+			{&#13;
+				T temp=arr[j];&#13;
+				arr[j]=arr[j+1];&#13;
+				arr[j+1]=temp;&#13;
+			}&#13;
+		}&#13;
+	}&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="0if13ppinquhpjhvbbtivm3ijd">&nbsp;&nbsp;&nbsp;&nbsp;特化模板</a>
+</h3>
+<h3 class="topic">
+<a name="79o3vtl7echvbo59ujtbnir4b5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;template&lt;&gt;&#13;
+void sort&lt;const char*&gt;(const char*arr,int size)&#13;
+{&#13;
+	for(i=0,i&lt;size-1;i++)&#13;
+	{&#13;
+		for(int j=0;j&lt;size-i-1;j++)&#13;
+		{	&#13;
+			//字符串比对&#13;
+			//strcmp的返回值可以为正数 负数 0，前两者均为ture&#13;
+			if(strcmp(arr[j],arr[j+1])&gt;0)&#13;
+			{&#13;
+				//交换指针数组中指针元素的指向&#13;
+				char* temp=arr[j];&#13;
+				arr[j]=arr[j+1];&#13;
+				arr[j+1]=temp;&#13;
+			}&#13;
+		}&#13;
+	}&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="5v8gloth2u2771ntb21fs2c8f7">&nbsp;&nbsp;&nbsp;函数模板的使用</a>
+</h3>
+<h3 class="topic">
+<a name="4pefn4ktf8rtk2d98autm3rm9a">&nbsp;&nbsp;&nbsp;&nbsp;int main()&#13;
+{&#13;
+	int array[10] = { 7, 5, 9, 6, 8, 3, 4, 2, 1, 0 };&#13;
+	//隐式调用普通函数模板&#13;
+	sort(array, 10); &#13;
+	//也可以显式调用函数模板	sort&lt;int&gt;(array, 10); &#13;
+&#13;
+	const char* str_array[3] = {&#13;
+		"123",&#13;
+		"567",&#13;
+		"456"&#13;
+	};&#13;
+	//隐式调用特化函数模板&#13;
+	sort(str_array, 3);&#13;
+	//也可以显式调用特化函数模板	sort&lt;int&gt;(array, 10); &#13;
+	return 0;&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="3dgbmm3mrd6bd16020ankh3jt3">&nbsp;&nbsp;&nbsp;普通函数模板与特化函数模板使用时可以隐式指定模板参数类型，也可以显式指定模板参数类型</a>
+</h3>
+<h3 class="topic">
+<a name="3fp3jjhjclc4emlq374ppogp0h">&nbsp;&nbsp;类模板</a>
+</h3>
+<h3 class="topic">
+<a name="41g46vgne6meq7acpalcam21te">&nbsp;&nbsp;&nbsp;用于类的功能相同，实现逻辑没有变化，只是处理的数据类型不同的类</a>
+</h3>
+<h3 class="topic">
+<a name="2vqo1aa5lg2pghedmkoea0dtlh">&nbsp;&nbsp;&nbsp;//模板类型关键字可以使用class或者typename&#13;
+template&lt;模板类型关键字&gt;&#13;
+class&#13;
+{&#13;
+}；</a>
+</h3>
+<h3 class="topic">
+<a name="5p4lfcal8kg1ljp6akvbel2eh7">&nbsp;&nbsp;&nbsp;实现一个堆空间</a>
+</h3>
+<h3 class="topic">
+<a name="5ejmpdhv84ipoh02cdtleiqsjp">&nbsp;&nbsp;&nbsp;&nbsp;//实现一个数组类&#13;
+class CArry&#13;
+{&#13;
+private: &#13;
+int *arr=nullptr;&#13;
+&#13;
+public:&#13;
+CArry(int size){&#13;
+	arr=new int[size]; &#13;
+	memset(arr,0,sizeof(int)*size);&#13;
+}&#13;
+//[]运算符只能重写为成员函数，重写[]目的是使用类对象名可以直接访问类内数据&#13;
+int &amp;operator[](int index)&#13;
+{&#13;
+return arr[index];&#13;
+}&#13;
+&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="1ke820q745csbfrlm1tan87eu6">&nbsp;&nbsp;&nbsp;改写为模板类</a>
+</h3>
+<h3 class="topic">
+<a name="0natapvop2f23q049u6ulqde5r">&nbsp;&nbsp;&nbsp;&nbsp;//实现一个数组类&#13;
+template&lt;calss T&gt;&#13;
+class CArry&#13;
+{&#13;
+private: &#13;
+	T *arr=nullptr;&#13;
+public:&#13;
+	CArry(int size);&#13;
+&#13;
+	T &amp;operator[](int index)&#13;
+	{&#13;
+	return arr[index];&#13;
+	}&#13;
+}&#13;
+//模板类成员函数在类外定义需要加上template&lt;class T&gt; 和&lt;T&gt;&#13;
+template&lt;class T&gt;&#13;
+CArry&lt;T&gt;::CArry(int size){&#13;
+	array=new T[size];&#13;
+	memset(array,0,sizeof(T)*size);&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="55s57vnn3b69eilpablq8leffa">&nbsp;&nbsp;&nbsp;使用模板类</a>
+</h3>
+<h3 class="topic">
+<a name="5pveun76a6bs90puja708rg0l8">&nbsp;&nbsp;&nbsp;&nbsp;int main()&#13;
+{&#13;
+	// 模板类只能显式的设置类型&#13;
+	CArray&lt;int&gt; array(10);&#13;
+&#13;
+	// 赋值&#13;
+	for (int i = 0; i &lt; 10; ++i)&#13;
+		array[i] = i * i;&#13;
+&#13;
+	return 0;&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="0hhcrrb2hg4g1po5kttdq0dbv6">&nbsp;&nbsp;&nbsp;注意模板类使用时只能显式指定模板数据类型</a>
+</h3>
+<h3 class="topic">
+<a name="2uocaj65ot8odo0bpq5lbi6ke5">&nbsp;&nbsp;&nbsp;类模板的定义和声明必须放在同一个文件，通常放在.h文件中</a>
+</h3>
+<h3 class="topic">
+<a name="3hn93jlfurk4mskla38vmj01jh">&nbsp;&nbsp;&nbsp; T 是类内需要替换的所有类型，声明有效范围是类域</a>
+</h3>
+<h3 class="topic">
+<a name="2la3b5ml8jji5432frfabo2is0">&nbsp;&nbsp;&nbsp;所以，将模板类的成员函数写在类外时，需要加上类域::&lt;T&gt;以及 template&lt;class T&gt;</a>
+</h3>
+<h3 class="topic">
+<a name="58a20n6j3d7f3ne55nlseg9amv">&nbsp;&nbsp;&nbsp;&nbsp;template&lt;class T&gt;&#13;
+类域&lt;T&gt;::函数名(参数列表){&#13;
+balabala&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="14935fmfnqsu0dtitt027nrlnn">&nbsp;&nbsp;模板的最终目的是实例出模板函数或模板类</a>
+</h3>
+<h3 class="topic">
+<a name="0lirlidm5b489sbjsmhu1kbfnq">&nbsp;c++异常处理（新内容）</a>
+</h3>
+<h3 class="topic">
+<a name="7rmh4m7svc2d7p471pdqoh41cd">&nbsp;&nbsp;异常：程序运行期间可能出现的导致程序运行终止的错误</a>
+</h3>
+<h3 class="topic">
+<a name="2pm6hkd9ihmkqsfoaundf6rqis">&nbsp;&nbsp;&nbsp;编译器检查出的语法错误和程序运行结果不正确的逻辑错误均不属于异常</a>
+</h3>
+<h3 class="topic">
+<a name="3flc91i8dmr5n8pnhct34l5buo">&nbsp;&nbsp;分类</a>
+</h3>
+<h3 class="topic">
+<a name="7iiog78gpss2stpl3sp8g000ub">&nbsp;&nbsp;&nbsp;用户主动触发</a>
+</h3>
+<h3 class="topic">
+<a name="735gr1ffeag8f4abp2ejvm1ual">&nbsp;&nbsp;&nbsp;程序自动触发</a>
+</h3>
+<h3 class="topic">
+<a name="0q1to5cj0olag7rrn9ndqtfq64">&nbsp;&nbsp;异常的特点</a>
+</h3>
+<h3 class="topic">
+<a name="5f6bln5j5g3k1dphtifqp99p39">&nbsp;&nbsp;&nbsp;偶然性</a>
+</h3>
+<h3 class="topic">
+<a name="69eabq63qr05fqsg6hggroufm0">&nbsp;&nbsp;&nbsp;可预见性</a>
+</h3>
+<h3 class="topic">
+<a name="1d1jhifh0job8dquav2d1s51mu">&nbsp;&nbsp;&nbsp;严重性</a>
+</h3>
+<h3 class="topic">
+<a name="1cgrj385fqkikaldithak47l12">&nbsp;&nbsp;c++中异常处理</a>
+</h3>
+<h3 class="topic">
+<a name="5jughm5m99ak7pi335haefejen">&nbsp;&nbsp;&nbsp;在每一个小的程序中可以使用简单的方法进行错误处理，但是自一个大的系统中，每一个函数中进行异常处理会导致程序过于复杂和庞大</a>
+</h3>
+<h3 class="topic">
+<a name="7qbcjh42rp2np6h69i1tpbd5a8">&nbsp;&nbsp;&nbsp;c++中如果执行一个函数出现异常，可以不在本函数中处理，而是发送一个信息传给其上一级（调用该函数的函数）上级捕捉到该信息进行处理，若上级无法处理，则继续上传信息，直到异常终止程序的执行</a>
+</h3>
+<h3 class="topic">
+<a name="6lncpai8h90kjdbreo4ueaimuh">&nbsp;&nbsp;异常处理关键字</a>
+</h3>
+<h3 class="topic">
+<a name="7jdgs4qhr0pqnie4ud8mekgqmq">&nbsp;&nbsp;&nbsp;try</a>
+</h3>
+<h3 class="topic">
+<a name="6q66d5pp3duur1fb41avlk10o2">&nbsp;&nbsp;&nbsp;&nbsp;用于检测异常</a>
+</h3>
+<h3 class="topic">
+<a name="0ipo8uhl9vm766kpb0jh8veg89">&nbsp;&nbsp;&nbsp;&nbsp;使用try包含可能产生问题的代码块，不能省去{}</a>
+</h3>
+<h3 class="topic">
+<a name="2uv71hohtoga73bgio3n4eujka">&nbsp;&nbsp;&nbsp;&nbsp;{}内要写throw才有意义</a>
+</h3>
+<h3 class="topic">
+<a name="1026r8smlbg58h971alcokl0ah">&nbsp;&nbsp;&nbsp;throw</a>
+</h3>
+<h3 class="topic">
+<a name="35s9hv7j73c2jvpv9nklilb50d">&nbsp;&nbsp;&nbsp;&nbsp;用于抛出异常</a>
+</h3>
+<h3 class="topic">
+<a name="7rd0kc3d78ek6isbvnk7s337p2">&nbsp;&nbsp;&nbsp;&nbsp;抛出异常后不会执行后面的语句，会直接执行对应catch中的语句</a>
+</h3>
+<h3 class="topic">
+<a name="0v73dso2frj3gqltj814rkhqd1">&nbsp;&nbsp;&nbsp;&nbsp;throw执行的时候会先进行局部变量的清理，然后执行catch块中的内容</a>
+</h3>
+<h3 class="topic">
+<a name="77ehtf2s7r5ks9qn0049mku0rp">&nbsp;&nbsp;&nbsp;catch</a>
+</h3>
+<h3 class="topic">
+<a name="257k5gto2o72a4mv1tqmq3t07b">&nbsp;&nbsp;&nbsp;&nbsp;用于处理异常</a>
+</h3>
+<h3 class="topic">
+<a name="6n18r5aad6dit66qdn1opjrj1k">&nbsp;&nbsp;&nbsp;&nbsp;catch 用于捕获找到的错误，参数是需要捕获的错误类型</a>
+</h3>
+<h3 class="topic">
+<a name="5504on68ept44vokn20lf95j19">&nbsp;&nbsp;&nbsp;&nbsp;catch块中的内容可以有名字，具体的值就是抛出异常时的内容</a>
+</h3>
+<h3 class="topic">
+<a name="1227vs22dhfprlv0727hft150r">&nbsp;&nbsp;&nbsp;异常的检测和异常的处理在不同代码段，thorw负责在两者之间传递异常信息</a>
+</h3>
+<h3 class="topic">
+<a name="5jfgccqeqiasnjrssl3mfrv3vc">&nbsp;&nbsp;异常处理代码结构</a>
+</h3>
+<h3 class="topic">
+<a name="5f2jvg7lum5e0ca0bobfshehs8">&nbsp;&nbsp;&nbsp;try{&#13;
+	受保护的语句;&#13;
+	throw 异常;&#13;
+	其他语句；&#13;
+}&#13;
+catch(异常类型){&#13;
+	异常处理语句;&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="3p5ono5s423skoiq8e71lbhn37">&nbsp;&nbsp;需要注意的点</a>
+</h3>
+<h3 class="topic">
+<a name="4v8bti2pub0jmcos087a63svbd">&nbsp;&nbsp;&nbsp;try和catch语句是一个整体，两者之间不能有其他语句</a>
+</h3>
+<h3 class="topic">
+<a name="3g8o150m7truhhvrdkg5k89h4q">&nbsp;&nbsp;&nbsp;&nbsp;可以只有try块而无catch块，即在本函数中只检查而不处理，把catch处理块放在其他函数中</a>
+</h3>
+<h3 class="topic">
+<a name="0nqfk8qlk1ij7g7oasf6soq4ov">&nbsp;&nbsp;&nbsp;&nbsp;try和catch块必须有用{}括起来的语句，不能省略{}</a>
+</h3>
+<h3 class="topic">
+<a name="18qavc2ak8p25a0c0vcn243ovs">&nbsp;&nbsp;&nbsp;一个try语句后面可能有多个catch语句（方便与不同的异常信息匹配），但是不可以几个try语句块后面用一个catch语句</a>
+</h3>
+<h3 class="topic">
+<a name="6tnornan7tidi5r3j1kniq16iu">&nbsp;&nbsp;&nbsp;&nbsp;被检测的函数必须放在try语句中</a>
+</h3>
+<h3 class="topic">
+<a name="5cm678rtl8u619kfu0h1clt9e0">&nbsp;&nbsp;&nbsp;&nbsp;catch后面的圆括号内一般只存放异常信息的类型名</a>
+</h3>
+<h3 class="topic">
+<a name="79tp3lepnjlhd9o99dmuedf95s">&nbsp;&nbsp;&nbsp;&nbsp;catch也存在另一种写法，除了指定类型名外，还指定变量名，catch(double d)</a>
+</h3>
+<h3 class="topic">
+<a name="0nj2ke1mmgqi0na8s0gc1769tl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;此时如果throw抛出异常信息为double型数据，则catch在捕获异常信息a的同时，还使d获得a的值，即d得到a的一个拷贝</a>
+</h3>
+<h3 class="topic">
+<a name="230c8mja45oa9p48l20ccamjna">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;此时catch可以获得抛出的异常的信息的值</a>
+</h3>
+<h3 class="topic">
+<a name="5b6uop39u291kr3p67derrunmg">&nbsp;&nbsp;&nbsp;catch只检查异常信息的类型，不检查其值，则若需要检测多个不同的异常信息，应当由throw抛出不同类型的异常信息</a>
+</h3>
+<h3 class="topic">
+<a name="7juna87a3qfpubquthsu012mad">&nbsp;&nbsp;&nbsp;异常信息可以是c++预定义的数据类型，也可以是用户自定义的类型</a>
+</h3>
+<h3 class="topic">
+<a name="5icvtn9e3f0j7n22sljjer5ohm">&nbsp;&nbsp;&nbsp;catch(...)用于捕获任意类型的异常信息</a>
+</h3>
+<h3 class="topic">
+<a name="6h0cl6quk0qnj33d7520fo5itv">&nbsp;&nbsp;&nbsp;&nbsp;这种语句一般放在所有catch语句的最后，如果把他放在第一位，则后面的所有catch语句都不起作用</a>
+</h3>
+<h3 class="topic">
+<a name="5ncmbd74o01a6iuq82e3rsrief">&nbsp;&nbsp;&nbsp;throw可以与try-catch结构在一个函数中，也可以不在一个函数中，当throw抛出异常时，首先在本函数寻找catch，若无则找最近的catch处理 </a>
+</h3>
+<h3 class="topic">
+<a name="0r2b5h8sej7g582jq4gulhtosu">&nbsp;&nbsp;&nbsp;某些情况下，throw中可以不包括表达式 例如throw; 其意思是请求调用函数处理该异常</a>
+</h3>
+<h3 class="topic">
+<a name="5s7pqgtlp8n6bqc7ke6cpq3vur">&nbsp;&nbsp;&nbsp;如果throw抛出的异常找不到对应的catch块，系统会调用系统函数terminate，使程序终止运行</a>
+</h3>
+<h3 class="topic">
+<a name="20rr10t9mkmpkhicm4ql71tp94">&nbsp;&nbsp;&nbsp;如果在try语句中存在类对象的建立，同时发生异常时，throw会调用该对象的析构函数，清理对象内存空间后再进行异常处理</a>
+</h3>
+<h3 class="topic">
+<a name="6ip91vgjp46gbft6tbhoib983u">&nbsp;&nbsp;异常处理代码</a>
+</h3>
+<h3 class="topic">
+<a name="69lh93m1n87qvprhb8tmssiqv9">&nbsp;&nbsp;&nbsp;除法运算</a>
+</h3>
+<h3 class="topic">
+<a name="5ffvplhs1npejl7h15f234hoqo">&nbsp;&nbsp;&nbsp;&nbsp;// 除法运算&#13;
+double div(double n1, double n2)&#13;
+{&#13;
+	return n1 / n2;&#13;
+}&#13;
+int main()&#13;
+{&#13;
+	// 算数运算的两个操作数&#13;
+	double number1 = 0, number2 = 0, result = 0;&#13;
+	while (cin &gt;&gt; number1 &gt;&gt; number2)&#13;
+	{&#13;
+		// 使用 try 包含可能产生问题的代码块，不能省去 { }&#13;
+		try {&#13;
+			// 如果除数为0就可能产生异常&#13;
+			if (number2 == 0)&#13;
+			{&#13;
+				// 使用 throw 抛出一个异常，异常的类型可以自己决定&#13;
+				throw "除数不能为0,";&#13;
+			}&#13;
+			// 如果没有产生异常，就会执行下面的语句&#13;
+			result = div(number1, number2);&#13;
+		}&#13;
+		// catch 用于捕获找到的错误，参数是需要捕获的错误类型&#13;
+		// 当异常产生时，会直接跳过剩余的所有代码，执行catch语句&#13;
+		catch (const char* str)&#13;
+		{&#13;
+			// catch 块中的内容可以有名字，具体的值就是抛出异常时的内容&#13;
+			printf("%s请重新输入", str);&#13;
+			continue;&#13;
+		}&#13;
+		printf("%.2lf / %.2lf = %.2lf", number1, number2, result);&#13;
+		break;&#13;
+	}&#13;
+	return 0;&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="0l189q8qskhmtvir15c5chb33i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;此时如果除数为0，商会为inf 即无限大</a>
+</h3>
+<h3 class="topic">
+<a name="75s5v0hi1k044t5hfd80kpsb8g">&nbsp;&nbsp;&nbsp;进行多个异常类型的捕获</a>
+</h3>
+<h3 class="topic">
+<a name="2c7oftp753a0d3v1hk0bcmd295">&nbsp;&nbsp;&nbsp;&nbsp;int main()&#13;
+{&#13;
+	try&#13;
+	{&#13;
+		throw "123";&#13;
+		// 当抛出的异常没有被正确的捕获，程序就会崩溃&#13;
+	}&#13;
+	catch (int)&#13;
+	{&#13;
+		// 捕获 int 类型异常&#13;
+		printf("catch (int)\n");&#13;
+	}&#13;
+	catch (double)&#13;
+	{&#13;
+		// 如果不是 int 类型的异常， 就捕获 double 类型异常&#13;
+		printf("catch (double)\n");&#13;
+	}&#13;
+	catch (...)&#13;
+	{&#13;
+		// 不上以上任何类型的异常，都由这里捕获&#13;
+		// 并且 ... 只能加在最后一个 catch 块&#13;
+		printf("catch (...)\n");&#13;
+	}&#13;
+	return 0;&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="0h47v0p3ucj8gbnehlog2o0n1n">&nbsp;&nbsp;&nbsp;在函数定义的时候，可以指定说明该函数可能抛出的异常类型</a>
+</h3>
+<h3 class="topic">
+<a name="43dajd0p0mrvfmn6bkn9e4520s">&nbsp;&nbsp;&nbsp;&nbsp;void throw_exp() noexcept(false)&#13;
+{&#13;
+	// 推荐使用，在函数内可能抛出任何类型的异常&#13;
+}&#13;
+void throw_exp() noexcept  // noexcept(true)&#13;
+{&#13;
+	// 在函数内绝对不会抛出异常&#13;
+	// 通常 构造，析构等特殊函数隐式的都是 noexcept&#13;
+}&#13;
+void throw_exp() throw(int, double)&#13;
+{&#13;
+	// 不推荐使用，函数内可能抛出 int, double 异常&#13;
+}&#13;
+void throw_exp() throw()&#13;
+{&#13;
+	// 表示不会抛出任何的异常&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="5ai9fsediil8t4q3835cim17qa">&nbsp;&nbsp;&nbsp;自定义异常处理类</a>
+</h3>
+<h3 class="topic">
+<a name="0lcub2igctvmqq74pcghc7tsld">&nbsp;&nbsp;&nbsp;&nbsp;// 自定的异常处理类最好继承自 exception 标准库&#13;
+class CArrayOverflow : public exception&#13;
+{&#13;
+private:&#13;
+	int index = 0;&#13;
+public:&#13;
+	// 接受错误信息&#13;
+	CArrayOverflow(const char* msg, int index) :&#13;
+		exception(msg) &#13;
+	{ &#13;
+		// 保存当前是哪一个下标越界了&#13;
+		this-&gt;index = index;&#13;
+	}&#13;
+	// 重写 exception 类中的虚函数 what&#13;
+	virtual char const* what() const override&#13;
+	{&#13;
+		printf("%s:[%d]\n", exception::what(), index);&#13;
+		return exception::what();&#13;
+	}&#13;
+};&#13;
+int main()&#13;
+{&#13;
+	int array[10] = { 0 };&#13;
+	for (int i = -1; i &lt; 11; ++i)&#13;
+	{&#13;
+		try&#13;
+		{&#13;
+			// 如果下标越界就抛出异常&#13;
+			if (i &lt; 0 || i &gt; 9)&#13;
+			{&#13;
+				// 抛出在一个自定义类型的异常&#13;
+				throw CArrayOverflow("数组下标越界", i);&#13;
+			}&#13;
+		}&#13;
+		// 捕获自己定义的异常信息&#13;
+		catch (CArrayOverflow e)&#13;
+		{&#13;
+			// 直接在内部输出异常信息&#13;
+			e.what();&#13;
+		}&#13;
+	}&#13;
+	return 0;&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="3ast8eb3i8rielevh7fleerbrq">&nbsp;&nbsp;&nbsp;&nbsp;exception 标准库是系统默认使用的异常处理类</a>
+</h3>
+<h3 class="topic">
+<a name="7hpspnodph24lhid3gci5idd4s">&nbsp;&nbsp;&nbsp;return和throw</a>
+</h3>
+<h3 class="topic">
+<a name="63lchorlq6gp9a4k52sud80f67">&nbsp;&nbsp;&nbsp;&nbsp;class OBJECT&#13;
+{&#13;
+public:&#13;
+	OBJECT() { printf("OBJECT::OBJECT()\n"); }&#13;
+	~OBJECT() { printf("OBJECT::~OBJECT()\n"); }&#13;
+};&#13;
+&#13;
+// 一个可能会抛出异常的函数&#13;
+void test_func() noexcept(false)&#13;
+{&#13;
+	try&#13;
+	{&#13;
+		OBJECT object;&#13;
+&#13;
+		// throw 首先进行局部变量的清理，然后转到 catch 块&#13;
+		throw "123456";&#13;
+&#13;
+		// return 会调用构造和析构&#13;
+		return;&#13;
+	}&#13;
+	catch (...)&#13;
+	{&#13;
+		printf("捕获到了异常");&#13;
+	}&#13;
+}&#13;
+&#13;
+int main()&#13;
+{&#13;
+	test_func();&#13;
+	return 0;&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="0uagt3t96g8bjikt359aq03cd2">&nbsp;&nbsp;进行多个异常的捕获</a>
+</h3>
+<h3 class="topic">
+<a name="11isf8jlvbkk8p9ce44rert7kn">&nbsp;&nbsp;&nbsp;与catch相关</a>
+</h3>
+<h3 class="topic">
+<a name="6vn1mbuih1ad6lmorb639p7sf6">&nbsp;&nbsp;&nbsp;可以使用多个catch进行连续的异常捕获</a>
+</h3>
+<h3 class="topic">
+<a name="3vc9q1eqlu5enh2op2t9lci7gg">&nbsp;&nbsp;&nbsp;catch(...)</a>
+</h3>
+<h3 class="topic">
+<a name="466a3sm7iqanht8o1jpemgs6cc">&nbsp;&nbsp;&nbsp;&nbsp;用于接受其他所有没有被明确定义的异常</a>
+</h3>
+<h3 class="topic">
+<a name="51mnalm35qe6eegiq2ptd6ki6p">&nbsp;&nbsp;&nbsp;如果抛出的异常没有被捕获，则程序会崩溃</a>
+</h3>
+<h3 class="topic">
+<a name="5k1e5mbn2bt0j1jjtqc3q74fh3">&nbsp;&nbsp;说明函数可能抛出的异常</a>
+</h3>
+<h3 class="topic">
+<a name="0n51vq5vvc5eac8an83k2vagnk">&nbsp;&nbsp;&nbsp;int fun(int num)noexpect(flase);</a>
+</h3>
+<h3 class="topic">
+<a name="4uod60mlf05alpo0g6qhjl5b04">&nbsp;&nbsp;&nbsp;&nbsp;函数可能抛出任何异常</a>
+</h3>
+<h3 class="topic">
+<a name="45653dkn6ae4qh1kdcc2agc0fi">&nbsp;&nbsp;&nbsp;int fun(int num)noexpect</a>
+</h3>
+<h3 class="topic">
+<a name="6k11hufib4atc937rfricmb6et">&nbsp;&nbsp;&nbsp;&nbsp;函数内绝对不会抛出异常</a>
+</h3>
+<h3 class="topic">
+<a name="72u6hha0s6k5816a9bicmcmv2a">&nbsp;&nbsp;&nbsp;&nbsp;通常构造 拷贝构造 析构函数等特殊函数隐式的都是noexpect</a>
+</h3>
+<h3 class="topic">
+<a name="0lqp38r6c75vjjq0t4tinmj1hn">&nbsp;&nbsp;&nbsp;int fun(int num)throw(int,doublel)</a>
+</h3>
+<h3 class="topic">
+<a name="2e6a23jo8jg8gmhvm112f8gt7q">&nbsp;&nbsp;&nbsp;&nbsp;函数内可能抛出int double类型异常</a>
+</h3>
+<h3 class="topic">
+<a name="6kgo71nttau3f6gkna2a5os9jk">&nbsp;&nbsp;&nbsp;int fun(int num)throw()</a>
+</h3>
+<h3 class="topic">
+<a name="3877t0a2t7ln8aodh9rqbqpsq8">&nbsp;&nbsp;&nbsp;&nbsp;不会抛出任何异常</a>
+</h3>
+<h3 class="topic">
+<a name="6ca3oit5eq1d57kst15ocoa5mv">&nbsp;&nbsp;&nbsp;如果函数可能抛出异常，编译器会为函数添加各种异常处理函数</a>
+</h3>
+<h3 class="topic">
+<a name="6qc12o409621hnr4d779bfsg4g">&nbsp;&nbsp;&nbsp;函数异常声明是函数的一部分，必须同时出现在函数声明和函数定义中</a>
+</h3>
+<h3 class="topic">
+<a name="2lq9beh66lsecgp8nc5m8oelun">&nbsp;字符编码问题（w***********f）</a>
+</h3>
+<h3 class="topic">
+<a name="7e4jn7mbq6bhlfebhtfmvgj2a7">&nbsp;&nbsp;原生ascii 有128个字符</a>
+</h3>
+<h3 class="topic">
+<a name="6jgsh6ovvcn09puil768u2lq8g">&nbsp;&nbsp;扩展ascii +128=256个字符</a>
+</h3>
+<h3 class="topic">
+<a name="0g4qv4mrgtbnrc3oqo21i25ln3">&nbsp;&nbsp;unicode规范</a>
+</h3>
+<h3 class="topic">
+<a name="0uguuvovru4joc6j43p847ijia">&nbsp;&nbsp;&nbsp;UTF-8</a>
+</h3>
+<h3 class="topic">
+<a name="4ghup6laaq752k34ur3fs73m97">&nbsp;&nbsp;&nbsp;&nbsp;不定长</a>
+</h3>
+<h3 class="topic">
+<a name="21v37s02gps0lmv5ggs0mo3hoh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;一个字符可能长1~6个字节</a>
+</h3>
+<h3 class="topic">
+<a name="2qfdrj4vad2kij1p8djtvv6i2o">&nbsp;&nbsp;&nbsp;&nbsp;广泛用于网络传播</a>
+</h3>
+<h3 class="topic">
+<a name="1obqutmc4qhnnonjmf3ogntvsg">&nbsp;&nbsp;&nbsp;UTF-16</a>
+</h3>
+<h3 class="topic">
+<a name="6pgcvc9sbl52q0hcmiomaj14cf">&nbsp;&nbsp;&nbsp;&nbsp;16位表示一个字符</a>
+</h3>
+<h3 class="topic">
+<a name="473fasqo304slq722okf6c77bv">&nbsp;&nbsp;&nbsp;UTF-32</a>
+</h3>
+<h3 class="topic">
+<a name="6soh0f0m49420r73aii0i96q38">&nbsp;&nbsp;&nbsp;&nbsp;32位表示一个字符</a>
+</h3>
+<h3 class="topic">
+<a name="1cg42vag7m9kv37h3r3k1bpiae">&nbsp;&nbsp;&nbsp;以上三种均是unicode编码模式</a>
+</h3>
+<h3 class="topic">
+<a name="71slr89c4f6m2dqe2cpdq5phlm">&nbsp;&nbsp;所有的编码模式的前256位均是扩展ascii，均可以显示英文字符</a>
+</h3>
+<h3 class="topic">
+<a name="04dl0sr9p0fuiad0212iekd99i">&nbsp;&nbsp;c++内的编码方式</a>
+</h3>
+<h3 class="topic">
+<a name="09har1rovlckssea65gl1ndbos">&nbsp;&nbsp;&nbsp;acsii码</a>
+</h3>
+<h3 class="topic">
+<a name="3fnmeqis7n9n9r03eetg84hqh2">&nbsp;&nbsp;&nbsp;&nbsp;也称多字节</a>
+</h3>
+<h3 class="topic">
+<a name="7ovg5sit4ur27usnvk7f5o118v">&nbsp;&nbsp;&nbsp;const char* GBK_str="你好"</a>
+</h3>
+<h3 class="topic">
+<a name="4d9ooqifbptl25e8g1ubsagfmc">&nbsp;&nbsp;&nbsp;&nbsp;使用GBK2312 GBK 等中文编码</a>
+</h3>
+<h3 class="topic">
+<a name="04im734bkht6do5kf09kn1j531">&nbsp;&nbsp;&nbsp;const wchar_t* unicode_str=L"你好";</a>
+</h3>
+<h3 class="topic">
+<a name="51b1ooen5aslrodg5754jpssun">&nbsp;&nbsp;&nbsp;&nbsp;使用unicode编码</a>
+</h3>
+<h3 class="topic">
+<a name="0lb359pmv39jd9cnh7g3rkrchi">&nbsp;&nbsp;&nbsp;const char16_t* char16_str=u"你好"；</a>
+</h3>
+<h3 class="topic">
+<a name="0po42a6oc2n28467c46fs8ubah">&nbsp;&nbsp;&nbsp;&nbsp;使用16位内存存储字符，每个字符两个字节</a>
+</h3>
+<h3 class="topic">
+<a name="6ja14id3bebl2gfbdob2v3lcuf">&nbsp;&nbsp;&nbsp;const char32_t* char32_str=U"你好"；</a>
+</h3>
+<h3 class="topic">
+<a name="70v5rl9ltae85u9k947tc680i0">&nbsp;&nbsp;&nbsp;&nbsp;使用32位内存存储字符，每个字符4个字节</a>
+</h3>
+<h3 class="topic">
+<a name="27fs6ocdhqa2cp3nojimv99613">&nbsp;&nbsp;多字节（char）与宽字节（wchar_t）相互转换 （即ascii转换为unicode）</a>
+</h3>
+<h3 class="topic">
+<a name="6looviaerrahg21hdkcaoo7kke">&nbsp;&nbsp;&nbsp;使用两个函数</a>
+</h3>
+<h3 class="topic">
+<a name="6691kth8gi1qg0tfofau5faor2">&nbsp;&nbsp;&nbsp;&nbsp;#define  CHAR_TO_WCHAR(lpChar, lpW_Char) \&#13;
+    MultiByteToWideChar(CP_ACP, NULL, lpChar, -1, lpW_Char, _countof(lpW_Char));&#13;
+&#13;
+#include &lt;windows.h&gt;&#13;
+#include &lt;iostream&gt;&#13;
+#include &lt;tchar.h&gt;&#13;
+using namespace std;&#13;
+&#13;
+int _tmain(int argc, TCHAR *argv[])&#13;
+{&#13;
+	CHAR char_str[10] = "123";&#13;
+	WCHAR wchar_str[10] = L"123";&#13;
+&#13;
+	// 对应的字符类型需要使用对应的字符函数&#13;
+	// 0x31 0x32 0x33 0x00&#13;
+	printf("strlen(\"123\") = %d\n", strlen(char_str));&#13;
+&#13;
+	// 0x31 0x00 0x32 0x00 0x33 0x00 0x00 0x00&#13;
+	// printf("strlen(L\"123\") = %d\n", strlen((char*)wchar_str));该语句输出结果为1，因为strlen()遇到\0就截断&#13;
+	printf("strlen(L\"123\") = %d\n", wcslen(wchar_str));&#13;
+&#13;
+	// 提出A版是为了兼容以前的操作系统和程序&#13;
+	// 目前windows系统采用的是UNICODE，如果使用多字节版(A)&#13;
+	// 实际上会使用 MultiByteToWideChar 将多字节转换&#13;
+	// 成宽字节，最终将转换出的宽字节传入到宽字符版本(W)的函数&#13;
+	MessageBoxA(0, "123", "456", 0);&#13;
+	MessageBoxW(0, L"123", L"456", 0);&#13;
+&#13;
+#ifdef UNICODE&#13;
+#define MessageBox  MessageBoxW&#13;
+#else&#13;
+#define MessageBox  MessageBoxA&#13;
+#endif // !UNICODE&#13;
+&#13;
+	return 0;&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="2btugc4ro7alr4566c5h4gcj5v">&nbsp;&nbsp;&nbsp;&nbsp;//_tmain 表示通用类型函数，根据编译的不同，底层是实现啊可以是Unicode版本的main函数，可以是ascii版本的main函数  ，根据目前有没有定义Unicode宏决定（条件编译）</a>
+</h3>
+<h3 class="topic">
+<a name="52msvj9vuk92c5d0eth5ob9535">&nbsp;&nbsp;vs中的多字节与宽字节</a>
+</h3>
+<h3 class="topic">
+<a name="50urhn7op1mel878efe0olotrt">&nbsp;&nbsp;&nbsp;程序使用的字符集由项目属性决定，可以使用Unicode或多字节（即ASCII）</a>
+</h3>
+<h3 class="topic">
+<a name="2se1acqurv3g0npi5b67cvd6nl">&nbsp;&nbsp;字符集与函数版本</a>
+</h3>
+<h3 class="topic">
+<a name="44e5astk72ve0uhv21g7n3t7b5">&nbsp;&nbsp;&nbsp;| **字符集** |                    | **ASC****ii** | **Unicode**      |&#13;
+| ----------  | ---------     | -------------  | -----------         |&#13;
+| 字符类型    | C类型          | char               | wchar_t            |&#13;
+|                   | Win32类型 | CHAR             | WCHAR            |&#13;
+| 函数版本   | C函数           | printf             | wprintf             |&#13;
+|                   |                    | strlen            | wcslen              |&#13;
+|                   | Win32函数  | MessageBxA | MessageBoxW |</a>
+</h3>
+<h3 class="topic">
+<a name="14n8qg4kqrf90o942t5ic7hc1k">&nbsp;&nbsp;字符处理函数</a>
+</h3>
+<h3 class="topic">
+<a name="4ddas5ulhhnhffp52n3ccc9v0p">&nbsp;&nbsp;&nbsp;#ifdef UNICODE&#13;
+#define _tmain  wmain&#13;
+#define TCHAR  wchar_t&#13;
+#else&#13;
+#define _tmain  main&#13;
+#define TCHAR  char&#13;
+#endif // !UNICODE&#13;
+&#13;
+int _tmain(int argc, TCHAR *argv[])&#13;
+{&#13;
+	TCHAR chr;&#13;
+	&#13;
+	_tprintf(TEXT("%c"), chr);&#13;
+	// _tprintf&#13;
+	//  - ascii:printf&#13;
+	//	- unicode:wprintf&#13;
+&#13;
+	// TEXT("%c")  _T("%c")&#13;
+	//  - ascii: "%c"&#13;
+	//	- unicode: L"%c"&#13;
+&#13;
+	// TCAHR&#13;
+	//  - ascii: char&#13;
+	//	- unicode: wchar_t&#13;
+	return 0;&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="0cg20t38gk28qdmi5g75l38mb2">&nbsp;&nbsp;&nbsp;&nbsp;？？？？？？？？？？？？？？？？？？？？？？？</a>
+</h3>
+<h3 class="topic">
+<a name="53r45pp9g649e8hj47qj56i22d">&nbsp;在vs中指针不能看到其指向的内存空间的值，需要放在内存中去看</a>
+</h3>
+<h3 class="topic">
+<a name="28m3mhun1t80o85ms9bqdph4t1">&nbsp;string类</a>
+</h3>
+<h3 class="topic">
+<a name="5qb19ajq4bf64sk5b0rb34c75f">&nbsp;&nbsp;一个用于操作字符串的类</a>
+</h3>
+</body>
+</html>

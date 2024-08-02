@@ -1,0 +1,942 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>class48day0416（pe文件第二天）</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="5d5eiu79bvrf2gre3ocl7dij6d">class48day0416（pe文件第二天）</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="class48day0416_files/images/class48day0416%EF%BC%88pe%E6%96%87%E4%BB%B6%E7%AC%AC%E4%BA%8C%E5%A4%A9%EF%BC%89.jpg"></div>
+<h2 class="topic">
+<a name="79h3fmce8nflajl8dhpnv2hf61">复习</a>
+</h2>
+<h3 class="topic">
+<a name="6t50dr6rttblv3j58v61798tfk">&nbsp;如何找到nt头</a>
+</h3>
+<h3 class="topic">
+<a name="1ppoejiq2hj2jgflnhfr30bfik">&nbsp;&nbsp;通过dos头（文件的起始位置）得到nt头的偏移量</a>
+</h3>
+<h3 class="topic">
+<a name="0r22k1flf9dcfhnjn88td2g6co">&nbsp;如何找到第一个区段头</a>
+</h3>
+<h3 class="topic">
+<a name="17croqi0he83455ggncoisk4of">&nbsp;&nbsp;扩展头的大小在文件头的倒数第二个字段，已知扩展头的大小，就可以通过nt头+4（第一个字段）+20（文件头的大小）+扩展头的大小，得到第一个区段头的位置</a>
+</h3>
+<h3 class="topic">
+<a name="5pqf1iob768p4b2l3cga2jqu80">&nbsp;&nbsp;使用一个宏，参数是nt头的地址，得到区段头的地址</a>
+</h3>
+<h3 class="topic">
+<a name="1ei946s8g0qobgm6i2ebj5mj7h">&nbsp;区段表中的VirtualAddress 、PointToRawData保存的是什么？</a>
+</h3>
+<h3 class="topic">
+<a name="1v6s9s0g6aovv9kf728n513r46">&nbsp;&nbsp;区段的在内存中的rcva</a>
+</h3>
+<h3 class="topic">
+<a name="54bf5nqitpfkokmvabkg4p5eud">&nbsp;&nbsp;区段在磁盘中的文件偏移</a>
+</h3>
+<h3 class="topic">
+<a name="3ie1poi7tg4f1u7t74bkofkbup">&nbsp;OEP字段保存在哪里</a>
+</h3>
+<h3 class="topic">
+<a name="3dnnkiirm6fbmafr9vaadmh59q">&nbsp;&nbsp;保存在扩展头的AddressOfEntryPoint</a>
+</h3>
+<h3 class="topic">
+<a name="06nhgijng5lr852uiv8b883o6o">&nbsp;判断pe文件时32位还是64位</a>
+</h3>
+<h3 class="topic">
+<a name="45mm5niv02996ggg27jqau0vr0">&nbsp;&nbsp;通过扩展头的第一个字段Magic</a>
+</h3>
+<h3 class="topic">
+<a name="1jaudjtpbsu3v0522o59fmcn7e">&nbsp;exe默认加载基址是0x400000h （四十万） dll默认加载基址是0x10000000h（一千万）</a>
+</h3>
+<h3 class="topic">
+<a name="5bgcugga7mhi01c8qeob4loojm">&nbsp;文件对齐粒度一般是0x200h 内存对其粒度一般是0x1000h</a>
+</h3>
+<h3 class="topic">
+<a name="6glp2om501lqn576eovndpisit">&nbsp;RVA转换成FOA</a>
+</h3>
+<h3 class="topic">
+<a name="3cjvb1gn5vl3cu5sjfl117n2bp">&nbsp;&nbsp;FOA-在文件中区段的起始位置=RVA-内存中区段的起始位置</a>
+</h3>
+<h2 class="topic">
+<a name="1q6bjhqp9hoae30vbe742qc83s">导出表</a>
+</h2>
+<h3 class="topic">
+<a name="43ku86hl5k88l0v8amfv60rp1f">&nbsp;数据目录表中下标为0的元素可以索引到导出表</a>
+</h3>
+<h3 class="topic">
+<a name="64ne5lmr4m1h9v6sc6bm6m6cqo">&nbsp;&nbsp;当数据目录表的第一个元素为0（即导出表的地址位为0）时，说明该程序当前没有导出表，一般exe程序没有导出表，dll有导出表</a>
+</h3>
+<h3 class="topic">
+<a name="6pv4sodk7numj3m9s7461qfcg2">&nbsp;作用</a>
+</h3>
+<h3 class="topic">
+<a name="2eucqb6deis9b9g837mqbnhiil">&nbsp;&nbsp;为其他程序提供函数</a>
+</h3>
+<h3 class="topic">
+<a name="3qhav0ba8spnoeakg634l35n8d">&nbsp;&nbsp;dll通过导出表导出函数或变量</a>
+</h3>
+<h3 class="topic">
+<a name="6g5jkhsitt8pmc7i48lndv1nsp">&nbsp;dll通过def导出可以控制导出函数的序号，也可以控制函数是否能通过名称导出 （即在def文件中函数名后面加no name）</a>
+</h3>
+<h3 class="topic">
+<a name="1ci6o2bpjgb8gfmkvkbc5unmu8">&nbsp;&nbsp;通过LoadLibrary+GetProAddress可以通过序号引用导出函数，即使用dll的显式调用</a>
+</h3>
+<h3 class="topic">
+<a name="4s62f8nrgr3bciit87f5l9ns22">&nbsp;导出表支持</a>
+</h3>
+<h3 class="topic">
+<a name="0479mrl30bbh3c0ii8je5eqi3o">&nbsp;&nbsp;符号导出</a>
+</h3>
+<h3 class="topic">
+<a name="4s17m4ndeg7gnolua97ippenl9">&nbsp;&nbsp;序号导出</a>
+</h3>
+<h3 class="topic">
+<a name="6vcdqo9j171cjkmrf734m471k9">&nbsp;&nbsp;两种形式可以共存</a>
+</h3>
+<h3 class="topic">
+<a name="721ovihs962lge2uof5lnoutg9">&nbsp;结构体类型&#13;
+IMAGE_EXPORT_DIRECTORY</a>
+</h3>
+<h3 class="topic">
+<a name="6222rglvmbicp1fdvnatj3bm12">&nbsp;&nbsp;模块名称&#13;
+DWORD Name</a>
+</h3>
+<h3 class="topic">
+<a name="3l26859ijeakd0ep04lq0b85g0">&nbsp;&nbsp;&nbsp;本pe文件的名称</a>
+</h3>
+<h3 class="topic">
+<a name="31dphtk6ucl2a575s3jrpamuv7">&nbsp;&nbsp;&nbsp;是一个RVA，标识名称的位置，是编译的时候生成的，后期的重命名无法影响到该值</a>
+</h3>
+<h3 class="topic">
+<a name="3rk54rat8mg3t5epheb2d3t1jh">&nbsp;&nbsp;&nbsp;如果要在文件中查询需要转化为文件偏移</a>
+</h3>
+<h3 class="topic">
+<a name="5df63nsmckbie3lt5vrp04vai7">&nbsp;&nbsp;索引基数&#13;
+DWORD Base</a>
+</h3>
+<h3 class="topic">
+<a name="5bhf3n18rr44hqk10o119g19pt">&nbsp;&nbsp;&nbsp;与序号导出相关</a>
+</h3>
+<h3 class="topic">
+<a name="12b36p7g1hk0dnq16rs4vqv6hf">&nbsp;&nbsp;&nbsp;一般为1</a>
+</h3>
+<h3 class="topic">
+<a name="20ncundjurd3sa33shaq4nn4ff">&nbsp;&nbsp;导出地址表中元素个数&#13;
+DWORD NumberOfFunction</a>
+</h3>
+<h3 class="topic">
+<a name="2poaq5il4ki49l5q163bioif16">&nbsp;&nbsp;导出名称表中元素个数&#13;
+DWORD NumberOfName</a>
+</h3>
+<h3 class="topic">
+<a name="59ebtnubtvmmb491180853b1ni">&nbsp;&nbsp;导出地址表的相对虚拟地址&#13;
+DWORD AddressOfFunction</a>
+</h3>
+<h3 class="topic">
+<a name="1l8vree7512369khrs60sqrrg7">&nbsp;&nbsp;&nbsp;地址表是一个dword数组，每个元素四个字节</a>
+</h3>
+<h3 class="topic">
+<a name="4pl5k6ohdnbat82pl6rqufljqb">&nbsp;&nbsp;&nbsp;有的地址为0，表示该函数无效</a>
+</h3>
+<h3 class="topic">
+<a name="3u9p1jnc0nr1856k20qf6m7epm">&nbsp;&nbsp;&nbsp;有的元素在序号表中没有对应的序号与之对应，此时该地址对应的函数是序号导出的</a>
+</h3>
+<h3 class="topic">
+<a name="7lmibd5s1albg4gp19porpb7os">&nbsp;&nbsp;&nbsp;&nbsp;此时函数地址对应的下标称为虚序号</a>
+</h3>
+<h3 class="topic">
+<a name="72m69uqdqgfuuq2p99ljrrvfpe">&nbsp;&nbsp;&nbsp;&nbsp;导出的序号等于该地址元素的下标+Base</a>
+</h3>
+<h3 class="topic">
+<a name="0mugc2og5dtee6c0gjlaal46ce">&nbsp;&nbsp;&nbsp;所有导出的函数都在导出地址表中</a>
+</h3>
+<h3 class="topic">
+<a name="0bah98jespe88ecmktuibn58tr">&nbsp;&nbsp;&nbsp;存储的是Rva，即函数的地址为相对虚拟地址</a>
+</h3>
+<h3 class="topic">
+<a name="4dmag1ji0ul73bi0tmv6mc1nm0">&nbsp;&nbsp;导出名称表的相对虚拟地址&#13;
+DWORD AddressOfName</a>
+</h3>
+<h3 class="topic">
+<a name="6cdhspjp4jdv7q7obj8gb2dleu">&nbsp;&nbsp;&nbsp;名称表是一个dword数组，每个元素四个字节</a>
+</h3>
+<h3 class="topic">
+<a name="41aj7gsl0i2op4666kqqdcud3r">&nbsp;&nbsp;&nbsp;如果函数以名称导出，函数的名称的rva就保存于该表</a>
+</h3>
+<h3 class="topic">
+<a name="1due1eosop29mal044cb3gajpo">&nbsp;&nbsp;&nbsp;存储的是函数名称字符串的相对虚拟地址Rva</a>
+</h3>
+<h3 class="topic">
+<a name="6me75j2unc9a39pg71h3ul8454">&nbsp;&nbsp;导出序号表相对虚拟地址&#13;
+DWORD AddressOfNameOrdinals</a>
+</h3>
+<h3 class="topic">
+<a name="517jf60ecg6c2bfr84gjgtb51m">&nbsp;&nbsp;&nbsp;序号表是一个word数组，每个元素两个字节</a>
+</h3>
+<h3 class="topic">
+<a name="6d87ugrhgo12tt1elekt33e3oe">&nbsp;&nbsp;&nbsp;保存的并不是所有导出函数的序号，只保存名称表中函数的序号，且两表中的元素一一对应，名称表的第一个元素的序号就保存在序号表的第一个元素中</a>
+</h3>
+<h3 class="topic">
+<a name="4kcj0p7cg0dtt64ij7m332er74">&nbsp;&nbsp;&nbsp;序号数组的元素值是导出地址表的下标，对应名称表中特定函数的地址</a>
+</h3>
+<h3 class="topic">
+<a name="4d801vunmndl4bk363dtejb6ji">&nbsp;&nbsp;&nbsp;导出序号表中的元素的值不一定时逐个递增的，可能会有跳过</a>
+</h3>
+<h3 class="topic">
+<a name="7j6680cnufdakofbngrq7ui32g">&nbsp;&nbsp;&nbsp;注意调用函数时使用的序号与表中的序号是不同的，表中的序号+base值才等于调用对应函数时使用的序号</a>
+</h3>
+<h3 class="topic">
+<a name="4mf4icaop4f8kqersi96tn30on">&nbsp;&nbsp;&nbsp;&nbsp;使用序号调用导出函数时，需要使用 序号-Base，然后 在地址表中找对应下标的元素，即得到函数的地址</a>
+</h3>
+<h3 class="topic">
+<a name="1ojlq7fhkinva0784rcmgl0na7">&nbsp;&nbsp;&nbsp;&nbsp;Base是一个导出表的字段</a>
+</h3>
+<h3 class="topic">
+<a name="6mm36b7q4cgpdhpks1m4uopvvc">&nbsp;在数据目录中找到导出表的Rva之后，需要将Rva转化为文件偏移，才能找到导出表在文件中的位置</a>
+</h3>
+<h3 class="topic">
+<a name="33ou34a7is7ms8srg9rer47giv">&nbsp;&nbsp;010editot可以使用ctrl+g跳转到特定地址</a>
+</h3>
+<h3 class="topic">
+<a name="0nje706uq5hg63992qv5q4hdsp">&nbsp;&nbsp;找到导出表中的模块名称之后，因为模块名称也是一个Rva，所以需要转为文件偏移才能在文件中找到该模块文件名的存储位置</a>
+</h3>
+<h3 class="topic">
+<a name="15b1ut5dhbbq1apsakbqa81ig3">&nbsp;&nbsp;同样的转换需要发生在所有存储着Rva的导出表的字段值的寻址中</a>
+</h3>
+<h3 class="topic">
+<a name="5a484339djogpqi39fi55ebjbk">&nbsp;dll中如果使用def文件对函数进行导出，可以使用显式调用的方式（LoadLibrary+GetProcAdderss）使用def中函数的序号调用函数</a>
+</h3>
+<h3 class="topic">
+<a name="0ogbcp80mhtlis8fq2pag01hqd">&nbsp;&nbsp;这里使用的序号等于Base+该函数在地址表中对应地址元素的下标</a>
+</h3>
+<h3 class="topic">
+<a name="6t9b5nvqu1k8eg6u0fsn3tstl7">&nbsp;代码实现遍历导出表</a>
+</h3>
+<h3 class="topic">
+<a name="673d2rtspso3paffl4i6gnvfcu">&nbsp;&nbsp;循环嵌套，外层遍历地址表，内部分辨函数时名称导出还是序号导出</a>
+</h3>
+<h3 class="topic">
+<a name="7hgoj4tv8n9njbvgsoaljqdtq4">&nbsp;&nbsp;取得导出表的指针，通过nt头数据目录表的第一个元素得到</a>
+</h3>
+<h3 class="topic">
+<a name="501vmo8pmkps53stkotenapk3o">&nbsp;&nbsp;将得到的导出表的Rva转化为文件偏移</a>
+</h3>
+<h3 class="topic">
+<a name="2em7be1qoee8lb36p87cklthg7">&nbsp;&nbsp;&nbsp;这里需要使用rv转文件偏移函数</a>
+</h3>
+<h3 class="topic">
+<a name="1tf1n705tsvuv39ou4v4ea3uag">&nbsp;&nbsp;&nbsp;&nbsp;该函数资料上有</a>
+</h3>
+<h3 class="topic">
+<a name="1ghrqmquoedtpeehrs8avj75rd">&nbsp;&nbsp;导出表在文件中的位置等于文件偏移+文件基址</a>
+</h3>
+<h3 class="topic">
+<a name="6uanv9ab99djbpgplu1mulp6ke">&nbsp;&nbsp;输出模块名</a>
+</h3>
+<h3 class="topic">
+<a name="2n4sodr650tvelh6325e2uqjjj">&nbsp;&nbsp;&nbsp;模块名储存的是一个rva，所以也需要转化为文件偏移再加上文件基址</a>
+</h3>
+<h3 class="topic">
+<a name="2t4i47tb38t17ecdsoo1ukv80n">&nbsp;&nbsp;遍历导出表</a>
+</h3>
+<h3 class="topic">
+<a name="438n9bemt7kalse34opd15fsb2">&nbsp;&nbsp;&nbsp;确定地址表中元素个数</a>
+</h3>
+<h3 class="topic">
+<a name="3aunkftnkulebpmcs3k8eooi8j">&nbsp;&nbsp;&nbsp;确定名称表中元素个数</a>
+</h3>
+<h3 class="topic">
+<a name="4436j8hgqntumer8cqct69r4ll">&nbsp;&nbsp;&nbsp;确定函数地址表、序号表、名称表的地址</a>
+</h3>
+<h3 class="topic">
+<a name="4jvjqku2mc51jgdldlvi447f5o">&nbsp;&nbsp;&nbsp;&nbsp;需要将地址表的rva转为文件偏移再加上文件基址</a>
+</h3>
+<h3 class="topic">
+<a name="549k3m9anoae93jpmm1tel20q6">&nbsp;&nbsp;&nbsp;&nbsp;注意序号表是一个word类型数组，里面每一个元素都是word类型</a>
+</h3>
+<h3 class="topic">
+<a name="4m9ba9g49kcj5dte1r2nmam4bp">&nbsp;&nbsp;&nbsp;外层循环遍历函数地址表</a>
+</h3>
+<h3 class="topic">
+<a name="13fbrche05bp7siffolfkimlff">&nbsp;&nbsp;&nbsp;&nbsp;若地址值为0，continue</a>
+</h3>
+<h3 class="topic">
+<a name="1f3fdmqfbapsdli1fkc8ml224o">&nbsp;&nbsp;&nbsp;&nbsp;判断是否为符号导出（即函数导出）</a>
+</h3>
+<h3 class="topic">
+<a name="272r5b1tjeadkcna5nd67tpvj3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;遍历序号表，看序号表中的元素是否存在与地址表中下标相等的</a>
+</h3>
+<h3 class="topic">
+<a name="16bip0g8h9e1os4342ps87b8h9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果有，则说明该函数是符号导出，有函数名</a>
+</h3>
+<h3 class="topic">
+<a name="1beg22dj1vmqdcdjv51hljfh72">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在函数名表中取出函数名的rva，转为文件偏移，加上文件基址，寻址到该函数名</a>
+</h3>
+<h3 class="topic">
+<a name="5kk38b91fu8vl9rsjv2hv3qeu7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;输出函数名及其导出序号（导出序号即地址表中下标+base）</a>
+</h3>
+<h3 class="topic">
+<a name="4dmvujso4kermj4r8gfl57ckaj">&nbsp;&nbsp;&nbsp;&nbsp;如果不是符号导出，则直接输出函数的序号</a>
+</h3>
+<h3 class="topic">
+<a name="0kkdgn2s96h7gi96g259k03enh">&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="083l9c75e16l03fhdk1em49q4v">&nbsp;&nbsp;&nbsp;void ShowExportInfo(char* pBuf)&#13;
+{&#13;
+	//找到导出位置，数据目录表的第一项（下标0）&#13;
+	PIMAGE_DOS_HEADER pDos = (PIMAGE_DOS_HEADER)pBuf;&#13;
+	//NT头&#13;
+	PIMAGE_NT_HEADERS pNt =&#13;
+		(PIMAGE_NT_HEADERS)&#13;
+		(pDos-&gt;e_lfanew + pBuf);&#13;
+	//获得导出表的RVA&#13;
+	PIMAGE_DATA_DIRECTORY pExportDir = &amp;pNt-&gt;OptionalHeader.DataDirectory[0];&#13;
+&#13;
+	//计算导出表的文件偏移FOA&#13;
+	DWORD dwExportFOA = RVAtoFOA(pExportDir-&gt;VirtualAddress, pBuf);&#13;
+	//具体在文件中的位置&#13;
+	PIMAGE_EXPORT_DIRECTORY pExport = &#13;
+		(PIMAGE_EXPORT_DIRECTORY)&#13;
+		(dwExportFOA + pBuf);&#13;
+&#13;
+	//模块名&#13;
+	char* pModeName = RVAtoFOA(pExport-&gt;Name, pBuf) + pBuf;&#13;
+	printf("---------模块名：%s---------\n", pModeName);&#13;
+	//遍历导出表&#13;
+	&#13;
+	DWORD dwFunAddrCount = pExport-&gt;NumberOfFunctions;//函数数量&#13;
+	DWORD dwFunNameCount = pExport-&gt;NumberOfNames;//函数名数量&#13;
+&#13;
+	PDWORD pFunAddr   = (PDWORD)(RVAtoFOA(pExport-&gt;AddressOfFunctions, pBuf) + pBuf);&#13;
+	PDWORD pFunName   = (PDWORD)(RVAtoFOA(pExport-&gt;AddressOfNames, pBuf) + pBuf);&#13;
+	PWORD pFunOrdinal = (PWORD)(RVAtoFOA(pExport-&gt;AddressOfNameOrdinals, pBuf) + pBuf);&#13;
+&#13;
+	for (int i = 0; i &lt; dwFunAddrCount;i++)&#13;
+	{&#13;
+		//如果有无效地址，直接下一个&#13;
+		if (pFunAddr[i] == 0)&#13;
+		{&#13;
+			continue;&#13;
+		}&#13;
+		printf("函数地址：%08X ", pFunAddr[i]);&#13;
+		//判断是否是符号导出（是否有函数名字）&#13;
+		//遍历序号表，看是否存在此序号（地址表下标 i ）&#13;
+		bool bFalg = false; //标识是否有名字&#13;
+		for (int j = 0; j &lt; dwFunNameCount;j++)&#13;
+		{&#13;
+			if (i == pFunOrdinal[j])&#13;
+			{&#13;
+				//存在说明有函数名称&#13;
+				bFalg = true;&#13;
+				DWORD dwNameAddr = pFunName[j];&#13;
+				char* pName = RVAtoFOA(dwNameAddr, pBuf) + pBuf;&#13;
+				printf("函数名：%s ", pName);&#13;
+				break;&#13;
+			}&#13;
+		}&#13;
+		if (bFalg)&#13;
+		{&#13;
+			printf("函数序号：%d \n", i+pExport-&gt;Base);&#13;
+		}&#13;
+		else   //没有名称，直接输出i这个序号&#13;
+		{&#13;
+			printf("函数名：[NULL] 函数序号：%d \n", i + pExport-&gt;Base);&#13;
+		}&#13;
+	}&#13;
+}</a>
+</h3>
+<h2 class="topic">
+<a name="4mns16g6vdvsp2ef3mf1s6ug5p">导入表</a>
+</h2>
+<h3 class="topic">
+<a name="7jntaeilf96dl4at96qfbdocbs">&nbsp;pe文件从其他第三方导入API，供本程序调用</a>
+</h3>
+<h3 class="topic">
+<a name="5skt1denel8ba888qim0e6a695">&nbsp;&nbsp;多导入dll文件中的函数</a>
+</h3>
+<h3 class="topic">
+<a name="4p72g64qv1r0strqobp3gnn6on">&nbsp;可以从导入表的内容猜测该程序使用了那些api，可能有哪些功能</a>
+</h3>
+<h3 class="topic">
+<a name="6jmvqenru0fd4tmf0uvru5hr9n">&nbsp;现在已经诞生了不用导入表而使用系统api的技术</a>
+</h3>
+<h3 class="topic">
+<a name="3kg1li3k67dqms4dkfde94rabj">&nbsp;结构</a>
+</h3>
+<h3 class="topic">
+<a name="5r60sv1kmm19u5jvkg7ecs5m85">&nbsp;&nbsp;导入表是一个数组，每一个数组元素为一个结构体，&#13;
+每一个结构体元素代表一个pe文件的导入信息(一个结构体元素常描述一个dll的导入信息)</a>
+</h3>
+<h3 class="topic">
+<a name="76nh63p9o676vcpvqc81221e0i">&nbsp;&nbsp;结构体元素类型为IMAGE_IMPORT_DESCRIPTOR&#13;
+（该结构体为20个字节大小）</a>
+</h3>
+<h3 class="topic">
+<a name="0ut9952ig31r17e5o8gfnrev8a">&nbsp;&nbsp;&nbsp;指向导入函数名称表的Rva（导入名称表是一个结构体数组）&#13;
+DWORD OriginalFiRstThunk</a>
+</h3>
+<h3 class="topic">
+<a name="223j9v4t1vdpi6e94oo4uj0e25">&nbsp;&nbsp;&nbsp;&nbsp;是一个RVA</a>
+</h3>
+<h3 class="topic">
+<a name="5qk6vi5k6hbs98kvpj19qee5qb">&nbsp;&nbsp;&nbsp;&nbsp;简称INT</a>
+</h3>
+<h3 class="topic">
+<a name="4dolsa48odbkuplcpctc2hgf7j">&nbsp;&nbsp;&nbsp;&nbsp;导入名称表是一个结构体数组</a>
+</h3>
+<h3 class="topic">
+<a name="6c85j6k4u1o3pgef8hl2etfbsl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;每一个结构体元素大小四个字节（该结构体内部实际上是一个联合体，该联合体内包括多个四字节数据）</a>
+</h3>
+<h3 class="topic">
+<a name="7mvkinddh2tc5vj265g7f468rm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;结构为</a>
+</h3>
+<h3 class="topic">
+<a name="4uptuu2p9aehspco5jih94dfnc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;被导入函数的地址</a>
+</h3>
+<h3 class="topic">
+<a name="2b44be7ljqol980h2true27hrc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;被导入函数的导出序号</a>
+</h3>
+<h3 class="topic">
+<a name="4ukfum2q95gd8a2v6devo4jhkd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;指向输入名称表</a>
+</h3>
+<h3 class="topic">
+<a name="5qdhaf1gmvpfn2lo3v43214t2o">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;结构</a>
+</h3>
+<h3 class="topic">
+<a name="6v55vt55rupprth6eh573mml4k">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;需要导入的函数序号</a>
+</h3>
+<h3 class="topic">
+<a name="2o8skjrim9nfc7gr7i7c99nbp8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;需要导入函数的名称</a>
+</h3>
+<h3 class="topic">
+<a name="4n69jhfentv11aqeo7deep5lm2">&nbsp;&nbsp;&nbsp;&nbsp;结构体数组以全0为结尾，可以作为解析时的结束条件</a>
+</h3>
+<h3 class="topic">
+<a name="4u3asavlcdt3if3n75vfpod53v">&nbsp;&nbsp;&nbsp;&nbsp;有的时候输入地址表为空的（全0），此时说明输入地址表没有备份，所以解析输入表时最好通过名称表解析</a>
+</h3>
+<h3 class="topic">
+<a name="4vqasf8sfssfmdit6etskrr5n5">&nbsp;&nbsp;&nbsp;&nbsp;结构体元素为IMAGE_THUNK_DATA&#13;
+（该结构体四个字节大小）</a>
+</h3>
+<h3 class="topic">
+<a name="76n97snn6rb8bppp06n46c9bmt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;结构体大小为四个字节</a>
+</h3>
+<h3 class="topic">
+<a name="7mqcphdcacn0dta2s12mcooom3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;结构体内部为一个联合体，所以同一时间结构体只有一种数据含义</a>
+</h3>
+<h3 class="topic">
+<a name="0hn5id4vtg91rga8cvfmg7bg91">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;结构</a>
+</h3>
+<h3 class="topic">
+<a name="4phccr76q5jl1s7djm4f3n5jtg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;被导入函数的地址&#13;
+DWORD Function</a>
+</h3>
+<h3 class="topic">
+<a name="6jgjfsq673sijl1q22u4cpn4qu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该字段只有在加载到内存之后才起作用</a>
+</h3>
+<h3 class="topic">
+<a name="0j2q0415ko2ikg84m6nct1qt8a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;被导入函数的导出序号&#13;
+DWORD Ordinal</a>
+</h3>
+<h3 class="topic">
+<a name="1i0n03bajmkiu22k7to7j21654">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;假如是序号导出的，用到这里</a>
+</h3>
+<h3 class="topic">
+<a name="3h1aacntd005clmab0lgjfjmto">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;指向被导入的函数名称的结构体&#13;
+DWORD AddressOfData</a>
+</h3>
+<h3 class="topic">
+<a name="4mt1j04sfd8p4pjn8hpevcajeb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;被导入的函数名称指向一个数组，数组类型为IMAGE_IMPORT_BY_NAME</a>
+</h3>
+<h3 class="topic">
+<a name="2rcfj8a3l51snfqn0i57kjf7th">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;数组结构</a>
+</h3>
+<h3 class="topic">
+<a name="08n0veev9pbkj24aup9p3mtu0h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;序号&#13;
+WORD Hint</a>
+</h3>
+<h3 class="topic">
+<a name="2ufg18aig4o88q9cl4agb1otv9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;函数名&#13;
+CHAR Name[1]</a>
+</h3>
+<h3 class="topic">
+<a name="1u3i5589hqh6fs9l1p2d1o3gtr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;磁盘文件中，该结构体起作用的只有后面两个成员</a>
+</h3>
+<h3 class="topic">
+<a name="68piafc0qb3ig4puup8atdonl8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该结构体如果最高位为1，则序号导入作用，只需输出一个序号</a>
+</h3>
+<h3 class="topic">
+<a name="417mlmdrskevo28b06lmpqso8h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该结构体若最高位为0，则结构体中名称导入起作用，即最后一个字段起作用</a>
+</h3>
+<h3 class="topic">
+<a name="734siquctt36rsf99555a1l4j3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;判断该结构体最高为是否为1可以使用宏IMAGE_SNAP_BY_ORDINAL32() 参数为该结构即可</a>
+</h3>
+<h3 class="topic">
+<a name="2d151qsm98pt5nppa1562ulvb5">&nbsp;&nbsp;&nbsp;指向导入pe文件的名字的相对虚拟地址Rva&#13;
+DWORD Name</a>
+</h3>
+<h3 class="topic">
+<a name="65g0am6um8ss139aj8k1e0qa66">&nbsp;&nbsp;&nbsp;&nbsp;是一个RVA</a>
+</h3>
+<h3 class="topic">
+<a name="42n6e0gqjglcie2489no6ef7ud">&nbsp;&nbsp;&nbsp;&nbsp;一般常为dll的名称</a>
+</h3>
+<h3 class="topic">
+<a name="695tebbmtd1oj4l3fht480qv1t">&nbsp;&nbsp;&nbsp;指向导入函数地址表的Rva （导入地址表是一个结构体数组）&#13;
+DWORD FirstThunk</a>
+</h3>
+<h3 class="topic">
+<a name="39jje43art87fs57o292rg0bjp">&nbsp;&nbsp;&nbsp;&nbsp;是一个RVA</a>
+</h3>
+<h3 class="topic">
+<a name="1ucjvg0tgo12tt803av8kfqreb">&nbsp;&nbsp;&nbsp;&nbsp;简称IAT</a>
+</h3>
+<h3 class="topic">
+<a name="5t9ft9v1l0ao4dctshbflp5i4d">&nbsp;&nbsp;&nbsp;&nbsp;导入地址表是一个结构体数组</a>
+</h3>
+<h3 class="topic">
+<a name="6e090pdenaspkv090vu6mujs21">&nbsp;&nbsp;&nbsp;&nbsp;分两种情况</a>
+</h3>
+<h3 class="topic">
+<a name="1k39v0behi9ml042f3m3rmnp96">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当程序保存在磁盘上，该表中保存的内容与名称表相同,保存导入函数的名称</a>
+</h3>
+<h3 class="topic">
+<a name="0048ks94afo74vdlcpc191vdre">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当程序运行起来之后，该表中保存函数的地址，此时输入地址表才是真正的输入地址表</a>
+</h3>
+<h3 class="topic">
+<a name="2sk3ot92bdja6nte4scocoms8s">&nbsp;&nbsp;&nbsp;&nbsp;结构体数组以全0为结尾，可以作为解析时的结束条件</a>
+</h3>
+<h3 class="topic">
+<a name="3fa51jlb93n0s15sfaddlopdvd">&nbsp;&nbsp;&nbsp;&nbsp;结构体元素为IMAGE_THUNK_DATA&#13;
+（该结构体四个字节大小）</a>
+</h3>
+<h3 class="topic">
+<a name="05s62g376mjnojgo0dcgf2emrd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;结构体大小为四个字节</a>
+</h3>
+<h3 class="topic">
+<a name="3f39mcp87kc0u0a4vg7fpv3r6r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;结构体内部为一个联合体，所以同一时间结构体只有一种数据含义</a>
+</h3>
+<h3 class="topic">
+<a name="57m8lojviu6odu74p9mg5p4mcv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;结构</a>
+</h3>
+<h3 class="topic">
+<a name="5o21itp3skbjc960r0aidfi7i1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;被导入函数的地址&#13;
+DWORD Function</a>
+</h3>
+<h3 class="topic">
+<a name="2sn0a1l3rhslonafno87clq2k5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该字段只有在加载到内存之后才起作用</a>
+</h3>
+<h3 class="topic">
+<a name="7679ff9d4onci0f4hrgh0hg2os">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;被导入函数的导入序号&#13;
+DWORD Ordinal</a>
+</h3>
+<h3 class="topic">
+<a name="32qadcj0mpdg2qnhn42vquddd6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;假如是序号导出的，用到这里</a>
+</h3>
+<h3 class="topic">
+<a name="7q18aabn970jiap0edbdvk1lsk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;指向被导入的函数名称的结构体&#13;
+DWORD AddressOfData</a>
+</h3>
+<h3 class="topic">
+<a name="4q3pqijnvoqako4gs1aivqsaiq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;被导入的函数名称指向一个数组，数组类型为IMAGE_IMPORT_BY_NAME</a>
+</h3>
+<h3 class="topic">
+<a name="6nsq1ivqoomf6lb1gb0kfmae07">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;数组结构</a>
+</h3>
+<h3 class="topic">
+<a name="0ch5e820if8u9bvg5adg5oded7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;序号&#13;
+WORD Hint</a>
+</h3>
+<h3 class="topic">
+<a name="6681ss0l31a91tck3acegcntko">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;函数名&#13;
+CHAR Name[1]</a>
+</h3>
+<h3 class="topic">
+<a name="31ti0ta6ifk4k6j4q1juhof70h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;磁盘文件中，该结构体起作用的只有后面两个成员</a>
+</h3>
+<h3 class="topic">
+<a name="7i7tqsl8mjfo7oharm62q2tehs">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该结构体如果最高位为1，则序号导入作用，只需输出一个序号</a>
+</h3>
+<h3 class="topic">
+<a name="37o9rkpas6ece4jfn72b1e4kni">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该结构体若最高位为0，则结构体中名称导入起作用，即最后一个字段起作用</a>
+</h3>
+<h3 class="topic">
+<a name="7dv2p5hshdeufsj9m5cb0r0hqk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;判断该结构体最高为是否为1可以使用宏IMAGE_SNAP_BY_ORDINAL32() 参数为该结构即可</a>
+</h3>
+<h3 class="topic">
+<a name="4o54r896mvl71uaj3bhm4jolmt">&nbsp;&nbsp;该数组以全0数组元素为结尾</a>
+</h3>
+<h3 class="topic">
+<a name="73ee5icn151kt2o14ae51dmi6v">&nbsp;导入方式</a>
+</h3>
+<h3 class="topic">
+<a name="16g4r73dupvh1e9ci3a0j27kns">&nbsp;&nbsp;通过导入地址表的结构体元素的最高为为1（序号导入）或 为0 （符号导入）判断</a>
+</h3>
+<h3 class="topic">
+<a name="5tpd986fbouit992lh2eqep2k2">&nbsp;手工解析导入表</a>
+</h3>
+<h3 class="topic">
+<a name="3vr8v0j6b87lc64r34ovgmqc26">&nbsp;&nbsp;找到导入表的rva，转为文件偏移，再加上文件基址</a>
+</h3>
+<h3 class="topic">
+<a name="7f4vrgqi3b5mmc75e1osb6qjr8">&nbsp;&nbsp;导入表第一个字节导入名称表的rva，由此可以得到导入名称表的存储地址（通过相对虚拟地址转文件偏移）</a>
+</h3>
+<h3 class="topic">
+<a name="79onpbs7kh2k7g7rcuo00nl73p">&nbsp;&nbsp;同理，找到导入地址表的存储地址</a>
+</h3>
+<h3 class="topic">
+<a name="7fthn6udd4k3ar0hthj8sv8tl3">&nbsp;使用代码解析导入表</a>
+</h3>
+<h3 class="topic">
+<a name="0sfvaav7fkm901biursq6ki4ik">&nbsp;&nbsp;资料上代码</a>
+</h3>
+<h3 class="topic">
+<a name="5q22lsorqj5f1bmr22k153b3jg">&nbsp;&nbsp;计算出导入表在文件中的位置</a>
+</h3>
+<h3 class="topic">
+<a name="1cebb99uhc5h05sod1rg1mhfnc">&nbsp;&nbsp;外层循环遍历导入表</a>
+</h3>
+<h3 class="topic">
+<a name="7dvchpucq5rbrp61pbtpbccoc8">&nbsp;&nbsp;&nbsp;导入表以全0的结构体判断是否遍历到最后一个</a>
+</h3>
+<h3 class="topic">
+<a name="5d05a807h8l5oj9dmfr9ehdkbc">&nbsp;&nbsp;&nbsp;输出导入模块的名称</a>
+</h3>
+<h3 class="topic">
+<a name="5fl31pitea1jvjtkv3o4vnmc44">&nbsp;&nbsp;&nbsp;&nbsp;模块名称需要从rva转为文件偏移</a>
+</h3>
+<h3 class="topic">
+<a name="2e4obihe79l61e551b1ntomga2">&nbsp;&nbsp;&nbsp;通过INT遍历所有函数</a>
+</h3>
+<h3 class="topic">
+<a name="07kbtv7rmvjck9rpo5k8k9jbt2">&nbsp;&nbsp;&nbsp;&nbsp;需要将INT表的rva转为文件偏移，得到INT表文件地址</a>
+</h3>
+<h3 class="topic">
+<a name="4u5jokckcdgoc0ld14rkt0i2ip">&nbsp;&nbsp;&nbsp;&nbsp;INT表以全0的结构体结尾</a>
+</h3>
+<h3 class="topic">
+<a name="7h69i7cbcof3avtnei122kbr71">&nbsp;&nbsp;&nbsp;&nbsp;判断导入方式</a>
+</h3>
+<h3 class="topic">
+<a name="508uahbls5b1mpvbnra0hvq3i7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果IMAGE_THUNK_DATA结构体最高为1，则为序号导入，否则为符号导入</a>
+</h3>
+<h3 class="topic">
+<a name="06c112ftnpe5gq113eo00q0l3c">&nbsp;&nbsp;&nbsp;&nbsp;如果INT表中元素的最高位为1，说明该函数是一个序号导入</a>
+</h3>
+<h3 class="topic">
+<a name="0o13grac7ef3b1iuca14pq5ua4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;直接输出序号</a>
+</h3>
+<h3 class="topic">
+<a name="5f66rc8cn9ag32jfbhqrp4v0gi">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;序号是该结构体的低2个字节</a>
+</h3>
+<h3 class="topic">
+<a name="1l8i1eq1uh7kfgejfvmq4vcois">&nbsp;&nbsp;&nbsp;&nbsp;如果是名称导入，该地址是一个rva，指向函数名称</a>
+</h3>
+<h3 class="topic">
+<a name="409nn11vulcn66qqhj8mlbc598">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将该rva转为文件偏移，将文件输出</a>
+</h3>
+<h3 class="topic">
+<a name="4ji8dg6t3jqehbnl5ntt93c5pm">&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="4t71btk9rap5nb9katddsspaa1">&nbsp;&nbsp;&nbsp;void ShowImportInfo(char* pBuf)&#13;
+{&#13;
+	//找到导入位置，数据目录表的第二项（下标1）&#13;
+	PIMAGE_DOS_HEADER pDos = (PIMAGE_DOS_HEADER)pBuf;&#13;
+	//NT头&#13;
+	PIMAGE_NT_HEADERS pNt =&#13;
+		(PIMAGE_NT_HEADERS)&#13;
+		(pDos-&gt;e_lfanew + pBuf);&#13;
+	PIMAGE_DATA_DIRECTORY pImportDir = &amp;pNt-&gt;OptionalHeader.DataDirectory[1];&#13;
+&#13;
+	//计算导入表的文件偏移FOA&#13;
+	DWORD dwImportFOA = RVAtoFOA(pImportDir-&gt;VirtualAddress, pBuf);&#13;
+	//具体在文件中的位置&#13;
+	PIMAGE_IMPORT_DESCRIPTOR pImport =&#13;
+		(PIMAGE_IMPORT_DESCRIPTOR)&#13;
+		(dwImportFOA + pBuf);&#13;
+&#13;
+	//遍历导入表&#13;
+	while (pImport-&gt;Name)&#13;
+	{&#13;
+		//导入模块的名称&#13;
+		printf("模块名：%s\n", RVAtoFOA(pImport-&gt;Name, pBuf) + pBuf);&#13;
+&#13;
+		//通过INT来遍历&#13;
+		PIMAGE_THUNK_DATA pINT =&#13;
+			(PIMAGE_THUNK_DATA)&#13;
+			(RVAtoFOA(pImport-&gt;OriginalFirstThunk, pBuf) + pBuf);&#13;
+		while (pINT-&gt;u1.AddressOfData)&#13;
+		{&#13;
+			//判断到方式，如果IMAGE_THUNK_DATA最高为为1说明是序号导入&#13;
+			//否则是符号导入&#13;
+			if (pINT-&gt;u1.AddressOfData &amp; 0x80000000)&#13;
+			{&#13;
+				//序号导入&#13;
+				printf("名称：[NULL] 序号：%d\n", pINT-&gt;u1.AddressOfData &amp; 0xFFFF);&#13;
+			}&#13;
+			else&#13;
+			{&#13;
+				PIMAGE_IMPORT_BY_NAME pName =&#13;
+					(PIMAGE_IMPORT_BY_NAME)&#13;
+					(RVAtoFOA(pINT-&gt;u1.AddressOfData, pBuf) + pBuf);&#13;
+				printf("函数名：%s 函数序号：%d\n", pName-&gt;Name, pName-&gt;Hint);&#13;
+			}&#13;
+			//下一个导入函数&#13;
+			pINT++;&#13;
+		}&#13;
+		//下一个导入的dll&#13;
+		pImport++;&#13;
+	}&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="2kbflakq0hrrlvdl9jspvf0mpc">&nbsp;导入表为什么需要INT和IAT两个类似的结构体数组2</a>
+</h3>
+<h3 class="topic">
+<a href="https://www.cnblogs.com/wang-can/p/3280515.html" name="19jvodsep2novgmsfpcp6ao7cm">&nbsp;&nbsp;https://www.cnblogs.com/wang-can/p/3280515.html</a>
+</h3>
+<h3 class="topic">
+<a name="69k1f39egobgbla64bpcf083jl">&nbsp;注意导入表在解析的时候，使用IAT解析或INT解析结果可能是不一样的，因为两个表中的值不一定相同</a>
+</h3>
+<h3 class="topic">
+<a name="40k7ambb92n8uhq5irf08inj27">&nbsp;&nbsp;这种情况也会发生在LordPE中，即不能正确显示相关导入函数的内容</a>
+</h3>
+<h3 class="topic">
+<a name="6kriij2i7lj39v3opp6ejomefg">&nbsp;&nbsp;虽然资料上说尽量使用IAT解析导入表，但是实际上往往使用INT导入能得到正确结果，或者说解析导入表时，需要同时使用INT和IAT解析表，将解析正确的结果输出</a>
+</h3>
+<h2 class="topic">
+<a name="48pt5nb29vq0gt28anea0kl4h1">TLS表</a>
+</h2>
+<h3 class="topic">
+<a name="2lq68brlgco09le0636jegvb14">&nbsp;通过数据目录表的下标为9的元素可以找到</a>
+</h3>
+<h3 class="topic">
+<a name="24cim6p5tlv7emm1972fhpndto">&nbsp;为了解决一个进程中多个线程同时访问同一个全局变量的同步问题</a>
+</h3>
+<h3 class="topic">
+<a name="16ggtuijkosf3h0b8s32u029mq">&nbsp;线程局部存储，用于线程间同步，分为动态TLS 静态TLS，这里讨论的主要是静态TLS</a>
+</h3>
+<h3 class="topic">
+<a name="781gos1e78d0hjnmjfhjsacmc8">&nbsp;静态TLS会生成一个区段，存在TLS回调函数，该回调函数可以用于反调试、抢占执行（因为回调函数的调用先于OEP执行）</a>
+</h3>
+<h3 class="topic">
+<a name="1b0rvrhr0g0l4gd20s9inm9gcv">&nbsp;&nbsp;TLS回调函数的地址表在只读数据区（.rdata）</a>
+</h3>
+<h3 class="topic">
+<a name="4qfo2f9hs3v3b27tnr2o3jbfss">&nbsp;&nbsp;TLS函数的代码存储在代码区（.text） </a>
+</h3>
+<h3 class="topic">
+<a name="2p5u5f0ok7tuk0o8ir4ug35jtj">&nbsp;TLS变量必须是全局便变量或静态变量</a>
+</h3>
+<h3 class="topic">
+<a name="541j0jpq1nmvm2glujkh3m3v1t">&nbsp;&nbsp;可以被不同线程访问，不同线程对TLS变量的修改不会相互影响</a>
+</h3>
+<h3 class="topic">
+<a name="2i482lu2umcr4j7982cnjt1ner">&nbsp;&nbsp;回调函数的参数有一个调用原因 </a>
+</h3>
+<h3 class="topic">
+<a name="5aaje5eu6mu9n9f2nlsv45967c">&nbsp;&nbsp;&nbsp;该调用原因是DllMian函数的四个宏</a>
+</h3>
+<h3 class="topic">
+<a name="62lukrdh4sh35dmvlhklf9rc0o">&nbsp;&nbsp;&nbsp;#define DLL_PROCESS_ATTACH 1</a>
+</h3>
+<h3 class="topic">
+<a name="1vv8ngtd66fbet8ltottca0isi">&nbsp;&nbsp;&nbsp;&nbsp;进程创建</a>
+</h3>
+<h3 class="topic">
+<a name="1arqdktoqtjcql1bcbu9u30m63">&nbsp;&nbsp;&nbsp;#define DLL_THREAD_ATTACH 2</a>
+</h3>
+<h3 class="topic">
+<a name="08ditrt7jk1a13ajs1kk61p2c9">&nbsp;&nbsp;&nbsp;&nbsp;线程创建</a>
+</h3>
+<h3 class="topic">
+<a name="019s3emv0iii7tah4tet05kblq">&nbsp;&nbsp;&nbsp;#define DLL_THREAD_DETACH 3</a>
+</h3>
+<h3 class="topic">
+<a name="08rr32fva8h59bsodu8b7eqpiu">&nbsp;&nbsp;&nbsp;&nbsp;线程结束</a>
+</h3>
+<h3 class="topic">
+<a name="3l2j8ganm9h8gos3thhthc8n4g">&nbsp;&nbsp;&nbsp;#define DLL_PROCESS_DETACH 0</a>
+</h3>
+<h3 class="topic">
+<a name="7gjchah3lkgm9nnu8obi5imk64">&nbsp;&nbsp;&nbsp;&nbsp;进程结束</a>
+</h3>
+<h3 class="topic">
+<a name="0a4bougejftbbjstlesovu2i5f">&nbsp;&nbsp;&nbsp;即执行TLS回调函数的时机为以上四种之一</a>
+</h3>
+<h3 class="topic">
+<a name="0m34dmtspug2krpn8h8dc5p6kq">&nbsp;tls区段主要用于注册TLS回调函数的相关信息</a>
+</h3>
+<h3 class="topic">
+<a name="52jqd1uogvnfps90u7rqcmidpv">&nbsp;TLS表的结构&#13;
+IMAGE_TLS_DIRECTORY32</a>
+</h3>
+<h3 class="topic">
+<a name="7l98bfg8g9j2rfm7urcgicd656">&nbsp;&nbsp;源数据的起始位置&#13;
+DWORD StartAddressOfRawData</a>
+</h3>
+<h3 class="topic">
+<a name="695m45ftsrt9mv4q56q3ep9bk6">&nbsp;&nbsp;&nbsp;在.tls节</a>
+</h3>
+<h3 class="topic">
+<a name="0os81d93tek6jreo7q09ls7sl7">&nbsp;&nbsp;源数据的结束地址&#13;
+DWORD EndAddressOfRawData </a>
+</h3>
+<h3 class="topic">
+<a name="7v8pgi69gfm335qglt95rtvqed">&nbsp;&nbsp;&nbsp;在.tls节</a>
+</h3>
+<h3 class="topic">
+<a name="5b6jevek1rp1c68bo6urhjk7he">&nbsp;&nbsp;&nbsp;与起始位置之间的区域是TLS数据的初始值，当一个线程被创建，就会将这一部分数据拷贝到线程相关的一片私有内存区域</a>
+</h3>
+<h3 class="topic">
+<a name="23cnbu1b2e5o1m0hjjmsqdfj8c">&nbsp;&nbsp;TLS回调函数地址表的位置（va）在rdata节</a>
+</h3>
+<h3 class="topic">
+<a name="6a3dc7i5ovmrt2kpv2du51melo">&nbsp;&nbsp;&nbsp;回调函数很难在解析的时候直接调用</a>
+</h3>
+<h3 class="topic">
+<a name="5k4qlj429qbbf2v9du7djv744u">&nbsp;&nbsp;&nbsp;TLS回调函数的地址表记录了进程所有的TLS回调函数的地址</a>
+</h3>
+<h3 class="topic">
+<a name="08djqecpfm135kmkkuo81bvc57">&nbsp;&nbsp;&nbsp;注意其地址是绝对虚拟地址而非相对虚拟地址，可以直接用在.rata节中寻址回调函数地址表</a>
+</h3>
+<h3 class="topic">
+<a name="14koco0b0le5fhp5ucld9jl7od">&nbsp;&nbsp;&nbsp;回调函数地址表中数据均是虚拟地址可以直接使用</a>
+</h3>
+<h3 class="topic">
+<a name="268tj75v1vgr442o8b5a4qv0td">&nbsp;定义TLS变量</a>
+</h3>
+<h3 class="topic">
+<a name="1ishkllc3f34pu8dv90kafubci">&nbsp;&nbsp;使用&nbsp;__declspec(thread)&nbsp;int&nbsp;nNum&nbsp;=&nbsp;99;&nbsp;定义TLS变量</a>
+</h3>
+<h3 class="topic">
+<a name="2juq14i637q54t60j6pbtmckqk">&nbsp;tls函数原型</a>
+</h3>
+<h3 class="topic">
+<a name="4c0hn15geplelc6bh7n9nlntnb">&nbsp;&nbsp;TLS&nbsp;函数的原型如下，和DllMain相比，它们只有返回值类型不同</a>
+</h3>
+<h3 class="topic">
+<a name="1avc9tsiij9mkbi2ti67585e3f">&nbsp;&nbsp;Void&nbsp;NTAPI&nbsp;t_TlsCallBackA(PVOID&nbsp;DllHandle,DWORD&nbsp;Reason,PVOID&nbsp;Red);</a>
+</h3>
+<h3 class="topic">
+<a name="3nna368lso66t9k8n36ds0ah3i">&nbsp;TLS&nbsp;函数的调用顺序位于main函数前，通常用于进行反调试</a>
+</h3>
+<h3 class="topic">
+<a name="3ijftjjgv8jjomho98u8jm0ufg">&nbsp;TLS使用代码</a>
+</h3>
+<h3 class="topic">
+<a name="3e8p672qlsdhsad7h7vlohtme2">&nbsp;&nbsp;#include "stdafx.h"&#13;
+#include &lt;windows.h&gt;&#13;
+#pragma comment(linker, "/INCLUDE:__tls_used")&#13;
+&#13;
+// TLS变量&#13;
+__declspec (thread) int  g_nNum = 0x11111111;&#13;
+__declspec (thread) char g_szStr[] = "TLS g_nNum = 0x%p ...\r\n";&#13;
+// TLS回调函数A  当线程结束时，该回调函数会执行&#13;
+void NTAPI t_TlsCallBack_A(PVOID DllHandle, DWORD Reason, PVOID Red) {&#13;
+	if (DLL_THREAD_DETACH == Reason) // 如果线程退出则打印信息&#13;
+		printf("t_TlsCallBack_A -&gt; ThreadDetach!\r\n");&#13;
+	return;&#13;
+}&#13;
+// TLS回调函数B 当线程结束时，该回调函数会执行&#13;
+void NTAPI t_TlsCallBack_B(PVOID DllHandle, DWORD Reason, PVOID Red) {&#13;
+	if (DLL_THREAD_DETACH == Reason) // 如果线程退出则打印信息&#13;
+		printf("t_TlsCallBack_B -&gt; ThreadDetach!\r\n");&#13;
+	return;&#13;
+}&#13;
+/*&#13;
+* 注册TLS回调函数，".CRT$XLB"的含义是：&#13;
+* CRT表明使用C RunTime机制&#13;
+* X表示标识名随机&#13;
+* L表示TLS callback section&#13;
+* B其实也可以为B-Y的任意一个字母&#13;
+*/&#13;
+#pragma data_seg(".CRT$XLB")&#13;
+PIMAGE_TLS_CALLBACK p_thread_callback[] = {&#13;
+	t_TlsCallBack_A,&#13;
+	t_TlsCallBack_B,&#13;
+	NULL };&#13;
+#pragma data_seg()&#13;
+&#13;
+&#13;
+DWORD WINAPI t_ThreadFun(PVOID pParam) {&#13;
+	printf("t_Thread -&gt;  first printf:");&#13;
+	printf(g_szStr, g_nNum);&#13;
+	g_nNum = 0x22222222; // 注意这里&#13;
+	printf("t_Thread -&gt; second printf:");&#13;
+	printf(g_szStr, g_nNum);&#13;
+	return 0;&#13;
+}&#13;
+int _tmain(int argc, _TCHAR* argv[]) {&#13;
+	printf("_tmain -&gt; TlsDemo.exe is runing...\r\n\r\n");&#13;
+	CreateThread(NULL, 0, t_ThreadFun, NULL, 0, 0);&#13;
+	Sleep(100);  // 睡眠100毫秒用于确保第一个线程执行完毕&#13;
+	printf("\r\n");&#13;
+	CreateThread(NULL, 0, t_ThreadFun, NULL, 0, 0);&#13;
+	system("pause");&#13;
+	return 0;&#13;
+}&#13;
+</a>
+</h3>
+<h3 class="topic">
+<a name="2kk4g5ln7e9rhvvac3l08h4646">&nbsp;&nbsp;或资料p30页中的代码</a>
+</h3>
+<h2 class="topic">
+<a name="2sein4al2vobqeqscqk9erm50p">延迟载入表</a>
+</h2>
+<h3 class="topic">
+<a name="1v5uj9edqb79662fp0qpu125mb">&nbsp;延迟加载的目的是加快程序初始化过程</a>
+</h3>
+<h3 class="topic">
+<a name="1up14s8ovvaudiraiff9gtdu10">&nbsp;&nbsp;只有使用到指定api的时候，才会载入（LoadLibrary）相应dll，然后通过GetProcAddress获得对应函数的地址，进行函数调用&#13;
+而不是在程序一开始载入所有dll模块，以此提高程序运行速度</a>
+</h3>
+<h3 class="topic">
+<a name="1aj43btbo6l5cqju7gr15eo9te">&nbsp;延迟载入表解析方式与导入表是相同的</a>
+</h3>
+<h3 class="topic">
+<a name="3aau8f4sgk91o018ajcon4rco8">&nbsp;使用延迟加载</a>
+</h3>
+<h3 class="topic">
+<a name="4ukd2nrbv03pqkp5blee2uufdj">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class48day0416_files/4dbbn71gdac4hdlb0o0suurptc.png"></p>
+<h3 class="topic">
+<a name="5m4t152mf59f31bj27nipevaqh">&nbsp;&nbsp;如果一个dll设置为延迟加载，则该dll在导入表中不会存在</a>
+</h3>
+<h3 class="topic">
+<a name="6on7cm5m00pkddjforbv4qlbm3">&nbsp;&nbsp;延迟加载之后调用相关api-》载入dll-》使用LoadLibrary+GetProcAddress将函数进行调用</a>
+</h3>
+<h3 class="topic">
+<a name="2svu86bikdfioquvvq7sa9m3a9">&nbsp;延迟载入表</a>
+</h3>
+<h3 class="topic">
+<a name="6d0mbp32sj9r960gk9d1m83hvj">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class48day0416_files/6eti2qks68risod6c3ddi1s0fg.png"></p>
+<h3 class="topic">
+<a name="7ct8sjec047k4bkfacph1mm4ns">&nbsp;&nbsp;关键是INT和IAT</a>
+</h3>
+<h3 class="topic">
+<a name="7dge96pt3vpj38pfq340a25jjb">&nbsp;博客</a>
+</h3>
+<h3 class="topic">
+<a name="19ilb8k2ad3sk3o72r2edp6kuc">&nbsp;&nbsp;https://www.cnblogs.com/tutucoo/p/9927725.html</a>
+</h3>
+<h3 class="topic">
+<a name="13plme3ajtde1jjppcqqb5c2up">&nbsp;老师代码</a>
+</h3>
+<h3 class="topic">
+<a name="66lthe9o13c0ekhfc93gadhv18">&nbsp;延迟加载表与导入表是完全一样的</a>
+</h3>
+</body>
+</html>

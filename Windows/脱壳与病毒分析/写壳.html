@@ -1,0 +1,825 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>写壳</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="5ohub9cm8p8fcjorm5vas4ptpf">写壳</a>
+</h1>
+<h2 class="topic">
+<a name="2lvk1q888usc5jah5lanjgif2d">复习</a>
+</h2>
+<h3 class="topic">
+<a name="5f4i43b00t5665kvq8ek50io3a">&nbsp;压缩壳</a>
+</h3>
+<h3 class="topic">
+<a name="2sja4jshd4420volosdff3nllj">&nbsp;&nbsp;减小pe文件体积</a>
+</h3>
+<h3 class="topic">
+<a name="1k7gnttgiq4hckdrvg7iv80kgj">&nbsp;加密壳</a>
+</h3>
+<h3 class="topic">
+<a name="0b7ht6kiacmtus1k5mv7ufrlvv">&nbsp;&nbsp;花指令</a>
+</h3>
+<h3 class="topic">
+<a name="6grb69jpdrcutfr38oi9q52g69">&nbsp;&nbsp;iat加密</a>
+</h3>
+<h3 class="topic">
+<a name="5bdfhogf009mi81v8bedcmdpl8">&nbsp;pe文件</a>
+</h3>
+<h3 class="topic">
+<a name="0t9ned7i33trnqmn2fhgtg41cd">&nbsp;&nbsp;头部</a>
+</h3>
+<h3 class="topic">
+<a name="6likpus93al7e8mpbp6ma475f5">&nbsp;&nbsp;&nbsp;dos头</a>
+</h3>
+<h3 class="topic">
+<a name="5fkagv05g8t56q7nvqltmbjgk1">&nbsp;&nbsp;&nbsp;&nbsp;e_magic</a>
+</h3>
+<h3 class="topic">
+<a name="6903tqmaoppfb0cogqpun4425t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;记录mz文件标志</a>
+</h3>
+<h3 class="topic">
+<a name="0fdmj6i0682qoo4vnlnn3psv8i">&nbsp;&nbsp;&nbsp;&nbsp;e_lfanew</a>
+</h3>
+<h3 class="topic">
+<a name="4covid8k6s236ufuspm4tsk7t5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;记录了nt头的文件偏移</a>
+</h3>
+<h3 class="topic">
+<a name="2kr0hbkur7dh4sti51lmtta11e">&nbsp;&nbsp;&nbsp;nt头</a>
+</h3>
+<h3 class="topic">
+<a name="23tqiq1pkbmd389jve7akf2fri">&nbsp;&nbsp;&nbsp;&nbsp;文件头</a>
+</h3>
+<h3 class="topic">
+<a name="7ho4hcls71gdv1cmc20opvaun6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;NumberOfSection</a>
+</h3>
+<h3 class="topic">
+<a name="23oddqspstq5dnome88db6cbti">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;区段个数</a>
+</h3>
+<h3 class="topic">
+<a name="77hv29b0534pha6dkj48cgtqee">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;扩展头大小</a>
+</h3>
+<h3 class="topic">
+<a name="4ufaro8qbrdlbp1h6so9khr3ft">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;是否是dll</a>
+</h3>
+<h3 class="topic">
+<a name="3fro0ek8jbsebrrmnson4gt82p">&nbsp;&nbsp;&nbsp;&nbsp;扩展头</a>
+</h3>
+<h3 class="topic">
+<a name="50q03kg8mgliqsn9m0rjls184f">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AddressOfEntryPoint</a>
+</h3>
+<h3 class="topic">
+<a name="3u1c1hqma66eckhhb5b4r1f2ip">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;oep</a>
+</h3>
+<h3 class="topic">
+<a name="6brn99q3piavic1s1qsr3k71pk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ImageBase</a>
+</h3>
+<h3 class="topic">
+<a name="6m439vdd9q6vevfp8a6bjf8u31">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;加载基址</a>
+</h3>
+<h3 class="topic">
+<a name="74ej4amfpfv6e611nn6m7g8shv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SizeofImage</a>
+</h3>
+<h3 class="topic">
+<a name="1haju6nktmgecc5j1r7svvkhrk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pe文件被加载到内存中之后的大小（内存对齐的大小）</a>
+</h3>
+<h3 class="topic">
+<a name="17hflcv9sf799rh80tmc1fj91d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FileAligment</a>
+</h3>
+<h3 class="topic">
+<a name="2m34h33lg9dgaork56gb3pnpj5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;文件对齐粒度</a>
+</h3>
+<h3 class="topic">
+<a name="66gu9ks1msongbgqt9hqgjtrrq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SectionAligment</a>
+</h3>
+<h3 class="topic">
+<a name="78u6l5d20trfsv816h8utdcokk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;内存对齐粒度</a>
+</h3>
+<h3 class="topic">
+<a name="6uvgqkmess95mh9ovqu5tiott8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DataDirectory</a>
+</h3>
+<h3 class="topic">
+<a name="3feeqbhh2er2ro9vomrqk3gf53">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;数据目录表</a>
+</h3>
+<h3 class="topic">
+<a name="14gsidg8eah9ptte99jpufbk1u">&nbsp;&nbsp;&nbsp;区段头表</a>
+</h3>
+<h3 class="topic">
+<a name="39mgp0d09ofbv5uk6bdggf1sj2">&nbsp;&nbsp;&nbsp;&nbsp;区段名</a>
+</h3>
+<h3 class="topic">
+<a name="3mvmc738nnve7jp547o47o8q9l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Name</a>
+</h3>
+<h3 class="topic">
+<a name="0gajnu8b0hcqhhmaaub1fabq97">&nbsp;&nbsp;&nbsp;&nbsp;区段数据大小</a>
+</h3>
+<h3 class="topic">
+<a name="44alm5cjriej4okn6iblpimuvt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Misc.VirtuaSize</a>
+</h3>
+<h3 class="topic">
+<a name="1t0e45qvd4ac36gmdcl3qh2flb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;区段数据实际大小，没有经过对齐</a>
+</h3>
+<h3 class="topic">
+<a name="45v4g8db5fmv6p6j41dth82ohi">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SizeofRawData</a>
+</h3>
+<h3 class="topic">
+<a name="10qttoblogg8vollutfuq6l7bm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;经过文件对齐粒度对齐后的大小</a>
+</h3>
+<h3 class="topic">
+<a name="3eectal3g05hf5ltrpg98oo4fi">&nbsp;&nbsp;&nbsp;&nbsp;区段的位置</a>
+</h3>
+<h3 class="topic">
+<a name="7ueqhp3trs6ptl7hlsi8tp43k6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PointerToRawData</a>
+</h3>
+<h3 class="topic">
+<a name="2v12b14vrvn72f0v11klsjok9e">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;区段数据在文件中的偏移</a>
+</h3>
+<h3 class="topic">
+<a name="646tiqtgdhfqvk0g8a29deqrr0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;VirualAddress</a>
+</h3>
+<h3 class="topic">
+<a name="5irapokmvl1i55ulhhi76ejq0v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;区段数据在内存中的偏移</a>
+</h3>
+<h3 class="topic">
+<a name="44caubkjk3jn4f3fl04e4kbda7">&nbsp;&nbsp;&nbsp;&nbsp;区段的属性</a>
+</h3>
+<h3 class="topic">
+<a name="5l2duelsb1cudkrqhpviart00v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;记录区段是否可读可写可执行</a>
+</h3>
+<h3 class="topic">
+<a name="0a1ih2rkdo84beclnrg1o2juh9">&nbsp;&nbsp;数据表</a>
+</h3>
+<h3 class="topic">
+<a name="76p7gbts95squc3s44b5475v3l">&nbsp;&nbsp;&nbsp;导出表</a>
+</h3>
+<h3 class="topic">
+<a name="3a595qiqpbddqmupnfl8q6o0b7">&nbsp;&nbsp;&nbsp;&nbsp;导出地址表</a>
+</h3>
+<h3 class="topic">
+<a name="1r8qqar5hse855fdmn43d6mjqn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;是一个数组，保存导出函数/全局变量在内存中的位置（rva）</a>
+</h3>
+<h3 class="topic">
+<a name="7467g88utplv6beqfhhk90v4k1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;表中只记录了函数的地址，没有记录该函数地址对应哪个函数</a>
+</h3>
+<h3 class="topic">
+<a name="7l9pa92igcs7oh37hi79p9d9hr">&nbsp;&nbsp;&nbsp;&nbsp;导出名称表</a>
+</h3>
+<h3 class="topic">
+<a name="13eihhe850ldb8nb110qv7vcbc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;是一个数组，保存导出函数或全局变量名称在内存中的位置rva</a>
+</h3>
+<h3 class="topic">
+<a name="6988lq1d8eibth3k45kbs8rm52">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;导出名称表与导出序号表一一对应，导出序号表保存对应导出名称表项在导出地址表中的下标</a>
+</h3>
+<h3 class="topic">
+<a name="2hc4qaud7332saqb03c33sbhe6">&nbsp;&nbsp;&nbsp;&nbsp;导出序号表</a>
+</h3>
+<h3 class="topic">
+<a name="0148v7haidvpbm0mpk2iuh1nlc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;与导出名称表一一对应</a>
+</h3>
+<h3 class="topic">
+<a name="39pfp0qd20otvbvdpeb16kfrob">&nbsp;&nbsp;&nbsp;&nbsp;寻找名称导出函数的地址</a>
+</h3>
+<h3 class="topic">
+<a name="7jgd20n60akctk3vmn00rred23">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;导出名称表与导出序号表一一对应，导出序号表保存对应导出名称表项在导出地址表中的下标，寻址一个导出函数地址，需要通过函数名，找到该函数在名称表中的下标，通过该下标索引序号表，从序号表中得到一个下标，使用该下标索引地址表，即可得到函数地址</a>
+</h3>
+<h3 class="topic">
+<a name="5lsdgt5ngjc513bullb01n7rku">&nbsp;&nbsp;&nbsp;&nbsp;寻找序号导出函数的地址</a>
+</h3>
+<h3 class="topic">
+<a name="2ntmh9mretrdb8du36jejtqrsp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当函数序号导出，根据导出序号减去导出表记录的序号基数，再根据该差值去导出地址表寻找对应表项，得到函数地址</a>
+</h3>
+<h3 class="topic">
+<a name="0di9a7tbugjaoe7bueineuql7j">&nbsp;&nbsp;&nbsp;导入表</a>
+</h3>
+<h3 class="topic">
+<a name="2vd9625k7vbf7qeouucnmm1asj">&nbsp;&nbsp;&nbsp;&nbsp;结构</a>
+</h3>
+<h3 class="topic">
+<a name="1dmfrru0mhcnoo0rf30a5sups5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;导入名称表</a>
+</h3>
+<h3 class="topic">
+<a name="6j4mntqjhpkbb2et9jcguhik4t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;导入地址表</a>
+</h3>
+<h3 class="topic">
+<a name="3p8d55svj7povbsce9ktpeo6d0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在文件中两张表所占内存不同，但是内容是相同的</a>
+</h3>
+<h3 class="topic">
+<a name="1sh5usraka9u18oo0lfd6ghhhh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;内存中，可以通过遍历int将得到的函数地址保存在iat中，即iat的修复</a>
+</h3>
+<h3 class="topic">
+<a name="68f847kni4l34o85tdkcu0f5b6">&nbsp;&nbsp;&nbsp;&nbsp;使用场景</a>
+</h3>
+<h3 class="topic">
+<a name="7phrtass1q6td26bumjbdlbau6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在源程序中如果调用外部模块的函数，调用就会被转变为  call[iat],此时iat为iat对应表项的地址，通过解引用，可以得到导入函数的地址</a>
+</h3>
+<h3 class="topic">
+<a name="45lpg9dpaaajvkom6g752komfg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;调用api的过程</a>
+</h3>
+<h3 class="topic">
+<a name="3hesfa7vomph3bqs78bh95iudv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在iat和int中增加记录</a>
+</h3>
+<h3 class="topic">
+<a name="72df8t91hrfmoo68eois3qdl63">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;加载器在加载pe文件时，会主动调用LoadLibrary加载导入表中所记录的dll，（dll被加载进入进程的虚拟地址空间）</a>
+</h3>
+<h3 class="topic">
+<a name="5duuegbvp35ftkk5tj0l2395dk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;遍历int将函数名对应函数地址获取出来，写到iat中</a>
+</h3>
+<h3 class="topic">
+<a name="0lsipmnj92vhpft19vkbvqo8dd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在代码中调用api时，使用call [iat]</a>
+</h3>
+<h3 class="topic">
+<a name="60brgljmg06m3alhtuiguumao1">&nbsp;&nbsp;&nbsp;&nbsp;如何修复iat</a>
+</h3>
+<h3 class="topic">
+<a name="6afdt0lo33gdkevi4ktmj7sop1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 通过遍历int将得到的函数地址保存在iat中，即iat的修复</a>
+</h3>
+<h3 class="topic">
+<a name="38j66bjp4abeehf8um8m8m55p2">&nbsp;&nbsp;&nbsp;&nbsp;iat加密与iathook的原理相同</a>
+</h3>
+<h3 class="topic">
+<a name="0dflfe745f77d6v3dl019dtamo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将iat中的地址改为其他函数的地址</a>
+</h3>
+<h3 class="topic">
+<a name="50j0aebjghdsrn6v7tkiiphedg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在其他函数中，做完操作之后会跳转到真正的api进行执行</a>
+</h3>
+<h3 class="topic">
+<a name="0kobgc1om58ctsgcjbe6ephqsm">&nbsp;&nbsp;&nbsp;重定位表</a>
+</h3>
+<h3 class="topic">
+<a name="23t069u3nvgbu0ru026fmaqc7a">&nbsp;&nbsp;&nbsp;&nbsp;记录需要重定位指令的位置，当时发生随机加载基址的时候用得到</a>
+</h3>
+<h3 class="topic">
+<a name="398v8jaip6ci82csavso8u68r0">&nbsp;&nbsp;&nbsp;&nbsp;哪种汇编指令需要重定位</a>
+</h3>
+<h3 class="topic">
+<a name="5f087qriarf4dj8qm8uf9lg676">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当前区段中引用其他区段的数据时，都需要重定位，因为使用了va作为操作数</a>
+</h3>
+<h3 class="topic">
+<a name="3cdlvjqqcefvl3v5ecvk1fsrra">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在代码段中使用数据段/使用只读数据段的数据</a>
+</h3>
+<h3 class="topic">
+<a name="0l98jpti6fet86kich6ksc5ljn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;代码段中使用本代码段的数据时，不需要使用va，不需要重定位</a>
+</h3>
+<h3 class="topic">
+<a name="73j5ig3361amrhgt1ur3m1i4t1">&nbsp;&nbsp;&nbsp;&nbsp;重定位表记录的内容是指令中需要被改变的数据的地址</a>
+</h3>
+<h3 class="topic">
+<a name="1dumv9maqmr6jcn00gju4hnoop">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;指令地址：     指令&#13;
+0x123456      ff15 0x654321 </a>
+</h3>
+<h3 class="topic">
+<a name="594gqms6otc8ur93q0vkuneb68">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这里重定位表中保存的是 0x123456+2，即指令中需要重定位的数据的地址</a>
+</h3>
+<h3 class="topic">
+<a name="6m1nsire91eq555r5m6qg4n47r">&nbsp;&nbsp;&nbsp;&nbsp;重定位修改数据的依据</a>
+</h3>
+<h3 class="topic">
+<a name="25ojpvg43r494b1jirq554ie96">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;va=加载基址+段首rva+段内偏移</a>
+</h3>
+<h3 class="topic">
+<a name="4usadtg75bbraa33uab9799qhk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;前两个都可能变化，只有段内偏移不会变</a>
+</h3>
+<h3 class="topic">
+<a name="5glv166nk80r4kr3igalvvm6u9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当整个段在pe文件中整体移动时，段首rva可能发生变化</a>
+</h3>
+<h3 class="topic">
+<a name="2dbqvclticju6e86frr1v927am">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dll默认加载基址为10000000（一千万）</a>
+</h3>
+<h3 class="topic">
+<a name="10rq036r82urvc299le6u2s2t9">&nbsp;&nbsp;&nbsp;&nbsp;一个重定位块只保存一个内存分页大小（4kb）内存空间的重定位信息</a>
+</h3>
+<h3 class="topic">
+<a name="6gp1h3rant3o235mah7itp0ibm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;一个内存分页大小4kb  即4096个字节 即0x1000个字节</a>
+</h3>
+<h3 class="topic">
+<a name="1l4ji25e3crgti32onrb9dfeq0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;一个内存地址如何取得内存分页首地址</a>
+</h3>
+<h3 class="topic">
+<a name="58sieejo3ulsdrfp7ihovqehiu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;内存地址&amp;0xfffff000</a>
+</h3>
+<h3 class="topic">
+<a name="2lr294qm2p0dnfqdnrkbejq60e">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;因为内存地址本质上是8个十六进制数组成的，而内存页首地址一定为0x1000的整数倍，只要将内存地址后三位置为0即可得到内存页首地址</a>
+</h3>
+<h3 class="topic">
+<a name="4hhe6gck4rcijb9vqpunr3t611">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;内存页首地址一定是0x1000的整数倍</a>
+</h3>
+<h3 class="topic">
+<a name="27snog0tpd84ibp30gq0onqfpb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;内存页中的偏移 = 内存页中的地址-内存分页首地址</a>
+</h3>
+<h3 class="topic">
+<a name="05i8hspp23foaro4ir7s4efcds">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;重定位块中保存的就是内存分页中的偏移 以及内存分页首地址，两者相加得到需要被重定位的数据的地址，该地址一般是一条指令中操作数的内存地址，而不是整指令的地址</a>
+</h3>
+<h3 class="topic">
+<a name="6i1idq5gis1nee1a6k5eqmifvp">&nbsp;&nbsp;&nbsp;&nbsp;重定位表的修复</a>
+</h3>
+<h3 class="topic">
+<a name="5g1139vk5qj27fh7240bb331oq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;遍历重定位表，将需要被重定位的数据减去默认加载基址，加上新的加载基址</a>
+</h3>
+<h2 class="topic">
+<a name="3bkcg08fu1678mjpfb5iva5iu5">写壳相关知识</a>
+</h2>
+<h3 class="topic">
+<a name="4ga3kkvtocp9o6ds1cfo23ru52">&nbsp;本质原理是对pe文件的处理，对pe文件加载和运行需要很熟悉</a>
+</h3>
+<h3 class="topic">
+<a name="5092nrbae7aodh9bcqavg2g02p">&nbsp;壳程序的调试只能通过反汇编调试</a>
+</h3>
+<h3 class="topic">
+<a name="6hq3fcs0iim0mo8rrj4f4plbvq">&nbsp;编译器、链接器、加载器</a>
+</h3>
+<h3 class="topic">
+<a name="5a7phs3dk5o82de31dfidl3clt">&nbsp;&nbsp;编译器</a>
+</h3>
+<h3 class="topic">
+<a name="5d72n05q8qlikron1fqb6qc7nv">&nbsp;&nbsp;&nbsp;将源码文件编译为中间代码文件</a>
+</h3>
+<h3 class="topic">
+<a name="201fq1530662avjghgohnuhag9">&nbsp;&nbsp;&nbsp;中间代码文件中会包括源代码中的代码指令</a>
+</h3>
+<h3 class="topic">
+<a name="1hscghlt254t1mvra9p5oh3i48">&nbsp;&nbsp;&nbsp;当一个函数中调用一个本程序中不存在的函数（外部函数或只定义未声明）时，生成的指令仅仅用于占位，没有相应执行的指令（例如 e8 00000000 ，即直接call 下一条指令）</a>
+</h3>
+<h3 class="topic">
+<a name="55jhbhk6vlvkq4lgprcdtk1h4f">&nbsp;&nbsp;链接器</a>
+</h3>
+<h3 class="topic">
+<a name="466te3jtp99g96j7bvdo883qcm">&nbsp;&nbsp;&nbsp;将所有中间文件的代码段与代码段， 数据段与数据段等分别结合起来</a>
+</h3>
+<h3 class="topic">
+<a name="5j37a12mo0km0mm46b17c0hbhh">&nbsp;&nbsp;&nbsp;存在一张符号表，当中保存不同中间文件中函数的位置，进行链接的时候，用于在不同中间文件中寻址函数</a>
+</h3>
+<h3 class="topic">
+<a name="4k1srudo2tahi3nmfvjdu3pp6n">&nbsp;&nbsp;&nbsp;有一张重定位表，用于定位多个中间文件链接过程中需要修改的位置</a>
+</h3>
+<h3 class="topic">
+<a name="473gcfaflgnf99g5rp66fc3pro">&nbsp;&nbsp;&nbsp;&nbsp;比如一个中间文件中调用了另一个中间文件中的函数，链接时该处需要被修改</a>
+</h3>
+<h3 class="topic">
+<a name="30akotcdrb5g15p5625dgscg8t">&nbsp;&nbsp;加载器</a>
+</h3>
+<h3 class="topic">
+<a name="79hmgfcf2biqplehegbgghl5f2">&nbsp;&nbsp;&nbsp;将pe文件加载到内存，修复pe文件，然后使其运行起来</a>
+</h3>
+<h3 class="topic">
+<a name="7urntn1snid6ualh8j5jv99jcv">&nbsp;&nbsp;&nbsp;&nbsp;最后创建一个线程，将oep加上加载基址作为回调函数，使程序运行起来</a>
+</h3>
+<h3 class="topic">
+<a name="4rsqpr8gue5430r2c8oatdm798">&nbsp;&nbsp;&nbsp;加载过程</a>
+</h3>
+<h3 class="topic">
+<a name="7dkln4vba6bgqhuu5i58tdmvnq">&nbsp;&nbsp;&nbsp;&nbsp;根据区段表，将pe文件按照区段rva和大小映射到内存</a>
+</h3>
+<h3 class="topic">
+<a name="5cvcj4tolj8o1vgosp7p36ujq4">&nbsp;&nbsp;&nbsp;&nbsp;根据区段表的区段属性修改内存分页属性</a>
+</h3>
+<h3 class="topic">
+<a name="1djejbq8s9aln0lh427ahto5ic">&nbsp;&nbsp;&nbsp;&nbsp;修复重定位表</a>
+</h3>
+<h3 class="topic">
+<a name="4usjdc8ee66imgs3rmae5hhro3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果发生了随机基址</a>
+</h3>
+<h3 class="topic">
+<a name="3oftti0eoptcfp6m8q4ao8ga6f">&nbsp;&nbsp;&nbsp;&nbsp;修复导入表</a>
+</h3>
+<h3 class="topic">
+<a name="2jjq36rft0rrg3dq5dnp322t8j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;修复iat</a>
+</h3>
+<h3 class="topic">
+<a name="09prgq3t9rc50fvmdrjrvlqht2">&nbsp;&nbsp;&nbsp;&nbsp;调用tls回调函数</a>
+</h3>
+<h3 class="topic">
+<a name="6lk4h5hjamfe1okmu2rkjmcggk">&nbsp;&nbsp;&nbsp;&nbsp;创建一个线程，并使用扩展头中的oep作为线程回调函数的地址</a>
+</h3>
+<h3 class="topic">
+<a name="3rhbcrcfeuder1jqmi95564ad1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以由壳利用，修改oep，让壳代码先于程序本身执行</a>
+</h3>
+<h3 class="topic">
+<a name="2sb0mfbkkiej6l78ifsehkce50">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;给pe文件添加一个新区段用于保存壳代码，将oep设置为新区段</a>
+</h3>
+<h3 class="topic">
+<a name="4s1d7qcij7dp6p83147vts5trf">&nbsp;壳的介绍</a>
+</h3>
+<h3 class="topic">
+<a name="4kiuma4f78tjebopjeg5bvqf3q">&nbsp;&nbsp;stub</a>
+</h3>
+<h3 class="topic">
+<a name="4okvg99hhvmjkjl8algf63016r">&nbsp;&nbsp;&nbsp;壳在可执行程序中的部分，用于解密解压缩</a>
+</h3>
+<h3 class="topic">
+<a name="3imbrd7t099qg9gq4atrhfplde">&nbsp;&nbsp;流程</a>
+</h3>
+<h3 class="topic">
+<a name="1m02k25o5qpnmkn7iktpaogtoh">&nbsp;&nbsp;&nbsp;将pe文件代码段加密</a>
+</h3>
+<h3 class="topic">
+<a name="0v9cgntgsvhmcnrb3hqc8c53je">&nbsp;&nbsp;&nbsp;将解密pe文件的代码保存在stub中</a>
+</h3>
+<h3 class="topic">
+<a name="1nqscr8q4vkcqjaj2k4a62ph19">&nbsp;&nbsp;&nbsp;将stub作为一个新区段调添加到pe文件</a>
+</h3>
+<h3 class="topic">
+<a name="25gunj7dbmufjek2mdbbo23vfr">&nbsp;&nbsp;&nbsp;将oep设置为stub</a>
+</h3>
+<h3 class="topic">
+<a name="3seehjle0m3jggdco45b53dbke">&nbsp;&nbsp;&nbsp;将pe文件另存为新文件</a>
+</h3>
+<h3 class="topic">
+<a name="3fobfdhrfvetlglp7bd55992qc">&nbsp;&nbsp;壳的装载过程</a>
+</h3>
+<h3 class="topic">
+<a name="7nbrve2g8punn427pi3bede1m3">&nbsp;&nbsp;&nbsp;获取壳自己需要的api的地址</a>
+</h3>
+<h3 class="topic">
+<a name="3muo4mcdetgb3ll4bt15n9aohi">&nbsp;&nbsp;&nbsp;&nbsp;壳代码可以存在完整的pe结构（即可以以iat的方式调用api），也可以使用shellcode的形式（没有pe结构）</a>
+</h3>
+<h3 class="topic">
+<a name="2b2ve3phjl19hpph571jmm43v2">&nbsp;&nbsp;&nbsp;解密源程序各个区块的数据</a>
+</h3>
+<h3 class="topic">
+<a name="30r2kss6futkjpk96j8n7ahk0k">&nbsp;&nbsp;&nbsp;修复重定位、修复导入表（修复iat）</a>
+</h3>
+<h3 class="topic">
+<a name="5sqlpijolp3sn5i7ea6d8dl3a9">&nbsp;&nbsp;&nbsp;跳转到程序原入口点（oep）</a>
+</h3>
+<h3 class="topic">
+<a name="7p85cc8c6b7g60fg6tjr94nmp5">&nbsp;&nbsp;压缩算法</a>
+</h3>
+<h3 class="topic">
+<a name="0v3kkb4ukcgh869sn587hq9ku6">&nbsp;&nbsp;&nbsp;需要解压速度一定要快，否则影响程序解压速度</a>
+</h3>
+<h3 class="topic">
+<a name="121373kps894fe4tqcco9itkkl">&nbsp;&nbsp;&nbsp;压缩引擎：aplib zlib</a>
+</h3>
+<h3 class="topic">
+<a name="1mh9k3b1mo83dd9psmthvhtgq4">&nbsp;&nbsp;壳代码中获取api的地址</a>
+</h3>
+<h3 class="topic">
+<a name="6qup2l9829i6jn45u2r5kg4rb8">&nbsp;&nbsp;&nbsp;获取kernel32模块基址的方法</a>
+</h3>
+<h3 class="topic">
+<a name="7i811c89chdh5l7eq6jvhjah9j">&nbsp;&nbsp;&nbsp;&nbsp;暴力搜索内存</a>
+</h3>
+<h3 class="topic">
+<a name="2vtmbh6qgki16quf9avc1350ac">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可执行文件进入oep之后，esp寄存器（或其他寄存器）中可能保存kernel32中的一个地址（因为加载器需要调用CreateThread，以便运行程序），只要将该地址往前测试，直到遇到MZ，说明来到了dos头</a>
+</h3>
+<h3 class="topic">
+<a name="7m3qa6u72r8sbgcat7pkoqu80d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;模块加载是以0x10000对齐的，0x10000是64kb，加载基址是0x10000的倍数</a>
+</h3>
+<h3 class="topic">
+<a name="6tme6mdeodslrj7tje7hbpm4jt">&nbsp;&nbsp;&nbsp;&nbsp;异常处理链表搜索</a>
+</h3>
+<h3 class="topic">
+<a name="58k75ctdo8omi58074ocpk7qvl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;异常处理链表的最后一项是默认的异常处理函数 xxxxx是kernel32中的一个函数，可以通过该函数的地址往上找，发现找到kernel32的基址</a>
+</h3>
+<h3 class="topic">
+<a name="1bbd8s85qcjki1d8959h76hgrk">&nbsp;&nbsp;&nbsp;&nbsp;查询peb结构体</a>
+</h3>
+<h3 class="topic">
+<a name="7dad36q9ed3ds32cg8il7qc3en">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;windbug手工遍历模块链表</a>
+</h3>
+<h3 class="topic">
+<a name="331rc1o39na7ldv6pci4fenhbr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;windug的使用</a>
+</h3>
+<h3 class="topic">
+<a name="6m71kqldu80hukk11pdus16r24">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用.reload /f   强制加载符号 </a>
+</h3>
+<h3 class="topic">
+<a name="53s8cfdnc4mgsjl86ane5vn9j8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 如果是win10，需要用64位的符号</a>
+</h3>
+<h3 class="topic">
+<a name="44hf0dp4hodiuovgeg6bv37eke">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.cls </a>
+</h3>
+<h3 class="topic">
+<a name="23micc57pse877t5u9edn8mguk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;清屏</a>
+</h3>
+<h3 class="topic">
+<a name="3p99g69uingv8ia5det1rr17eo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;!peb</a>
+</h3>
+<h3 class="topic">
+<a name="2lnmno6dlfjplf67al9i1v0atj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;查看peb结构</a>
+</h3>
+<h3 class="topic">
+<a name="4s3bhdkf5ns1v4f55ig6icn2nn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dt可以查看一个结构体</a>
+</h3>
+<h3 class="topic">
+<a name="7ges2akeovro8lebl60mhn25fo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dt _PEB</a>
+</h3>
+<h3 class="topic">
+<a name="2k5hu9tn75mbu56df8q5cnp7c5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dt _PEB 内存地址</a>
+</h3>
+<h3 class="topic">
+<a name="7ejkc27egd56msj4n0rsu7mcvb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;以peb方式解析某内存空间</a>
+</h3>
+<h3 class="topic">
+<a name="0fl16sc4d5tmjklk0me0u29d6r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dt _PEB/b 内存地址</a>
+</h3>
+<h3 class="topic">
+<a name="3grmfh9d8ksbd4trdfgj7jrdsd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;以peb方式解析某内存空间，并展开结构体</a>
+</h3>
+<h3 class="topic">
+<a name="112505ht12g2rci1k2qv9ti17j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意dt后面的参数必须是已经存在的结构体名，所以不能名称有严格限制，只能为 _PEB</a>
+</h3>
+<h3 class="topic">
+<a name="5u58e4ch7anov58bqpel59dem6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dt ldr的数据</a>
+</h3>
+<h3 class="topic">
+<a name="2pjl4777khrjk4qk2dctppod0p">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当中有三条链表，一般使用第一条链表，根据加载顺序保存的模块基址的链表</a>
+</h3>
+<h3 class="topic">
+<a name="6mi8khgkhhhpj76dr6553mbejl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;查看链表节点的结构，可以看到dll加载基址</a>
+</h3>
+<h3 class="topic">
+<a name="259ou5920r246t5j41gsfstcqb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;windbug tab可以自动补全</a>
+</h3>
+<h3 class="topic">
+<a name="06c32tlssbc3kmbf3u0a35jqv6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lm 列出模块列表，如果后面有pdb路径说明符号导成功</a>
+</h3>
+<h3 class="topic">
+<a name="1gk0eh91abvmk83rr0ganhm293">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;遍历过程</a>
+</h3>
+<h3 class="topic">
+<a name="0cji16ucrh38hnfs9qbefj4rr2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- 得到PEB的首地址</a>
+</h3>
+<h3 class="topic">
+<a name="38fcl9jt0efgouf0ielrc94h2h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- 得到PEB.Ldr记录的地址, 就是`_PEB_LDR_DATA`结构体的首地址.</a>
+</h3>
+<h3 class="topic">
+<a name="3k6ud8nagfadefb3166qakksre">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- 获取第一个模块的首地址 `_PEB_LDR_DATA.InLoadOrderModuleList.Flink` , Flink保存的首地址,是使用`_LDR_DATA_TABLE_ENTRY`结构,就是第一个模块的模块信息(也就是主模块)</a>
+</h3>
+<h3 class="topic">
+<a name="4qeldodaoaotae13ink83l4jaj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- 再通过`_LDR_DATA_TABLE_ENTRY.InLoadOrderModuleList.Flink`得到第二个模块(也就是ntdll模块)</a>
+</h3>
+<h3 class="topic">
+<a name="14a7a1aia103t608slkrmiihn5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- 再通过`_LDR_DATA_TABLE_ENTRY.InLoadOrderModuleList.Flink`得到第二个模块(也就是kernel32模块</a>
+</h3>
+<h3 class="topic">
+<a name="2r2374444v1u13aka1m60su6pj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;汇编形式遍历</a>
+</h3>
+<h3 class="topic">
+<a name="0ugmnt843eucgdb186j68dp2qo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;; 1. 获取PEB的首地址&#13;
+mov eax , fs:[0x30] ; eax  = &amp;peb;&#13;
+; 2. 得到peb.Ldr字段的值,这个值就是_PEB_LDR_DATA的首地址, ldr字段在PEB结构体中的偏移为0XC的位置.&#13;
+mov eax , [eax + 0xc]; eax =(_PEB_LDR_DATA*)peb-&gt;Ldr, &#13;
+; 3. 得到模块链表的第一个节点的首地址, _PEB_LDR_DATA结构体中,记录了三条链表,这次使用的是InLoadOrderModuleList, 在结构体中的偏移是0xC;&#13;
+mov eax, [eax+0xC]; eax = _PEB_LDR_DATA.InLoadOrderModuleList.Flink; eax的类型现在就是_LDR_DATA_TABLE_ENTRY类型的指针.就是模块链表中的第一个节点.&#13;
+&#13;
+; 4. 获取第二个模块(ntll.dll模块), 当前eax是_LDR_DATA_TABLE_ENTRY类型的指针, 这个结构体中,也保存了三条链表. 这次使用的是InLoadOrderModuleList, 在结构体中的偏移是0x0;&#13;
+mov eax,[eax];eax = _LDR_DATA_TABLE_ENTRY.InLoadOrderModuleList.Flink;&#13;
+&#13;
+; 5. 获取第三个模块(kernel32.dll),当前eax是_LDR_DATA_TABLE_ENTRY类型的指针, 这个结构体中,也保存了三条链表. 这次使用的是InLoadOrderModuleList, 在结构体中的偏移是0x0;&#13;
+mov eax,[eax] &#13;
+&#13;
+;6. 获取kernel32.dll的加载基址, eax此时保存的是_LDR_DATA_TABLE_ENTRY的首地址, 记录了加载基址的字段是DllBase,字段偏移值是0x018&#13;
+mov eax,[eax+0x18]; eax = _LDR_DATA_TABLE_ENTRY.DllBase&#13;
+&#13;
+最终得到的代码:&#13;
+MOV EAX,DWORD PTR FS:[0x30]&#13;
+MOV EAX,DWORD PTR DS:[EAX+0xC]&#13;
+MOV EAX,DWORD PTR DS:[EAX+0xC]&#13;
+MOV EAX,DWORD PTR DS:[EAX]&#13;
+MOV EAX,DWORD PTR DS:[EAX]&#13;
+MOV EAX,DWORD PTR DS:[EAX+0x18]&#13;
+机器码:&#13;
+64 A1 30 00 00 00 8B 40 0C 8B 40 0C 8B 00 8B 00 8B 40 18</a>
+</h3>
+<h3 class="topic">
+<a name="21916gp3cdgvko138kvh4t905c">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0x30&#13;
+0xc&#13;
+0xc&#13;
+eax&#13;
+eax&#13;
+0x18</a>
+</h3>
+<h3 class="topic">
+<a name="1t8vl65l4g54012p8g14ls917a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;或者是</a>
+</h3>
+<h3 class="topic">
+<a name="22dkjv1nosn9dof0e02b9s6rhr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0x30</a>
+</h3>
+<h3 class="topic">
+<a name="54lt4dg0vajp37m48lsp1l5nqa">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0xc</a>
+</h3>
+<h3 class="topic">
+<a name="1i6v45njlabivoqr0scrrqccmn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0x1c</a>
+</h3>
+<h3 class="topic">
+<a name="5ukltgdbk3kakivbarjesoau0f">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;eax</a>
+</h3>
+<h3 class="topic">
+<a name="0ire16dlouqtfrs07ff8hkv64e">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0x08</a>
+</h3>
+<h3 class="topic">
+<a name="79io387tv5sln50kc2pti9fleh">&nbsp;手工加壳</a>
+</h3>
+<h3 class="topic">
+<a name="0qpvdp6s24ohjrjic1l7i9kopk">&nbsp;&nbsp;添加区段</a>
+</h3>
+<h3 class="topic">
+<a name="5jkckh70na97kvbk1560dqt18p">&nbsp;&nbsp;&nbsp;修改文件头的区段个数</a>
+</h3>
+<h3 class="topic">
+<a name="41co78oikgppvpedr633datreo">&nbsp;&nbsp;&nbsp;&nbsp;保存在文件头</a>
+</h3>
+<h3 class="topic">
+<a name="5ck9jhirhpf34t17goid6o3vop">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;NumberOfSection</a>
+</h3>
+<h3 class="topic">
+<a name="0v1afn65be3d19cqfr0pgnmf8n">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%86%99%E5%A3%B3_files/019vkkqdsgdr605cd6hvkq5ekf.png"></p>
+<h3 class="topic">
+<a name="1prjs5cumcv2vd149k7c0bpbkn">&nbsp;&nbsp;&nbsp;配置新的区段头</a>
+</h3>
+<h3 class="topic">
+<a name="3g4i9e06psghbum4ujr4m8fdh7">&nbsp;&nbsp;&nbsp;&nbsp;区段名称</a>
+</h3>
+<h3 class="topic">
+<a name="2emqiv49enrre6qg53jrnbg7d7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Name 最大8字节</a>
+</h3>
+<h3 class="topic">
+<a name="290luhbe8jm6alvp9tfh7mdfc3">&nbsp;&nbsp;&nbsp;&nbsp;区段大小</a>
+</h3>
+<h3 class="topic">
+<a name="1vvvpgo6tjdgjqc1ccc4d83ngv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;实际大小</a>
+</h3>
+<h3 class="topic">
+<a name="4iupj7201ip4h9g2m51m4i0t76">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Misc.VirtualSize</a>
+</h3>
+<h3 class="topic">
+<a name="2qvoc1k4aucb2hp8d75tld9m9q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;最小为0x200，即文件对齐粒度</a>
+</h3>
+<h3 class="topic">
+<a name="7v81esm3ug5htunbr9bktfvuf4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;文件对齐后的大小</a>
+</h3>
+<h3 class="topic">
+<a name="5oidtpoe680s41hejj28p8jbb7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SizeofRawData</a>
+</h3>
+<h3 class="topic">
+<a name="01m0tegt0u8c8ces2hrhl2iduc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;最小为0x200，即文件对齐粒度</a>
+</h3>
+<h3 class="topic">
+<a name="3obnpeug5oo5m72ir5lh213u1n">&nbsp;&nbsp;&nbsp;&nbsp;区段位置</a>
+</h3>
+<h3 class="topic">
+<a name="5p209dev6i1683jshhas3gm14m">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;文件偏移</a>
+</h3>
+<h3 class="topic">
+<a name="6v9lbo09qh5ijn5dnb5sk92pq8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pe文件最后一个区段的结束不等于pe文件的结束（因为最后一个区段之后还有附加数据），因此新区段的文件偏移应当设置为当前文件数据最后（即以010editor看到的最后），并且需要符合文件对齐粒度（0x200）</a>
+</h3>
+<h3 class="topic">
+<a name="5uv6vsvn4i5v0lfp88eo821003">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PointerToRawData</a>
+</h3>
+<h3 class="topic">
+<a name="4qufj6vrgsl1rfla64gs40kpjr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;内存偏移</a>
+</h3>
+<h3 class="topic">
+<a name="2ko8o61h8h1qm19v9vljkorgu2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;内存偏移必须是上一个区段的结束位置，需要获得上一个区段的内存偏移加上上一个区段的大小（文件大小对齐大小？实际大小？），经过内存粒度对齐，</a>
+</h3>
+<h3 class="topic">
+<a name="0cc7uqsshlu3u5mls9oedd2146">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;VirtualAddress</a>
+</h3>
+<h3 class="topic">
+<a name="2c6obd7bg26h69o2cjvd40pfj4">&nbsp;&nbsp;&nbsp;&nbsp;区段属性</a>
+</h3>
+<h3 class="topic">
+<a name="7u47ed3i088snk2q7b16i8enm6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可读可写可执行</a>
+</h3>
+<h3 class="topic">
+<a name="29ueff35e22u5hn2aaah7b0prj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;e0 00 00 e0</a>
+</h3>
+<h3 class="topic">
+<a name="6namfkbv4837dfnlfgfm43du1v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Characteristics</a>
+</h3>
+<h3 class="topic">
+<a name="2bdhv249i379cdgdh5cj2imkj3">&nbsp;&nbsp;&nbsp;修改扩展头中映像大小</a>
+</h3>
+<h3 class="topic">
+<a name="64kffcjuvjhlk6u0rm1063n4t6">&nbsp;&nbsp;&nbsp;&nbsp;SizeOfImage</a>
+</h3>
+<h3 class="topic">
+<a name="0f71rhgoprsao8kblop1f1lqqa">&nbsp;&nbsp;&nbsp;&nbsp;最后一个区段的内存偏移+区段的实际大小</a>
+</h3>
+<h3 class="topic">
+<a name="41unp25vflb9tdki8mjd1u2igi">&nbsp;&nbsp;&nbsp;&nbsp;或最后一个区段的内存偏移+区段的文件粒度对齐粒度大小</a>
+</h3>
+<h3 class="topic">
+<a name="5sqmqib308cb4dk0km20st478v">&nbsp;&nbsp;&nbsp;&nbsp;或最后一个区段的内存偏移+区段的内存粒度对齐粒度大小</a>
+</h3>
+<h3 class="topic">
+<a name="7cteou0q0lq5b2lpk7536m8833">&nbsp;&nbsp;&nbsp;添加新区段数据到文件中</a>
+</h3>
+<h3 class="topic">
+<a name="61vsjr2c1ipu57sq02f6kmkuu3">&nbsp;&nbsp;&nbsp;&nbsp;insert  py hex -》填充200个nop</a>
+</h3>
+<h3 class="topic">
+<a name="40siedaeaiuf1ui63u8u85frli">&nbsp;&nbsp;&nbsp;&nbsp;64 A1 30 00 00 00 8B 40 0C 8B 40 0C 8B 00 8B 00 8B 40 18 BE 90 29 02 00 01 C6 BF 20 5F 01 00 01 C7 90 E8 10 00 00 00 75 73 65 72 33 32 2E 64 6C 6C 00 90 90 90 90 90 FF D6 90 90 E8 11 00 00 00 4D 65 73 73 61 67 65 42 6F 78 41 00 90 90 90 90 90 50 FF D7 90 6A 00 6A 00 E8 13 00 00 00 B4 F3 BC D2 BA C3 2C CE D2 CA C7 D2 BB B8 F6 BF C7 00 00 6A 00 FF D0 E9 66 44 FE FF&#13;
+&#13;
+&#13;
+0041D000  | 64:A1 30000000        | MOV EAX,DWORD PTR FS:[0x30]            | eax = PEB首地址&#13;
+0041D006  | 8B40 0C               | MOV EAX,DWORD PTR DS:[EAX+0xC]         | eax = Ldr首地址&#13;
+0041D009  | 8B40 0C               | MOV EAX,DWORD PTR DS:[EAX+0xC]         | eax = Ldr.InLoadOrderModuleList.Flink, 也就是主模块信息&#13;
+0041D00C  | 8B00                  | MOV EAX,DWORD PTR DS:[EAX]             |&#13;
+0041D00E  | 8B00                  | MOV EAX,DWORD PTR DS:[EAX]             |&#13;
+0041D010  | 8B40 18               | MOV EAX,DWORD PTR DS:[EAX+0x18]        |&#13;
+0041D013  | BE 90290200           | MOV ESI,0x22990                        | esi 保存的是LoadLibraryA的偏移&#13;
+0041D018  | 01C6                  | ADD ESI,EAX                            | LoadLibrary的地址&#13;
+0041D01A  | BF 205F0100           | MOV EDI,0x15F20                        | edi:EntryPoint&#13;
+0041D01F  | 01C7                  | ADD EDI,EAX                            | edi = 保存GetProcAddress的地址&#13;
+0041D021  | 90                    | NOP                                    | 加载user32.dll&#13;
+0041D022  | E8 10000000           | CALL 0x41D037                          | LoadLibraryA("user32.dll")&#13;
+0041D027  | 75 73                 | JNE 0x41D09C                           |&#13;
+0041D029  | 65:72 33              | JB 0x41D05F                            |&#13;
+0041D02C  | 322E                  | XOR CH,BYTE PTR DS:[ESI]               | esi:EntryPoint&#13;
+0041D02E  | 64:6C                 | INSB                                   |&#13;
+0041D030  | 6C                    | INSB                                   |&#13;
+0041D031  | 0090 90909090         | ADD BYTE PTR DS:[EAX-0x6F6F6F70],DL    |&#13;
+0041D037  | FFD6                  | CALL ESI                               | call LoadLibraryA&#13;
+0041D039  | 90                    | NOP                                    | eax == user32.dll的加载基址&#13;
+0041D03A  | 90                    | NOP                                    |&#13;
+0041D03B  | E8 11000000           | CALL 0x41D051                          | GetProcAddress(hUser,"MessageBoxA")&#13;
+0041D040  | 4D                    | DEC EBP                                |&#13;
+0041D041  | 65:73 73              | JAE 0x41D0B7                           |&#13;
+0041D044  | 61                    | POPAD                                  |&#13;
+0041D045  | 6765:42               | INC EDX                                | edx:EntryPoint&#13;
+0041D048  | 6F                    | OUTSD                                  | LoadLibraryA();&#13;
+0041D049  | 78 41                 | JS 0x41D08C                            |&#13;
+0041D04B  | 0090 90909090         | ADD BYTE PTR DS:[EAX-0x6F6F6F70],DL    |&#13;
+0041D051  | 50                    | PUSH EAX                               | eax =&gt; user32.dll的加载基址&#13;
+0041D052  | FFD7                  | CALL EDI                               | call GetProcAddress&#13;
+0041D054  | 90                    | NOP                                    | eax ==MesageBoxA的地址&#13;
+0041D055  | 6A 00                 | PUSH 0x0                               | MessageBox(0,"内容","标题",0);&#13;
+0041D057  | 6A 00                 | PUSH 0x0                               | 参数3&#13;
+0041D059  | E8 13000000           | CALL 0x41D071                          | 参数2&#13;
+0041D05E  | B4 F3                 | MOV AH,0xF3                            |&#13;
+0041D060  | BC D2BAC32C           | MOV ESP,0x2CC3BAD2                     |&#13;
+0041D065  | CE                    | INTO                                   |&#13;
+0041D066  | D2CA                  | ROR DL,CL                              |&#13;
+0041D068  | C7                    | ???                                    |&#13;
+0041D069  | D2BB B8F6BFC7         | SAR BYTE PTR DS:[EBX-0x38400948],CL    |&#13;
+0041D06F  | 0000                  | ADD BYTE PTR DS:[EAX],AL               |&#13;
+0041D071  | 6A 00                 | PUSH 0x0                               | 参数1&#13;
+0041D073  | FFD0                  | CALL EAX                               |&#13;
+0041D075  | E9 6644FEFF           | JMP test.4014E0                        |</a>
+</h3>
+<h3 class="topic">
+<a name="28261d13qi01um7hmbl3a66cqg">&nbsp;&nbsp;&nbsp;&nbsp;注意上面的代码不能照单全用，因为存在返回oep地址不同以及不能动态获取api地址的问题</a>
+</h3>
+<h3 class="topic">
+<a name="39mdofl2ncnb0suajndnh565at">&nbsp;&nbsp;设置oep</a>
+</h3>
+<h3 class="topic">
+<a name="7ap8jj0kbb3171gjnqavd5vatn">&nbsp;&nbsp;&nbsp;设置oep为新区段的段首</a>
+</h3>
+<h3 class="topic">
+<a name="4eqq3ru18g9i84u13ildcdru38">&nbsp;&nbsp;&nbsp;将原始oep保存</a>
+</h3>
+<h3 class="topic">
+<a name="5lvv2476s2l0icv1dmfidp1q1o">&nbsp;&nbsp;&nbsp;将oep设置为新区段相对虚拟地址（rva）</a>
+</h3>
+<h3 class="topic">
+<a name="5spk77cfd7cm9e6cb72jtnmk36">&nbsp;&nbsp;在x64中使用汇编编程，写上壳代码</a>
+</h3>
+<h3 class="topic">
+<a name="1udd1d22op3a2lq90557fm2n3c">&nbsp;作业，完成手工加壳，加壳时加密代码段，使用c++实现添加代码段的区段</a>
+</h3>
+<h2 class="topic">
+<a name="719vaup8gjcrgdpbfjcv6kar6v">dll默认加载基址为10000000（一千万）</a>
+</h2>
+<h2 class="topic">
+<a name="68ajckpgcen6p8bnr5ao08cki5">一个内存分页4kb大小，即4096个字节，0x1000个字节</a>
+</h2>
+<h2 class="topic">
+<a name="0htr5eev514c1or3jce0ksrvrg">新增代码段的前几条指令</a>
+</h2>
+<h3 class="topic">
+<a name="334cel8sgkv30ilp25cr2r3lqi">&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%86%99%E5%A3%B3_files/7fj773t1n5ppbni3r9jarsldjm.png"></p>
+<h3 class="topic">
+<a name="551uet6v3n3cb8qmr5qih5nv4t">&nbsp;mov eax,dword ptr fs:[30]&#13;
+mov eax,dword ptr ds:[eax+C]&#13;
+mov eax,dword ptr ds:[eax+C]&#13;
+mov eax,dword ptr ds:[eax]&#13;
+mov eax,dword ptr ds:[eax]&#13;
+mov eax,dword ptr ds:[eax+18]&#13;
+mov esi,dword ptr ds:[eax+3C]&#13;
+lea esi,dword ptr ds:[eax+esi]&#13;
+mov esi,dword ptr ds:[esi+78]&#13;
+lea esi,dword ptr ds:[eax+esi]</a>
+</h3>
+<h2 class="topic">
+<a name="2vg7pp5nujvtjbroom7v87bmqu">如果被加壳程序是随机基址的，则从新增区段（壳代码所在区段）跳转回原来的oep是不能写死的，因为跨区段跳转，</a>
+</h2>
+<h2 class="topic">
+<a name="3mqvtj263medtn04ti57ftrnol"></a>
+</h2>
+<p class="topicImage">
+<img src="%E5%86%99%E5%A3%B3_files/1j0oicuqi9hm1bm8rnedcj0enf.png"></p>
+</body>
+</html>

@@ -1,0 +1,612 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>class57day0514（软件逆向第二天）</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="6k9fqqrq0hf77la6bpp8004r35">class57day0514（软件逆向第二天）</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="class57day0514_files/images/class57day0514%EF%BC%88%E8%BD%AF%E4%BB%B6%E9%80%86%E5%90%91%E7%AC%AC%E4%BA%8C%E5%A4%A9%EF%BC%89.jpg"></div>
+<h2 class="topic">
+<a name="3bg82pqvadjrrijr205gaqia2c">复习</a>
+</h2>
+<h3 class="topic">
+<a name="6bdom9cokn15j35nr43gp1i1f2">&nbsp;软件逆向的目的</a>
+</h3>
+<h3 class="topic">
+<a name="0nmf1bobhifc5r8rk97vd35hdr">&nbsp;&nbsp;逆向软件的算法和数据</a>
+</h3>
+<h3 class="topic">
+<a name="5kuqflg4nv5055vcdpgb3ca3fo">&nbsp;&nbsp;在原有程序上打补丁，增强程序功能，修复程序bug</a>
+</h3>
+<h3 class="topic">
+<a name="5em5iuuhlfogtt91f95blsh6or">&nbsp;可以从事的工作</a>
+</h3>
+<h3 class="topic">
+<a name="0jsd4et91l3hlrj1k8lp00p9rh">&nbsp;&nbsp;软件破解</a>
+</h3>
+<h3 class="topic">
+<a name="2tenimat7g8ke6jsj41k9i4ilk">&nbsp;&nbsp;&nbsp;逆向工程师</a>
+</h3>
+<h3 class="topic">
+<a name="4dfj6kubjdf1h1cpebf7k2scsj">&nbsp;&nbsp;恶意代码分析</a>
+</h3>
+<h3 class="topic">
+<a name="36n8ovcs401id12m7gkme502bl">&nbsp;&nbsp;&nbsp;病毒分析工程师</a>
+</h3>
+<h3 class="topic">
+<a name="7qvh3ptrer7l8raqd20hbnv4mo">&nbsp;&nbsp;&nbsp;&nbsp;安全研究员</a>
+</h3>
+<h3 class="topic">
+<a name="43musufelq6ab3gaervqm63qg5">&nbsp;&nbsp;协议分析</a>
+</h3>
+<h3 class="topic">
+<a name="1udlgqvb7mbhmkel2uvb4h9k6d">&nbsp;&nbsp;&nbsp;协议分析工程师</a>
+</h3>
+<h3 class="topic">
+<a name="0off7bj7jabi3vb36j2jatapr7">&nbsp;&nbsp;二进制代码审核</a>
+</h3>
+<h3 class="topic">
+<a name="1jqr4bpetaoh85rivmaobb9h2g">&nbsp;&nbsp;&nbsp;漏洞挖掘、利用工程师</a>
+</h3>
+<h3 class="topic">
+<a name="6kq5f0p1gv3lmur8vqtsj7lhpk">&nbsp;&nbsp;竞品分析</a>
+</h3>
+<h3 class="topic">
+<a name="79jp8k9iqhef03v2djo3od67ik">&nbsp;&nbsp;&nbsp;逆向工程师</a>
+</h3>
+<h3 class="topic">
+<a name="43ikr4r1uqh0bh2h4kpg616g28">&nbsp;&nbsp;未公开api</a>
+</h3>
+<h3 class="topic">
+<a name="053m861cleniig7vc46bdmrq2q">&nbsp;&nbsp;&nbsp;系统分析工程师</a>
+</h3>
+<h3 class="topic">
+<a name="4tfbdki4390s680p7kie1ipnc2">&nbsp;工具</a>
+</h3>
+<h3 class="topic">
+<a name="4hnecvc83d8n1358c6bp93d746">&nbsp;&nbsp;十六进制编辑器</a>
+</h3>
+<h3 class="topic">
+<a name="0vn2u3h7gug41djtsveikfu6pk">&nbsp;&nbsp;&nbsp;010editor</a>
+</h3>
+<h3 class="topic">
+<a name="0fb52obc7qrgnnvjoh9ts9fdqq">&nbsp;&nbsp;&nbsp;WinHex</a>
+</h3>
+<h3 class="topic">
+<a name="4s6civrj66ungi5d8jutk81f2p">&nbsp;&nbsp;&nbsp;&nbsp;可以编辑物理磁盘</a>
+</h3>
+<h3 class="topic">
+<a name="3b3i02al8scaup8gug2d55vmu9">&nbsp;&nbsp;系统监控工具</a>
+</h3>
+<h3 class="topic">
+<a name="1n4tjjacqm01l0hp73rm7fasn0">&nbsp;&nbsp;&nbsp;火绒剑</a>
+</h3>
+<h3 class="topic">
+<a name="1bg5lu8lcadol47b1ao84qevch">&nbsp;&nbsp;&nbsp;&nbsp;进行软件行为分析</a>
+</h3>
+<h3 class="topic">
+<a name="4i3ht6mcspcdt7ddtn7tl3hk27">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;文件操作</a>
+</h3>
+<h3 class="topic">
+<a name="46vl074naij4qutd3mnf9isc14">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注册表操作</a>
+</h3>
+<h3 class="topic">
+<a name="3e97pchltahb7serku7gm15p33">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;网络操作</a>
+</h3>
+<h3 class="topic">
+<a name="0ansil6mu4k39cu66teok7uiog">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;其他进程的入侵</a>
+</h3>
+<h3 class="topic">
+<a name="354t72ot3hdns6obrnev8s9lkg">&nbsp;&nbsp;&nbsp;&nbsp;钩子的扫描</a>
+</h3>
+<h3 class="topic">
+<a name="410ho56l79hafe30470dqesjen">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;内核钩子</a>
+</h3>
+<h3 class="topic">
+<a name="1i0p11rpb4k80t01j0q7dvgaef">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;进程内的钩子</a>
+</h3>
+<h3 class="topic">
+<a name="7uiqq623rlq1pa101883d632ss">&nbsp;&nbsp;抓包工具</a>
+</h3>
+<h3 class="topic">
+<a name="6k1qn9ml8llegcavl5lg1dm21s">&nbsp;&nbsp;&nbsp;WireShark</a>
+</h3>
+<h3 class="topic">
+<a name="6pu217413hq942pbt89a14u2ib">&nbsp;&nbsp;&nbsp;&nbsp;全协议全平台数据包</a>
+</h3>
+<h3 class="topic">
+<a name="54k7lc58g3fc8gngstq17130dh">&nbsp;&nbsp;&nbsp;&nbsp;针对网卡数据抓包</a>
+</h3>
+<h3 class="topic">
+<a name="77bhv78nrkupstlaugbjk200lq">&nbsp;&nbsp;&nbsp;WSExplore</a>
+</h3>
+<h3 class="topic">
+<a name="6icjme5bkr8855jsu5m0bju9qh">&nbsp;&nbsp;&nbsp;&nbsp;针对进程抓包</a>
+</h3>
+<h3 class="topic">
+<a name="5p8ci7k5ue198de3risvdub0nn">&nbsp;&nbsp;&nbsp;&nbsp;主要了是hook相关api</a>
+</h3>
+<h3 class="topic">
+<a name="007m6v3ng0bh8h8bu1g33f43eb">&nbsp;&nbsp;&nbsp;&nbsp;主要抓tcp udp工具</a>
+</h3>
+<h3 class="topic">
+<a name="5mgk5i117hqcn8952eqaba2cfp">&nbsp;&nbsp;ARK工具</a>
+</h3>
+<h3 class="topic">
+<a name="19s5ucpvdegm2nmc412ghiek7v">&nbsp;&nbsp;&nbsp;PC-Hunter</a>
+</h3>
+<h3 class="topic">
+<a name="3g3d3gbuaijgb27mb71l1sj8o5">&nbsp;&nbsp;&nbsp;&nbsp;内核分析必备工具</a>
+</h3>
+<h3 class="topic">
+<a name="3igtku15ta6dk161r6p7i5qdhs">&nbsp;&nbsp;&nbsp;&nbsp;能够进行内核层数据遍历</a>
+</h3>
+<h3 class="topic">
+<a name="2a1p81t39l3fiqbrcuu97fgdr0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;加载的驱动</a>
+</h3>
+<h3 class="topic">
+<a name="3fmhmub0pedu3bavg91ac9n5jl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;卸载驱动</a>
+</h3>
+<h3 class="topic">
+<a name="0kpkbir7i495dqgpmqc1e20ent">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;遍历内核层的钩子</a>
+</h3>
+<h3 class="topic">
+<a name="6hftb7ummqpb8r0h6356mk2b7g">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;只要改变了原始程序的执行顺序，均可以称为钩子</a>
+</h3>
+<h3 class="topic">
+<a name="5des9873lup7kri68rpihcud8j">&nbsp;&nbsp;pe工具</a>
+</h3>
+<h3 class="topic">
+<a name="63p4ghaibr00njubtlfu3ssk89">&nbsp;&nbsp;&nbsp;LordPE</a>
+</h3>
+<h3 class="topic">
+<a name="4ft1k7v304uu4p9crsjgm6uenm">&nbsp;&nbsp;&nbsp;&nbsp;添加区段，修改导入导出表等</a>
+</h3>
+<h3 class="topic">
+<a name="3akbukudcmq9mkcemg3lonims3">&nbsp;&nbsp;&nbsp;PEID、EXEinfo</a>
+</h3>
+<h3 class="topic">
+<a name="47jmrighklqtg0s3ech2kolajd">&nbsp;&nbsp;&nbsp;&nbsp;查看ppe文件的信息，主要是加壳的信息，以及内部使用的算法的提示</a>
+</h3>
+<h3 class="topic">
+<a name="3pf3lq2c2q3ve3fssiel0rtg79">&nbsp;&nbsp;内存修改工具</a>
+</h3>
+<h3 class="topic">
+<a name="39cv6eoj8cfthfnt7uk6nvfvch">&nbsp;&nbsp;&nbsp;ce</a>
+</h3>
+<h3 class="topic">
+<a name="3vca39sci3odkn9fl6nmdvipgd">&nbsp;&nbsp;&nbsp;&nbsp;内存搜索工具</a>
+</h3>
+<h2 class="topic">
+<a name="50tpov5n968khopj0h3qltfh5c">od的使用</a>
+</h2>
+<h3 class="topic">
+<a name="03702pl9pauj0nj82l1r73sqq5">&nbsp;使用od进行调试一般有三种方法</a>
+</h3>
+<h3 class="topic">
+<a name="5tk6lvm6rmqubnbrdm5ahprq44">&nbsp;&nbsp;单步调试</a>
+</h3>
+<h3 class="topic">
+<a name="79mpf39mfd1ig16e31trbs9406">&nbsp;&nbsp;字符串搜索分析</a>
+</h3>
+<h3 class="topic">
+<a name="6e7391b8igrrigh4ltn69td450">&nbsp;&nbsp;api下断栈回溯分析</a>
+</h3>
+<h3 class="topic">
+<a name="75ok8t62aod8blpnbsd9kv2dfu">&nbsp;&nbsp;&nbsp;非常重要，将程序断在与需要分析位置不远的地方，通过栈回溯，找到需要分析的位置</a>
+</h3>
+<h3 class="topic">
+<a name="2eshe8m3v6mtr83cao3t1ekir8">&nbsp;&nbsp;&nbsp;可以通过栈窗口或k工具栏</a>
+</h3>
+<h3 class="topic">
+<a name="1eool7tqhk0pf7bm6po7kufjs8">&nbsp;&nbsp;&nbsp;通常用于定位关键位置</a>
+</h3>
+<h3 class="topic">
+<a name="3mejnq8j93bgmt4csk4fsmihc4">&nbsp;版本</a>
+</h3>
+<h3 class="topic">
+<a name="1qvh7bcfrmvni5nka29ilnd1ht">&nbsp;&nbsp;1.1</a>
+</h3>
+<h3 class="topic">
+<a name="2kf5leh9e0tepn2icd4oooth8u">&nbsp;&nbsp;&nbsp;断点</a>
+</h3>
+<h3 class="topic">
+<a name="3dkth8p7rsmuka57aaq5qmscet">&nbsp;&nbsp;&nbsp;&nbsp;只能设置一个内存断点</a>
+</h3>
+<h3 class="topic">
+<a name="5t9940e3hg5fovm2fj0j3lqdas">&nbsp;&nbsp;&nbsp;&nbsp;只能显示软件断点</a>
+</h3>
+<h3 class="topic">
+<a name="7lvomljbqru778hi4224a04npo">&nbsp;&nbsp;&nbsp;&nbsp;只能设置软件断点的条件</a>
+</h3>
+<h3 class="topic">
+<a name="2vi16joqu7o76hm2e7qtcferbk">&nbsp;&nbsp;2.0</a>
+</h3>
+<h3 class="topic">
+<a name="228f3i1r5v4pb4o88sj58di8c8">&nbsp;&nbsp;&nbsp;插件系统与1.1不兼容</a>
+</h3>
+<h3 class="topic">
+<a name="4alk1q2sops3vs2e4gedqb8sh8">&nbsp;&nbsp;&nbsp;可以设置多个内存断点</a>
+</h3>
+<h3 class="topic">
+<a name="580ojj1q0buf8avtedmki14aqr">&nbsp;&nbsp;&nbsp;三种断点均可以加条件</a>
+</h3>
+<h3 class="topic">
+<a name="5n267j2chsqdnq1rb6h8gh96hj">&nbsp;od界面配置信息保存在in文件中</a>
+</h3>
+<h3 class="topic">
+<a name="6v0l1jpi4609cndnidekv571om">&nbsp;通过以不同的方式解析数据窗口中的数据，可以获取有用信息</a>
+</h3>
+<h3 class="topic">
+<a name="7u337oj22v99cavsuclhb7budf">&nbsp;&nbsp;比如查看导入表数据中，使用长整形数据查看，看到导入表中数据地址和函数名称</a>
+</h3>
+<h3 class="topic">
+<a name="44i1ttnhuqhbiel6q4t60atup8">&nbsp;&nbsp;当数据窗口中内容为程序起始位置时，使用pe格式查看数据可以以pe文件方法解析数据</a>
+</h3>
+<h3 class="topic">
+<a name="4ufhkgba5j93kajcm3220q37b5">&nbsp;&nbsp;可以以反汇编的形式查看数据</a>
+</h3>
+<h3 class="topic">
+<a name="4mg4erncf3sjkle0iibm156b4n">&nbsp;使用od调试程序的情况</a>
+</h3>
+<h3 class="topic">
+<a name="3paehrt6svvkooqomio812eml3">&nbsp;&nbsp;主动调试程序</a>
+</h3>
+<h3 class="topic">
+<a name="4sfklr0e34ifrm6cbn1d61vm6j">&nbsp;&nbsp;&nbsp;可以在开始调试的时候使用od向被调试程序传递命令行参数</a>
+</h3>
+<h3 class="topic">
+<a name="5pir4geajai27jpibqbfofk2tc">&nbsp;&nbsp;&nbsp;&nbsp;比如mian函数中的两个参数，就是程序运行起来时需要传入的命令行参数</a>
+</h3>
+<h3 class="topic">
+<a name="7povtagq6d45b91tnhdc6h5tr1">&nbsp;&nbsp;附加调试</a>
+</h3>
+<h3 class="topic">
+<a name="4lk8ks5eq7vmf1sk7et2mo6ecf">&nbsp;&nbsp;实时调试</a>
+</h3>
+<h3 class="topic">
+<a name="2tmtjur5j75942h2lptgdhcd1f">&nbsp;&nbsp;&nbsp;设置od为实时调试器</a>
+</h3>
+<h3 class="topic">
+<a name="6i1hslfmrn8a06b11bgtgtofam">&nbsp;&nbsp;&nbsp;&nbsp;即od被设置为实时调试器时，当系统中的某个程序发生异常导致崩溃时，会调用od对崩溃的程序进行调试</a>
+</h3>
+<h3 class="topic">
+<a name="7mfpdseos2mne6iuiksugqpaqb">&nbsp;&nbsp;调试一个dll</a>
+</h3>
+<h3 class="topic">
+<a name="02hgr07bfi6gigsapdo2lcne6h">&nbsp;&nbsp;&nbsp;在调试dll的时候实际调试的是LoadDll.exe,后者会将要调试的dll加载进来，以便在od中查看dll相关信息</a>
+</h3>
+<h3 class="topic">
+<a name="1oft7hispdlogt8b4dj5ti1e8t">&nbsp;多线程调试</a>
+</h3>
+<h3 class="topic">
+<a name="5dbp5ggc9g5ukueq8mtmme7c8j">&nbsp;&nbsp;可以主动挂起、终止线程</a>
+</h3>
+<h3 class="topic">
+<a name="2apdsc9ijrgj672u6so2gi57v5">&nbsp;&nbsp;可以显示</a>
+</h3>
+<h3 class="topic">
+<a name="2if3r9uslokk9v49v88oaiva5f">&nbsp;&nbsp;&nbsp;tid</a>
+</h3>
+<h3 class="topic">
+<a name="5nd2aljt6bjin3cvtj7onlr1b4">&nbsp;&nbsp;&nbsp;线程入口函数</a>
+</h3>
+<h3 class="topic">
+<a name="40re9dfmap27nc22gh7cg972qj">&nbsp;&nbsp;&nbsp;线程环境块 即fs:[0]</a>
+</h3>
+<h3 class="topic">
+<a name="30300m6mq59vsgrdf2e17s6om3">&nbsp;&nbsp;&nbsp;线程错误码</a>
+</h3>
+<h3 class="topic">
+<a name="7o29m2rfalhkmk5nt8qfco5s6f">&nbsp;&nbsp;&nbsp;。。。</a>
+</h3>
+<h3 class="topic">
+<a name="1m4qjmdljhmft2gfpcuhnmuks5">&nbsp;分析</a>
+</h3>
+<h3 class="topic">
+<a name="5brfarsoib8m03coviambrfbfn">&nbsp;&nbsp;可以进行pe文件、语法结构、函数参数的识别与分析</a>
+</h3>
+<h3 class="topic">
+<a name="332dc80quffm4r3lc5t2frdj5r">&nbsp;&nbsp;&nbsp;在分析选项-》调试设置-》分析1窗口，可以勾选主模块分析，可以针对模块中的函数和参数进行识别与分析</a>
+</h3>
+<h3 class="topic">
+<a name="482n13geb485brp03aqee3c6ph">&nbsp;&nbsp;&nbsp;在非主模块中使用Ctrl+a可以分析该模块中的函数</a>
+</h3>
+<h3 class="topic">
+<a name="395vpn851hrf3sr2l5p48os4kl">&nbsp;&nbsp;&nbsp;一个程序的加载基址就是实例句柄，winmain函数的参数之一就是实例句柄</a>
+</h3>
+<h3 class="topic">
+<a name="4t4g5tpnfdr96eqhfbslvh8tue">&nbsp;&nbsp;&nbsp;&nbsp;句柄即加载基址</a>
+</h3>
+<h3 class="topic">
+<a name="55frotkfesjpjc9432krg61rrm">&nbsp;&nbsp;&nbsp;可以使用右键-》分析-》假定参数，将特定函数指定为某一函数形式，（比如将窗口回调函数识别出来时候，将该函数指定为Winproc，即可以对窗口消息（WM_COMMAND）进行拦截）</a>
+</h3>
+<h3 class="topic">
+<a name="20shloqsudmn8sjdg5tqa25sju">&nbsp;&nbsp;&nbsp;&nbsp;需要回顾有关sdk消息的知识</a>
+</h3>
+<h3 class="topic">
+<a name="5hk0agg4b7mj18evb3n66c6hj9">&nbsp;识别栈</a>
+</h3>
+<h3 class="topic">
+<a name="63sh8ge9f3jh9l5v0sl5g0e1b4">&nbsp;&nbsp;针对特定api下断点，然后触发该api执行，通过栈回溯可以找到调用该api的位置</a>
+</h3>
+<h3 class="topic">
+<a name="777iuobpj6herjo97tdk4ljaml">&nbsp;seh链</a>
+</h3>
+<h3 class="topic">
+<a name="2pn5f5h92bfa8epj0ed4rocmpj">&nbsp;&nbsp;结构化异常处理</a>
+</h3>
+<h3 class="topic">
+<a name="4b4rdl6louou2491mhj6ads5n3">&nbsp;&nbsp;是一种改变代码流的方式，是一种常用的反调试操作</a>
+</h3>
+<h3 class="topic">
+<a name="71jd1aj5hmii05ml5ujilb1pae">&nbsp;&nbsp;&nbsp;即故意产生异常，将反调试代码放置在seh异常处理函数种</a>
+</h3>
+<h3 class="topic">
+<a name="113090ujdmavch3ueqs9u9o3hb">&nbsp;&nbsp;查看-》seh链即可查看she处理函数</a>
+</h3>
+<h3 class="topic">
+<a name="0tm4h4okd7fii8jeionjocdp4u">&nbsp;搜索功能</a>
+</h3>
+<h3 class="topic">
+<a name="2s1pn6qkku811p8kf0p08dn0jf">&nbsp;&nbsp;搜索字符串</a>
+</h3>
+<h3 class="topic">
+<a name="1nim55bkunikifdhg55ahpl5gm">&nbsp;&nbsp;&nbsp;右键-》查找-》搜索参考文本字符串</a>
+</h3>
+<h3 class="topic">
+<a name="4shljtgcb58kbafgngn2gcsq1n">&nbsp;&nbsp;搜索目标字符串</a>
+</h3>
+<h3 class="topic">
+<a name="119g4f58es7erccgguppnadhqi">&nbsp;&nbsp;&nbsp;右键-》查找-》二进制字符串</a>
+</h3>
+<h3 class="topic">
+<a name="003vpeuegnejjuks06lhenbl8d">&nbsp;&nbsp;&nbsp;在数据段中查找需要在m工具栏中在指定段中进行搜索</a>
+</h3>
+<h3 class="topic">
+<a name="24cjbrsnf6rskait3j9qaqvmjv">&nbsp;&nbsp;搜索二进制指令序列</a>
+</h3>
+<h3 class="topic">
+<a name="614pe96h8naoel3e9r92mmpehp">&nbsp;&nbsp;&nbsp;与上面的区别在于，搜索目的区段是在text段</a>
+</h3>
+<h3 class="topic">
+<a name="1t9nnkofnar0t6r9t8ont2ihg9">&nbsp;&nbsp;搜索汇编指令序列</a>
+</h3>
+<h3 class="topic">
+<a name="5i6n91lk8lf1inotqnmn4h7ltp">&nbsp;&nbsp;&nbsp;右键-》查找-》命令序列</a>
+</h3>
+<h3 class="topic">
+<a name="7rqdrrkg487mvjohgccsl1majn">&nbsp;&nbsp;&nbsp;可以在所有的push ebp   mov ebp,esp处下断点，即可断下所有函数调用（大部分函数调用都是以这两句汇编开头）</a>
+</h3>
+<h3 class="topic">
+<a name="77orka4lcj60bgt3ft2a13nauc">&nbsp;&nbsp;搜索常量</a>
+</h3>
+<h3 class="topic">
+<a name="4o1f93lksps1meuhj0553tus67">&nbsp;&nbsp;&nbsp;可以在代码段中搜索程序加载基址，就可以找到winmian函数的入口点，因为winmain函数在第一参数就是实例句柄，实例句柄就该程序的加载基址，找到push加载基址的位置，可以找到调用winmain函数的位置</a>
+</h3>
+<h3 class="topic">
+<a name="2il5obpgejj6hq0brrss4n9o2t">&nbsp;窗口信息</a>
+</h3>
+<h3 class="topic">
+<a name="4dq1gpf8dn4ft3l01uuclh6j4d">&nbsp;&nbsp;在工具栏w工具处可以找到</a>
+</h3>
+<h3 class="topic">
+<a name="4b2ae3rigdnmldb3ee170a5vs4">&nbsp;&nbsp;一般窗口的遍历需要和窗口回调函数一起使用</a>
+</h3>
+<h3 class="topic">
+<a name="2fuq7m42bc1joesdodabvhdgtp">&nbsp;断点</a>
+</h3>
+<h3 class="topic">
+<a name="4o42b1lr7plh7sulno486edhg8">&nbsp;&nbsp;硬件断点</a>
+</h3>
+<h3 class="topic">
+<a name="2p90mvi0t8kpcrcjt08lokurub">&nbsp;&nbsp;&nbsp;次常用，主要用于下读写断点</a>
+</h3>
+<h3 class="topic">
+<a name="10cj7cg57f4qbedrau0tri56iq">&nbsp;&nbsp;&nbsp;硬件内存读写访问断点</a>
+</h3>
+<h3 class="topic">
+<a name="6pa2j600ubsaarp354lpkaiflj">&nbsp;&nbsp;&nbsp;最多设置4个</a>
+</h3>
+<h3 class="topic">
+<a name="29qrol3d0590pvjnmsbqc50qt6">&nbsp;&nbsp;&nbsp;调试-》硬件断点可以看有哪些硬件断点</a>
+</h3>
+<h3 class="topic">
+<a name="4cmmlp0r5aitpdbcap36lvb42g">&nbsp;&nbsp;软件断点</a>
+</h3>
+<h3 class="topic">
+<a name="1dreqvi5mvn4nnesnv5il7q3lv">&nbsp;&nbsp;&nbsp;最为常用，但是也最容易被反调试检测出来</a>
+</h3>
+<h3 class="topic">
+<a name="53h9fjkph2j2kjigpk2cusr565">&nbsp;&nbsp;&nbsp;不适用于读写断点</a>
+</h3>
+<h3 class="topic">
+<a name="2sjfqg74qqjpuarntgedsan60h">&nbsp;&nbsp;&nbsp;可以设置条件断点</a>
+</h3>
+<h3 class="topic">
+<a name="1hed22j6hkm8e0fg4p6h6p826h">&nbsp;&nbsp;&nbsp;&nbsp;右键-》断点-》条件</a>
+</h3>
+<h3 class="topic">
+<a name="6u68khvfnd7s1l791u8bgki9gb">&nbsp;&nbsp;&nbsp;&nbsp;快捷键shift+F2</a>
+</h3>
+<h3 class="topic">
+<a name="4ovgcqeo25l482spdvp5sj7haj">&nbsp;&nbsp;内存断点</a>
+</h3>
+<h3 class="topic">
+<a name="5fs3rf4gb6l3hh8n0jc8hkpmf3">&nbsp;&nbsp;&nbsp;在</a>
+</h3>
+<h3 class="topic">
+<a name="6m8rvseabqr9aafr4419vbie11">&nbsp;补丁</a>
+</h3>
+<h3 class="topic">
+<a name="56f64k4kq79r08m3lfg5mnn3rj">&nbsp;&nbsp;右键-》复制到可执行文件-》选择-》右键-》保存文件</a>
+</h3>
+<h3 class="topic">
+<a name="5elu7i4sa3k4bu81dg0jacd4qr">&nbsp;插件与udd</a>
+</h3>
+<h3 class="topic">
+<a name="789oh44drsnheu864v3j2prdh9">&nbsp;&nbsp;在od的目录下存在udd目录，udd文件中保存有针对不同程序的分析记录（包括信息、补丁、注释信息）</a>
+</h3>
+<h3 class="topic">
+<a name="6ifrognqn05l9ke154jtk26nn8">&nbsp;&nbsp;可以使用清理文件清理所有的udd的bak</a>
+</h3>
+<h3 class="topic">
+<a name="0mj5q7tnrpp58ttdjfve8jrflb">&nbsp;分析程序一般思路</a>
+</h3>
+<h3 class="topic">
+<a name="2hqqsh04b2jfhf5kthlhj4vfgl">&nbsp;&nbsp;关键定位置</a>
+</h3>
+<h3 class="topic">
+<a name="51qqjv66bett4v6mg7d3o7dlfa">&nbsp;总结如何识别关键位置</a>
+</h3>
+<h3 class="topic">
+<a name="1es096miqan15g11lsn52g81jv">&nbsp;&nbsp;搜索</a>
+</h3>
+<h3 class="topic">
+<a name="2pfa7vk9n9cfklbtkht1tvl7oi">&nbsp;&nbsp;&nbsp;搜索字符串</a>
+</h3>
+<h3 class="topic">
+<a name="3ltjh6de7virnub5ng24tnu2nl">&nbsp;&nbsp;&nbsp;搜索二进制数据</a>
+</h3>
+<h3 class="topic">
+<a name="05mfdjh363t26tg8q4dpc3spbt">&nbsp;&nbsp;&nbsp;&nbsp;可以是指定字符串的二进制数据，也可以是OPCode的二进制数据</a>
+</h3>
+<h3 class="topic">
+<a name="1n21o8n53fgl0s3g1c7o41k1et">&nbsp;&nbsp;&nbsp;搜索汇编代码</a>
+</h3>
+<h3 class="topic">
+<a name="2opk9qigtp639gveomk8feibea">&nbsp;&nbsp;&nbsp;&nbsp;比如push ebp mov ebp,esp</a>
+</h3>
+<h3 class="topic">
+<a name="1bqcjvqo01bqecq3l20e889jj0">&nbsp;&nbsp;&nbsp;搜索常量</a>
+</h3>
+<h3 class="topic">
+<a name="0i6t92n2e5tr99j221u8bga00q">&nbsp;&nbsp;&nbsp;&nbsp;对于winmian函数第一个参数即实例句柄 即程序加载地址，可以搜索改常量，很可能找到winmian函数调用位置</a>
+</h3>
+<h3 class="topic">
+<a name="1kp6jqg0289f1qb8hu1grri9fs">&nbsp;&nbsp;&nbsp;搜索当前模块中的名称</a>
+</h3>
+<h3 class="topic">
+<a name="03tvi7m2ku0e99j163khpviq86">&nbsp;&nbsp;&nbsp;&nbsp;右键-》查找-》当前模块中的名称（标签）</a>
+</h3>
+<h3 class="topic">
+<a name="3vkfp5s9jpr6q5t0ckoh98dvk2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当位于本程序领空，可以查到当前程序使用的导入导出函数</a>
+</h3>
+<h3 class="topic">
+<a name="69u28ovv49l606m92eu9s1mh5g">&nbsp;&nbsp;&nbsp;搜索当前所有命令/所有命令序列</a>
+</h3>
+<h3 class="topic">
+<a name="0p7qlb906sub9opbgo7v8pdah1">&nbsp;&nbsp;栈回溯</a>
+</h3>
+<h3 class="topic">
+<a name="056to4a60g5qcks6qo3bv43mpu">&nbsp;&nbsp;&nbsp;指定api下断，使用栈回溯找到特定位置</a>
+</h3>
+<h3 class="topic">
+<a name="3lru1fbabvasefap8vr67n244k">&nbsp;&nbsp;搜索程序特征</a>
+</h3>
+<h3 class="topic">
+<a name="35m3bnaudcp0nri4uau7j3enl8">&nbsp;&nbsp;&nbsp;对于有特征的程序，可以搜索特征从而进行定位（特征即某类程序独有的指令序列）</a>
+</h3>
+<h3 class="topic">
+<a name="4tstekqr7bopp6vh5e9f1dnvcv">&nbsp;&nbsp;&nbsp;&nbsp;查找-》当前模块中的名称-》获得关键导入、导出函数</a>
+</h3>
+<h3 class="topic">
+<a name="3lpfuchl3t072cbv1364alvm61">&nbsp;&nbsp;&nbsp;&nbsp;查找-》所有命令/所有命令序列/所有分支</a>
+</h3>
+<h3 class="topic">
+<a name="0dbbqqil2bvvuqu7g02s8snodq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以查询当前模块指定单条命令/指定多条命令/所有分支语句的位置</a>
+</h3>
+<h3 class="topic">
+<a name="4m8b9k8l1sjo321pkscnshndv0">&nbsp;&nbsp;分析程序内存</a>
+</h3>
+<h3 class="topic">
+<a name="1k9q2ijhotgvd87814ciio9nk4">&nbsp;&nbsp;&nbsp;使用内存搜索工具定位关键地址，再使用od附加该进程，针对关键位置分析</a>
+</h3>
+<h3 class="topic">
+<a name="5d3o41imjiegu6b65vg1uopm7d">&nbsp;&nbsp;分析程序行为</a>
+</h3>
+<h3 class="topic">
+<a name="45jo7l36avj4fs4mgq4rrjr8p7">&nbsp;&nbsp;&nbsp;可以使用程序行为分析工具，根据程序行为定位关键位置</a>
+</h3>
+<h3 class="topic">
+<a name="0s4ogl30vv44thn9n04bbsmnu3">&nbsp;&nbsp;&nbsp;&nbsp;火绒剑</a>
+</h3>
+<h3 class="topic">
+<a name="4nu8474mef4fmrq8e9binilo3h">&nbsp;&nbsp;设置假定参数</a>
+</h3>
+<h3 class="topic">
+<a name="4fcb387qnu5qp8ig1ap6smnm61">&nbsp;&nbsp;&nbsp;可以使用右键-》分析-》假定参数，将特定函数指定为某一函数形式，（比如将窗口回调函数识别出来时候，将该函数指定为Winproc，即可以对窗口消息（WM_COMMAND）进行拦截）</a>
+</h3>
+<h3 class="topic">
+<a name="4c0lvkifgv8de7ibs98h30leep">&nbsp;&nbsp;设置条件断点</a>
+</h3>
+<h3 class="topic">
+<a name="4q840jgv6o8rk0cfbipjpdm74q">&nbsp;&nbsp;&nbsp;右键-》分析-》假定参数</a>
+</h3>
+<h3 class="topic">
+<a name="02us8es1nv215n78s8rkirsan5">&nbsp;&nbsp;&nbsp;当确认某一位置是某个函数的起始位置时，可以使用假定参数指定对应的函数类型，此时针对窗口回调函数可以下消息断点</a>
+</h3>
+<h3 class="topic">
+<a name="03uujn2bc5o5t4vhl0oeebnp65">&nbsp;od快捷键</a>
+</h3>
+<h3 class="topic">
+<a name="52d256u5p493b0gmsn4dgdfs4e">&nbsp;&nbsp;打开一个新的可执行程序 (F3)</a>
+</h3>
+<h3 class="topic">
+<a name="2d9ddiht59qbo8nov7g7rm27b8">&nbsp;&nbsp;重新运行当前调试的程序 (Ctrl+F2)</a>
+</h3>
+<h3 class="topic">
+<a name="2msjlvcfuq5ova0t9mie6dmjbm">&nbsp;&nbsp;当前调试的程序 (Alt+F2)</a>
+</h3>
+<h3 class="topic">
+<a name="6kerceodrgml1b443btff06iq7">&nbsp;&nbsp;运行选定的程序进行调试 (F9)</a>
+</h3>
+<h3 class="topic">
+<a name="7fdu80fkof793b2ra6f5bjc5k1">&nbsp;&nbsp;暂时停止被调试程序的执行 (F12)</a>
+</h3>
+<h3 class="topic">
+<a name="2qifvfbsmhagb3iqcpldev63cl">&nbsp;&nbsp;单步进入被调试程序的 Call 中 (F7)</a>
+</h3>
+<h3 class="topic">
+<a name="11tjka7lmv7duv8qs6ejjilgeq">&nbsp;&nbsp;步过被调试程序的 Call (F8)</a>
+</h3>
+<h3 class="topic">
+<a name="54glc97kuhqq53mte66d91o52u">&nbsp;&nbsp;跟入被调试程序的 Call 中 (Ctrl+F11)</a>
+</h3>
+<h3 class="topic">
+<a name="7263av4gu53i907b31uhqduci3">&nbsp;&nbsp;跟踪时跳过被调试程序的 Call (Ctrl+F12)</a>
+</h3>
+<h3 class="topic">
+<a name="7qr50sjf2td4cfd6f5sroului5">&nbsp;&nbsp;执行直到返回 (Ctrl+F9)</a>
+</h3>
+<h3 class="topic">
+<a name="7f67lb3115gije0t11gn6imhjr">&nbsp;&nbsp;显示记录窗口 (Alt+L)</a>
+</h3>
+<h3 class="topic">
+<a name="5bm0dbah81r7j4o6gjt91845uu">&nbsp;&nbsp;显示模块窗口 (Alt+E)</a>
+</h3>
+<h3 class="topic">
+<a name="266ek4fv5a2skmt89l2rabek9i">&nbsp;&nbsp;显示内存窗口 (Alt+M)</a>
+</h3>
+<h3 class="topic">
+<a name="47n9e6cdr8bfe479ocm2gk57sf">&nbsp;&nbsp;显示 CPU 窗口 (Alt+C)</a>
+</h3>
+<h3 class="topic">
+<a name="5a1m9tqvrfbfivfe6la3umjghq">&nbsp;&nbsp;显示补丁窗口 (Ctrl+P)</a>
+</h3>
+<h3 class="topic">
+<a name="338mhu24lh6ukod07r6sva1qn6">&nbsp;&nbsp;显示呼叫堆栈 (Alt+K)</a>
+</h3>
+<h3 class="topic">
+<a name="13gdf3dlfmfjna95rsrf9ia9dl">&nbsp;&nbsp;显示断点窗口 (Alt+B)</a>
+</h3>
+<h3 class="topic">
+<a name="4pb3sd524f6p0e291isadkjj2a">&nbsp;&nbsp;打开调试选项窗口 (Alt+O)</a>
+</h3>
+</body>
+</html>

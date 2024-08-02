@@ -1,0 +1,1256 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>汇编语言第二天</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="3n5m4a766ahlnf4tumsvt4otf3">汇编语言第二天</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E7%AC%AC%E4%BA%8C%E5%A4%A9_files/images/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E7%AC%AC%E4%BA%8C%E5%A4%A9.jpg"></div>
+<h2 class="topic">
+<a name="6r6u560iq5v81544apaijactar">有符号乘法和无符号乘法的区别</a>
+</h2>
+<h2 class="topic">
+<a name="345q7gmmmes5q677fbovp98r2c">复习</a>
+</h2>
+<h3 class="topic">
+<a name="5vk01jvd7rhqefb27sul795pso">&nbsp;标志寄存器有哪些</a>
+</h3>
+<h3 class="topic">
+<a name="5utn4kn7o00tuu51nagpe3l3cg">&nbsp;&nbsp;zf</a>
+</h3>
+<h3 class="topic">
+<a name="5gkcahebt1d8rfnbvpfj6r8484">&nbsp;&nbsp;&nbsp;零标志位</a>
+</h3>
+<h3 class="topic">
+<a name="10e7rudetaj4rercsdcqd0mi3n">&nbsp;&nbsp;&nbsp;&nbsp;运算结果是否为0</a>
+</h3>
+<h3 class="topic">
+<a name="2jdn3shlc2e1jae5unnmn9q5pp">&nbsp;&nbsp;cf</a>
+</h3>
+<h3 class="topic">
+<a name="258rc4410825d12if09eagaoln">&nbsp;&nbsp;&nbsp;无符号进位标志位</a>
+</h3>
+<h3 class="topic">
+<a name="7pg2v6psli9li6o9ll8plf7jgl">&nbsp;&nbsp;&nbsp;&nbsp;将运算结果看成无符号数，看其最高位发生变化</a>
+</h3>
+<h3 class="topic">
+<a name="6uc67q8tfsg6fab38il59thn7i">&nbsp;&nbsp;of</a>
+</h3>
+<h3 class="topic">
+<a name="5fnl85hi1lqd8tp47rp89d3nob">&nbsp;&nbsp;&nbsp;有符号溢出标志</a>
+</h3>
+<h3 class="topic">
+<a name="09l6as13i22pj0ugipualhjvq3">&nbsp;&nbsp;&nbsp;&nbsp;将运算结果看成有符号数，看运算结果是否超出有符号的表示范围</a>
+</h3>
+<h3 class="topic">
+<a name="1t1lv665jfp39hg1gvt54pe8q5">&nbsp;&nbsp;af</a>
+</h3>
+<h3 class="topic">
+<a name="376pdc1nv6p3udj8jc3pgpoaj4">&nbsp;&nbsp;&nbsp;辅助进位标志</a>
+</h3>
+<h3 class="topic">
+<a name="6qijnjsm0ak49a2cd7mv896n9g">&nbsp;&nbsp;&nbsp;&nbsp;一般由计算机指定，不需要程序员手工指定</a>
+</h3>
+<h3 class="topic">
+<a name="5vlqo1snsfagfb8v0638bkmfgh">&nbsp;&nbsp;pf</a>
+</h3>
+<h3 class="topic">
+<a name="1evdqjg02bjo743dof8bgjiprv">&nbsp;&nbsp;&nbsp;奇偶标志</a>
+</h3>
+<h3 class="topic">
+<a name="141klmoqn8f6qjkbbpb5kjt0ap">&nbsp;&nbsp;&nbsp;&nbsp;针对二进制数的低八位1的个数，为偶数，则标志为1</a>
+</h3>
+<h3 class="topic">
+<a name="5isumhg4ptu6c6nb1bg0cfv8gu">&nbsp;&nbsp;sf</a>
+</h3>
+<h3 class="topic">
+<a name="3qnoq64ect84kejtld86v8tob6">&nbsp;&nbsp;&nbsp;符号标志</a>
+</h3>
+<h3 class="topic">
+<a name="2kvi1vc2dc8fd91gvoti6gfemk">&nbsp;&nbsp;&nbsp;&nbsp;运算结果的最高为为1，则sf=1 否则为0</a>
+</h3>
+<h3 class="topic">
+<a name="1ucn099hc7v3ratltva1cfvltl">&nbsp;&nbsp;df</a>
+</h3>
+<h3 class="topic">
+<a name="7flhb9sngrgvvmfuesom6do5tr">&nbsp;&nbsp;&nbsp;方向控制标志符</a>
+</h3>
+<h3 class="topic">
+<a name="6hqab21gkkd4e9581145pfo1mg">&nbsp;&nbsp;&nbsp;&nbsp;CLD</a>
+</h3>
+<h3 class="topic">
+<a name="2ddgsro2hgttd7hbboo1roo9o4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;置为0</a>
+</h3>
+<h3 class="topic">
+<a name="7hpc74a3kjth5d4r9duusiqis8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;32位计算机中只有ring0能调用</a>
+</h3>
+<h3 class="topic">
+<a name="05ni1a2ciqp3t5kiajhm28hmet">&nbsp;&nbsp;&nbsp;&nbsp;STD</a>
+</h3>
+<h3 class="topic">
+<a name="19oje81mfmgs4ulcghk1f016h8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;置为1</a>
+</h3>
+<h3 class="topic">
+<a name="3ml6uad3jdbd2ll6kmsgeg8iil">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;32位计算机中只有ring0能调用</a>
+</h3>
+<h3 class="topic">
+<a name="08l97u8h5upj4fpne71l7su9kb">&nbsp;&nbsp;if</a>
+</h3>
+<h3 class="topic">
+<a name="797ribda7nifanrmjvl03akcsd">&nbsp;&nbsp;&nbsp;中断允许标志符</a>
+</h3>
+<h3 class="topic">
+<a name="0so9iu7a0jgsbq6dm7gmtqdhs7">&nbsp;&nbsp;&nbsp;&nbsp;CLS</a>
+</h3>
+<h3 class="topic">
+<a name="2b62qmq77b55e6dk3jeaba6a3j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;置为0</a>
+</h3>
+<h3 class="topic">
+<a name="2t25ucnhr382nm3hop3gta87k8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;32位计算机中只有ring0能调用</a>
+</h3>
+<h3 class="topic">
+<a name="7kc0civq28du3uodcj0pcfs4e0">&nbsp;&nbsp;&nbsp;&nbsp;STI</a>
+</h3>
+<h3 class="topic">
+<a name="7j4nc35ar5qqj7pmjvq2k9b1q4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;置为1</a>
+</h3>
+<h3 class="topic">
+<a name="72361lteq34mk3nbb5qm35ggsl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;32位计算机中只有ring0能调用</a>
+</h3>
+<h3 class="topic">
+<a name="79u9ffqk4u5m9u1mrl4i8nva5v">&nbsp;&nbsp;tf</a>
+</h3>
+<h3 class="topic">
+<a name="1ramef9ns67r0lle22jiulap6p">&nbsp;&nbsp;&nbsp;陷阱标志位</a>
+</h3>
+<h3 class="topic">
+<a name="00136vu4ec3isonngo0p0sa0t1">&nbsp;&nbsp;&nbsp;&nbsp;tf=0 ：处理器正常工作</a>
+</h3>
+<h3 class="topic">
+<a name="5b8m8vumq4875r0lgb88b4p2ta">&nbsp;&nbsp;&nbsp;&nbsp;tf=1：处理器单步执行</a>
+</h3>
+<h3 class="topic">
+<a name="3pj739560n9qts1mfrv1vkap07">&nbsp;8086寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="5p8apukcaburp4m22bkk7tkj8r">&nbsp;&nbsp;ax bx cx dx si di sp bp</a>
+</h3>
+<h3 class="topic">
+<a name="013vo35f39asre6s8qgbft3oip">&nbsp;&nbsp;ip</a>
+</h3>
+<h3 class="topic">
+<a name="2sd4igiugko1cn4ckgglg6ksd7">&nbsp;&nbsp;cs ds ss es</a>
+</h3>
+<h3 class="topic">
+<a name="7079no9kqv1dpt3vfsi9f8bunh">&nbsp;&nbsp;flags</a>
+</h3>
+<h3 class="topic">
+<a name="27ao4tuljp3lqnqpu65umegjf7">&nbsp;8086如何访问内存</a>
+</h3>
+<h3 class="topic">
+<a name="5uj2pk9v99eokoksc1ervl7e5k">&nbsp;&nbsp;逻辑地址</a>
+</h3>
+<h3 class="topic">
+<a name="7t4embrddou8gdf5li2gd93ogq">&nbsp;&nbsp;&nbsp;段基址:段内偏移</a>
+</h3>
+<h3 class="topic">
+<a name="1qio3gcn5bg97i6r6rv4naqjke">&nbsp;&nbsp;物理地址</a>
+</h3>
+<h3 class="topic">
+<a name="1iosud6ml4e7f2b9jqfikptc6p">&nbsp;&nbsp;&nbsp;段基址*10h+段内偏移</a>
+</h3>
+<h3 class="topic">
+<a name="6blknj98o02eq4j9l126rs62k9">&nbsp;8086总线为20位，寄存器为16位，所以需要段基址:段内偏移的方式进行寻址才能寻址到所有1m内存空间</a>
+</h3>
+<h3 class="topic">
+<a name="4or3e8r5klfsjn6840155um4o9">&nbsp;汇编指令组成</a>
+</h3>
+<h3 class="topic">
+<a name="21ijnsq89v2mlc94qmq1e0tb2g">&nbsp;&nbsp;操作码</a>
+</h3>
+<h3 class="topic">
+<a name="4nluf1kgik20ds6vhb8s7k5mla">&nbsp;&nbsp;操作数</a>
+</h3>
+<h3 class="topic">
+<a name="1t7o61khn5c3dntpm6kmp58kb7">&nbsp;es段不能使用跨段前缀覆盖</a>
+</h3>
+<h2 class="topic">
+<a name="4uu46ggf0c0utii4887a8r6h59">数据传输指令</a>
+</h2>
+<h3 class="topic">
+<a name="6f71u3pfupibe2h8dvpg64fs77">&nbsp;mov</a>
+</h3>
+<h3 class="topic">
+<a name="61m1rfjq404mi1kcrajtq7012f">&nbsp;&nbsp;目标操作数为reg 源操作数可以为reg mem imm</a>
+</h3>
+<h3 class="topic">
+<a name="3q8mqd7rv2j8hvlksqt5uvimad">&nbsp;&nbsp;目标操作数为mem，源操作数只能为reg或imm，不能为mem</a>
+</h3>
+<h3 class="topic">
+<a name="5m2pr0f4jskboq2jjsre38tat4">&nbsp;&nbsp;目标为seg，源可以为reg16，也可以为mem16，但必须是16位的</a>
+</h3>
+<h3 class="topic">
+<a name="3sktuik7nlvjd6d1o4uckjd2vn">&nbsp;&nbsp;&nbsp;因为8086中段寄存器一定是16位的</a>
+</h3>
+<h3 class="topic">
+<a name="0q89ptorhssa9bmgeq7uou4a0l">&nbsp;push、pop</a>
+</h3>
+<h3 class="topic">
+<a name="6s5arch1sb1vvap1sdgifs0e23">&nbsp;&nbsp;操作数</a>
+</h3>
+<h3 class="topic">
+<a name="4s8c7686ip2udmt8ueset9knm4">&nbsp;&nbsp;&nbsp;reg</a>
+</h3>
+<h3 class="topic">
+<a name="38l2otsm6bjrse6o3bskkccuh2">&nbsp;&nbsp;&nbsp;mem</a>
+</h3>
+<h3 class="topic">
+<a name="5au0iv7vj8f51ju3bortrmb4l7">&nbsp;&nbsp;&nbsp;seg</a>
+</h3>
+<h3 class="topic">
+<a name="1o8o81v51not047icui6h7b9a5">&nbsp;&nbsp;&nbsp;push、pop的操作数不能为立即数</a>
+</h3>
+<h3 class="topic">
+<a name="514ogp57fgilbrahelvd02jnae">&nbsp;&nbsp;&nbsp;&nbsp;？？？？</a>
+</h3>
+<h3 class="topic">
+<a name="6j7pa1dc642sp63e5dl6v61orp">&nbsp;&nbsp;将数据存储入栈中时，因为主机cpu是小端的，所以将数据的高位存放在栈的高地址，数据的低位存在栈的低地址</a>
+</h3>
+<h3 class="topic">
+<a name="2ajo40ui9e7p0erqpo15hh34mr">&nbsp;&nbsp;&nbsp;栈的增长是从高内存地址到低内存地址</a>
+</h3>
+<h3 class="topic">
+<a name="6ug9onhbvrpj8dio66kovhm8ma">&nbsp;&nbsp;堆栈常用于保存局部变量、函数传参、函数返回值、函数返回地址</a>
+</h3>
+<h3 class="topic">
+<a name="5qgnfeh1um94l5j4upi06a405n">&nbsp;xchg指令</a>
+</h3>
+<h3 class="topic">
+<a name="2ta0pifv2ikcq6fb6d2fp82bs7">&nbsp;&nbsp;reg-reg/mem</a>
+</h3>
+<h3 class="topic">
+<a name="0tcpp5ka60rr9e6fee4mfm9d96">&nbsp;&nbsp;mem-reg</a>
+</h3>
+<h3 class="topic">
+<a name="3d6d1jlthbjkasqgqcnu2tbmjn">&nbsp;&nbsp;参数不能为mem-mem</a>
+</h3>
+<h3 class="topic">
+<a name="05nvogdj6o3ff9or0vkqijbquu">&nbsp;lea指令</a>
+</h3>
+<h3 class="topic">
+<a name="3jq3e3gdq2b7n82vm7tbp8rbda">&nbsp;&nbsp;取地址指令</a>
+</h3>
+<h3 class="topic">
+<a name="5qgmh9bgi25htmtdtd9i9j55uk">&nbsp;&nbsp;必须是将一个mem的地址赋值给reg</a>
+</h3>
+<h3 class="topic">
+<a name="5336534ohul18pckk4fo79aeq6">&nbsp;pushf popf将标志寄存器压栈和出栈</a>
+</h3>
+<h3 class="topic">
+<a name="3olr6g6hevbsi4k8nvtvk50rv0">&nbsp;pusha popa将所有通用寄存器压栈、出栈</a>
+</h3>
+<h3 class="topic">
+<a name="7bstjruavjr8te97vhegrur5qe">&nbsp;&nbsp;只能用于16位，32位需要用pushad popad</a>
+</h3>
+<h3 class="topic">
+<a name="6909ecjcpho0led61q2atriqgs">&nbsp;注意：内存空间（mem）之间不能直接相互操作</a>
+</h3>
+<h3 class="topic">
+<a name="4otpr7r5ji4c8t1cng31pb65ao">&nbsp;注意写法</a>
+</h3>
+<h3 class="topic">
+<a name="0h68kh9t3735v5hva323b9e5h6">&nbsp;&nbsp;byte ptr</a>
+</h3>
+<h3 class="topic">
+<a name="5rqe7k611l9fba48kf6d2rsg8p">&nbsp;&nbsp;&nbsp;字节</a>
+</h3>
+<h3 class="topic">
+<a name="1r98doicrojok5bv5ka4au628o">&nbsp;&nbsp;word ptr</a>
+</h3>
+<h3 class="topic">
+<a name="2gd5t6kjsko8fvj5b8q9mibk8g">&nbsp;&nbsp;&nbsp;字</a>
+</h3>
+<h3 class="topic">
+<a name="5k1i4aglt8fob3jq2vn0sgegu5">&nbsp;&nbsp;dword ptr</a>
+</h3>
+<h3 class="topic">
+<a name="2rpquqn5cvnoqid0bb6uqfcjh7">&nbsp;&nbsp;&nbsp;双字</a>
+</h3>
+<h2 class="topic">
+<a name="06617ggcc5c2p90pvg4bhip1hk">算术与逻辑运算指令</a>
+</h2>
+<h3 class="topic">
+<a name="6bcr5c5k17vd92pg1jpsota4m7">&nbsp;inc</a>
+</h3>
+<h3 class="topic">
+<a name="40kiiji0grotec81r0fchm47d8">&nbsp;&nbsp;操作数为reg或mem</a>
+</h3>
+<h3 class="topic">
+<a name="5v9qor7u983anolkhijtn7dlqa">&nbsp;&nbsp;结果不会影响CF标志位</a>
+</h3>
+<h3 class="topic">
+<a name="1jgh6o5c6inc7f9qh23f3srb57">&nbsp;dec</a>
+</h3>
+<h3 class="topic">
+<a name="2m5slreiv7911idcttkoi2sspk">&nbsp;&nbsp;操作数为reg或mem</a>
+</h3>
+<h3 class="topic">
+<a name="1c5snq2mf6b9cl0fctqjvcg7qa">&nbsp;&nbsp;结果不会影响CF标志位</a>
+</h3>
+<h3 class="topic">
+<a name="2v4s8a617isj29k5j8rjtoa2gf">&nbsp;add</a>
+</h3>
+<h3 class="topic">
+<a name="2ct7a40jvjpf1dlg9f1kv250th">&nbsp;&nbsp;ref-reg/mem/imm</a>
+</h3>
+<h3 class="topic">
+<a name="2jb40m165ijbi7uka9qcqbd79b">&nbsp;&nbsp;mem-reg/imm</a>
+</h3>
+<h3 class="topic">
+<a name="4iievtqgmo9s3jvvc2t2eq7mjm">&nbsp;&nbsp;mem不能相互操作</a>
+</h3>
+<h3 class="topic">
+<a name="03a958hr4tshq5lmtglu7oi62s">&nbsp;adc</a>
+</h3>
+<h3 class="topic">
+<a name="3o0gimdcinsckna9gpa79ihlvi">&nbsp;&nbsp;在add的基础上，将add的结果加上CF标志作为最终结果</a>
+</h3>
+<h3 class="topic">
+<a name="1dedspct0saldke8urodbref45">&nbsp;&nbsp;可以用于解决大数相加的问题</a>
+</h3>
+<h3 class="topic">
+<a name="6bl0n75en7epnoig9s6923a89k">&nbsp;&nbsp;&nbsp;使用dx寄存器存放结果的高2字节，ax存放结果的低2字节</a>
+</h3>
+<h3 class="topic">
+<a name="2607bm44sfeobbo485coo0e1k9">&nbsp;&nbsp;&nbsp;例如：计算1EF000H+201000H结果的高两字字节存放在dx中，低两字节存放在ax中&#13;
+mov dx 001E  ;第一个操作数的高位&#13;
+mov ax f000 ;第一个操作数的低位&#13;
+add ax,1000 ;两数的低十六位相加&#13;
+adc dx,0020 ;两数的高十六位相加，同时加上低位相加的进位</a>
+</h3>
+<h3 class="topic">
+<a name="0q0gvij0pcjevrqojsi3gqf4o3">&nbsp;sub</a>
+</h3>
+<h3 class="topic">
+<a name="63mcgb4o4kcqcoa5o1is2d7gd9">&nbsp;&nbsp;ref-reg/mem/imm</a>
+</h3>
+<h3 class="topic">
+<a name="42e8rhhhb5hqs3hdh9i2s3f150">&nbsp;&nbsp;mem-reg/imm</a>
+</h3>
+<h3 class="topic">
+<a name="09gjesc1rivaqai2iehdmg31pf">&nbsp;&nbsp;mem不能相互操作</a>
+</h3>
+<h3 class="topic">
+<a name="4eqpjcdk4ru89idga4l37h0pfo">&nbsp;sbb</a>
+</h3>
+<h3 class="topic">
+<a name="1bedmbq0bq67v0dogpl31148uv">&nbsp;&nbsp;在sub的基础上，将sub的结果减去CF标志位作为最终结果</a>
+</h3>
+<h3 class="topic">
+<a name="3ppuasvs8k657fc5e4u5cpc6il">&nbsp;mul</a>
+</h3>
+<h3 class="topic">
+<a name="2qhcc6rpu24i981ttgpdubpgv3">&nbsp;&nbsp;无符号乘法运算</a>
+</h3>
+<h3 class="topic">
+<a name="711n67crhc0e1ovll3iuj5ouvo">&nbsp;&nbsp;&nbsp;即将参与运算的操作数全部当作无符号处理，即操作数只能为正数或0</a>
+</h3>
+<h3 class="topic">
+<a name="51h2mkcr0nd45rt871mi95o53f">&nbsp;&nbsp;目标操作数可能是位于以下位置的隐式操作数（取决于操作数的大小）</a>
+</h3>
+<h3 class="topic">
+<a name="4i4rl9csps94fm6jfak45ri1cr">&nbsp;&nbsp;&nbsp;al</a>
+</h3>
+<h3 class="topic">
+<a name="0vdg9h2dr8mtrr7gvfindcc9qh">&nbsp;&nbsp;&nbsp;ax</a>
+</h3>
+<h3 class="topic">
+<a name="3qpncbadvlong389jqao7ivf13">&nbsp;&nbsp;&nbsp;eax</a>
+</h3>
+<h3 class="topic">
+<a name="7m6tcrb4tp7vjpdipo66qd35f5">&nbsp;&nbsp;源操作数可能为通用寄存器或内存位置</a>
+</h3>
+<h3 class="topic">
+<a name="7b6pug90bm9flabb1m9v2kcjbc">&nbsp;&nbsp;运算结果最终存储在目标操作数中</a>
+</h3>
+<h3 class="topic">
+<a name="1idrmqqrejl2qk52iveroadd1t">&nbsp;imul</a>
+</h3>
+<h3 class="topic">
+<a name="3dok7mp9ci3b7oipc3gh4d4sob">&nbsp;&nbsp;有符号乘法</a>
+</h3>
+<h3 class="topic">
+<a name="5nckk5lcems7qm0rm0kbugtrdu">&nbsp;&nbsp;单操作数mul 源操作数</a>
+</h3>
+<h3 class="topic">
+<a name="7bq608tu58fct9t079g8orql3n">&nbsp;&nbsp;&nbsp;源操作数可能位于</a>
+</h3>
+<h3 class="topic">
+<a name="5s527hsoe92m0c7giunr3vsoma">&nbsp;&nbsp;&nbsp;&nbsp;通用寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="7kks374pcu1b0lslmuapgbgokr">&nbsp;&nbsp;&nbsp;&nbsp;内存位置</a>
+</h3>
+<h3 class="topic">
+<a name="592ju68ve2pau6g1auuv3fc2td">&nbsp;&nbsp;&nbsp;目标操作数可能位于</a>
+</h3>
+<h3 class="topic">
+<a name="06oegnpshe74mnb2tsa1q0a3io">&nbsp;&nbsp;&nbsp;&nbsp;al</a>
+</h3>
+<h3 class="topic">
+<a name="4a7lh231nc344j8k2itpg3kqs8">&nbsp;&nbsp;&nbsp;&nbsp;ax</a>
+</h3>
+<h3 class="topic">
+<a name="2gib5tnf2ut695ja66atpv07tp">&nbsp;&nbsp;&nbsp;&nbsp;eax</a>
+</h3>
+<h3 class="topic">
+<a name="5qhsk0jqhcdfi814e7oi2a7rld">&nbsp;&nbsp;&nbsp;运算结果可能位于</a>
+</h3>
+<h3 class="topic">
+<a name="3srk0ur342aq9v475c27o42mdd">&nbsp;&nbsp;&nbsp;&nbsp;ax</a>
+</h3>
+<h3 class="topic">
+<a name="4h919l6tr6g9penthv4f2l16sf">&nbsp;&nbsp;&nbsp;&nbsp;dx:ax</a>
+</h3>
+<h3 class="topic">
+<a name="28plkrbc1qthmad41korvu6lcc">&nbsp;&nbsp;&nbsp;&nbsp;edx:eax</a>
+</h3>
+<h3 class="topic">
+<a name="7ta4uhfgvkk0detf719a0m9fi6">&nbsp;&nbsp;双操作数 mul 目标操作数,源操作数</a>
+</h3>
+<h3 class="topic">
+<a name="3n75t3ucibih3rbtqd1sogj1eb">&nbsp;&nbsp;&nbsp;目标操作数是reg</a>
+</h3>
+<h3 class="topic">
+<a name="41t5jvjqunqic5q9n8vji9rppi">&nbsp;&nbsp;&nbsp;源操作数可能为imm reg mem</a>
+</h3>
+<h3 class="topic">
+<a name="2u9nuvfq0kaeeo503pbsk0o0pv">&nbsp;&nbsp;&nbsp;运算结果存储到目标操作数</a>
+</h3>
+<h3 class="topic">
+<a name="3loc06r8ctplhfv4oei26k8fa1">&nbsp;&nbsp;三操作数 mul 目标操作数,源操作数,立即数</a>
+</h3>
+<h3 class="topic">
+<a name="7ibdhkbeqi8gfst4apvl2p9e5f">&nbsp;&nbsp;&nbsp;目标操作数是reg</a>
+</h3>
+<h3 class="topic">
+<a name="52c4jr8tkf8c4mf24ld1vglnpv">&nbsp;&nbsp;&nbsp;源操作数是reg或mem</a>
+</h3>
+<h3 class="topic">
+<a name="3mddtfaiqgknca2s8qfjslu9om">&nbsp;&nbsp;&nbsp;源操作数乘以立即数，结果存放于目标操作数</a>
+</h3>
+<h3 class="topic">
+<a name="6quqchseic3m405110stbhhv5e">&nbsp;div</a>
+</h3>
+<h3 class="topic">
+<a name="6m7mm393gbis3lli3n6s7r978q">&nbsp;&nbsp;无符号除法</a>
+</h3>
+<h3 class="topic">
+<a name="4ar6b3ohqglc8pc4hc80ba7ban">&nbsp;&nbsp;div 源操作数</a>
+</h3>
+<h3 class="topic">
+<a name="3idcseu5uffdv7jfkagson29c1">&nbsp;&nbsp;源操作数为除数</a>
+</h3>
+<h3 class="topic">
+<a name="2dab08nii8okihl7hovbrhktlp">&nbsp;&nbsp;被除数可能为</a>
+</h3>
+<h3 class="topic">
+<a name="0d9hel174s7bm8oi4p5cp3nhjr">&nbsp;&nbsp;&nbsp;ax</a>
+</h3>
+<h3 class="topic">
+<a name="2r688o7ks5tc7jc03r2adqg2r9">&nbsp;&nbsp;&nbsp;dx:ax</a>
+</h3>
+<h3 class="topic">
+<a name="2au9a128e3vl34sgo9pkn1c3j5">&nbsp;&nbsp;&nbsp;edx:eax</a>
+</h3>
+<h3 class="topic">
+<a name="2gsq47e8g5hlrmqe8pgqj8204v">&nbsp;&nbsp;结果可能位于</a>
+</h3>
+<h3 class="topic">
+<a name="6hn93busq5a1qaae233shupqmi">&nbsp;&nbsp;&nbsp;ax（ah:al）</a>
+</h3>
+<h3 class="topic">
+<a name="04dmn44hgk50m60d6kq16frfug">&nbsp;&nbsp;&nbsp;dx:ax</a>
+</h3>
+<h3 class="topic">
+<a name="3u68darb85v46ronn11no1h127">&nbsp;&nbsp;&nbsp;edx:eax</a>
+</h3>
+<h3 class="topic">
+<a name="33jl7jkofj1nur73l8i2qkhde6">&nbsp;&nbsp;结果中al ax eax用于保存商 ah dx edx用于保存余数</a>
+</h3>
+<h3 class="topic">
+<a name="613lepbqu2jr76nf3dp4l9369l">&nbsp;idiv</a>
+</h3>
+<h3 class="topic">
+<a name="73dpc2gqjahrqqg82r2cm8tni9">&nbsp;&nbsp;有符号除法</a>
+</h3>
+<h3 class="topic">
+<a name="6kl8g0b5h5a8cb7uneiqsbbunr">&nbsp;&nbsp;idiv 源操作数</a>
+</h3>
+<h3 class="topic">
+<a name="3v8okjm84ocd6gc7id13nh8j9j">&nbsp;&nbsp;源操作数为除数</a>
+</h3>
+<h3 class="topic">
+<a name="7rck689rtq65v193hkfbmfjrdf">&nbsp;&nbsp;被除数可能为</a>
+</h3>
+<h3 class="topic">
+<a name="22n0rmd7k8gfh7pe7nrkb7o0rt">&nbsp;&nbsp;&nbsp;al</a>
+</h3>
+<h3 class="topic">
+<a name="1jsld7r7vrqa8gkd4hutapnigd">&nbsp;&nbsp;&nbsp;ax</a>
+</h3>
+<h3 class="topic">
+<a name="7agkcbssg8737q0mv4dcf1mhdf">&nbsp;&nbsp;&nbsp;eax</a>
+</h3>
+<h3 class="topic">
+<a name="4v840g32nd9dlq2u7tgiapttpt">&nbsp;&nbsp;结果可能位于</a>
+</h3>
+<h3 class="topic">
+<a name="1rh9s5sl3mdaba5ou0j4o4rj70">&nbsp;&nbsp;&nbsp;ax（ah:al）</a>
+</h3>
+<h3 class="topic">
+<a name="1e1p860u7ailnm3v4u72d9qq0l">&nbsp;&nbsp;&nbsp;dx:ax</a>
+</h3>
+<h3 class="topic">
+<a name="3vuf3hgnhd2j9vab3rq3cmkmhj">&nbsp;&nbsp;&nbsp;edx:eax</a>
+</h3>
+<h3 class="topic">
+<a name="34ned3gughb3hm1ogt9qjmbhr6">&nbsp;&nbsp;结果中al ax eax用于保存商 ah dx edx用于保存余数</a>
+</h3>
+<h3 class="topic">
+<a name="588ua76f558m87fg88g8j9ij9b">&nbsp;除法</a>
+</h3>
+<h3 class="topic">
+<a name="373k9qauhpcg6tt5msj9ci79f8">&nbsp;&nbsp;字节除</a>
+</h3>
+<h3 class="topic">
+<a name="4foao7u4urdtb6vs1j7hq9t68k">&nbsp;&nbsp;&nbsp;是指除数是一个字节，此时被除数需要为字</a>
+</h3>
+<h3 class="topic">
+<a name="54evcqbdqa2hhuplpcuqtvvc22">&nbsp;&nbsp;字除</a>
+</h3>
+<h3 class="topic">
+<a name="3gv4b54u41diq0t7p8sq3o5orf">&nbsp;&nbsp;&nbsp;是指除数是一个字，此时被除数需要为双字</a>
+</h3>
+<h3 class="topic">
+<a name="328v0sqrivpjlu8crpjn1ccfes">&nbsp;除法中断错误</a>
+</h3>
+<h3 class="topic">
+<a name="730k3ej4vtfldo2lvvmq6f2qo0">&nbsp;&nbsp;除法可能出现有符号数或无符号数的商溢出的问题，此时会8086cpu会产生编号为0的内部中断，--除法错误中断</a>
+</h3>
+<h3 class="topic">
+<a name="1k7a2sl6ldvurbirtpjk700083">&nbsp;&nbsp;div除法中断错误的成因</a>
+</h3>
+<h3 class="topic">
+<a name="7o3o7btob2319d2qkjlpt0af6s">&nbsp;&nbsp;&nbsp;除数为0</a>
+</h3>
+<h3 class="topic">
+<a name="1f162uo0intav5i274em4upknp">&nbsp;&nbsp;&nbsp;字节除时商超过8位</a>
+</h3>
+<h3 class="topic">
+<a name="39mh4o6nk86oujisaa6gn5a3p7">&nbsp;&nbsp;&nbsp;字除时商超过16位</a>
+</h3>
+<h3 class="topic">
+<a name="2fd984hokbngi8tqeoolg1i80a">&nbsp;&nbsp;idiv除法中断错误的成因</a>
+</h3>
+<h3 class="topic">
+<a name="3vqj35j0enql9jr5ftr271akk6">&nbsp;&nbsp;&nbsp;除数为0</a>
+</h3>
+<h3 class="topic">
+<a name="4sr1qqm2g5onve61o8tc3g5v6c">&nbsp;&nbsp;&nbsp;字节除时商超过 -128~127</a>
+</h3>
+<h3 class="topic">
+<a name="3com6vqjc379tscnfbvue6s6d0">&nbsp;&nbsp;&nbsp;字除时商超过-32768~32767</a>
+</h3>
+<h3 class="topic">
+<a name="11iqfm7fmriu2agnv39oeasmdo">&nbsp;cmp</a>
+</h3>
+<h3 class="topic">
+<a name="3ub4kns64clv58vpv4n3bn034m">&nbsp;&nbsp;第一个操作数减第二个操作数，不保存结果，根据结果设置FLAGS寄存器中的状态标志</a>
+</h3>
+<h3 class="topic">
+<a name="0hu91h9562rlbfnvcm9m22kloa">&nbsp;and</a>
+</h3>
+<h3 class="topic">
+<a name="4asu1p6i8q36ohl5k9ie4thbvo">&nbsp;&nbsp;按位与</a>
+</h3>
+<h3 class="topic">
+<a name="4n7400l2l2jn7cunku46bl8n0i">&nbsp;or</a>
+</h3>
+<h3 class="topic">
+<a name="0h8v79gtdbu1k7ido1ttadqcmc">&nbsp;&nbsp;按位或</a>
+</h3>
+<h3 class="topic">
+<a name="46atlfl3nojdd2826ip3artc6o">&nbsp;xor</a>
+</h3>
+<h3 class="topic">
+<a name="6ag8i3s6fl60bm1es35k2jf4pn">&nbsp;&nbsp;按位异或</a>
+</h3>
+<h3 class="topic">
+<a name="58qam97ernp8mcqf5ndlvok86n">&nbsp;&nbsp;两值不相等，异或结果为1</a>
+</h3>
+<h3 class="topic">
+<a name="76ffkd2ld9b5oq62ckgdmkqjb7">&nbsp;&nbsp;两值相等，异或结果为0</a>
+</h3>
+<h3 class="topic">
+<a name="1ussr72vd607dii6r8hdgcucs0">&nbsp;not</a>
+</h3>
+<h3 class="topic">
+<a name="3dcq62mrulj9nas2rro3s80heu">&nbsp;&nbsp;按位取反</a>
+</h3>
+<h3 class="topic">
+<a name="32urrodvaci6rlurqa58pt4oub">&nbsp;test</a>
+</h3>
+<h3 class="topic">
+<a name="58tskidr24n9cnki05ged9cvr2">&nbsp;&nbsp;将两个源操作数按位与，根据结果设置标志寄存器sf zf pf，结果不保存</a>
+</h3>
+<h3 class="topic">
+<a name="452ck7h0pivs4u5ve7s6cdba5d">&nbsp;&nbsp;test eax,eax 可以用于检验eax是否为0</a>
+</h3>
+<h3 class="topic">
+<a name="6hcqsh1ipheps9p2n9jsfd0b95">&nbsp;shl</a>
+</h3>
+<h3 class="topic">
+<a name="2uuhgl76da9uh8apq58ccdifde">&nbsp;&nbsp;参数</a>
+</h3>
+<h3 class="topic">
+<a name="7pvida1c590tobog2v7oqmeho8">&nbsp;&nbsp;&nbsp;reg,cl</a>
+</h3>
+<h3 class="topic">
+<a name="3ri6ign36m16kdhrt2sh0c5fbk">&nbsp;&nbsp;&nbsp;&nbsp;reg：需要位移运算的寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="3eks4o5k6rrj83n8li61ois3pc">&nbsp;&nbsp;&nbsp;&nbsp;cl需要位移的位数</a>
+</h3>
+<h3 class="topic">
+<a name="4rsdnpgrjl5t7ctlagkt6o16a0">&nbsp;&nbsp;最低位补0</a>
+</h3>
+<h3 class="topic">
+<a name="2ar6guub28c1niollplnnf0qgh">&nbsp;&nbsp;将被移出的最后一位移写到CF中</a>
+</h3>
+<h3 class="topic">
+<a name="2j4ik470675uo8n9v9jm9ckqe0">&nbsp;shr</a>
+</h3>
+<h3 class="topic">
+<a name="30g6389chtrun5af5t22kslalp">&nbsp;&nbsp;参数</a>
+</h3>
+<h3 class="topic">
+<a name="45kae2smibaef3jn494bd7h4v4">&nbsp;&nbsp;&nbsp;reg,cl</a>
+</h3>
+<h3 class="topic">
+<a name="040bnu3fam9oe8dlmjvr1c5ln7">&nbsp;&nbsp;&nbsp;&nbsp;reg：需要位移运算的寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="4326f6k38ll935ruandpckmas4">&nbsp;&nbsp;&nbsp;&nbsp;cl需要位移的位数</a>
+</h3>
+<h3 class="topic">
+<a name="7erinn745g6e4ibn3fdtuqars9">&nbsp;&nbsp;最高位补0</a>
+</h3>
+<h3 class="topic">
+<a name="4ombdrhj3pq58442gioe79vvvl">&nbsp;&nbsp;将目的操作数的最低有效位移到进位标志位CF</a>
+</h3>
+<h3 class="topic">
+<a name="0nr1mcabh73v9h4rhnpe6b5b54">&nbsp;&nbsp;如果对于有符号数中的负数，右移时最高位补1</a>
+</h3>
+<h2 class="topic">
+<a name="5cbvgmrq1fg6lcbke5ehhupo7k">寻址方式</a>
+</h2>
+<h3 class="topic">
+<a name="6s8mkm5v2nqjeqj17o1elkiock">&nbsp;汇编指令</a>
+</h3>
+<h3 class="topic">
+<a name="0ho6keb81du0ji1779bs5a1sl1">&nbsp;&nbsp;操作码+操作数</a>
+</h3>
+<h3 class="topic">
+<a name="6ep6oc595utidv4ul4dlm9jqrq">&nbsp;&nbsp;&nbsp;操作数可能为</a>
+</h3>
+<h3 class="topic">
+<a name="72lm0gu1f60n3rue4icbt9lulr">&nbsp;&nbsp;&nbsp;&nbsp;寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="6dvd98cu208s93vftcuildsh0n">&nbsp;&nbsp;&nbsp;&nbsp;立即数</a>
+</h3>
+<h3 class="topic">
+<a name="6l9put6nrau7kovs2jiqidfhpe">&nbsp;&nbsp;&nbsp;&nbsp;内存</a>
+</h3>
+<h3 class="topic">
+<a name="5lalaemh3ncv96dt1npl29necj">&nbsp;寻址方式：以一种方式表示操作数的值保存的地址</a>
+</h3>
+<h3 class="topic">
+<a name="2k5t4fi4devrnj8hf4fsl58k6v">&nbsp;寻址方式</a>
+</h3>
+<h3 class="topic">
+<a name="7uj7hdf33b9l4vpc64o6j3soqq">&nbsp;&nbsp;立即数寻址</a>
+</h3>
+<h3 class="topic">
+<a name="402lh2qi8mo8l353skso61eumu">&nbsp;&nbsp;&nbsp;mov ax,1</a>
+</h3>
+<h3 class="topic">
+<a name="3b8k2ld90ob29b5tvnus71tpok">&nbsp;&nbsp;&nbsp;一般用于给寄存器赋值</a>
+</h3>
+<h3 class="topic">
+<a name="3280jba39a3312i7rkocm6s8aa">&nbsp;&nbsp;寄存器寻址</a>
+</h3>
+<h3 class="topic">
+<a name="3ru9orbal2vavjicimvvr3ui2m">&nbsp;&nbsp;&nbsp;mov ax,cx</a>
+</h3>
+<h3 class="topic">
+<a name="30d624evi596oon1fm5soe25rh">&nbsp;&nbsp;&nbsp;可以用于保存地址的寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="2e2ijr3dchr7596ksibd9k3a40">&nbsp;&nbsp;&nbsp;&nbsp;8位寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="6d3lnevtqmsqut73rocv2mv8sv">&nbsp;&nbsp;&nbsp;&nbsp;16位通用寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="6mfueoc5qva8v9hs2mpa9c7jkr">&nbsp;&nbsp;&nbsp;&nbsp;4个段寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="0ife0gv8f6u236o6e5fjr91c11">&nbsp;&nbsp;存储器寻址</a>
+</h3>
+<h3 class="topic">
+<a name="6q2d5h15m10f9ma24n5j6t8qte">&nbsp;&nbsp;&nbsp;直接寻址</a>
+</h3>
+<h3 class="topic">
+<a name="1kqn8iusjmvk4lgj4kfadh89n4">&nbsp;&nbsp;&nbsp;&nbsp;mov ax,[100]</a>
+</h3>
+<h3 class="topic">
+<a name="63tce1epk77qebm3bkhui21f38">&nbsp;&nbsp;&nbsp;&nbsp;默认的段地址在DS寄存器中，可以用段超越前缀改变</a>
+</h3>
+<h3 class="topic">
+<a name="1v2fqc6brqp2ijrubmeknrhk42">&nbsp;&nbsp;&nbsp;寄存器间接寻址</a>
+</h3>
+<h3 class="topic">
+<a name="4ad9k856osfbrfe0qfc6osncam">&nbsp;&nbsp;&nbsp;&nbsp;mov ax,[si]</a>
+</h3>
+<h3 class="topic">
+<a name="374nppo249mqe1p75lci6a28j8">&nbsp;&nbsp;&nbsp;&nbsp;有效地址可以存放在bx si di</a>
+</h3>
+<h3 class="topic">
+<a name="06hovpm4rmbjtv1nn80njm20id">&nbsp;&nbsp;&nbsp;&nbsp;默认的段地址在DS寄存器中，可以用段超越前缀改变</a>
+</h3>
+<h3 class="topic">
+<a name="0ibktptecc3j78drbdl37s41in">&nbsp;&nbsp;&nbsp;寄存器相对寻址</a>
+</h3>
+<h3 class="topic">
+<a name="5eosnuj57qq1ss4sp84nsegsuo">&nbsp;&nbsp;&nbsp;&nbsp;mov ax,[di+06]</a>
+</h3>
+<h3 class="topic">
+<a name="1cr3t5ub4bi2nubpm9vhohu21o">&nbsp;&nbsp;&nbsp;&nbsp;有效地址可以存放在bx bp si di，位移量可以为8位或16位的值</a>
+</h3>
+<h3 class="topic">
+<a name="0e8f8nmvlak296kl6g2hhqt5rp">&nbsp;&nbsp;&nbsp;&nbsp;bx si di默认段寄存器为ds ，bp默认段寄存器为ss，可以使用段超越前缀</a>
+</h3>
+<h3 class="topic">
+<a name="0mpjlf6v6qv50fmkv8gvksudnt">&nbsp;&nbsp;&nbsp;基址变址寻址</a>
+</h3>
+<h3 class="topic">
+<a name="5kdbmqoo579en7m951otqmnvvd">&nbsp;&nbsp;&nbsp;&nbsp;mov ax,[bx+si]</a>
+</h3>
+<h3 class="topic">
+<a name="5ucqs8072h0ua6adfaagt9pk95">&nbsp;&nbsp;&nbsp;&nbsp;有效地址由基址寄存器 （bx bp）加上变址寄存器（si di）组成</a>
+</h3>
+<h3 class="topic">
+<a name="267thjg6ucf8amg98h3agb5bl0">&nbsp;&nbsp;&nbsp;&nbsp;bx默认段寄存器为ds ，bp默认段寄存器为ss，可以使用段超越前缀</a>
+</h3>
+<h3 class="topic">
+<a name="2ntcngdit2i9b0rs5mnruqed2f">&nbsp;&nbsp;&nbsp;相对基址变址寻址</a>
+</h3>
+<h3 class="topic">
+<a name="4l0eq3872fi4bii6bpeidi4qho">&nbsp;&nbsp;&nbsp;&nbsp;相对于基址变址寻址，有效地址添加一个8位或16位的位移量</a>
+</h3>
+<h3 class="topic">
+<a name="4a41e7ol5sh69oguv0uj4ajf4h">&nbsp;&nbsp;&nbsp;&nbsp;其他性质和基址变址寻址相同</a>
+</h3>
+<h2 class="topic">
+<a name="23c44ruke1mv95ssm5p8j9ukij">win32位汇编程序设计</a>
+</h2>
+<h3 class="topic">
+<a name="45h7d89v0kak5r3vbgrqohcqqm">&nbsp;寄存器的不同</a>
+</h3>
+<h3 class="topic">
+<a name="00u6mp3q3n4h34kpurh0p7dl3b">&nbsp;&nbsp;所有寄存器大小均为四个字节，占32位</a>
+</h3>
+<h3 class="topic">
+<a name="4bedg6rn1c43g3ckhqc3b9u9a5">&nbsp;平坦模式：因为所有寄存器都是32位的，而cpu地址总线也是32条，所以一个寄存器就可以寻址到所有4GB内存空间</a>
+</h3>
+<h3 class="topic">
+<a name="2ln9qj6t7p7gpknkrtphirvfg1">&nbsp;RadAsm win32汇编编程</a>
+</h3>
+<h3 class="topic">
+<a name="6gra4bjhgrn4h5hd80u9pn2b2m">&nbsp;&nbsp;.386  ;表示使用386指令集&#13;
+.model flat,stdcall      ;内存为平坦模式，使用标准调用约定,win32程序必须是stdcall&#13;
+option casemap:none    ;区分大小写&#13;
+include msvcrt.inc     ;包含windows运行时库&#13;
+includelib msvcrt.lib    ;包含实际的代码&#13;
+&#13;
+.data  ;伪指令数据段&#13;
+&#13;
+;全局变量定义  变量名 变量类型 初始值  ，注意汇编中没有转义字符，不能使用\n \0等，汇编中的字符串也不是以0结尾的，这里0ah 0dh 是\n 的ascii，用于换行显式字符串  &#13;
+szfromat byte "hello asm",0ah,0dh,0 &#13;
+nNumber dword 10&#13;
+&#13;
+;定义数组，格式：变量名 变量类型 数组长度 dup(每个元素初始值)&#13;
+Arry dword 10 dup(12345h)	;这里如果数据需要字母开头，需要在字母前面加0	&#13;
+&#13;
+;定义结构体    结构体名 struct 字段 类型 初始值 结构体名 ends&#13;
+STUDENT struct &#13;
+	szName db 20 dup(?)  ;?表示未定义数据&#13;
+	id dd ?&#13;
+	age dd ?&#13;
+STUDENT ends&#13;
+									&#13;
+;定义结构体变量  变量名  变量类型 初始值&#13;
+stu STUDENT &lt;"小明",100,18&gt;&#13;
+&#13;
+.code ;一个伪指令，用于表示函数段&#13;
+&#13;
+;函数定义 函数名 proc   函数代码    函数名 endp  注意汇编中函数返回值默认通过eax传递&#13;
+fun proc&#13;
+	add eax,ebx&#13;
+	ret&#13;
+fun endp&#13;
+&#13;
+main:        ;用于设置函数入口&#13;
+	mov eax,10&#13;
+	mov ebx,20 &#13;
+	call fun   ;调用自定义函数，这里使用寄存器传参，所以函数调用完成后不用平衡堆栈&#13;
+	&#13;
+	;直接访问结构体&#13;
+	mov eax,stu.id ;将结构体的id部分数据传送给eax寄存器&#13;
+	lea eax,stu.szName ;获取结构体中的字符串的地址&#13;
+	;通过偏移访问结构体&#13;
+	mov esi,offset stu&#13;
+	mov eax,[esi+STUDENT.id];将指令id的内容放入eax，注意这里要用结构体类，而不是用结构体变量&#13;
+	;通过伪指令方式访问结构体&#13;
+	mov esi,offset stu&#13;
+	assume esi:ptr STUDENT  ;假设esi是结构体student&#13;
+	lea eax,[esi].szName&#13;
+	assume esi:nothing   ;解除esi是结构体&#13;
+&#13;
+	push offset szfromat ;将全局字符串的偏移地址入栈， offset是一个伪指令&#13;
+	call crt_printf&#13;
+	add esp,4 ;平衡堆栈&#13;
+	ret&#13;
+end main ;mian函数结束&#13;
+end ;文件结束</a>
+</h3>
+<h3 class="topic">
+<a name="1eucllbmcg1k085takob15iudl">&nbsp;&nbsp;变量定义</a>
+</h3>
+<h3 class="topic">
+<a name="0jlu3ictis5plcs2oofknmkv93">&nbsp;&nbsp;&nbsp;变量名 变量类型 变量初始值 </a>
+</h3>
+<h3 class="topic">
+<a name="0udcaf5ia7c7cdl01sq6hkit7s">&nbsp;&nbsp;数组定义</a>
+</h3>
+<h3 class="topic">
+<a name="04mlhf8adpud9edmhb3u3pif7i">&nbsp;&nbsp;&nbsp;变量名 变量类型 数组大小 dup(初始值) </a>
+</h3>
+<h3 class="topic">
+<a name="4g7lbgd6rribk4lh762s30egb2">&nbsp;&nbsp;定义结构体</a>
+</h3>
+<h3 class="topic">
+<a name="0ce0umcvki4dup93i8sb1sq76r">&nbsp;&nbsp;&nbsp;结构体名 struct 字段名 字段类型 初始值 ... 结构体名 ends </a>
+</h3>
+<h3 class="topic">
+<a name="0kianitkp28v3m94b02e0j0hct">&nbsp;&nbsp;定义结构体变量</a>
+</h3>
+<h3 class="topic">
+<a name="71iaf2424f8h290sttuvkvu5kl">&nbsp;&nbsp;&nbsp;变量名 结构体类型 &lt;字段初始值1，初始值2，......&gt; </a>
+</h3>
+<h3 class="topic">
+<a name="706m8qv7vm5iq4va1sa0dfj5nv">&nbsp;&nbsp;访问结构体</a>
+</h3>
+<h3 class="topic">
+<a name="63os4vn4tcaua814v70stgu4oo">&nbsp;&nbsp;&nbsp;直接访问</a>
+</h3>
+<h3 class="topic">
+<a name="37dbcu01ibbhk72euesp4a635t">&nbsp;&nbsp;&nbsp;结构体偏移访问</a>
+</h3>
+<h3 class="topic">
+<a name="59hk5q5cfl1skgmk4bbk480172">&nbsp;&nbsp;&nbsp;伪指令访问</a>
+</h3>
+<h3 class="topic">
+<a name="3vm9ef53vead4blgb2ku3scndl">&nbsp;&nbsp;函数定义</a>
+</h3>
+<h3 class="topic">
+<a name="1d3hgkuo2eb3om3qk8prlnppaj">&nbsp;&nbsp;&nbsp;函数名 proc  代码  函数名 endp</a>
+</h3>
+<h2 class="topic">
+<a name="2lu482k7a0fq5qq1oq8bp1l0d6">串操作指令</a>
+</h2>
+<h3 class="topic">
+<a name="196qq6rb813l7ot7mek07idnm8">&nbsp;用于操作一段空间中由相同类型数据构成的一个整体</a>
+</h3>
+<h3 class="topic">
+<a name="0br343557p0m3bfrsg7ln6so7i">&nbsp;串传送指令（movs）</a>
+</h3>
+<h3 class="topic">
+<a name="571fdo11ol3dt7u4o8fm4rhqqp">&nbsp;&nbsp;类型</a>
+</h3>
+<h3 class="topic">
+<a name="5qr1sm1pj9hge0mnp6ref1jobb">&nbsp;&nbsp;&nbsp;movsb</a>
+</h3>
+<h3 class="topic">
+<a name="5ud19bner1jkqivjl38udmml8h">&nbsp;&nbsp;&nbsp;&nbsp;每次传送一个字节</a>
+</h3>
+<h3 class="topic">
+<a name="5copcgdoh4hfd9vufdeh53ikdl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;byte</a>
+</h3>
+<h3 class="topic">
+<a name="7go4o7ehhti0hgr0i0nbejegik">&nbsp;&nbsp;&nbsp;movsw</a>
+</h3>
+<h3 class="topic">
+<a name="2q4u06mgmc8dvjbak9gcau23b7">&nbsp;&nbsp;&nbsp;&nbsp;每次传送一个字</a>
+</h3>
+<h3 class="topic">
+<a name="7anjjhjnnb86o212e90g7aa5jr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;word</a>
+</h3>
+<h3 class="topic">
+<a name="1ubjgovucr9ndd59t5precvrur">&nbsp;&nbsp;&nbsp;movsd</a>
+</h3>
+<h3 class="topic">
+<a name="5ssn5bp7v6kodoe1tk7n21at9u">&nbsp;&nbsp;&nbsp;&nbsp;每次传送一个双字</a>
+</h3>
+<h3 class="topic">
+<a name="1evt8nc2q8c0omgnol3sq2311p">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dword</a>
+</h3>
+<h3 class="topic">
+<a name="4gdans9ag1b3g5mtiphinqrtsp">&nbsp;&nbsp;隐含操作数</a>
+</h3>
+<h3 class="topic">
+<a name="28b1a15qm150ovmfgs0nkh310e">&nbsp;&nbsp;&nbsp;edi存放传送目标地址</a>
+</h3>
+<h3 class="topic">
+<a name="78frro6ie6j9hj6qqnbef2k7a9">&nbsp;&nbsp;&nbsp;esi存放传送源地址</a>
+</h3>
+<h3 class="topic">
+<a name="436gb4qenftdsg6u3nmm5guemu">&nbsp;&nbsp;&nbsp;结合使用ecx和rep指令，可以循环传送多次</a>
+</h3>
+<h3 class="topic">
+<a name="5ur9smhoh1mvup0hn4cg78gcco">&nbsp;&nbsp;可以用于字符串拷贝</a>
+</h3>
+<h3 class="topic">
+<a name="5ahv2v35l2m0q6s809oj1h17s6">&nbsp;&nbsp;&nbsp; ; movsb  字符拷贝 -&gt;strcpy&#13;
+lea edi , str2    &#13;
+lea esi , str1    &#13;
+mov ecx,10      ;拷贝长度    &#13;
+cld             ;清空方向    &#13;
+rep movsb       ;循环拷贝字符esi到edi中，直到ecx = 0为止</a>
+</h3>
+<h3 class="topic">
+<a name="1e4r2itrf19uv0vi2ph4ie8pl3">&nbsp;串填充指令(stos)</a>
+</h3>
+<h3 class="topic">
+<a name="0p442bm3tgj919kudgbgclv91k">&nbsp;&nbsp;默认参数</a>
+</h3>
+<h3 class="topic">
+<a name="46a1a5ouh3mn25n3lvql5vdipd">&nbsp;&nbsp;&nbsp;edi中存放要填充的目的地址</a>
+</h3>
+<h3 class="topic">
+<a name="667cgjmpm0f65o7ulkf6g341j0">&nbsp;&nbsp;&nbsp;&nbsp;结合使用loop</a>
+</h3>
+<h3 class="topic">
+<a name="3st4om6p7343ekpnbcgrkscvq0">&nbsp;&nbsp;&nbsp;将al ax eax寄存器中的字节 字 双字存储到目的地址中</a>
+</h3>
+<h3 class="topic">
+<a name="09jjps1hiujsqt5l91emrktfue">&nbsp;&nbsp;stosb</a>
+</h3>
+<h3 class="topic">
+<a name="7ehkr3p3dm9dq2oa8lq9q5jco2">&nbsp;&nbsp;stosw</a>
+</h3>
+<h3 class="topic">
+<a name="2o04ivkm9iah6pcm4glr8hcivq">&nbsp;&nbsp;stosd</a>
+</h3>
+<h3 class="topic">
+<a name="7qonboc5pd7i460tob57k98ha4">&nbsp;&nbsp;类似于memset</a>
+</h3>
+<h3 class="topic">
+<a name="0ejkrvloemum33sm2krgf20vka">&nbsp;&nbsp;&nbsp;;字符填充-&gt;memset    &#13;
+mov al,5h       ;填充的字节    &#13;
+lea edi,str3      ;要填充的数组    &#13;
+mov ecx,10     ;填充次数    &#13;
+cld    &#13;
+rep stosb       ;循环填充到edi</a>
+</h3>
+<h3 class="topic">
+<a name="1c845ac4uvl7ado54qajeprbfb">&nbsp;串取出指令(lods)</a>
+</h3>
+<h3 class="topic">
+<a name="623h0pcr4rgmvu2reojbvekml6">&nbsp;&nbsp;默认参数</a>
+</h3>
+<h3 class="topic">
+<a name="330upoh65c447sdvf6ae6k2j13">&nbsp;&nbsp;&nbsp;ds:esi中存放要取出内容的源地址</a>
+</h3>
+<h3 class="topic">
+<a name="5ncqkea0ivhhbesq4e9k48nlhl">&nbsp;&nbsp;&nbsp;用al ax eax寄存器保存取出的 字节 字 双字</a>
+</h3>
+<h3 class="topic">
+<a name="7dj6grft9lgq9qvumun7j2iika">&nbsp;&nbsp;循环将内存中的每一个字节读出来</a>
+</h3>
+<h3 class="topic">
+<a name="4j05io669nlcp28i7if7355h88">&nbsp;&nbsp;可以用于进行数组元素累加和的运算</a>
+</h3>
+<h3 class="topic">
+<a name="05bq7ut1trpu2lcoa50eh6ha67">&nbsp;&nbsp;结合使用loop</a>
+</h3>
+<h3 class="topic">
+<a name="1d9pjmsqutjgjc1kh83e32nai9">&nbsp;&nbsp;&nbsp;见书29页</a>
+</h3>
+<h3 class="topic">
+<a name="6qbr38jaaap50q0lhrbdsisosr">&nbsp;扫描字符串指令scasb</a>
+</h3>
+<h3 class="topic">
+<a name="0fs4e00l64cclut7f3teo7j5gb">&nbsp;&nbsp;scasb</a>
+</h3>
+<h3 class="topic">
+<a name="1mfqn97htugp7l98curb1qp2jj">&nbsp;&nbsp;&nbsp;用于比较两个字符串</a>
+</h3>
+<h3 class="topic">
+<a name="20esb3q46vsria8a4eghqhtp7u">&nbsp;&nbsp;&nbsp;将内存操作数指定的字节、字、双字与al、ax、eax寄存器中的值进行比较，根据结果设置标志寄存器，内存操作数的地址存放于ds:edi或ds:di</a>
+</h3>
+<h3 class="topic">
+<a name="2mlbotbua1pvtnn9c3f8rnpfud">&nbsp;&nbsp;;求字符长度 scas &nbsp;    &#13;
+; al 与 edi中数据进行比较    &#13;
+lea edi,str1        &#13;
+lea esi,str1    &#13;
+mov al, 0       ;字符串每个元素与0比较    &#13;
+repne scasb     ;循环从edi中比较al的值，直到相等退出循环    &#13;
+sub edi,esi     ;终止位置 - 起始位置 = 长度    &#13;
+mov ecx, edi    ;保存长度</a>
+</h3>
+<h3 class="topic">
+<a name="6fncq4vv49c4qa509cimvkr3dq">&nbsp;&nbsp;&nbsp;比较操作会导致edi的值发生变化，这里edi的值为字符串中'\0'的地址,故通过与esi相减，求得字符串长度</a>
+</h3>
+<h3 class="topic">
+<a name="34e09drcon41ebc0ct74ac2ueb">&nbsp;串比较指令（cmps）</a>
+</h3>
+<h3 class="topic">
+<a name="7hi6trl3bvbnvqqqaqn62jtglo">&nbsp;&nbsp;cmpsb cmpsw cmpsd</a>
+</h3>
+<h3 class="topic">
+<a name="36bh9594ptpqqck52702igqolh">&nbsp;&nbsp;默认参数</a>
+</h3>
+<h3 class="topic">
+<a name="5g5i1t6rkabc9q0adphrkgpvlf">&nbsp;&nbsp;&nbsp;ds:esi  ds:edi分别存放两个源操作数的地址</a>
+</h3>
+<h3 class="topic">
+<a name="6948k1q9r63bku5rq5gsn4i8m8">&nbsp;&nbsp;比较两个源操作数的字节、字、双字，根据结果设置标志寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="57u08ap91km17r4caft4gtqshe">&nbsp;&nbsp;类似于strcmp</a>
+</h3>
+<h3 class="topic">
+<a name="2tga8cstbv4as2l51bt627qrll">&nbsp;&nbsp;&nbsp;;字符串比较 cmpsb    &#13;
+lea esi,str1    &#13;
+lea edi,str4    &#13;
+cld             ;清空方向    &#13;
+repe cmpsb      ;循环比较esi,和edi中的值，直到cx=0或者zf=0    这里ecx中的值是提前置好的，用于规定比较的字节数&#13;
+je _eq          ;如果比较完字符长度后，都相等，zf =1 跳转到相等代码&#13;
+jmp _exit  ;不相等&#13;
+_eq:      ;相等执行代码&#13;
+_exit:  </a>
+</h3>
+<h3 class="topic">
+<a name="4mbsin0pn1ad16382896lafpd1">&nbsp;&nbsp;&nbsp;例子见书29页</a>
+</h3>
+<h3 class="topic">
+<a name="7a8l7ifmhquupat98tv6anf83d">&nbsp;rep重复操作前缀</a>
+</h3>
+<h3 class="topic">
+<a name="2nint8bdro13f5ekg7mf6cq48a">&nbsp;&nbsp;只能重复执行串操作</a>
+</h3>
+<h3 class="topic">
+<a name="4jg4qie0s31chmfpelben2ef6e">&nbsp;&nbsp;一直循环，直到cx为0或ZF不再满足指定的条件为止</a>
+</h3>
+<h3 class="topic">
+<a name="1su25u8spobudm5aeatolopn0t">&nbsp;&nbsp;其他rep指令</a>
+</h3>
+<h3 class="topic">
+<a name="00iccr69lgmvneodpbjkp7qi8b">&nbsp;&nbsp;&nbsp;repe</a>
+</h3>
+<h3 class="topic">
+<a name="0f8cknl24n05o2v38unlu51pom">&nbsp;&nbsp;&nbsp;&nbsp;只要zf等于1，就重复执行</a>
+</h3>
+<h3 class="topic">
+<a name="4mttb8etai3188bnqimconi3ma">&nbsp;&nbsp;&nbsp;&nbsp;zf等于0，停止重复执行</a>
+</h3>
+<h3 class="topic">
+<a name="6ok0aihqlvnfjr0ubv15mvucuh">&nbsp;&nbsp;&nbsp;repz</a>
+</h3>
+<h3 class="topic">
+<a name="254sj4bk62nlp98rh18s3b24vl">&nbsp;&nbsp;&nbsp;repne</a>
+</h3>
+<h3 class="topic">
+<a name="16ce22h02nf11bgoug0uma2fcp">&nbsp;&nbsp;&nbsp;repnz</a>
+</h3>
+<h3 class="topic">
+<a name="613eji0n8ej58r24o26iipt3o7">&nbsp;注意movsb scasb等指令均会在执行过程中 改变esi edi寄存器的值，两者分别代表串操作的源字符串地址和目的字符串地址，指令执行一次，会导致esi edi的值增加，类似于指针指向字符串的下一个字符</a>
+</h3>
+<h3 class="topic">
+<a name="0uo3i8ij6aqadfjbbqetatcvth">&nbsp;&nbsp;所以特别是在与rep指令结合使用并且在外部还有循环时，需要知晓esi ebi往往只需初始化一次</a>
+</h3>
+<h2 class="topic">
+<a name="5rql17c5nuh36b8n2spe46fvu0">控制转移指令</a>
+</h2>
+<h3 class="topic">
+<a name="0ntesingqojmrgq2tg4eq1brak">&nbsp;跳转的寻址方式</a>
+</h3>
+<h3 class="topic">
+<a name="13n91n88j2p6i8bp9a2p5ul8q6">&nbsp;&nbsp;直接寻址方式</a>
+</h3>
+<h3 class="topic">
+<a name="7gol2jju58cc2ihafdldqqmr1n">&nbsp;&nbsp;&nbsp;使用立即数寻址</a>
+</h3>
+<h3 class="topic">
+<a name="4sa1mnhncr0at2sjph6im450l2">&nbsp;&nbsp;间接寻址方法</a>
+</h3>
+<h3 class="topic">
+<a name="4el9alf0eh3m0pa0kf2gib86ps">&nbsp;&nbsp;&nbsp;通过寄存器或存储器寻址</a>
+</h3>
+<h3 class="topic">
+<a name="5q1oajvk329gnp0bbmsruh44f4">&nbsp;&nbsp;段内近转移</a>
+</h3>
+<h3 class="topic">
+<a name="50kata242gcu5lpbva6ooq6o33">&nbsp;&nbsp;&nbsp;近转移</a>
+</h3>
+<h3 class="topic">
+<a name="6665r3o6boav236cclulmjq3it">&nbsp;&nbsp;&nbsp;当前代码段64kb范围内转移</a>
+</h3>
+<h3 class="topic">
+<a name="2r5bmciv4831dh8o932ooasq3g">&nbsp;&nbsp;&nbsp;&nbsp;可寻址前后32kb范围</a>
+</h3>
+<h3 class="topic">
+<a name="2fbk3gq2spvfa7m7psdocl475i">&nbsp;&nbsp;&nbsp;不需要更改cs段地址，只需要改变ip偏移地址</a>
+</h3>
+<h3 class="topic">
+<a name="1i11in4j2db5a8ns2ocpa5jjpj">&nbsp;&nbsp;段内远转移</a>
+</h3>
+<h3 class="topic">
+<a name="641ppvq9g7j6mmq2s49jivrt12">&nbsp;&nbsp;&nbsp;看资料</a>
+</h3>
+<h3 class="topic">
+<a name="4jn559phmeqqag764v9g5a56c4">&nbsp;&nbsp;段间转移</a>
+</h3>
+<h3 class="topic">
+<a name="2t0p0g5uniu5ell8inbhavfpib">&nbsp;&nbsp;&nbsp;看资料</a>
+</h3>
+<h3 class="topic">
+<a name="069eticgssg7as8hsk7gspodqj">&nbsp;jmp</a>
+</h3>
+<h3 class="topic">
+<a name="6m986kt86bg4iugeo6orqdmj9r">&nbsp;&nbsp;无条件转移指令</a>
+</h3>
+<h3 class="topic">
+<a name="426867dne058m9a8tfrc5ddnqj">&nbsp;&nbsp;参数可以为reg/mem/imm</a>
+</h3>
+<h3 class="topic">
+<a name="3nr87p5g2ggrhrda1l8cenbnkn">&nbsp;jxx</a>
+</h3>
+<h3 class="topic">
+<a name="7jv91d91jt4kmrus1aaohniouf">&nbsp;&nbsp;条件转移指令</a>
+</h3>
+<h3 class="topic">
+<a name="2gdb3ds6vcfseo3nua4tcgob92">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E7%AC%AC%E4%BA%8C%E5%A4%A9_files/4m1pv8dk5fbl8msqfl4cgucfo3.png"></p>
+<h3 class="topic">
+<a name="0rm8bj5d1u85qaim1a24b15233">&nbsp;&nbsp;jb ja对应cf位，则对应无符号数的运算结果</a>
+</h3>
+<h3 class="topic">
+<a name="3f6h16s25spgu24ml6q0epvqc2">&nbsp;&nbsp;jl  jg对应of位，则对应有符号数的运算结果</a>
+</h3>
+<h3 class="topic">
+<a name="46ic9s5gnll9hg13uhvoi6lkq9">&nbsp;loop</a>
+</h3>
+<h3 class="topic">
+<a name="2cqg3f9qvmm21btge0daqggghq">&nbsp;&nbsp;当cx为0的时候loop停止循环</a>
+</h3>
+<h3 class="topic">
+<a name="2f00qn509t25oali8ab7t30rdg">&nbsp;&nbsp;loop 标号</a>
+</h3>
+<h3 class="topic">
+<a name="79ap4530958o2ej4iktrafgaeb">&nbsp;&nbsp;&nbsp;当cx不等于0时，该语句会将程序跳转到标号处开始执行</a>
+</h3>
+<h3 class="topic">
+<a name="760a8h9c2ov0lc5if8s38g43vv">&nbsp;call</a>
+</h3>
+<h3 class="topic">
+<a name="5n4h5tgo0dah2qc9lq6hm4261i">&nbsp;&nbsp;参数可以为</a>
+</h3>
+<h3 class="topic">
+<a name="4s1dcmu7d0btku66s8243ae4k0">&nbsp;&nbsp;&nbsp;reg</a>
+</h3>
+<h3 class="topic">
+<a name="45j0vttns5vbk87hs3q19n5i30">&nbsp;&nbsp;&nbsp;mem</a>
+</h3>
+<h3 class="topic">
+<a name="262d2a9fvq70fhks65doeqe25a">&nbsp;&nbsp;&nbsp;imm</a>
+</h3>
+<h3 class="topic">
+<a name="5flf4cqsnf5qqfcfe855kq3a9c">&nbsp;&nbsp;&nbsp;&nbsp;一般使用标号作为作为函数名</a>
+</h3>
+<h3 class="topic">
+<a name="6pev3vm4mb7md9bkqbprcjcvos">&nbsp;&nbsp;相当于</a>
+</h3>
+<h3 class="topic">
+<a name="62gf74i905qoi5eueiph80khs7">&nbsp;&nbsp;&nbsp;push ip</a>
+</h3>
+<h3 class="topic">
+<a name="0sorq9dlmr56s79k19ivdvb4s9">&nbsp;&nbsp;&nbsp;jmp near ptr 函数标号</a>
+</h3>
+<h3 class="topic">
+<a name="311pkub25abqqiugennr7atqqt">&nbsp;ret</a>
+</h3>
+<h3 class="topic">
+<a name="1co713aeqo7bvnd3083teu7tp3">&nbsp;&nbsp;参数为立即数，执行语句的时候会将给sp寄存器增加立即数的值，并从栈中取出函数返回地址赋值给ip</a>
+</h3>
+<h3 class="topic">
+<a name="1oak1eo9r2nlu5us528sn7n53u">&nbsp;&nbsp;&nbsp;如果带参数相当于pop eip  add esp,XXX</a>
+</h3>
+<h3 class="topic">
+<a name="5b14b44p5acq2ivjqg44aqnb91">&nbsp;&nbsp;ret</a>
+</h3>
+<h3 class="topic">
+<a name="3v3vq7lgdigg5nrjn254mkknlt">&nbsp;&nbsp;retn</a>
+</h3>
+<h3 class="topic">
+<a name="5uv09j09jai1172dt0e81g9vpl">&nbsp;&nbsp;&nbsp;用于实现近转移</a>
+</h3>
+<h3 class="topic">
+<a name="4f4o898brv64uk5v6tksmt70gd">&nbsp;&nbsp;&nbsp;&nbsp;用于从段内转移CALL进的子程序中返回</a>
+</h3>
+<h3 class="topic">
+<a name="51dal5ph0uigq3tq9r3uv3aaib">&nbsp;&nbsp;&nbsp;相当于</a>
+</h3>
+<h3 class="topic">
+<a name="1n1vepjiv8k8s9l94os470tihm">&nbsp;&nbsp;&nbsp;&nbsp;pop ip</a>
+</h3>
+<h3 class="topic">
+<a name="5tk5beldd62qknmgubtbbcua3i">&nbsp;&nbsp;retf</a>
+</h3>
+<h3 class="topic">
+<a name="02u5hl7cotsq5h0p5veqks782a">&nbsp;&nbsp;&nbsp;用于实现远转移</a>
+</h3>
+<h3 class="topic">
+<a name="4o0e5d8ffe56a9l2l7asa0ee2c">&nbsp;&nbsp;&nbsp;&nbsp;用于从段间转移CALL进的子程序中返回</a>
+</h3>
+<h3 class="topic">
+<a name="11kns51pe2h951r07f1vk99ngk">&nbsp;&nbsp;&nbsp;相当于</a>
+</h3>
+<h3 class="topic">
+<a name="6f9c1rttkekqukulotejb0ge0e">&nbsp;&nbsp;&nbsp;&nbsp;pop ip</a>
+</h3>
+<h3 class="topic">
+<a name="3sd3cchfis2cgd0u3h2d3ru6qg">&nbsp;&nbsp;&nbsp;&nbsp;pop cs</a>
+</h3>
+</body>
+</html>

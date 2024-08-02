@@ -1,0 +1,1589 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>class35day0318（进程与线程）</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="7lu34p14av5e73nibof337m9d4">class35day0318（进程与线程）</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="class35day0318%EF%BC%88%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B%EF%BC%89_files/images/class35day0318%EF%BC%88%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B%EF%BC%89.jpg"></div>
+<h2 class="topic">
+<a name="7iq4sdlab4fm92kv7glukq8gug">进程与线程第一天</a>
+</h2>
+<h3 class="topic">
+<a name="56q9o491sv3v1gtjeremvukv16">&nbsp;书目《windows核心编程》</a>
+</h3>
+<h3 class="topic">
+<a name="6i5c0kv677s1f7ogp5cg8cq4o5">&nbsp;学习主线</a>
+</h3>
+<h3 class="topic">
+<a name="6ckgeejsmna33tujt2e1oi9m22">&nbsp;&nbsp;学习系统机制</a>
+</h3>
+<h3 class="topic">
+<a name="0ki6j3rt3nrgsq02e045878csb">&nbsp;&nbsp;学习使用api</a>
+</h3>
+<h3 class="topic">
+<a name="43q0n0eu8rt6jfqmhpocrne7ib">&nbsp;windows对象与内核对象</a>
+</h3>
+<h3 class="topic">
+<a name="5l4h3j1fn5vig9fugn9c71stlp">&nbsp;&nbsp;weindows系统是c语言编程的，但是仍是一个面向对象的操作系统，一个对象本质上都是结构体变量，为了提供封装性，所以使用了句柄，对象的直接操作需要得到句柄</a>
+</h3>
+<h3 class="topic">
+<a name="4atailj7ni1jei6bn72e3m5i3p">&nbsp;&nbsp;&nbsp;句柄大小  四字节（32位系统）</a>
+</h3>
+<h3 class="topic">
+<a name="4tipokfp4m2fg6970eti45mo84">&nbsp;&nbsp;&nbsp;句柄内容一般是一个比较小的值</a>
+</h3>
+<h3 class="topic">
+<a name="28j1uqebamp66otl1916aomdu4">&nbsp;&nbsp;windows中主要对象</a>
+</h3>
+<h3 class="topic">
+<a name="4ft0d6pbv8mks3u09h7v670mp4">&nbsp;&nbsp;&nbsp;user对象（用于操作对象的api封装在user32.dll）</a>
+</h3>
+<h3 class="topic">
+<a name="4u015914fi6h0lm1efi1fklv3h">&nbsp;&nbsp;&nbsp;&nbsp;界面</a>
+</h3>
+<h3 class="topic">
+<a name="1ie7km90mfgrnii8tumkoftno3">&nbsp;&nbsp;&nbsp;&nbsp;控件</a>
+</h3>
+<h3 class="topic">
+<a name="0poed2f6oj9661tvjoiafcct4c">&nbsp;&nbsp;&nbsp;&nbsp;图标</a>
+</h3>
+<h3 class="topic">
+<a name="7jvu51jkuud15jmmqifsbvbtu9">&nbsp;&nbsp;&nbsp;&nbsp;菜单</a>
+</h3>
+<h3 class="topic">
+<a name="1tgcq0ne3j48br60subrosjbeo">&nbsp;&nbsp;&nbsp;&nbsp;光标</a>
+</h3>
+<h3 class="topic">
+<a name="4batv5in05qtrd1bdie5t7a7g6">&nbsp;&nbsp;&nbsp;GDI对象（用于操作对象的api封装在GDI32.DLL）</a>
+</h3>
+<h3 class="topic">
+<a name="5aqjb1mcdtrqr5ielued3ivn8q">&nbsp;&nbsp;&nbsp;&nbsp;画刷</a>
+</h3>
+<h3 class="topic">
+<a name="0sg92r3m8nndlrnq7j93eljive">&nbsp;&nbsp;&nbsp;&nbsp;设备环境</a>
+</h3>
+<h3 class="topic">
+<a name="1a13l2r26cj0kn066lphm7fjr4">&nbsp;&nbsp;&nbsp;&nbsp;字体</a>
+</h3>
+<h3 class="topic">
+<a name="656bcq3b2tldvquni26f3sl9bd">&nbsp;&nbsp;&nbsp;&nbsp;。。</a>
+</h3>
+<h3 class="topic">
+<a name="0kkgeg937gjg61c4576p6pdufm">&nbsp;&nbsp;&nbsp;内核对象（用于操作对象的api封装在Kernel32.dll）</a>
+</h3>
+<h3 class="topic">
+<a name="3jtpgo0i6kvloqh0haabjch0ip">&nbsp;&nbsp;&nbsp;&nbsp;文件</a>
+</h3>
+<h3 class="topic">
+<a name="5c6jeusrhtj65ulknrmdshovs1">&nbsp;&nbsp;&nbsp;&nbsp;进程</a>
+</h3>
+<h3 class="topic">
+<a name="3c4fim3dupj6hmebc7mvv81h41">&nbsp;&nbsp;&nbsp;&nbsp;线程</a>
+</h3>
+<h3 class="topic">
+<a name="1hao5brk7f3ai7rbdpjeaugffj">&nbsp;&nbsp;&nbsp;&nbsp;邮槽</a>
+</h3>
+<h3 class="topic">
+<a name="42qaof7lomffkkaq7v7p6ls20v">&nbsp;&nbsp;&nbsp;&nbsp;。。。</a>
+</h3>
+<h3 class="topic">
+<a name="3qvm43e51cibntkhois3a40mi6">&nbsp;&nbsp;内核对象（与系统全局性功能有关）</a>
+</h3>
+<h3 class="topic">
+<a name="5o4tgn7ufc08udblii2vpobp1h">&nbsp;&nbsp;&nbsp;使用模式</a>
+</h3>
+<h3 class="topic">
+<a name="1voltkhiopjc8tdprrak9scd5m">&nbsp;&nbsp;&nbsp;&nbsp;得到内核对象的句柄</a>
+</h3>
+<h3 class="topic">
+<a name="1binl2mbq0aflvoedd8l6ar8bb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;创建内核对象（Createxxx）（创建新的）</a>
+</h3>
+<h3 class="topic">
+<a name="124ls0764hk5405693rafta16b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;打开内核对象(Openxxx)（打开已有的）</a>
+</h3>
+<h3 class="topic">
+<a name="7thn0pfvm93e3f0bn7nquhcs69">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;两者均可以用来得到内核句柄</a>
+</h3>
+<h3 class="topic">
+<a name="2chgmregjab35tg6kkgu5c06nm">&nbsp;&nbsp;&nbsp;&nbsp;通过api访问内核对象</a>
+</h3>
+<h3 class="topic">
+<a name="4ha6pk984rbdkaosc57n6mqbrl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;不同的内核对象，有不同的api进程处理</a>
+</h3>
+<h3 class="topic">
+<a name="3vd2gil8s9htt0m3jaqhqj2mcp">&nbsp;&nbsp;&nbsp;&nbsp;关闭内核对象句柄（CloseHandle等）</a>
+</h3>
+<h3 class="topic">
+<a name="1dhu75960t9epr8blrc5ritgls">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;否则可能造成句柄泄露（内核级别的内存泄露）</a>
+</h3>
+<h3 class="topic">
+<a name="40a5otpk95e04ml2i88huck48t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当进程结束时，系统会将进程中句柄表中的所有句柄都关闭掉</a>
+</h3>
+<h3 class="topic">
+<a name="4sjg16p0ueqlp4m69e5l37t628">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该函数只能将内核对象的引用计数减一，当内核对象引用计数为0时，内核对象才被销毁</a>
+</h3>
+<h3 class="topic">
+<a name="09eir7kp0202j6vlltngbrr3tt">&nbsp;&nbsp;&nbsp;内核对象特性</a>
+</h3>
+<h3 class="topic">
+<a name="4hhbk8bv5n3vl0dc08crbtn2gl">&nbsp;&nbsp;&nbsp;&nbsp;全局性</a>
+</h3>
+<h3 class="topic">
+<a name="21f6p49i4refvnanl41fg8uph0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;windows（32位）虚拟内存地址中</a>
+</h3>
+<h3 class="topic">
+<a name="37i2e41qoi2ajvmij52r2bi425">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0~2gb是普通进程占用的内存</a>
+</h3>
+<h3 class="topic">
+<a name="24m38o2pmh6s9a5p567b4eljfg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2~4gb的内存保存操作系统内核对象，内核对象可以映射到每一个普通进程，每一个普通进程均会调用内核对象中方法，用于在普通进程中使用一些系统基础功能（例如线程 文件等）</a>
+</h3>
+<h3 class="topic">
+<a name="1qcb7dh372kha1o6onllnfkjd7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;所有的内核对象均属于操作系统内核，可以在不同的进程间访问到，即内核对象是跨进程的</a>
+</h3>
+<h3 class="topic">
+<a name="2scqc2m26ijtotk6eledoj243l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;同于进程同步，进程间共享数据等</a>
+</h3>
+<h3 class="topic">
+<a name="6r7mtirsp0668r8rhpvik5j2sn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通常使用命名的方式标识内核对象，从而在不同的进程间使用内核对象</a>
+</h3>
+<h3 class="topic">
+<a name="3bn1v5e3knlhe34emhdrromviq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当一个进程创建了一个内核对象，其他进程需要使用相同的内核对象时，不会重新创建内核对象，多个进程会共同使用同一个内核对象</a>
+</h3>
+<h3 class="topic">
+<a name="517edsjet5ufkrvcll9074tlte">&nbsp;&nbsp;&nbsp;&nbsp;引用计数</a>
+</h3>
+<h3 class="topic">
+<a name="1kr596rn86etk00gb7s781p4gu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;引用计数是内核对象中的一个字段，当一个进程创建或打开了内核对象，则引用计数+1，一个进程终止或关闭了内核句柄，引用计数-1，当引用计数为0时，该内核对象会被销毁，不再占用内存空间</a>
+</h3>
+<h3 class="topic">
+<a name="60aa7g9vh6ar4jhavtqcfhaugt">&nbsp;&nbsp;&nbsp;&nbsp;安全性</a>
+</h3>
+<h3 class="topic">
+<a name="7kiv8bq8ma0bj8a1ih4c8jmrdq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;内核对象都有一个安全描述符</a>
+</h3>
+<h3 class="topic">
+<a name="2531iinakc6okrgoakv5ftvjoc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;安全描述符是一个结构体，其字段分别为</a>
+</h3>
+<h3 class="topic">
+<a name="1sm394caejl04v5ifmb0ffcuu4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;typedef struct _PSECURITY_ATTRIBUTES{&#13;
+DWORD nLength //此结构体的大小&#13;
+LPVOID lpSecurityDescriptor; //安全描述符，用于描述各种访问权限，比如是否可读，可写等&#13;
+BOOL bInheritHandle;//是否能被子进程继承&#13;
+} PSECURITY_ATTRIBUTES;</a>
+</h3>
+<h3 class="topic">
+<a name="3frf6i4ick2mu7485osbsp2fo6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;创建内核对象的时候需要提供安全描述符</a>
+</h3>
+<h3 class="topic">
+<a name="47ct4u6hg2tvgkn3qv23g3arac">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;一般安全描述符可以置为null，即内核对象将使用当前令牌相关默认安全属性</a>
+</h3>
+<h3 class="topic">
+<a name="08modvre2l21u9cefehqeuif4o">&nbsp;&nbsp;&nbsp;句柄特性</a>
+</h3>
+<h3 class="topic">
+<a name="5p52c3l3m5fn3duk5kcrt5p9dn">&nbsp;&nbsp;&nbsp;&nbsp;句柄表</a>
+</h3>
+<h3 class="topic">
+<a name="0ij1ij6lf7b6a42rgj1moqc1qb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;win中使用对象就需要句柄，内核对象也不例外，但是内核对象的句柄是与进程相关的，同一个内核对象，在不同的进程中句柄值不同</a>
+</h3>
+<h3 class="topic">
+<a name="2111udjdj4o1rejbvbebfb64u9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;内核对象句柄与内核对象的映射关系在句柄表中保存</a>
+</h3>
+<h3 class="topic">
+<a name="57dfm5f7eqr8ftaqbghr3lgscv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;句柄表是一个结构体类型的数组，用于记录内核对象的信息</a>
+</h3>
+<h3 class="topic">
+<a name="26jsti2ijmc2p6djlcdb83nl8i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;数组中的结构体通常包括以下字段</a>
+</h3>
+<h3 class="topic">
+<a name="7ch08lvd2f8rhrvhte7l9jf98p">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用此句柄访问内核对象的权限（读写 只读 只写）</a>
+</h3>
+<h3 class="topic">
+<a name="40m7tv6q9i6r3sufkccnp2qduo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;内核对象在内存中的地址</a>
+</h3>
+<h3 class="topic">
+<a name="6prrq5rsdgln2v176nhe3i9lsu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;标志（此内核对象句柄是否可以被当前进程的子进程继承）</a>
+</h3>
+<h3 class="topic">
+<a name="403drscqerhm64522hnjd9t51i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;句柄的值是实际上是该数组的下标</a>
+</h3>
+<h3 class="topic">
+<a name="0v06mbki3voos4ahfnqqnat95u">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;句柄表保存在进程中，每一个进程维护自己的一张句柄表</a>
+</h3>
+<h3 class="topic">
+<a name="0lttp5h8dgda7d9r1uorks6d0l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该进程创建一个内核对象，则在句柄表中添加一项</a>
+</h3>
+<h3 class="topic">
+<a name="34a0tjujoqqvhrt79ri1slh92b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;不同进程的相同句柄表下标可能对应不同的对象</a>
+</h3>
+<h3 class="topic">
+<a name="3rt74mh3ebimgoogebf9if2mq1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对于同一个内核对象，在不同的进程中，句柄值不同</a>
+</h3>
+<h3 class="topic">
+<a name="324dmirrku7bg0sojrsqe77hm3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;内核对象的句柄值只是句柄表的一个索引，每一个进程都有一个独立的句柄表，每一个进程的句柄表数据不一样，所以进程的内核句柄值不能跨进程使用</a>
+</h3>
+<h3 class="topic">
+<a name="2g3i87le7ogvgl09b38gmlu7ps">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;但是对于GDI对象，其句柄值是全局有效的，不同进程中可以使用同一个句柄值访问同一个GDI对象</a>
+</h3>
+<h3 class="topic">
+<a name="49s045asnerq05hfojigp7d5bo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;由此可见不同的对象，其句柄管理方式不同</a>
+</h3>
+<h3 class="topic">
+<a name="5f5utvrg70d5ea0s80h0p1h746">&nbsp;&nbsp;&nbsp;&nbsp;注意进程中的句柄表只能用于保存该进程所打开的内核对象的句柄</a>
+</h3>
+<h3 class="topic">
+<a name="1n9ac38qsj925m8eoiruviu3d1">&nbsp;&nbsp;&nbsp;三种方式实现跨进程访问内核对象</a>
+</h3>
+<h3 class="topic">
+<a name="383l97bba24jmofp5f16a7o8ii">&nbsp;&nbsp;&nbsp;&nbsp;由父进程继承给子进程</a>
+</h3>
+<h3 class="topic">
+<a name="4v38em1hab6b071g8m9v1gpu2o">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;即在一个进程中创建另一个进程，该过程中，会将父进程中的句柄表拷贝给子进程</a>
+</h3>
+<h3 class="topic">
+<a name="3isukdotl6pfkbktbu43sm8rr4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;不是所有的句柄均可以继承，需要看内核对象创建的时候参数设置</a>
+</h3>
+<h3 class="topic">
+<a name="46nu2as1r99grmk79qb98j9ahp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;即使继承了句柄，子进程也不知道自己继承了谁，句柄值为多少，只能由父进程通过进程间通讯告诉他</a>
+</h3>
+<h3 class="topic">
+<a name="0d9grv3dosasqp18s0u9gmadi1">&nbsp;&nbsp;&nbsp;&nbsp;使用名称或者id作为标识，在另一个进程中打开一个内核对象</a>
+</h3>
+<h3 class="topic">
+<a name="68dudbm8rn51ho7cvscc77jec1">&nbsp;&nbsp;&nbsp;&nbsp;使用DuplicateHandle()函数将一个内核对象的句柄传递给另一个进程</a>
+</h3>
+<h3 class="topic">
+<a name="4ooqhv5gtlfnppj8ufehrektbs">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;每个进程都有内核对象的句柄表</a>
+</h3>
+<h3 class="topic">
+<a name="7em04gpbvf8o3ogrioka1918ej">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;传递过程中需要用到原进程  原进程中的句柄  目的进程</a>
+</h3>
+<h3 class="topic">
+<a name="6hn0b4g591travau8nidijk6hf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;返回值为内核对象在目的进程中的句柄</a>
+</h3>
+<h3 class="topic">
+<a name="7qdb91lc64ng04ma26evo0t4lr">&nbsp;&nbsp;&nbsp;在进程的句柄表添加句柄的四种方式</a>
+</h3>
+<h3 class="topic">
+<a name="4kt7dqufb9f1difctog0hm27pc">&nbsp;&nbsp;&nbsp;&nbsp;创建内核对象</a>
+</h3>
+<h3 class="topic">
+<a name="69c8htuv9tmkdanm9r1uehthsm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CreateFile()等</a>
+</h3>
+<h3 class="topic">
+<a name="4n3aie19tptumi0eh56r3242mq">&nbsp;&nbsp;&nbsp;&nbsp;显式打开某个内核对象</a>
+</h3>
+<h3 class="topic">
+<a name="728vfcvs9e6o41i7lrb9u1vlck">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OpenFile</a>
+</h3>
+<h3 class="topic">
+<a name="761hkad1d5t4ecdibvn58fbsvj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OpenMutex</a>
+</h3>
+<h3 class="topic">
+<a name="0rqchp9ncfkqern2rqgmv4gcn9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OpenProcess</a>
+</h3>
+<h3 class="topic">
+<a name="5230hcch0pq3btboo9hn5435mi">&nbsp;&nbsp;&nbsp;&nbsp;子进程继承自父进程</a>
+</h3>
+<h3 class="topic">
+<a name="7josp7frq27e5do08b4k9be8et">&nbsp;&nbsp;&nbsp;&nbsp;使用DuplicateHandle()函数</a>
+</h3>
+<h3 class="topic">
+<a name="4mg95v0vnuvf1hf3c9f1tnqufm">&nbsp;&nbsp;对象句柄的重要概念</a>
+</h3>
+<h3 class="topic">
+<a name="59pv1edebuj8uuskpma9rc7b0j">&nbsp;&nbsp;&nbsp;一个句柄代表了对于一个对象的打开操作</a>
+</h3>
+<h3 class="topic">
+<a name="7cikhhtbau152iklo4lbptpb78">&nbsp;&nbsp;&nbsp;句柄的权限是指本次打开指定对象时，申请到的权限，之后使用该句柄对对象的操作均不能超过该权限</a>
+</h3>
+<h3 class="topic">
+<a name="55d7fs6tsuuv33hk2lo8gkqv46">&nbsp;进程</a>
+</h3>
+<h3 class="topic">
+<a name="5a8m9l8lvlipcudmg2nsla28ka">&nbsp;&nbsp;进程与模块</a>
+</h3>
+<h3 class="topic">
+<a name="1n4pka1evo31ihujdltfa0v8vm">&nbsp;&nbsp;&nbsp;什么是进程</a>
+</h3>
+<h3 class="topic">
+<a name="5pjjdg9b8oemeula9jo7bimn9v">&nbsp;&nbsp;&nbsp;&nbsp;一个正在运行的程序</a>
+</h3>
+<h3 class="topic">
+<a name="3e15hni49u7ikl2n9iv4p7qgi2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;计算机中正在运行的程序实例</a>
+</h3>
+<h3 class="topic">
+<a name="0nlle22m3vfcq24fn72anr35t2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以分配给处理器并由处理器执行的一个实体</a>
+</h3>
+<h3 class="topic">
+<a name="725ko6jqimt85rikl7k5pv8ksm">&nbsp;&nbsp;&nbsp;&nbsp;进程没有执行代码的能力，所以在每个进程创建之初都会创建一个主线程用于执行代码，如果主线程结束，系统就会销毁该进程内核对象</a>
+</h3>
+<h3 class="topic">
+<a name="5j0bdbs2fpfbt3mhcr20nl0h4h">&nbsp;&nbsp;&nbsp;&nbsp;一个程序可能同时属于多个进程</a>
+</h3>
+<h3 class="topic">
+<a name="51nph3vscmnn1i64ovl52ncqae">&nbsp;&nbsp;&nbsp;&nbsp;windows下进程又被细化为线程，一个进程下有多个能够独立运行的更小的单位</a>
+</h3>
+<h3 class="topic">
+<a name="2avv2bqj78q0cd9kp84pecme7m">&nbsp;&nbsp;&nbsp;&nbsp;分类</a>
+</h3>
+<h3 class="topic">
+<a name="7h7a5qsqm6rvp0f4jikad579cr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;系统进程</a>
+</h3>
+<h3 class="topic">
+<a name="3bd50vs82f9hu2dqcr6mk16nd4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用户进程</a>
+</h3>
+<h3 class="topic">
+<a name="29dlo14dhkfes8s7eubnbi0ufu">&nbsp;&nbsp;&nbsp;&nbsp;进程中包括（不仅仅是一个exe）</a>
+</h3>
+<h3 class="topic">
+<a name="0nc975l658ul71fuvd8soj0fr3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;虚拟的地址空间</a>
+</h3>
+<h3 class="topic">
+<a name="2qj7abqoba4gtd4d9eih2c7kor">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;地址空间中有加载的exe，有程序运行必须的dll</a>
+</h3>
+<h3 class="topic">
+<a name="2db6ri89f3jfbeuvnv2d265i9a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;exe为进程的主模块</a>
+</h3>
+<h3 class="topic">
+<a name="3pk1cf6r3m8vo626ee7p6s9mho">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dll为进程的dll模块</a>
+</h3>
+<h3 class="topic">
+<a name="1purh2nrn1rahgj25mqetkpb8t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;进程内核对象</a>
+</h3>
+<h3 class="topic">
+<a name="5u6811lvndoo59v1no8o003qvd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;进程内核对象的句柄表</a>
+</h3>
+<h3 class="topic">
+<a name="546qd9etaoeld884kl3n0m2v4t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;进程的权限</a>
+</h3>
+<h3 class="topic">
+<a name="5nlm9sjkb16jeormlt1hhbtvvd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;进程的全局唯一id值</a>
+</h3>
+<h3 class="topic">
+<a name="3r7shcfvfcvgf14ui4bis8jbdn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;至少一个运行着的线程</a>
+</h3>
+<h3 class="topic">
+<a name="2jv26m38u40ff0qm47skji2181">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;进程提供一个空间，但是不会执行真正的代码</a>
+</h3>
+<h3 class="topic">
+<a name="23knbgn11q3062up86mum3l7ab">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;是通过线程执行代码</a>
+</h3>
+<h3 class="topic">
+<a name="7942o1qms4fdvk8k32279n9cup">&nbsp;&nbsp;&nbsp;&nbsp;进程相关函数</a>
+</h3>
+<h3 class="topic">
+<a name="7umpev4ots7d5rsr61sf1j1rq7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CreateProcess</a>
+</h3>
+<h3 class="topic">
+<a name="2d6t9fprsjveic2bpnsfrn4r6u">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;创建进程</a>
+</h3>
+<h3 class="topic">
+<a name="5npgo6fs0trfp7ht8lnt0nmeo6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OpenProcess</a>
+</h3>
+<h3 class="topic">
+<a name="7s0vp44uv814shlt83pk5ov6vo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;打开进程</a>
+</h3>
+<h3 class="topic">
+<a name="5g0if570n1e2g0of8huhecdf2l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ExitProcess</a>
+</h3>
+<h3 class="topic">
+<a name="00f2t2na03pu53ds6mcg56fi58">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;退出本进程</a>
+</h3>
+<h3 class="topic">
+<a name="2rhihu2qgv1euaam3e6ctm4b5g">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TerminateProcess</a>
+</h3>
+<h3 class="topic">
+<a name="40kqm591gc89h6hgqm40e1082j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;结束其他线程</a>
+</h3>
+<h3 class="topic">
+<a name="2mea7sei851g6lg294gqcku166">&nbsp;&nbsp;&nbsp;什么是模块</a>
+</h3>
+<h3 class="topic">
+<a name="05a2qlt27og6vs0dq8goimukns">&nbsp;&nbsp;&nbsp;&nbsp;进程中加载的可执行文件</a>
+</h3>
+<h3 class="topic">
+<a name="5skh8k77noktsad986a9i7p2dt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;exe</a>
+</h3>
+<h3 class="topic">
+<a name="3ttdduhg40q42ruttnddd9hov8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;只有一个</a>
+</h3>
+<h3 class="topic">
+<a name="1ho8sknlse5ok6oodojfvgm6ln">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;被称为主模块</a>
+</h3>
+<h3 class="topic">
+<a name="4sqf5ucarkq8irle2vf3eod60i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dll</a>
+</h3>
+<h3 class="topic">
+<a name="14ctsqidgk5litdnhcr91bqfgt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以有多个</a>
+</h3>
+<h3 class="topic">
+<a name="74fbo89rgk7a9pujhr6kmd4vbe">&nbsp;&nbsp;&nbsp;如何创建一个进程&#13;
+（创建一个进程的过程会同时创建一个线程）</a>
+</h3>
+<h3 class="topic">
+<a name="5dc1lsukcitt35cmn3cs6ut51m">&nbsp;&nbsp;&nbsp;&nbsp;函数：CreateProcess</a>
+</h3>
+<h3 class="topic">
+<a name="3ga8hnahcvilg0hbs3g4g246sv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;所有的opt参数均是可选的</a>
+</h3>
+<h3 class="topic">
+<a name="5h2ihkh04m1itjgnlm47620pi1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;函数原型</a>
+</h3>
+<h3 class="topic">
+<a name="5tpp0bqam7037ta8vj2kccp8jm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BOOL WINAPI CreateProcess(&#13;
+  _In_opt_ LPCTSTR lpApplicationName,//要执行的可执行文件名称及路径&#13;
+  _Inout_opt_  LPTSTR lpCommandLine,//传递给新进程的命令行参数字符串&#13;
+  _In_opt LPSECURITY_ATTRIBUTES lpProcessAttributes,//针对进程的安全描述符&#13;
+  _In_opt LPSECURITY_ATTRIBUTES lpThreadAttribubtes，//针对线程的安全描述符&#13;
+  _In_ BOOL bInheritHandle,    //继承句柄（决定了新创建的子进程是否从父进程处继承所有句柄，是的话子进程可以访问父进程中所有句柄）&#13;
+  _In_ DWORD dwCreationFlags,  //进程创建方式标识（只读，只写，读写）&#13;
+  _In_opt_ LPVOID lpEnvironment,  //指向保存有进程环境字符串的内存块&#13;
+  _In_opt_ LPCTSTR lpCurrentDirectory, //新进程当前目录&#13;
+  _In_ LPSTARTUPINFO lpStartupInfo,//指向子进程创建配置结构体 即进程启动信息&#13;
+  _Out_ LPPROCESS_INFORMATION lpProcessInformation  返回进程创建的详细信息&#13;
+)</a>
+</h3>
+<h3 class="topic">
+<a name="0fhipqa8btq4f84ooludmigaor">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该函数中有opt的参数均为可选参数</a>
+</h3>
+<h3 class="topic">
+<a name="2p6ftdvpse76ffoa1sek7tdgdt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该函数执行成功后将创建一个进程内核对象</a>
+</h3>
+<h3 class="topic">
+<a name="4oonno9fcvr859kjf2u6hi7ljh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;需要注意进程内核对象和进程不是同一个东西</a>
+</h3>
+<h3 class="topic">
+<a name="63cmpo9hhop7uglus56v3lpc1v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;所以进程内核对象创建成功不代表进程本身可以正常加载并运行</a>
+</h3>
+<h3 class="topic">
+<a name="0hljo6h1psjk0hsdig58si3af8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;一般可执行文件的路径、是否继承（填TRUE或FALSE）,进程创建标识符（填0），子进程创建配置的结构体，返回进程创建信息的结构体不能为null怕，其余的均可以为null</a>
+</h3>
+<h3 class="topic">
+<a name="3ktnf2cta0p8rnufvrh49iaqkq">&nbsp;&nbsp;&nbsp;&nbsp;其他函数</a>
+</h3>
+<h3 class="topic">
+<a name="5pd3l2u7kfea9088ajv18j1hhs">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WinExec</a>
+</h3>
+<h3 class="topic">
+<a name="2gjvct2pcigl6t5h0rs62u0c0c">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;创建进程</a>
+</h3>
+<h3 class="topic">
+<a name="30fccp74e5ai1r90338rvc3ccr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;绑定的是cmd</a>
+</h3>
+<h3 class="topic">
+<a name="3p3kgja8f55vude83nm900c8bv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ShellWxwcute</a>
+</h3>
+<h3 class="topic">
+<a name="2soeu0o06k2lhmkj6pt0l7elm3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;创建一个进程，打印一个文件，浏览一个文件夹</a>
+</h3>
+<h3 class="topic">
+<a name="0j1k1pa4g4j2i87b5fic9fd71s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;system</a>
+</h3>
+<h3 class="topic">
+<a name="2rj85oqpviar0p191r2kpvadsb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;以控制台方式打开一个进程</a>
+</h3>
+<h3 class="topic">
+<a name="48vn4t3ta9fgcoi017v2srhkfl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OpenProcess</a>
+</h3>
+<h3 class="topic">
+<a name="5p0m99nfpjl7s42r1cn61prmrq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;打开一个进程</a>
+</h3>
+<h3 class="topic">
+<a name="2dv1cpgd05mv9fv2vv7kkohpfn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;需要传入要打开的进程id</a>
+</h3>
+<h3 class="topic">
+<a name="4ldlh0jl7gd514r2i5s4vs0jh9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;参数是申请的权限和是否可以被继承</a>
+</h3>
+<h3 class="topic">
+<a name="6aogpa26ct1fdgubp8cvdrm4ki">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;低权限的无法以写的方式打开高权限的进程</a>
+</h3>
+<h3 class="topic">
+<a name="21cda4l565rleddkoq2ha9v61m">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;是否申请到取决于当前进程的权限</a>
+</h3>
+<h3 class="topic">
+<a name="3oh48t3li1cer2d26oup3b4pto">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意OpenProcess是通过进程id获取一个进程的句柄，&#13;
+而CreateProcess函数是创建一个进程（同时会创建一个主线程），通过该函数可以获得进程句柄、id，线程句柄，id</a>
+</h3>
+<h3 class="topic">
+<a name="6t68jdulaamck7di89a567b50m">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ExitProcess</a>
+</h3>
+<h3 class="topic">
+<a name="642f2o542h03dta0l2dbom4tal">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;退出本进程</a>
+</h3>
+<h3 class="topic">
+<a name="2k6meg2v2vj2c0a6f8olvlpj36">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TerminateProcess</a>
+</h3>
+<h3 class="topic">
+<a name="2oh81u2vk8bf4pbv1id041tis0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关闭其他进程</a>
+</h3>
+<h3 class="topic">
+<a name="0poi6ijt5g45e29jki7iatdcg8">&nbsp;&nbsp;&nbsp;&nbsp;注意</a>
+</h3>
+<h3 class="topic">
+<a name="0i3joieou214q9qt6c1jttl96f">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;进程的创建必须要有可执行文件的路径，进程创建之后，创建进程的程序和被执行的可执行文件分属于两个进程</a>
+</h3>
+<h3 class="topic">
+<a name="6600d4qrfu43ses9rgsohffhlr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;进程(线程)的句柄和进程（线程）的id没有直接关系，前者的值为内核对象的内存首地址，后者是内核对象的唯一标识符</a>
+</h3>
+<h3 class="topic">
+<a name="2v0gjan34dd8d7qsalj7kupfra">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;进程（线程）句柄的关闭意味着对应的内核对象引用计数减1</a>
+</h3>
+<h3 class="topic">
+<a name="68jifpb2vmfm7bltinrgkvhar2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;进程间的通讯就是线程间通讯和资源之间的通讯，不同进程之间的线程因为都是内核对象且都在内核空间，可以进行通讯，资源不在内核层，所以资源间的通讯都是通过内核对象（邮槽 socket WM_COPYDATA等）进行数据交互。</a>
+</h3>
+<h3 class="topic">
+<a name="5oopn0p4rv91j56b0alebbpb8t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;进程间通讯是通过内核对象获取其他进程的资源改变本进程的程序行为</a>
+</h3>
+<h3 class="topic">
+<a name="5cbs0vrutbpaifmhgam5gkcrii">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;同一个进程的线程之间可以通过全局变量等方式进行通讯，不同进程间线程的通讯与进程和进程通讯的方法相同，通过特定的内核对象进行转接</a>
+</h3>
+<h3 class="topic">
+<a name="2pllipisq17latfm1bvgp1b27o">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;进程创建函数CreateProcess会返回四种信息</a>
+</h3>
+<h3 class="topic">
+<a name="0aeunq9t5vsn202dlg7pbdfj5h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;进程的句柄</a>
+</h3>
+<h3 class="topic">
+<a name="0j74qa8gastjf0m65867upt3b6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;线程的句柄</a>
+</h3>
+<h3 class="topic">
+<a name="0q6uh8iendrsiouefta56deqjc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;进程的id</a>
+</h3>
+<h3 class="topic">
+<a name="5geiccqqqsjk5i6f8f7qujj781">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;线程的id</a>
+</h3>
+<h3 class="topic">
+<a name="43j8rf05hulj48dj2uafqd2u0t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过窗口句柄获得线程id  GetWindowThreadProcess()</a>
+</h3>
+<h3 class="topic">
+<a name="3e4feri128dseme0vqgjahs2o8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过线程id可以获得进程句柄  OpenProcess</a>
+</h3>
+<h3 class="topic">
+<a name="10b229lisiugvspcutoqa77lga">&nbsp;&nbsp;&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="3qa0o8v3k0u0svgbmk2t2kspte">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过创建进程打开控制台程序</a>
+</h3>
+<h3 class="topic">
+<a name="3d9m834ijepmoffj1memtpiikj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;双进程保护</a>
+</h3>
+<h3 class="topic">
+<a name="1ghvn79eainrd3n8b8j0t5ns8o">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;进程1（即保护者1号）</a>
+</h3>
+<h3 class="topic">
+<a name="2lvar6e1qt6c47i0i4r1rr4p5k">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class35day0318%EF%BC%88%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B%EF%BC%89_files/02d63ol32o9n9sam30qcrfr5np.png"></p>
+<h3 class="topic">
+<a name="3isr4r81ur4tbju5tosqkpn5vq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;第一个进程中（一个单独的程序）</a>
+</h3>
+<h3 class="topic">
+<a name="1cc5n5fgusuhgm7mq8ossrula6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;获取守护窗口的窗口句柄</a>
+</h3>
+<h3 class="topic">
+<a name="3oph891t9eevk9vbe5hu3u3um3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果该句柄为空（说明该窗口未被打开）</a>
+</h3>
+<h3 class="topic">
+<a name="0ecldgcq3k8fs2adukmimifhp6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;创建进程，该进程打开窗口程序（可以自己编写，参数可以很简单，需要总结），将该进程对象调用等待函数，只有该进程被关闭，等待函数才返回</a>
+</h3>
+<h3 class="topic">
+<a name="0g1kubkms0gnh040c7o343aegk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果该句柄是非空（窗口被打开）</a>
+</h3>
+<h3 class="topic">
+<a name="1rudv6ja9vgae6u42k8qt3dts9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过窗口句柄，获取该窗口进程的id</a>
+</h3>
+<h3 class="topic">
+<a name="2ov57v0akgtglmet78ggm1outi">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过进程id打开进程</a>
+</h3>
+<h3 class="topic">
+<a name="7nhl3h8mdaknanj61ep38lla43">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;获得进程的句柄</a>
+</h3>
+<h3 class="topic">
+<a name="2vtmv1edg1t01tus761jpad6oo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;以进程句柄作为参数调用等待函数，只有该窗口被关闭的时候，等待函数才返回</a>
+</h3>
+<h3 class="topic">
+<a name="60vlp5ordscnnstksb6kinasat">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;进程2（即守护者1号）</a>
+</h3>
+<h3 class="topic">
+<a name="5a7bua9e1gqbhgv51odtfk7n7v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class35day0318%EF%BC%88%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B%EF%BC%89_files/62ccal50fqrvusqc7l54mutpsm.png"></p>
+<h3 class="topic">
+<a name="5je4p4ag5fabin1kb6j64iqj7n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过创建进程打开笔记本和计算器</a>
+</h3>
+<h3 class="topic">
+<a name="5pcme38ntvvv1314brc6blp43h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#include"pch.h"&#13;
+#include&lt;iostream&gt;&#13;
+#include&lt;stdlib.h&gt;&#13;
+#include&lt;windows.h&gt;&#13;
+using namespace std;&#13;
+int n = 0;&#13;
+int main()&#13;
+{//一些必备参数设置&#13;
+	&#13;
+	RESET:&#13;
+&#13;
+	STARTUPINFO si;&#13;
+	memset(&amp;si, 0, sizeof(STARTUPINFO));//初始化si在内存块中的值（详见memset函数）&#13;
+	&#13;
+	si.cb = sizeof(STARTUPINFO);&#13;
+	si.dwFlags = STARTF_USESHOWWINDOW;&#13;
+	si.wShowWindow = SW_SHOW;&#13;
+&#13;
+	PROCESS_INFORMATION pi1;//必备参数设置结束&#13;
+	PROCESS_INFORMATION pi2;&#13;
+&#13;
+	//c:\\windows\\system32\\calc.exe&#13;
+	//打开一个笔记本进程&#13;
+	if (!CreateProcess(TEXT("c:\\windows\\system32\\notepad.exe"),&#13;
+		NULL,&#13;
+		NULL,&#13;
+		NULL,&#13;
+		FALSE,&#13;
+		0,&#13;
+		NULL,&#13;
+		NULL,&#13;
+		&amp;si,//进程启动信息&#13;
+		&amp;pi1//该参数会返回线程id 进程id 线程句柄 进程句柄&#13;
+	)) {			&#13;
+		cout &lt;&lt; "CreateFailNotepad!" &lt;&lt; endl;&#13;
+		exit(1);&#13;
+	}&#13;
+	else {&#13;
+&#13;
+		if (n == 1)&#13;
+		{&#13;
+			WaitForSingleObject(pi2.hProcess, -1);&#13;
+		}&#13;
+		n = 1;&#13;
+		//如果笔记本进程创建成功，则打开计算器进程&#13;
+		cout &lt;&lt; "SuccessNotepad!" &lt;&lt; endl;&#13;
+		if (!CreateProcess(TEXT("c:\\windows\\system32\\calc.exe"),&#13;
+			NULL,&#13;
+			NULL,&#13;
+			NULL,&#13;
+			FALSE,&#13;
+			0,&#13;
+			NULL,&#13;
+			NULL,&#13;
+			&amp;si,//进程启动信息&#13;
+			&amp;pi2//该参数会返回线程id 进程id 线程句柄 进程句柄&#13;
+		))&#13;
+		{&#13;
+			cout &lt;&lt; "CreateFailCalc!" &lt;&lt; endl;&#13;
+			exit(1);&#13;
+		}&#13;
+		else&#13;
+		{&#13;
+			cout &lt;&lt; "SuccessCalc!" &lt;&lt; endl;	&#13;
+			//如果笔记本程序被关闭,则对应句柄处于激发态&#13;
+			WaitForSingleObject(pi1.hProcess, -1);				&#13;
+			goto RESET;		&#13;
+		}&#13;
+		//CloseHandle(pi2.hThread);&#13;
+		//CloseHandle(pi2.hProcess);	&#13;
+	}&#13;
+	//不使用的句柄最好关掉&#13;
+	CloseHandle(pi1.hThread);&#13;
+	CloseHandle(pi1.hProcess);&#13;
+	return 0;&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="51cra18jp1r2uqj3ef88bfet5q">&nbsp;&nbsp;&nbsp;遍历（进程、进程的模块、线程、进程的堆）</a>
+</h3>
+<h3 class="topic">
+<a name="2it4874202eni8r0446sj3csnc">&nbsp;&nbsp;&nbsp;&nbsp;遍历方法：创建快照</a>
+</h3>
+<h3 class="topic">
+<a name="5btavmhn43hd3uu090p4ltv7c9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;获取某一个时刻正在运行的所有进程的状态</a>
+</h3>
+<h3 class="topic">
+<a name="4j6vj5fc8c6qr3nraakvqtttrm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;需要包含#include &lt;TlHelp32.h&gt;</a>
+</h3>
+<h3 class="topic">
+<a name="4ah6f00inlkt0qjevp2ntsclmq">&nbsp;&nbsp;&nbsp;&nbsp;可以建立的快照的对象包括</a>
+</h3>
+<h3 class="topic">
+<a name="72j0dgpda8pbtgvd5gn7ho59f0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;进程</a>
+</h3>
+<h3 class="topic">
+<a name="1cspk4torujoaedfjkco1r21bq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;线程</a>
+</h3>
+<h3 class="topic">
+<a name="7a3g5fco2fm0rg5i25gk5pm5mt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;进程模块</a>
+</h3>
+<h3 class="topic">
+<a name="29p8ida8r3ivsfdukhv31bb8p1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;进程堆</a>
+</h3>
+<h3 class="topic">
+<a name="0f5jv2o6bvni7odd2ujnhcpq94">&nbsp;&nbsp;&nbsp;&nbsp;遍历流程</a>
+</h3>
+<h3 class="topic">
+<a name="3s3jct675ivo4vagsfsq26apkn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;调用api创建快照，返回快照对象的句柄</a>
+</h3>
+<h3 class="topic">
+<a name="1i73u76jjho02703490ipuns0p">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用两个api提取快照中的信息</a>
+</h3>
+<h3 class="topic">
+<a name="0nau562opveg3u89bsodo8ipo1">&nbsp;&nbsp;&nbsp;&nbsp;使用的api</a>
+</h3>
+<h3 class="topic">
+<a name="20uk5qrsnn8ib48c885q9cokv9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CreateToolhelp32Snapshot</a>
+</h3>
+<h3 class="topic">
+<a name="2i1cmrs9dpbj75m7nj12jqnh1h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;创建快照</a>
+</h3>
+<h3 class="topic">
+<a name="2r6hbo6kistp8dp33tcd5kg5lf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Process32First</a>
+</h3>
+<h3 class="topic">
+<a name="5d8evo86a7jcmkpqprjbd9fq6a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;获取快照中第一个进程/进程的模块/线程/进程的堆</a>
+</h3>
+<h3 class="topic">
+<a name="287e5lvof6u77qp61fg5g6ukfb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Process32Next</a>
+</h3>
+<h3 class="topic">
+<a name="7cosk39li9m9mnlvvsjaj759nc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;获取快照中下一个进程/进程的模块/线程/进程的堆</a>
+</h3>
+<h3 class="topic">
+<a name="6a20qic5gp6n3vnr7p1rjk9htj">&nbsp;&nbsp;&nbsp;&nbsp;遍历模块</a>
+</h3>
+<h3 class="topic">
+<a name="60skr8gstj0fln45n3rumr6fjb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;遍历流程与遍历进程差不多，只是建立模块快照时需要指定模块对应的进程id</a>
+</h3>
+<h3 class="topic">
+<a name="6ichlmdkd4oei9cheg5g5btios">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;有时无法获取某些进程的模块信息，因为当前权限不够</a>
+</h3>
+<h3 class="topic">
+<a name="32uaq80bms7rti6564939svr5t">&nbsp;&nbsp;&nbsp;&nbsp;遍历线程</a>
+</h3>
+<h3 class="topic">
+<a name="19e26geurgivt7jgo052t2rc1m">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;一般直接遍历处所有线程，不指定该线程属于哪个进程，如果需要指定，可以在线程结构体中进行相应的设置</a>
+</h3>
+<h3 class="topic">
+<a name="4nisbd5v59rll0v2ii4ec8rmco">&nbsp;&nbsp;&nbsp;&nbsp;遍历进程的堆</a>
+</h3>
+<h3 class="topic">
+<a name="43qpc5nelkmci3hfvmstoktce3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意进程堆的遍历分为两个层次，每个堆id的遍历以及堆块的遍历，后者如果完全遍历，输出量会较大，所以一般仅输出堆id</a>
+</h3>
+<h3 class="topic">
+<a name="0usov6fvh4qc8c3j2dljo98jr9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;msdn提供遍历指定进程的堆以及堆块的函数</a>
+</h3>
+<h3 class="topic">
+<a name="2dhjesosrog45ulpt6rfr1iq4u">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#include &lt;windows.h&gt;&#13;
+#include &lt;tlhelp32.h&gt;&#13;
+#include &lt;stdio.h&gt;&#13;
+&#13;
+int main( void )&#13;
+{&#13;
+   HEAPLIST32 hl;&#13;
+   &#13;
+   HANDLE hHeapSnap = CreateToolhelp32Snapshot(TH32CS_SNAPHEAPLIST, GetCurrentProcessId());&#13;
+   &#13;
+   hl.dwSize = sizeof(HEAPLIST32);&#13;
+   &#13;
+   if ( hHeapSnap == INVALID_HANDLE_VALUE )&#13;
+   {&#13;
+      printf ("CreateToolhelp32Snapshot failed (%d)\n", GetLastError());&#13;
+      return 1;&#13;
+   }&#13;
+   &#13;
+   if( Heap32ListFirst( hHeapSnap, &amp;hl ) )&#13;
+   {&#13;
+      do&#13;
+      {&#13;
+         HEAPENTRY32 he;&#13;
+         ZeroMemory(&amp;he, sizeof(HEAPENTRY32));&#13;
+         he.dwSize = sizeof(HEAPENTRY32);&#13;
+&#13;
+         if( Heap32First( &amp;he, GetCurrentProcessId(), hl.th32HeapID ) )&#13;
+         {&#13;
+            printf( "\nHeap ID: %d\n", hl.th32HeapID );&#13;
+            do&#13;
+            {&#13;
+               printf( "Block size: %d\n", he.dwBlockSize );&#13;
+               &#13;
+               he.dwSize = sizeof(HEAPENTRY32);&#13;
+            } while( Heap32Next(&amp;he) );&#13;
+         }&#13;
+         hl.dwSize = sizeof(HEAPLIST32);&#13;
+      } while (Heap32ListNext( hHeapSnap, &amp;hl ));&#13;
+   }&#13;
+   else printf ("Cannot list first heap (%d)\n", GetLastError());&#13;
+   &#13;
+   CloseHandle(hHeapSnap); &#13;
+&#13;
+   return 0;&#13;
+}&#13;
+&#13;
+</a>
+</h3>
+<h3 class="topic">
+<a name="31v8bf0csrogi6s16p9i8h22aa">&nbsp;&nbsp;&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="1t1eur07o0ga3ap05b1uo40mvr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // 001_进程_遍历进程.cpp : 此文件包含 "main" 函数。程序执行将在此处开始并结束。&#13;
+//&#13;
+&#13;
+#include "pch.h"&#13;
+#include &lt;iostream&gt;&#13;
+#include &lt;windows.h&gt;&#13;
+#include &lt;TlHelp32.h&gt;&#13;
+//************************************&#13;
+// Method:    打印指定进程的所有模块&#13;
+// Returns:   void&#13;
+// Qualifier: &#13;
+// Parameter: DWORD dwPid&#13;
+//************************************&#13;
+&#13;
+//该函数用于遍历特定进程下所有的模块&#13;
+//是否能遍历出来取决于当前进程的权限&#13;
+void printProcessModuleList(DWORD dwPid)&#13;
+{&#13;
+	HANDLE hSnap = INVALID_HANDLE_VALUE;&#13;
+	hSnap = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE,/*创建模块快照*/&#13;
+									 dwPid/*进程的ID*/);&#13;
+&#13;
+	//用于从快照对象的句柄中读取模块信息&#13;
+	MODULEENTRY32 moduleInfo = { sizeof(MODULEENTRY32) };&#13;
+	&#13;
+	//从快照对象句柄hSnap中读取第一个模块信息&#13;
+	if (Module32First(hSnap, &amp;moduleInfo))&#13;
+	{&#13;
+		int i = 0;&#13;
+		do &#13;
+		{&#13;
+			//打印第i个模块信息&#13;
+			wprintf(L"\t[%02d] %08X %04X %s\n",&#13;
+					i,&#13;
+					moduleInfo.modBaseAddr,/*模块在进程内存中的首地址(加载基址)*/&#13;
+					moduleInfo.modBaseSize,/*整个模块所占用的内存大小*/&#13;
+					moduleInfo.szModule/*模块的名字: xxx.exe,xxx.dll*/);&#13;
+			++i;&#13;
+		} while (Module32Next(hSnap,&amp;moduleInfo));//读取下一个模块信息&#13;
+	}&#13;
+	//关闭快照句柄&#13;
+	CloseHandle(hSnap);&#13;
+}&#13;
+int main()&#13;
+{&#13;
+	//设置本地信息，以便可以打印中文&#13;
+	setlocale(LC_ALL, "chs");&#13;
+&#13;
+    // 1. 创建一个进程快照&#13;
+	HANDLE hSnap = INVALID_HANDLE_VALUE;&#13;
+	hSnap = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS,/*快照的类型: 进程,进程的模块,线程,进程的堆*/&#13;
+									 0/*进程ID,遍历进程时不需要用到.传0即可*/);&#13;
+	// 2. 使用一组API提取出进程快照的内容&#13;
+	PROCESSENTRY32 procInfo = { sizeof(PROCESSENTRY32) };//用于从快照中接收进程信息&#13;
+	if (Process32First(hSnap, &amp;procInfo))//接收第一个进程信息&#13;
+	{&#13;
+		do &#13;
+		{&#13;
+			wprintf(L"%4d %s\n",&#13;
+				   procInfo.th32ProcessID,/*进程的ID*/&#13;
+				   procInfo.szExeFile/*进程的名字*/);&#13;
+			// 接着获取这个进程的所有模块&#13;
+			printProcessModuleList(procInfo.th32ProcessID);&#13;
+		} while (Process32Next(hSnap, &amp;procInfo));&#13;
+	}&#13;
+	//关闭快照句柄&#13;
+	CloseHandle(hSnap);&#13;
+	system("pause");&#13;
+}&#13;
+</a>
+</h3>
+<h3 class="topic">
+<a name="1avjg3b5daet38581qauckpckj">&nbsp;&nbsp;&nbsp;进程间的通讯</a>
+</h3>
+<h3 class="topic">
+<a name="773nj3m77qkagpvv2ihrrnjt59">&nbsp;&nbsp;&nbsp;&nbsp;有很多方法，暂时介绍四种</a>
+</h3>
+<h3 class="topic">
+<a name="26p1ilmefmsqouahhkrv8vekvk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WM_COPYDATA消息</a>
+</h3>
+<h3 class="topic">
+<a name="5s29tocbhq277kqhank5dq92c6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;一般只有窗口程序才能用，因为窗口才需要消息作响应</a>
+</h3>
+<h3 class="topic">
+<a name="7f96ff4oc80nk8fl0i8jds4ni1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WM_COPYDATA是专门用于传递数据的消息，可以携带大体积的消息参数</a>
+</h3>
+<h3 class="topic">
+<a name="41mvb59iqutm9m8p160fb3s3ec">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;附加信息</a>
+</h3>
+<h3 class="topic">
+<a name="3cf9kah819d64udj8rg15b2954">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wparem</a>
+</h3>
+<h3 class="topic">
+<a name="7hm6ch36aegg9fh018m8q6vmj3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用于保存发送此消息窗口的句柄</a>
+</h3>
+<h3 class="topic">
+<a name="3m9elj9t7p4e0b94qch7pqtccb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以为null</a>
+</h3>
+<h3 class="topic">
+<a name="71ng3c4tfam78rakdh5c7q67oc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lparam</a>
+</h3>
+<h3 class="topic">
+<a name="0ijntqh1fep7p6dn60lbpev676">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;保存COPYDATASTRUCT结构体的指针</a>
+</h3>
+<h3 class="topic">
+<a name="71l38rnm0hf484fb7tbd9thmhs">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;结构体原型</a>
+</h3>
+<h3 class="topic">
+<a name="0bf1velu5ds9tgf8g104vh4k5u">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;typedef struct tagCOPYDATASTRUCT {&#13;
+  ULONG_PTR dwData;/// 保存一个数值, 可以用来作标志等&#13;
+  DWORD     cbData;//被发送的数据的大小，字节为单位&#13;
+  PVOID     lpData;//待发送数据块的指针&#13;
+} COPYDATASTRUCT, *PCOPYDATASTRUCT;</a>
+</h3>
+<h3 class="topic">
+<a name="0nfbtj6om59epga0psuak3ut86">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该消息可以使用SendMessage函数发送给另一个窗口（进程），从而完成数据在进程间传输</a>
+</h3>
+<h3 class="topic">
+<a name="3e692id83n5271qcn1nf3ktaa7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;此时SendMessage函数的参数分别为</a>
+</h3>
+<h3 class="topic">
+<a name="4nuk468v43tq6t8a1ravnjahkq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hWnd:   接收数据的窗口的句柄</a>
+</h3>
+<h3 class="topic">
+<a name="375koli5pkcnd7hc0v227aprra">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WM_COPYDATA</a>
+</h3>
+<h3 class="topic">
+<a name="45qafm47bv5r391n3vnea5e7hj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wParam: 传送该数据的窗口句柄(NULL也无所谓)</a>
+</h3>
+<h3 class="topic">
+<a name="4uamljh5kslhrkn8mb1i4a92da">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lParam: COPYDATASTRUCT类型变量的地址</a>
+</h3>
+<h3 class="topic">
+<a name="24kcsijm2ohk0qtumkbskldglb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该消息的数据会被目标进程空间的栈空间中保存，因此单次发送的数据量不宜过大</a>
+</h3>
+<h3 class="topic">
+<a name="5tg733n749u199p10713i84jm5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="03uobjp1985a0nv6sspojgr12e">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;创建消息接收窗口</a>
+</h3>
+<h3 class="topic">
+<a name="662idk5baerbdv1osndvvl5nku">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;创建对话框窗口</a>
+</h3>
+<h3 class="topic">
+<a name="3v3sjg93okfdbqkooesva2hohb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在窗口的消息回调函数中，针对WM_COPYDATA消息设置处理函数</a>
+</h3>
+<h3 class="topic">
+<a name="2m1bhs5j60su368rk6nro73icv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="6gkdbrbqnakic5fegbvvirdvp6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#include "pch.h"&#13;
+#include "resource.h"&#13;
+#include &lt;windows.h&gt;&#13;
+INT_PTR CALLBACK DlgProc(HWND hWnd,&#13;
+			UINT uMsg,&#13;
+			WPARAM w,&#13;
+			LPARAM l)&#13;
+{&#13;
+	switch (uMsg)&#13;
+	{&#13;
+	case WM_COPYDATA:&#13;
+	{&#13;
+		//从lparam附加参数中得到COPYDATASTRUCT结构体的指针&#13;
+		COPYDATASTRUCT* pStc = (COPYDATASTRUCT*)l;&#13;
+		MessageBox(hWnd,&#13;
+				  (LPCWSTR)pStc-&gt;lpData,//调用结构体指针中指向数据块的指针，以此内容弹出对话框&#13;
+				   L"标题",&#13;
+				   0);&#13;
+	}&#13;
+	break;&#13;
+	case WM_CLOSE:&#13;
+		EndDialog(hWnd, 0);	&#13;
+		break;&#13;
+	}&#13;
+	return FALSE;&#13;
+}&#13;
+int WINAPI WinMain(HINSTANCE,&#13;
+			HINSTANCE,&#13;
+		   	char* , &#13;
+			int)&#13;
+{&#13;
+	DialogBox(NULL,(TCHAR*)IDD_DIALOG1,NULL,DlgProc);&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="7k2c28le8blsbf0gaqup2u59i8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;消息发送程序（控制台）</a>
+</h3>
+<h3 class="topic">
+<a name="2q98gtb6cmkoack2jru4m7768m">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#13;
+#include "pch.h"&#13;
+#include &lt;Windows.h&gt;&#13;
+int main()&#13;
+{&#13;
+	//使用FindWindows程序通过窗口名，获取消息接收窗口的句柄&#13;
+	HWND hWnd = FindWindow(NULL,&#13;
+						   L"测试对话框");&#13;
+	//设计消息发送结构体&#13;
+	COPYDATASTRUCT obj = { 0 };&#13;
+	//要发送的消息的指针&#13;
+	obj.lpData = (LPVOID)L"hello 15pb";&#13;
+	//要发送消息的字节数，这里怕不够用，所以*2&#13;
+	obj.cbData = wcslen(L"hello 15pb") * 2;&#13;
+	//使用sendmessage函数将消息发送给接收窗口&#13;
+	SendMessage(hWnd,&#13;
+				WM_COPYDATA,&#13;
+				(WPARAM)NULL,&#13;
+				(LPARAM)&amp;obj);&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="2e1v824tjaao21cm2abmv5094f">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过发送消息的方法数据从一个进程拷贝到另一个进程，接收者必须是窗口程序，否则不能接收消息</a>
+</h3>
+<h3 class="topic">
+<a name="0tqo92vbh9vkossl8g3k74r2c8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;消息中结构的数据会被拷贝到目标进程的栈空间中，可能导致栈溢出，所以单次发送的数据量不宜过大</a>
+</h3>
+<h3 class="topic">
+<a name="5ecrseamk4sbqjb4hgjjaqk7gt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;邮槽内核对象（该消息传递的数据不在栈中保存，可能在堆中保存）</a>
+</h3>
+<h3 class="topic">
+<a name="1r1g3curaistn9o6sd99ds83e9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;邮槽是内核对象，可以跨进程使用，一个进程可以创建一个邮槽，其他进程可以通过打开邮槽与创建邮槽的进程通讯</a>
+</h3>
+<h3 class="topic">
+<a name="3jrmrq7t975hn0t68av2t63drn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;邮槽的通讯是单向的，只有服务端（创建邮槽的程序）才能从邮槽读取信息，客户端只能写入信息，信息以队列方式保存，先进先出</a>
+</h3>
+<h3 class="topic">
+<a name="19j0sv4mqjh6op1n9bhoi23dv2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;邮槽除了本机内进程通讯外，可以在主机之间进行通讯，使用udp协议</a>
+</h3>
+<h3 class="topic">
+<a name="3re8b26bmqqljcnfvgnhd5agd2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;邮槽api</a>
+</h3>
+<h3 class="topic">
+<a name="4ki12i8plo798p4n82r2d9604i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;创建邮槽</a>
+</h3>
+<h3 class="topic">
+<a name="7q7ticntfm3atl2tql9oa0bl7j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CreateMailslot</a>
+</h3>
+<h3 class="topic">
+<a name="1rm7mb2iqvetjjfp84itf5u87q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;参数1</a>
+</h3>
+<h3 class="topic">
+<a name="2ot6v68vcrav2gk7s6ff1626pv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;邮槽名</a>
+</h3>
+<h3 class="topic">
+<a name="0nrv5rni7c5pmfcgeccf0ttgvc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;邮槽的命名规律:&#13;
+1. 主机地址部分&#13;
+2. 关键字&#13;
+3. 自定义名字&#13;
+ \\主机地址部分\mailslot\自定义名字</a>
+</h3>
+<h3 class="topic">
+<a name="6dopkv9kal2mj8cgffb60b9kdv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.\mailslot\邮槽名称</a>
+</h3>
+<h3 class="topic">
+<a name="7pk9ftigkp8uf0fq8dotaf4iqa">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这里的.表示本机</a>
+</h3>
+<h3 class="topic">
+<a name="17thbfsp8nchuniuu565h7jqlk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;也可以用ip代替</a>
+</h3>
+<h3 class="topic">
+<a name="67u1gfe3okgmurkkje0bvnajkb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;参数2</a>
+</h3>
+<h3 class="topic">
+<a name="1sjeo4ti5cakoin8no5j2of2i4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;最大消息字节数,0表示没有限制</a>
+</h3>
+<h3 class="topic">
+<a name="1tntbctfqujm5cakki85rf91pv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;参数3</a>
+</h3>
+<h3 class="topic">
+<a name="4s8tg44uj7v28uusisl9gp36q8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;阻塞的超时时间,-1表示永远等待</a>
+</h3>
+<h3 class="topic">
+<a name="5gqh0ing3c147ido1ulnrmm2fo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;参数4</a>
+</h3>
+<h3 class="topic">
+<a name="4emj5fmi38k4e8lnrhk1bms1j5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;安全描述符,NULL表示使用默认的</a>
+</h3>
+<h3 class="topic">
+<a name="3ptn5gbn8judukef5jg4qlcrah">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;获取邮槽相关信息（注意没有获得邮槽中的消息的实际内容）</a>
+</h3>
+<h3 class="topic">
+<a name="0ae3meg3vh34nqk6mp3lml6h77">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;GetMailslotInfo</a>
+</h3>
+<h3 class="topic">
+<a name="0s7sp3dbdd35loa7frjl01iivq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;邮槽句柄</a>
+</h3>
+<h3 class="topic">
+<a name="1rpgpg9ub1stvf5123663rd2i9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;最大消息字节数,0表示没有限制</a>
+</h3>
+<h3 class="topic">
+<a name="54t0p46e29pk962dc8ih37db19">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;邮槽消息队列中,第一个消息内容占用的字节数</a>
+</h3>
+<h3 class="topic">
+<a name="70bt7shdrsionost38hdf2hfg1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;邮槽消息队列中的消息的个数</a>
+</h3>
+<h3 class="topic">
+<a name="7alv9qpfk27f9mch4n4bfkiqf7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;有无时限</a>
+</h3>
+<h3 class="topic">
+<a name="17juvsvut30ftpa90u59sncnps">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以填NULL</a>
+</h3>
+<h3 class="topic">
+<a name="02hi6p7vli2te7r2pm3tfb8p0c">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;打开文件</a>
+</h3>
+<h3 class="topic">
+<a name="707a75escbmdebsc6bhsae1159">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CreateFile</a>
+</h3>
+<h3 class="topic">
+<a name="2ki087jhk26eulq5f9fcpk5vfv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;打开、写入 读取函数是一个被重载的函数，根据不同的参数，可以创建不同的设备,包括文件，邮槽，串口等</a>
+</h3>
+<h3 class="topic">
+<a name="156g97deta3ritur9mo91k7kmv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;写入文件</a>
+</h3>
+<h3 class="topic">
+<a name="1rl12ejk2een7ap4papj1poml3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WriteFile</a>
+</h3>
+<h3 class="topic">
+<a name="2o6j09tjh2b1dqo6342d2ttfhe">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;向邮槽中写入消息</a>
+</h3>
+<h3 class="topic">
+<a name="3q8218bh3nqc04ur0buhgn9rke">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;读取文件</a>
+</h3>
+<h3 class="topic">
+<a name="5rfsbl450mq56bfa87nrfqsdu0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ReadFile</a>
+</h3>
+<h3 class="topic">
+<a name="2r7a0sh0kq0hi29mpkvf9rpt93">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;获取邮槽中的消息</a>
+</h3>
+<h3 class="topic">
+<a name="5uppb5hael4g5k3a5s2mmjuqvp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;代码示例</a>
+</h3>
+<h3 class="topic">
+<a name="3ie2hust47eudmum9kckbb2usu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;服务端</a>
+</h3>
+<h3 class="topic">
+<a name="47ver7vh7jk9geqo0qbjd8sgcr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="3ql4chdiocd9ats1p0av1ia13f">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#include "pch.h"&#13;
+#include &lt;Windows.h&gt;&#13;
+#include &lt;stdio.h&gt;&#13;
+int main()&#13;
+{&#13;
+	// 1. 创建一个邮槽对象&#13;
+	// 邮槽的命名规律:&#13;
+	// 1. 主机地址部分&#13;
+	// 2. 关键字&#13;
+	// 3. 自定义名字&#13;
+	// \\主机地址部分\mailslot\自定义名字&#13;
+	HANDLE hMailSlot = CreateMailslot(&#13;
+		L"\\\\.\\mailslot\\15PBMAILSLOT",/*邮槽的命名:*/&#13;
+		0,/*最大消息字节数,0表示没有限制*/&#13;
+		-1,/*阻塞的超时时间,-1表示永远等待*/&#13;
+		NULL/*安全描述符,NULL表示使用默认的*/&#13;
+	);&#13;
+	//永久等待获取信息&#13;
+	while ( true )&#13;
+	{&#13;
+		//用于储存邮槽中第一个信息字节数&#13;
+		DWORD dwMsgSize = 0;&#13;
+		//用于储存邮槽消息队列中消息个数&#13;
+		DWORD dwMsgCount = 0;&#13;
+&#13;
+		// 2. 等待客户端发送消息&#13;
+		// 3. 获取邮槽中的消息信息&#13;
+		// 此函数会阻塞,直到客户端将消息&#13;
+		// 写入到邮槽的消息队列为止&#13;
+		GetMailslotInfo(hMailSlot,/*邮槽句柄*/&#13;
+						0,/*最大消息字节数,0表示没有限制*/&#13;
+						&amp;dwMsgSize,/*邮槽消息队列中,第一个消息内容占用的字节数*/&#13;
+						&amp;dwMsgCount,/*邮槽消息队列中的消息的个数*/&#13;
+						NULL);&#13;
+		if (dwMsgCount &gt; 0)//当邮槽中有消息时&#13;
+		{&#13;
+			//打印消息长度的消息数量&#13;
+			printf("size=%d count=%d\n",&#13;
+				   dwMsgSize, dwMsgCount);&#13;
+			// 4. 读取邮槽中的消息内容&#13;
+			// 4.1 dwMsgSize记录的消息的字节数&#13;
+			//申请缓冲区存储消息&#13;
+			char* pData = new char[dwMsgSize];&#13;
+			//该变量用于计数读取的字节数&#13;
+			DWORD dwRead = 0;&#13;
+			//参数为 &#13;
+			//设备句柄、&#13;
+			//用于保存被读取数据的缓冲区、&#13;
+			//读取的最大字节数、&#13;
+			//表示每次读取多少个字节的变量的指针，一般置为0，是为了进行错误检查&#13;
+			//一个指向OVERLAPPED结构体的指针，一般可以为null&#13;
+			ReadFile(hMailSlot, pData, dwMsgSize, &amp;dwRead, NULL);&#13;
+			//将读取到的信息输出&#13;
+			printf("服务端&gt; %s\n", pData);&#13;
+			//释放堆空间&#13;
+			delete[] pData;&#13;
+		}&#13;
+	}&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="2i8oet3lgac03j4nv2nil8rdrg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;客户端</a>
+</h3>
+<h3 class="topic">
+<a name="572rp4ok1lqv1fnn4irsgvcgh6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="3fkdbreps6p33kml3b1jbft2hf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#include "pch.h"&#13;
+#include &lt;Windows.h&gt;&#13;
+#include &lt;stdio.h&gt;&#13;
+&#13;
+int main()&#13;
+{&#13;
+    // 1. 打开邮槽对象(用服务端的邮槽的名字来打开&#13;
+	HANDLE hMailSlot = CreateFile(&#13;
+		L"\\\\192.168.5.1\\mailslot\\15PBMAILSLOT",/*邮槽的名字ip 表示打开对应主机的邮槽*/&#13;
+		GENERIC_WRITE,/*只用到写入权限就够了.*/&#13;
+		FILE_SHARE_WRITE,//共享方式，写入分享&#13;
+		NULL,//安全描述符，null为默认&#13;
+		OPEN_EXISTING,//创建方式，打开已存在的&#13;
+		FILE_ATTRIBUTE_NORMAL,//创建属性，使用普通属性&#13;
+		NULL);//创建模板，一般填空&#13;
+	// 2. 将消息写入到服务端的邮槽中&#13;
+	while ( 1 )&#13;
+	{&#13;
+		printf("客户端&gt; ");&#13;
+		//申请内存接收客户端输入&#13;
+		char buff[1024];&#13;
+		//获取客户端输入&#13;
+		gets_s(buff, sizeof(buff));&#13;
+		//写入邮槽&#13;
+		//该变量用于计数写入的字节数&#13;
+		DWORD dwWrite = 0;&#13;
+		WriteFile(hMailSlot,//邮槽句柄&#13;
+				  buff,//信息的缓冲区&#13;
+				  strlen(buff) + 1,//写入数据长度&#13;
+				  &amp;dwWrite,//写入字节数变量的指针&#13;
+			      NULL);//一个指向OVERLAPPED结构体的指针，一般可以为null&#13;
+	}&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="19h658lgs06q098hu5bum8p8bt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;总结：</a>
+</h3>
+<h3 class="topic">
+<a name="5jdqojotdo4qj5kvka8p17uipv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;邮槽有两种特殊的邮槽路径</a>
+</h3>
+<h3 class="topic">
+<a name="0i4if6ggvavvoj4n0h7u5m3k7q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\\.表示当前主机</a>
+</h3>
+<h3 class="topic">
+<a name="6cu1ghker8l38a5s1k94mde5r0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\\192.168.1.5可以是具体的ip或者主机名</a>
+</h3>
+<h3 class="topic">
+<a name="14li2bfrj1a387tclt2n7pc34h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;创建邮槽或打开邮槽</a>
+</h3>
+<h3 class="topic">
+<a name="2mbf28um7o73esun113lcb4re9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;获取邮槽消息只能获取到邮槽中消息个数以及下一个消息的字节数</a>
+</h3>
+<h3 class="topic">
+<a name="48abijkm5869m152ffipb14qd4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;邮槽读写</a>
+</h3>
+<h3 class="topic">
+<a name="1otkgbb71r66kge55cj2ls9e58">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;邮槽读写才能获取邮槽中的消息数据</a>
+</h3>
+<h3 class="topic">
+<a name="3bes46q2g7ddm34dkt14e8sr5q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;管道</a>
+</h3>
+<h3 class="topic">
+<a name="01ni2k1k6fhlsmbk1hd51jil49">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;管道就是一部份共享内存以便进程可以用来相互通信，创建了Pipe内核对象的进程就是一个Pipe Server, 当另一个进程与这个进程创建的Pipe Server连接时，就称为Pipe Client.当一个进程往Piple当中写入信息时，另一个进程便可以从这个Pipe读出这个信息。</a>
+</h3>
+<h3 class="topic">
+<a name="4n1ap1q894tnggchfsi4letc1v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Pipe分为两种：一个是anonymous pipes(末名命Pipe),另一个是named pipes(命名Pipe), anonymous pipes所需要的开销要比named pipes要来得少，但是缺点是提供的功能也少。&#13;
+   pipe这个术语在这里的意思是指：作为一个提供信息的管道，从概念上来理解，Pipe包含了两个端，一端可以允许进程写入，另一端允许进程读出。两个端都可以让进程读或者写。</a>
+</h3>
+<h3 class="topic">
+<a name="13ltn6okob9vju7l0fldc8esgb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://www.cnblogs.com/shipfi/archive/2006/05/27/410658.html</a>
+</h3>
+<h3 class="topic">
+<a name="64qb42tsvpgo169vmoakbsj9ie">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CreeatePipe</a>
+</h3>
+<h3 class="topic">
+<a name="7frp3uppm6so6e0dd40gplboa5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CreateProcess</a>
+</h3>
+<h3 class="topic">
+<a name="7ebvha3kaesv4imjr7e80pei5a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ReadFile</a>
+</h3>
+<h3 class="topic">
+<a name="4b38t6jej95kon6r5v8qhendlc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WriteToPipe</a>
+</h3>
+<h3 class="topic">
+<a name="0896bkdrom6qi4p1mupm4ol3ro">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ReadFromPipe</a>
+</h3>
+<h3 class="topic">
+<a name="2h6cjfg9g37vl0hoa00gsv5mho">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;共享内存</a>
+</h3>
+<h3 class="topic">
+<a name="3kipsujpeclrv4o0tkt99tqdm9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CreateFileMapping 创建命名的内存映射文件对象</a>
+</h3>
+<h3 class="topic">
+<a name="2ghu3ne8tbiaqdu0durn7g6ojq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;为了能够访问这块内存区域必须调用 MapViewOfFile 函数</a>
+</h3>
+<h3 class="topic">
+<a name="4cvhul4bqqvk9cad0d9m4ipr6f">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当在其他进程访问这块内存区域时，则必须使用OpenFileMapping 函数取得对象句柄 hMap，并调用 MapViewOfFile 函数得到此内存空间的一个映射。这样一来，系统就把同一块内存区域映射到了不同进程的地址空间中，从而达到共享内存的目的。</a>
+</h3>
+<h3 class="topic">
+<a name="4tp376njpa5otig5sg7735m1k1">&nbsp;文件操作</a>
+</h3>
+<h3 class="topic">
+<a name="7m8cs54eoc3vujsahic6ab9dm3">&nbsp;&nbsp;文件处理</a>
+</h3>
+<h3 class="topic">
+<a name="5h3j4152cr4ck0iuk6egobeuph">&nbsp;&nbsp;&nbsp;创建文件</a>
+</h3>
+<h3 class="topic">
+<a name="6alngdfhrv6rlnh615h28hdc3a">&nbsp;&nbsp;&nbsp;&nbsp;CreateFile</a>
+</h3>
+<h3 class="topic">
+<a name="1tddp8687bnnv8gt1jh1d2n4ar">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;文件名</a>
+</h3>
+<h3 class="topic">
+<a name="2j1r8jgeg78e5vdutomfu7l8gv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;要打开的文件的名或设备名</a>
+</h3>
+<h3 class="topic">
+<a name="10439cq0ekkajdfjaf333cjdrs">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;访问方式</a>
+</h3>
+<h3 class="topic">
+<a name="0pq6adqkumelv8gl6vrpksfp7k">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;只读、只写、读写</a>
+</h3>
+<h3 class="topic">
+<a name="2cvb30ecvmuna5kpvo1vs4hujd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;共享方式</a>
+</h3>
+<h3 class="topic">
+<a name="6684komoo2g0oerftvjq8t2fc0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;一个程序打开一个文件的时候另一个程序能否打开该文件</a>
+</h3>
+<h3 class="topic">
+<a name="3vp7pu7i7vcea71bib0e4s4n3s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;只读、只写、读写，不可读写</a>
+</h3>
+<h3 class="topic">
+<a name="7a33e59n3kilmgopb5ppie4j56">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果是0表示不共享</a>
+</h3>
+<h3 class="topic">
+<a name="0u1ogimjg533isdenacabrooe7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;安全描述符</a>
+</h3>
+<h3 class="topic">
+<a name="3sq96p2qoi1q633vj24afr6g5b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;创建方式</a>
+</h3>
+<h3 class="topic">
+<a name="2kk5rqejmh5vd1ocutv1u5jj3q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;类似于c语言中的a r w</a>
+</h3>
+<h3 class="topic">
+<a name="31h39530759jti3vocphpsg41l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;打开已存在的文件</a>
+</h3>
+<h3 class="topic">
+<a name="4ut6l6c5vvnk03phbkm7g2i45v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;创建新的文件</a>
+</h3>
+<h3 class="topic">
+<a name="5f4ki4q4h85kbp0jf7mupi7c2s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;。。。</a>
+</h3>
+<h3 class="topic">
+<a name="0mr7kli78pp93finsj55r91ti2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;创建属性</a>
+</h3>
+<h3 class="topic">
+<a name="15gi51d6ktdmpaphvq0sd0os21">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;文件的相关属性的设置</a>
+</h3>
+<h3 class="topic">
+<a name="7e8pvpb87778vu977o2suss1vl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;创建模板</a>
+</h3>
+<h3 class="topic">
+<a name="78bkb4l5ssgp1umet8kkrqeme1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;一般填空</a>
+</h3>
+<h3 class="topic">
+<a name="60mai380810qnv7mhea4e0oo5d">&nbsp;&nbsp;&nbsp;文件的三大时间（FileTimeToLocalFileTime）（FileTimeToSystemTime）</a>
+</h3>
+<h3 class="topic">
+<a name="7m08jlm5t1d4dse6cbi707p4r6">&nbsp;&nbsp;&nbsp;&nbsp;文件创建时间</a>
+</h3>
+<h3 class="topic">
+<a name="6tm4tbaq7jst965hj9rfogol88">&nbsp;&nbsp;&nbsp;&nbsp;文件最后访问时间</a>
+</h3>
+<h3 class="topic">
+<a name="6jvauvt5uuinl3b6uqtcf1d0ld">&nbsp;&nbsp;&nbsp;&nbsp;文件最后写入时间</a>
+</h3>
+<h3 class="topic">
+<a name="3qjfo6fqbmuclpd9vt7m9ub4cf">&nbsp;&nbsp;&nbsp;文件的属性（GetFileAttribute）（GetFileAttributeEx）(SetFileAttribute)</a>
+</h3>
+<h3 class="topic">
+<a name="442ia9vcl9lv2pamp9tegsdovc">&nbsp;&nbsp;&nbsp;&nbsp;隐藏</a>
+</h3>
+<h3 class="topic">
+<a name="4nc1ojnsqu067iu53sf610q65t">&nbsp;&nbsp;&nbsp;&nbsp;目录</a>
+</h3>
+<h3 class="topic">
+<a name="02eq871o037ubv2o6igd012880">&nbsp;&nbsp;&nbsp;&nbsp;临时文件</a>
+</h3>
+<h3 class="topic">
+<a name="36vsdpv5e9sgiqsk56lemv50bh">&nbsp;&nbsp;&nbsp;&nbsp;获取文件属性api的参数</a>
+</h3>
+<h3 class="topic">
+<a name="46u685bfgh0dbeniuq81bon9lo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;文件路径</a>
+</h3>
+<h3 class="topic">
+<a name="1kkk2rnh353bv9khla928e9gk8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;获取的级别</a>
+</h3>
+<h3 class="topic">
+<a name="0qd4n11oq6tvrtceil3rcsftvf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;存储获得或要设置的文件属性的结构体</a>
+</h3>
+<h3 class="topic">
+<a name="5tue64d4i6o29tbki7noqdu771">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;文件属性</a>
+</h3>
+<h3 class="topic">
+<a name="1fc2s3uiktsnrmbj832n8l19ov">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;每一个二进制位表示一个</a>
+</h3>
+<h3 class="topic">
+<a name="0u4sq7s9rd4dia3aq2kbjs6s06">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;文件创建时间</a>
+</h3>
+<h3 class="topic">
+<a name="391qt0ld7g7s5ocbft8j0dcu40">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;文件最后访问时间</a>
+</h3>
+<h3 class="topic">
+<a name="2konto54utj34566v2jjedbj11">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;文件最后写入时间</a>
+</h3>
+<h3 class="topic">
+<a name="4s32dhe642rge7thqrcmc7lous">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;文件大小高32位</a>
+</h3>
+<h3 class="topic">
+<a name="44egv7p54jp67scn55lm3rhf95">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;文件大小低32位</a>
+</h3>
+<h3 class="topic">
+<a name="76ino8tqvh892use9fbihclvok">&nbsp;&nbsp;&nbsp;文件读写 ReadFile() WriteFile()</a>
+</h3>
+<h3 class="topic">
+<a name="75i4qg1fnkqi0ls59tr6on83ln">&nbsp;&nbsp;&nbsp;&nbsp;参数</a>
+</h3>
+<h3 class="topic">
+<a name="2bn93679nqhvnc4p2ub45fpvea">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;设备句柄</a>
+</h3>
+<h3 class="topic">
+<a name="19s4o7i277r8m5fc410c7it2gi">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;缓冲区地址</a>
+</h3>
+<h3 class="topic">
+<a name="3ca6flqb4as0rlnj5chrdk7i1s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;缓冲区大小</a>
+</h3>
+<h3 class="topic">
+<a name="0916gr2lrlesh9bodkbcp0d97s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;实际读写大小</a>
+</h3>
+<h3 class="topic">
+<a name="63qi7e15vc1an2p98bb23agkun">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;刚开始可以用一个值位0的变量的指针，该变量用于记录函数读或写了多少字节的信息</a>
+</h3>
+<h3 class="topic">
+<a name="73ejmsgeagqns9r7b89lgellg8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;一个指向OVERLAPPED结构体的指针</a>
+</h3>
+<h3 class="topic">
+<a name="7h3jd4lf88qmt57hi0bh1nac93">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;一般为null</a>
+</h3>
+<h3 class="topic">
+<a name="6hofovclrln1s8h0j1e59dlpck">&nbsp;&nbsp;&nbsp;删除文件</a>
+</h3>
+<h3 class="topic">
+<a name="6atjnv4qo2e4sqjrjhef680vm9">&nbsp;&nbsp;&nbsp;&nbsp;DeleteFile()</a>
+</h3>
+<h3 class="topic">
+<a name="6r26g2cljpmr7dmhk8qcfir4gq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;参数可以为绝对路径，可以为相对路径</a>
+</h3>
+<h3 class="topic">
+<a name="1q6nggtfi5jmn2ihq1drh0ovcb">&nbsp;&nbsp;&nbsp;移动文件（同时可以改文件名）（效果是剪切而不是复制）</a>
+</h3>
+<h3 class="topic">
+<a name="58vpk86qe4bgc0pf4o2db38ufh">&nbsp;&nbsp;&nbsp;&nbsp;MoveFile()</a>
+</h3>
+<h3 class="topic">
+<a name="0f2gjacva142pt1cubeeqk3eo7">&nbsp;&nbsp;&nbsp;拷贝文件</a>
+</h3>
+<h3 class="topic">
+<a name="0jo1d868iqqs1dgluriud360rv">&nbsp;&nbsp;&nbsp;&nbsp;CopyFile()</a>
+</h3>
+<h3 class="topic">
+<a name="0nhn47l0uu47m2sah5i2ke3gli">&nbsp;&nbsp;&nbsp;设置文件指针</a>
+</h3>
+<h3 class="topic">
+<a name="4vsnrpgv3en5b9usa7cli6r5ut">&nbsp;&nbsp;&nbsp;&nbsp;SetFilePointer()</a>
+</h3>
+<h3 class="topic">
+<a name="1pcm88tm9q7i7uibbctvs4v15e">&nbsp;&nbsp;&nbsp;&nbsp;类似于c语言文件操作的seek</a>
+</h3>
+<h3 class="topic">
+<a name="4rrk5s0428d5afcebi1t1uaump">&nbsp;&nbsp;&nbsp;获取文件大小GetFileSize()、GetFileSizeEx()</a>
+</h3>
+<h3 class="topic">
+<a name="3umco1nj7cmrir5bou8gbb5j7l">&nbsp;&nbsp;&nbsp;获取当前模块的全路径</a>
+</h3>
+<h3 class="topic">
+<a name="6r2kj0ju7eb2vu4ggheveqok1g">&nbsp;&nbsp;&nbsp;&nbsp;GetModuleFileName()</a>
+</h3>
+<h3 class="topic">
+<a name="4c9afvml8pubgtoukscvfkas5g">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;获取的模块可能位为exe、可能为dll</a>
+</h3>
+<h3 class="topic">
+<a name="7dcruru43jr8uaomqv591qqfbi">&nbsp;&nbsp;遍历文件</a>
+</h3>
+<h3 class="topic">
+<a name="1cbgfppa55fjpi3lnrp32b7b0i">&nbsp;&nbsp;&nbsp;单层次遍历</a>
+</h3>
+<h3 class="topic">
+<a name="1blvmdr71rkusdjol3rcs737c0">&nbsp;&nbsp;&nbsp;&nbsp;FindFristFile()（也可以用于变相获取文件信息）&#13;
+FindNextFile()</a>
+</h3>
+<h3 class="topic">
+<a name="1n218ojvivue9r1483ekkbui20">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;传递具体的文件名</a>
+</h3>
+<h3 class="topic">
+<a name="12u8e1d7ns1do7afm2bgndgcp1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用*用于表示获取当前文件下所有的文件</a>
+</h3>
+<h3 class="topic">
+<a name="7egpd832mo2eiabpu2dp59c7la">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;文件名中一个.表示文件当前文件名 ..表示上一级目录</a>
+</h3>
+<h3 class="topic">
+<a name="3eev69pnqkg5vb7a9q58vm6ill">&nbsp;&nbsp;&nbsp;&nbsp;使用格式</a>
+</h3>
+<h3 class="topic">
+<a name="6lmum58f1ujb5nuh1ju4rc1jrc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FindFristFile&#13;
+do{&#13;
+&#13;
+}while{FindNextFile};</a>
+</h3>
+<h3 class="topic">
+<a name="2r13ak72fjk7k17gfjd8v2l4q1">&nbsp;&nbsp;&nbsp;多层次遍历</a>
+</h3>
+<h3 class="topic">
+<a name="6br40t2j3euucvq2ui4irvks0d">&nbsp;&nbsp;&nbsp;&nbsp;需要使用将路径进行拼接，之后调用递归</a>
+</h3>
+<h3 class="topic">
+<a name="79ibfqogvmjsd0n3r97dh2icg5">&nbsp;&nbsp;文件操作类</a>
+</h3>
+<h3 class="topic">
+<a name="7utpup7ka9t0jj10k3thfkbup3">&nbsp;线程</a>
+</h3>
+<h3 class="topic">
+<a name="32akmrguer0564pb9fgasrbf54">&nbsp;&nbsp;查看线程</a>
+</h3>
+<h3 class="topic">
+<a name="2r3gvolr6mur0r52tk0feljiqv">&nbsp;&nbsp;&nbsp;可以使用PChunter</a>
+</h3>
+<h3 class="topic">
+<a name="1bq6lce6n03et45cehdkiertmb">&nbsp;&nbsp;创建线程</a>
+</h3>
+<h3 class="topic">
+<a name="2q6pdvrm47e2apqpu8mtjnf0eh">&nbsp;&nbsp;&nbsp;CreateThread()</a>
+</h3>
+<h3 class="topic">
+<a name="347vokr43rdoks8evku31qf8nk">&nbsp;&nbsp;一个线程是操作系统的一个内核对象，windows操作系统中没有进程的概念，只有线程的概念，进程逻辑上只是对一组线程以及相关资源的封装</a>
+</h3>
+<h3 class="topic">
+<a name="2dleto6g3n0tb2hjt2417qnbg2">&nbsp;&nbsp;主线程的初始函数</a>
+</h3>
+</body>
+</html>

@@ -1,0 +1,640 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>class20day0219</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="0pi5fss55o5k09g9hunmlg3ajd">class20day0219</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="class20day0219_files/images/class20day0219.jpg"></div>
+<h2 class="topic">
+<a name="6maqsf21sm7oj92oqee3bpvrj8">c语言复习第二天</a>
+</h2>
+<h3 class="topic">
+<a name="264al9sc38och0aimk2mtfped7">&nbsp;一维数组的使用</a>
+</h3>
+<h3 class="topic">
+<a name="0a3innl465bto2fbt29vc9faj7">&nbsp;&nbsp;普通数组</a>
+</h3>
+<h3 class="topic">
+<a name="1medko9qthtdh1opjdjgr4l0sf">&nbsp;&nbsp;&nbsp;定义：使用连续的内存空间保存一组相同的类型的数据&#13;
+数组的大小是固定的，不能动态改变</a>
+</h3>
+<h3 class="topic">
+<a name="3qk8l88ii2l2o0ikmad8gsvit3">&nbsp;&nbsp;数组的定义</a>
+</h3>
+<h3 class="topic">
+<a name="1tavamc1q592ocfkk0pr03gel6">&nbsp;&nbsp;&nbsp;int array[10];</a>
+</h3>
+<h3 class="topic">
+<a name="7dnsn8ipd3fifj4cggstcbiqnv">&nbsp;&nbsp;&nbsp;int array[]={1};</a>
+</h3>
+<h3 class="topic">
+<a name="74qk9ri0t9tddiambmdm00s39s">&nbsp;&nbsp;&nbsp;&nbsp;一个数组保存了一个元素，被初始化为1</a>
+</h3>
+<h3 class="topic">
+<a name="4l8huke6tlko4di60n1dvn3vbf">&nbsp;&nbsp;&nbsp;int array[10]={0};</a>
+</h3>
+<h3 class="topic">
+<a name="1flicape8lcnvpsve7e2gsp9is">&nbsp;&nbsp;&nbsp;&nbsp;等同于 int array[10]={};（只有在c++中成立）</a>
+</h3>
+<h3 class="topic">
+<a name="11k0ghhsbpd8h9hnhou5448r4g">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;数组元素全部为0</a>
+</h3>
+<h3 class="topic">
+<a name="3fengiu74689it654jidf0gsmc">&nbsp;&nbsp;&nbsp;int array[10]={1};</a>
+</h3>
+<h3 class="topic">
+<a name="4askr5imjjj06ghofe8qpbci9o">&nbsp;&nbsp;&nbsp;&nbsp;第一个初始化为1，其余初始化为0</a>
+</h3>
+<h3 class="topic">
+<a name="71h7tre4qd4j3g6r7mi3es0qdb">&nbsp;&nbsp;数组的访问与修改</a>
+</h3>
+<h3 class="topic">
+<a name="7qshf40l4casr8lusm5jttsm11">&nbsp;&nbsp;&nbsp;数组名[下标]</a>
+</h3>
+<h3 class="topic">
+<a name="18qd7ui42eg8e19btjdh3epr8h">&nbsp;&nbsp;&nbsp;&nbsp;数组下标从0开始</a>
+</h3>
+<h3 class="topic">
+<a name="11ab6748q5hb4ng8paj2tl4jec">&nbsp;&nbsp;&nbsp;数组越界问题</a>
+</h3>
+<h3 class="topic">
+<a name="1cg8i1ve2uajto1tmhnar77a59">&nbsp;&nbsp;&nbsp;&nbsp;通常变量保存在一起，可能会覆盖其他有意义的变量（debug版本中变量没有保存在一起，变量之间有cc，而在release版本中，变量与变量存放在一起），</a>
+</h3>
+<h3 class="topic">
+<a name="44r83k0qgmebudk2jrehv6e1n1">&nbsp;&nbsp;字符串数组</a>
+</h3>
+<h3 class="topic">
+<a name="60d1gu7o038dsrdr01a2qjsnp2">&nbsp;&nbsp;&nbsp;定义：是一个保存char类型元素的数组，且元素的最后一位为'\0'</a>
+</h3>
+<h3 class="topic">
+<a name="08c2n9mmbp5c9c9priopbdfnfu">&nbsp;&nbsp;&nbsp;&nbsp;char str[10]="123";</a>
+</h3>
+<h3 class="topic">
+<a name="2ut99aa2b7u259ubjrn3dgpjjt">&nbsp;&nbsp;&nbsp;&nbsp;char str[10]={"123"};</a>
+</h3>
+<h3 class="topic">
+<a name="0gnndpbjjqbeg9tav3vtmk0f2n">&nbsp;&nbsp;&nbsp;&nbsp;char str[10]={'1','2','3','\0'};</a>
+</h3>
+<h3 class="topic">
+<a name="44sc3o30krc6kt14hhdkujbg9h">&nbsp;&nbsp;&nbsp;常见函数</a>
+</h3>
+<h3 class="topic">
+<a name="7vpv2tfdi310p89ran0vlkq7pu">&nbsp;&nbsp;&nbsp;&nbsp;strlen();</a>
+</h3>
+<h3 class="topic">
+<a name="1msge1jc50v5fvmpim08k6redi">&nbsp;&nbsp;&nbsp;&nbsp;strcpy();</a>
+</h3>
+<h3 class="topic">
+<a name="15dv781dgthn45tc5bt2dro17k">&nbsp;&nbsp;&nbsp;&nbsp;strcat();</a>
+</h3>
+<h3 class="topic">
+<a name="73iato2l9ogu28i6ap1qpgfmg1">&nbsp;&nbsp;&nbsp;&nbsp;sprintf();格式化字符串</a>
+</h3>
+<h3 class="topic">
+<a name="3phbni259rf4vjnvjblrp69so6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;char str[20]={0};&#13;
+sprintf_s(str,20,"价格：%10.2lf",2.2);      &#13;
+//固定格式的&ldquo;价格：     2.20&rdquo;保存在数组，构建一个字符串数组</a>
+</h3>
+<h3 class="topic">
+<a name="0rcqkfqridlr20mnm56d8lumek">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;向字符串数组中写入某些东西</a>
+</h3>
+<h3 class="topic">
+<a name="6hqrmlukn4t4vlc0kpr6op3t34">&nbsp;&nbsp;&nbsp;&nbsp;str(i)cmp(); 忽略大小写比较字符串</a>
+</h3>
+<h3 class="topic">
+<a name="3h4acpeepejqgbq74rrf18rfh6">&nbsp;&nbsp;字符串到数字的转换</a>
+</h3>
+<h3 class="topic">
+<a name="1rhht1fm7i384o031c3743h730">&nbsp;&nbsp;&nbsp;int num=0;&#13;
+sscanf_s("123","%d",&amp;num);//将字符串&ldquo;123&rdquo;转换成数字保存在num中</a>
+</h3>
+<h3 class="topic">
+<a name="2g018qltvub0o5uupgl3dnjllm">&nbsp;&nbsp;&nbsp;&nbsp;以字符串为依据将给某些数字赋值</a>
+</h3>
+<h3 class="topic">
+<a name="30npfq3botmu0cjeb7mn582muu">&nbsp;&nbsp;&nbsp;int i=atoi("123"); 将ascii转换成数据， 需要头文件stdlib</a>
+</h3>
+<h3 class="topic">
+<a name="4cd26dkjs1fk1hrfq03ndtsbil">&nbsp;&nbsp;&nbsp;int i=StrToInt();</a>
+</h3>
+<h3 class="topic">
+<a name="0a91gqigk1dhm6t61pbleu5mcj">&nbsp;&nbsp;&nbsp;int n=strtol("123",NULL,10);//这里是将字符串看成10进制数字并将其转换为int类型数据&#13;
+int n=strtol("123",NULL,8);//将123看成8进制数将其转换为int类型数据</a>
+</h3>
+<h3 class="topic">
+<a name="53hrs5ogr3ucmjkcj02a8nl8v3">&nbsp;&nbsp;&nbsp;&nbsp;推荐使用</a>
+</h3>
+<h3 class="topic">
+<a name="1f5ouqbq3vrot1u864qetanh6f">&nbsp;&nbsp;字符串指针与字符串数组</a>
+</h3>
+<h3 class="topic">
+<a name="09tgi6hctoqt7curekqp6ip6dl">&nbsp;&nbsp;&nbsp;char *str="123456"; str是一个指针变量，指向了常量&ldquo;123456&rdquo;</a>
+</h3>
+<h3 class="topic">
+<a name="10093n25q0ah3765u8kglc7833">&nbsp;&nbsp;&nbsp;char str[]="123456"  str是一个数组，使用常量"123456"对其进行初始化，注意区别于上一个</a>
+</h3>
+<h3 class="topic">
+<a name="56gb4dea0m35pbo6ecq0rebebi">&nbsp;二维数组的使用</a>
+</h3>
+<h3 class="topic">
+<a name="6j69o3jegiat07lkqutqkcdvea">&nbsp;&nbsp;二维数组的定义</a>
+</h3>
+<h3 class="topic">
+<a name="7nqdcvtqglo03jdet54r4gao9r">&nbsp;&nbsp;&nbsp;int array[5][10]={{1,2},{3,4},{5,6}}</a>
+</h3>
+<h3 class="topic">
+<a name="0degqsmt55sm3glk53952o6iaj">&nbsp;&nbsp;数组的访问</a>
+</h3>
+<h3 class="topic">
+<a name="67h74rkruefu8lnaqs3qb3vguq">&nbsp;&nbsp;&nbsp;int array[5][10]={{1,2},{3,4},{5,6}};&#13;
+*array==array[0];//数组首元素的地址&#13;
+array //数组的地址&#13;
+//这里数组首元素的地址与数组的地址值相同，但是如果量地址分别赋值给不同的指针变量，则指针变量做算术运算时增加或减少的值不同，前者自增1表示增加了sizeof(数组元素),后者自增1表示增加了sizeof(数组)&#13;
+&#13;
+array[0]访问第一个维度即第一行&#13;
+array[0][0]访问第二个维度 &#13;
+</a>
+</h3>
+<h3 class="topic">
+<a name="1sqed90lkoer3lt2l48ordulng">&nbsp;&nbsp;辨别字符串数组的维度 {"1","2","3"}</a>
+</h3>
+<h3 class="topic">
+<a name="4qm4k25m6g8fjrqqm8rfruee69">&nbsp;&nbsp;&nbsp;可能是二维数组</a>
+</h3>
+<h3 class="topic">
+<a name="1g7u1fekt00bnc5kiv9q1qvqif">&nbsp;&nbsp;&nbsp;&nbsp;char str[3][2]= {"1","2","3"};</a>
+</h3>
+<h3 class="topic">
+<a name="4cd0up6fqsnfdlh3kkmic2tr30">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;是一个二维数组，每一个元素是一个字符串数组</a>
+</h3>
+<h3 class="topic">
+<a name="2jhcvj5boe4cave2c610qcnstj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;数组的总大小是6（3*2），可以直接修改字符</a>
+</h3>
+<h3 class="topic">
+<a name="6g3nu7io3etsap1jg2fol2mm46">&nbsp;&nbsp;&nbsp;可能是一维数组</a>
+</h3>
+<h3 class="topic">
+<a name="4c5944lnrsrhi8sh2fnlfal0jh">&nbsp;&nbsp;&nbsp;&nbsp;const char*str[]={"1","2","3"}；</a>
+</h3>
+<h3 class="topic">
+<a name="4lf17ca5asm45d1cl3o7k0ouov">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;是一个一维数组，每一个元素是指向字符串的指针</a>
+</h3>
+<h3 class="topic">
+<a name="2tocf5kv7btm5ncq6gvmdeuc1g">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;数组的总大小是12（3*4）不能直接修改字符</a>
+</h3>
+<h3 class="topic">
+<a name="60e8grut5cv514apamj0ntn4d9">&nbsp;指针和数组</a>
+</h3>
+<h3 class="topic">
+<a name="4uoitll0dtlqeacr6mko4tn65f">&nbsp;&nbsp;指针的定义</a>
+</h3>
+<h3 class="topic">
+<a name="3n33i9afman3j6avg96fkatcld">&nbsp;&nbsp;&nbsp;指针通常用于保存地址</a>
+</h3>
+<h3 class="topic">
+<a name="3rujegshpnhehsjljp9qokiqc8">&nbsp;&nbsp;&nbsp;指针可以是变量，可以是常量</a>
+</h3>
+<h3 class="topic">
+<a name="375rkecsf4072uijvu9ig4805e">&nbsp;&nbsp;&nbsp;指针是地址的容器，地址绝对是常量</a>
+</h3>
+<h3 class="topic">
+<a name="7mdl7kbfqf9uiirspauknbbgr6">&nbsp;&nbsp;&nbsp;常量指针与指针常量</a>
+</h3>
+<h3 class="topic">
+<a name="3eh2v20b81hoikkrrlb2nc2vi8">&nbsp;&nbsp;&nbsp;&nbsp;常量指针</a>
+</h3>
+<h3 class="topic">
+<a name="4mq6k3qgbtgndnoono2nc7dpa5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;是一个指针，指向了一个常量，不能修改地址内的数据</a>
+</h3>
+<h3 class="topic">
+<a name="12kcb3rlo4m198054omjt59fv2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const int *ptr=&amp;num；</a>
+</h3>
+<h3 class="topic">
+<a name="0udhl5utulq8qug2ddd82u6fbr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;int const*ptr=&amp;num；</a>
+</h3>
+<h3 class="topic">
+<a name="48vat08iktbc5na1vjaqkq6h7f">&nbsp;&nbsp;&nbsp;&nbsp;指针常量</a>
+</h3>
+<h3 class="topic">
+<a name="6bh5t7nr57pj9p4fb23a3gvue7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;是一个常量，指向了一个地址，指针本身不能修改，</a>
+</h3>
+<h3 class="topic">
+<a name="0b4pggcrkscau91cvri2gf1rh4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;int *const ptr=&amp;num;</a>
+</h3>
+<h3 class="topic">
+<a name="3ug3gl5vh8a0d38s1tb84q3e8q">&nbsp;&nbsp;&nbsp;&nbsp;指针常量指向常量</a>
+</h3>
+<h3 class="topic">
+<a name="0o5qp7tmv4lpntked3i45d5ll2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const int *const ptr=&amp;num；</a>
+</h3>
+<h3 class="topic">
+<a name="6jgfohrr9277dkihsvu1d15a9b">&nbsp;&nbsp;指针的类型</a>
+</h3>
+<h3 class="topic">
+<a name="4v76bkkkom0hqbnk12a111lcpf">&nbsp;&nbsp;&nbsp;指向的类型*指针的名字=对应数据的地址</a>
+</h3>
+<h3 class="topic">
+<a name="7e2ln0goudk6ieeag0hlqvc3pa">&nbsp;&nbsp;&nbsp;指针指向的类型必须和指针本身的类型相同</a>
+</h3>
+<h3 class="topic">
+<a name="2lc0ov8jnttt6457g4bpslmek0">&nbsp;&nbsp;&nbsp;不同类型的指针之间的区别主要在于指针进行算术运算时，指针变化的字节数不相同</a>
+</h3>
+<h3 class="topic">
+<a name="7h99eus5sdf7ouvvbmnuvf3ivb">&nbsp;&nbsp;指针的算术运算</a>
+</h3>
+<h3 class="topic">
+<a name="4kmh0hnch29sv2jp5j2qlfb6tc">&nbsp;&nbsp;&nbsp;指针进行加法运算 自增1相当于自增sizeof(指针类型)</a>
+</h3>
+<h3 class="topic">
+<a name="239hkchadnk8t38s9olmjp16b6">&nbsp;&nbsp;&nbsp;&nbsp;    int int_number = 0;&#13;
+    int* int_ptr = &amp;int_number;&#13;
+    &#13;
+    double double_number = 0;&#13;
+    double* double_ptr = &amp;double_number;&#13;
+    &#13;
+    printf("int_ptr = 0x%p\n", int_ptr);&#13;
+    printf("double_ptr = 0x%p\n", double_ptr);&#13;
+    &#13;
+    printf("int_ptr = 0x%p\n", ++int_ptr);&#13;
+    printf("double_ptr = 0x%p\n", ++double_ptr);</a>
+</h3>
+<h3 class="topic">
+<a name="313ce5qa9rioa5j2hhvgh21p3g">&nbsp;&nbsp;&nbsp;通常情况下减法没有意义，当使用数组的尾元素地址减数组的首元素地址时，得到的是两个元素直接相隔的元素个数</a>
+</h3>
+<h3 class="topic">
+<a name="17r3rab48jmsj2jhrioopunmae">&nbsp;&nbsp;&nbsp;&nbsp;即结果相当于：（地址A-地址B）/sizeof(指针类型)</a>
+</h3>
+<h3 class="topic">
+<a name="2rbkom4c0kkcpglv2t1enkp51q">&nbsp;&nbsp;&nbsp;&nbsp;    int array[10] = { 0 };&#13;
+    printf("&amp;array[0] = 0x%p\n", &amp;array[0]);&#13;
+    printf("&amp;array[9] = 0x%p\n", &amp;array[9]);&#13;
+    printf("&amp;array[9] - &amp;array[0] = %d\n",&#13;
+           &amp;array[9] - &amp;array[0]);</a>
+</h3>
+<h3 class="topic">
+<a name="1c881v9h3u9mdb72uuqrg7qr2r">&nbsp;&nbsp;数组指针与指针数组</a>
+</h3>
+<h3 class="topic">
+<a name="59oj1a21br944svsj26uethr90">&nbsp;&nbsp;&nbsp;数组指针</a>
+</h3>
+<h3 class="topic">
+<a name="09log7ci1386g1vgd24e08gf5q">&nbsp;&nbsp;&nbsp;&nbsp;一维数组的一些属性&#13;
+int arr[10]={0};&#13;
+//直接访问数组名称访问到的实际上是数组元素首地址&#13;
+arr==&amp;arr[0]&#13;
+arr实际上是一个数组元素的地址，需要使用int*类型的指针接收&#13;
+&#13;
+int *arr_ptr=arr;//或int *arr_ptr=&amp;arr[0];&#13;
+&#13;
+此时arr_ptr自增1，实际上arr_ptr自增了sizeof(元素数据类型)&#13;
+&#13;
+//数组本身的地址，这里数组本身的地址就是数组首元素的地址，两个值是相同的&#13;
+&amp;arr&#13;
+需要保存该地址需要用到数组指针&#13;
+int(*ptr)[10]=&amp;arr&#13;
+但是此时ptr自增，增加的是一个数组的大小 即sizef(arr);</a>
+</h3>
+<h3 class="topic">
+<a name="7ptgkc1gd8ga7sukt6308v5dsd">&nbsp;&nbsp;&nbsp;&nbsp;指向二维数组的指针&#13;
+arr是二维数组的首地址，其值等于二维数组第一个元素（即第一个一维数组）的地址&#13;
+int arr[10][10]={0};&#13;
+&#13;
+此时arr==&amp;arr[0]&#13;
+&#13;
+则接收该数组地址的指针应该是一个数组指针，&#13;
+int (*ptr)[10]=arr;//这里就是行指针&#13;
+&#13;
+对于列值针，因为直接指向数组元素，所以应该&#13;
+int* p=*arr 或int *p=arr[0] //相当于将第一个元素的地址赋值给ptr&#13;
+第一个元素的地址值与arr是相同的，区别在于在进行算术运算时指针增加的字节数不同 &#13;
+&#13;
+ptr自增加上的是一个一维数组的长度&#13;
+p自增增加的是一个数组元素的长度</a>
+</h3>
+<h3 class="topic">
+<a name="4el4r4sg8l0pmahdk306v7b445">&nbsp;&nbsp;&nbsp;指针数组</a>
+</h3>
+<h3 class="topic">
+<a name="0u3dg4sccs0m513atej3lecod2">&nbsp;&nbsp;&nbsp;&nbsp;int*array[10];</a>
+</h3>
+<h3 class="topic">
+<a name="0nhe5eknjjlr48fl6adbh0cnic">&nbsp;&nbsp;函数指针</a>
+</h3>
+<h3 class="topic">
+<a name="4gcrsug22r8bfcm1tovf4inav7">&nbsp;&nbsp;&nbsp;void show();</a>
+</h3>
+<h3 class="topic">
+<a name="7jq5v86rilpr659l0c6cn6ts8j">&nbsp;&nbsp;&nbsp;&nbsp;void (*pfunc)();</a>
+</h3>
+<h3 class="topic">
+<a name="1m02vk739eaqvguk0vpmddr05e">&nbsp;&nbsp;&nbsp;int* show(int a,char b);</a>
+</h3>
+<h3 class="topic">
+<a name="4nno081shr6b1vp6s5b1plekdu">&nbsp;&nbsp;&nbsp;&nbsp;int*(*pfunc)(int,char)</a>
+</h3>
+<h3 class="topic">
+<a name="7m95clvq3ghlaihdsnb18dpee9">&nbsp;&nbsp;&nbsp;常结合typedef使用</a>
+</h3>
+<h3 class="topic">
+<a name="5heiotu6tid28nk4o5c7uv9vj2">&nbsp;&nbsp;&nbsp;先写*，后将函数原型加上去(即返回值类型和函数形参的类型)</a>
+</h3>
+<h3 class="topic">
+<a name="75s2dm7inqjs818lbnumocb7ms">&nbsp;堆的使用</a>
+</h3>
+<h3 class="topic">
+<a name="3l3r6jl6bes7ti1l3j9557ves2">&nbsp;&nbsp;堆的申请函数</a>
+</h3>
+<h3 class="topic">
+<a name="3oqqd6tf89inakj8rnoai99547">&nbsp;&nbsp;&nbsp;malloc：在堆空间中申请一块内存，单位是字节数</a>
+</h3>
+<h3 class="topic">
+<a name="26b0hm6cai8f5peksa9b9ajobp">&nbsp;&nbsp;&nbsp;&nbsp;int*p=(int*)malloc(10*sizeof(int));</a>
+</h3>
+<h3 class="topic">
+<a name="7oe816fmphhr3813ib2unl5ren">&nbsp;&nbsp;&nbsp;calloc:申请内存并初始化为0</a>
+</h3>
+<h3 class="topic">
+<a name="120pbov7sgmfgspe2rvpj9sol7">&nbsp;&nbsp;&nbsp;&nbsp;int*p=(int*)calloc(10,sizeof(int));</a>
+</h3>
+<h3 class="topic">
+<a name="6pu8elnq2a5emfvtqc6rsflguj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;申请10个int类型大小的空间</a>
+</h3>
+<h3 class="topic">
+<a name="6prb7tmvdt5gkmkcq355bpdnt7">&nbsp;&nbsp;&nbsp;realloc：如果允许，在原有地址上重新分配一块空间</a>
+</h3>
+<h3 class="topic">
+<a name="659v9kdq74tuqggqopbsmra86m">&nbsp;&nbsp;&nbsp;&nbsp;str = (char*)realloc(str, 20);</a>
+</h3>
+<h3 class="topic">
+<a name="6npse0m84tmjh74nf48uijgmpd">&nbsp;&nbsp;堆的释放函数</a>
+</h3>
+<h3 class="topic">
+<a name="2umr48aj7ml41gls45kns91gqp">&nbsp;&nbsp;&nbsp;free();</a>
+</h3>
+<h3 class="topic">
+<a name="023e8pfnaua2lhokqkhndlp3io">&nbsp;&nbsp;&nbsp;如果堆被破坏了，则会释放错误</a>
+</h3>
+<h3 class="topic">
+<a name="0gnj93f0u6t23jgbskph06b1re">&nbsp;&nbsp;&nbsp;&nbsp;0xfdfdfdfd是堆的结束标志，如果被覆盖，在堆的释放过程中会导致程序崩溃</a>
+</h3>
+<h3 class="topic">
+<a name="3i3l6fctgc7qi5ncr92rvrtjfr">&nbsp;&nbsp;&nbsp;&nbsp;同一个程序中，任何一块堆空间出现问题，很有可能所有其他堆空间出问题，因为堆之间是存在联系的</a>
+</h3>
+<h3 class="topic">
+<a name="5pvrcb4tse04fdvl785eb0g9ub">&nbsp;&nbsp;内存操作函数</a>
+</h3>
+<h3 class="topic">
+<a name="28ufrmg3bh2j9kijc46fc57n0q">&nbsp;&nbsp;&nbsp;memcpy</a>
+</h3>
+<h3 class="topic">
+<a name="24s3qchrvg21581rhncduunua8">&nbsp;&nbsp;&nbsp;&nbsp;拷贝指定大小内存，不考虑空字符</a>
+</h3>
+<h3 class="topic">
+<a name="0kjvmdl3fp418c6jn23fcmki38">&nbsp;&nbsp;&nbsp;memcmp</a>
+</h3>
+<h3 class="topic">
+<a name="10a2v83vfo3m5bo4lcb8qko67k">&nbsp;&nbsp;&nbsp;&nbsp;比较指定大小内存，不考虑空字符</a>
+</h3>
+<h3 class="topic">
+<a name="21r7emsa39fc39htgv36djq11a">&nbsp;&nbsp;&nbsp;memset</a>
+</h3>
+<h3 class="topic">
+<a name="6hsvq17b78l50k01cn14j98kft">&nbsp;&nbsp;&nbsp;&nbsp;将指定大小的堆空设置为指定的值</a>
+</h3>
+<h3 class="topic">
+<a name="1gklg5gcu2a4ca00u0rabrhc02">&nbsp;生存周期和作用域</a>
+</h3>
+<h3 class="topic">
+<a name="35f4kcid2aoor3lqptm265pc8o">&nbsp;&nbsp;局部变量(栈)</a>
+</h3>
+<h3 class="topic">
+<a name="3l2091jnqfso17kjmael01qiau">&nbsp;&nbsp;&nbsp;定义：被定义在花括号内的变量</a>
+</h3>
+<h3 class="topic">
+<a name="5c3v2asbgojjvqc0f80rkpd9ko">&nbsp;&nbsp;&nbsp;作用域从定义的位置开始到所在花括号的结尾</a>
+</h3>
+<h3 class="topic">
+<a name="326p2hi990qumtghcvraqts2o7">&nbsp;&nbsp;&nbsp;当不同作用域出现相同变量名称，那么小作用域的变量会覆盖大作用域的变量。</a>
+</h3>
+<h3 class="topic">
+<a name="06kb43qv2bn8up78e06ob1nk3e">&nbsp;&nbsp;&nbsp;生存周期从定义的位置开始到所在花括号的结尾</a>
+</h3>
+<h3 class="topic">
+<a name="32o1rfr141ecnje3cl3c7pavg0">&nbsp;&nbsp;&nbsp;未初始化的局部变量通常保存的是0xccccc</a>
+</h3>
+<h3 class="topic">
+<a name="5ea1os5g2kk318tvdu51hc0ko2">&nbsp;&nbsp;全局变量（静态数据区）</a>
+</h3>
+<h3 class="topic">
+<a name="5s1cofcr71kdgf3mmg0ihqn34k">&nbsp;&nbsp;&nbsp;定义：定义在所有{}外的变量</a>
+</h3>
+<h3 class="topic">
+<a name="21r3ub7frm0383hg9ehpjuact4">&nbsp;&nbsp;&nbsp;全局变量的初始化位于main函数之前</a>
+</h3>
+<h3 class="topic">
+<a name="0d38l4aic4t4a963hd5h2qjmes">&nbsp;&nbsp;&nbsp;所有全局变量会被默认初始化为0</a>
+</h3>
+<h3 class="topic">
+<a name="5286r5q8qnuren9lbqst3spp1d">&nbsp;&nbsp;&nbsp;作用域：从定义开始到整个文件结束</a>
+</h3>
+<h3 class="topic">
+<a name="093jua117818n334ffc7lsen9a">&nbsp;&nbsp;&nbsp;&nbsp;可以使用extern声明使用其他文件的全局变量</a>
+</h3>
+<h3 class="topic">
+<a name="7qah2anc009f752nemkjn9ejpl">&nbsp;&nbsp;&nbsp;生存周期：从程序运行开始到程序运行结束</a>
+</h3>
+<h3 class="topic">
+<a name="38cvpu5vln8aelucok3f5q72hf">&nbsp;&nbsp;静态变量（静态数据区）</a>
+</h3>
+<h3 class="topic">
+<a name="3uhmr1abetu46jga4j6fup73ul">&nbsp;&nbsp;&nbsp;定义</a>
+</h3>
+<h3 class="topic">
+<a name="4mdu20reufps3cahd1qvthma9i">&nbsp;&nbsp;&nbsp;&nbsp;使用static定义</a>
+</h3>
+<h3 class="topic">
+<a name="6c0ppo2ahbv2q76bbqrt8qhqug">&nbsp;&nbsp;&nbsp;&nbsp;默认初始化为0</a>
+</h3>
+<h3 class="topic">
+<a name="7j7fmkeh7opf24jl3hgu9h813u">&nbsp;&nbsp;&nbsp;&nbsp;无论在哪里，只被初始化1次</a>
+</h3>
+<h3 class="topic">
+<a name="4lubrkaveor86uop3rk41hniba">&nbsp;&nbsp;&nbsp;生存周期</a>
+</h3>
+<h3 class="topic">
+<a name="4r78c4opggtd21tsdg66m0vj2s">&nbsp;&nbsp;&nbsp;&nbsp;程序运行开始到程序运行结束</a>
+</h3>
+<h3 class="topic">
+<a name="246ftc3jshtfa9ps85l3btqoce">&nbsp;&nbsp;&nbsp;作用域</a>
+</h3>
+<h3 class="topic">
+<a name="1rh40g25tq5cm0dt59ftvjeehu">&nbsp;&nbsp;&nbsp;&nbsp;和所定义的位置相关，如果全局那就是全局，否则就是局部</a>
+</h3>
+<h3 class="topic">
+<a name="6u9o4lj159ul4g8rnidm04ietr">&nbsp;&nbsp;&nbsp;&nbsp;使用static定义的全局变量不能被其他文件使用</a>
+</h3>
+<h3 class="topic">
+<a name="48lfaefgvnq56bk64p5gajfvqr">&nbsp;&nbsp;堆变量</a>
+</h3>
+<h3 class="topic">
+<a name="2156rvrmq5pdsa1jvak9b2gehe">&nbsp;&nbsp;&nbsp;定义：编写程序的人维护的一块内存空间</a>
+</h3>
+<h3 class="topic">
+<a name="19bhnr8jomaqr4sb87scdjr8fl">&nbsp;&nbsp;&nbsp;生存周期 从malloc等函数到free</a>
+</h3>
+<h3 class="topic">
+<a name="761j95mlrn5pe40osat640ebln">&nbsp;&nbsp;&nbsp;作用域：取决于定义在哪里，全局或局部</a>
+</h3>
+<h3 class="topic">
+<a name="2p2bf9gdgqhucuq3jgra4hd6g6">&nbsp;程序三大结构</a>
+</h3>
+<h3 class="topic">
+<a name="7s5qk0r9d2r9akmobclljmdjrq">&nbsp;&nbsp;顺序结构</a>
+</h3>
+<h3 class="topic">
+<a name="4rh3djc4u7t2d6b1p88ufth1dk">&nbsp;&nbsp;选择结构</a>
+</h3>
+<h3 class="topic">
+<a name="6p9qs4g6hmvuq9r1dmsnluc49j">&nbsp;&nbsp;&nbsp;特点：有多条语句可以执行，但是只能执行其中部分</a>
+</h3>
+<h3 class="topic">
+<a name="3572fka0ra125fdmso18g4h3r3">&nbsp;&nbsp;&nbsp;if elseif else</a>
+</h3>
+<h3 class="topic">
+<a name="3fjmcfjsj9hqc8fi6es73inim1">&nbsp;&nbsp;&nbsp;&nbsp;通常用于判断是否在某一个范围内</a>
+</h3>
+<h3 class="topic">
+<a name="48t1uu0kgku0iebq3q3pl04o5n">&nbsp;&nbsp;&nbsp;&nbsp;推荐给每一个判断后面的语句加{}</a>
+</h3>
+<h3 class="topic">
+<a name="09k6j4vh46u8jro679mfoglp69">&nbsp;&nbsp;&nbsp;&nbsp;每一个判断语句后面只能跟一条语句或一个语句块</a>
+</h3>
+<h3 class="topic">
+<a name="75tc9vhd5mtlervdccfp34qmbk">&nbsp;&nbsp;&nbsp;&nbsp;else和与它距离最近的if相匹配</a>
+</h3>
+<h3 class="topic">
+<a name="7aqdjnmkur8eo9n8ugsga0s3r2">&nbsp;&nbsp;&nbsp;&nbsp;如果满足前面的条件就直接执行，如果全都不满足就执行else</a>
+</h3>
+<h3 class="topic">
+<a name="7qp4eo2514fvlrsph7969jf5tn">&nbsp;&nbsp;&nbsp;switch case</a>
+</h3>
+<h3 class="topic">
+<a name="66f1hj1iv3d66c4tk9bj00v2o8">&nbsp;&nbsp;&nbsp;&nbsp;case后面跟的必须是整形（包括字符）常量</a>
+</h3>
+<h3 class="topic">
+<a name="3m578srofju6oltdb1h8b51tsn">&nbsp;&nbsp;&nbsp;&nbsp;case后面不能直接定义变量，会报错，若想在case后面定义变量，则需要加上{}</a>
+</h3>
+<h3 class="topic">
+<a name="48mu3nvbag1sd847k4l7qd43pg">&nbsp;&nbsp;&nbsp;&nbsp;case的值不能重复，会直接报错</a>
+</h3>
+<h3 class="topic">
+<a name="61mk6n0eahp3s9t1u820a8qn6o">&nbsp;&nbsp;&nbsp;&nbsp;case default没有固定的顺序</a>
+</h3>
+<h3 class="topic">
+<a name="0li6f4k5q61ti1omrkmej30lfv">&nbsp;&nbsp;&nbsp;&nbsp;default不是必须的，如果所有case均不满足条件，就执行</a>
+</h3>
+<h3 class="topic">
+<a name="62buq2n5hd8ubf4sbbi5l2r0m2">&nbsp;&nbsp;&nbsp;&nbsp;break 用于结束一个case，</a>
+</h3>
+<h3 class="topic">
+<a name="2809pe3t2d9u8ofs7tu7qa55ar">&nbsp;&nbsp;&nbsp;&nbsp;如果没有在case后面加上对应的break，那么就会接续执行下一个case</a>
+</h3>
+<h3 class="topic">
+<a name="6vl1v3po2tpu7vg3f3r9u039fk">&nbsp;&nbsp;循环语句</a>
+</h3>
+<h3 class="topic">
+<a name="44v62gsr47rth1vqmdu6m4jtem">&nbsp;&nbsp;&nbsp;将指定语句按照指定次数循环多次</a>
+</h3>
+<h3 class="topic">
+<a name="4hns0elnqd056v8aicie3nc3g7">&nbsp;&nbsp;&nbsp;种类</a>
+</h3>
+<h3 class="topic">
+<a name="5hko9lc4grd7i4c1cau9i9022i">&nbsp;&nbsp;&nbsp;&nbsp;入口条件循环</a>
+</h3>
+<h3 class="topic">
+<a name="1gv6fr0f5862gjpi62rvfkdl89">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;进入的时候判断循环条件</a>
+</h3>
+<h3 class="topic">
+<a name="0j4ut1r9ragb0knqrdkika91hp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for  while</a>
+</h3>
+<h3 class="topic">
+<a name="75b8lghs0uc0eda4s4g1jdn7j8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;while的用法</a>
+</h3>
+<h3 class="topic">
+<a name="4b9odi994oqlu7civvfoqir0p6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;循环接受输入信息，直到输入quit</a>
+</h3>
+<h3 class="topic">
+<a name="3e9hj2b3ibqcoip3tmc7s4q4kb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;清空缓冲区中的错误输入</a>
+</h3>
+<h3 class="topic">
+<a name="000uslkghcf43quugd4qnjd83h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;while(getchar()!='\n');</a>
+</h3>
+<h3 class="topic">
+<a name="2v689mifbd0hdpdmd9dlf768os">&nbsp;&nbsp;&nbsp;&nbsp;出口条件循环</a>
+</h3>
+<h3 class="topic">
+<a name="483heirldgpcd3tp2qotpflqfm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;退出循环的时候判断循环条件</a>
+</h3>
+<h3 class="topic">
+<a name="1b42h7hcde1e404pq4ipi025jm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;do-while</a>
+</h3>
+<h3 class="topic">
+<a name="622fvr05fqhnhoqcokthc910e7">&nbsp;&nbsp;&nbsp;break:跳出最内层的循环，可以在循环或switch中使用</a>
+</h3>
+<h3 class="topic">
+<a name="297nfpq63g0cbr9s2gdpv8topg">&nbsp;&nbsp;&nbsp;continue 只能在循环中使用，跳过本次循环，执行下一次循环</a>
+</h3>
+<h3 class="topic">
+<a name="102h0p7cg7dfr5un5am3r4v0o6">&nbsp;&nbsp;&nbsp;循环嵌套</a>
+</h3>
+<h3 class="topic">
+<a name="5m13us1ok65hpqo3sbh6ra41t6">&nbsp;&nbsp;&nbsp;死循环的形成</a>
+</h3>
+<h3 class="topic">
+<a name="2sibmnqki248icbi1gfe3dg8b5">&nbsp;&nbsp;&nbsp;&nbsp;while（任何一个非0值）</a>
+</h3>
+<h3 class="topic">
+<a name="3u98t9ihk4idvr0nqbhg9ff91i">&nbsp;&nbsp;&nbsp;&nbsp;for(;;)条件语句不写时默认就是死循环&#13;
+可以使用break return goto跳出循环</a>
+</h3>
+<h3 class="topic">
+<a name="0pt0kotp7cirr6kjqpql7qumvm">&nbsp;&nbsp;&nbsp;while与for的转换</a>
+</h3>
+<h3 class="topic">
+<a name="7insjtd6qjmemlmhs320uoq5si">&nbsp;0xcdcdcd  屯屯屯  </a>
+</h3>
+<h3 class="topic">
+<a name="3p368krqffvcq6c1hnnop74fot">&nbsp;&nbsp;表示堆空间没有进行初始化</a>
+</h3>
+<h3 class="topic">
+<a name="5eqgv537v6bn4hgdlgdeidhbau">&nbsp;0xccccccc  烫烫烫</a>
+</h3>
+<h3 class="topic">
+<a name="6bq6ekrsqvf19rf13v3rh0756g">&nbsp;&nbsp;表示局部变量没有被初始化</a>
+</h3>
+<h3 class="topic">
+<a name="0q6ccgus44p17bt8erh0f4no9h">&nbsp;0xfdfdfdfd</a>
+</h3>
+<h3 class="topic">
+<a name="15o1r2v77uggslodi76s9ti4ho">&nbsp;&nbsp;表示堆空间的边界</a>
+</h3>
+<h3 class="topic">
+<a name="55t2canj4v0tlfhe6vnbdhbn65">&nbsp;错误0xC0000005</a>
+</h3>
+<h3 class="topic">
+<a name="771u24qjttn31sq7o114nn5558">&nbsp;&nbsp;内存读写异常，通常是地址无效或不可写</a>
+</h3>
+<h3 class="topic">
+<a name="42ukuqpakjkk1d4jj13phlnm9f">&nbsp;在printf中尽量不要对一个变量同时进行自增或自减操作并输出，会出问题</a>
+</h3>
+<h3 class="topic">
+<a name="10vlokbe8pf86v6uqqgr9hp7ko">&nbsp;&nbsp;即printf("%d，%d",number,number++);</a>
+</h3>
+</body>
+</html>

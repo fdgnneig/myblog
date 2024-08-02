@@ -1,0 +1,658 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>class28day0228</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="4iiqc7reskejnkafteeno5fjl4">class28day0228</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%842_files/images/class28day0228.jpg"></div>
+<h2 class="topic">
+<a name="49ev73ra4hn9jqkdeuklfhel2l">数据结构第二天</a>
+</h2>
+<h3 class="topic">
+<a name="44bngmebvs43rhj778ifq38nc2">&nbsp;递归</a>
+</h3>
+<h3 class="topic">
+<a name="269phcapeoqfvsjdt1vqvvcoa8">&nbsp;&nbsp;定义：函数直接或间接调用自己或两个函数相互调用</a>
+</h3>
+<h3 class="topic">
+<a name="4srppnnum7vkhejl2frackor4e">&nbsp;&nbsp;结束条件：每个递归定义必须至少有一个结束条件</a>
+</h3>
+<h3 class="topic">
+<a name="5n364dkucajkuvs2ldg36s0irs">&nbsp;&nbsp;阶乘递归</a>
+</h3>
+<h3 class="topic">
+<a name="707tfejsjuje40g28bgfmmjlb9">&nbsp;&nbsp;&nbsp;long digui(int number){&#13;
+	if(number&lt;=1)&#13;
+	return 1;&#13;
+	else&#13;
+	return number*digui(number-1);&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="7rremuku7iipcjrsotdd187tvr">&nbsp;&nbsp;二分查找（递归方法）</a>
+</h3>
+<h3 class="topic">
+<a name="6mmsem4ifuut2kpva0ed2o1j4o">&nbsp;&nbsp;&nbsp;把有序个有限个数的数据分为两个部分，将中间值分成两个部分进行查找，进行查找</a>
+</h3>
+<h3 class="topic">
+<a name="366olqk0dbl6n0qcuucbk01nbq">&nbsp;&nbsp;&nbsp;//需要查找的数组，查找区间的最小下标 最大下标，需要查找的数值&#13;
+int bin_serach(int* arr,int min,int max,int elem)&#13;
+{&#13;
+		//结束条件&#13;
+		if(min&gt;max)&#13;
+		return -1；&#13;
+&#13;
+		//获取中间值&#13;
+		int mid=min+(max-min)/2;&#13;
+&#13;
+		//判断需要找的值与中值进行判断&#13;
+		if(elem&gt;arr[mid])	&#13;
+		return bin_serach(arr,mid+1，max)；&#13;
+		if(elem&lt;arr[mid])&#13;
+		return bin_search(arr,min,mid-1);&#13;
+		if(elem==arr[mid])&#13;
+		return mid;&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="65qhcnlaunqf2of8miolms11u5">&nbsp;树</a>
+</h3>
+<h3 class="topic">
+<a name="22prjkd1o5ldc7ard72jgcvtl4">&nbsp;&nbsp;定义：n个节点的有限集合，n=0时为空树，在任意一个非空树有以下定义</a>
+</h3>
+<h3 class="topic">
+<a name="0olid1m6kdqglggcdd92cci06q">&nbsp;&nbsp;&nbsp;每一个树都有且仅有一个节点被称为根</a>
+</h3>
+<h3 class="topic">
+<a name="6phgujbhsrcqi6hd6afs1alev7">&nbsp;&nbsp;&nbsp;n&gt;1其中每个子集本身又是一棵树，被称为子树</a>
+</h3>
+<h3 class="topic">
+<a name="6i2fn5ced8uef04bn6cg04ph0j">&nbsp;&nbsp;节点的层次</a>
+</h3>
+<h3 class="topic">
+<a name="5jp3sbn74ur0n4qh4g5511unva">&nbsp;&nbsp;&nbsp;节点的最大层次为根的深度或高度</a>
+</h3>
+<h3 class="topic">
+<a name="19lfo6h8g5q3luvgv3ctdb2gch">&nbsp;&nbsp;节点的度</a>
+</h3>
+<h3 class="topic">
+<a name="4t2qu2hp7ptorjldo95ilcmppp">&nbsp;&nbsp;&nbsp;节点拥有的子树的数量被称为度</a>
+</h3>
+<h3 class="topic">
+<a name="7nha72m3pjjcghu6paopu4pgjp">&nbsp;&nbsp;父子节点</a>
+</h3>
+<h3 class="topic">
+<a name="4k3c9t76ja2t13a5c8mr6lf0nf">&nbsp;&nbsp;&nbsp;节点派生出的节点称为</a>
+</h3>
+<h3 class="topic">
+<a name="1k9jkh6ft337tkl9ljr99t6maj">&nbsp;&nbsp;兄弟节点和堂兄弟节点</a>
+</h3>
+<h3 class="topic">
+<a name="4raa9ha9hbak0mqrap391ljqf9">&nbsp;&nbsp;&nbsp;兄弟节点</a>
+</h3>
+<h3 class="topic">
+<a name="39ativ4q24ve73ucdu3jsak0c3">&nbsp;&nbsp;&nbsp;&nbsp;同一个父节点</a>
+</h3>
+<h3 class="topic">
+<a name="7b677bfe5b4ik2ie1k4jp4h949">&nbsp;&nbsp;&nbsp;堂兄弟节点</a>
+</h3>
+<h3 class="topic">
+<a name="3kub8p5qgbmc9blcingclnlnas">&nbsp;&nbsp;&nbsp;&nbsp;同一个爷爷节点，父节点不同</a>
+</h3>
+<h3 class="topic">
+<a name="1v4oq7ult9gqii2r5vr517hnml">&nbsp;&nbsp;有序树</a>
+</h3>
+<h3 class="topic">
+<a name="6136r8h52qrpt9v98o1vcif9k3">&nbsp;&nbsp;&nbsp;节点的各子树看成是从左到右是有序的，不能互换的</a>
+</h3>
+<h3 class="topic">
+<a name="4g2u9bser7snrc5sp52m66snj6">&nbsp;&nbsp;二叉树</a>
+</h3>
+<h3 class="topic">
+<a name="1skhnoaci4u3r4bjuvot7bcoqk">&nbsp;&nbsp;&nbsp;定义：每个节点最多只有两个子树（度最大为2），子树有左右之分，且左右不能颠倒</a>
+</h3>
+<h3 class="topic">
+<a name="5dco4o9bs94e7l2ren8lffv6jl">&nbsp;&nbsp;&nbsp;斜树</a>
+</h3>
+<h3 class="topic">
+<a name="7p85uemmcnj5clfmulci9gdtj2">&nbsp;&nbsp;&nbsp;&nbsp;左斜树</a>
+</h3>
+<h3 class="topic">
+<a name="79gd13p7h1t0l6siekal6cd608">&nbsp;&nbsp;&nbsp;&nbsp;右斜树</a>
+</h3>
+<h3 class="topic">
+<a name="5dc87d3rrrbiv6r8ov2tjs8b0a">&nbsp;&nbsp;&nbsp;满二叉树</a>
+</h3>
+<h3 class="topic">
+<a name="00pb6hpr71o4oe3irl3jd08fv1">&nbsp;&nbsp;&nbsp;&nbsp;每一层的节点数都是最大节点数（除了最底层）</a>
+</h3>
+<h3 class="topic">
+<a name="3iu6i50r4vl5a6nrqi66l57spd">&nbsp;&nbsp;&nbsp;完全二叉树</a>
+</h3>
+<h3 class="topic">
+<a name="1d8pp5gvbogoggkp1bl4bqa3v5">&nbsp;&nbsp;&nbsp;&nbsp;满二叉树的子集，自上而下，自左而右进行编号，编号相同的节点与满二叉树相同编号的节点相同</a>
+</h3>
+<h3 class="topic">
+<a name="603o5csrtk4c0gp5vctuu2fljp">&nbsp;&nbsp;&nbsp;&nbsp;与满二叉树相比只能缺少叶子节点，而且只能从右到左地缺少</a>
+</h3>
+<h3 class="topic">
+<a name="727pf3eb4s57to2he521rfb8ft">&nbsp;&nbsp;&nbsp;二叉搜索树（bstree）</a>
+</h3>
+<h3 class="topic">
+<a name="6s7sjas6367cr5p2fng8u18qq6">&nbsp;&nbsp;&nbsp;&nbsp;二叉搜索树定义</a>
+</h3>
+<h3 class="topic">
+<a name="74e4jq6dspgjt1ncpbfsqvjsg2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    任意节点的左子树不空，则左子树上所有结点的值均小于它的根结点的值；</a>
+</h3>
+<h3 class="topic">
+<a name="5f2tbm6mqjh2ieed0ect9apjuv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    任意节点的右子树不空，则右子树上所有结点的值均大于它的根结点的值;</a>
+</h3>
+<h3 class="topic">
+<a name="3durfnib6g38m4u94qdocrqc1m">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    任意节点的左、右子树也分别为二叉搜索树；</a>
+</h3>
+<h3 class="topic">
+<a name="23826eefmedrjtu2clfkg82mrb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    一般没有键值相等的节点。</a>
+</h3>
+<h3 class="topic">
+<a name="40h1dktgal87ijs7bvoic117kn">&nbsp;&nbsp;&nbsp;&nbsp;二叉搜索树的遍历（重点）</a>
+</h3>
+<h3 class="topic">
+<a name="3d4drb3srtqf9uh7tevfilo9co">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;前序遍历</a>
+</h3>
+<h3 class="topic">
+<a name="1mptpfo43etguvc0sf174mpdkk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;根左右</a>
+</h3>
+<h3 class="topic">
+<a name="3c4v6cs19m9vr2amr56aibp0oe">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用递归的方法四行代码</a>
+</h3>
+<h3 class="topic">
+<a name="01gk9upmbl6mdous9hg4k6895f">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;中序遍历</a>
+</h3>
+<h3 class="topic">
+<a name="7qa00sfnol1psvmm45fie4nckg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;左根右</a>
+</h3>
+<h3 class="topic">
+<a name="0f8r42m8ak241un0skflip7d49">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;以中序遍历遍历二叉搜索树，得到的数据是递增的</a>
+</h3>
+<h3 class="topic">
+<a name="6u9itk6gvo5s3odqr1715l9av9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;后序遍历</a>
+</h3>
+<h3 class="topic">
+<a name="4kd8mmfah8ij1c47gv06ei53jd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;左右根</a>
+</h3>
+<h3 class="topic">
+<a name="4a3djmnr0vjao9fvp4shgeaqkc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;层序遍历</a>
+</h3>
+<h3 class="topic">
+<a name="252diomu9mhlbcp6tvunnv7u1t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;代码最复杂</a>
+</h3>
+<h3 class="topic">
+<a name="4akne3s1gu0ckefmu9kejagpfg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;从上到下，从左到右，从最高层到最底层，每一层从左到右</a>
+</h3>
+<h3 class="topic">
+<a name="1hcta56cli3aol28v4ofvrf8k8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;前中后的划分依据是根所处的位置，且左侧往往在右侧之前</a>
+</h3>
+<h3 class="topic">
+<a name="0re55psc0oig6362itm4jmcnjf">&nbsp;&nbsp;&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="17do57t6datme5fp0lup1pq5vf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;添加数据</a>
+</h3>
+<h3 class="topic">
+<a name="7at54e5tdli49h4e49e8bmc5vc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;找到的节点为nullptr，可以添加数据</a>
+</h3>
+<h3 class="topic">
+<a name="7h88pvrqvd4beubl880dbn9fbr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;添加的数据大于找到的数据</a>
+</h3>
+<h3 class="topic">
+<a name="7k9okt77mnhaooekgaim5a4e8q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在右侧添加</a>
+</h3>
+<h3 class="topic">
+<a name="42g1j3sespaad8vnoaguasr6k9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;添加的数据小于找到的数据</a>
+</h3>
+<h3 class="topic">
+<a name="3gbearppdkbhurkv0dhvuo8tr9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在左侧添加</a>
+</h3>
+<h3 class="topic">
+<a name="5pfukmu4h2eu7ddcr04ao46li4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当已经存在该数据</a>
+</h3>
+<h3 class="topic">
+<a name="1kakf4bki00pg5k5b87o70bh94">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;不做操作</a>
+</h3>
+<h3 class="topic">
+<a name="59hip285590doek3vsebtqr16l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;删除数据</a>
+</h3>
+<h3 class="topic">
+<a name="3257qptl6rikqamss46krrapt0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;需要加辅助函数，主要用于找到左子树中的最大值或右子树中的最小值</a>
+</h3>
+<h3 class="topic">
+<a name="4vocvu5a75rg74rt2agrffpku7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果是nullptr 说明没有找到</a>
+</h3>
+<h3 class="topic">
+<a name="5u94vi47g6a1hrdm1kv8ds6093">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果删除的值&gt;找到的值 找右边</a>
+</h3>
+<h3 class="topic">
+<a name="437oreddb43e68dvhqnc2d3j10">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果删除的值&lt;找到的值 找左边</a>
+</h3>
+<h3 class="topic">
+<a name="4fselbg06nmsiut91gnlfqnmhm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;找到了需要删除的值</a>
+</h3>
+<h3 class="topic">
+<a name="5nk972ombg86u6lnadad1oe8hs">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果需要删除的值有子节点的情况</a>
+</h3>
+<h3 class="topic">
+<a name="6bs3v8lhcvkjk1nq10slhkkn5d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果需要删除的值没有子节点的情况</a>
+</h3>
+<h3 class="topic">
+<a name="146dutaoccg9d5phirtho7q6rm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;第二种分类</a>
+</h3>
+<h3 class="topic">
+<a name="45fqhtodqp045jirn280flu2l4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;被删除的节点有两个子节点的情况</a>
+</h3>
+<h3 class="topic">
+<a name="2r76rle6a1a36db8nh8hnh3eng">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;从左子树找到最大值或从右子树找最小值</a>
+</h3>
+<h3 class="topic">
+<a name="7u2urgh42o4phtccr1if7ck24r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用该值替换节点内数据</a>
+</h3>
+<h3 class="topic">
+<a name="0embreo7qih4od6itvdb1c7a9l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;从左子树或右子树中删除被替换的数据的节点（这里可以是递归）</a>
+</h3>
+<h3 class="topic">
+<a name="42s3mnikgo86qjl4hmqrn126m6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;需要使用找到树中最小值或最大值的辅助函数</a>
+</h3>
+<h3 class="topic">
+<a name="03krfknlan3c1fimojbl77f8u6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;被删除的节点有一个或没有子节点的情况</a>
+</h3>
+<h3 class="topic">
+<a name="7bumreuor3pioaakarq4qrlmn8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;保存需要删除的节点</a>
+</h3>
+<h3 class="topic">
+<a name="71r1d89tqoa6rcm2m71fd2km92">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;判断要被删除的节点是不存在子节点或存在一个子节点</a>
+</h3>
+<h3 class="topic">
+<a name="3eck5dv8o9skjosf7ducpei3ke">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;若不存在子节点，说明要被删除的节点是叶子节点，则将指向被删除的节点的指针置为空</a>
+</h3>
+<h3 class="topic">
+<a name="1tiju4vg7e6l6kr99ijm8vfn2c">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;若存在一个子节点，则需要将原本指向被删除节点的指针赋值为该子节点的地址</a>
+</h3>
+<h3 class="topic">
+<a name="5j2jcbo4b9sqnh9gc7lrkgmels">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;相当于被删除节点的父节点与被删除的节点断链，然后指向被删除节点的子节点</a>
+</h3>
+<h3 class="topic">
+<a name="7ahq3hat5jpt2q925106dfkb1h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;若只存在一个子节点，但是该子节点之下还有其他子节点呢？</a>
+</h3>
+<h3 class="topic">
+<a name="1l2i13qf2tgrjfcm3r8ptn7289">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;此时该子节点之下的子节点保持不变，相当于整棵数均随着根节点向上整体平移一级</a>
+</h3>
+<h3 class="topic">
+<a name="6u60tm0tcn5u26c0rp1gsllvn2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;删除找到的节点</a>
+</h3>
+<h3 class="topic">
+<a name="1h0eot1h320ekn04cd7qk8a6d3">&nbsp;&nbsp;&nbsp;&nbsp;网站：可视化数据结构学习网站</a>
+</h3>
+<h3 class="topic">
+<a name="16t55q811iu0uu944qjtv8esni">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://visualgo.net/zh/bst</a>
+</h3>
+<h3 class="topic">
+<a name="2f06bjns5c5dejmlbu4n0c31v5">&nbsp;&nbsp;&nbsp;平衡二叉树（AVL树）（是一个有条件的二叉搜索树）</a>
+</h3>
+<h3 class="topic">
+<a name="6ih8br872m5bpn214g9mk5qc5m">&nbsp;&nbsp;&nbsp;&nbsp;不同结构的二叉查找树，查找效率不同</a>
+</h3>
+<h3 class="topic">
+<a name="7ikp1h5lfl2dmds99al5ov67ah">&nbsp;&nbsp;&nbsp;&nbsp;AVL要求任意节点的两个子树的高度之差不能大于1</a>
+</h3>
+<h3 class="topic">
+<a name="66uujt8tisen35qkp94gfphjlr">&nbsp;&nbsp;&nbsp;&nbsp;分类</a>
+</h3>
+<h3 class="topic">
+<a name="50149nqfg5udr03dnd5a8u3q47">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;avl树</a>
+</h3>
+<h3 class="topic">
+<a name="55tcsvu9susopjmvunisg71m4k">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rb树（红黑树）(在平衡二叉树基础上更进一步)</a>
+</h3>
+<h3 class="topic">
+<a name="0u08ppemfer2t8k5gamiqo6v2c">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用最多 文件系统 编译器词义解析</a>
+</h3>
+<h3 class="topic">
+<a name="2s8a417k2nldr173gpq4stlqir">&nbsp;&nbsp;&nbsp;&nbsp;使得平衡二叉树不平衡的情况以及解决方法（重点）</a>
+</h3>
+<h3 class="topic">
+<a name="15m85ovbg5e16uc149nsqekbed">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;左左（左斜树）</a>
+</h3>
+<h3 class="topic">
+<a name="65s5o18riiba356ccn91lvovrg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;右旋分解</a>
+</h3>
+<h3 class="topic">
+<a name="2kl7bsgd82jel3ln6oagiti0u0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;左右</a>
+</h3>
+<h3 class="topic">
+<a name="100tumf4jaodus2f9hun3tca0l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;左右旋分解</a>
+</h3>
+<h3 class="topic">
+<a name="7g6itt041efbg0tvuoo1pmj45f">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;具体代码实现可以先左旋根节点的子树，之后右旋根节点本身，通过调用左、右旋函数实现</a>
+</h3>
+<h3 class="topic">
+<a name="6drjvc246evurjn9qruhhopmkq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;右右（右斜树）</a>
+</h3>
+<h3 class="topic">
+<a name="08kci176r7allkl3ppk1mbv137">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;左旋分解</a>
+</h3>
+<h3 class="topic">
+<a name="7gb1jpqeoqoq1coo05ffka4s74">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;右左</a>
+</h3>
+<h3 class="topic">
+<a name="1hvgl2iku9f0c8vidpc5qgnlfv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;右左旋分解</a>
+</h3>
+<h3 class="topic">
+<a name="7cufnv2s7ouplm9udhulie5ki6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;具体代码实现可以先右旋根节点的子树，之后左旋根节点本身，通过调用左、右旋函数实现</a>
+</h3>
+<h3 class="topic">
+<a name="3gbmo8t97iop5t80iv61k1crm1">&nbsp;&nbsp;&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="4t80h8efv3v5ub22l2h7ufreos">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;添加或删除的时候树可能不平衡</a>
+</h3>
+<h3 class="topic">
+<a name="5a7t74k0o7kb2ick9sqft6hl5d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;添加</a>
+</h3>
+<h3 class="topic">
+<a name="2dsn1n5m6qpudt2ommspdaa264">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在搜索二叉树的基础上，当添加节点成功，</a>
+</h3>
+<h3 class="topic">
+<a name="6oc0jnj4upcfmrmlioo969jrmu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;插入数据较大，右子树变高时，右子树高度减左子树高度大于1</a>
+</h3>
+<h3 class="topic">
+<a name="1ausjskusudmahjt3kg0rb1nu8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;判断平衡是需要使用左旋分解</a>
+</h3>
+<h3 class="topic">
+<a name="2lc6oskes7te09d1o5m7upnr92">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当前添加的数据大于当前根节点的右节点</a>
+</h3>
+<h3 class="topic">
+<a name="57h1clrup5v8b641hbvepqea07">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用左旋辅助函数</a>
+</h3>
+<h3 class="topic">
+<a name="616iqtqk7423hq1lc1sq3njl01">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将旧根的右子树设置为新根</a>
+</h3>
+<h3 class="topic">
+<a name="1tsm81cheak7nq1n00mnstrn61">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将新根的左子树设置为旧根</a>
+</h3>
+<h3 class="topic">
+<a name="6o7sps0c3qjktpu7bbdpeocj5t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;判断平衡是需要使用右左旋分解</a>
+</h3>
+<h3 class="topic">
+<a name="62471ljfcuh916tqq3f373oiqu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当前添加的数据小于当前根节点的右节点</a>
+</h3>
+<h3 class="topic">
+<a name="5sq52me64780m0b8qra63i0meg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用右左辅助函数</a>
+</h3>
+<h3 class="topic">
+<a name="3vvti258pti8f01fhfa3u43dg3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;先右旋子树，后左旋本身</a>
+</h3>
+<h3 class="topic">
+<a name="7v2gtj75o81s1o0oou3ujeapjd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;插入数据较小，左子树变高时，左子树高度减右子树高度大于1</a>
+</h3>
+<h3 class="topic">
+<a name="3h0aman8bvnh0fqkg29qjqm758">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;判断平衡是需要使用右旋分解</a>
+</h3>
+<h3 class="topic">
+<a name="457bhuqicudmugt46poeqcrdpk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当前添加的数据小于当前根节点的左节点</a>
+</h3>
+<h3 class="topic">
+<a name="45d2ekfhviq50efu1j8rkcl63p">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用右旋辅助函数</a>
+</h3>
+<h3 class="topic">
+<a name="2eog0nr5rvi086qio3eo8oegje">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将旧根的左子树设置为新根</a>
+</h3>
+<h3 class="topic">
+<a name="5qiru2t9ld00krc42c6979a44b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将新根的右子树设置为旧根</a>
+</h3>
+<h3 class="topic">
+<a name="1t4taur61glg9cg9bl9u3uhl0f">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;判断平衡是需要使用左右旋分解</a>
+</h3>
+<h3 class="topic">
+<a name="721q21ug04t3n04ifed984u10q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当前添加的数据大于当前节点的左节点</a>
+</h3>
+<h3 class="topic">
+<a name="20nq2qd0l1npp1p60laksv7b1q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用左右辅助函数</a>
+</h3>
+<h3 class="topic">
+<a name="55nlg4pd3e6pos9dq96ofm7m31">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;先左旋子树，后右自旋本身</a>
+</h3>
+<h3 class="topic">
+<a name="1vjb530f8ebfhn5o3urbpvflc6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;数据添加在哪一侧，就可能需要旋转哪一侧</a>
+</h3>
+<h3 class="topic">
+<a name="3qf28b2klvankf8bhdielcn061">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;删除</a>
+</h3>
+<h3 class="topic">
+<a name="2tgmkgj5rh0kvo77ujfoq7e29d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;数据删除哪一侧，就可能需要旋转另外一侧</a>
+</h3>
+<h3 class="topic">
+<a name="3j92k2sah9ee3hct4bo27li9qh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;从右子树删除数据，右子树可能变低，应该用左子树高度减去右子树  如果大于1</a>
+</h3>
+<h3 class="topic">
+<a name="4na94mkgb8121roqpubhruf2kt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;判断左子树的左子树，高于左子树的右子树，则出现左左</a>
+</h3>
+<h3 class="topic">
+<a name="56gn11mm4tr2036h9d1udkg49m">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;则对左子树进行右旋</a>
+</h3>
+<h3 class="topic">
+<a name="64pp9cvlrucfl10likdr628n3p">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;否则为左右，进行左右旋</a>
+</h3>
+<h3 class="topic">
+<a name="49c14r8miobti401sj89qop485">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;从左子树删除数据，左子树可能变低，应该用右子树高度减去左子树 如果大于1</a>
+</h3>
+<h3 class="topic">
+<a name="7dr0r2hh6vkbj7knfrrvp4ak8o">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;判断右子树的右子树，高于右子树的左子树，则出现右右</a>
+</h3>
+<h3 class="topic">
+<a name="15c70m2hc9uutg94ekd6s1domv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;则对右子树进行左旋</a>
+</h3>
+<h3 class="topic">
+<a name="4oktq4ndkq7fsqrbcim20q6h1h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;否则为右左，进行右左旋</a>
+</h3>
+<h3 class="topic">
+<a name="1m1hiu7f8sua77a93shkv71bjr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;遍历</a>
+</h3>
+<h3 class="topic">
+<a name="6umft7s501rdjpgenr1dc4jjih">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;前序遍历</a>
+</h3>
+<h3 class="topic">
+<a name="2atde5sfe7kvjauiv7sa2ofmv5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果为null就停止递归</a>
+</h3>
+<h3 class="topic">
+<a name="2rss1s0cmfkv420o7kkpqqmmah">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用递归，先输出左子树，后输出右子树</a>
+</h3>
+<h3 class="topic">
+<a name="4nemmsaa862u8h6njbvku407jt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%842_files/0hvdc0a65mh3odmam9ohm2f47r.png"></p>
+<h3 class="topic">
+<a name="2mpssig2451ap1s52kv4pvh4gi">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;中序遍历</a>
+</h3>
+<h3 class="topic">
+<a name="56kjs3lgqdfk1vavfe3n0skljk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;只是调换输出顺序</a>
+</h3>
+<h3 class="topic">
+<a name="1o58kduopcib0kapqhfkhfnk03">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%842_files/51ernadmmg2g0l8uqrb4e9fl9h.png"></p>
+<h3 class="topic">
+<a name="5onfo1ofhspt3dclv7i5herllr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;后序遍历</a>
+</h3>
+<h3 class="topic">
+<a name="650i90p75eootij73j6174vrfl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%842_files/78al9jpiitmg54ka575bi8cpof.png"></p>
+<h3 class="topic">
+<a name="35h2unn6sc5qab77ik1i6nfnsg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;层序遍历（面试）</a>
+</h3>
+<h3 class="topic">
+<a name="6gjothci2h7p3cum4vv2b35355">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用vector</a>
+</h3>
+<h3 class="topic">
+<a name="5q14060enlhmjttjl5h4jo53sm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;初始化两个容器，分别是当前层和下一层</a>
+</h3>
+<h3 class="topic">
+<a name="7et2aipegnft6kmq1k9gbkubpn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当前层永远是根节点，且只有一个</a>
+</h3>
+<h3 class="topic">
+<a name="4urbhqcc0j7shj4l1k6ti02c8p">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果当前层没有任何节点，就停止循环</a>
+</h3>
+<h3 class="topic">
+<a name="2unogasg8cctfoclhf3s14tvct">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;遍历当前层所有数据，并输出</a>
+</h3>
+<h3 class="topic">
+<a name="3e4dffr4g5dumpg2dce8ke0jor">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;输出当前层</a>
+</h3>
+<h3 class="topic">
+<a name="7cpmshjvidivm4vbnai6cj88a1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将下一层的左子树和右子树进入下一层容器</a>
+</h3>
+<h3 class="topic">
+<a name="0hsga5p0p8jbl632lrbpk23c6n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;更新下一层数据到当前层</a>
+</h3>
+<h3 class="topic">
+<a name="5uhia2fmjn3pe1i5prd2qqv1up">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;清空下一层</a>
+</h3>
+<h3 class="topic">
+<a name="0bbf8i07jom5ffr8osriboma08">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%842_files/62r10p3rou6u4eb1o0721ujoud.png"></p>
+<h3 class="topic">
+<a name="5jduu7lmb9irpeuov8peranjrl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;规律</a>
+</h3>
+<h3 class="topic">
+<a name="1eekvr8b5pfk1021s66rv44d1o">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;前序遍历第一个访问的一定是整个二叉树的根节点</a>
+</h3>
+<h3 class="topic">
+<a name="37riljlmb4va3ov653sah7iis8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;中序遍历根节点前访问的节点一定在根节点的左子树中，根节点后访问的节点一定在根节点的右子树中</a>
+</h3>
+<h3 class="topic">
+<a name="6ovkapfl7gb76gtokf7lafeu5r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;后序遍历中根节点一定是最后被访问到的</a>
+</h3>
+<h3 class="topic">
+<a name="6lp927tu2o2gsrr4hhq2j4c835">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;主要思想是递归，以前序遍历举例，在二叉树中，先输出根节点的数值，之后以前序遍历对左子树进行输出，左子树输出完毕后，对右子树进行输出，在每个子树处也执行前序遍历</a>
+</h3>
+<h3 class="topic">
+<a name="5dvcs65r6djkim9p0jvlot6rk6">&nbsp;&nbsp;节点的高度如何求</a>
+</h3>
+<h3 class="topic">
+<a name="3345f792n2ai234gn14b086c95">&nbsp;&nbsp;&nbsp;叶子类的节点高度为1，子树根的深度是其左右子树高度较大者+1</a>
+</h3>
+<h3 class="topic">
+<a name="6lgo5aj14e31eiragc3rvcb6c2">&nbsp;&nbsp;&nbsp;使用递归求一树的高度（参数为树的根节点）</a>
+</h3>
+<h3 class="topic">
+<a name="3peeomo6egse9f08o8froi3bv7">&nbsp;&nbsp;&nbsp;&nbsp;	int avltree::height(PNODE &amp; node)&#13;
+	{&#13;
+		// 空树返回 0 //叶子节点深度为1&#13;
+		if (node == nullptr)&#13;
+			return 1;&#13;
+&#13;
+		// 获取左子树的高度，右子树的高度&#13;
+		int left = height(node-&gt;left);&#13;
+		int right = height(node-&gt;right);&#13;
+&#13;
+		// 返回当前结点的高度&#13;
+		return left &gt; right ? left + 1 : right + 1;&#13;
+	}</a>
+</h3>
+<h3 class="topic">
+<a name="182hfhp8k79ncvue543m43kcnf">&nbsp;&nbsp;如何获取最大值，如何获取最小值</a>
+</h3>
+<h3 class="topic">
+<a name="1ftcbdd6a6ebg01j9jf7jgmi44">&nbsp;&nbsp;&nbsp;根的左子树总是小，根的右子树总是大</a>
+</h3>
+<h3 class="topic">
+<a name="6ge7c6enatba86etpt6tvvbe22">&nbsp;&nbsp;旋转相关代码</a>
+</h3>
+<h3 class="topic">
+<a name="3sdeketl35fj2r9s0k97j9omhl">&nbsp;&nbsp;&nbsp;左旋</a>
+</h3>
+<h3 class="topic">
+<a name="5ff6vncduv3ru1e43ujg6vke5m">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%842_files/5le0i3psgf8la3h5ccbqrjlk3s.png"></p>
+<h3 class="topic">
+<a name="6r5cn82anubc2ah2g2lifqn7qn">&nbsp;&nbsp;&nbsp;右旋</a>
+</h3>
+<h3 class="topic">
+<a name="3vt9btc6hti0muijkd7er9i8lj">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%842_files/2df5hnsmbai0kcme2m64bq86bj.png"></p>
+<h3 class="topic">
+<a name="5j5ig45mdgl5ljiqehk843jrep">&nbsp;&nbsp;&nbsp;左右旋</a>
+</h3>
+<h3 class="topic">
+<a name="74uu5t48le14mivuldrka6c92t">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%842_files/6r84gcenqpgq58n2gd0f010ouc.png"></p>
+<h3 class="topic">
+<a name="4ma22uvkh88mdqb9nnbvilbue5">&nbsp;&nbsp;&nbsp;右左旋</a>
+</h3>
+<h3 class="topic">
+<a name="01j4e2s13rrsn95jio9ltjvotp">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%842_files/4eed3bpbc9h46dvmn22bnfonp6.png"></p>
+<h3 class="topic">
+<a name="60o24i7kjcdke92rjotpkllokm">&nbsp;&nbsp;遍历相关代码</a>
+</h3>
+<h3 class="topic">
+<a name="6504hdgqsju9qk7gio1ihuc13s">&nbsp;&nbsp;&nbsp;前序遍历</a>
+</h3>
+<h3 class="topic">
+<a name="0sl8f5e17r0dcg3ulnsar4ta7h">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%842_files/1j10tua1dgm1bgn2iemtkrpm5r.png"></p>
+<h3 class="topic">
+<a name="5l3lqo90hsef5usadodh91qeab">&nbsp;&nbsp;&nbsp;中序遍历</a>
+</h3>
+<h3 class="topic">
+<a name="4sevqc8po384b0usdcep1uch77">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%842_files/657g3mj65qgpgo6glti11jatl1.png"></p>
+<h3 class="topic">
+<a name="060ijo87j8e9j59sbn05pbo1fr">&nbsp;&nbsp;&nbsp;后序遍历</a>
+</h3>
+<h3 class="topic">
+<a name="0asvmi4r4dbcimnvub58julpgr">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%842_files/7l7d7apheh4brjrb67kt6bfueh.png"></p>
+<h3 class="topic">
+<a name="5sput66bhs2u3u1p6de3rjvu5l">&nbsp;&nbsp;&nbsp;层序遍历</a>
+</h3>
+<h3 class="topic">
+<a name="7qqmqemg2aof3st3k5lcp9sila">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%842_files/7jd2co7oh0j2d6jpbju846ek84.png"></p>
+<h3 class="topic">
+<a name="4b1po9erofk4v4vffetitpvkc8">&nbsp;&nbsp;&nbsp;&nbsp;主要思路是使用两个动态数组保存本次循环需要输出的节点和下一次循环需要输出的节点</a>
+</h3>
+<h2 class="topic">
+<a name="709dj7p5fnhq3bj3e14ffv5dbf">tips</a>
+</h2>
+<h3 class="topic">
+<a name="0n7um89fqggv1eud06o7rosk0v">&nbsp;注意子树的高度和深度不是一个概念，叶子节点的高度为1，子树根节点的高度为左子树与右子树中高度较高者+1</a>
+</h3>
+</body>
+</html>

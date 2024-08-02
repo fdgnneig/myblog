@@ -1,0 +1,492 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>class63day0522(脱壳与病毒分析第三天)</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="78f17ctu8l8csgmpnrf98h4kvm">class63day0522(脱壳与病毒分析第三天)</a>
+</h1>
+<h2 class="topic">
+<a name="4ubbtlf5p9mug2qnc87jrl1vvu">复习</a>
+</h2>
+<h2 class="topic">
+<a name="3bfjbonk1t7vposd0bcegach5k">00壳upx壳</a>
+</h2>
+<h3 class="topic">
+<a name="6vngmj5kbc24btjpl7dgni0phv">&nbsp;upx3.94手动脱壳&#13;
+工具：&#13;
+吾爱破解论坛Ollydbg&#13;
+ImportREConstructor&#13;
+&#13;
+upx3.94下载地址：https://github.com/upx/upx/releases/download/v3.94/upx394w.zip&#13;
+&#13;
+环境：XP（还是XP下方便，win7有ASRL干扰，ImportREConstructor识别的基地址不对）&#13;
+&#13;
+自己写了一个很简单的程序，用upx加壳，使用ESP定律脱壳。&#13;
+&#13;
+    OD加载crackme.exe，找到入口点，发现pushad指令&#13;
+    这里写图片描述&#13;
+    F8单步，在ESP上 右键 -&gt; HW break [ESP] 下硬件断点&#13;
+    这里写图片描述&#13;
+    F9执行，断住的地方离OEP就不远了。下图中下面那个jmp就是跳转到OEP的指令&#13;
+    这里写图片描述&#13;
+    去掉第2步中的硬件断点，走到OEP&#13;
+    这里写图片描述&#13;
+    F8再走一步，这里就是入口函数了&#13;
+    这里写图片描述&#13;
+    点右键，用OllyDump脱壳调试进程&#13;
+    这里写图片描述&#13;
+    起始需要填写正确的地址，点击E按钮可以看到，这里为12B0000，入口点为12C17F0-12B0000=117F0&#13;
+    下面的重建输入表不要勾选，我们后面使用ImportREConstructor来重建输入表&#13;
+    点&ldquo;脱壳&rdquo;保存为dump.exe&#13;
+    使用ImportREConstructor来重建输入表&#13;
+    前面的OD不要退出，打开ImportREConstructor附加到crackme.exe进程，填写上正确的OEP 117F0，点击&ldquo;IAT自动搜索&rdquo;，可以搜到。但我这里使用手动来找导入表，在第4步中，找到call指令，回车跟进去&#13;
+    这里写图片描述&#13;
+    再回车跟进去，可以看到调用kernel32.GetSystemTimeAsFileTime&#13;
+    这里写图片描述&#13;
+    0x12C81C0附近应该就是导入表的地址，内存中查看0x12C81C0&#13;
+    这里写图片描述&#13;
+    [0x12C81C0]=0x760334E9就是kernel32.GetSystemTimeAsFileTime，对应0x12C8190～0x12C8210就是kernel32.dll中函数地址&#13;
+    下面0x12C8240～0x12C82C0是msvcr100d.dll中函数地址&#13;
+    回到ImportREConstructor，填写RVA为0x012C8190-0x012B0000=0x00018190,大小中填入0x130,点击获取输入表，两个dll的都找到了&#13;
+    这里写图片描述&#13;
+    点击&ldquo;修正转储&rdquo;，选择第5步保存的dump.exe文件，确定,生成的dump_.exe就可以直接运行了。&#13;
+</a>
+</h3>
+<h2 class="topic">
+<a name="1v70asu1rhjtogolhq4ghq58ut">asp壳代码分析</a>
+</h2>
+<h3 class="topic">
+<a name="01thurf3g661ob9a4hor2n66t4">&nbsp;壳代码的兼容性问题是一个很大的问题</a>
+</h3>
+<h3 class="topic">
+<a name="1f3v32s1kpil58ctgknjl98nia">&nbsp;&nbsp;一个壳很难可以加在所有的程序上正常运行</a>
+</h3>
+<h3 class="topic">
+<a name="26v02os8kd86vkch8gns7hnnme">&nbsp;&nbsp;&nbsp;壳对汇编代码的修改可能导致程序无法运行</a>
+</h3>
+<h3 class="topic">
+<a name="6ga4tl956u5vetk27k64jb3k4i">&nbsp;&nbsp;分析指令时如果对数据进行操作，需要在内存中看一下，对数据的含义进行猜测，如果数据为0，则不需要查看，因为无法猜测该数据的用途</a>
+</h3>
+<h3 class="topic">
+<a name="24ukn7t6c7et0le1015g3do7ej">&nbsp;壳代码对程序代码进行重定位修复</a>
+</h3>
+<h3 class="topic">
+<a name="32cp0k2j9el9ptngrbn8n7qqop">&nbsp;&nbsp;需要找到程序中重定位表的地址</a>
+</h3>
+<h3 class="topic">
+<a name="1v319obrdt2ojhf5gfdvjgp83f">&nbsp;&nbsp;重定位表中重定位项的第一位总是3，表示该地址需要被重定位，可以以此为特征分辨重定位表</a>
+</h3>
+<h3 class="topic">
+<a name="6h0i77meefo3004m5ak9tktiqq">&nbsp;&nbsp;重定位公式</a>
+</h3>
+<h3 class="topic">
+<a name="1heee34oigocjvooehsh33sjd3">&nbsp;&nbsp;&nbsp;新地址=[当前基地址+分页地址+偏移]-默认基地址+当前基地址</a>
+</h3>
+<h3 class="topic">
+<a name="7hslcteiflejuh3054ijhj2vrl">&nbsp;&nbsp;&nbsp;&nbsp;&ldquo;当前基地址+分页地址+偏移&rdquo;等于需要被重定位的数据的虚拟地址（va）地址解引用得到该地址处的存储的全局地址，该全局地址以默认基地址为基础</a>
+</h3>
+<h3 class="topic">
+<a name="3bnlqhksrnubhtbaj3ja641kdh">&nbsp;&nbsp;&nbsp;&nbsp;&ldquo;全局地址-默认基地址&rdquo;得到该地址相对于默认基地址的偏移</a>
+</h3>
+<h3 class="topic">
+<a name="3tlkn9h4dide3q52r2jevhk9cv">&nbsp;&nbsp;&nbsp;&nbsp;偏移+当前基地址  得到随机基址中被重定位的目的地址</a>
+</h3>
+<h3 class="topic">
+<a name="36rksk1h08pb2m08pr6dr8begi">&nbsp;&nbsp;asp壳代码修复重定位表之后，会将重定位表清空，以此提高脱壳难度</a>
+</h3>
+<h3 class="topic">
+<a name="0uaor5pauvf72ovbevjmmsok3i">&nbsp;&nbsp;&nbsp;如果想要让dump支持随机基址，asp壳代码中清空重定位表的函数需要被注释掉，然后记住重定位表在程序中的地址，使用lordpe将程序的重定位表的地址改为刚才获得的基址</a>
+</h3>
+<h3 class="topic">
+<a name="0qi01s314557roc7t5egpubklo">&nbsp;壳代码中的填充iat</a>
+</h3>
+<h3 class="topic">
+<a name="4ns3o8ou3g1tpr6lsgo4an99j1">&nbsp;&nbsp;找到导入表</a>
+</h3>
+<h3 class="topic">
+<a name="22ac9o3091c8ldo13cabcj53lj">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class63day0522_files/6kvkuq9ursdkakacfjbp6c6sga.png"></p>
+<h3 class="topic">
+<a name="4frt45nhadsj0u86tu9d8vi0rv">&nbsp;&nbsp;&nbsp;1：第一个导入表结构体</a>
+</h3>
+<h3 class="topic">
+<a name="6m9qikqli540ggbcv8ktqteqhb">&nbsp;&nbsp;&nbsp;2：通过加载基址+固定偏移的方式 获得导入表的首地址</a>
+</h3>
+<h3 class="topic">
+<a name="4f6f7q824enn57rnlnee3b3tdc">&nbsp;&nbsp;获得dll名称</a>
+</h3>
+<h3 class="topic">
+<a name="4gli2tha3lb2ld9cv2af7ums1g">&nbsp;&nbsp;使用GetModuleHandle（获取当前内存中存在的模块的基地址）或LoadLibrary（获取未加载的模块的基址）获取dll地址</a>
+</h3>
+<h3 class="topic">
+<a name="51695cj3s3up32fehjps51vlvl">&nbsp;&nbsp;使用GetProcAddress，通过函数名称获取函数地址</a>
+</h3>
+<h3 class="topic">
+<a name="1p8gmkqsi023ifhstifsdc7v7e">&nbsp;&nbsp;使用函数地址填充iat</a>
+</h3>
+<h3 class="topic">
+<a name="4ptassi92ae5skl599osc8rlia">&nbsp;&nbsp;&nbsp;test ebx,0x80000000</a>
+</h3>
+<h3 class="topic">
+<a name="3t997dhij6db2k6onisq2gm5bd">&nbsp;&nbsp;&nbsp;&nbsp;判断函数是否为序号导入</a>
+</h3>
+<h3 class="topic">
+<a name="4lhpaiqh59esb601m59hls34j7">&nbsp;&nbsp;填充iat是脱壳过程中最重要的地方，一般壳如果对iat进行了加密，则在这里解密</a>
+</h3>
+<h3 class="topic">
+<a name="230kh5me6ictofo3sfo169kfom">&nbsp;&nbsp;整个过程至少是两重循环</a>
+</h3>
+<h3 class="topic">
+<a name="33ehms3hvu46tms5sh0qhjtcvl">&nbsp;&nbsp;&nbsp;遍历模块</a>
+</h3>
+<h3 class="topic">
+<a name="6bso1rqqcsj43ua77m5nnvnqa2">&nbsp;&nbsp;&nbsp;填充模块中的iat</a>
+</h3>
+<h3 class="topic">
+<a name="3vuvm7p84r3siql1og121n3ret">&nbsp;让asp脱壳的dump文件支持随机基址的步骤</a>
+</h3>
+<h3 class="topic">
+<a name="0obps3v6tftc4729456nb033me">&nbsp;&nbsp;1、分析壳代码，发现壳代码在修复重定位之后，会将重定位表中的值更改为ff，从而在提高壳的保护力度，为了保存文件中的重定位表信息，将清空重定位表的代码nop掉，重新生成一个程序</a>
+</h3>
+<h3 class="topic">
+<a name="2ulsb82851513utoiqq937t4hd">&nbsp;&nbsp;&nbsp;1的位置原本存在将导入表清空为ff的操作</a>
+</h3>
+<p class="topicImage">
+<img src="class63day0522_files/38ali109aliq8984r8qjpjvibo.png"></p>
+<h3 class="topic">
+<a name="6d27n8654vtbn7kesagh56gssq">&nbsp;&nbsp;&nbsp;壳分析过程中可获知重定位表的RVA，后面要用</a>
+</h3>
+<h3 class="topic">
+<a name="43d96bnr34ggimkte7c94kldcl">&nbsp;&nbsp;2、将得到的文件从OEP dump出来</a>
+</h3>
+<h3 class="topic">
+<a name="4js8j7c6vto5mjkmop4m6j8noh">&nbsp;&nbsp;&nbsp;此时dump文件中保存有完整的重定位表</a>
+</h3>
+<h3 class="topic">
+<a name="43ah7nsc8r3gn8opkluspfqir7">&nbsp;&nbsp;3、修复dump文件的iat表</a>
+</h3>
+<h3 class="topic">
+<a name="45fl399jf08n6cg893o8i3gn71">&nbsp;&nbsp;&nbsp;使用ImportREC</a>
+</h3>
+<h3 class="topic">
+<a name="0op6bndjfc2mqs6l54h9hnpor3">&nbsp;&nbsp;4、使用LordPE将dump文件的重定位表的rva改成分析得到的重定位rva，重定位块的大小改成与1000（与reloc区段信息相同），</a>
+</h3>
+<h3 class="topic">
+<a name="2gedshlgjvanj8u40g8l7bj40d">&nbsp;&nbsp;&nbsp;修改1和2</a>
+</h3>
+<p class="topicImage">
+<img src="class63day0522_files/29ghi3d5ot67s9l8kfog6unlla.png"></p>
+<h2 class="topic">
+<a name="386mtvem9ivr0ktfp71mte4nkd">脱加密壳 程序02</a>
+</h2>
+<h3 class="topic">
+<a name="4m19r6ht3bj6ufj1cckibpmaa7">&nbsp;步骤</a>
+</h3>
+<h3 class="topic">
+<a name="33mqtc06sos99nhrcgj1ims840">&nbsp;&nbsp;找oep</a>
+</h3>
+<h3 class="topic">
+<a name="12rm2415aobajrdun0obd5o6qd">&nbsp;&nbsp;&nbsp;特征搜索，特征api定位</a>
+</h3>
+<h3 class="topic">
+<a name="66hea3l7k8mq8jj2n76cbngif0">&nbsp;&nbsp;确定程序的iat表内存空间</a>
+</h3>
+<h3 class="topic">
+<a name="71geob5m496u04f82hpi6qr381">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class63day0522_files/0opdm15jrqfcqaj4j3ir18h0n0.png"></p>
+<h3 class="topic">
+<a name="7b5hbtsonuasgs476ggluvo5pd">&nbsp;&nbsp;&nbsp;1、根据分析程序为vc6，此类程序IAT表位于rdata段开头，可以通过区段rva计算得到IAT表地址</a>
+</h3>
+<h3 class="topic">
+<a name="5eppro82ims528ktql6tporcm4">&nbsp;&nbsp;&nbsp;2、vc6程序第一个调用的api为GetVersion，调用位置为2处，则该调用使用ff15（call）且被调用的函数地址应该保存在iat表中，所以0x42214时iat表的内存空间，保存GetVersion函数的地址</a>
+</h3>
+<h3 class="topic">
+<a name="0jm74c57lb1cgcipcvm18mv2ac">&nbsp;&nbsp;&nbsp;3、od第一次断下，数据窗口会断在iat表中，可以直接得到看到iat表中内容，这里因为iat表被加密，所以表中注释没有显示对应api名称</a>
+</h3>
+<h3 class="topic">
+<a name="4uu4sccikqlm7qmcsim42gkhqn">&nbsp;&nbsp;如果iat中的函数地址被加密了，则dump文件中无法在api调用的位置确定调用的时什么api，所以需要解密iat之后再dump文件</a>
+</h3>
+<h3 class="topic">
+<a name="4c91dsb926n69kklj9rjsk2hio">&nbsp;&nbsp;&nbsp;方法1</a>
+</h3>
+<h3 class="topic">
+<a name="6rltpea6ilc3m0tm73a54ts037">&nbsp;&nbsp;&nbsp;&nbsp;找到iat</a>
+</h3>
+<h3 class="topic">
+<a name="0dnjrke67vuk5lo8l6t0qcchut">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;od运行到oep处断下，此时数据窗口中显示iat表的内容</a>
+</h3>
+<h3 class="topic">
+<a name="54onja7u0nhsaivksocr3lcj0r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当程序调用系统api时，保存api地址的内存空间即iat表</a>
+</h3>
+<h3 class="topic">
+<a name="62o7vosp623doqqqb80oltelvr">&nbsp;&nbsp;&nbsp;&nbsp;因为如果壳要给iat加密，就需要向iat表中写入加密后的函数地址，故可以在iat表上设置硬件写入断点，然后让程序重新加载，类似这样的指令就是填充iat （mov dword ptr[exx],eax）,只要段下来就可以在其附近进行分析iat被加密的过程，一般都能找到正确的api的位置 </a>
+</h3>
+<h3 class="topic">
+<a name="6uif0nek8mc4srcrbr4tcrkvqr">&nbsp;&nbsp;&nbsp;方法2</a>
+</h3>
+<h3 class="topic">
+<a name="7aepk0vkjeg8hvs2fdqesik3rt">&nbsp;&nbsp;&nbsp;&nbsp;在获取api地址的api上设置断点</a>
+</h3>
+<h3 class="topic">
+<a name="2gqivcs931fja8t3vkjdlqjdne">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;virtualalloc</a>
+</h3>
+<h3 class="topic">
+<a name="4a28molt4nul1daa5rflhnk4ao">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以直接定位到关键代码附近</a>
+</h3>
+<h3 class="topic">
+<a name="4cebkt0mr86jk82348nhmmbaif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;getprocaddress</a>
+</h3>
+<h3 class="topic">
+<a name="2ilob6ibdtbmil6qe41o3uio6i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;一般会断下多次</a>
+</h3>
+<h3 class="topic">
+<a name="76d2i0iodqcoil4e6kq3d5m7rf">&nbsp;&nbsp;修复iat的方法</a>
+</h3>
+<h3 class="topic">
+<a name="00nce533c9q6v8t756tc1dctuv">&nbsp;&nbsp;&nbsp;手动逐个修改iat表中api的地址值</a>
+</h3>
+<h3 class="topic">
+<a name="0acu03rpnb3gudufvgfap8adej">&nbsp;&nbsp;&nbsp;将加密iat的代码nop掉，直接将正确的api地址保存在iat表中</a>
+</h3>
+<h3 class="topic">
+<a name="2ch9k2a06hgdkivprr6qh574cf">&nbsp;&nbsp;&nbsp;&nbsp;nop一大段函数的过程中，需要注意，如果该函数中有的指令会对该函数外的程序产生影响，所以不能简单直接nop该指令，需要保存该指令的执行</a>
+</h3>
+<h3 class="topic">
+<a name="6o18vedsn0jahg49vk5s92lug7">&nbsp;&nbsp;&nbsp;也可以通过写脚本对这里的自动iat修复（如果壳代码比较复杂则直接修改壳代码比较复杂，可以使用od脚本使iat自动修复）</a>
+</h3>
+<h3 class="topic">
+<a name="65b6o2l9um9ml1ccdj34ujo4a4">&nbsp;&nbsp;&nbsp;&nbsp;工具包-》od脚本编辑器</a>
+</h3>
+<h3 class="topic">
+<a name="3qsgnq68lj587g4pimpo1b0pqr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;定义变量，初始化</a>
+</h3>
+<h3 class="topic">
+<a name="411rdceaaudsc75084rb5s4dha">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在对应的地址上设置断点</a>
+</h3>
+<h3 class="topic">
+<a name="17vvbrddcupttjo81latbl7g03">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;虚循环对每一种情况进行判断和处理</a>
+</h3>
+<h3 class="topic">
+<a name="48r007alhav1ulla3eddu5hsnq">&nbsp;&nbsp;&nbsp;&nbsp;os脚本&mdash;&mdash;&gt;自动化操作od</a>
+</h3>
+<h3 class="topic">
+<a name="7h5grm8l92315k4utm3rlgvk7t">&nbsp;&nbsp;&nbsp;&nbsp;使用od脚本</a>
+</h3>
+<h3 class="topic">
+<a name="1k8i9e0cl854soam1ja2le80qm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;脚本运行窗口</a>
+</h3>
+<h3 class="topic">
+<a name="3sjtll1i114ajv2co0p15pi8ke">&nbsp;&nbsp;&nbsp;&nbsp;脚本代码</a>
+</h3>
+<h3 class="topic">
+<a name="0oljkfi5ispv51obs1fdg0frek">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//1.定义变量，初始化//右侧b 打头 软件断点 bph硬件断点 &#13;
+mov dwGetAPIAddr , 001D14DC&#13;
+mov dwWriteIATAddr, 001D0897 &#13;
+mov dwOEP, 0047148B&#13;
+//2.在对应的地址上设置断点&#13;
+BPHWC//清除硬件断点&#13;
+BC//清除所有软件断定&#13;
+&#13;
+// 给特定内存地址下执行断点&#13;
+BPHWS dwGetAPIAddr, "x" &#13;
+BPHWS dwWriteIATAddr, "x" &#13;
+BPHWS dwOEP, "x" &#13;
+//BPHWS dwGetAPIAddr//变量名 &ldquo;x&rdquo;    //BPHWS*3 &#13;
+&#13;
+//3. 循环对每一种情况进行判断和处理&#13;
+LOOP1:&#13;
+run //运行程序&#13;
+cmp dwGetAPIAddr ,eip  // &#13;
+jnz case1&#13;
+mov dwTmp,edx//保存地址&#13;
+jmp LOOP1&#13;
+case1:&#13;
+CMP dwWriteIATAddr,eip&#13;
+jnz case2&#13;
+MOV  [edx],dwTmp//填充IAT  将临时变量填充&#13;
+jmp LOOP1&#13;
+case2:&#13;
+cmp dwOEP, eip&#13;
+jnz LOOP1&#13;
+MSG "成功了！"&#13;
+//右键打开运行脚本窗口，打开相应脚本 tab ，空格让他正常继续跑&#13;
+//解密后 ，就可以dump</a>
+</h3>
+<h3 class="topic">
+<a name="2llec5334jgf60278thru3okko">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;od脚本指令集</a>
+</h3>
+<h3 class="topic">
+<a href="http://www.cnblogs.com/JianXu/p/5158419.html" name="1r1ga4plqs6m8k2ndmechtoeud">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;http://www.cnblogs.com/JianXu/p/5158419.html</a>
+</h3>
+<h3 class="topic">
+<a name="7j7h981g7bkot4p46895akmg3q">&nbsp;&nbsp;&nbsp;程序02的壳中相当于将iat进行hook，使得每一个api执行都先要执行一个自己的花指令函数，之后再调用真正的api</a>
+</h3>
+<h3 class="topic">
+<a name="5dsp41tln0j1ll9n5tvo8ioi06">&nbsp;&nbsp;将修改过的程序dump(此时iat表中存放正常的api地址，而不是加密的数据)出来</a>
+</h3>
+<h3 class="topic">
+<a name="0uv3tjblqsie5opts6qasnjt97">&nbsp;&nbsp;使用ImportRec修复dump文件的输入表</a>
+</h3>
+<h3 class="topic">
+<a name="516132oohv2pnb8ssr18gv7d7k">&nbsp;&nbsp;&nbsp;在iat修复工具中，如果导入模块和函数显示不正确，可以手动指定iat的地址（可以从被分析的程序中得到）以及扫描的范围，从而得到大量输入函数，清除无效的记录，导出到dump文件</a>
+</h3>
+<h3 class="topic">
+<a name="4cpfbdgacvi4u2ug2d8fg7sqts">&nbsp;&nbsp;&nbsp;&nbsp;填入dump文件的oep、iat的rva、size使用100&#13;
+直接点击获取输入表  再点3列出所有无效函数</a>
+</h3>
+<p class="topicImage">
+<img src="class63day0522_files/2aqbms9tqf1p3n06888j4jdn99.png"></p>
+<h3 class="topic">
+<a name="179crecgji4li13psvvmup9q9p">&nbsp;&nbsp;&nbsp;&nbsp;在无效函数处右键-》剪切指针-》转储到dump的文件中</a>
+</h3>
+<p class="topicImage">
+<img src="class63day0522_files/68f87chmhgb3oo2bqfefvn3ln8.png"></p>
+<h2 class="topic">
+<a name="253euq28hmac0v4q71911l8cth">其他</a>
+</h2>
+<h3 class="topic">
+<a name="6ig6a807hudr11621re7v33pn0">&nbsp;如果壳代码中出现跳转幅度比较大的跳转指令，可能是要跳转到oep中</a>
+</h3>
+<h3 class="topic">
+<a name="1317nvs665ej91l4aqinn410qb">&nbsp;在栈回溯过程中，如果下断函数的调用来自于系统模块，则不需要去看，说明是系统代码调用被下断的api，不用分析，继续f9执行，直到找到跳转来自于主模块，说明此时命中了主模块中的api特征</a>
+</h3>
+<h3 class="topic">
+<a name="60jpnn4c3nseggsb2mcmav038n">&nbsp;fsg壳存在坑，不能全部识别出所有的iat，因为iat中模块于模块之间使用ff隔开，需要手动更改为000</a>
+</h3>
+<h3 class="topic">
+<a name="6q3to1iepjmhlioloah232k3sm">&nbsp;&nbsp;fsg壳是在pe头中执行壳代码，只有在win7以下版本适用，可以在pe头中执行代码</a>
+</h3>
+<h3 class="topic">
+<a name="3pl0hid4hgvb0c0rotpocero3k">&nbsp;&nbsp;如果oep为00，只要代码堆栈平衡就可以执行</a>
+</h3>
+<h3 class="topic">
+<a name="05lg2n2u0ggsg58licgfj6b7tc">&nbsp;压缩壳只要找到oep后dump修复一般就可以</a>
+</h3>
+<h3 class="topic">
+<a name="57bg6bi6fpetie7qmrdt56ueeo">&nbsp;imm开头的函数涉及输入法</a>
+</h3>
+<h3 class="topic">
+<a name="446jsn8jjrld0a0gnuu1f9ko4c">&nbsp;壳中因为涉及代码段的加密与解密，所以最好下硬件执行断点</a>
+</h3>
+<h3 class="topic">
+<a name="7g25h81u7le4qvr6vqbv1tdj4g">&nbsp;在代码中点击按钮1，可以将一个字节的指令变成nop，以此解开花指令</a>
+</h3>
+<h3 class="topic">
+<a name="0b73pqejqgpj5kjfgn5rao7lt6">&nbsp;遇到花指令的call记得要用f7，否则可能使程序直接运行</a>
+</h3>
+<h3 class="topic">
+<a name="24o8rb5k80p0ecqpul6thaifdh">&nbsp;注意55 8B EC对应指令为</a>
+</h3>
+<h3 class="topic">
+<a name="4tb5dcj0vib2q26pan3rt0jnm7">&nbsp;&nbsp;push ebp</a>
+</h3>
+<h3 class="topic">
+<a name="7t5r2vvldmct5f9ekjnq6d258j">&nbsp;&nbsp;mov ebp,esp</a>
+</h3>
+<h3 class="topic">
+<a name="2l7kvujt8t5lt4hfurem7dajav">&nbsp;注意当在加壳程序中，发现oep后如果要给oep下断点，需要下硬件执行断点，不能下软件断点，因为软件断点将oep处代码改写为0xcc，在壳代码解密的过程中0xcc会被修改，使得断点失效</a>
+</h3>
+<h3 class="topic">
+<a name="2srp0k3cdsbqtfj9lpiqs2nslb">&nbsp;注意od中工具栏k中的调用链条是完整的，可以不用每一层都下断点，然后让程序重新执行才能断到指定位置，直接从对战中逆着往上找即可</a>
+</h3>
+<h3 class="topic">
+<a name="77t4foa1rdpq6qkgjvbdecnunr">&nbsp;&nbsp;1调用了2 2调用了3，可以直接找到3的调用位置即为程序oep</a>
+</h3>
+<p class="topicImage">
+<img src="class63day0522_files/6oigb28tcgb3anupi70b76ir3r.png"></p>
+<h3 class="topic">
+<a name="51jsg3t064tc7esibdrq8u5s8k">&nbsp;注意一般iat位于rdata区段的开头（rdata一般是第二个区段），而导入表在vs编译的程序中也保存在rdata中，且与iat相距不远，所以一般看到此类地址且内存空间中以20字节为单位进行变化，且第2、3个四字节常为0的结构体要警惕是否是在寻址导入表</a>
+</h3>
+<h3 class="topic">
+<a name="2b68avs67v660ovb2ivqd191jk">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class63day0522_files/61l7phj8g08pj9nv4pue7o2gcr.png"></p>
+<h3 class="topic">
+<a name="0kcrt19iuo04o3fovboe0ev4bv">&nbsp;&nbsp;1、中可以看到指令判断的地址位于iat附近iat(iat为422000)，</a>
+</h3>
+<h3 class="topic">
+<a name="1hvj8faqjdprnfdtt7d6qph5q1">&nbsp;&nbsp;2、中可以看出该内存空间结构体以5个四字节字段为一个单位，该结构体导入表的结构体</a>
+</h3>
+<h3 class="topic">
+<a name="395aqsrir8a1o3s9fk8mnbf1un">&nbsp;&nbsp;3、语句3是判断是否存在导入表</a>
+</h3>
+<h2 class="topic">
+<a name="1u5rn27r66e7191tvtht4ct2kl">补充</a>
+</h2>
+<h3 class="topic">
+<a name="40pbu8iortj8fb0tqv6qlupiv5">&nbsp;数据段</a>
+</h3>
+<h3 class="topic">
+<a name="7hko67nf08qs0mti04piruagso">&nbsp;&nbsp;.text</a>
+</h3>
+<h3 class="topic">
+<a name="1amggn2sos3uk2uu5i0jqhuoa5">&nbsp;&nbsp;&nbsp;代码段</a>
+</h3>
+<h3 class="topic">
+<a name="4tq6ofor9gdkpgj9letite7e8v">&nbsp;&nbsp;.data</a>
+</h3>
+<h3 class="topic">
+<a name="29nll13ufh3fenssllu7ob4v67">&nbsp;&nbsp;&nbsp;全局变量的初始值</a>
+</h3>
+<h3 class="topic">
+<a name="1p0bjh91dcacbmdp80ce5j69vj">&nbsp;&nbsp;.rdata</a>
+</h3>
+<h3 class="topic">
+<a name="37j2kd658lg6u0260bcjlb5n79">&nbsp;&nbsp;&nbsp;常量数据段</a>
+</h3>
+<h3 class="topic">
+<a name="08nlj4b36hn7ijkgn5el6mgj9h">&nbsp;&nbsp;&nbsp;&nbsp;vs中还保存导入表、导出表的数据</a>
+</h3>
+<h3 class="topic">
+<a name="6v5rque71sq1ec019sihaqqs9n">&nbsp;&nbsp;.reloc</a>
+</h3>
+<h3 class="topic">
+<a name="4u2j5ncibsjuujtqscb8bc1uoo">&nbsp;&nbsp;&nbsp;重定位段</a>
+</h3>
+<h3 class="topic">
+<a name="6nclalp8dab4cvkak8oe4q3k6v">&nbsp;&nbsp;.res</a>
+</h3>
+<h3 class="topic">
+<a name="0onh50o47mvf6c66es78s8pni7">&nbsp;&nbsp;&nbsp;资源</a>
+</h3>
+<h3 class="topic">
+<a name="7na1pv21jigi17blvu52f6ug08">&nbsp;&nbsp;.idata</a>
+</h3>
+<h3 class="topic">
+<a name="7kl9mg0qcjp242cqc6iusq08gg">&nbsp;&nbsp;&nbsp;导入表</a>
+</h3>
+<h3 class="topic">
+<a name="789ag4kb8p7bl76ssnu5sar55h">&nbsp;&nbsp;.edata</a>
+</h3>
+<h3 class="topic">
+<a name="72hlem0m9i9gqoeer2kfu8o3vj">&nbsp;&nbsp;&nbsp;导出表</a>
+</h3>
+<h3 class="topic">
+<a name="0lrn6pmecvgnk2l74p69m3v01g">&nbsp;链接过程中，链接器使用0x400000作为默认加载基址</a>
+</h3>
+<h3 class="topic">
+<a name="4psk5ip1otev9t84jqklt4dcrk">&nbsp;当在一个区段中使用了其他区段的数据时，指令中会使用va进行调用，此时需要针对该指令进行重定位</a>
+</h3>
+<h3 class="topic">
+<a name="6k60cqr27hcfjvqaa65vn5kvrc">&nbsp;&nbsp;ff15（call）  ff25（jmp）</a>
+</h3>
+<h3 class="topic">
+<a name="154q2l1n5eaa8pur1g3n7i4dlp">&nbsp;当使用相同区段中的数据，跳转指令使用偏移进行调用</a>
+</h3>
+<h3 class="topic">
+<a name="3njvniq6lt731cnvlkgv6mg8su">&nbsp;&nbsp;e8（call）  e9(jmp）</a>
+</h3>
+<h3 class="topic">
+<a name="0i54piijv0tbvtit04opgstfs6">&nbsp;判断当前是不是壳的代码，可以查看该代码是否壳代码的区段</a>
+</h3>
+</body>
+</html>

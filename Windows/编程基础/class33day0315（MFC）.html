@@ -1,0 +1,843 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>class33day0315（MFC）</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="1grq819ocenpt273q625sg8i79">class33day0315（MFC）</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="class33day0315%EF%BC%88MFC%EF%BC%89_files/images/class33day0315%EF%BC%88MFC%EF%BC%89.jpg"></div>
+<h2 class="topic">
+<a name="0pegnif3mlbqcsklf4rq22f9p6">MFC第一天</a>
+</h2>
+<h3 class="topic">
+<a name="4047tv7cftnsptsvtuhj9dkbf4">&nbsp;C++与SDK回顾</a>
+</h3>
+<h3 class="topic">
+<a name="1r01h4c4va12sss6v5kaioqkks">&nbsp;&nbsp;C++三大特性</a>
+</h3>
+<h3 class="topic">
+<a name="29drufd5lmrpbdukscnobst91b">&nbsp;&nbsp;&nbsp;封装</a>
+</h3>
+<h3 class="topic">
+<a name="0r32vkvjcvv05r0665p244vmmm">&nbsp;&nbsp;&nbsp;继承</a>
+</h3>
+<h3 class="topic">
+<a name="3j3rtmlnj7ktq7hmjqj5hrqtuo">&nbsp;&nbsp;&nbsp;多态</a>
+</h3>
+<h3 class="topic">
+<a name="5msgjm2q6c7uevi6c2p88jkdp8">&nbsp;&nbsp;SDK入口函数 WinMain</a>
+</h3>
+<h3 class="topic">
+<a name="7b99h2d5ad8g8lm5o9dutnhcvg">&nbsp;&nbsp;&nbsp;窗口创建流程</a>
+</h3>
+<h3 class="topic">
+<a name="6v0njhcca842mc7e4vbqackvk1">&nbsp;初识mfc</a>
+</h3>
+<h3 class="topic">
+<a name="7t8cge661ah5q7b3u6o4n3ik9b">&nbsp;&nbsp;mfc的历史</a>
+</h3>
+<h3 class="topic">
+<a name="467hqkubqsq5trrp3283b6l4gh">&nbsp;&nbsp;mfc：微软基础类库</a>
+</h3>
+<h3 class="topic">
+<a name="64gr5dther1vesua15l1ed3r4p">&nbsp;&nbsp;&nbsp;将SDK中的api封装成类，使用起来更加方便</a>
+</h3>
+<h3 class="topic">
+<a name="514qr8tinpll32583sfdjd4pet">&nbsp;&nbsp;sdk中的函数可以在mfc中使用</a>
+</h3>
+<h3 class="topic">
+<a name="3vdff8t7afobvh6lbmbollik4k">&nbsp;简单mfc程序</a>
+</h3>
+<h3 class="topic">
+<a name="6gk6l69lm7gtatifrrpphfutth">&nbsp;&nbsp;在工程-&gt;属性-&gt; MFC的使用-&gt;在共享的dll中使用MFC</a>
+</h3>
+<h3 class="topic">
+<a name="3u1v3kuj7ahghsuad58tkartob">&nbsp;&nbsp;创建空项目</a>
+</h3>
+<h3 class="topic">
+<a name="11943fr81rqldi872s96adkgkp">&nbsp;&nbsp;包含头文件</a>
+</h3>
+<h3 class="topic">
+<a name="1tl7gnfq8fgk81gr1ph1643cc7">&nbsp;&nbsp;&nbsp;#include&lt;afxwin.h&gt;</a>
+</h3>
+<h3 class="topic">
+<a name="6u8mlkc3l91h4n86sae63nlu5b">&nbsp;&nbsp;创建自己的窗口类（MyCWinApp） 并实现继承CWinApp类</a>
+</h3>
+<h3 class="topic">
+<a name="07iifdlgs09hji25qhlcl6983f">&nbsp;&nbsp;&nbsp;class MyCWinApp : public CWinApp</a>
+</h3>
+<h3 class="topic">
+<a name="3a5s66hp7mgiuoaof7h87blg7g">&nbsp;&nbsp;重写虚函数InitInstance（初始化实例）</a>
+</h3>
+<h3 class="topic">
+<a name="1q6lu64luki13ugnlk02fckjmt">&nbsp;&nbsp;&nbsp;在重写的初始化实例函数中创建窗口</a>
+</h3>
+<h3 class="topic">
+<a name="6gs7ivpud0fh4kbqlk94pspquc">&nbsp;&nbsp;&nbsp;&nbsp;new一个CFrameWnd类的对象</a>
+</h3>
+<h3 class="topic">
+<a name="1048dvbk49qkhua3isjs4badf8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这里必须通过指针接收new出的对象，因为直接定义类对象，产生的为局部变量，存储在栈空间中，函数范围之外无法使用</a>
+</h3>
+<h3 class="topic">
+<a name="18nlf520r6p8tt67795cufushr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过new在堆空间为类对象分配空间</a>
+</h3>
+<h3 class="topic">
+<a name="4u9c8n269779dnffvh65dbl0od">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这里也可以通过MyCWinApp类的成员变量或者函数全局变量保存新建的CFrameWnd类对象，只要保证不会因为InitInstance函数执行完毕而销毁就可以</a>
+</h3>
+<h3 class="topic">
+<a name="0s40ugv5ahrqtnklq1kocnare1">&nbsp;&nbsp;&nbsp;&nbsp;通过类指针调用Create函数创建窗口</a>
+</h3>
+<h3 class="topic">
+<a name="3jd4r26k45gvi025p4nohp5d88">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;第一个参数类名可以为NULL</a>
+</h3>
+<h3 class="topic">
+<a name="7as65uu69ovvetttej1ttq3t6u">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;因为我们并没有设计这个类</a>
+</h3>
+<h3 class="topic">
+<a name="3eoatrndnnk9vh51q49ok0mjnr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;第二个参数为窗口名</a>
+</h3>
+<h3 class="topic">
+<a name="4mfkd6ghd0p9t1qit8otockbtc">&nbsp;&nbsp;&nbsp;&nbsp;通过类指针调用函数ShowWindow显示窗口</a>
+</h3>
+<h3 class="topic">
+<a name="03gjb4gfvoe22gsvrij2magak0">&nbsp;&nbsp;&nbsp;&nbsp;将当前的类指针赋值给主窗口句柄（重要！）</a>
+</h3>
+<h3 class="topic">
+<a name="671gb5n9722ccd2mai8kbr479m">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;（主窗口句柄m_pMainWnd是CWinApp的成员变量）</a>
+</h3>
+<h3 class="topic">
+<a name="7dbc5df6p47sbn98jnar939007">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;消息循环是通过该成员变量进行</a>
+</h3>
+<h3 class="topic">
+<a name="7ipj7o2h0hpjn5nf36vkcu4rbf">&nbsp;&nbsp;&nbsp;&nbsp;给初始化实例函数返回 return true，InitInstance函数结束</a>
+</h3>
+<h3 class="topic">
+<a name="2f3dbgfrm8q7fi0cef4lvrn0jm">&nbsp;&nbsp;实例化一个全局MyCWinApp对象</a>
+</h3>
+<h3 class="topic">
+<a name="7gr36k4n4sja1noh621orhr8n5">&nbsp;&nbsp;&nbsp;MyCWinApp obj;</a>
+</h3>
+<h3 class="topic">
+<a name="6c8o75d3h7v6bciu2gfilodl00">&nbsp;&nbsp;问题</a>
+</h3>
+<h3 class="topic">
+<a name="4r5f2ccop46emm3rvjj5bm3nte">&nbsp;&nbsp;&nbsp;MFC有没有执行main函数</a>
+</h3>
+<h3 class="topic">
+<a name="642gl944bdun1rifod8vuqotlv">&nbsp;&nbsp;&nbsp;&nbsp;执行了winmian，MFC框架提供了winmain函数并进行了执行</a>
+</h3>
+<h3 class="topic">
+<a name="7phtk0rfku1o1i2sltrlg4rrd8">&nbsp;&nbsp;&nbsp;&nbsp;WinMian函数调用了afxWinMian函数，后者调用了InitInstance函数</a>
+</h3>
+<h3 class="topic">
+<a name="4dg6rmhsncnlp1g0q9bnbge68c">&nbsp;&nbsp;&nbsp;m_pMainWnd什么时候检测的</a>
+</h3>
+<h3 class="topic">
+<a name="4veddk1d1jk39efdbcamhg5bcn">&nbsp;&nbsp;&nbsp;&nbsp;在InitInstance函数return true之后返回到afxwinmain，之后返回到winmian</a>
+</h3>
+<h3 class="topic">
+<a name="5g3390jhie4c1583tc9gpbot8l">&nbsp;&nbsp;&nbsp;什么是符号</a>
+</h3>
+<h3 class="topic">
+<a name="02tace449cj99lhccecusapbb5">&nbsp;&nbsp;&nbsp;&nbsp;程序文件夹中的pbd文件即为符号</a>
+</h3>
+<h3 class="topic">
+<a name="2rhhpjjf0ol1nsd8en1op2iaa1">&nbsp;&nbsp;&nbsp;&nbsp;符号中标识了源码 函数名 变量名 结构体 等的位置</a>
+</h3>
+<h3 class="topic">
+<a name="49iftt3g1kis8688l8oddnenip">&nbsp;&nbsp;&nbsp;&nbsp;之所以可以进行单步调试是因为符号已经将源码位置进行标识</a>
+</h3>
+<h3 class="topic">
+<a name="5s7n0dnd6nnqki41741u7vlko7">&nbsp;&nbsp;&nbsp;&nbsp;符号文件需要在微软的库中进行下载</a>
+</h3>
+<h3 class="topic">
+<a name="3v06evn7023isjj0js0ccfg7vi">&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="3g3t32pj7ccj0460mrcittes5e">&nbsp;&nbsp;&nbsp;//1.包含头文件&#13;
+#include&lt;afxwin.h&gt;&#13;
+//2.实现继承CWinApp类&#13;
+class MyCWinApp : public CWinApp&#13;
+{&#13;
+	//3. 重写InitInstance&#13;
+	virtual BOOL InitInstance()&#13;
+	{&#13;
+		//4.创建窗口&#13;
+		//窗口框架类&#13;
+		// CFrameWnd p ; //全局对象,new出成员，不能是局部变量&#13;
+		CFrameWnd *p = new CFrameWnd;&#13;
+&#13;
+		//创建窗口&#13;
+		p-&gt;Create(NULL, L"第一个MFC窗口");&#13;
+		p-&gt;ShowWindow(SW_SHOW);&#13;
+&#13;
+		//5. 给m_pMainWnd赋值，保存主窗口句柄&#13;
+		m_pMainWnd = p;&#13;
+		return TRUE;&#13;
+	}&#13;
+};&#13;
+//6. 实例化一个全局MyCWinApp对象&#13;
+MyCWinApp theApp;</a>
+</h3>
+<h3 class="topic">
+<a name="6an32aplqdh9ukcl5d9j4s9emo">&nbsp;创建默认的mfc项目</a>
+</h3>
+<h3 class="topic">
+<a name="5q60asv7fov86m0i8l0usbvors">&nbsp;&nbsp;创建mfc应用程序</a>
+</h3>
+<h3 class="topic">
+<a name="3k9irl3s102ju4enkauelp1h92">&nbsp;&nbsp;&nbsp;基于对话框</a>
+</h3>
+<h3 class="topic">
+<a name="78vh83k8r9b9etp2o3p5dv76ok">&nbsp;&nbsp;&nbsp;&nbsp;基于中文名称的默认mfc项目会崩溃</a>
+</h3>
+<h3 class="topic">
+<a name="0f9qrrd0p6s0bbabj886j73q4m">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;解决方法</a>
+</h3>
+<h3 class="topic">
+<a name="5pah25jok4i38m3t3ecsf1jhsh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在资源文件中将关于中文的部分全部删除</a>
+</h3>
+<h3 class="topic">
+<a name="56bahb82tu73no6dl4i2daiuil">&nbsp;&nbsp;默认项目（是一个对话框程序）</a>
+</h3>
+<h3 class="topic">
+<a name="53jf3455vpeq3co409tkmvp5ci">&nbsp;&nbsp;&nbsp;至少有两个类</a>
+</h3>
+<h3 class="topic">
+<a name="0o1e0qu4g8ohbf51inj3ghf0lu">&nbsp;&nbsp;&nbsp;&nbsp;继承自CWinApp类</a>
+</h3>
+<h3 class="topic">
+<a name="7ikk1fkc4va8bge5te232hc77e">&nbsp;&nbsp;&nbsp;&nbsp;继承自CDialogEx类</a>
+</h3>
+<h3 class="topic">
+<a name="6ok6d0soigpt8059d2tuld2jqv">&nbsp;MFC中的类图</a>
+</h3>
+<h3 class="topic">
+<a name="32r9jv648vr3mr4fb4duqa8kj6">&nbsp;&nbsp;mfc中的类均继承自CObject</a>
+</h3>
+<h3 class="topic">
+<a name="18483s8gg6ubddmrbc159bbmv8">&nbsp;&nbsp;CWnd类是mfc编程的重点  在WinApp的InitInstance方法中必须把窗口指针赋值给m_pMainWnd  m_pMainWnd 就是CWnd类型的</a>
+</h3>
+<h3 class="topic">
+<a name="2no79p95n2ku878r728tnqkvfi">&nbsp;&nbsp;简单的数据类</a>
+</h3>
+<h3 class="topic">
+<a name="11vru29r96ddmqcsdtva3dq93m">&nbsp;&nbsp;&nbsp;cPoint类</a>
+</h3>
+<h3 class="topic">
+<a name="6h1fpgl2420v3p3vtg50589htq">&nbsp;&nbsp;&nbsp;&nbsp;点类</a>
+</h3>
+<h3 class="topic">
+<a name="790mm862usjpcbgvqkhae1f9r8">&nbsp;&nbsp;&nbsp;CPect类 </a>
+</h3>
+<h3 class="topic">
+<a name="190r8q9bohf068v07mktmrlf29">&nbsp;&nbsp;&nbsp;&nbsp;矩形类</a>
+</h3>
+<h3 class="topic">
+<a name="4mdsna5pec9c1ngdt8t7kchhnj">&nbsp;&nbsp;&nbsp;CString类</a>
+</h3>
+<h3 class="topic">
+<a name="7cri06ge5rr4h35km71fbjbiv4">&nbsp;&nbsp;&nbsp;&nbsp;是字符串操作类，存在大量字符和字符串操作</a>
+</h3>
+<h3 class="topic">
+<a name="0i9vel9t8vqoj9q70270smr7lt">&nbsp;&nbsp;&nbsp;&nbsp;使用演示</a>
+</h3>
+<h3 class="topic">
+<a name="65nml13f9vmbjn8k1bnqasbd2f">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在InitInstance函数中定义CString类的对象</a>
+</h3>
+<h3 class="topic">
+<a name="21lkuutq364pj2t0etkva7ve18">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用该类对象调用Format函数</a>
+</h3>
+<h3 class="topic">
+<a name="57qngak06f5kfsepefdpe784ha">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;调用GetLenth获取字符串长度</a>
+</h3>
+<h3 class="topic">
+<a name="4t379o7jgc0t7nq3vn3a8ju1de">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;调用GetBuffer函数申请内存空间</a>
+</h3>
+<h3 class="topic">
+<a name="0r9u66jf666dvsgol09un0c8tj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用MessageBox()弹出字符串窗口</a>
+</h3>
+<h3 class="topic">
+<a name="523ivfdk1o2tkg3rbclh9jdq8o">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="092mn51c8uo3psn8bpimbahvis">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CString str;&#13;
+str.Format(L"%d%s", 1000, L" hello");&#13;
+int x = str.GetLength();&#13;
+TCHAR *pbuff = str.GetBuffer();&#13;
+MessageBox(0, str, 0, 0);</a>
+</h3>
+<h3 class="topic">
+<a name="2u481vql6riud5a3obqd8f0a2l">&nbsp;&nbsp;&nbsp;以上类可以在消息处理过程中定义对象，并且调用相关函数，达到处理响应的目的</a>
+</h3>
+<h3 class="topic">
+<a name="49a0diap3iba3j0k1q0828kbna">&nbsp;对话框程序</a>
+</h3>
+<h3 class="topic">
+<a name="2df5ml1sjn1dvedn5hf7tpn7hn">&nbsp;&nbsp;新建空项目</a>
+</h3>
+<h3 class="topic">
+<a name="6jvqb87dhv8l38b6jtiv4ie00q">&nbsp;&nbsp;完成最基本的MFC程序</a>
+</h3>
+<h3 class="topic">
+<a name="2mbin02kcq8vjtkp6rvpiobo79">&nbsp;&nbsp;&nbsp;参照之前简单的MFC程序</a>
+</h3>
+<h3 class="topic">
+<a name="7u33jr50jiq4kkqihgo1796tfh">&nbsp;&nbsp;添加对话框资源，在对话框中设置相应空间</a>
+</h3>
+<h3 class="topic">
+<a name="7ggs236t6v1p9p4maph7bk78t4">&nbsp;&nbsp;&nbsp;在对话框绘制界面中，在对话框上点击右键，添加Dialog类，使类和对话框绑定</a>
+</h3>
+<h3 class="topic">
+<a name="5h6e7vtgmrl6j100cjoh3rgp70">&nbsp;&nbsp;&nbsp;&nbsp;注意要使</a>
+</h3>
+<h3 class="topic">
+<a name="5jd7q8l8b3il5daj62naucjkcg">&nbsp;&nbsp;&nbsp;会自动在工程文件夹下生成对话框相应的类 包括.h 和.cpp文件</a>
+</h3>
+<h3 class="topic">
+<a name="6a889fva2u3d1akr6nn6vvtjbj">&nbsp;&nbsp;&nbsp;该类继承自CDialogEx类</a>
+</h3>
+<h3 class="topic">
+<a name="2ghr83vabrq4ou4a0dg176kcsg">&nbsp;&nbsp;需要新生成Dialog类的.h文件中包含#include&lt;afxdialogex.h&gt;&#13;
+#include"resource.h"</a>
+</h3>
+<h3 class="topic">
+<a name="5mik4juflgd00tc8b1ofhkqg2i">&nbsp;&nbsp;在MFC主程序中创建对话框&#13;
+（需要包含对话框类的头文件）</a>
+</h3>
+<h3 class="topic">
+<a name="30ccg5rss7bb5qo8prvke0tvah">&nbsp;&nbsp;&nbsp;在InitInstance函数中定义对话框类的对象</a>
+</h3>
+<h3 class="topic">
+<a name="7cski4i7s5vulin2jf9tft4i77">&nbsp;&nbsp;&nbsp;&nbsp;模态对话框</a>
+</h3>
+<h3 class="topic">
+<a name="5eip73vn1cvrdf5imenhgbqdkv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;定义对话框类指针，new对象出来  （或直接定义对象）</a>
+</h3>
+<h3 class="topic">
+<a name="0egc7d9nmbchttf1sgmahsg4ui">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;或写成成员</a>
+</h3>
+<h3 class="topic">
+<a name="3crcvepgbmoh6et9vk82avq1tp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这里的对话框类就是之前为对话框资源生成的类</a>
+</h3>
+<h3 class="topic">
+<a name="10ia10teecnnrqu0mei420793e">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用该指针（或对象）调用DoModal函数，参数为空</a>
+</h3>
+<h3 class="topic">
+<a name="0ppumk8j7q7ugr8iqgtvnvh17a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;模态对话框不需要手动编写消息循环，一般作为主窗口使用</a>
+</h3>
+<h3 class="topic">
+<a name="7hk1jp9143p4j4j0f4ah5f5vfo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="38p3j7htm8lim6r9j66cnl7lts">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MyDialog* dlg = new MyDialog;&#13;
+dlg-&gt;DoModal();&#13;
+//m_pMainWnd = dlg;创建模态对话框不需要该句</a>
+</h3>
+<h3 class="topic">
+<a name="10ologljajqhck1ugsq0d2ekvh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;区别于SDK中的Dialogbox</a>
+</h3>
+<h3 class="topic">
+<a name="60vkdintiq9n561adbr5q7jsev">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;模态对话框有两种显示方式</a>
+</h3>
+<h3 class="topic">
+<a name="04shubnl5qb7d0pnfbp5jnfcas">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过对象</a>
+</h3>
+<h3 class="topic">
+<a name="06svglkpf1b84mooc1i4pcvq3c">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MyDialog dlg;&#13;
+dlg.DoModal();</a>
+</h3>
+<h3 class="topic">
+<a name="6bdq3f767um6iqv7te7g88hprl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过指针</a>
+</h3>
+<h3 class="topic">
+<a name="3kdvug7bk76tq4ce79eg8v8ed7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MyDialog* dlg = new MyDialog;&#13;
+dlg-&gt;DoModal();</a>
+</h3>
+<h3 class="topic">
+<a name="79fec35ge2hdlgnfoet2958duk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//这里模态对话框有两种写法，直接定义对话框类的对象&#13;
+//或者通过类对象指针调用DoModal函数&#13;
+//两者均不需要将m_pMainWnd进行赋值&#13;
+//因为模态对话框自带消息循环，不需要出InitInstance函数</a>
+</h3>
+<h3 class="topic">
+<a name="66a142gcqcah1r0j9dv61eh9hn">&nbsp;&nbsp;&nbsp;&nbsp;非模态对话框</a>
+</h3>
+<h3 class="topic">
+<a name="54c05bf8f9flrtbgknm1eteih3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;定义对话框类指针  new对象出来</a>
+</h3>
+<h3 class="topic">
+<a name="111lnjboahmq1v3d1ue6b82a09">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用该指针调用Create函数，参数为对话框资源id</a>
+</h3>
+<h3 class="topic">
+<a name="04074s8a9pbvlaoq9lj6jngsh6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用该指针调用ShowWindow函数，参数为SW_SHOW</a>
+</h3>
+<h3 class="topic">
+<a name="1vb9kiqmgq3a56l19ifkjb8iql">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将当前的类指针赋值给主窗口句柄</a>
+</h3>
+<h3 class="topic">
+<a name="5ca9i1h3i3orirbr7au0u2mpqu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;非模态对话框需要手动编写消息循环</a>
+</h3>
+<h3 class="topic">
+<a name="4bcnqud0ep4dorr40m65j3n2bm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="2c7qf1k5et61nd2tq2j6tm12ke">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//非模态对胡框，需要消息循环，线程不会堵塞&#13;
+//MyDialog  *dlg = new MyDialog; //不能是局部变量&#13;
+//dlg-&gt;Create(IDD_DIALOG1);&#13;
+//dlg-&gt;ShowWindow(SW_SHOW);&#13;
+//m_pMainWnd = dlg;</a>
+</h3>
+<h3 class="topic">
+<a name="3pgb3i49ua2furbfdbe6kmi5q3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;区别于SDK中的CreateDialog</a>
+</h3>
+<h3 class="topic">
+<a name="082o7lmcsi0bsun86naf8uq4ke">&nbsp;&nbsp;消息响应</a>
+</h3>
+<h3 class="topic">
+<a name="2d9vlm3js1up4kbddfv07pi9hh">&nbsp;&nbsp;&nbsp;响应对话框的事件</a>
+</h3>
+<h3 class="topic">
+<a name="5qla99tm8q86bdlhassv9ecaek">&nbsp;&nbsp;&nbsp;&nbsp;在对话框资源界面中，在对话框上右键类向导</a>
+</h3>
+<h3 class="topic">
+<a name="0ni73oogmt2dhmrgku30u56ac5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;选定对应项目名</a>
+</h3>
+<h3 class="topic">
+<a name="071pt05s92r2shf7aclfur75bq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;选定对应类名</a>
+</h3>
+<h3 class="topic">
+<a name="32r5pibm6ka2jmk41ujrlrpur8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;选定需要响应消息</a>
+</h3>
+<h3 class="topic">
+<a name="48rvfda085dubjb4jhfb4m5olk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这里的消息是指发生在对话框窗口界面上的消息</a>
+</h3>
+<h3 class="topic">
+<a name="135a8n9v5nmkmbs9v7gc5ipnla">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;添加处理程序</a>
+</h3>
+<h3 class="topic">
+<a name="1ei48i8vptmdo9banbqfhfb4uc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;编辑代码</a>
+</h3>
+<h3 class="topic">
+<a name="4u35bi3m6m5tkcv3nt145u1515">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;跳回到对话框类，发现该类中有公有成员函数被声明定义</a>
+</h3>
+<h3 class="topic">
+<a name="33m31pj4o4bajvh7jjvfjdgbva">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该成员函数带有相关参数，可以用来描述事件的发生，（比如鼠标点击，存在参数可以标识鼠标点击的坐标）</a>
+</h3>
+<h3 class="topic">
+<a name="2gvm8n27gu3tetqcnhheb3o23b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在该函数内this指针指向当前对话框句柄，可以使用this-&gt;调用当前对话框类中所有成员函数</a>
+</h3>
+<h3 class="topic">
+<a name="6hb7d2r11i0tbsu7i92stvn2d9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以在该函数中编写对特定消息的响应</a>
+</h3>
+<h3 class="topic">
+<a name="4saismrpo57sc3lskrpct4d0l5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;编写消息响应的过程中，可以使用mfc中的类定义对象，并调用特定函数，比如定义CString类对象用于显示字符串</a>
+</h3>
+<h3 class="topic">
+<a name="3vp3h1e9ah3l341fqo8tosr33g">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mfc中的成员函数会覆盖SDK中的对应函数</a>
+</h3>
+<h3 class="topic">
+<a name="5nnspdcd585knv9483drpk0068">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果要使用SDK中的函数，需要函数名前加::</a>
+</h3>
+<h3 class="topic">
+<a name="4j52qufa5svlc4vs8ffrgp3mr4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;实现代码与消息响应的关键在于消息映射</a>
+</h3>
+<h3 class="topic">
+<a name="7ga5ve3uup2kdhabbg3nredq2s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;本质是一个结构体数组，将特定消息与函数关联在一起</a>
+</h3>
+<h3 class="topic">
+<a name="2upjmfu497obatrms8jkcsfaof">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;消息映射机制</a>
+</h3>
+<h3 class="topic">
+<a name="2oan7635a584iu1tjs1n6r5j41">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;声明消息映射 : DECLARE_MESSAGE_MAP</a>
+</h3>
+<h3 class="topic">
+<a name="2k9actsltdc59jhvb6ti1cvgbk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;定义消息映射</a>
+</h3>
+<h3 class="topic">
+<a name="1vd6gptd5a7st1bb3sq92ostea">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BEGIN_MESSAGE_MAP     </a>
+</h3>
+<h3 class="topic">
+<a name="3lm7hct7t6ll4otk0sf6mg4mnr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;END_MESSAGE_MAP</a>
+</h3>
+<h3 class="topic">
+<a name="5u5a7q00bbc0o4fr1kobfq9l6n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;需要添加消息映射宏(设置类向导的时候会自动添加上)</a>
+</h3>
+<h3 class="topic">
+<a name="01gijs66ud2rbv6h84dfrtllk4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在h文件中</a>
+</h3>
+<h3 class="topic">
+<a name="65a2mi7p146i2u8rv2k6m6cc0j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在cpp文件中</a>
+</h3>
+<h3 class="topic">
+<a name="29a9mc4k72bsch4vvqeiv62qdh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="4p4kqkah95859f075utsnimiv5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// MyDialog 消息处理程序&#13;
+void MyDialog::OnRButtonDown(UINT nFlags, CPoint point)&#13;
+{&#13;
+  // TODO: 在此添加消息处理程序代码和/或调用默认值&#13;
+  //创建CString类的对象&#13;
+  CString str = L"hello MFC";&#13;
+  // MFC中成员函数覆盖SDK中MessageBox&#13;
+  //弹出窗口打印字符串&#13;
+  MessageBox(str);&#13;
+  // this-&gt;m_hWnd; 当前窗口句柄&#13;
+	&#13;
+  //SDK中MessageBox&#13;
+  //::MessageBox(0, 0, 0, 0);&#13;
+&#13;
+  //这一句是消息处理程序生成的时候自动添加的&#13;
+  CDialogEx::OnRButtonDown(nFlags, point);&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="6r48f36s9rbjlvnodb424jofs2">&nbsp;&nbsp;&nbsp;响应对话框上控件的事件</a>
+</h3>
+<h3 class="topic">
+<a name="6g7493opccdciqimefhvkcl85g">&nbsp;&nbsp;&nbsp;&nbsp;在对话框资源界面中，在对话框上右键类向导</a>
+</h3>
+<h3 class="topic">
+<a name="47pasbb459acb55ssagnqq3phr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在对话框上右键类向导</a>
+</h3>
+<h3 class="topic">
+<a name="7adsi641c82vi4kf8r3p3v9g82">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;选择对话框对应的项目名</a>
+</h3>
+<h3 class="topic">
+<a name="4ejk576653fe1vfslhcgnek2ii">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;选择对话框对应的类名</a>
+</h3>
+<h3 class="topic">
+<a name="6qnkr2a0nrlukckbod1n5kkhf9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;选择命令标签页</a>
+</h3>
+<h3 class="topic">
+<a name="3o0fk5ntgcerd1pq1ic4rvm6mg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;命令特指就是WM_COMMAND</a>
+</h3>
+<h3 class="topic">
+<a name="3ck035pa9umkam4i7bqmh3vrqr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;此举是设置对话框（主窗口）对WM_COMMAND消息的响应</a>
+</h3>
+<h3 class="topic">
+<a name="38ra6bq57utea9ukp5r6v6k0h2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;指定按钮（控件）id</a>
+</h3>
+<h3 class="topic">
+<a name="2ti1ufou4p5idhitb20lepu5nb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;设置特定id的按钮（控件）发送的消息</a>
+</h3>
+<h3 class="topic">
+<a name="2l0knvf8gjo6vkvues5lc8gr49">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;针对按钮按键，被按下的消息为BN_CLICKED</a>
+</h3>
+<h3 class="topic">
+<a name="3v0hb5cs3og7bij8n8l6pilubd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;添加处理程序，可以指定成员函数名</a>
+</h3>
+<h3 class="topic">
+<a name="4bmbh614rljhfn3iibqbv3a934">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;编辑代码</a>
+</h3>
+<h3 class="topic">
+<a name="1ok1rrp5hr99ho5j22djuncs7m">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;跳回到对话框类，发现该类中有公有成员函数被声明定义</a>
+</h3>
+<h3 class="topic">
+<a name="1au988e7nbrmj3t866ba5l0pkg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该成员函数带有相关参数，可以用来描述事件的发生，（比如鼠标点击，存在参数可以标识鼠标点击的坐标）</a>
+</h3>
+<h3 class="topic">
+<a name="00mbj9msgi59fk9p6a5atlsck5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该成员函数用于响应对话框（主窗口）上特定控件发生的消息</a>
+</h3>
+<h3 class="topic">
+<a name="56jgt8cffve2c65hlm54vqhq14">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在消息映射中会包含事件类型和控件id针对处理函数的对应关联</a>
+</h3>
+<h3 class="topic">
+<a name="77042314v8c5i4ivsvk46g4voe">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当控件id和事件被匹配的后，会直接调用相应函数</a>
+</h3>
+<h3 class="topic">
+<a name="25h40t2c9l63nnul82fgvoj5v8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;针对按钮控件，添加处理函数时</a>
+</h3>
+<h3 class="topic">
+<a name="0cu3gpo232s8s9imp70kt5enlp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以双击，自动在对话框类中生成针对点击事件的处理程序</a>
+</h3>
+<h3 class="topic">
+<a name="542ipabv2cpaiqgn9lcs9d8itk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以右键添加事件处理程序，指定消息类型 类名 函数名</a>
+</h3>
+<h3 class="topic">
+<a name="245rfh32fn9omaodbji5pjo74n">&nbsp;控件编程</a>
+</h3>
+<h3 class="topic">
+<a name="4cs6havj9puqgk71c6vmv6on1c">&nbsp;&nbsp;控件绑定（以编辑框控件为例）</a>
+</h3>
+<h3 class="topic">
+<a name="4otbfr3iav6c7evkft1k2osvn9">&nbsp;&nbsp;&nbsp;添加值类型（绑定值类型）</a>
+</h3>
+<h3 class="topic">
+<a name="7g4da874uhrj70hh8iaq0c8e62">&nbsp;&nbsp;&nbsp;&nbsp;在控件上 右键 添加变量（指定控件与某个变量的关系）</a>
+</h3>
+<h3 class="topic">
+<a name="3chfv7nd9jt3ctogk270n1so80">&nbsp;&nbsp;&nbsp;&nbsp;类别选为值</a>
+</h3>
+<h3 class="topic">
+<a name="71cl89ihsri5p4uu7rnfr0o5eo">&nbsp;&nbsp;&nbsp;&nbsp;变量类型选为 CString</a>
+</h3>
+<h3 class="topic">
+<a name="7gaks7u3vagu8atr5uo3fmee15">&nbsp;&nbsp;&nbsp;&nbsp;设置变量名</a>
+</h3>
+<h3 class="topic">
+<a name="7mdes1v88fh34iqrp61afb7t51">&nbsp;&nbsp;&nbsp;&nbsp;在对话框类中生成公有成员变量，也会生成对应的成员函数，函数中将变量与控件id关联起来，对变量的操作就等同于操作控件</a>
+</h3>
+<h3 class="topic">
+<a name="3d3uc03s8gcjouci720p5gcptn">&nbsp;&nbsp;&nbsp;&nbsp;在对话框类的其他成员函数中可以对该变量进行改变</a>
+</h3>
+<h3 class="topic">
+<a name="4ivbolcabln9ni22q98tcf56tf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;改变变量从而改变控件上的数据</a>
+</h3>
+<h3 class="topic">
+<a name="28rhusnf9but1dcvev0mvaoqih">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;先改变变量</a>
+</h3>
+<h3 class="topic">
+<a name="1sugh1bepv6hg6uski0hse47qa">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;改变之后需要调用UpdateData(FALSE);将数据更新到窗口上</a>
+</h3>
+<h3 class="topic">
+<a name="28rllcopvc459d2vjk10qf3upi">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;获取控件上的数据到变量上</a>
+</h3>
+<h3 class="topic">
+<a name="0sf8gog1v7g8tprp3df947f3pg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用UpdateData(true)，获取控件上数据到变量</a>
+</h3>
+<h3 class="topic">
+<a name="0vhnq26fojvisdfid87n02mdet">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;子主题 1</a>
+</h3>
+<h3 class="topic">
+<a name="0rf01itunh89er4a3dmnh6sf0b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用相关联的变量</a>
+</h3>
+<h3 class="topic">
+<a name="76l01v1cd4qqfe255958ulvlcc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mfc编程的过程中，先使用UpdateData（true）将控件上的内容传输到绑定变量中，后使用UpdateData（false）将绑定变量的数据同步到控件中</a>
+</h3>
+<h3 class="topic">
+<a name="3cveerkh1c4kt9i0kuivanasiq">&nbsp;&nbsp;&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="1qe7r22t3nr55agn36317v7jqm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;void MyDialog::OnBnClickedButton2()&#13;
+{&#13;
+	//获取控件上的数据&#13;
+	UpdateData(TRUE);&#13;
+	// 使用绑定变量接收控件上的值，并弹窗输出&#13;
+	MessageBox(m_EditStr1);&#13;
+	//编辑框绑定变量&#13;
+	m_EditStr1 = L"  hello world";&#13;
+	//更新数据到窗口上&#13;
+	UpdateData(FALSE);&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="66q14t0f9i8d42hkqd3enpncuo">&nbsp;&nbsp;&nbsp;添加控件类型（绑定控件类型）</a>
+</h3>
+<h3 class="topic">
+<a name="31jk3boggcv1u514jfd2j7p50r">&nbsp;&nbsp;&nbsp;&nbsp;在控件上 右键 添加变量</a>
+</h3>
+<h3 class="topic">
+<a name="6f7tmqi4un2sl5crjtu6nbh5hc">&nbsp;&nbsp;&nbsp;&nbsp;类别选为控件</a>
+</h3>
+<h3 class="topic">
+<a name="3pssfpnmvdc7nbu78a9q0imvjl">&nbsp;&nbsp;&nbsp;&nbsp;控件类型选为 CEdit</a>
+</h3>
+<h3 class="topic">
+<a name="6j385tjbisjg8cg5rcg4el6oen">&nbsp;&nbsp;&nbsp;&nbsp;设置控件名</a>
+</h3>
+<h3 class="topic">
+<a name="49m8gkfdmafcvbl8c0lbpo683a">&nbsp;&nbsp;&nbsp;&nbsp;在对话框类中生成公有控件类对象，该控件与窗口上的控件相绑定，对该控件的修改都会反映到窗口上的控件</a>
+</h3>
+<h3 class="topic">
+<a name="6gl4sv46vud7vdfonesur576br">&nbsp;&nbsp;&nbsp;&nbsp;通过绑定控件，可以调用控件类的成员函数，精确修窗口上的控件</a>
+</h3>
+<h3 class="topic">
+<a name="2j0hhn03ipr70b8vjin89l9oqp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;比如设置控件内容</a>
+</h3>
+<h3 class="topic">
+<a name="7k7csp02fa10bktnbgi7ksdetj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;比如设置控件大小位置</a>
+</h3>
+<h3 class="topic">
+<a name="6j8r03tfr1g87k9a4cpfhr6lqr">&nbsp;&nbsp;&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="1hrb8r0699teunfcol4q4vaqne">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;void MyDialog::OnShowHello()&#13;
+{&#13;
+	//控制edit变量 - 控件类型&#13;
+	//通过改变绑定对象的内容，改变对话框上的控件&#13;
+	//为绑定编辑框控件设置内容&#13;
+	m_editCtl.SetWindowTextW(L"hello");&#13;
+	//设置绑定编辑框控件的位置&#13;
+	m_editCtl.MoveWindow(200, 20, 70, 70);&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="79kqmjbpv7tnhu2gud0qvldpe7">&nbsp;&nbsp;&nbsp;控件绑定注意</a>
+</h3>
+<h3 class="topic">
+<a name="5i356v0t4opnbspgek5qi85a44">&nbsp;&nbsp;&nbsp;&nbsp;同一个绑定类型只能绑定一次</a>
+</h3>
+<h3 class="topic">
+<a name="31bor72mgjjubpasgssifgh6od">&nbsp;&nbsp;&nbsp;&nbsp;有的控件两种类型均可以绑定，有的控件只能绑定一种类型</a>
+</h3>
+<h3 class="topic">
+<a name="6i7pv4th1rfo4vbnh0nkp16l0a">&nbsp;&nbsp;控件派生类</a>
+</h3>
+<h3 class="topic">
+<a name="388lr4kdg0gel4p3u2hmr0vtpn">&nbsp;&nbsp;&nbsp;添加按钮</a>
+</h3>
+<h3 class="topic">
+<a name="6fcvf96i1lmd7qvbli6sh77ie2">&nbsp;&nbsp;&nbsp;绑定变量（按钮只能绑定控件类）</a>
+</h3>
+<h3 class="topic">
+<a name="40h099onr0n8gc2l1ncc3m93f8">&nbsp;&nbsp;&nbsp;&nbsp;在对话框类中生成一个CButton（按钮类）的控件对象成员（公有）</a>
+</h3>
+<h3 class="topic">
+<a name="4b3gmsac3jnoo5518unqh4qiii">&nbsp;&nbsp;&nbsp;在添加类向导上点击添加类-&gt;添加MFC类</a>
+</h3>
+<h3 class="topic">
+<a name="2ap0pu7hm2fv31qupq7estbqu9">&nbsp;&nbsp;&nbsp;设置基类为CButton类</a>
+</h3>
+<h3 class="topic">
+<a name="0j2vodsvn9d1ug6mivfg8itcnj">&nbsp;&nbsp;&nbsp;设置类名MyCButton</a>
+</h3>
+<h3 class="topic">
+<a name="5d7rvf7bmjkbqb7r96bivgdkcu">&nbsp;&nbsp;&nbsp;&nbsp;将之前绑定的控件的类型改成MyCButton，从而建立窗口上的按钮与派生类的关系</a>
+</h3>
+<h3 class="topic">
+<a name="0qukcmmr73i083me5i80f3majk">&nbsp;&nbsp;&nbsp;工程中会生成一个继承自CButton类的继承类MyCButton</a>
+</h3>
+<h3 class="topic">
+<a name="4b9i87rsmg9ic7sraclfi9im9k">&nbsp;&nbsp;&nbsp;右键按钮添加类向导，类名设置为新派生出来的类，选择要处理的信息，添加处理程序</a>
+</h3>
+<h3 class="topic">
+<a name="0hsbj07vtddv6ind6ldfa7gs41">&nbsp;&nbsp;&nbsp;系统会在派生出来的类中添加相应的处理程序</a>
+</h3>
+<h3 class="topic">
+<a name="3gesgm13rdt90mkn9vs247263d">&nbsp;&nbsp;&nbsp;&nbsp;该处理程序会重定义基类处理相应消息的的成员函数，则在派生类（MyCButton）中实现了对基类（CButton）中相同消息的不同处理</a>
+</h3>
+<h3 class="topic">
+<a name="53tl3tpo7bb9uc34008uj16n4t">&nbsp;&nbsp;&nbsp;在处理程序中使用this即为对应按钮控件的句柄，this-&gt;可以通过调用函数改变该按钮的性质</a>
+</h3>
+<h3 class="topic">
+<a name="5g30jaslchakcijtgablmqilrt">&nbsp;&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="10sqqv1n17vd3pkaienf6c1uiq">&nbsp;&nbsp;&nbsp;&nbsp;void MyButton::OnMouseMove(UINT nFlags, CPoint point)&#13;
+{&#13;
+	//移动按钮&#13;
+	CRect rt;&#13;
+	GetClientRect(rt);&#13;
+	int x = rand() % 200;&#13;
+	int y = rand() % 200;&#13;
+	this-&gt;MoveWindow(x,y,rt.Width(),rt.Height(), TRUE);&#13;
+	CButton::OnMouseMove(nFlags, point);&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="7ca69c0ti517991e4bhh0vfe4f">&nbsp;&nbsp;复选框 checkbox</a>
+</h3>
+<h3 class="topic">
+<a name="0p3pt021dba1dvu0v5j8d97jf7">&nbsp;&nbsp;&nbsp;给每个复选框 绑定值变量（BOOL类型）</a>
+</h3>
+<h3 class="topic">
+<a name="5nurjsme9omjo65berp83pkt7j">&nbsp;&nbsp;&nbsp;添加一个按钮，设置处理过程，用于显示当前复选框状态</a>
+</h3>
+<h3 class="topic">
+<a name="2hvrh6m8aauvefu1hqbnpla97b">&nbsp;&nbsp;&nbsp;UpdateDate(TRUE);</a>
+</h3>
+<h3 class="topic">
+<a name="43414boicg8oueu45uhf5amthb">&nbsp;&nbsp;&nbsp;&nbsp;获取控件信息，从界面更新到变量上</a>
+</h3>
+<h3 class="topic">
+<a name="2udubg7nihco78nash7o0ivlj0">&nbsp;&nbsp;&nbsp;定义一个CString对象，用来拼接被勾选的复选框信息 </a>
+</h3>
+<h3 class="topic">
+<a name="5tigr20jgisp939iqgc69kbeo8">&nbsp;&nbsp;&nbsp;复选框可以设置属性tri-state，使复选框有三种状态</a>
+</h3>
+<h3 class="topic">
+<a name="5fd39p3srl0l8m1ukojsorr2ib">&nbsp;&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="3rs4026kaqhrocblh8498lqesn">&nbsp;&nbsp;&nbsp;&nbsp;void CMy04控件使用Dlg::OnBnClickedButton1()&#13;
+{&#13;
+	//获取控件信息 ,从界面更新到变量上&#13;
+	UpdateData(TRUE);&#13;
+	&#13;
+	CString str;&#13;
+	if (m_check1==TRUE)&#13;
+	{&#13;
+		str += L"check1 ";&#13;
+	}	&#13;
+	if (m_check2 == TRUE)&#13;
+	{&#13;
+		str += L"check2 ";&#13;
+	}&#13;
+	if (m_check3 == TRUE)&#13;
+	{&#13;
+		str += L"check3 ";&#13;
+	}&#13;
+	MessageBox(str);&#13;
+}&#13;
+</a>
+</h3>
+<h3 class="topic">
+<a name="4fbteds64u1iqo99m70p0v9qoa">&nbsp;&nbsp;单选框</a>
+</h3>
+<h3 class="topic">
+<a name="2c2hi73g0djb7dq3b9j0q0m9m7">&nbsp;&nbsp;&nbsp;拖动多个单选框</a>
+</h3>
+<h3 class="topic">
+<a name="48aj07smp8qau754rjfstdgupt">&nbsp;&nbsp;&nbsp;&nbsp;进行分组</a>
+</h3>
+<h3 class="topic">
+<a name="0nfagvoc2qhigjpg9sslvl7e9t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用ctrl +d，将同一组的按键设置为顺序的</a>
+</h3>
+<h3 class="topic">
+<a name="6qpnaok90eu8g5nn04l9tji8fv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将每组的第一个GROUP属性设置为true</a>
+</h3>
+<h3 class="topic">
+<a name="09dqlj3a9ev974tlvnittclmte">&nbsp;&nbsp;&nbsp;&nbsp;绑定值类型变量，只需要绑定每一组的第一个</a>
+</h3>
+<h3 class="topic">
+<a name="652efb9bhj6d3bqj2fldp9e43d">&nbsp;&nbsp;&nbsp;添加一个按钮，设置处理按键事件</a>
+</h3>
+<h3 class="topic">
+<a name="65vdmi8d4ugcruq9pme704jff2">&nbsp;&nbsp;&nbsp;编写函数</a>
+</h3>
+<h3 class="topic">
+<a name="4v3d6inth96iq4jsd1g9avhe3k">&nbsp;&nbsp;&nbsp;&nbsp;更新窗口数据到变量</a>
+</h3>
+<h3 class="topic">
+<a name="1r7vf3vt39r4mejct45ltu1sf6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;UpdateData(TRUE);</a>
+</h3>
+<h3 class="topic">
+<a name="2jriaouathsj6f6ut1vkp7iu5t">&nbsp;&nbsp;&nbsp;&nbsp;定义CSring变量用于拼接输出的字符串</a>
+</h3>
+<h3 class="topic">
+<a name="6stv74fq1rk0vv44l93ujusq9j">&nbsp;&nbsp;&nbsp;&nbsp;每一组单选框的第一个绑定变量，默认值为0，单选框第二个变量值默认为1，以此类推</a>
+</h3>
+<h3 class="topic">
+<a name="68m8n3g4roc2tjvqrj7lbddkbg">&nbsp;&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="0k67u7npoeee3omakbr75kc33l">&nbsp;&nbsp;&nbsp;&nbsp;void CMy04控件使用Dlg::OnBnClickedButton2()&#13;
+{&#13;
+	//跟新界面数据到窗口&#13;
+	UpdateData(TRUE);&#13;
+	CString str;&#13;
+	//第一组单选框的绑定值变量为m_Radio1&#13;
+	//当绑定值为0的时候，说明第一个单选框被选中&#13;
+	if (m_Radio1 == 0)&#13;
+	{&#13;
+		str = L"足球";&#13;
+	}&#13;
+	if (m_Radio1 == 1)&#13;
+	{&#13;
+		str = L"篮球";&#13;
+	}&#13;
+	if (m_Radio1 == 2)&#13;
+	{&#13;
+		str = L"乒乓球";&#13;
+	}&#13;
+	MessageBox(str);&#13;
+}</a>
+</h3>
+</body>
+</html>

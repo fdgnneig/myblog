@@ -1,0 +1,959 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>class22day0221</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="722j1crmv8hsnju7t2g468eqcp">class22day0221</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="class22day0221_files/images/class22day0221.jpg"></div>
+<h2 class="topic">
+<a name="1h6vt04bns173skhq6q9cn6170">c++提高课程（包括复习部分）</a>
+</h2>
+<h3 class="topic">
+<a name="6137vfa5sak3cngi9vd1pammgk">&nbsp;c++简史</a>
+</h3>
+<h3 class="topic">
+<a name="7cl2hathlqgd4e8k2mchtu7ml2">&nbsp;&nbsp;C++之父 Bjame Sgoustrup</a>
+</h3>
+<h3 class="topic">
+<a name="3kq1vn9jd3357l80eske2uv4t5">&nbsp;&nbsp;c语言标准：编译器实现所有标准语法的基础上，可以再进行其他扩展</a>
+</h3>
+<h3 class="topic">
+<a name="407d8hln31a1c1hg7929fbdt82">&nbsp;c++语言特性</a>
+</h3>
+<h3 class="topic">
+<a name="6kn7mqhn3dvo0u9qfo8ffk7t1m">&nbsp;&nbsp;开发效率比c语言更快，增加代码的复用效率</a>
+</h3>
+<h3 class="topic">
+<a name="5d63cgv7jggoo4lb72s7fagb3m">&nbsp;&nbsp;c++是编译型语言，执行效率较高</a>
+</h3>
+<h3 class="topic">
+<a name="6if9ml4gd3rh51u1td4p01drp0">&nbsp;c++语言难点</a>
+</h3>
+<h3 class="topic">
+<a name="13b25a89jqic2h7rlj331opmg0">&nbsp;&nbsp;面向过程编程</a>
+</h3>
+<h3 class="topic">
+<a name="7tu7j4jff100oqig4ogou9vu2a">&nbsp;&nbsp;面向对象编程</a>
+</h3>
+<h3 class="topic">
+<a name="3jmao2mvsbdpk3ha0k8qkphu2m">&nbsp;&nbsp;函数式编程</a>
+</h3>
+<h3 class="topic">
+<a name="1c5karjdbokf8sq2u4r4i5so6j">&nbsp;&nbsp;泛型编程</a>
+</h3>
+<h3 class="topic">
+<a name="24tt6uu5nllfb7tnpb5htpigcp">&nbsp;&nbsp;&nbsp;多态的一种，支持多种类型的编程</a>
+</h3>
+<h3 class="topic">
+<a name="3s0caeicq3ipeqn57sh9asve71">&nbsp;define const enum inline-define</a>
+</h3>
+<h3 class="topic">
+<a name="3qt1pc69t2chqvtvb3l6pfdaur">&nbsp;&nbsp;define（编译预处理指令）</a>
+</h3>
+<h3 class="topic">
+<a name="2d3tfivvu5p392tntt6h9osoq2">&nbsp;&nbsp;&nbsp;define不是一个关键字</a>
+</h3>
+<h3 class="topic">
+<a name="1v1l1174duq98d16etntouppp2">&nbsp;&nbsp;&nbsp;后面三个可以弥补define的缺点</a>
+</h3>
+<h3 class="topic">
+<a name="2v80jj66rj3fegqqct0935993i">&nbsp;&nbsp;&nbsp;原理：简单的替换，都是编译之前就处理的</a>
+</h3>
+<h3 class="topic">
+<a name="0hl489abfnus466alq5reh1jaf">&nbsp;&nbsp;&nbsp;两种用法</a>
+</h3>
+<h3 class="topic">
+<a name="3o51geo9fp30220u2tu4led85t">&nbsp;&nbsp;&nbsp;&nbsp;有参宏</a>
+</h3>
+<h3 class="topic">
+<a name="41q481v021hti6p10b4ag6201g">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;定义一些比较短小的代码，便于使用</a>
+</h3>
+<h3 class="topic">
+<a name="5fb7857lg2k5djorojjb17hj6e">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;缺点，直接展开，没有进行优先级判断</a>
+</h3>
+<h3 class="topic">
+<a name="6ps0580p8kqmbegtahila670cg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以使用inline弥补</a>
+</h3>
+<h3 class="topic">
+<a name="7bf6ajh2n1m9b4tb1jbi9g3u9l">&nbsp;&nbsp;&nbsp;&nbsp;无参宏</a>
+</h3>
+<h3 class="topic">
+<a name="0r76u0ef4efqisheb2apkuk8uu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;定义一个常量，便于修改</a>
+</h3>
+<h3 class="topic">
+<a name="1kbasfct030b2elf1lieppo4hk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;缺点：可以定义的常量，但是无法指定类型（#define NUM 100）</a>
+</h3>
+<h3 class="topic">
+<a name="4d4djuofdabtn81bfdfl9tcuj5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以使用const弥补缺点</a>
+</h3>
+<h3 class="topic">
+<a name="2f4hc5psnbmevaugdf793i6305">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;定义一组有意义的名字，而不关心具体的值</a>
+</h3>
+<h3 class="topic">
+<a name="7625cuu16vrtlu5o9qb85enpgb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;缺点</a>
+</h3>
+<h3 class="topic">
+<a name="7hv3cbtl8kt6b8uguo8qimb5h1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;定义出来的一组名称没有关联</a>
+</h3>
+<h3 class="topic">
+<a name="1c8qn3oqo0g6lurq1d4u3j48lc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;作为参数传递时没有类型检查</a>
+</h3>
+<h3 class="topic">
+<a name="6cq3ipiplmnd364m6n06vflck4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以使用enum弥补</a>
+</h3>
+<h3 class="topic">
+<a name="2psuj2ne68p6vjgb1e8to2vdsi">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#define PI 3.14</a>
+</h3>
+<h3 class="topic">
+<a name="0ud19ft3mm61gi484rcbt6u5dm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;默认数据类型是double</a>
+</h3>
+<h3 class="topic">
+<a name="2m4bk2bmt0nul78f82lc8277un">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#define PI 3.14f</a>
+</h3>
+<h3 class="topic">
+<a name="7k3553ekp17h7sb686cn4akfao">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这里可以通过字面量的方法指定数据类型</a>
+</h3>
+<h3 class="topic">
+<a name="4m8m3sjfih8fcv3ociafuvus8l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#define NUM 100</a>
+</h3>
+<h3 class="topic">
+<a name="0poukjdb26g4uvvdhre5lj0o84">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;默认数据类型是int</a>
+</h3>
+<h3 class="topic">
+<a name="0pn5brgshp6mrh43mdj8ocu6bt">&nbsp;&nbsp;const</a>
+</h3>
+<h3 class="topic">
+<a name="0c36fov426rok8i2t64uv2km3d">&nbsp;&nbsp;&nbsp;在c++中该关键字可以产生真正的常量，可以用作定义数组下标</a>
+</h3>
+<h3 class="topic">
+<a name="1ot1ols22ci82jfv7q69v3pnki">&nbsp;&nbsp;&nbsp;&nbsp;c中的const只是一个伪常量，是一个不能改变其值大小的变量，不能作为数组下标</a>
+</h3>
+<h3 class="topic">
+<a name="7ktmlpl2i6hrd874v8n6a5fu27">&nbsp;&nbsp;&nbsp;const占有了内存空间（即const常量可以取地址并被赋值给指针），但是宏没有占用（无法取地址）</a>
+</h3>
+<h3 class="topic">
+<a name="3efdkf34186ahph13k07c14oh4">&nbsp;&nbsp;&nbsp;const有类型，并且必须初始化，宏无法指定类型</a>
+</h3>
+<h3 class="topic">
+<a name="04m3bldehcgh6c0lbb666ptdot">&nbsp;&nbsp;&nbsp;举例</a>
+</h3>
+<h3 class="topic">
+<a name="3ejs3jisnjefgoci123fuq8d5g">&nbsp;&nbsp;&nbsp;&nbsp;int main()&#13;
+{&#13;
+	// 创建一个常量初始化为 10&#13;
+	const int size = 10;&#13;
+&#13;
+	// 在 C++ 中可以使用 const 定义一个常量&#13;
+	int array[size] = { 0 };	&#13;
+&#13;
+	// const 占用了内存空间，但是宏没有占用&#13;
+	const int *p1 = &amp;size;&#13;
+	const int *p2 = &amp;SIZE;&#13;
+&#13;
+	// const 有类型，并且必须初始化，宏无法指定类型&#13;
+	const int const_int = 10;&#13;
+	#define DEFINE_NUM 10&#13;
+&#13;
+	return 0;</a>
+</h3>
+<h3 class="topic">
+<a name="727t1a3ldjb4276rlvlksa5kmk">&nbsp;&nbsp;&nbsp;const运用情况</a>
+</h3>
+<h3 class="topic">
+<a name="48378fqjuv55a1o512af4m0ino">&nbsp;&nbsp;&nbsp;&nbsp;定义一个常量</a>
+</h3>
+<h3 class="topic">
+<a name="553vbjmmkllo6hu9d9ejvo94pu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以作为数组下标</a>
+</h3>
+<h3 class="topic">
+<a name="7kntrc4i69rkhqrfmfsska8tr2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;方便以后更改</a>
+</h3>
+<h3 class="topic">
+<a name="1gu1o3lj638jrtfcf5leqpej8r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const int siz =10</a>
+</h3>
+<h3 class="topic">
+<a name="6pp4s0p4ebfmip0ddrsbei2pmk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;举例</a>
+</h3>
+<h3 class="topic">
+<a name="2qpbjbviacnlgql0ahkv5rvtbc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;int main()&#13;
+  {&#13;
+  	const int size = 10;&#13;
+  &#13;
+  	// 如果想要修改数组的大小直接改变size的值就可以了&#13;
+  	int arr0[size] = { 0 };&#13;
+  	int arr1[size] = { 0 };&#13;
+  	int arr2[size] = { 0 };&#13;
+  &#13;
+  	return 0;&#13;
+  }</a>
+</h3>
+<h3 class="topic">
+<a name="7vqe73rgsenk8uj64va981f1n0">&nbsp;&nbsp;&nbsp;&nbsp;将函数的参数设置为const类型</a>
+</h3>
+<h3 class="topic">
+<a name="24tr2vb9c2rq3kv7tfpn2l4p3v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  char* strcat(char* dest, const char* sour)&#13;
+  {&#13;
+  	// 当不小心写错时，编译器会报错&#13;
+  	sour[0] = 10;&#13;
+  }</a>
+</h3>
+<h3 class="topic">
+<a name="7d96e1hmhkgv6vudh02j1p9p71">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;函数的功能是将源字符串（2）拼接到目的字符串（1），所以源字符串不会改变，目的字符串需要改变&#13;
+当不小心写错改变源字符串时，编译器会报错</a>
+</h3>
+<h3 class="topic">
+<a name="58dqb5g3suc825fl7r3e1oqikg">&nbsp;&nbsp;&nbsp;&nbsp;将函数的返回值设置为const类型（当返回的值不希望被外界修改或当返回的是一个const类型的时候，必须设置为const）</a>
+</h3>
+<h3 class="topic">
+<a name="6dcm4e4m81tj6o4qif1p82jg23">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const int &amp;SetNumber(int &amp;number)&#13;
+{&#13;
+	//进行一些操作&#13;
+	number*=10&#13;
+	return number;&#13;
+}&#13;
+为了避免返回值被修改并在程序中被使用&#13;
+类似 std::cout&lt;&lt;SetNumber(n)+=10;类似情况</a>
+</h3>
+<h3 class="topic">
+<a name="63bla7ogfcfv2vduc6gl66qg5u">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;因为具有const修饰的函数或变量是不能出现在赋值运算符左边的</a>
+</h3>
+<h3 class="topic">
+<a name="7paa6h2t4akh0m0l01bhscuj51">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当函数返回的是一个常量字符串指针时</a>
+</h3>
+<h3 class="topic">
+<a name="7ju8cmeab2agkv5nl8jvh2n6cl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const char*GetString&#13;
+{&#13;
+    return"122345"&#13;
+}&#13;
+int main(){&#13;
+    char*string=GetString();//此时会报错，必须把string的类型改成const char*，使用与返回值类型相同的变量接收返回值&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="1ljmbaqlla4d5u43v7fm6r2hae">&nbsp;&nbsp;&nbsp;&nbsp;将成员函数设置为从const类型</a>
+</h3>
+<h3 class="topic">
+<a name="5kej13bo2m8sq1vrktk37bd4ce">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;class OBJ{&#13;
+private:&#13;
+int num;&#13;
+&#13;
+public:&#13;
+	int get()const //此时const修饰的是this指针&#13;
+	{	&#13;
+		//此时如果再该函数内部修改num，会产生报错&#13;
+		//因为num的本质上是this-&gt;num,所以this为const时其对应的num不能被改变&#13;
+		//该函数目的是返回成员变量，而不能修改成员变量&#13;
+		return num&#13;
+	}&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="4pv38mo2tsi3dai6ik1vkq4dq5">&nbsp;&nbsp;enum</a>
+</h3>
+<h3 class="topic">
+<a name="3rcj4av4rlmnf810odn7t4buap">&nbsp;&nbsp;&nbsp;定义枚举，存放一组有关联的名称并可以指定值</a>
+</h3>
+<h3 class="topic">
+<a name="72ek4apbahe6m8mbigd4qg1b63">&nbsp;&nbsp;&nbsp;&nbsp;enum 枚举的名字 {一组名称}</a>
+</h3>
+<h3 class="topic">
+<a name="54jpl6ochpo74ob58snbt2fbl4">&nbsp;&nbsp;&nbsp;&nbsp;enum DIR {UP，DOWN，LEFT，RIGHT};</a>
+</h3>
+<h3 class="topic">
+<a name="78knsum1ml6mua6g3rte27s974">&nbsp;&nbsp;&nbsp;当没有指定值的时候，枚举内的数据从 0 开始</a>
+</h3>
+<h3 class="topic">
+<a name="548huhc1mrb79vde0ab596gqnr">&nbsp;&nbsp;&nbsp;枚举在编译器层面是有联系的一组值</a>
+</h3>
+<h3 class="topic">
+<a name="23hrcq3bd972pal9gia26637s2">&nbsp;&nbsp;&nbsp;使用枚举类型作为参数时，会进行类型检查</a>
+</h3>
+<h3 class="topic">
+<a name="77llt2apvd7mihh3ujhulbg1kf">&nbsp;&nbsp;&nbsp;&nbsp;void EnumMove(DIR dir)&#13;
+{&#13;
+	// 因为dir是一组有联系的值，switch会自动补全	&#13;
+	switch(dir)&#13;
+	{&#13;
+	case UP:&#13;
+		break;&#13;
+	case DOWN:&#13;
+		break;&#13;
+	case LEFT:&#13;
+		break;&#13;
+	case RIGHT:&#13;
+		break;&#13;
+	default:&#13;
+		break;&#13;
+	}&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="5idgbank6qlahmqan8cqdc7b2i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;枚举作为函数参数的使用</a>
+</h3>
+<h3 class="topic">
+<a name="2clgpd47tlss14h1a3cqftp6bk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;void EnumMove(UP);</a>
+</h3>
+<h3 class="topic">
+<a name="7k5gbb6iji29eh7pu46g52godg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;void EnumMove(1);</a>
+</h3>
+<h3 class="topic">
+<a name="5f9oltqa4frjjhh7v14bl0blc5">&nbsp;&nbsp;&nbsp;枚举中的元素，后一个值就是前一个+1</a>
+</h3>
+<h3 class="topic">
+<a name="6kbg2glct83m36gg7cg8lpg1ib">&nbsp;&nbsp;&nbsp;&nbsp;enum SET{ONE=1,TWO,FOUR=4,FIVE};&#13;
+//枚举中的值分别为1 2 4 5</a>
+</h3>
+<h3 class="topic">
+<a name="66n2obfn7mnn02bvsab2hr1lq8">&nbsp;&nbsp;inline</a>
+</h3>
+<h3 class="topic">
+<a name="5vh9p37ru68rbljvu58lr9r2se">&nbsp;&nbsp;&nbsp;inline用于定义一个内联函数，内联函数会直接展开在调用位置，可能导致代码膨胀</a>
+</h3>
+<h3 class="topic">
+<a name="6svi989u1c470jv96i657beurl">&nbsp;&nbsp;&nbsp;inline int mul(int x){return x*x};</a>
+</h3>
+<h3 class="topic">
+<a name="3bhmi2q640qt50s5uklvhimi1k">&nbsp;&nbsp;&nbsp;#define MUL(x) x*x</a>
+</h3>
+<h3 class="topic">
+<a name="4tiq6rprkt2tsffkl532jf2itb">&nbsp;&nbsp;&nbsp;同一个函数使用有参宏和inline分别实现，inline可以对传入的数据进行类型检查</a>
+</h3>
+<h3 class="topic">
+<a name="4avemrelqnqna9roebm85t5v2j">&nbsp;&nbsp;&nbsp;&nbsp;int main()&#13;
+{&#13;
+ MUL(2 + 2);&#13;
+ //  x * x -&gt; 2 + 2 * 2 + 2&#13;
+&#13;
+ // 内联函数是函数，所以参数类型为int 先将2+2计算出来，在带入函数运算&#13;
+ mul(2 + 2);&#13;
+ return 0;&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="4tev5jonj6ei79q270k8pqv7bc">&nbsp;堆</a>
+</h3>
+<h3 class="topic">
+<a name="25rebgn2mq4r0dim6bg4ppr5ap">&nbsp;&nbsp;c++中使用的时new和delete</a>
+</h3>
+<h3 class="topic">
+<a name="2p170nm2pcla4r7q5k24rjt9ej">&nbsp;&nbsp;&nbsp;在C语言中申请一个int大小的空间</a>
+</h3>
+<h3 class="topic">
+<a name="5r70t6rbj0m7pk91fq0eonklco">&nbsp;&nbsp;&nbsp;&nbsp;int*malloc_int=(int*)mallloc(sizeof(int)*1);</a>
+</h3>
+<h3 class="topic">
+<a name="1cs5f596uh2nk56p3l5kme0gg4">&nbsp;&nbsp;&nbsp;在C语言中申请10个int大小的空间</a>
+</h3>
+<h3 class="topic">
+<a name="7jta62bc3ciprdqs99brlrs71f">&nbsp;&nbsp;&nbsp;&nbsp;int*malloc_arr=(int*)mallloc(sizeof(int)*10);</a>
+</h3>
+<h3 class="topic">
+<a name="4tus58hqgbslartnhhd61jppkq">&nbsp;&nbsp;&nbsp;在c中释放</a>
+</h3>
+<h3 class="topic">
+<a name="7unjifof8vvli3jg13sjtvdhlb">&nbsp;&nbsp;&nbsp;&nbsp;// 在C语言中不论是申请一个大小还是10个大小，用的都是 free</a>
+</h3>
+<h3 class="topic">
+<a name="7mikos9fnpt4ls5k9d6ae926ne">&nbsp;&nbsp;&nbsp;&nbsp;free(malloc_int);</a>
+</h3>
+<h3 class="topic">
+<a name="1qdb7tg32a2ohqu2gt5s2qtgic">&nbsp;&nbsp;&nbsp;&nbsp;free(malloc_arra);</a>
+</h3>
+<h3 class="topic">
+<a name="6a0i1mm5mfumq8c5rkkahap1kh">&nbsp;&nbsp;&nbsp;在c++中</a>
+</h3>
+<h3 class="topic">
+<a name="7k5vvrrfffqms08escv0vo4fji">&nbsp;&nbsp;&nbsp;&nbsp;int *new_int=new int;</a>
+</h3>
+<h3 class="topic">
+<a name="2i3lsqo0veivagdlcm8qm29ada">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;delete new_int;</a>
+</h3>
+<h3 class="topic">
+<a name="4ffdnkoe5q474d02tv838ud7ln">&nbsp;&nbsp;&nbsp;&nbsp;int* new_arr=new int[10];</a>
+</h3>
+<h3 class="topic">
+<a name="6edunkgobhqinlq8fccphi0iof">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;delete [] new_arr;</a>
+</h3>
+<h3 class="topic">
+<a name="652e8tv1avq27m7vbc4282cqbi">&nbsp;&nbsp;&nbsp;&nbsp;在new类对象的时候需要对应使用，new变量的时候两种delete方式等价</a>
+</h3>
+<h3 class="topic">
+<a name="24aa0if06c9qot4b64rcfio3tc">&nbsp;&nbsp;new delete malloc free的区别</a>
+</h3>
+<h3 class="topic">
+<a name="5e6s1iihed2dj7luivo0dki551">&nbsp;&nbsp;&nbsp;区别</a>
+</h3>
+<h3 class="topic">
+<a name="41vtb9ch7p0vlqcd0jh2e7l6jf">&nbsp;&nbsp;&nbsp;&nbsp;new delete会分别调用构造函数和析构函数</a>
+</h3>
+<h3 class="topic">
+<a name="07rnc3ajpig3nbqklh1luq4nl5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;所以new delete常用于创建对象以及销毁对象</a>
+</h3>
+<h3 class="topic">
+<a name="00ksqp2qd0thg0fm61mspk6t5c">&nbsp;&nbsp;&nbsp;&nbsp;new返回的是对应类型的指针，malloc返回void*</a>
+</h3>
+<h3 class="topic">
+<a name="267jm318bef2mughhbd44u9hnn">&nbsp;&nbsp;&nbsp;&nbsp;new delete是关键字并且是运算符，malloc free是函数</a>
+</h3>
+<h3 class="topic">
+<a name="4thbq6v6q3ji2qcfu4ch488d4t">&nbsp;&nbsp;&nbsp;&nbsp;new 的单位是对应类型大小 malloc对应的单位是字节</a>
+</h3>
+<h3 class="topic">
+<a name="0gn1tkbkq2qvcluhkl0esuktgs">&nbsp;重载和名称粉碎</a>
+</h3>
+<h3 class="topic">
+<a name="1ul0u2riqvdnbeit99humqreea">&nbsp;&nbsp;重载</a>
+</h3>
+<h3 class="topic">
+<a name="3g70es16vaofe0dr74ikgvr31o">&nbsp;&nbsp;&nbsp;在同一个作用域内存在相同名称，但是参数不同的函数</a>
+</h3>
+<h3 class="topic">
+<a name="5afvc99o4p4ghko2n7mh19m80t">&nbsp;&nbsp;&nbsp;要求</a>
+</h3>
+<h3 class="topic">
+<a name="7rv3af63623cln5d8l0rm505po">&nbsp;&nbsp;&nbsp;&nbsp;函数名称 作用域相同</a>
+</h3>
+<h3 class="topic">
+<a name="0pcclerduh0p5niqpbkcoj4slk">&nbsp;&nbsp;&nbsp;&nbsp;函数的参数 （顺序 个数 类型）不同</a>
+</h3>
+<h3 class="topic">
+<a name="5gejerpj2mil3k6l4ubjboq25o">&nbsp;&nbsp;&nbsp;&nbsp;函数的返回值不作为函数重载的条件</a>
+</h3>
+<h3 class="topic">
+<a name="285v02ajd97ea4rb6dht6p74ra">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;就是说如果函数返回值即使不相同，只要满足函数名称相同，作用域相同，参数不同，也可以构成函数重载</a>
+</h3>
+<h3 class="topic">
+<a name="21nubf8kq9i0spiqko6mbpc8es">&nbsp;&nbsp;&nbsp;举例</a>
+</h3>
+<h3 class="topic">
+<a name="2i5tkfr5sgp0n0n59ri2pg50hv">&nbsp;&nbsp;&nbsp;&nbsp;void show() &#13;
+{  &#13;
+  // 函数参数类型不同的重载&#13;
+  void show(int) {}&#13;
+  &#13;
+  // 函数参数个数不同的重载&#13;
+  void show(int, double) {}&#13;
+  &#13;
+  // 函数参数顺序不同的重载&#13;
+  void show(double, int) {}&#13;
+  &#13;
+  // ！！ 函数的返回值不是重载条件&#13;
+  //这里只要参数不同，也可以使该函数构成函数重载&#13;
+  int show() {}&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="2e7vo6a84odmfvl7metvl8e4k6">&nbsp;&nbsp;名称粉碎</a>
+</h3>
+<h3 class="topic">
+<a name="581qim3hsjtt0hrql74ropvctv">&nbsp;&nbsp;&nbsp;在C语言中没有名称粉碎，同名不同参的函数在实际名称是相同的</a>
+</h3>
+<h3 class="topic">
+<a name="3or0gqmh172almnfe4ifjfnpjl">&nbsp;&nbsp;&nbsp;是c++用于支持函数重载的机制</a>
+</h3>
+<h3 class="topic">
+<a name="2a839veau9376oja9hokaheq6u">&nbsp;&nbsp;&nbsp;实际上是将函数名称根据参数修改为编译器可见的名称</a>
+</h3>
+<h3 class="topic">
+<a name="4b5pp0rmic3648g730afsn6s9a">&nbsp;&nbsp;&nbsp;重载的函数在编译器层面被重新命名</a>
+</h3>
+<h3 class="topic">
+<a name="2brovfs6suru1jviblmsf1ar9s">&nbsp;&nbsp;&nbsp;&nbsp;int show(int n);			// (?show@@YAHH@Z)&#13;
+int show(int n, int m);		// (?show@@YAHHH@Z)</a>
+</h3>
+<h3 class="topic">
+<a name="70fsp5iub0glajbbrdm1mlmjsa">&nbsp;&nbsp;&nbsp;在c++中关闭名称粉碎机制</a>
+</h3>
+<h3 class="topic">
+<a name="515rcegmg039eu38dqucla0rsg">&nbsp;&nbsp;&nbsp;&nbsp;在函数前面加上 extern "c" 函数以c语言的形式编译该函数</a>
+</h3>
+<h3 class="topic">
+<a name="1moe1ghl02nmaj5tbtmce81vo7">&nbsp;&nbsp;&nbsp;&nbsp;通常用于写windows库，关闭c++中的名称粉碎</a>
+</h3>
+<h3 class="topic">
+<a name="672o72dolhuofjkalm7h2u7iqj">&nbsp;默认参数</a>
+</h3>
+<h3 class="topic">
+<a name="4rbk4d6mc5q7cc8gbthh58vhli">&nbsp;&nbsp;用于给没有传入的参数提供一个默认值</a>
+</h3>
+<h3 class="topic">
+<a name="6n6ivso8sviuff0cvnvrgdnbjj">&nbsp;&nbsp;//计算圆的周长的函数,并可以指定pi的精度，大部分情况下使用3.14作为pi的精度&#13;
+double calc (doubel r,double pi=3.14)&#13;
+{&#13;
+	return 2*r*pi;&#13;
+}&#13;
+</a>
+</h3>
+<h3 class="topic">
+<a name="0e55dmqpab41ai2g79p1m3f81b">&nbsp;&nbsp;在什么时候声明默认参数</a>
+</h3>
+<h3 class="topic">
+<a name="04tanjutubgjs48blsu3dqja25">&nbsp;&nbsp;&nbsp;当函数只有定义没有声明时，直接在定义中设置默认参数</a>
+</h3>
+<h3 class="topic">
+<a name="3pgvnsesker04achcln86pk2c6">&nbsp;&nbsp;&nbsp;&nbsp;  double clac(double r, double pi = 3.14)&#13;
+  {&#13;
+  	return 2 * r * pi;&#13;
+  }</a>
+</h3>
+<h3 class="topic">
+<a name="0td9im5ul5m5fvcnlogmts1c2l">&nbsp;&nbsp;&nbsp;如果有声明，也有定义，只能在其中一个上进行设置</a>
+</h3>
+<h3 class="topic">
+<a name="2s26umibpof44k23c1lqjr6bkb">&nbsp;&nbsp;&nbsp;&nbsp;类的构造函数只能在声明中指定默认参数</a>
+</h3>
+<h3 class="topic">
+<a name="4csm1sj1ett56je24vca2tsee6">&nbsp;&nbsp;&nbsp;&nbsp;声明、定义中同时出现默认参数会报重定义默认参数的错误</a>
+</h3>
+<h3 class="topic">
+<a name="0sadi5gjjn68ccnbaqa445o7jc">&nbsp;&nbsp;默认参数的使用要求</a>
+</h3>
+<h3 class="topic">
+<a name="3hvd4fikpp51p2m2njt9c84p5o">&nbsp;&nbsp;&nbsp;必须从右到左，中间不能有间隔</a>
+</h3>
+<h3 class="topic">
+<a name="1fu75cm5v2ie841ekgvnrampag">&nbsp;引用</a>
+</h3>
+<h3 class="topic">
+<a name="7rdmpkblnnt781063f2k67qtk7">&nbsp;&nbsp;实际上是：给一个已存在的变量取别名</a>
+</h3>
+<h3 class="topic">
+<a name="2r8fqt027btg37kkpp64fbnjsi">&nbsp;&nbsp;定义方式： 类型 &amp;引用名=被引用对象</a>
+</h3>
+<h3 class="topic">
+<a name="5m52j221gaa44dodu3t3c15cv3">&nbsp;&nbsp;使用要求</a>
+</h3>
+<h3 class="topic">
+<a name="0g14d0vj58ckc7g9g1lkg01v62">&nbsp;&nbsp;&nbsp;引用必须初始化</a>
+</h3>
+<h3 class="topic">
+<a name="06v4goqkdo7gemdgkhufitdr4n">&nbsp;&nbsp;&nbsp;修改引用的值或者被引用对象的值都会改变所有的内容</a>
+</h3>
+<h3 class="topic">
+<a name="18nfhff6edp9oo2r24c1lo5f21">&nbsp;&nbsp;&nbsp;&nbsp;其实相当于共享同一块内存空间</a>
+</h3>
+<h3 class="topic">
+<a name="50qid64rh1rgqqqg67ajjf30me">&nbsp;&nbsp;&nbsp;引用本身没有地址，引用的地址是被引用对象的地址</a>
+</h3>
+<h3 class="topic">
+<a name="7jheuo319q98o6r38dkpndbnn1">&nbsp;&nbsp;&nbsp;引用对象一经引用，不能再引用其他变量</a>
+</h3>
+<h3 class="topic">
+<a name="06jc2g47jooh538t6u4610alhq">&nbsp;&nbsp;&nbsp;引用在底层与指针的原理相同，相当于阉割版的指针</a>
+</h3>
+<h3 class="topic">
+<a name="2h51hablb1q8kvo2hmn0qr1v5c">&nbsp;&nbsp;&nbsp;举例</a>
+</h3>
+<h3 class="topic">
+<a name="735jthdpl3e0v1ic8os9nmi3hd">&nbsp;&nbsp;&nbsp;&nbsp;int main()&#13;
+{&#13;
+	int number = 0;&#13;
+&#13;
+	// 定义一个引用: 类型 &amp; 引用名 = 被引用对象&#13;
+&#13;
+	// 1. 引用必须进行初始化&#13;
+	int &amp; ref_number = number;&#13;
+&#13;
+	// 2. 修改引用的值或者修改被引用对象的值都会改变所有的内容&#13;
+	number = 20;&#13;
+	printf("number = %d ref_number = %d\n",&#13;
+		number, ref_number);&#13;
+	ref_number = 100;&#13;
+	printf("number = %d ref_number = %d\n",&#13;
+		number, ref_number);&#13;
+&#13;
+	// 3. 引用本身没有地址，引用的地址是被引用对象的地址&#13;
+	printf("&amp;number = %p &amp;ref_number = %p\n",&#13;
+		&amp;number, &amp;ref_number);&#13;
+&#13;
+	// 4. 引用一经引用了对象，不能引用其它变量&#13;
+	int number2 = 10;&#13;
+	ref_number = number2;		// 实际上是将 number2 的值给了引用对象&#13;
+	printf("number = %d ref_number = %d number2 = %d\n",&#13;
+		number, ref_number, number2);&#13;
+	printf("&amp;number = %p &amp;ref_number = %p &amp;number2 = %p\n",&#13;
+		&amp;number, &amp;ref_number, &amp;number2);&#13;
+&#13;
+	return 0;&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="16g8qbmmh8b2ttka9r1umlivgb">&nbsp;&nbsp;引用传参的好处（即引用与指针的区别）</a>
+</h3>
+<h3 class="topic">
+<a name="3a8l6nn9fv5i5sia67gucgb5m7">&nbsp;&nbsp;&nbsp;引用必须初始化，指针不一定初始化</a>
+</h3>
+<h3 class="topic">
+<a name="0lspmbe53f9jt8lm7s15ss61j7">&nbsp;&nbsp;&nbsp;引用可以直接修改被引用的值，指针必须使用解引用*进行间接修改</a>
+</h3>
+<h3 class="topic">
+<a name="5cgknvlrj3o0f62f49i6beq7s5">&nbsp;&nbsp;&nbsp;引用没有自己的地址，不占用空间，指针占有空间，有自己的内存地址</a>
+</h3>
+<h3 class="topic">
+<a name="7ru4uvfl0mrib29dm4bvkhap1b">&nbsp;&nbsp;&nbsp;引用只能引用一个对象，指针可以指向多个对象</a>
+</h3>
+<h3 class="topic">
+<a name="6pe0tj0rnb2i8sn1mdfv46q9on">&nbsp;&nbsp;&nbsp;综上使用引用更安全 引用不能再次引用，可以直接修改被引用对象，</a>
+</h3>
+<h3 class="topic">
+<a name="2nsuikqgr6gn9rl9cf399qot2b">&nbsp;&nbsp;引用的传参</a>
+</h3>
+<h3 class="topic">
+<a name="40sa2pq6t0df513rscom3mj37j">&nbsp;&nbsp;&nbsp;目的是修改实参</a>
+</h3>
+<h3 class="topic">
+<a name="2e02rg4i5l0ctjhojtsr3ul3mn">&nbsp;类型转换</a>
+</h3>
+<h3 class="topic">
+<a name="7pdc2h3cra98a8vvqtip0lo8ck">&nbsp;&nbsp;常量类型转换(将常量转换成非常量)</a>
+</h3>
+<h3 class="topic">
+<a name="3uq3v6b1rf7f2vqo842tbfiesq">&nbsp;&nbsp;&nbsp;void show(char*str){ }&#13;
+show("hello")//需要进行类型转换&#13;
+show(const_cast&lt;char*&gt;("hello"));//使用该语句进行常量类型转换</a>
+</h3>
+<h3 class="topic">
+<a name="37o0elvubjp2ma70jb2eo983ka">&nbsp;&nbsp;静态类型转换（用于基本类型之间的转换）</a>
+</h3>
+<h3 class="topic">
+<a name="2jrgm01hg4snmrppv1vasdb8dc">&nbsp;&nbsp;&nbsp;int number = static_cast&lt;int&gt;(10.2);</a>
+</h3>
+<h3 class="topic">
+<a name="4hacngstgmefbccairi6b00pru">&nbsp;&nbsp;强制类型转换（通常转换编译器不认可的内容）</a>
+</h3>
+<h3 class="topic">
+<a name="14pgacg0to62gj7kh2710si15e">&nbsp;&nbsp;&nbsp;int number = 10;&#13;
+int number2 = reinterpret_cast&lt;int&gt;(&amp;number);</a>
+</h3>
+<h3 class="topic">
+<a name="1o6g21302nteop1u955i7aq0nh">&nbsp;&nbsp;可以直接使用()进行转换，但是c++中不推荐，因为可读性不强且不安全</a>
+</h3>
+<h3 class="topic">
+<a name="65eo4qgebc24qqbj7p5pqs23cs">&nbsp;面向对象简介</a>
+</h3>
+<h3 class="topic">
+<a name="58p8hhmakv3lbqlg4gi3tugiij">&nbsp;&nbsp;面向过程</a>
+</h3>
+<h3 class="topic">
+<a name="0tobvs3mbh9nmkjvb5nq4vpenc">&nbsp;&nbsp;&nbsp;程序=算法+数据结构</a>
+</h3>
+<h3 class="topic">
+<a name="3g9j9hbtg19gvo6i0evt2jjg5p">&nbsp;&nbsp;面向过程</a>
+</h3>
+<h3 class="topic">
+<a name="36u49ook85u0pug1ioneogeutr">&nbsp;&nbsp;&nbsp;对象+对象+对象</a>
+</h3>
+<h3 class="topic">
+<a name="0ue5tgdd34bgmlcl9squc1u5tt">&nbsp;类与对象</a>
+</h3>
+<h3 class="topic">
+<a name="6hnhfpslhc8kf2616q912fbe3n">&nbsp;&nbsp;类与对象</a>
+</h3>
+<h3 class="topic">
+<a name="0jbs7t23agdtotlrd1vudi21u4">&nbsp;&nbsp;&nbsp;类是抽象的，广泛的概念</a>
+</h3>
+<h3 class="topic">
+<a name="4fu2t1648j52sb7q6gukmp18qr">&nbsp;&nbsp;&nbsp;对象是具体的，可以使用类内的属性对其进行描述</a>
+</h3>
+<h3 class="topic">
+<a name="72ciu2vn8gpb3psqe5u9j6ugkp">&nbsp;&nbsp;类的定义</a>
+</h3>
+<h3 class="topic">
+<a name="6mu26nsuk0nfbq1dkg9skprd1u">&nbsp;&nbsp;&nbsp;注意class之后的{}必须加分号；</a>
+</h3>
+<h3 class="topic">
+<a name="6kkkghn72iefv7k722erbts1e0">&nbsp;&nbsp;&nbsp;class 类名：继承方式 父类&#13;
+{&#13;
+数据与成员&#13;
+}；</a>
+</h3>
+<h3 class="topic">
+<a name="5h931ojrt27l716p2diblkrrbq">&nbsp;&nbsp;&nbsp;&nbsp;默认的继承方式为private</a>
+</h3>
+<h3 class="topic">
+<a name="2blth50350kvsih7cjltjoe9p3">&nbsp;&nbsp;访问权限</a>
+</h3>
+<h3 class="topic">
+<a name="54naemc94lptdu78qmpf923rub">&nbsp;&nbsp;&nbsp;public</a>
+</h3>
+<h3 class="topic">
+<a name="29esr0oj8t3ssl1j82qfntma9h">&nbsp;&nbsp;&nbsp;&nbsp;可以在类内以及类外直接访问</a>
+</h3>
+<h3 class="topic">
+<a name="7gibk5f8refr17ru6a8nrmfb2r">&nbsp;&nbsp;&nbsp;protected</a>
+</h3>
+<h3 class="topic">
+<a name="67ighvmda1gkmrb8ndsc6ftod4">&nbsp;&nbsp;&nbsp;&nbsp;不能在类外直接访问，想要访问需要使用公有接口（公有函数）</a>
+</h3>
+<h3 class="topic">
+<a name="6tsav583p79fvsuhpa8fgtb66j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;因为成员函数可以直接访问类内所有数据，而公有函数可以在类外直接访问</a>
+</h3>
+<h3 class="topic">
+<a name="1kov8hl2dntu78ipap3bl7dp7v">&nbsp;&nbsp;&nbsp;&nbsp;保护成员可以被继承</a>
+</h3>
+<h3 class="topic">
+<a name="71ls1il5j0uqap204ntvahe4vb">&nbsp;&nbsp;&nbsp;private</a>
+</h3>
+<h3 class="topic">
+<a name="5ngo0drhpiht49vr2i2nodnrbe">&nbsp;&nbsp;&nbsp;&nbsp;不能在类外直接访问，想要访问需要使用公有接口（公有函数）</a>
+</h3>
+<h3 class="topic">
+<a name="1o4jhaagt8jpfpsbk7a01tusv0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;因为成员函数可以直接访问类内所有数据，而公有函数可以在类外直接访问</a>
+</h3>
+<h3 class="topic">
+<a name="2uik9pvuggfj7dk87anec472pm">&nbsp;&nbsp;&nbsp;&nbsp;私有成员不能被继承</a>
+</h3>
+<h3 class="topic">
+<a name="025v8hhokp1cp7i2ul88ncjd28">&nbsp;&nbsp;&nbsp;访问属性关键字可以在类中任意位置写，不限个数</a>
+</h3>
+<h3 class="topic">
+<a name="5prij5o2ub8d8a3jreogfct1uv">&nbsp;&nbsp;&nbsp;可以使用公有函数(接口)间接的修改访问私有成员</a>
+</h3>
+<h3 class="topic">
+<a name="7vsb4701lk7ig0a5nib1n54kjb">&nbsp;&nbsp;类中定义成员函数的方法</a>
+</h3>
+<h3 class="topic">
+<a name="3kt5td7jtq30blfa7s2isa3auh">&nbsp;&nbsp;&nbsp;在类内定义</a>
+</h3>
+<h3 class="topic">
+<a name="3k6b9rj1bbfgr2d31p000c1ngb">&nbsp;&nbsp;&nbsp;&nbsp;在类内直接定义的函数可能会被inline</a>
+</h3>
+<h3 class="topic">
+<a name="3f8crm0pd3fkn2ce2ddebq2j4h">&nbsp;&nbsp;&nbsp;在类内声明，在类外定义</a>
+</h3>
+<h3 class="topic">
+<a name="0rjvaqs5ru0bt8rmqismv1uqjp">&nbsp;&nbsp;&nbsp;&nbsp;在类外定义成员函数的必须加上类域</a>
+</h3>
+<h3 class="topic">
+<a name="0rnuj1ahddc9ihiv0tv95cc4h3">&nbsp;&nbsp;&nbsp;在类内声明，在不同文件中定义</a>
+</h3>
+<h3 class="topic">
+<a name="387sh6cjor86rgenhkei3edlq7">&nbsp;&nbsp;&nbsp;&nbsp;定义方式和在类外定义相同，但是要包含头文件</a>
+</h3>
+<h3 class="topic">
+<a name="65q3fsp8hdvc7juj7nkaqm572r">&nbsp;&nbsp;&nbsp;&nbsp;.h</a>
+</h3>
+<h3 class="topic">
+<a name="23ipkup0o0uj2r0v2rd2pum7k3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通常用于函数和类的声明</a>
+</h3>
+<h3 class="topic">
+<a name="1plusb9bo9la282eqr4emfuehe">&nbsp;&nbsp;&nbsp;&nbsp;.cpp</a>
+</h3>
+<h3 class="topic">
+<a name="7938tom62igfenrti664crhfae">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通常用于实现</a>
+</h3>
+<h3 class="topic">
+<a name="3q890vm7135np9esm3192qo9oe">&nbsp;&nbsp;定义对象</a>
+</h3>
+<h3 class="topic">
+<a name="2dql87en4gi0eqqo25mc8devb9">&nbsp;&nbsp;&nbsp;定义对象数组，每个数组元素均会调用构造函数</a>
+</h3>
+<h3 class="topic">
+<a name="16brrb5pk9m1rl2s350rbh1see">&nbsp;&nbsp;&nbsp;定义指向对象的指针不会调用构造函数(MyClass*obj;)</a>
+</h3>
+<h3 class="topic">
+<a name="79tjph8b6klcg3kvr2gceddv9v">&nbsp;&nbsp;&nbsp;除非定义的过程中也进行初始化,才会调用构造函数MyClass *obj=new MyClass;</a>
+</h3>
+<h3 class="topic">
+<a name="7mi35hch6akbklip6d8v2pqqdn">&nbsp;&nbsp;对象的访问</a>
+</h3>
+<h3 class="topic">
+<a name="5onv6vo3r626oeriesl5g64360">&nbsp;&nbsp;&nbsp;.</a>
+</h3>
+<h3 class="topic">
+<a name="1ijbca3duprocsmgea46flr6ds">&nbsp;&nbsp;&nbsp;-&gt;</a>
+</h3>
+<h3 class="topic">
+<a name="5s2itjejnqun4ndtpidt2jlrno">&nbsp;&nbsp;c++中类与结构体的区别</a>
+</h3>
+<h3 class="topic">
+<a name="30k0d09o7jg9pa69o475l02ctq">&nbsp;&nbsp;&nbsp;内部默认的访问权限不同</a>
+</h3>
+<h3 class="topic">
+<a name="5bnhbsjdmon4g30e3do1boaosu">&nbsp;&nbsp;&nbsp;&nbsp;类（私有）</a>
+</h3>
+<h3 class="topic">
+<a name="68a94ipmb0s0nl9mu64eq1ciie">&nbsp;&nbsp;&nbsp;&nbsp;结构体（公有）</a>
+</h3>
+<h3 class="topic">
+<a name="6a5nlevl4tml8hhcncprief39m">&nbsp;&nbsp;&nbsp;继承时默认的继承方式不同</a>
+</h3>
+<h3 class="topic">
+<a name="7b93fidls6hd58dmmfmqsdpc8q">&nbsp;&nbsp;&nbsp;&nbsp;类（私有继承）</a>
+</h3>
+<h3 class="topic">
+<a name="2eebcvvmt7gsl0vqjrlvp9l11s">&nbsp;&nbsp;&nbsp;&nbsp;结构体（公有继承）</a>
+</h3>
+<h3 class="topic">
+<a name="6hr38orshotd3tbcou2ru5jo4u">&nbsp;&nbsp;&nbsp;其他没有任何区别</a>
+</h3>
+<h3 class="topic">
+<a name="1ef954bhu1596m3ihh9733qddb">&nbsp;this指针</a>
+</h3>
+<h3 class="topic">
+<a name="5ah7fmkonn7b9otqvii0t9ekru">&nbsp;&nbsp;在成员函数中使用数据成员时，是通过this指针对数据成员进行引用</a>
+</h3>
+<h3 class="topic">
+<a name="5si2nd3ujis2n3j9l2av23igds">&nbsp;&nbsp;this指针的数据类型当前类的指针，内容是调用当前成员函数的对象的地址</a>
+</h3>
+<h3 class="topic">
+<a name="53df1928asgcd98r336colek9o">&nbsp;&nbsp;实际上在对象调用成员函数的时候，会隐含将对象的地址作为函数参数传入，并将其赋值给this指针</a>
+</h3>
+<h3 class="topic">
+<a name="69mthldr808h4lroiot6h94bee">&nbsp;作用域</a>
+</h3>
+<h3 class="topic">
+<a name="0vgrvsromn2p53fs5q79sq3n7t">&nbsp;&nbsp;类的作用域简称为类域</a>
+</h3>
+<h3 class="topic">
+<a name="3ghai65rm727nrfpl2k5ebpntp">&nbsp;&nbsp;使用::（作用域运算符）   指定全局作用域，访问全局的变量</a>
+</h3>
+<h3 class="topic">
+<a name="3b6puhccrkdonpdqrph4r1qetn">&nbsp;命名空间</a>
+</h3>
+<h3 class="topic">
+<a name="61a3n1dcbiiutpqctpd781ujir">&nbsp;&nbsp;namespace mmm&#13;
+{&#13;
+int num；&#13;
+}//命名空间中的num生存周期是真个程序运行期间，作用域在{}内</a>
+</h3>
+<h3 class="topic">
+<a name="12nsoeni7bkiori95u7sftb346">&nbsp;&nbsp;c++中所有标准函数和数据结构都存在一个std命名空间中，但是命名空间中的数据不能直接访问所以会用到 using</a>
+</h3>
+<h3 class="topic">
+<a name="0hcfvd392e1ioo89fc7od067fi">&nbsp;&nbsp;访问不同命名空间（using使用方法）</a>
+</h3>
+<h3 class="topic">
+<a name="17vgseqihhghe712ssm5ugbfll">&nbsp;&nbsp;&nbsp;1、不使用using 直接加 作用域:: </a>
+</h3>
+<h3 class="topic">
+<a name="5ji3hnc7jictubqava5sbnvhff">&nbsp;&nbsp;&nbsp;&nbsp;std::cout;</a>
+</h3>
+<h3 class="topic">
+<a name="292hodck4kn9ni0br515hbm1hb">&nbsp;&nbsp;&nbsp;2 using 命名空间 ::</a>
+</h3>
+<h3 class="topic">
+<a name="6upsoqjvmk9t2b53unr6e5g4di">&nbsp;&nbsp;&nbsp;&nbsp;using std::cout</a>
+</h3>
+<h3 class="topic">
+<a name="7knphinoh6ee1gkgtbnk763mah">&nbsp;&nbsp;&nbsp;&nbsp;当使用的指令不同时，会存在多个using</a>
+</h3>
+<h3 class="topic">
+<a name="4qpqc60rfp9aiu40r5k6iojjti">&nbsp;&nbsp;&nbsp;3、using namespace 命名空间</a>
+</h3>
+<h3 class="topic">
+<a name="7hofr1359t3mlqo96a0gmh5b55">&nbsp;&nbsp;&nbsp;&nbsp;using namespace std;</a>
+</h3>
+<h3 class="topic">
+<a name="737rl36e1vsonan87mtjqmo1bu">&nbsp;&nbsp;&nbsp;&nbsp;命名空间存在的意义防止相同的作用域有重名的情况</a>
+</h3>
+<h3 class="topic">
+<a name="07fm3jue7ss07e5vr4e543en4j">&nbsp;&nbsp;&nbsp;&nbsp;直接使用该using语句，当不同命名空间中存在重名数据时，可能导致重名错误</a>
+</h3>
+<h3 class="topic">
+<a name="76s2h7bujeujekh0ul4sd1gfdt">&nbsp;&nbsp;&nbsp;举例</a>
+</h3>
+<h3 class="topic">
+<a name="4p9lnda46fdkj2s3emmd397ll2">&nbsp;&nbsp;&nbsp;&nbsp;int main()&#13;
+{&#13;
+	// C++所有的标准函数和数据结构都存在于一个叫做 std 的命名空间中&#13;
+	// 但是命名空间中的数据并不能直接访问，所以我们会用到 using&#13;
+&#13;
+	// 1. 如果不使用 using 指令想要访问其中的数据，需要加作用域名&#13;
+	// - 缺点是，当使用的数据或函数过多，代码就会重复&#13;
+	std::cout &lt;&lt; "Hello World" &lt;&lt; std::endl;&#13;
+&#13;
+	// 2. 使用 using std::cout 类似的方式默认作用域&#13;
+	// - 当使用的不同指令过多时，会有非常多的 using &#13;
+	using std::cout;		// 所有使用的cout默认在 std 作用域中找&#13;
+	cout &lt;&lt; "Hello World\n" &lt;&lt; std::endl;&#13;
+	cout &lt;&lt; "Hello World\n" &lt;&lt; std::endl;&#13;
+&#13;
+	// 3. 一次性指定所有的数据和函数默认查找的作用域&#13;
+	// - 命名空间存在的意义是防止相同作用域有重名的情况&#13;
+	// - 如果使用这条指令指定了默认作用域，还是会重名&#13;
+	using namespace std;	// std 就是默认使用的作用域&#13;
+	cout &lt;&lt; "Hello World" &lt;&lt; endl;&#13;
+	cout &lt;&lt; "Hello World" &lt;&lt; endl;&#13;
+	cout &lt;&lt; "Hello World" &lt;&lt; endl;&#13;
+&#13;
+	return 0;&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="0vo7j8c38nl7v38chhmg4vfsts">&nbsp;&nbsp;命名空间中可以包括什么</a>
+</h3>
+<h3 class="topic">
+<a name="1s1dvlht85k1koc45e4pbb54pt">&nbsp;&nbsp;&nbsp;数据</a>
+</h3>
+<h3 class="topic">
+<a name="5oiv822v355doc0pq57teed35p">&nbsp;&nbsp;&nbsp;函数</a>
+</h3>
+<h3 class="topic">
+<a name="301270kfqg2er2fursltriftkn">&nbsp;&nbsp;&nbsp;类</a>
+</h3>
+<h3 class="topic">
+<a name="6fk1ofet66ncp566atobrifpu7">&nbsp;&nbsp;&nbsp;新的命名空间</a>
+</h3>
+<h3 class="topic">
+<a name="2519jaabk7050i4dispc0nq2hc">&nbsp;&nbsp;&nbsp;&nbsp;需要使用两次::  作用域运算符访问内层的命名空间</a>
+</h3>
+<h3 class="topic">
+<a name="5s02rafnlp6iav1bolqirkr35a">&nbsp;&nbsp;&nbsp;&nbsp;外层命名空间::内层命名空间::内层命名空间中的内容 </a>
+</h3>
+<h3 class="topic">
+<a name="1hrn0rfh3n0c2o13kn85d5dum7">&nbsp;&nbsp;&nbsp;实例</a>
+</h3>
+<h3 class="topic">
+<a name="00acflpuod70mj6vv1k5oh3cst">&nbsp;&nbsp;&nbsp;&nbsp;namespace Outer&#13;
+{&#13;
+	// 数据&#13;
+	int number = 10;&#13;
+&#13;
+	// 函数&#13;
+	void show()&#13;
+	{&#13;
+		printf("M::number = %d", number);&#13;
+	}&#13;
+&#13;
+	// 类&#13;
+	class OBJ { };&#13;
+&#13;
+	// 新的命名空间&#13;
+	namespace Inner&#13;
+	{&#13;
+		int inner_number = 10;&#13;
+	}&#13;
+}&#13;
+&#13;
+void test_func()&#13;
+{&#13;
+	// 访问外层作用域&#13;
+	Outer::number = 20;&#13;
+	Outer::OBJ obj;&#13;
+	Outer::show();&#13;
+&#13;
+	// 访问内层作用域&#13;
+	Outer::Inner::inner_number = 20;&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="6gibj8100tdp8q4q549dasn45i">&nbsp;有函数声明但是没有函数实现会报错：无法解析的外部符号</a>
+</h3>
+<h3 class="topic">
+<a name="24okpa7k7su0odrtt9i2577ckl">&nbsp;vs快捷键</a>
+</h3>
+<h3 class="topic">
+<a name="6g8brdh55h9t03usj3tgn6f4fj">&nbsp;&nbsp;  // 注释: ctrl + k + c</a>
+</h3>
+<h3 class="topic">
+<a name="25cro0vhkl0q7s7a282cjci56u">&nbsp;&nbsp;  // 取消: ctrl + k + u</a>
+</h3>
+</body>
+</html>

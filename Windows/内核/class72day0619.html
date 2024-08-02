@@ -1,0 +1,1280 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>class72day0619（内核编程第三天)</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="6icv1rctk6hlg8sgare4le2m0c">class72day0619（内核编程第三天)</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="class72day0619_files/images/class72day0619%EF%BC%88%E5%86%85%E6%A0%B8%E7%BC%96%E7%A8%8B%E7%AC%AC%E4%B8%89%E5%A4%A9).jpg"></div>
+<h2 class="topic">
+<a name="6udbq04t7js58enqlnb9lia3u4">推荐书：windows驱动开发技术详解、windows内核安全与驱动开发</a>
+</h2>
+<h2 class="topic">
+<a name="591cmbslo8c51duc94p2cacvvf">内核编程基础</a>
+</h2>
+<h3 class="topic">
+<a name="0l4udtqjviosu6025r5mtf1m2g">&nbsp;概述</a>
+</h3>
+<h3 class="topic">
+<a name="07bfvehn1bp0dip97rbkbd443k">&nbsp;驱动对象</a>
+</h3>
+<h3 class="topic">
+<a name="5nm9vj5ortpk2cv31nv78r59ta">&nbsp;&nbsp;代表着当前的驱动程序，类比sdk应用程序</a>
+</h3>
+<h3 class="topic">
+<a name="1fl0pnnb4n6f6qh89lhqugd3dr">&nbsp;&nbsp;驱动对象是一整个驱动程序的抽象，类似于sdk中的程序的实例句柄</a>
+</h3>
+<h3 class="topic">
+<a name="6n6lsrqmq6bq27dn99c2q1qdk3">&nbsp;&nbsp;当驱动程序被加载，对象管理器会生成一个驱动对象，并调用DriverEntry，将驱动对象传入，可以在该函数中为驱动对象结构体的各个字段赋值，为驱动程序的运行定基调</a>
+</h3>
+<h3 class="topic">
+<a name="0tr8qiiuk9a21v9lsqnahe377b">&nbsp;&nbsp;DRIVER_OBJECT</a>
+</h3>
+<h3 class="topic">
+<a name="3hc1mbusp30jta1bqmk5uq83ch">&nbsp;&nbsp;&nbsp;结构体字段</a>
+</h3>
+<h3 class="topic">
+<a name="73i1rq3e0kjq97ssa17bocgfed">&nbsp;&nbsp;&nbsp;&nbsp;Type</a>
+</h3>
+<h3 class="topic">
+<a name="2eelhpukr0u4sfmcdl6jbme2ci">&nbsp;&nbsp;&nbsp;&nbsp;Size</a>
+</h3>
+<h3 class="topic">
+<a name="118812km22h933ukflqu9nk5og">&nbsp;&nbsp;&nbsp;&nbsp;DriverName</a>
+</h3>
+<h3 class="topic">
+<a name="7tiqg63ga41asci897tob324s8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;驱动名称，采用unicode编码，一般形式为\Driver\[驱动程序名称]</a>
+</h3>
+<h3 class="topic">
+<a name="78ufuogevs3g32sntj7lu3v0f0">&nbsp;&nbsp;&nbsp;&nbsp;DriverSection</a>
+</h3>
+<h3 class="topic">
+<a name="1moili9km05dmmgefamvrn5i5l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;指向一个未公开的结构体</a>
+</h3>
+<h3 class="topic">
+<a name="21m02cecpas4v4cirbjoqjqqlb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该结构体中有一个双向链表的指针（InLoadOrderLinks），通过该双向链表可以遍历当前所有加载的驱动（.sys）</a>
+</h3>
+<h3 class="topic">
+<a name="3lca1lmric91d5idor0snbbb5b">&nbsp;&nbsp;&nbsp;&nbsp;DriverUnload</a>
+</h3>
+<h3 class="topic">
+<a name="0m44r3n8ush8s1cdsffko5mf4f">&nbsp;&nbsp;&nbsp;&nbsp;DeviceObject</a>
+</h3>
+<h3 class="topic">
+<a name="0r9jq4ahgm7eiq89dbiu85tgdr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;设备对象</a>
+</h3>
+<h3 class="topic">
+<a name="55lkmatds1tam4p2gsq54u6s4a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;一个驱动对象可以有一个或多个设备对象，所有设备对象通过链表串联</a>
+</h3>
+<h3 class="topic">
+<a name="0amebc393fe6m39bgm93rq8iqc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该字段指向多个设备对象中的第一个设备对象，由此可以遍历所有设备对象</a>
+</h3>
+<h3 class="topic">
+<a name="31m5jfd3a6rsebo7smsb1ltjtn">&nbsp;&nbsp;&nbsp;&nbsp;MajorFunction[]</a>
+</h3>
+<h3 class="topic">
+<a name="4dehcno26ofrfej9onq8eco9eu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;派遣函数指针数组</a>
+</h3>
+<h3 class="topic">
+<a name="1rcpv9d97f3dk482g3iveucv9o">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;保存用于响应处理irp的函数的函数指针</a>
+</h3>
+<h3 class="topic">
+<a name="05th7p3jhsbknmq59e56e60rv4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;windows系统针对不同下标的函数定义不同的功能，包括内核对象的读写等</a>
+</h3>
+<h3 class="topic">
+<a name="0jb2l1mlb2drjn2esgfuev7uh8">&nbsp;&nbsp;&nbsp;&nbsp;......</a>
+</h3>
+<h3 class="topic">
+<a name="0ukt0tlvd1a9lnn2uqc16hc4oo">&nbsp;&nbsp;代码：通过DriverSection中的双向链表遍历驱动</a>
+</h3>
+<h3 class="topic">
+<a name="7n2tkb16qln6p6ut2ltbppbdr3">&nbsp;&nbsp;&nbsp;。。。。。。。。。</a>
+</h3>
+<h3 class="topic">
+<a name="12ioftt5cn7v0htffqef297v3d">&nbsp;设备对象</a>
+</h3>
+<h3 class="topic">
+<a name="0g3jm471fqqi249rhdg5gu1n2t">&nbsp;&nbsp;类比sdk窗口</a>
+</h3>
+<h3 class="topic">
+<a name="02pcvttfth986c80gdmsa7l169">&nbsp;&nbsp;&nbsp;一个sdk程序可能有多个窗口，窗口之间可能有不同的级别层次</a>
+</h3>
+<h3 class="topic">
+<a name="7egsd9rad2fk33k5h4r2cnp56b">&nbsp;&nbsp;驱动程序可以没有设备对象，但是没有设备对象，无法接受IRP</a>
+</h3>
+<h3 class="topic">
+<a name="2fvia54h13qrr56ak05sjetu4l">&nbsp;&nbsp;创建设备对象时需要指定其属于哪个驱动对象</a>
+</h3>
+<h3 class="topic">
+<a name="6l4m8ck6rh2b5haeehcp4u05jd">&nbsp;&nbsp;内核程序中，负责与外部进行交流的是设备对象</a>
+</h3>
+<h3 class="topic">
+<a name="3lnimp330q1uts17lpddftnif2">&nbsp;&nbsp;一个驱动可以创建多个设备对象，创建的设备对象会自动挂载到驱动对象的设备链上</a>
+</h3>
+<h3 class="topic">
+<a name="7a2coepht07gqsoj2jjck69l6c">&nbsp;&nbsp;驱动对象可以通过设备链找到所有的设备对象</a>
+</h3>
+<h3 class="topic">
+<a name="6g43que65vtdn3mme6uucll0hc">&nbsp;&nbsp;一个设备对象也可以找到创建他的驱动对象</a>
+</h3>
+<h3 class="topic">
+<a name="69dpd8c7ha43t0bss61s4eeuio">&nbsp;&nbsp;设备对象结构体</a>
+</h3>
+<h3 class="topic">
+<a name="4i5c9s1lkioj5f8ec9sn53hmmh">&nbsp;&nbsp;&nbsp;主要字段</a>
+</h3>
+<h3 class="topic">
+<a name="11mut46qfq299623pba09jtm8j">&nbsp;&nbsp;&nbsp;&nbsp;DriverObject</a>
+</h3>
+<h3 class="topic">
+<a name="7l5usegpgjnccp2eguois8iepj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;所属驱动对象</a>
+</h3>
+<h3 class="topic">
+<a name="6b8n96b7d2tgl8rcgd8aihrru7">&nbsp;&nbsp;&nbsp;&nbsp;NextDevice</a>
+</h3>
+<h3 class="topic">
+<a name="4lv1jkvv7nuvs1o7npcoigsjlk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;指向下一个同层设备对象（与当前设备处于同一级别），同层设备对象的irp消息不能由其他同层设备预处理</a>
+</h3>
+<h3 class="topic">
+<a name="4iugc2auc6q444t5i5vr0ab0aq">&nbsp;&nbsp;&nbsp;&nbsp;AttachedDevice</a>
+</h3>
+<h3 class="topic">
+<a name="5a0d2cardjsggj5kerflla4cho">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;指向下一层驱动程序的设备对象</a>
+</h3>
+<h3 class="topic">
+<a name="3td9ia85lidospp720g5es1u3s">&nbsp;&nbsp;&nbsp;&nbsp;DeviceType</a>
+</h3>
+<h3 class="topic">
+<a name="7gbfq8gn0mrkslrumf4o6lr0be">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;设备类型</a>
+</h3>
+<h3 class="topic">
+<a name="0rp4i7obfekg1h901gtmm3i94p">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对标硬件设备类型，鼠标、键盘等</a>
+</h3>
+<h3 class="topic">
+<a name="2g3bh0ottrktosl4uca8jd4u7v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果内核程序不针对某个具体的设备，设备类型选择为unknow即可</a>
+</h3>
+<h3 class="topic">
+<a name="5ojp4gsjq20ttbjgge2f49qqnj">&nbsp;&nbsp;&nbsp;&nbsp;CurrentIrp</a>
+</h3>
+<h3 class="topic">
+<a name="5v53ar7ict7g3vhtb7s34d45k3">&nbsp;&nbsp;&nbsp;&nbsp;StackSize</a>
+</h3>
+<h3 class="topic">
+<a name="64mrihp06ebobhf331ecvukasj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;多层驱动情况下，驱动的层数</a>
+</h3>
+<h3 class="topic">
+<a name="2hqhjleq9dtnjgod3trmr24gd1">&nbsp;&nbsp;&nbsp;&nbsp;DeviceExtension</a>
+</h3>
+<h3 class="topic">
+<a name="2bp26v30skqmjntomjo60cim2r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;指向LDR链的指针</a>
+</h3>
+<h3 class="topic">
+<a name="5rn2t98t8r41g0mnvj8m6ff3i1">&nbsp;&nbsp;&nbsp;将设备对象设置为分层的操作，下层设备对象会将消息处理好之后传递到上一层设备对象，每一层处理该层所属功能，层间相互不影响</a>
+</h3>
+<h3 class="topic">
+<a name="486l9snsfohdc2ocji8vogmgml">&nbsp;&nbsp;多个设备对象在一个驱动对象下分层设置，用于接收、处理irp消息</a>
+</h3>
+<h3 class="topic">
+<a name="20sq1385slvtnevkrkud43kns9">&nbsp;&nbsp;设备对象只包含设备的基本信息，需要保存其他信息可以使用设备扩展，一般全局变量通过设备扩展保存，同时加上适当同步保护</a>
+</h3>
+<h3 class="topic">
+<a name="2pbrk1ma45r7vuahp3fh5303gk">&nbsp;irp</a>
+</h3>
+<h3 class="topic">
+<a name="7at6soh4c8l0ljgc4lhr2fp6n8">&nbsp;&nbsp;类比sdk中的MSG消息，用于在不同设备对象间、在0环3环间传递消息，进行io操作</a>
+</h3>
+<h3 class="topic">
+<a name="098v3lrmike9crl6203dm6ls6p">&nbsp;&nbsp;其结构体的结构比较复杂，保存有描述一个IO请求的完整信息</a>
+</h3>
+<h3 class="topic">
+<a name="2q0vt92ls22dp3e6e2553dp2to">&nbsp;&nbsp;可以在windbg中使用指令 dt _IRP -r3查看IRP3层的结构体</a>
+</h3>
+<h3 class="topic">
+<a name="1eslllao7pgdpif4muirfjqhto">&nbsp;&nbsp;设备是分层的，irp的传递也应该是分层的</a>
+</h3>
+<h3 class="topic">
+<a name="10p3ji0js0lbrnrlr2p5epdb0r">&nbsp;&nbsp;来源于IO管理器的创建，用于代表一个IO操作，IO管理器将irp传递给正确的驱动程序 并接受处理完成后的irp</a>
+</h3>
+<h3 class="topic">
+<a name="2ujobbvseim9k6jei7ic10em1n">&nbsp;&nbsp;驱动程序接收irp，执行irp指定操作，将irp传回给IO管理器，返回该操作是否处理完毕或应该传给另一个驱动进一步操作</a>
+</h3>
+<h3 class="topic">
+<a name="2q5ru1kpt5cjsi5blhp00r983d">&nbsp;&nbsp;irp接收者是设备对象，处理者是驱动对象</a>
+</h3>
+<h3 class="topic">
+<a name="2dkhke27s3e22j9l8ikrr4pa7e">&nbsp;irp栈</a>
+</h3>
+<h3 class="topic">
+<a name="1gb80nikkj385e6shpfamjs5vv">&nbsp;&nbsp;上面的irp结构是IO请求包的irp头部，IO请求包的另一部分是irp栈，irp栈紧跟在irp头部之后，保存irp其他相关信息</a>
+</h3>
+<h3 class="topic">
+<a name="4jekqcfpfc7pl82cjmgi2llnn0">&nbsp;&nbsp;1、一个IRP被发出来,可以被多个驱动对象所处理, 每个驱动对象都能做出不同的处理.&#13;
+2、 IO管理器创建IRP时, 会找出所有能够处理此IRP的设备对象, 并为每一个设备对象建立一个IRP栈元素,(一个驱动对象所创建的设备可以挂载到另一个驱动的设备对象链中,IoAttatchDeviceToDeviceStack)&#13;
+3、于是便有了IRP栈,&#13;
+4、通过函数IoGetCurrentIrpStackLocation能够获取到本驱动的IRP栈,</a>
+</h3>
+<h3 class="topic">
+<a name="43b123dq55t4v59jb40hmrpjl7">&nbsp;&nbsp;IO_STACK_LOCATION结构体较为复杂</a>
+</h3>
+<h3 class="topic">
+<a name="2mr5jjc7ch0f2k0ilvd66hqfcc">&nbsp;&nbsp;在windows系统下所有的设备均被看成是文件</a>
+</h3>
+<h3 class="topic">
+<a name="64dgsr97k29ikvl9pru63d0ms7">&nbsp;驱动程序基本编写思路</a>
+</h3>
+<h3 class="topic">
+<a name="5em9qokm3cm0e68qc2t6hgttff">&nbsp;&nbsp;驱动程序的编写和用户层编写差不多，都属于事件驱动，通常在DriverEntry中创建设备对象，并给驱动对象填好处理irp的函数，其他程序需要和驱动程序交互的时候，会将irp消息发送给设备对象，驱动对象处理完成irp消息之后会将irp消息传回</a>
+</h3>
+<h2 class="topic">
+<a name="2qp8bi6mc63gchav7btv24d1vj">内核编程特点</a>
+</h2>
+<h3 class="topic">
+<a name="49sv72sfgelvi36if5lndbk6pf">&nbsp;数据类型</a>
+</h3>
+<h3 class="topic">
+<a name="2slmegvvlrs7k9psc3flfgpri4">&nbsp;&nbsp;UINT32</a>
+</h3>
+<h3 class="topic">
+<a name="64kvp0bqp4mt2pum4jqi5akjph">&nbsp;&nbsp;&nbsp;unsigned int</a>
+</h3>
+<h3 class="topic">
+<a name="19odiupe19vuuggb1r73aoo3f6">&nbsp;&nbsp;&nbsp;&nbsp;无符号整型</a>
+</h3>
+<h3 class="topic">
+<a name="30vbo08f5ae6l302o7en66rsne">&nbsp;&nbsp;。。。。</a>
+</h3>
+<h3 class="topic">
+<a name="0m0vqkt01bu2ps4efvfnpj392j">&nbsp;函数所占用的内存属性</a>
+</h3>
+<h3 class="topic">
+<a name="7eofb7b4ijvr4a4karscfr0hcf">&nbsp;&nbsp;即指定函数指令所在内存的属性，这一点与3环程序不同</a>
+</h3>
+<h3 class="topic">
+<a name="6vkjauj9v9dqsb6rl4omavlkqs">&nbsp;&nbsp;使用宏指定函数的内存属性</a>
+</h3>
+<h3 class="topic">
+<a name="25ilte1emj72ljmmp41gohn40i">&nbsp;&nbsp;&nbsp;#pragma alloc_text(类型,函数名)</a>
+</h3>
+<h3 class="topic">
+<a name="6on7agngpdnjv76kpoekkk3bc7">&nbsp;&nbsp;类型</a>
+</h3>
+<h3 class="topic">
+<a name="1jag2bu4juneptte22jhuf1vqu">&nbsp;&nbsp;&nbsp;调用完即可释放</a>
+</h3>
+<h3 class="topic">
+<a name="0olimhb9regmr2cdld043rs2kd">&nbsp;&nbsp;&nbsp;&nbsp;用完不管，立即释放内存</a>
+</h3>
+<h3 class="topic">
+<a name="264tirmh2km52dn1vtfjl72c73">&nbsp;&nbsp;&nbsp;&nbsp;比如DriverEntry</a>
+</h3>
+<h3 class="topic">
+<a name="7d7o3elbng67cdp9g35hvrabb5">&nbsp;&nbsp;&nbsp;位于分页内存</a>
+</h3>
+<h3 class="topic">
+<a name="4ohpqtte6q43lvbbitr068m1bq">&nbsp;&nbsp;&nbsp;&nbsp;分页的概念分为两种</a>
+</h3>
+<h3 class="topic">
+<a name="6l958u3m77nq7nd5424l8uftu6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1、4kb，内存管理单元</a>
+</h3>
+<h3 class="topic">
+<a name="1rdtgi50rurs7901loeimj0pli">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2、当内存空间不足时，或将长久不用的内存内容交换到硬盘中</a>
+</h3>
+<h3 class="topic">
+<a name="2476mmpreob57q61vo4nvkpk3e">&nbsp;&nbsp;&nbsp;&nbsp;这里的分页内存指的是第二种，指的是可以将函数的一部分交换硬盘中</a>
+</h3>
+<h3 class="topic">
+<a name="3p631uj155b9jc29vnvq08mal6">&nbsp;&nbsp;&nbsp;&nbsp;内核中的代码，可以与cpu直接挂钩，如果独占cpu的函数有部分指令位于硬盘，则被占用的cpu无法将硬盘中的指令交换回来，造成曾死锁</a>
+</h3>
+<h3 class="topic">
+<a name="1o87pepcmmvd80rthtb03k3g1f">&nbsp;&nbsp;&nbsp;位于非分页内存</a>
+</h3>
+<h3 class="topic">
+<a name="3ue0cfth9nnik10pqsv1d1al1v">&nbsp;&nbsp;&nbsp;&nbsp;是默认值，不将函数内容交换到硬盘</a>
+</h3>
+<h3 class="topic">
+<a name="5iiac7qa6fuce52m8ad229rvtl">&nbsp;内核中仍然可以使用各种内核概念，各种内核对象等</a>
+</h3>
+<h3 class="topic">
+<a name="7kotqkj4inrqvekhpnc5jvobj0">&nbsp;内核编程api均以一定前缀开头，可以猜测函数功能</a>
+</h3>
+<h3 class="topic">
+<a name="1qdmfl1g6nrfent6uj83ukgpjh">&nbsp;内核中的函数的返回值一般是固定的若干值</a>
+</h3>
+<h3 class="topic">
+<a name="3ma201rthahml8bnpo2je15uqb">&nbsp;&nbsp;STATUS_SUCCESS</a>
+</h3>
+<h3 class="topic">
+<a name="1k0ud57aokpujgou5ser4qcnat">&nbsp;&nbsp;&nbsp;执行成功</a>
+</h3>
+<h3 class="topic">
+<a name="2gl6v01epqhp756fu8u4ihfsg0">&nbsp;&nbsp;STATUS_TIMEOUT</a>
+</h3>
+<h3 class="topic">
+<a name="47k1t30prvoeb7gsesfiakv58s">&nbsp;&nbsp;&nbsp;超时</a>
+</h3>
+<h3 class="topic">
+<a name="78uce1fs3kiavop623k8jbust4">&nbsp;&nbsp;。。。。。。</a>
+</h3>
+<h3 class="topic">
+<a name="714bnsg6tgndivog0aqv8cr756">&nbsp;中断请求级别	IRQL</a>
+</h3>
+<h3 class="topic">
+<a name="2h13rf8j4kmn5us4bi2nfdcgsr">&nbsp;&nbsp;背景：系统内核相当于一个进程，多个线程在该进程中运行，多个线程同时访问内核中的全局变量会引发问题，此时微软使用中断请求级别将不同的线程赋予不同的执行权限</a>
+</h3>
+<h3 class="topic">
+<a name="2ftjvrdeunu52lk6khmhpam1j5">&nbsp;&nbsp;分为以下级别</a>
+</h3>
+<h3 class="topic">
+<a name="5i7qlc80offidefcd22gs2gb1c">&nbsp;&nbsp;&nbsp;Dispatch</a>
+</h3>
+<h3 class="topic">
+<a name="6cvj64fq51nnkm792e919qkukc">&nbsp;&nbsp;&nbsp;&nbsp;该级别运行的函数会进行原子操作，不能访问分页内存，函数全部运行完毕才可以切换线程</a>
+</h3>
+<h3 class="topic">
+<a name="1tucvu69vparjpnjg3giih6gkq">&nbsp;&nbsp;&nbsp;APC</a>
+</h3>
+<h3 class="topic">
+<a name="3tu1pcjovfoclr6f3sfk1p54hl">&nbsp;&nbsp;&nbsp;&nbsp;可以访问分页内存</a>
+</h3>
+<h3 class="topic">
+<a name="2hua08fd9gfb83m1vshdnrs707">&nbsp;&nbsp;&nbsp;Passive</a>
+</h3>
+<h3 class="topic">
+<a name="58ho7a5dukfr2b3loi5ii8nd9i">&nbsp;&nbsp;&nbsp;&nbsp;最低的优先级，大多数代码运行于此</a>
+</h3>
+<h3 class="topic">
+<a name="0cptvchpkmc6o77hpn7kdug248">&nbsp;&nbsp;&nbsp;Passive级别函数可以调用Dispatch级别函数 不能反过来调用</a>
+</h3>
+<h3 class="topic">
+<a name="786ae4nm7dh1fph0hjha2de6d3">&nbsp;字符串表达方式</a>
+</h3>
+<h3 class="topic">
+<a name="3piiiit3144a6iqinub26btq7t">&nbsp;&nbsp;0环中字符串使用UNICODE_STRING结构体表示</a>
+</h3>
+<h3 class="topic">
+<a name="1c5jbs0hru8f78i6hn8s6lemef">&nbsp;&nbsp;可以使用宏（RTL_CONSTANT_STRING）完成字符串的初始化操作</a>
+</h3>
+<h3 class="topic">
+<a name="575vovjr5ed7942oeere2ba61l">&nbsp;&nbsp;常见字符串处理函数</a>
+</h3>
+<h3 class="topic">
+<a name="669hblnajoc4ea3v0cu9blkff4">&nbsp;&nbsp;&nbsp;初始化字符串</a>
+</h3>
+<h3 class="topic">
+<a name="25gk0aj69dqctu01erthp73get">&nbsp;&nbsp;&nbsp;销毁字符串</a>
+</h3>
+<h3 class="topic">
+<a name="03nns88v2sn4n18cnv1pibthmk">&nbsp;&nbsp;&nbsp;拷贝字符串</a>
+</h3>
+<h3 class="topic">
+<a name="4aimferb346pr3v78gqlk340bp">&nbsp;&nbsp;&nbsp;追加字符串</a>
+</h3>
+<h3 class="topic">
+<a name="302s4brk060arc11etmf4v9jhr">&nbsp;&nbsp;&nbsp;比较字符串</a>
+</h3>
+<h3 class="topic">
+<a name="4s3js9vqtt33ogpitt0210q7hv">&nbsp;&nbsp;&nbsp;字符串传数字</a>
+</h3>
+<h3 class="topic">
+<a name="5ra0jqp6p43769q8o2dsi9cbvt">&nbsp;&nbsp;&nbsp;数字转字符串</a>
+</h3>
+<h3 class="topic">
+<a name="5kr5ufd7nanegikficbfu99ohu">&nbsp;&nbsp;&nbsp;unicode转ansi</a>
+</h3>
+<h3 class="topic">
+<a name="29vrvut68uivoheglbc5qecbl4">&nbsp;&nbsp;&nbsp;输出调试信息</a>
+</h3>
+<h3 class="topic">
+<a name="4shd1nj9a5vms62ef4mvme5nps">&nbsp;内存操作对应函数</a>
+</h3>
+<h3 class="topic">
+<a name="040coo305aqseuvndmhj3b13h3">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class72day0619_files/7nva63omaa7kukk50jcmslu1il.png"></p>
+<h3 class="topic">
+<a name="4c6ar07gnsr6c9dfaovdqd6jbr">&nbsp;&nbsp;内存申请函数</a>
+</h3>
+<h3 class="topic">
+<a name="7sfko0vudmp0kntv381nslftfi">&nbsp;&nbsp;&nbsp;参数</a>
+</h3>
+<h3 class="topic">
+<a name="6uiggfq4t06ooql8fbh5h0j8lc">&nbsp;&nbsp;&nbsp;&nbsp;申请堆内存的类型</a>
+</h3>
+<h3 class="topic">
+<a name="08g4hphed7ujnkaupbpr151b6a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;分页内存</a>
+</h3>
+<h3 class="topic">
+<a name="1lul05up1ogq4a7eq3n8d1j1bl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;非分页内存</a>
+</h3>
+<h3 class="topic">
+<a name="44kutb0j8d25in4ilcb67lk7mt">&nbsp;&nbsp;&nbsp;&nbsp;内存大小</a>
+</h3>
+<h3 class="topic">
+<a name="0ni9qii7m3nejqvv8ufrpjfbmg">&nbsp;&nbsp;调试内存分配相关代码</a>
+</h3>
+<h3 class="topic">
+<a name="7lcapq9b64md1lq5oj356hsha4">&nbsp;&nbsp;&nbsp;调试方法</a>
+</h3>
+<h3 class="topic">
+<a name="5ota5us2bvthp38n5o53ikdb19">&nbsp;&nbsp;&nbsp;&nbsp;sxe </a>
+</h3>
+<h3 class="topic">
+<a name="4jejvpaoqelrq7jiuqaicheche">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;给驱动的加载下断点</a>
+</h3>
+<h3 class="topic">
+<a name="7dlr1273udvul2t5efh17d1dp9">&nbsp;&nbsp;&nbsp;&nbsp;lm /m 模块名称 </a>
+</h3>
+<h3 class="topic">
+<a name="7f2lo3enmo0s0ldcdk4p84sl9d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以查看到模块的地址</a>
+</h3>
+<h3 class="topic">
+<a name="1613r5cg57sa9vppuvcq08buvk">&nbsp;&nbsp;&nbsp;&nbsp;bp DriverEntry</a>
+</h3>
+<h3 class="topic">
+<a name="4mfvvitgsku2lmh0kda5uanukt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;给main函数下断点</a>
+</h3>
+<h3 class="topic">
+<a name="4vv2ep270cus3nbtcb67bndpes">&nbsp;&nbsp;系统内核中的内存资源珍贵，驱动程序的栈空间比用户层程序栈空间小得多，所以若需要使用较大的数组或结构体，应将其保存在堆中，如果栈中数据过多，可能导致系统错误</a>
+</h3>
+<h3 class="topic">
+<a name="4gk7oh040caqqs0um26e1cd9gm">&nbsp;内存描述符表</a>
+</h3>
+<h3 class="topic">
+<a name="0jbcqde1je4983ev3k5jfgu62i">&nbsp;&nbsp;mdl</a>
+</h3>
+<h3 class="topic">
+<a name="36jifmqg7mjaoi4hjl33arm2at">&nbsp;&nbsp;是未公开结构</a>
+</h3>
+<h3 class="topic">
+<a name="7952e8p8jna1oo8f3ad0k47e79">&nbsp;&nbsp;通过系统api使用该结构体，可以将一块内存重新映射，从而重新设置新映射内存的属性</a>
+</h3>
+<h3 class="topic">
+<a name="27oqk0h5rpjpfuh8qq9t6dpkaq">&nbsp;&nbsp;可以用于修改内核模块中内存的读写属性，从而对内核内存进行操作</a>
+</h3>
+<h3 class="topic">
+<a name="48pe6dn01d4pnehcqgsf2s0f3h">&nbsp;&nbsp;&nbsp;可能被用到内核级别的HOOK等技术中</a>
+</h3>
+<h3 class="topic">
+<a name="4pnkukki7dnskpi5q0fce6tfkv">&nbsp;&nbsp;使用其修改内存页属性</a>
+</h3>
+<h3 class="topic">
+<a name="7q3fpkgv0akjur6lmn20juklps">&nbsp;&nbsp;&nbsp;总结：MDL就是描述一块虚拟内存的结构体，里面有个成员记录了多个页码，这些页码即处于各个不同物理地址的物理块的页号。&#13;
+&#13;
+所以要对一块受系统保护的区域进行写操作的话，可以这样来修改它的保护属性：&#13;
+1.创建一个MDL，显然里面的物理页号数组没有初始化 IoAllocateMdl&#13;
+2.初始化页码数组，使之成为实际有效的MDL MmBuildMdlForNonPagedPool&#13;
+3.进行锁定，并且重新赋值新的保护属性为可读 MmProbeAndLockPages&#13;
+4.获得我们所映射后的实际内存区域的虚拟地址 MmMapLockedPagesSpecifyCache&#13;
+&#13;
+使用示例&#13;
+&#13;
+    const wchar_t* pStr = L"123456789abcdefg0"; // 常量字符串,不可修改.&#13;
+    // 创建一个内存描述符列表&#13;
+    PMDL mdl = IoAllocateMdl(pStr, 17/*字节数*/, 0, 0, 0);&#13;
+    // 为内存描述符列表建立虚拟内存分页&#13;
+    MmBuildMdlForNonPagedPool(mdl);&#13;
+​&#13;
+    // 将虚拟内存加载到物理内存, 修改内存描述符分页属性为可写,并返回虚拟内存分页地址&#13;
+    wchar_t* p = (wchar_t*)MmMapLockedPagesSpecifyCache(mdl, KernelMode, MmWriteCombined, 0, 0, 0);&#13;
+    p[1] = 'A'; // 本来不可修改的内存现在可以修改了.&#13;
+​&#13;
+    // 取消锁定和映射&#13;
+    MmUnmapLockedPages(p, mdl);&#13;
+    // 释放内存描述符列表&#13;
+    IoFreeMdl(mdl);</a>
+</h3>
+<h3 class="topic">
+<a name="0cj44s7si89ses2tret3rceg9o">&nbsp;&nbsp;常用的mdl函数</a>
+</h3>
+<h3 class="topic">
+<a name="140b8cp1ikjutn2jatcoesk35e">&nbsp;&nbsp;&nbsp;创建mdl</a>
+</h3>
+<h3 class="topic">
+<a name="7hail6pjgakkpo94jg11qsc6ga">&nbsp;&nbsp;&nbsp;锁定内存分页</a>
+</h3>
+<h3 class="topic">
+<a name="1co323b0p383h8ef91bkfqm1lb">&nbsp;&nbsp;&nbsp;使用示例在书上</a>
+</h3>
+<h2 class="topic">
+<a name="7kmi2fc01e1timevetlc7pskf2">内核编程初级实战</a>
+</h2>
+<h3 class="topic">
+<a name="63ovb58dtfk51k223u4lekv1e1">&nbsp;内核通讯（3环与0环通讯）</a>
+</h3>
+<h3 class="topic">
+<a name="2ignbd7cko3rgagqkre11gtqip">&nbsp;&nbsp;在用户层界面实现内核数据读写</a>
+</h3>
+<h3 class="topic">
+<a name="4r3nithtj0jafrimfk6gdrvho8">&nbsp;&nbsp;数据的传输：IO</a>
+</h3>
+<h3 class="topic">
+<a name="3s8p1qrb177j82k0305t9lmc14">&nbsp;&nbsp;驱动程序中 io都是通过传递irp实现的，irp只能与设备对象进行通讯</a>
+</h3>
+<h3 class="topic">
+<a name="09f6tcitt81j98ifc0rk33vh6r">&nbsp;&nbsp;3环读写0环数据流程</a>
+</h3>
+<h3 class="topic">
+<a name="35abr96cdec53bp0l06l8oucbp">&nbsp;&nbsp;&nbsp;创建设备对象</a>
+</h3>
+<h3 class="topic">
+<a name="0gf7t1il4tf4msequ1u7k3tfir">&nbsp;&nbsp;&nbsp;&nbsp;IoCreateDevice</a>
+</h3>
+<h3 class="topic">
+<a name="3pb8egsgb6mtqkch767agsfp9d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;参数</a>
+</h3>
+<h3 class="topic">
+<a name="4mn4p7umvb0c1oqbrf3jc5f5mi">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;驱动对象</a>
+</h3>
+<h3 class="topic">
+<a name="64r3un58a4hm4fh1f97dvjbker">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;扩展大小</a>
+</h3>
+<h3 class="topic">
+<a name="6p0abumc0ljb21rlkffp0vibpn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;一般为0</a>
+</h3>
+<h3 class="topic">
+<a name="3p25sco2plvrq40h9ct3ldfnvp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;设备名称</a>
+</h3>
+<h3 class="topic">
+<a name="58giddg7tjh4jgm0ust42ptfa5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用unicode_string结构体</a>
+</h3>
+<h3 class="topic">
+<a name="51vuj9d03jqvrnth79mf343gqu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;设备类型</a>
+</h3>
+<h3 class="topic">
+<a name="757rfhfu7de2j28un08ol2v8mf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果不驱动真实硬件，则使用unknow</a>
+</h3>
+<h3 class="topic">
+<a name="4mrdk9fgugi008fdam0heb4svc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;设备特征信息</a>
+</h3>
+<h3 class="topic">
+<a name="04e0o6n4sb4oaeas864ddi86tt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0</a>
+</h3>
+<h3 class="topic">
+<a name="48u40m7m86b4qi4d6ccbcbr2v4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;设备是否独占</a>
+</h3>
+<h3 class="topic">
+<a name="4gafm1shgbsvsg3dj3iti39nh0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;false</a>
+</h3>
+<h3 class="topic">
+<a name="7rov9hh3otl3bot437ff58ag4g">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;创建完成的设备对象指针</a>
+</h3>
+<h3 class="topic">
+<a name="5761rqes6ib1fdt6bspespb35i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;输出参数</a>
+</h3>
+<h3 class="topic">
+<a name="2qqlr45rfv0voaaspg823ha0cp">&nbsp;&nbsp;&nbsp;&nbsp;代码：创建设备对象</a>
+</h3>
+<h3 class="topic">
+<a name="27iph8ht6u14nfnqf8uaj83u5s">&nbsp;&nbsp;&nbsp;创建符号链接</a>
+</h3>
+<h3 class="topic">
+<a name="3pn28vnsj877phher1qbocs7fv">&nbsp;&nbsp;&nbsp;&nbsp;如果要使用设备，需要给设备对象创建符号链接</a>
+</h3>
+<h3 class="topic">
+<a name="0n1chvpmir2au0p6eq1p2dfgnc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;一般简单的符号链接总是命名在"\DosDevices\"下</a>
+</h3>
+<h3 class="topic">
+<a name="6cmim0dce5on7vr4uj8d11f950">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用IoCreateSymbolicLink</a>
+</h3>
+<h3 class="topic">
+<a name="7acb55omc0lrulmqibo9g46c80">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;参数</a>
+</h3>
+<h3 class="topic">
+<a name="3r0qa1e5lb5v711nilno74e36p">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;链接符号名</a>
+</h3>
+<h3 class="topic">
+<a name="4lpod3qjdo8a7vba55u0dp4lkd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;设备名称</a>
+</h3>
+<h3 class="topic">
+<a name="4mbvlsr20rb339dnrm2qr6sou5">&nbsp;&nbsp;&nbsp;&nbsp;在windows2000以及更高版本的系统中，链接符号带有用户相关性，普通用户创建的链接符号只能供自己使用，其他用户不可见</a>
+</h3>
+<h3 class="topic">
+<a name="4u57gc5kq64j2q34bvnldvet1f">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果需要使符号链接可以被所有用户访问，则要创建全局符号链接，需要将符号链接名称改为全局符号链接格式</a>
+</h3>
+<h3 class="topic">
+<a name="4tchc2vphfs418m49u7pfhll5j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\DosDevices\Global\符号链接名</a>
+</h3>
+<h3 class="topic">
+<a name="3dtp101uhiigs13hrksrqojm90">&nbsp;&nbsp;&nbsp;&nbsp;代码根据系统版本高低创建全局符号链接</a>
+</h3>
+<h3 class="topic">
+<a name="7iuc5a338jm9d8fh2se9blhevt">&nbsp;&nbsp;&nbsp;准备卸载符号链接和设备对象</a>
+</h3>
+<h3 class="topic">
+<a name="6055ja7kt396kdlu3cjtsafqod">&nbsp;&nbsp;&nbsp;&nbsp;在卸载函数（DriverUnload）中需要卸载符号链接和卸载设备对象</a>
+</h3>
+<h3 class="topic">
+<a name="5kospvm2de2o1srpntu50neaps">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IoDeleteSymbolicLink</a>
+</h3>
+<h3 class="topic">
+<a name="34050h7k6rcg97s0fdbrg1fncc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;卸载设备对象的api</a>
+</h3>
+<h3 class="topic">
+<a name="6mnre1avranpeg0aufoebq5qj1">&nbsp;&nbsp;&nbsp;设置irp默认处理函数</a>
+</h3>
+<h3 class="topic">
+<a name="2jt8fmuqm6259knq12d6fl1gs1">&nbsp;&nbsp;&nbsp;&nbsp;当在用户层调用createfile readfile closehandle 等api的时候会产生各种irp信息，需要设备对象进行处理</a>
+</h3>
+<h3 class="topic">
+<a name="418s63apgmfvnn8o6tk94dp73s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;调用驱动对象中填好的派遣函数指针，处理irp消息</a>
+</h3>
+<h3 class="topic">
+<a name="5adbn86be5rrdolro5j1ilj97d">&nbsp;&nbsp;&nbsp;&nbsp;IO信息分为两部分，irp头部和irp栈，后者可以通过IoGetCurrentIrpStackLocation这个api获得</a>
+</h3>
+<h3 class="topic">
+<a name="5md5fjlr7je6vnkekf4bv0souu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;irp结构体中有两个重要成员</a>
+</h3>
+<h3 class="topic">
+<a name="0ke4d7rj101a1jml3lpuot82vn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MajorFunction</a>
+</h3>
+<h3 class="topic">
+<a name="73figpjfpckbit39rl18cliamm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;记录irp的主类型</a>
+</h3>
+<h3 class="topic">
+<a name="657ubt05ntvu7o8cifneu3v42p">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;明确是什么irp</a>
+</h3>
+<h3 class="topic">
+<a name="0peh36lkl4nlce92kgk414snfe">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MinorFunctionn</a>
+</h3>
+<h3 class="topic">
+<a name="5t6t4vj0o0bpftdht0vfb6e7c5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;记录irp的子类型</a>
+</h3>
+<h3 class="topic">
+<a name="6f25hhj26nfisqloc8f4mka2t4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;明确一些子消息</a>
+</h3>
+<h3 class="topic">
+<a name="5g4vcsd33rei91r6rbqli501on">&nbsp;&nbsp;&nbsp;&nbsp;系统不提供默认的irp处理函数，所以需要手动创建默认IRP处理函数</a>
+</h3>
+<h3 class="topic">
+<a name="6kmq7vmn5qjchp9a6sfc40rf2q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;irp处理函数原型</a>
+</h3>
+<h3 class="topic">
+<a name="2nafkm2n2ug7shpec6dlkful31">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;NTSTATUS DRIVER_DISPATCH(&#13;
+_In_ struct _DEVICE_OBJECT *DeviceObject,&#13;
+_InOut_ struct _IRP*Irp);</a>
+</h3>
+<h3 class="topic">
+<a name="0s8dqj09nrrff50au78mpqb9up">&nbsp;&nbsp;&nbsp;&nbsp;irp处理函数有两种填法</a>
+</h3>
+<h3 class="topic">
+<a name="10qmbcao63vnovd9eav750vmhr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;派遣数组中每一个元素填写不同的回调函数指针，创建多个回调函数，用于处理不同类型的irp</a>
+</h3>
+<h3 class="topic">
+<a name="6jn2g1apjn50664jn9443eldlq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;第一种代码处理示例</a>
+</h3>
+<h3 class="topic">
+<a name="2eqknt1fa7lfsa9lqp68dfnjkn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;派遣数组中所有元素均填写同一个回调函数，在回调函数中去判断当前irp的类型，再进行响应处理</a>
+</h3>
+<h3 class="topic">
+<a name="7nqf95404pus15l2g082upm66e">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;第二种代码处理示例</a>
+</h3>
+<h3 class="topic">
+<a name="3jhtje4f89t27itcn4t3jejoqo">&nbsp;&nbsp;&nbsp;&nbsp;NTSTATU&amp;DefProc(PDEVICE_OBJECT objDev,PIRP pIRP)&#13;
+{&#13;
+//irp的返回状态&#13;
+&#13;
+//处理了多少个字节&#13;
+&#13;
+//iep栈增加了多少个字节&#13;
+&#13;
+return STATUS_SUCCESS;&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="3jk520qptptbis9qm0or2uvd9d">&nbsp;&nbsp;&nbsp;在DriverEntry中将irp处理函数设置到驱动对象的MajorFunction数组中</a>
+</h3>
+<h3 class="topic">
+<a name="3vc933e1f1ntlmjq9kbciqajh1">&nbsp;&nbsp;&nbsp;&nbsp;将irp默认处理函数填充到MajorFunction所有表项中，针对特定irp的处理函数，单独在进行填充</a>
+</h3>
+<h3 class="topic">
+<a name="7659qfpr78b04octcfl6srigog">&nbsp;&nbsp;&nbsp;单独填充IRP_MJ_CREATE   IRP_MJ_READ  IRP_MJ_WRITE 的irp消息处理函数</a>
+</h3>
+<h3 class="topic">
+<a name="08b6ho9gqepkmhb07belhdpcd0">&nbsp;&nbsp;&nbsp;&nbsp;对于IRP_MJ_CREATE，消息处理函数在默认处理函数基础上打印创建的消息提示符，重新构建一个函数</a>
+</h3>
+<h3 class="topic">
+<a name="1a34v2akhiccv9kobfdke59gvb">&nbsp;&nbsp;&nbsp;&nbsp;构建IRP_MJ_WRITE的irp处理函数，并函数指针赋值到MajorFunction数组指定项</a>
+</h3>
+<h3 class="topic">
+<a name="4aaofie07j7g3570rdbgdc737l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;是3环通过writefile写入到0环的数据，在0环中是收数据</a>
+</h3>
+<h3 class="topic">
+<a name="5j54a495l10juqrpq94on7gk6l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用&#13;
+irp-》UserBuffer、&#13;
+irp-》AssociatedIrp.SystemBuffer&#13;
+irp-》MdlAddress&#13;
+分别查看是否为0，看有没有接收到数据</a>
+</h3>
+<h3 class="topic">
+<a name="0ib3agciaa6p0vkhabp5nf4mmm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用DbgPrint将接收到的数据打印出来</a>
+</h3>
+<h3 class="topic">
+<a name="68n1g7ltiq6pem3bdlksa7ncan">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;设置</a>
+</h3>
+<h3 class="topic">
+<a name="60ib1tnbt9e7ehbovnmajfjtf0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//irp的返回状态</a>
+</h3>
+<h3 class="topic">
+<a name="0493ifgtevj2islrsjfhb6csa3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//处理了多少个字节</a>
+</h3>
+<h3 class="topic">
+<a name="2csbld0hqbs4dm747urml7sq6h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//iep栈增加了多少个字节</a>
+</h3>
+<h3 class="topic">
+<a name="6oaj6vomr1a4ruuv9o2hfq1t61">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return STATUS_SUCCESS;</a>
+</h3>
+<h3 class="topic">
+<a name="3vgtuojajant8tdg4v825utl76">&nbsp;&nbsp;&nbsp;&nbsp;IRP_MJ_READ </a>
+</h3>
+<h3 class="topic">
+<a name="26l1d8v40tgcpaas0l4m63pu22">&nbsp;&nbsp;&nbsp;在3环中使用ReadFile和WriteFile针对设备对象的符号链接进行读写</a>
+</h3>
+<h3 class="topic">
+<a name="7pqv3j2ac3d0al87sv1bdl0tc2">&nbsp;&nbsp;&nbsp;&nbsp;windows系统中将所有的设备对象视为文件处理</a>
+</h3>
+<h3 class="topic">
+<a name="3584a7qq1hbcsb0a7lm21p8pod">&nbsp;&nbsp;&nbsp;&nbsp;3环中使用以上api与0环通讯，注意使用设备对象的符号链接时要加上"\\??\\符号链接"</a>
+</h3>
+<h3 class="topic">
+<a name="1es4b5vm783i2l30mtgb1f4k3n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class72day0619_files/0csk4gfqeieualho8172u9tc4v.png"></p>
+<h3 class="topic">
+<a name="2flm9ljtbvma9i3a2f3jt0g31h">&nbsp;r3r0通过read、write进行通讯的三种方式</a>
+</h3>
+<h3 class="topic">
+<a name="0j9nqqijgqdisrjngrgij2ams4">&nbsp;&nbsp;以下三种方式均是0环-3环通讯过程中消息的传输介质，即传输数据的保存位置</a>
+</h3>
+<h3 class="topic">
+<a name="7t4mtcejp1n1imtp0l0rdahcqs">&nbsp;&nbsp;缓冲区设备读写方式</a>
+</h3>
+<h3 class="topic">
+<a name="4t30tlkot07qhel8p4l46hpfj4">&nbsp;&nbsp;&nbsp;在内核态中申请堆空间，将用户态缓冲区拷贝到内核态，内核态处理完毕后，在拷贝回用户态</a>
+</h3>
+<h3 class="topic">
+<a name="415jn64drj3d8qov1p8h1lulr3">&nbsp;&nbsp;&nbsp;&nbsp;用于不追求效率的情况下</a>
+</h3>
+<h3 class="topic">
+<a name="6btarttr3ck5pl759hl1msnjip">&nbsp;&nbsp;&nbsp;通过irp获取缓冲区</a>
+</h3>
+<h3 class="topic">
+<a name="3qu38f83faf1lobfo46b4lnnrt">&nbsp;&nbsp;&nbsp;&nbsp;irp-》AssociatedIrp.SystemBuffer</a>
+</h3>
+<h3 class="topic">
+<a name="6b56k6oanifriuter1i2d3m17e">&nbsp;&nbsp;直接读写方式</a>
+</h3>
+<h3 class="topic">
+<a name="6rrsh2f9qufj8ogensdgdfn6oi">&nbsp;&nbsp;&nbsp;通过MDL对用户态内存进行重新映射，得到一个内核空间的地址，对该地址的内容进行修改，改变的是对应用户态内存中的数据</a>
+</h3>
+<h3 class="topic">
+<a name="4gfgeobk8q502hq6s48inpvld7">&nbsp;&nbsp;&nbsp;&nbsp;需要创建MDL,如果需要获取缓冲区地址需要调用api</a>
+</h3>
+<h3 class="topic">
+<a name="5q53daacehggq0jclhu5eg6oik">&nbsp;&nbsp;&nbsp;找一块物理内核，将r3中的虚拟内存映射到该物理内存中（通过mdl）然后将该物理内核上锁，即不允许切换，然后再通过mdl将该块物理内存重新映射到r0中的虚拟地址</a>
+</h3>
+<h3 class="topic">
+<a name="3kl0s869cqrc4k85abchu3f5uh">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class72day0619_files/6g35iujarvja8pvde2r2ldsmiq.png"></p>
+<h3 class="topic">
+<a name="5if5gs507aeolkti2fb01b40v2">&nbsp;&nbsp;&nbsp;通过irp+api获得缓冲区的指针及其数据</a>
+</h3>
+<h3 class="topic">
+<a name="7s2akfaqack5fqch35p26qbcbq">&nbsp;&nbsp;&nbsp;&nbsp;irp-》MdlAddress</a>
+</h3>
+<h3 class="topic">
+<a name="7b7dhlvjsrr22icujkqfs5v7o6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果要使用其中的数据，需要使用api 才能获得其中的数据</a>
+</h3>
+<h3 class="topic">
+<a name="600mcv74bk04hbn0hk723vjpjo">&nbsp;&nbsp;&nbsp;&nbsp;MmGetSystemAddressForMdlSafe(irp-&gt;MdlAddress,NormalPagePriority)</a>
+</h3>
+<h3 class="topic">
+<a name="52o9nrc5fipl7ju5boq14jcnr3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该函数返回指定数据的指针</a>
+</h3>
+<h3 class="topic">
+<a name="62gmdab84m83t46v1ft66qvld7">&nbsp;&nbsp;&nbsp;主要用于大规模数据交换</a>
+</h3>
+<h3 class="topic">
+<a name="60055jtpujknmgrdecbaaa0feu">&nbsp;&nbsp;其他方式</a>
+</h3>
+<h3 class="topic">
+<a name="2dd7sdhpg88nke7ugrg23klcim">&nbsp;&nbsp;&nbsp;通过irp获得缓冲区地址</a>
+</h3>
+<h3 class="topic">
+<a name="0g6ogmfro8oe88kgg3gali79to">&nbsp;&nbsp;&nbsp;&nbsp;irp-》UserBuffer</a>
+</h3>
+<h3 class="topic">
+<a name="6dv4ji21c07nj0iqlv0j94b3tv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class72day0619_files/64jn4r2qm8osjb482ulsad1q6b.png"></p>
+<h3 class="topic">
+<a name="2nmimlmtg5cvp65isv4iviuc1l">&nbsp;&nbsp;&nbsp;注意此种方法得到的缓冲度地址是用户层的地址，当cpu发生进程切换的时候，该地址中的数据会变成另一个进程中的数据，会发生地址错误</a>
+</h3>
+<h3 class="topic">
+<a name="7eo1rklacn6ha0fqas6m5o82np">&nbsp;&nbsp;&nbsp;如果要使用这种方法，需要保证r3与r0处于同一个进程上下文（即r3不进行进程切换） 需要在进行内存读写之前使用ProbeForRead()、ProbeForWrite()以及try{}except，从而保证r3传给r0的内存地址是r3中内存，而不是r0中的地址</a>
+</h3>
+<h3 class="topic">
+<a name="0ujb5ba11u5dj65epufg998dbt">&nbsp;&nbsp;使用哪种方法取决于设备对象结构体中Flags的值，一般在设备对象创建完成之后，进行Flags的指定</a>
+</h3>
+<h3 class="topic">
+<a name="0898eh153oigbgqe2jb5v01fpv">&nbsp;&nbsp;&nbsp;objDev-&gt;Flags |= DO_BUFFERED_IO ;</a>
+</h3>
+<h3 class="topic">
+<a name="7v219iujg0a6nrv180qq1rdqoq">&nbsp;&nbsp;&nbsp;&nbsp;缓冲区读写方式</a>
+</h3>
+<h3 class="topic">
+<a name="3ddrv1e8j8i1tsv2as8u7sckvr">&nbsp;&nbsp;&nbsp;objDev-&gt;Flags |= DO_DIRECT_IO ;</a>
+</h3>
+<h3 class="topic">
+<a name="7mad8u0i9r76evci9h8901qhme">&nbsp;&nbsp;&nbsp;&nbsp;直接读写方式</a>
+</h3>
+<h3 class="topic">
+<a name="6tsot6nohcghnlg9hvb4bcvinn">&nbsp;&nbsp;&nbsp;objDev-&gt;Flags |= 0</a>
+</h3>
+<h3 class="topic">
+<a name="57edapjf1ccbssabuq4tkunkdh">&nbsp;&nbsp;&nbsp;&nbsp;其他读写方式</a>
+</h3>
+<h3 class="topic">
+<a name="1tuvir6gc1bb4qg265gksq8pg5">&nbsp;通过读写的方式进行通讯</a>
+</h3>
+<h3 class="topic">
+<a name="38h41jhtg61o3e1rru3q8u8k6l">&nbsp;&nbsp;以上设备通讯方式支持三环程序以CreateFile、ReadFile、WriteFile、CloseHandle等方式与设备对象进行通讯</a>
+</h3>
+<h3 class="topic">
+<a name="5jg8j5807nglouo0teqmiqt38j">&nbsp;通过控制码的方式通讯（此方法是3环0环通讯的主要方法）</a>
+</h3>
+<h3 class="topic">
+<a name="01hsqg0dsa9097vq8ppk09e229">&nbsp;&nbsp;流程</a>
+</h3>
+<h3 class="topic">
+<a name="0ej2vg39qgrg1mbedc0m365eub">&nbsp;&nbsp;&nbsp;使用宏定制控制码</a>
+</h3>
+<h3 class="topic">
+<a name="7gf2jsqf2s1hl9lhi70mn7smuc">&nbsp;&nbsp;&nbsp;&nbsp;CTL_CODE</a>
+</h3>
+<h3 class="topic">
+<a name="5o00h0dlpimtgqlckjcc8s1ka9">&nbsp;&nbsp;&nbsp;调用用户层api给内核设备对象发送控制码</a>
+</h3>
+<h3 class="topic">
+<a name="05e684i7r5rmajqj9749kgncef">&nbsp;&nbsp;&nbsp;&nbsp;DiviceIoControl</a>
+</h3>
+<h3 class="topic">
+<a name="1nb0b61f125n7o2teivmvrpoej">&nbsp;&nbsp;&nbsp;驱动中针对 IRP_MJ_DEVICE_CONTROL 这个trp，设置派遣函数，对该io操作进行处理</a>
+</h3>
+<h3 class="topic">
+<a name="3ss2s4hm2o9psvpfdevqtktrp1">&nbsp;&nbsp;&nbsp;&nbsp;需要获取irp栈，其中保存了用户层发来的主功能号</a>
+</h3>
+<h3 class="topic">
+<a name="2f513tdrfq05rf33lbfnedpron">&nbsp;&nbsp;注意DeviceIOControl()函数本身也是通过将irp消息传输到内核中，调用对应的驱动对象的分发函数(派遣函数)，从而完成功能的，其过程和ReadFile WriteFile差不多</a>
+</h3>
+<h3 class="topic">
+<a name="75qaub87s6u9i9s4bc6lt9gij7">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class72day0619_files/6j2f0q7umq6roebipuujs9jn32.png"></p>
+<h3 class="topic">
+<a name="0q3kv5rhe5birjs7ep8fstvgfh">&nbsp;代码：通过读写的方式进行内核通讯</a>
+</h3>
+<h3 class="topic">
+<a name="5h48jgd9cc4t46nra9o38tdo7t">&nbsp;&nbsp;驱动程序</a>
+</h3>
+<h3 class="topic">
+<a name="7f3lmusgj1d1796qpncc6ju22u">&nbsp;&nbsp;&nbsp;#include&lt;ntddk.h&gt;&#13;
+&#13;
+void OnUnload(DRIVER_OBJECT* obj)&#13;
+{&#13;
+	UNREFERENCED_PARAMETER(obj);&#13;
+	IoDeleteDevice(obj-&gt;DeviceObject);//删除设备对象&#13;
+	UNICODE_STRING symName = RTL_CONSTANT_STRING&#13;
+							(L"\\DosDevices\\ring1");&#13;
+	IoDeleteSymbolicLink(&amp;symName);//删除符号链接 注意符号链接的字符串需要使用unicode_string字符串保存&#13;
+}&#13;
+&#13;
+NTSTATUS OnRead(DEVICE_OBJECT*dev, IRP*irp);&#13;
+NTSTATUS OnWrite(DEVICE_OBJECT*dev, IRP*irp);&#13;
+NTSTATUS OnCreate(DEVICE_OBJECT*dev, IRP*irp);&#13;
+&#13;
+NTSTATUS DriverEntry(DRIVER_OBJECT *driver,&#13;
+	UNICODE_STRING*path)//驱动对象和驱动对象的注册表路径&#13;
+{&#13;
+	UNREFERENCED_PARAMETER(path);&#13;
+	NTSTATUS status = STATUS_SUCCESS;//driverentry 函数的返回值，最后必须要返回success否则设备对象的创建不会成功&#13;
+	//创建设备对象&#13;
+	DEVICE_OBJECT*pDevice = NULL;//用于接收创建出的设备对象的指针&#13;
+	UNICODE_STRING devName = RTL_CONSTANT_STRING&#13;
+							(L"\\Device\\ring0");//设备对象的名称&#13;
+	&#13;
+	status = IoCreateDevice(driver,&#13;
+		0,&#13;
+		&amp;devName,&#13;
+		FILE_DEVICE_UNKNOWN,&#13;
+		0, 0, &amp;pDevice);&#13;
+	if (status != STATUS_SUCCESS)//检测设备对象是否创建成功，如果不检测，程序容易蓝屏&#13;
+	{&#13;
+		KdPrint(("创建设备失败\n"));&#13;
+		return status;&#13;
+	}&#13;
+	// DO_BUFFERED_IO : 表示使用irp-&gt;AssociatedIrp.SystemBuffer字段作为缓冲区&#13;
+	// DO_DIRECT_IO : 表示使用irp-&gt;MdlAddress作为缓冲区&#13;
+	pDevice-&gt;Flags |= DO_DIRECT_IO;//指定该设备对象的通讯方式&#13;
+&#13;
+	//给设备对象创建符号链接&#13;
+	UNICODE_STRING symName = RTL_CONSTANT_STRING&#13;
+							(L"\\DosDevices\\ring1");&#13;
+	IoCreateSymbolicLink(&amp;symName, &amp;devName);&#13;
+	&#13;
+	DbgBreakPoint();//手动设置断点&#13;
+&#13;
+	//设置派遣函数&#13;
+	driver-&gt;MajorFunction[IRP_MJ_CREATE] = OnCreate;&#13;
+	driver-&gt;MajorFunction[IRP_MJ_READ] = OnRead;&#13;
+	driver-&gt;MajorFunction[IRP_MJ_WRITE] = OnWrite;&#13;
+	return status;&#13;
+}&#13;
+&#13;
+NTSTATUS OnCreate(DEVICE_OBJECT*dev, IRP*irp)//设备对象指针，IRP结构体指针&#13;
+{&#13;
+	UNREFERENCED_PARAMETER(dev);&#13;
+	//将io任务设置为完成，也就是默认irp处理函数的操作&#13;
+	irp-&gt;IoStatus.Information = 0;//io操作完成的字节数&#13;
+	irp-&gt;IoStatus.Status = STATUS_SUCCESS;//io任务完成情况：已完成&#13;
+	IoCompleteRequest(irp, IO_NO_INCREMENT);//已经完成io请求的所有处理，将irp返回给io管理器&#13;
+	return irp-&gt;IoStatus.Status;//函数返回状态为success&#13;
+}&#13;
+&#13;
+NTSTATUS OnWrite(DEVICE_OBJECT*dev, IRP*irp)&#13;
+{&#13;
+	UNREFERENCED_PARAMETER(dev);&#13;
+	ULONG buffSize = 0;&#13;
+	char*pBuff = NULL;//用于标识3环写入的数据的缓冲区&#13;
+	if (irp-&gt;AssociatedIrp.SystemBuffer != NULL)//如果通过AssociatedIrp方式进行通讯&#13;
+	{&#13;
+		pBuff = irp-&gt;AssociatedIrp.SystemBuffer;//则得到通讯内容的指针&#13;
+	}&#13;
+	else if(irp-&gt;MdlAddress!=NULL)&#13;
+	{&#13;
+		//若使用该方式进行通讯，则需要调用api获取通讯内容的地址&#13;
+		pBuff = MmGetSystemAddressForMdlSafe(irp-&gt;MdlAddress, 0);&#13;
+	}&#13;
+	else&#13;
+	{&#13;
+		//没有接收到缓冲区&#13;
+		KdPrint(("传入了NULL缓冲区\n"));&#13;
+		goto _DONE;&#13;
+	}&#13;
+	//3环写入数据的字节数保存在irp栈中，此时取出为了&#13;
+	//向io管理器返回本次io操作处理了多少个字节的数据&#13;
+	IO_STACK_LOCATION*ioStack = IoGetCurrentIrpStackLocation(irp);//获取当前irp栈&#13;
+	buffSize = ioStack-&gt;Parameters.Write.Length;//获得irp栈中的io操作涉及的字节数，最后需要填回irp中返回&#13;
+	KdPrint(("内核输出：%s\n", pBuff));&#13;
+&#13;
+&#13;
+	_DONE:&#13;
+	//将io任务设置为完成，也就是默认irp处理函数的操作&#13;
+	irp-&gt;IoStatus.Information = buffSize;//io操作完成的字节数&#13;
+	irp-&gt;IoStatus.Status = STATUS_SUCCESS;//io任务完成情况：已完成&#13;
+	IoCompleteRequest(irp, IO_NO_INCREMENT);//没有增加io请求，irp对应的io请求设置为完成&#13;
+	return irp-&gt;IoStatus.Status;//函数返回状态为success&#13;
+}&#13;
+&#13;
+NTSTATUS OnRead(DEVICE_OBJECT*dev, IRP*irp)&#13;
+{&#13;
+	UNREFERENCED_PARAMETER(dev);&#13;
+	char*pBuff = NULL;&#13;
+	if (irp-&gt;AssociatedIrp.SystemBuffer != NULL)&#13;
+	{&#13;
+		pBuff = irp-&gt;AssociatedIrp.SystemBuffer;&#13;
+	}&#13;
+	else if(irp-&gt;MdlAddress!=NULL)&#13;
+	{&#13;
+		pBuff = MmGetSystemAddressForMdlSafe(irp-&gt;MdlAddress, 0);&#13;
+	}&#13;
+	else&#13;
+	{&#13;
+		KdPrint(("传出了null缓冲区"));&#13;
+		goto _DONE;&#13;
+	}&#13;
+	&#13;
+	char gdtr[6];//6字节的内存空间，一共48位，用于保存gdtr寄存器的值&#13;
+	_asm &#13;
+	{&#13;
+		sgdt fword ptr[gdtr];&#13;
+	}&#13;
+	ULONG gdtAddr = *(ULONG*)(gdtr + 2);//gdtr寄存器的值中，前32字节保存GDT表的地址，后16字节保存gdt表的大小，这里取GDT表的地址&#13;
+	//从gdt表中取20个表项，作为3环代码读取到的内容&#13;
+	memcpy(pBuff,(void*)gdtAddr,8*20);//内核中的代码可以使用memcpy？是不是用了mt？&#13;
+&#13;
+	_DONE:&#13;
+	irp-&gt;IoStatus.Information = 8 * 20;//io操作完成的字节数&#13;
+	irp-&gt;IoStatus.Status = STATUS_SUCCESS;//io任务完成情况：已完成&#13;
+	IoCompleteRequest(irp, IO_NO_INCREMENT);//没有增加io请求，irp对应的io请求设置为完成&#13;
+	return irp-&gt;IoStatus.Status;//函数返回状态为success&#13;
+}&#13;
+&#13;
+</a>
+</h3>
+<h3 class="topic">
+<a name="6ejbgj6f6n9cogo113s1udbehm">&nbsp;&nbsp;3环程序</a>
+</h3>
+<h3 class="topic">
+<a name="4bbd65o21p777enn1hvjjtlhdb">&nbsp;&nbsp;&nbsp;&#13;
+#include "pch.h"&#13;
+#include &lt;iostream&gt;&#13;
+#include&lt;windows.h&gt;&#13;
+&#13;
+int main()&#13;
+{&#13;
+	HANDLE hDev = CreateFile(&#13;
+		L"\\??\\ring1",&#13;
+		GENERIC_READ | GENERIC_WRITE,&#13;
+		FILE_SHARE_READ,&#13;
+		NULL,&#13;
+		OPEN_EXISTING,&#13;
+		FILE_ATTRIBUTE_NORMAL,&#13;
+		NULL);&#13;
+	if (hDev == INVALID_HANDLE_VALUE)&#13;
+	{&#13;
+		printf("驱动程序打开失败，错误码：%08X\n", GetLastError());&#13;
+		getchar();&#13;
+		return 0;&#13;
+	}&#13;
+	&#13;
+	//char buff[100] = { 0 };&#13;
+	ULONG64 gdtrData[255] = { 0 };&#13;
+	DWORD read = 0;&#13;
+	ReadFile(hDev, gdtrData, sizeof(gdtrData), &amp;read, NULL);&#13;
+	for (int i = 0; i &lt; read / 8; i++)&#13;
+	{&#13;
+		printf("%08llx\n", gdtrData[i]);&#13;
+	}&#13;
+&#13;
+	printf("从设备中读取到的实际字节数：%d", read);&#13;
+&#13;
+	WriteFile(hDev, "来自用户层的字符串", 30, &amp;read, NULL);&#13;
+	printf("写入设备的字节数为%d\n", read);&#13;
+&#13;
+	CloseHandle(hDev);&#13;
+	getchar();&#13;
+	return 0;&#13;
+}&#13;
+&#13;
+</a>
+</h3>
+<h2 class="topic">
+<a name="4ldjt3mppcdh9ec89jhrh45c4b">补充</a>
+</h2>
+<h3 class="topic">
+<a name="7nm9oo0k30741pfqdbgem6ekc2">&nbsp;irp</a>
+</h3>
+<h3 class="topic">
+<a name="5f1pldpm7c27ob675vhpq9272k">&nbsp;&nbsp;任何进程中高2gb(地址0x80000000以上)，均是内核空间，该空间所有的地址都是物理地址，在不同的进程中，同一地址对应的内容相同</a>
+</h3>
+<h3 class="topic">
+<a name="5rjgsnut68441u8411i8233p0o">&nbsp;&nbsp;当前一个进程中，每创建一个线程会使用kprocess结构体中的DirBase 赋值给cr3，用于保存页目录表首地址</a>
+</h3>
+<h3 class="topic">
+<a name="4j8kq6de2b2k05v2odju5svnkg">&nbsp;&nbsp;0环&mdash;&mdash;3环通讯</a>
+</h3>
+<h3 class="topic">
+<a name="7ub35uu6ir5ghc44gcsmp06aob">&nbsp;&nbsp;&nbsp;io管理器创建驱动对象，驱动对象创建设备对象，设备对象有符号链接，符号链接可以被3环使用，从而接收到3环的io请求（io请求中保存了io操作所需的信息，io请求使用irp保存）</a>
+</h3>
+<h3 class="topic">
+<a name="0mha0vkauf51jsj7r0rur96e75">&nbsp;&nbsp;&nbsp;io栈</a>
+</h3>
+<h3 class="topic">
+<a name="53r3mie46esf7nl1eev367416l">&nbsp;&nbsp;&nbsp;&nbsp;驱动对象可以创建一个设备，在该设备之前可能也存在设备，形成一个设备链，irp会在设备链上传输，irp会针对设备链上每一个设备创建一个irp栈，每一个设备只能使用该设备对应的irp栈，不能使用其他设备的irp栈，irp栈中保存与该设备相关的其他io信息，irp栈跟在irp头部后面保存</a>
+</h3>
+<h3 class="topic">
+<a name="09onivlkb1h41ii29phhooj79g">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以通过一个api获得irp栈的内容</a>
+</h3>
+<h3 class="topic">
+<a name="08ahfitbgocdhnn933mvg26li6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;获取当前IO栈位置: IoGetCurrentIrpStackLocation</a>
+</h3>
+<h3 class="topic">
+<a name="6rvfrulb19dnr15k1jvvp3ieco">&nbsp;&nbsp;&nbsp;使用WriteFile ReadFile的读写方法进行通讯时，WriteFile ReadFile两个api涉及三个参数&#13;
+目标内存空间 （buff） &#13;
+目标操作字节数 （size） &#13;
+实际操作字节数 （writeSize、ReadSize）</a>
+</h3>
+<h3 class="topic">
+<a name="6b0rt04on4puq9a8rgjqjg17hc">&nbsp;&nbsp;&nbsp;&nbsp;irp中有三个字段均可以找到 buff，</a>
+</h3>
+<h3 class="topic">
+<a name="6lr16sunhuqfmdomrgrrbms3kt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;irp-》UserBuffer</a>
+</h3>
+<h3 class="topic">
+<a name="5cl8182ajkgh629312e118eg4a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;地址值是三环中的地址，当发生进程切换时，会造成地址错误</a>
+</h3>
+<h3 class="topic">
+<a name="1620jg52r13ecusuhncmhjb888">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;irp-》AssociatedIrp.SystemBuffer</a>
+</h3>
+<h3 class="topic">
+<a name="5svj9dr0o87092iudeke5f51bk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;会在内核中申请一块堆空间，内核堆空间大小与用户空间的buff一样，并将buff中的数据拷贝到3环的堆中，最后系统会即将0环堆中的数据拷贝回3环中</a>
+</h3>
+<h3 class="topic">
+<a name="52tf7hvirb283q8bg2pf2klvgo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;irp-》MdlAddress</a>
+</h3>
+<h3 class="topic">
+<a name="3d6c55rcv53c0ru8fqr1au5jk7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;api返回的地址是内核空间中的地址，该地址来自3环内存空间的地址的映射，该内核地址解析得到的数据与3环的一样</a>
+</h3>
+<h3 class="topic">
+<a name="1lekld5col7eqplmgk3egs8i2o">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MmGetSystemAddressForMdlSafe(irp-&gt;MdlAddress,NormalPagePriority)</a>
+</h3>
+<h3 class="topic">
+<a name="0i3qhod7fd610renvlirrsu1g6">&nbsp;&nbsp;&nbsp;&nbsp;irp栈中 params结构体中有read write的结构体，结构体中有size字段，io目标操作字节数的大小保存在size中</a>
+</h3>
+<h3 class="topic">
+<a name="5j66g3n9q24u4qlkej9mvr5u6c">&nbsp;&nbsp;&nbsp;&nbsp;irp-&gt;IoStatus .Inform字段用于保存io实际操作字节数</a>
+</h3>
+<h3 class="topic">
+<a name="3ii2apmfatu0jmpq6c7hm9d0tl">&nbsp;&nbsp;&nbsp;示例图片</a>
+</h3>
+<h3 class="topic">
+<a name="79p4s0devjlj6s54b9nfh7gdj2">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class72day0619_files/4aurohgt0iua968plnnr4pm2ko.png"></p>
+<h3 class="topic">
+<a name="6ca3d122tnlujsnh755sp1om0m">&nbsp;&nbsp;进程内核对象结构体（保存在0环） &#13;
+进程环境块（保存在3环） &#13;
+处理器级别（包含在eprocess） &#13;
+线程的内核对象（保存在3环） &#13;
+线程环境块（保存在3环）</a>
+</h3>
+<h3 class="topic">
+<a name="6kitrq8fgdtbrasai88nft10ah">&nbsp;&nbsp;&nbsp;联系韦神笔记的一个内容</a>
+</h3>
+<h3 class="topic">
+<a name="7lhffrg8r3rob4cdtla90kk627">&nbsp;驱动通讯代码流程</a>
+</h3>
+<h3 class="topic">
+<a name="53pjjokpkfopssgiknr8idgadp">&nbsp;&nbsp;工程文件如果要使用cpp，必须加上extern c防止名称粉碎</a>
+</h3>
+<h3 class="topic">
+<a name="0phsjs7n387g2v59o7injp06ra">&nbsp;&nbsp;driverentryd的第二个参数是一个注册表路径，该函数必须返回success，否则驱动对象无法创建</a>
+</h3>
+<h3 class="topic">
+<a name="5gchg1mo0gq8gmmu42ibltjl3n">&nbsp;&nbsp;创建设备对象</a>
+</h3>
+<h3 class="topic">
+<a name="6kq4l15bvprctrboq39n2ep22k">&nbsp;&nbsp;&nbsp;对于设备名有要求，需要有前缀</a>
+</h3>
+<h3 class="topic">
+<a name="2ugkblissadvuh40btnakqvige">&nbsp;&nbsp;&nbsp;&nbsp;使用nt的命名方式</a>
+</h3>
+<h3 class="topic">
+<a name="40s7p5aaukc055touj8dkkljrs">&nbsp;&nbsp;&nbsp;设备名如果为0，创建出的设备名称会为一段数字</a>
+</h3>
+<h3 class="topic">
+<a name="1oscoor4cv4opp8s99cvop4238">&nbsp;&nbsp;&nbsp;注意函数的返回值是否正确，在0环中需要判断，否则程序出现错误，容易蓝屏</a>
+</h3>
+<h3 class="topic">
+<a name="4bed70em0qdqeifa3oib3n8a5s">&nbsp;&nbsp;&nbsp;创建设备之后，设置设备对象的Flags标志位，用于确定使用哪种通讯方式</a>
+</h3>
+<h3 class="topic">
+<a name="47it2bfisjqrlne4v4h8157roh">&nbsp;&nbsp;创建符号链接</a>
+</h3>
+<h3 class="topic">
+<a name="2ig45hgbsi0ue5qq9shc5rb9rf">&nbsp;&nbsp;&nbsp;符号链接使用dos的命名方式</a>
+</h3>
+<h3 class="topic">
+<a name="6umhnjhvkhe9qobvckrtg98htu">&nbsp;&nbsp;注册派遣函数</a>
+</h3>
+<h3 class="topic">
+<a name="22v5tck29masrm63agqsdg2d8g">&nbsp;&nbsp;&nbsp;注册卸载的派遣函数</a>
+</h3>
+<h3 class="topic">
+<a name="0aobbahsjcbd5f6cmrhhoih5r5">&nbsp;&nbsp;要和3环通讯，需要设置其他派遣函数</a>
+</h3>
+<h3 class="topic">
+<a name="4tgeovmj3pvf8lq8pck6bk1au7">&nbsp;&nbsp;&nbsp;设置创建、读取、写入的派遣函数指针</a>
+</h3>
+<h3 class="topic">
+<a name="0mh21b1k170k6fhmmq17av3s2c">&nbsp;&nbsp;&nbsp;创建irp的派遣函数</a>
+</h3>
+<h3 class="topic">
+<a name="7c8hut08ug1a7q391m5l229qgb">&nbsp;&nbsp;&nbsp;&nbsp;将io任务设置为完成</a>
+</h3>
+<h3 class="topic">
+<a name="3j970secp63ng69ihhb52auenc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将完成的信息填写到irp结构中</a>
+</h3>
+<h3 class="topic">
+<a name="387bu41j0hfb2nsli3fs4o1k9p">&nbsp;&nbsp;&nbsp;读取函数</a>
+</h3>
+<h3 class="topic">
+<a name="6sas5isa2gihgf8gne6q2asgvv">&nbsp;&nbsp;&nbsp;&nbsp;根据使用的通讯方式得到缓冲区</a>
+</h3>
+<h3 class="topic">
+<a name="47nr17mmfq1etgdc2if7atrve6">&nbsp;&nbsp;&nbsp;&nbsp;对缓冲区进行写入</a>
+</h3>
+<h3 class="topic">
+<a name="7ud2pmuik3lnuc1a9q2dmg0f8n">&nbsp;&nbsp;&nbsp;&nbsp;在读取函数中将gdt表的内容写入到缓冲区中，从而显示在3环程序中</a>
+</h3>
+<h3 class="topic">
+<a name="6c09j9i087ra196i3pehk1ikob">&nbsp;&nbsp;&nbsp;&nbsp;将io任务设置为完成</a>
+</h3>
+<h3 class="topic">
+<a name="201ubu1slb92tr5dbq542r7368">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将完成的信息填写到irp结构中</a>
+</h3>
+<h3 class="topic">
+<a name="6sj8sh7sc58v4gap9ged0pn7gi">&nbsp;&nbsp;&nbsp;写入函数</a>
+</h3>
+<h3 class="topic">
+<a name="7pmrlbriluhug0tpr5ofcrf001">&nbsp;&nbsp;&nbsp;&nbsp;根据使用的通讯方式得到缓冲区</a>
+</h3>
+<h3 class="topic">
+<a name="0u771dpcvto3tg5tg7di664m13">&nbsp;&nbsp;&nbsp;&nbsp;打印出缓冲区内容</a>
+</h3>
+<h3 class="topic">
+<a name="06cpulk6k3rgibf13m6n5srkv8">&nbsp;&nbsp;&nbsp;&nbsp;将io任务设置为完成</a>
+</h3>
+<h3 class="topic">
+<a name="7fr0pton84u6pjfqbtsqdckjkn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将完成的信息填写到irp结构中</a>
+</h3>
+<h3 class="topic">
+<a name="2aclqhmnu56nd8ee5efelfbk5t">&nbsp;&nbsp;写一个3环程序，通过CreateFile与0环通讯</a>
+</h3>
+<h3 class="topic">
+<a name="3pr7ae07cn67qmlv2d3c0u8755">&nbsp;&nbsp;&nbsp;3环程序编译成release 并且使用使用mt模式编译，因为其需要在虚拟机中运行，如果不用release可能会要求各种dll</a>
+</h3>
+<h3 class="topic">
+<a name="214ksbhfr99taed88b23qb7o2l">&nbsp;&nbsp;测试内核程序的虚拟机最好使用纯净版的系统，防止其他驱动对本驱动产生影响</a>
+</h3>
+<h3 class="topic">
+<a name="4fvubusirua6p4s9bnp6t0aj07">&nbsp;&nbsp;工具 winboj 可以看到内核中的设备设备信息</a>
+</h3>
+<h2 class="topic">
+<a name="5mlo7i2vd0dd1o7bqa9rg8o8nd">VS运行时库 /MD、/MDd 和 /MT、/MTd之间的区别</a>
+</h2>
+<h3 class="topic">
+<a name="797j1a49m2a9pchfgs5u6l8pkv">&nbsp;/MT和/MTd表示采用多线程CRT库的静态lib版本。该选项会在编译时将运行时库以静态lib的形式完全嵌入。该选项生成的可执行文件运行时不需要运行时库dll的参加，会获得轻微的性能提升，但最终生成的二进制代码因链入庞大的运行时库实现而变得非常臃肿。当某项目以静态链接库的形式嵌入到多个项目，则可能造成运行时库的内存管理有多份，最终将导致致命的&ldquo;Invalid Address specified to RtlValidateHeap&rdquo;问题。另外托管C++和CLI中不再支持/MT和/MTd选项。</a>
+</h3>
+<h3 class="topic">
+<a name="7hd2s68plb39jcn8u6k85n78p6">&nbsp;/MD和/MDd表示采用多线程CRT库的动态dll版本，会使应用程序使用运行时库特定版本的多线程DLL。链接时将按照传统VC链接dll的方式将运行时库MSVCRxx.DLL的导入库MSVCRT.lib链接，在运行时要求安装了相应版本的VC运行时库可再发行组件包（当然把这些运行时库dll放在应用程序目录下也是可以的）。 因/MD和/MDd方式不会将运行时库链接到可执行文件内部，可有效减少可执行文件尺寸。当多项目以MD方式运作时，其内部会采用同一个堆，内存管理将被简化，跨模块内存管理问题也能得到缓解。</a>
+</h3>
+<h3 class="topic">
+<a name="0ig10u6nurvg16dkdhpohc5ks3">&nbsp;资料链接</a>
+</h3>
+<h3 class="topic">
+<a name="64h4td31e727pr2gtu3f4jkg3c">&nbsp;&nbsp;https://blog.csdn.net/u013829933/article/details/50321355</a>
+</h3>
+<h2 class="topic">
+<a name="7vse7vg28qic6mr9bvavlfof0j">Spectre缓解：vs中用于缓解cpu中的幽灵漏洞的机制</a>
+</h2>
+<h3 class="topic">
+<a name="4mh1k2a9p1noqq5tqtjqecc3es">&nbsp;可以在项目属性中将其关闭</a>
+</h3>
+<h2 class="topic">
+<a name="3q59iphk3hflr7k1oo2dl7lv49">注意irp栈是针对irp传输过程中的每一个设备对象创建一个irp栈</a>
+</h2>
+</body>
+</html>

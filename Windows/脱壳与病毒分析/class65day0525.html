@@ -1,0 +1,619 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>class65day0525（脱壳与病毒分析）</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="7q93258ep3dkkfoak41hg8k5h9">class65day0525（脱壳与病毒分析）</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="class65day0525_files/images/class65day0525%EF%BC%88%E8%84%B1%E5%A3%B3%E4%B8%8E%E7%97%85%E6%AF%92%E5%88%86%E6%9E%90%EF%BC%89.jpg"></div>
+<h2 class="topic">
+<a name="1sdfogp2ibkl9kgbav1efc5l37">恶意代码传播方式</a>
+</h2>
+<h3 class="topic">
+<a name="1fvg66c4d99djfjmn7qok72g3j">&nbsp;通过移动介质传播</a>
+</h3>
+<h3 class="topic">
+<a name="1er3809qhuvupihapnqclpjgam">&nbsp;&nbsp;插入u盘</a>
+</h3>
+<h3 class="topic">
+<a name="4nuoio0nos2fc9oevckah1b01h">&nbsp;&nbsp;&nbsp;利用windows自动播放功能运行恶意代码</a>
+</h3>
+<h3 class="topic">
+<a name="6q9cbr2i35veu4s2v22ag49rmt">&nbsp;&nbsp;&nbsp;可以使用组策略禁用windows自动播放功能</a>
+</h3>
+<h3 class="topic">
+<a name="2bcs8me2ipoeetrkll61r8vsvt">&nbsp;&nbsp;&nbsp;&nbsp;gpedit.msc</a>
+</h3>
+<h3 class="topic">
+<a name="2k9tvlaaa7a1a26e12a44ktgkl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果win10是家庭版，则没有组策略，需要进行相关注册表配置</a>
+</h3>
+<h3 class="topic">
+<a name="1n3fi41pmp31ikqb2bcfcp1c0m">&nbsp;&nbsp;&nbsp;&nbsp;计算机配置</a>
+</h3>
+<h3 class="topic">
+<a name="36e3tiliijrsns5tjkh525ga91">&nbsp;&nbsp;&nbsp;&nbsp;管理模板</a>
+</h3>
+<h3 class="topic">
+<a name="4oo1hui7b93muek6197na17j7g">&nbsp;&nbsp;&nbsp;&nbsp;windows组件</a>
+</h3>
+<h3 class="topic">
+<a name="010f5oa9lo59upcp45799esr4p">&nbsp;&nbsp;&nbsp;&nbsp;自动播放策略</a>
+</h3>
+<h3 class="topic">
+<a name="0u8vsv00kb38c9uub7bu2bo9ii">&nbsp;&nbsp;&nbsp;&nbsp;关闭自动播放</a>
+</h3>
+<h3 class="topic">
+<a name="29qrlc7odt2i1gd7mh2sla74u4">&nbsp;&nbsp;&nbsp;&nbsp;启用</a>
+</h3>
+<h3 class="topic">
+<a name="60tcur46kt6844p67ile61t0fo">&nbsp;&nbsp;dll劫持（也可以用作dll注入的方法）</a>
+</h3>
+<h3 class="topic">
+<a name="7dtn3k6gmpukspsaiiiv3a1v9u">&nbsp;&nbsp;&nbsp;利用程序加载dll顺序，劫持系统dll</a>
+</h3>
+<h3 class="topic">
+<a name="2c85iqdq5fdsfifc4i5tevql46">&nbsp;&nbsp;&nbsp;程序运行时会主动搜索本文件目录下系统dll名称的dll，如果伪造dll名称，可以优先加载该目录下的恶意dll</a>
+</h3>
+<h3 class="topic">
+<a name="64gjb0ka3kjpcm3h3nclic5uuc">&nbsp;&nbsp;&nbsp;&nbsp;恶意dll中必须拥有原dll的功能，从而保证原有的api被执行</a>
+</h3>
+<h3 class="topic">
+<a name="275lgnsr4suber91uveuv4o6ll">&nbsp;&nbsp;&nbsp;xp系统上很常见</a>
+</h3>
+<h3 class="topic">
+<a name="3elcg0ioesrqj72us1rjcshb64">&nbsp;&nbsp;&nbsp;病毒可能会在能够遍历到的文件夹下释放恶意dll</a>
+</h3>
+<h3 class="topic">
+<a name="4higojn5fh92s961kpf4fejbs1">&nbsp;&nbsp;&nbsp;也可以利用dll劫持的dll加载方式，使得被加壳的程序加载该dll，然后运行dll中代码，为加壳程序打内存补丁</a>
+</h3>
+<h3 class="topic">
+<a name="4r5fgkkhc5g2dug8ou0be94nbp">&nbsp;&nbsp;&nbsp;常见劫持系统的dll</a>
+</h3>
+<h3 class="topic">
+<a name="319adbev48eootldco6em7g60p">&nbsp;&nbsp;&nbsp;&nbsp;lpk.dll</a>
+</h3>
+<h3 class="topic">
+<a name="5let9pd084umkrdst9mm07l9ej">&nbsp;&nbsp;&nbsp;&nbsp;usp10.dll</a>
+</h3>
+<h3 class="topic">
+<a name="62uig4u0dnce1m0k97ef2nscva">&nbsp;&nbsp;&nbsp;&nbsp;这两个dll比较小，方便被模拟，以保证原有dll的功能</a>
+</h3>
+<h3 class="topic">
+<a name="2klnelivecg522r2hu4b5kje76">&nbsp;&nbsp;&nbsp;dll劫持的劫持目标也可以是应用程序的dll，比如劫持360软件的软件dll，让360程序加载伪造的dll，dll中可以实现恶意代码，从而实现免杀</a>
+</h3>
+<h3 class="topic">
+<a name="74sdgl41ui71lbgqu15uufjmhs">&nbsp;&nbsp;&nbsp;&nbsp;当前程序在加载时</a>
+</h3>
+<h3 class="topic">
+<a name="4c3tt67klbcbresj1gehcr1ms0">&nbsp;通过网络</a>
+</h3>
+<h3 class="topic">
+<a name="3k7053oliuakvmkh0mah4cngf3">&nbsp;&nbsp;钓鱼邮件</a>
+</h3>
+<h3 class="topic">
+<a name="20uibrcibannub3h0if6fn9nbr">&nbsp;&nbsp;&nbsp;伪造网站</a>
+</h3>
+<h3 class="topic">
+<a name="4npuafkpon416e08fcl9hepabi">&nbsp;&nbsp;&nbsp;&nbsp;咸鱼上伪造淘宝网站</a>
+</h3>
+<h3 class="topic">
+<a name="3nm66i4tg1ej1ub1jqroq4tobm">&nbsp;&nbsp;&nbsp;模仿url链接</a>
+</h3>
+<h3 class="topic">
+<a name="1n125bmbbuu6jkllm710if0dfb">&nbsp;&nbsp;&nbsp;word文件</a>
+</h3>
+<h3 class="topic">
+<a name="6r9rhd83dkegmj44perd3jn2j2">&nbsp;&nbsp;&nbsp;pdf文件</a>
+</h3>
+<h3 class="topic">
+<a name="7nc0unn38ncpmgtboekhnlduaq">&nbsp;&nbsp;&nbsp;exe</a>
+</h3>
+<h3 class="topic">
+<a name="1svmj3feo169v06l5j3lere7pt">&nbsp;&nbsp;即时通讯</a>
+</h3>
+<h3 class="topic">
+<a name="04srrq6pcip0kg5570vnoco6vm">&nbsp;&nbsp;&nbsp;qq 微信 阿里旺旺</a>
+</h3>
+<h3 class="topic">
+<a name="6s9qjkg0d53cs4aj3qkl9sdcpc">&nbsp;&nbsp;网络共享目录</a>
+</h3>
+<h3 class="topic">
+<a name="0uec89mj97d1ebeagvcsmv802k">&nbsp;&nbsp;&nbsp;可以大规模传播恶意代码</a>
+</h3>
+<h3 class="topic">
+<a name="773lfdcmbkrhp68539cupmjsek">&nbsp;&nbsp;网站下载</a>
+</h3>
+<h3 class="topic">
+<a name="0nt6r1e7ef9812lsj9rtouoaok">&nbsp;&nbsp;&nbsp;网站下载、ftp下载</a>
+</h3>
+<h3 class="topic">
+<a name="76ohr4ndmtgpknpcks93bcnm0k">&nbsp;&nbsp;漏洞传播</a>
+</h3>
+<h3 class="topic">
+<a name="67h371ltk4tgie0c7f5v1tlaht">&nbsp;&nbsp;&nbsp;系统漏洞、软件漏洞、协议漏洞（通讯协议出现漏洞，影响面很大）、服务漏洞</a>
+</h3>
+<h3 class="topic">
+<a name="07ne7q91ip69be0hvh9v6kunsp">&nbsp;&nbsp;&nbsp;震网病毒、OpenSSL（加密通讯dll）心脏出血漏洞、SMB协议（windows经常出现漏洞的协议、开放445端口）、IIS服务漏洞</a>
+</h3>
+<h3 class="topic">
+<a name="2vqj2muen2uala23gkn30qhm46">&nbsp;&nbsp;&nbsp;&nbsp;中石油，中石化内部通讯软件使用smb协议，使用445端口</a>
+</h3>
+<h3 class="topic">
+<a name="6oldi24usdds5h3n9jpgurivpa">&nbsp;通过文件</a>
+</h3>
+<h3 class="topic">
+<a name="34r2uthd1ii9s6rjbcq9ajs6df">&nbsp;&nbsp;文件感染</a>
+</h3>
+<h3 class="topic">
+<a name="502vk34geg39iiifq88ctm3uha">&nbsp;&nbsp;&nbsp;修改pe文件添加恶意代码，修改oep</a>
+</h3>
+<h3 class="topic">
+<a name="2qsdtu7vc8jqsv6oiumouh4rg8">&nbsp;&nbsp;软件捆绑</a>
+</h3>
+<h3 class="topic">
+<a name="5l5jvu8cgf1co189c8tic6e3a9">&nbsp;&nbsp;&nbsp;与正常软件捆绑</a>
+</h3>
+<h3 class="topic">
+<a name="55nk5s0jqatcs59749ek761rv7">&nbsp;&nbsp;&nbsp;强制安装</a>
+</h3>
+<h3 class="topic">
+<a name="3r5qi3agbes24bj5avmb9ot6fr">&nbsp;&nbsp;&nbsp;默认安装</a>
+</h3>
+<h3 class="topic">
+<a name="7juie2j27s4aa1mhbrdfb7hdea">&nbsp;&nbsp;一般是小型功能性软件可能会携带恶意代码</a>
+</h3>
+<h2 class="topic">
+<a name="38bgaqo42fv21419571pf79q8l">恶意代码实现技术</a>
+</h2>
+<h3 class="topic">
+<a name="36f875f6kmprpjlq4v6je5gm67">&nbsp;注册表</a>
+</h3>
+<h3 class="topic">
+<a name="63dkncq7rk3aan5gk5j1fksa4p">&nbsp;&nbsp;win+r -》regeidt</a>
+</h3>
+<h3 class="topic">
+<a name="3nill405a5so4emdsu7tbs9kbl">&nbsp;&nbsp;&nbsp;注册表是一个windows本地数据库，用于保存系统配置信息、应用配置信息</a>
+</h3>
+<h3 class="topic">
+<a name="3718cq0mnkbns156e5lv8s0n22">&nbsp;加载</a>
+</h3>
+<h3 class="topic">
+<a name="4en5vnhirak50l2j9hu2br2ghj">&nbsp;&nbsp;注册表启动</a>
+</h3>
+<h3 class="topic">
+<a name="22k7aqoq4o2k3rnsia3dk5e1f9">&nbsp;&nbsp;&nbsp;run键</a>
+</h3>
+<h3 class="topic">
+<a name="0g3kg3sr8bpjmqg5q4oauduatq">&nbsp;&nbsp;注册表注入启动</a>
+</h3>
+<h3 class="topic">
+<a name="0kdu45cmevd6gm12ta180ndeon">&nbsp;&nbsp;系统服务</a>
+</h3>
+<h3 class="topic">
+<a name="6ota7ptc7dqk2pnfgvqnm63kcv">&nbsp;&nbsp;&nbsp;讲恶意代码登记为系统服务，并设置启动方式为自动启动</a>
+</h3>
+<h3 class="topic">
+<a name="1mseekov0suoa654rjqdfmsjm8">&nbsp;&nbsp;随文件执行</a>
+</h3>
+<h3 class="topic">
+<a name="7ij439pul73ks90u8riqsc7bed">&nbsp;&nbsp;&nbsp;感染</a>
+</h3>
+<h3 class="topic">
+<a name="5e5jm3ovdnf3s8c6rgdmmf8nub">&nbsp;&nbsp;&nbsp;捆绑</a>
+</h3>
+<h3 class="topic">
+<a name="3kj2mntbgohp3pbffa0sf1g18j">&nbsp;&nbsp;&nbsp;修改文件关联、配置文件</a>
+</h3>
+<h3 class="topic">
+<a name="72o87eeboj81hrkf5dkrh11pm2">&nbsp;&nbsp;&nbsp;&nbsp;感染开发环境，使得该开发环境编译出的程序会自动携带恶意代码</a>
+</h3>
+<h3 class="topic">
+<a name="75d7kve71nbavpd8brpiv3nops">&nbsp;&nbsp;&nbsp;劫持</a>
+</h3>
+<h3 class="topic">
+<a name="7r2mt72iokfgsbrvhc3e419vmi">&nbsp;&nbsp;bookit</a>
+</h3>
+<h3 class="topic">
+<a name="68c7q7b5vnrlr612avu9qgg7tg">&nbsp;&nbsp;&nbsp;通过感染MBR（磁盘主引导记录）实现绕过内核检查和启动隐身，其开机启动比windows内核更早加载</a>
+</h3>
+<h3 class="topic">
+<a name="4qjh1jirctn8s1ne7jjf0v24oo">&nbsp;&nbsp;&nbsp;win7之后不使用mbr，使用uefi</a>
+</h3>
+<h3 class="topic">
+<a name="5dofpnn8ccintjud5li5tuo8b5">&nbsp;&nbsp;开始-程序-启动菜单</a>
+</h3>
+<h3 class="topic">
+<a name="247smhn8f7nsa3t5k0fhi5v252">&nbsp;&nbsp;&nbsp;当前用户</a>
+</h3>
+<h3 class="topic">
+<a name="4al644p5pl9bodea9p0so53srg">&nbsp;&nbsp;&nbsp;所用用户</a>
+</h3>
+<h3 class="topic">
+<a name="5misv2mpfhu302v5um91o8568n">&nbsp;&nbsp;计划任务</a>
+</h3>
+<h3 class="topic">
+<a name="2hdfhbqt4mho5957aeu17330q5">&nbsp;&nbsp;&nbsp;启动计划任务的进程可能是系统进程而不是用户进程</a>
+</h3>
+<h3 class="topic">
+<a name="3dcrt3fi6ghdea92rd9tkqouoo">&nbsp;进程隐藏方式</a>
+</h3>
+<h3 class="topic">
+<a name="0slfu0uimepe5lr9jbcc2898h5">&nbsp;&nbsp;进程迷惑</a>
+</h3>
+<h3 class="topic">
+<a name="2gicrsl43go3hukebkk5068t4d">&nbsp;&nbsp;&nbsp;进程名称伪装</a>
+</h3>
+<h3 class="topic">
+<a name="35u9il57f4mgru5vacnru1mpm6">&nbsp;&nbsp;&nbsp;&nbsp;以下进程经常被伪装</a>
+</h3>
+<h3 class="topic">
+<a name="4ontj07pdutj0misp1a5t6qosn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;桌面进程的名称 explorer.exe</a>
+</h3>
+<h3 class="topic">
+<a name="6sa3rh6hlog7i21dj7aq5ft5oe">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;任务管理器进程名称 Taskmgr.exe</a>
+</h3>
+<h3 class="topic">
+<a name="4e9232o0iki87q3vhismr14d4v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用户登陆进程winlogon.exe</a>
+</h3>
+<h3 class="topic">
+<a name="3f8cbln3s4gpvm7m83q9thepca">&nbsp;&nbsp;&nbsp;同名不同路径的进程</a>
+</h3>
+<h3 class="topic">
+<a name="7d7s3cn18ul28mrd7ca9gj0jmu">&nbsp;&nbsp;&nbsp;&nbsp;需要熟悉系统目录</a>
+</h3>
+<h3 class="topic">
+<a name="1et13jjm0ii15hlt0emu426mom">&nbsp;&nbsp;进程注入</a>
+</h3>
+<h3 class="topic">
+<a name="1ppq8cq5crdf5hsf7gm5vfq1t7">&nbsp;&nbsp;&nbsp;dll注入</a>
+</h3>
+<h3 class="topic">
+<a name="3k4rtp0tn89udnsqdrf68fct72">&nbsp;&nbsp;&nbsp;&nbsp;病毒写在dll中，exe仅仅将dll注入到exe中</a>
+</h3>
+<h3 class="topic">
+<a name="6l4qmvnhta5f17djm3t3epbio7">&nbsp;&nbsp;&nbsp;直接注入</a>
+</h3>
+<h3 class="topic">
+<a name="32b10rm709u0dlsfc9bpt3dedt">&nbsp;&nbsp;&nbsp;&nbsp;在目标进程远程申请内存，直接将恶意代码拷贝过去，执行</a>
+</h3>
+<h3 class="topic">
+<a name="4qui5naed4ftc3vpehudpek3he">&nbsp;&nbsp;&nbsp;优点</a>
+</h3>
+<h3 class="topic">
+<a name="1m4paf2curk20ajotc7o7gkjgh">&nbsp;&nbsp;&nbsp;&nbsp;无进程</a>
+</h3>
+<h3 class="topic">
+<a name="0h46a58lhmnmss77pbstbv7lun">&nbsp;&nbsp;&nbsp;&nbsp;隐蔽性强（白名单、黑名单）</a>
+</h3>
+<h3 class="topic">
+<a name="338m79ii8seakq6gnd8fcrrmr4">&nbsp;&nbsp;&nbsp;&nbsp;清除难度大</a>
+</h3>
+<h3 class="topic">
+<a name="1lo8q6cs1limhu1o3o7ekud15f">&nbsp;&nbsp;进程替换</a>
+</h3>
+<h3 class="topic">
+<a name="0gdd2af491i7l68a8okak3h6hl">&nbsp;&nbsp;&nbsp;有时正常的进程（桌面进程、浏览器进程）会有多个，病毒可以启动一个合法的进程，将进程空间内存释放，再申请内存，将恶意代码拷贝到该进程中执行</a>
+</h3>
+<h3 class="topic">
+<a name="1a5ms896u2gv1cu2etuvv8onqd">&nbsp;&nbsp;&nbsp;&nbsp;灰鸽子远控可以在被控制主机上启动一个ie浏览器进程，然后将进程空间中的代码替换为恶意代码</a>
+</h3>
+<h3 class="topic">
+<a name="25poagg0h8jeummb7m5ecu2sar">&nbsp;&nbsp;&nbsp;恶意代码拥有被替换的进程的执行权限</a>
+</h3>
+<h3 class="topic">
+<a name="0qnr3rrqprco8ghnvscm89ukqt">&nbsp;&nbsp;apc注入</a>
+</h3>
+<h3 class="topic">
+<a name="5vhedec826dbud8pq5f93r7evt">&nbsp;&nbsp;&nbsp;当线程切换的时候（SleepEx()  WaitForSingleObject ()）会唤醒apc队列，调用其中的函数</a>
+</h3>
+<h3 class="topic">
+<a name="4jgr1t5aon1tdav1uq7m2c9dl7">&nbsp;&nbsp;网络隐藏</a>
+</h3>
+<h3 class="topic">
+<a name="5d10q887llrin2738akaedno8t">&nbsp;&nbsp;&nbsp;端口复用</a>
+</h3>
+<h3 class="topic">
+<a name="7b26206apcflob6pf9e23ffj0s">&nbsp;&nbsp;&nbsp;端口反向连接</a>
+</h3>
+<h3 class="topic">
+<a name="4tppffd1172jddcfudtp5i1vlt">&nbsp;&nbsp;&nbsp;&nbsp;恶意代码控制被控制端主动连接控制端</a>
+</h3>
+<h3 class="topic">
+<a name="4qdltvbknn89ueo64o5lg6vsei">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;被控制端一般被称为木马服务器</a>
+</h3>
+<h3 class="topic">
+<a name="4kv0s1i7d50h29cef7r24m8qbu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;控制端一般被称为木马客户端</a>
+</h3>
+<h3 class="topic">
+<a name="6ri83se7k6r4efhmnor8i8441q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;但是实际的网络软件设计的时候经常是反的</a>
+</h3>
+<h3 class="topic">
+<a name="3k2gitsa7oafca2i065hvdcm9e">&nbsp;&nbsp;系统隐藏</a>
+</h3>
+<h3 class="topic">
+<a name="20jge8uqrv6k3osrnnrjnuaquc">&nbsp;&nbsp;&nbsp;隐藏文件</a>
+</h3>
+<h3 class="topic">
+<a name="3cb9avck9i1t6rqqishf99t7nk">&nbsp;&nbsp;&nbsp;&nbsp;属性</a>
+</h3>
+<h3 class="topic">
+<a name="1e1qfh8avnu9j0893mgf8gi5gf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;系统属性</a>
+</h3>
+<h3 class="topic">
+<a name="5d58ebk3bo90rhtuhgldijk8ft">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;隐藏属性</a>
+</h3>
+<h3 class="topic">
+<a name="20qtqcjtfgk9u0doshmee46u8e">&nbsp;&nbsp;&nbsp;隐藏后缀</a>
+</h3>
+<h3 class="topic">
+<a name="6r7out0chskdrof2a7ukejbt6k">&nbsp;&nbsp;&nbsp;&nbsp;即将程序命名为1.txt.exem，则最后显示时可能只显示1.txt</a>
+</h3>
+<h3 class="topic">
+<a name="65s8mb20u1odn18g8mvpkm9v7n">&nbsp;&nbsp;&nbsp;&nbsp;windows系统上可以选择是否显示程序后缀名</a>
+</h3>
+<h3 class="topic">
+<a name="6k0tj5g3smj6674lc1emifru9a">&nbsp;&nbsp;&nbsp;&nbsp;以阿拉伯国家阅读顺序是右到左的，可以显示为exe.txt</a>
+</h3>
+<h3 class="topic">
+<a name="77fjpaq1fr13t7aj691aqv56ra">&nbsp;&nbsp;&nbsp;ADS交换数据流</a>
+</h3>
+<h3 class="topic">
+<a name="4uqf9bsokfglb2pt1ja2sicd3e">&nbsp;&nbsp;&nbsp;hook技术</a>
+</h3>
+<h3 class="topic">
+<a name="65s3un5oo4sf8r6b5irgrorvvi">&nbsp;&nbsp;&nbsp;&nbsp;应用层面的hook</a>
+</h3>
+<h3 class="topic">
+<a name="6p9mm621aj9p1fqcvr2ejejisj">&nbsp;&nbsp;&nbsp;&nbsp;内核层面的hook</a>
+</h3>
+<h3 class="topic">
+<a name="1h3iqief4enron10d75qmancif">&nbsp;病毒自我保护技术</a>
+</h3>
+<h3 class="topic">
+<a name="58or95cnjjm3ich0sjietii2op">&nbsp;&nbsp;进程保护</a>
+</h3>
+<h3 class="topic">
+<a name="754f0mugtqplqnjd6re45gqv4k">&nbsp;&nbsp;&nbsp;多进程、有守护进程</a>
+</h3>
+<h3 class="topic">
+<a name="653g6fpof1b92ej8uql48jff1i">&nbsp;&nbsp;&nbsp;进程+服务</a>
+</h3>
+<h3 class="topic">
+<a name="0vu0508bea5tcd2b5tjfnvodkt">&nbsp;&nbsp;&nbsp;&nbsp;服务负责保护恶意代码进程</a>
+</h3>
+<h3 class="topic">
+<a name="5acsnj0gt5782s9c1rj37pe6eu">&nbsp;&nbsp;&nbsp;&nbsp;即设置一个监控进程，对恶意进程保护与修复</a>
+</h3>
+<h3 class="topic">
+<a name="4fhp0t72b3k1s2leaer29tjiau">&nbsp;&nbsp;检测对抗</a>
+</h3>
+<h3 class="topic">
+<a name="0pnn09peoe0k8u2jphe20kkhhd">&nbsp;&nbsp;&nbsp;反动态调试</a>
+</h3>
+<h3 class="topic">
+<a name="4cqqnha301a8mmkf45ghteucts">&nbsp;&nbsp;&nbsp;&nbsp;校验文件，内存</a>
+</h3>
+<h3 class="topic">
+<a name="5shjqeej97o9jb1rdmppgeqctr">&nbsp;&nbsp;&nbsp;&nbsp;环境检测（虚拟机、调试器、沙箱）</a>
+</h3>
+<h3 class="topic">
+<a name="29ao724bptrdhp6cotigfu6abq">&nbsp;&nbsp;&nbsp;反静态调试</a>
+</h3>
+<h3 class="topic">
+<a name="3684j1du29de9h14turi4sm5o4">&nbsp;&nbsp;&nbsp;&nbsp;混淆</a>
+</h3>
+<h2 class="topic">
+<a name="08pbdel4dggkubh7bbnvcdg6jt">杀毒软件发展</a>
+</h2>
+<h3 class="topic">
+<a name="37bvr435d6mo9s3gv57v3fpk33">&nbsp;av虚拟机</a>
+</h3>
+<h3 class="topic">
+<a name="37lg6khsu6v5lvaaui2kpg7eq0">&nbsp;&nbsp;即模拟运行程序检测病毒</a>
+</h3>
+<h3 class="topic">
+<a name="51641g739h267nv8qfhgm1t09k">&nbsp;&nbsp;通过模拟api调用解释执行指令</a>
+</h3>
+<h3 class="topic">
+<a name="1egrvbdfc3cbgcf48v0o8olkki">&nbsp;&nbsp;&nbsp;需要模拟若干系统api</a>
+</h3>
+<h3 class="topic">
+<a name="216058vc5bl4qtq33fs9jbkc8f">&nbsp;&nbsp;&nbsp;如果遇到了地址操作，会自动再申请一片内存空间，用于保存数据并模拟对数据操作</a>
+</h3>
+<h3 class="topic">
+<a name="0c2kr633a54pfq0397fsmpc986">&nbsp;&nbsp;使用ida模拟执行</a>
+</h3>
+<h3 class="topic">
+<a name="0b33jnmjao7k17b8fe2btoivdn">&nbsp;&nbsp;&nbsp;ida插件x86模拟器</a>
+</h3>
+<h3 class="topic">
+<a name="434o7u9qj71cfddp6n6p7beqna">&nbsp;&nbsp;&nbsp;&nbsp;X86 Emulator</a>
+</h3>
+<h3 class="topic">
+<a name="3spdcepmks703lup0ga7rsqlqi">&nbsp;&nbsp;&nbsp;&nbsp;在模拟器中给eip指定地址，可以单步执行，观测指令中寄存器的变化</a>
+</h3>
+<h3 class="topic">
+<a name="50v1gj3bdoj6k6nanqdkfs6qr3">&nbsp;当前杀毒软件的核心技术</a>
+</h3>
+<h3 class="topic">
+<a name="2d1k9vuqgqfsjv9n918eiehv17">&nbsp;&nbsp;云查杀</a>
+</h3>
+<h3 class="topic">
+<a name="6ndari146i8o2jiidm24gv5k41">&nbsp;&nbsp;av虚拟机</a>
+</h3>
+<h3 class="topic">
+<a name="1neg9stsmp9r77hg157ecara7j">&nbsp;杀毒软件查杀技术</a>
+</h3>
+<h3 class="topic">
+<a name="51f16d2brrapnrtb3g25pdqbk2">&nbsp;&nbsp;扫描器</a>
+</h3>
+<h3 class="topic">
+<a name="5jjtr2n3r7jgrc1mi55n99qghj">&nbsp;&nbsp;&nbsp;文件扫描器</a>
+</h3>
+<h3 class="topic">
+<a name="6rp0hljv274l5a6tm18hhmq92k">&nbsp;&nbsp;&nbsp;内存扫描器</a>
+</h3>
+<h3 class="topic">
+<a name="4gh32ojurvpeppml29792gc4oa">&nbsp;&nbsp;脱壳引擎</a>
+</h3>
+<h3 class="topic">
+<a name="31oigagb7bp9c58fb7n5q8n9n0">&nbsp;&nbsp;&nbsp;辅助文件扫描器</a>
+</h3>
+<h3 class="topic">
+<a name="0o6aem425smk8vra4nqrcc2m86">&nbsp;&nbsp;av虚拟机</a>
+</h3>
+<h3 class="topic">
+<a name="16e4eeq2endkpb1jfim66vj6ce">&nbsp;&nbsp;&nbsp;辅助内存扫描</a>
+</h3>
+<h3 class="topic">
+<a name="7p8jcha75mucdvbpleacsob6di">&nbsp;&nbsp;主动防御</a>
+</h3>
+<h3 class="topic">
+<a name="00ena9072fcupek11nsr6qmcfk">&nbsp;&nbsp;&nbsp;hook敏感api、记录程序行为</a>
+</h3>
+<h3 class="topic">
+<a name="6cvuvqk8caat2lsais7ijn0v3s">&nbsp;&nbsp;云查杀</a>
+</h3>
+<h3 class="topic">
+<a name="5akpcko331lcrnklf3rfvfg2na">&nbsp;&nbsp;&nbsp;云查将文件的md5值上传到服务器进行分析查杀</a>
+</h3>
+<h3 class="topic">
+<a name="1irqvgsj3dhhn342c8s5bul30b">&nbsp;&nbsp;沙箱</a>
+</h3>
+<h3 class="topic">
+<a name="19i0tsa201bd0c48b77jdl5eea">&nbsp;&nbsp;&nbsp;虚拟机</a>
+</h3>
+<h3 class="topic">
+<a name="1pinu5mcj0d8h5klhdmq01v5t1">&nbsp;&nbsp;&nbsp;目前有在线沙箱</a>
+</h3>
+<h3 class="topic">
+<a name="7tggf5ij4e4c4locmeqeq81t8o">&nbsp;&nbsp;&nbsp;&nbsp;微步云查杀</a>
+</h3>
+<h3 class="topic">
+<a name="3j6214sefprostg0vt1bo12sur">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以将可疑文件上传进行查杀分析</a>
+</h3>
+<h3 class="topic">
+<a name="4kebvjuh7likaib3vop60l7jhc">&nbsp;&nbsp;&nbsp;&nbsp;国外在线杀毒</a>
+</h3>
+<h3 class="topic">
+<a name="25fv6nv2i0ktr2g04q5b2hkvtd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;VirusTotal</a>
+</h3>
+<h3 class="topic">
+<a name="1q749r17fgcc8jrt85dai8kgbm">&nbsp;&nbsp;&nbsp;威胁情报的概念</a>
+</h3>
+<h2 class="topic">
+<a name="24ai0vt3f3ifev7189o3vpa7oi">杀毒厂商对恶意代码的命名</a>
+</h2>
+<h3 class="topic">
+<a name="24ec8drss44sh0uqfscg24dtpi">&nbsp;没有统一的命名规范，一般使用卡巴斯基的命名规则</a>
+</h3>
+<h3 class="topic">
+<a name="62gk27t0le927n6ichd2fk1034">&nbsp;&nbsp;主类型-子类型.平台.病毒家族.变种</a>
+</h3>
+<h3 class="topic">
+<a name="5iummm6erilbc8gqei0i0vdlqc">&nbsp;瑞星病毒命名规范</a>
+</h3>
+<h3 class="topic">
+<a name="741udmjaav5s4dshigm9dbors9">&nbsp;&nbsp;与卡巴斯基差不多</a>
+</h3>
+<h3 class="topic">
+<a name="4c158ti214i65d1e4g6ttu1f9l">&nbsp;火绒有技术白皮书</a>
+</h3>
+<h3 class="topic">
+<a name="0hqq6f7asu7pea02tl1ma4f4fg">&nbsp;&nbsp;火绒没有云查杀，只有本地查杀</a>
+</h3>
+<h3 class="topic">
+<a name="0iod4n2u8r14192p6ura45j520">&nbsp;常见的杀毒引擎</a>
+</h3>
+<h3 class="topic">
+<a name="325otq2eouugi5irvs5kd88jnp">&nbsp;开源杀毒软件</a>
+</h3>
+<h3 class="topic">
+<a name="7n2uppqe6rr8e4tisviptbrn44">&nbsp;&nbsp;ClamAV</a>
+</h3>
+<h3 class="topic">
+<a name="7f7sp66otpfoa7snnsuku20u1j">&nbsp;杀毒软件脱壳和破解脱壳要求不一样，后则需要能运行程序，前者只要可以用于进行病毒内存扫描和文件扫描特征即可</a>
+</h3>
+<h2 class="topic">
+<a name="371k9v91ogde3c5s1h1fpnke3l">反病毒工作</a>
+</h2>
+<h3 class="topic">
+<a name="3am537914tmacotaf0ug9ud9hu">&nbsp;高级病毒分析师</a>
+</h3>
+<h3 class="topic">
+<a name="6asvku7r4bjeaercsc9cdttcl7">&nbsp;&nbsp;分析流行样本，写分析报告</a>
+</h3>
+<h3 class="topic">
+<a name="2aqcfgfqecq07gt5fbg70p7vou">&nbsp;&nbsp;分析高威胁样本（APT分析），写分析报告</a>
+</h3>
+<h3 class="topic">
+<a name="2r8p8f1coealhvkcd9r29darj6">&nbsp;&nbsp;高级的病毒分析师，分析报告越倾向于软文</a>
+</h3>
+<h3 class="topic">
+<a name="2svq7g8sm2q1298cbg7olidm0e">&nbsp;反病毒开发</a>
+</h3>
+<h3 class="topic">
+<a name="6te25oh668qep9atsaqm4ei9od">&nbsp;&nbsp;c++应用层开发</a>
+</h3>
+<h3 class="topic">
+<a name="7ds7hnema0qmapmsdrievalog9">&nbsp;&nbsp;内核层开发</a>
+</h3>
+<h2 class="topic">
+<a name="0v1efbuk9g9ckq2ifakj7941ni">shift 右键，在特定窗口上打开命令行窗口</a>
+</h2>
+<h2 class="topic">
+<a name="0fdoj44v8qsvru60931l4qnebs">win+r -》regeidt</a>
+</h2>
+<h3 class="topic">
+<a name="7trf0aa5rve50eu5nuk1h6bl45">&nbsp;注册表是一个windows本地数据库，用于保存系统配置信息、应用被指信息</a>
+</h3>
+<h2 class="topic">
+<a name="0e6jptjdispsj5uqe3cvj25iec">虚拟机版本不能太低，否则可能会出现虚拟机逃逸</a>
+</h2>
+<h2 class="topic">
+<a name="3m9ighn2sv69a7uee3b0or4hps">虚拟机不要设置共享目录</a>
+</h2>
+<h3 class="topic">
+<a name="2cqkktd2f50mp8dasf3a60djri">&nbsp;虚拟机设置</a>
+</h3>
+<h2 class="topic">
+<a name="5bg5q9jfo921g44ftkbbhh9iti">真机上防止病毒</a>
+</h2>
+<h3 class="topic">
+<a name="1a389l9i4i7mlqb40drlbqsf1o">&nbsp;组策略</a>
+</h3>
+<h3 class="topic">
+<a name="2u8efipq7bcatu8bcop574m892">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class65day0525_files/58nav12fqjoobajc53hqvhf3ee.png"></p>
+<h3 class="topic">
+<a name="69ufsf1a5g3o5c0olkp1r8k26b">&nbsp;&nbsp;右键创建限制策略，将指定路径设置为不可执行</a>
+</h3>
+<h3 class="topic">
+<a name="42grpa8mebifh87kobcqf732ol">&nbsp;可以通过修改特定路径的权限，禁止该路径下的程序运行</a>
+</h3>
+<h3 class="topic">
+<a name="30mpn3c02rtqvhcav88rrao766">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class65day0525_files/6tn0ecth9lc0usceb571qrk8uh.png"></p>
+<h3 class="topic">
+<a name="3ita5dl84jmmbft09a1rl8vr50">&nbsp;&nbsp;路径下下=-&gt;右键-》属性-》安全</a>
+</h3>
+<h3 class="topic">
+<a name="5hrsop25l2ekca920mq3vrn9eh">&nbsp;打开组策略</a>
+</h3>
+<h3 class="topic">
+<a name="55scie68liavr6vou4hd67pe1i">&nbsp;&nbsp;win+R</a>
+</h3>
+<h3 class="topic">
+<a name="32r16tido38617kbtrcguqdh7o">&nbsp;&nbsp;&nbsp;gpedit.msc</a>
+</h3>
+</body>
+</html>

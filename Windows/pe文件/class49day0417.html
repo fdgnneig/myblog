@@ -1,0 +1,742 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>class49day0417（pe文件第三天）</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="4ark75petg9mug0tq0gm04q1vd">class49day0417（pe文件第三天）</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="class49day0417_files/images/class49day0417%EF%BC%88pe%E6%96%87%E4%BB%B6%E7%AC%AC%E4%B8%89%E5%A4%A9%EF%BC%89.jpg"></div>
+<h2 class="topic">
+<a name="6c8gn3q34peaivrqfrf8pkrvni">复习</a>
+</h2>
+<h3 class="topic">
+<a name="0mcn7ueovfij9djl33jss5ooba">&nbsp;程序没有导入表和导出表是可以运行的，只不过没有什么功能</a>
+</h3>
+<h3 class="topic">
+<a name="1tt1lphu9lq5hilgavlfc8gq0d">&nbsp;已知dll名和一个dll导出函数名，如何得到函数名的地址</a>
+</h3>
+<h3 class="topic">
+<a name="4nif9m7akvnoqr085ugeb9gi0d">&nbsp;&nbsp;确定这个dll的名称，在相应的dll中通过名称表找对应的函数序号，在序号表中确认序号，在地址表中找序号对应的地址</a>
+</h3>
+<h3 class="topic">
+<a name="4ri9iil86e13barqkkdqov14b3">&nbsp;如何判断exe使用了那些API</a>
+</h3>
+<h3 class="topic">
+<a name="0bg91rb5j81r117t193ggdt3ls">&nbsp;&nbsp;使用导入表</a>
+</h3>
+<h3 class="topic">
+<a name="1po1fnc9u6s3fuapbknlnmloa2">&nbsp;如何判断导入函数是通过序号导入还是名称导入</a>
+</h3>
+<h3 class="topic">
+<a name="39ekv5r099qs6onu5uvde15po7">&nbsp;&nbsp;IMAGE_THUNK_DATA结构体最高位为1，则说明是序号导入，如果最高为为0，说明是符号导出</a>
+</h3>
+<h3 class="topic">
+<a name="3vtik2u8t64b3k7k6118ujlmbm">&nbsp;如何确定导出函数是以序号还是名称导出</a>
+</h3>
+<h3 class="topic">
+<a name="5lqnrkuv1v9bfuno1iet2ieq71">&nbsp;&nbsp;如果函数以名称导出，则在函数名称表中有记录，如果在函数地址表中有相应记录，但是在函数名称表中没有相应记录，则该函数通过序号导出</a>
+</h3>
+<h2 class="topic">
+<a name="13avtr0g3ufmhpkindee5kghm3">资源表</a>
+</h2>
+<h3 class="topic">
+<a name="0rc5vh7qukvuh2pd1au4njh6cn">&nbsp;一般分为3层</a>
+</h3>
+<h3 class="topic">
+<a name="33hi4fnb75fgpao7qcgblo5ur7">&nbsp;&nbsp;资源类型</a>
+</h3>
+<h3 class="topic">
+<a name="0va2ddksvib34qvgca03einm81">&nbsp;&nbsp;&nbsp;有哪几类资源</a>
+</h3>
+<h3 class="topic">
+<a name="1iueiu7ndor3fe1vqnkae42t5g">&nbsp;&nbsp;目录资源id</a>
+</h3>
+<h3 class="topic">
+<a name="0u9d0kp9kmma33aru318ubrq2m">&nbsp;&nbsp;&nbsp;特定类的资源有几个资源</a>
+</h3>
+<h3 class="topic">
+<a name="4lmp8rgcekkkp9plt36ddsu0nj">&nbsp;&nbsp;资源代码页</a>
+</h3>
+<h3 class="topic">
+<a name="0grlngar1dhhs2idv7ffuujkk9">&nbsp;&nbsp;&nbsp;某一个资源的二进制数据</a>
+</h3>
+<h3 class="topic">
+<a name="05jg54sev1na7h5gem202v7cdv">&nbsp;资源表放置于资源区段，且资源表的起始地址与资源区段的起始地址相同，可以认为资源区段的一开始放置的就是资源表</a>
+</h3>
+<h3 class="topic">
+<a name="0pcffstvibe90mr2uticg4pphv">&nbsp;&nbsp;可以通过区段头表直接找到资源区段的文件偏移，该处也是资源表的开头</a>
+</h3>
+<h3 class="topic">
+<a name="1hf39a2asleqlllc7oqmqdsisl">&nbsp;&nbsp;即资源表的起始位置就是资源区段的起始位置</a>
+</h3>
+<h3 class="topic">
+<a name="2l24sclar01cn3s2t26p7cvem2">&nbsp;结构组成</a>
+</h3>
+<h3 class="topic">
+<a name="15fh87crc18glesp9csu7pf18s">&nbsp;&nbsp;结构1（该结构是每一层的起始）&#13;
+IMAGE_RESOURCE_DIRECTORY</a>
+</h3>
+<h3 class="topic">
+<a name="7imolnkvcarqmj92hl8gjob4cu">&nbsp;&nbsp;&nbsp;资源名称条目个数&#13;
+WORD NumberOfNamedEntries</a>
+</h3>
+<h3 class="topic">
+<a name="5ki05pshm0qg3gcp7dc4p22kiv">&nbsp;&nbsp;&nbsp;&nbsp;以名称字符串作为标识的资源</a>
+</h3>
+<h3 class="topic">
+<a name="58rcihe96pc3se4h74np91v20o">&nbsp;&nbsp;&nbsp;资源id条目个数&#13;
+WORD NumberOfIdEntries</a>
+</h3>
+<h3 class="topic">
+<a name="3prp4g9k0it1ehut1vr29a5o6m">&nbsp;&nbsp;&nbsp;&nbsp;以序号作为标识的资源</a>
+</h3>
+<h3 class="topic">
+<a name="01n4of928h83e4bleavjf586qv">&nbsp;&nbsp;&nbsp;这两个字段之和分别表示</a>
+</h3>
+<h3 class="topic">
+<a name="3mo4hvf4evuu7b2o33jubi8mfu">&nbsp;&nbsp;&nbsp;&nbsp;有多少种资源</a>
+</h3>
+<h3 class="topic">
+<a name="69f6lbvec0g06505brj2htal0j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;第一层</a>
+</h3>
+<h3 class="topic">
+<a name="2e3aepvoa4qcafquqrsj92c2qr">&nbsp;&nbsp;&nbsp;&nbsp;具体资源有多少个</a>
+</h3>
+<h3 class="topic">
+<a name="4s0isqohetcsf3r8mrn4oq47o6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;第二层</a>
+</h3>
+<h3 class="topic">
+<a name="2km4j34vse4o5lc6h3fqobb52l">&nbsp;&nbsp;&nbsp;&nbsp;为1</a>
+</h3>
+<h3 class="topic">
+<a name="6osui39ad7t0cs4i1suvs44mq8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;第三层</a>
+</h3>
+<h3 class="topic">
+<a name="2j14ef9ubd49clq39i0nbg7k0l">&nbsp;&nbsp;&nbsp;该结构体后面跟着一个结构体数组，结构体元素的类型为结构体2，结构体数组元素个数在第一、二层就是NumberOfNamedEntries、NumberOfIdEntries两个字段的和，在第三层，该结构体数组的元素个数为1</a>
+</h3>
+<h3 class="topic">
+<a name="63l3hti1pcfvqt519di89jbqq5">&nbsp;&nbsp;结构2（8个字节大小）&#13;
+IMAGE_RESOURCE_DIRECTORY_ENTRY</a>
+</h3>
+<h3 class="topic">
+<a name="6pgjcvip2jm4k2aoiulm5j0cm0">&nbsp;&nbsp;&nbsp;作为前面结构体后面的结构体数组的元素</a>
+</h3>
+<h3 class="topic">
+<a name="4ah21ghqh1okqn3oi9vbcfm1d4">&nbsp;&nbsp;&nbsp;联合体1&#13;
+DUMMYUNIONNAME</a>
+</h3>
+<h3 class="topic">
+<a name="1p6s2jjqcpr97p0h1n9bphksh8">&nbsp;&nbsp;&nbsp;&nbsp;四个字节大小</a>
+</h3>
+<h3 class="topic">
+<a name="2k9vae53687d180stc19o85b4i">&nbsp;&nbsp;&nbsp;&nbsp;结构体&#13;
+DUMMSTRUCTNAME</a>
+</h3>
+<h3 class="topic">
+<a name="5h1vs93hrei4fij4n1s27j8fn5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;资源名称的偏移&#13;
+DWORD NameOffset:31</a>
+</h3>
+<h3 class="topic">
+<a name="70jsekogqs3muhfr1gn6cdvj7q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;低31位</a>
+</h3>
+<h3 class="topic">
+<a name="7j81n74bfohp52suf69ko1i82u">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果资源使用名称标识，则该字段指向一个结构体&#13;
+结构体类型为IMAGE_RESOURCE_DIR_STRING_U</a>
+</h3>
+<h3 class="topic">
+<a name="7n2rreqpt7bnkiil9vp2f3jcht">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;字符串长度&#13;
+WORD Lengh</a>
+</h3>
+<h3 class="topic">
+<a name="7uevtpt9s5a1ukf6nein1cui68">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;保存资源名称的字符串数组&#13;
+WCHAR NameString[1]</a>
+</h3>
+<h3 class="topic">
+<a name="564idvnti8aeqouvg5539h2bl7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该结该构体名称为字符串，但是不以0为结尾，所以不能直接使用printf输出</a>
+</h3>
+<h3 class="topic">
+<a name="7ekjb9do0dc816jpi8f0o4fefh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意该字符串是WCAHR类型，打印的时候使用相关unicode函数</a>
+</h3>
+<h3 class="topic">
+<a name="31l3gnbvo6d2v35qul66q24s7b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意这个偏移是相对于资源区段头部，在寻址实际内容的时候需要加上资源区段头部地址</a>
+</h3>
+<h3 class="topic">
+<a name="2b0sjb7fl6muo4k0cuk14dk2mh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;是否为名称的的标识&#13;
+DWORD NameIsString:1</a>
+</h3>
+<h3 class="topic">
+<a name="335tftdoabm88pdcjsrhh964sc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;高1位</a>
+</h3>
+<h3 class="topic">
+<a name="6e3coi6uqnka5lr33orkbm8tas">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果该位为1则该资源用名称标识，即该资源使用字符串标识</a>
+</h3>
+<h3 class="topic">
+<a name="0dubpjbatvhve0m986j795blj7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;为0则该资源使用数字标识</a>
+</h3>
+<h3 class="topic">
+<a name="17htcqmkr0tg7qqqj3nnrcjld3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在位段中，位段的最高位是结构体最后一个字段，因为主机是小端存储的</a>
+</h3>
+<h3 class="topic">
+<a name="2u4090gj9ebcfn2dc1jucmv52b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果该结构体最高位为1，即NameIsString为1，说明该资源通过字符串标识</a>
+</h3>
+<h3 class="topic">
+<a name="3sn39vegpc5jd2ioe90hp0jfqp">&nbsp;&nbsp;&nbsp;&nbsp;DWORD Name</a>
+</h3>
+<h3 class="topic">
+<a name="5ss036dpbb4brfel7q80vlflf1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在第三层时会使用到该字段，标识该资源使用哪种语言</a>
+</h3>
+<h3 class="topic">
+<a name="1jnp5gdls95b96p3ce9evphi8v">&nbsp;&nbsp;&nbsp;&nbsp;WORD Id</a>
+</h3>
+<h3 class="topic">
+<a name="1ds6ggv89mknfd81sivdmq0pga">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当NameString为0的时候，该字段发挥作用，表示资源的的数字标识</a>
+</h3>
+<h3 class="topic">
+<a name="4s5umk970emia7v8b2jv3rla96">&nbsp;&nbsp;&nbsp;&nbsp;标识资源序号</a>
+</h3>
+<p class="summary">(<a href="#1jnp5gdls95b96p3ce9evphi8v">WORD Id</a>)</p>
+<h3 class="topic">
+<a name="27dvv9nlmeedvqioroqhkbc7p6">&nbsp;&nbsp;&nbsp;&nbsp;在最后一层，标识资源所用的语言种类</a>
+</h3>
+<p class="summary">(<a href="#3sn39vegpc5jd2ioe90hp0jfqp">DWORD Name</a>)</p>
+<h3 class="topic">
+<a name="7s6gteorvt116inqcv24t8pb27">&nbsp;&nbsp;&nbsp;&nbsp;判断资源是否使用名称标识，如果是，指向一个结构体，该结构体中保存资源字符串的位置</a>
+</h3>
+<p class="summary">(<a href="#2k9vae53687d180stc19o85b4i">结构体&#13;
+DUMMSTRUCTNAME</a>)</p>
+<h3 class="topic">
+<a name="6rkh498oqel0853gj37u03ravg">&nbsp;&nbsp;&nbsp;联合体2&#13;
+DUMMYUNIONNAME2</a>
+</h3>
+<h3 class="topic">
+<a name="42ss6cpkbtqu5p3i07lk6b3v4j">&nbsp;&nbsp;&nbsp;&nbsp;四个字节大小</a>
+</h3>
+<h3 class="topic">
+<a name="20jv6mrhnj5q8uks66t4b28e39">&nbsp;&nbsp;&nbsp;&nbsp;数据的偏移地址&#13;
+DWORD OffsetToData</a>
+</h3>
+<h3 class="topic">
+<a name="7uj938vfpn64fs1njokpdspvi7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;是相对于资源区段首地址的偏移量</a>
+</h3>
+<h3 class="topic">
+<a name="418edpsbndnpo4c24d3cqjkgkn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用于第三层中，查找特定资源的详细信息</a>
+</h3>
+<h3 class="topic">
+<a name="0adgpgc7t52gvvfcgc0ca1fpbq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在第三层中，指向一个IMAGE_RESOURCE_DATA_ENTRY结构体</a>
+</h3>
+<h3 class="topic">
+<a name="5db5u1stbpk3ij5mj46unajumd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;资源二进制数据的偏移&#13;
+DWORD OffsetToData</a>
+</h3>
+<h3 class="topic">
+<a name="0rtqv9jvl9acjhr563m64kutgg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意这是一个相对虚拟地址rva，转换为foa后可以在文件中找到相应资源的二进制数据</a>
+</h3>
+<h3 class="topic">
+<a name="1ni41iv1n42gaackkaj8quae5a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;资源的大小&#13;
+DWORD Size</a>
+</h3>
+<h3 class="topic">
+<a name="25bfej3p50ls0rs0u8hdu9qbj5">&nbsp;&nbsp;&nbsp;&nbsp;结构体&#13;
+DUMMYSTRUCTNAME2</a>
+</h3>
+<h3 class="topic">
+<a name="6egicrnuevgrud2k9deesal4l7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;结构体低31位指向下一层&#13;
+DWORD OffsetToDirectory:31</a>
+</h3>
+<h3 class="topic">
+<a name="6nv49366jk0dibmuvu5osuerpu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;是相对于资源区段的首地址的偏移量</a>
+</h3>
+<h3 class="topic">
+<a name="3t7leh6mo0qrecnthv3pg46bp2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;结构体高1位用于判断当前层是否有下一层&#13;
+DWORD DataIsDirectory:1</a>
+</h3>
+<h3 class="topic">
+<a name="46os8mqt60ssij0jf4qmkngccg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;是相对于资源区段的首地址的偏移量</a>
+</h3>
+<h3 class="topic">
+<a name="11huelpu0hu2d4nn70afvqgcob">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该位段为1时，说明还有下一层，通过OffsetOfDirectory找到下一层的地址</a>
+</h3>
+<h3 class="topic">
+<a name="5c15mr90qohp7j6fslvqbc28bv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该位段为0时，说明当前层为最后一层，通过OffsetToData指向的结构体得到当前资源二进制数据偏移和资源的大小</a>
+</h3>
+<h3 class="topic">
+<a name="7gce7toevn34vshl4ao9u4qk5k">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果该结构体最高位为1，说明存在下一层</a>
+</h3>
+<h3 class="topic">
+<a name="1tp5ldc8q5q2k98o9f8hu3o20d">&nbsp;&nbsp;&nbsp;&nbsp;用于判断是否有下一层</a>
+</h3>
+<p class="summary">(<a href="#25bfej3p50ls0rs0u8hdu9qbj5">结构体&#13;
+DUMMYSTRUCTNAME2</a>)</p>
+<h3 class="topic">
+<a name="6hmvgtb9c5h2srtsvi4pde09qc">&nbsp;&nbsp;&nbsp;&nbsp;用于在最后一层中，指向一个结构体，该结构体中保存资源二进制数据的位置</a>
+</h3>
+<p class="summary">(<a href="#20jv6mrhnj5q8uks66t4b28e39">数据的偏移地址&#13;
+DWORD OffsetToData</a>)</p>
+<h3 class="topic">
+<a name="1263jmckst9h46a8a9iun2dkdd">&nbsp;&nbsp;&nbsp;经过三层目录的检索，会指向一个结构体，该结构体会给出资源的二进制数据的偏移地址</a>
+</h3>
+<h3 class="topic">
+<a name="7ggd4570tfu3btoibch3b0bjh6">&nbsp;&nbsp;&nbsp;注意 NameOffset   OffsetToDirectory  OffsetToData这三个偏移是相对于资源表最开始的位置，但是第三层中  IMAGE_RESOURCE_DATA_ENTRY结构体  中的的OffsetToData是一个相对虚拟地址</a>
+</h3>
+<h3 class="topic">
+<a name="25e2clc59cb4052td3qplq0mrp">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class49day0417_files/7a3u3d5nsbrt60pg7f6dtdo1u5.png"></p>
+<h3 class="topic">
+<a name="4nt85g0fvvmbthjucbtbcr0ad1">&nbsp;序号标识的资源是系统的已知资源，比如位图、光标等，系统不能识别的资源使用字符串标识</a>
+</h3>
+<h3 class="topic">
+<a name="6qde14u6cshdhldv2a84q585lf">&nbsp;代码解析资源表</a>
+</h3>
+<h3 class="topic">
+<a name="5jmo4admfto5euqq7j6dck3nud">&nbsp;&nbsp;获得资源表的地址</a>
+</h3>
+<h3 class="topic">
+<a name="2qhd2g9ke375cfn5r4knj51d48">&nbsp;&nbsp;得到第一层资源的种类</a>
+</h3>
+<h3 class="topic">
+<a name="48ou0qupan6erksfjm7oj2sh3o">&nbsp;&nbsp;循环所有资源种类</a>
+</h3>
+<h3 class="topic">
+<a name="132ovd9pioclcv1pou0nrj1dqq">&nbsp;&nbsp;&nbsp;第一层结构体的指针+1，得到第一种资源的指针</a>
+</h3>
+<h3 class="topic">
+<a name="5epo0srs7rocorq9k8qv6il475">&nbsp;&nbsp;&nbsp;判断资源命名方式</a>
+</h3>
+<h3 class="topic">
+<a name="02r3pus4q66vb3b5gusfu7unhq">&nbsp;&nbsp;&nbsp;&nbsp;如果nameisstring为1说明是字符串命名，否则是数字命名</a>
+</h3>
+<h3 class="topic">
+<a name="61h767kkq3ckdjun19q22sfrc0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果是字符串则nameoffset+(dword)资源区段地址得到名称结构体的指针</a>
+</h3>
+<h3 class="topic">
+<a name="7daelqp12mmmoa532m9as1d10q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该结构中有有字符串长度和WCHAR类型的字符串</a>
+</h3>
+<h3 class="topic">
+<a name="5f9mfnsa2g09voq7rit0nmqgmb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;为输出字符串，根据字符串长度申请空间，使用内存拷贝得到函数名的</a>
+</h3>
+<h3 class="topic">
+<a name="516l5u8qajoa2tctjdlmcohkee">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;打印资源种类和资源名称</a>
+</h3>
+<h3 class="topic">
+<a name="0f1n7gfvvnvedih7btnvro0dpi">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果是数字命名，则直接输出序号</a>
+</h3>
+<h3 class="topic">
+<a name="7rjnak1s6hk7ftbsr6fqbrli7s">&nbsp;&nbsp;&nbsp;&nbsp;判断是否有下一层，即判断第二季结构体体的最高为是否为1，如果为1，说明有下一层</a>
+</h3>
+<h3 class="topic">
+<a name="68dg3skp88a2a2sdk95v4vcmft">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果有下一层，则指向下一层的偏移+资源区段的首地址得到下一层地址</a>
+</h3>
+<h3 class="topic">
+<a name="0csk81v1kekrc9ni60bt61fkn5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;计算某种资源有多少个具体的资源</a>
+</h3>
+<h3 class="topic">
+<a name="1ung2mtpq72711ei8tfi0grcsa">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;根据具体资源个数开始循环</a>
+</h3>
+<h3 class="topic">
+<a name="6c9k9b16vicho8rqssaafi9kpg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;获得第二层中第一个资源结构体的首地址</a>
+</h3>
+<h3 class="topic">
+<a name="1sgir3vdd2l72jatcj7dme0483">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;判断资源是通过名称命名还是序号命名，输出相应的名称和序号</a>
+</h3>
+<h3 class="topic">
+<a name="7a0clg45eaahneloabhdhd4rat">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;判断有没有下一层</a>
+</h3>
+<h3 class="topic">
+<a name="62pdfdgcshidol61ll3q8nukh8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果有下一层，获得下一层的地址</a>
+</h3>
+<h3 class="topic">
+<a name="0nomnonng8up5cn4bm5tmurlqm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;第三层种，资源格个数为1，直接通过PINMAGE_RESOURCE_DIRECTORY_ENTRY 中的偏移字段找到描述具体在资源性质的结构体，输出该结构体种资源二进制数据，由于数据比较多，所以一般输出10个</a>
+</h3>
+<h3 class="topic">
+<a name="5uhhbvrqkhqet56414q417t1l3">&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="7f9rlqg88cpj04tr1spf2l29p7">&nbsp;&nbsp;&nbsp;void ShowResouceInfo(char* pBuf)&#13;
+{&#13;
+	//找到资源位置，数据目录表的第三项（下标2）&#13;
+	PIMAGE_DOS_HEADER pDos = (PIMAGE_DOS_HEADER)pBuf;&#13;
+	//NT头&#13;
+	PIMAGE_NT_HEADERS pNt =&#13;
+		(PIMAGE_NT_HEADERS)&#13;
+		(pDos-&gt;e_lfanew + pBuf);&#13;
+	PIMAGE_DATA_DIRECTORY pResDir = &amp;pNt-&gt;OptionalHeader.DataDirectory[2];&#13;
+&#13;
+	//计算资源表的文件偏移FOA&#13;
+	DWORD dwResFOA = RVAtoFOA(pResDir-&gt;VirtualAddress, pBuf);&#13;
+	//具体在文件中的位置&#13;
+	PIMAGE_RESOURCE_DIRECTORY pResRoot =&#13;
+		(PIMAGE_RESOURCE_DIRECTORY)&#13;
+		(dwResFOA + pBuf);&#13;
+&#13;
+	//第一层，资源的种类&#13;
+	DWORD dwCount1 = pResRoot-&gt;NumberOfIdEntries + &#13;
+		             pResRoot-&gt;NumberOfNamedEntries;&#13;
+&#13;
+	PIMAGE_RESOURCE_DIRECTORY_ENTRY pEntry1 =&#13;
+		(PIMAGE_RESOURCE_DIRECTORY_ENTRY)(pResRoot + 1);&#13;
+	for (int i1 = 0; i1 &lt; dwCount1;i1++)&#13;
+	{&#13;
+		//判断资源命名方式（pEntry1-&gt;NameIsString为1说明是字符串命名，否则是数字命名）&#13;
+		if (pEntry1-&gt;NameIsString)&#13;
+		{&#13;
+			PIMAGE_RESOURCE_DIR_STRING_U pName =&#13;
+				(PIMAGE_RESOURCE_DIR_STRING_U)&#13;
+				(pEntry1-&gt;NameOffset + (DWORD)pResRoot);&#13;
+			WCHAR* pNameBuf = new WCHAR[pName-&gt;Length + 1]{};&#13;
+			memcpy(pNameBuf, pName-&gt;NameString, pName-&gt;Length * 2);&#13;
+			printf("------资源种类：%S------\n", pNameBuf);&#13;
+			delete[] pNameBuf;&#13;
+		}&#13;
+		else&#13;
+		{&#13;
+			printf("-------资源种类：%d-------- \n", pEntry1-&gt;Id);&#13;
+		}&#13;
+		//判断是否有下一层(pEntry1-&gt;DataIsDirectory为1说明有下一层)&#13;
+		if (pEntry1-&gt;DataIsDirectory)&#13;
+		{&#13;
+			//第二层（某种资源的个数）&#13;
+			PIMAGE_RESOURCE_DIRECTORY pRes2 =&#13;
+				(PIMAGE_RESOURCE_DIRECTORY)&#13;
+				(pEntry1-&gt;OffsetToDirectory + (DWORD)pResRoot);&#13;
+			DWORD dwCount2 = pRes2-&gt;NumberOfIdEntries +&#13;
+				             pRes2-&gt;NumberOfNamedEntries;&#13;
+&#13;
+			PIMAGE_RESOURCE_DIRECTORY_ENTRY pEntry2 =&#13;
+				(PIMAGE_RESOURCE_DIRECTORY_ENTRY)(pRes2 + 1);&#13;
+			for (int i2 = 0; i2 &lt; dwCount2;i2++)&#13;
+			{&#13;
+				//某种资源的每一个资源的名字&#13;
+				//比如第一种资源叫PNG，那么这里遍历的就是&#13;
+				//PNG这种资源的每一个&#13;
+				//判断资源命名方式（pEntry1-&gt;NameIsString为1说明是字符串命名，否则是数字命名）&#13;
+				if (pEntry2-&gt;NameIsString)&#13;
+				{&#13;
+					PIMAGE_RESOURCE_DIR_STRING_U pName =&#13;
+						(PIMAGE_RESOURCE_DIR_STRING_U)&#13;
+						(pEntry2-&gt;NameOffset + (DWORD)pResRoot);&#13;
+					WCHAR* pNameBuf = new WCHAR[pName-&gt;Length + 1]{};&#13;
+					memcpy(pNameBuf, pName-&gt;NameString, pName-&gt;Length * 2);&#13;
+					printf("------第二层资源名：%S------", pNameBuf);&#13;
+					delete[] pNameBuf;&#13;
+				}&#13;
+				else&#13;
+				{&#13;
+					printf("-------第二层资源名：%d-------- ", pEntry2-&gt;Id);&#13;
+				}&#13;
+				//判断是否有下一层（第三层）&#13;
+				if (pEntry2-&gt;DataIsDirectory)&#13;
+				{&#13;
+					PIMAGE_RESOURCE_DIRECTORY pRes3 =&#13;
+						(PIMAGE_RESOURCE_DIRECTORY)&#13;
+						(pEntry2-&gt;OffsetToDirectory + (DWORD)pResRoot);&#13;
+					//第三层此值就是1&#13;
+					DWORD dwCount3 = pRes3-&gt;NumberOfIdEntries +&#13;
+						pRes3-&gt;NumberOfNamedEntries;&#13;
+&#13;
+					PIMAGE_RESOURCE_DIRECTORY_ENTRY pEntry3 =&#13;
+						(PIMAGE_RESOURCE_DIRECTORY_ENTRY)(pRes3 + 1);&#13;
+&#13;
+					PIMAGE_RESOURCE_DATA_ENTRY pData =&#13;
+						(PIMAGE_RESOURCE_DATA_ENTRY)&#13;
+						(pEntry3-&gt;OffsetToData + (DWORD)pResRoot);&#13;
+&#13;
+					char* pDataBuf = RVAtoFOA(pData-&gt;OffsetToData, pBuf) + pBuf;&#13;
+					//输出资源二进制数据&#13;
+// 					for (int i = 0; i &lt; pData-&gt;Size;i++)&#13;
+// 					{&#13;
+// 						printf("%02X ", pDataBuf[i]);&#13;
+// 					}&#13;
+					printf("\t");&#13;
+					for (int i = 0; i &lt; 10; i++)&#13;
+					{&#13;
+						printf("%02X ", (unsigned char)pDataBuf[i]);&#13;
+					}&#13;
+					printf("\n");&#13;
+				}&#13;
+				//某种类的下一个&#13;
+				pEntry2++;&#13;
+			}//第二层&#13;
+&#13;
+		}&#13;
+		//下一个种类&#13;
+		pEntry1++;&#13;
+	}//第一层&#13;
+}</a>
+</h3>
+<h2 class="topic">
+<a name="74b8k9466dp98n0k8si9obqpg5">重定位表</a>
+</h2>
+<h3 class="topic">
+<a name="3r46q1gafbvv7vtiv17v1ai4ti">&nbsp;当代码中使用绝对地址时，如果程序载入基址发生变化，则使用绝对地址的代码出也需要进行修改，此时需要修改的位置就保存在重定义表中</a>
+</h3>
+<h3 class="topic">
+<a name="6kt9ppt64g2sb0b37h2pu9ra9j">&nbsp;是数据目录表中的第六项，下标为5</a>
+</h3>
+<h3 class="topic">
+<a name="464k4j05hde80rj5hhq6u08p71">&nbsp;重定位表放置于重定位区段，且重定位表的起始地址与重定位区段的起始地址相同，可以认为重定位区段的一开始放置的就是重定位表</a>
+</h3>
+<h3 class="topic">
+<a name="7u742hiom38qeflmh6jrm2i47h">&nbsp;&nbsp;可以通过区段头表直接找到重定位区段的文件偏移，该处也是重定位表的开头</a>
+</h3>
+<h3 class="topic">
+<a name="1gjhogp6l8apj58v4s51sbgpv3">&nbsp;&nbsp;即重定位表的起始位置就是重定位区段的起始位置</a>
+</h3>
+<h3 class="topic">
+<a name="3afsefb330jsfjvslspssfn1ep">&nbsp;重定位块的结构</a>
+</h3>
+<h3 class="topic">
+<a name="0rtl7dlc2079sg82m3v757f4ef">&nbsp;&nbsp;结构体&#13;
+IMAGE_BASE_RELOCATION</a>
+</h3>
+<h3 class="topic">
+<a name="6s5uurdg9sg3uqrdrsn110r4e9">&nbsp;&nbsp;&nbsp;8个字节</a>
+</h3>
+<h3 class="topic">
+<a name="6s6vgv9odevbi8qcvfcen7b369">&nbsp;&nbsp;&nbsp;需要重定位数据的相对虚拟地址Rva&#13;
+DWORD VirtualAddress</a>
+</h3>
+<h3 class="topic">
+<a name="1659lvno6e7eg95s8t6ucr2nti">&nbsp;&nbsp;&nbsp;本结构体与TypeOffset数组的总大小&#13;
+DWORD SizeOfBlock</a>
+</h3>
+<h3 class="topic">
+<a name="2mlo85f09qmka6kcr2jamafsp9">&nbsp;&nbsp;&nbsp;&nbsp;其值减去8并除以2得到该内存页中(因为一个重定位块描述的一个内存页大小的内存空间的重定位情况)需要重定位修改的位置的个数</a>
+</h3>
+<h3 class="topic">
+<a name="5pirh6ji6hut27ctcne0du30cp">&nbsp;&nbsp;该结构体后面跟了一个数组&#13;
+WORD TypeOffset[1]</a>
+</h3>
+<h3 class="topic">
+<a name="1ckqnnbqp9p6d5579t0s7v0a2h">&nbsp;&nbsp;&nbsp;该数组的元素保存需要重定位的位置以及重定位的方式信息</a>
+</h3>
+<h3 class="topic">
+<a name="3757keir0pp05pfb7ioh5oheu5">&nbsp;&nbsp;&nbsp;该数组元素为一个WORD，前四位表示重定位的属性，后十二位表示重定位位置的偏移值</a>
+</h3>
+<h3 class="topic">
+<a name="6meacuban8pntnk1hrecv3ju9o">&nbsp;&nbsp;&nbsp;&nbsp;由于windows没有提供此结构体定义，所以解析时需要自己定义</a>
+</h3>
+<h3 class="topic">
+<a name="0do9f5g13sqffujkk6fev4lhgi">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;struct _TYPEOFFSET{&#13;
+	WORD offset:12//偏移值&#13;
+	WORD Type:4//重定位属性，32位计算机一般为3用于表示需要修改全部四个字节的内存地址&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="22npm17iin949k9906s901fdrg">&nbsp;&nbsp;&nbsp;数组中的结构体元素</a>
+</h3>
+<h3 class="topic">
+<a name="260aadrps0vggkvnidmqahck0j">&nbsp;&nbsp;&nbsp;&nbsp;需要重定位的地址（低十二位）</a>
+</h3>
+<h3 class="topic">
+<a name="4spji8b5laoc08koqdbdfdqvq5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意这里的offset是相对于自己重定位块本块的VirtualAddress，与资源表不一样，资源表中的偏移多对应资源区段的首地址</a>
+</h3>
+<h3 class="topic">
+<a name="3i7e91rltuvqfq926s5nktjvvj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;两者相加是需要修改位置的rva</a>
+</h3>
+<h3 class="topic">
+<a name="2j9cct7fkvmoem0osadlf81e8s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;重定位：该位置处的数据是相对于默认加载基址的偏移，需要修改为相对于实际加载基址的偏移</a>
+</h3>
+<h3 class="topic">
+<a name="2h9q47q4a0hhusbn9pu6j1e9lr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;即使用该处的值减去默认加载基址，加上实际基址</a>
+</h3>
+<h3 class="topic">
+<a name="3ohodesl5gsfvnk8qb1u1eep92">&nbsp;&nbsp;&nbsp;&nbsp;需要重定位的类型（高四位）</a>
+</h3>
+<h3 class="topic">
+<a name="72n02sp9s7t46avsaed8pseqnb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0</a>
+</h3>
+<h3 class="topic">
+<a name="3m2uc4s5l96d478t7noq09eafu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;不需要重定位</a>
+</h3>
+<h3 class="topic">
+<a name="3vtuidolph4mt28kkc872qqnpr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3</a>
+</h3>
+<h3 class="topic">
+<a name="7a8f5sa9svo6aqluge8u0srh6b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;修改四个字节大小的地址</a>
+</h3>
+<h3 class="topic">
+<a name="1kee1kle09qta555h0vv1vjbio">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;一般32位计算机中均为3</a>
+</h3>
+<h3 class="topic">
+<a name="0ovo739kjqvsjsmede1id9jf6e">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class49day0417_files/43bjpg8cmk0aqeoif3dn3fmubv.png"></p>
+<h3 class="topic">
+<a name="56d73vr0u8ssiur1qdu3is9j3v">&nbsp;重定位的结构体加上其后面的数组组成一个重定位块，一个块描述4kb空间中需要重定位的位置</a>
+</h3>
+<h3 class="topic">
+<a name="0nusl8f3441r729e457oqjhufj">&nbsp;&nbsp;所以重定位块的地址均是1000h的倍数（因为一个内存页的大小为4kb），如果一个内存页大小（4kb）的数据中没有需要重定位的数据，则针对该页内存不生成重定位块</a>
+</h3>
+<h3 class="topic">
+<a name="03ijo19ch01ag49l5k1ft272a8">&nbsp;&nbsp;本质上重定位表也是类似于一个结构体数组，数组每一个元都是重定位块，但是各个元素大小不一定是相同的</a>
+</h3>
+<h3 class="topic">
+<a name="1kfbs9g4lcjrg3tehmc77obkr9">&nbsp;&nbsp;&nbsp;由于重定位块大小不一，所以遍历的时候需要用到该重定位块的大小，以此寻址下一个重定位块</a>
+</h3>
+<h3 class="topic">
+<a name="6sv1esl0vipod6l49mqo187e7a">&nbsp;代码解析重定位表</a>
+</h3>
+<h3 class="topic">
+<a name="63vbqiga6gp1glecdjotqpk633">&nbsp;&nbsp;找到重定位表的位置</a>
+</h3>
+<h3 class="topic">
+<a name="2dmvf412vahreqqh89nhekhh60">&nbsp;&nbsp;遍历重定位表</a>
+</h3>
+<h3 class="topic">
+<a name="45obk9kfnvmtdl5sucskucn290">&nbsp;&nbsp;&nbsp;重定位表以一个全零的结构体结尾</a>
+</h3>
+<h3 class="topic">
+<a name="1uokdqf77ookn25820unp4at02">&nbsp;&nbsp;&nbsp;&nbsp;可以作为循环结束标志</a>
+</h3>
+<h3 class="topic">
+<a name="2nb2ij6p1r9umbukab86ncicdd">&nbsp;&nbsp;&nbsp;遍历每一块内的重定位项</a>
+</h3>
+<h3 class="topic">
+<a name="4qev8vdqd45gctkhr4captekhe">&nbsp;&nbsp;&nbsp;&nbsp;此时因为重定位项的数据结构没有定义，需要自己定义</a>
+</h3>
+<h3 class="topic">
+<a name="4jn7lpuauojsmnja1dne89uek5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意结构体中高位在，低位在上</a>
+</h3>
+<h3 class="topic">
+<a name="7jgdjthf3f2ehch3k8f432chna">&nbsp;&nbsp;&nbsp;&nbsp;获取本重定位块中重定位项的个数</a>
+</h3>
+<h3 class="topic">
+<a name="11l6u89s05tvhkudok09pov51s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;作为循环次数</a>
+</h3>
+<h3 class="topic">
+<a name="3lq3sv6di7bvl0kg4ghofb8rr4">&nbsp;&nbsp;&nbsp;&nbsp;循环中，需要判断当重定位类型为3的时候，才需要修正重定位项地址的四个字节</a>
+</h3>
+<h3 class="topic">
+<a name="5m9tbieafkc467bt78has60qtf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;得到需要重定位项的rva</a>
+</h3>
+<h3 class="topic">
+<a name="599i2jkj6bfpo9r98hbpaibfsv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将其转化为foa</a>
+</h3>
+<h3 class="topic">
+<a name="50sh6u43hn78a1li9lk2l70k96">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;得需要修改的重定位信息的地址</a>
+</h3>
+<h3 class="topic">
+<a name="675nj9aphlrs9nverss9v99jad">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果需要修复，可以将该地址-默认加载基址+新的加载基址</a>
+</h3>
+<h3 class="topic">
+<a name="3das0846sarmsaunogdqnh41i7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;也可以直接进行输出</a>
+</h3>
+<h3 class="topic">
+<a name="3jb66r4kqs5fk1bl7523e7d4n8">&nbsp;&nbsp;&nbsp;获取下一个重定位块可以通过本重定位块的地址，和重定位块的大小得到</a>
+</h3>
+<h3 class="topic">
+<a name="5mb8l998pnb4r2b6m6r3ovvfup">&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="7q51tbbai11ma05laug7reausb">&nbsp;&nbsp;&nbsp;void ShowRelocInfo(char* pBuf)&#13;
+{&#13;
+	//找到重定位表位置，数据目录表的第6项（下标5）&#13;
+	PIMAGE_DOS_HEADER pDos = (PIMAGE_DOS_HEADER)pBuf;&#13;
+	//NT头&#13;
+	PIMAGE_NT_HEADERS pNt =&#13;
+		(PIMAGE_NT_HEADERS)&#13;
+		(pDos-&gt;e_lfanew + pBuf);&#13;
+	PIMAGE_DATA_DIRECTORY pRelocDir = &amp;pNt-&gt;OptionalHeader.DataDirectory[5];&#13;
+&#13;
+	//计算重定位表的文件偏移FOA&#13;
+	DWORD dwRelocFOA = RVAtoFOA(pRelocDir-&gt;VirtualAddress, pBuf);&#13;
+	//重定位具体在文件中的位置&#13;
+	PIMAGE_BASE_RELOCATION pReloc =&#13;
+		(PIMAGE_BASE_RELOCATION)&#13;
+		(dwRelocFOA + pBuf);&#13;
+&#13;
+	struct TypeOffset &#13;
+	{&#13;
+		WORD offset : 12;&#13;
+		WORD type : 4;&#13;
+	};&#13;
+	//遍历重定位&#13;
+	int n = 1;&#13;
+	while (pReloc-&gt;SizeOfBlock)&#13;
+	{&#13;
+		//遍历每一块内的重定位项&#13;
+		TypeOffset* pOffset = (TypeOffset*)(pReloc + 1);&#13;
+		//重定位项的个数&#13;
+		DWORD dwCount = (pReloc-&gt;SizeOfBlock - sizeof(IMAGE_BASE_RELOCATION) )/ 2;&#13;
+		printf("第%d块，VirtualAddress:%08X ，SizeOfBlock：%d ",&#13;
+			n++, pReloc-&gt;VirtualAddress, pReloc-&gt;SizeOfBlock);&#13;
+		printf("重定位项个数：%d\n", dwCount);&#13;
+		for (int i = 0; i &lt; dwCount;i++)&#13;
+		{&#13;
+			//type==3,说明需要修正4个字节&#13;
+			if (pOffset-&gt;type == 3)&#13;
+			{&#13;
+				DWORD dwDataRVA = pReloc-&gt;VirtualAddress + &#13;
+					              pOffset-&gt;offset;&#13;
+&#13;
+				DWORD dwDataFOA = RVAtoFOA(dwDataRVA, pBuf);&#13;
+				PDWORD pData = (PDWORD)(dwDataFOA + pBuf);&#13;
+				//修复过程：*pData = *pData - ImageBase（默认加载基址） + newImageBase(新的加载基址)&#13;
+				printf("%08X ", *pData);&#13;
+			}&#13;
+			if (i == 5)&#13;
+			{//测试用的&#13;
+				break;&#13;
+			}&#13;
+			//下一个重定位项&#13;
+			pOffset++;&#13;
+		}&#13;
+		printf("\n");&#13;
+		//下一重定位块&#13;
+		pReloc = (PIMAGE_BASE_RELOCATION)&#13;
+			((DWORD)pReloc + pReloc-&gt;SizeOfBlock);&#13;
+	}&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="51rgstm9fovtaj97vg9tnh1hls">&nbsp;因为内存页按照4kb对齐，所以随机基址的位置一般是1000h的倍数</a>
+</h3>
+<h3 class="topic">
+<a name="4ob8jtg77t72vj4al4gq2o33r2">&nbsp;同一个重定位块中可能同时需要修改两个相同的内容，原因是该内存页中可能多次引用同一个使用va寻址的变量</a>
+</h3>
+<h3 class="topic">
+<a name="4hlhbivqq35tdagjm199knusqn">&nbsp;vs编译器右键-》高级-》可以打开或关闭随机基址</a>
+</h3>
+<h2 class="topic">
+<a name="0nc4gj8fegfeipuolirub7r88l">病毒如何感染pe文件</a>
+</h2>
+<h3 class="topic">
+<a name="7k6divja8md43o5pfj6jduvued">&nbsp;病毒会修改病毒程序的OEP，先执行病毒代码</a>
+</h3>
+<h3 class="topic">
+<a name="2khdbhr487lbqjp4gp803ogp4s">&nbsp;病毒会将恶意代码插入到pe文件中，在符合pe文件的结构的前提下，可以保证原pe文件可以正常执行</a>
+</h3>
+<h3 class="topic">
+<a name="4551mdkg96tvsqbm2evi598roq">&nbsp;病毒插入pe文件有两种方法</a>
+</h3>
+<h3 class="topic">
+<a name="160qj8ra4k2no41q5se7glnqlp">&nbsp;&nbsp;在pe文件中新建区段</a>
+</h3>
+<h3 class="topic">
+<a name="6dfg2en0ng80tmu8hq06adjggm">&nbsp;&nbsp;使用pe文件中已有的区段中插入恶意代码</a>
+</h3>
+<h3 class="topic">
+<a name="1o63n6gbpunm4tvehgq7ehf61m">&nbsp;杀毒原理（核心原理：对比）</a>
+</h3>
+<h3 class="topic">
+<a name="66ha7cra4dll1mgqtq2avuj24d">&nbsp;&nbsp;启发式</a>
+</h3>
+<h3 class="topic">
+<a name="71od23tpnh1lkaf8faks1kmb6d">&nbsp;&nbsp;&nbsp;通过对重点api的监控（hook）判断程序是否可能为病毒</a>
+</h3>
+<h3 class="topic">
+<a name="15t42b5n33f0nc91j6t2uni4tl">&nbsp;&nbsp;防御式</a>
+</h3>
+<h3 class="topic">
+<a name="6fh1uutrpstj7gkcc2ti6a78vk">&nbsp;&nbsp;&nbsp;通过特征码对比</a>
+</h3>
+</body>
+</html>

@@ -1,0 +1,1154 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>class78day0628（协议分析第一天）</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="6n9904nkbphtruib7jvf5ocnkm">class78day0628（协议分析第一天）</a>
+</h1>
+<h2 class="topic">
+<a name="2gvv90vsg6n2qt093t4j4lbt9n">网络基础知识</a>
+</h2>
+<h3 class="topic">
+<a name="260l6a9ulsl6tvkcfv816ovgko">&nbsp;本质：一台计算机上的进程与远程计算机上的进程进行数据传递</a>
+</h3>
+<h3 class="topic">
+<a name="4ar82hih9u7v1ej4ifr8svb0og">&nbsp;依靠路由器中转数据包</a>
+</h3>
+<h3 class="topic">
+<a name="6vh0qeugtgr5edm9cdtfdm1inu">&nbsp;osi七层模型是各种计算机互联的标准框架</a>
+</h3>
+<h3 class="topic">
+<a name="63n3vi2sgbsdve9uge575abd4l">&nbsp;tcp/ip模型是一组用于实现网络互连的通讯协议，一定程度上符合osi七层模型，是当前internet网络体系的核心</a>
+</h3>
+<h2 class="topic">
+<a name="74sotknnv221vff12ng7rdsv9s">网络模型</a>
+</h2>
+<h3 class="topic">
+<a name="7l991flpdqh842oeuenqjbvqnh">&nbsp;tcp/ip模型</a>
+</h3>
+<h3 class="topic">
+<a name="59rje6k4hvvk0d2dlcl04v922l">&nbsp;&nbsp;应用层</a>
+</h3>
+<h3 class="topic">
+<a name="0evh51ps9g3vhgvd7b1nkiovgv">&nbsp;&nbsp;&nbsp;进程产生一些数据，该层主要负责处理网络与具体应用有关的细节问题</a>
+</h3>
+<h3 class="topic">
+<a name="7mhfb4a81q6nm24g6s8n8qp2kn">&nbsp;&nbsp;&nbsp;相关协议</a>
+</h3>
+<h3 class="topic">
+<a name="72lsu4felj4fudjjj5j07h0s95">&nbsp;&nbsp;&nbsp;&nbsp;http</a>
+</h3>
+<h3 class="topic">
+<a name="1nglkm93fp1gc48c3ejdr0n9ka">&nbsp;&nbsp;&nbsp;&nbsp;ftp</a>
+</h3>
+<h3 class="topic">
+<a name="6ag7icb0can3oc94262lajpgqd">&nbsp;&nbsp;&nbsp;&nbsp;pop3</a>
+</h3>
+<h3 class="topic">
+<a name="5n5bkcaust7agq4522j3qp18f9">&nbsp;&nbsp;&nbsp;&nbsp;telnet</a>
+</h3>
+<h3 class="topic">
+<a name="3gnfi0tnps45mk69qjr2srir5i">&nbsp;&nbsp;&nbsp;&nbsp;dns</a>
+</h3>
+<h3 class="topic">
+<a name="0olaei2lgmb4qpi2eige00g6jh">&nbsp;&nbsp;&nbsp;&nbsp;hcp</a>
+</h3>
+<h3 class="topic">
+<a name="3chotvheb6ace9i8a6jvvt8h4g">&nbsp;&nbsp;&nbsp;&nbsp;........</a>
+</h3>
+<h3 class="topic">
+<a name="3ufhpgme5ioafgep9qj0cufl2b">&nbsp;&nbsp;传输层</a>
+</h3>
+<h3 class="topic">
+<a name="4t5galqk5ifabm7q94ekqtvj23">&nbsp;&nbsp;&nbsp;作用</a>
+</h3>
+<h3 class="topic">
+<a name="661it9jqnsbsjr979af5ohrc99">&nbsp;&nbsp;&nbsp;&nbsp;主机或代理服务器规划如何传输数据，保证传输正确</a>
+</h3>
+<h3 class="topic">
+<a name="73s6jpgj3jbigsh4sr5rb27ndb">&nbsp;&nbsp;&nbsp;类比</a>
+</h3>
+<h3 class="topic">
+<a name="5an7evs4ph0slsukurjg51onhe">&nbsp;&nbsp;&nbsp;&nbsp;为数据加上&ldquo;地址&rdquo;、&ldquo;门牌号&rdquo;、&ldquo;邮编&rdquo;</a>
+</h3>
+<h3 class="topic">
+<a name="0nuitfdlr9vgaai4lk9oqrntpe">&nbsp;&nbsp;&nbsp;具体操作</a>
+</h3>
+<h3 class="topic">
+<a name="27tu5sb7tkve7kj5m72paq4kk2">&nbsp;&nbsp;&nbsp;&nbsp;给数据包加上tcp头</a>
+</h3>
+<h3 class="topic">
+<a name="5mlguhea2dsel8h7gj0i3ufitp">&nbsp;&nbsp;&nbsp;相关协议</a>
+</h3>
+<h3 class="topic">
+<a name="3iokagdb688b26vhogfdd0jd2s">&nbsp;&nbsp;&nbsp;&nbsp;tcp</a>
+</h3>
+<h3 class="topic">
+<a name="6klaaqno6h9dogsol37hes65vg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;传输控制协议</a>
+</h3>
+<h3 class="topic">
+<a name="4j8rnrnd2tfrfsd9gorf369l9f">&nbsp;&nbsp;&nbsp;&nbsp;udp</a>
+</h3>
+<h3 class="topic">
+<a name="0cum563gp6rbrko5qg05i1031i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用户数据报协议</a>
+</h3>
+<h3 class="topic">
+<a name="2q94hmbapagejv8bp8ik4m8j66">&nbsp;&nbsp;网络层</a>
+</h3>
+<h3 class="topic">
+<a name="27sahlkhmlv16jd42qqm76eoae">&nbsp;&nbsp;&nbsp;作用</a>
+</h3>
+<h3 class="topic">
+<a name="2qlql62m2b4nldbbq98nipv51q">&nbsp;&nbsp;&nbsp;&nbsp;网络中各个结点路由转发数据包</a>
+</h3>
+<h3 class="topic">
+<a name="0k7c6urinrr6rb0ugfdajbrr2v">&nbsp;&nbsp;&nbsp;具体操作</a>
+</h3>
+<h3 class="topic">
+<a name="5781l9us2gmr62npaec6hmrf47">&nbsp;&nbsp;&nbsp;&nbsp;给数据包加上ip头</a>
+</h3>
+<h3 class="topic">
+<a name="4gm7m5nauqtmvtkdeknhmpcon3">&nbsp;&nbsp;&nbsp;相关协议</a>
+</h3>
+<h3 class="topic">
+<a name="6k7lm93cdbuohhmkn0eklhtink">&nbsp;&nbsp;&nbsp;&nbsp;ip</a>
+</h3>
+<h3 class="topic">
+<a name="2g48r1lvqarc590o7uemus34gt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;因特网协议</a>
+</h3>
+<h3 class="topic">
+<a name="1ga0k1193grjseijvjn5s94k65">&nbsp;&nbsp;&nbsp;&nbsp;arp</a>
+</h3>
+<h3 class="topic">
+<a name="5d3u13umpg5idcb74a848phssk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;地址解析协议</a>
+</h3>
+<h3 class="topic">
+<a name="5huur8o4aj5pkjqv3ln7srl62i">&nbsp;&nbsp;&nbsp;&nbsp;rarp</a>
+</h3>
+<h3 class="topic">
+<a name="6et2pp7cfi8lqcgfse5jbvgebi">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;反向地址解析协议</a>
+</h3>
+<h3 class="topic">
+<a name="0s27jr07317qrmc2o83gh1asuh">&nbsp;&nbsp;&nbsp;&nbsp;icmp</a>
+</h3>
+<h3 class="topic">
+<a name="6vghq8ithciagvqju93j33frph">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;因特网控制消息协议</a>
+</h3>
+<h3 class="topic">
+<a name="458mh97hoi58co76qtukl1ui87">&nbsp;&nbsp;数据链路层</a>
+</h3>
+<h3 class="topic">
+<a name="3etd96fqfke3r5emsjrni2p0sl">&nbsp;&nbsp;&nbsp;作用</a>
+</h3>
+<h3 class="topic">
+<a name="00nmcv0msnm4hrs4kmo4b3nctr">&nbsp;&nbsp;&nbsp;&nbsp;物理媒介将数字信号转换成模拟信号</a>
+</h3>
+<h3 class="topic">
+<a name="4oska5ll5v71vs6g5s6o8vafbh">&nbsp;&nbsp;&nbsp;&nbsp;负责网络层和数据层之间的数据交换</a>
+</h3>
+<h3 class="topic">
+<a name="0n06a8141nq14apsgf6vl1r8c3">&nbsp;&nbsp;&nbsp;具体操作</a>
+</h3>
+<h3 class="topic">
+<a name="36dtudbm3fi8uqus4njv6e1s9d">&nbsp;&nbsp;&nbsp;&nbsp;以太网头中包含目的地址</a>
+</h3>
+<h3 class="topic">
+<a name="750hohsq2slsgo6f86o836617j">&nbsp;&nbsp;&nbsp;&nbsp;给数据包加上以太网头</a>
+</h3>
+<h3 class="topic">
+<a name="2kblt2r8073nq2ctham7ncakgr">&nbsp;osi七层模型</a>
+</h3>
+<h3 class="topic">
+<a name="4o4pk0jeohi4da5rprenkmal5c">&nbsp;&nbsp;应用层</a>
+</h3>
+<h3 class="topic">
+<a name="065cnkog89nnehsjgjasn32skc">&nbsp;&nbsp;&nbsp;直接面向用户</a>
+</h3>
+<h3 class="topic">
+<a name="68oni0i57tobja26mqlr6pnum8">&nbsp;&nbsp;&nbsp;这一层用的协议很多</a>
+</h3>
+<h3 class="topic">
+<a name="0n2981mfd9mod2ga0qp4q8hdv0">&nbsp;&nbsp;&nbsp;&nbsp;http</a>
+</h3>
+<h3 class="topic">
+<a name="52sqar8oqcoh06hr69v207qror">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;超文本传输协议</a>
+</h3>
+<h3 class="topic">
+<a name="6aqp8klqdsudi4ruogija2d39h">&nbsp;&nbsp;&nbsp;&nbsp;ftp</a>
+</h3>
+<h3 class="topic">
+<a name="2tq1uh3e95bpqe9vo5cp1f8u7g">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;文件传输协议</a>
+</h3>
+<h3 class="topic">
+<a name="1f2ujhtdfsgc7kaud5ig2aod71">&nbsp;&nbsp;&nbsp;&nbsp;dns</a>
+</h3>
+<h3 class="topic">
+<a name="68sqa5h3lsc574hjfp1sb37vis">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;域名解析协议</a>
+</h3>
+<h3 class="topic">
+<a name="0ubk1hmau59o40u4klqgj00kmq">&nbsp;&nbsp;&nbsp;&nbsp;smtp</a>
+</h3>
+<h3 class="topic">
+<a name="11f5hdvkvtjbdm9alsjedlabkm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;简单邮件协议</a>
+</h3>
+<h3 class="topic">
+<a name="2a22up92thbviujm8csc3sssd9">&nbsp;&nbsp;&nbsp;&nbsp;telnet</a>
+</h3>
+<h3 class="topic">
+<a name="0cdof99imtinnbc8pmvnc9in4o">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;远程登陆协议</a>
+</h3>
+<h3 class="topic">
+<a name="6qdobgjjba58lgchhmve5p6rr6">&nbsp;&nbsp;&nbsp;&nbsp;pop3</a>
+</h3>
+<h3 class="topic">
+<a name="7bp30s7icks06tlsspd2gv82gg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;邮局协议</a>
+</h3>
+<h3 class="topic">
+<a name="1nvfdbvpn2hm8nt046t24ph69c">&nbsp;&nbsp;表示层</a>
+</h3>
+<h3 class="topic">
+<a name="17eej98ik0n6bod1oqfbqevomo">&nbsp;&nbsp;&nbsp;将数据转换为应用程序可以读取的格式</a>
+</h3>
+<h3 class="topic">
+<a name="0rkhni9cnt78se12qpsgtefk97">&nbsp;&nbsp;&nbsp;同时进程数据的加密与解密</a>
+</h3>
+<h3 class="topic">
+<a name="64m162o7g2kiap8glqkno8fmue">&nbsp;&nbsp;会话层</a>
+</h3>
+<h3 class="topic">
+<a name="7bjc9ke7dlkbgu078vl2n0vgt4">&nbsp;&nbsp;&nbsp;负责在通讯设备之间建立、管理、终止会话链接</a>
+</h3>
+<h3 class="topic">
+<a name="425jji2j6jb3m6p888ssro57ik">&nbsp;&nbsp;&nbsp;全双工</a>
+</h3>
+<h3 class="topic">
+<a name="7lfqis26o7e7ec2h8spferj3ud">&nbsp;&nbsp;&nbsp;&nbsp;能够同时接受与发送消息</a>
+</h3>
+<h3 class="topic">
+<a name="65queirls95apfp7jha0hpkkt8">&nbsp;&nbsp;&nbsp;半双工</a>
+</h3>
+<h3 class="topic">
+<a name="2ohcs3poqghvabtenugmhkhfvp">&nbsp;&nbsp;&nbsp;&nbsp;在某个时间段内，只能发送消息或只能接受消息</a>
+</h3>
+<h3 class="topic">
+<a name="0a1uatqiabh7o6dqcnpgp90nc8">&nbsp;&nbsp;传输层</a>
+</h3>
+<h3 class="topic">
+<a name="47gv7v6sbjpuco4pk6m90t5n49">&nbsp;&nbsp;&nbsp;数据包的分割重组排序重传链接</a>
+</h3>
+<h3 class="topic">
+<a name="0c60g3dp326587tg47cm78srav">&nbsp;&nbsp;&nbsp;&nbsp;用于保证数据准确传输到网络另一端</a>
+</h3>
+<h3 class="topic">
+<a name="2rd3g02btptceo557sa232k87t">&nbsp;&nbsp;&nbsp;tcp协议</a>
+</h3>
+<h3 class="topic">
+<a name="4n5trdgj2mcspuk8sd9ued6aqg">&nbsp;&nbsp;&nbsp;&nbsp;udp协议</a>
+</h3>
+<h3 class="topic">
+<a name="6av0evs0g84v7atfv5i7dahj2t">&nbsp;&nbsp;&nbsp;传输层通过端口号来标识，数据到底传输给哪个进程</a>
+</h3>
+<h3 class="topic">
+<a name="6sq68br6nd70n5j77qr5icalf8">&nbsp;&nbsp;&nbsp;端口</a>
+</h3>
+<h3 class="topic">
+<a name="5sl74md6l4dgrldt72pfrn46jg">&nbsp;&nbsp;&nbsp;&nbsp;0-65535</a>
+</h3>
+<h3 class="topic">
+<a name="2203s6d7s7om1amdu0f2sn6lg6">&nbsp;&nbsp;&nbsp;查看端口情况</a>
+</h3>
+<h3 class="topic">
+<a name="6eg3j9f09gp4u89p03i02d9gb6">&nbsp;&nbsp;&nbsp;&nbsp;netstat -noa</a>
+</h3>
+<h3 class="topic">
+<a name="2n5ltslm676l9mluhfcu8avsjn">&nbsp;&nbsp;&nbsp;0~1023</a>
+</h3>
+<h3 class="topic">
+<a name="63kqj3pga89smb9r2es78q8cto">&nbsp;&nbsp;&nbsp;&nbsp;与某些服务相关</a>
+</h3>
+<h3 class="topic">
+<a name="7ujvs7ugslj4v1qti2dqhid8ic">&nbsp;&nbsp;&nbsp;1024~49151</a>
+</h3>
+<h3 class="topic">
+<a name="4cjt14547ojv2qpp9gsub7oegh">&nbsp;&nbsp;&nbsp;&nbsp;供应用程序使用，有关win socket应用程序开发会经常使用到</a>
+</h3>
+<h3 class="topic">
+<a name="19bb6bialghh33o5v3eh07m5k9">&nbsp;&nbsp;&nbsp;49152~65535</a>
+</h3>
+<h3 class="topic">
+<a name="5jr57emq4i99u7eiq049ufvk3r">&nbsp;&nbsp;&nbsp;&nbsp;动态或私有端口</a>
+</h3>
+<h3 class="topic">
+<a name="3o4q7r9olsqp03ri6jt2eplgqt">&nbsp;&nbsp;网络层</a>
+</h3>
+<h3 class="topic">
+<a name="1ivlsf5alkd90lf03arg8rp6ap">&nbsp;&nbsp;&nbsp;路由器</a>
+</h3>
+<h3 class="topic">
+<a name="0nleru1nbv82jft5ibneqss4k8">&nbsp;&nbsp;&nbsp;tpc/ip模型中最重要的一层</a>
+</h3>
+<h3 class="topic">
+<a name="08sk7qkjva344l15156vf4d6u9">&nbsp;&nbsp;&nbsp;将ip头封装到数据包中</a>
+</h3>
+<h3 class="topic">
+<a name="1p3ei8prs0afejo0f2vd9rteu0">&nbsp;&nbsp;&nbsp;ip协议</a>
+</h3>
+<h3 class="topic">
+<a name="03ak58u1t34emnjmdi9spr28th">&nbsp;&nbsp;数据链路层</a>
+</h3>
+<h3 class="topic">
+<a name="7oen1vfgf3s8irla1gmcaqba5u">&nbsp;&nbsp;&nbsp;交换机</a>
+</h3>
+<h3 class="topic">
+<a name="1n80sqlr3vnbhhvhp0s5ohtri1">&nbsp;&nbsp;&nbsp;&nbsp;最重要的是MAC地址</a>
+</h3>
+<h3 class="topic">
+<a name="02l3kgg07cjk7usq7ul8ughjb4">&nbsp;&nbsp;&nbsp;&nbsp;win10可以通过软件自动更换mac地址</a>
+</h3>
+<h3 class="topic">
+<a name="4d9itjentu82uo4teor7dn3lvg">&nbsp;&nbsp;&nbsp;在两个网络实体之间提供数据链路封装链接</a>
+</h3>
+<h3 class="topic">
+<a name="0o5bg2pnbp19586me1pkpcffs8">&nbsp;&nbsp;&nbsp;arp协议</a>
+</h3>
+<h3 class="topic">
+<a name="1vr5kdf0ns3l75ei1ds0cuee18">&nbsp;&nbsp;物理层</a>
+</h3>
+<h3 class="topic">
+<a name="4gtvtk33kmka2tf83e2bubmlgv">&nbsp;&nbsp;&nbsp;传输网络数据的物理媒介</a>
+</h3>
+<h3 class="topic">
+<a name="2ual557f0dr4v4aqa7p2sjlj8k">&nbsp;&nbsp;&nbsp;集线器、网络适配器、中继器、电压</a>
+</h3>
+<h3 class="topic">
+<a name="6kkg90tiogcugns5k2sb5unpan">&nbsp;&nbsp;&nbsp;将数组信号转为模拟限号</a>
+</h3>
+<h3 class="topic">
+<a name="1jsbmi6hiscst5s15meskbtfmr">&nbsp;&nbsp;应表会传网数物</a>
+</h3>
+<h3 class="topic">
+<a name="2cso9baeevsug6m4njjmkm5olt">&nbsp;&nbsp;Please Do Not Throw Sausage Pizza Away</a>
+</h3>
+<h3 class="topic">
+<a name="078aikro9ms8jn9s81atr22o39">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class78day0628_files/4g6tkduigla7fmqp56mhdfjtl6.png"></p>
+<h3 class="topic">
+<a name="6bga4vguu35mhh59ohjcomiecu">&nbsp;osi七层模型不一定一定要遵守，应用层面可以使用tcp/ip协议模型</a>
+</h3>
+<h2 class="topic">
+<a name="281bmvsqroks3vkv2au9l5uh57">数据包分析</a>
+</h2>
+<h3 class="topic">
+<a name="7unco3t2002vttnv0d0obs8g34">&nbsp;即数据嗅探和协议分析、捕获和解析网络上的数据传输过程</a>
+</h3>
+<h3 class="topic">
+<a name="113smbnj3es339de9mgonea0ao">&nbsp;作用</a>
+</h3>
+<h3 class="topic">
+<a name="7k6i9r0f03shbpk43dblrp094i">&nbsp;&nbsp;网络特征</a>
+</h3>
+<h3 class="topic">
+<a name="7euev8fub44msq1emqdtc8lck8">&nbsp;&nbsp;查看网络通讯主体</a>
+</h3>
+<h3 class="topic">
+<a name="0927uuvqu6pam6ujh0eu4423f8">&nbsp;&nbsp;.........</a>
+</h3>
+<h3 class="topic">
+<a name="1lkg5ecc9s6em42p730h84th2t">&nbsp;常用的数据包嗅探器</a>
+</h3>
+<h3 class="topic">
+<a name="13rrsccqcr4jjbes9ne5ol3i5d">&nbsp;&nbsp;Wireshark</a>
+</h3>
+<h3 class="topic">
+<a name="2vot33qbmirn90ps93qd25rci6">&nbsp;&nbsp;科来</a>
+</h3>
+<h3 class="topic">
+<a name="54bjnr1obcvi68qho96chkrdj8">&nbsp;&nbsp;以上两个工作必会</a>
+</h3>
+<h3 class="topic">
+<a name="3bjh6dvb2mphbkg7u9rg3qum1b">&nbsp;数据包嗅探器功能</a>
+</h3>
+<h3 class="topic">
+<a name="64b6il9h0lgnvg6a5eshp26pu4">&nbsp;&nbsp;收集功能</a>
+</h3>
+<h3 class="topic">
+<a name="39t12ehr87d3n70sqqi67lef71">&nbsp;&nbsp;&nbsp;收集原始二进制数据</a>
+</h3>
+<h3 class="topic">
+<a name="0gupca4gr3su79ro62rmbvqhk8">&nbsp;&nbsp;转换功能</a>
+</h3>
+<h3 class="topic">
+<a name="777f8p9l993hpdarles2mafnb7">&nbsp;&nbsp;&nbsp;将二进制数据转换为可读形式</a>
+</h3>
+<h3 class="topic">
+<a name="014n1ridnv6m3r2ilhpdqmenam">&nbsp;&nbsp;分析统计功能</a>
+</h3>
+<h2 class="topic">
+<a name="3cepcdgfbou6a01gitml2c6obk">wireshark</a>
+</h2>
+<h3 class="topic">
+<a name="6jh7gupfi4rl8dr6egdiri4kpa">&nbsp;优点</a>
+</h3>
+<h3 class="topic">
+<a name="39ft09rs7g6rc40nogck1fj9gt">&nbsp;&nbsp;支持的协议超过1000种</a>
+</h3>
+<h3 class="topic">
+<a name="7uph4nt7ire6jd58chjgud04pt">&nbsp;&nbsp;界面友好</a>
+</h3>
+<h3 class="topic">
+<a name="5qfmfsu3aav8eg467qj52tnne7">&nbsp;&nbsp;免费开源</a>
+</h3>
+<h3 class="topic">
+<a name="0h8niuadfo5jssoml85r6tqqe3">&nbsp;功能</a>
+</h3>
+<h3 class="topic">
+<a name="6o52r5i77gpg3e0b8p23u02ead">&nbsp;&nbsp;收集功能</a>
+</h3>
+<h3 class="topic">
+<a name="40hcjs7nv4nre4e0sj24blq934">&nbsp;&nbsp;&nbsp;收集原始二进制数据</a>
+</h3>
+<h3 class="topic">
+<a name="7f6n5pk505p1dn70qnn2bhenok">&nbsp;&nbsp;转换功能</a>
+</h3>
+<h3 class="topic">
+<a name="35q509rjgfhukk48mv5egscrah">&nbsp;&nbsp;&nbsp;将二进制数据转换为可读形式</a>
+</h3>
+<h3 class="topic">
+<a name="6s36h6cvhcprjh0fn78tbp3tg5">&nbsp;&nbsp;分析统计功能</a>
+</h3>
+<h3 class="topic">
+<a name="5mp09vhn2vuul363qnc4drnegg">&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class78day0628_files/3932nnm550vcevkid9m38llhas.png"></p>
+<h3 class="topic">
+<a name="45cqv04iiggk9b0scofp2hi4u8">&nbsp;捕获</a>
+</h3>
+<h3 class="topic">
+<a name="37ea20nf703fjj0rk3gf79sj1u">&nbsp;&nbsp;捕获过滤器</a>
+</h3>
+<h3 class="topic">
+<a name="2fclo7am6aaom06m2oq9ci0261">&nbsp;显示</a>
+</h3>
+<h3 class="topic">
+<a name="1rg1r488a4gh1rpbnjc5nek81h">&nbsp;&nbsp;显示过滤器</a>
+</h3>
+<h3 class="topic">
+<a name="5a61ai8g8bi03i4aol3o2of2fa">&nbsp;统计</a>
+</h3>
+<h3 class="topic">
+<a name="0fhn2lcbcueitrvn5lt3ubile4">&nbsp;&nbsp;端点和对话</a>
+</h3>
+<h3 class="topic">
+<a name="1cfa5av5h14cfnh4k43lsp6dee">&nbsp;&nbsp;&nbsp;端点</a>
+</h3>
+<h3 class="topic">
+<a name="3m5eecoje9qeeq5p06m69a5efd">&nbsp;&nbsp;&nbsp;&nbsp;可以查看发生大量数据交换的ip</a>
+</h3>
+<h3 class="topic">
+<a name="7222iu24ek50duvehc73psbas7">&nbsp;&nbsp;&nbsp;&nbsp;流量分布</a>
+</h3>
+<h3 class="topic">
+<a name="38og2nfcudd23godpqdlu6k6n5">&nbsp;&nbsp;&nbsp;&nbsp;哪里流量比较大</a>
+</h3>
+<h3 class="topic">
+<a name="47oj383bll8eg3c292422hjs23">&nbsp;&nbsp;&nbsp;对话</a>
+</h3>
+<h3 class="topic">
+<a name="3ggjs2lg0l5mvsg0qc7hdggvmc">&nbsp;&nbsp;&nbsp;&nbsp;显示数据包相关信息</a>
+</h3>
+<h3 class="topic">
+<a name="4457aqoc933fpu4lhmkj8ra620">&nbsp;&nbsp;&nbsp;&nbsp;显示较大的数据包以及通讯的双方</a>
+</h3>
+<h3 class="topic">
+<a name="4gtgk09g42a3mmqa509seuanf8">&nbsp;&nbsp;&nbsp;&nbsp;显示通讯双方的数据流量差值</a>
+</h3>
+<h3 class="topic">
+<a name="1n688b8tqje4t08c7ama1e816g">&nbsp;协议分级</a>
+</h3>
+<h3 class="topic">
+<a name="2p3qrfpr3bdb1pn30lcj9hl81o">&nbsp;&nbsp;分析网络通讯过程中，各种协议的流量的占比情况</a>
+</h3>
+<h3 class="topic">
+<a name="3d6p1kvr37koh14frt15eeh2jg">&nbsp;&nbsp;找到哪个协议占通讯总量的比重较大</a>
+</h3>
+<h3 class="topic">
+<a name="6cb05esvqv381a8uvf6ni9vvrv">&nbsp;当某个数据包解析失败，需要重新修改协议</a>
+</h3>
+<h3 class="topic">
+<a name="1uoqmfgaooqpeiggsa92h938h7">&nbsp;&nbsp;在一个数据包中，右键-》解码为</a>
+</h3>
+<h3 class="topic">
+<a name="4qfmsvnik8oa12bsqn7st8anj4">&nbsp;流追踪</a>
+</h3>
+<h3 class="topic">
+<a name="2vg6m0mg0ajffl242el9dmajfs">&nbsp;&nbsp;将某一次对话中的不同的数据重组成统一易读的格式（一个会话）</a>
+</h3>
+<h3 class="topic">
+<a name="4fn42dhorc2aqgiu6uds52jshe">&nbsp;&nbsp;&nbsp;有四种</a>
+</h3>
+<h3 class="topic">
+<a name="5ijqs18ot30en35h9asiqefavg">&nbsp;&nbsp;&nbsp;&nbsp;tcp流</a>
+</h3>
+<h3 class="topic">
+<a name="2877ahc462j7lpfrcu15ou7m9j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;：重组使用TCP协议的数据，比如HTTP和FTP </a>
+</h3>
+<h3 class="topic">
+<a name="5hbivspprotmgkh76237apum90">&nbsp;&nbsp;&nbsp;&nbsp;http流</a>
+</h3>
+<h3 class="topic">
+<a name="6i5kphgc58em75sohbq6emsaug">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;从HTTP协议中重组和解压数据，当使用TCP流跟踪但又没有完全识别 出HTTP数据的时候</a>
+</h3>
+<h3 class="topic">
+<a name="4km9koudcs77acg662o9hj5m8l">&nbsp;&nbsp;&nbsp;&nbsp;udp流</a>
+</h3>
+<h3 class="topic">
+<a name="15p5khtehu5nfnho4nh3eqr1qm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;：重组使用UDP协议的数据，比如DNS </a>
+</h3>
+<h3 class="topic">
+<a name="5m63ipfnbkg10q51ns3ue4c0mq">&nbsp;&nbsp;&nbsp;&nbsp;tls流</a>
+</h3>
+<h3 class="topic">
+<a name="6su0fdhg3rsfun9alad8jc1ab2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;需要有密钥</a>
+</h3>
+<h3 class="topic">
+<a name="3m1qursci1bc4fsfsrujr4r307">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class78day0628_files/31eiu2n7di1eogqmq5gnin1f6e.png"></p>
+<h3 class="topic">
+<a name="4917ej1peqj9br2qelnob1kbrd">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class78day0628_files/21ct3qk3tni32ggqolh3p1megv.png"></p>
+<h3 class="topic">
+<a name="2pfmufoni3u1kig8mmdt4qrdn4">&nbsp;分组长度</a>
+</h3>
+<h3 class="topic">
+<a name="4iecirot9r7qhbioqf3treo2v3">&nbsp;&nbsp;一个以太网帧最大长度为1518字节 除去以太网 ip tcp头，还剩1460个字节</a>
+</h3>
+<h3 class="topic">
+<a name="7pq3qq9acha98hqtgc3bj2j9n9">&nbsp;&nbsp;那么就可以根据报文的最小需求进行猜测</a>
+</h3>
+<h3 class="topic">
+<a name="0hmoa04n8430i2u7drdjcsfni5">&nbsp;&nbsp;这里可以随时进行修改&nbsp;&nbsp;&#13;
+&shy;&shy;&nbsp;较大的数据包通常表示数据传输&#13;
+&shy;&shy;&nbsp;较小的数据包通常表示协议控制</a>
+</h3>
+<h3 class="topic">
+<a name="7egqa3kr09q0611o1ppu36ggrp">&nbsp;专家信息</a>
+</h3>
+<h3 class="topic">
+<a name="2db83oaltbsfh9jcnkku60hb8i">&nbsp;&nbsp;提醒我们该协议数据包中的特定状态</a>
+</h3>
+<h3 class="topic">
+<a name="0th9rfpbtkrmucnj9s2ouffc4l">&nbsp;&nbsp;对话</a>
+</h3>
+<h3 class="topic">
+<a name="5rq7h8g3nsh7g9mbd8fqqbhbc3">&nbsp;&nbsp;&nbsp;蓝色</a>
+</h3>
+<h3 class="topic">
+<a name="61jglqp8j9qfvpouvt7hht21u2">&nbsp;&nbsp;&nbsp;有关常规工作流程的信息，例如&nbsp;设置了SYN标志的TCP数据包 </a>
+</h3>
+<h3 class="topic">
+<a name="4qomjkccgkeoorg0ecomkd9ma1">&nbsp;&nbsp;注意</a>
+</h3>
+<h3 class="topic">
+<a name="2o55pu2nta8tj1n543kusjih1o">&nbsp;&nbsp;&nbsp;青色</a>
+</h3>
+<h3 class="topic">
+<a name="2hq3l895h9ivsg4321fa4lobfv">&nbsp;&nbsp;&nbsp;值得注意的事物，例如：&nbsp;应用程序返回&ldquo;通常&rdquo;错误代码，如 HTTP&nbsp;404 </a>
+</h3>
+<h3 class="topic">
+<a name="644jglmb5cor2n59mc3r31lqoe">&nbsp;&nbsp;警告</a>
+</h3>
+<h3 class="topic">
+<a name="5m9rorfg1okks5a01ge5ek4rks">&nbsp;&nbsp;&nbsp;黄色</a>
+</h3>
+<h3 class="topic">
+<a name="5svckldbmf4rh6r7rh502krfcn">&nbsp;&nbsp;&nbsp;：警告，例如&nbsp;应用程序返回&ldquo;异常&rdquo;错误代码，如连接问题 </a>
+</h3>
+<h3 class="topic">
+<a name="570eih2qbk1ic01h903o7in2hq">&nbsp;&nbsp;错误</a>
+</h3>
+<h3 class="topic">
+<a name="44irkp7p6ak4s4jgjir1adall9">&nbsp;&nbsp;&nbsp;红色</a>
+</h3>
+<h3 class="topic">
+<a name="647aq99msh4scssejivilpe0pn">&nbsp;&nbsp;&nbsp;严重问题，例如&nbsp;[格式错误的数据包]</a>
+</h3>
+<h3 class="topic">
+<a name="15v13dhuan6poups5lmtc3mg8o">&nbsp;实例</a>
+</h3>
+<h3 class="topic">
+<a name="7mvcuveblo9d3reqejblonr55a">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class78day0628_files/113nlnfd993dfahkiq3bd297ub.png"></p>
+<h2 class="topic">
+<a name="3h9rtk5t0om3nfkv2rvq1jeeb0">网络编程复习</a>
+</h2>
+<h3 class="topic">
+<a name="79n1d1iabsl2lin4dgolhdmhio">&nbsp;模型</a>
+</h3>
+<h3 class="topic">
+<a name="68fuq6k7e7vkont3d9anpjna6k">&nbsp;&nbsp;cs</a>
+</h3>
+<h3 class="topic">
+<a name="7bg3n2lsu390q804olemv0lcrv">&nbsp;&nbsp;bs</a>
+</h3>
+<h3 class="topic">
+<a name="1jgq264h4svp2hcdn3i3erp1lf">&nbsp;tcp编程流程</a>
+</h3>
+<h3 class="topic">
+<a name="0g4nqeu72vro37tv6bemdiombc">&nbsp;&nbsp;服务器</a>
+</h3>
+<h3 class="topic">
+<a name="6pgopeu9s394ommv6dfi1ln0mh">&nbsp;&nbsp;&nbsp;初始化网络环境</a>
+</h3>
+<h3 class="topic">
+<a name="3ss3a6gfgvhmj3m7u3c298r7v5">&nbsp;&nbsp;&nbsp;创建socket</a>
+</h3>
+<h3 class="topic">
+<a name="0d2cn4ac2vd52bovj9dvma56av">&nbsp;&nbsp;&nbsp;绑定</a>
+</h3>
+<h3 class="topic">
+<a name="7ppku0g0suhgtgsl10ssma06o2">&nbsp;&nbsp;&nbsp;监听</a>
+</h3>
+<h3 class="topic">
+<a name="5gn7d0rh2r7t1l71i9br9gp53q">&nbsp;&nbsp;&nbsp;等待连接</a>
+</h3>
+<h3 class="topic">
+<a name="3jfr56lj4ttskqafue7kihf8g5">&nbsp;&nbsp;&nbsp;send /recv</a>
+</h3>
+<h3 class="topic">
+<a name="3isifcmh4frd74lndb9h8p5lg1">&nbsp;&nbsp;&nbsp;关闭socket</a>
+</h3>
+<h3 class="topic">
+<a name="0lc5ltdqh5kvt2cbr3mra3415n">&nbsp;&nbsp;&nbsp;清理网络环境</a>
+</h3>
+<h3 class="topic">
+<a name="40mpmtm7gcah8sh8q2aoc4gcg4">&nbsp;&nbsp;客户端</a>
+</h3>
+<h3 class="topic">
+<a name="14en9l0hr9gr3rjr3s5mkd94cm">&nbsp;&nbsp;&nbsp;不需要绑定监听</a>
+</h3>
+<h3 class="topic">
+<a name="0koqhk2k5vh84gh88fjn1jvmta">&nbsp;&nbsp;&nbsp;将服务端的等待链接换成主动链接 connect</a>
+</h3>
+<h3 class="topic">
+<a name="0j7lubc1g5f1kfrc9u5ctfm6la">&nbsp;udp编程流程</a>
+</h3>
+<h3 class="topic">
+<a name="6rdv1h5s0etfspundvstim5qh8">&nbsp;&nbsp;查看以往笔记</a>
+</h3>
+<h3 class="topic">
+<a name="7g1cn7l693h1846cdl5c81k6lv">&nbsp;网络编程教材上有详细代码</a>
+</h3>
+<h2 class="topic">
+<a name="0fg41gkjl2vp5mamohk5ea4cl3">网络协议</a>
+</h2>
+<h3 class="topic">
+<a name="7dk0ug5bhgo7uvnvm8lnilourl">&nbsp;rfc是定义协议实现标准的官方文档</a>
+</h3>
+<h3 class="topic">
+<a name="10h1j1kb5riml5hba001sjlha0">&nbsp;&nbsp;该文档数量极多，新的文档会对历史文档进行修改和编撰</a>
+</h3>
+<h3 class="topic">
+<a name="3u26lcf8fvobmdcrjv4d4o8vfq">&nbsp;&nbsp;https://www.rfc&shy;editor.org/ </a>
+</h3>
+<h3 class="topic">
+<a name="0vvbrdr876f6u511amu55kkgn8">&nbsp;以太网</a>
+</h3>
+<h3 class="topic">
+<a name="3bo6p55as7f0ia2eqb6psp290s">&nbsp;&nbsp;以太网（Ethernet）是一种计算机局域网技术。IEEE组织的IEEE 802.3标准制定了以太网的技术标准，它规定了包括物理层的连线、电子信号和介质访问层协议的内容。以太网是目前应用最普遍的局域网技术，取代了其他局域网标准如令牌环、FDDI和ARCNET。</a>
+</h3>
+<h3 class="topic">
+<a name="67fcl4tnh582dm7gglre1l37e2">&nbsp;&nbsp;当前大多数局域网都是以太网</a>
+</h3>
+<h3 class="topic">
+<a name="46q3o310tn4b2i1jvjmlhj31ei">&nbsp;以太网帧</a>
+</h3>
+<h3 class="topic">
+<a name="0msooem4l2fvosjb52t11pfk4j">&nbsp;&nbsp;定义：在以太网中中传输的数据</a>
+</h3>
+<h3 class="topic">
+<a name="646sb8cfa0bmbt5jrvce6eoq1v">&nbsp;&nbsp;当前局域网多为以太网</a>
+</h3>
+<h3 class="topic">
+<a name="5056b0o10sfu33mhaeije1j075">&nbsp;&nbsp;传输过程</a>
+</h3>
+<h3 class="topic">
+<a name="2vpiq616qpfo83tio7ko0oglk1">&nbsp;&nbsp;&nbsp;http</a>
+</h3>
+<h3 class="topic">
+<a name="08tf9041o4ucv55oktrbt37870">&nbsp;&nbsp;&nbsp;&nbsp;应用层</a>
+</h3>
+<h3 class="topic">
+<a name="2l37tstv7qddq5tfb7r9vjo8g9">&nbsp;&nbsp;&nbsp;tcp http</a>
+</h3>
+<h3 class="topic">
+<a name="0e3e13e45jjn3qa1274s5skjtg">&nbsp;&nbsp;&nbsp;&nbsp;传输层</a>
+</h3>
+<h3 class="topic">
+<a name="7qvq5s6bgmqpjse1g92kjmvemt">&nbsp;&nbsp;&nbsp;ip tcp http</a>
+</h3>
+<h3 class="topic">
+<a name="3gp4dqb5gsb4mnetvtv47h71vg">&nbsp;&nbsp;&nbsp;&nbsp;网络层</a>
+</h3>
+<h3 class="topic">
+<a name="1emjd9q9rivuq71pddpiam4t7f">&nbsp;&nbsp;&nbsp;以太网头 ip tcp http</a>
+</h3>
+<h3 class="topic">
+<a name="382tpqbo5boccai6u2cd2emn50">&nbsp;&nbsp;&nbsp;&nbsp;数据链路地址</a>
+</h3>
+<h3 class="topic">
+<a name="6237e36t1krkcejdc8lk87ikk6">&nbsp;arp协议</a>
+</h3>
+<h3 class="topic">
+<a name="058bl8mtovbsvmalnmrdejrafl">&nbsp;&nbsp;地址解析协议 位于数据链路层</a>
+</h3>
+<h3 class="topic">
+<a name="7s61h4ff9pkmler338gr8pta90">&nbsp;&nbsp;rfc 828文档</a>
+</h3>
+<h3 class="topic">
+<a name="7q5kqsv3mrso3uj473pnafg9a1">&nbsp;&nbsp;功能：根据ip地址获取器mac地址</a>
+</h3>
+<h3 class="topic">
+<a name="0gjt9pgl6sbkhh51i1qh7iipl8">&nbsp;&nbsp;免费arp ：发送ip和目标ip相同，用于更新arp表</a>
+</h3>
+<h3 class="topic">
+<a name="561d6pokqa0gd556e75cbfannc">&nbsp;&nbsp;&nbsp;定时或不定时由路由器自动发送</a>
+</h3>
+<h3 class="topic">
+<a name="6kcms0vuluk588930rrndi0ni7">&nbsp;&nbsp;arp应用（cmd命令）</a>
+</h3>
+<h3 class="topic">
+<a name="19a1s5i8qdb0o1q5mb4cpni8vb">&nbsp;&nbsp;&nbsp;ARP -a</a>
+</h3>
+<h3 class="topic">
+<a name="2p5rivcb6cgvsf3fqorrk5up1o">&nbsp;&nbsp;&nbsp;&nbsp;显示所有端口的当前arp缓冲表</a>
+</h3>
+<h3 class="topic">
+<a name="1j2sgojd3ihmmr58kbittl8488">&nbsp;&nbsp;&nbsp;&nbsp;该表中存放着ip地址和mac地址的对应关系</a>
+</h3>
+<h3 class="topic">
+<a name="1keh47b2nj3ana8nqjjanqn3dt">&nbsp;&nbsp;&nbsp;ARP -d</a>
+</h3>
+<h3 class="topic">
+<a name="2s3c6djjse1qpcagfgl7o3lsi5">&nbsp;&nbsp;&nbsp;&nbsp;删除指定的ip地址项</a>
+</h3>
+<h3 class="topic">
+<a name="7omigli4d3qlmgd1n6auko17c7">&nbsp;&nbsp;&nbsp;ARP -s</a>
+</h3>
+<h3 class="topic">
+<a name="3qsk2glvb6ibgcsilkipi14o3m">&nbsp;&nbsp;&nbsp;&nbsp;添加静态的 IP-MAC 映射记录</a>
+</h3>
+<h3 class="topic">
+<a name="1a7fqb02i7kn4u1sa34p41vmkg">&nbsp;&nbsp;arp包的广播mac地址是FF:FF:FF:FF:FF:FF</a>
+</h3>
+<h3 class="topic">
+<a name="5qd2k45ogq1f00spe77aivi8mr">&nbsp;&nbsp;arp地址解析主要涉及两种数据包</a>
+</h3>
+<h3 class="topic">
+<a name="66s9gj24p2o71ibqusd0gq01nm">&nbsp;&nbsp;&nbsp;arp请求包和arp响应包</a>
+</h3>
+<h3 class="topic">
+<a name="7pibdl207e2hbuh9km81hmggnc">&nbsp;&nbsp;&nbsp;arp响应包可以主动发送从而更改其他其他主机中的ip-mac映射</a>
+</h3>
+<h3 class="topic">
+<a name="4dfkmqrtdflhdau12i4vq528nj">&nbsp;&nbsp;arp协议主要字段</a>
+</h3>
+<h3 class="topic">
+<a name="3alkl23at21hbjn0g93lh9rr54">&nbsp;&nbsp;&nbsp;发送方硬件地址</a>
+</h3>
+<h3 class="topic">
+<a name="3ncubfq98tjn5af1gp92tde90o">&nbsp;&nbsp;&nbsp;发送方ip地址</a>
+</h3>
+<h3 class="topic">
+<a name="4hu0v4chgeo16jarkkm505kf2k">&nbsp;&nbsp;&nbsp;目标硬件地址</a>
+</h3>
+<h3 class="topic">
+<a name="7s9h8lvqgl3v4hue2omv6t5r9r">&nbsp;&nbsp;&nbsp;&nbsp;在arp请求数据包中，该数据为0</a>
+</h3>
+<h3 class="topic">
+<a name="2a4od057a1fmcfoitptpfrnolj">&nbsp;&nbsp;&nbsp;目标ip地址</a>
+</h3>
+<h3 class="topic">
+<a name="4m78onvh0daomt7oq3ghe6o64c">&nbsp;&nbsp;arp欺骗</a>
+</h3>
+<h3 class="topic">
+<a name="7es6nn82lap0mr3g25aqdgvq3u">&nbsp;&nbsp;&nbsp;当被攻击的主机发送arp广播，根据询问局域网内路由器ip地址对应的物理地址时，攻击主机会伪造apr消息回复该请求，并在回复的报文中，表示局域网内路由器ip对应的物理地址为攻击主机的物理地址，造成被攻击主机不能通过物理地址访问路由器，导致网络连接失败</a>
+</h3>
+<h3 class="topic">
+<a name="43tj16fi04iqtrnvfbscmr0fbl">&nbsp;&nbsp;&nbsp;是一种中间人攻击，即重定向两台主机之间的流量，试图在传输过程中对流量进行拦截或修改</a>
+</h3>
+<h3 class="topic">
+<a name="5e8kftm3hehlaqtaim4fpr6362">&nbsp;&nbsp;&nbsp;代码在老师发的工程中</a>
+</h3>
+<h3 class="topic">
+<a name="5k76ll767v9ql0r8bnac6873sk">&nbsp;IP协议</a>
+</h3>
+<h3 class="topic">
+<a name="5e19qa1ldg5bec6fp7at909ujc">&nbsp;&nbsp;位于网络层</a>
+</h3>
+<h3 class="topic">
+<a name="5e97j3ed69d7et3d7kma3iu9fv">&nbsp;&nbsp;负责跨网络通讯</a>
+</h3>
+<h3 class="topic">
+<a name="4di9ick6c2t7s9fggoa5j6uc77">&nbsp;&nbsp;ipv4</a>
+</h3>
+<h3 class="topic">
+<a name="7oqive6h5q1tung7dmd2nn2a5q">&nbsp;&nbsp;&nbsp;是一个32位地址 ，唯一标识网络设备</a>
+</h3>
+<h3 class="topic">
+<a name="4n87u2dia6r6oik7n7a3iuqs9t">&nbsp;&nbsp;&nbsp;采用点分四组</a>
+</h3>
+<h3 class="topic">
+<a name="3f1gtld1o39hffcdnmfhg3dlrm">&nbsp;&nbsp;&nbsp;使用子网掩码用于标识，ip地址中那些是网络地址，那些是主机地址</a>
+</h3>
+<h3 class="topic">
+<a name="1a0l5uosf4uchvd6tolsaa2i6e">&nbsp;&nbsp;&nbsp;&nbsp;255.255.0.0</a>
+</h3>
+<h3 class="topic">
+<a name="441qdropacp3tpq1020iim18kp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;表示ip地址后十六位为主机地址</a>
+</h3>
+<h3 class="topic">
+<a name="7vs93f51jvuhdtmvp2p80l17j1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;前16位为网络地址</a>
+</h3>
+<h3 class="topic">
+<a name="7aa949bdvrt0kg019e2d6qa37g">&nbsp;&nbsp;&nbsp;&nbsp;255.255.255.0</a>
+</h3>
+<h3 class="topic">
+<a name="466e0ei9upp62f2duh670jmkc8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;前24位为网络地址</a>
+</h3>
+<h3 class="topic">
+<a name="7a1hbobagebpp38eio1b94hug6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;后8位为主机地址</a>
+</h3>
+<h3 class="topic">
+<a name="5tn1bsvipvfm4hcd18vroc9bsj">&nbsp;&nbsp;ipv6</a>
+</h3>
+<h3 class="topic">
+<a name="11ddmtlcohlp5k8cbsb365hpmm">&nbsp;&nbsp;ip4协议格式</a>
+</h3>
+<h3 class="topic">
+<a name="4ci0f4o3tuhcukfb6d5m2017j5">&nbsp;&nbsp;&nbsp;关注点</a>
+</h3>
+<h3 class="topic">
+<a name="2clrl67fdiucnqcjnal3ii658b">&nbsp;&nbsp;&nbsp;&nbsp;总长度</a>
+</h3>
+<h3 class="topic">
+<a name="6cq4drdtjcvf1n6eh79jjvg4ld">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IP长度+数据包长度</a>
+</h3>
+<h3 class="topic">
+<a name="3g6a48rqqk7ji22jjp3m788o4b">&nbsp;&nbsp;&nbsp;&nbsp;分片偏移</a>
+</h3>
+<h3 class="topic">
+<a name="22st183qjf7kk3d9ghvpto2e99">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当按照特定规则将数据包分片时（目的是压缩数据体积），该位 置为有效</a>
+</h3>
+<h3 class="topic">
+<a name="6r8gsj04m18oun8rdb47hgoeph">&nbsp;&nbsp;&nbsp;&nbsp;存活时间</a>
+</h3>
+<h3 class="topic">
+<a name="2rgvi14usb1a2o9332lcqusn6b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ttl</a>
+</h3>
+<h3 class="topic">
+<a name="7q89oo0145vpct91q5kcgfr8tt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;即数据包的生存周期</a>
+</h3>
+<h3 class="topic">
+<a name="6p995i9i9pkfqhbb556kcm3igh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;每次经过一个路由器，数据包ttl的值会减1</a>
+</h3>
+<h3 class="topic">
+<a name="79mbc9uq03rdan9lpm71bts7mg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果ttl为0，数据包被丢弃</a>
+</h3>
+<h3 class="topic">
+<a name="1ssab3bojb5s91sljt9qkr6g7s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果每一个数据包都是一直存在的，会占用大量带宽</a>
+</h3>
+<h3 class="topic">
+<a name="4kiokbq8s8o90jq6vebgqf0ejs">&nbsp;&nbsp;&nbsp;&nbsp;源ip地址、目标ip地址</a>
+</h3>
+<h3 class="topic">
+<a name="7tcpc06gccbhebhhlkoo88b4b2">&nbsp;&nbsp;ipv4最大地址空间仅允许由0xffffffff个地址</a>
+</h3>
+<h3 class="topic">
+<a name="1n4uoetjgk3p36qoquoqfu56bo">&nbsp;&nbsp;&nbsp;大概40亿个左右</a>
+</h3>
+<h3 class="topic">
+<a name="3c841ncignofrhf7nga8j3buo7">&nbsp;&nbsp;ip6协议格式</a>
+</h3>
+<h3 class="topic">
+<a name="2m6fii0p1i2sm38nuh5hn5l7tp">&nbsp;&nbsp;&nbsp;关注点</a>
+</h3>
+<h3 class="topic">
+<a name="2iijf74q4i18mvpk8g1jup59lf">&nbsp;&nbsp;&nbsp;&nbsp;载荷长度</a>
+</h3>
+<h3 class="topic">
+<a name="4fm9m1kmvkphc42ahh09bf0hbi">&nbsp;&nbsp;&nbsp;&nbsp;条数限制</a>
+</h3>
+<h3 class="topic">
+<a name="5lsuo8qk5f3p7ecpkk81cqek76">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;即ipv4中的ttl</a>
+</h3>
+<h3 class="topic">
+<a name="6i5cirht4502jddvvvgrfuu9rc">&nbsp;&nbsp;&nbsp;&nbsp;下一个数据包的地址</a>
+</h3>
+<h3 class="topic">
+<a name="7k8q2nopeqsa9v39vjt7u1qju1">&nbsp;&nbsp;ipv6</a>
+</h3>
+<h3 class="topic">
+<a name="5baog7ktdf5k52g0lhrslh7st6">&nbsp;&nbsp;&nbsp;不使用arp广播，通过icmp的邻居协议发现同一局域网的主机</a>
+</h3>
+<h3 class="topic">
+<a name="3k9thqekp7193hva6ssrd7ij2l">&nbsp;&nbsp;&nbsp;不使用分片</a>
+</h3>
+<h3 class="topic">
+<a name="5uja1f3lrrahlsd93bokmeocn6">&nbsp;&nbsp;&nbsp;&nbsp;如果数据包过大会直接将数据包丢弃，并发送回一个数据包过大的消息，发送方接收到之后，会调整数据包大小，重新发送</a>
+</h3>
+<h3 class="topic">
+<a name="24g9834eufbkpji1ufsrhju7ba">&nbsp;&nbsp;特殊ip地址</a>
+</h3>
+<h3 class="topic">
+<a name="53rtfcc8n6e9dnlbh0502vk9vo">&nbsp;&nbsp;&nbsp;回送地址</a>
+</h3>
+<h3 class="topic">
+<a name="7gnhdsfcfbjq886es7h4cbs0bi">&nbsp;&nbsp;&nbsp;&nbsp;127.0.0.1</a>
+</h3>
+<h3 class="topic">
+<a name="4e4qtonn51cibpg0qust046c1v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果访问该地址，则不会产生网络数据通讯，只会在本机进行处理</a>
+</h3>
+<h3 class="topic">
+<a name="1cm79vtmvtgkg5v754mmudh71v">&nbsp;&nbsp;&nbsp;全零</a>
+</h3>
+<h3 class="topic">
+<a name="1dlu189vjhu50ipph8slksv2ef">&nbsp;&nbsp;&nbsp;&nbsp;0.0.0.0</a>
+</h3>
+<h3 class="topic">
+<a name="3jhcopaq7ss2cbeuapmmtb99qm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用于标识本机</a>
+</h3>
+<h3 class="topic">
+<a name="7s9jj7te1rgbcvukvh8rvib4ie">&nbsp;&nbsp;&nbsp;全1</a>
+</h3>
+<h3 class="topic">
+<a name="5kh59enrob38f7sdh4mntmuel2">&nbsp;&nbsp;&nbsp;&nbsp;255.255.255</a>
+</h3>
+<h3 class="topic">
+<a name="2h3jcd5hm3vmmljnandcte3d1u">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当前局域网的广播地址</a>
+</h3>
+<h3 class="topic">
+<a name="47pegit4vi0di1c98rv7gg6ao3">&nbsp;&nbsp;&nbsp;....</a>
+</h3>
+<h3 class="topic">
+<a name="41ogjalo5jcergf374tksbdonb">&nbsp;&nbsp;ipv4与ipv6的区别</a>
+</h3>
+<h3 class="topic">
+<a name="0tkl2p74pcehllbdlsdoimb2e9">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class78day0628_files/5hmbm6l61aoshfrmsupl0hra8f.png"></p>
+<h3 class="topic">
+<a name="4emsejcv8kdujgub2ulpup0pjv">&nbsp;icmp协议</a>
+</h3>
+<h3 class="topic">
+<a name="4b010rdlq7bdjflj7k43uob592">&nbsp;&nbsp;检测网络是否畅通，用于在主机之间传递控制消息（网络是否通畅、主机是否可达、路由是否可用等）</a>
+</h3>
+<h3 class="topic">
+<a name="2ltsjkt1purkr2svb1e4dmvnv9">&nbsp;&nbsp;&nbsp;当ip数据包发生错误时，icmp将错误信息封包，传回给主机，使进行错误处理</a>
+</h3>
+<h3 class="topic">
+<a name="0mtupoh4fl4g96cdaqvh6h3up4">&nbsp;&nbsp;分为两种报文</a>
+</h3>
+<h3 class="topic">
+<a name="7ksioef6224utoq43oepljgiov">&nbsp;&nbsp;&nbsp;查询报文</a>
+</h3>
+<h3 class="topic">
+<a name="4magum039jg0h2m1vvsb8br35u">&nbsp;&nbsp;&nbsp;差错报文</a>
+</h3>
+<h3 class="topic">
+<a name="7efpj1okl5ldpvo24g55kujh0a">&nbsp;&nbsp;是ip协议的一部分，并依赖ip进行消息传递</a>
+</h3>
+<h3 class="topic">
+<a name="5cmid5p30donjo6efr1dk4ef1j">&nbsp;&nbsp;协议格式</a>
+</h3>
+<h3 class="topic">
+<a name="2hfktbv6gs029dhkcjucr8gqdf">&nbsp;&nbsp;&nbsp;。。</a>
+</h3>
+<h3 class="topic">
+<a name="0acdd8a8ns2uinco44npen6nbg">&nbsp;&nbsp;&nbsp;有一个data段，用于保存发送的数据的内容</a>
+</h3>
+<h3 class="topic">
+<a name="75p0kkrtitb2f1usqb5tg21ola">&nbsp;&nbsp;icmp类型和代码</a>
+</h3>
+<h3 class="topic">
+<a name="014hnrer2qavubngsb5ljg205d">&nbsp;&nbsp;&nbsp;不需要强行记忆</a>
+</h3>
+<h3 class="topic">
+<a name="6qfbaq122fpfcn70ello2crgln">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class78day0628_files/0g729e766qrr8m42lk1503rcfv.png"></p>
+<h3 class="topic">
+<a name="4sbbd6ktlds0brbb4enhl3bv7h">&nbsp;&nbsp;协议应用</a>
+</h3>
+<h3 class="topic">
+<a name="1b6vn4g9jfk2erbrh7mihiohio">&nbsp;&nbsp;&nbsp;ping包</a>
+</h3>
+<h3 class="topic">
+<a name="7696c144kc6063nbarmrk4d1i5">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class78day0628_files/73dq2b91lkk4n20jps89c5eno9.png"></p>
+<h3 class="topic">
+<a name="30j4e2l4t76tmb8iiu5g9vu1e2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class78day0628_files/53ftlq1qa09cp41a6i3rg1dt36.png"></p>
+<h3 class="topic">
+<a name="5kuj7nmfft8m3bh6r5darj54ad">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class78day0628_files/6sflngpg2uod28tk9c458t4a2h.png"></p>
+<h3 class="topic">
+<a name="4n82ppjc720q8e6d0rr85i5h5u">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class78day0628_files/56kli7ejt1c6e2ucu1fpl58irv.png"></p>
+<h3 class="topic">
+<a name="3j1lj07rqbi8ecfk3v5qht4h76">&nbsp;&nbsp;&nbsp;路由器跟踪</a>
+</h3>
+<h3 class="topic">
+<a name="0dj37vcd8cfk2eur3kpvau0rk1">&nbsp;&nbsp;抓包实验</a>
+</h3>
+<h3 class="topic">
+<a name="6apm7dd6ad99cm6b0jgegshpme">&nbsp;&nbsp;&nbsp;icmp的ping包</a>
+</h3>
+<h3 class="topic">
+<a name="1r02c2c4s38no5i4d6ukj77n0l">&nbsp;&nbsp;&nbsp;路由器跟踪 tracert www.baidu.com</a>
+</h3>
+<h3 class="topic">
+<a name="71u5bco1fjf6s3msef15v8217u">&nbsp;tcp协议</a>
+</h3>
+<h3 class="topic">
+<a name="4mv8oa2hd5vbn3jdlc5tngr3an">&nbsp;&nbsp;传输层协议</a>
+</h3>
+<h3 class="topic">
+<a name="3tjns13g9rv83v9atus3tpgg1p">&nbsp;&nbsp;提供可靠的端到端的数据传输，用于处理数据的顺序和错误恢复，最终保证数据能到达的目的地</a>
+</h3>
+<h3 class="topic">
+<a name="6kci91men62nenli7vvum0v0un">&nbsp;&nbsp;tcp提供流量控制，总是先告知对方自己能够接受字节数量</a>
+</h3>
+<h3 class="topic">
+<a name="3b75g5kduqrbhlpsvt00rgjrj7">&nbsp;&nbsp;tcp连接是全双工的，既可以发送数据，同时可以接受数据</a>
+</h3>
+<h3 class="topic">
+<a name="50bdnjqusi9v31u4kt0tbge4cp">&nbsp;&nbsp;格式</a>
+</h3>
+<h3 class="topic">
+<a name="5n9n5iarqrkp9a1j0mtc3b3bqb">&nbsp;&nbsp;&nbsp;关注点</a>
+</h3>
+<h3 class="topic">
+<a name="02cq167lktjq086at26f33ts92">&nbsp;&nbsp;&nbsp;&nbsp;序号</a>
+</h3>
+<h3 class="topic">
+<a name="3qll1m64ndii2c1258tlc4loqu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;保证tcp包的顺序传输，接收方根据序号，对接收到的数据进行排序</a>
+</h3>
+<h3 class="topic">
+<a name="2sb9de485bm2h2hvos729m0s74">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用于标识一个tcp片段，保证数据没有丢失</a>
+</h3>
+<h3 class="topic">
+<a name="2ofejktab5pq8j0fjlnimctmcr">&nbsp;&nbsp;&nbsp;&nbsp;确认号</a>
+</h3>
+<h3 class="topic">
+<a name="679anurokkjikt5fegkab3mcvl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通讯过程中，希望从另一个设备中得到的下一个数据包的序号</a>
+</h3>
+<h3 class="topic">
+<a name="5ddq1vas8p8h2ag6tbdpgh791e">&nbsp;&nbsp;&nbsp;&nbsp;标记</a>
+</h3>
+<h3 class="topic">
+<a name="2nq89v5dtau7bd0s3tumria7jv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;所传输的tcp数据包类型</a>
+</h3>
+<h3 class="topic">
+<a name="01n0nkduo3v9erdgrtood2egiq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class78day0628_files/0d8r5fk9vneacp63bdard2952q.png"></p>
+<h3 class="topic">
+<a name="22sd1m2cdinrgb4jgtj04arp9i">&nbsp;&nbsp;tcp的端口</a>
+</h3>
+<h3 class="topic">
+<a name="17v1pd2b4vc36r19j34c3n7vhg">&nbsp;&nbsp;&nbsp;0~1023</a>
+</h3>
+<h3 class="topic">
+<a name="6poruirbp83u4i83bbpu9r373q">&nbsp;&nbsp;&nbsp;&nbsp;与某些服务相关</a>
+</h3>
+<h3 class="topic">
+<a name="0nagrtbt2rrekt950bcvt3si8p">&nbsp;&nbsp;&nbsp;1024~49151</a>
+</h3>
+<h3 class="topic">
+<a name="1p1ng89vqimosjps5m3cu6f98c">&nbsp;&nbsp;&nbsp;&nbsp;供应用程序使用，有关win socket应用程序开发会经常使用到</a>
+</h3>
+<h3 class="topic">
+<a name="4sfqf8mgtemmb23qfflrhfop81">&nbsp;&nbsp;&nbsp;49152~65535</a>
+</h3>
+<h3 class="topic">
+<a name="7tm8u9upt3va3gpglfgph0vv44">&nbsp;&nbsp;&nbsp;&nbsp;动态或私有端口</a>
+</h3>
+<h3 class="topic">
+<a name="0j24lu80a3ri4r4b8evauu8k93">&nbsp;&nbsp;三次握手</a>
+</h3>
+<h3 class="topic">
+<a name="16mmfgb8dih39eb9t9bae6d0ra">&nbsp;&nbsp;&nbsp;syn</a>
+</h3>
+<h3 class="topic">
+<a name="13i8383843tmvfm6vf8c4qls31">&nbsp;&nbsp;&nbsp;&nbsp;客户端随机生成初始序列号，确认号为0，发送给服务端</a>
+</h3>
+<h3 class="topic">
+<a name="4rv4ro1d0ori3jg767h42c07rt">&nbsp;&nbsp;&nbsp;syn/ack</a>
+</h3>
+<h3 class="topic">
+<a name="6c161l3ivh27tubsgdjfcva5ru">&nbsp;&nbsp;&nbsp;&nbsp;服务端回应客户端，随机生成初始序列号，确认号为客户端序列号+1，发送给客户端</a>
+</h3>
+<h3 class="topic">
+<a name="674kd8q8nkk16cuh2t64sksqma">&nbsp;&nbsp;&nbsp;ack</a>
+</h3>
+<h3 class="topic">
+<a name="37qsia13a248cj71rjjimtrvh7">&nbsp;&nbsp;&nbsp;&nbsp;客户端回应服务端，序列号为客户端序列号+1，确认号为服务端序列号+1，发送给服务端</a>
+</h3>
+<h3 class="topic">
+<a name="6k7fhd4tt5a3098qr0561acgl5">&nbsp;&nbsp;&nbsp;三握手之后，两方开始准备传送数据，序列号从两方生成的序列号+1开始</a>
+</h3>
+<h3 class="topic">
+<a name="28jum9t23aajna9ug2sn82o8k5">&nbsp;&nbsp;四次挥手</a>
+</h3>
+<h3 class="topic">
+<a name="3hdqd1qpohbtaghhk1sjav44ls">&nbsp;&nbsp;&nbsp;fin/ack</a>
+</h3>
+<h3 class="topic">
+<a name="4ihlq5hutioaa220jpmb83m5gb">&nbsp;&nbsp;&nbsp;ack</a>
+</h3>
+<h3 class="topic">
+<a name="3vkoa75g0b2bfee94po9ga9a9f">&nbsp;&nbsp;&nbsp;fin/ack</a>
+</h3>
+<h3 class="topic">
+<a name="22ad55sn7mvknqifmcbn3e6ql3">&nbsp;&nbsp;&nbsp;ack</a>
+</h3>
+<h3 class="topic">
+<a name="3kb23tbt12sh6hm1cbg07mkqa1">&nbsp;&nbsp;如果连接突然断开，会使用rst/ack进行数据包消息重置</a>
+</h3>
+<h3 class="topic">
+<a name="766rr4i3touuspibb06i9ac8qj">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class78day0628_files/4bg6jljpn1d8nibt6579b59pud.png"></p>
+<h3 class="topic">
+<a name="0nagc1ce8c3n6ho4jdgub14vrm">&nbsp;抓包远控软件</a>
+</h3>
+<h3 class="topic">
+<a name="4jjl72aq0gnq1h9fkh60pbbfis">&nbsp;&nbsp;获取桌面截图数据</a>
+</h3>
+</body>
+</html>

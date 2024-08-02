@@ -1,0 +1,543 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>class53day0430（调试与异常第二天）</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="2dlh8iii8flo020pgm7ot64dbc">class53day0430（调试与异常第二天）</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="class53day0430%EF%BC%88%E8%B0%83%E8%AF%95%E4%B8%8E%E5%BC%82%E5%B8%B8%E7%AC%AC%E4%BA%8C%E5%A4%A9%EF%BC%89_files/images/class53day0430%EF%BC%88%E8%B0%83%E8%AF%95%E4%B8%8E%E5%BC%82%E5%B8%B8%E7%AC%AC%E4%BA%8C%E5%A4%A9%EF%BC%89.jpg"></div>
+<h2 class="topic">
+<a name="67nphkg6drlt3eceo1n5usanvj">复习</a>
+</h2>
+<h3 class="topic">
+<a name="6gj2uh0ovsf99o755ofal7hb3t">&nbsp;如果所有的seh均无法处理异常，则通过ueh处理异常，ueh机制通常被用于收集错误信息，或进行反调试，他是应用程序处理异常的最后一道防线</a>
+</h3>
+<h3 class="topic">
+<a name="7mftg4u0h0tfmc7eem193ca0j3">&nbsp;只要异常已经被处理且程序拥有VCH函数，VCH就会被调用</a>
+</h3>
+<h3 class="topic">
+<a name="6b9tm14tmoo0354mn59lnk79a3">&nbsp;异常是由cpu内部产生的，一旦产生，必须处理</a>
+</h3>
+<h3 class="topic">
+<a name="5fnha8afvu8sr7neqgte13sqne">&nbsp;&nbsp;分为三类</a>
+</h3>
+<h3 class="topic">
+<a name="4vlf78gtknr1vri8j0q6frphm6">&nbsp;&nbsp;&nbsp;错误</a>
+</h3>
+<h3 class="topic">
+<a name="0argdb5vrmmbbea1bkk3klupr2">&nbsp;&nbsp;&nbsp;&nbsp;可以修复，eip指向错误的指令</a>
+</h3>
+<h3 class="topic">
+<a name="5tpoklqofmap71upda7bnpc2g3">&nbsp;&nbsp;&nbsp;&nbsp;内存访问错误、除零错误</a>
+</h3>
+<h3 class="topic">
+<a name="57r1dnqdffp0b4b8rtn2oft0o9">&nbsp;&nbsp;&nbsp;陷阱</a>
+</h3>
+<h3 class="topic">
+<a name="16t5c1la5hdomo1msgfr0ct2bk">&nbsp;&nbsp;&nbsp;&nbsp;可以修复，eip指向的是错误指令的下一条</a>
+</h3>
+<h3 class="topic">
+<a name="63q1n3lm62agrkn0ocvsr6u4oh">&nbsp;&nbsp;&nbsp;&nbsp;int3断点（软件断点）  硬件读写断点  单步执行断点</a>
+</h3>
+<h3 class="topic">
+<a name="4lu12h2d9vbtqevc5kk6knpvkj">&nbsp;&nbsp;&nbsp;终止</a>
+</h3>
+<h3 class="topic">
+<a name="7f272j7duf07o33306vo8u58bm">&nbsp;&nbsp;&nbsp;&nbsp;一旦产生，无法修复</a>
+</h3>
+<h3 class="topic">
+<a name="08vlhf8e4ucqp8f5sre2plt2b7">&nbsp;中断通常由外部硬件产生，仅仅通知，cpu不一定要处理</a>
+</h3>
+<h3 class="topic">
+<a name="0l5cerlcqtev0i4u1s7skkldv5">&nbsp;windbg</a>
+</h3>
+<h3 class="topic">
+<a name="6j0aq7atetgvl3g4achh5ri4de">&nbsp;&nbsp;d指令 (参数l，可以用于规定显示数据的个数)</a>
+</h3>
+<h3 class="topic">
+<a name="6h81ec20tcoaillmak2iobo0td">&nbsp;&nbsp;&nbsp;db</a>
+</h3>
+<h3 class="topic">
+<a name="1boqsrna02b5drld0sr9i5ge65">&nbsp;&nbsp;&nbsp;dw</a>
+</h3>
+<h3 class="topic">
+<a name="7shk851o3vq7triaeg8vlttb4g">&nbsp;&nbsp;&nbsp;dd</a>
+</h3>
+<h3 class="topic">
+<a name="0g0q5khul3jncrrimj822ngns3">&nbsp;&nbsp;&nbsp;dq</a>
+</h3>
+<h3 class="topic">
+<a name="6unr08lu7jesukhqb1oeplli6o">&nbsp;&nbsp;&nbsp;da</a>
+</h3>
+<h3 class="topic">
+<a name="5kkrhs3ef6ool4bpn77jt76c1r">&nbsp;&nbsp;&nbsp;du</a>
+</h3>
+<h3 class="topic">
+<a name="1k8iksqm80bufabcrnjvj8vo5b">&nbsp;&nbsp;&nbsp;dt</a>
+</h3>
+<h3 class="topic">
+<a name="7ukdka9m5vo3p2kmunvp8jek3p">&nbsp;&nbsp;&nbsp;&nbsp;查看结构体</a>
+</h3>
+<h3 class="topic">
+<a name="3iagn06bio8162bq3n84aavflu">&nbsp;&nbsp;&nbsp;&nbsp;dt -b展开子结构</a>
+</h3>
+<h3 class="topic">
+<a name="6ckp4ne0ko6milpnaiaat4trgi">&nbsp;&nbsp;e指令（编辑数据）</a>
+</h3>
+<h3 class="topic">
+<a name="5brisklcb6bbmrb8kikumvsfs9">&nbsp;&nbsp;&nbsp;eb</a>
+</h3>
+<h3 class="topic">
+<a name="1vdsfhop76634ivgiois1kleea">&nbsp;&nbsp;&nbsp;ew</a>
+</h3>
+<h3 class="topic">
+<a name="1e7p82e8kdefr95n95lhr5slkc">&nbsp;&nbsp;&nbsp;ed</a>
+</h3>
+<h3 class="topic">
+<a name="75t8bmdv7ffc4o20ohh5r8mpcq">&nbsp;&nbsp;&nbsp;eq</a>
+</h3>
+<h3 class="topic">
+<a name="0kc8miosc17iuh762rigm43pgs">&nbsp;&nbsp;b指令</a>
+</h3>
+<h3 class="topic">
+<a name="5vme49a8flssgauj9op2kog7uj">&nbsp;&nbsp;&nbsp;bp</a>
+</h3>
+<h3 class="topic">
+<a name="7p9e5iu1b7kpen3b29fgm2i0tv">&nbsp;&nbsp;&nbsp;bu</a>
+</h3>
+<h3 class="topic">
+<a name="7a2ob2gnt2unqu0fe2khqe2skm">&nbsp;&nbsp;&nbsp;&nbsp;与bp差不多</a>
+</h3>
+<h3 class="topic">
+<a name="4cbnenac71pblmk9191ftgi7fm">&nbsp;&nbsp;&nbsp;&nbsp;对动态基址有效，推荐使用</a>
+</h3>
+<h3 class="topic">
+<a name="70kqvam2k5n6ej78k2ln472op3">&nbsp;&nbsp;&nbsp;ba</a>
+</h3>
+<h3 class="topic">
+<a name="24m8oe94dgv0f1tco105uidtq0">&nbsp;&nbsp;&nbsp;&nbsp;硬件断点</a>
+</h3>
+<h3 class="topic">
+<a name="3t7nlofblk3s03bmj8pmghhhtu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;??读写断点</a>
+</h3>
+<h3 class="topic">
+<a name="53eipru61k02ch3mdt8e5ss6ju">&nbsp;&nbsp;&nbsp;bl</a>
+</h3>
+<h3 class="topic">
+<a name="5m4jsmcash0ss0edbuf787g1v5">&nbsp;&nbsp;&nbsp;&nbsp;查看所有断点</a>
+</h3>
+<h3 class="topic">
+<a name="1ckt993mm2evlc7c6nhujj50dv">&nbsp;&nbsp;&nbsp;be</a>
+</h3>
+<h3 class="topic">
+<a name="22dlruva62lgv2qf6hgl8enhnn">&nbsp;&nbsp;&nbsp;&nbsp;开启断点</a>
+</h3>
+<h3 class="topic">
+<a name="5mkh4mgal7b0ukckln2cb536j4">&nbsp;&nbsp;&nbsp;bd</a>
+</h3>
+<h3 class="topic">
+<a name="0md5rnikcfo1lbq4sbljojluhh">&nbsp;&nbsp;&nbsp;bc</a>
+</h3>
+<h3 class="topic">
+<a name="0epb2bi6tg8fn3rdbntokhj87u">&nbsp;&nbsp;&nbsp;&nbsp;删除断点</a>
+</h3>
+<h3 class="topic">
+<a name="0bseubbg63gicpieh1fv1v739r">&nbsp;&nbsp;指令流程</a>
+</h3>
+<h3 class="topic">
+<a name="5h5gclg8jnneq08otqh1fo7i6k">&nbsp;&nbsp;&nbsp;（f5执行）（f11、f8步入） （f10步过）</a>
+</h3>
+<h3 class="topic">
+<a name="0c2re6e2gnlhodc5d8e63hb0k2">&nbsp;中断处理程序被保存于IDT，windows中中断或异常是统一管理的</a>
+</h3>
+<h3 class="topic">
+<a name="0elv6f6dr03bsj7fjpc1svtsps">&nbsp;&nbsp;所有的中断处理函数均被保存在idt中，</a>
+</h3>
+<h3 class="topic">
+<a name="17sdba6vuf77ateiotvu3nm6r7">&nbsp;&nbsp;windbg指令：idtr 获取IDT基址</a>
+</h3>
+<h3 class="topic">
+<a name="7ltrr3plcpc94e9tfk3rv1jgg8">&nbsp;&nbsp;windbg指令：idtl（0x7ff 256）用于获取IDT长度</a>
+</h3>
+<h3 class="topic">
+<a name="40bofv5u3n1r96t8nrps12i24a">&nbsp;&nbsp;!idt \a</a>
+</h3>
+<h3 class="topic">
+<a name="3bolq6mchstaub8523ik4r9a56">&nbsp;&nbsp;&nbsp;查看所有IDT</a>
+</h3>
+<h3 class="topic">
+<a name="2h5suefl0u3v28u99ntg69p7od">&nbsp;&nbsp;!idt n</a>
+</h3>
+<h3 class="topic">
+<a name="6dl52kf0boih67o0jf2qfle0ri">&nbsp;异常的产生方式</a>
+</h3>
+<h3 class="topic">
+<a name="28sasvbusijnqql6ls550p1jkv">&nbsp;&nbsp;当cpu执行到特定指令或满足的特定条件时，主动产生异常</a>
+</h3>
+<h3 class="topic">
+<a name="7eqf7kuppeq25adhp2sqfe1k6c">&nbsp;&nbsp;由用户（程序员）主动编写代码抛出异常</a>
+</h3>
+<h3 class="topic">
+<a name="66mh2o415r229bmsqdabri84ag">&nbsp;异常处理程序调用顺序</a>
+</h3>
+<h3 class="topic">
+<a name="4b57v80ovjcu5n91p6ch92n3ng">&nbsp;&nbsp;veh seh ueh vch</a>
+</h3>
+<h3 class="topic">
+<a name="4sra3sipm2gd8mrt0vcsvbj93j">&nbsp;seh是全局有效的吗？</a>
+</h3>
+<h3 class="topic">
+<a name="0se2j2d6dmck8in36pslpek3kc">&nbsp;&nbsp;不是全局有效，每个线程均有一个TEB结构，seh被保存在Teb.NT_TIB.ExcecptionList中</a>
+</h3>
+<h3 class="topic">
+<a name="1ahj3fq2d4kenv0t2r4hv8sb80">&nbsp;veh ueh vch只能用于用户态</a>
+</h3>
+<h3 class="topic">
+<a name="3cnalebg7jmc1fqvnhiant8oak">&nbsp;&nbsp;seh用户态和内核态均可以使用</a>
+</h3>
+<h2 class="topic">
+<a name="3rbf7e806ppejjpdlg1loms9bl">SEH原理刨析</a>
+</h2>
+<h3 class="topic">
+<a name="1e0651tqfa7u70ekhk2eohhjq4">&nbsp;异常产生后，先发给内核层(idt表)，而windows提供的异常处理机制，是从内核层发出来之后再处理的</a>
+</h3>
+<h3 class="topic">
+<a name="1ormt64tjcbvvtfvod3dppr3t6">&nbsp;seh是用户层和内核层均有的异常处理机制，而其他三个异常处理机制均只有用户层</a>
+</h3>
+<h3 class="topic">
+<a name="3nv79qe64i7pn3sir1tuii7j57">&nbsp;线程在用户层有一个teb结构体（线程环境块）</a>
+</h3>
+<h3 class="topic">
+<a name="53jttd7vqd14odcbvmo0rl1dmu">&nbsp;&nbsp;该结构体第一个元素为NtTib结构体</a>
+</h3>
+<h3 class="topic">
+<a name="0rev8dgmosvsrqosbn1a27jfug">&nbsp;&nbsp;&nbsp;NtTib结构体第一个元素为ExceptionList</a>
+</h3>
+<h3 class="topic">
+<a name="1o30grnamdehbn34ispt51r024">&nbsp;&nbsp;&nbsp;&nbsp;指向链表头节点，即指向一个当前线程的异常链表（链表中每一个元素均为seh的异常处理程序）</a>
+</h3>
+<h3 class="topic">
+<a name="6o8bpe0mh925euunb61nau4d5p">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;链表元素</a>
+</h3>
+<h3 class="topic">
+<a name="1vl78rmvr388qkobha883dmk2e">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;指向下一个链表元素的指针</a>
+</h3>
+<h3 class="topic">
+<a name="316hvfrj82qmerh69ib9cbk5ou">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;异常处理程序的函数</a>
+</h3>
+<h3 class="topic">
+<a name="43u97otfgb137ng1tq3pjfon9t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;链表元素原型</a>
+</h3>
+<h3 class="topic">
+<a name="7v5cg5hrehb9hlu6rk4h02313m">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;typedef struct _EXCEPTION_REGISTRATION_RECORD {&#13;
+    struct _EXCEPTION_REGISTRATION_RECORD *Next; //指向下一个链表节点&#13;
+    PEXCEPTION_ROUTINE Handler;//异常处理函数指针&#13;
+} EXCEPTION_REGISTRATION_RECORD;</a>
+</h3>
+<h3 class="topic">
+<a name="4jssr5o6tk59bl2qe273bgalnf">&nbsp;&nbsp;&nbsp;&nbsp;异常链表可以通过FS段寄存器（FS:[0]）找到，该寄存器指向IDT，寄存器是线程相关的,所有seh是线程相关的</a>
+</h3>
+<h3 class="topic">
+<a name="1ajhrtdch91qf6rv2tpcrbg7bm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这里有个问题ExceptionList指向的结构体是不是IDT？如果是，IDT也就是就与seh异常处理链表等同?</a>
+</h3>
+<h3 class="topic">
+<a name="6iuf3n2grp0mulf9v91fcejh8p">&nbsp;&nbsp;&nbsp;NtTib结构体第二个元素为该线程的栈基址</a>
+</h3>
+<h3 class="topic">
+<a name="4783e41m2ga78koke064p4ctcs">&nbsp;&nbsp;&nbsp;NtTib结构体第三个元素为该线程栈的大小</a>
+</h3>
+<h3 class="topic">
+<a name="1491kvahoi7dmk93h78hhufnce">&nbsp;当手动注册一个SEH，必须使用FS:[0]。</a>
+</h3>
+<h3 class="topic">
+<a name="5k9828b2odlpcc78hmo5eve034">&nbsp;在vs中SEH的函数名为_excecpt_handle4</a>
+</h3>
+<h3 class="topic">
+<a name="3a5e0udu1ecjhur1dq6m0ujeng">&nbsp;手动注册一个seh(本质上是链表的插入操作，自己构建一个异常链表元素结构体，然后将其插入到链表中)（注意自己构建的异常链表元素结构体必须是存储在栈上的）</a>
+</h3>
+<h3 class="topic">
+<a name="4usp2tgpsqu7fl00ji7fvpkv8l">&nbsp;&nbsp;自定义异常处理函数</a>
+</h3>
+<h3 class="topic">
+<a name="6kj55ov3ldrecoqjdro57ia9u2">&nbsp;&nbsp;获取源节点，即将FS:[0]中的内容拿出来</a>
+</h3>
+<h3 class="topic">
+<a name="4fcn15sue9go16ddq7kl82o5nu">&nbsp;&nbsp;构建结构体</a>
+</h3>
+<h3 class="topic">
+<a name="6mg76o0lql92nl9o3bc7673me0">&nbsp;&nbsp;&nbsp;因为结构体中高地址保存异常处理函数地址，所以先push自己的异常处理程序，之后push下一个异常处理程序的地址，即之前保存的FS:[0]，从而自定义一个异常链表元素</a>
+</h3>
+<h3 class="topic">
+<a name="6a2k05f9v5sp13t6iui1d429cs">&nbsp;&nbsp;将该结构体作为异常链表头节点</a>
+</h3>
+<h3 class="topic">
+<a name="59ibgd3bfba7sgeh2u78u82l6c">&nbsp;&nbsp;&nbsp;即j将fs:[0]的内容修改为栈中构建的结构体的首地址</a>
+</h3>
+<h3 class="topic">
+<a name="10posaionci1rgr1gshmfmhpkh">&nbsp;&nbsp;产生异常</a>
+</h3>
+<h3 class="topic">
+<a name="24kuber5tov88nld6ld38aea9u">&nbsp;&nbsp;&nbsp;查看是否调用了自定义的异常处理函数</a>
+</h3>
+<h3 class="topic">
+<a name="00qmma848mf6flh58ao1q10507">&nbsp;&nbsp;卸载自定义异常处理函数</a>
+</h3>
+<h3 class="topic">
+<a name="4chdntdklhn772a9t0rv6sp0j7">&nbsp;&nbsp;&nbsp;将栈还原</a>
+</h3>
+<h3 class="topic">
+<a name="4doja2mkk1vf6l423uh1bhlhca">&nbsp;&nbsp;&nbsp;&nbsp;_asm add esp,8</a>
+</h3>
+<h3 class="topic">
+<a name="4dm80samd31cupnc2afv6m6mqo">&nbsp;&nbsp;&nbsp;将fs:[0]的值进行还原</a>
+</h3>
+<h3 class="topic">
+<a name="3bbpfftdteh9abojr8fg57d33k">&nbsp;&nbsp;&nbsp;&nbsp;使用之前保存的FS:[0]</a>
+</h3>
+<h3 class="topic">
+<a name="6u4f5fct821b20vl8s248ursoq">&nbsp;&nbsp;其本质是通过栈来来构建异常处理链的元素结构体，再将该结构体插入链表，注意不能通过创建堆来创建该结构体，原因涉及异常处理的底层实现</a>
+</h3>
+<h3 class="topic">
+<a name="2hfmetaiv0g4pt2d9lo532nhcu">&nbsp;遍历异常链表</a>
+</h3>
+<h3 class="topic">
+<a name="70c4m1v3408judpn52o9nvs5qf">&nbsp;&nbsp;定义指针保存链表的头节点</a>
+</h3>
+<h3 class="topic">
+<a name="1ci6atccu5r7v5shm6vibpf1ov">&nbsp;&nbsp;获取链表的头节点</a>
+</h3>
+<h3 class="topic">
+<a name="57k54736a79stjc7d85l6cq0ko">&nbsp;&nbsp;&nbsp;使用_asm mov eax,FS:[0]&#13;
+       _asm mov Head,eax&#13;
+(或者使用push pop)</a>
+</h3>
+<h3 class="topic">
+<a name="1js97t5t0raof6c2ljen38jaka">&nbsp;&nbsp;开始遍历链表</a>
+</h3>
+<h3 class="topic">
+<a name="6l556bhvfo0kie5rconkjnbqd2">&nbsp;&nbsp;&nbsp;结束条件为链表元素为-1</a>
+</h3>
+<h3 class="topic">
+<a name="58dootpklln0faik0irc1o1pcd">&nbsp;&nbsp;&nbsp;输出链表结构体中异常处理函数的地址</a>
+</h3>
+<h3 class="topic">
+<a name="7ad7k7d26607ofq1ct3hkaaegg">&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="1mu1335iuhbgnuj8fmsoe4lh07">&nbsp;&nbsp;#include &lt;iostream&gt;&#13;
+#include &lt;windows.h&gt;&#13;
+&#13;
+// 含有 SEH 的函数&#13;
+void func1()&#13;
+{&#13;
+	// 当注册了一个 SEH 之后，必须会使用 FS:[0]&#13;
+	// 在 VS 下， SEH 处理程序的名字 _except_handler4&#13;
+	__try {&#13;
+	}&#13;
+	__except (0) {&#13;
+&#13;
+	}&#13;
+}&#13;
+&#13;
+// 不含有 SEH 的函数&#13;
+void func2(){ }&#13;
+&#13;
+//自定义的seh异常处理函数&#13;
+EXCEPTION_DISPOSITION NTAPI ExceptionRoutine(&#13;
+	// 产生的异常信息&#13;
+	EXCEPTION_RECORD *ExceptionRecord,&#13;
+	PVOID EstablisherFrame,&#13;
+	// 产生异常时的线程上下文&#13;
+	CONTEXT *ContextRecord,&#13;
+	PVOID DispatcherContext&#13;
+)&#13;
+{&#13;
+	printf("自定义的 SEH\n");&#13;
+	return ExceptionContinueSearch;&#13;
+}&#13;
+&#13;
+// 用于遍历 SEH 链表&#13;
+void EnumExceptionList()&#13;
+{&#13;
+	// 定义指针保存链表的头节点&#13;
+	PEXCEPTION_REGISTRATION_RECORD Head = nullptr;&#13;
+	&#13;
+	// 获取到链表的头节点&#13;
+	__asm push FS:[0]&#13;
+	__asm pop Head&#13;
+&#13;
+	// 开始遍历链表&#13;
+	while (Head != (PEXCEPTION_REGISTRATION_RECORD)-1)&#13;
+	{&#13;
+		printf("address: 0x%08X\n", Head-&gt;Handler);&#13;
+		Head = Head-&gt;Next;&#13;
+	}&#13;
+	puts("");&#13;
+}&#13;
+&#13;
+int main()&#13;
+{&#13;
+	// 区分由seh和没有的区别&#13;
+	func1();&#13;
+	func2();&#13;
+&#13;
+	// 遍历&#13;
+	EnumExceptionList();&#13;
+&#13;
+	// 1. 获取到原节点&#13;
+	PEXCEPTION_REGISTRATION_RECORD head = nullptr;&#13;
+	__asm mov eax, FS:[0]//将FS寄存器中的异常链表第一个元素的地址保存起来&#13;
+	__asm mov head, eax //将原来异常链表一个元素的地址保存在head中&#13;
+&#13;
+	// 2. 构建一个结构体  即手动注册seh程序&#13;
+	__asm push ExceptionRoutine//将自定义的异常处理函数入栈&#13;
+	__asm push FS:[0]//将原来异常链表中第一个元素的地址入栈，由此在栈中该栈帧与上一个栈帧组成新的链表元素结构体，该结构体的因为在栈顶，故地址保存在esp中&#13;
+	__asm mov FS:[0], esp//将新的链表元素结构体的地址保存到FS中，则该链表元素结构体称为链表中第一个元素，完成向链表中插入节点&#13;
+&#13;
+	// 遍历&#13;
+	EnumExceptionList();&#13;
+&#13;
+	// 产生一个异常&#13;
+	// *(int*)0 = 10;&#13;
+&#13;
+	// 3. 手动卸载异常处理函数&#13;
+	__asm add esp, 8  //将堆栈平衡&#13;
+	__asm mov eax, head //将保存有原异常链表第一个元素地址的head赋值给eax，后者赋值给FS:[0],恢复链表首首元素&#13;
+	__asm mov fs : [0], eax&#13;
+&#13;
+	// 遍历&#13;
+	EnumExceptionList();&#13;
+&#13;
+	return 0;&#13;
+}</a>
+</h3>
+<h2 class="topic">
+<a name="36kkq6050nu0ojqgffu173pc86">windows异常处理深入分析</a>
+</h2>
+<h3 class="topic">
+<a name="52s3aji3c0kvi19atqf1ikbogr">&nbsp;用户层异常处理流程分析（应用程序程序产生异常）</a>
+</h3>
+<h3 class="topic">
+<a name="4l43mdr9ke4qvjh2iuk65lvhl7">&nbsp;&nbsp;使用windbg 分析int 3异常的处理函数</a>
+</h3>
+<h3 class="topic">
+<a name="598p0mutqt80b9mfi0i7i8ava4">&nbsp;&nbsp;&nbsp;int 3对应的异常处理函数为nt!KiTrap03</a>
+</h3>
+<h3 class="topic">
+<a name="7qu4vu915uoro6vuh1qmcdkcup">&nbsp;&nbsp;&nbsp;&nbsp;使用  !idt  3可以看到idt表第三项的函数地址，通过地址可以查看函数的相关信息</a>
+</h3>
+<h3 class="topic">
+<a name="0p6cbmabtf50knjic0dvtroenc">&nbsp;&nbsp;&nbsp;分析该函数</a>
+</h3>
+<h3 class="topic">
+<a name="2id79qsfhcp03bmq7j9hi1oaaa">&nbsp;&nbsp;&nbsp;&nbsp;保存异常线程cpu中所有寄存器的状态，等待之后用以恢复</a>
+</h3>
+<h3 class="topic">
+<a name="1s04se6t87hf606ojqsdp469ir">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用宏填充KTRAP_FRAME保存当前线程环境</a>
+</h3>
+<h3 class="topic">
+<a name="5v46dfb1jdbvk3cubea3vfhhv3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;判断cs寄存器最低两位是否为1，如果最低两位为1，表示异常产生于3环</a>
+</h3>
+<h3 class="topic">
+<a name="3qfc7ccuamhcoo92eii1r1heei">&nbsp;&nbsp;&nbsp;&nbsp;调用分发异常的函数，并传入了异常地址、附加参数和异常类型</a>
+</h3>
+<h3 class="topic">
+<a name="52295tkjrgfjbo4oph4ohm2kua">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;异常分发函数（该函数会被大多数异常处理函数调用）</a>
+</h3>
+<h3 class="topic">
+<a name="1fvh5i2oql46h5n2ig313p0b9b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过传入的参数填入EXCEPTION_RECORD结构体</a>
+</h3>
+<h3 class="topic">
+<a name="163vat4plr4u1vv1ut7akn21ho">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;调用nt!KiDispatchException函数（会被所有的中断处理程序调用）</a>
+</h3>
+<h3 class="topic">
+<a name="2lmkb8ctlle7ronl2vuv7h8blq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;五个参数</a>
+</h3>
+<h3 class="topic">
+<a name="47ifrgo7ijbkstjvaoqfjpulsn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;是否是第一个分发异常</a>
+</h3>
+<h3 class="topic">
+<a name="2thsgi47ol4agnar5lp26e14ut">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0或1 先前模式，用于标识触发异常的线程位于用户态还是内核态</a>
+</h3>
+<h3 class="topic">
+<a name="0igcsbdknd5l1hkvajjgfk747s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;KTRAP_FRAME结构体地址</a>
+</h3>
+<h3 class="topic">
+<a name="7j6efsp4couvgk33i62v595hi1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;空的异常栈帧</a>
+</h3>
+<h3 class="topic">
+<a name="0eljvrqlc3ii6flkm4qv13b6lc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;EXCEPTION_RECORD结构体</a>
+</h3>
+<h3 class="topic">
+<a name="43mbi6d1809915ee0ln7a7tjr1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;判断是内核态还是用户态</a>
+</h3>
+<h3 class="topic">
+<a name="7nihe72gvbhropqrhp9d9kbkad">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过传入的KTRAP_FRAME填充CONTEXT</a>
+</h3>
+<h3 class="topic">
+<a name="3raujbummqf1vg1ptc1ina5k3r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;开始异常处理</a>
+</h3>
+<h3 class="topic">
+<a name="3lp8hi81ic74i756cljjqjdpg6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;内核态</a>
+</h3>
+<h3 class="topic">
+<a name="46n65kai1llv5gr0hoadinkv1h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果是第一次，检查函数指针是否有意义，并且调用指向的函数，如果处理成功，就使用</a>
+</h3>
+<h3 class="topic">
+<a name="75bpd7lfj79go96vc3466oli25">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果没有异常调试器，或内核调试器没有异常，就调用指定函数遍历SEH链，调用异常处理函数</a>
+</h3>
+<h3 class="topic">
+<a name="3lr0cel3sg5654l5shrbjh9lrg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;异常处理函数</a>
+</h3>
+<h3 class="topic">
+<a name="7rk5jf78930im4heaqf4j4ks87">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用户态</a>
+</h3>
+<h3 class="topic">
+<a name="4dbhgh70b1fsje5jmjm8abefqj">&nbsp;&nbsp;主要看老师发的代码和示例</a>
+</h3>
+<h3 class="topic">
+<a name="0g51ubt7282qn5iqmaphrc8b0i">&nbsp;一个异常产生后会在内核中进行分发，如果经过两次分发异常还是没有被处理，则该异常不会被处理，用户态程序会产生报错，内核态程序会直接蓝屏</a>
+</h3>
+<h3 class="topic">
+<a name="0q8t46lts0iqsp5687fm9u9rbi">&nbsp;seh在处理异常之前会由调试器先接管异常</a>
+</h3>
+<h3 class="topic">
+<a name="1drcp2q1fe6cvkbfo9ripc44s2">&nbsp;&nbsp;在DbgkForwardException函数中将异常交给用户层调试器处理</a>
+</h3>
+<h3 class="topic">
+<a name="5p6edu8p8933p1nmh6nh64i72p">&nbsp;如果用户层调试器处理不成功，会将一场异常信息拷贝到栈空间并返回用户态</a>
+</h3>
+<h3 class="topic">
+<a name="78q37h0jq7r7uv4drctbebub3c">&nbsp;&nbsp;返回用户态后调用RtlDispathException函数，seh,veh vch在该函数中被执行，用于处理异常</a>
+</h3>
+<h3 class="topic">
+<a name="4j11c1l2013ja9q49b7avlr947">&nbsp;&nbsp;&nbsp;如果成功恢复线程环境继续跑</a>
+</h3>
+<h3 class="topic">
+<a name="6cplvl091deqm6ttbrljtcu6t9">&nbsp;内核中可以使用try except 但是不能使用veh ueh vch</a>
+</h3>
+<h3 class="topic">
+<a name="36udruq2k0i7vndivthiei8dsl">&nbsp;异常处理中之所以会涉及内核或用户态到=的调试器，是因为出现异常的程序如果处于被调试的状态，则会优先将异常信息发送给调试器，以求调试器弹窗显示或进行处理，如果调试器不能进行处理，则交由seh veh ueh vch等机制进行处理</a>
+</h3>
+<h3 class="topic">
+<a name="4nvudi9gokbrccer8iob7u5fcv">&nbsp;DbgkpSendApiMessage() 是一个重要函数，用于调试器与被调试程序间的通讯</a>
+</h3>
+<h3 class="topic">
+<a name="1d3eg4ghspq6jj6nhamon96laq">&nbsp;推荐书目</a>
+</h3>
+<h3 class="topic">
+<a name="793c3e6gu6jcjq1bjk0r8o2ahd">&nbsp;&nbsp;软件调试</a>
+</h3>
+<h3 class="topic">
+<a name="5ld2bn7u55857mr0ngu1qkhss6">&nbsp;&nbsp;windows内核情景分析</a>
+</h3>
+<h3 class="topic">
+<a name="380q26r0cl3u4abjkmk1sni45t">&nbsp;异常-》是否有内核调试器-》是否有用户态调试器-》调用veh seh ueh vch进行处理</a>
+</h3>
+</body>
+</html>

@@ -1,0 +1,1609 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>class71day0618(内核编程第二天)</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="5vmhotstsf5pobfvbg7heimik9">class71day0618(内核编程第二天)</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="class71day0618_files/images/class71day0618(%E5%86%85%E6%A0%B8%E7%BC%96%E7%A8%8B%E7%AC%AC%E4%BA%8C%E5%A4%A9).jpg"></div>
+<h2 class="topic">
+<a name="77i5kodtk0bq32rceqd24svnhf">权限检查</a>
+</h2>
+<h3 class="topic">
+<a name="6s28vcso1232tgdldf9c9mumsf">&nbsp;当前特权级</a>
+</h3>
+<h3 class="topic">
+<a name="0onap8f3grt7simbvsa8bha7to">&nbsp;&nbsp;cpl</a>
+</h3>
+<h3 class="topic">
+<a name="5rje5q61efflc58d61mf105820">&nbsp;描述特权级</a>
+</h3>
+<h3 class="topic">
+<a name="7127odsck84blegshubg3i3ore">&nbsp;&nbsp;dpl</a>
+</h3>
+<h3 class="topic">
+<a name="6o07rnso32gakuqbtvqnp66vsr">&nbsp;请求特权级</a>
+</h3>
+<h3 class="topic">
+<a name="7flkdtrfvse2fncog4pjg1d5jd">&nbsp;&nbsp;rpl</a>
+</h3>
+<h2 class="topic">
+<a name="0jmm8bcomcabb2ick27avsj4c8">框架知识</a>
+</h2>
+<h3 class="topic">
+<a name="3j2ctn8ls35msr99mgc6g2vnqh">&nbsp;在十六位实模式中</a>
+</h3>
+<h3 class="topic">
+<a name="1q37fg2i5nr862mh5vpq2siljs">&nbsp;&nbsp;在实模式中(以前16位CPU所使用的模式) , 在内存中的任何地址上都能够执行代码, 所有的内存地址都是可以被读写的, 这非常不安全. 然而并没有其它手段能够限制或者说禁止代码去读写某个内存地址(例如,在保护模式下,读写地址0是错误的,会导致程序崩溃,在实模式下就不会崩溃). CPU为了提供限制/禁止的手段, 提出了保护模式. </a>
+</h3>
+<h3 class="topic">
+<a name="1abjf1nvicgg62715t5hosac34">&nbsp;在32位保护模式中</a>
+</h3>
+<h3 class="topic">
+<a name="25vi6352l6er1n08ck5228dhv4">&nbsp;&nbsp;保护模式效果</a>
+</h3>
+<h3 class="topic">
+<a name="583k62iqhlfm37idr8um02cqk9">&nbsp;&nbsp;&nbsp;1、对内存的属性进行了区分，内存可能具有的属性包括可读可写可执行等方面，某段特定的内存根据用途不同，可能具有不同的属性，比如保存指令的内存一定要有执行属性、保存数据的内存一定要有读取的属性</a>
+</h3>
+<h3 class="topic">
+<a name="6t12tega6jqa16349c1ajjjacr">&nbsp;&nbsp;&nbsp;2、对用户使用的内存和系统使用的内存进行区分，系统和用户进程是被隔离开的. 用户进程无法修改系统的内存,也无法执行系统的代码.</a>
+</h3>
+<h3 class="topic">
+<a name="6qpl89ima8ibidtu78q29brm8s">&nbsp;&nbsp;保护模式实现原理</a>
+</h3>
+<h3 class="topic">
+<a name="2bllb604vlqcuhsgkc2ei7pva9">&nbsp;&nbsp;&nbsp;通过内存分段</a>
+</h3>
+<h3 class="topic">
+<a name="1cvjmv5ka535qnv6ech7g40g1s">&nbsp;&nbsp;&nbsp;&nbsp;注意十六位实模式中也存在内存分段，但是其分段方式只是为了解决使用十六位的寄存器访问1mb内存空间的问题，即本质是通过两个十六进制寄存器组合成20位的地址，从而访问所有内存空间，不涉及内存读写属性，用户执行权限问题</a>
+</h3>
+<h3 class="topic">
+<a name="5d0u7anomijjfl5do3vsfgfum8">&nbsp;&nbsp;&nbsp;&nbsp;32位保护模式下，兼容十六位实模式中 段地址*16+偏移地址的寻址方式，同时通过为段增加段基地址、段长度、段属性三个属性，实现保护模式中内存读写属性区分和权限管理功能</a>
+</h3>
+<h3 class="topic">
+<a name="1vclhisti22cgapiejtgc85qj3">&nbsp;&nbsp;&nbsp;&nbsp;32位实模式中共有6个段寄存器，cs ds ss es fs gs，具体分段机制实现与以上六个寄存器相关，凡是涉及以上六个寄存器的指令，均与保护模式底层实现原理相关</a>
+</h3>
+<h3 class="topic">
+<a name="7m9bluqkkkepeulghqomo2ct7s">&nbsp;32位保护模式中的段寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="7fbpkhvt1ap61tpei6g9q64ud0">&nbsp;&nbsp;可见部分(16位)</a>
+</h3>
+<h3 class="topic">
+<a name="792o50hm6j9nqo523rpu9acigm">&nbsp;&nbsp;&nbsp;不能真实影响段的属性</a>
+</h3>
+<h3 class="topic">
+<a name="09on8pge3anhvvodp209ukbf90">&nbsp;&nbsp;&nbsp;实质上是段选择子,系统根据段选择子填充段寄存器中不可见的部分</a>
+</h3>
+<h3 class="topic">
+<a name="6pik1sva8fgvl87ul4dem4umiq">&nbsp;&nbsp;&nbsp;可以分为</a>
+</h3>
+<h3 class="topic">
+<a name="1tec2jcflkpvlmo9sbouo8lrtu">&nbsp;&nbsp;&nbsp;&nbsp;00 01</a>
+</h3>
+<h3 class="topic">
+<a name="66v3j7akkmq4m9lemukme80kij">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;请求特权级：RPL</a>
+</h3>
+<h3 class="topic">
+<a name="28r5pej13qvj637hm6pmga2emd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;00</a>
+</h3>
+<h3 class="topic">
+<a name="59h5s4m0n07impbivaa3rlmqdf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0环</a>
+</h3>
+<h3 class="topic">
+<a name="7s8i2ne2llrj98mbvud01kso90">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;11</a>
+</h3>
+<h3 class="topic">
+<a name="6dnkgdtbif3ivbmf8i2eqvcms2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3环</a>
+</h3>
+<h3 class="topic">
+<a name="5u209kjltebf666rq0acp8gfs4">&nbsp;&nbsp;&nbsp;&nbsp;02</a>
+</h3>
+<h3 class="topic">
+<a name="2iphv5d2q7l0a49q95mqps0j7b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;表指示器：TI</a>
+</h3>
+<h3 class="topic">
+<a name="084bpj4sn20e8dqp64pumeqllu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0</a>
+</h3>
+<h3 class="topic">
+<a name="5bih3n15idvm0dpu7bbso7rlhj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;表示使用全局描述符表</a>
+</h3>
+<h3 class="topic">
+<a name="78mt9t4qf6fekd2t4kbq9s2i6u">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;GDT</a>
+</h3>
+<h3 class="topic">
+<a name="10qmld03205fi28h64cl8cml84">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1</a>
+</h3>
+<h3 class="topic">
+<a name="3vh6mbdjj90jb4i30eqomnqnvm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;表示使用局部描述符表</a>
+</h3>
+<h3 class="topic">
+<a name="2dm6s6dskp8po32ukd7me3tao7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LDT</a>
+</h3>
+<h3 class="topic">
+<a name="446hj17d2017v07suu79if12do">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;windows系统并不使用局部描述符表</a>
+</h3>
+<h3 class="topic">
+<a name="51h20tf3m7lk50m70lgm00fu4u">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;以上两者保存在cpu的两个寄存器中</a>
+</h3>
+<h3 class="topic">
+<a name="5vve81pds02tpf4rbab93v4qeu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;GDTR</a>
+</h3>
+<h3 class="topic">
+<a name="703jlb9qsauiu30hss7362m5ok">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;分为32位和16位</a>
+</h3>
+<h3 class="topic">
+<a name="4eql286sddpa7rqce0vq3q2m5l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LDTR</a>
+</h3>
+<h3 class="topic">
+<a name="5211n66mjg4tugsk1rv0q4vl8f">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;以上两个寄存器包括两个部分，表的基址和限长</a>
+</h3>
+<h3 class="topic">
+<a name="33pa2bu1nlgadju9cfhrtj90l1">&nbsp;&nbsp;&nbsp;&nbsp;03-15</a>
+</h3>
+<h3 class="topic">
+<a name="6igl521r2ib4t8ob1elf80mafn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;描述符索引:INDEX</a>
+</h3>
+<h3 class="topic">
+<a name="23kevvd6bsupfgbt5t1oe5ouvd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用于描述GDT或LDT表的下标,系统将对应下标的内容填充到段寄存器不可见部分</a>
+</h3>
+<h3 class="topic">
+<a name="1fgj5otu7glg385bijsuedlr9o">&nbsp;&nbsp;不可见部分（80位）</a>
+</h3>
+<h3 class="topic">
+<a name="28t13lfl5stu6d6s4joq4ivsm5">&nbsp;&nbsp;&nbsp;描述符高速缓存器</a>
+</h3>
+<h3 class="topic">
+<a name="6e1uqp16sg9hm3p3j98bsonos3">&nbsp;&nbsp;&nbsp;用于保存段基地址 段的范围  段的属性</a>
+</h3>
+<h3 class="topic">
+<a name="115ter4pfep83i1i4o7a2r2n6j">&nbsp;&nbsp;&nbsp;操作系统通过段的属性对内核层内存和用户层内存进行区分</a>
+</h3>
+<h3 class="topic">
+<a name="4m0s1v6ctk05rvmh6f34l51t2i">&nbsp;&nbsp;&nbsp;是根据可见部分,在GDTR LDTR中索引到的表项（GDT 表和LDT表）进行填充</a>
+</h3>
+<h3 class="topic">
+<a name="4dn6gfeus6ghg9b0kvplqdthjt">&nbsp;&nbsp;&nbsp;&nbsp;windows系统中只使用GDT表，不适用LDT表</a>
+</h3>
+<h3 class="topic">
+<a name="68nd5v86fqfndmb4kod8qrmkps">&nbsp;&nbsp;&nbsp;&nbsp;两张表中的表项称为段描述符，每个段描述符8个字节</a>
+</h3>
+<h3 class="topic">
+<a name="624dsqbp6ubr079dupdjc4u0ps">&nbsp;&nbsp;&nbsp;据资料有80位,但是具体是如何使用的不用详细了解,只要确定其中保存着段描述符相关信息即可</a>
+</h3>
+<h3 class="topic">
+<a name="0tg924o4msnu400keiiv9v5vdt">&nbsp;保护模式如何发挥作用</a>
+</h3>
+<h3 class="topic">
+<a name="6ht8gei059bhjm46oiahtvtpoq">&nbsp;&nbsp;对于指令mov eax , dword ptr ds:[0x403000]</a>
+</h3>
+<h3 class="topic">
+<a name="6ied58hvshcih0f9j0hpe7u4e8">&nbsp;&nbsp;&nbsp;该指令执行过程中 被读取的数据的地址为： &#13;
+段基地址*16 + 段内偏移</a>
+</h3>
+<h3 class="topic">
+<a name="24vkmgt0fnon4ro8ii46kkmr2n">&nbsp;&nbsp;&nbsp;但是此时ds仅是一个十六位的段选择子，需要根据段选择子中的信息，得到8字节的段描述符，并将段描述符填充到段寄存器不可见的部分（描述符高速缓冲区）&#13;
+段描述符中保存该段的基地址，</a>
+</h3>
+<h3 class="topic">
+<a name="27cr8nbcarv8olfb4907s8ko0p">&nbsp;&nbsp;&nbsp;&nbsp;通过段选择子填充描述符高速缓冲区</a>
+</h3>
+<h3 class="topic">
+<a name="4pi6qeq58knk393c3jaibgca7l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1、通过TI确定找GDT表还是LDT表</a>
+</h3>
+<h3 class="topic">
+<a name="1ug6dbjngp0h16t70n6ihnnn2j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2、使用index在对应表中寻找到对应下标的段描述符	</a>
+</h3>
+<h3 class="topic">
+<a name="72v470cg3iccdueujuklfh61vc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3、将段描述符填充到描述符高速缓冲区</a>
+</h3>
+<h3 class="topic">
+<a name="533da7nv94doq8hnt884kut2u9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4、根据描述符高速缓冲区中的段描述符中的基地址，完成取数据的操作</a>
+</h3>
+<h3 class="topic">
+<a name="1qihvceobci6sd3vkaakgaquao">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意：：实际过程要更加复杂，此时过程为简略过程，详细过程看下一条指令</a>
+</h3>
+<h3 class="topic">
+<a name="10epu4nc2gps4oid99315ac6e9">&nbsp;&nbsp;对于直接给段寄存器赋值的指令&#13;
+mov ax,2Bh  mov ds,ax</a>
+</h3>
+<h3 class="topic">
+<a name="0eduud223ejvi48krvsbn48edd">&nbsp;&nbsp;&nbsp;1、将0x2b分解为段选择子的形式，得到其RPL TI INDEX </a>
+</h3>
+<h3 class="topic">
+<a name="08fjqk6su4tscoanokf8tdda32">&nbsp;&nbsp;&nbsp;2 、从对应表中根据下标取出段描述符</a>
+</h3>
+<h3 class="topic">
+<a name="58s79tous0d1c7pp80ikfslroe">&nbsp;&nbsp;&nbsp;3、进行权限检查</a>
+</h3>
+<h3 class="topic">
+<a name="2nu5o9pi83i6r15glf7sqvmhkp">&nbsp;&nbsp;&nbsp;&nbsp;&bull;	段描述符有效位检查 </a>
+</h3>
+<h3 class="topic">
+<a name="17srjlmqqse4tqoh9rus8n4aq3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;检查段描述符的P为是否为1 , 如果为0 , 说明该描述符无效,CPU会触发一个异常.</a>
+</h3>
+<h3 class="topic">
+<a name="0t3cnacfm435t3h7biis49r49i">&nbsp;&nbsp;&nbsp;&nbsp;&bull;	段类型检查 （检查段的读写权限）</a>
+</h3>
+<h3 class="topic">
+<a name="2ba2dfnb3vfp1a135460kq1jqd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;例如, 将一个可读可写但不可执行的段加载到CS段寄存器是错误的,因为CS + IP执行的是代码,如果这个段不能执行,那就没有意义. 将一个只读的段加载到SS是错误的, 因为栈段是可以被改写的, 如果这个段加载到SS却不能修改,也是没有意义的.</a>
+</h3>
+<h3 class="topic">
+<a name="47mtsjjknnmc1lh7ij7c1ojb7g">&nbsp;&nbsp;&nbsp;&nbsp;&bull;	段权限执行检查</a>
+</h3>
+<h3 class="topic">
+<a name="0g6acs5m2puipcrn6e3j6q5rjl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;无论当前执行的是什么指令, 都会使用CS段选择子中的低2位来作为CPL(表示当前执行级别) , 使用被加载的段选择子的低2位作为RPL(表示当前请求级别) , 使用被加载的段选择子的高13位作为描述符表的下标,并从表中取出段描述符,得到该描述符表的DPL(表示描述符特权级别). </a>
+</h3>
+<h3 class="topic">
+<a name="5giuuec3b64nk302nueovbqu7d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当CPL &gt; DPL 或者 RPL &gt; DPL 时, 表示权限不够, 段描述符就会加载是失败，也就是说, 当CPL 或 RPL只要其中一个比DPL要大, 操作就会失败. </a>
+</h3>
+<h3 class="topic">
+<a name="013lpvhf4ietnlf53mtgb0b18i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这是因为操作系统不希望用户程序能够随意切换段描述符, 在32位保护模式下, 每个段描述符的基地址都是0, 段限长都是4Gb, 但其类型是不同的. 系统在创建一个用户进程的时候, 会将用户线程的CS段寄存器的低2位置为3 ,也就是最低的权限的CPL. 这时, 这个系统就永远不能通过正常方式来获取高权限的段描述符, 也就无法访问和修改系统的内存了.</a>
+</h3>
+<h3 class="topic">
+<a name="3jl6lco0oucubpeth58rvomoo4">&nbsp;&nbsp;&nbsp;如果权限检查通过，则将段描述符写到该段寄存器对应的描述符高速缓冲区中</a>
+</h3>
+<h3 class="topic">
+<a name="3qnl7il055pg1s4pn4mpph6tl5">&nbsp;&nbsp;对于远跳转指令和远调用指令&#13;
+jmp 33:401000 &#13;
+call 33:401000</a>
+</h3>
+<h3 class="topic">
+<a name="7un6g8jv5dmjm2pntmffgenjfb">&nbsp;&nbsp;&nbsp;两条指令的33是段选择子，两条指令在执行后, 会将操作数中的段选择子对应的段描述符加载到CS中，此时, CPU也会做检查: 如果检查通过，会将对应段描述符保存到cs的描述符高速缓冲区中 </a>
+</h3>
+<h3 class="topic">
+<a name="7vqh52v6o2lqeku2g4hr80cnrc">&nbsp;&nbsp;&nbsp;&nbsp;检查流程</a>
+</h3>
+<h3 class="topic">
+<a name="2fprmkm3ectpkp62q63r10778s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1. 检查请求的段描述符的S是否为1, 如果是1, 表示是请求的段是一个数据段或代码段, 再检查Type的高位是否是1 , 如果是1 , 表示请求的段是代码段. 如果其中一个不是,就无法加载,指令无法执行,CPU还会报异常.</a>
+</h3>
+<h3 class="topic">
+<a name="50cgagms5vcv6h5s08n7qr7v6d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2. 继续检查,`Type`的`C`标志, 如果是一致代码段, 则要求`CPL`&gt;=`DPL` , 也就是只能低权限转移到高权限, 如果是非一致代码段, 则要求 ` COPL==DPL` 并且, `RPL&lt;=DPL`, 也就是平级才能转移.&#13;
+      但是转移之后, `CPL`和`RPL`不会改变.</a>
+</h3>
+<h3 class="topic">
+<a name="7je9ggofvump7q08qh5tb2fbfv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3. 如果检查`S`位是0 , 则表示请求的是系统段. </a>
+</h3>
+<h3 class="topic">
+<a name="568998c9gp3f0hm9880rg77nsd">&nbsp;段描述符</a>
+</h3>
+<h3 class="topic">
+<a name="1emr5j146r0070e4m84guj1io3">&nbsp;&nbsp;是根据段选择子从GDT表（或LDT表或IDT表）中取出的8字节数据，用于保存段的基地址，段的长度、段的属性信息</a>
+</h3>
+<h3 class="topic">
+<a name="0fmsotbdip436s7d6tk7n14m38">&nbsp;&nbsp;分类(分类依据是段描述符中的s位和type位)</a>
+</h3>
+<h3 class="topic">
+<a name="4n4k75bfubof65hun2e2nb5dcv">&nbsp;&nbsp;&nbsp;数据段（是用户的内存段）</a>
+</h3>
+<h3 class="topic">
+<a name="6ojtp79mva49djme0c9j5a5lgn">&nbsp;&nbsp;&nbsp;代码段（是用户的内存段）</a>
+</h3>
+<h3 class="topic">
+<a name="0vo6kl42fqckk0fa9b7hmttba6">&nbsp;&nbsp;&nbsp;系统段（是内核的内存段）</a>
+</h3>
+<h3 class="topic">
+<a name="346nu4f985q0kmft3l34ito0m1">&nbsp;&nbsp;&nbsp;&nbsp;调用门描述符</a>
+</h3>
+<h3 class="topic">
+<a name="2cokss28tmrn1rrh25ogqp54vt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Windows操作系统没有使用此机制)</a>
+</h3>
+<h3 class="topic">
+<a name="16lv3j9ivpdtlf55bt0l9n561v">&nbsp;&nbsp;&nbsp;&nbsp;中断门描述符</a>
+</h3>
+<h3 class="topic">
+<a name="19hn7t79rqrf3umqcb6c5utcej">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(IDT表中的中断处理函数就是这种门描述符)</a>
+</h3>
+<h3 class="topic">
+<a name="12f38j3eicqfnuabk5l4sai0tr">&nbsp;&nbsp;&nbsp;&nbsp;陷阱门描述符</a>
+</h3>
+<h3 class="topic">
+<a name="6eemujjo3ieo29fkrvpdpqjvrr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(IDT表中的陷阱处理函数就是这种门描述符)</a>
+</h3>
+<h3 class="topic">
+<a name="2u8pfes1fkn5kq5o53d3gign5b">&nbsp;&nbsp;&nbsp;&nbsp;任务门描述符</a>
+</h3>
+<h3 class="topic">
+<a name="233a8p8bhjclrdcmv5oq9e454j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(用于任务切换)</a>
+</h3>
+<h3 class="topic">
+<a name="76d5l296vr534bd02mu2oq8l1m">&nbsp;&nbsp;&nbsp;&nbsp;注意所有的系统段描述符都是门描述符</a>
+</h3>
+<h3 class="topic">
+<a name="59nropgcvvvp99hd0nc5j1mogr">&nbsp;&nbsp;&nbsp;&nbsp;中断、陷阱、任务描述符保存在IDT中，调用门描述符保存在GDT中</a>
+</h3>
+<h3 class="topic">
+<a name="350r163hlrnibhu5bcj5ar4t0p">&nbsp;&nbsp;&nbsp;windows中的异常类型</a>
+</h3>
+<h3 class="topic">
+<a name="707b897d0782vt0tuiq3t6po94">&nbsp;&nbsp;&nbsp;&nbsp;中断</a>
+</h3>
+<h3 class="topic">
+<a name="3nifen0km1cts4l1mant2ts9lo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;硬件产生，可以不处理，不阻塞</a>
+</h3>
+<h3 class="topic">
+<a name="7njpl9jvukrh5v2e1iv8t3cibk">&nbsp;&nbsp;&nbsp;&nbsp;异常</a>
+</h3>
+<h3 class="topic">
+<a name="1s7lma0lcofd7mf43he8ag2okr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;程序自身产生，必须处理，会阻塞</a>
+</h3>
+<h3 class="topic">
+<a name="73dret2ksdc056gr81hen15pl5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;分类</a>
+</h3>
+<h3 class="topic">
+<a name="64v604g77bv981bl9f6ejmnpod">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;错误</a>
+</h3>
+<h3 class="topic">
+<a name="6o985eltri1kfp2cun73ktlsqd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;内存访问异常</a>
+</h3>
+<h3 class="topic">
+<a name="550locjgfgk8as0oacde3bc081">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;除零异常</a>
+</h3>
+<h3 class="topic">
+<a name="037psj010nggkpe7tcu9qkahi0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;eipz指向错误指令</a>
+</h3>
+<h3 class="topic">
+<a name="0vja20cb2u391ja2gt1bk1jjlv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;陷阱</a>
+</h3>
+<h3 class="topic">
+<a name="7i060k1t67i4oqv82bt5n3g53l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;int3断点，硬件读写断点，单步执行断点</a>
+</h3>
+<h3 class="topic">
+<a name="34bej3cf2ki2ic6fd1tdli3ger">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;eip指向错误指令的下一条指令</a>
+</h3>
+<h3 class="topic">
+<a name="4ku8n9031te7uhv1enc2q7jtg5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;终止</a>
+</h3>
+<h3 class="topic">
+<a name="6v81l2842jcpfn8mmia9e5in6k">&nbsp;&nbsp;段描述符结构</a>
+</h3>
+<h3 class="topic">
+<a name="62inmehpc3rr6khq5lrlkdu5cl">&nbsp;&nbsp;&nbsp;略，可以看书</a>
+</h3>
+<h3 class="topic">
+<a name="0pq2i2c8k6edmdevh7f5feuk24">&nbsp;从用户态转为内核态</a>
+</h3>
+<h3 class="topic">
+<a name="1fhfufimlh3dm6k88o50qe50kb">&nbsp;&nbsp;实质</a>
+</h3>
+<h3 class="topic">
+<a name="760qn2qm4blg80scptid70aclp">&nbsp;&nbsp;&nbsp;将CS段寄存器的CPL改成0(也就是0环权限)，即将当前权限改为0环权限</a>
+</h3>
+<h3 class="topic">
+<a name="42gbn9rdlo8nf2kh5rpmk4ru0g">&nbsp;&nbsp;问题</a>
+</h3>
+<h3 class="topic">
+<a name="2rg9n2lilavelsnccsje7ri9v8">&nbsp;&nbsp;&nbsp;当cs处于3环时,CS的CPL是3,，无法直接修改cs的值CPL（即段选择子）</a>
+</h3>
+<h3 class="topic">
+<a name="5m93t754o3165blqsh18msst03">&nbsp;&nbsp;&nbsp;&nbsp;因为此时CPL为3，重新设置段选择子的过程中涉及找到段描述符重新填充cs的描述符高速缓冲区，因为此时cs需要转为0环，所以目标段描述符中的DPL必然为0，CPL&gt;DPL，权限不够，段描述符填充失败，程序报错</a>
+</h3>
+<h3 class="topic">
+<a name="2n09bh4uv0jtei082hgckn1hig">&nbsp;&nbsp;解决方案</a>
+</h3>
+<h3 class="topic">
+<a name="4viq7jlupv7jtirs68f7rvsor2">&nbsp;&nbsp;&nbsp;门描述符一般用于从3环进入到0环，并能够将3环权限切换成0环权限，即将cs的cpl置为0</a>
+</h3>
+<h3 class="topic">
+<a name="49tlfl5mg5p4kjomip9s2j52sr">&nbsp;&nbsp;&nbsp;一般使用调用门进行不同权限之间的切换</a>
+</h3>
+<h3 class="topic">
+<a name="5t0h77h23c7fmc9cln5jh9nmqt">&nbsp;&nbsp;具体细节</a>
+</h3>
+<h3 class="topic">
+<a name="4sntbch8iq7m60n549120vq6bc">&nbsp;&nbsp;&nbsp;门描述符的结构与数据段描述符和代码段描述符不太一样</a>
+</h3>
+<h3 class="topic">
+<a name="3pgslup7j8e7gfjc6vqqrtorqo">&nbsp;&nbsp;&nbsp;&nbsp;调用门</a>
+</h3>
+<h3 class="topic">
+<a name="1s33bkuolbtpov955hkj0k3hpt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class71day0618_files/6tuhr10p9q9sqi8qlvug5gim50.png"></p>
+<h3 class="topic">
+<a name="2u108u6g1ddgmaecks9ct9fj96">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type为12</a>
+</h3>
+<h3 class="topic">
+<a name="4e0cep332q43tl7cdhb5vsmd8j">&nbsp;&nbsp;&nbsp;&nbsp;中断门</a>
+</h3>
+<h3 class="topic">
+<a name="51ecpo7e9i5v5vd6vtispa2ai5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class71day0618_files/0ur414v8rimj8aahnebgp3pukq.png"></p>
+<h3 class="topic">
+<a name="4ruu0u8fugrpkn3ud2rteia7li">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type为14</a>
+</h3>
+<h3 class="topic">
+<a name="49vedkhsvq3q374ft9cuhm7psa">&nbsp;&nbsp;&nbsp;&nbsp;陷阱门</a>
+</h3>
+<h3 class="topic">
+<a name="5uqraseagkqmpb5h5laa8lsh19">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class71day0618_files/4rvmo9v4717sm1i4d6aof8uhdu.png"></p>
+<h3 class="topic">
+<a name="3ecidvtlorde66hql6cimf4bm4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type为15</a>
+</h3>
+<h3 class="topic">
+<a name="0mh6na8f49c14g03oaclhj753e">&nbsp;&nbsp;&nbsp;&nbsp;任务门</a>
+</h3>
+<h3 class="topic">
+<a name="20ff76tqdrdjoq3nakjv14ahqd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class71day0618_files/2h9o8s5p65cn737skglvdllco2.png"></p>
+<h3 class="topic">
+<a name="0qtt001u434r19uq6j3uq60f5n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type为5</a>
+</h3>
+<h3 class="topic">
+<a name="1rkdhpo3hm2se72n6fm84gf9ub">&nbsp;&nbsp;&nbsp;调用门、中断门、陷阱门均保存有段选择子，同时也保存有一个偏移</a>
+</h3>
+<h3 class="topic">
+<a name="3akiuig9ptl57o7bqi680r8q1s">&nbsp;&nbsp;&nbsp;&nbsp;调用门被使用时，段选择子赋值给使用调用门的段寄存器，即该段选择子可能赋值给cs寄存器，该寄存器的赋值不需要检测权限，只需要考虑该段选择子对应的段描述符的类型是否与cs寄存器相符（即该段描述符是不是代码段描述符）</a>
+</h3>
+<h3 class="topic">
+<a name="48oncone5c5v0kofi7avb19ugc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过该特点，可以修改cs中的段选择子，使其CPL为0</a>
+</h3>
+<h3 class="topic">
+<a name="6fbik7lrce56431rdn96q1dqf0">&nbsp;&nbsp;&nbsp;&nbsp;调用门被使用时，offset（由门描述符中的两个部分拼成）即为偏移，保存的是cs被修改后，所执行的指令的地址，就是穿过门，跳转到的目的地址，实质上是将offset赋值给eip</a>
+</h3>
+<h3 class="topic">
+<a name="26ogkmia2fhch6o27nccktrqb0">&nbsp;&nbsp;&nbsp;&nbsp;当权限切换发生时，需要将栈从用户栈切换位内核栈， </a>
+</h3>
+<h3 class="topic">
+<a name="3iouci9l022nvlfvp0ilf46d52">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;会将SS段选择子,切换为内核的段选择子, 将ESP切换成内核的ESP,</a>
+</h3>
+<h3 class="topic">
+<a name="3nf453dkariph5r7emvuarbj2s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;切换前,SS,ESP的值都会被保存. 在切换回来之后,才进行还原.</a>
+</h3>
+<h3 class="topic">
+<a name="022k6smfukh6ivgf5a7vm020q3">&nbsp;&nbsp;&nbsp;&nbsp;将用户栈切换为内核栈是在调用门执行过程中系统使用任务门自动完成的</a>
+</h3>
+<h3 class="topic">
+<a name="345cp6pogs9dr3lrvv7d5en79e">&nbsp;&nbsp;&nbsp;&nbsp;中断门陷阱门中的 段选择子和offset可以类比调用门的过程会将cs eip重新赋值</a>
+</h3>
+<h3 class="topic">
+<a name="7465d1nmpcb2j14l9esa8bmk86">&nbsp;&nbsp;&nbsp;&nbsp;使用调用门后，门描述符中的段选择子对应的段描述符，会被填充到cs的描述符高速缓冲区</a>
+</h3>
+<h3 class="topic">
+<a name="02el0lo42ptsudhver56oc0s5f">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意并不是门描述符填充cs寄存器的描述符高速缓冲区</a>
+</h3>
+<h3 class="topic">
+<a name="5vqh7ru1u86t2gfptku9jev8fv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这就意味着我们不仅需要构建一个门描述符放入GDT表中（与call fword ptr中的段选择子对应），并且在构建门描述符时，因为门描述符中保存有段选择子，该段选择子会被赋值到cs寄存器中，该段选择子对应的段描述符会被填充进cs对应的描述符高速缓冲区中，则该段描述符从哪里来呢？</a>
+</h3>
+<h3 class="topic">
+<a name="6tnflvhvkc0ch9sqe1d6ugggmg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;首先根据门描述符中的段选择子对应的段描述符填充cs寄存器的描述符高速缓冲区，目的是改变当前cs段的属性，所以被填充的段描述符必须是 表示内核层的代码段的属性，具体而言该段描述符必须DPL为0  S为1  Type最高位为1</a>
+</h3>
+<h3 class="topic">
+<a name="5lskffig3gm7s9al5picrgl3v3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如何找得到这样一个段描述符？可以选择当前gdt表中已经存在并符合要求的段描述符，根据其下标得到门描述中的段选择子，也可以在GDT表的空白位置自己创建一个段描述符，并构造段选择子指向该段描述符</a>
+</h3>
+<h3 class="topic">
+<a name="4igemofpkvtj867jm30oq06cr4">&nbsp;&nbsp;&nbsp;&nbsp;当cs的描述符高速缓冲区被填充之后，调用门机制发挥作用，将cs的描述符高速缓冲区中的段描述符的base作为基址（该段描述符是调用门描述符中的段选择子指向的）&#13;
+将调用门描述符中的offset作为偏移，调用函数，因为32位保护模式下段描述符中base总为0，所以调用门描述符中的offset就是被调用函数的地址</a>
+</h3>
+<h3 class="topic">
+<a name="5cuo8go1a0uf4kllld7qnio716">&nbsp;&nbsp;&nbsp;如何使用调用门？</a>
+</h3>
+<h3 class="topic">
+<a name="1t46j5fjsm08hnj37eumvc5s8p">&nbsp;&nbsp;&nbsp;&nbsp;通过call fword ptr ds:[buff]指令</a>
+</h3>
+<h3 class="topic">
+<a name="4s6qhd65men0hs9lvsd3shrmij">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;char buff[ ] = { 0,0,0,0,0x4b,00 };</a>
+</h3>
+<h3 class="topic">
+<a name="4dtfi5c4uojel6gl0dbuc3t0qt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fword tpr意思是对6字节的数据进行操作，而buff中开始的四个0表示eip的值，00 0x4b表示段选择子，整个call指令与call 33:401000等效，目的还是修改cs的值</a>
+</h3>
+<h3 class="topic">
+<a name="24s6m4l5n21cgm5aavvmpe0j97">&nbsp;&nbsp;&nbsp;&nbsp;通过将GDT中的空白项设置为调用门描述符，然后构造段选择子调用call fword ptr ds:[buff]指令，可以使用调用门将cs、eip分别修改为调用门中的段选择子和偏移，从而以特权权限执行调用门中指定内存地址的函数</a>
+</h3>
+<h3 class="topic">
+<a name="18hjep4e9bg8nt36o14devk850">&nbsp;&nbsp;&nbsp;&nbsp;不能通过直接向cs赋值从而切换执行权限3环到0环，只能通过call、jmp、retf、触发异常的方式修改cs</a>
+</h3>
+<h3 class="topic">
+<a name="0dsk68moi1cpggji8bsn1lcart">&nbsp;中断门、异常门的用法</a>
+</h3>
+<h3 class="topic">
+<a name="5vlha5j0qd71ukap1lf0b8ar5j">&nbsp;&nbsp;产生中断或异常后,</a>
+</h3>
+<h3 class="topic">
+<a name="3mgvqoo7su6mui40rbvs93phtl">&nbsp;&nbsp;&nbsp;1.	CPU会使用中断号找到IDT表中的中断描述符/陷阱描述符, </a>
+</h3>
+<h3 class="topic">
+<a name="2qr8gh6pva4k7ga7t3u3put3lu">&nbsp;&nbsp;&nbsp;2.	取出描述符后, 得到门描述符中的段选择子.</a>
+</h3>
+<h3 class="topic">
+<a name="2ttq9d2qqfk6ggb985mgacc8rk">&nbsp;&nbsp;&nbsp;3.	通过此段选择子找到GDT表中的段描述符,</a>
+</h3>
+<h3 class="topic">
+<a name="6lau3oqa32s6hpgeeg767ilpqh">&nbsp;&nbsp;&nbsp;4.	从GDT表中取出的段描述符中得到段基地址</a>
+</h3>
+<h3 class="topic">
+<a name="2aoe3k9het0a6p30seu8leguks">&nbsp;&nbsp;&nbsp;5.	使用段基地址 + 门描述符中的函数偏移 , 得到函数地址.</a>
+</h3>
+<h3 class="topic">
+<a name="4h7flti6binn34jcknfhogjdmm">&nbsp;&nbsp;&nbsp;6.	调用该函数.</a>
+</h3>
+<h3 class="topic">
+<a name="445bcnp3s4ie81fiid3f0nnetm">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class71day0618_files/0p7k8gks3mtc9hpcp1vcfd5i7l.png"></p>
+<h3 class="topic">
+<a name="7piqamjapidk2frva8te1b271h">&nbsp;知识细节</a>
+</h3>
+<h3 class="topic">
+<a name="1ic8gevihnlc17tdus1ept7isp">&nbsp;&nbsp;在32位保护模式下, 每个段描述符的基地址都是0, 段限长都是0xfffff（4GB）</a>
+</h3>
+<h3 class="topic">
+<a name="15kffijt82ijvqn50sev5bromc">&nbsp;&nbsp;GDT表保存在内核的内存空间中，使用gdtr寄存器寻址，后者是一个48位寄存器，32位表示GDT表的首地址，16位表示GDT表的大小</a>
+</h3>
+<h2 class="topic">
+<a name="3imf3r9ju0gkkjfbf55j7b7rko">门</a>
+</h2>
+<h3 class="topic">
+<a name="2qju7bheoeg4ii78htsuaej0mc">&nbsp;门可以使代码执行从一个段进入另一个段，可以使执行权限从3环转移到0环</a>
+</h3>
+<h3 class="topic">
+<a name="5cciu89ui9jfrlucdlg389rlq3">&nbsp;触发门的方式</a>
+</h3>
+<h3 class="topic">
+<a name="5575d7k2gk9ti4l9tigmvj2pli">&nbsp;&nbsp;jmp</a>
+</h3>
+<h3 class="topic">
+<a name="3o78jnboa42ed8p88ueei49sk7">&nbsp;&nbsp;call</a>
+</h3>
+<h3 class="topic">
+<a name="5cjobm67s0pd6o5626a3js57q7">&nbsp;&nbsp;int</a>
+</h3>
+<h3 class="topic">
+<a name="7gb1dkjoeh6frcdqlgkrlqdi6m">&nbsp;&nbsp;retf</a>
+</h3>
+<h3 class="topic">
+<a name="7i0q8eagjfu3d2h2u1mju3g082">&nbsp;&nbsp;&nbsp;远返回</a>
+</h3>
+<h3 class="topic">
+<a name="43t0k7auq3dleag41b32uta0cr">&nbsp;&nbsp;触发错误</a>
+</h3>
+<h3 class="topic">
+<a name="26jovkf8p6rtnv5r81jk7cmp56">&nbsp;&nbsp;只能通过以上方式触发，不能通过直接赋值段寄存器触发</a>
+</h3>
+<h3 class="topic">
+<a name="22u4n5rbc84qjnvpoh62ft30ko">&nbsp;门类型</a>
+</h3>
+<h3 class="topic">
+<a name="0tpn5sq69tvpdqcck0e1o51nud">&nbsp;&nbsp;调用门</a>
+</h3>
+<h3 class="topic">
+<a name="4pv5it4aibiaj4audd3t2hufj4">&nbsp;&nbsp;&nbsp;用于跨级别访问段 即从3环访问到0环的数据</a>
+</h3>
+<h3 class="topic">
+<a name="2virans5fj9vn65f7kbtocuqv0">&nbsp;&nbsp;&nbsp;调用门描述符中存储了一个代码段的段选择子</a>
+</h3>
+<h3 class="topic">
+<a name="296t9q7ch70c4crsk98n84r3p6">&nbsp;&nbsp;&nbsp;&nbsp;段选择子指向的段描述符中的段base+门描述符中的偏移地址即为真正需要执行的地址，即门的目的地</a>
+</h3>
+<h3 class="topic">
+<a name="7r1clr89r4hu0g24vmkg8so55f">&nbsp;&nbsp;&nbsp;其门描述符保存在GDT中</a>
+</h3>
+<h3 class="topic">
+<a name="0o7optee4r7ec3gh6u7f5c6pch">&nbsp;&nbsp;&nbsp;s=0 type=1100</a>
+</h3>
+<h3 class="topic">
+<a name="0pt2j52fh3ragd35ualli7r2n6">&nbsp;&nbsp;任务门</a>
+</h3>
+<h3 class="topic">
+<a name="6cgv37v9l24r93q1p2ub51qar7">&nbsp;&nbsp;&nbsp;保存TSS段的段选择子</a>
+</h3>
+<h3 class="topic">
+<a name="19a0sscvadb51nue8s1e9qqsh2">&nbsp;&nbsp;&nbsp;任务门描述符中只有TSS段选择子和属性描述有用</a>
+</h3>
+<h3 class="topic">
+<a name="5jub8t6jepjag92g8dl5km4na4">&nbsp;&nbsp;&nbsp;&nbsp;段选择子用于指向TSS段</a>
+</h3>
+<h3 class="topic">
+<a name="3d1qfjjvqo5ivqoac1vn4cg8h9">&nbsp;&nbsp;&nbsp;TSS即任务段，是一块104个字节的内存，可以存储很多寄存器的值</a>
+</h3>
+<h3 class="topic">
+<a name="1leb5ggdi3d1vinaebono1klo7">&nbsp;&nbsp;&nbsp;&nbsp;intel欲将其用于在线程切换的时候保存线程环境</a>
+</h3>
+<h3 class="topic">
+<a name="74gi6com647d36k3qdcdmp033a">&nbsp;&nbsp;&nbsp;&nbsp;实际windows中仅用于保存ESP和SS寄存器的值</a>
+</h3>
+<h3 class="topic">
+<a name="5qi6pkuu822tcnt6dejpa8rise">&nbsp;&nbsp;&nbsp;其门描述符保存在IDT中</a>
+</h3>
+<h3 class="topic">
+<a name="51voink1o9gipjjou395d1tf92">&nbsp;&nbsp;&nbsp;s=0 type=0101</a>
+</h3>
+<h3 class="topic">
+<a name="4k5ngfjn0fvaa53rl2rgjb00b9">&nbsp;&nbsp;中断门</a>
+</h3>
+<h3 class="topic">
+<a name="580ir7gtbpod3et29hm28pa9cp">&nbsp;&nbsp;&nbsp;与IDT搭配，处理中断请求</a>
+</h3>
+<h3 class="topic">
+<a name="5jg58i6ejkluubgha320enkoov">&nbsp;&nbsp;&nbsp;中断门描述符中存储了一个代码段的段选择子</a>
+</h3>
+<h3 class="topic">
+<a name="3i98je3sk1ng934jdgm40047s6">&nbsp;&nbsp;&nbsp;中断门执行的时候，会将if置为0，从而屏蔽可屏蔽的中断</a>
+</h3>
+<h3 class="topic">
+<a name="06m792ccmomlc063kj4eb86gu9">&nbsp;&nbsp;&nbsp;其门描述符保存在IDT中</a>
+</h3>
+<h3 class="topic">
+<a name="7sscd324fnaharkldsun8tctlp">&nbsp;&nbsp;&nbsp;s=0 type=1110</a>
+</h3>
+<h3 class="topic">
+<a name="704dqgaqko6bo09nel2739ifq8">&nbsp;&nbsp;陷阱门</a>
+</h3>
+<h3 class="topic">
+<a name="3u1r9cf9pk57sr7o4o45cnpdge">&nbsp;&nbsp;&nbsp;存放异常处理函数地址，用于处理异常</a>
+</h3>
+<h3 class="topic">
+<a name="6irkdsoad39lhrnpd8o8epvo12">&nbsp;&nbsp;&nbsp;陷阱门执行的时候，不会将if置为0，不会屏蔽可屏蔽的中断</a>
+</h3>
+<h3 class="topic">
+<a name="0l98csk65bm4bu7guj88aju2en">&nbsp;&nbsp;&nbsp;其门描述符保存在IDT中</a>
+</h3>
+<h3 class="topic">
+<a name="38q7j9uf1k9utlvjqjrhrchp9g">&nbsp;&nbsp;&nbsp;s=0 type=1111</a>
+</h3>
+<h3 class="topic">
+<a name="7qu2ma09lk08orhdgtih1k8q4e">&nbsp;寻找IDT表</a>
+</h3>
+<h3 class="topic">
+<a name="5c16on1mv19p8nfd9gni4h0r1e">&nbsp;&nbsp;中断门、异常门、任务门的描述符表不是gdt中而是idt</a>
+</h3>
+<h3 class="topic">
+<a name="2h77gtn5ltu2upg8fuhp0p5dm9">&nbsp;&nbsp;&nbsp;r idtr</a>
+</h3>
+<h3 class="topic">
+<a name="2na038nealt649qbc7j3svn3ol">&nbsp;&nbsp;&nbsp;dq idtr</a>
+</h3>
+<h3 class="topic">
+<a name="4ij7hcdt36uhhr4nb0l6k23eb0">&nbsp;&nbsp;&nbsp;u int3异常处理函数的断点</a>
+</h3>
+<h3 class="topic">
+<a name="09cc8vs5bo1u4vc853gb23tkjl">&nbsp;门的描述符</a>
+</h3>
+<h3 class="topic">
+<a name="05503atvlt6jnrsitu8q81rd89">&nbsp;&nbsp;相对于段描述符，整体结构体相似，部分结构不相同，主要区别在于，多出参数个数字段，且门描述符中保存有段选择子</a>
+</h3>
+<h3 class="topic">
+<a name="39bl8dr3kb1lmn4aui0qb3nnq4">&nbsp;&nbsp;type中内容根据门的类型的不同而不同，最重要</a>
+</h3>
+<h3 class="topic">
+<a name="4b7v09d0bal53laem2m2rv2uks">&nbsp;&nbsp;&nbsp;s为0时，描述符是系统描述符，所有系统描述符均是门描述符</a>
+</h3>
+<h3 class="topic">
+<a name="4lvha574od4lqk38ctldmmpihk">&nbsp;&nbsp;&nbsp;0101 任务门</a>
+</h3>
+<h3 class="topic">
+<a name="71e019ehnofpsi5fkkhko26rjs">&nbsp;&nbsp;&nbsp;1100调用门</a>
+</h3>
+<h3 class="topic">
+<a name="4aqgiiboaul3mag78saode5453">&nbsp;&nbsp;&nbsp;1110中断门</a>
+</h3>
+<h3 class="topic">
+<a name="1v5ofmlf42ek0jhn6orf6kj661">&nbsp;&nbsp;&nbsp;1111陷阱门</a>
+</h3>
+<h3 class="topic">
+<a name="27653nejmuem5lr872no34q828">&nbsp;&nbsp;Segmen Seletor</a>
+</h3>
+<h3 class="topic">
+<a name="2nak0ml0avq4hg3b3v59q3512s">&nbsp;&nbsp;&nbsp;门跳转时的段选择子，就是说在门描述符中，存在选择子，这一点和段描述符不同</a>
+</h3>
+<h3 class="topic">
+<a name="2sglmsa14rqndhaihsqbt6n96l">&nbsp;&nbsp;门描述符一般用于从3环进入到0环，并能够将3环权限切换成0环权限。 </a>
+</h3>
+<h3 class="topic">
+<a name="6kkkpmf1kifgfrcait5nm9n59i">&nbsp;使用调用门从3环切换到0环</a>
+</h3>
+<h3 class="topic">
+<a name="7nsohec9f17hb7c11hqoup8oaf">&nbsp;&nbsp;调用门的过程即切换段的过程，需要指定cs eip，cs使用门描述符中的段选择子，eip使用门描述符中的段偏移</a>
+</h3>
+<h3 class="topic">
+<a name="1c86go8b6cvfieo1mbk51v8igj">&nbsp;&nbsp;若需要完成一次完整的段间转移，需要指定目的段的cs:eip  ss:esp </a>
+</h3>
+<h3 class="topic">
+<a name="0o4b5fprks146rlvql8kkf2slh">&nbsp;&nbsp;tss主要用于保存跳转过程中栈的值状态 用于保存ss esp寄存器的状态</a>
+</h3>
+<h3 class="topic">
+<a name="4mith408tkt9346fijn1rnv9tp">&nbsp;调用门提权原理</a>
+</h3>
+<h3 class="topic">
+<a name="2c3dc4bm61ptobfa740rigqto7">&nbsp;&nbsp;call fword ptr ds:[选择子:偏移废弃]</a>
+</h3>
+<h3 class="topic">
+<a name="5bsl0u8gldchtqaabvrtiau191">&nbsp;&nbsp;调用门选择子与段选择子结构体相同，包括RPL TI 偏移，且其指向GDT，使用偏移在GDT中寻找对应的门描述符</a>
+</h3>
+<h3 class="topic">
+<a name="07he7m2f9a340e7dad4hpim5nu">&nbsp;TR寄存器保存TSS表的首地址</a>
+</h3>
+<h3 class="topic">
+<a name="5ujq3u8rl1qmlgl7v29hakacgc">&nbsp;&nbsp;16位可见</a>
+</h3>
+<h3 class="topic">
+<a name="7if1v4qgoi0ukm4u67u4j18ij0">&nbsp;&nbsp;&nbsp;是描述索引，可以在GDT中寻址</a>
+</h3>
+<h3 class="topic">
+<a name="2i2nll0d51c2qjplc8l5pmo0oo">&nbsp;&nbsp;&nbsp;通过gdt找到的内容填充不可见部分，通过不可见部分寻址tss表，通过tss表获得跳转目的段的ss esp</a>
+</h3>
+<h3 class="topic">
+<a name="3cfemoqjbslpg853hr083qh2ou">&nbsp;&nbsp;48位不可见</a>
+</h3>
+<h3 class="topic">
+<a name="7cqa0b26dp3ckev1f24n0pdqa7">&nbsp;&nbsp;&nbsp;保存tss的基址</a>
+</h3>
+<h3 class="topic">
+<a name="1l65o161rsmm7n48emp5hn0lg6">&nbsp;&nbsp;&nbsp;保存tss的限长</a>
+</h3>
+<h3 class="topic">
+<a name="6d82ek02ujdhpu87u1t2ch5vjt">&nbsp;&nbsp;windbg指令</a>
+</h3>
+<h3 class="topic">
+<a name="2g44sodfeeu9a8oqrbun5r8h90">&nbsp;&nbsp;&nbsp;r tr</a>
+</h3>
+<h3 class="topic">
+<a name="0q281op7j85fopaj8or18qhh4l">&nbsp;&nbsp;&nbsp;&nbsp;查看tr寄存器选择子</a>
+</h3>
+<h3 class="topic">
+<a name="465aneeej4e21dihqf4uo1204e">&nbsp;&nbsp;&nbsp;&nbsp;解析选择子得到在GDT中的偏移</a>
+</h3>
+<h3 class="topic">
+<a name="1lnga1pnononpfl3cr73guk3j5">&nbsp;&nbsp;&nbsp;r gdtr</a>
+</h3>
+<h3 class="topic">
+<a name="77o9n131191tkbopogpddmo3oa">&nbsp;&nbsp;&nbsp;dq gdtr</a>
+</h3>
+<h3 class="topic">
+<a name="2irn2pu3fpemifp1oin3v4ls79">&nbsp;&nbsp;&nbsp;&nbsp;将gdtr寄存器中的值作为首地址，显示数据，以8字节进行显示</a>
+</h3>
+<h3 class="topic">
+<a name="1lftnhlj7aquqe0nnbokp71tej">&nbsp;&nbsp;&nbsp;找到tss描述符，解析tss描述符</a>
+</h3>
+<h3 class="topic">
+<a name="5bm0nt6iqmtcrkvmo2jh8903e9">&nbsp;&nbsp;&nbsp;&nbsp;将tss的基地址组装起来 需要由三个部分组成</a>
+</h3>
+<h3 class="topic">
+<a name="64trrq4i0tn5qq6jrfil04706o">&nbsp;&nbsp;&nbsp;!pcr</a>
+</h3>
+<h3 class="topic">
+<a name="2h05dji01ffcupqrai3lh87kmq">&nbsp;&nbsp;&nbsp;&nbsp;查看当前进程的tss所在的位置，检查拼接得到的基地址是否正确</a>
+</h3>
+<h2 class="topic">
+<a name="4b4pgfdtjs7pv18hmgk1v5slo5">写程序通过调用门访问内核数据</a>
+</h2>
+<h3 class="topic">
+<a name="739i2knga5um4otklispn7ovkv">&nbsp;主要流程</a>
+</h3>
+<h3 class="topic">
+<a name="25pr3omld5c4c7qg8mlihfncsk">&nbsp;&nbsp;定义全局变量</a>
+</h3>
+<h3 class="topic">
+<a name="6f3oejavbt0omq94qmi3c5nmg2">&nbsp;&nbsp;&nbsp;int magic=0</a>
+</h3>
+<h3 class="topic">
+<a name="5e0l3mcl8g1pefijb6pf0kpcop">&nbsp;&nbsp;写一个裸函数</a>
+</h3>
+<h3 class="topic">
+<a name="4vl1hqqo6vgitd9mkb9t0ntq26">&nbsp;&nbsp;&nbsp;void _declspec(naked)func()&#13;
+{&#13;
+__asm{&#13;
+push eax&#13;
+mov eax,ds:[0x83e3e6be]&#13;
+mov magic,eax&#13;
+pop eax&#13;
+retf;&#13;
+}&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="3hj8rrpu2rn392438b6pkn4f4n">&nbsp;&nbsp;创建数组</a>
+</h3>
+<h3 class="topic">
+<a name="6r2b2uh4946a856jmpchikcuoq">&nbsp;&nbsp;&nbsp;char Data[]={0x00,0x00,0x00,0x00,0x66,0x00}</a>
+</h3>
+<h3 class="topic">
+<a name="499tvfihaiqd59gdsinqcaad34">&nbsp;&nbsp;构造一个call</a>
+</h3>
+<h3 class="topic">
+<a name="3ne8a6534q31a4s2k0is2kmvsv">&nbsp;&nbsp;&nbsp;call fword ptr ds:[Data]</a>
+</h3>
+<h3 class="topic">
+<a name="42e4il8ii9r25bbeue7vob8a15">&nbsp;&nbsp;&nbsp;&nbsp;远调用</a>
+</h3>
+<h3 class="topic">
+<a name="1stcg603inatvub1pnq72etea4">&nbsp;&nbsp;&nbsp;call 00??:[00000000]</a>
+</h3>
+<h3 class="topic">
+<a name="7vuji2v60vkcdg2g6u60rpbp0j">&nbsp;&nbsp;打印从0环取得的数据</a>
+</h3>
+<h3 class="topic">
+<a name="246o8t773su7baphvotem7gu8r">&nbsp;&nbsp;&nbsp;printf("%p",magic)</a>
+</h3>
+<h3 class="topic">
+<a name="1lskfmdha8k5vbmtbcgbbo2f5v">&nbsp;&nbsp;构造描述符，描述符中的偏移为函数</a>
+</h3>
+<h3 class="topic">
+<a name="40f0sqdv4ei4g2oj0k1mjbpvqc">&nbsp;&nbsp;将描述符写入gdtr中</a>
+</h3>
+<h3 class="topic">
+<a name="3d4aomrqf94moleeouc5fqraf1">&nbsp;&nbsp;&nbsp;dq gdtr</a>
+</h3>
+<h3 class="topic">
+<a name="2mimkg9g2a8endj8apmlhj9c9l">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class71day0618_files/37u227vvolo8mboga1ftn5huhu.png"></p>
+<h3 class="topic">
+<a name="1id5ipreenm9rm7p0sno2l8qam">&nbsp;&nbsp;&nbsp;eq 目标地址 描述符</a>
+</h3>
+<h3 class="topic">
+<a name="43qhqn27bq6mk9kfjktm413r49">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class71day0618_files/4ssheua904i7tbolr053t179c9.png"></p>
+<h3 class="topic">
+<a name="45e0gqu886enrfl3ie9g08572v">&nbsp;&nbsp;&nbsp;dq gdtr</a>
+</h3>
+<h3 class="topic">
+<a name="3jp38fj8uqs81k0hjhnfu6a4o8">&nbsp;&nbsp;构建段选择子</a>
+</h3>
+<h3 class="topic">
+<a name="3gqkg8m45rav100kc7tc8759no">&nbsp;&nbsp;&nbsp;1100   0    11    =0x60&#13;
+index   0  3环</a>
+</h3>
+<h3 class="topic">
+<a name="5e4l4b0jeq1hqigubershg1gh3">&nbsp;&nbsp;设置为静态库mfc</a>
+</h3>
+<h3 class="topic">
+<a name="37appshedfptftdkovean8v9lm">&nbsp;&nbsp;&nbsp;注意也要关闭随机基址</a>
+</h3>
+<h3 class="topic">
+<a name="5h8terkmcd9d37fliv625lhndo">&nbsp;&nbsp;将程序拖到虚拟机</a>
+</h3>
+<h3 class="topic">
+<a name="13uoluv3jc06bn844ll3rfs26r">&nbsp;&nbsp;注意再写func的时候，因为该函数是3环程序，所以权限也是3环</a>
+</h3>
+<h3 class="topic">
+<a name="74lg8be9m5jq9q2itbjm6mi6m2">&nbsp;&nbsp;思路：&#13;
+1、在用户层编写一个函数读取内核层关键数据，并获取该函数地址 函数地址为0x00455a50&#13;
+2、在gdt空白位置构造一个自定义的调用门描述符&#13;
+3、根据自定义描述符所在的gdt位置，构造门选择子 &#13;
+4、使用代码构造一个远跳转，选择子指向自定义的调用门描述符&#13;
+5、在用户层将数据打印出来</a>
+</h3>
+<h3 class="topic">
+<a name="35vd7h000vli0v2d9bj1b8deat">&nbsp;&nbsp;&nbsp;因为段偏移中需要设置为函数地址，如果需要得到函数地址需要关闭随即机制，通过查看反汇编，直接获得函数地址</a>
+</h3>
+<h3 class="topic">
+<a name="1m53gd396q1dundph003cr5tkm">&nbsp;&nbsp;r idtr</a>
+</h3>
+<h3 class="topic">
+<a name="6sv7odf11bl5jlt1151o30klgu">&nbsp;&nbsp;&nbsp;查看中断描述符表的地址</a>
+</h3>
+<h3 class="topic">
+<a name="78n3j6p17iklh21qf7ftaip9tb">&nbsp;&nbsp;dq idtr</a>
+</h3>
+<h3 class="topic">
+<a name="24nst0vf1s5n4v3cb0aonudjjg">&nbsp;&nbsp;dq idtr+8*ox2e</a>
+</h3>
+<h3 class="topic">
+<a name="3rghcvl07lughgopbdou5b9ai4">&nbsp;分析段描述符，构造们描述符、构造段选择子</a>
+</h3>
+<h3 class="topic">
+<a name="4ds8ugaibnfp4v0k993hq6bofl">&nbsp;&nbsp; 下标为9的位置有空的位置，可以将调用门描述符插到这里&#13;
+&#13;
+分析描述符&#13;
+ &#13;
+00cf9b00 == 0000 0000 1100 1111 1001 1011 0000 0000&#13;
+00000000&mdash;&mdash;1&mdash;&mdash;1&mdash;&mdash;0&mdash;&mdash;0&mdash;&mdash;1111&mdash;&mdash;1&mdash;&mdash;00&mdash;&mdash;1&mdash;&mdash;1011&mdash;&mdash;0000 0000&#13;
+Base                g    D/B      L      AVL  seglimit    p      DPL     S       type       Base&#13;
+&#13;
+0000ffff-》 abseaddress =0000 segment limit=ffff&#13;
+</a>
+</h3>
+<h3 class="topic">
+<a name="0nmpfkklcqj9gnmdgmunfk3p50">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class71day0618_files/090vun8e9gnve7k5gksdk28qtn.png"></p>
+<h3 class="topic">
+<a name="3foiqe980tm658pct7n04ert7q">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class71day0618_files/215tpqc1d3f8l3reev2l9as72o.png"></p>
+<h3 class="topic">
+<a name="6a1hl9og9i4v3v2qcm6jfnbmvo">&nbsp;&nbsp;构造调用调用门描述符&#13;
+ &#13;
+0000000000000000&mdash;&mdash;1&mdash;&mdash;11&mdash;&mdash;0&mdash;&mdash;1100&mdash;&mdash;000&mdash;&mdash;00000&#13;
+Offset1                           P         DPL     S        Type                ParamCount &#13;
+0000000000001&mdash;&mdash;0&mdash;&mdash;00&mdash;&mdash;0000000000000000&#13;
+Index             TI    RPL     Offset2&#13;
+Segment select&#13;
+&#13;
+Offset1：函数高16位地址&#13;
+Offset2：函数低16位地址&#13;
+&#13;
+注意最后Param Count一共有5位，而不是4位&#13;
+					&#13;
+0000000000000000&mdash;&mdash;1110110000000000&#13;
+xxxx                  EC00&#13;
+&#13;
+0000000000001000&mdash;&mdash;0000000000000000&#13;
+0008					xxxx&#13;
+&#13;
+0118    ec00&#13;
+0008    1037&#13;
+&#13;
+0118ec0000081037&#13;
+</a>
+</h3>
+<h3 class="topic">
+<a name="7686qi7dtiqhg7nobgim6qv8pa">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class71day0618_files/3r6rljb97o9s23umavfj4lpk05.png"></p>
+<h3 class="topic">
+<a name="3vu5coq2cnuc14mt7v0ogcth8p">&nbsp;&nbsp;构造指令中的段选择子 call fword ptr ds : [Data]&#13;
+ &#13;
+准备将门描述符填入GDT表中下标为9的位置&#13;
+0000000001001&mdash;&mdash;0&mdash;&mdash;11&#13;
+Index                       TI       RPL&#13;
+0000000001001011 即0x4b&#13;
+&#13;
+segment selector 必须指向一个已经存在的内核的代码段的段描述符，具体是哪一个不重要，单必须是内核的，代码段 即DPL为0  S为1  Type最高位为1&#13;
+</a>
+</h3>
+<h3 class="topic">
+<a name="7ispgbg1506bsb2hetvenapb88">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class71day0618_files/4m9jjr37ncnccof6sq7cimq62g.png"></p>
+<h3 class="topic">
+<a name="4o8ug0fog1l6flpb1m9kc5ml24">&nbsp;&nbsp;注意点</a>
+</h3>
+<h3 class="topic">
+<a name="2lip8m1avgl5jsmts8jnmbme1j">&nbsp;&nbsp;&nbsp;注意以下问题&#13;
+1、RPL和DPL的问题&#13;
+1.1、Call fword ptr指令中段选择子的rpl应为3，因为该指令运行在3环中&#13;
+1.2、门描述符中段选择子的rpl应为0，因为该段选择子最终要赋值给cs，需要保证cs权限为0环&#13;
+1,3、门描述符中的 dpl应为3，因为Call fword ptr指令中段选择子rpl为3，如果前者小于3，权限不够，不能执行调用门&#13;
+1.4、门描述符中段选择子对应的段描述符的dpl 应为0，因为该段描述符会被填充到cs寄存器的描述符高速缓冲区中，需要指定cs段的权限为内核权限，并且该段描述符必须是代码段&#13;
+&#13;
+2、门描述符中段选择子的指向&#13;
+	门描述符中段选择子的指向的段描述符会在调用门执行起来后填充到cs寄存器的描述符高速缓冲区中，此举意图将cs段指定为内核中的代码段，所以该段描述符必须满足&#13;
+DPL为0，S为1，Type最高位为1，该段描述符可以选择GDT表中符合要求的任意一个段描述符，也可以自己在GDT表中添加一个满足条件的段描述符，最后需要根据该段描述符的位置，计算出对应的段选择子，作为门描述符中的段选择子&#13;
+&#13;
+3、门描述符中的offset&#13;
+offset in segment 15:00是目的函数地址的低16位&#13;
+offset in segment 31:16是目的函数地址的高16位&#13;
+&#13;
+4、调用门实际使用流程&#13;
+	1、使用call、jmp、retf等指令使用调用门&#13;
+	2、根据指令中的段选择子，在GDT表中找到预先设置好的调用门描述符&#13;
+3、根据门描述符中的段选择子填充cs寄存器（注意，这一步仅仅检查而类型，不检查权限，所以可以将cs寄存器中rpl置为0）&#13;
+4、根据门描述符中的段选择子，在GDT表中寻找对应段描述符，该段描述符可以利用GDT表中已有的，也可以自己另行填充，要求是该段描述符属性必须为内核层的代码段，即DPL为0，S为1，Type最高位为1&#13;
+5、从门描述符中的段选择子指向的段描述符中得到基址（win32保护模式下段描述符的基址均为0），从门描述符中的offset中得到偏移（这里offset是两个十六位数据拼接起来的），两者结合，得到函数地址，并调用函数地址&#13;
+&#13;
+5 &#13;
+门描述符中offset应该是00455A50，如果想要该函数地址固定就需要保证程序编译过程中使用mfc静态库，并关闭随机基址&#13;
+当然可以动态打印函数地址，并构造门描述符，从而构造调用门&#13;
+</a>
+</h3>
+<h3 class="topic">
+<a name="5q0sju8b0hm7td9bahqkbdormh">&nbsp;代码：通过调用门访问内核数据（自己）</a>
+</h3>
+<h3 class="topic">
+<a name="6me68culm8q6k8nvtcqltu0l4s">&nbsp;&nbsp;#include "pch.h"&#13;
+#include &lt;iostream&gt;&#13;
+&#13;
+int magic1 = 0;&#13;
+int magic2 = 0;&#13;
+&#13;
+void _declspec(naked)func()&#13;
+{&#13;
+	_asm {//取gdt表中下标为2的项的值，因为该值为8字节，所以分两次找&#13;
+		push eax&#13;
+&#13;
+		mov eax, ds:[0x80b95010]//需要取到的内核数据的地址&#13;
+		mov magic1, eax&#13;
+&#13;
+		mov eax, ds : [0x80b95014]//需要取到的内核数据的地址&#13;
+		mov magic2, eax&#13;
+&#13;
+		pop eax&#13;
+		retf&#13;
+	}&#13;
+}&#13;
+&#13;
+int main()&#13;
+{&#13;
+	char Data[] = { 0x00, 0x00 ,0x00 ,0x00 ,0x4b,0x00 }; //前四个0x00是eip的值  0x00,0x4b是段选择子，	&#13;
+	printf("调用门函数地址:%08X\n", func);&#13;
+	printf("请使用该函数地址，构造门描述符，写入到GDT[9]中: ");	&#13;
+	system("pause");&#13;
+	_asm call fword ptr ds:[Data];  //类似于call 段选择子:00000000&#13;
+	printf("%p%p", magic2,magic1);&#13;
+	system("pause");&#13;
+}&#13;
+</a>
+</h3>
+<h3 class="topic">
+<a name="5lqg8nf93l6360l3cmbfrg143s">&nbsp;老师代码（可以自动生成门描述符）</a>
+</h3>
+<h3 class="topic">
+<a name="01itusccben69b7nei7cmf7t6i">&nbsp;&nbsp;#include "pch.h"&#13;
+#include &lt;iostream&gt;&#13;
+#include &lt;iomanip&gt;&#13;
+&#13;
+&#13;
+#pragma pack(1)&#13;
+//调用门结构&#13;
+typedef struct _CALLGATEDESCRIPT {&#13;
+	unsigned int functionAddrLow : 16; // 被调用函数地址的低16位&#13;
+	unsigned int SegmentSelector : 16; // 想要切换的段选择子&#13;
+&#13;
+	unsigned int paramCount : 5; // 参数个数&#13;
+	unsigned int none : 3; // 无&#13;
+	unsigned int Type : 4; // 系统段类型, 必须为12(1100b: 32位调用门)&#13;
+	unsigned int S : 1; // S位,必须为0&#13;
+	unsigned int DPL : 2; // 描述符特权级别&#13;
+	unsigned int P : 1; // 描述符有效位&#13;
+	unsigned int functionAddrHig : 16; //被调用函数地址的高16位&#13;
+}CALLGATEDESCRIPT;&#13;
+&#13;
+//段选择子结构&#13;
+struct SELECTOR {&#13;
+	unsigned short index : 13;&#13;
+	unsigned short T1 : 1;&#13;
+	unsigned short RPL : 2;&#13;
+};&#13;
+&#13;
+//创建门描述符&#13;
+unsigned long long createCallGateDescript(unsigned short selector, unsigned int functionAddr, int functionParamSize)//参数分别为门描述符中的选择子、门调用的函数的地址、函数参数个数&#13;
+{&#13;
+	CALLGATEDESCRIPT cgd = { 0 };&#13;
+	cgd.P = 1; // 描述符有效位, 必须设置为1&#13;
+	cgd.S = 0; // 系统段描述符, 必须设置0&#13;
+	cgd.Type = 12; // 调用门描述符,必须设置为12&#13;
+	cgd.DPL = 3; // 设置为3,表示此描述符可被3环所使用.&#13;
+	cgd.SegmentSelector = selector;// 要切换的段选择子&#13;
+	cgd.functionAddrHig = (functionAddr &amp; 0xFFFF0000) &gt;&gt; 16;&#13;
+	cgd.functionAddrLow = functionAddr &amp; 0x0000FFFF;&#13;
+	cgd.paramCount = functionParamSize / 4; // 参数个数,如果函数没有参数,填0,如果有参数,则填参数占用栈的字节数 / 4&#13;
+	return *(unsigned long long*)&amp;cgd;&#13;
+}&#13;
+&#13;
+&#13;
+int magic1 = 0;&#13;
+int magic2 = 0;&#13;
+&#13;
+//通过调用门调用的函数&#13;
+void _declspec(naked) GateFun()&#13;
+{&#13;
+	_asm {&#13;
+		push eax&#13;
+		&#13;
+		mov eax, ds:[0x80b95010]//需要取到的内核数据的地址&#13;
+		mov magic1, eax&#13;
+&#13;
+		mov eax, ds : [0x80b95014]//需要取到的内核数据的地址&#13;
+		mov magic2, eax&#13;
+&#13;
+		pop eax&#13;
+		retf&#13;
+	}&#13;
+}&#13;
+&#13;
+int main()&#13;
+{&#13;
+	printf("调用门函数地址:%08X\n", GateFun);&#13;
+	printf("切换的段选择子:%04X\n", 8);/*8是内核中的代码段选择子*/&#13;
+&#13;
+	unsigned long long descript =&#13;
+		createCallGateDescript(8/*8是内核中的代码段选择子*/, (unsigned int)GateFun, 0);&#13;
+&#13;
+&#13;
+	printf("请将这个段描述符写入到GDT[9]中: ");&#13;
+	std::cout &lt;&lt; std::hex &lt;&lt; std::uppercase &lt;&lt; std::setfill('0') &lt;&lt; std::setw(8) &lt;&lt; descript &lt;&lt; '\n';&#13;
+	system("pause");&#13;
+&#13;
+	// 前4字节是EIP,后2字节是CS(0x004b)&#13;
+	char buff[] = { 0,0,0,0,0x4b,00 };&#13;
+&#13;
+	_asm call fword ptr ds : [buff];&#13;
+&#13;
+	printf("调用后  magic1=%x magic2=%x\n", magic1, magic2);&#13;
+&#13;
+	system("pause");&#13;
+}&#13;
+&#13;
+</a>
+</h3>
+<h2 class="topic">
+<a name="13s7d9549vnk52k7hal4va7tlc">虚拟内存和物理内存之间的映射：系统分页</a>
+</h2>
+<h3 class="topic">
+<a name="3ngeperth4g54v8i5vv7h8fc6f">&nbsp;对于虚拟地址到物理地址的转换，主要通过将虚拟地址根据规则解析为若干部分（非pae：三个部分 pae：四个部分），之后使用每个部分在页表目录-》页表-》内存页中找到对应的地址</a>
+</h3>
+<h3 class="topic">
+<a name="1grkt54nhi6j6lt6cqd46hct9o">&nbsp;非pae</a>
+</h3>
+<h3 class="topic">
+<a name="56ne1kk6jl4n8hg8qqpjom2a1h">&nbsp;&nbsp;分为三个结构</a>
+</h3>
+<h3 class="topic">
+<a name="07bquarchob53dhihem4p9eie0">&nbsp;&nbsp;&nbsp;pdt</a>
+</h3>
+<h3 class="topic">
+<a name="5hn8krav3vg5ara9svo98qeuop">&nbsp;&nbsp;&nbsp;pt</a>
+</h3>
+<h3 class="topic">
+<a name="06jom2dlprh4u5pam1t2h6m80l">&nbsp;&nbsp;&nbsp;&nbsp;分页页表</a>
+</h3>
+<h3 class="topic">
+<a name="1ctpulsko18ps5172g039sbe1u">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;描述4kb的分页</a>
+</h3>
+<h3 class="topic">
+<a name="0rn0u6vfofj4kejqe957uihcms">&nbsp;&nbsp;&nbsp;pd</a>
+</h3>
+<h3 class="topic">
+<a name="2tbi4ufqg645v4u1vafvig8umg">&nbsp;&nbsp;&nbsp;&nbsp;分页页目录</a>
+</h3>
+<h3 class="topic">
+<a name="63pu3f5ngc46sqh7iaoa4g5jq5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;保存分页页表</a>
+</h3>
+<h3 class="topic">
+<a name="1i2261rbk5tdftcpol43iuf1d3">&nbsp;&nbsp;一个32位的虚拟地址解释为三部分</a>
+</h3>
+<h3 class="topic">
+<a name="29oi9ic5h46pbdo32g7iqgucki">&nbsp;&nbsp;&nbsp;页目录索引</a>
+</h3>
+<h3 class="topic">
+<a name="11t707c8f8gbs731pk2b9ncuc0">&nbsp;&nbsp;&nbsp;页表索引</a>
+</h3>
+<h3 class="topic">
+<a name="1cv2ovcogem2d75us0eoutnhid">&nbsp;&nbsp;&nbsp;字节索引</a>
+</h3>
+<h3 class="topic">
+<a name="7a8sg40l2su1nps024knr125h7">&nbsp;&nbsp;虚拟地址的三个部分分别对应</a>
+</h3>
+<h3 class="topic">
+<a name="1ns6c8519k9damjn8u6umpcpf3">&nbsp;&nbsp;&nbsp;页目录表</a>
+</h3>
+<h3 class="topic">
+<a name="2sk88sp5o9rfh49sh3srg2140c">&nbsp;&nbsp;&nbsp;&nbsp;页目录表地址保存在cr3寄存器中，也保存在KPROCESS中</a>
+</h3>
+<h3 class="topic">
+<a name="3tb8h7kag9vun89b17go9ab86k">&nbsp;&nbsp;&nbsp;页表</a>
+</h3>
+<h3 class="topic">
+<a name="2rdbgn29ij6uc6g1qtbbf3hl6o">&nbsp;&nbsp;&nbsp;页表项</a>
+</h3>
+<h3 class="topic">
+<a name="5ckmiscm1p3os20800r35abuv1">&nbsp;&nbsp;物理地址的访问需要经过页目录-》页表-》页表项 ，过程中三个阶段分别对应 描述符检查-》页目录检查-》页面检查，只有所有检查均通过，才能读出一个页面</a>
+</h3>
+<h3 class="topic">
+<a name="2p5om1i8iped3v9kvv0g6dut7i">&nbsp;&nbsp;通常一个32位地址被解释为三个部分 页目录索引（10位）、页表索引（10位）、字节索引（12位）</a>
+</h3>
+<h3 class="topic">
+<a name="2t54vjqfc1hn3mse9otl5c5de7">&nbsp;&nbsp;注意页表索引可能不对应物理页，页表索引和物理页是多对一的关系</a>
+</h3>
+<h3 class="topic">
+<a name="4vs0agjm3lg1ju1p1go98i65ha">&nbsp;&nbsp;页目录索引和页表索引的结构相似，都是四字节数据，低12位保存状态和保护位信息，高20位才分别保存页表首地址和物理页首地址</a>
+</h3>
+<h3 class="topic">
+<a name="2gg8985p8ek31beeogci7gq12g">&nbsp;&nbsp;最多只支持4GB的物理地址</a>
+</h3>
+<h3 class="topic">
+<a name="3copldd1mkscf4k7en7pab4753">&nbsp;pae：物理地址扩展</a>
+</h3>
+<h3 class="topic">
+<a name="520se0r3mhc2t2gjl3oa737l3l">&nbsp;&nbsp;将32位地址分为4部分 2:9:9:12</a>
+</h3>
+<h3 class="topic">
+<a name="642sijg7bupn65qlgeeom9ba45">&nbsp;&nbsp;较于非pae 页目录之前多了个页目录指针目录，多了一层索引</a>
+</h3>
+<h3 class="topic">
+<a name="6m0fovb1bcmfocv51nd17be08i">&nbsp;&nbsp;此时页目录索引和页表索引均为8个字节</a>
+</h3>
+<h3 class="topic">
+<a name="2ms0pqdufhpb0ou967u3df0ntm">&nbsp;&nbsp;&nbsp;非pae下页目录索引和页表索引都是4字节</a>
+</h3>
+<h3 class="topic">
+<a name="0trtcgjpjjbdrvneiqmch7g2bi">&nbsp;控制寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="582dvt5bttlkjkuruh7v3kkqq3">&nbsp;&nbsp;定义：cpu中用于控制和确定CPU的操作模式的寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="701m2gr5cpg7v4imvg7l89lgi7">&nbsp;&nbsp;cr0 cr1 cr2 cr3 cr4</a>
+</h3>
+<h3 class="topic">
+<a name="0fcss4ln5ura41nd1cmmjcpved">&nbsp;&nbsp;cr0</a>
+</h3>
+<h3 class="topic">
+<a name="74e74qll5igsb6je3o101idflq">&nbsp;&nbsp;&nbsp;pe位和pg位分别确定cpu是否执行在保护模式，是否开启分页机制</a>
+</h3>
+<h3 class="topic">
+<a name="2j9sam9e17nfpbfq3sg5e85k20">&nbsp;&nbsp;cr2</a>
+</h3>
+<h3 class="topic">
+<a name="7n1sjjkc7elo8tqaf9phnnv4hn">&nbsp;&nbsp;&nbsp;当cpu访问无效页面时，产生缺页异常，发生异常的线性地址保存在cr2中</a>
+</h3>
+<h3 class="topic">
+<a name="6t2q929ijb69obt2vab9voh5tq">&nbsp;&nbsp;cr3</a>
+</h3>
+<h3 class="topic">
+<a name="7614ri5tveu5qahiueo9bdskco">&nbsp;&nbsp;&nbsp;保存当前进程页目录表地址</a>
+</h3>
+<h3 class="topic">
+<a name="6q5pf5qkg8g0hdqb1r08bjv9a0">&nbsp;&nbsp;cr4</a>
+</h3>
+<h3 class="topic">
+<a name="7btb3mr9k1tqo2bg6ldt6ma7j3">&nbsp;&nbsp;&nbsp;其中pae项为1，则是pae分页，反之为普通分页</a>
+</h3>
+<h3 class="topic">
+<a name="3gii2nsuc8cbjndka1frtodbs2">&nbsp;MSR寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="1tvb8454e8omsr7gk809lbr1hd">&nbsp;&nbsp;是一组寄存器，用于监控cpu运行状态以及特殊指令处理等</a>
+</h3>
+<h3 class="topic">
+<a name="0e6nrkou6b9alt32mu64aab6ls">&nbsp;&nbsp;每个msr寄存器存在编号，可以使用rdmsr wrmsr对指定msr寄存器进行读写，两条指令必须运行在0环</a>
+</h3>
+<h3 class="topic">
+<a name="3k4s78kq1kpqvbk3mfbte63pvb">&nbsp;实验：通过虚拟地址找对应的物理地址</a>
+</h3>
+<h3 class="topic">
+<a name="7u6fcc8hp7lkbctbr2pgrasprr">&nbsp;&nbsp;在记事本中随便写一些东西，尝试搜索该记事本中的字符串</a>
+</h3>
+<h3 class="topic">
+<a name="49mspg5ceh7pe8i8bgkjelg3re">&nbsp;&nbsp;切换到记事本内的进程环境</a>
+</h3>
+<h3 class="topic">
+<a name="6utd0kr1gm0c0kppagkj53vg0b">&nbsp;&nbsp;&nbsp;!process 0 0 notepad.exe</a>
+</h3>
+<h3 class="topic">
+<a name="39pe8fnq6lt6lsqn8d74i9si38">&nbsp;&nbsp;&nbsp;.process 进程地址</a>
+</h3>
+<h3 class="topic">
+<a name="25a8li7qhp0e727mufv6npvinq">&nbsp;&nbsp;搜索字符串,得到字符串的虚拟地址</a>
+</h3>
+<h3 class="topic">
+<a name="5c242io02vu1hhon0s23vgkohf">&nbsp;&nbsp;&nbsp;s -u 00000000 L01000000 "hello world	!"</a>
+</h3>
+<h3 class="topic">
+<a name="0h0j4jott9c8f0v3gkemf1ncfo">&nbsp;&nbsp;将虚拟地址进行解析</a>
+</h3>
+<h3 class="topic">
+<a name="7i9i2cqm0r70qe4eddbvrm7vro">&nbsp;&nbsp;&nbsp;高十位</a>
+</h3>
+<h3 class="topic">
+<a name="360dcv6n0pkng02s0iq2dq77v4">&nbsp;&nbsp;&nbsp;&nbsp;页目录索引</a>
+</h3>
+<h3 class="topic">
+<a name="3fqnd21vf9ntn994pf2okn9m0g">&nbsp;&nbsp;&nbsp;子主题 2</a>
+</h3>
+<h3 class="topic">
+<a name="12i5qpo9fvuo6ku0nrhjm36csi">&nbsp;&nbsp;&nbsp;&nbsp;子主题 1</a>
+</h3>
+<h3 class="topic">
+<a name="7sj7po9bq4gpjjcl105endul2k">&nbsp;&nbsp;&nbsp;。。</a>
+</h3>
+<h3 class="topic">
+<a name="65i8dbea7ibgf2futo5j6kh6qp">&nbsp;&nbsp;r cr3</a>
+</h3>
+<h3 class="topic">
+<a name="3aemjl1fmdb6qlrhsasjrhccbc">&nbsp;&nbsp;进行进程的切换，切换回system进程</a>
+</h3>
+<h3 class="topic">
+<a name="2d4qfrjalkrgbv1nbb4csl52se">&nbsp;&nbsp;&nbsp;.process 进程地址</a>
+</h3>
+<h3 class="topic">
+<a name="49716i08f8nc54atdha1e9meg3">&nbsp;&nbsp;&nbsp;切换进程需要强制切换，/i，否则只切换了内存地址</a>
+</h3>
+<h3 class="topic">
+<a name="7o0q507cdgma28rnpqmqk71m9q">&nbsp;&nbsp;!dd cr3</a>
+</h3>
+<h3 class="topic">
+<a name="4dru17k5s1sd3km840k5j52ko1">&nbsp;&nbsp;win7默认是开启了地址的扩展，需要关闭pae，才能使用之前的方式进行物理地址的查询</a>
+</h3>
+<h3 class="topic">
+<a name="11cje9k2lmaa69qdp0oilnhhjt">&nbsp;&nbsp;&nbsp;以管理员身份运行cmd，将pae关闭</a>
+</h3>
+<h3 class="topic">
+<a name="2pd1r0feuojs5kr1u0kpsberrh">&nbsp;&nbsp;pae关闭后物理地址和虚拟地址的映射关系发生变化，pdb符号文件就会发生变化</a>
+</h3>
+<h3 class="topic">
+<a name="4v33ej7o7jm4h1p7egnvrguac1">&nbsp;&nbsp;du 将数据以unicode形式展示</a>
+</h3>
+<h3 class="topic">
+<a name="7pk9a97psj376131lvhs5aapq2">&nbsp;&nbsp;物理地址相关信息需要使用到！ 用于表示在物理地址查询内容</a>
+</h3>
+<h3 class="topic">
+<a name="3pf4cl65lqgd8b3b1vpj0nvlrs">&nbsp;开启pae中后如何查询物理地址</a>
+</h3>
+<h3 class="topic">
+<a name="6k1uce7v98iilhd9n6f44djre7">&nbsp;&nbsp;整体原理于非pae相同，只是非pae将虚拟地址分为3个部，pae将虚拟地址分为四个部分</a>
+</h3>
+<h3 class="topic">
+<a name="41tpv6tln00cfkus35tcm5k1er">&nbsp;&nbsp;pde和pte都是四字节数据，结构具有相似性</a>
+</h3>
+<h3 class="topic">
+<a name="7dblk4dhfsiu9tmuk486a29ng9">&nbsp;&nbsp;低12位仍然是字节的偏移</a>
+</h3>
+<h3 class="topic">
+<a name="6qcfjn108veps7gtia0899208a">&nbsp;&nbsp;开启pae之后页目录存储在目录指针项中</a>
+</h3>
+<h3 class="topic">
+<a name="4vcrleeftar4fqi43dn5n0feuo">&nbsp;&nbsp;pae模式下的pde和pte都变成了8个字节</a>
+</h3>
+<h3 class="topic">
+<a name="0id6vnc121kpf78959hu6cm4tc">&nbsp;查到具体流程看韦老师笔记</a>
+</h3>
+<h3 class="topic">
+<a name="0q5a6vvo45n9b4nk9r5o4l5g6a">&nbsp;分为两种</a>
+</h3>
+<h3 class="topic">
+<a name="5a8r7iupqlvi1ufpe4ukgm8d3j">&nbsp;&nbsp;非物理地址扩展模式&middot;</a>
+</h3>
+<h3 class="topic">
+<a name="2nfct6c78t9mv1e9s2m9nvh4qt">&nbsp;&nbsp;&nbsp;例如地址: 403001. 这个地址会被拆分成3个部分&#13;
+&bull;	页目录表索引(10个比特位)&#13;
+&bull;	页表索引(10个比特位)&#13;
+&bull;	字节索引(12个比特位)</a>
+</h3>
+<h3 class="topic">
+<a name="07ptkbgfp4r0u06kk3mkri283m">&nbsp;&nbsp;&nbsp;查询物理地址的windbg指令</a>
+</h3>
+<h3 class="topic">
+<a name="1k0itc2babvdf0ecvkhhcm7i4c">&nbsp;&nbsp;&nbsp;&nbsp;kd&gt; !process 0 0 test.exe  /* 1. 查看进程信息*/&#13;
+PROCESS 87c46030  SessionId: 1  Cid: 08ac    Peb: 7ffdf000  ParentCid: 05ec&#13;
+    DirBase: 3946f000 /*页目录首地址*/ ObjectTable: ac410490  HandleCount:   9.&#13;
+    Image: test.exe&#13;
+&#13;
+kd&gt; .formats 41b730 /*查看虚拟地址的二进制形式*/&#13;
+Evaluate expression:&#13;
+  Hex:     0041b730&#13;
+  Decimal: 4306736&#13;
+  Octal:   00020333460&#13;
+  Binary:  00000000 01000001 10110111 00110000 /*转换为10-10-12格式==&gt; 1-17-B30*/&#13;
+  Chars:   .A.0&#13;
+  Time:    Fri Feb 20 04:18:56 1970&#13;
+  Float:   low 6.03502e-039 high 0&#13;
+  Double:  2.12781e-317&#13;
+&#13;
+kd&gt; !dd 3946f000  /*查看页目录, 页目录的每个元素是页表首地址,使用虚拟地址中记录的第1项:392ec867 */&#13;
+#3946f000 387f0867 392ec867 00000000 00000000&#13;
+#3946f010 00000000 00000000 00000000 00000000&#13;
+#3946f020 00000000 00000000 00000000 00000000&#13;
+#3946f030 00000000 00000000 00000000 00000000&#13;
+#3946f040 00000000 00000000 00000000 00000000&#13;
+#3946f050 00000000 00000000 00000000 00000000&#13;
+#3946f060 00000000 00000000 00000000 00000000&#13;
+#3946f070 00000000 00000000 00000000 00000000&#13;
+&#13;
+kd&gt; !dd 392ec000 + 17 *4 /*查看页表, 页表中保存的每个元素是分页首地址, 使用虚拟地址中记录的第17项分页:38d6d025*/&#13;
+#392ec05c 38d6d025 38b2e025 00000000 37993867&#13;
+#392ec06c 3780b025 38dfc225 3761c025 3a0c1025&#13;
+#392ec07c 00000000 00000000 00000000 00000000&#13;
+#392ec08c 00000000 00000000 00000000 00000000&#13;
+#392ec09c 00000000 00000000 00000000 00000000&#13;
+#392ec0ac 00000000 00000000 00000000 00000000&#13;
+#392ec0bc 00000000 00000000 00000000 00000000&#13;
+#392ec0cc 00000000 00000000 00000000 00000000&#13;
+kd&gt; !db 38d6d000 + B30 /*分页首地址+页内偏移得到真正的物理地址*/&#13;
+#38d6db30 61 61 61 62 62 62 63 63-63 00 00 00 c7 fd b6 af aaabbbccc.......&#13;
+#38d6db40 b4 f2 bf aa ca a7 b0 dc-3a 25 64 0a 00 00 00 00 ........:%d.....&#13;
+#38d6db50 00 00 00 00 25 70 0a 00-5c 00 3f 00 3f 00 5c 00 ....%p..\.?.?.\.&#13;
+#38d6db60 43 00 3a 00 5c 00 31 00-2e 00 74 00 78 00 74 00 C.:.\.1...t.x.t.&#13;
+#38d6db70 00 00 00 00 00 00 00 00-00 00 00 00 00 00 00 00 ................&#13;
+#38d6db80 70 61 75 73 65 00 00 00-bb f1 c8 a1 ce c4 bc fe pause...........&#13;
+#38d6db90 b4 ed ce f3 3a 25 30 38-58 0a 00 00 00 00 00 00 ....:%08X.......&#13;
+#38d6dba0 c7 fd b6 af b4 f2 bf aa-b3 c9 b9 a6 0a 00 00 00 ................&#13;
+&#13;
+kd&gt; db 417b30 /*直接查看虚拟地址*/&#13;
+00417b30  61 61 61 62 62 62 63 63-63 00 00 00 c7 fd b6 af  aaabbbccc.......&#13;
+00417b40  b4 f2 bf aa ca a7 b0 dc-3a 25 64 0a 00 00 00 00  ........:%d.....&#13;
+00417b50  00 00 00 00 25 70 0a 00-5c 00 3f 00 3f 00 5c 00  ....%p..\.?.?.\.&#13;
+00417b60  43 00 3a 00 5c 00 31 00-2e 00 74 00 78 00 74 00  C.:.\.1...t.x.t.&#13;
+00417b70  00 00 00 00 00 00 00 00-00 00 00 00 00 00 00 00  ................&#13;
+00417b80  70 61 75 73 65 00 00 00-bb f1 c8 a1 ce c4 bc fe  pause...........&#13;
+00417b90  b4 ed ce f3 3a 25 30 38-58 0a 00 00 00 00 00 00  ....:%08X.......&#13;
+00417ba0  c7 fd b6 af b4 f2 bf aa-b3 c9 b9 a6 0a 00 00 00  ................&#13;
+&#13;
+kd&gt; .process /i 87c46030 /*切换到进程地址空间, 格式为 .process /i PROCESS地址*/&#13;
+You need to continue execution (press 'g' &lt;enter&gt;) for the context&#13;
+to be switched. When the debugger breaks in again, you will be in&#13;
+the new process context.&#13;
+kd&gt; g   /*g一下再执行!vtop指令*/&#13;
+Break instruction exception - code 80000003 (first chance)&#13;
+nt!RtlpBreakWithStatusInstruction:&#13;
+8405dd00 cc              int     3&#13;
+kd&gt; !vtop 0 417b30  /*查看进程虚拟地址对应的物理地址, 格式为 !vtop 0 虚拟地址*/&#13;
+X86VtoP: Virt 00417b30, pagedir 3946f000&#13;
+X86VtoP: PDE 3946f004 - 392ec867&#13;
+X86VtoP: PTE 392ec05c - 38d6d025&#13;
+X86VtoP: Mapped phys 38d6db30&#13;
+Virtual address 417b30 translates to physical address 38d6db30.&#13;
+</a>
+</h3>
+<h3 class="topic">
+<a name="4m2nv0nq3rr7nfddmknshm3nah">&nbsp;&nbsp;物理地址扩展模式（pae模式）</a>
+</h3>
+<h3 class="topic">
+<a name="0u1p0es182hfmeq8pgk5c7vtjc">&nbsp;&nbsp;&nbsp;开启PAE模式之后, Windows使用另一种模式来管理虚拟地址.&#13;
+一个虚拟地址被拆分为4个部分:&#13;
+1.	页目录表指针索引(2个二进制位)&#13;
+2.	页目录(9个二进制位)&#13;
+3.	页表(9个二进制位)&#13;
+4.	页内偏移(12个二进制位)&#13;
+也就是2-9-9-12</a>
+</h3>
+<h3 class="topic">
+<a name="2a316ncbgfs05idc7sp5tmhgu5">&nbsp;&nbsp;&nbsp;查询物理地址的windbg指令</a>
+</h3>
+<h3 class="topic">
+<a name="07pfo5pm58s7rhuhtk38ks8ien">&nbsp;&nbsp;&nbsp;&nbsp;kd&gt; !process 0 0 test.exe  /*查看进程信息*/&#13;
+PROCESS 87932030 /*切换进程时用到的PROCESS地址*/ SessionId: 1  Cid: 0864    Peb: 7ffda000  ParentCid: 0548&#13;
+    DirBase: 3e807440/*页目录指针表地址*/  ObjectTable: 8b4e6ef8  HandleCount:   7.&#13;
+    Image: test.exe&#13;
+&#13;
+kd&gt; .formats 417b30 /*查看虚拟地址的二进制形式*/&#13;
+Evaluate expression:&#13;
+  Hex:     00417b30&#13;
+  Decimal: 4291376&#13;
+  Octal:   00020275460&#13;
+  Binary:  00000000 01000001 01111011 00110000 /*拆分成2-9-9-12格式为: 0-2-17-B30*/&#13;
+  Chars:   .A{0&#13;
+  Time:    Fri Feb 20 00:02:56 1970&#13;
+  Float:   low 6.0135e-039 high 0&#13;
+  Double:  2.12022e-317&#13;
+kd&gt; !dq 3e807440   /*查看页目录指针表 ,此表保存的是页目录的首地址,同样低12位是属性.使用第0个即:00000000`37a65801*/&#13;
+#3e807440 00000000`37a65801 00000000`38326801&#13;
+#3e807450 00000000`38067801 00000000`38128801&#13;
+#3e807460 00000000`36ec8801 00000000`36e09801&#13;
+#3e807470 00000000`3704a801 00000000`36b8b801&#13;
+#3e807480 00000000`355c5801 00000000`35306801&#13;
+#3e807490 00000000`35507801 00000000`35488801&#13;
+#3e8074a0 00000000`34c90801 00000000`354d1801&#13;
+#3e8074b0 00000000`353d2801 00000000`35bd3801&#13;
+&#13;
+kd&gt; !dq 00000000`37a65000+2*8  /*查看页目录, 此表保存的是页表首地址, 同样低12位是属性,使用第2个,注意,这里乘的是8,因为每个地址使用8字节来保存了.*/&#13;
+#37a65010 00000000`37ef0847 00000000`00000000&#13;
+#37a65020 00000000`00000000 00000000`00000000&#13;
+#37a65030 00000000`00000000 00000000`00000000&#13;
+#37a65040 00000000`00000000 00000000`00000000&#13;
+#37a65050 00000000`00000000 00000000`00000000&#13;
+#37a65060 00000000`00000000 00000000`00000000&#13;
+#37a65070 00000000`00000000 00000000`00000000&#13;
+#37a65080 00000000`00000000 00000000`00000000&#13;
+kd&gt; !dq 00000000`37ef0000+17*8 /*查看页表, 此表保存的是分页首地址, 同样低12位是属性,使用第17个:80000000`37cf1005 */&#13;
+#37ef00b8 80000000`37cf1005 80000000`37cb2005&#13;
+#37ef00c8 00000000`00000000 80000000`3701b847&#13;
+#37ef00d8 80000000`37513005 80000000`36dc4205&#13;
+#37ef00e8 80000000`37e64005 80000000`13563005&#13;
+#37ef00f8 00000000`00000000 00000000`00000000&#13;
+#37ef0108 00000000`00000000 00000000`00000000&#13;
+#37ef0118 00000000`00000000 00000000`00000000&#13;
+#37ef0128 00000000`00000000 00000000`00000000&#13;
+kd&gt; !db 80000000`37cf1000+B30 /*查看页内偏移*/&#13;
+#8000000037cf1b30 61 61 61 62 62 62 63 63-63 00 00 00 c7 fd b6 af aaabbbccc.......&#13;
+#8000000037cf1b40 b4 f2 bf aa ca a7 b0 dc-3a 25 64 0a 00 00 00 00 ........:%d.....&#13;
+#8000000037cf1b50 00 00 00 00 25 70 0a 00-5c 00 3f 00 3f 00 5c 00 ....%p..\.?.?.\.&#13;
+#8000000037cf1b60 43 00 3a 00 5c 00 31 00-2e 00 74 00 78 00 74 00 C.:.\.1...t.x.t.&#13;
+#8000000037cf1b70 00 00 00 00 00 00 00 00-00 00 00 00 00 00 00 00 ................&#13;
+#8000000037cf1b80 70 61 75 73 65 00 00 00-bb f1 c8 a1 ce c4 bc fe pause...........&#13;
+#8000000037cf1b90 b4 ed ce f3 3a 25 30 38-58 0a 00 00 00 00 00 00 ....:%08X.......&#13;
+#8000000037cf1ba0 c7 fd b6 af b4 f2 bf aa-b3 c9 b9 a6 0a 00 00 00 ................&#13;
+&#13;
+kd&gt; db 417b30&#13;
+00417b30  61 61 61 62 62 62 63 63-63 00 00 00 c7 fd b6 af  aaabbbccc.......&#13;
+00417b40  b4 f2 bf aa ca a7 b0 dc-3a 25 64 0a 00 00 00 00  ........:%d.....&#13;
+00417b50  00 00 00 00 25 70 0a 00-5c 00 3f 00 3f 00 5c 00  ....%p..\.?.?.\.&#13;
+00417b60  43 00 3a 00 5c 00 31 00-2e 00 74 00 78 00 74 00  C.:.\.1...t.x.t.&#13;
+00417b70  00 00 00 00 00 00 00 00-00 00 00 00 00 00 00 00  ................&#13;
+00417b80  70 61 75 73 65 00 00 00-bb f1 c8 a1 ce c4 bc fe  pause...........&#13;
+00417b90  b4 ed ce f3 3a 25 30 38-58 0a 00 00 00 00 00 00  ....:%08X.......&#13;
+00417ba0  c7 fd b6 af b4 f2 bf aa-b3 c9 b9 a6 0a 00 00 00  ................&#13;
+&#13;
+kd&gt; !vtop 0 417b30&#13;
+X86VtoP: Virt 00417b30, pagedir 3e807440&#13;
+X86VtoP: PAE PDPE 3e807440 - 0000000037a65801&#13;
+X86VtoP: PAE PDE 37a65010 - 0000000037ef0867&#13;
+X86VtoP: PAE PTE 37ef00b8 - 8000000037cf1025&#13;
+X86VtoP: PAE Mapped phys 37cf1b30&#13;
+Virtual address 417b30 translates to physical address 37cf1b30.&#13;
+</a>
+</h3>
+<h2 class="topic">
+<a name="4kmsh3unb5ls8dlpci159hkq2l"> 在32位保护模式下, 每个段描述符的基地址都是0, 段限长都是0xfffff</a>
+</h2>
+<h2 class="topic">
+<a name="0tap954g54670iiak3j9ignsvt">msr寄存器用于保存cpu运行过程的状态</a>
+</h2>
+<h2 class="topic">
+<a name="7ear5lhl6n6qq60v2ihfs0d1i2">注意在c++中使用内联汇编，c++中的变量的符号可以在内联汇编中使用</a>
+</h2>
+<h2 class="topic">
+<a name="3f4mfnod1m338uj4kjkvuu7ait">补充</a>
+</h2>
+<h3 class="topic">
+<a name="0asep9sbb4pknh3grnaaeidouk">&nbsp;gdt表保存在内核的内存空间中，使用gdtr寄存器寻址，后者是一个48位寄存器，32位表示gdt的首地址，16位表示gdt表的大小</a>
+</h3>
+<h3 class="topic">
+<a name="20bqktrp3src2l8hba6am2ss5f">&nbsp;在给段寄存器赋值时，ds段寄存器的不可见部分也会被填充，填充过程由系统完成，根据段寄存中的段选择子在GDT表中找到对应段描述符进行填充</a>
+</h3>
+<h3 class="topic">
+<a name="1sdrctmg1f7ere9v7n68cbrrmm">&nbsp;&nbsp;过程</a>
+</h3>
+<h3 class="topic">
+<a name="1p6k5jbv46pa1mcdins89jfq7u">&nbsp;&nbsp;&nbsp;判断描述符类型</a>
+</h3>
+<h3 class="topic">
+<a name="7a4qmvi58tcu057sj6ssfnog6h">&nbsp;&nbsp;&nbsp;判断特权</a>
+</h3>
+<h3 class="topic">
+<a name="0cu2a575nsujdtvbtbmovds5n0">&nbsp;&nbsp;&nbsp;&nbsp;判断cpl和rpl关于dpl的大小</a>
+</h3>
+<h3 class="topic">
+<a name="52l41kobl6g4ie05om0dktl11n">&nbsp;如果修改cs段寄存器的值，不能通过之直接赋值，可以通过jmp call等段间转移指令对cs进行修改</a>
+</h3>
+<h3 class="topic">
+<a name="2hekri6ffnhjkd9c8pae0nk2vd">&nbsp;&nbsp;jmp 33:401000&#13;
+call 33:401000  &#13;
+</a>
+</h3>
+<h3 class="topic">
+<a name="7mmjts6ao1h532pugpkgb5ojk6">&nbsp;&nbsp;&nbsp;33是选择子</a>
+</h3>
+<h3 class="topic">
+<a name="6u27aq7podiugo7d5c01lbhif7">&nbsp;&nbsp;&nbsp;也可以通过retf等远返回指令对cs进行修改</a>
+</h3>
+<h3 class="topic">
+<a name="62qi4idqki4rt9en6s5udfs9rb">&nbsp;在32位程序中，通过修改段寄存器，可以将一个32位程序转换为64位程序</a>
+</h3>
+<h3 class="topic">
+<a name="5cm1sds7fcdc6jpkj86usoa0io">&nbsp;所有的系统段都是门描述符</a>
+</h3>
+<h3 class="topic">
+<a name="091mbop5j5o39p14894gmh8j1e">&nbsp;&nbsp;从3环进入0环通过中断门或异常门</a>
+</h3>
+<h3 class="topic">
+<a name="1pqs63oe23pgjsu4jlg5m7h3jt">&nbsp;&nbsp;这个过程中需要修改权限，也就是修改cs寄存器的低两位</a>
+</h3>
+<h3 class="topic">
+<a name="3d6aob7g72cag0703k2briehqd">&nbsp;&nbsp;可以通过调用门达到该目的</a>
+</h3>
+<h3 class="topic">
+<a name="6jfi8bchq66iva54jddr5bq4tb">&nbsp;&nbsp;offset in segment 是偏移，是一个地址，是通过门描述符转移到的目的地址</a>
+</h3>
+<h3 class="topic">
+<a name="7optlah813mj5undtbefj537rq">&nbsp;&nbsp;调用门中的段选择子可以在调用门被执行的过程中直接赋值到cs寄存器中，此时cs寄存器获得0环的权限&#13;
+&#13;
+调用门被调用的时候，也会将其中的偏移设置给eip，使特定函数被执行，该函数中不能调用api也不要下断点，否则可能会造成错误</a>
+</h3>
+<h3 class="topic">
+<a name="53q868khdem0bbmqbvkjkscu7v">&nbsp;call fword ptr ds:[buff]</a>
+</h3>
+<h3 class="topic">
+<a name="7nk4htkc3nj11s5mks4tv5dj5g">&nbsp;&nbsp;fword 意思是6个字节，其中会将四个字节赋值给eip 两个字节赋值给段寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="1sadahd68d7i0gn4atgj9vnn99">&nbsp;base中恒为0 limit恒为f</a>
+</h3>
+<h3 class="topic">
+<a name="7fp1h8ncikmj3rnee64ighlgih">&nbsp;系统中所有的段描述符（数据段、代码段、系统段）均被打包存储在内存中，其形成的一个数组称为全局描述符表</a>
+</h3>
+</body>
+</html>

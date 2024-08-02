@@ -1,0 +1,651 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>汇编第四天</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="3g76f6l1hls3a6366f9eh6ruso">汇编第四天</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="%E6%B1%87%E7%BC%96%E7%AC%AC%E5%9B%9B%E5%A4%A9_files/images/%E6%B1%87%E7%BC%96%E7%AC%AC%E5%9B%9B%E5%A4%A9.jpg"></div>
+<h2 class="topic">
+<a name="4hff46d2cq899vq1v15e9q4fd1">复习</a>
+</h2>
+<h2 class="topic">
+<a name="4qkm28ciihi3lff50ar8jb11cn">OPCode</a>
+</h2>
+<h3 class="topic">
+<a name="2u6s6scg0d2aj3dg4d4ied0ehd">&nbsp;即操作码,，被用于描述机器语言指令中，指定要执行某种操作的机器码</a>
+</h3>
+<h3 class="topic">
+<a name="34oavrrlv7taark2sckj0du38r">&nbsp;OPCode不同的场合通常表示不同的含义，比如PHP虚拟机、JAVA虚拟机等</a>
+</h3>
+<h3 class="topic">
+<a name="4nag0ovpvsridilf0ogaof537k">&nbsp;单字节OPCode</a>
+</h3>
+<h3 class="topic">
+<a name="0mus9b4edk63j2agif3jp0bhjg">&nbsp;&nbsp;eax ecx edx ebx esp ebp esi edi</a>
+</h3>
+<h3 class="topic">
+<a name="5lj6dlg7il97tv9luh6mdg5o5d">&nbsp;&nbsp;&nbsp;单字节OPCode的编码针对以上寄存器是编码递增的</a>
+</h3>
+<h3 class="topic">
+<a name="3kci4r0060hkdcfk5v5kfsck1e">&nbsp;&nbsp;0x90 是nop指令</a>
+</h3>
+<h3 class="topic">
+<a name="5okvntrnm97eervba8ttsp35t7">&nbsp;指令长度</a>
+</h3>
+<h3 class="topic">
+<a name="5lkotk18o8rln8nr80obvcddpp">&nbsp;&nbsp;一个指令的长度在1Byte~16Byte之间</a>
+</h3>
+<h3 class="topic">
+<a name="4k62v0802o468tf8rmbums103p">&nbsp;&nbsp;实际正常的最长指令是，13Byte</a>
+</h3>
+<h3 class="topic">
+<a name="50kedra1k1kaabjukikq6p5oc9">&nbsp;OPCode与汇编指令的对应关系</a>
+</h3>
+<h3 class="topic">
+<a name="5jffvdvfa2rr9h67pbs36n2mcl">&nbsp;&nbsp;同类型的指令OPCode不一定相同</a>
+</h3>
+<h3 class="topic">
+<a name="6k2r0akkcd8m8bkvcoggl6a6qm">&nbsp;&nbsp;OPCode相同的情况指令不一定相同</a>
+</h3>
+<h3 class="topic">
+<a name="29fittat0mi3m1uqu30ba6ncgi">&nbsp;opcode组成</a>
+</h3>
+<h3 class="topic">
+<a name="2n4mo1l3d70srts3dmqevcr4m1">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B1%87%E7%BC%96%E7%AC%AC%E5%9B%9B%E5%A4%A9_files/6d2dvmg99rktc6kd973r51djuk.png"></p>
+<h3 class="topic">
+<a name="4pk99h2tpkhoncvbuad69k3lbg">&nbsp;&nbsp;&nbsp;除了代码段，其他数据段不是必须的</a>
+</h3>
+<h3 class="topic">
+<a name="4ihjjp1h88br95296275v7aasl">&nbsp;&nbsp;前缀</a>
+</h3>
+<h3 class="topic">
+<a name="0ohhlslln3ktjc7b84c1df6i2m">&nbsp;&nbsp;&nbsp;描述指令情况</a>
+</h3>
+<h3 class="topic">
+<a name="1t9b41a9okem11io5417ckhquu">&nbsp;&nbsp;&nbsp;分类</a>
+</h3>
+<h3 class="topic">
+<a name="4u7c9m2k1dc7rd36cfmgmm2ssm">&nbsp;&nbsp;&nbsp;&nbsp;切换操作数大小</a>
+</h3>
+<h3 class="topic">
+<a name="3tdie7f1qijumglm3sltjp6l5n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;16位寄存器转换为8位寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="3qv22najucjhi9t7vcenr29kq6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;往小切换，如果操作数位数较小，则该前缀无效</a>
+</h3>
+<h3 class="topic">
+<a name="2bet0q4b8jkp4d013vjfbd5aog">&nbsp;&nbsp;&nbsp;&nbsp;切换寻址模式（切换地址大小）</a>
+</h3>
+<h3 class="topic">
+<a name="7n5nu1dvcn67nq3fmh30es8bla">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;32位转换为16位</a>
+</h3>
+<h3 class="topic">
+<a name="4o1cbe411ujpl358gja5dg47pb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;往小切换</a>
+</h3>
+<h3 class="topic">
+<a name="033ulmq1ggjo1bcmrd6tllp0ca">&nbsp;&nbsp;&nbsp;&nbsp;重复操作前缀</a>
+</h3>
+<h3 class="topic">
+<a name="0lkud5sqjn568j0o3l7n6tc4ub">&nbsp;&nbsp;&nbsp;&nbsp;修改默认段</a>
+</h3>
+<h3 class="topic">
+<a name="6ld850acackdnlas4tbd5q1r7q">&nbsp;&nbsp;&nbsp;&nbsp;锁定前缀</a>
+</h3>
+<h3 class="topic">
+<a name="4525g7nrd39hlovgmdkqu3eh8f">&nbsp;&nbsp;&nbsp;原则</a>
+</h3>
+<h3 class="topic">
+<a name="3l16289m6sp8l8pv20cbie2vgp">&nbsp;&nbsp;&nbsp;&nbsp;一条OPCode可以有多个前缀，但是每类前缀只能存在一个，同一个前缀不能重复，前缀的顺序无关紧要</a>
+</h3>
+<h3 class="topic">
+<a name="3nqiut89dcdqk8rqcgmm78fof4">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B1%87%E7%BC%96%E7%AC%AC%E5%9B%9B%E5%A4%A9_files/3n6gpfbbe13hbiknhk7tahsd8q.png"></p>
+<h3 class="topic">
+<a name="74kgurdobc9p6rspudgdqto8ki">&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="3ddhihhtm6jq16u8utm57mjlr4">&nbsp;&nbsp;&nbsp;是指令必须存在的部分</a>
+</h3>
+<h3 class="topic">
+<a name="28qjcfd0ata8kt15hatifrt2qh">&nbsp;&nbsp;&nbsp;包括</a>
+</h3>
+<h3 class="topic">
+<a name="36tb0rr0eubp16ump4qc5aere6">&nbsp;&nbsp;&nbsp;&nbsp;指令的助记符名称</a>
+</h3>
+<h3 class="topic">
+<a name="3dk98a7d217abn7j2k9kode2t1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mov push等</a>
+</h3>
+<h3 class="topic">
+<a name="07lu600cqn20gdj1bk9cu6oa3a">&nbsp;&nbsp;&nbsp;&nbsp;指令操作数个数</a>
+</h3>
+<h3 class="topic">
+<a name="6jv5ccrqi8n45ojhvt3emn0r45">&nbsp;&nbsp;&nbsp;&nbsp;指令操作数类型</a>
+</h3>
+<h3 class="topic">
+<a name="4tlv31b9f6u89qf7i1hg9sda4g">&nbsp;&nbsp;&nbsp;&nbsp;指令操作数大小</a>
+</h3>
+<h3 class="topic">
+<a name="6fs93960205qd2fdsju5brddtm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;eax ax al</a>
+</h3>
+<h3 class="topic">
+<a name="63765ug3f4edl0me64g95gno11">&nbsp;&nbsp;&nbsp;&nbsp;指令是否存在 ModR/M</a>
+</h3>
+<h3 class="topic">
+<a name="0m7jcmfc2gb2j0otufqghe6udv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;只有指令使用内存寻址时才用到ModR/M</a>
+</h3>
+<h3 class="topic">
+<a name="134di2rk2c518iqg263kd9s2b5">&nbsp;&nbsp;&nbsp;如果在代码表中查询到了Grp字段，需要在group表中查询具体的操作指令，此时需要modR/M的中间三位的值作为索引</a>
+</h3>
+<h3 class="topic">
+<a name="73qvg87ir1ttnv78ke0spqt7mt">&nbsp;&nbsp;modr/m</a>
+</h3>
+<h3 class="topic">
+<a name="1jgpcvl6oeclo2cfoojvus9d5c">&nbsp;&nbsp;&nbsp;操作数名称</a>
+</h3>
+<h3 class="topic">
+<a name="5jobk2go8pj9voah3kp9ltk3qb">&nbsp;&nbsp;&nbsp;是否存在SIB</a>
+</h3>
+<h3 class="topic">
+<a name="57pb5nah4lt5b7dupg3pcctbqk">&nbsp;&nbsp;&nbsp;是否存在相对偏移</a>
+</h3>
+<h3 class="topic">
+<a name="0vqvknstb64qu3tot2vhaa9eu9">&nbsp;&nbsp;&nbsp;只占一个字节</a>
+</h3>
+<h3 class="topic">
+<a name="2rsg8telhl4hoi8r6ptfjb5f5o">&nbsp;&nbsp;&nbsp;&nbsp;按照2位3位3位的规则进行拆分</a>
+</h3>
+<h3 class="topic">
+<a name="7n01el4aqt15f8p4aetlksup9f">&nbsp;&nbsp;&nbsp;当出现内存寻址[]时会用到</a>
+</h3>
+<h3 class="topic">
+<a name="3ksj1kkp5di04rerqepeffj6nu">&nbsp;&nbsp;SIB</a>
+</h3>
+<h3 class="topic">
+<a name="70gv64bf2pp70miroqe08elnp4">&nbsp;&nbsp;&nbsp;主要是[]中出现乘法时会用到</a>
+</h3>
+<h3 class="topic">
+<a name="3ugra5vpl06vfhpbhhg16nb1j1">&nbsp;&nbsp;位移</a>
+</h3>
+<h3 class="topic">
+<a name="1q2a8o5vlig3agkui68a3aegpa">&nbsp;&nbsp;&nbsp;是[]中的偏移，用于内存地址寻址</a>
+</h3>
+<h3 class="topic">
+<a name="4jqh3ihqj4vq8f3s6ussoped8p">&nbsp;&nbsp;立即数</a>
+</h3>
+<h3 class="topic">
+<a name="6sltq2q69ev67e73pbv68qo5us">&nbsp;&nbsp;&nbsp;即汇编代码中参与运算的立即数</a>
+</h3>
+<h3 class="topic">
+<a name="4qnhvu6tt13msup2mecjl82pob">&nbsp;&nbsp;注意</a>
+</h3>
+<h3 class="topic">
+<a name="3hhhr93kpmbeaidqt27ef7t72v">&nbsp;&nbsp;&nbsp;modR/M、SIB  ，位移均是用于规定[ ]即内存地址寻址的格式</a>
+</h3>
+<h3 class="topic">
+<a name="5o88hu7g7tfig92qqoicd04aet">&nbsp;解析opcode</a>
+</h3>
+<h3 class="topic">
+<a name="28988sb6d17aocjff9jdtpnon9">&nbsp;&nbsp;先查找单字节opcode对照表</a>
+</h3>
+<h3 class="topic">
+<a name="4lk9tmlj66488fsp02o9thisk4">&nbsp;&nbsp;&nbsp;高字节找纵列，低字节找横列</a>
+</h3>
+<h3 class="topic">
+<a name="5niimos7eg1qbohipsc4vl530t">&nbsp;&nbsp;&nbsp;&nbsp;F0</a>
+</h3>
+<h3 class="topic">
+<a name="2qbki04bt3lsr2d50gahick291">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LOCK</a>
+</h3>
+<h3 class="topic">
+<a name="51cm21nm3md6q00nf0922mjlds">&nbsp;&nbsp;&nbsp;&nbsp;26</a>
+</h3>
+<h3 class="topic">
+<a name="22h73h868p5glr2jn68r8ufe02">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ES</a>
+</h3>
+<h3 class="topic">
+<a name="1thlsvke84djg0o78a92roi4ut">&nbsp;&nbsp;&nbsp;&nbsp;C7</a>
+</h3>
+<h3 class="topic">
+<a name="318ikgf10si8o2ad1m70vjpt5m">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOV Ev,Iz</a>
+</h3>
+<h3 class="topic">
+<a name="7a71jva9nhkj9oaa05qt9euq2p">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过寻址方式操作数对照表找到Ev Iz的意义</a>
+</h3>
+<h3 class="topic">
+<a name="1k93hedv3hmhi5q2i9ime8jldi">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;E表示需要使用modR/M</a>
+</h3>
+<h3 class="topic">
+<a name="6cj6g0umjuk8kun3ak582vl40p">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;I立即数 4字节</a>
+</h3>
+<h3 class="topic">
+<a name="2kmr1vi91ktdouc72l6go5dco7">&nbsp;&nbsp;16位32位modr/m表中找ModR/M的解释</a>
+</h3>
+<h3 class="topic">
+<a name="25dsm2kirllg53beasigikbve2">&nbsp;&nbsp;&nbsp;在表中找对应数字，其实际意义在表的最左边还是最上面，是根据代码决定的</a>
+</h3>
+<h3 class="topic">
+<a name="573qstu47ktm86mlja8vh6esqb">&nbsp;&nbsp;&nbsp;84</a>
+</h3>
+<h3 class="topic">
+<a name="34ofebcvsgugrfc9h48a519l5p">&nbsp;&nbsp;&nbsp;&nbsp;[--][--]+disp32</a>
+</h3>
+<h3 class="topic">
+<a name="46n1re1j6664ctcgh37u3nu5r1">&nbsp;&nbsp;SIB表中找到SIB的解释</a>
+</h3>
+<h3 class="topic">
+<a name="1lruc8ac5lg6e37evnbsgt5vko">&nbsp;&nbsp;&nbsp;91</a>
+</h3>
+<h3 class="topic">
+<a name="3mfarcb0qmcc848dh75d8ubagj">&nbsp;&nbsp;&nbsp;&nbsp;[edx*4 + ecx]</a>
+</h3>
+<h3 class="topic">
+<a name="73hvapepm5ghb1gd1fhoe5n6as">&nbsp;&nbsp;&nbsp;注意sib中的结果是表中左纵列和上横列相加</a>
+</h3>
+<h3 class="topic">
+<a name="4uagfmh1bnqmj6k0s5mm05m566">&nbsp;&nbsp;偏移</a>
+</h3>
+<h3 class="topic">
+<a name="6idhqbu4u1ec5doko3s3s9d5hl">&nbsp;&nbsp;&nbsp;注意偏移是小端存放的</a>
+</h3>
+<h3 class="topic">
+<a name="4u3888k3ggdo9q4tu0cqqq4l24">&nbsp;&nbsp;立即数</a>
+</h3>
+<h3 class="topic">
+<a name="3nq8gppogqjl379sa664bpg6g9">&nbsp;&nbsp;&nbsp;立即数也是小端存放的</a>
+</h3>
+<h3 class="topic">
+<a name="4jtujmaiu7s2q7qgj680ig9ear">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%B1%87%E7%BC%96%E7%AC%AC%E5%9B%9B%E5%A4%A9_files/7shj7u0sih6pu1epkl9oho2fo9.png"></p>
+<h3 class="topic">
+<a name="1gp4kjkrc39v5j0c9ggieesa2n">&nbsp;特殊情况</a>
+</h3>
+<h3 class="topic">
+<a name="5401ajq7trpbh2m1tgbbh20ru9">&nbsp;&nbsp;多操作码</a>
+</h3>
+<h3 class="topic">
+<a name="37j9054iqj6pkgldh1969et4df">&nbsp;&nbsp;&nbsp;到两、三字节对照表去找</a>
+</h3>
+<h3 class="topic">
+<a name="7ap1fdk9duadi8hakupdmtdrrm">&nbsp;&nbsp;同操作码不同指令</a>
+</h3>
+<h3 class="topic">
+<a name="73rtgjam8ce0juur85upl56k4h">&nbsp;&nbsp;&nbsp;原因在于：指令具有相同的操作数，导致的opcode的优化</a>
+</h3>
+<h3 class="topic">
+<a name="3jno768qs674jc1p4f02oe265g">&nbsp;&nbsp;&nbsp;先单字节OPCode表中去查，前者会引导到group表中找，需要用到modr/m，将其拆成233，在group表中去查</a>
+</h3>
+<h3 class="topic">
+<a name="36ht6tv81rrkpi658c2nsto08k">&nbsp;需要知道的opcode</a>
+</h3>
+<h3 class="topic">
+<a name="7riluu5sh63c0nco5v3rmk7aml">&nbsp;&nbsp;E8</a>
+</h3>
+<h3 class="topic">
+<a name="4a8epggtr2jsinl0otugddrvpg">&nbsp;&nbsp;&nbsp;CALL</a>
+</h3>
+<h3 class="topic">
+<a name="74cdq39vc74jdmcr3lep1djcpk">&nbsp;&nbsp;&nbsp;后面跟立即数</a>
+</h3>
+<h3 class="topic">
+<a name="5bafh5lv5vuum933ua4dd64brp">&nbsp;&nbsp;&nbsp;&nbsp;立即数代表偏移</a>
+</h3>
+<h3 class="topic">
+<a name="4568mlk7u9sopa7uojs010g72u">&nbsp;&nbsp;E9</a>
+</h3>
+<h3 class="topic">
+<a name="2arg3tgr1ld1kuhvtu1mif3lc8">&nbsp;&nbsp;&nbsp;JMP</a>
+</h3>
+<h3 class="topic">
+<a name="6moo95ogr72i2mf57gtu7enqhf">&nbsp;&nbsp;&nbsp;后面跟立即数</a>
+</h3>
+<h3 class="topic">
+<a name="0d09k9ifun4etv1tsnt1jeqrt0">&nbsp;&nbsp;&nbsp;&nbsp;立即数代表偏移</a>
+</h3>
+<h3 class="topic">
+<a name="180r2rats8r74bpo0qvgds9dn5">&nbsp;&nbsp;FF15</a>
+</h3>
+<h3 class="topic">
+<a name="7g87e4seume9q3vg8lkn8dss70">&nbsp;&nbsp;&nbsp;call</a>
+</h3>
+<h3 class="topic">
+<a name="51kg521ao6pf2403tlpih2n00b">&nbsp;&nbsp;&nbsp;后面跟内存地址</a>
+</h3>
+<h3 class="topic">
+<a name="1ah27s1e24ho7j89v65ebebn50">&nbsp;&nbsp;&nbsp;&nbsp;即绝对地址</a>
+</h3>
+<h3 class="topic">
+<a name="686o8302t1m9eqv3v927j3c3j9">&nbsp;&nbsp;FF25</a>
+</h3>
+<h3 class="topic">
+<a name="648adum7csu4n786rnc2ok4pip">&nbsp;&nbsp;&nbsp;jmp</a>
+</h3>
+<h3 class="topic">
+<a name="5k0mpuc9qhctr76p6rpn3ag9vr">&nbsp;&nbsp;&nbsp;后面跟内存地址</a>
+</h3>
+<h3 class="topic">
+<a name="0b28fb8063322j2fhm6mdfta0b">&nbsp;&nbsp;&nbsp;&nbsp;即绝对地址</a>
+</h3>
+<h2 class="topic">
+<a name="5vcmh84mlhq01p2fakl3g2f0ct">常见的反汇编、汇编引擎</a>
+</h2>
+<h3 class="topic">
+<a name="3napk4i61lp0c7bvjb1scqalsv">&nbsp;前者将机器码转为汇编语言，后者反向操作</a>
+</h3>
+<h3 class="topic">
+<a name="3q9p8berl8d2hujuirdmp9gjlv">&nbsp;反汇编引擎</a>
+</h3>
+<h3 class="topic">
+<a name="456idqv1go9r5t7rpk87t84r68">&nbsp;&nbsp;BeaEngine</a>
+</h3>
+<h3 class="topic">
+<a name="084t57d8ha2dbv56iatnlmjda7">&nbsp;&nbsp;&nbsp;几乎支持x86 x64所有的汇编指令</a>
+</h3>
+<h3 class="topic">
+<a name="0tdbersg37qjpuliugos85gjkj">&nbsp;&nbsp;&nbsp;使用前需要包含指定头文件，并声明特定宏定义</a>
+</h3>
+<h3 class="topic">
+<a name="0vi85nnoiq0hp2bnv4k6l70ftk">&nbsp;&nbsp;&nbsp;一次性只能反汇编出一条指令来</a>
+</h3>
+<h3 class="topic">
+<a name="5k9m8jn8feu2dq28b8ltprlgbb">&nbsp;&nbsp;&nbsp;&nbsp;每次返回值为进行反汇编成功的字节数</a>
+</h3>
+<h3 class="topic">
+<a name="0eh2b8lehj9hul9m3q6o6tuhin">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用于作为下一次反汇编的起始位置</a>
+</h3>
+<h3 class="topic">
+<a name="19h25j2cn41br62shh10j125va">&nbsp;&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="4vnv2kn9pvt2ekmv14h45agkqv">&nbsp;&nbsp;&nbsp;&nbsp;需要定义DISASM结构体</a>
+</h3>
+<h3 class="topic">
+<a name="3fint200v4hmcoruj13g6qsu0k">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;结构体结构</a>
+</h3>
+<h3 class="topic">
+<a name="209al0u8dmkegq2d6qin5u215d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;巴拉巴拉</a>
+</h3>
+<h3 class="topic">
+<a name="0mdgea1tfmep8n9ikgtchg9ue7">&nbsp;&nbsp;Capstone</a>
+</h3>
+<h3 class="topic">
+<a name="7do32jqh4v43aq93a4qsaupa3e">&nbsp;&nbsp;&nbsp;支持多种机器语言，多种操作系统，多种编程语言</a>
+</h3>
+<h3 class="topic">
+<a name="3070jtj2rpkuldun4e0n765dbt">&nbsp;&nbsp;&nbsp;使用</a>
+</h3>
+<h3 class="topic">
+<a name="01fd209qe92eul2v97j4a0difa">&nbsp;&nbsp;&nbsp;&nbsp;包含其头文件</a>
+</h3>
+<h3 class="topic">
+<a name="5f5nf8jerl4duijievmapg9cmn">&nbsp;&nbsp;&nbsp;&nbsp;配置返反汇编器的句柄</a>
+</h3>
+<h3 class="topic">
+<a name="2c3t10ufphtk4mmti9kn33t60a">&nbsp;&nbsp;&nbsp;&nbsp;进行反汇编</a>
+</h3>
+<h3 class="topic">
+<a name="5i3k29mub3qq2g7tqpr8qacfh7">&nbsp;&nbsp;&nbsp;&nbsp;关闭反汇编器</a>
+</h3>
+<h3 class="topic">
+<a name="50mdt1pt1i6qhmb5pnjv92o91e">&nbsp;&nbsp;&nbsp;&nbsp;类似于windows窗口编程</a>
+</h3>
+<h3 class="topic">
+<a name="2sjq10fooj8jfp0fqj3chb2lcu">&nbsp;&nbsp;&nbsp;可以一次性反汇编出所有代码</a>
+</h3>
+<h3 class="topic">
+<a name="1oguhbhahvqsbr797kb30gs3m2">&nbsp;汇编引擎</a>
+</h3>
+<h3 class="topic">
+<a name="1feqgj7h2ntg3e4th0t4116q48">&nbsp;&nbsp;Keystonne</a>
+</h3>
+<h3 class="topic">
+<a name="7kq7ohif3j56tabd5mhro47hgc">&nbsp;&nbsp;&nbsp;使用方式与Capstone类似</a>
+</h3>
+<h3 class="topic">
+<a name="55bak2e8qlne8bhmg92fg12ad3">&nbsp;&nbsp;XEDParse</a>
+</h3>
+<h2 class="topic">
+<a name="2erscsucj8vo69r58010rue81f">汇编语言与逆向</a>
+</h2>
+<h3 class="topic">
+<a name="2gnvdv2v7b4crt6f5948pa0tg8">&nbsp;od</a>
+</h3>
+<h3 class="topic">
+<a name="409if5tef76l21dcqvp38nmvac">&nbsp;&nbsp;按钮</a>
+</h3>
+<h3 class="topic">
+<a name="5cfosi2p84fl024kli6821c6lo">&nbsp;&nbsp;&nbsp;l</a>
+</h3>
+<h3 class="topic">
+<a name="6v9qad20053omeofjs47ask0f4">&nbsp;&nbsp;&nbsp;&nbsp;日志</a>
+</h3>
+<h3 class="topic">
+<a name="2jhbt8kq7vtuptbqriaj0t3sgm">&nbsp;&nbsp;&nbsp;e</a>
+</h3>
+<h3 class="topic">
+<a name="26msc9k0a28b6pgjhj104qje8q">&nbsp;&nbsp;&nbsp;&nbsp;模块：element</a>
+</h3>
+<h3 class="topic">
+<a name="6nfmo3mrdkqgoqe8sg8ef429lv">&nbsp;&nbsp;&nbsp;m</a>
+</h3>
+<h3 class="topic">
+<a name="003d6qmu81sh93t74iiuf1ab09">&nbsp;&nbsp;&nbsp;&nbsp;内存</a>
+</h3>
+<h3 class="topic">
+<a name="63hrbk2efrmcnramcfasfa63jn">&nbsp;&nbsp;&nbsp;t</a>
+</h3>
+<h3 class="topic">
+<a name="53v619es4t37h1aihvb8l4v51u">&nbsp;&nbsp;&nbsp;&nbsp;线程</a>
+</h3>
+<h3 class="topic">
+<a name="2lrke7ediin07usedhnc4val9h">&nbsp;&nbsp;&nbsp;h</a>
+</h3>
+<h3 class="topic">
+<a name="5n6ha9jl2sngpmebv2vv2abod7">&nbsp;&nbsp;&nbsp;&nbsp;句柄</a>
+</h3>
+<h3 class="topic">
+<a name="01it2g1ske2o6pdognrjklniqa">&nbsp;&nbsp;&nbsp;c</a>
+</h3>
+<h3 class="topic">
+<a name="1prb4kbt5brfr15pvpsa6aebl1">&nbsp;&nbsp;&nbsp;&nbsp;主窗口</a>
+</h3>
+<h3 class="topic">
+<a name="7ct3jt980uliusamgr7a79dk0i">&nbsp;&nbsp;&nbsp;/</a>
+</h3>
+<h3 class="topic">
+<a name="0qnuglu0v55qu0cbjgb0glqg99">&nbsp;&nbsp;&nbsp;&nbsp;补丁</a>
+</h3>
+<h3 class="topic">
+<a name="3ho9fqj5emujhucm26s6584kdj">&nbsp;&nbsp;&nbsp;&nbsp;即对代码的修改</a>
+</h3>
+<h3 class="topic">
+<a name="5ut6u256t8otqsj48cs0kpc9j9">&nbsp;&nbsp;&nbsp;k</a>
+</h3>
+<h3 class="topic">
+<a name="50cukrhj2knb73gmdllerb0trp">&nbsp;&nbsp;&nbsp;&nbsp;堆栈调用</a>
+</h3>
+<h3 class="topic">
+<a name="563ildfmn7vgcpsfoai0rgeb50">&nbsp;&nbsp;&nbsp;&nbsp;可以通过栈中的返回地址跟踪到调用函数的位置</a>
+</h3>
+<h3 class="topic">
+<a name="5k4b5u8c1ege2mine0r19oto9s">&nbsp;&nbsp;&nbsp;&nbsp;在破解逆向的过程中很重要</a>
+</h3>
+<h3 class="topic">
+<a name="6r8k86dc3rg2m7u6c73urfp9ud">&nbsp;&nbsp;&nbsp;b</a>
+</h3>
+<h3 class="topic">
+<a name="57oaqjjh3ub2rmmgsklp882jqh">&nbsp;&nbsp;&nbsp;&nbsp;断点</a>
+</h3>
+<h3 class="topic">
+<a name="5kilscpkqvbmnnc29517d4556t">&nbsp;&nbsp;&nbsp;r</a>
+</h3>
+<h3 class="topic">
+<a name="2v4l3q5qlqdvq816ok2od2pv0a">&nbsp;&nbsp;&nbsp;&nbsp;注释</a>
+</h3>
+<h3 class="topic">
+<a name="5vabjcv60fea7179tpc9irg3h5">&nbsp;&nbsp;&nbsp;...</a>
+</h3>
+<h3 class="topic">
+<a name="6m4khac66bl2hra00nchio97kl">&nbsp;&nbsp;&nbsp;&nbsp;run跟踪</a>
+</h3>
+<h3 class="topic">
+<a name="03h7ge9dag1ppnq3it00eae52f">&nbsp;&nbsp;&nbsp;s</a>
+</h3>
+<h3 class="topic">
+<a name="5rovfjcql46g8ehhruqgk1eanq">&nbsp;&nbsp;&nbsp;&nbsp;源码</a>
+</h3>
+<h3 class="topic">
+<a name="3ooh8ori4rogluonjmk94a0uuf">&nbsp;&nbsp;快捷方式</a>
+</h3>
+<h3 class="topic">
+<a name="7g34g8075p8jt4rpg2f8f2qac1">&nbsp;&nbsp;&nbsp;f7</a>
+</h3>
+<h3 class="topic">
+<a name="3tj6v69d9ssa8kojf9q2gntmkm">&nbsp;&nbsp;&nbsp;&nbsp;步入</a>
+</h3>
+<h3 class="topic">
+<a name="4ajeqdnk0kq2s312b9e0r6iud4">&nbsp;&nbsp;&nbsp;f8</a>
+</h3>
+<h3 class="topic">
+<a name="6s86g5qjr22u325di7u1ifneu1">&nbsp;&nbsp;&nbsp;&nbsp;步过</a>
+</h3>
+<h3 class="topic">
+<a name="0dt7i744fp0vruq9qqs53vv1h3">&nbsp;&nbsp;&nbsp;f9</a>
+</h3>
+<h3 class="topic">
+<a name="4q15bolcgj24iiirm02irvf333">&nbsp;&nbsp;&nbsp;&nbsp;运行</a>
+</h3>
+<h3 class="topic">
+<a name="6roegeb091mii1rri1bpv1h3h5">&nbsp;&nbsp;&nbsp;f2</a>
+</h3>
+<h3 class="topic">
+<a name="7rbtrrg1h990h2b0v4ot68kj20">&nbsp;&nbsp;&nbsp;&nbsp;下断点</a>
+</h3>
+<h3 class="topic">
+<a name="5tof2u2sq2f68m11tdc5fjnlr6">&nbsp;&nbsp;&nbsp;ctrl+e</a>
+</h3>
+<h3 class="topic">
+<a name="2horbi2dcv7n0cv5rri0aiq37g">&nbsp;&nbsp;&nbsp;&nbsp;编辑二进制</a>
+</h3>
+<h3 class="topic">
+<a name="797miuj6ngc9ik82n7q4bqm0p8">&nbsp;&nbsp;&nbsp;ctrl+g</a>
+</h3>
+<h3 class="topic">
+<a name="5r5iqksob9e8mfbnlcgq69kksf">&nbsp;&nbsp;&nbsp;&nbsp;跳转到</a>
+</h3>
+<h3 class="topic">
+<a name="0n1euii3ln8pi0hg1bbd0v2p5d">&nbsp;&nbsp;&nbsp;&nbsp;可以用于在不同的窗口中查找指定内容</a>
+</h3>
+<h3 class="topic">
+<a name="1t706puvdj9j8n3ufpb6dq6ond">&nbsp;&nbsp;&nbsp;+ -</a>
+</h3>
+<h3 class="topic">
+<a name="0d4ig6rso9jjv11ng19249h2hl">&nbsp;&nbsp;&nbsp;&nbsp;前进 后退</a>
+</h3>
+<h3 class="topic">
+<a name="2k3uq5e4in2agpki9n9l3nb54c">&nbsp;&nbsp;&nbsp;ctrl+a</a>
+</h3>
+<h3 class="topic">
+<a name="302a6tvjk77vhtrtkaqm3sfhgl">&nbsp;&nbsp;&nbsp;&nbsp;辅助识别函数和字符串</a>
+</h3>
+<h3 class="topic">
+<a name="36ktk0fj343bdqjhd6sprls9al">&nbsp;&nbsp;&nbsp;ctrl+*重置eip</a>
+</h3>
+<h3 class="topic">
+<a href="https://blog.csdn.net/yizhenweifeng/article/details/8518925" name="6o21q83lv66hs4eqkeiprr1lvc">&nbsp;&nbsp;&nbsp;https://blog.csdn.net/yizhenweifeng/article/details/8518925</a>
+</h3>
+<h3 class="topic">
+<a name="1mrrku9kv1g5ogo5a9gld9st08">&nbsp;定位核心代码</a>
+</h3>
+<h3 class="topic">
+<a name="5htpjjh2pe5b7jp8lnv8vlqnq4">&nbsp;&nbsp;猜想核心代码特征</a>
+</h3>
+<h3 class="topic">
+<a name="2n4d8onk0jur9h7una6flmctl5">&nbsp;&nbsp;&nbsp;最重要</a>
+</h3>
+<h3 class="topic">
+<a name="0rruojh3219d9et598df9i5jiq">&nbsp;&nbsp;字符串搜索</a>
+</h3>
+<h3 class="topic">
+<a name="37im8tagvo9kvm0egp3ijgn14p">&nbsp;&nbsp;&nbsp;插件-》中文搜索引擎</a>
+</h3>
+<h3 class="topic">
+<a name="58t61rcbc0q5ofklh1l6h694bu">&nbsp;&nbsp;堆栈回溯</a>
+</h3>
+<h3 class="topic">
+<a name="6b7esrrs1foi0l5sg1n729rpb4">&nbsp;&nbsp;&nbsp;api断点-》返回地址返回到api被调用的敌方</a>
+</h3>
+<h3 class="topic">
+<a name="17jb3r5o3e3ec76qjdoqsedrq2">&nbsp;分析核心代码</a>
+</h3>
+<h3 class="topic">
+<a name="36iaul0hs2nkm152fvb97f1llf">&nbsp;&nbsp;三大结构</a>
+</h3>
+<h3 class="topic">
+<a name="3t33a6nu6khtlq3utv4f62pd1j">&nbsp;&nbsp;&nbsp;顺序</a>
+</h3>
+<h3 class="topic">
+<a name="6rrqbrea0e4dd1qgjsmaa53tpm">&nbsp;&nbsp;&nbsp;选择</a>
+</h3>
+<h3 class="topic">
+<a name="3t7qbak98frb1j310hqhq2h72v">&nbsp;&nbsp;&nbsp;&nbsp;使用cmp配合jcc实现if</a>
+</h3>
+<h3 class="topic">
+<a name="45qo5jcs8tks2jcm79cvgk3tmi">&nbsp;&nbsp;&nbsp;&nbsp;使用cmp配合jcc配合jmp实现if-else</a>
+</h3>
+<h3 class="topic">
+<a name="3q99a4pu49h77h2g1rp2vm50fp">&nbsp;&nbsp;&nbsp;&nbsp;使用cmp配合je实现最简单的switch case</a>
+</h3>
+<h3 class="topic">
+<a name="0n4seqil3hd4f7v3s40d2q5csi">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;switch如果case的分支过多或者分支之间值差距过大，会导致编译器对汇编代码进行优化</a>
+</h3>
+<h3 class="topic">
+<a name="10etccdjl35d3dg6i60co9fnis">&nbsp;&nbsp;&nbsp;循环</a>
+</h3>
+<h3 class="topic">
+<a name="45dnpjk965ieb9810uchqnqbpq">&nbsp;&nbsp;&nbsp;&nbsp;使用jmp指令往回跳转</a>
+</h3>
+<h3 class="topic">
+<a name="5el0fapvkvr3va4rpek1qn6ngq">&nbsp;&nbsp;分析数据来源</a>
+</h3>
+<h3 class="topic">
+<a name="44epr089o3bnmcpgt1hk9s4tcs">&nbsp;&nbsp;&nbsp;所有汇编指令都在操作寄存器、内存</a>
+</h3>
+<h3 class="topic">
+<a name="0on3crh6fde02njhm89fh55shu">&nbsp;&nbsp;&nbsp;寄存器，内存中的值不可能是无中生有的</a>
+</h3>
+<h3 class="topic">
+<a name="3dev3ppojsid389tscmcndu6p2">&nbsp;&nbsp;&nbsp;识别数据的来源和去向，推断数据意图</a>
+</h3>
+<h3 class="topic">
+<a name="6lpcnso7g6f7vdqhrgjbe0a90v">&nbsp;&nbsp;识别参数</a>
+</h3>
+<h3 class="topic">
+<a name="170nsu9kq4fh9cj6aoi4tqhdm8">&nbsp;&nbsp;&nbsp;形参个数和类型</a>
+</h3>
+<h3 class="topic">
+<a name="7qm53hamaagqfb4cilcpm54apf">&nbsp;&nbsp;&nbsp;&nbsp;在清栈的时候可以识别</a>
+</h3>
+<h3 class="topic">
+<a name="00jjgtv7ldlbpu3u87qns9s672">&nbsp;&nbsp;&nbsp;返回值</a>
+</h3>
+<h3 class="topic">
+<a name="0t25va3il6lgioqdvsvgj3ttcp">&nbsp;&nbsp;&nbsp;&nbsp;总是通过eax返回函数返回值</a>
+</h3>
+<h2 class="topic">
+<a name="3l8ergnoacfm6kv7f9drfa1rlj">od中ctrl+e可以更改OPCODE</a>
+</h2>
+</body>
+</html>

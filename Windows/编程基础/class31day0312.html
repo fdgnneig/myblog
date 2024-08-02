@@ -1,0 +1,1189 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>class31day0312</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="1p7qhf2nmjp2qjme5mo99dvgtn">class31day0312</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="class31day0312_files/images/class31day0312.jpg"></div>
+<h2 class="topic">
+<a name="3vdti7a3mk11233qdf4td8vlo9">WIN编程基础</a>
+</h2>
+<h3 class="topic">
+<a name="6qfdrv252ghhtq8i462cbbq901">&nbsp;窗口</a>
+</h3>
+<h3 class="topic">
+<a name="3mqqgc533r0geod870ja7dvplg">&nbsp;&nbsp;复习窗口的创建</a>
+</h3>
+<h3 class="topic">
+<a name="5f1skj749v11en3lhn933i6c2e">&nbsp;&nbsp;&nbsp;设计窗口类</a>
+</h3>
+<h3 class="topic">
+<a name="5qtivdlsa6iha2kske4vb3me7l">&nbsp;&nbsp;&nbsp;&nbsp;类名</a>
+</h3>
+<h3 class="topic">
+<a name="799oiqbfv2783l2vlnqikoobin">&nbsp;&nbsp;&nbsp;&nbsp;回调函数</a>
+</h3>
+<h3 class="topic">
+<a name="7nafstk3i6vf2ta4it05mlilv6">&nbsp;&nbsp;&nbsp;&nbsp;实例句柄</a>
+</h3>
+<h3 class="topic">
+<a name="7ufp9ikamvf3hejbttlsh89clg">&nbsp;&nbsp;&nbsp;注册窗口</a>
+</h3>
+<h3 class="topic">
+<a name="0k98a9r792jrbb45lie80r7jqj">&nbsp;&nbsp;&nbsp;创建窗口</a>
+</h3>
+<h3 class="topic">
+<a name="68krmehcnvpcp3s7f1tak09r69">&nbsp;&nbsp;&nbsp;&nbsp;我们调用的 CreateWindow()如果第一个参数为0 ，默认调用的是 CreateWindowEx()函数</a>
+</h3>
+<h3 class="topic">
+<a name="62cuunkipqmkmqb4b2biifb0oo">&nbsp;&nbsp;&nbsp;&nbsp;CreateWindow()与CreateWindowEx()的区别</a>
+</h3>
+<h3 class="topic">
+<a name="18ja764c4ak9pegri8j5iiomni">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CreateWindowEx 函数功能：该函数创建一个具有扩展风格的重叠式窗口、弹出式窗口或子窗口，其他与 CreateWindow函数相同。</a>
+</h3>
+<h3 class="topic">
+<a name="3jh9vd46m61ntrc9ug9v4q1g6d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;若要使用除CreateWindow函数支持的风格外的扩展风格，则使用CreateWindowEx函数代替CreateWindow函数。 </a>
+</h3>
+<h3 class="topic">
+<a name="1qaompkqfs9vupuigoakjig7cn">&nbsp;&nbsp;&nbsp;更新窗口</a>
+</h3>
+<h3 class="topic">
+<a name="6100ovqvtqflbrk1nlejvrq419">&nbsp;&nbsp;&nbsp;显示窗口</a>
+</h3>
+<h3 class="topic">
+<a name="385qme6lpt0pe6mt5rv70sgg7j">&nbsp;&nbsp;&nbsp;消息泵</a>
+</h3>
+<h3 class="topic">
+<a name="62dq69qr5dqgegt99n0m1gun65">&nbsp;&nbsp;注册winmain函数的时候，可以写int WINAPI，可以写 int APIENTRY,宏定义下均一样</a>
+</h3>
+<h3 class="topic">
+<a name="69n2f69eqe0a38c0f4qgfaie80">&nbsp;&nbsp;回调函数两个附加信息的形参，对不同的消息码，对应不同的附加信息含义，需要查msdn</a>
+</h3>
+<h3 class="topic">
+<a name="5u9akfp0orfnavt6pgjfgkoo86">&nbsp;&nbsp;三大窗口风格</a>
+</h3>
+<h3 class="topic">
+<a name="1tv8j6kppgnccfa955ubqffec9">&nbsp;&nbsp;&nbsp;分类一</a>
+</h3>
+<h3 class="topic">
+<a name="4ile2nk81rph63hef23tg67nhj">&nbsp;&nbsp;&nbsp;&nbsp;普通风格</a>
+</h3>
+<h3 class="topic">
+<a name="3msmvsv0loebhkita3rm5a3g4p">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WS_   开头</a>
+</h3>
+<h3 class="topic">
+<a name="1uatbdejjj4o2l00h0atcsodb7">&nbsp;&nbsp;&nbsp;&nbsp;扩展风格</a>
+</h3>
+<h3 class="topic">
+<a name="5spaao7dokf24gjls0f56t501j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WS_EX_     开头</a>
+</h3>
+<h3 class="topic">
+<a name="67rh6m5bumj5fdmaqdt2c5iq6h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以使用CreateWindowEx()才能为窗口设置扩展风格</a>
+</h3>
+<h3 class="topic">
+<a name="2f43q5cpjb945089kjtp4trcfj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;例如</a>
+</h3>
+<h3 class="topic">
+<a name="5irpml842pu8m1a0iboemvgjk7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WS_EX_LAYREED</a>
+</h3>
+<h3 class="topic">
+<a name="2d152qpqudmfca3sftnroo92fg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;分层或透明窗口</a>
+</h3>
+<h3 class="topic">
+<a name="2k6114h01g477j380gjs66q8ee">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WS_EX_ACCEPTFILES </a>
+</h3>
+<h3 class="topic">
+<a name="020l15cc6j1ad3o3ikff9npff6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;窗口接受一个拖曳的文件</a>
+</h3>
+<h3 class="topic">
+<a name="402edc15ftimfnlamhura7bvk6">&nbsp;&nbsp;&nbsp;分类二</a>
+</h3>
+<h3 class="topic">
+<a name="4l2dd2gdj6gretp1i8prdnbei2">&nbsp;&nbsp;&nbsp;&nbsp;表明窗口和其他窗口之间的关系</a>
+</h3>
+<h3 class="topic">
+<a name="1535bt8lqitqilvqhdig5ns4co">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WS_CHILD</a>
+</h3>
+<h3 class="topic">
+<a name="6oc4d4o0ue1r20gk3ee9cdfqfd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WS_POPUP</a>
+</h3>
+<h3 class="topic">
+<a name="6090rglqjaeotairna78jeok89">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WS_OVERLAPPED</a>
+</h3>
+<h3 class="topic">
+<a name="53heffsi4rsaih5841hkjtet1j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;等。。。</a>
+</h3>
+<h3 class="topic">
+<a name="3dlcr03pibnh0b34jlm5abvh0c">&nbsp;&nbsp;&nbsp;&nbsp;表明窗口自身的外观</a>
+</h3>
+<h3 class="topic">
+<a name="3ct376irgsjk5u68h1em52mu3l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WS_BORDER</a>
+</h3>
+<h3 class="topic">
+<a name="4cvb4uqu48ut2j4e9pgeq1he29">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WS_CAPTION</a>
+</h3>
+<h3 class="topic">
+<a name="58ou56he27gj7pu6l3t6d2qpju">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WS_MINIMIZE</a>
+</h3>
+<h3 class="topic">
+<a name="6uf7gtiujtoisnhqekh0qb4588">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;等。。。</a>
+</h3>
+<h3 class="topic">
+<a name="143kg44baet491o92tdjf60odu">&nbsp;&nbsp;&nbsp;分类三</a>
+</h3>
+<h3 class="topic">
+<a name="3mou5p2ag0e3ph1s2oj87sugbh">&nbsp;&nbsp;&nbsp;&nbsp;重叠窗口</a>
+</h3>
+<h3 class="topic">
+<a name="2gggrb2dc2av6fm9dpm65itluu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;常作为主窗口</a>
+</h3>
+<h3 class="topic">
+<a name="7d98gtbvm89ft0mn8jd3524e88">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;具有丰富的控件，存在标题，最大化，最小化关闭按钮，可以独立存在</a>
+</h3>
+<h3 class="topic">
+<a name="4o7ievc477ne0nrqfg3q7b6kct">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WS_OVERLAPPEDWINDOW</a>
+</h3>
+<h3 class="topic">
+<a name="7fin0gu1u5aevnngc7diagec7p">&nbsp;&nbsp;&nbsp;&nbsp;弹出窗口</a>
+</h3>
+<h3 class="topic">
+<a name="55urqj2j6cjth6lt2g93soje3r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;具有消息框和对话框的全部特点</a>
+</h3>
+<h3 class="topic">
+<a name="0mmrufnoaaegt51skuai0cba02">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;一般有关闭按钮，没有最大化，最小化，可以独立存在，存在固定大小的框架</a>
+</h3>
+<h3 class="topic">
+<a name="26vff9s71dn2vp0uiu3nmb749o">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WS_POPUPWINDOW</a>
+</h3>
+<h3 class="topic">
+<a name="0vnbf72rdrpmhebn7c3kbl3o6p">&nbsp;&nbsp;&nbsp;&nbsp;子窗口</a>
+</h3>
+<h3 class="topic">
+<a name="4svsniivpd4okf81uikl0l376c">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;控件类窗口</a>
+</h3>
+<h3 class="topic">
+<a name="16832hbotk5msfoa6h0dm325bf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;只能依附在某个窗口里面，具有类似按钮控件的全部特点，不能脱离父窗口</a>
+</h3>
+<h3 class="topic">
+<a name="7klo47id0ojst0d36pemds4ufp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WS_CHILDWINDOW</a>
+</h3>
+<h3 class="topic">
+<a name="17cvji4dhth3j9tut6tkv3u0i3">&nbsp;&nbsp;操作窗口的通用函数</a>
+</h3>
+<h3 class="topic">
+<a name="0qukhtmlrblmul6q6adck6f9re">&nbsp;&nbsp;&nbsp;MoveWindow:&nbsp;移动窗口 SetWindowText：设置窗口标题 GetWindowText:&nbsp;获取窗口标题 FindWindow: 查找窗口 EnumChildWindow:&nbsp;枚举子窗口 GetDlgItem:&nbsp;获取控件窗口句柄 GetParent:&nbsp;获取父窗口 SetParant:&nbsp;设置父窗口 GetClinetRect:&nbsp;获取窗口矩形 SetWindowPos&nbsp;:设置窗口位置  GetDesktopWindow;获取桌面窗口的句柄&#13;
+PostQuitMessage：关闭窗口</a>
+</h3>
+<h3 class="topic">
+<a name="355g24k1edq7eq7m7mpruisabq">&nbsp;&nbsp;WNDCLASS窗口类中的参数</a>
+</h3>
+<h3 class="topic">
+<a name="3sdk8ke3lgu24hh36dn1q1qv6v">&nbsp;&nbsp;&nbsp;设计一个窗口类</a>
+</h3>
+<h3 class="topic">
+<a name="7jeaj9it5r47vsuscjraemni23">&nbsp;&nbsp;&nbsp;&nbsp;WNDCLASS cls = {0};</a>
+</h3>
+<h3 class="topic">
+<a name="6vhbj7d644fmg7jai2286soi4v">&nbsp;&nbsp;&nbsp;&nbsp;cls.style = CS_VREDRAW|CS_HREDRAW;	//类风格:垂直重绘和水平重绘</a>
+</h3>
+<h3 class="topic">
+<a name="3a12sd660qgpiqhri60e1tas2l">&nbsp;&nbsp;&nbsp;&nbsp;cls.lpfnWndProc = windowproc;		//窗口回调函数</a>
+</h3>
+<h3 class="topic">
+<a name="1u7kh90h9ns3lprh2qih9fnbbj">&nbsp;&nbsp;&nbsp;&nbsp;cls.cbClsExtra  =  0;		//无用</a>
+</h3>
+<h3 class="topic">
+<a name="5gat57jun750imc69fotlil928">&nbsp;&nbsp;&nbsp;&nbsp;cls.cbWndExtra   = 0;</a>
+</h3>
+<h3 class="topic">
+<a name="4eil0so4hu1k7jterp8rnbqvbe">&nbsp;&nbsp;&nbsp;&nbsp;cls.hInstance= g_hInstance;	 //实例句柄</a>
+</h3>
+<h3 class="topic">
+<a name="66560behuv1tjt70331ojedkod">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;实例句柄可以在程序中使用全部变量定义</a>
+</h3>
+<h3 class="topic">
+<a name="1aju2ki4e2qs6j46k7qvjmlfva">&nbsp;&nbsp;&nbsp;&nbsp;//加载图标资源(即窗口左上角以及桌面图标)</a>
+</h3>
+<h3 class="topic">
+<a name="7h2ugvjrgs8sp1hllso2r3scp4">&nbsp;&nbsp;&nbsp;&nbsp;cls.hIcon = LoadIcon(g_hInstance,MAKEINTRESOURCE(IDI_ICON1));//图标句柄</a>
+</h3>
+<h3 class="topic">
+<a name="7he026248dflvnbt6m8df2c989">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;函数第一个参数为当前实例句柄</a>
+</h3>
+<h3 class="topic">
+<a name="0qvchj2b47ev6q52hori1otqku">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;第二个参数为一个字符串，但是图标id：IDI_ICON1为数字需要使用MAKEINTRESOURCE()函数转为字符串</a>
+</h3>
+<h3 class="topic">
+<a name="13puvjrbkdttpcg2b2jdc2lb54">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;图标、光标、菜单资源的名称可以在vs工程中资源文件目录下找到</a>
+</h3>
+<h3 class="topic">
+<a name="1icumj5gdddiedao6os0ffv4ee">&nbsp;&nbsp;&nbsp;&nbsp;//加载光标资源</a>
+</h3>
+<h3 class="topic">
+<a name="0sqq77bthn7nvqm70hh3qq9nai">&nbsp;&nbsp;&nbsp;&nbsp;cls.hCursor=LoadCursor(g_hInstance,MAKEINTRESOURCE(IDC_CURSOR1));	//光标</a>
+</h3>
+<h3 class="topic">
+<a name="3dt4k8regvsvkojrriaabe3jpp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;光标资源的加载同理</a>
+</h3>
+<h3 class="topic">
+<a name="4nlbkbpsd2ctueihfbnla6g42e">&nbsp;&nbsp;&nbsp;&nbsp;//设置背景颜色</a>
+</h3>
+<h3 class="topic">
+<a name="48a90cturtrmhtgmelu6o6fgm0">&nbsp;&nbsp;&nbsp;&nbsp;cls.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH); //背景颜色</a>
+</h3>
+<h3 class="topic">
+<a name="2jfs8rctifpcndn1vqp4lip6ll">&nbsp;&nbsp;&nbsp;&nbsp;//加载菜单</a>
+</h3>
+<h3 class="topic">
+<a name="51uk4p4m13d9cd34384kk9uk6q">&nbsp;&nbsp;&nbsp;&nbsp;cls.lpszMenuName = MAKEINTRESOURCE(IDR_MENU1);//菜单</a>
+</h3>
+<h3 class="topic">
+<a name="7vfb8q1u7h1o247h5auqc1qftf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;菜单在设计窗口类的时候不使用LoadMenu</a>
+</h3>
+<h3 class="topic">
+<a name="3898ggb4adqundpg8bril5qbj1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在创建窗口的时候用LoadMenu函数</a>
+</h3>
+<h3 class="topic">
+<a name="332n605lgcmvnrre595se4b1h2">&nbsp;&nbsp;&nbsp;&nbsp;//指定窗口类名</a>
+</h3>
+<h3 class="topic">
+<a name="0lbo1iensfmiaajbmpialt2c31">&nbsp;&nbsp;&nbsp;&nbsp;cls.lpszClassName= L"15pb";//类名</a>
+</h3>
+<h3 class="topic">
+<a name="2flcsl63gvqkajhlpo2kporsaf">&nbsp;&nbsp;注册窗口类</a>
+</h3>
+<h3 class="topic">
+<a name="5u82a8nad120qvrkpo9rf6cnes">&nbsp;&nbsp;&nbsp;RegisterClass(&amp;cls);</a>
+</h3>
+<h3 class="topic">
+<a name="1v60qhej4a09uemot43l5kelpt">&nbsp;&nbsp;创建窗口类</a>
+</h3>
+<h3 class="topic">
+<a name="2jj8ocf61p0nd9ij1bj9fgookr">&nbsp;&nbsp;&nbsp;HWND hwnd = CreateWindowEx(&#13;
+  0,	//窗口扩展风格&#13;
+  L"15pb",	//类名&#13;
+  L"windows",	 //窗口名&#13;
+  WS_OVERLAPPEDWINDOW, //窗口风格&#13;
+  500, 500, 800, 600, //x,y,宽，高&#13;
+  NULL,  //父窗口&#13;
+  LoadMenu(g_hInstance, MAKEINTRESOURCE(IDR_MENU1)),  //菜单 &#13;
+  g_hInstance,	  //实例句柄&#13;
+  NULL);	 //附加参数，该参数如果指定，会将该参数传到窗口的回调函数的附加消息中</a>
+</h3>
+<h3 class="topic">
+<a name="7edsvq5r41ait0bl8seh903veg">&nbsp;&nbsp;&nbsp;&nbsp;窗口风格决定了创建出是主窗口（重叠窗口） 弹出窗口  或控件（子窗口）</a>
+</h3>
+<h3 class="topic">
+<a name="2pt86kv606hjk9tjdhbnji0o9c">&nbsp;&nbsp;&nbsp;&nbsp;窗口菜单句柄需要执行LoadMenu()函数进行返回</a>
+</h3>
+<h3 class="topic">
+<a name="1if50u5s2ndkhr350o3c3upjtg">&nbsp;&nbsp;显示更新</a>
+</h3>
+<h3 class="topic">
+<a name="2a3r9t4jbg3vf5mbtj67to513l">&nbsp;&nbsp;&nbsp;ShowWindow(hwnd,SW_SHOW);//SW_HIDE窗口隐藏</a>
+</h3>
+<h3 class="topic">
+<a name="6fepv9b4hi20h6o3raenfeqtad">&nbsp;&nbsp;&nbsp;UpdateWindow(hwnd);</a>
+</h3>
+<h3 class="topic">
+<a name="13ec061dophfh1md4v52btjc6m">&nbsp;&nbsp;消息循环</a>
+</h3>
+<h3 class="topic">
+<a name="4jgn73b1k0l6rsu0fdrfpu325d">&nbsp;&nbsp;&nbsp;MSG msg;</a>
+</h3>
+<h3 class="topic">
+<a name="5b9ulronn6p6b8p8b6fk86tcqn">&nbsp;&nbsp;&nbsp;while(GetMessage(&amp;msg,0,0,0))&#13;
+{&#13;
+TranslateMessage(&amp;msg); //wm_keydowm == wm_char&#13;
+DispatchMessage(&amp;msg);&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="582u22jh2vc2v3f4i96t15abha">&nbsp;&nbsp;&nbsp;&nbsp;TranslateMessage函数用于将虚拟键消息转换为字符消息。</a>
+</h3>
+<h3 class="topic">
+<a name="1ur2s3umvql5l2jpvjjfqp6oh2">&nbsp;控件创建与消息响应</a>
+</h3>
+<h3 class="topic">
+<a name="61nihmpq0aild2m9qa9sqhlfka">&nbsp;&nbsp;控件是windows系统内置的窗口</a>
+</h3>
+<h3 class="topic">
+<a name="0t1r81lc6jigco694i361u2mug">&nbsp;&nbsp;&nbsp;控件是一个子窗口且是一个提供了特定功能的子窗口</a>
+</h3>
+<h3 class="topic">
+<a name="51ep8g22a0ai5j94p9b3qm20ok">&nbsp;&nbsp;控件</a>
+</h3>
+<h3 class="topic">
+<a name="0bjari1tqnjqf4mr5cs228ms0k">&nbsp;&nbsp;&nbsp;创建控件的两种方式</a>
+</h3>
+<h3 class="topic">
+<a name="38r1uffjvnf3ofcsr0aa05ekgc">&nbsp;&nbsp;&nbsp;&nbsp;通过CreateWindow创建出来</a>
+</h3>
+<h3 class="topic">
+<a name="479jrhgfnnk8tjs994qaa7avrt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用代码确定控件性质</a>
+</h3>
+<h3 class="topic">
+<a name="7ma99hlvrviq92p7v098ktd3tl">&nbsp;&nbsp;&nbsp;&nbsp;通过对话框资源一起被创建出来</a>
+</h3>
+<h3 class="topic">
+<a name="0gfbd7j4mn2186mfk2s0vmrrvm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用拖拽设置控件</a>
+</h3>
+<h3 class="topic">
+<a name="1qtpl6kasgs352pbdeeu0ctm9h">&nbsp;&nbsp;&nbsp;&nbsp;两种方式只有在创建的阶段差异大，使用的时候用法是一致的</a>
+</h3>
+<h3 class="topic">
+<a name="0ujpl1la74vq8q7s9qu3vvage3">&nbsp;&nbsp;&nbsp;使用控件会发生两种情况</a>
+</h3>
+<h3 class="topic">
+<a name="1r1t3b6hlhkes4tost790ikj1c">&nbsp;&nbsp;&nbsp;&nbsp;父窗口可以通过发消息控制控件</a>
+</h3>
+<h3 class="topic">
+<a name="6mjn6tf2253apt0bsfbdp1vb7r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;控件除了会接收通用窗口消息(WM_),还有自己的专属消息，只要向控件发送此类消息就可以控制其行为</a>
+</h3>
+<h3 class="topic">
+<a name="57iuq9pgv4kd5f7r90bgkvt53l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;父窗口通过SendMassage()函数操作或设置控件</a>
+</h3>
+<h3 class="topic">
+<a name="3l04rnkbdaf6b4nkq2ho2rabsf">&nbsp;&nbsp;&nbsp;&nbsp;当控件的特定功能被触发后，控件会主动发消息通知父窗口</a>
+</h3>
+<h3 class="topic">
+<a name="1r2735op2s6r1m6su76k6va1er">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WM_COMMAND</a>
+</h3>
+<h3 class="topic">
+<a name="6fumoj0qt59nui2se556r7sedo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WM_NOTIFY</a>
+</h3>
+<h3 class="topic">
+<a name="4u2sbh7a1noe179gjnetin8jse">&nbsp;&nbsp;&nbsp;控件交互</a>
+</h3>
+<h3 class="topic">
+<a name="0v7r6asjir47ppe0e8asv021q7">&nbsp;&nbsp;&nbsp;&nbsp;父窗口控制控件的行为</a>
+</h3>
+<h3 class="topic">
+<a name="50lqh40d1kofc0l497i1si4fqd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用控件消息 各个控件都有其自身的控件消息，通过SendMessage函数发送此类消息</a>
+</h3>
+<h3 class="topic">
+<a name="7o7k4fenrmg7ouum3c9735fddm">&nbsp;&nbsp;&nbsp;&nbsp;子控件通知父窗口一些信息</a>
+</h3>
+<h3 class="topic">
+<a name="3t9o4773jbo8ekcqt8p53r0sak">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WM_COMMAND</a>
+</h3>
+<h3 class="topic">
+<a name="59spsov688stat0j8kr0ogovit">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;简单的控件消息</a>
+</h3>
+<h3 class="topic">
+<a name="12e1kfofdpal92eobqbb4mrpv9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;标准控件</a>
+</h3>
+<h3 class="topic">
+<a name="27r21ful8jljhrir236naio97f">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WM_NOTIFY</a>
+</h3>
+<h3 class="topic">
+<a name="1oau3k59rn7el6dvt1i4ropgo6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;发送复杂的控件消息</a>
+</h3>
+<h3 class="topic">
+<a name="7unhh1bless0hs2qk185vf46s9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;公共控件</a>
+</h3>
+<h3 class="topic">
+<a name="0h58hq70bkqpm40opeodapuqdp">&nbsp;&nbsp;&nbsp;分类</a>
+</h3>
+<h3 class="topic">
+<a name="2r4015elujo7ls6dfmcb7kppev">&nbsp;&nbsp;&nbsp;&nbsp;标准控件</a>
+</h3>
+<h3 class="topic">
+<a name="00bvmfsl6hkqncqkpntf4vrdeg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;数量少 功能简单</a>
+</h3>
+<h3 class="topic">
+<a name="3qmi8eighrgv2slgved7ahi56k">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;只接受WM_COMMAND消息</a>
+</h3>
+<h3 class="topic">
+<a name="7nf7bqeg5kk3upttdqdu3q9u4h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;即对不同控件的处理过程放在case WM_COMMAND下</a>
+</h3>
+<h3 class="topic">
+<a name="5uei6217tr72rfdv1sgi5ffvno">&nbsp;&nbsp;&nbsp;&nbsp;通用控件</a>
+</h3>
+<h3 class="topic">
+<a name="3te133341qeuj4duittubru1cq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;数量多 功能复杂</a>
+</h3>
+<h3 class="topic">
+<a name="57jjlu05m9l3h8g5qlocduqkge">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;只接受WM_NOTIFY消息</a>
+</h3>
+<h3 class="topic">
+<a name="0nmmajanp8elibeamhojaecgrq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;即对不同控件的处理过程放在case WM_NOTIFY下</a>
+</h3>
+<h3 class="topic">
+<a name="1g5o80ivkb30fcg74nfkqfuvma">&nbsp;&nbsp;&nbsp;标准控件</a>
+</h3>
+<h3 class="topic">
+<a name="0l5pgei7inq75vc6tvn7aivp0f">&nbsp;&nbsp;&nbsp;&nbsp;按钮</a>
+</h3>
+<h3 class="topic">
+<a name="51p7r6effnivmca101t3ek6tkq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;普通按钮</a>
+</h3>
+<h3 class="topic">
+<a name="7csahiakid23hda4mnapichfih">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;复选框</a>
+</h3>
+<h3 class="topic">
+<a name="54kndtise02vo16uklrlbl3jpq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;单选框</a>
+</h3>
+<h3 class="topic">
+<a name="3s1ikj29pvin7toc028hqd5ffo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;不同按钮的使用在对话框资源中拖动使用</a>
+</h3>
+<h3 class="topic">
+<a name="65q9uvvu0b7iemdeoj9g8bf68r">&nbsp;&nbsp;&nbsp;通用控件</a>
+</h3>
+<h3 class="topic">
+<a name="2ugdpa9da75hrit42m6ismcelp">&nbsp;&nbsp;&nbsp;&nbsp;列表框控件</a>
+</h3>
+<h3 class="topic">
+<a name="6un35eghfmbc0nvpkaig21o80u">&nbsp;&nbsp;&nbsp;&nbsp;树控件</a>
+</h3>
+<h3 class="topic">
+<a name="7gei14hsht496767badjlm5vna">&nbsp;&nbsp;&nbsp;&nbsp;选项卡等</a>
+</h3>
+<h3 class="topic">
+<a name="39sp1dvrakm6g4j3fhvu9fcqmb">&nbsp;&nbsp;&nbsp;相关函数</a>
+</h3>
+<h3 class="topic">
+<a name="76qhrt8lu59e9qq807tqmdbolm">&nbsp;&nbsp;&nbsp;&nbsp;HWND hbutton2 =  GetDlgItem(hwnd, 0x1001);</a>
+</h3>
+<h3 class="topic">
+<a name="6hhh01o6thbj8rbnlv8kmtco9q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;获取控件句柄，第一个参数为控件所属的窗口句柄，第二个参数为控件id（控件id是在使用CreateWindows()创建控件的时候指定的）</a>
+</h3>
+<h3 class="topic">
+<a name="2lc2ktfvgj6e8f54rufhlmvvmg">&nbsp;&nbsp;&nbsp;&nbsp;RECT rt;&#13;
+GetClientRect(hbutton2, &amp;rt);</a>
+</h3>
+<h3 class="topic">
+<a name="779t5ldl6armhid93b8m3env61">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;获取窗口矩形的高度宽度</a>
+</h3>
+<h3 class="topic">
+<a name="5aomca9u3mttd2ipi0vc82embk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;第一个参数为控件句柄，第二个参数用于接收窗口矩形高度宽度</a>
+</h3>
+<h3 class="topic">
+<a name="60j2dito7hphhruvqo5pdkf9cv">&nbsp;&nbsp;&nbsp;&nbsp;HWND hbutton2 = GetDlgItem(hwnd, 0x1001);//获取控件0x1001的句柄&#13;
+HWND hDesTop = GetDesktopWindow();//获取控件桌面窗口的句柄&#13;
+SetParent(hbutton2, hDesTop);//将控件0x1001的父界面设置为桌面窗口，所以控件可以在桌面上显示</a>
+</h3>
+<h3 class="topic">
+<a name="7jd3u2sv2su6h4njr383ja68g8">&nbsp;&nbsp;&nbsp;&nbsp;窗口是可以使用的函数，空间上均可以使用，因为控件本质上就是窗口</a>
+</h3>
+<h3 class="topic">
+<a name="4jn97d0kk0usbvc3lp6oubfpq4">&nbsp;&nbsp;创建控件</a>
+</h3>
+<h3 class="topic">
+<a name="03rs9qfenvcndcnv57ql08kfpm">&nbsp;&nbsp;&nbsp;使用Createwindow()函数创建</a>
+</h3>
+<h3 class="topic">
+<a name="1tp1li4ii9sk0uuvh8q7h77v3q">&nbsp;&nbsp;&nbsp;常见的风格为</a>
+</h3>
+<h3 class="topic">
+<a name="2rnugl0sdv21chfcqlva7o8clk">&nbsp;&nbsp;&nbsp;&nbsp;WS_CHILDWINDOW</a>
+</h3>
+<h3 class="topic">
+<a name="2vuct1899cso7j9uddv3af948m">&nbsp;&nbsp;每一种控件除了窗口通用风格还有自己特定的风格,可以与窗口通用风格联合使用</a>
+</h3>
+<h3 class="topic">
+<a name="6vgqogg84f90qqidbklloajsng">&nbsp;&nbsp;控件产生的消息在其父窗口的回调函数中处理</a>
+</h3>
+<h3 class="topic">
+<a name="0qs9s1kjb260uvk908cgijrj4c">&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="073fbhmon39vhgkm6cdbvhhiub">&nbsp;&nbsp;&nbsp;#include&lt;windows.h&gt;&#13;
+#include"resource.h"&#13;
+&#13;
+HINSTANCE g_hInstance = 0;&#13;
+&#13;
+bool _trace(TCHAR *format, ...) //变参函数&#13;
+{&#13;
+	TCHAR buffer[1000];&#13;
+	va_list argptr;&#13;
+	va_start(argptr, format);&#13;
+	//将格式化信息写入指定的缓冲区&#13;
+	wvsprintf(buffer, format, argptr);&#13;
+	va_end(argptr);&#13;
+	//将缓冲区信息输出&#13;
+	OutputDebugString(buffer);&#13;
+	return true;&#13;
+}&#13;
+&#13;
+&#13;
+//枚举子窗口函数&#13;
+BOOL CALLBACK enumchildproc(HWND hwnd, LPARAM lparam)&#13;
+{&#13;
+	TCHAR buff[100];&#13;
+	//获取窗口标题&#13;
+	GetWindowText(hwnd, buff, 100);&#13;
+	_trace((TCHAR*)L"%s\n", buff);&#13;
+	//继续遍历，直到结束&#13;
+	return true;&#13;
+}&#13;
+&#13;
+&#13;
+//回调函数&#13;
+LRESULT CALLBACK windowproc(&#13;
+	HWND hwnd,&#13;
+	UINT msg,&#13;
+	WPARAM wparam,&#13;
+	LPARAM lparam)&#13;
+{&#13;
+	switch (msg)&#13;
+	{&#13;
+	case WM_RBUTTONDOWN://鼠标右击弹出菜单&#13;
+	{&#13;
+		// 获取鼠标点击位置&#13;
+		int x = LOWORD(lparam);&#13;
+		int y = HIWORD(lparam);&#13;
+		POINT pt = { x,y };&#13;
+&#13;
+		//将鼠标坐标转换当前窗口关联的坐标&#13;
+		ClientToScreen(hwnd, &amp;pt);&#13;
+&#13;
+		//弹出菜单  资源的调用方式是在消息回调函数中对资源进行load，获资源的句柄，对句柄进行操作&#13;
+		HMENU hmenu = LoadMenu(g_hInstance, MAKEINTRESOURCE(IDR_MENU1));&#13;
+&#13;
+		//获取下拉菜单句柄&#13;
+		HMENU hSubMenu = GetSubMenu(hmenu, 0);&#13;
+&#13;
+		//弹出菜单&#13;
+		TrackPopupMenu(&#13;
+			hSubMenu, &#13;
+			TPM_LEFTALIGN,&#13;
+			pt.x,&#13;
+			pt.y,&#13;
+			0, &#13;
+			hwnd,&#13;
+			0);&#13;
+		break;&#13;
+	}&#13;
+	//通用控件会接受WM_COMMAND命令，所以需要在该命令的基础上对控件id进行区分，&#13;
+	//从而针对不同的控件，设置不同的处理&#13;
+	case WM_COMMAND:	//命令消息  //菜单的响应&#13;
+	{&#13;
+		DWORD ID = LOWORD(wparam);		//控件ID, wparam低16位&#13;
+		DWORD CODE = HIWORD(wparam);	//通知码, wparam高16位&#13;
+		&#13;
+		switch (ID)&#13;
+		{&#13;
+			//菜单资源的按钮的id也在WM_COMMAND的命令下识别&#13;
+			case ID_40001:  //响应菜单按钮1&#13;
+			{&#13;
+				//弹出对话框&#13;
+				MessageBox(NULL, L"打开", 0, 0);&#13;
+				break;&#13;
+			}&#13;
+			&#13;
+			//控件id&#13;
+			case 0x1000: //按钮1&#13;
+			{&#13;
+				//获取控件按钮0x1001的句柄，如果点击按钮0x1000，会使0x1001按钮发生随机移动&#13;
+				HWND hbutton2 = GetDlgItem(hwnd, 0x1001);&#13;
+				//获取控件大小&#13;
+				RECT rt;&#13;
+				GetClientRect(hbutton2, &amp;rt);&#13;
+				int x = rand() % 300;&#13;
+				int y = rand() % 300;&#13;
+				//移动 0x1001控件&#13;
+				MoveWindow(hbutton2, x, y, rt.right, rt.bottom, TRUE);&#13;
+				break;&#13;
+			}&#13;
+			case 0x1001: //按钮2&#13;
+			{&#13;
+				//获取控件0x1003的句柄&#13;
+				HWND hedit = GetDlgItem(hwnd, 0x1003);&#13;
+				//SetWindowText(hedit, L"hello 15pb");//将"hello 15pb"设置为0x1003控件的标题&#13;
+				TCHAR buff[100];&#13;
+				//获取x1003控件的标题&#13;
+				GetWindowText(hedit, buff, 100);&#13;
+				//x1003控件的标题弹窗输出&#13;
+				MessageBox(0, buff, 0, 0);&#13;
+				break;&#13;
+			}&#13;
+			case 0x1002: //按钮3&#13;
+			{&#13;
+				//设置父窗口&#13;
+				/*HWND hbutton2 = GetDlgItem(hwnd, 0x1001);&#13;
+				HWND hDesTop = GetDesktopWindow();&#13;
+				SetParent(hbutton2, hDesTop);*/&#13;
+&#13;
+				//获得窗口类名为FileCleaner2.0的窗口的句柄		&#13;
+				HWND hfind = FindWindow(NULL, L"FileCleaner2.0");&#13;
+				//枚举该窗口所有的文本标题并输出&#13;
+				EnumChildWindows(hfind, enumchildproc, 0);		&#13;
+				break;&#13;
+			}&#13;
+		}&#13;
+		break;&#13;
+	}&#13;
+&#13;
+	//创建窗口 ,初始化&#13;
+	//窗口创建命令，当窗口创建的时候会产生该命令，该命令下的处理可以用于初始化窗口控件&#13;
+	case WM_CREATE:	&#13;
+	{&#13;
+		//创建按钮控件  &#13;
+		//使用创建窗口的函数创建控件，是因为控件本质上就是窗口，只是风格不同&#13;
+		// 窗口名（按键中的文本）&#13;
+		&#13;
+		CreateWindow(L"button", //窗口类名（控件类名）&#13;
+                                L"1",// 窗口名（按键中的文本）&#13;
+                                WS_CHILD | WS_VISIBLE|BS_PUSHBUTTON,//窗口风格 子窗口（决定了该窗口为控件） 可见  可按下的按键（属于控件自己特定的风格，与窗口通用风格联合使用）&#13;
+                                0, 0, 100, 30, //窗口坐标以及宽度高度&#13;
+                                hwnd, //父类窗口句柄&#13;
+                                (HMENU)0x1000, //控件id  在主窗口的创建过程中，这里指定菜单，而对于控件，这里指定空控件id&#13;
+                                g_hInstance, //实例句柄&#13;
+                                NULL);//附加参数	&#13;
+		//这里 WS_CHILD与使用WS_CHILDWINDOW是一样的&#13;
+		CreateWindow(L"button", L"2", WS_CHILD | WS_VISIBLE, 0, 40, 100, 30, hwnd, (HMENU)0x1001, g_hInstance, NULL);&#13;
+		CreateWindow(L"button", L"3", WS_CHILD | WS_VISIBLE, 0, 80, 100, 30, hwnd, (HMENU)0x1002, g_hInstance, NULL);&#13;
+		//创建编辑框控件  &#13;
+		CreateWindow(L"edit", L"", WS_CHILD | WS_VISIBLE, 0, 120, 100, 30, hwnd, (HMENU)0x1003, g_hInstance, NULL);&#13;
+	}break;&#13;
+&#13;
+	//窗口销毁信息，该信息当窗口关闭时&#13;
+	case WM_DESTROY:	//窗口销毁&#13;
+		//窗口关闭，程序停止运行&#13;
+		PostQuitMessage(0);&#13;
+		break;&#13;
+	}&#13;
+	return DefWindowProc(hwnd, msg, wparam, lparam);&#13;
+}&#13;
+&#13;
+int APIENTRY WinMain(&#13;
+	HINSTANCE hInstance,&#13;
+	HINSTANCE hPerInstance,&#13;
+	LPSTR  szCmdline,&#13;
+	int		nShowCmd&#13;
+) {&#13;
+	g_hInstance = hInstance;&#13;
+	// 1.设计一个窗口类&#13;
+	WNDCLASS cls = {0};&#13;
+	cls.style = CS_VREDRAW|CS_HREDRAW;	//类风格&#13;
+	cls.lpfnWndProc = windowproc;		//窗口回调&#13;
+	cls.cbClsExtra  =  0;				//无用&#13;
+	cls.cbWndExtra   = 0;&#13;
+	cls.hInstance= g_hInstance;			//实例句柄&#13;
+&#13;
+	//加载图标资源&#13;
+	cls.hIcon = LoadIcon(g_hInstance,MAKEINTRESOURCE(IDI_ICON1));	//图标句柄&#13;
+	//加载光标资源&#13;
+	cls.hCursor=LoadCursor(g_hInstance,MAKEINTRESOURCE(IDC_CURSOR1));	//光标&#13;
+	//设置背景颜色&#13;
+	cls.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH); //背景颜色&#13;
+	//设置菜单名称（加载菜单在创建窗口处执行）&#13;
+	cls.lpszMenuName = MAKEINTRESOURCE(IDR_MENU1);	//菜单&#13;
+	//指定窗口类名&#13;
+	cls.lpszClassName= L"15pb";			//类名&#13;
+&#13;
+	//2. 注册窗口类&#13;
+	RegisterClass(&amp;cls);&#13;
+&#13;
+	//3.创建窗口&#13;
+	//这里使用的是CreateWindowEx函数而非CreateWindow函数，&#13;
+	//如果CreateWindow的第一个参数为0，则默认调用的是CreateWindowE函数&#13;
+	//后者支持更多的窗口扩展风格&#13;
+	HWND hwnd = CreateWindowEx(&#13;
+		0,						//窗口扩展风格&#13;
+		L"15pb",				//类名&#13;
+		L"windows",				//窗口名&#13;
+		WS_OVERLAPPEDWINDOW,	//窗口风格&#13;
+		500, 500, 800, 600,		//x,y,宽，高&#13;
+		NULL,					//父窗口&#13;
+		LoadMenu(g_hInstance, MAKEINTRESOURCE(IDR_MENU1)),	//加载菜单&#13;
+		g_hInstance,			//实例句柄&#13;
+		NULL);					//附加参数&#13;
+&#13;
+	//4. 显示更新&#13;
+	ShowWindow(hwnd, SW_SHOW);//SW_HIDE;&#13;
+	UpdateWindow(hwnd);&#13;
+&#13;
+	MSG  msg;&#13;
+	//5. 消息循环&#13;
+	while (GetMessage(&amp;msg, 0, 0, 0))//四个参数分别代表 消息结构体，指定接收哪个窗口的消息，接收消息码的最小值，接收消息码的最大值&#13;
+	{&#13;
+		//wm_keydowm == wm_char&#13;
+		TranslateMessage(&amp;msg);&#13;
+		DispatchMessage(&amp;msg);&#13;
+	}&#13;
+	return 0;&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="5eicm6gujdioqsl5f20ig33mm4">&nbsp;资源</a>
+</h3>
+<h3 class="topic">
+<a name="2pq9abpkkvigjoto32ue41u293">&nbsp;&nbsp;定义：每一个应用程序或多或少会用到的几类数据（会包含在exe文件中）</a>
+</h3>
+<h3 class="topic">
+<a name="2l0r91fuvvqnlrpd9viglo6kfu">&nbsp;&nbsp;&nbsp;图标</a>
+</h3>
+<h3 class="topic">
+<a name="3phjtm2n5meu86ihtk04rqjcj5">&nbsp;&nbsp;&nbsp;&nbsp;hIcon</a>
+</h3>
+<h3 class="topic">
+<a name="6dtm9aafl9c4k97rlmll77341c">&nbsp;&nbsp;&nbsp;光标</a>
+</h3>
+<h3 class="topic">
+<a name="63tre0j3jnn2jc4hk31b1ggrns">&nbsp;&nbsp;&nbsp;&nbsp;cursor</a>
+</h3>
+<h3 class="topic">
+<a name="321r1g603mfp8rse8i3a6gjvqi">&nbsp;&nbsp;&nbsp;位图</a>
+</h3>
+<h3 class="topic">
+<a name="5d4s5lmromlq77o43l10asrdh5">&nbsp;&nbsp;&nbsp;&nbsp;bitmap</a>
+</h3>
+<h3 class="topic">
+<a name="2m7govo7o12gvuja500qqubo93">&nbsp;&nbsp;&nbsp;菜单</a>
+</h3>
+<h3 class="topic">
+<a name="5gr8bjm9qr0fcrojkrke0ig57n">&nbsp;&nbsp;&nbsp;&nbsp;Menu</a>
+</h3>
+<h3 class="topic">
+<a name="25n3v63qhc780mg9ier1235ao7">&nbsp;&nbsp;添加资源</a>
+</h3>
+<h3 class="topic">
+<a name="3kb0voc7hvgf47g4h5hbh5ipn2">&nbsp;&nbsp;&nbsp;项目右键-》添加资源</a>
+</h3>
+<h3 class="topic">
+<a name="0eggfjs9ado8hqlbrci2a9t2ge">&nbsp;&nbsp;资源分类</a>
+</h3>
+<h3 class="topic">
+<a name="07vd5gmdplkdeqolj7qdc0hn8k">&nbsp;&nbsp;&nbsp;光标</a>
+</h3>
+<h3 class="topic">
+<a name="68mab5tam756m3r5c1hpjmnnhd">&nbsp;&nbsp;&nbsp;&nbsp;新建光标</a>
+</h3>
+<h3 class="topic">
+<a name="5ngmiakba9inl5bm9b19hntq2m">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以自己绘制</a>
+</h3>
+<h3 class="topic">
+<a name="0pp354hdul6n6urj4sclk3hego">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;资源名称为资源的id</a>
+</h3>
+<h3 class="topic">
+<a name="2266gjaq8qjtgt1rculdkv5qah">&nbsp;&nbsp;&nbsp;&nbsp;导入光标(后缀名位cur的文件)</a>
+</h3>
+<h3 class="topic">
+<a name="7obr408h5ngg1fh3l393p39m05">&nbsp;&nbsp;&nbsp;图标</a>
+</h3>
+<h3 class="topic">
+<a name="3gtuimm17269hv48u666d06agf">&nbsp;&nbsp;&nbsp;&nbsp;新建图标</a>
+</h3>
+<h3 class="topic">
+<a name="2pkdu5559v9mhmpnvidte3rfq4">&nbsp;&nbsp;&nbsp;&nbsp;导入图标</a>
+</h3>
+<h3 class="topic">
+<a name="0jh22t1qdpidga7f91jvnj6fr3">&nbsp;&nbsp;&nbsp;菜单</a>
+</h3>
+<h3 class="topic">
+<a name="6coie3r76ott68d2g9aa9b2a3i">&nbsp;&nbsp;&nbsp;&nbsp;新建菜单</a>
+</h3>
+<h3 class="topic">
+<a name="4h4urfos1rd0ash0l1ksv71oc9">&nbsp;&nbsp;&nbsp;&nbsp;导入菜单</a>
+</h3>
+<h3 class="topic">
+<a name="3tphcla0nor54vb54ioj82qltu">&nbsp;&nbsp;&nbsp;&nbsp;分类</a>
+</h3>
+<h3 class="topic">
+<a name="6q3bon3p6j3i2006vu9djbe57j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;顶级菜单</a>
+</h3>
+<h3 class="topic">
+<a name="6q1ibh0s3etf5rthg05p16udvn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;不会触发WM_COMMAND</a>
+</h3>
+<h3 class="topic">
+<a name="0t28uq78k63eqlonnoh5hhhs9n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;下拉菜单</a>
+</h3>
+<h3 class="topic">
+<a name="055fkqgq2jo963uv95psv5re8d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;被点击后会触发WM_COMMAND</a>
+</h3>
+<h3 class="topic">
+<a name="4si85crvelu6q5pkqjc1dhgrqm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;下拉菜单中菜单按钮值的判断放在WM_COMMAND</a>
+</h3>
+<h3 class="topic">
+<a name="40nimegjk8t9ig9fnc1kcong0u">&nbsp;&nbsp;&nbsp;&nbsp;菜单选项状态</a>
+</h3>
+<h3 class="topic">
+<a name="67e86ohbvd9jhl9irn5u29sdav">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;启用</a>
+</h3>
+<h3 class="topic">
+<a name="5hil35kqmtkre2lhj6uu4obcom">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;禁用</a>
+</h3>
+<h3 class="topic">
+<a name="5048sv6nnraarbfmvut1kbpju9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;变灰</a>
+</h3>
+<h3 class="topic">
+<a name="5veh6tf40gs24vi66v4u1mg0bh">&nbsp;&nbsp;&nbsp;&nbsp;相关消息</a>
+</h3>
+<h3 class="topic">
+<a name="32cdo9hsqm4h0qle26sd2d7p4c">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;最重要的是WM_COMMAND</a>
+</h3>
+<h3 class="topic">
+<a name="3qp28rev6jiqs47rlcvfchm9gi">&nbsp;&nbsp;&nbsp;对话框（比较特殊）</a>
+</h3>
+<h3 class="topic">
+<a name="18pnpnnct7fjm1jj1jjcr7l29k">&nbsp;&nbsp;&nbsp;&nbsp;对话框的使用与单独定义主窗口进行使用是一样的，两者可以相互取代，即通过对话框资源在winmain中创建主窗口也是可行的</a>
+</h3>
+<h3 class="topic">
+<a name="7tqrsb4p3d2o4o42bhvjdhbbvr">&nbsp;&nbsp;使用资源</a>
+</h3>
+<h3 class="topic">
+<a name="36dmo3h6p6ficetdlbeirq2mfh">&nbsp;&nbsp;&nbsp;在设计窗口的时候加载光标 图标资源，设置菜单名称</a>
+</h3>
+<h3 class="topic">
+<a name="7sgijg3vu3ta87529mfdaal1vv">&nbsp;&nbsp;&nbsp;&nbsp;WNDCLASS cls = {0};&#13;
+	cls.style = CS_VREDRAW|CS_HREDRAW;	//类风格&#13;
+	cls.lpfnWndProc = windowproc;		//窗口回调&#13;
+	cls.cbClsExtra  =  0;				//无用&#13;
+	cls.cbWndExtra   = 0;&#13;
+	cls.hInstance= g_hInstance;			//实例句柄&#13;
+&#13;
+	//加载图标资源&#13;
+	cls.hIcon = LoadIcon(g_hInstance,MAKEINTRESOURCE(IDI_ICON1));//图标句柄&#13;
+	//加载光标资源&#13;
+	cls.hCursor=LoadCursor(g_hInstance,MAKEINTRESOURCE(IDC_CURSOR1));//光标&#13;
+	//设置背景颜色&#13;
+	cls.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH); //背景颜色&#13;
+	//加载菜单&#13;
+	cls.lpszMenuName = MAKEINTRESOURCE(IDR_MENU1);//菜单&#13;
+	//指定窗口类名&#13;
+	cls.lpszClassName= L"15pb";	//类名</a>
+</h3>
+<h3 class="topic">
+<a name="6cgtdohj9rg9c293jka44up714">&nbsp;&nbsp;&nbsp;在创建窗口的时候加载菜单</a>
+</h3>
+<h3 class="topic">
+<a name="5dvtb9on2c88oc4as9k0ntubfe">&nbsp;&nbsp;&nbsp;&nbsp;HWND hwnd = CreateWindowEx(&#13;
+	0,	//窗口扩展风格&#13;
+	L"15pb",	//类名&#13;
+	L"windows",	//窗口名&#13;
+	WS_OVERLAPPEDWINDOW,//窗口风格&#13;
+	500, 500, 800, 600,	//x,y,宽，高&#13;
+	NULL,	//父窗口&#13;
+	LoadMenu(g_hInstance, MAKEINTRESOURCE(IDR_MENU1)),//菜单&#13;
+	g_hInstance,	//实例句柄&#13;
+	NULL);	</a>
+</h3>
+<h3 class="topic">
+<a name="5edlnas71jsp70rnqnbhddljvh">&nbsp;&nbsp;&nbsp;注意点</a>
+</h3>
+<h3 class="topic">
+<a name="6ojs6kv4uu6b2nvf37jicscuvp">&nbsp;&nbsp;&nbsp;&nbsp;需要包含头文件 resource.h</a>
+</h3>
+<h3 class="topic">
+<a name="682n2mdbd3mlucj8c8m3uldum5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;资源的id在resource.h文件中可以查到</a>
+</h3>
+<h3 class="topic">
+<a name="653q22e8av03233s41qq8eb3vm">&nbsp;&nbsp;&nbsp;&nbsp;需要将各种资源放在当前项目目录下</a>
+</h3>
+<h3 class="topic">
+<a name="75ei44mgu1d5otjaeqtrdadtm7">&nbsp;&nbsp;&nbsp;&nbsp;如何显示菜单</a>
+</h3>
+<h3 class="topic">
+<a name="1a7cl3q0v6rdl39usep1eqp49n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;菜单可以在设计窗口类时指定菜单名：cls.lpszMenuName = MAKEINTRESOURCE(IDR_MENU1);//菜单&#13;
+菜单可以在创建窗口类时加载：LoadMenu(g_hInstance, MAKEINTRESOURCE(IDR_MENU1)),//菜单</a>
+</h3>
+<h3 class="topic">
+<a name="4egh1q8g5mhi3ijqe4p7vpd5on">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;菜单本身有菜单id 菜单中每一个按钮也有id</a>
+</h3>
+<h3 class="topic">
+<a name="46r4focgg8qdmkikgevhpearah">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对菜单中选项的响应与对按钮的响应相同，选项对应的id 在switch case中的WM_COMMAND消息分支下进行相关操作</a>
+</h3>
+<h3 class="topic">
+<a name="77f34fvu6i5sri5rtnd6dn6npf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以新建，可以导入</a>
+</h3>
+<h3 class="topic">
+<a name="0eobh7oj4ro34i0bcb66kjqdl5">&nbsp;&nbsp;对话框资源</a>
+</h3>
+<h3 class="topic">
+<a name="50iekh9sn8afarf6bibrjalfd5">&nbsp;&nbsp;&nbsp;使用对话框资源可以创建一个对话框以及其上的子控件</a>
+</h3>
+<h3 class="topic">
+<a name="6froq3l8h4ra9nanatpur9lhii">&nbsp;&nbsp;&nbsp;&nbsp;通过对话框可以进行可视化界面编程</a>
+</h3>
+<h3 class="topic">
+<a name="01v8afh97r52ajjhmjahdsb01j">&nbsp;&nbsp;&nbsp;注意使用对话框资源创建对话框类似于直接创建窗口，所以就需要为窗口设置回调函数，设置实例句柄等</a>
+</h3>
+<h3 class="topic">
+<a name="1s1f5jlm4s6gvenjejaua6qpv0">&nbsp;&nbsp;&nbsp;分类</a>
+</h3>
+<h3 class="topic">
+<a name="7o9herk2m3t7p7k4bs8ks06qi8">&nbsp;&nbsp;&nbsp;&nbsp;模态对话框</a>
+</h3>
+<h3 class="topic">
+<a name="4go5q9pvo5nsh0d6mqvepceuqd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;会阻塞当前线程，对话框处理结束之前主窗口无法接受信息，不需要写消息循环</a>
+</h3>
+<h3 class="topic">
+<a name="6l4vd2cufd1t9ugb1mt3cgmgso">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DialogBox()</a>
+</h3>
+<h3 class="topic">
+<a name="4eq4d62807va1jggmci391jcri">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用于创建模态对话框，其中自带消息循环，无需编写</a>
+</h3>
+<h3 class="topic">
+<a name="1rqs12ir6ugmp4rir1hq425kdp">&nbsp;&nbsp;&nbsp;&nbsp;非模态对话框</a>
+</h3>
+<h3 class="topic">
+<a name="21dmam2dib4n44qmqoroenrkj7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;不会阻塞当前线程，主窗口可以接受信息，需要写消息循环</a>
+</h3>
+<h3 class="topic">
+<a name="7dtt7dq5f9177f43tm7968l07b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CreateDialog()</a>
+</h3>
+<h3 class="topic">
+<a name="4fo2dbtgivo49n22kfm17ef3gb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用于创建非模态对话框，需要自己编写while循环</a>
+</h3>
+<h3 class="topic">
+<a name="2fg9orhi8unjjqiafubrj4iko8">&nbsp;&nbsp;&nbsp;使用步骤</a>
+</h3>
+<h3 class="topic">
+<a name="3nmru07kqkr6aqtvkvpt5fvtn7">&nbsp;&nbsp;&nbsp;&nbsp;添加Dialog资源</a>
+</h3>
+<h3 class="topic">
+<a name="1lmrimobji7q2qa77vbms4sh37">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;新建：可以进行图形化编程，手动设置拖动相关控件，从而形成对话框</a>
+</h3>
+<h3 class="topic">
+<a name="44663k2753sojv05vul5gv1te9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以在属性中查找到对话框中控件的ID，在该id用于标识对话框中的控件，在回调函数中，用于区分不同控件的产生的信息</a>
+</h3>
+<h3 class="topic">
+<a name="2c1clpjj8eshjb2te5727q7anr">&nbsp;&nbsp;&nbsp;&nbsp;创建针对对话框的回调函数</a>
+</h3>
+<h3 class="topic">
+<a name="6f6irq4g6n9el81hbiph7abt1l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该回调函数参数与主窗口的回调函数相同</a>
+</h3>
+<h3 class="topic">
+<a name="58o70bfdtfv821fenf29ogcl80">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对话框中通用控件的消息处理全部基于WM_COMMAND消息，具体是哪个控件使用控件id进行标识</a>
+</h3>
+<h3 class="topic">
+<a name="58vc1ckhdleihlt2oba4714rpl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对话框的回调函数中</a>
+</h3>
+<h3 class="topic">
+<a name="3hopa2tba4p2joomhg9tnc1q9l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;窗口创建消息为</a>
+</h3>
+<h3 class="topic">
+<a name="5pfvv5t4vvvrh866g10i11chq3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WM_INITDIALOG</a>
+</h3>
+<h3 class="topic">
+<a name="0c2t76vcvfrq5gfkb5g2f9ion3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;不同于一般窗口创建消息WM_CREATE</a>
+</h3>
+<h3 class="topic">
+<a name="45651oh9fvb4j2frr8qj91ti8s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;窗口关闭消息为</a>
+</h3>
+<h3 class="topic">
+<a name="1ikhdp3esptelndtsuvintjauo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WM_CLOSE</a>
+</h3>
+<h3 class="topic">
+<a name="0jlht3p299uonc769ut1t30pr2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;不同于一般窗口关闭消息WM_DESTROY</a>
+</h3>
+<h3 class="topic">
+<a name="7eqkur8ra2v6v2ci56578omgvj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在窗口关闭消息中</a>
+</h3>
+<h3 class="topic">
+<a name="046phoi1etl0sea90a7uvajpon">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;结束非模态对话框使用</a>
+</h3>
+<h3 class="topic">
+<a name="2a43a3o0dtequpj0kpcjgokrdt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PostQuitMessage(0); </a>
+</h3>
+<h3 class="topic">
+<a name="6sdq3u64clcbp287q5f811f8ee">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;结束模态对话框使用</a>
+</h3>
+<h3 class="topic">
+<a name="6dslu5u7chrkchr3ue7hhgs166">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;EndDialog(hdlg, 0); </a>
+</h3>
+<h3 class="topic">
+<a name="0lvkf2te5l7dodfr3c4ipse6n2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对话框回调函数如果什么都不做（即没有信息类型被命中），需要返回false</a>
+</h3>
+<h3 class="topic">
+<a name="7r2qv47kb6d2pfob89cq425cvf">&nbsp;&nbsp;&nbsp;&nbsp;创建模态对话框</a>
+</h3>
+<h3 class="topic">
+<a name="2j6hpdurtjrkadqqh4jd4qqk0e">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DialogBox(hInstance,//实例句柄&#13;
+                MAKEINTRESOURCE(IDD_DIALOG1), //对话框资源的字符串&#13;
+                NULL,&#13;
+                DlgProc//对话框消息回调函数);</a>
+</h3>
+<h3 class="topic">
+<a name="5i4smejq5afptgga0n88oj3jgh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该函数直到指定的回调函数通过调用EndDialog函数中止模态的对话框才能返回控制。（会阻塞）</a>
+</h3>
+<h3 class="topic">
+<a name="0drkltrp17i54dmu42q8t9bq6i">&nbsp;&nbsp;&nbsp;&nbsp;创建非模态对话框</a>
+</h3>
+<h3 class="topic">
+<a name="0nnlpcgh5dfh3gdar5dfegg6r1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;创建非模态对话框</a>
+</h3>
+<h3 class="topic">
+<a name="6ne7qjoc4ivp2g5b9b4g64sd55">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;HWND hDlg = CreateDialog(hInstance, MAKEINTRESOURCE(IDD_DIALOG1), NULL, DlgProc);</a>
+</h3>
+<h3 class="topic">
+<a name="55q1qg0f5h1urb247apv0oumhn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;显示窗口</a>
+</h3>
+<h3 class="topic">
+<a name="0ogi7h77ae3o7c02sc98q0ov09">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ShowWindow(hDlg,WM_SHOW);</a>
+</h3>
+<h3 class="topic">
+<a name="39hbqp3hphn1483r1avn7o0ta1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;更新窗口</a>
+</h3>
+<h3 class="topic">
+<a name="36kf3rvolai55jllhtob7ibfn3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;UpdateWindow(hDlg);</a>
+</h3>
+<h3 class="topic">
+<a name="4ajce297po36vblbg8e0da5kei">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;写消息循环</a>
+</h3>
+<h3 class="topic">
+<a name="7aqnibp2vu5vd792uu56babp52">&nbsp;&nbsp;&nbsp;对话框与窗口的区别</a>
+</h3>
+<h3 class="topic">
+<a name="25e58clfjd6dmhh1g00arbknqa">&nbsp;&nbsp;&nbsp;&nbsp;                   </a>
+</h3>
+<h3 class="topic">
+<a name="5ukpbfg8emq559htq98dfgvu8r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;            窗口</a>
+</h3>
+<h3 class="topic">
+<a name="22qac6glnfpcpicr21uftt2kl8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;      对话框</a>
+</h3>
+<h3 class="topic">
+<a name="6ipqg85sgtgqapbu0jlagsvg7c">&nbsp;&nbsp;&nbsp;&nbsp;窗口回调函数返回值</a>
+</h3>
+<h3 class="topic">
+<a name="1cmhh4hv0r1mv8efh8lmnam9pu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;返回LRESULT值</a>
+</h3>
+<h3 class="topic">
+<a name="7um1fkkf8qkphmogfpc37c29gi">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;返回BOOL</a>
+</h3>
+<h3 class="topic">
+<a name="5k05j8cf5vu04rg4ehr3p624hp">&nbsp;&nbsp;&nbsp;&nbsp;消息处理</a>
+</h3>
+<h3 class="topic">
+<a name="2uig408cp4m9vu9vsd6lb6fmu1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;不处理WM_INITDIALOG、WM_CLOSE</a>
+</h3>
+<h3 class="topic">
+<a name="0seutqf6bnre3fuf78riosrl92">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;不处理WM_CREAT WM_DESTORY WM_PAIN</a>
+</h3>
+<h3 class="topic">
+<a name="46ljqkremrvntuijqtuik3gbcd">&nbsp;&nbsp;&nbsp;&nbsp;不处理消息的处理</a>
+</h3>
+<h3 class="topic">
+<a name="689ovrhklr7cedl4s33ovni58v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;调用DefWindowProc处理程序不处理的消息</a>
+</h3>
+<h3 class="topic">
+<a name="6pjjml9nolfgn1dhppkk0ni4bl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对话框直接返回false</a>
+</h3>
+<h3 class="topic">
+<a name="7lafpbahlld8rd9vsit4fbevli">&nbsp;&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="6ot11fbneb0vtqhaq9s9vklsm7">&nbsp;&nbsp;&nbsp;&nbsp;#include&lt;windows.h&gt;&#13;
+#include"resource.h"&#13;
+&#13;
+bool NewMessageBox(TCHAR *format, ...) //变参函数&#13;
+{&#13;
+	TCHAR buffer[1000];&#13;
+	va_list argptr;&#13;
+	va_start(argptr, format);&#13;
+	//将格式化信息写入指定的缓冲区&#13;
+	wvsprintf(buffer, format, argptr);&#13;
+	va_end(argptr);&#13;
+	//将缓冲区信息输出&#13;
+	MessageBox(NULL, buffer, NULL, NULL);&#13;
+	return true;&#13;
+}&#13;
+&#13;
+//对话框回调&#13;
+INT_PTR CALLBACK DlgProc(HWND hdlg, UINT msg, WPARAM wparam, LPARAM lparam)&#13;
+{&#13;
+	switch (msg)&#13;
+	{&#13;
+	case WM_COMMAND:&#13;
+	{&#13;
+		DWORD ID = LOWORD(wparam);  //控件id&#13;
+		DWORD CODE = HIWORD(wparam);//操作码&#13;
+		if (ID == IDC_BUTTON1)//点击IDC_BUTTON1控件对应按钮&#13;
+		{&#13;
+			//获取控件句柄&#13;
+			HWND hCheck[3] = {&#13;
+				GetDlgItem(hdlg,IDC_CHECK1),&#13;
+				GetDlgItem(hdlg,IDC_CHECK2),&#13;
+				GetDlgItem(hdlg,IDC_CHECK3) };&#13;
+			//获取是否被勾选&#13;
+			for (int i = 0; i &lt; 3; i++)&#13;
+			{&#13;
+				//发送消息测试控件是否被勾选&#13;
+				if (SendMessage(hCheck[i], BM_GETCHECK, 0, 0))&#13;
+				{&#13;
+					NewMessageBox((TCHAR*)L"%d 被选中", i);&#13;
+				}&#13;
+			}&#13;
+			break;				&#13;
+		}&#13;
+		if (ID == IDC_BUTTON2)&#13;
+		{&#13;
+			//获取控件句柄&#13;
+			HWND hRadio[3] = {&#13;
+				GetDlgItem(hdlg,IDC_RADIO1),&#13;
+				GetDlgItem(hdlg,IDC_RADIO2),&#13;
+				GetDlgItem(hdlg,IDC_RADIO3) };&#13;
+			//获取是否被勾选&#13;
+			for (int i = 0; i &lt; 3; i++)&#13;
+			{&#13;
+				//发送消息获取勾选&#13;
+				if (SendMessage(hRadio[i], BM_GETCHECK, 0, 0))&#13;
+				{&#13;
+					NewMessageBox((TCHAR*)L"%d 被选中", i);&#13;
+				}&#13;
+			}&#13;
+		}&#13;
+	}&#13;
+	break;&#13;
+&#13;
+	// WM_CREATE		//在对话框中没有响应&#13;
+	case WM_INITDIALOG	://在对话框中没有响应&#13;
+	{&#13;
+		break;&#13;
+	}&#13;
+	//对话框的关闭产生的命令是WM_CLOSE,而不是WM_DESTROY&#13;
+	case WM_CLOSE:&#13;
+	{&#13;
+		//结束非模态对话框&#13;
+		PostQuitMessage(0); &#13;
+		//模态对话框结束&#13;
+		EndDialog(hdlg, 0); &#13;
+		break;&#13;
+	}&#13;
+	}&#13;
+	//啥也不干，必须返回FALSE&#13;
+	return FALSE;&#13;
+}&#13;
+&#13;
+int APIENTRY WinMain(&#13;
+	HINSTANCE hInstance,&#13;
+	HINSTANCE hPerInstance,&#13;
+	LPSTR  szCmdline,&#13;
+	int		nShowCmd&#13;
+) {&#13;
+	//1.添加资源&#13;
+	//2.创建模态对话框&#13;
+	//DialogBox(hInstance, MAKEINTRESOURCE(IDD_DIALOG1), NULL, DlgProc);&#13;
+&#13;
+	//2、创建非模态对话框，没有消息循环，手动添加&#13;
+	HWND hDlg = CreateDialog(hInstance, MAKEINTRESOURCE(IDD_DIALOG1), NULL, DlgProc);&#13;
+&#13;
+	ShowWindow(hDlg, SW_SHOW);&#13;
+	UpdateWindow(hDlg);&#13;
+&#13;
+	MSG msg;&#13;
+	while (GetMessage(&amp;msg, 0, 0, 0))&#13;
+	{&#13;
+		DispatchMessage(&amp;msg);&#13;
+	}&#13;
+	return 0;&#13;
+}&#13;
+</a>
+</h3>
+<h2 class="topic">
+<a name="1jfntm7v4i1u82ot6m9kj5jl81">tips</a>
+</h2>
+<h3 class="topic">
+<a name="1nn2itlr0qvbfe7fepn3ujfvei">&nbsp;菜单资源中菜单按钮的编码是在WM_COMMAND命令下进行判断的</a>
+</h3>
+</body>
+</html>

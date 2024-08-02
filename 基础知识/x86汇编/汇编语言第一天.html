@@ -1,0 +1,610 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>汇编语言第一天</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="0994fp14vak03a7ktcusrk8kea">汇编语言第一天</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E7%AC%AC%E4%B8%80%E5%A4%A9_files/images/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E7%AC%AC%E4%B8%80%E5%A4%A9.jpg"></div>
+<h2 class="topic">
+<a name="42qmhe7tl54pq4sjl9hb6akr0l">使用流程</a>
+</h2>
+<h3 class="topic">
+<a name="4tjg798dcnftcc0bts03hbhhn0">&nbsp;汇编语言-》编译器-》cpu</a>
+</h3>
+<h2 class="topic">
+<a name="50tbsoddn0c0u417o38ankhjc0">IDE</a>
+</h2>
+<h3 class="topic">
+<a name="778i5g75c3unfk0gn61g0r5h9o">&nbsp;RadASM</a>
+</h3>
+<h2 class="topic">
+<a name="233fk7mlr6heelh13epd29jlug">开发环境</a>
+</h2>
+<h3 class="topic">
+<a name="2tur53kb2q9j5rgsl5msnas53r">&nbsp;c：编译器（cl）-》编译成obj+链接器（link）+lib-》链接成exe</a>
+</h3>
+<h3 class="topic">
+<a name="2mrp0icfiaqfaaek50hba338gb">&nbsp;cpp-》obj-》exe</a>
+</h3>
+<h3 class="topic">
+<a name="0m18lgumcsqq216bpibn1cabg0">&nbsp;汇编：汇编器-》会汇编成obj+链接器（link）+lib-》链接为exe</a>
+</h3>
+<h3 class="topic">
+<a name="7ga9rrq636k4guoejkkhjpr6ki">&nbsp;asm-》obj-》exe</a>
+</h3>
+<h3 class="topic">
+<a name="1up8b5jkm6j3hi6t8qqit8j7gt">&nbsp;asm与c一样，要经过汇编器和链接器，转变为 .obj 和 lib，最终变为exe</a>
+</h3>
+<h2 class="topic">
+<a name="5np10olq7vnjd8i2nga08dtvnv">数据形式</a>
+</h2>
+<h3 class="topic">
+<a name="683l1gb22ha6ck3f2emrf8khfk">&nbsp;二进制</a>
+</h3>
+<h3 class="topic">
+<a name="0mio8hdulnbonoa98ub15f1r8d">&nbsp;&nbsp;B/Y</a>
+</h3>
+<h3 class="topic">
+<a name="61fekg8b73a2bvi3c75g8k2vqp">&nbsp;八进制</a>
+</h3>
+<h3 class="topic">
+<a name="4eo6l1t4dnija9o33ecei1vo8a">&nbsp;&nbsp;Q/O</a>
+</h3>
+<h3 class="topic">
+<a name="4lsujpsvmoanqdt8ketki2doju">&nbsp;十进制</a>
+</h3>
+<h3 class="topic">
+<a name="5nghsb7lpbnjnilvsn577e5gvu">&nbsp;&nbsp;D/T</a>
+</h3>
+<h3 class="topic">
+<a name="3mhkm0qguqqdba21cnrc0t5g4u">&nbsp;十六进制</a>
+</h3>
+<h3 class="topic">
+<a name="57n9j7pqg4oai2gnpojsip9b9m">&nbsp;&nbsp;H</a>
+</h3>
+<h3 class="topic">
+<a name="4932d63vq7gquc6irs6pfgnvig">&nbsp;YOT是宏汇编MASM系统添加的数据类型</a>
+</h3>
+<h2 class="topic">
+<a name="54mod7h956es84kuf4cekkip1g">汇编指令与伪指令</a>
+</h2>
+<h3 class="topic">
+<a name="1udf6vsq72kg692e90gv0v62uo">&nbsp;汇编指令与机器码一一对应</a>
+</h3>
+<h3 class="topic">
+<a name="5aufaip7sj9qvb5q2qsd4j1tga">&nbsp;伪指令用于操作IDE环境，不能生成机器码</a>
+</h3>
+<h2 class="topic">
+<a name="5phmnr7mbl9cbgt18094kih4a4">寄存器、内存、栈</a>
+</h2>
+<h3 class="topic">
+<a name="0jjon1jqh9o9ek7scjcbceu0c0">&nbsp;栈用于存放局部变量、函数参数、返回地址</a>
+</h3>
+<h2 class="topic">
+<a name="26baitqsvm06uclfjud2ofgkuk">windows汇编调试器</a>
+</h2>
+<h3 class="topic">
+<a name="5ue67j831pl6cbld495n9vbnh0">&nbsp;十六位汇编调试器</a>
+</h3>
+<h3 class="topic">
+<a name="1nu624pn5s01pfqvdsimr3lfea">&nbsp;&nbsp;debug.exe TD.exe</a>
+</h3>
+<h3 class="topic">
+<a name="6c40q5aps2bdpvuqtg924rkr3r">&nbsp;用户调试器</a>
+</h3>
+<h3 class="topic">
+<a name="5fdfspcpkaff6bnu0icop82bkv">&nbsp;&nbsp;OllDebug，X64Debug，Windbg</a>
+</h3>
+<h3 class="topic">
+<a name="4ttcs5dpemr41ghao4djljqg1t">&nbsp;&nbsp;OllDebug不支持64位</a>
+</h3>
+<h3 class="topic">
+<a name="37688kg61f77jmmsuq66uodpcn">&nbsp;内核调试器</a>
+</h3>
+<h3 class="topic">
+<a name="5fkm1qolhfp1jgbc0fp29g4lu3">&nbsp;&nbsp;Windbg</a>
+</h3>
+<h3 class="topic">
+<a name="06ud3vs2uo91pne9bbadvpjknj">&nbsp;&nbsp;&nbsp;基于命令行</a>
+</h3>
+<h2 class="topic">
+<a name="68btsdp09p1u4teogbmll3g3bm">cpu内部构造和运行原理</a>
+</h2>
+<h3 class="topic">
+<a name="7h8j1j66tfu865tcn964dc1601">&nbsp;cpu工作内容</a>
+</h3>
+<h3 class="topic">
+<a name="0djnocnv4999q76u5cp9sovota">&nbsp;&nbsp;读取指令</a>
+</h3>
+<h3 class="topic">
+<a name="61fr9ro52hq0qqjju7nh3r7ee3">&nbsp;&nbsp;&nbsp;需要cpu控制其他硬件（内存、显存等），cpu与其他硬件通过总线连接</a>
+</h3>
+<h3 class="topic">
+<a name="4d5rk9bpeoinp1v7qnn19er223">&nbsp;&nbsp;&nbsp;&nbsp;总线</a>
+</h3>
+<h3 class="topic">
+<a name="6a9iqc6ou9390sihjij5tcb2lt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;地址总线</a>
+</h3>
+<h3 class="topic">
+<a name="45mp9ibe3ihp761mp7ojm7uut6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用于寻址</a>
+</h3>
+<h3 class="topic">
+<a name="3qhoe0a4d2ht5dijraceo3vqnl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;数据总线</a>
+</h3>
+<h3 class="topic">
+<a name="09nbbjt397ugmuo1cdmrcq9fp3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用于传输数据</a>
+</h3>
+<h3 class="topic">
+<a name="09qqhm87lghpjtqj3kjaf47l20">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;控制总线</a>
+</h3>
+<h3 class="topic">
+<a name="3p9quqcc167dpo6t408olp82h4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;作用传输指令</a>
+</h3>
+<h3 class="topic">
+<a name="4pn34kh5iqskmq28sgnkddk8mn">&nbsp;&nbsp;指令译码</a>
+</h3>
+<h3 class="topic">
+<a name="4dqsledq3tvhphc8m853ujqjsc">&nbsp;&nbsp;执行单元</a>
+</h3>
+<h3 class="topic">
+<a name="3fnv3ra25ts90qqsuj33ccj4j7">&nbsp;cpu将主存储空间、显存地址空间、各种BIOS地址空间等全部抽象为一个逻辑地址空间，在不同内存地址上读写，读写硬件</a>
+</h3>
+<h2 class="topic">
+<a name="70711vnujebajn6i7jtjsvauk0">8086寄存器内部（地址总线是20位，最大寻址空间为1M）</a>
+</h2>
+<h3 class="topic">
+<a name="6i1lvsa8pqrcp4209s8un6ccr2">&nbsp;存在20条地址线</a>
+</h3>
+<h3 class="topic">
+<a name="3gij91mb8it38cscgn7hbukviu">&nbsp;8个十六位寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="3vm95a4mfqn8alkgcevc2teo2b">&nbsp;&nbsp;AX BX CX DX SI DI SP BP</a>
+</h3>
+<h3 class="topic">
+<a name="0por473gcm7am7dpu8c4dj3vnk">&nbsp;&nbsp;&nbsp;AX常用于累加</a>
+</h3>
+<h3 class="topic">
+<a name="30knk3kvjbm3mp2n0u58n69scq">&nbsp;&nbsp;&nbsp;CX常用于循环计数</a>
+</h3>
+<h3 class="topic">
+<a name="2eqlaurufllc64tif46fb0g3pb">&nbsp;&nbsp;&nbsp;SI</a>
+</h3>
+<h3 class="topic">
+<a name="2uhlp79romvitrnm74ksipvqg1">&nbsp;&nbsp;&nbsp;&nbsp;源地址变址</a>
+</h3>
+<h3 class="topic">
+<a name="1lvc6eoj93oa98vb0urleunjhb">&nbsp;&nbsp;&nbsp;DI</a>
+</h3>
+<h3 class="topic">
+<a name="198hnervtebh97kgsjfgi0rj70">&nbsp;&nbsp;&nbsp;&nbsp;目的变址</a>
+</h3>
+<h3 class="topic">
+<a name="4shemtulb1m8a2otn7iocdftla">&nbsp;&nbsp;其中AX BX CX DX 可以划分为高十六位和低十六位寄存器，分别可以划分为两个8位寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="55bh2vpjj2vjaovovbofppdhi6">&nbsp;指令寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="3solnaa6m4bgtkd5jer9f046i5">&nbsp;&nbsp;IP</a>
+</h3>
+<h3 class="topic">
+<a name="2p57puai8enj2hq1epq3n1ij6q">&nbsp;标志寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="1q406bgcu77ehjv84ll68elopt">&nbsp;&nbsp;FLAGS</a>
+</h3>
+<h3 class="topic">
+<a name="2bc6juh0haoe1ikf21d5pt3as8">&nbsp;&nbsp;&nbsp;详见资料10页</a>
+</h3>
+<h3 class="topic">
+<a name="5n9mv2qgvd8s2rc5jgcoclj216">&nbsp;&nbsp;&nbsp;辅助进位标志符</a>
+</h3>
+<h3 class="topic">
+<a name="2fhhtcoi3h3u0au2p467g86mjo">&nbsp;&nbsp;&nbsp;&nbsp;主要是计算机内部进行计算的</a>
+</h3>
+<h3 class="topic">
+<a name="7jmqvaqgqk9effrrm48dcnt67v">&nbsp;&nbsp;&nbsp;方向标志符DF</a>
+</h3>
+<h3 class="topic">
+<a name="0pgaml0k93ov8rhbkei60121af">&nbsp;&nbsp;&nbsp;&nbsp;用于串操作指令中，控制地址的变化方向</a>
+</h3>
+<h3 class="topic">
+<a name="3o72tia69jl8r621jvjjtok4qf">&nbsp;&nbsp;&nbsp;陷阱标志</a>
+</h3>
+<h3 class="topic">
+<a name="6lal0064lmiv9pbcrd8s80ffop">&nbsp;&nbsp;&nbsp;状态标志</a>
+</h3>
+<h3 class="topic">
+<a name="36440kir9301u65uo45cj3sqi4">&nbsp;&nbsp;&nbsp;&nbsp;CF</a>
+</h3>
+<h3 class="topic">
+<a name="7ilue16sum87ar9drqe1hcalpu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;进位标志</a>
+</h3>
+<h3 class="topic">
+<a name="09cddh71bcmsmg2443qs7t8pd3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果运算结果的最高有效位产生加法进位或减法借位，则标志为1，否则为0</a>
+</h3>
+<h3 class="topic">
+<a name="48b5sg0iidsvtrddfmgt6c8v64">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;只有在无符号数运算产生进位借位的时候有效</a>
+</h3>
+<h3 class="topic">
+<a name="2m1a8f1a5d05kpscfdenagj7hh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意与溢出标志区分</a>
+</h3>
+<h3 class="topic">
+<a name="4dif505dl3vivbg3dc39ic4ftb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;进位表示无符号数运算结果是否超出范围，运算结果仍然正确</a>
+</h3>
+<h3 class="topic">
+<a name="3o6m3fdb6kek0msjmqg0fqb8uf">&nbsp;&nbsp;&nbsp;&nbsp;ZF</a>
+</h3>
+<h3 class="topic">
+<a name="3sapul5hn1f0vjv1lovsq9rlcv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;零位标志</a>
+</h3>
+<h3 class="topic">
+<a name="6ajs1gaa6ltefhua9nvctumf3h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;若运算结果为为0，则为1否则为0</a>
+</h3>
+<h3 class="topic">
+<a name="6t56bvqh0j4es1vl3qsao4i4pr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这里的运算结果为以字节为单位，即两个十六进制数，如果 84+7C =(1)00 产生了进位，最高位溢出，字节中只剩下00，此时运算结果为0，ZF被置为1</a>
+</h3>
+<h3 class="topic">
+<a name="3lo8hmjibr8bm780vgt8fdrkg2">&nbsp;&nbsp;&nbsp;&nbsp;SF</a>
+</h3>
+<h3 class="topic">
+<a name="3f6omppcs7tm7jrudh43vpct6p">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;符号标志</a>
+</h3>
+<h3 class="topic">
+<a name="26vq664e3hpqikiih9hh0f9fts">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;运算结果最高位为1，则SF=1，否则SF=0</a>
+</h3>
+<h3 class="topic">
+<a name="3tf4j7n8ohh6q9ohnq9ntd6mgo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;有符号数据用最高有效位表示数据的符号，此时，最高有效位就是符号标志的状态</a>
+</h3>
+<h3 class="topic">
+<a name="4s0euc6929tajlmf3donhioirk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;最高位也是以字节为单位，超过一个字节数据不作为符号标志位的变化依据</a>
+</h3>
+<h3 class="topic">
+<a name="0fc8jjc35ln81b3raja2p88vdt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;84+7C=(1)00,此时最高位的1溢出，一个字节中的内容位00，则SF=0</a>
+</h3>
+<h3 class="topic">
+<a name="0qccprlmsa4sp5n4q26od5pe7m">&nbsp;&nbsp;&nbsp;&nbsp;PF</a>
+</h3>
+<h3 class="topic">
+<a name="1movhd1curaihbp35usshhlgri">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;奇偶标志</a>
+</h3>
+<h3 class="topic">
+<a name="4al6akt67cqbh5g9n15n1a01gb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;运算结果中最低字节中1的个数为偶数时PF=1，否则为0</a>
+</h3>
+<h3 class="topic">
+<a name="13ss8pd2gdigt9jjlk8p2d281k">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;仅反映计算结果中最低8位的1的个数是奇数或偶数，即使是进行16位字操作</a>
+</h3>
+<h3 class="topic">
+<a name="7oep0a8ikmr3basr57goar6a3c">&nbsp;&nbsp;&nbsp;&nbsp;OF</a>
+</h3>
+<h3 class="topic">
+<a name="4n1u9d76vklvs13qt2sp0gpeqd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;溢出标志</a>
+</h3>
+<h3 class="topic">
+<a name="1gm7hhbq0sc0ct3unpla0a872d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;算术运算的结果有溢出，则OF=1，否则OF=0</a>
+</h3>
+<h3 class="topic">
+<a name="2fl5c6vulbkpofvhjidtacj61u">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;十六位的有符号数的范围是-32768~+32767</a>
+</h3>
+<h3 class="topic">
+<a name="09g34uijpgtj2oegu4ume0447i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对应十六进制数为8000~7FFF</a>
+</h3>
+<h3 class="topic">
+<a name="0u70geaqlavmnl4mtd6sl80m8e">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;十六位无符号数的范围是0~65535</a>
+</h3>
+<h3 class="topic">
+<a name="5ne8i97uk38kmimn97jf94mtdt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;八位有符号数的范围为-128~127</a>
+</h3>
+<h3 class="topic">
+<a name="7kau0oso9k5to93mk2m3765f6g">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对应十六进制数为80（-128）~7F（127）</a>
+</h3>
+<h3 class="topic">
+<a name="4pkatuplupn04usaefptf90o8a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;八位无符号数的范围为0~255</a>
+</h3>
+<h3 class="topic">
+<a name="6racv0jveovqv4t69sq9ehfseh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;溢出标志表示有符号数的运算结果是否超出范围，运算结果是否错误</a>
+</h3>
+<h3 class="topic">
+<a name="2m4a0jof78gmil7rkctc11vuee">&nbsp;&nbsp;&nbsp;&nbsp;AF</a>
+</h3>
+<h3 class="topic">
+<a name="3u37qkufseubuqh8j5i32qc44g">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;辅助进位标志</a>
+</h3>
+<h3 class="topic">
+<a name="6u9katl8euqocfvkscvj88sr9u">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;运算时，低半字节有进位或借位时，AF=1 否则AF=0</a>
+</h3>
+<h3 class="topic">
+<a name="1lr3t6npl60gjm4qm4gjurdnp4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该标志主要是处理器内部使用，用户不用关心</a>
+</h3>
+<h3 class="topic">
+<a name="6fueuhrrunq2vm3rcnceqocgo8">&nbsp;&nbsp;&nbsp;&nbsp;注意状态标志位中进位、零、溢出标志位对应的运算结果的位数与计算机操作位数相同，</a>
+</h3>
+<h3 class="topic">
+<a name="15albq7n35k5437grsv5ste60p">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对于8位计算机，计算单位为一个字节，</a>
+</h3>
+<h3 class="topic">
+<a name="6pu56l0k9qfs3nvc9ct79ebuh7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果计算结果超过11111111（FF）（255），则CF标志位置为1 </a>
+</h3>
+<h3 class="topic">
+<a name="5tg58hvibetrisn0osl0td020v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果计算结果为00000000 （00）0，则ZF标志位置为1</a>
+</h3>
+<h3 class="topic">
+<a name="21k7ajo21rosh6cprul0ru0avj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果计算结果超过 -128~127 80~7F，则OF标志置为1</a>
+</h3>
+<h3 class="topic">
+<a name="30qf0965c4k41205a9p6v7nra9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对于十六位计算机，计算的单位为2个字节</a>
+</h3>
+<h3 class="topic">
+<a name="53ods2q7brbhmq52bs49nr4h4a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;32位....4个字节</a>
+</h3>
+<h3 class="topic">
+<a name="06k3uoe7i0mbpbt8jisgnv7d9i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;64位....8个字节</a>
+</h3>
+<h3 class="topic">
+<a name="52g5u0cdbpcp057stfda8idgb2">&nbsp;&nbsp;&nbsp;&nbsp;进位标志与溢出标志对于同一个运算来说，分别代表</a>
+</h3>
+<h3 class="topic">
+<a name="30l2obkr23uh1rer661bi6c1k3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果运算结果是一个无符号数，则是否发生进位或借位</a>
+</h3>
+<h3 class="topic">
+<a name="2gqf8fsos4ucou9id1llvujq8s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果将运算结果看成是有符号数，则是否发生溢出（即运算结果超出当前计算机位数所能表示的有符号数的范围）</a>
+</h3>
+<h3 class="topic">
+<a name="7sdh4l3ub29h1c93jl23bk9ure">&nbsp;&nbsp;&nbsp;控制标志</a>
+</h3>
+<h3 class="topic">
+<a name="08a3k26660h8ahushoqvl0co7i">&nbsp;&nbsp;&nbsp;&nbsp;DF</a>
+</h3>
+<h3 class="topic">
+<a name="5d27tp84ha3rjshj47rhrdsnr1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;方向控制标志</a>
+</h3>
+<h3 class="topic">
+<a name="3jfhjpt4lgv9a8083216hf1s6n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用于串操作指令中，控制地址变化的方向</a>
+</h3>
+<h3 class="topic">
+<a name="5tor7h8tl188epj87fjaua5v08">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DF=0 储存地址自动增加</a>
+</h3>
+<h3 class="topic">
+<a name="6llp0b2v9m6hpktf8s393fbrfs">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DF=1 储存地址自动减少</a>
+</h3>
+<h3 class="topic">
+<a name="5ighdh9qsov5be0jdstq2uegpc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CLD清空方向 DF=0，地址自动增加  &#13;
+STD设置方向 DF=1，地址自动减小</a>
+</h3>
+<h3 class="topic">
+<a name="4me49m0uipoigt7gv9tg5vnjel">&nbsp;&nbsp;&nbsp;&nbsp;IF</a>
+</h3>
+<h3 class="topic">
+<a name="7vn39kn67t9d0el8kf8bmu1tca">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;中断允许标志</a>
+</h3>
+<h3 class="topic">
+<a name="0hoslb128t8vlciq2ttsq9m1ga">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用于控制外部可屏蔽中断是否可以被处理器响应</a>
+</h3>
+<h3 class="topic">
+<a name="5hf2a9r6h4mu2soemngngnh8av">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IF=1,允许中断</a>
+</h3>
+<h3 class="topic">
+<a name="5r59kbbl19ir3m0d15buti2jbo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IF=0,禁止中断</a>
+</h3>
+<h3 class="topic">
+<a name="4ejndn1rehl2nm1k1ielt3d654">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CLI指令用于复位中断，执行后IF=0</a>
+</h3>
+<h3 class="topic">
+<a name="3v7dh6d6bujih0kpv4tul4fbio">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;STI指令用于置位中断，执行后IF=1</a>
+</h3>
+<h3 class="topic">
+<a name="0tvt4pti9f487a83ev5bq4fe8m">&nbsp;&nbsp;&nbsp;&nbsp;TF</a>
+</h3>
+<h3 class="topic">
+<a name="3l0prkbnmttpi89546jrprm08u">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;陷阱标志位</a>
+</h3>
+<h3 class="topic">
+<a name="3ea3qh4b16bn2vq7inftq9p9ku">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用于控制处理器进入单步操作方式</a>
+</h3>
+<h3 class="topic">
+<a name="2f1fr5f047ag98me661j4veb25">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TF=1 处理器单步执行指令， TF=0处理器正常执行指令</a>
+</h3>
+<h3 class="topic">
+<a name="0sh83g7vq61mm3ufb5gtefoelt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;处理器每执行完一条指令，就产生一个编号为1的内部中断</a>
+</h3>
+<h3 class="topic">
+<a name="7jsc60vtir2hnil8g0up5pvtgg">&nbsp;段寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="3s97jrfikeamjqdpbg23tcamd2">&nbsp;&nbsp;CS DS  ES SS</a>
+</h3>
+<h2 class="topic">
+<a name="3pv5kobo3p96cbr3ccg67vbc9g">汇编指令</a>
+</h2>
+<h3 class="topic">
+<a name="2ej9a2c2nh2j70122v7falgbmq">&nbsp;指令 =操作码 + 操作数</a>
+</h3>
+<h3 class="topic">
+<a name="277ltecaob8e4tbahk96trp9ov">&nbsp;操作码说明可以执行的操作</a>
+</h3>
+<h3 class="topic">
+<a name="5i1qo8a7gde42d6dgauf7fmrd8">&nbsp;操作数据可以为</a>
+</h3>
+<h3 class="topic">
+<a name="6p7etjaek7dpd9a6uag4q7ntpu">&nbsp;&nbsp;寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="43ggrnl3ir3odo7hd1o98q50sn">&nbsp;&nbsp;数字</a>
+</h3>
+<h3 class="topic">
+<a name="1ocpq9v4hce1rk2oj8fgqh43ou">&nbsp;&nbsp;&nbsp;即立即数</a>
+</h3>
+<h3 class="topic">
+<a name="55dddk2br163hf1rlnentfgtpo">&nbsp;&nbsp;内存地址</a>
+</h3>
+<h3 class="topic">
+<a name="1eblm9bku5uvhkgolvbmr7j2cs">&nbsp;指令的操作码用一个唯一的助记符表示，对应着一个机器指令的二进制编码</a>
+</h3>
+<h2 class="topic">
+<a name="0ln2lo2ijhricv360huf9mad4j">内存管理</a>
+</h2>
+<h3 class="topic">
+<a name="2e0590kpp6gbs5eciqrb1ja34h">&nbsp;当操作数是个内存地址的时候</a>
+</h3>
+<h3 class="topic">
+<a name="1avi4d6l23e2odblpbo63r7oth">&nbsp;&nbsp;mov [ax], 10</a>
+</h3>
+<h3 class="topic">
+<a name="43d5udr51gm8pj5iivpnenfl6o">&nbsp;&nbsp;&nbsp;问题在于ax寄存器为16位，最大寻址范围为64K（2^16），不能完全满足地址总线的最大寻址空间（1M 即2^20），所以需要使用  段基址:段内偏移  形式寻址（ 段基址:段内偏移 是逻辑地址）</a>
+</h3>
+<h3 class="topic">
+<a name="32vq7f3c5c6svuvf0ash5hmd6j">&nbsp;&nbsp;&nbsp;段基址通过段寄存器给出，段内偏移地址通过其他十六位寄存器给出</a>
+</h3>
+<h3 class="topic">
+<a name="641072b7b2m9l1mc9hvqo99g7e">&nbsp;&nbsp;&nbsp;物理地址计算方法</a>
+</h3>
+<h3 class="topic">
+<a name="5mbr2q4343bb9sbj08kiter8fu">&nbsp;&nbsp;&nbsp;&nbsp;物理地址=段基址*10h+偏移地址</a>
+</h3>
+<h3 class="topic">
+<a name="3h31gcsmugn7vptuor7ju1njg0">&nbsp;&nbsp;&nbsp;&nbsp;同一个物理地址可以有多个不同的逻辑地址</a>
+</h3>
+<h3 class="topic">
+<a name="5fbmi1604c0sks2rpnp4lcudig">&nbsp;8086将1M的内存空间分为多个逻辑段</a>
+</h3>
+<h3 class="topic">
+<a name="1n04sndj8p867ib6l14od13131">&nbsp;&nbsp;每个段最大限制为64KB</a>
+</h3>
+<h3 class="topic">
+<a name="5k9uds1s10s6gnsiqrtn06vk6m">&nbsp;&nbsp;段地址的低四位为0000B</a>
+</h3>
+<h3 class="topic">
+<a name="06me9t7h10k1d5e9ci34d993q3">&nbsp;访问内存地址</a>
+</h3>
+<h3 class="topic">
+<a name="008d84dl6s958d0gr4e3obvegq">&nbsp;&nbsp;代码段</a>
+</h3>
+<h3 class="topic">
+<a name="4kifua70t37pekshs2ml673hit">&nbsp;&nbsp;&nbsp;cs:ip</a>
+</h3>
+<h3 class="topic">
+<a name="7299mefli9qtgn15dbhtjcvkc6">&nbsp;&nbsp;数据段</a>
+</h3>
+<h3 class="topic">
+<a name="22ltft26v0ks98qdjh2g3d9s04">&nbsp;&nbsp;&nbsp;ds:si&#13;
+ds:bx</a>
+</h3>
+<h3 class="topic">
+<a name="7hk1tghb87mgsvci8ct1neatjp">&nbsp;&nbsp;堆栈段</a>
+</h3>
+<h3 class="topic">
+<a name="72g26cqmba516scu57kt8375o1">&nbsp;&nbsp;&nbsp;ss:sp&#13;
+ss:bp</a>
+</h3>
+<h3 class="topic">
+<a name="7b7er5eth0tgoghj14o4mq1hb1">&nbsp;&nbsp;附加段</a>
+</h3>
+<h3 class="topic">
+<a name="7df8l8kec8kfh7rkpoer15lijh">&nbsp;&nbsp;&nbsp;es:di</a>
+</h3>
+<h3 class="topic">
+<a name="4d9bvo8soktd3sc839foph99ce">&nbsp;&nbsp;&nbsp;附加段是附加的数据段，也用于数据的保存</a>
+</h3>
+<h3 class="topic">
+<a name="2s2lc2geuln4qiufddt9ktp88e">&nbsp;&nbsp;&nbsp;串操作指令将附加段作为其目的操作数的存储空间</a>
+</h3>
+<h3 class="topic">
+<a name="1n657q6htu72hppt2atb0hlser">&nbsp;物理上，内存是连续的，cpu在逻辑上将cpu进行分段，主要是为了方便访问</a>
+</h3>
+<h3 class="topic">
+<a name="52d7fftq874fl76eo5g3fktkef">&nbsp;段超越前缀指令</a>
+</h3>
+<h3 class="topic">
+<a name="3hacnodhh7fpcqiikjv9lng2dm">&nbsp;&nbsp;没有指明数据段时，默认访问DS段</a>
+</h3>
+<h3 class="topic">
+<a name="37thuvcvohpq3hndq47bs4ktr1">&nbsp;&nbsp;使用BP访问内存，则默认访问的是SS段</a>
+</h3>
+<h3 class="topic">
+<a name="10bpvvkfrnd4rqpu3rbq9c47vc">&nbsp;&nbsp;可以使用段超越前缀指令指定需要访问的数据段</a>
+</h3>
+<h3 class="topic">
+<a name="7fierkicqkmamkinj3nh41akm6">&nbsp;&nbsp;&nbsp;CS:</a>
+</h3>
+<h3 class="topic">
+<a name="67itnq6pmqrl6k7t489g5sh6uh">&nbsp;&nbsp;&nbsp;DS:</a>
+</h3>
+<h3 class="topic">
+<a name="6s6lbg96rnvit9m2gfl2gv3gk5">&nbsp;&nbsp;&nbsp;SS:</a>
+</h3>
+<h3 class="topic">
+<a name="49mol8sn6jnhq80mr8hbfjgb9i">&nbsp;&nbsp;&nbsp;ES:</a>
+</h3>
+<h3 class="topic">
+<a name="7f8hlrflpa4t0nckcimf77vebo">&nbsp;段寄存器的使用规定</a>
+</h3>
+<h3 class="topic">
+<a name="51k1hbvibm8kbvpapbj6p9luc6">&nbsp;&nbsp;资料14页</a>
+</h3>
+<h3 class="topic">
+<a name="359ba218dejscs06hrk75e835t">&nbsp;存储器的分段</a>
+</h3>
+<h3 class="topic">
+<a name="3hnrkrpgs9j6alsb9stbngm4q3">&nbsp;&nbsp;8086对逻辑段要求</a>
+</h3>
+<h3 class="topic">
+<a name="545fqa7ahifhf4fv26hisfjiek">&nbsp;&nbsp;&nbsp;段地址低四位均为0</a>
+</h3>
+<h3 class="topic">
+<a name="6vstvspkhktepcc9ar6idrv4si">&nbsp;&nbsp;&nbsp;每段最大不超过64KB</a>
+</h3>
+<h3 class="topic">
+<a name="1qacquqonqkq4ck9fhf49i4fn8">&nbsp;&nbsp;8086逻辑段不要求</a>
+</h3>
+<h3 class="topic">
+<a name="6r9hh501mvhob803ob1df4fvuc">&nbsp;&nbsp;&nbsp;每段必须是64KB</a>
+</h3>
+<h3 class="topic">
+<a name="2h0kcp7g6hfm8cn5m519oqo3m0">&nbsp;&nbsp;&nbsp;各个段不可重合</a>
+</h3>
+<h3 class="topic">
+<a name="49tplesvhapj5o918tkfvgl7am">&nbsp;&nbsp;&nbsp;&nbsp;即段之间可以重叠</a>
+</h3>
+<h3 class="topic">
+<a name="6p5vevmjatpj46pq2em9h08b3s">&nbsp;&nbsp;1MB空间最多能分成多少段</a>
+</h3>
+<h3 class="topic">
+<a name="12qrqk7mob53hbdcecn32r2c2j">&nbsp;&nbsp;&nbsp;每隔16个存储单元可以开始一个段</a>
+</h3>
+<h3 class="topic">
+<a name="6pnorbou7i1amlj5g304op1e3n">&nbsp;&nbsp;&nbsp;&nbsp;每隔16个存储单元可以开始一个段？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？</a>
+</h3>
+<h3 class="topic">
+<a name="2tis92d5et1mvjtm9to83jk51o">&nbsp;&nbsp;&nbsp;&nbsp;是因为一个段寄存器是十六位，如果按照一个区段最小的标准分割，则一个区段最少要占据十六位用于保存段的基地址</a>
+</h3>
+<h3 class="topic">
+<a name="44vh8mdofqp8t2m31etsh0o4an">&nbsp;&nbsp;&nbsp;1MB最多可以有2^20/16=2^16=64KB个段</a>
+</h3>
+<h3 class="topic">
+<a name="1c0hh8a0cp592c12fec5doijkp">&nbsp;&nbsp;1MB空间最少能分成多少段</a>
+</h3>
+<h3 class="topic">
+<a name="5ijcqqj47hbhnsr3ug2ak1jvg5">&nbsp;&nbsp;&nbsp;每个64KB存储单元开始一个段</a>
+</h3>
+<h3 class="topic">
+<a name="2k3hbfqhu6n3k0dgt6ad87efbq">&nbsp;&nbsp;&nbsp;&nbsp;因为一个段寄存器为16位，如果段之间不重叠，则每个段最大为2^16即64KB，</a>
+</h3>
+<h3 class="topic">
+<a name="1aqi0gemfitrvj3t0sfjcr7f0s">&nbsp;&nbsp;&nbsp;1MB最多分成16个段 （2^20/2^16）</a>
+</h3>
+<h3 class="topic">
+<a name="78uvh2jsl8m3s8rjmprm2hfh07">&nbsp;debug调试器</a>
+</h3>
+<h3 class="topic">
+<a name="2r20g7icqtsb0d6l1s9p8246s2">&nbsp;内存寻址方式</a>
+</h3>
+<p class="summary">(<a href="#2e0590kpp6gbs5eciqrb1ja34h">当操作数是个内存地址的时候</a>, <a href="#5fbmi1604c0sks2rpnp4lcudig">8086将1M的内存空间分为多个逻辑段</a>)</p>
+</body>
+</html>

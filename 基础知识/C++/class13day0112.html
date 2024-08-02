@@ -1,0 +1,791 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>class13day0112</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="0kqek8nruuf2ve767vc6so8l98">class13day0112</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="class13day0112_files/images/class13day0112.jpg"></div>
+<h2 class="topic">
+<a name="6mspoiuo8vhptf7dsg3lpa5cap">stl之vector</a>
+</h2>
+<h3 class="topic">
+<a name="0p9o0psevlf8u23f18smijglnu">&nbsp;什么是stl</a>
+</h3>
+<h3 class="topic">
+<a name="3ensk3k4h4bu6v46i4qks5e1bf">&nbsp;&nbsp;标准模板库</a>
+</h3>
+<h3 class="topic">
+<a name="45obvevj6heub1s8pi9fuhs25o">&nbsp;需要使用数组的时候就可以使用到STL</a>
+</h3>
+<h3 class="topic">
+<a name="5l1vkbm7h0mvd4vthom3niil5a">&nbsp;三大部件</a>
+</h3>
+<h3 class="topic">
+<a name="5n1jjgaj5btr64lej61207ficl">&nbsp;&nbsp;容器</a>
+</h3>
+<h3 class="topic">
+<a name="2219m557c9v4oeasgo7i1lmbqn">&nbsp;&nbsp;&nbsp;动态数组</a>
+</h3>
+<h3 class="topic">
+<a name="5p5aqsppnqosbqrbqulukvjdrp">&nbsp;&nbsp;&nbsp;链表</a>
+</h3>
+<h3 class="topic">
+<a name="0q1se7agq9iumuf2vsi32kcdta">&nbsp;&nbsp;&nbsp;栈</a>
+</h3>
+<h3 class="topic">
+<a name="2rkgdbe17hq73q0huf5rrdj44l">&nbsp;&nbsp;&nbsp;......</a>
+</h3>
+<h3 class="topic">
+<a name="1ei4qirv0a188s02lnu31gre8g">&nbsp;&nbsp;&nbsp;分类</a>
+</h3>
+<h3 class="topic">
+<a name="08n306snls6e3me157daashi1s">&nbsp;&nbsp;&nbsp;&nbsp;顺序容器</a>
+</h3>
+<h3 class="topic">
+<a name="3no1566coqlk7ojpk7cfu6vsf7">&nbsp;&nbsp;&nbsp;&nbsp;关联容器</a>
+</h3>
+<h3 class="topic">
+<a name="0i8hmqhj6dep2ac81bfe12eidk">&nbsp;&nbsp;&nbsp;&nbsp;容器适配器</a>
+</h3>
+<h3 class="topic">
+<a name="4j0k83g8a3es1kqqd8tg9b5dn9">&nbsp;&nbsp;算法</a>
+</h3>
+<h3 class="topic">
+<a name="3p5fj62usv7vfsbr79bsnoa0po">&nbsp;&nbsp;&nbsp;排序操作</a>
+</h3>
+<h3 class="topic">
+<a name="5sh5v6vsrnau50porvlh72a6db">&nbsp;&nbsp;&nbsp;寻找最大操作</a>
+</h3>
+<h3 class="topic">
+<a name="1vr4ll7o1j7ll18nkad1mtuen0">&nbsp;&nbsp;&nbsp;....</a>
+</h3>
+<h3 class="topic">
+<a name="5fvkivmlsiee5sm2ekgps5vest">&nbsp;&nbsp;&nbsp;一般与容器和迭代器配合使用</a>
+</h3>
+<h3 class="topic">
+<a name="66g2cq2pocdhbs30eltsr5iab7">&nbsp;&nbsp;迭代器</a>
+</h3>
+<h3 class="topic">
+<a name="2i86dclfua04egv6f81o0eobd7">&nbsp;&nbsp;&nbsp;是一个类,是一种泛化的指针类型,是一种指针</a>
+</h3>
+<h3 class="topic">
+<a name="3dhtbn2oin53njgpiu006k1oes">&nbsp;使用</a>
+</h3>
+<h3 class="topic">
+<a name="4udmo34iidjgld0jvrccn2op03">&nbsp;&nbsp;包含头文件</a>
+</h3>
+<h3 class="topic">
+<a name="7skv52qpuqoi9nsqnd2urebbbv">&nbsp;&nbsp;&nbsp;#include&lt;vector&gt;</a>
+</h3>
+<h3 class="topic">
+<a name="28cvjb3qqren0b77tr5tphuarq">&nbsp;&nbsp;声明命名空间</a>
+</h3>
+<h3 class="topic">
+<a name="3amkp18so06ng268jb1q5k11ap">&nbsp;&nbsp;&nbsp;using namespace vector</a>
+</h3>
+<h3 class="topic">
+<a name="38uuleimqgbn11f0e7gb84u399">&nbsp;&nbsp;定义的时候需要指定数据类型(vector本身是一个类)</a>
+</h3>
+<h3 class="topic">
+<a name="2ofb2pro9hf00uksrig174par9">&nbsp;&nbsp;&nbsp;vector&lt;int&gt;obj;</a>
+</h3>
+<h3 class="topic">
+<a name="270oasbma0qof0oqhh11rl4ito">&nbsp;&nbsp;支持[]</a>
+</h3>
+<h3 class="topic">
+<a name="31qiugh6rrlp52j1il744ikhic">&nbsp;&nbsp;&nbsp;及可以使用类似数组的方式对变量量名进行操作</a>
+</h3>
+<h3 class="topic">
+<a name="6qsaccfufel8ndoj6oe8ficn1o">&nbsp;&nbsp;在插入和删除操作方面效率比较慢</a>
+</h3>
+<h3 class="topic">
+<a name="71i1rrdq91sdmvddge53isk59u">&nbsp;&nbsp;可以自动扩展空间</a>
+</h3>
+<h3 class="topic">
+<a name="1v3o5i5lifkgmora2ui7bk7ti1">&nbsp;&nbsp;定义:   vector&lt;int&gt;vecInt;</a>
+</h3>
+<h3 class="topic">
+<a name="6ie8047pa399j4s91m6ker0i0o">&nbsp;&nbsp;功能</a>
+</h3>
+<h3 class="topic">
+<a name="1repe3vve13q9kq43hqp0qsh9k">&nbsp;&nbsp;&nbsp;增加</a>
+</h3>
+<h3 class="topic">
+<a name="7f54rdbtqaca3ser97tp72farj">&nbsp;&nbsp;&nbsp;&nbsp;vecInt.push_back(0);</a>
+</h3>
+<h3 class="topic">
+<a name="7trcmusa5vsld8hdg65sqgmu0d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//注意这里是在动态数组最末尾加上一个元素,并且该元素数值为0</a>
+</h3>
+<h3 class="topic">
+<a name="76je5k90of7rrg0sd94vgeegp3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vecInt.push_back(2);  vecInt.push_back(3); //这样操作之后,数组内存放的数据为  0,2,3</a>
+</h3>
+<h3 class="topic">
+<a name="7od8pq0lknremo3pir3rbqjhed">&nbsp;&nbsp;&nbsp;&nbsp;vecInt[0]=10;</a>
+</h3>
+<h3 class="topic">
+<a name="0hd8i6jaqr08asi3kd1sl7t6s0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将下标为0的位置的元素赋值为10</a>
+</h3>
+<h3 class="topic">
+<a name="2ckfdb20r3tpejutdabjqrjaq7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;此时使用vecInt[1]=10;是错的,因为还没有为下标为一的元素申请内存空间</a>
+</h3>
+<h3 class="topic">
+<a name="31ib525j5bpk2q2hta0l4edd7d">&nbsp;&nbsp;&nbsp;&nbsp;插入</a>
+</h3>
+<h3 class="topic">
+<a name="7cmoljuc3dajahb8mvgebm0h2j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vecInt.insert(vecInt.begin(),4);</a>
+</h3>
+<h3 class="topic">
+<a name="0oucoegs98sg57kati1f8ddkrn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将4插入到数组的首位,其余元素以此向后移</a>
+</h3>
+<h3 class="topic">
+<a name="55r69e8m64eoeflcml3n08jmoe">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vecInt.insert(vecInt.begin()+1,5);</a>
+</h3>
+<h3 class="topic">
+<a name="4q6av6a85bifft1cs6911rca8r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将5插入到数组的数组下标为1的位置,之后的元素以此向后移</a>
+</h3>
+<h3 class="topic">
+<a name="05omnl82cubmar2kn1og0mo46g">&nbsp;&nbsp;&nbsp;删除</a>
+</h3>
+<h3 class="topic">
+<a name="5pg71vjngctcnk652lj5o7t1dv">&nbsp;&nbsp;&nbsp;&nbsp;删除最后一个元素</a>
+</h3>
+<h3 class="topic">
+<a name="6l9j5ahjr2o3jnpvee2r9i5qp6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vecInt.pop_back();</a>
+</h3>
+<h3 class="topic">
+<a name="562tkphsd1bgc3d4s2t2ordd6s">&nbsp;&nbsp;&nbsp;&nbsp;删除指定位置的元素</a>
+</h3>
+<h3 class="topic">
+<a name="0n6dm8tr0bssnbvc7p136iimjo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vecInt.erase(vecInt.begin()+2);</a>
+</h3>
+<h3 class="topic">
+<a name="7sor7avmdbs0sr3pjkg2eo1ahe">&nbsp;&nbsp;&nbsp;遍历动态数组</a>
+</h3>
+<h3 class="topic">
+<a name="6hingr8fgkpk39dghr9s3tsq5j">&nbsp;&nbsp;&nbsp;&nbsp;使用数组的方式遍历</a>
+</h3>
+<h3 class="topic">
+<a name="5431b84vst58e3s137trljfua1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for(int i=0;i&lt;vecInt.size();i++)&#13;
+{&#13;
+cout&lt;&lt;venInt[i]&lt;&lt;',';&#13;
+}&#13;
+cout&lt;&lt;endl;</a>
+</h3>
+<h3 class="topic">
+<a name="259sivaasdc7l636bvh501cf2b">&nbsp;&nbsp;&nbsp;&nbsp;使用c++11标准的新方式进行遍历</a>
+</h3>
+<h3 class="topic">
+<a name="23503dlg7ikidm2796aj5sshie">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;auto根据赋值符号的右边的数据类型来自动推测变量的类型</a>
+</h3>
+<h3 class="topic">
+<a name="7m8g998cbk6rhf4gu868j5u3ln">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;例如 auto n=100;此时n为int类型的数据</a>
+</h3>
+<h3 class="topic">
+<a name="0o49ls2vvsek789825bqjkv9qv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;auto m;//不赋值的时候无法推测m的数据类型,无法定义变量</a>
+</h3>
+<h3 class="topic">
+<a name="4s9llk5oiomtct4eeshkjdnkis">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;auto &amp;是一个自动的引用类型,主要是为了防止产生拷贝</a>
+</h3>
+<h3 class="topic">
+<a name="78nbim536e452cqlfvr79uk9dn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for(auto&amp; i : vecInt)&#13;
+{&#13;
+cout&lt;&lt;i&lt;&lt;',';&#13;
+}&#13;
+cout&lt;&lt;endl;</a>
+</h3>
+<h3 class="topic">
+<a name="1tvbq35337sopd486qkfiqnfog">&nbsp;&nbsp;&nbsp;&nbsp;通用的容器遍历方式:迭代器遍历</a>
+</h3>
+<h3 class="topic">
+<a name="0bpof4bn66lat0volbgf8ublls">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;定义一个vector&lt;int&gt;迭代器类型的变量 itr(相当于一个指向vector&lt;int&gt;类型的指针)</a>
+</h3>
+<h3 class="topic">
+<a name="1vksltfelsr5ueepllcmhclqob">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vector&lt;int&gt;::iterator itr;</a>
+</h3>
+<h3 class="topic">
+<a name="1hd3bjeqoin00g073catkoplbf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for(auto itr=vecInt.begin();itr!=vecInt.end();)&#13;
+{&#13;
+cout&lt;&lt;*itr&lt;&lt;',';&#13;
+	if(*itr==5){&#13;
+	itr=vecInt.erase(itr);&#13;
+	continue;&#13;
+	}&#13;
+++itr;&#13;
+}&#13;
+cout&lt;&lt;endl;&#13;
+</a>
+</h3>
+<h3 class="topic">
+<a name="5183dc3uur8tke1ns7b430hfst">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// 当一个元素通过迭代器被删除之后&#13;
+// 这个迭代器就会变成一个无效的迭代器&#13;
+// 这个无效的迭代器不能使用++,--运算符了&#13;
+// 如果删除之后还要继续循环&#13;
+// 就得为迭代器重新赋值&#13;
+// erase 会删除一个迭代器指向&#13;
+// 的元素, 同时也会返回一个新的&#13;
+// 迭代器, 新的迭代器指向被删除&#13;
+// 元素的下一个位置.</a>
+</h3>
+<h3 class="topic">
+<a name="1ohssidf0dfe132ekkhlkvnsaa">&nbsp;&nbsp;&nbsp;&nbsp;迭代器的操作</a>
+</h3>
+<h3 class="topic">
+<a name="5a089ov2b0113pmq9tinluafg2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;class MyClass {&#13;
+   public:&#13;
+   	void fun() { cout &lt;&lt; "MyClass::fun\n"; }&#13;
+   };</a>
+</h3>
+<h3 class="topic">
+<a name="3grn3mj95utqaceuj56g6u9dag">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;定义一个类</a>
+</h3>
+<h3 class="topic">
+<a name="3b4vo04gikv94f345hdcrubl3b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vector&lt;MyClass&gt; vecMyClass;</a>
+</h3>
+<h3 class="topic">
+<a name="37ninv8tiups2orcvvmccm5m2i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;创建一个动态数组,数组名为vecMyClass,数组中的元素均为MyClass类的对象</a>
+</h3>
+<h3 class="topic">
+<a name="32r8trtgukrvsaqtahlacchfmu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vecMyClass.push_back(MyClass());</a>
+</h3>
+<h3 class="topic">
+<a name="7f0cgqgl02ql0d3a71t26cjlsv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;为数组添加一个元素</a>
+</h3>
+<h3 class="topic">
+<a name="66jrg3jsm7i31fn53i67cdndni">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;auto itrMy = vecMyClass.begin();</a>
+</h3>
+<h3 class="topic">
+<a name="0th5kduefkt54oe9gdq9ntsddt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用迭代器指向动态数组的首地址,指向动态数组的第一个元素</a>
+</h3>
+<h3 class="topic">
+<a name="5prb2lqd6ptr3shl0f98u0qo1u">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;itrMy-&gt;fun();</a>
+</h3>
+<h3 class="topic">
+<a name="05ss8nb7s5m5eirv9mv9ojourh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用迭代器以指针的方式调用类对象中的成员函数</a>
+</h3>
+<h3 class="topic">
+<a name="4cqkbck9i18uh3s4j91us3ddqe">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   // 迭代器的操作&#13;
+   // 迭代器可以看做是一个执行数组元素的指针.&#13;
+   // 1. 可以使用自增自减运算符来找到下一个元素&#13;
+   // 2. 可以使用*运算符来取出指针指向的内&#13;
+   //    容/也可以修改指针指向的内容.&#13;
+   // 3. 如果容器保存的是类类型的话, 还可以使用&#13;
+   //   `-&gt;`运算符来访问类类型成员</a>
+</h3>
+<h3 class="topic">
+<a name="6ccggo67n4b1gqnder3l0lo97d">&nbsp;&nbsp;&nbsp;访问元素</a>
+</h3>
+<h3 class="topic">
+<a name="5bll5pe1o1c38ett83kvc5kr5n">&nbsp;&nbsp;&nbsp;&nbsp;cout&lt;&lt;vecInt[0];</a>
+</h3>
+<h3 class="topic">
+<a name="682brdda3hmesoe27r16ld32vq">&nbsp;&nbsp;&nbsp;&nbsp;vecInt[1]=vecInt[0];</a>
+</h3>
+<h3 class="topic">
+<a name="60p5jk3806h8ke86b7b24il0oc">&nbsp;&nbsp;&nbsp;&nbsp;vecInt[2]=vecInt.at(0);</a>
+</h3>
+<h3 class="topic">
+<a name="5qoovu4o1q55p0bbt3aonsb8nn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;at函数接收一个下标,返回一个元素</a>
+</h3>
+<h3 class="topic">
+<a name="7f4ili3cra953ac1iu66qm5ipc">&nbsp;&nbsp;迭代器</a>
+</h3>
+<h3 class="topic">
+<a name="1i254hpn78shkl0l1ai2gvdpm4">&nbsp;&nbsp;&nbsp;begein()</a>
+</h3>
+<h3 class="topic">
+<a name="2to99jlqg8nceuc9sdv8k3ha6n">&nbsp;&nbsp;&nbsp;&nbsp;可以视为第0个元素的指针</a>
+</h3>
+<h3 class="topic">
+<a name="4qrt67po7cvhu84ipboa22a14r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;即*(vecInt.begin()+1)的值为vecInt[1]</a>
+</h3>
+<h3 class="topic">
+<a name="3042ipe77svresclgih6iaeda0">&nbsp;&nbsp;&nbsp;end()</a>
+</h3>
+<h3 class="topic">
+<a name="2qnukkcuvb7pkdp0l5kqmu0rlk">&nbsp;&nbsp;&nbsp;&nbsp;可以视为指向最后一个元素之后的一个内存空间的指针</a>
+</h3>
+<h3 class="topic">
+<a name="263dhv22dng5hspoijq2h1n3kl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;即 *(vecInt.end()-1)的值为动态数组vecInt的最后一个数组元素的值</a>
+</h3>
+<h3 class="topic">
+<a name="19f9db0816oj63ehvvbe286612">&nbsp;参考博客</a>
+</h3>
+<h3 class="topic">
+<a name="26jvkg45hpc1hc06fgakrk7fiv">&nbsp;&nbsp;http://www.cnblogs.com/aminxu/p/4686332.html</a>
+</h3>
+<h2 class="topic">
+<a name="1s3kqgtulh1qngijduvgdqgq5o">UML类图(是uml中的一种)</a>
+</h2>
+<h3 class="topic">
+<a name="4or6jskfodrvk9vgb92af5cj2j">&nbsp;用于项目开始之前的构思建模等用描述项目中类与类之间的关系</a>
+</h3>
+<h3 class="topic">
+<a name="4kpghmvkk4k7g8rf7s2j6tivbc">&nbsp;主要模型</a>
+</h3>
+<h3 class="topic">
+<a name="4hm8h11to6s7163b65mja4ucal">&nbsp;&nbsp;功能模型</a>
+</h3>
+<h3 class="topic">
+<a name="319use6cof007hr2cvkno2281l">&nbsp;&nbsp;&nbsp;函数图形化表示</a>
+</h3>
+<h3 class="topic">
+<a name="0t74uc0kfjd6p0749conla8cr0">&nbsp;&nbsp;对象模型</a>
+</h3>
+<h3 class="topic">
+<a name="0uem5vtuh1efgure0mfi5l54ba">&nbsp;&nbsp;&nbsp;类的图形化表示</a>
+</h3>
+<h3 class="topic">
+<a name="7d5vuu1mo9av5prhe51iee2eta">&nbsp;&nbsp;动态模型</a>
+</h3>
+<h3 class="topic">
+<a name="6dsfubvpr96j0sup8jffeu1ne8">&nbsp;&nbsp;&nbsp;系统的内部行为</a>
+</h3>
+<h3 class="topic">
+<a name="58rmc2jl8j8akrc5f8lbkpesfn">&nbsp;组成部分</a>
+</h3>
+<h3 class="topic">
+<a name="5jiorrrt60ch3cefmnoelbmauq">&nbsp;&nbsp;类名</a>
+</h3>
+<h3 class="topic">
+<a name="00pemntp99hr1o5dq92lit45k3">&nbsp;&nbsp;属性</a>
+</h3>
+<h3 class="topic">
+<a name="6p70q0i3uns07a1lfhem2t97s6">&nbsp;&nbsp;操作(成员函数)</a>
+</h3>
+<h3 class="topic">
+<a name="2it12icsnft91dtnprjmmhd406">&nbsp;类与类之间的关系</a>
+</h3>
+<h3 class="topic">
+<a name="3v8r1sdpcqqpjvcfr9etc1p5j9">&nbsp;&nbsp;关联关系</a>
+</h3>
+<h3 class="topic">
+<a name="7nv48f5b83lkn6b61k85rlo0f2">&nbsp;&nbsp;&nbsp;讲一个类的对象作为另一个类的成员变量</a>
+</h3>
+<h3 class="topic">
+<a name="2po6e833f71unffpasq8gbvn8h">&nbsp;&nbsp;&nbsp;分类</a>
+</h3>
+<h3 class="topic">
+<a name="7g6it9k2bcq0pdbpkrt1qhdmht">&nbsp;&nbsp;&nbsp;&nbsp;单向关联</a>
+</h3>
+<h3 class="topic">
+<a name="1n2gn6b3tg61hq007alrn6bs8o">&nbsp;&nbsp;&nbsp;&nbsp;双向关联</a>
+</h3>
+<h3 class="topic">
+<a name="7qla0he59499j2eh77gob3i1tn">&nbsp;&nbsp;&nbsp;&nbsp;自关联</a>
+</h3>
+<h3 class="topic">
+<a name="5fi2v2r7jrfbnj4t00au7od3dk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;与链表有关</a>
+</h3>
+<h3 class="topic">
+<a name="6s2n5vh3gpbv8tdrs607l8nocn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;一般是指针</a>
+</h3>
+<h3 class="topic">
+<a name="6cind2eq3gguqnkah844eqp253">&nbsp;&nbsp;&nbsp;&nbsp;多重关联</a>
+</h3>
+<h3 class="topic">
+<a name="63ki0pp0n0iaq7vgl47hoc3uaa">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;相当于数组中有多个元素进行关联</a>
+</h3>
+<h3 class="topic">
+<a name="2gunh1eaold6bbq5hu7svbr5t3">&nbsp;&nbsp;&nbsp;&nbsp;聚合</a>
+</h3>
+<h3 class="topic">
+<a name="6irrk8hmqc2dsq4jh0fic2u74e">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;成员变量通常为指针</a>
+</h3>
+<h3 class="topic">
+<a name="0at1qpo4gr7k9n6g74gs77430p">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;两个类的生存周期不相同</a>
+</h3>
+<h3 class="topic">
+<a name="42mqri2a88q36hf0ddjgr352mv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;一个整体和零件的关系,零件是可以换掉的</a>
+</h3>
+<h3 class="topic">
+<a name="3fjdpnllf1ngtrolfsr6f54qn0">&nbsp;&nbsp;&nbsp;&nbsp;组合</a>
+</h3>
+<h3 class="topic">
+<a name="3uqblhf9pdgva7tga3c0ukohcn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对应聚合但是两个类的生存周期相同</a>
+</h3>
+<h3 class="topic">
+<a name="7njiqelochnjlnrg60i5q9e0h4">&nbsp;&nbsp;依赖关系</a>
+</h3>
+<h3 class="topic">
+<a name="6or8mbfp9osg4ln8jidr0d3o9i">&nbsp;&nbsp;&nbsp;某一个类使用另一个类的对象作为成员变量的参数</a>
+</h3>
+<h3 class="topic">
+<a name="76vikughkuar85ura9t5089rig">&nbsp;&nbsp;泛化</a>
+</h3>
+<h3 class="topic">
+<a name="1hi7qur9m575f7h2rummnur1q1">&nbsp;&nbsp;&nbsp;即继承关系</a>
+</h3>
+<h3 class="topic">
+<a name="6dqte35t2f46qd156rvf7elnps">&nbsp;&nbsp;接口与实现关系</a>
+</h3>
+<h3 class="topic">
+<a name="6oepr1e8lpksc7ejapqsnkrfn2">&nbsp;&nbsp;&nbsp;一般是指抽象类与派生类的关系</a>
+</h3>
+<h3 class="topic">
+<a name="42j6ujin8lrn38vqpboq5ht70m">&nbsp;使用类图可以直接生成相关类的代码</a>
+</h3>
+<h2 class="topic">
+<a name="3iumvh3fflr3ou9r1h5h7adfs6">贪吃蛇项目指导</a>
+</h2>
+<h3 class="topic">
+<a name="18bfcrublp091ds8lc3pgg8lrj">&nbsp;控制台编程基础</a>
+</h3>
+<h3 class="topic">
+<a name="76vo6g3aprqoi52i4kbfe9un19">&nbsp;&nbsp;控制态api介绍</a>
+</h3>
+<h3 class="topic">
+<a name="5j92kr6eiu4bh82tupfni6lkti">&nbsp;&nbsp;&nbsp;控制台横纵坐标</a>
+</h3>
+<h3 class="topic">
+<a name="2hbjcnmbbkkkquds2t6ak8kqfe">&nbsp;&nbsp;&nbsp;句柄:相当于类对象的this指针,一个控制台有一个句柄,要控制哪个控制台,就要用哪个控制台的句柄,</a>
+</h3>
+<h3 class="topic">
+<a name="306iumtne3c33hmiab1bvjblj8">&nbsp;&nbsp;&nbsp;控制台程序默认带有两个控制台句柄(GetStdHandle)</a>
+</h3>
+<h3 class="topic">
+<a name="35392sc3kq3reus1rvb3g7nh7r">&nbsp;&nbsp;&nbsp;&nbsp;标准输入句柄()</a>
+</h3>
+<h3 class="topic">
+<a name="20699jv6tj0g8mnc59t7qi9p5f">&nbsp;&nbsp;&nbsp;&nbsp;标准输出句柄()</a>
+</h3>
+<h3 class="topic">
+<a name="7pj95u9cjt7vvjbhcr51olifbp">&nbsp;&nbsp;&nbsp;需要包含头文件&lt;windows.h&gt;</a>
+</h3>
+<h3 class="topic">
+<a name="27oopqu3vku26rh5d30ki2imcm">&nbsp;&nbsp;&nbsp;获取标准输出句柄</a>
+</h3>
+<h3 class="topic">
+<a name="6a446ssds1rhbip204ukup05im">&nbsp;&nbsp;&nbsp;&nbsp;表示当前屏幕输出光标</a>
+</h3>
+<h3 class="topic">
+<a name="2m1e14ar1m3qjp267cuc8m02lm">&nbsp;&nbsp;&nbsp;设置当前光标位置 (不知道的数据类型可以直接F12进去看)</a>
+</h3>
+<h3 class="topic">
+<a name="5de2lpi8puah66ev9t8k6shti1">&nbsp;&nbsp;&nbsp;封装成一个函数,在某一个位置输出某一个字符串</a>
+</h3>
+<h3 class="topic">
+<a name="5ngfohvatr3ealdr3gisepvgtr">&nbsp;&nbsp;&nbsp;将光标设置为不可见</a>
+</h3>
+<h3 class="topic">
+<a name="560g0r8gn5dqigpjrm42rvtoo9">&nbsp;&nbsp;&nbsp;设置字体颜色,并将字体颜色设置添加到打印函数中</a>
+</h3>
+<h3 class="topic">
+<a name="5i0lctnq8p8ud2c9an609gi3rk">&nbsp;&nbsp;&nbsp;&nbsp;在控制台输入color /?可以查看相关注释</a>
+</h3>
+<h3 class="topic">
+<a name="1fk2442gsb0ulftn505br2ubek">&nbsp;&nbsp;&nbsp;&nbsp;结合清屏函数(使用空格填充整个屏幕),将屏幕的底色全部设置为白色</a>
+</h3>
+<h3 class="topic">
+<a name="5r5a6lqia6h7678g1s3l6tkle2">&nbsp;&nbsp;&nbsp;&nbsp;通过两层循环打印输出特定颜色的和背景的字符占一片空间</a>
+</h3>
+<h3 class="topic">
+<a name="7hc05q87hou1m6528f75dh04fq">&nbsp;&nbsp;&nbsp;输出一个会移动的文本</a>
+</h3>
+<h3 class="topic">
+<a name="0pk1hbto4uddp34as0o9jnmv7u">&nbsp;&nbsp;&nbsp;接收键盘按键指导文本移动</a>
+</h3>
+<h3 class="topic">
+<a name="5m453h8hakfh21ldf2u4cr11gt">&nbsp;&nbsp;&nbsp;&nbsp;_kbhit()</a>
+</h3>
+<h3 class="topic">
+<a name="49jtvgfopl7gl3mqbk1e0gcbqe">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;只检测当前有没有按键,如果没有就返回0,如果有就返回1</a>
+</h3>
+<h3 class="topic">
+<a name="2u9n639afnsqrd494srivlq4t4">&nbsp;&nbsp;&nbsp;&nbsp;_getch();</a>
+</h3>
+<h3 class="topic">
+<a name="7ugpcl2smm4qmv2efebknh2v71">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;堵塞的接受用户的按键,并按键码返回,并且不会在控制台输出接收的字符</a>
+</h3>
+<h3 class="topic">
+<a name="2ovhdc7o3pea074d7c39h1goqc">&nbsp;&nbsp;&nbsp;&nbsp;两者结合死循环,循环接收键盘输入</a>
+</h3>
+<h3 class="topic">
+<a name="1s6q3p8io9eu103iilnbp8boi0">&nbsp;&nbsp;&nbsp;设置point类,用于保存光标点此时的位置</a>
+</h3>
+<h3 class="topic">
+<a name="7clcmu32t4e9h9kd9qu59km8gc">&nbsp;&nbsp;&nbsp;&nbsp;需要有打印函数  移动函数   消除函数, x轴和y轴值所谓成员变量</a>
+</h3>
+<h3 class="topic">
+<a name="3tj6c1os9g68897tc8toman2em">&nbsp;&nbsp;&nbsp;如何打印一条蛇</a>
+</h3>
+<h3 class="topic">
+<a name="0mosqr5q1uhs7obkuhl7bg5ddp">&nbsp;&nbsp;&nbsp;&nbsp;定义一个关于点类型的数组</a>
+</h3>
+<h3 class="topic">
+<a name="7rs50onia2sprb91qg756q8aci">&nbsp;&nbsp;&nbsp;&nbsp;核心科技:将蛇的最后一个单位放在蛇头的地方,然后根据按键的不同修改尾部以头部为依据的方向</a>
+</h3>
+<h3 class="topic">
+<a name="4beuqi50i2e2g2r5hmv2tnjoie">&nbsp;&nbsp;&nbsp;&nbsp;吃到食物时在尾部增加一个节点,以倒数第二个节点的移动方向为依据进行反向增加</a>
+</h3>
+<h3 class="topic">
+<a name="3k031th3mhr8geld7l4v7a67k9">&nbsp;&nbsp;&nbsp;&nbsp;用动态数组定义一个蛇类</a>
+</h3>
+<h3 class="topic">
+<a name="0ieoeq709u59v515tt6sb8ig97">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;初始初始坐标为0,0  然后增加一个点</a>
+</h3>
+<h3 class="topic">
+<a name="7u51vi4604kif4phiglfa79afg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;添加移动函数</a>
+</h3>
+<h3 class="topic">
+<a name="6utdcctivtsi7kp77pj7o8a2in">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;根据传入的方向和舌头的坐标生成一个新的点</a>
+</h3>
+<h3 class="topic">
+<a name="77ntbudujjfbrmsbsrf18rgbm3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将该点插入到数组的第0个元素,作为新的蛇头</a>
+</h3>
+<h3 class="topic">
+<a name="538nt1iphngeetkef4olnqv74n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;删除蛇尾</a>
+</h3>
+<h3 class="topic">
+<a name="1optl7samskv8cjap4c80qu1ga">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意是否移动的方向和当前的移动方向相反,如果相反,使用当前舌头方向为下一步移动方向</a>
+</h3>
+<h3 class="topic">
+<a name="7kuk2ppojvg876n90tpcihci70">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;添加设置坐标xy的成员函数</a>
+</h3>
+<h3 class="topic">
+<a name="5nq0aevomvab8noq6hlr9k5hdo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;添加设置按下方向的成员函数</a>
+</h3>
+<h3 class="topic">
+<a name="34ic23md056g6e808u7vmps7nm">&nbsp;&nbsp;&nbsp;如何保证食物的设置,</a>
+</h3>
+<h3 class="topic">
+<a name="7hg81rvmn5mjpbqel2dca938jp">&nbsp;&nbsp;&nbsp;&nbsp;引入地图,即设置一个二维数组,二维数组中的每个点对应地图中的点,地图中的点可以设置为食物,障碍 冰面等</a>
+</h3>
+<h3 class="topic">
+<a name="110qnm17oe75q1bhb3rhikhguq">&nbsp;&nbsp;&nbsp;使蛇移动变慢的方式 </a>
+</h3>
+<h3 class="topic">
+<a name="5oo444q1f60rfsmrotstdtatpk">&nbsp;&nbsp;&nbsp;&nbsp;sleep(500);卡住500毫秒</a>
+</h3>
+<h3 class="topic">
+<a name="1sq570htbeae38uo28dq0480mf">&nbsp;&nbsp;&nbsp;两只蛇移动速度不同的问题</a>
+</h3>
+<h3 class="topic">
+<a name="0j31a3b8a8fn3od86t2vgl6rcd">&nbsp;&nbsp;&nbsp;&nbsp;clock();从程序中获取时间,以毫秒为单位</a>
+</h3>
+<h3 class="topic">
+<a name="34il0v3otdmt5902v5hbnpqhmb">&nbsp;&nbsp;&nbsp;&nbsp;获取当前时间,减去一个上次的时间,得到一个时间差,不同的蛇之后满足不同的时间差之后,才能进行下一步的动作</a>
+</h3>
+<h3 class="topic">
+<a name="6f9c8iaphnb6aesld21361fapa">&nbsp;&nbsp;控制台光标设置</a>
+</h3>
+<h3 class="topic">
+<a name="3cgsq9bv2r8d8a6ujdag9ter6e">&nbsp;&nbsp;&nbsp;显示与隐藏设置</a>
+</h3>
+<h3 class="topic">
+<a name="6gu2v56dt6ef662vhjr4m9kl0b">&nbsp;&nbsp;&nbsp;坐标</a>
+</h3>
+<h3 class="topic">
+<a name="1gbnssn50k66peebh576mj81m2">&nbsp;&nbsp;控制台文本属性</a>
+</h3>
+<h3 class="topic">
+<a name="4mr93ov03af6hh2a0a343q4j7d">&nbsp;&nbsp;&nbsp;颜色</a>
+</h3>
+<h3 class="topic">
+<a name="0mc3mqo8l7bvb405maeh9o9dam">&nbsp;&nbsp;设置控制台缓冲器大小,窗口大小</a>
+</h3>
+<h3 class="topic">
+<a name="2mt98ch361otknv432uqj5qqug">&nbsp;&nbsp;&nbsp;超出高度控制台是,光标进入缓冲区,若缓冲区大小用尽,则多余输入的字符不现实</a>
+</h3>
+<h3 class="topic">
+<a name="35d5ctr8ir0j7025p5mis2jpvq">&nbsp;子主题 2</a>
+</h3>
+<h2 class="topic">
+<a name="23vregmtcr79luake2nmmp256p">tips</a>
+</h2>
+<h3 class="topic">
+<a name="7fjarp1f4ukkv789j2fiu22vtv">&nbsp;空类是一个字节</a>
+</h3>
+<h3 class="topic">
+<a name="3e6103229ceh6ti2bv4af5ucud">&nbsp;虚函数有虚基表占有四个字节内存空间,</a>
+</h3>
+<h3 class="topic">
+<a name="3de6vmnnrf5vbtd64og58jsrne">&nbsp;&nbsp;只有一个虚函数的类所占字节要么是1个字节(与空类相同),要么是5个字节,(无论如何,空类中的那一个字节时必须被保存的)</a>
+</h3>
+<h3 class="topic">
+<a name="7nqne3cqvdsa023ohd3hejgtto">&nbsp;为什么会产生虚基</a>
+</h3>
+<h3 class="topic">
+<a name="4f7u8cm7he36uct9kg5s0dbike">&nbsp;&nbsp;为了解决菱继承二义性的问题</a>
+</h3>
+<h3 class="topic">
+<a name="1ileb6qisqsl287vh8errvoq6k">&nbsp;&nbsp;&nbsp;继承方式与virtual的顺序可以颠倒</a>
+</h3>
+<h3 class="topic">
+<a name="3d5mnivi1l98ka2g5ns5662pbg">&nbsp;虚继承是为了解决菱形继承,解决二义性问题,不是为了提供多态</a>
+</h3>
+<h3 class="topic">
+<a name="270lsrijdn9dmst3taoociusvq">&nbsp;析构函数作为虚函数时可以用于在销毁基类指针的时候顺便调用子类的析构函数</a>
+</h3>
+<h3 class="topic">
+<a name="2e25ugvfi16abist59ia6cq57i">&nbsp;父类中声名的纯虚函数,子类中不一定非要将其进行实现</a>
+</h3>
+<h3 class="topic">
+<a name="1k37j5db59ramd46r2m2n8aaha">&nbsp;虚函数的机制在父类的与孙子类之间函数的重写也有作用</a>
+</h3>
+<h3 class="topic">
+<a name="25up1dtm86h1am615564dto6u0">&nbsp;重定义的对象也可以是虚函数,即在父类子类中的虚函数也可以为重定义的</a>
+</h3>
+<h3 class="topic">
+<a name="0q5ti8djcfjdgu482eli45h9a7">&nbsp;stl中把各种存储数据的结构都称为容器</a>
+</h3>
+<h3 class="topic">
+<a name="4cvvmc2e5r19qn4693386k3ofe">&nbsp;&nbsp;stl是通过模板机制实现的</a>
+</h3>
+<h3 class="topic">
+<a name="5b9mt4skkcnevrn87v0v90oj72">&nbsp;vector可以储存结构体类型,能够储存任何数据类型</a>
+</h3>
+<h3 class="topic">
+<a name="0ol4tcvasost8aq6rka2u74afq">&nbsp;vector在单纯定义后是没有分配空间的要么进行多次push,要么在定义的时候就在</a>
+</h3>
+<h3 class="topic">
+<a name="59ebeu8133a5n5kpopkdcc5l3i">&nbsp;使用malloc创建对象的时候不会调用构造函数</a>
+</h3>
+<h3 class="topic">
+<a name="629mekv35340kjjhd3hl7ucra4">&nbsp;&nbsp;new在申请对象(或多个对象)的同时,会调用相应的构造函数</a>
+</h3>
+<h3 class="topic">
+<a name="67no71rbtaraalk4ad7d3n7pd1">&nbsp;&nbsp;new不是函数,是一种运算符</a>
+</h3>
+<h3 class="topic">
+<a name="087kqe8uuqaotkil0e7d1oef28">&nbsp;拷贝构造的形参是一个类型的引用的原因</a>
+</h3>
+<h3 class="topic">
+<a name="67q1rrfuap2q0ipe98v4vtcajp">&nbsp;&nbsp;因为引用的传参效率高</a>
+</h3>
+<h3 class="topic">
+<a name="2icrcei3g2b07u492k89eskqvp">&nbsp;&nbsp;因为如果直接用类,可能导致死循环</a>
+</h3>
+<h3 class="topic">
+<a name="3g4jv24o25rg230tpj2llbru4m">&nbsp;为const类型的成员变量初始化可以在初始化列表中进行,也可以在类中定义之后直接给一个数,进行初始化(在vs2015中支持)</a>
+</h3>
+<h3 class="topic">
+<a name="45m0mtdjsui6drapkaccdo6704">&nbsp;构造的顺序</a>
+</h3>
+<h3 class="topic">
+<a name="3fmpbck0ou6b83diqnekfsabc6">&nbsp;&nbsp;父类-&gt;成员-&gt;子类</a>
+</h3>
+<h3 class="topic">
+<a name="1cng4t4o76mcppk497om1fpl7l">&nbsp;&nbsp;这里如果父类中有对象成员,则在父类构造调用之前,也需要先调用父类中的成员的构造</a>
+</h3>
+<h3 class="topic">
+<a name="6anfgmrap2tifbplpgc8gdq289">&nbsp;浅拷贝是坏处</a>
+</h3>
+<h2 class="topic">
+<a name="476gad0j1dmpsi45ldnnp2du3o">贪吃蛇架构</a>
+</h2>
+<h3 class="topic">
+<a name="6lb5nsp3vh1fbm8j72tg2bfutl">&nbsp;蛇类</a>
+</h3>
+<h3 class="topic">
+<a name="7bt53vsbj9pc9gq77kamjv5gdl">&nbsp;&nbsp;move</a>
+</h3>
+<h3 class="topic">
+<a name="4fe9a6n9b5h94bh65tkcqptfc4">&nbsp;&nbsp;color</a>
+</h3>
+<h3 class="topic">
+<a name="2fn1hbslmd0bl5crut5a5um83e">&nbsp;&nbsp;flash</a>
+</h3>
+<h3 class="topic">
+<a name="1pqhr2cfjh3g4vfu8fj7etmts8">&nbsp;&nbsp;子主题 4</a>
+</h3>
+<h3 class="topic">
+<a name="0m79pqp6n9hhkdjovb0ur343se">&nbsp;食物</a>
+</h3>
+<h3 class="topic">
+<a name="0jqlaqhmr4372l70s7pvpfeh5b">&nbsp;&nbsp;食物生成</a>
+</h3>
+<h3 class="topic">
+<a name="3vr1nusgcvilkpqlu0gmeg8as2">&nbsp;地图类</a>
+</h3>
+<h3 class="topic">
+<a name="1v8vj8kckcidvshnqm6o06fm8s">&nbsp;&nbsp;使用二维数组</a>
+</h3>
+<h3 class="topic">
+<a name="4e3c1k0mvonh32283hl3h50gol">&nbsp;游戏类</a>
+</h3>
+<h3 class="topic">
+<a name="5rokta9tlgsmfagietosgkjg9i">&nbsp;&nbsp;蛇类</a>
+</h3>
+<h3 class="topic">
+<a name="5urlh175v34ffpa3fv56tmjs72">&nbsp;&nbsp;食物</a>
+</h3>
+<h3 class="topic">
+<a name="1adfro3c48kjs0h5a3r6hrtkm0">&nbsp;&nbsp;吃食物</a>
+</h3>
+<h3 class="topic">
+<a name="1t9mu6geoj0dm9r2e0lt5krl6o">&nbsp;&nbsp;地图类</a>
+</h3>
+<h3 class="topic">
+<a name="607va25gel9hngvpsdpjgce1nm">&nbsp;对于食物 蛇之间的交互要要重新定义一个类进行操作</a>
+</h3>
+<h2 class="topic">
+<a name="789afugp1ljre55pfji4qf0ium">考试</a>
+</h2>
+<h3 class="topic">
+<a name="6kcgt6fh0g3jtma2b9ji0t9dbr">&nbsp;25-30选择</a>
+</h3>
+<h3 class="topic">
+<a name="27t2q8nh0tbmtctun8h1c2b73b">&nbsp;20-30填空</a>
+</h3>
+<h3 class="topic">
+<a name="2aund87i51h10279u8r76s9hfg">&nbsp;40+大题  编程</a>
+</h3>
+<h3 class="topic">
+<a name="37c18ot5l9ms6529k4df0j5hgs">&nbsp;&nbsp;头文件</a>
+</h3>
+<h3 class="topic">
+<a name="1ndb9sddprniq87u871jp0aglq">&nbsp;&nbsp;&nbsp;stdio.h</a>
+</h3>
+<h3 class="topic">
+<a name="6hdgfubhfijijthc6ibgltj7jo">&nbsp;&nbsp;&nbsp;iostream</a>
+</h3>
+<h3 class="topic">
+<a name="07c2ark6u72dahn2dp6m5m6a3f">&nbsp;&nbsp;&nbsp;stdlib.h</a>
+</h3>
+<h3 class="topic">
+<a name="01qnun78gqlon72vutv26tch64">&nbsp;&nbsp;&nbsp;string.h</a>
+</h3>
+<h3 class="topic">
+<a name="4oud4b7g3cblb1rembp69nqfen">&nbsp;&nbsp;函数</a>
+</h3>
+<h3 class="topic">
+<a name="4epeusrdns3p545r1k6nfpts5u">&nbsp;&nbsp;&nbsp;strcmp</a>
+</h3>
+<h3 class="topic">
+<a name="348993hhomoqkifh77n0ttde7b">&nbsp;&nbsp;&nbsp;strcpy</a>
+</h3>
+<h3 class="topic">
+<a name="3pl263m07p3mvaoqpihlmo1b38">&nbsp;&nbsp;&nbsp;strcar</a>
+</h3>
+<h3 class="topic">
+<a name="74d0f95s74nfo5iamk9b5ake2f">&nbsp;&nbsp;自己实现strcpy strcat strlen strcmp</a>
+</h3>
+<h3 class="topic">
+<a name="54mmv11kh9o69b83n8e7ua777u">&nbsp;&nbsp;排序算法</a>
+</h3>
+<h3 class="topic">
+<a name="0s8e3rds9cm65tcm60j82lb1t3">&nbsp;&nbsp;实现深拷贝 浅拷贝</a>
+</h3>
+<h3 class="topic">
+<a name="5toqe50i0kul7jmujl7q2acgm6">&nbsp;&nbsp;继承 虚继承</a>
+</h3>
+<h3 class="topic">
+<a name="045la54q7n3imdlfm4jkqndmep">&nbsp;&nbsp;菱形继承解决</a>
+</h3>
+<h3 class="topic">
+<a name="57nagb17lqh3c7bso72ave0q32">&nbsp;&nbsp;虚函数</a>
+</h3>
+<h2 class="topic">
+<a name="1c7fjdqi06lrhf9afbm5i5ud2i">问题</a>
+</h2>
+<h3 class="topic">
+<a name="13vkdb4dn1d99a8rf3nosk1eqe">&nbsp;最后一个知识点的编程第存在疑惑</a>
+</h3>
+</body>
+</html>

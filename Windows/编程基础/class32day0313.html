@@ -1,0 +1,924 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>class32day0313</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="1okvjbrn32fd3ok947f67skfs0">class32day0313</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="class32day0313_files/images/class32day0313.jpg"></div>
+<h2 class="topic">
+<a name="5tescuutcmukqnuaeprg367ro7">win编程基础</a>
+</h2>
+<h3 class="topic">
+<a name="70k9rlrdt7ji3a873sk7a4s99m">&nbsp;重要窗口风格</a>
+</h3>
+<h3 class="topic">
+<a name="5g7hslk6t18i11l3ojj9nqfj33">&nbsp;&nbsp;重叠窗口：WS_OVERLAPPEDWINDOW</a>
+</h3>
+<h3 class="topic">
+<a name="3t40dkujl9hokp354pk8kfmh0m">&nbsp;&nbsp;弹出窗口：WS_POPUPWINDOW</a>
+</h3>
+<h3 class="topic">
+<a name="4ihi54fm7gis01jqrd3sqskd6j">&nbsp;&nbsp;子窗口：WS_CHILDWINDOW</a>
+</h3>
+<h3 class="topic">
+<a name="54tnaponste26ks140ba1u9ph1">&nbsp;资源</a>
+</h3>
+<h3 class="topic">
+<a name="3osc78m070i9n1jd2stc9doec8">&nbsp;&nbsp;图标</a>
+</h3>
+<h3 class="topic">
+<a name="6somr1ba1ninu4rkivek0bt0bv">&nbsp;&nbsp;光标</a>
+</h3>
+<h3 class="topic">
+<a name="2680tq9av4bq1i89vthb216dap">&nbsp;&nbsp;对话框</a>
+</h3>
+<h3 class="topic">
+<a name="7vo7jf9rp52ehij9bbi4lv748f">&nbsp;&nbsp;菜单</a>
+</h3>
+<h3 class="topic">
+<a name="3fqnjr4n9ds1235bjjvep7hieb">&nbsp;&nbsp;位图</a>
+</h3>
+<h3 class="topic">
+<a name="1quko7pa8ic7sd9p716hs8qjlc">&nbsp;&nbsp;对话框</a>
+</h3>
+<h3 class="topic">
+<a name="326bn392fuego0gqcbbf9h5hdt">&nbsp;&nbsp;&nbsp;种类</a>
+</h3>
+<h3 class="topic">
+<a name="09u14mv254jtqv8dr96q7tmnpp">&nbsp;&nbsp;&nbsp;&nbsp;模态对话框</a>
+</h3>
+<h3 class="topic">
+<a name="6ad9fl2iifq098k67ke60fm2in">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;创建使用Dialogbox())</a>
+</h3>
+<h3 class="topic">
+<a name="7huco4o3temti3t990q7afqjpf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;退出时使用EndDialog()</a>
+</h3>
+<h3 class="topic">
+<a name="75d31f5vgblo7kpdci85gmadit">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;自带消息循环</a>
+</h3>
+<h3 class="topic">
+<a name="7is0uuur9q6f7upb0i4sqji15n">&nbsp;&nbsp;&nbsp;&nbsp;非模态对话框</a>
+</h3>
+<h3 class="topic">
+<a name="2adp2ont27kblccn2klu9jk9r2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;创建使用CreateDialog()</a>
+</h3>
+<h3 class="topic">
+<a name="1m6cecs06b2lhhjc8j8bm0iel9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;退出时使用PostQuitMessage()</a>
+</h3>
+<h3 class="topic">
+<a name="7ett8khnpqoif884be4qi2o00d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;需要手动编辑消息循环</a>
+</h3>
+<h3 class="topic">
+<a name="6hddjac2odvtcvvsa4qs9m6v79">&nbsp;&nbsp;资源使用方式大多基本一致LoadXXX</a>
+</h3>
+<h3 class="topic">
+<a name="14matnnj9jrbsr4ds0luudr2mi">&nbsp;&nbsp;&nbsp;注意光标、图标均是在设计窗口的时候使用loadXXX函数加载资源，菜单在设计窗口时仅仅指定类的名称</a>
+</h3>
+<h3 class="topic">
+<a name="2lds874vnbgbm5g13a8c16f1rv">&nbsp;&nbsp;&nbsp;在创建窗口的时候，才使用LoadMenu加载菜单资源</a>
+</h3>
+<h3 class="topic">
+<a name="3vk55qena36pi7p4nduck3h8ic">&nbsp;&nbsp;控件的使用</a>
+</h3>
+<h3 class="topic">
+<a name="52d0bgcmdl0i6dopq7fuo0c3k0">&nbsp;&nbsp;&nbsp;通过CreateWindow()创建</a>
+</h3>
+<h3 class="topic">
+<a name="2iiu7vqr6q50fl7mnuasudori9">&nbsp;&nbsp;&nbsp;通过加载对话框资源，在其中使用图形化编程产生控件</a>
+</h3>
+<h3 class="topic">
+<a name="7l4ihsm220r0gccu5hjr7hi06c">&nbsp;控件(目前控件的使用常通过添加对话框资源进行可视化编程)</a>
+</h3>
+<h3 class="topic">
+<a name="2houe8v0bp36gp9eic174du7rc">&nbsp;&nbsp;button（按钮）</a>
+</h3>
+<h3 class="topic">
+<a name="2hvlp8tm65lv76f3l4dgbrlh3d">&nbsp;&nbsp;&nbsp;普通按钮</a>
+</h3>
+<h3 class="topic">
+<a name="3ojad4di1v7lbo8gq831f89unc">&nbsp;&nbsp;&nbsp;单选框</a>
+</h3>
+<h3 class="topic">
+<a name="2qdboj4buk48p07d0t86983vjt">&nbsp;&nbsp;&nbsp;复选框</a>
+</h3>
+<h3 class="topic">
+<a name="3b7auf31iu34tt1srs9vaprjsc">&nbsp;&nbsp;static（静态控件）</a>
+</h3>
+<h3 class="topic">
+<a name="4kdcbd5cke2i5qbij7pa30s35g">&nbsp;&nbsp;&nbsp;静态文本</a>
+</h3>
+<h3 class="topic">
+<a name="0pd74rfhafrvdiqaqmebnf19hk">&nbsp;&nbsp;&nbsp;&nbsp;单纯用来显示文本</a>
+</h3>
+<h3 class="topic">
+<a name="54jpj8iaa3o3vjtougnl1psgv3">&nbsp;&nbsp;&nbsp;图片(图片的控件类型为static)（存在问题）</a>
+</h3>
+<h3 class="topic">
+<a name="4rd6g72bmjeui02qp4ekfqpq7j">&nbsp;&nbsp;&nbsp;&nbsp;添加的图片必须是bmp格式，添加的图片在bitmap资源中显示</a>
+</h3>
+<h3 class="topic">
+<a name="3evhd6o5ihuanl45h1aejde14c">&nbsp;&nbsp;&nbsp;&nbsp;需要在属性图片类型中改成bitmap</a>
+</h3>
+<h3 class="topic">
+<a name="58c74bao2bspb411vc99mu0r45">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class32day0313_files/57gcfns35rrbtpnn3bm2s6ulr8.png"></p>
+<h3 class="topic">
+<a name="20dalo5c2lanimca6ub59s1ft6">&nbsp;&nbsp;&nbsp;&nbsp;图片的id与静态文本的默认id一样，所以使用的时候需要手动修改图片id</a>
+</h3>
+<h3 class="topic">
+<a name="02r6trvtnqcpgt8p5t805ksjr7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class32day0313_files/0qfae0m2bldbqiua48angj94i1.png"></p>
+<h3 class="topic">
+<a name="1a9ocmmleua0g4ds98ainr59em">&nbsp;&nbsp;&nbsp;&nbsp;代码（通过触发按键切换位图图片）</a>
+</h3>
+<h3 class="topic">
+<a name="5cs1qisu8cgc55q264ahmtd75s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;case IDC_BUTTON1:&#13;
+  {&#13;
+    //1.通过控件di即（IDC_PIC）获取图片控件句柄&#13;
+    HWND hpic = GetDlgItem(hwnd, IDC_PIC);&#13;
+    //设置静态变量，根据按点击次数切换图片&#13;
+    static int n = 0;&#13;
+    //定义位图句柄&#13;
+    HBITMAP hbitmap;&#13;
+    if (n % 2 == 0)&#13;
+    {&#13;
+        //将位图1载入当前窗口&#13;
+        hbitmap = LoadBitmap(g_hInstanc, MAKEINTRESOURCE(IDB_BITMAP1));&#13;
+    }&#13;
+    else &#13;
+    {	//将位图2载入当前窗口&#13;
+        hbitmap = LoadBitmap(g_hInstanc, MAKEINTRESOURCE(IDB_BITMAP2));&#13;
+    }&#13;
+    n++;&#13;
+    //2.根据载入的图片句柄设置位图控件句柄，故点击该按钮可以达到切换图片的目的&#13;
+    //通过SendMessage函数以及特定消息将位图句柄对应的图片进行设置&#13;
+    SendMessage(hpic, STM_SETIMAGE, IMAGE_BITMAP, (LPARAM)hbitmap);&#13;
+}&#13;
+break;</a>
+</h3>
+<h3 class="topic">
+<a name="3gtcshncqrhrs871j50ql625ui">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这里存在问题为什么一个句柄是HBITMAP  一个句柄是hwnd？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？</a>
+</h3>
+<h3 class="topic">
+<a name="3opeh24jctggj1q1po5ffrkhj3">&nbsp;&nbsp;combobox（复合框）</a>
+</h3>
+<h3 class="topic">
+<a name="7vou4lh2v3penor3oe1ji22fht">&nbsp;&nbsp;&nbsp;在对话框初始化时定义</a>
+</h3>
+<h3 class="topic">
+<a name="7tjtervlon08ji49aiv8jeh0ck">&nbsp;&nbsp;&nbsp;&nbsp;WM_INITDIALOG</a>
+</h3>
+<h3 class="topic">
+<a name="6o0e3spl18r4b0ork53grjfdqf">&nbsp;&nbsp;&nbsp;使用的时候需要加头文件 windowsx.h</a>
+</h3>
+<h3 class="topic">
+<a name="3ocmb33iuip0cn9aal7ks4etpt">&nbsp;&nbsp;&nbsp;&nbsp;进行了一些函数封装</a>
+</h3>
+<h3 class="topic">
+<a name="25jialpgi3h0i0c5epi46e5bpr">&nbsp;&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="0v50dhs3na6s41qbgkf54oa8fk">&nbsp;&nbsp;&nbsp;&nbsp;//获取组合框控件句柄&#13;
+HWND hcombo = GetDlgItem(hwnd, IDC_COMBO1);&#13;
+//往组合框中添加字符串，该函数是对sendmassage的封装&#13;
+ComboBox_AddString(hcombo, L"上海");&#13;
+ComboBox_AddString(hcombo, L"深圳");&#13;
+ComboBox_AddString(hcombo, L"广东");&#13;
+ComboBox_AddString(hcombo, L"天津");&#13;
+//将深圳设置为组合框中第一个&#13;
+ComboBox_SelectString(hcombo, 0, L"深圳");&#13;
+//获取当前组合框中的字符串&#13;
+int x= ComboBox_GetCurSel(hcombo);</a>
+</h3>
+<h3 class="topic">
+<a name="5vug5ok479mh68i9i7deulc4e5">&nbsp;&nbsp;进度条process control（通用控件）</a>
+</h3>
+<h3 class="topic">
+<a name="5b16pufm7fkcbs86df0umqun6b">&nbsp;&nbsp;&nbsp;通用控件的使用需要包含头文件  #include&lt;CommCtrl.h&gt;</a>
+</h3>
+<h3 class="topic">
+<a name="7s9smu3vbqa8t4nimstm69f8nb">&nbsp;&nbsp;&nbsp;获取进度条句柄 HWND hProgres=GetDlgItem(hwnd,控件id)；</a>
+</h3>
+<h3 class="topic">
+<a name="1a6pbcjcr3v6fpoj9cs8d4j80h">&nbsp;&nbsp;&nbsp;int pos=SendMessage(hProgres,PBM_GETPOS,0,0);</a>
+</h3>
+<h3 class="topic">
+<a name="1ke5gq8lbdcdk0dgdsoleihsgo">&nbsp;&nbsp;&nbsp;&nbsp;获取进度条位置</a>
+</h3>
+<h3 class="topic">
+<a name="1vtpu8abumtsue0a8m2mvdfroj">&nbsp;&nbsp;&nbsp;SendMessage(hProgres,PBM_SETPOS,pos+10,0);</a>
+</h3>
+<h3 class="topic">
+<a name="5j8m2t9bnuvb9lph807fps9nak">&nbsp;&nbsp;&nbsp;&nbsp;设置进度条位置</a>
+</h3>
+<h3 class="topic">
+<a name="1ecdct9ch1v1stn8psitp1ag04">&nbsp;&nbsp;&nbsp;有横向或横向的进度条，可以设置属性进行设置</a>
+</h3>
+<h3 class="topic">
+<a name="5j3k8ompr95pj7apiiced16rn6">&nbsp;&nbsp;scrollbar（滑块）</a>
+</h3>
+<h3 class="topic">
+<a name="6op7aef7s6fl3t8b48rv0bn23m">&nbsp;&nbsp;&nbsp;有横向或纵向滑块，设置方向属性即可</a>
+</h3>
+<h3 class="topic">
+<a name="71avi2m8oigvgtihr5a0om6r62">&nbsp;&nbsp;&nbsp;响应两个特殊消息</a>
+</h3>
+<h3 class="topic">
+<a name="03m23ivmr2pl66s83chst3g2pi">&nbsp;&nbsp;&nbsp;&nbsp;WM_VSCROLL</a>
+</h3>
+<h3 class="topic">
+<a name="689h4v4qof7p8e86p0dbmdot37">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;垂直滑动消息</a>
+</h3>
+<h3 class="topic">
+<a name="3ect6gspnod7d6p5iac5tqgrm2">&nbsp;&nbsp;&nbsp;&nbsp;WM_HSCROLL</a>
+</h3>
+<h3 class="topic">
+<a name="4g6j777fu39nmqeie9prk8j15o">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;横向滑动消息</a>
+</h3>
+<h3 class="topic">
+<a name="7530tv942jgb6oaims39nrdp7l">&nbsp;&nbsp;&nbsp;使用滑块控制进度条</a>
+</h3>
+<h3 class="topic">
+<a name="3npifh0bu4nbv3845cvsabt9h8">&nbsp;&nbsp;&nbsp;&nbsp;//获取进度条空间句柄&#13;
+HWND hprogress = GetDlgItem(hwnd, IDC_PROGRESS1);&#13;
+//获取滑块控件句柄&#13;
+HWND hSlider = GetDlgItem(hwnd, IDC_SLIDER1);&#13;
+//获取滑块位置&#13;
+int pos = SendMessage(hSlider, TBM_GETPOS, 0, 0);&#13;
+//根据滑块位置设置进度条中的进度&#13;
+SendMessage(hprogress, PBM_SETPOS, pos, 0);&#13;
+//从这里可以看出同一个窗口控件之间的交互可以使用SendMessage函数，通过发送特定消息完成</a>
+</h3>
+<h3 class="topic">
+<a name="3l7bqqo2hesaur4d6fmqo4liko">&nbsp;&nbsp;list control（通用控件）</a>
+</h3>
+<h3 class="topic">
+<a name="472euv32m2onsca09csktsp10g">&nbsp;&nbsp;&nbsp;在对话框初始化时定义</a>
+</h3>
+<h3 class="topic">
+<a name="372407dt5hout6ec95kqb6vlko">&nbsp;&nbsp;&nbsp;&nbsp;WM_INITDIALOG</a>
+</h3>
+<h3 class="topic">
+<a name="6fma63qrdodrl53saesdmkvu4c">&nbsp;&nbsp;&nbsp;通用控件的使用需要包含头文件  #include&lt;CommCtrl.h&gt;</a>
+</h3>
+<h3 class="topic">
+<a name="4noh0tfsbbkl6p520t97gijcse">&nbsp;&nbsp;&nbsp;获取句柄</a>
+</h3>
+<h3 class="topic">
+<a name="08pqs92a9k1ib6c89j5299rdmk">&nbsp;&nbsp;&nbsp;&nbsp;HWND hList = GetDlgItem(hwnd, IDC_LIST1);</a>
+</h3>
+<h3 class="topic">
+<a name="153mj1kqed9f6lprmce8jeh6a9">&nbsp;&nbsp;&nbsp;设置风格</a>
+</h3>
+<h3 class="topic">
+<a name="3qjfpqidfb0q9fenlr823vdgnr">&nbsp;&nbsp;&nbsp;&nbsp;//设置list控件的扩展风格 一次选中一行+网格  </a>
+</h3>
+<h3 class="topic">
+<a name="6dm33mbtas39podh29u40ctf0a">&nbsp;&nbsp;&nbsp;&nbsp;ListView_SetExtendedListViewStyle(hList, LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES);</a>
+</h3>
+<h3 class="topic">
+<a name="3goin551a6vql94c4ucu6lkr2u">&nbsp;&nbsp;&nbsp;创建列相关的结构体</a>
+</h3>
+<h3 class="topic">
+<a name="5122cp2cf3kcadpkkp5kcjjk13">&nbsp;&nbsp;&nbsp;&nbsp;//定义结构体，用来设置在list中的列名&#13;
+LVCOLUMN lc = {0};&#13;
+//设置掩码，用于标识结构体中哪些字段有效，宽度，文本&#13;
+lc.mask = LVCF_TEXT | LVCF_WIDTH; &#13;
+lc.cx = 100;			 //宽度100&#13;
+lc.pszText = L"姓名";	//显示文本&#13;
+lc.cchTextMax = 2;		//文本长度</a>
+</h3>
+<h3 class="topic">
+<a name="3t2hol5un01cpdt764rha3ehsq">&nbsp;&nbsp;&nbsp;插入该列</a>
+</h3>
+<h3 class="topic">
+<a name="6jqopprdrthc15l5l131jl8489">&nbsp;&nbsp;&nbsp;&nbsp;ListView_InsertColumn(hList, 0, &amp;lc);</a>
+</h3>
+<h3 class="topic">
+<a name="0h54f5madfq1meao8s73el9851">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;插入第0列</a>
+</h3>
+<h3 class="topic">
+<a name="4cs7bc83dodvut4nl4trni69uh">&nbsp;&nbsp;&nbsp;设置行相关的结构体</a>
+</h3>
+<h3 class="topic">
+<a name="13jajvnqg0rb276a7pugorr7p7">&nbsp;&nbsp;&nbsp;&nbsp;LVITEM lv = { 0 };&#13;
+lv.mask = LVIF_TEXT;//该行中可以使用的字段为text&#13;
+lv.pszText = L"小明";//显示文本&#13;
+lv.cchTextMax = 2;//文本长度&#13;
+lv.iItem = 0;//第0行</a>
+</h3>
+<h3 class="topic">
+<a name="3jn6tcqi65j307ghkr652ieuv1">&nbsp;&nbsp;&nbsp;插入该行</a>
+</h3>
+<h3 class="topic">
+<a name="0p4tjkssovokc0i1oohsao1r5q">&nbsp;&nbsp;&nbsp;&nbsp;ListView_InsertItem(hList, &amp;lv);</a>
+</h3>
+<h3 class="topic">
+<a name="43m338ftv3j5ot7mujt1751gu1">&nbsp;&nbsp;&nbsp;设置该行</a>
+</h3>
+<h3 class="topic">
+<a name="5s9n1ndt9qcatprsphdbhbolk8">&nbsp;&nbsp;&nbsp;&nbsp;//在0行1列设置18 在0行2列设置北京&#13;
+ListView_SetItemText(hList, 0, 1, L"18");&#13;
+ListView_SetItemText(hList, 0, 2, L"北京");</a>
+</h3>
+<h3 class="topic">
+<a name="0ega13g2lkk4hls3an2dl1k1it">&nbsp;&nbsp;弹出菜单步骤</a>
+</h3>
+<h3 class="topic">
+<a name="2iojd4ptln1u4pqj1cs7gcdvhr">&nbsp;&nbsp;&nbsp;case WM_RBUTTONDOWN:&#13;
+{&#13;
+//获取鼠标点击位置&#13;
+int x = LOWORD(lparam);&#13;
+int y = HIWORD(lparam);&#13;
+POINT pt={x,y};&#13;
+&#13;
+//将当前鼠标坐标转换屏幕坐标&#13;
+ClientToScreen(hwnd,&amp;pt);&#13;
+&#13;
+//获取顶级菜单句柄&#13;
+HMENU hmenu=LoadMenu(g_hInstance,MAKEINTRESOURCE(IDR_MENU1));&#13;
+//获取下拉菜单句柄  （因为顶级菜单不能弹出）&#13;
+HMENU hSubMenu=GetSubMenu(hmenu,0);&#13;
+&#13;
+//弹出菜单&#13;
+TrackPopupMenu(hSubMenu,TPM_LEFTALIGN,pt.x,pt.y,0,hwnd,0);&#13;
+&#13;
+break;&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="2jdav5uk2k278kfivb9jtaj6e1">&nbsp;&nbsp;&nbsp;SetMenu()</a>
+</h3>
+<h3 class="topic">
+<a name="3ram9d3m9rmajh9o899ta6tat6">&nbsp;&nbsp;&nbsp;&nbsp;用来在函数中动态加载菜单</a>
+</h3>
+<h3 class="topic">
+<a name="7l4lpr8i3umvno8hbdt69iut8t">&nbsp;&nbsp;公共控件被触发时，向主窗口传递WM_NOTIFY消息</a>
+</h3>
+<h3 class="topic">
+<a name="5el0f1qeabeu4vs25t6jrf631j">&nbsp;&nbsp;&nbsp;其wparam</a>
+</h3>
+<h3 class="topic">
+<a name="6nq3sq4j337asc2kifd4ib6tkp">&nbsp;&nbsp;&nbsp;&nbsp;控件的id</a>
+</h3>
+<h3 class="topic">
+<a name="4p94cjmohrdft8g2drqqa4dlne">&nbsp;&nbsp;&nbsp;其lparam</a>
+</h3>
+<h3 class="topic">
+<a name="5ab93c0j9434ro77tnqlpgsupp">&nbsp;&nbsp;&nbsp;&nbsp;一个结构体指针</a>
+</h3>
+<h3 class="topic">
+<a name="7rd5ccajmt4jhg6uj9v9tn3k4n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;结构体中包括控件id以及信息类型（CODE）</a>
+</h3>
+<h3 class="topic">
+<a name="4cgldeava1paf9a73ij8vrqnpb">&nbsp;&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="1bv75lsp7kd56l1s9u3o5jkao9">&nbsp;&nbsp;&nbsp;&nbsp;//通用控件（即公共控件）被触发时，向父窗口发送的是WM_NOTIFY消息&#13;
+//NOTIFY消息的wparam附加消息存储发生该消息的控件的id  lparam存储一个NMHDR结构体指针&#13;
+//该结构体中包括 控件句柄(hwndFrom) 控件id(idFrom)  操作码(code)&#13;
+&#13;
+case WM_NOTIFY: &#13;
+{&#13;
+	//获取这个lparam消息的结构体&#13;
+	NMHDR* pNmhdr = (NMHDR*)lparam;&#13;
+	//如果产生该消息的控件的id为IDC_LIST1&#13;
+	if (pNmhdr-&gt;idFrom == IDC_LIST1)&#13;
+	{&#13;
+		//针对list控件可能的操作码进行区分处理&#13;
+		switch (pNmhdr-&gt;code)&#13;
+		{&#13;
+			case NM_RCLICK://鼠标在控件中右击&#13;
+			{&#13;
+				//加载顶级菜单并且获得菜单句柄&#13;
+				HMENU hMenul = LoadMenu(g_hInstanc, MAKEINTRESOURCE(IDR_MENU1));&#13;
+				//获取下拉菜单句柄&#13;
+  				HMENU hSubMenu = GetSubMenu(hMenul, 0);&#13;
+				//在屏幕位置弹出菜单&#13;
+				TrackPopupMenu(hSubMenu,TPM_LEFTALIGN, 300, 200, 0, hwnd, 0);&#13;
+				break;&#13;
+			}&#13;
+		}&#13;
+	}&#13;
+}&#13;
+break;</a>
+</h3>
+<h3 class="topic">
+<a name="5e2lvk90q507jdg4i19b04a60k">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class32day0313_files/0dpu2ebb383q52nkq3m88hcgd8.png"></p>
+<h3 class="topic">
+<a name="1h1saqfcrf4tic2erndl81abl0">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class32day0313_files/6q8h5l1rohoo3hmc221gicpbml.png"></p>
+<h3 class="topic">
+<a name="00giir572c6ogau6o2qnknk7oc">&nbsp;&nbsp;控件消息的截获（HOOK）</a>
+</h3>
+<h3 class="topic">
+<a name="6c759bi19nrehhc92fpfht79oj">&nbsp;&nbsp;&nbsp;使用SetWindowLong替换控件的窗口回调函数</a>
+</h3>
+<h3 class="topic">
+<a name="1ibhgpjp5bakd03gef025ms1jp">&nbsp;&nbsp;&nbsp;&nbsp;case IDC_BUTTON3: //hook&#13;
+{&#13;
+   //获取控件的句柄&#13;
+   HWND hbuton4 = GetDlgItem(hwnd, IDC_BUTTON4);&#13;
+   //修改按钮的回调 GWL_WNDPROC,&#13;
+   //返回原来的回调函数地址，这里返回的实际上是系统提供给控件的消息回调函数地址&#13;
+   //SetWindowLong可以用于更改指定窗口的属性，&#13;
+   //第一个参数为被改变属性的窗口的句柄，这里要改变按键4窗口&#13;
+   //第二个参数为要改变的属性类型，这里要改变按键四窗口的消息回调函数&#13;
+   //第三个参数为新消息回调函数的地址&#13;
+   //最终的结果是将控件hbuton4的消息回调函数改变了，产生类似于hook消息劫持的效果&#13;
+   g_Proc = SetWindowLong(hbuton4, GWL_WNDPROC, (LONG)ButtonProc);&#13;
+}&#13;
+   break;</a>
+</h3>
+<h3 class="topic">
+<a name="4q160vj83uggje33edp54nafru">&nbsp;&nbsp;&nbsp;使用GetWindowLong()可以获取大多数窗口的信息</a>
+</h3>
+<h3 class="topic">
+<a name="2h0s1v6tn51jjbj41ve4i9d36s">&nbsp;&nbsp;控件（包括标准控件、公共控件）创建方法</a>
+</h3>
+<h3 class="topic">
+<a name="34pfao159vi98srh4drk4se1vv">&nbsp;&nbsp;&nbsp;1、在对话框中拖拽</a>
+</h3>
+<h3 class="topic">
+<a name="3vq0vqndvjbnil01p7qagkcpqk">&nbsp;&nbsp;&nbsp;2、使用createwindow创建，需要添加一些头文件等比较复杂</a>
+</h3>
+<h3 class="topic">
+<a name="68q149li49lovnmcnh0gup3s2s">&nbsp;&nbsp;添加资源-&gt;DialogBox()添加模态对话框-&gt;设置模态对话框的回调函数（如果什么多不做就返回false，否则会循环读取所有消息）</a>
+</h3>
+<h3 class="topic">
+<a name="2sbcbe2rbclu6m7fmoqsib42lq">&nbsp;&nbsp;&nbsp;模态对话框回调函数中使用WM_CLOSE+EndDialog()退出窗口</a>
+</h3>
+<h3 class="topic">
+<a name="3hg6sac6nr62fnv2he895rsgb8">&nbsp;&nbsp;代码可参见老师代码 windows代码第三天</a>
+</h3>
+<h3 class="topic">
+<a name="3dotrnmnb6hh6bb93kaa1plb04">&nbsp;磁盘操作（可以直接用在控制台程序中）</a>
+</h3>
+<h3 class="topic">
+<a name="0lv12m8i22bcvc5klm7klfb0fs">&nbsp;&nbsp;api</a>
+</h3>
+<h3 class="topic">
+<a name="3av8otp6lu7nd4b175i6hh7ejt">&nbsp;&nbsp;&nbsp;分类</a>
+</h3>
+<h3 class="topic">
+<a name="1v5vm9gecgqmpu5ubc62c692j5">&nbsp;&nbsp;&nbsp;&nbsp;系统基础服务</a>
+</h3>
+<h3 class="topic">
+<a name="4plb3dr2v86gt70e3pcebqmkg8">&nbsp;&nbsp;&nbsp;&nbsp;图形化用户界面</a>
+</h3>
+<h3 class="topic">
+<a name="5ra8ap4q84dojlhc235rpts8ei">&nbsp;&nbsp;&nbsp;&nbsp;shell特性</a>
+</h3>
+<h3 class="topic">
+<a name="30ses3a5d8c9vnmf5o27boc9vg">&nbsp;&nbsp;&nbsp;&nbsp;图形设备接口</a>
+</h3>
+<h3 class="topic">
+<a name="24c50e0r76f8q57apg46enjsq6">&nbsp;&nbsp;&nbsp;&nbsp;国际特性</a>
+</h3>
+<h3 class="topic">
+<a name="79o6nt4lt7kha5gdnt91g8i16u">&nbsp;&nbsp;&nbsp;&nbsp;网络服务</a>
+</h3>
+<h3 class="topic">
+<a name="1ra97lvjithhrcpuplmck4a9dk">&nbsp;&nbsp;文件系统基本概念</a>
+</h3>
+<h3 class="topic">
+<a name="392jam24a67u7h6pml06f67q3b">&nbsp;&nbsp;&nbsp;磁盘分区</a>
+</h3>
+<h3 class="topic">
+<a name="6l8vpuhjo8jgs7pjodouc9n6l6">&nbsp;&nbsp;&nbsp;&nbsp;即计算机上的cdef盘</a>
+</h3>
+<h3 class="topic">
+<a name="1hor52c3m2ien73n32akpreqfk">&nbsp;&nbsp;&nbsp;卷</a>
+</h3>
+<h3 class="topic">
+<a name="0em8ma3pgtsb7bpuompqkjh9g0">&nbsp;&nbsp;&nbsp;&nbsp;是逻辑驱动器</a>
+</h3>
+<h3 class="topic">
+<a name="47r0nkvit13vl7rli0pj36178l">&nbsp;&nbsp;&nbsp;&nbsp;一个磁盘分区至少含有一个卷，也可以多个分区共用一个卷</a>
+</h3>
+<h3 class="topic">
+<a name="019l2bqompk8un9onbhmnn90ra">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;简单卷</a>
+</h3>
+<h3 class="topic">
+<a name="7sqju76o2bcrkfajaqujelo5km">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;一个磁盘分区只有一个卷</a>
+</h3>
+<h3 class="topic">
+<a name="48pk0vujdrek0v1urhh5v93dvg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;跨区卷</a>
+</h3>
+<h3 class="topic">
+<a name="66j1vvp1qf8mb7ofnd1hpvkper">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;多个磁盘分区共用一个卷</a>
+</h3>
+<h3 class="topic">
+<a name="6ipsbqslbq9dq079c84f5ecad2">&nbsp;&nbsp;&nbsp;&nbsp;卷有一个卷标，程序可以通过卷标访问卷（c d e盘）</a>
+</h3>
+<h3 class="topic">
+<a name="0toe2cn1krqni08532grmuuthm">&nbsp;&nbsp;&nbsp;驱动器挂载点</a>
+</h3>
+<h3 class="topic">
+<a name="0mgobgkhd36tmo8bk77p97e808">&nbsp;&nbsp;&nbsp;&nbsp;是用来进入卷的入口，用户程序可以通过挂载点进入卷，而不仅仅是通过卷标</a>
+</h3>
+<h3 class="topic">
+<a name="5vultajavh6lsvcjba23giu2d0">&nbsp;&nbsp;磁盘操作代码</a>
+</h3>
+<h3 class="topic">
+<a name="52la10a48gs8dju0ru3akj688q">&nbsp;&nbsp;&nbsp;获取当前有哪些磁盘，并获取磁盘名</a>
+</h3>
+<h3 class="topic">
+<a name="2o97jehvofm9f3hok2dgj68b3r">&nbsp;&nbsp;&nbsp;&nbsp;//获取所有磁盘名 保存在buff缓冲区中</a>
+</h3>
+<h3 class="topic">
+<a name="5o1ri7re6l0khi97avl4t2apfc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;参数分别为缓冲区大小，缓冲区指针</a>
+</h3>
+<h3 class="topic">
+<a name="2b9vsrmf70am6q2q5lf9ioe7jf">&nbsp;&nbsp;&nbsp;&nbsp;GetLogicalDriveStrings(MAX_PATH, buff);</a>
+</h3>
+<h3 class="topic">
+<a name="58aebcjqf0ssvdvht2j98qu7oa">&nbsp;&nbsp;&nbsp;获取磁盘名对应的磁盘的类型</a>
+</h3>
+<h3 class="topic">
+<a name="49cek1cm6f3rq0m8hlcc4u5col">&nbsp;&nbsp;&nbsp;&nbsp;DWORD type =GetDriveType(pPath);</a>
+</h3>
+<h3 class="topic">
+<a name="2lee0ov8kg81lm0g24l9a7k4k7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;返回相应的宏，对应不同的磁盘类型</a>
+</h3>
+<h3 class="topic">
+<a name="241sstvc1ssi4f2emt7k973bhe">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;参数为磁盘名（即字符串）</a>
+</h3>
+<h3 class="topic">
+<a name="0n4nu3k61uannib8bmir8kvgtr">&nbsp;&nbsp;&nbsp;获取磁盘的空间信息</a>
+</h3>
+<h3 class="topic">
+<a name="1b853upj3s02s6u2uid11upigb">&nbsp;&nbsp;&nbsp;&nbsp;DWORD 每簇扇区容量;&#13;
+DWORD 每扇区容量;&#13;
+DWORD 所有簇容量;&#13;
+DWORD 空闲簇容量;&#13;
+&#13;
+GetDiskFreeSpace(&#13;
+	pPath,&#13;
+	&amp;每簇扇区容量,&#13;
+	&amp;每扇区容量,&#13;
+	&amp;空闲簇容量,&#13;
+	&amp;所有簇容量&#13;
+);&#13;
+//                             簇的数量*每簇的扇区个数*每个扇区的个数             &#13;
+wprintf(L"%lfGB ", (所有簇容量 / 1024.0)*每簇扇区容量*每扇区容量 / 1024 / 1024);&#13;
+wprintf(L"%lfGB ", (空闲簇容量 / 1024.0)*每簇扇区容量*每扇区容量 / 1024 / 1024);</a>
+</h3>
+<h3 class="topic">
+<a name="0f6a5b3oh0r3pc9t6rp1n2fs6l">&nbsp;&nbsp;扇区：磁盘中操作的基本单位，一般一个扇区512个字节</a>
+</h3>
+<h3 class="topic">
+<a name="2rujl9750j5fvd3ege12cj1hu4">&nbsp;&nbsp;簇：文件占有的单位，一个簇包含多个扇区</a>
+</h3>
+<h3 class="topic">
+<a name="0cpd21blss3kg1qmq1j2akp84a">&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="4rj8jo7747uvdrgjdnkn9rqh9o">&nbsp;&nbsp;&nbsp;#include "pch.h"&#13;
+#include&lt;Windows.h&gt;&#13;
+#include&lt;stdio.h&gt;&#13;
+&#13;
+int main()&#13;
+{&#13;
+   //接收当前哪些磁盘名&#13;
+	TCHAR buff[MAX_PATH] = {};&#13;
+	//获取所有磁盘名 将获取到的路径保存在buff缓冲区中&#13;
+	GetLogicalDriveStrings(MAX_PATH, buff);&#13;
+	&#13;
+	//设置指向缓冲区的指针&#13;
+	TCHAR *pPath = buff;&#13;
+	while (*pPath != 0)&#13;
+	{&#13;
+		wprintf(L"%s  ", pPath);&#13;
+		//获取磁盘名对应的磁盘类型，使用type接收&#13;
+		DWORD type =GetDriveType(pPath);&#13;
+		switch (type)&#13;
+		{&#13;
+		case DRIVE_CDROM: //光驱&#13;
+			printf("光驱 "); break;&#13;
+		case DRIVE_FIXED: //硬盘&#13;
+			printf("硬盘 "); break;&#13;
+		case DRIVE_REMOVABLE: //移动硬盘&#13;
+			printf("移动硬盘 "); break;&#13;
+		}&#13;
+&#13;
+		// 扇区： 磁盘中操作的基本单位，一般一个扇区512字节&#13;
+		// 簇：   文件占有单位，一个簇包含多个扇区&#13;
+		//获取文件容量&#13;
+		DWORD 每簇扇区容量;&#13;
+		DWORD 每扇区容量;&#13;
+		DWORD 所有簇容量;&#13;
+		DWORD 空闲簇容量;&#13;
+&#13;
+		GetDiskFreeSpace(&#13;
+			pPath,&#13;
+			&amp;每簇扇区容量,&#13;
+			&amp;每扇区容量,&#13;
+			&amp;空闲簇容量,&#13;
+			&amp;所有簇容量&#13;
+		);&#13;
+		//                             簇的数量*每簇的扇区个数*每个扇区的个数             &#13;
+		wprintf(L"%lfGB ", (所有簇容量 / 1024.0)*每簇扇区容量*每扇区容量 / 1024 / 1024);&#13;
+		wprintf(L"%lfGB ", (空闲簇容量 / 1024.0)*每簇扇区容量*每扇区容量 / 1024 / 1024);&#13;
+&#13;
+		//len等于缓冲区中长度+1&#13;
+		int len = wcslen(pPath) + 1;&#13;
+		//指针进行算术运算，指向下一个盘符名所在的内存空间&#13;
+		//说明在盘符名的缓冲区中每个盘符名之间间隔一个int类型的空间&#13;
+		pPath = pPath + len;&#13;
+		wprintf(L"\n");&#13;
+	}	&#13;
+	getchar();&#13;
+	return 0;&#13;
+}&#13;
+</a>
+</h3>
+<h3 class="topic">
+<a name="4ccbuu7t68fon0rmlapvngtkjb">&nbsp;关于dll的动态链接库</a>
+</h3>
+<h3 class="topic">
+<a name="4npehcv1t143gq92vikb7vc6so">&nbsp;&nbsp;动态链接库（操作系统核心，是大量api的封装结果）</a>
+</h3>
+<h3 class="topic">
+<a name="53e5nk6o5rn35dijcsll2brl5g">&nbsp;&nbsp;&nbsp;重要的</a>
+</h3>
+<h3 class="topic">
+<a name="7k61dicd878vqk4bhtlca0omso">&nbsp;&nbsp;&nbsp;&nbsp;kernel32</a>
+</h3>
+<h3 class="topic">
+<a name="515e7ul9j10igsd37flf6fhdjp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;系统基础服务相关</a>
+</h3>
+<h3 class="topic">
+<a name="6260lh5dme6c83g1dk6gk824c7">&nbsp;&nbsp;&nbsp;&nbsp;user32</a>
+</h3>
+<h3 class="topic">
+<a name="6gnr0gj71n9m8m28v43pm239lv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;图形界面相关</a>
+</h3>
+<h3 class="topic">
+<a name="0jdg9sm2soq2ii09ll9crrsh0n">&nbsp;&nbsp;&nbsp;&nbsp;gdi32</a>
+</h3>
+<h3 class="topic">
+<a name="3oe2ij9ujbj9mh1jqkldu68ots">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;绘图相关</a>
+</h3>
+<h3 class="topic">
+<a name="405sc03clst44ltkoopufvbj8r">&nbsp;&nbsp;dll中包含公有的代码和数据，可以供其他模块（dll或exe使用）是将应用程序模块化的重要方法</a>
+</h3>
+<h3 class="topic">
+<a name="3sicgmfgsuirga1dd62050kjkb">&nbsp;&nbsp;dll的由来</a>
+</h3>
+<h3 class="topic">
+<a name="6afkme9cs6ueejd1d0eabbf0dm">&nbsp;&nbsp;&nbsp;最初为了节约磁盘和内存空间，两个程序同时调用一个子程序，就会出现两份代码</a>
+</h3>
+<h3 class="topic">
+<a name="3vvut26881ce0vb3vevpl9jgsa">&nbsp;&nbsp;&nbsp;dll出现后，程序代码可以进行动态链接，同一个dll中的api在内存中只有一份，可以供其他程序调用</a>
+</h3>
+<h3 class="topic">
+<a name="7sic2lin1ftt6hblv6ismdesd8">&nbsp;&nbsp;dll中所有的函数只有经过导出（export）之后才允许被外部使用</a>
+</h3>
+<h3 class="topic">
+<a name="0je5127eumdc3gnet654brecha">&nbsp;&nbsp;windows api存放在dll中 多个进程共同使用的dll在物理内存中只有一份文件，不过是被映射到了不同的进程的内存空间（通过内存分页机制）</a>
+</h3>
+<h3 class="topic">
+<a name="5mtqf0kc77hg9dtghr95bke1vt">&nbsp;&nbsp;&nbsp;api中的静态变量在访问的时候只有一份，如果要修改，子进程会开辟自己的内存空间单独存储静态变量</a>
+</h3>
+<h3 class="topic">
+<a name="3c4gf6g09r9m8uslse328d50f1">&nbsp;&nbsp;dll的编写</a>
+</h3>
+<h3 class="topic">
+<a name="455jomh1nft1ahm7a6knqslg50">&nbsp;&nbsp;&nbsp;dll存在入口函数 DllMain，但是一般不会调用</a>
+</h3>
+<h3 class="topic">
+<a name="7otua4o8vjfkosauuh4hvnbd1p">&nbsp;&nbsp;&nbsp;dll函数需要在不同于dllMain函数的 cpp和h文件中定义和声明</a>
+</h3>
+<h3 class="topic">
+<a name="2lf2eeap9lpp31mvrb8a8u0203">&nbsp;&nbsp;dll的导出方式</a>
+</h3>
+<h3 class="topic">
+<a name="66rqqnkqdu9mjheg3kooiv9pik">&nbsp;&nbsp;&nbsp;声明导出</a>
+</h3>
+<h3 class="topic">
+<a name="6aan9lv607u9f1b9u7phce89bs">&nbsp;&nbsp;&nbsp;&nbsp;cpp文件中</a>
+</h3>
+<h3 class="topic">
+<a name="4gq973cokni7h453j4phb0c9s8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//1. 声明导出   （须在.cpp .h文件中均使用该导出声明）&#13;
+//函数前 _declspec(dllexport) &#13;
+// extern "C"  声明C方式导出，不会名称粉碎&#13;
+extern "C"  _declspec(dllexport) void fun1()&#13;
+{&#13;
+	printf("声明导出\n");&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="19n3e038mok22c3hdc695b83nb">&nbsp;&nbsp;&nbsp;&nbsp;h文件中</a>
+</h3>
+<h3 class="topic">
+<a name="28kcg34k289m8vflq1d14u2dlf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;extern "C"  _declspec(dllexport) void fun1();</a>
+</h3>
+<h3 class="topic">
+<a name="732not6eilsj4r148kdftgs2cp">&nbsp;&nbsp;&nbsp;&nbsp;注意 extern"C"的处理不是必须的</a>
+</h3>
+<h3 class="topic">
+<a name="2uaa67qh1cp3n8d1kufgcfj11s">&nbsp;&nbsp;&nbsp;def文件导出</a>
+</h3>
+<h3 class="topic">
+<a name="747g3fn9fe00rdan772afmq83o">&nbsp;&nbsp;&nbsp;&nbsp;dll函数在cpp文件 h文件中正常定义和声明</a>
+</h3>
+<h3 class="topic">
+<a name="4uri6nqkh54k13i2u6d4eihihu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;int fun2(){&#13;
+printf("声明导出");&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="75daengoqglobcfcakfulebtv0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;int fun2();</a>
+</h3>
+<h3 class="topic">
+<a name="1jpg0vpr3tchskp9dii4fa04hi">&nbsp;&nbsp;&nbsp;&nbsp;在工程中添加-&gt;新建项-&gt;代码-&gt;def文件</a>
+</h3>
+<h3 class="topic">
+<a name="21r684igiedor9599bv91kvchb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LIBRARY;不是必须的&#13;
+&#13;
+EXPORTS	;导出函数声明&#13;
+fun2 @2 ; 导出函数函数名 @函数导出序号&#13;
+fun3 @43</a>
+</h3>
+<h3 class="topic">
+<a name="30tuna663thrmssdtstsiqsd04">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;def文件中;之后为注释</a>
+</h3>
+<h3 class="topic">
+<a name="2hi411g1bitl86s5ph24j3e5mg">&nbsp;&nbsp;使用dll(在普通的win32程序中)</a>
+</h3>
+<h3 class="topic">
+<a name="2cnhqk5ir4ni7po63dpmenppoc">&nbsp;&nbsp;&nbsp;使用dll两种方式</a>
+</h3>
+<h3 class="topic">
+<a name="2nmt0jm1j6basrdbiek3puvkan">&nbsp;&nbsp;&nbsp;&nbsp;显式调用(重要，逆向要用)</a>
+</h3>
+<h3 class="topic">
+<a name="0afehmf2h6q6ot9349c0lao0g0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;加载dll</a>
+</h3>
+<h3 class="topic">
+<a name="4hphapjag40vc3k5rdplo5vnbv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;需要包含windows.h头文件</a>
+</h3>
+<h3 class="topic">
+<a name="1lqh9pek4kirqh2hv0vsvar2gd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;HMODULE hmod = LoadLibraryA("3-11动态链接库01.dll");</a>
+</h3>
+<h3 class="topic">
+<a name="78bl22888ai99eb3t4ouvhkm8t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //加载dll 参数为当前目录下的的dll文件，</a>
+</h3>
+<h3 class="topic">
+<a name="61240qk2oto8rtml9s8l8d14tb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//该文件可以在编写完dll后通过vs的生成文件得到</a>
+</h3>
+<h3 class="topic">
+<a name="62aje2jr8lph03b4953i538odg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//这里使用了A版函数，也可以使用其他版函数</a>
+</h3>
+<h3 class="topic">
+<a name="39qk9utvb5o1mmgpvunngdqv5o">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;获取函数</a>
+</h3>
+<h3 class="topic">
+<a name="1qrvuth4ad2k738romikm2vj7h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PFUN pfun = (PFUN)GetProcAddress(&#13;
+		hmod,     //模块句柄&#13;
+		"fun1");	   //dll中需要使用的导出函数</a>
+</h3>
+<h3 class="topic">
+<a name="6hfjr24kionsu8kl8uj129fkv0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;因为用到了函数指针，所以常用typeded给函数指针取别名</a>
+</h3>
+<h3 class="topic">
+<a name="6m21i6d4qu7jers1sgm9nc2lje">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;typedef void(*PFUN)();</a>
+</h3>
+<h3 class="topic">
+<a name="37i0u463d40ll9vajfk76i3du8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;调用函数</a>
+</h3>
+<h3 class="topic">
+<a name="0vng1lt42bmq2f6tkaldr91khr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pfun();</a>
+</h3>
+<h3 class="topic">
+<a name="07fapai5hkomg5rn3oikgamuc0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用返回的函数指针调用函数</a>
+</h3>
+<h3 class="topic">
+<a name="3fbplllohgj4se21ot4gi4pf6g">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 注意dll需要放在exe文件目录下</a>
+</h3>
+<h3 class="topic">
+<a name="3p91j4f9ba4ni29iaresfv9srr">&nbsp;&nbsp;&nbsp;&nbsp;隐式调用（两步）</a>
+</h3>
+<h3 class="topic">
+<a name="0baalanuh8s5f64g3opikv8res">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;包含dll的头文件</a>
+</h3>
+<h3 class="topic">
+<a name="0pdffq85pkqgac0pid1h43s339">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#include"..\\3-11动态链接库01\testdll.h"</a>
+</h3>
+<h3 class="topic">
+<a name="0fu8ehoso4qdik3n0nnpsbl73s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//这里的..表示返回上一级目录 在上一级目录中找到3-11动态链接库01目录下的testdll.h</a>
+</h3>
+<h3 class="topic">
+<a name="2j6sqn1saffe6kl6uq680sd097">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//总体而言，这里include的是一个路径</a>
+</h3>
+<h3 class="topic">
+<a name="5pgo1cdrds8gvf2k60i5kmv078">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;载入lib文件</a>
+</h3>
+<h3 class="topic">
+<a name="4d1hnom3v68kdbioiqrteaphob">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#pragma comment(lib,"3-11动态链接库01.lib")</a>
+</h3>
+<h3 class="topic">
+<a name="36cnkfngnogpm9tighjsp05ldr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//这里是当前目录下的lib文件，也可以是一个路径</a>
+</h3>
+<h3 class="topic">
+<a name="3spf01rf95av26b2igeuql41ht">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;直接使用dll中的函数名调用函数</a>
+</h3>
+<h3 class="topic">
+<a name="1dtp9ec36lpvolack13ngf6icf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意dll需要放在exe文件目录下</a>
+</h3>
+<h3 class="topic">
+<a name="4t8uv552qpbrt7bjvd4jdmqgqt">&nbsp;&nbsp;将生成的dll拖入lordPE，会看见导出的函数，函数的名称发生了改变(因为名称粉碎机制)，为了防止名称粉碎需要声明 extern "C"</a>
+</h3>
+<h3 class="topic">
+<a name="2p9eqj8s3mtkj62omfd89qdqm8">&nbsp;&nbsp;dll中不能运行，应该直接生成文件，，在所在目录下生成 .dll文件</a>
+</h3>
+<h3 class="topic">
+<a name="7g5anv59959k47m0rjnklefk5a">&nbsp;静态链接库</a>
+</h3>
+<h3 class="topic">
+<a name="722ldhajclcbd9l3feve1trfnl">&nbsp;&nbsp;将代码和数据均存放在lib文件中</a>
+</h3>
+<h3 class="topic">
+<a name="3a3q1gd9eurqn322u1ni1tp97b">&nbsp;&nbsp;种类</a>
+</h3>
+<h3 class="topic">
+<a name="6np0dbpvesvbrh3ocnsmbsv9dq">&nbsp;&nbsp;&nbsp;导入库</a>
+</h3>
+<h3 class="topic">
+<a name="26v7uvcogbvaia0c0rul7k47er">&nbsp;&nbsp;&nbsp;&nbsp;是生成dll时附带的lib文件，文件中存放的函数与代码的关系，不存储实际的函数代码，起到一个链接的作用，体积较小，需要配合dll使用</a>
+</h3>
+<h3 class="topic">
+<a name="29pqc5fopo52fbal7pm18dnt60">&nbsp;&nbsp;&nbsp;对象库</a>
+</h3>
+<h3 class="topic">
+<a name="7qs4ifuj0po3jp0h8e9d1sbbvb">&nbsp;&nbsp;&nbsp;&nbsp;是完整的数据代码，编译的时候会添加进程序（exe）中，不需要配合使用dll</a>
+</h3>
+<h3 class="topic">
+<a name="78j0jt7tjhfqrnq2971dici6be">&nbsp;&nbsp;定义静态链接库</a>
+</h3>
+<h3 class="topic">
+<a name="2n1gn2c8bqs3eu0iqf0idsf5rk">&nbsp;&nbsp;&nbsp;新建项目-&gt;属性-&gt;项目属性-&gt;项目配置类型设置为静态库</a>
+</h3>
+<h3 class="topic">
+<a name="1hltpbfkh00hjplpgv9npjmavc">&nbsp;&nbsp;&nbsp;定义相应的.h文件和.cpp文件</a>
+</h3>
+<h3 class="topic">
+<a name="6ova0tt5tm8n5lpssclgmr0e0m">&nbsp;&nbsp;&nbsp;&nbsp;在ccp和h文件中分别定义和声明静态链接库函数</a>
+</h3>
+<h3 class="topic">
+<a name="4jmj40jcsv1tqlc5hvrpvib9d3">&nbsp;&nbsp;使用静态链接库（类似于dll的隐式调用）</a>
+</h3>
+<h3 class="topic">
+<a name="6r0ac4lr5cvtddg5jlfmbq8cin">&nbsp;&nbsp;&nbsp;1、包含lib的.h文件</a>
+</h3>
+<h3 class="topic">
+<a name="04obm6kc5v6sasgja7rohe6bhu">&nbsp;&nbsp;&nbsp;&nbsp;#include "..\3-13静态链接库\testlib.h"</a>
+</h3>
+<h3 class="topic">
+<a name="46ggbpotkj8fc4ndmdo0pvvilj">&nbsp;&nbsp;&nbsp;&nbsp;本质上include的是一个路径</a>
+</h3>
+<h3 class="topic">
+<a name="3ruiipbcmjjupjat5fqiu2746c">&nbsp;&nbsp;&nbsp;2、载入lib文件</a>
+</h3>
+<h3 class="topic">
+<a name="6cr9bk5718mvmau074gphd0is5">&nbsp;&nbsp;&nbsp;&nbsp;#pragma comment(lib,"..\\Debug\\3-13静态链接库.lib")</a>
+</h3>
+<h3 class="topic">
+<a name="4nv6jnb2dm7pp54kicmimdupn5">&nbsp;&nbsp;&nbsp;3、直接使用lib中的函数名调用函数</a>
+</h3>
+<h3 class="topic">
+<a name="5nvheu6piivlt1kh1qcg4ok8ip">&nbsp;&nbsp;将代码直接加入程序中，加入之后，即使在目录中删除了lib文件，程序也可以运行</a>
+</h3>
+<h3 class="topic">
+<a name="11205tpca3ei1cei04v1ikhbbp">&nbsp;&nbsp;使用的时候直接生成，不运行</a>
+</h3>
+<h2 class="topic">
+<a name="3cptsfr6sg85omvcqrju8i4bom">windows难点</a>
+</h2>
+<h3 class="topic">
+<a name="1gmigqe9r18b3mmfp6n0i8pjm3">&nbsp;消息</a>
+</h3>
+<h3 class="topic">
+<a name="3jgf0p1u7lrcgaub1igi67aksu">&nbsp;api</a>
+</h3>
+<h3 class="topic">
+<a name="44snsrfer1e1de9tm12liqm9vl">&nbsp;窗口</a>
+</h3>
+</body>
+</html>

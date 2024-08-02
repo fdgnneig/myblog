@@ -1,0 +1,194 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>写壳2</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="1karth09l9e1et7o92n88q9ce3">写壳2</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="%E5%86%99%E5%A3%B32_files/images/%E5%86%99%E5%A3%B32.jpg"></div>
+<h2 class="topic">
+<a name="5g57rscuoskqikepqjbf7je6fv">对一个程序加壳要做的事情</a>
+</h2>
+<h3 class="topic">
+<a name="7jchtg3331c35nu2nap1o8apal">&nbsp;1、处理被加壳文件</a>
+</h3>
+<h3 class="topic">
+<a name="1677k9t1vbai5vsicg502va0nf">&nbsp;&nbsp;加密代码段</a>
+</h3>
+<h3 class="topic">
+<a name="67984oc6b7rer6b2leq6on6gs2">&nbsp;&nbsp;压缩文件</a>
+</h3>
+<h3 class="topic">
+<a name="1nvg85uk6cg8n18nkm4ckt7l56">&nbsp;&nbsp;加密iat</a>
+</h3>
+<h3 class="topic">
+<a name="7mkl3lpolufhap35tgl6jtvqcf">&nbsp;2、将壳的代码植入到被加壳程序中</a>
+</h3>
+<h3 class="topic">
+<a name="4l0pmlmb83r77mmetf620aip8s">&nbsp;&nbsp;在被加壳程序中添加一个新区段，存储壳代码</a>
+</h3>
+<h3 class="topic">
+<a name="40veshupu7eef704rlcqkacr72">&nbsp;&nbsp;设置被加壳文件的入口点指向新区段中的壳的代码</a>
+</h3>
+<h3 class="topic">
+<a name="3p9ss88tdo4o87go4dkr55r8rn">&nbsp;3、编写壳的代码</a>
+</h3>
+<h3 class="topic">
+<a name="33v4v8ga9e8flfqqa8ig2a2rpl">&nbsp;&nbsp;创建一个dll项目，该项目中的.text段中保存c语言代码</a>
+</h3>
+<h3 class="topic">
+<a name="0v4466ftdj33u764je90tant46">&nbsp;&nbsp;&nbsp;因为只会将代码段拷贝到被加壳程序中，所以壳程序中不能直接调用api，不能使用全局变量</a>
+</h3>
+<h3 class="topic">
+<a name="4d00jula45isdviee8qonq0lkr">&nbsp;&nbsp;编写完之后编译为dll，则所有的代码都在dll的text中</a>
+</h3>
+<h3 class="topic">
+<a name="0tn2aln1l9u6h7p1ffji4k3rvt">&nbsp;&nbsp;使用的时候只要将dll的text段拷贝到被加壳文件的新区段</a>
+</h3>
+<h3 class="topic">
+<a name="3kd205dvhpfisc5olglld9kr7h">&nbsp;&nbsp;&nbsp;如果移植代码段，代码段中使用的全局变量和常量字符串将丢失</a>
+</h3>
+<h3 class="topic">
+<a name="5ag8r346ouo3ahvnmoc99d9m4d">&nbsp;&nbsp;&nbsp;&nbsp;解决方法时：因为全局变量可以使用GetProcAddress等api从dll中导出，所以</a>
+</h3>
+<h3 class="topic">
+<a name="54q8r7fi3phf9a21nh4jblnivc">&nbsp;&nbsp;&nbsp;由于dll加载基址为一千万，被加壳程序exe加载机制为0x400000，加载基址不一样，而dll代码段中，发生重定位时，默认加载基址都是0x10000000，因此需要修改重定位项的默认加载基址</a>
+</h3>
+<h3 class="topic">
+<a name="2a6ubn4km8n6o1hsqsau8sij31">&nbsp;&nbsp;&nbsp;同理dll的text段在dll中的偏移与在被加壳程序中的偏移不一样，即段首rva页不一样，修复重定位时两个都要被修复</a>
+</h3>
+<h3 class="topic">
+<a name="1v53nukpggmucie6qmcos0f2pd">&nbsp;实现步骤</a>
+</h3>
+<h3 class="topic">
+<a name="2ss787g5oikv2m57fsk1u1h1ub">&nbsp;&nbsp;加壳器项目</a>
+</h3>
+<h3 class="topic">
+<a name="00ua9d16devlmop24p241c056j">&nbsp;&nbsp;&nbsp;项目中需要存在一个加载stub的函数</a>
+</h3>
+<h3 class="topic">
+<a name="5fvpi4akdt32sbl23757ala8jf">&nbsp;&nbsp;&nbsp;&nbsp;将stub.dll加载到加壳程序中，在加壳程序中获得stub的代码段，作为壳代码添加到被加壳程序中，加载stubdll的过程中需要使用特殊标志，用于在加载stub.dll的时候不运行dll的dllmain函数</a>
+</h3>
+<h3 class="topic">
+<a name="46eq9phg49ma8bmtgi6k2n3985">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%86%99%E5%A3%B32_files/01ei2rf2hlsp48jvd645p010bi.png"></p>
+<h3 class="topic">
+<a name="0aqp2qttg2f3s9be6ra4b86j9h">&nbsp;&nbsp;&nbsp;在将dll中的text段拷贝到被加壳程序的新区段之后，需要重新设置加壳程序的oep，就需要找到sub中的函数在被加壳程序中的位置，因为stub.dll的text区段发生了整体移动，计算oep的时候就涉及 &#13;
+代码内存地址=程序加载基址+段相对于加载基址的偏移+代码相对于段首的偏移,只有最后一个是固定的，前两个都需要修改</a>
+</h3>
+<h3 class="topic">
+<a name="61ai0hv2d4m7mn1hbrqqq37jhm">&nbsp;&nbsp;stub.dll项目</a>
+</h3>
+<h3 class="topic">
+<a name="190ju9o9j3ofii0k01otjc4v2g">&nbsp;&nbsp;&nbsp;项目配置类型可以选择 dll</a>
+</h3>
+<h3 class="topic">
+<a name="17gn85lqgsfjqs8lulvci2vh4v">&nbsp;&nbsp;&nbsp;先把项目优化选项关闭，然后项目写好后将优化打开，保证stub程序小而快</a>
+</h3>
+<h3 class="topic">
+<a name="4p50pdduq082d3gp492th05njq">&nbsp;&nbsp;&nbsp;stub应该改成release版本</a>
+</h3>
+<h3 class="topic">
+<a name="0jj0dkkk8u1k7fd0rd8hv1079d">&nbsp;&nbsp;&nbsp;关闭预编译头，不使用</a>
+</h3>
+<h3 class="topic">
+<a name="5k2sirpd7vstva46cd3e0a3s0t">&nbsp;&nbsp;&nbsp;需要将dll多个区段合并在text段中</a>
+</h3>
+<h3 class="topic">
+<a name="1rjk8hth8g7qpg21eq263ndfmr">&nbsp;&nbsp;&nbsp;&nbsp;虽然合并了，但是代码段中仍然没有导入导出表，这两张表会被自动生成idata 和edata区段保存 </a>
+</h3>
+<h3 class="topic">
+<a name="39e973hmmfd7tajba66iequnf4">&nbsp;&nbsp;&nbsp;定义一个结构体，用于描述壳代码中所有需要从被加壳程序中获得数据（比如代码段加密密钥等），然后导出出去，</a>
+</h3>
+<h3 class="topic">
+<a name="3r1dhiupggasufe7jkb4id7m23">&nbsp;&nbsp;&nbsp;dll中导出的是一个裸函数，从而保证text段中的代码不会产生冗余</a>
+</h3>
+<h3 class="topic">
+<a name="6gobqk55a3gn5ds7rbfgbhb5ff">&nbsp;&nbsp;&nbsp;将dll的输出目录和加壳器的输出目录以及调试的工作目录就修改为同一个项目，并将加壳器设置依赖项为stub，方便进行调试</a>
+</h3>
+<h3 class="topic">
+<a name="6l8qup3l3tkqb02v7e8rqrranu">&nbsp;&nbsp;&nbsp;sub一定要保证是静态编译的，否则无法使用strcmp等函数</a>
+</h3>
+<h3 class="topic">
+<a name="7kctu67sg65ohnnuk012amti26">&nbsp;关键功能</a>
+</h3>
+<h3 class="topic">
+<a name="5jsc0qrn00jee0kl2cg10np5ls">&nbsp;&nbsp;找到代码数据起始地址和大小</a>
+</h3>
+<h3 class="topic">
+<a name="533lbgbgkv17shs46dnd62ac1l">&nbsp;&nbsp;&nbsp;找到代码段首地址   该区段的PointToRawData+区段实际大小misc，</a>
+</h3>
+<h3 class="topic">
+<a name="6uuok0m9uetsg543an0rnivfr6">&nbsp;&nbsp;加区段</a>
+</h3>
+<h3 class="topic">
+<a name="0uoqu3iccu5gfq3vlcrhkskea5">&nbsp;&nbsp;&nbsp;参数</a>
+</h3>
+<h3 class="topic">
+<a name="2gsacvahj8a76lnmq9ib6onrit">&nbsp;&nbsp;&nbsp;&nbsp;缓冲区大小</a>
+</h3>
+<h3 class="topic">
+<a name="7ivdu9qmidqi2aq9c9fcee24l5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意是传引用，因为需要扩展文件大小</a>
+</h3>
+<h3 class="topic">
+<a name="19poj5rlbhoh9c0bblljgffe12">&nbsp;&nbsp;&nbsp;&nbsp;文件大小</a>
+</h3>
+<h3 class="topic">
+<a name="59i3a507unc70fn5bk6n4ktmmk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意是传引用，因为需要扩展文件大小</a>
+</h3>
+<h3 class="topic">
+<a name="7m5749esjni62i432e0o9qt3a0">&nbsp;&nbsp;&nbsp;&nbsp;区段名</a>
+</h3>
+<h3 class="topic">
+<a name="5c3qq3b7vb9n25ahsnt3gq9irl">&nbsp;&nbsp;&nbsp;&nbsp;区段大小</a>
+</h3>
+<h3 class="topic">
+<a name="6atoc1b5ktjets20215h6ep56e">&nbsp;&nbsp;&nbsp;修改文件头的区段个数</a>
+</h3>
+<h3 class="topic">
+<a name="5gqm7um64f2n4run8ov5th18n3">&nbsp;&nbsp;&nbsp;配置新的区段头</a>
+</h3>
+<h3 class="topic">
+<a name="61g5sm5ra876seb3297invsscn">&nbsp;&nbsp;&nbsp;修改扩展头的映像大小</a>
+</h3>
+<h3 class="topic">
+<a name="7ciot33v1tiqb3b0br16cogipl">&nbsp;&nbsp;创建stub项目，编写壳代码</a>
+</h3>
+<h3 class="topic">
+<a name="3qbqg7qu83m8vcpu26b0r8jo3d">&nbsp;&nbsp;将oep设置为新区段rva</a>
+</h3>
+<h3 class="topic">
+<a name="71qp15ohs4k0j6lttuorqt7hfa">&nbsp;&nbsp;可以通过将tls段数据目录表中的的virtualaddress、size数值填0，可以将tls段去掉，使其不发挥作用</a>
+</h3>
+<h3 class="topic">
+<a name="6a01isfgje8agd6pqukr791ahm">&nbsp;&nbsp;在解密代码段的时候需要修改代码段的属性，使其可以读写</a>
+</h3>
+<h3 class="topic">
+<a name="1l0bmkn7344uh4bbhbmdp39bpo">&nbsp;&nbsp;&nbsp;需要使用api，就需要动态获取api地址，因为不能直接调用api</a>
+</h3>
+<h3 class="topic">
+<a name="6il3qcchgfb5jkq8c0p5qjf588">&nbsp;&nbsp;&nbsp;需要通过定义函数指针，然后使用宏（DefineFunc）的方法调用函数</a>
+</h3>
+<h3 class="topic">
+<a name="3la22fafs81udq3tma26h4blbg">&nbsp;&nbsp;sub一定要保证是静态编译的，否则无法使用strcmp等函数</a>
+</h3>
+<h3 class="topic">
+<a name="7587p01bgh4tilmq03kcgjn999">&nbsp;主要看老师发的代码和笔记</a>
+</h3>
+<h3 class="topic">
+<a name="51sbh0urhbh56nn1iidcgh0bci">&nbsp;&nbsp;区段头表的结构以及含义</a>
+</h3>
+<h3 class="topic">
+<a name="4qi4e6l7lk0gbikh6gqkugav3n">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E5%86%99%E5%A3%B32_files/1n9hkjg62t4f1r1qsikihd9c5m.png"></p>
+</body>
+</html>

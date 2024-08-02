@@ -1,0 +1,1088 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>class51day0420(hook第一天)</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="1kcdsubtgch1imco260fai8rad">class51day0420(hook第一天)</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="class51day0420(hook%E7%AC%AC%E4%B8%80%E5%A4%A9)_files/images/class51day0420(hook%E7%AC%AC%E4%B8%80%E5%A4%A9).jpg"></div>
+<h2 class="topic">
+<a name="1v8hgsq6eds50nshf7pjtb6k88">动态链接库注入</a>
+</h2>
+<h3 class="topic">
+<a name="5erntk6j7dat520boq2qrvrhk5">&nbsp;dll注入（自己实现恶意的dll或者实现恶意代码）</a>
+</h3>
+<h3 class="topic">
+<a name="1f5sv32bv3rv7ppl83r93m0i5b">&nbsp;&nbsp;将自己的代码注入到已有的进程中，在该进程中执行自己的代码</a>
+</h3>
+<h3 class="topic">
+<a name="1rpjtrthpbugmm3hglabggjr5n">&nbsp;&nbsp;关键api</a>
+</h3>
+<h3 class="topic">
+<a name="7k1a5m26b7hh5s6s4li1g4l55s">&nbsp;&nbsp;&nbsp;OpenProcess</a>
+</h3>
+<h3 class="topic">
+<a name="22fisabi795439f7j6tpoojt4t">&nbsp;&nbsp;&nbsp;&nbsp;打开远程进程</a>
+</h3>
+<h3 class="topic">
+<a name="5copqgain8uhbbngio8mg079it">&nbsp;&nbsp;&nbsp;VirtualAllocEx</a>
+</h3>
+<h3 class="topic">
+<a name="3nvmvk2sas19hrd09derouu92a">&nbsp;&nbsp;&nbsp;&nbsp;在远程进程中申请虚拟内存空间</a>
+</h3>
+<h3 class="topic">
+<a name="6789g30baecdfl7mt01bnhkncb">&nbsp;&nbsp;&nbsp;WriteProcessMemory</a>
+</h3>
+<h3 class="topic">
+<a name="0s6d21s665q48fo3b7qr22i54n">&nbsp;&nbsp;&nbsp;&nbsp;向远程进程中写入数据</a>
+</h3>
+<h3 class="topic">
+<a name="66v6qsuhqlruvq8pqsbb6klv7l">&nbsp;&nbsp;&nbsp;CreateRemoteThread</a>
+</h3>
+<h3 class="topic">
+<a name="5j6kfhmp5pqik5j74p6a2i5mjj">&nbsp;&nbsp;&nbsp;&nbsp;创建远程线程</a>
+</h3>
+<h3 class="topic">
+<a name="5m6913s1pr8cte4ae054j42lul">&nbsp;&nbsp;&nbsp;WaitForSingleObject</a>
+</h3>
+<h3 class="topic">
+<a name="47lsq2ihbg0i8hvqeog4g0st52">&nbsp;&nbsp;&nbsp;&nbsp;等待信号</a>
+</h3>
+<h3 class="topic">
+<a name="235640mjhjt1r80ntag07fjeta">&nbsp;&nbsp;&nbsp;VirtualFreeEx</a>
+</h3>
+<h3 class="topic">
+<a name="1nucc91bnfgdeele0ot7b3a9hn">&nbsp;&nbsp;&nbsp;&nbsp;释放远程进程中申请的空间</a>
+</h3>
+<h3 class="topic">
+<a name="7qa7ovbnq3ugur8j71f2gh0upu">&nbsp;&nbsp;&nbsp;CloseHandle</a>
+</h3>
+<h3 class="topic">
+<a name="0tni4lmv1qa13b7ivimettiugh">&nbsp;&nbsp;&nbsp;&nbsp;关闭句柄</a>
+</h3>
+<h3 class="topic">
+<a name="0h8ef1h9cm7bpcegvvvglloqi0">&nbsp;&nbsp;&nbsp;LoadLibrary</a>
+</h3>
+<h3 class="topic">
+<a name="5iqahg0j2bpb8vgvopevt4gmrp">&nbsp;&nbsp;&nbsp;&nbsp;加载模块</a>
+</h3>
+<h3 class="topic">
+<a name="64utu2akeg13s6972p76hc34iv">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class51day0420(hook%E7%AC%AC%E4%B8%80%E5%A4%A9)_files/5q0d7nd08u2fpn76ug8s6gmif3.png"></p>
+<h3 class="topic">
+<a name="7n5an3oompp2q7684rhr5tpflm">&nbsp;&nbsp;主要流程在其他进程中创建一个线程，并在该进程中申请虚拟空间（用于传递dll的路径或传递OPCode），使得另一个进程加载dll并执行代码</a>
+</h3>
+<h3 class="topic">
+<a name="5ci9jku95gsimv1g65crtdaam0">&nbsp;&nbsp;&nbsp;当dll在进程中加载成功，就会执行DllMain中 DLL_PROCESS_ATTACH消息下的代码</a>
+</h3>
+<h3 class="topic">
+<a name="0upnp18a9gaum0cg7f9qt1as3d">&nbsp;&nbsp;不同进程中，由于windows的随机基址机制，同一个dll在不同的进程中其内存地址是不一样的，但是kernel32 和nt两个dll是个例外，在不同进程中，两个dll的内存地址是相同的</a>
+</h3>
+<h3 class="topic">
+<a name="4eaaq1t1p1k7ajrsulibet1e1b">&nbsp;&nbsp;&nbsp;kernel32和nt两个dll对于不同进程的加载基址是相同的，意味着不同的进程中，均可以使用相同的地址调用这两个dll中的函数 ，LoadLibrary就是在kernel32中</a>
+</h3>
+<h3 class="topic">
+<a name="3t4hg299set0568gcpp5989aqs">&nbsp;&nbsp;&nbsp;但类似于MessageBox等在user32.dll中的函数，在不同的进程中函数地址是不同的，如果要在目标进程中执行MassageBox函数，首先要遍历到该函数在目标进程中的地址，将该地址包含在被注入的代码中</a>
+</h3>
+<h3 class="topic">
+<a name="1ekckqv449gc88ervga3t8uni9">&nbsp;&nbsp;远程线程注入（dll）</a>
+</h3>
+<h3 class="topic">
+<a name="514b1h3sm3tgmoes6rob4vv8hb">&nbsp;&nbsp;&nbsp;获取目标进程的句柄</a>
+</h3>
+<h3 class="topic">
+<a name="1cmjkb7l67d5l5c78nbkjcv1o2">&nbsp;&nbsp;&nbsp;&nbsp;OpenProcess</a>
+</h3>
+<h3 class="topic">
+<a name="3afujcnb9tbcudci94krir0i03">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;申请权限</a>
+</h3>
+<h3 class="topic">
+<a name="4u5bicu0jvsgsf7r0ins6nf3gn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;是否可继承</a>
+</h3>
+<h3 class="topic">
+<a name="46ceol6j6le2cg8b0i5udo76jr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;进程pid</a>
+</h3>
+<h3 class="topic">
+<a name="0t9pegj6n9k93vq3vf63f3de7g">&nbsp;&nbsp;&nbsp;&nbsp;若句柄为空，则进程打开失败</a>
+</h3>
+<h3 class="topic">
+<a name="3199imif7jf081erpiduknltre">&nbsp;&nbsp;&nbsp;从目标进程中申请一块内存，大小是dll路径的长度，该内存用于保存被注入到目的进程的dll的路径，该路径之后会作为LoadLibrary函数的参数，从而将dll加载入目的进程</a>
+</h3>
+<h3 class="topic">
+<a name="4jqg9a3tl5jpog3ch0rf2mavrp">&nbsp;&nbsp;&nbsp;&nbsp;目的是保存LoadLibrary函数的参数，该函数之后会在目的进程中的单独创建线程并执行</a>
+</h3>
+<h3 class="topic">
+<a name="1ckeast461fm22bm49d8atsrko">&nbsp;&nbsp;&nbsp;&nbsp;VirtualAllocEx</a>
+</h3>
+<h3 class="topic">
+<a name="16kh019cg8ma80oh21h1b6h4aa">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;进程句柄</a>
+</h3>
+<h3 class="topic">
+<a name="1lv3ghjoh9k2tro23kg6o0b6hj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;申请内存的地址</a>
+</h3>
+<h3 class="topic">
+<a name="1mbj3p3lir1e7k2k052jbe70s0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;一般填null，由系统决定</a>
+</h3>
+<h3 class="topic">
+<a name="003bgbg5ls898m7i3bsmefp4mb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1</a>
+</h3>
+<h3 class="topic">
+<a name="1r0jskbq601f25jf55tlsqlkge">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4096个字节</a>
+</h3>
+<h3 class="topic">
+<a name="3u8ocntleoi9jlgt5ciq6g0i3h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;立刻提交</a>
+</h3>
+<h3 class="topic">
+<a name="0qqsdcar35d8g3ta3nlc7o8g02">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MEM_COMMIT</a>
+</h3>
+<h3 class="topic">
+<a name="1oucb3c5bo8ppmq7celm5kq3n8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可读可写</a>
+</h3>
+<h3 class="topic">
+<a name="4f40hj5mkpsdlmalvljvo3i276">&nbsp;&nbsp;&nbsp;将dll路径写入刚才在目标进程中申请到的虚拟内存空间中</a>
+</h3>
+<h3 class="topic">
+<a name="5v8atuc6h76hgkiq6ekpgi9lvr">&nbsp;&nbsp;&nbsp;&nbsp;WriteProcessMemory</a>
+</h3>
+<h3 class="topic">
+<a name="28opgjphlrvgiotrh8242in26o">&nbsp;&nbsp;&nbsp;&nbsp;注意这里因为攻击进程和目标进程均在同一台主机上，所以目标进程可以通过该路径找到需要被加载的dll</a>
+</h3>
+<h3 class="topic">
+<a name="7q9315gj8qlidusag99j4mui2k">&nbsp;&nbsp;&nbsp;创建一个远程线程，远程线程的回调函数为LoadLibrary（A版或W版）主要目的是让目的进程开辟一条线程执行dll加载函数，当dll被加载DllMain中的相应函数会被自动调用，导致任意代码在目标进程中被执行</a>
+</h3>
+<h3 class="topic">
+<a name="7n13ek25d17k0ktmefhm27tfvd">&nbsp;&nbsp;&nbsp;&nbsp;CreateRemoteThread</a>
+</h3>
+<h3 class="topic">
+<a name="0f52ke74sjma8961a2eb62e0kh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;进程</a>
+</h3>
+<h3 class="topic">
+<a name="749v4sehniok4ab9at8ka61p55">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;安全属性</a>
+</h3>
+<h3 class="topic">
+<a name="2s5kdamiuknl4tm61rib8439ia">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;默认堆栈</a>
+</h3>
+<h3 class="topic">
+<a name="6tomn4ohovsdv1066e4rcuvltt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;函数地址</a>
+</h3>
+<h3 class="topic">
+<a name="13up4k7b7vfln9a0h2pl4p26fj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用A版或W版的LoadLibrary</a>
+</h3>
+<h3 class="topic">
+<a name="2jhadbqep1tf0mj1mpjqkqf17p">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;参数</a>
+</h3>
+<h3 class="topic">
+<a name="2g8ekm3ibbln0qe5o40l727kj9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;保留着dll路径的内存空间的地址</a>
+</h3>
+<h3 class="topic">
+<a name="67j09bihhk7omi3mfo4lcmd1fj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0</a>
+</h3>
+<h3 class="topic">
+<a name="6u9jej4gbduh3i3fgl2jpfq1h9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0</a>
+</h3>
+<h3 class="topic">
+<a name="0i0sa30ba3ofdkcarfj4d8lnn8">&nbsp;&nbsp;&nbsp;等待目标进程中的线程执行完毕</a>
+</h3>
+<h3 class="topic">
+<a name="110b9p3u5ucbfngmmlcc72c5gl">&nbsp;&nbsp;&nbsp;&nbsp;WaitForSingleObject</a>
+</h3>
+<h3 class="topic">
+<a name="2but8a3j9brrocmsh3dm0e4itn">&nbsp;&nbsp;&nbsp;释放资源</a>
+</h3>
+<h3 class="topic">
+<a name="55ifksr0rabqc558odj5kmb6nl">&nbsp;&nbsp;&nbsp;&nbsp;VirtualFreeEx</a>
+</h3>
+<h3 class="topic">
+<a name="409ikcfiqs4o83gclpcfdoipha">&nbsp;&nbsp;&nbsp;&nbsp;CloseHandle</a>
+</h3>
+<h3 class="topic">
+<a name="3e1gknscpf4ullffo689glam4j">&nbsp;&nbsp;&nbsp;使用此种方法，需要创建一个dll，该dll中包含需要在目的进程中执行的代码</a>
+</h3>
+<h3 class="topic">
+<a name="14qdgvf4o747oafh97npitfclj">&nbsp;&nbsp;远程线程注入（OPCode）</a>
+</h3>
+<h3 class="topic">
+<a name="3ok2mbroju2nii15gmj9a7qa38">&nbsp;&nbsp;&nbsp;主要流程与远程dll注入类似</a>
+</h3>
+<h3 class="topic">
+<a name="4ljn79vuhoj7icmrjo89o8s0rv">&nbsp;&nbsp;&nbsp;在目的进程中申请的内存空间，该内存空间中不放置LoadLibrary函数的参数，而是写入恶意代码opcode，</a>
+</h3>
+<h3 class="topic">
+<a name="52kqu75d641lm4hkcbjr2age1c">&nbsp;&nbsp;&nbsp;&nbsp;为了将相应恶意代码的opcode抠出来，可以使用x32dbg</a>
+</h3>
+<h3 class="topic">
+<a name="6c01m0k5t12ms6as5u7una91vb">&nbsp;&nbsp;&nbsp;在创建远程线程的时候将回调函数地址改成自己申请的内存空间的首地址，由此当新线程被创建时，会执行虚拟内存空间中恶意代码</a>
+</h3>
+<h3 class="topic">
+<a name="29av58nm85mt01ss4m983qbmoe">&nbsp;&nbsp;&nbsp;注意此时Messbox等函数因为不在kernel中，故不同进程的MessageBox函数的地址不相同，所以在opcode中需包含目的进程中该函数的地址，才能在目的进程中执行该函数</a>
+</h3>
+<h3 class="topic">
+<a name="4a6i5aoersb7nt4nocmtmr7esv">&nbsp;&nbsp;&nbsp;&nbsp;注意这里写入的messagebox函数的地址必须是目标进程中该函数的地址，因为不同进程中massagebox函数的内存地址不同，因为该函数在user32中而不是kernel中</a>
+</h3>
+<h3 class="topic">
+<a name="3kpqhpq87go976u74jph1jfqj7">&nbsp;&nbsp;&nbsp;&nbsp;可以使用漏洞利用的技巧，动态获取指定函数在目的进程中的地址</a>
+</h3>
+<h3 class="topic">
+<a name="074rhc8dq9ph32o8gdngajtb5k">&nbsp;&nbsp;注入可以使目标进程执行相应代码，相应代码可以使让目标进程将自身文件映射到内存中，当文件映射是有名称的时，攻击者进程可以打开文件映射，将目标程序的文件进行改变</a>
+</h3>
+<h3 class="topic">
+<a name="7re6tce458ldjnn55g7tmfu38r">&nbsp;&nbsp;注意在dll的使用中，将dll编写完成后，右键dll项目，生成，则可以在指定目录生成dll文件，在vs的输出栏中即可查询到dll的路径</a>
+</h3>
+<h3 class="topic">
+<a name="3t9d67on2g86ogsdalvfj1t71k">&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="79sikukqn717na8l38rg76hcln">&nbsp;&nbsp;&nbsp;#include "stdafx.h"&#13;
+#include &lt;windows.h&gt;&#13;
+//DLL注入需要两个参数，第一个参数为dll的路径，要注入的进程的PID&#13;
+void InjectDll(char* pDllPath,DWORD dwPid)&#13;
+{&#13;
+	//1.获取目标进程句柄&#13;
+	HANDLE hProcess = OpenProcess(&#13;
+		PROCESS_ALL_ACCESS,//打开一个进程，该进程的权限为所有可以使用的权限&#13;
+		FALSE, dwPid);//是否可以继承，需要打开的进程的pid&#13;
+	if (!hProcess)&#13;
+	{&#13;
+		printf("进程打开失败\n");&#13;
+		return;&#13;
+	}&#13;
+	//2.从目标进程中申请一块内存（大小是DLL路径的长度）&#13;
+	LPVOID lpBuf = VirtualAllocEx(hProcess, &#13;
+		NULL,//申请虚拟内存的首地址，如果为NULL则由系统指定首地址 &#13;
+		1, //由于是按粒度（4096字节）分配内存，写1也是一样的&#13;
+		MEM_COMMIT,//将申请的内存立即提交，可以立即使用&#13;
+		PAGE_READWRITE);//内存保护权限为可读可写&#13;
+&#13;
+	//3.将dll路径写入到目标进程中&#13;
+	DWORD dwWrite;&#13;
+	WriteProcessMemory(hProcess, //目标进程句柄&#13;
+		lpBuf, pDllPath, //要写入内存空间的首地址，要写入的内容&#13;
+		strlen(pDllPath), &amp;dwWrite);//要写入内容的大小，实际写入的内存的大小&#13;
+	&#13;
+	//4.创建远程线程&#13;
+	//这里远程线程的回调函数为LoadLibrary，用于将dll导入到目的进程&#13;
+	//因为该函数位于kernel模块中，所以在不同的进程中其虚拟内存地址是相同的&#13;
+	//可以直接传给目的进程，并在目的进程调用该函数&#13;
+	HANDLE hThread = CreateRemoteThread(hProcess,//目标进程&#13;
+		NULL, NULL, //安全描述符，线程栈的大小，两者均使用默认值&#13;
+		(LPTHREAD_START_ROUTINE)LoadLibraryA,//新建线程的回调函数地址，注意函数指针的类型必须进行强转&#13;
+		lpBuf, 0, 0);//回调函数参数，创建线程的状态（立即执行），创建线程的id&#13;
+	//5.等待远程线程结束&#13;
+	WaitForSingleObject(hThread, -1);&#13;
+	//6.释放资源&#13;
+	VirtualFreeEx(hProcess, lpBuf, 0, MEM_RELEASE);//释放在另一个进程中申请的虚拟内存空间&#13;
+	CloseHandle(hProcess);//关闭目的进程句柄&#13;
+}&#13;
+//参数分别为OPCode的指针，被注入的进程的PID，OPCode的大小&#13;
+void InjectOpCode(char* pCode, DWORD dwPid,DWORD dwSize)&#13;
+{&#13;
+	//1.获取目标进程句柄&#13;
+	HANDLE hProcess = OpenProcess(&#13;
+		PROCESS_ALL_ACCESS,&#13;
+		FALSE, dwPid);&#13;
+	if (!hProcess)&#13;
+	{&#13;
+		printf("进程打开失败\n");&#13;
+		return;&#13;
+	}&#13;
+	//2.从目标进程中申请一块虚拟内存，申请的虚拟内存的大小必须足够放下OPCode&#13;
+	//这里直接将OPCode注入目标进程，如果OPCode中调用了系统API，而该API不在kernal或nt中&#13;
+	//则该api对应的模块是随机基址加载在不同的进程中，即每个进程中该函数的虚拟内存地址不同&#13;
+	//如果需要在另一个进程中调用api，需要找到该api在该进程的地址，这里是直接运行目的进程求出来&#13;
+	//也可以在OPCode中遍历IAT，从而主动找出指定函数在目的进程中的地址&#13;
+	LPVOID lpBuf = VirtualAllocEx(hProcess,&#13;
+		NULL, 1, MEM_COMMIT,&#13;
+		PAGE_EXECUTE_READWRITE);//注意因为该内存中保存OPCode，所以内存空间的属性必须为可读可写可执行&#13;
+	//3.将指定的OPCode写入到目标进程刚申请到的虚拟内存空间中&#13;
+	DWORD dwWrite;&#13;
+	WriteProcessMemory(hProcess,&#13;
+		lpBuf, pCode,&#13;
+		dwSize, &amp;dwWrite);//注意这里需要使用到OPCode的大小dwSize&#13;
+	//4.创建远程线程&#13;
+	HANDLE hThread = CreateRemoteThread(hProcess,&#13;
+		NULL, NULL,&#13;
+		(LPTHREAD_START_ROUTINE)lpBuf,//这里线程的回调函数地址为申请到的内存空间的首地址，其中存贮这OPCode&#13;
+		0, 0, 0);//这里不需要传递参数&#13;
+	//5.等待远程线程结束&#13;
+	WaitForSingleObject(hThread, -1);&#13;
+	//6.释放资源&#13;
+	VirtualFreeEx(hProcess, lpBuf, 0, MEM_RELEASE);&#13;
+	CloseHandle(hProcess);&#13;
+}&#13;
+&#13;
+//要被注入的dll的路径&#13;
+#define DLL_PATH "E:\\15pb学习\\15pb\\老师日常笔记\\正式班第二阶段\\正式班pe文件结构\\解压\\Windows原理Day005\\Windows原理Day006\\Debug\\TestDll.dll"&#13;
+#define DLL_PATH2 "D:\\ProgramVS\\Windows原理Day006\\Debug\\内联Hook.dll"&#13;
+#define DLL_PATH3 "D:\\ProgramVS\\Windows原理Day006\\Debug\\IAT-hook.dll"&#13;
+&#13;
+int _tmain(int argc, _TCHAR* argv[])&#13;
+{&#13;
+	//dll注入&#13;
+	printf("Pid:");//获取要被注入的进程的PID&#13;
+	DWORD dwPid;&#13;
+	scanf_s("%d", &amp;dwPid);&#13;
+	InjectDll(DLL_PATH, dwPid);//dll注入&#13;
+&#13;
+ 	//__asm  //OPCode的汇编指令&#13;
+ 	//{&#13;
+ 	//	push 0;&#13;
+ 	//	push 0;&#13;
+ 	//	push 0;&#13;
+ 	//	push 0;&#13;
+ 	//	mov eax, 0x11111111; //函数地址&#13;
+ 	//	call eax;&#13;
+ 	//}&#13;
+&#13;
+ 	//OPcode注入&#13;
+	char code[] = {                  //OPCode的机器码&#13;
+ 		0x6A, 0x00, 0x6A, 0x00, 0x6A, &#13;
+ 		0x00, 0x6A, 0x00, 0xB8, &#13;
+ 		0x11, 0x11, 0x11, 0x11, //这里保存在目的进程中被调用的函数的地址&#13;
+ 		0xFF, 0xD0&#13;
+ 	};&#13;
+ 	*(DWORD*)&amp;code[9] = 0x76228290;//目的进程中MessageBox函数的虚拟内存地址设置在OPCode中&#13;
+ 	InjectOpCode(code,15232,sizeof(code));//OPCode注入&#13;
+&#13;
+	system("pause");&#13;
+	return 0;&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="7j5ff2gh0kaj207h6mhajl64sg">&nbsp;&nbsp;注意如果要注入的进程为32位windows图形界面程序，则解决方案和具体项目的配置管理器均需要设置为win32，从而匹配对应的系统环境</a>
+</h3>
+<h3 class="topic">
+<a name="4eaa7kfumve6eeeta3ijehqg79">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class51day0420(hook%E7%AC%AC%E4%B8%80%E5%A4%A9)_files/0pqbq186qgjluin2kjbaq8bqts.png"></p>
+<h3 class="topic">
+<a name="1mfsj8a14h4b3dsortt5hnd25i">&nbsp;&nbsp;同理如果要注入的进程为32位windows控制台程序，则使用x86作为解决方案和具体项目的管理器配置</a>
+</h3>
+<h2 class="topic">
+<a name="1d546dhcp4n3qbb0odis020t0c">hook（拦截）</a>
+</h2>
+<h3 class="topic">
+<a name="4nhpvhot92spj0vpopnphamh9m">&nbsp;由系统提供的消息Hook机制</a>
+</h3>
+<h3 class="topic">
+<a name="7nc4qtuve1rfn2lcid2j05o3u4">&nbsp;&nbsp;将windows消息循环中的特定消息进行拦截</a>
+</h3>
+<h3 class="topic">
+<a name="5mtsh2on299svr7a8qvfe0m569">&nbsp;&nbsp;&nbsp;消息hook是在系统消息队列将消息分发到不同窗口的消息队列的过程中，对消息进行拦截，并执行不同的代码</a>
+</h3>
+<h3 class="topic">
+<a name="716ukkn69bs0fhgaspnbvgvp20">&nbsp;&nbsp;多个钩子会形成一个钩子链，被拦截的消息会在钩子链中传递(前提是使用了相关函数)，如果多个钩子拦截同一种消息，则消息会被勾中多次，不同的消息钩子函数均会被执行</a>
+</h3>
+<h3 class="topic">
+<a name="7qeqaen3ubkd631oa1r22ghvf2">&nbsp;&nbsp;相关api</a>
+</h3>
+<h3 class="topic">
+<a name="3pedq4r4vr40io7qfc9ej9prsb">&nbsp;&nbsp;&nbsp;设置钩子&#13;
+SetWindowsHookEx</a>
+</h3>
+<h3 class="topic">
+<a name="4o1ao405bmi721v67uqnsp3f43">&nbsp;&nbsp;&nbsp;&nbsp;参数</a>
+</h3>
+<h3 class="topic">
+<a name="076p17etmjci7rda4lhc3ahljm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;钩子类型</a>
+</h3>
+<h3 class="topic">
+<a name="1i585tkf5kld3uppjbf54age8q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;即hook什么类型的消息</a>
+</h3>
+<h3 class="topic">
+<a name="4e7dn5oc4e60uolv0au7pjtkpv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;钩子函数</a>
+</h3>
+<h3 class="topic">
+<a name="3oe77vnr4j9oboc4drfkkaopk6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;类似于回调函数，当对应消息被勾中，会执行钩子函数中的代码</a>
+</h3>
+<h3 class="topic">
+<a name="4a8fd8t769j42n7erbnd9v1j3o">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;应用程序示例句柄</a>
+</h3>
+<h3 class="topic">
+<a name="1ps3d4bjhrcpaasuhkje3mhs3e">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;表示当前消息钩子属于哪个模块</a>
+</h3>
+<h3 class="topic">
+<a name="74sglg7bckigcd34rrk0lb3p4v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;是钩子所在的dll的全局示例句柄</a>
+</h3>
+<h3 class="topic">
+<a name="1fb3j5u212dk43ls7n43adlo4e">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;欲钩住的线程</a>
+</h3>
+<h3 class="topic">
+<a name="4p90uschv02i876f89euhjj1up">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果为0则不指定要勾取线程，即针对所有的线程只要触发钩子消息均会被勾中</a>
+</h3>
+<h3 class="topic">
+<a name="3p338lrkf7ppbgls5913gttikm">&nbsp;&nbsp;&nbsp;&nbsp;失败返回值为0</a>
+</h3>
+<h3 class="topic">
+<a name="1h5mu0punmbenoqmlvqqld4eja">&nbsp;&nbsp;&nbsp;为钩子链中的下一个子程序设置钩子&#13;
+CallNextHookEx</a>
+</h3>
+<h3 class="topic">
+<a name="1f767ftakatrglnovsbiuvomvr">&nbsp;&nbsp;&nbsp;&nbsp;将被hook的消息继续往下传</a>
+</h3>
+<h3 class="topic">
+<a name="193qmh6bd031csfirv2qdvq7hl">&nbsp;&nbsp;&nbsp;&nbsp;这个函数会主要用于将钩子截获到的消息传递给钩子链表的下一个钩子，用于判断下一个钩子是否会勾取该消息</a>
+</h3>
+<h3 class="topic">
+<a name="5ts4ipkkmlbf1cf4umquarqk5q">&nbsp;&nbsp;&nbsp;&nbsp;如果不调用该函数，则被勾取的消息就会停止在钩子中，不会继续传递到原本响应该消息的窗口中</a>
+</h3>
+<h3 class="topic">
+<a name="28mprjh6uig4k57q8fviplug9n">&nbsp;&nbsp;&nbsp;卸载钩子&#13;
+UnhookWindowsHookEx</a>
+</h3>
+<h3 class="topic">
+<a name="61bepghjm4s2mopgp53t74mfr0">&nbsp;&nbsp;注意</a>
+</h3>
+<h3 class="topic">
+<a name="7r38gu2okknssnnoshg6nsefek">&nbsp;&nbsp;&nbsp;钩子必须写在在dll中</a>
+</h3>
+<h3 class="topic">
+<a name="7kj3592vlvnrhthislfq9trrsq">&nbsp;&nbsp;&nbsp;&nbsp;并在dll中定义全局实例句柄，在设置钩子的时候作为参数传入，用于表示该钩子属于哪一个dll模块</a>
+</h3>
+<h3 class="topic">
+<a name="07qjp7dv69hcobtec0kq27fdpb">&nbsp;&nbsp;&nbsp;&nbsp;写好的dll需要进行编译，然后在被hook的程序中根据路径导入dll执行hook</a>
+</h3>
+<h3 class="topic">
+<a name="6psau4te2hm5v47r58i6qn8ct4">&nbsp;&nbsp;&nbsp;&nbsp;被hook的图形化界程序需要包含该dll，才能被hook，即在图形化界面的初始化函数中使用LoadLibrary和GetProcAddress函数导入dll中的hook函数</a>
+</h3>
+<h3 class="topic">
+<a name="4f21dpi5rf0opg8e16jav4ggjk">&nbsp;&nbsp;&nbsp;DbgView工具</a>
+</h3>
+<h3 class="topic">
+<a name="573dqjiivd36i1255m8dtrfbg6">&nbsp;&nbsp;&nbsp;&nbsp;Sysinternals公司的系列调试工具。&#13;
+debugview 可以捕获程序中由TRACE(debug版本)和OutputDebugString输出的信息。&#13;
+&#13;
+Debug信息捕获软件&#13;
+  可以很方便的捕获系统实时输出的Debug信息，并保存为日志文件。可以远程捕获服务器上的Debug信息。  比较方便开发人员在系统发布前监控一些系统流程和异常，甚至在系统不大的情况下，更能在部署后进行远程监控功能。 </a>
+</h3>
+<h3 class="topic">
+<a name="061qpm9l22sb6ii0kvd0qen4al">&nbsp;&nbsp;&nbsp;&nbsp;可以用来查看hook结果</a>
+</h3>
+<h3 class="topic">
+<a name="2c0aap4i8eaqg2dhj5lnv4gfll">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用OutputDebugStringA()输出hook信息，输出的信息可以在DbgView工具中显示出来</a>
+</h3>
+<h3 class="topic">
+<a name="3fd9om2lorh5drk82qsdgafm3f">&nbsp;&nbsp;&nbsp;创建的钩子如果没有指定线程，默认会检测当前所有的线程，即当前主机中无论哪个窗口程序产生了相应消息，均会被hook到，如果需要分辨相应的消息是哪个窗口发生的，可以使用以下思路</a>
+</h3>
+<h3 class="topic">
+<a name="47lfs182hk4ollm098i0scnusl">&nbsp;&nbsp;&nbsp;&nbsp;FindWindows</a>
+</h3>
+<h3 class="topic">
+<a name="7648r2giq2rp0nmovlq7fks77o">&nbsp;&nbsp;&nbsp;&nbsp;GetWindowTextA</a>
+</h3>
+<h3 class="topic">
+<a name="3bt3ponac5t43vqij4pe5le89v">&nbsp;&nbsp;&nbsp;&nbsp;如何判断被hook的消息是哪个窗口发送的</a>
+</h3>
+<h3 class="topic">
+<a name="0nsbjk4mv17tve74qjrjqro273">&nbsp;&nbsp;&nbsp;&nbsp;QueryFullProcessImageNameA，</a>
+</h3>
+<h3 class="topic">
+<a name="70vhiq91c6v7v4n2dga8tofcs2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;检索指定进程的可执行映像的全名。</a>
+</h3>
+<h3 class="topic">
+<a name="65jqu3rejuj719mtqm9k3eeo9q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将检索到的文件全名与指定的程序的名字进行对比</a>
+</h3>
+<h3 class="topic">
+<a name="12koevvgmq2u7fnb8o27ngmd65">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以获取到进程的名字，从而获知当前是哪个程序被hook了</a>
+</h3>
+<h3 class="topic">
+<a name="25h93pp749j4n078v6i0f7qtur">&nbsp;&nbsp;&nbsp;&nbsp;可以使用QueryFullProcessImageNameA函数用于获取当前进程的可执行映像的全名，即当前进程对应的程序名</a>
+</h3>
+<h3 class="topic">
+<a name="20e53i1hgr42tbac61rgqdhnl1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以将获得的程序名与指定的程序名进行比较，判断产生的消息的进程是否为指定进程</a>
+</h3>
+<h3 class="topic">
+<a name="4uc7gd9f5sdv09cmbevntdecrd">&nbsp;&nbsp;&nbsp;当消息钩子钩住一个GUI线程时，如果被勾住的线程所在的进程没有加载钩子函数的dll，系统会强制将该dll加载到对方进程中，这就导致所有被勾中的进程都会强制加载钩子函数的dll，由此机制，完成dll的注入</a>
+</h3>
+<h3 class="topic">
+<a name="7ljojttkvc3foe1iiifaugbomu">&nbsp;&nbsp;&nbsp;&nbsp;可以自动注入到被勾住的线程中</a>
+</h3>
+<h3 class="topic">
+<a name="3kstj0o57vmk1aumtqpsajjjts">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class51day0420(hook%E7%AC%AC%E4%B8%80%E5%A4%A9)_files/1k282tu9c1no51dg5h1o6847t2.png"></p>
+<h3 class="topic">
+<a name="77oclb2jvgh2kd1vj8vi3b5umb">&nbsp;&nbsp;&nbsp;&nbsp;利用此特点可以将dll自动注入到大量的进程中</a>
+</h3>
+<h3 class="topic">
+<a name="34ak5dpu43933nsgvk97pasv26">&nbsp;&nbsp;&nbsp;dll中的代码可以调试</a>
+</h3>
+<h3 class="topic">
+<a name="75em6o923faera8kach3altsb8">&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="5ipglpracv02cgfnpbuapid798">&nbsp;&nbsp;&nbsp;消息钩子DLL</a>
+</h3>
+<h3 class="topic">
+<a name="1qg8g67nm1gocc12ri6d7aqpg6">&nbsp;&nbsp;&nbsp;&nbsp;// dllmain.cpp : 定义 DLL 应用程序的入口点。&#13;
+#include "stdafx.h"&#13;
+#include &lt;windows.h&gt;&#13;
+#include &lt;stdlib.h&gt;&#13;
+#include &lt;stdio.h&gt;&#13;
+#include &lt;Shlwapi.h&gt;&#13;
+#pragma comment(lib,"Shlwapi.lib")&#13;
+//创建钩子的时候需要传入实例句柄，用于标识该dll属于哪个模块&#13;
+HMODULE g_Histance;&#13;
+HHOOK g_Hook; //钩子的句柄，需要设置位全局变量，在安装钩子的时候获得，在卸载钩子以及传递被勾中的消息时用到&#13;
+&#13;
+//自己实现的字符串比较函数&#13;
+bool strcmp1(char* p1, char* p2)&#13;
+{&#13;
+	while (*p1)&#13;
+	{&#13;
+		if (*p1 != *p2)&#13;
+		{&#13;
+			return false;&#13;
+		}&#13;
+		else&#13;
+		{&#13;
+			p1++;&#13;
+			p2++;&#13;
+		}&#13;
+	}&#13;
+	if (*p1 == 0 &amp;&amp; *p2 == 0)&#13;
+	{&#13;
+		return true;&#13;
+	}&#13;
+	return false;&#13;
+}&#13;
+&#13;
+LRESULT CALLBACK KeyboardProc(&#13;
+	int code,           // 消息类型&#13;
+	WPARAM wParam,      // 虚拟码&#13;
+	LPARAM lParam) {   // 按键信息&#13;
+	// 判断是否wParam与lParam都有键盘消息，是的话则执行打印操作&#13;
+	if (code == HC_ACTION){&#13;
+		char strTitle[100] = {""};&#13;
+		char strProc[100] = {};&#13;
+		DWORD dwSize = 100;//该变量存放映像文件名地址空间的大小，在QueryFullProcessImageNameA函数执行完之后dwSize中存放取得的映像文件名得字符数&#13;
+		//该函数用于获取指定进程的内存映像文件名（比如E:\\QQ.exe等）&#13;
+		QueryFullProcessImageNameA(GetCurrentProcess(),//当前进程句柄，即该函数获取当前进程的映像文件名&#13;
+			0, strProc, &amp;dwSize);//0表示得到的姓名是32位windows路径格式的，储存映像文件名的地址空间，该地址空间的大小，&#13;
+		char* pStr = PathFindFileNameA(strProc);//根据之前得到的文件路径得到该路径对应的文件名（比如QQ.exe等）&#13;
+		OutputDebugStringA(pStr);//调试信息输出该文件名&#13;
+        &#13;
+		//比较获得的文件名是否为指定文件名，即判断此时的勾中的消息所属的GUI进程是不是指定的GUI进程  		&#13;
+		if (strcmp1(pStr, "test.exe"))//使用自定义的字符串比较函数比较获得的文件名和指定文件名&#13;
+		{	&#13;
+			OutputDebugStringA("勾取到指定窗口:test.exe的按键消息");&#13;
+			HWND hWnd = FindWindow(NULL, L"RVAtoFOA");&#13;
+			GetWindowTextA(hWnd, strTitle, 100);&#13;
+			OutputDebugStringA(strTitle);//输出该窗口的标题&#13;
+		}&#13;
+&#13;
+		BYTE KeyState[256] = { 0 };&#13;
+		if (GetKeyboardState(KeyState)) {// 将256个虚拟键的状态拷贝到指定的缓冲区中，如果成功则继续&#13;
+			// 得到第16&ndash;23位，键盘虚拟码&#13;
+			LONG  KeyInfo = lParam;//Lparam中存放勾取到的按键消息的按键信息&#13;
+			UINT  keyCode = (KeyInfo &gt;&gt; 16) &amp; 0x00ff;&#13;
+			WCHAR wKeyCode = 0;&#13;
+			ToAscii((UINT)wParam, keyCode, KeyState, (LPWORD)&amp;wKeyCode, 0);&#13;
+			// 将其打印出来&#13;
+			CHAR szInfo[10] = { 0 };&#13;
+			sprintf_s(szInfo, _countof(szInfo), "Hook_%c", wKeyCode);&#13;
+			OutputDebugStringA(szInfo);//将按键的信息打印为Debug信息&#13;
+			return 0;&#13;
+		}&#13;
+	}&#13;
+	//使用CallNextHookEx函数将勾中的消息在钩子链中传递下去&#13;
+	//该函数不会默认调用，需要主动调用&#13;
+	return CallNextHookEx(g_Hook, code, wParam, lParam);&#13;
+}&#13;
+&#13;
+&#13;
+// 导出函数：安装钩子，当触发Hook消息WH_KEYBOARD后，目标进程加载DLL&#13;
+extern "C" __declspec(dllexport)//使用__declspec将InstallHook导出&#13;
+BOOL InstallHook() {&#13;
+	g_Hook = SetWindowsHookEx(WH_KEYBOARD,//该钩子检测WH_KEYBOARD消息（即键盘消息），该消息发生时会被勾中&#13;
+		KeyboardProc, g_Histance, 0);//当该消息发生时运行回调函数，实例化句柄，检测所有的线程&#13;
+	if (NULL == g_Hook)&#13;
+		return FALSE;&#13;
+	OutputDebugStringA("hook!!!success!!!!\n");//输出Debug字符串，可以使用DbgView工具查看输出的消息&#13;
+	return TRUE;&#13;
+}&#13;
+&#13;
+// 导出函数：卸载钩子&#13;
+extern "C" __declspec(dllexport)//使用__declspec将UninstallHook导出&#13;
+BOOL UninstallHook() {&#13;
+	if (NULL == g_Hook)&#13;
+		return FALSE;&#13;
+	return UnhookWindowsHookEx(g_Hook);&#13;
+}&#13;
+&#13;
+&#13;
+&#13;
+BOOL APIENTRY DllMain( HMODULE hModule,&#13;
+                       DWORD  ul_reason_for_call,&#13;
+                       LPVOID lpReserved&#13;
+					 )&#13;
+{&#13;
+	switch (ul_reason_for_call)&#13;
+	{&#13;
+	case DLL_PROCESS_ATTACH:&#13;
+		g_Histance = hModule;//模块句柄赋值&#13;
+	case DLL_THREAD_ATTACH:&#13;
+	case DLL_THREAD_DETACH:&#13;
+	case DLL_PROCESS_DETACH:&#13;
+		break;&#13;
+	}&#13;
+	return TRUE;&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="6o9tipninoc5rarpgt6oqi3bee">&nbsp;&nbsp;以上代码的主要目的是将系统钩子函数写成一个dll，并在需要使用钩子的时候让程序加载该dll并从中导出安装钩子的函数和卸载钩子的函数</a>
+</h3>
+<h3 class="topic">
+<a name="7p2ch06agbum08o7br3ohftjn6">&nbsp;&nbsp;如果想让程序加载该dll之后自动在本进程中设置钩子，可以在dllmain函数中调用钩子设置函数</a>
+</h3>
+<h3 class="topic">
+<a name="5vna98bs4li5ergtkt18r67tli">&nbsp;自定义的Hook编程技巧</a>
+</h3>
+<h3 class="topic">
+<a name="5mldqllb07dtoqm0ajoupihjfk">&nbsp;&nbsp;内联hook</a>
+</h3>
+<h3 class="topic">
+<a name="4kajo2jamjvi5advfqku7j68ef">&nbsp;&nbsp;&nbsp;修改机器码</a>
+</h3>
+<h3 class="topic">
+<a name="1elvlkm8bm6h13ap6ul72eoue8">&nbsp;&nbsp;&nbsp;改变程序原有的执行流程，让程序执行自定义的代码</a>
+</h3>
+<h3 class="topic">
+<a name="005kloepm59u59f0joqqefdokg">&nbsp;&nbsp;&nbsp;将jmp指令写入目的程序的二进制编码中，jmp的目的地址储存着自定义代码，通过jmp改变程序执行流程，使其执行自定义函数</a>
+</h3>
+<h3 class="topic">
+<a name="4tv9q50cdq0svs0ohr983icraq">&nbsp;&nbsp;&nbsp;地址偏移换算</a>
+</h3>
+<h3 class="topic">
+<a name="2oebj7q5etij3bnu7artfiukue">&nbsp;&nbsp;&nbsp;&nbsp;jmp call指令的操作数是一个地址的偏移量</a>
+</h3>
+<h3 class="topic">
+<a name="09pum1rjckbg0lmcd189arjiui">&nbsp;&nbsp;&nbsp;&nbsp;地址偏移=目标地址（恶意代码）-jmp所在地址（）-jmp指令的长度（一般是5）</a>
+</h3>
+<h3 class="topic">
+<a name="45ji34uq110kbgqfd4nf0j6e8k">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class51day0420(hook%E7%AC%AC%E4%B8%80%E5%A4%A9)_files/46iauca7bfk7u0oh5n18nisq8e.png"></p>
+<h3 class="topic">
+<a name="1oe08fm2r8ikbbslk0crkt7cvm">&nbsp;&nbsp;&nbsp;hookMessageBox</a>
+</h3>
+<h3 class="topic">
+<a name="4fjlanuatad896hl8qsr5o2l8h">&nbsp;&nbsp;&nbsp;&nbsp;目的：将系统的MessageBox函数hoook为自己的MyMessageBox函数执行</a>
+</h3>
+<h3 class="topic">
+<a name="0559creqmb87kgsngl74c08n2j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意在自己的MB函数中因为需要调用系统的MB，所以需要先卸载钩子，执行系统MB，再安装钩子</a>
+</h3>
+<h3 class="topic">
+<a name="266v6k2vf9kuah9fg7kk7sb96t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;需要准备两个全局变量，用于保存原来的OPCode以及新的OPCode</a>
+</h3>
+<h3 class="topic">
+<a name="6q5d4hivie457ejeo112dv7tqh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hook安装函数</a>
+</h3>
+<h3 class="topic">
+<a name="0e9uq5lkh4nms0k2dmbrfah09n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;先保存原OPCode</a>
+</h3>
+<h3 class="topic">
+<a name="4pm8oe350893kc6pkod3b0sao5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;计算偏移量</a>
+</h3>
+<h3 class="topic">
+<a name="5a9626druamig4h8okdjtdq5qk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;我MB的地址-系统MB的地址-jmp语句长度（一般为5）</a>
+</h3>
+<h3 class="topic">
+<a name="06oab77fkqmbmlrl8uvhrl9vtc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将偏移量结合到新OPCode中</a>
+</h3>
+<h3 class="topic">
+<a name="0bso952bhl4j8d09b046vl3e16">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;更改原来的MB所在的内存空间的属性</a>
+</h3>
+<h3 class="topic">
+<a name="038knd4pu4d9ads5ssqpbicb56">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;修改为可写</a>
+</h3>
+<h3 class="topic">
+<a name="25lug31b0s1kd3i2q25dtvb0r1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将新的OPCode写入该内存</a>
+</h3>
+<h3 class="topic">
+<a name="4etb4dhmc5v2c9vum9m7u6e2k9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;还原内存空间原来的属性</a>
+</h3>
+<h3 class="topic">
+<a name="2rj14vu9gb787odtbejvt9tekg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hook卸载函数</a>
+</h3>
+<h3 class="topic">
+<a name="0t7nck25e4egmqjhsao3tv5hpv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;改变内存空间的保护模式为可读可写，注意同时也需要保存该段内存原来的保护属性，用于时候恢复使用</a>
+</h3>
+<h3 class="topic">
+<a name="2rulp9t2b9l7t6rbja4i979f0v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将原来的代码恢复到指定内存空间</a>
+</h3>
+<h3 class="topic">
+<a name="5c4e198ljh4q2kas857qhiorfm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将内存空间的保护模式恢复，从而不妨碍卸载hook之后程序的正常执行</a>
+</h3>
+<h3 class="topic">
+<a name="0ric7um02ne1ttgklimnu0m129">&nbsp;&nbsp;&nbsp;可以将以上代码封装在dll中，并且使用dll注入将dll注入到其他进程中，相当于将其他程序的中的api进行hook&#13;
+dll一旦被加载，则会执行安装hook函数</a>
+</h3>
+<h3 class="topic">
+<a name="0hn9tg07u1b8edq2u57bqs9r4p">&nbsp;&nbsp;&nbsp;注意自己的函数要与被hook的函数参数一致，从而保证堆栈的平衡</a>
+</h3>
+<h3 class="topic">
+<a name="3u63piaj6ro2pvjthtts6197sv">&nbsp;&nbsp;&nbsp;hook用作程序保护</a>
+</h3>
+<h3 class="topic">
+<a name="3fqgdfuqr6flnc51c73n4ki76p">&nbsp;&nbsp;&nbsp;&nbsp;自己的程序可以使用hook监控程序中的api是否被修改</a>
+</h3>
+<h3 class="topic">
+<a name="1krbgtgthhhi4m1e3okpbrrlsk">&nbsp;&nbsp;&nbsp;如果要hook的api为MessageBox，则需要将jmp指令的opcode写在原来MessageBox函数的内存起始位置，这样当程序中调用MessageBox函数之后，就会先执行jmp指令，跳转到我们指定的opcode中执行</a>
+</h3>
+<h3 class="topic">
+<a name="76tirmjng2pj7dmt64c1rfo4um">&nbsp;&nbsp;&nbsp;执行完自定义的MessageBox之后，会根据当前堆栈中的函数返回地址返回到正常的程序执行流程中，继续执行代码</a>
+</h3>
+<h3 class="topic">
+<a name="3td5qiufvj9uv70g079qv98orp">&nbsp;&nbsp;&nbsp;&nbsp;前提是自定义的MB函数的函数原型需要与被hook的函数先相同，才能保证堆栈平衡</a>
+</h3>
+<h3 class="topic">
+<a name="377ufdse3ofq1gqpg804jfpomv">&nbsp;&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="78tifsv9b3tp76trpitf3hdtip">&nbsp;&nbsp;&nbsp;&nbsp;#include "stdafx.h"&#13;
+#include &lt;windows.h&gt;&#13;
+&#13;
+//声明自己的MB函数，主语需要与原来的MB函数参数一致，&#13;
+//这样用自己的MB函数替换系统MB函数到的时候，才不会堆栈不平衡&#13;
+int WINAPI MyMessageBoxA(&#13;
+_In_opt_ HWND hWnd,&#13;
+_In_opt_ LPCSTR lpText,&#13;
+_In_opt_ LPCSTR lpCaption,&#13;
+_In_ UINT uType);&#13;
+&#13;
+char g_OldCode[5];  //目的进程中虚拟内存空间的原有代码，用来恢复&#13;
+char g_NewCode[5] = { 0xE9 }; //自己的代码,第一字节的OPCode对应JMP，之后将jmp的偏移地址计算后填入该数组&#13;
+//卸载钩子&#13;
+void UnHook()&#13;
+{&#13;
+	DWORD dwOld;&#13;
+	//该函数将MessageBoxA地址为首地址的5个字节内存空间保护模式设置为可读可写&#13;
+	//因为钩子dll是作为dll加载到被勾取的程序中的，所以这里MessageBoxA的函数名&#13;
+	//就代表该函数在进程中虚拟内存空间的首地址&#13;
+	//dwOld用于保存该端内存空间之前的内存保护模式，用于在数据写入完毕后恢复该端内存的内存保护模式&#13;
+	VirtualProtect(MessageBoxA, 5,&#13;
+		PAGE_EXECUTE_READWRITE, &amp;dwOld);&#13;
+	//将以前的OPCode恢复&#13;
+	memcpy(MessageBoxA, g_OldCode, 5);&#13;
+	//将该段内存空间恢复为原来的保护模式&#13;
+	VirtualProtect(MessageBoxA, 5,&#13;
+		dwOld, &amp;dwOld);&#13;
+}&#13;
+//装钩子&#13;
+void OnHook()&#13;
+{&#13;
+	//保存原字节&#13;
+	memcpy(g_OldCode, MessageBoxA, 5);&#13;
+	//计算偏移量&#13;
+	//这里MyMessageBoxA是自己函数在虚拟内存中的地址&#13;
+	//MessageBoxA是进程空间中原本函数的首地址&#13;
+	//5是jmp指令的长度&#13;
+	DWORD dwOffset = (DWORD)MyMessageBoxA -&#13;
+		(DWORD)MessageBoxA - 5;&#13;
+	//将偏移值保存到新的OPCode中，得到需要内联的OPCode&#13;
+	memcpy(g_NewCode + 1, &amp;dwOffset, 4);&#13;
+	//改变OPCode插入位置的虚拟内存的保护模式，为插入做好准备&#13;
+	//这里MessageBoxA函数的起始地址将会被替换为OPCode，&#13;
+	//则一旦程序调用MessageBoxA函数，就会执行OPCode，跳转到&#13;
+	//自定义的MB函数执行&#13;
+	DWORD dwOld;&#13;
+	VirtualProtect(MessageBoxA, 5,&#13;
+		PAGE_EXECUTE_READWRITE, &amp;dwOld);&#13;
+	//将OPCode替换到MessageBoxA函数首地址的位置&#13;
+	memcpy(MessageBoxA, g_NewCode, 5);&#13;
+	//恢复该内存地址原有的保护属性，为执行该段代码做好准备&#13;
+	VirtualProtect(MessageBoxA, 5,&#13;
+		dwOld, &amp;dwOld);&#13;
+}&#13;
+&#13;
+int WINAPI MyMessageBoxA(&#13;
+_In_opt_ HWND hWnd,&#13;
+_In_opt_ LPCSTR lpText,&#13;
+_In_opt_ LPCSTR lpCaption,&#13;
+_In_ UINT uType)&#13;
+{&#13;
+	lpText = "hello ya";&#13;
+	lpCaption = "soga";&#13;
+	//先卸载钩子&#13;
+	UnHook();&#13;
+	//执行系统的MeaaageBox函数&#13;
+	int r = MessageBoxA(hWnd, lpText, lpCaption, uType);&#13;
+	//安装钩子&#13;
+	OnHook();&#13;
+	return r;&#13;
+}&#13;
+&#13;
+BOOL APIENTRY DllMain( HMODULE hModule,&#13;
+                       DWORD  ul_reason_for_call,&#13;
+                       LPVOID lpReserved&#13;
+					 )&#13;
+{&#13;
+	switch (ul_reason_for_call)&#13;
+	{&#13;
+	case DLL_PROCESS_ATTACH:&#13;
+		OnHook();//该dll一旦被进程加载，就会HOOK进程中的MessageBoxA函数&#13;
+	case DLL_THREAD_ATTACH:&#13;
+	case DLL_THREAD_DETACH:&#13;
+	case DLL_PROCESS_DETACH:&#13;
+		break;&#13;
+	}&#13;
+	return TRUE;&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="0d40dqc8c2vhoeuj99ht66uuja">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class51day0420(hook%E7%AC%AC%E4%B8%80%E5%A4%A9)_files/4501nn6usked7f28n8822pqhie.png"></p>
+<h3 class="topic">
+<a name="1j75db3q3115ltq95fcb8i6ole">&nbsp;&nbsp;函数地址hook（即IAT HOOK）</a>
+</h3>
+<h3 class="topic">
+<a name="74l92o2jemnvi69oan6velbphi">&nbsp;&nbsp;&nbsp;将IAT中对应模块的导入函数地址修改为自定义函数的地址，使得程序在调用被hook的函数时，在导入表中找到的是自定义函数的地址，并执行自定义函数</a>
+</h3>
+<h3 class="topic">
+<a name="6nvbu7umbrrb3qf09r18agisqf">&nbsp;&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="579eibfephmshfekc95lhshp02">&nbsp;&nbsp;&nbsp;&nbsp;参数</a>
+</h3>
+<h3 class="topic">
+<a name="6emoab3p1a4jjprk7jp7bs2hf2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;需要被hook的api所在的dll的名字</a>
+</h3>
+<h3 class="topic">
+<a name="4tdkrcpdi5dmlhhcf478ir0ka0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;需要被hook的api的名字</a>
+</h3>
+<h3 class="topic">
+<a name="6vj1hurjtv5i4h3q7i1ojuhqc4">&nbsp;&nbsp;&nbsp;&nbsp;遍历IAT</a>
+</h3>
+<h3 class="topic">
+<a name="05h0t9cv6kqnrtvj573ns64pf5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过GetModuleHandle(NULL)获取的当前进程的加载基址</a>
+</h3>
+<h3 class="topic">
+<a name="5s9akbmri0vi0ki7ab2clfed1u">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;找到导入表，遍历iat</a>
+</h3>
+<h3 class="topic">
+<a name="5ud35pd25q4ibq06gfph6bn515">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过加载基址获取dos头</a>
+</h3>
+<h3 class="topic">
+<a name="78kt5i75lart91igat082q3fl4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;获取nt头</a>
+</h3>
+<h3 class="topic">
+<a name="1aj3p0hj7209eqcu3ft7rstt6t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;获取扩展头中的数据目录表的下标为1的项</a>
+</h3>
+<h3 class="topic">
+<a name="7dg8d463ugv2glgs2rg8rl8m3c">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将导入表的rva转为va</a>
+</h3>
+<h3 class="topic">
+<a name="2advt3oen3fjb7d4d128k97128">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;因为此时程序已经在内存中，所以可以直接使用va</a>
+</h3>
+<h3 class="topic">
+<a name="49nlou99sais4d6v1iltki9lsh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;遍历iat</a>
+</h3>
+<h3 class="topic">
+<a name="35usik7vk4pd8faei4nnqk9g4v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;找到模块的名字，与我们指定的模块名对比</a>
+</h3>
+<h3 class="topic">
+<a name="3qncl6o8c8mn7fpnb3avn98agn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用函数_stricmp()进行不区分大小写的字符串比较</a>
+</h3>
+<h3 class="topic">
+<a name="1e16rum4cincdib68hfodd4e5g">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;找到对应模块</a>
+</h3>
+<h3 class="topic">
+<a name="52p3hrfpm0gj4souc5p87qr765">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在模块中查找要hook的函数</a>
+</h3>
+<h3 class="topic">
+<a name="2bi5nlrj6n5mv238htv3anvkv4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过导入名称表找到对应要hook的函数</a>
+</h3>
+<h3 class="topic">
+<a name="60onfoojkgqa4hpup8ib4kk9ca">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;导入名称表中函数与导入地址表中的函数一一对应，只要找到函数名称表的下标，以该下标找导入地址表就可以找到对应函数的地址</a>
+</h3>
+<h3 class="topic">
+<a name="3paogsfng3afak07ehdgkfr1o6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;进行判断导入函数是通过名称导入还是序号导入，仅对名称导入进行判断</a>
+</h3>
+<h3 class="topic">
+<a name="6523cckpk1pj1a5jnum60sdqc2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;找到对应的名称结构体，使用_stricmp()进行函数名比较</a>
+</h3>
+<h3 class="topic">
+<a name="7qabo82olj9d4sn11nt75ga70e">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;找到对应函数下标</a>
+</h3>
+<h3 class="topic">
+<a name="76lfpv8oo9tqu7t7of8kjctv0g">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;保存被HOOK的API的地址值</a>
+</h3>
+<h3 class="topic">
+<a name="1qe968elgre76o5bjjsp3np562">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用于恢复</a>
+</h3>
+<h3 class="topic">
+<a name="72ar0pjscptc2aj03f93m3f86s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;保存原api地址</a>
+</h3>
+<h3 class="topic">
+<a name="2noc6rl90l5hvbrne8q1fin48i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;创建一个指针，指向一个IAT表中保存原API地址的位置</a>
+</h3>
+<h3 class="topic">
+<a name="06ff181i9n5pg60aco78j23qv6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用于保存原api的地址在iat表中的位置</a>
+</h3>
+<h3 class="topic">
+<a name="46f1gq0rqn562o131nsukb9mid">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;修改我的api地址</a>
+</h3>
+<h3 class="topic">
+<a name="7c48cjgvoprouh8uucsmqo2fkj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意需要修改内存空间的读写权限</a>
+</h3>
+<h3 class="topic">
+<a name="37smgvv0qg7tlulflf60hbinql">&nbsp;&nbsp;&nbsp;相关知识</a>
+</h3>
+<h3 class="topic">
+<a name="785qprmc276fkl6a6psbcmps99">&nbsp;&nbsp;&nbsp;&nbsp;该hook代码可以封装成dll，使用dll注入将特定进程进行hook</a>
+</h3>
+<h3 class="topic">
+<a name="297lp4t3o942qst4j2snkmcrrd">&nbsp;&nbsp;&nbsp;&nbsp;iat中存储的是函数绝对地址，c++中对函数取地址得到也是绝对地址</a>
+</h3>
+<h3 class="topic">
+<a name="6mu4bgqgss6bor3hmvqvjdup5p">&nbsp;&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="4v2067ke6c18l6hjriaj5cqj1l">&nbsp;&nbsp;&nbsp;&nbsp;#include &lt;Windows.h&gt;&#13;
+#include &lt;string.h&gt;&#13;
+//宏定义，定义指向被HOOK的函数的指针，用于保存被HOOK的函数在虚拟内存空间中的地址&#13;
+typedef int&#13;
+(WINAPI*FP_MessageBoxA)(&#13;
+	_In_opt_ HWND hWnd,&#13;
+	_In_opt_ LPCSTR lpText,&#13;
+	_In_opt_ LPCSTR lpCaption,&#13;
+	_In_ UINT uType);&#13;
+&#13;
+DWORD g_IatAddr; //目用于保存被HOOK的导入函数在IAT表中的位置（即地址），相当于保存被HOOK函数在IAT表中的下标&#13;
+FP_MessageBoxA g_fpFun; //用于保存被HOOK的函数在虚拟内存空间中的地址&#13;
+&#13;
+int WINAPI MyMessageBoxA(&#13;
+	_In_opt_ HWND hWnd,&#13;
+	_In_opt_ LPCSTR lpText,&#13;
+	_In_opt_ LPCSTR lpCaption,&#13;
+	_In_ UINT uType)&#13;
+{&#13;
+	lpText = "HOOK BY IAT";&#13;
+	lpCaption = "soga";&#13;
+	//调用原API&#13;
+	int r = g_fpFun(hWnd, lpText, lpCaption, uType);&#13;
+	return r;&#13;
+}&#13;
+&#13;
+void IatHook(char* pStrDllName, char* pFunName) &#13;
+{&#13;
+	//GetModuleHandle函数可以用于获取当前进程的加载基址&#13;
+	char* pBase = (char*)GetModuleHandle(NULL);&#13;
+&#13;
+	//找到导入表，遍历IAT&#13;
+	PIMAGE_DOS_HEADER pDos = (PIMAGE_DOS_HEADER)pBase;&#13;
+	PIMAGE_NT_HEADERS pNt = (PIMAGE_NT_HEADERS)(pDos-&gt;e_lfanew + pBase);&#13;
+&#13;
+	//得到导入表的相对虚拟地址（RVA）&#13;
+	DWORD dwImportTableTRVA =&#13;
+		pNt-&gt;OptionalHeader.DataDirectory[1].VirtualAddress;&#13;
+&#13;
+	//因为该dll运行的时候整个文件已经在内存中运行起来的，&#13;
+	//导入表的虚拟地址直接使用Rva+加载基址即可，不涉及文件中的Rva转Foa&#13;
+	PIMAGE_IMPORT_DESCRIPTOR pImport =&#13;
+		(PIMAGE_IMPORT_DESCRIPTOR)&#13;
+		(dwImportTableTRVA + pBase);&#13;
+&#13;
+	//遍历导表，导入表以一个全0的结构体结尾，可以用于循环结束条件&#13;
+	while (pImport-&gt;Name)&#13;
+	{&#13;
+		//获得模块名称的存储位置的虚拟地址，这里因为同样无需Rva转Foa&#13;
+		char* pDllname = pImport-&gt;Name + pBase;&#13;
+		//_stricmp不区分大小写比较，比较遍历到的模块与我们想要HOOK的函数所在的模块是否相同&#13;
+		if (!_stricmp(pDllname, pStrDllName))&#13;
+			//if (strcmp1(pDllname, pStrDllName))&#13;
+		{&#13;
+			//找到对应模块&#13;
+			//得到该模块的IAT INT两张表的地址&#13;
+			PDWORD pIAT = (PDWORD)(pImport-&gt;FirstThunk + pBase);&#13;
+			PDWORD pINT = (PDWORD)(pImport-&gt;OriginalFirstThunk + pBase);&#13;
+			//导入名称表和导入地址表以一个全零的结构体结尾，可以用于作为循环停止条件&#13;
+			while (*pINT)&#13;
+			{&#13;
+				//当INT结构体数组中的元素的最高位为1，说明该函数是序号导出的，最高位为0，说明该函数是名称导出的&#13;
+				if (!(*pINT &amp; 0x80000000))//当函数是名称导出时&#13;
+				{&#13;
+					//得到INT元素中指向函数名称结构体的地址&#13;
+					PIMAGE_IMPORT_BY_NAME pName =&#13;
+						(PIMAGE_IMPORT_BY_NAME)&#13;
+						(*pINT + pBase);&#13;
+					//判断函数名称与要HOOK的函数名称是否相同&#13;
+					if (!_stricmp(pName-&gt;Name, pFunName))&#13;
+						//if (strcmp1(pName-&gt;Name, pFunName))&#13;
+					{&#13;
+						//保存要被HOOK的函数在虚拟内存中的地址，之后卸载hook恢复IAT表的时候要用&#13;
+						//注意IAT中保存的都是被导入函数的绝对地址，即在虚拟内存空间中的va，可以直接使用&#13;
+						g_fpFun = (FP_MessageBoxA)*pIAT;&#13;
+&#13;
+						//目用于保存被HOOK的导入函数在IAT表中的位置（即地址），相当于保存被HOOK函数在IAT表中的下标&#13;
+						g_IatAddr = (DWORD)pIAT;&#13;
+&#13;
+						//更改虚拟内存保护属性，为修改IAT表的内容左准备&#13;
+						DWORD dwOld;&#13;
+						VirtualProtect(pIAT, 4, PAGE_READWRITE, &amp;dwOld);&#13;
+						*pIAT = (DWORD)MyMessageBoxA;//使用自定义函数的地址替代原函数地址&#13;
+						VirtualProtect(pIAT, 4, dwOld, &amp;dwOld);//恢复内存保护属性&#13;
+						goto end;&#13;
+					}&#13;
+				}&#13;
+				//下一个函数&#13;
+				pIAT++;&#13;
+				pINT++;&#13;
+			}&#13;
+		}&#13;
+		//下一个模块&#13;
+		pImport++;&#13;
+	}&#13;
+end:;&#13;
+}&#13;
+&#13;
+void UnHook()&#13;
+{&#13;
+	DWORD dwOld;&#13;
+	VirtualProtect((LPVOID)g_IatAddr, 4, PAGE_READWRITE, &amp;dwOld);&#13;
+	*(DWORD*)g_IatAddr = (DWORD)g_fpFun;&#13;
+	VirtualProtect((LPVOID)g_IatAddr, 4, dwOld, &amp;dwOld);&#13;
+}&#13;
+&#13;
+&#13;
+BOOL APIENTRY DllMain(HMODULE hModule,&#13;
+	DWORD  ul_reason_for_call,&#13;
+	LPVOID lpReserved&#13;
+)&#13;
+{&#13;
+	switch (ul_reason_for_call)&#13;
+	{&#13;
+	case DLL_PROCESS_ATTACH:&#13;
+		IatHook("user32.dll", "MessageBoxA");&#13;
+		break;&#13;
+	case DLL_THREAD_ATTACH:&#13;
+	case DLL_THREAD_DETACH:&#13;
+	case DLL_PROCESS_DETACH:&#13;
+		break;&#13;
+	}&#13;
+	return TRUE;&#13;
+}&#13;
+</a>
+</h3>
+<h3 class="topic">
+<a name="2mdl83ev4p30ekchtgqljqro1a">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class51day0420(hook%E7%AC%AC%E4%B8%80%E5%A4%A9)_files/20vgknfa6ekbl2e6gfvs3ommm5.png"></p>
+<h3 class="topic">
+<a name="028u0budfjjvc014fqpc0lk2eb">&nbsp;hook与线程关系紧密，即使当前进程没有执行线程的权限</a>
+</h3>
+</body>
+</html>

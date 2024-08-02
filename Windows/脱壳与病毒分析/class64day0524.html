@@ -1,0 +1,869 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>class64day0524（脱壳与病毒分析第四天）</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="7mf2phqm5njvvpjm89hlr9fs9v">class64day0524（脱壳与病毒分析第四天）</a>
+</h1>
+<h2 class="topic">
+<a name="6ai0ov98ph1rji2tlmt4rt1g7c">脱壳中的一些问题</a>
+</h2>
+<h3 class="topic">
+<a name="3vvoq38kfmi0oilf6svac52sav">&nbsp;拿到程序怎么办：以脱壳为目的，尽可能完成脱壳，不用每个壳都完整分析壳代码</a>
+</h3>
+<h3 class="topic">
+<a name="2ab6i08b6konmo7bprqobqqlo1">&nbsp;api下断之后，要观察堆栈中返回的是主模块还是系统模块，系统模块不需要分析</a>
+</h3>
+<h3 class="topic">
+<a name="3imb4gcfbmurq6dg1djmkofkmc">&nbsp;注意当前分析的模块是不是主模块</a>
+</h3>
+<h3 class="topic">
+<a name="035cnbuh55o2vg06jbiuk9djla">&nbsp;分析过程中应该跟着思路走，而不是跟着工具走</a>
+</h3>
+<h3 class="topic">
+<a name="4tp5v25734pjup5ffee2ishdia">&nbsp;&nbsp;只要堆栈能平衡，可以直接通过设置eip执行任意位置代码</a>
+</h3>
+<h3 class="topic">
+<a name="46lgiv7hhvie9mpiivp7cghf04">&nbsp;不用把每一行地址看懂才能脱壳，只要能分析关键位置的代码即可，直接f7按住，观察寄存器中的值是否为api地址等关键信息</a>
+</h3>
+<h3 class="topic">
+<a name="7k2ikuildiqh2g79k5skho2odt">&nbsp;&nbsp;这种思路很重要</a>
+</h3>
+<h2 class="topic">
+<a name="3v30pqk62kk7hjmh6hdbdbpq7f">04壳</a>
+</h2>
+<h3 class="topic">
+<a name="4jfgheinppcsq9k6fsh2uauck4">&nbsp;通过写脚本方式脱壳</a>
+</h3>
+<h3 class="topic">
+<a name="63s2m4q9hr4lqo55bi9u6lv64t">&nbsp;&nbsp;esp定律找oep</a>
+</h3>
+<h3 class="topic">
+<a name="2apohalfo1i7d8i81t7pk0etcd">&nbsp;&nbsp;验证第一个函数为getversion</a>
+</h3>
+<h3 class="topic">
+<a name="2e1fmt5us21qjnlem2sjjkmoaa">&nbsp;&nbsp;&nbsp;分析该函数的执行，最终调用了对应api</a>
+</h3>
+<h3 class="topic">
+<a name="5jrireok9ckissq1ol9jrjl2nb">&nbsp;&nbsp;iat下硬件写入断点</a>
+</h3>
+<h3 class="topic">
+<a name="4fufjbltje0stem67n79ru9gge">&nbsp;&nbsp;&nbsp;第一次断在解密数据的位置</a>
+</h3>
+<h3 class="topic">
+<a name="1iigsbn5nkhtgsp4lkug401l0n">&nbsp;&nbsp;&nbsp;第二次断在填充iat的位置</a>
+</h3>
+<h3 class="topic">
+<a name="3al48m2g7brj7e0fdgukj9pfvv">&nbsp;&nbsp;分析iat填充</a>
+</h3>
+<h3 class="topic">
+<a name="02908e78cstri367oitdu2la4p">&nbsp;&nbsp;&nbsp;call 结合 lea esp,[esp+4] 相当于jmp</a>
+</h3>
+<h3 class="topic">
+<a name="4ccrn5mt64sn1smvurpppnqaoe">&nbsp;&nbsp;&nbsp;&nbsp;是一种混淆策略</a>
+</h3>
+<h3 class="topic">
+<a name="30pm12oeaqnmb591h9uk5ontph">&nbsp;&nbsp;&nbsp;代码比较复杂，一直按f7，观察寄存器变化，目的是找到使寄存器中存有api地址信息的指令，从而定位到获取api地址的指令</a>
+</h3>
+<h3 class="topic">
+<a name="74ga9f6962d82vuhml93n0gq42">&nbsp;&nbsp;&nbsp;&nbsp;如果寄存器中的值无法转移到数据窗口显示且凌乱无规律，可以猜测其为hash值</a>
+</h3>
+<h3 class="topic">
+<a name="0c72bf2m4p3e8qcr9adv13amc8">&nbsp;&nbsp;&nbsp;分析代码，跳出hash加密字符串的代码循环</a>
+</h3>
+<h3 class="topic">
+<a name="14f75usl4h0vk37pirtav66ja7">&nbsp;&nbsp;&nbsp;找到三个地址就可以写脚本进行脱壳</a>
+</h3>
+<h3 class="topic">
+<a name="6dkogm3b8eo3t449vg39vhhi1a">&nbsp;&nbsp;&nbsp;&nbsp;oep</a>
+</h3>
+<h3 class="topic">
+<a name="24vc78lvbu9riga0ulisedd6ku">&nbsp;&nbsp;&nbsp;&nbsp;填充iat的地址</a>
+</h3>
+<h3 class="topic">
+<a name="7a3td046sq1nf6g8j58lru2346">&nbsp;&nbsp;&nbsp;&nbsp;获取api的地址</a>
+</h3>
+<h3 class="topic">
+<a name="002uktv3027497b3l7pfb9j20a">&nbsp;&nbsp;&nbsp;注意该函数中填充iat的代码是在堆中申请的，所以地址是可变的，但是根据win7加载内存的机制，有一定几率，程序两次运行申请的堆空间地址是不变的，可以碰运气</a>
+</h3>
+<h3 class="topic">
+<a name="5hfln8ae7pu4bvhqtj3moja3k2">&nbsp;&nbsp;&nbsp;&nbsp;这种机制可能会被病毒利用</a>
+</h3>
+<h3 class="topic">
+<a name="2ldbdc8o0o5v76cjdc4n6vgl2h">&nbsp;&nbsp;&nbsp;如果不利用上述机制，可以找到申请内存空间的函数，发现堆空间申请的偏移是一定的，只是申请基址不同，可以利用这点在更改脚本，动态计算出 填充iat、 获取api地址指令的地址</a>
+</h3>
+<h3 class="topic">
+<a name="08d3c26jrclts21sfm0trrnpk0">&nbsp;&nbsp;dump出来</a>
+</h3>
+<h3 class="topic">
+<a name="7djp6kfc7c5m2692hl37i66gi9">&nbsp;&nbsp;依赖win7堆申请基址可能不变的特点的脚本代码</a>
+</h3>
+<h3 class="topic">
+<a name="1mkg5d6rsuekqbed0unc6nrd9k">&nbsp;&nbsp;&nbsp;//1.定义变量，初始化//右侧b 打头 软件断点 bph硬件断点 &#13;
+mov dwGetAPIAddr , 001D14DC&#13;
+mov dwWriteIATAddr, 001D0897 &#13;
+mov dwOEP, 0047148B&#13;
+//2.在对应的地址上设置断点&#13;
+BPHWC//清除硬件断点&#13;
+BC//清除所有软件断定&#13;
+&#13;
+// 给特定内存地址下执行断点&#13;
+BPHWS dwGetAPIAddr, "x" &#13;
+BPHWS dwWriteIATAddr, "x" &#13;
+BPHWS dwOEP, "x" &#13;
+//BPHWS dwGetAPIAddr//变量名 &ldquo;x&rdquo;    //BPHWS*3 &#13;
+&#13;
+//3. 循环对每一种情况进行判断和处理&#13;
+LOOP1:&#13;
+run //运行程序&#13;
+cmp dwGetAPIAddr ,eip  // &#13;
+jnz case1&#13;
+mov dwTmp,edx//保存地址&#13;
+jmp LOOP1&#13;
+case1:&#13;
+CMP dwWriteIATAddr,eip&#13;
+jnz case2&#13;
+MOV  [edx],dwTmp//填充IAT  将临时变量填充&#13;
+jmp LOOP1&#13;
+case2:&#13;
+cmp dwOEP, eip&#13;
+jnz LOOP1&#13;
+MSG "成功了！"&#13;
+//右键打开运行脚本窗口，打开相应脚本 tab ，空格让他正常继续跑&#13;
+//解密后 ，就可以dump</a>
+</h3>
+<h3 class="topic">
+<a name="4t5p2rlhqamoi0uonhivp9stev">&nbsp;&nbsp;&nbsp;od脚本指令集</a>
+</h3>
+<h3 class="topic">
+<a href="http://www.cnblogs.com/JianXu/p/5158419.html" name="45sjab179chfpul0u0t7htmq3d">&nbsp;&nbsp;&nbsp;&nbsp;http://www.cnblogs.com/JianXu/p/5158419.html</a>
+</h3>
+<h3 class="topic">
+<a name="0c3bgu0ehe5bs5tu4lccrng90l">&nbsp;&nbsp;不依赖win7堆申请基址的脚本代码</a>
+</h3>
+<h3 class="topic">
+<a name="5beh7d1qm9fgrs0dvnf5tcsb6d">&nbsp;&nbsp;&nbsp;//1.定义变量，初始化//右侧b 打头 软件断点 bph硬件断点 &#13;
+mov dwGetAPIAddr , 14DC&#13;
+mov dwWriteIATAddr, 0897 &#13;
+mov dwOEP, 0047148B&#13;
+MOV dwBase,0047A37F //保存加密iat代码的堆空间的内存申请函数&#13;
+&#13;
+//2.在对应的地址上设置断点&#13;
+BPHWC//清除硬件断点&#13;
+BC//清除所有软件断定&#13;
+&#13;
+// 给特定内存地址下执行断点&#13;
+BPHWS dwOEP, "x" &#13;
+BPHWS dwBase, "x" &#13;
+&#13;
+//BPHWS dwGetAPIAddr//变量名 &ldquo;x&rdquo;    //BPHWS*3 &#13;
+&#13;
+//3. 循环对每一种情况进行判断和处理&#13;
+LOOP1:&#13;
+run //运行程序&#13;
+&#13;
+cmp dwBase,eip&#13;
+JNZ case0&#13;
+ADD dwGetAPIAddr,eax&#13;
+ADD dwWriteIATAddr,eax&#13;
+BPHWS dwGetAPIAddr, "x" &#13;
+BPHWS dwWriteIATAddr, "x" &#13;
+jmp LOOP1&#13;
+&#13;
+case0:&#13;
+cmp dwGetAPIAddr ,eip  // &#13;
+jnz case1&#13;
+mov dwTmp,edx//保存地址&#13;
+jmp LOOP1&#13;
+case1:&#13;
+CMP dwWriteIATAddr,eip&#13;
+jnz case2&#13;
+MOV  [edx],dwTmp//填充IAT  将临时变量填充&#13;
+jmp LOOP1&#13;
+case2:&#13;
+cmp dwOEP, eip&#13;
+jnz LOOP1&#13;
+MSG "成功了！"&#13;
+//右键打开运行脚本窗口，打开相应脚本 tab ，空格让他正常继续跑&#13;
+//解密后 ，就可以dump</a>
+</h3>
+<h3 class="topic">
+<a name="2mciodg09vjacn0k2c54lu1h55">&nbsp;&nbsp;&nbsp;即通过壳代码中VirtualAlloc函数的返回值，动态获取每次申请的堆空间的首地址，并以此加上偏移，动态获取填充iat和获取api地址的指令的位置（因为偏移使不变的）</a>
+</h3>
+<h3 class="topic">
+<a name="7c75grj3raajmlgb9qgtmsdmap">&nbsp;&nbsp;注意点</a>
+</h3>
+<h3 class="topic">
+<a name="4g2jh613e9af75022u0oh1kmfs">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class64day0524_files/7pfkehkin9ggu5h268cgqufect.png"></p>
+<h3 class="topic">
+<a name="3frfcig9moj0cl9kschkon52cg">&nbsp;&nbsp;&nbsp;脚本的思路为给【oep】 【获取api地址的指令的地址】 【填充iat表指令的地址】上下硬件断点，当eip等于以上地址时程序会断下，先执行脚本中的代码，然后返回程序继续执行</a>
+</h3>
+<h3 class="topic">
+<a name="75aeaogfitkp58su28j4ebg7ol">&nbsp;&nbsp;&nbsp;&nbsp;问题在于，程序若在填充iat的指令处断下（即1的位置出断下），会执行脚本代码，将正确api地址填入iat，之后程序继续执行，程序代码会再次项该iat位置填充，导致正确api地址被覆盖，</a>
+</h3>
+<h3 class="topic">
+<a name="354n8mdm7vp3fuvm2p9tggas6a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;故正确思路是使程序在iat填充指令的下一条指令处下断（即2处），此时使用正确的api覆盖原来的iat内容，即可修正iat</a>
+</h3>
+<h3 class="topic">
+<a name="06luir32hdhh3dp5fkfo3m75ja">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;所以3的位置应该填2的地址而不是1的地址</a>
+</h3>
+<h3 class="topic">
+<a name="4des36nmhghgt8d8i7a8gdd161">&nbsp;通过修改指令的方法脱壳</a>
+</h3>
+<h3 class="topic">
+<a name="2j5vrka1k928cuoc1f0hauab01">&nbsp;&nbsp;找到壳代码中获取api地址的位置</a>
+</h3>
+<h3 class="topic">
+<a name="51l3pq2btm2360rod7tovla1l5">&nbsp;&nbsp;往下执行，看寄存器和堆栈变化，看什么时候函数地址被加密或发生变化</a>
+</h3>
+<h3 class="topic">
+<a name="3mommg2kbdgsg48o7cj0sbns0h">&nbsp;&nbsp;&nbsp;可以按住f7单步，可以逐个指令分析</a>
+</h3>
+<h3 class="topic">
+<a name="6ngspbf689j1g75glimsqcqecs">&nbsp;&nbsp;会发生内存的拷贝，即将混淆指令复制到堆中，在调用特定api的时候会先转移到堆中执行指令，之后再调用api</a>
+</h3>
+<h3 class="topic">
+<a name="7uok9blff2m888151lpcm56iam">&nbsp;&nbsp;找到使用堆空间地址对iat进行填充的指令，反向寻找到获得api地址的指令 ，修改两者之间的代码，使得api地址直接被填充到iat中</a>
+</h3>
+<h3 class="topic">
+<a name="6q0gf882khfgimdg6eqp7adam4">&nbsp;&nbsp;在获得api地址的位置将api地址保存，在填充iat的位置将api地址填充到iat中</a>
+</h3>
+<h3 class="topic">
+<a name="48uktjjs4r7bm2ka952s7co12g">&nbsp;&nbsp;&nbsp;在寄存器中找一个当没有用到的寄存器，使用该寄存器保存api地址，在最后用于往iat中填充地址 （代码中使用的是ebx）</a>
+</h3>
+<h3 class="topic">
+<a name="5c8rffrj5b5n9g40vha0goge1f">&nbsp;&nbsp;改完后将断点去掉，将程序运行到oep，如果不崩溃说明程序修改成功</a>
+</h3>
+<h3 class="topic">
+<a name="602frjl9d9dbjiltsrgu8nocof">&nbsp;&nbsp;进行dump将程序出来</a>
+</h3>
+<h3 class="topic">
+<a name="5s5k09apjn9gen426kn66n5n5d">&nbsp;&nbsp;注意因为本壳的填充iat的代码运行在动态申请的堆空间中，所以每次填充iat指令地址可能不同，并且如果在给iat首地址内存下写入断点，结果在断在对应指令之前，部分iat项已经被填充（具体原因未知，可能与其他断点干扰相关）导致断点后修改填充代码只能修复部分iat项目</a>
+</h3>
+<h3 class="topic">
+<a name="1dv278rdvidki0ijiudohaevkb">&nbsp;&nbsp;&nbsp;解决方法：win7中程序反复加载时，有一定几率两次申请的对堆空间地址相同，故可以尝试在获得api地址的指令处下断，如果程序申请的对堆空间地址不变，则可以正常断下，此时第一次iat表填充还未发生，可以修改填充代码，保证iat表被完整正确填充</a>
+</h3>
+<h3 class="topic">
+<a name="2h0b5827u8j454jflt84rb0i2q">&nbsp;&nbsp;关键指令</a>
+</h3>
+<h3 class="topic">
+<a name="61micqr90b8t9je6khg0gm3feu">&nbsp;&nbsp;&nbsp;oep&#13;
+0047148B    55              PUSH EBP     ; oep&#13;
+&#13;
+iat表的填充（该段指令所在的内存动态申请，故001D0000可能会改变，但是后四位偏移不会改变）&#13;
+001D14DC    895401 FC       MOV DWORD PTR DS:[ECX+EAX-0x4],EDX   ; 将真正的函数地址保存到刚刚填充指令的堆的最后一行&#13;
+001D06FA    50              PUSH EAX&#13;
+001D0D77    8B57 04         MOV EDX,DWORD PTR DS:[EDI+0x4]        ; edx销毁&#13;
+001D0949    0355 E4         ADD EDX,DWORD PTR SS:[EBP-0x1C]       ; 获得iat表的地址&#13;
+001D0EE2    8B45 A8         MOV EAX,DWORD PTR SS:[EBP-0x58]&#13;
+001D0895    8902            MOV DWORD PTR DS:[EDX],EAX            ; 向ait表中填充数据</a>
+</h3>
+<h3 class="topic">
+<a name="21qdrd4oa9rj97p4vj4khe677k">&nbsp;通过修改文件的方法</a>
+</h3>
+<h3 class="topic">
+<a name="6ktg3nkcatih0nekta6m4i4ts8">&nbsp;&nbsp;填充iat的代码是在动态申请的内存空间中执行的，壳代码中申请内存空间，然后将代码拷贝到堆空间中执行，所以在壳代码中一定有保存填充iat代码的位置，在壳代码中搜索到这些代码，修改这些代码，就可以保证堆空间中执行的代码是修改过的</a>
+</h3>
+<h3 class="topic">
+<a name="31853utq7aml1f5on5ufmlck7j">&nbsp;&nbsp;注意需要修改的代码不止一处，程序中有相关的备份，全部修改</a>
+</h3>
+<h3 class="topic">
+<a name="4e77ramvqtvqeetec86788dkij">&nbsp;&nbsp;注意：如果指令运行在动态申请的堆空间中，如果修改了代码是无法发保存到文件中的，因为文件中没有对应的指令与之对应</a>
+</h3>
+<h3 class="topic">
+<a name="7i8ug7kqipriv2bq0t36oc7vq7">&nbsp;&nbsp;&nbsp;此时就需要找这段代码的原版代码在文件中的保存的位置，修改这断代码才可以将修改保存到文件中</a>
+</h3>
+<h3 class="topic">
+<a name="4tcic4klemhk5amm83qp6fdjac">&nbsp;&nbsp;将修改过的文件以运行到oep并dump出来</a>
+</h3>
+<h3 class="topic">
+<a name="30ug47sslq5mg8sarh74o22jlo">&nbsp;&nbsp;注意：如何在这整个文件中定位特定代码</a>
+</h3>
+<h3 class="topic">
+<a name="5hq7glgr43uavqk9tgmabsbefb">&nbsp;&nbsp;&nbsp;在工具栏m打开区段信息，右键-》查找（ctrl+b），可以输入opcode对整个文件进行查找，而且可以在已查找到的位置上使用查找下一个（ctrl+l），从而定位文件中所有符合要求的数据的地址</a>
+</h3>
+<h3 class="topic">
+<a name="64hsucoc30u0pqehmjsm190rn2">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class64day0524_files/44gj2ujvqh1atgsqt7jqi6lvmp.png"></p>
+<h3 class="topic">
+<a name="7dvhl3b9b6dj7r822k74mtupm7">&nbsp;&nbsp;&nbsp;&nbsp;问题在于部分符合opcode的数据也会被搜索出来，需要对检索出的数据尽心鉴别</a>
+</h3>
+<h3 class="topic">
+<a name="08s4vn3qdscig5gc1v5ona653f">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;疑似符合要求的数据</a>
+</h3>
+<p class="topicImage">
+<img src="class64day0524_files/1ae5ikutvmt6njgesvllre43ah.png"></p>
+<h3 class="topic">
+<a name="09lp5c05th1eup7pfe70d7jrvf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果有花指令可能导致搜索不到</a>
+</h3>
+<h3 class="topic">
+<a name="66h5dmtdditdu3jimehkt13a9s">&nbsp;&nbsp;&nbsp;本题中检索文件中的填充iat和获得api地址的指令，可以通过给virtualAlloc下断，单步执行，找到向堆空间填充数据的源数据的数据地址，在源数据起始地址，可以通过指令与源数据起始地址偏移值不变的特点，定位到填充iat和获得api地址的指令，修改他们，并保存到文件，可以保证程序运行时iat不会被修改</a>
+</h3>
+<h3 class="topic">
+<a name="7mjv48mk25rcjui38unp9bnh86">&nbsp;&nbsp;&nbsp;&nbsp;通过该方法定位出的目的指令地址</a>
+</h3>
+<p class="topicImage">
+<img src="class64day0524_files/324s4qrc4a4bbu8jj6gv9margp.png"></p>
+<h2 class="topic">
+<a name="2k5i2dgglg6halid27rrk7j32r">后面的壳自己再多分析</a>
+</h2>
+<h3 class="topic">
+<a name="73s9esr0e74dcbq8uh0g3vomnb">&nbsp;注意遇到壳动态申请内存用于向其中灌入指令，执行iat加密的情况，要注意在堆空间写入的注释无法保存的</a>
+</h3>
+<h3 class="topic">
+<a name="2qhopng42a4lackfjh3dlvt60r">&nbsp;05壳</a>
+</h3>
+<h3 class="topic">
+<a name="29nrmfhd582c86e0klld2tnnmk">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class64day0524_files/7ii3kt6icviipts2ajg7i5529h.png"></p>
+<h3 class="topic">
+<a name="0bhkcrbpk35392gg5c4ett5on8">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class64day0524_files/7i2fp55klg2p9hc0td5ocjmhgg.png"></p>
+<h3 class="topic">
+<a name="1n2r3ukms5ggvad59qas6r8ah6">&nbsp;&nbsp;注意该壳中，api调用是通过call（e8）一个偏移，然后指令跳转到一个跳转表中，使用call（ff25）一个地址执行api，只要能保证2中被call的函数地址是正确的api地址，此种调用方式就不是api加密，只是一种编译器编译程序的方法</a>
+</h3>
+<h3 class="topic">
+<a name="4e6s0poe7t617a5rg5iusscr6k">&nbsp;&nbsp;对于这种调用api的方式，再找到找到oep，dump出文件之后，修复iat表，iat表rva可以选择跳转表中的api真实地址的rva，这里1处为api地址最小，所以修复iat表时rva使用99000，size按惯例选择1000</a>
+</h3>
+<p class="topicImage">
+<img src="class64day0524_files/27h3bprbvdfc6r9t2c9eae9ndb.png"></p>
+<h3 class="topic">
+<a name="2aosd0vuaee8g602l4n0f4jckj">&nbsp;06壳</a>
+</h3>
+<h3 class="topic">
+<a name="39djrtffj5bkpbm2eeurhgt50k">&nbsp;&nbsp;使用seh异常处理机制进行反调试，所以无法在iat被写入内存地址设置硬件写入断点（使用内存写入断点试试？）</a>
+</h3>
+<h3 class="topic">
+<a name="4c9pn8rln2m8ddd4dh5obh4ebk">&nbsp;&nbsp;&nbsp;处理思路，已经确定壳代码会加密iat表，将指定api地址的转为临时申请的堆空间的首地址，该堆空间中存在混淆指令，最终调用对应api</a>
+</h3>
+<h3 class="topic">
+<a name="3r6s6an10scf9904el3ca9lpnk">&nbsp;&nbsp;&nbsp;即在壳代码中存在获得导入模块的地址以及导入api的地址的操作，根据程序导入表中存在 LoadLibrary 以及GetProcAddress函数，可以推测壳代码通过这两个函数，获得导入模块的地址以及导入函数地址，并且进行iat表的填充</a>
+</h3>
+<h3 class="topic">
+<a name="7mu0vsbhvn2m6ohmnj7b12589l">&nbsp;&nbsp;&nbsp;通过给LoadLibaray 下断，截获壳代码加载导入模块的位置，壳代码加载dll可能做两件事1、使用dll中的api 2、获取dll中的api地址，进一步填充iat，此时需要寻找的是后者，故一般栈回溯GDI32.dll模块被加载的位置，此时壳代码更可能是加载dll，获得api地址、填充iat，而不是使用该dll中的函数</a>
+</h3>
+<h3 class="topic">
+<a name="1u5d3ukn0lirmrbn3tre2af306">&nbsp;&nbsp;&nbsp;&nbsp;下断的是LoadLibraryExW</a>
+</h3>
+<h3 class="topic">
+<a name="4cl54abh7k8rcgfrnpt19ntk21">&nbsp;&nbsp;&nbsp;通过栈回溯，在加载dll的附近分析代码，找到得到api地址的指令以及填充iat地址的指令</a>
+</h3>
+<h3 class="topic">
+<a name="1aasqumg8hie22kvuk9ff1c1ij">&nbsp;&nbsp;&nbsp;通过LoadLibraryExW返回值可以找到GDI32.dll在文件中的基址，由此可以找到dll的整体pe结构在内存中的位置，可以找到dll的各种pe结构，关键的是导出表等</a>
+</h3>
+<h3 class="topic">
+<a name="74870ff7i1apsua3615sjb0csj">&nbsp;&nbsp;破解seh反调试</a>
+</h3>
+<h3 class="topic">
+<a name="59neb6roj7mdb5kr16j0kbruko">&nbsp;&nbsp;&nbsp;确定清除硬件断点的指令在哪个seh异常处理函数中</a>
+</h3>
+<h3 class="topic">
+<a name="4b3n470am9ai9bps8qv2vfmq1d">&nbsp;&nbsp;&nbsp;&nbsp;1、设置od调试设置，不跳过异常</a>
+</h3>
+<h3 class="topic">
+<a name="242kcoj8n2gv5qa1nkj759mqdl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class64day0524_files/52la6es68d1mc73qr7kidf11sa.png"></p>
+<h3 class="topic">
+<a name="79542pvpp396jit6fiq1nnvc13">&nbsp;&nbsp;&nbsp;&nbsp;2、调试程序，发现程序壳代码中触发了七个异常，以及其对应的异常类型</a>
+</h3>
+<h3 class="topic">
+<a name="6ue3kgr0qgkodt8gr6ni72boks">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class64day0524_files/0440ffer4jgodgu9rh6vp178tf.png"></p>
+<h3 class="topic">
+<a name="6s93bhpoaln2otd5nl4erujlv2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class64day0524_files/46qot4f6vb0980eal6eekivap8.png"></p>
+<h3 class="topic">
+<a name="577ke7ck7pq3ltp1e63ttopluu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class64day0524_files/3rramk4fgbs3jpaut703eiknb0.png"></p>
+<h3 class="topic">
+<a name="47828vb4is76ov0jouelcs46kf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class64day0524_files/2u23ked0htm8a3dv3s26mnpu87.png"></p>
+<h3 class="topic">
+<a name="47hgimi6c6jr3d5qpbsmuoe88e">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class64day0524_files/6dkhsoh4qmjg9oae47j33vghms.png"></p>
+<h3 class="topic">
+<a name="2ucc2bmfhh5hcic71402cjg00t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class64day0524_files/16rgg4b279s08e3hpibu1dd2b7.png"></p>
+<h3 class="topic">
+<a name="22nn1lqeaiekf7mub6sa30b811">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class64day0524_files/49ecfbrcf8h77h6tb6tv9icfio.png"></p>
+<h3 class="topic">
+<a name="7bvkcbh553vtlioegr2ielkfio">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class64day0524_files/7ok6uqgjdjmmj9oi73f38lemsp.png"></p>
+<h3 class="topic">
+<a name="1j0f7kdrt7spoud5r56km20oom">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class64day0524_files/2i00dd9jt1p8sd4v3osaocbrtm.png"></p>
+<h3 class="topic">
+<a name="7ngskrbqi6oe3p2hqd88eg661b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class64day0524_files/23bh3vojhm96jn4gjn2eplb8fc.png"></p>
+<h3 class="topic">
+<a name="62ivfa1ettfq6vlo75ai10cmco">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class64day0524_files/58vkpe4ijukj56emem44da245l.png"></p>
+<h3 class="topic">
+<a name="1cnnp1mgpq73oj5hnpn77b318o">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class64day0524_files/4pbjb47n8naui76cdflfu6vbgv.png"></p>
+<h3 class="topic">
+<a name="0jo4k9h753i9hqabn0lsgs2uqn">&nbsp;&nbsp;&nbsp;&nbsp;3 给第二个异常触发处下硬件访问断点，以此测试第一个异常的异常处理函数是否清除了硬件断点，如果没被清除，在第二个触发异常的代码处应该先是被硬件断点断下，显示1，继续执行后再被其自身触发的异常断下，显示2，反之如果硬件断点被清除，则不会显示硬件断点断下，直接显示被异常断下</a>
+</h3>
+<h3 class="topic">
+<a name="65r9r5293ocabmdelu453vv4cp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1</a>
+</h3>
+<p class="topicImage">
+<img src="class64day0524_files/19ifh6n7vegi5rcbk1kgrmv6pj.png"></p>
+<h3 class="topic">
+<a name="2vhclilvm1sulbjbp6kfta6ikj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2</a>
+</h3>
+<p class="topicImage">
+<img src="class64day0524_files/73pk1e5riur08p8qr4d8n6poss.png"></p>
+<h3 class="topic">
+<a name="1944ujc5qb22mcgts4aj8vph3o">&nbsp;&nbsp;&nbsp;&nbsp;以此类推，第三个异常的处理函数清除了硬件断点</a>
+</h3>
+<h3 class="topic">
+<a name="11o11vese8kddcm2gbdp5pj4hu">&nbsp;&nbsp;&nbsp;&nbsp;通过查看-》seh链可以查到异常对应的seh处理函数</a>
+</h3>
+<h3 class="topic">
+<a name="6sfahr850kgcnd96shbq3vepd3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class64day0524_files/6udtpp5h4jain7j7vlqivv4rft.png"></p>
+<h3 class="topic">
+<a name="78neie4q349q1f93q2d3d0n1ih">&nbsp;&nbsp;&nbsp;解除壳代码对硬件断点的删除</a>
+</h3>
+<h3 class="topic">
+<a name="1padoukkpobv009fhqhh6fdd22">&nbsp;&nbsp;&nbsp;&nbsp;第三个异常的处理函数</a>
+</h3>
+<h3 class="topic">
+<a name="5jnc0eif0th5mid1tcarg0ah8o">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class64day0524_files/3tjmr6iflcu67e33utln8lc58k.png"></p>
+<h3 class="topic">
+<a name="47p4qga699aa0t01klmegak39t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过3 寻址到内存一片内存空间，其中1中为被设置硬件执行断点的指令地址，即dr0~dr3的值</a>
+</h3>
+<h3 class="topic">
+<a name="1b9jl1b9uiice4rpkd18t0ufsa">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在4中，指令将部分1中的值清零，即清除这些硬件断点，只要把以上指令nop掉，即可保证硬件断点不被清除</a>
+</h3>
+<h3 class="topic">
+<a name="4agatokrbvek76smv0n263hntd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果直接nop掉会导致程序直接崩溃，可能与这一段程序的加密有关，可以保存1处的内存地址，在需要时直接将硬件断点地址填上，</a>
+</h3>
+<h3 class="topic">
+<a name="7974ldggsl3uk87o9mkf25cht1">&nbsp;&nbsp;注意有的时候od在指定内存地址只能下针对一个字节的读写断点，此时如果想通过该断找到壳代码填充iat的位置，最好下四个字节的写入断点，如果od只能下一个字节写入断点，可能导致程序断其他以一字节为单位填充iat的代码上，此时只需要跳过该断点（f9），使程序再次断下，看当前是否断在以4字节数据填充iat项的位置</a>
+</h3>
+<h3 class="topic">
+<a name="33gr5q82tmfoenmujd9acuqhi8">&nbsp;&nbsp;&nbsp;如果下一个字节的读写断点，则对该地址大于等于一个字节的读写均会被断下</a>
+</h3>
+<h3 class="topic">
+<a name="7m875har86s0m1dq1b4eggb6sl">&nbsp;&nbsp;注意硬件读写断点一般会断在读写操作指令的下一条指令处，如果存在花指令，则可能会将上一条读写操作指令掩盖起来，此时需要处理花指令</a>
+</h3>
+<h3 class="topic">
+<a name="012jev65npvsvr5llmf5kkdelf">&nbsp;&nbsp;该壳通过计算得到api的地址，而不是通过GetProcAddress获得，所以通过api下断点是没有用的，需要从填充iat的位置一步一步跟踪，注意单步跟踪花指令时需要使用f7，如果用f8很可能跑飞</a>
+</h3>
+<h3 class="topic">
+<a name="5snvhtm15ns9h72iknd5a56spv">&nbsp;&nbsp;得到四种地址之就可以通过脚本进行iat的修复</a>
+</h3>
+<h3 class="topic">
+<a name="5fgvnrr9as4m1180gk7di4088u">&nbsp;&nbsp;&nbsp;得到api地址的指令的地址</a>
+</h3>
+<h3 class="topic">
+<a name="4ch1s8b621kum9jktq6ql09a57">&nbsp;&nbsp;&nbsp;&nbsp;获得api地址的指令&#13;
+00438F99    0385 1E424000   ADD EAX,DWORD PTR SS:[EBP+0x40421E]       ; 计算api地址，前面一大堆花指令，没有使用GetProcAddress获得地址&#13;
+00438F9F   /EB 10           JMP SHORT 06.00438FB1 ;编写脚本时，在这里下断点</a>
+</h3>
+<h3 class="topic">
+<a name="1c9rj3ob1u7icj3por2ogheugf">&nbsp;&nbsp;&nbsp;填充iat的指令的地址</a>
+</h3>
+<h3 class="topic">
+<a name="5r1hi1iolri0ivf4gpfpg7n8vh">&nbsp;&nbsp;&nbsp;&nbsp;填充一次填充四个字节进入iat的指令&#13;
+0043918A    8907            MOV DWORD PTR DS:[EDI],EAX                    ; 真实的填充iat的位置&#13;
+0043918C   /EB 02           JMP SHORT 06.00439190  ;编写脚本时，在这里下断点</a>
+</h3>
+<h3 class="topic">
+<a name="2a12itgvofm0kh8oon5lhb702k">&nbsp;&nbsp;&nbsp;oep</a>
+</h3>
+<h3 class="topic">
+<a name="2geig9v1v48oqfaotkvf0p61o1">&nbsp;&nbsp;&nbsp;&nbsp;oep    可以正常下硬件执行断点&#13;
+00409486    55          PUSH EBP             ; oep</a>
+</h3>
+<h3 class="topic">
+<a name="60d08caj293cuaamhsuciujphb">&nbsp;&nbsp;&nbsp;异常处理函数中清除硬件断点的指令地址</a>
+</h3>
+<h3 class="topic">
+<a name="4hsc3rt30163mvg9ukb4n9cn2k">&nbsp;&nbsp;&nbsp;&nbsp;第三个异常的处理函数的第一行指令&#13;
+0043AF42    8B5424 08       MOV EDX,DWORD PTR SS:[ESP+0x8]  </a>
+</h3>
+<h3 class="topic">
+<a name="5ck9ftvm4clegmpn24m0qo5hv7">&nbsp;&nbsp;&nbsp;修复iat的脚本</a>
+</h3>
+<h3 class="topic">
+<a name="7q773dl02ih0jidnmatvnkheq0">&nbsp;&nbsp;&nbsp;&nbsp;//1.定义变量，初始化//右侧b 打头 软件断点 bph硬件断点 &#13;
+mov dwGetAPIAddr , 438f9f&#13;
+mov dwWriteIATAddr, 43918c &#13;
+mov dwOEP, 00409486&#13;
+MOV HardwarePointAddr, 43af51&#13;
+MOV APIaddr,0&#13;
+//2.在对应的地址上设置断点&#13;
+BPHWC//清除硬件断点&#13;
+BC//清除所有软件断定&#13;
+&#13;
+// 给特定内存地址下执行断点&#13;
+BPHWS dwGetAPIAddr, "x" &#13;
+BPHWS dwWriteIATAddr, "x" &#13;
+BPHWS dwOEP, "x" &#13;
+BPHWS HardwarePointAddr, "x"&#13;
+//BPHWS dwGetAPIAddr//变量名 &ldquo;x&rdquo;    //BPHWS*3 &#13;
+&#13;
+//3. 循环对每一种情况进行判断和处理&#13;
+LOOP1:&#13;
+run //运行程序&#13;
+&#13;
+CMP eip, HardwarePointAddr&#13;
+JNZ case0&#13;
+FILL HardwarePointAddr,22,90 //nop 10个字节&#13;
+&#13;
+&#13;
+case0:&#13;
+cmp dwGetAPIAddr ,eip  // &#13;
+jnz case1&#13;
+mov dwTmp,eax//保存地址&#13;
+jmp LOOP1&#13;
+&#13;
+case1:&#13;
+CMP dwWriteIATAddr,eip&#13;
+jnz case2&#13;
+MOV  [edi],dwTmp//填充IAT  将临时变量填充&#13;
+jmp LOOP1&#13;
+&#13;
+case2:&#13;
+cmp dwOEP, eip&#13;
+jnz LOOP1&#13;
+MSG "成功了！"&#13;
+//右键打开运行脚本窗口，打开相应脚本 tab ，空格让他正常继续跑&#13;
+//解密后 ，就可以dump</a>
+</h3>
+<h3 class="topic">
+<a name="4gjovedbg3tr3a0iakkehl378e">&nbsp;&nbsp;修复iat之后发现，虽然api的地址被填充到了iat空间，但是每个api地址之键使用00 进行隔开，就导致iat表结果发生了变化，导致ImpREC无法识别iat表中的api地址，无法直接进行修复</a>
+</h3>
+<h3 class="topic">
+<a name="3minmdffm8li4cmf6pguvgn3ht">&nbsp;&nbsp;&nbsp;根据4可以找到iat的内存，其中123均为api的地址，之间使用00隔开，导致iat表格式被毁坏</a>
+</h3>
+<p class="topicImage">
+<img src="class64day0524_files/6sjosbet42kjtk2t544c0k835a.png"></p>
+<h3 class="topic">
+<a name="4vrdgdgv58o592h127kk1k3d2o">&nbsp;&nbsp;&nbsp;IAT格式损坏</a>
+</h3>
+<h3 class="topic">
+<a name="21e34ije9vesqbc957salvu25b">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class64day0524_files/3h2lp6gk2viq4c2r1vtstna67u.png"></p>
+<h3 class="topic">
+<a name="0kd6h306e3ilsdio51frm9bi0j">&nbsp;&nbsp;此时需要使用通用导入表修复工具对iat进行修复</a>
+</h3>
+<h3 class="topic">
+<a name="7ogn8hc6len6v5m3t1bs2fusou">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class64day0524_files/7eplvecacab370lr6bskk41etm.png"></p>
+<h3 class="topic">
+<a name="6cjnbiq75tjgnv013avn7paqej">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class64day0524_files/7ubj1ulm9hou1nbagbchn972cp.png"></p>
+<h3 class="topic">
+<a name="65qm5sd9cdh69il1vel0d2q7i1">&nbsp;&nbsp;&nbsp;进程id选则正在被调试的06.exe的pid</a>
+</h3>
+<h3 class="topic">
+<a name="3i0rv6e1r3c66re85h85ad6ulh">&nbsp;&nbsp;&nbsp;代码起始和代码止于意义时pe文件中代码断的位置，这里假定第一个区段为程序代码段，如果修复结果不争确，可以多次尝试</a>
+</h3>
+<h3 class="topic">
+<a name="36cfelisbkjc8jdu45hb5u9vo9">&nbsp;&nbsp;&nbsp;新的iat的rva意义是选择当前pe文件的一段文件区间用于保存新的iat，这里选择了最后一个区段（rva=38000）因为根据调试发现，壳代码基本位于最后一个区段，dump之后壳代码不需要被运行，可以用于存放新的iat表</a>
+</h3>
+<h3 class="topic">
+<a name="29jkranoc1a66ei8biucefa7j6">&nbsp;&nbsp;使用通用导入表修复之后，iat表被修复正常，iat表的首地址即为在工具中指定的的地址（即43850c），之后用使用od插件dump出来，使用ImpREC修复iat表即可</a>
+</h3>
+<h3 class="topic">
+<a name="0h6pqrlg1meiuvpfatv85vr6je">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class64day0524_files/2a354ggnv55usmv91mrqedduk2.png"></p>
+<h3 class="topic">
+<a name="009qbkj7mvj2q27a0b8mleqmsd">&nbsp;&nbsp;&nbsp;注意ImpREC修复如果将iat 的rva指定为3850c size指定为1000，修改出来的程序运行会出错，此时可以让ImpREC自动寻找iat，以此转储到文件，可以正确修复</a>
+</h3>
+<h2 class="topic">
+<a name="211la2ql5m4f1cn6m67396f8jc">恶意代码分析课程</a>
+</h2>
+<h3 class="topic">
+<a name="05elqe5dd3b5kglarpbiqcatpp">&nbsp;恶意代码基础</a>
+</h3>
+<h3 class="topic">
+<a name="51dgkda50qahdjkfail22mgva6">&nbsp;&nbsp;恶意代码</a>
+</h3>
+<h3 class="topic">
+<a name="66nalt0ogtpqo2nvhhgnbrdi9j">&nbsp;&nbsp;&nbsp;使计算机按照攻击者的意图运行用于达到恶意目的的指令集合</a>
+</h3>
+<h3 class="topic">
+<a name="2n4fqaav6741314ntk35chdoeo">&nbsp;&nbsp;恶意代码目的</a>
+</h3>
+<h3 class="topic">
+<a name="1t4bo1576abpu19loi4277cm0i">&nbsp;&nbsp;&nbsp;技术炫耀、远程控制、窃取私密信息、盗用资源、拒接服务、破坏、勒索</a>
+</h3>
+<h3 class="topic">
+<a name="1ek5epvll58m3onscvj3bep651">&nbsp;&nbsp;杀毒软件</a>
+</h3>
+<h3 class="topic">
+<a name="0gt7oflf1fukfgaealhjar9hv9">&nbsp;&nbsp;&nbsp;冠群金臣 国内第一款杀毒软件</a>
+</h3>
+<h3 class="topic">
+<a name="0icfeek9itolov7j9a7pm7vj1n">&nbsp;&nbsp;&nbsp;国外杀毒软件</a>
+</h3>
+<h3 class="topic">
+<a name="74ofbgcnch8d8fq6ft2pn25r7l">&nbsp;&nbsp;&nbsp;&nbsp;卡巴斯基、ESET NOD32</a>
+</h3>
+<h3 class="topic">
+<a name="2f2aue6jubbdmctneclftr1hsj">&nbsp;&nbsp;&nbsp;移动端杀毒</a>
+</h3>
+<h3 class="topic">
+<a name="38e43n8k084de1ng2v9co0uatr">&nbsp;&nbsp;&nbsp;&nbsp;猎豹安全卫士、leb安全大师、360安全卫士</a>
+</h3>
+<h3 class="topic">
+<a name="7kmdd5cfn5mjfnn7n11ph07rl2">&nbsp;恶意代码分析</a>
+</h3>
+<h3 class="topic">
+<a name="5feoump10la1gt8qdh0uic7e59">&nbsp;&nbsp;恶意代码分类（面试时重要知识）</a>
+</h3>
+<h3 class="topic">
+<a name="10urllscet3nn9ugp3cu87vbkr">&nbsp;&nbsp;&nbsp;感染性病毒Virus</a>
+</h3>
+<h3 class="topic">
+<a name="6iu8dfgvmq109ib4ecuvrrceh7">&nbsp;&nbsp;&nbsp;&nbsp;将恶意代码感染到其他可执行文件中</a>
+</h3>
+<h3 class="topic">
+<a name="3733p1444ovs980tu17o0ldjc8">&nbsp;&nbsp;&nbsp;&nbsp;正常文件被感染后，会执行病毒功能，因为程序都具有正常功能，欺骗性很大，病毒处理难度大，这种病毒危害级别最高</a>
+</h3>
+<h3 class="topic">
+<a name="65l2r7ur0edlccs58k3nke1o6t">&nbsp;&nbsp;&nbsp;&nbsp;单机游戏破解补丁一般比较少有坑，网络游戏外挂中招可能性较高</a>
+</h3>
+<h3 class="topic">
+<a name="16qdfdtme93f5archuurhfsq7n">&nbsp;&nbsp;&nbsp;&nbsp;危害级别最高</a>
+</h3>
+<h3 class="topic">
+<a name="2hf0uvaqjit5smjm6puuot2gdm">&nbsp;&nbsp;&nbsp;蠕虫病毒Worm</a>
+</h3>
+<h3 class="topic">
+<a name="79j89te834pt0vjfd31kgu64vr">&nbsp;&nbsp;&nbsp;&nbsp;是指存在于内存，网络emain等非本地存储器中，可以利用漏洞感染其他计算机的恶意代码，进行传播</a>
+</h3>
+<h3 class="topic">
+<a name="4harv3gaq805mprmaikhjd83a9">&nbsp;&nbsp;&nbsp;&nbsp;传播途径</a>
+</h3>
+<h3 class="topic">
+<a name="2g3tf83d85il8ljne02s3gqpbq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;U盘传播、邮件传播、msn，qq传播，p2p软件传播</a>
+</h3>
+<h3 class="topic">
+<a name="49actku0c51fq6mj847ps0pva8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;word类型文档有很多漏洞（缓冲区溢出），双击word文档导致恶意代码执行</a>
+</h3>
+<h3 class="topic">
+<a name="5ds8ju8rh2mqi61fg0k98i1phq">&nbsp;&nbsp;&nbsp;&nbsp;传播性很高</a>
+</h3>
+<h3 class="topic">
+<a name="7kfkhbnoaqi666v3ege73bep4k">&nbsp;&nbsp;&nbsp;&nbsp;可遇不可求</a>
+</h3>
+<h3 class="topic">
+<a name="3a8ge5ese17583mp6pik41lok4">&nbsp;&nbsp;&nbsp;木马Trojan</a>
+</h3>
+<h3 class="topic">
+<a name="55i5qdfb0rauab8940tsm879ir">&nbsp;&nbsp;&nbsp;&nbsp;最普遍</a>
+</h3>
+<h3 class="topic">
+<a name="2efgbheo1bgbc60eetg5rksmvn">&nbsp;&nbsp;&nbsp;&nbsp;在用户不知情的情况下在被感染的机器上与运行</a>
+</h3>
+<h3 class="topic">
+<a name="3j57tom88o9o45c8ak3cm4rpc0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TrojanSpy：窃取用户信息</a>
+</h3>
+<h3 class="topic">
+<a name="1jeujfq6v2aks133h7jv5v00k7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PSW：具有窃取密码的行为</a>
+</h3>
+<h3 class="topic">
+<a name="788tfkkrvck69tknsqv5ibgptt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DownLoader：下载病毒并运行</a>
+</h3>
+<h3 class="topic">
+<a name="4itapklbrdiuvdes3qpkj39l61">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Clicker:点击指定的网页</a>
+</h3>
+<h3 class="topic">
+<a name="7fq4ufbb30n6orve71kpig3q2e">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Dialer：通过拨号骗取钱财</a>
+</h3>
+<h3 class="topic">
+<a name="7ump4nhlmt8eh1an0ela5djf1c">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Dropper：释放病毒的程序</a>
+</h3>
+<h3 class="topic">
+<a name="5dqrm8nku544eokf84jgqpfh0h">&nbsp;&nbsp;&nbsp;&nbsp;特点：窃取信息</a>
+</h3>
+<h3 class="topic">
+<a name="4t05vj2acqrp2rvrj568105nnu">&nbsp;&nbsp;&nbsp;后门BlackDoor</a>
+</h3>
+<h3 class="topic">
+<a name="77g5pg197t95g91ns705tg8l3h">&nbsp;&nbsp;&nbsp;&nbsp;一种特殊的木马</a>
+</h3>
+<h3 class="topic">
+<a name="3062io3sac2rju6200tc3bocra">&nbsp;&nbsp;&nbsp;&nbsp;木马中能够给控制者以访问权限的程序</a>
+</h3>
+<h3 class="topic">
+<a name="5p153j2v9qj5l3hn4on21pp3gi">&nbsp;&nbsp;&nbsp;高级持续性危险病毒APT</a>
+</h3>
+<h3 class="topic">
+<a name="1imj25a64sejl9un8lg4c0i51b">&nbsp;&nbsp;&nbsp;&nbsp;一种特殊的木马</a>
+</h3>
+<h3 class="topic">
+<a name="1hl0ndbcevmtugtrru5av4a3hd">&nbsp;&nbsp;&nbsp;&nbsp;利用先进的攻击手段对特定的目标进行长期持续性网络攻击</a>
+</h3>
+<h3 class="topic">
+<a name="4vquqrbglv6dr55mr92b6c9s9r">&nbsp;&nbsp;&nbsp;&nbsp;攻击原理相对于其他攻击形式更为高级和先进，会在攻击前对攻击对象业务流程和目标系统进行精确信息收集，挖掘被攻击者授信系统和应用程序的漏洞，利用漏洞组建攻击者所需的网络，并利用0day进行攻击</a>
+</h3>
+<h3 class="topic">
+<a name="1pvmah5i3mscbtpk1vaaq8cgro">&nbsp;&nbsp;&nbsp;&nbsp;0day漏洞：已经被发现，但是官方还没有相关补丁的漏洞</a>
+</h3>
+<h3 class="topic">
+<a name="6pmv2r7v67aakqrtvclo73mv8t">&nbsp;&nbsp;&nbsp;&nbsp;特点：持续时间长，会用到0day</a>
+</h3>
+<h3 class="topic">
+<a name="5bhr72t56v0pca2u55b50fpe1g">&nbsp;&nbsp;&nbsp;间谍软件Spyware</a>
+</h3>
+<h3 class="topic">
+<a name="6n9h6ru15uns63fuqp65ran0o8">&nbsp;&nbsp;&nbsp;&nbsp;收集用户信息</a>
+</h3>
+<h3 class="topic">
+<a name="262jqq0gtm0qe1d49omd6lmgl7">&nbsp;&nbsp;&nbsp;rootkit</a>
+</h3>
+<h3 class="topic">
+<a name="34fpte332k2ja33nqn6r0imu4c">&nbsp;&nbsp;&nbsp;&nbsp;隐藏性高的代码一类总称</a>
+</h3>
+<h3 class="topic">
+<a name="79tb3mqvi1rdd6sedbm1mfp9en">&nbsp;&nbsp;&nbsp;&nbsp;分类</a>
+</h3>
+<h3 class="topic">
+<a name="4vqvb09rqqdonqsbcfmkok1hjv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用户层</a>
+</h3>
+<h3 class="topic">
+<a name="1gdcs11oi05idacd67gbf8bg24">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dll注入 api hook FakeGINA</a>
+</h3>
+<h3 class="topic">
+<a name="2ksl5vh5d60tvvseebladtk6er">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;内核层</a>
+</h3>
+<h3 class="topic">
+<a name="3epktg2tjchsllvp9e1be26aki">&nbsp;&nbsp;&nbsp;&nbsp;所有的hook和root的技术都是rookt</a>
+</h3>
+<h3 class="topic">
+<a name="268b9unguul7en7fvdlrqqehgr">&nbsp;&nbsp;&nbsp;漏洞利用程序（Exploit）</a>
+</h3>
+<h3 class="topic">
+<a name="6u2tmr7sm0b4e6pkraonmar7oo">&nbsp;&nbsp;&nbsp;黑客工具（HackTool）</a>
+</h3>
+<h3 class="topic">
+<a name="3fiunrsi1ufq79v01c8o10ml7t">&nbsp;&nbsp;&nbsp;整蛊程序</a>
+</h3>
+<h3 class="topic">
+<a name="5ke0pd2u6e9695h4dd82vl90bd">&nbsp;&nbsp;&nbsp;广告程序</a>
+</h3>
+<h3 class="topic">
+<a name="1ckd3o5k314n976lkcko7rse3a">&nbsp;&nbsp;&nbsp;不安全灰色软件（PUA）</a>
+</h3>
+<h3 class="topic">
+<a name="6cfs629jgai6ilcu1n5t2ev36t">&nbsp;&nbsp;&nbsp;&nbsp;比如windows激活软件之于windows</a>
+</h3>
+<h3 class="topic">
+<a name="7ou3e7a9vvo2gs3rjrf9s1kiqm">&nbsp;&nbsp;&nbsp;移动恶意代码分类</a>
+</h3>
+<h3 class="topic">
+<a name="4tm88pm0cj0gfogv40q7rt07c9">&nbsp;&nbsp;&nbsp;&nbsp;信息窃取</a>
+</h3>
+<h3 class="topic">
+<a name="2qdg0ilqur0n8ncn6fijf2fm78">&nbsp;&nbsp;&nbsp;&nbsp;恶意扣费</a>
+</h3>
+<h3 class="topic">
+<a name="49lpgkkbc6qgjvvds50fahkhn8">&nbsp;&nbsp;&nbsp;&nbsp;远程控制</a>
+</h3>
+<h3 class="topic">
+<a name="06j1i21o5tvp6lklo0700ilj0f">&nbsp;&nbsp;&nbsp;&nbsp;。。。。。</a>
+</h3>
+<h3 class="topic">
+<a name="4b9rk3ev34e1iu90qm2j1fqi1s">&nbsp;&nbsp;&nbsp;当前流行的病毒类型</a>
+</h3>
+<h3 class="topic">
+<a name="5dcq25v6du5md8iiqg7r6q25do">&nbsp;&nbsp;&nbsp;&nbsp;感染pe的病毒</a>
+</h3>
+<h3 class="topic">
+<a name="7o40miaoldiqls2h7ttg73dbl4">&nbsp;&nbsp;&nbsp;&nbsp;团伙作案的APT病毒</a>
+</h3>
+<h3 class="topic">
+<a name="2voi2iqjhimcjcd17kqgs6k1ec">&nbsp;&nbsp;&nbsp;&nbsp;利用漏洞的蠕虫病毒</a>
+</h3>
+<h3 class="topic">
+<a name="5spm7vad7cm6r98jt4jcrlogl6">&nbsp;&nbsp;&nbsp;&nbsp;各种软件的木马病毒</a>
+</h3>
+<h3 class="topic">
+<a name="0nfot4ghe2h15t06a2qgujtl13">&nbsp;&nbsp;&nbsp;&nbsp;勒索软件</a>
+</h3>
+<h3 class="topic">
+<a name="44phgnfj0v6u7us3gdj3bqbq0q">&nbsp;&nbsp;恶意代码发展史</a>
+</h3>
+<h3 class="topic">
+<a name="2qoiaceq4nrgi42651nnoi5363">&nbsp;&nbsp;&nbsp;dos系统</a>
+</h3>
+<h3 class="topic">
+<a name="1ea2dt85h3dhqq7fn3iaik9huq">&nbsp;&nbsp;&nbsp;&nbsp;实模式（只有内核层，可以直接操作物理内存）、单任务</a>
+</h3>
+<h3 class="topic">
+<a name="1bv0f2pov2l9b7p9kaedrq1mms">&nbsp;&nbsp;恶意代码传播技术</a>
+</h3>
+<h3 class="topic">
+<a name="7uvc9fmafl2sivsgjq779qloou">&nbsp;&nbsp;恶意代码实现技术</a>
+</h3>
+<h3 class="topic">
+<a name="2rtk9rj71tj1o91h0149hdpj67">&nbsp;&nbsp;自我保护技术</a>
+</h3>
+<h3 class="topic">
+<a name="3641gp4g5pmmiiatfs9cm0p9df">&nbsp;恶意代码分析实例</a>
+</h3>
+<h3 class="topic">
+<a name="6m81di8ii1se28ap2c2pg1vuu7">&nbsp;&nbsp;一般派拍快照最好在关机情况下进行，这样体积比较小</a>
+</h3>
+</body>
+</html>

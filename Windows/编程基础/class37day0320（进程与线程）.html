@@ -1,0 +1,2029 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>class37day0320（进程与线程）</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="7galcpoph0vlq74v2roe5e9u6p">class37day0320（进程与线程）</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="class37day0320%EF%BC%88%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B%EF%BC%89_files/images/class37day0320%EF%BC%88%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B%EF%BC%89.jpg"></div>
+<h2 class="topic">
+<a name="6ol8703m9lnpoojnbasdsgoca2">复习</a>
+</h2>
+<h3 class="topic">
+<a name="7uj0hvpd7bo0d3spl9vfv14gv3">&nbsp;线程同步</a>
+</h3>
+<h3 class="topic">
+<a name="3bs0tfqot3kgse2hjb0ugobmm8">&nbsp;&nbsp;原子操作</a>
+</h3>
+<h3 class="topic">
+<a name="6r963i8d36rau6qlo3851a1g55">&nbsp;&nbsp;&nbsp;只能操作一个变量</a>
+</h3>
+<h3 class="topic">
+<a name="4cigs97l5mm706pl63ov7a3f68">&nbsp;&nbsp;临界区</a>
+</h3>
+<h3 class="topic">
+<a name="1doi9haps7b542fingma3nntn1">&nbsp;&nbsp;&nbsp;创建临界区变量</a>
+</h3>
+<h3 class="topic">
+<a name="2lrfihsknsjsbp7h5p1jqm7gd1">&nbsp;&nbsp;&nbsp;初始化一个临界区</a>
+</h3>
+<h3 class="topic">
+<a name="5st1k275a6hf094peflqtkn3bl">&nbsp;&nbsp;&nbsp;进入临界区</a>
+</h3>
+<h3 class="topic">
+<a name="6se3hcccm80o4q7o15uugt6nan">&nbsp;&nbsp;&nbsp;执行多线程要互斥的代码</a>
+</h3>
+<h3 class="topic">
+<a name="1n79b8rh27us6eoh8uhn60acnm">&nbsp;&nbsp;&nbsp;离开临界区</a>
+</h3>
+<h3 class="topic">
+<a name="6a8g6iuulearhc23063augjc7v">&nbsp;&nbsp;内核对象的同步</a>
+</h3>
+<h3 class="topic">
+<a name="7pmmek8175orgu605dlk2hn0id">&nbsp;&nbsp;&nbsp;互斥体</a>
+</h3>
+<h3 class="topic">
+<a name="01jtfbcc917ta54t09rt7se0rv">&nbsp;&nbsp;&nbsp;事件对象</a>
+</h3>
+<h3 class="topic">
+<a name="6hatvgi8lutl38ggjrslf497re">&nbsp;&nbsp;&nbsp;信号量</a>
+</h3>
+<h3 class="topic">
+<a name="5gkmlpc6s7rs7g8vkn27l9r3ur">&nbsp;&nbsp;&nbsp;通用使用模式</a>
+</h3>
+<h3 class="topic">
+<a name="6s3e77sioc5kf1k0vmrgffkc0d">&nbsp;&nbsp;&nbsp;&nbsp;一般都是先使用等待函数等待信号</a>
+</h3>
+<h3 class="topic">
+<a name="2c786mkf8e5rv28iskvl7u3foh">&nbsp;&nbsp;&nbsp;&nbsp;执行多线程要互斥/同步的对象</a>
+</h3>
+<h3 class="topic">
+<a name="192ubv591p92hkojqk10dsl2fu">&nbsp;&nbsp;&nbsp;&nbsp;重置内核对象的信号</a>
+</h3>
+<h2 class="topic">
+<a name="0tkf0lggvd9b0npbbeohsii29k">异步io（也称重叠io）</a>
+</h2>
+<h3 class="topic">
+<a name="5sotn9ip1phritt9jcv37d70t0">&nbsp;同步io：读写文件使用ReadFile WriteFile，读写完成前函数会阻塞，必须等待读写完成函数才能返回（虽然可以专门建立线程用于读写文件，更多的不如使用异步io机制）</a>
+</h3>
+<h3 class="topic">
+<a name="72avehpch1ku6aa1e7i0u1n1me">&nbsp;&nbsp;异步io：文件读写函数执行之后会立即返回，由系统提供的异步读写机制进行文件读写，程序中可以使用另一个进程用于获取文件读写进度、获取文件读写内容等，这样可以不影响程序主线程的运行</a>
+</h3>
+<h3 class="topic">
+<a name="204vuo8k04ik2rabh914rpb9qt">&nbsp;核心问题</a>
+</h3>
+<h3 class="topic">
+<a name="7u2temh13bj8dc17hkcc0g07mk">&nbsp;&nbsp;如何发起异步io的任务</a>
+</h3>
+<h3 class="topic">
+<a name="4ur3p2gj58cbds9f00kooqabpc">&nbsp;&nbsp;如何接收io任务完成的通知</a>
+</h3>
+<h3 class="topic">
+<a name="47g2ac6k34i8sp6obgndemtiju">&nbsp;相关函数</a>
+</h3>
+<h3 class="topic">
+<a name="3t9r0ionhiistp455argfovn60">&nbsp;&nbsp;与一般文件读写api相同</a>
+</h3>
+<h3 class="topic">
+<a name="355igl79a6ssl5a5h450aj6u13">&nbsp;&nbsp;&nbsp;CreateFile()</a>
+</h3>
+<h3 class="topic">
+<a name="64oulng6mjcopg2vi32nns6ghv">&nbsp;&nbsp;&nbsp;&nbsp;创建文件的时候需要指定异步io的标志,才能进行异步io处理</a>
+</h3>
+<h3 class="topic">
+<a name="5lnp3co7g4v8v5blpp3epfrlk3">&nbsp;&nbsp;&nbsp;ReadFile()</a>
+</h3>
+<h3 class="topic">
+<a name="5aek5jj969p07sgnr23vleuhla">&nbsp;&nbsp;&nbsp;WriteFile()</a>
+</h3>
+<h3 class="topic">
+<a name="2q9jj7v64n8j8a9i6qc8oed3d3">&nbsp;&nbsp;需要用到重叠结构体OVERLAPPED</a>
+</h3>
+<h3 class="topic">
+<a name="13hgihjfk1n21o16gtkodem3cv">&nbsp;&nbsp;&nbsp;可以设置文件读写位置字段，指定要进行输入输出地文件位置</a>
+</h3>
+<h3 class="topic">
+<a name="0kh2jfua7rg7ma30pfif3sp1ip">&nbsp;&nbsp;&nbsp;设置事件对象字段，&#13;
+当读写完成，事件对象会被设置为激发态，此时可以使用等待函数判断文件是否读写完成</a>
+</h3>
+<h3 class="topic">
+<a name="4nc0rv2aojnrak9ki938u1823n">&nbsp;&nbsp;&nbsp;注意重叠结构体有时需要在多个函数中使用，所以需要new出来，或定义为全局变量</a>
+</h3>
+<h3 class="topic">
+<a name="3rpeci4brjbld3hd1rck4apd9i">&nbsp;&nbsp;&nbsp;重叠结构体字段</a>
+</h3>
+<h3 class="topic">
+<a name="17eiu2t4eb6pov87lbjve79kmu">&nbsp;&nbsp;&nbsp;&nbsp; 	typedef struct _OVERLAPPED {&#13;
+ 		ULONG_PTR Internal; // [输出] 读/写文件时产生的错误码&#13;
+ 		ULONG_PTR InternalHigh;//[输出] 用于保存实际完成的字节数&#13;
+ 		union {&#13;
+ 			struct {&#13;
+ 				DWORD Offset;//[输入]文件的读写位置的低32位&#13;
+ 				DWORD OffsetHigh;//[输入]文件的读写位置的高32位&#13;
+ 			} DUMMYSTRUCTNAME;&#13;
+ 			PVOID Pointer;//[输入]&#13;
+ 		} DUMMYUNIONNAME;&#13;
+  		HANDLE  hEvent;//[输入] 事件对象.用于接收IO任务的完成通知.&#13;
+ 	} OVERLAPPED, *LPOVERLAPPED;</a>
+</h3>
+<h3 class="topic">
+<a name="101lg786kl60sllmlr2heqqqe5">&nbsp;当文件以异步io的方式被打开</a>
+</h3>
+<h3 class="topic">
+<a name="3eoemok85vbrk67e4lpmnlb5m6">&nbsp;&nbsp;文件句柄会变成可等待的对象，即拥有激发态和非激发态</a>
+</h3>
+<h3 class="topic">
+<a name="3avdk0gjhhjumiauomaqe12jq5">&nbsp;&nbsp;文件指针会失效，不能用于指向文件的读写位置，不能使用SetFilePointer函数，而是使用重叠结构体中的偏移，用于表示文件读写位置</a>
+</h3>
+<h3 class="topic">
+<a name="2lr9paugbouuo58nnglomka47p">&nbsp;使用方法</a>
+</h3>
+<h3 class="topic">
+<a name="31jk6aeqpa06onp3n8l5sruf22">&nbsp;&nbsp;发起异步io任务</a>
+</h3>
+<h3 class="topic">
+<a name="1jff3dlr6botm9ls7ovvlu406r">&nbsp;&nbsp;&nbsp;流程</a>
+</h3>
+<h3 class="topic">
+<a name="097l9h421r4k8klrfvicknrs62">&nbsp;&nbsp;&nbsp;&nbsp;包含windows.h</a>
+</h3>
+<h3 class="topic">
+<a name="1rebmhm1qqichpe20asoam5498">&nbsp;&nbsp;&nbsp;&nbsp;以异步的方式打开或创建文件</a>
+</h3>
+<h3 class="topic">
+<a name="3ci1cb9qigdhsmp85rsj6lphkf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在标志属性参数（即倒数第二个参数中）处指定异步io标志作为参数</a>
+</h3>
+<h3 class="topic">
+<a name="5jng6rdcs9lhrjklovsh67pj7b">&nbsp;&nbsp;&nbsp;&nbsp;定义、设置重叠结构体的offset指定文件读写位置</a>
+</h3>
+<h3 class="topic">
+<a name="4djmqsi0ruk997tlm1bcil3f94">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过异步io标志打开的对象没有默认的文件读写位置，需要使用重叠结构体指定文件读写位置</a>
+</h3>
+<h3 class="topic">
+<a name="7g0d6fh5dcem3utrrcmeicg00n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;异步io可以从文件的不同的位置开始读写，通过指定重叠结构体实现</a>
+</h3>
+<h3 class="topic">
+<a name="2lifv8dth7ccjilcra7buccurs">&nbsp;&nbsp;&nbsp;&nbsp;使用ReadFile() WriteFile()发出异步io任务</a>
+</h3>
+<h3 class="topic">
+<a name="5eg2snlc57ck86fhpqmcmgopvj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用重叠结构体作为最后一个参数，同步io的时候该参数为NULL</a>
+</h3>
+<h3 class="topic">
+<a name="62u09ftueva3gkg5v6jo04vv8s">&nbsp;&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="19ecju5hm1t3nbhptc3egvsvd9">&nbsp;&nbsp;&nbsp;&nbsp;&#13;
+#include "pch.h"&#13;
+#include &lt;windows.h&gt;&#13;
+#include &lt;stdio.h&gt;&#13;
+//&#13;
+VOID WINAPI ReadProc(&#13;
+	_In_    DWORD dwErrorCode,/*错误码,读写时产生错误就以此参数记录 0表示操作完成*/&#13;
+	_In_    DWORD dwNumberOfBytesTransfered,/*实际完成的字节数*/&#13;
+	_Inout_ LPOVERLAPPED lpOverlapped /*重叠结构体*/&#13;
+	)&#13;
+{&#13;
+	//在回调函数中有重叠结构体的指针，所以可以区分是哪个异步IO任务完成了&#13;
+	printf("完成的任务的偏移: %d", lpOverlapped-&gt;Offset);&#13;
+}&#13;
+int main()&#13;
+{&#13;
+	// 异步IO的流程&#13;
+	// 1. 以异步的方式打开/创建一个文件&#13;
+	//	  在倒数第二个参数中指定异步IO标志:FILE_FLAG_OVERLAPPED&#13;
+	//这里文件句柄被赋值为无效的句柄值，类似于创建变量后将初始值赋值为0&#13;
+	HANDLE hFile = INVALID_HANDLE_VALUE;&#13;
+	hFile = CreateFile(L"E:\\watch_dog\\Watch_Dogs\\Watch_Dogs\\watch_dogs.exe",//文件名 注意文件名需要使用转义字符&#13;
+					   GENERIC_READ,//文件访问方式：只读&#13;
+					   FILE_SHARE_READ,//共享方式共享读&#13;
+					   NULL,//默认安全描述符&#13;
+					   OPEN_EXISTING,//创建方式&#13;
+					   FILE_FLAG_OVERLAPPED,//创建属性，注意，这里指定了文件以重叠io的方式打开&#13;
+					   NULL);//创建模板&#13;
+&#13;
+	// 2. 使用ReadFile和WriteFile来发出IO任务&#13;
+	char *buff = new char[1024*1024*1024];//申请1gb的缓存区&#13;
+	//返回实际读取到的字节数的变量&#13;
+	DWORD dwRead = 0;&#13;
+	&#13;
+	// 2.1 使用OVERLAPPED来指定要读写文件位置.&#13;
+	//     因为通过异步IO标志打开的文件对象,已经&#13;
+	//     没有默认的文件读写位置.&#13;
+	OVERLAPPED ol = { 0 };&#13;
+&#13;
+//重叠结构体的内容&#13;
+// 	typedef struct _OVERLAPPED {&#13;
+// 		ULONG_PTR Internal; // [输出] 读/写文件时产生的错误码&#13;
+// 		ULONG_PTR InternalHigh;//[输出] 用于保存实际完成的字节数&#13;
+// 		union {&#13;
+// 			struct {&#13;
+// 				DWORD Offset;//[输入]文件的读写位置的低32位&#13;
+// 				DWORD OffsetHigh;//[输入]文件的读写位置的高32位&#13;
+// 			} DUMMYSTRUCTNAME;&#13;
+// 			PVOID Pointer;//[输入]&#13;
+// 		} DUMMYUNIONNAME;&#13;
+// &#13;
+// 		HANDLE  hEvent;//[输入] 事件对象.用于接收IO任务的完成通知.&#13;
+// 	} OVERLAPPED, *LPOVERLAPPED;&#13;
+&#13;
+	//读写起始位置为0x10000&#13;
+	ol.Offset = 0x10000;&#13;
+	ReadFile(hFile,/*文件句柄*/&#13;
+			 buff, /*保存文件内容的缓冲区*/&#13;
+			 1024 * 1024 * 1024, /*要读取的字节数*/&#13;
+			 &amp;dwRead, /*实际读取到的字节数*/&#13;
+			 &amp;ol);//重叠结构体指针&#13;
+&#13;
+&#13;
+	// 3. 使用其中一种方式来接收IO任务的完成通知&#13;
+	// 3.1 根据文件句柄的信号来判断&#13;
+	// 3.1.1 当IO任务没有完成时, 文件句柄是无信号的&#13;
+	// 3.1.2 当IO任务完成时, 文件句柄是有信号的&#13;
+	WaitForSingleObject(hFile, -1);&#13;
+&#13;
+///////////////////////////////////////////////////////////////////////////////&#13;
+	// 3.2 使用OVERLAPPED结构体中的hEvent字段.&#13;
+	// 3.2.1 当OVERLAPPED记录的文件读写位置的IO任务&#13;
+	//       被系统完成之后, 系统会将结构体中的hEvent&#13;
+	//       设置为有信号.&#13;
+	OVERLAPPED ol2 = { 0 };&#13;
+	ol2.Offset = 0x30000;&#13;
+	// 创建了一个自动的初始无信号的事件对象.&#13;
+	ol2.hEvent = CreateEvent(NULL,&#13;
+							 FALSE,&#13;
+							 FALSE,&#13;
+							 NULL);&#13;
+	ReadFile(hFile,/*文件句柄*/&#13;
+			 buff, /*保存文件内容的缓冲区*/&#13;
+			 1024 * 1024 * 1024, /*要读取的字节数*/&#13;
+			 &amp;dwRead, /*实际读取到的字节数*/&#13;
+			 &amp;ol2);&#13;
+&#13;
+	OVERLAPPED ol3 = { 0 };&#13;
+	ol3.Offset = 0x40000;&#13;
+	// 创建了一个自动的初始无信号的事件对象.&#13;
+	ol3.hEvent = CreateEvent(NULL,&#13;
+							 FALSE,&#13;
+							 FALSE,&#13;
+							 NULL);&#13;
+	ReadFile(hFile,/*文件句柄*/&#13;
+			 buff, /*保存文件内容的缓冲区*/&#13;
+			 1024 * 1024 * 1024, /*要读取的字节数*/&#13;
+			 &amp;dwRead, /*实际读取到的字节数*/&#13;
+			 &amp;ol3);&#13;
+&#13;
+	//当异步io任务完成，ol2 ol3两个结构体中的事件对象变为激发态，两个等待函数返回，主线程继续执行&#13;
+	WaitForSingleObject(ol2.hEvent, -1);&#13;
+	WaitForSingleObject(ol3.hEvent, -1);&#13;
+//////////////////////////////////////////////////////////////////////////////////&#13;
+&#13;
+// 3.3 使用异步读取函数&#13;
+	// 3.3.1 发出一个IO任务, 当任务完成了之后&#13;
+	//       系统就会调用回调函数.&#13;
+	OVERLAPPED ol4 = { 0 };&#13;
+	ol4.Offset = 0x10000;&#13;
+	ReadFileEx(hFile,/*文件句柄*/&#13;
+			   buff, /*保存文件内容的缓冲区*/&#13;
+			   1024 * 1024 * 1024, /*要读取的字节数*/&#13;
+			   &amp;ol4,//重叠结构体指针&#13;
+			   ReadProc);//异步读取函数的回调函数，该函数自带的形参包括了重叠结构体&#13;
+&#13;
+	OVERLAPPED ol5 = { 0 };&#13;
+	ol5.Offset = 0x80000;&#13;
+	ReadFileEx(hFile,/*文件句柄*/&#13;
+			   buff, /*保存文件内容的缓冲区*/&#13;
+			   1024 * 1024 * 1024, /*要读取的字节数*/&#13;
+			   &amp;ol5,//重叠结构体指针&#13;
+			   ReadProc);//异步读取函数的回调函数，该函数自带的形参包括了重叠结构体&#13;
+&#13;
+	//使用该函数可以使线程挂起并处于惊醒状态，可以调用异步读取函数的回调函数&#13;
+	SleepEx(1,TRUE);&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="562cf72va5cv61nl059d79517q">&nbsp;&nbsp;接收io任务完成的通知</a>
+</h3>
+<h3 class="topic">
+<a name="7j3vj10s7mg8sk4glsk9n4q223">&nbsp;&nbsp;&nbsp;三种方法</a>
+</h3>
+<h3 class="topic">
+<a name="3rg3dp2vshijletsm683hvopt9">&nbsp;&nbsp;&nbsp;&nbsp;根据文件句柄的信号判断文件是否读写完毕</a>
+</h3>
+<h3 class="topic">
+<a name="5sue2ncvgo7uecmbcsffncv2mn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;异步io任务没有完成时，文件句柄没有信号（非激发态）</a>
+</h3>
+<h3 class="topic">
+<a name="1vempi4lf736qq4kuon2v9m5qu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;完成后，文件句柄时有信号的（激发态）</a>
+</h3>
+<h3 class="topic">
+<a name="0kaiaume2gje43js6a3naqp5ev">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用等待函数进行判断</a>
+</h3>
+<h3 class="topic">
+<a name="7l3s6l9rhssjck3c8cm1f1p25o">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;缺点，如果同时进行多个异步io任务（重复发起异步io任务），只要一个完成了，文件句柄都会变为激发态，导致等待函数返回</a>
+</h3>
+<h3 class="topic">
+<a name="4oga3dj3pf6fvsnkemdi8sg811">&nbsp;&nbsp;&nbsp;&nbsp;使用重叠结构体中的hEvent字段，为每一个异步io任务建立一个事件对象，用于标识对应任务是否完成</a>
+</h3>
+<h3 class="topic">
+<a name="24ra2cp3obg0jvmi51l9eeuvo1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当重叠结构体记录的文件读写位置被系统完成后，系统会将结构体中的hEvent设置为有信号</a>
+</h3>
+<h3 class="topic">
+<a name="57d7bpnuna3gpflbv8v8vkv03k">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在创建异步io任务之前，使用重叠结构体中的hEvent字段创建一个初始无信号的事件对象（使用CreateEvent）</a>
+</h3>
+<h3 class="topic">
+<a name="75610fa04473pj24soh9rv5aeq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;之后使用等待函数对事件信号进行检测</a>
+</h3>
+<h3 class="topic">
+<a name="7koe37dd72sbpb68l2tpf0hp6r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;也可以使用等待多个内核对象的等待函数(WaitForMultipleObject)对多个异步io任务的信号进行检测</a>
+</h3>
+<h3 class="topic">
+<a name="16maoku43rvnjfkt8oqc8n282t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;缺点：每一个任务都有事件对象，事件对象的等待函数是阻塞的，一般需要创建一个线程用于等待事件对象，而每个异步io任务均有一个事件对象，如果异步io任务过多，就需要创建更多的线程去等待事件对象</a>
+</h3>
+<h3 class="topic">
+<a name="0ss1jkp8p53fsp6m67i2hi2qk6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当然可以只创建一个线程并在该线程中使用等待多个内核对象的等待函数对事件信号进行检测</a>
+</h3>
+<h3 class="topic">
+<a name="07aereuf6nhfbtblm6hh9tvgdl">&nbsp;&nbsp;&nbsp;&nbsp;使用异步读写函数</a>
+</h3>
+<h3 class="topic">
+<a name="381ic7i3r6d84a3hq3meob89vh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ReadFileEx()&#13;
+WriteFileEx()</a>
+</h3>
+<h3 class="topic">
+<a name="5rcnmnrl9doknrde66nbivnm51">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;异步读写函数与普通的读写函数区别在于，倒数第二个参数为重叠结构体，最后一个参数为函数指针（指向回调函数），读写完毕后之后，系统会调用此处的回调函数</a>
+</h3>
+<h3 class="topic">
+<a name="51fh90qkr703r29897olv2auiv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;回调函数原型</a>
+</h3>
+<h3 class="topic">
+<a name="61lqqk01q5c539vrji8v0mkjvt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;VOID WINAPI ReadProc(&#13;
+参数1 文件读写过程的错误码，0表示操作完成&#13;
+参数2 实际读写的字节数&#13;
+参数3  指向重叠结构体的指针);</a>
+</h3>
+<h3 class="topic">
+<a name="6rhji7bcraskjre05oj35flhs6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当创建多个异步io任务，则会由不同的重叠结构体调用回调函数，在回调函数中可以通过区分不同的重叠结构体的offset（文件读写位置），区分不同的任务的完成情况。</a>
+</h3>
+<h3 class="topic">
+<a name="0sde6bc76pjfvkn8r7crrlbb18">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;有关重叠结构体</a>
+</h3>
+<h3 class="topic">
+<a name="5r32rtu4k0cqspar7lgq8trhns">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意重叠结构体有时需要在多个函数中使用，所以需要new出来，或定义为全局变量</a>
+</h3>
+<h3 class="topic">
+<a name="4dho43dj10vf7rsjfmfm356vt0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用异步读写函数，需要把对应异步io任务的重叠结构体的hEvent字段置为0</a>
+</h3>
+<h3 class="topic">
+<a name="43vgg91sg8nup2deceuqihukah">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;系统会将回调函数的指针插入APC队列中，只有有线程被挂起，且处于可警醒状态时，apc中的回调函数才能被依次执行</a>
+</h3>
+<h3 class="topic">
+<a name="4oor7k0fktijn51d03th3lo10c">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;故回调函数在异步io完成之后不会被立即调用，只有线程挂起且线程处于可警醒状态的时候，才会被调用</a>
+</h3>
+<h3 class="topic">
+<a name="68shm0gumao5k8n533089iao8u">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;调用以下函数可以使线程处于警醒状态</a>
+</h3>
+<h3 class="topic">
+<a name="2h2ej83b8ibp2p9fl908sjk7ht">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SleepEx()</a>
+</h3>
+<h3 class="topic">
+<a name="3eh0id121omktdrh7g3t4q2pr9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;..参见资料36页</a>
+</h3>
+<h3 class="topic">
+<a name="5qn7sr972q2bdp410k4aos2k3g">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;缺陷：回调函数只会在线程被挂起时才会被调用</a>
+</h3>
+<h3 class="topic">
+<a name="1na5es28hds5t80pdrs5132jmv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class37day0320%EF%BC%88%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B%EF%BC%89_files/59qlol8hgdg2olcvvh45s83uvt.png"></p>
+<h3 class="topic">
+<a name="6nl1fq3vg8rmm2rps0ribh36s4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="512c7866qr873eron8kpu89mv1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class37day0320%EF%BC%88%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B%EF%BC%89_files/64fa6ckp0jvsu9nj7otufrlgtt.png"></p>
+<h3 class="topic">
+<a name="63aef801fdknjajf512cn899ac">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class37day0320%EF%BC%88%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B%EF%BC%89_files/4rkl0d1d03f5b541dj2ggjtptl.png"></p>
+<h3 class="topic">
+<a name="2379g0i2gv5tepd8kuh0pg0j4g">&nbsp;&nbsp;&nbsp;有效接收io任务完成通知</a>
+</h3>
+<h3 class="topic">
+<a name="21f7dqqkam4kjbcktvke7n4ncr">&nbsp;&nbsp;&nbsp;&nbsp;将重叠结构体的事件对象创建出来</a>
+</h3>
+<h3 class="topic">
+<a name="3siv8h0hpi9kfbupttmd35b474">&nbsp;&nbsp;&nbsp;&nbsp;使用重叠结构体中的hEvent字段创建事件对象</a>
+</h3>
+<h3 class="topic">
+<a name="6uk6l31j43puhbboa69diq253i">&nbsp;&nbsp;&nbsp;&nbsp;创建专门的线程用于等待事件对象，依次接收文件读写完成的通知</a>
+</h3>
+<h3 class="topic">
+<a name="5ucsng64ji749477m94dhdje4i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将事件对象（是重叠结构体的字段）作为参数传给回调函数</a>
+</h3>
+<h3 class="topic">
+<a name="1dm28uknt7ag13eur6fu10rl7u">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在回调函数使用等待函数对事件对象进行等待</a>
+</h3>
+<h3 class="topic">
+<a name="4fu0orq406pvciu0lbj5vk588s">&nbsp;&nbsp;&nbsp;&nbsp;重叠结构体和接收数据读取的buffer均为new出来的，位于堆空间中，保证其空间不会因为不同函数间切换而被销毁</a>
+</h3>
+<h3 class="topic">
+<a name="3db3otbo1978sp92he1li1t62l">&nbsp;&nbsp;&nbsp;&nbsp;将buffer和重叠结构体组合为一个新的结构体，这样就可以作为参传到数新创建的线程中，该进程中存在等待函数，该等待函数返回之后，可以使用新创建的结构体找到读取到的内容（新的结构体中包括了buffer和重叠结构体）</a>
+</h3>
+<h3 class="topic">
+<a name="4a8ps30qhpleccg1kb4iufva2s">&nbsp;&nbsp;&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="1kmj5pbcghsj3bp13861ae8dql">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#include "pch.h"&#13;
+#include &lt;windows.h&gt;&#13;
+#include &lt;stdio.h&gt;&#13;
+//自定义的重叠结构体，派生自重叠结构体，其中主要是将缓冲区的指针也结合到了里面&#13;
+struct MYOVERLAPPED : public OVERLAPPED&#13;
+{&#13;
+	//构造，将自定义的重叠结构体赋初值为0&#13;
+	MYOVERLAPPED() {&#13;
+		memset(this, 0, sizeof(OVERLAPPED));&#13;
+	}&#13;
+	char * m_pBuff= NULL;&#13;
+	//析构函数中释放缓冲区指针&#13;
+	~MYOVERLAPPED() {&#13;
+		delete[] m_pBuff;&#13;
+	}&#13;
+};&#13;
+// 接收IO完成通知的线程回调函数.&#13;
+DWORD CALLBACK IoComplateProc(&#13;
+	LPVOID pArg)&#13;
+{&#13;
+	MYOVERLAPPED *pOl = (MYOVERLAPPED  *)pArg;&#13;
+	WaitForSingleObject(pOl-&gt;hEvent,-1);&#13;
+	printf("IO任务完成, 实际完成的字节数: %d, " &#13;
+		   "文件偏移: %d, 得到的内容:\n----\n%s\n----\n",&#13;
+		   pOl-&gt;InternalHigh,&#13;
+		   pOl-&gt;Offset,&#13;
+		   pOl-&gt;m_pBuff);&#13;
+	delete pOl;&#13;
+	return 0;&#13;
+}&#13;
+void ReadIo(HANDLE hFile,&#13;
+			DWORD dwSize,&#13;
+			DWORD offset)&#13;
+{&#13;
+	//使用传入的参数给自定义的重叠结构体中的字段赋值&#13;
+	MYOVERLAPPED* ol = new MYOVERLAPPED();&#13;
+	DWORD dwRead = 0;&#13;
+	ol-&gt;m_pBuff = new char[dwSize];&#13;
+	ol-&gt;Offset = offset;&#13;
+	//使用重叠结构体中创建事件对象的方法获取异步IO任务执行结果&#13;
+	ol-&gt;hEvent = CreateEvent(0, 0, 0, 0);&#13;
+	&#13;
+	ReadFile(hFile,&#13;
+			 ol-&gt;m_pBuff,&#13;
+			 dwSize,&#13;
+			 &amp;dwRead,&#13;
+			 ol);&#13;
+	//为获取异步IO任务执行结果，单独创建线程吗，其中对事件对象进行等待&#13;
+	//当异步io任务处理完毕，事件对象处于激发态，等待函数返回，&#13;
+	//就可以使用自定义的重叠结构体获得读取的消息以及读取的实际字节数等信息&#13;
+	CreateThread(0, 0,&#13;
+				 IoComplateProc,&#13;
+				 (LPVOID)ol,&#13;
+				 0,&#13;
+				 0);&#13;
+}&#13;
+&#13;
+int main()&#13;
+{&#13;
+	// 异步IO的流程&#13;
+	// 1. 以异步的方式打开/创建一个文件&#13;
+	//	  在倒数第二个参数中指定异步IO标志:FILE_FLAG_OVERLAPPED&#13;
+	HANDLE hFile = INVALID_HANDLE_VALUE;&#13;
+	hFile = CreateFile(L"E:\\watch_dog\\Watch_Dogs\\Watch_Dogs\\watch_dogs.exe",&#13;
+					   GENERIC_READ,&#13;
+					   FILE_SHARE_READ,&#13;
+					   NULL,&#13;
+					   OPEN_EXISTING,&#13;
+					   FILE_FLAG_OVERLAPPED | FILE_ATTRIBUTE_NORMAL,&#13;
+					   NULL);&#13;
+	//封装函数，用于从指定文件偏移处，读取指定文件的指定字节大小的信息&#13;
+	ReadIo(hFile, 100, 200);&#13;
+	ReadIo(hFile, 300, 50);&#13;
+	system("pause");&#13;
+}</a>
+</h3>
+<h2 class="topic">
+<a name="7icbamo7qis5t4vlnh0e6r87q3">网络编程</a>
+</h2>
+<h3 class="topic">
+<a name="6budhkkln8ur76uqhj7ievn3pb">&nbsp;网络软件分类</a>
+</h3>
+<h3 class="topic">
+<a name="7o7l6iii6a4hkh2v7bfdqcsg9v">&nbsp;&nbsp;C/S</a>
+</h3>
+<h3 class="topic">
+<a name="1skgojaabe9om77mm342nsik5r">&nbsp;&nbsp;&nbsp;服务端一般处于休眠状态，直到客户端对服务器发出连接请求，将其唤醒</a>
+</h3>
+<h3 class="topic">
+<a name="5ms0vo4gsaq5v9silvaa385ikh">&nbsp;&nbsp;&nbsp;&nbsp;服务端与客户端的链接是持续的，直到客户端关闭该链接</a>
+</h3>
+<h3 class="topic">
+<a name="3m8oh38nmai1qfe01u56beo0f2">&nbsp;&nbsp;&nbsp;&nbsp;服务端可以主动将数据发送到客户端</a>
+</h3>
+<h3 class="topic">
+<a name="7fuf1j9onfmanm52hjnspv5tqb">&nbsp;&nbsp;B/S</a>
+</h3>
+<h3 class="topic">
+<a name="1hlo485jg4c3dhv49kq72u9ojh">&nbsp;&nbsp;&nbsp;客户端是浏览器上，浏览器以超文本格式向web服务器提出请求</a>
+</h3>
+<h3 class="topic">
+<a name="49tqcbvat85hkcb0ackgi0bq6k">&nbsp;&nbsp;&nbsp;&nbsp;服务端与客户端的的消息交互一下之后，消息即断开</a>
+</h3>
+<h3 class="topic">
+<a name="56dbmq0qbroapvadkus96ufs93">&nbsp;&nbsp;&nbsp;&nbsp;服务端不能主动将数据发送到客户端</a>
+</h3>
+<h3 class="topic">
+<a name="7e80m7itsk3pa5d9ajq2tfhum4">&nbsp;套接字（Socket）（是一种内核对象）</a>
+</h3>
+<h3 class="topic">
+<a name="37k6qlbl3if083b2echfrnnlnu">&nbsp;&nbsp;WinSocket:在原有的socket基础上进行了一些扩充</a>
+</h3>
+<h3 class="topic">
+<a name="5gc4lechjoe1183kcrcorvefuu">&nbsp;&nbsp;&nbsp;2.2版本以上支持多种网络协议</a>
+</h3>
+<h3 class="topic">
+<a name="4cobdihn4cc2fqrbfa5hp97dtf">&nbsp;&nbsp;ws2_32</a>
+</h3>
+<h3 class="topic">
+<a name="0bf395m4nj6rb3lia6r5ru51vt">&nbsp;&nbsp;&nbsp;套接字的库函数</a>
+</h3>
+<h3 class="topic">
+<a name="7r3t21950f398km2mf78j5j5sn">&nbsp;TCP/UDP</a>
+</h3>
+<h3 class="topic">
+<a name="17m9180nf6atn7ei2eq89u66ut">&nbsp;&nbsp;TCP</a>
+</h3>
+<h3 class="topic">
+<a name="0fa5cti8a59oui0qdg7d3i1s1b">&nbsp;&nbsp;&nbsp;安全的传输协议，保证数据的送达</a>
+</h3>
+<h3 class="topic">
+<a name="3d4vi8oqit9s1v3neesi7dnqh0">&nbsp;&nbsp;&nbsp;&nbsp;传输速度较慢</a>
+</h3>
+<h3 class="topic">
+<a name="7cbmlvtmt3rp0dqeetpg35u1p3">&nbsp;&nbsp;UDP</a>
+</h3>
+<h3 class="topic">
+<a name="7pvmmlji6gtm8m41ro30codhpr">&nbsp;&nbsp;&nbsp;不能保证数据的完整传输</a>
+</h3>
+<h3 class="topic">
+<a name="2cbeifol4utmt201q5d93robtq">&nbsp;&nbsp;&nbsp;&nbsp;传输速度快</a>
+</h3>
+<h3 class="topic">
+<a name="3qhnrh0oc7o3skcjn7j10t8o14">&nbsp;&nbsp;TCP在客户端和服务端交互基本流程</a>
+</h3>
+<h3 class="topic">
+<a name="6e939ac0r8ke1mtmmhfvaejvj3">&nbsp;&nbsp;&nbsp;主要函数send() revc()，用于收发消息</a>
+</h3>
+<h3 class="topic">
+<a name="784qsplk0fp9joc6gnle11genn">&nbsp;&nbsp;&nbsp;服务端</a>
+</h3>
+<h3 class="topic">
+<a name="176q1o53c5n468vpl004q47591">&nbsp;&nbsp;&nbsp;&nbsp;初始化网络环境</a>
+</h3>
+<h3 class="topic">
+<a name="75s5cf99qasdkp1qq5qn8ok84a">&nbsp;&nbsp;&nbsp;&nbsp;创建套接字</a>
+</h3>
+<h3 class="topic">
+<a name="1usamvesglo332g7n53k52lnpf">&nbsp;&nbsp;&nbsp;&nbsp;为套接字绑定ip地址和端口</a>
+</h3>
+<h3 class="topic">
+<a name="3dls5e25lrsq4lpamprnb9nerf">&nbsp;&nbsp;&nbsp;&nbsp;监听套接字</a>
+</h3>
+<h3 class="topic">
+<a name="50324c7sukcq3qfkcf3uvghqr6">&nbsp;&nbsp;&nbsp;&nbsp;等待获取客户端的链接</a>
+</h3>
+<h3 class="topic">
+<a name="69757s1pf3i14ek1grq326bp1u">&nbsp;&nbsp;&nbsp;&nbsp;收发消息</a>
+</h3>
+<h3 class="topic">
+<a name="5lfb19di730r0q2lbt65vhqs1o">&nbsp;&nbsp;&nbsp;&nbsp;关闭套接字</a>
+</h3>
+<h3 class="topic">
+<a name="09dqie1r4fqo9dq2och62ol8d6">&nbsp;&nbsp;&nbsp;&nbsp;清空网络环境</a>
+</h3>
+<h3 class="topic">
+<a name="2mob4u3i641tk6d5he8dmnrk4b">&nbsp;&nbsp;&nbsp;客户端</a>
+</h3>
+<h3 class="topic">
+<a name="4balcm960efhp8ld7l36u4g27l">&nbsp;&nbsp;&nbsp;&nbsp;初始化网络环境</a>
+</h3>
+<h3 class="topic">
+<a name="7tgiikdo6m133pa7id975ej202">&nbsp;&nbsp;&nbsp;&nbsp;创建套接字</a>
+</h3>
+<h3 class="topic">
+<a name="0s0km71ghtagek0omnr62k2h1d">&nbsp;&nbsp;&nbsp;&nbsp;链接到服务器</a>
+</h3>
+<h3 class="topic">
+<a name="79p51ucgd90p05s56udt5amia5">&nbsp;&nbsp;&nbsp;&nbsp;收发消息</a>
+</h3>
+<h3 class="topic">
+<a name="1soqceh3rdc6n4krfhajbqdhc5">&nbsp;&nbsp;&nbsp;&nbsp;关闭套接字</a>
+</h3>
+<h3 class="topic">
+<a name="6s5g5mc15p6dapet3c4q9eh30l">&nbsp;&nbsp;&nbsp;&nbsp;清空网络环境</a>
+</h3>
+<h3 class="topic">
+<a name="6rl0fsho9cpsh979ia79on7iqf">&nbsp;&nbsp;UDP在客户端和服务端交互基本流程</a>
+</h3>
+<h3 class="topic">
+<a name="0t4f6dssh0eg7bu0amq63492du">&nbsp;&nbsp;&nbsp;初始化网络环境</a>
+</h3>
+<h3 class="topic">
+<a name="537p6h8oiued2fahm4db796sae">&nbsp;&nbsp;&nbsp;创建套接字</a>
+</h3>
+<h3 class="topic">
+<a name="5e8rdklogn32cb4epp8nk4bn53">&nbsp;&nbsp;&nbsp;为套接字绑定ip地址和端口</a>
+</h3>
+<h3 class="topic">
+<a name="0q2tpaqo2pc3jsl2tqki127fs6">&nbsp;&nbsp;&nbsp;收发消息</a>
+</h3>
+<h3 class="topic">
+<a name="0rlvb6oq13p1tfco57l4qa542r">&nbsp;&nbsp;&nbsp;关闭套接字</a>
+</h3>
+<h3 class="topic">
+<a name="6ot6crk46hfd4mpug6b1nddkl9">&nbsp;&nbsp;&nbsp;清空网络环境</a>
+</h3>
+<h3 class="topic">
+<a name="0hg8drh13gubt5k1ps5ogk6csv">&nbsp;代码实现一个tcp服务器</a>
+</h3>
+<h3 class="topic">
+<a name="6s89mbk1k6n5ekr26toi5etg0e">&nbsp;&nbsp;包含头文件</a>
+</h3>
+<h3 class="topic">
+<a name="79i3lgqj39s50ai0ijuqs6hl0n">&nbsp;&nbsp;&nbsp;windows.h</a>
+</h3>
+<h3 class="topic">
+<a name="571fridseuth1j939veta9r9rc">&nbsp;&nbsp;&nbsp;winsock2.h</a>
+</h3>
+<h3 class="topic">
+<a name="4gimhrv3mk549qcouium37142b">&nbsp;&nbsp;包含库</a>
+</h3>
+<h3 class="topic">
+<a name="3scajs79vgbvn3p9jant3u80ir">&nbsp;&nbsp;初始化套接字环境</a>
+</h3>
+<h3 class="topic">
+<a name="0pclpu3jv42l0nm9umoouk079q">&nbsp;&nbsp;&nbsp;参数</a>
+</h3>
+<h3 class="topic">
+<a name="3oel800ctgofvdn9o624n6pisq">&nbsp;&nbsp;&nbsp;&nbsp;版本号一般是2.2</a>
+</h3>
+<h3 class="topic">
+<a name="5stq2flqqa9hu927hg7i7m1hgb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;需要定义版本号结构体</a>
+</h3>
+<h3 class="topic">
+<a name="7vhbhfch1ciferpdetv48dtoce">&nbsp;&nbsp;创建一个服务端的套接字</a>
+</h3>
+<h3 class="topic">
+<a name="3eqa20madiae9h0e0gmqs4hnmh">&nbsp;&nbsp;&nbsp;参数</a>
+</h3>
+<h3 class="topic">
+<a name="53nv05qi9ibm2p17ui63bt33es">&nbsp;&nbsp;&nbsp;&nbsp;套接字协议族</a>
+</h3>
+<h3 class="topic">
+<a name="2kn878pm9gh4kqth96rvg13s4l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AF_INET</a>
+</h3>
+<h3 class="topic">
+<a name="7u5o2mk3cn0gdbt0mps4l31n05">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;英特网协议族</a>
+</h3>
+<h3 class="topic">
+<a name="1sifqjou2t6d5vn6h1vpm6vk40">&nbsp;&nbsp;&nbsp;&nbsp;套接字类型</a>
+</h3>
+<h3 class="topic">
+<a name="39eb0q1ca08qdvjd6alv9a21di">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SOCEKT_STREAM</a>
+</h3>
+<h3 class="topic">
+<a name="3967pa1pko9mrsnb3keirrgn0d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;流式套接字</a>
+</h3>
+<h3 class="topic">
+<a name="4nn6o6t7r4o59onrdgondvtrl2">&nbsp;&nbsp;&nbsp;&nbsp;协议类型</a>
+</h3>
+<h3 class="topic">
+<a name="5vjo31hfa4396ubc5cuoc78oae">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TCP</a>
+</h3>
+<h3 class="topic">
+<a name="5jsvcjbdf1gudsv9lhct3m5v1i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;会影响套接字类型</a>
+</h3>
+<h3 class="topic">
+<a name="51l4ujbsuarvogflr45d647o8c">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;比如如果是udp协议，不能使用流式套接字</a>
+</h3>
+<h3 class="topic">
+<a name="1mvkjtk9hopfqr7h2bo3gprus7">&nbsp;&nbsp;将服务端的套接字和本机的ip端口绑定</a>
+</h3>
+<h3 class="topic">
+<a name="52hknvgku1a6a2eou1f1gil626">&nbsp;&nbsp;&nbsp;创建sockaddr_in结构体，其中指定字段</a>
+</h3>
+<h3 class="topic">
+<a name="1vrbb1r9mf8t6qnoufs8e6btk0">&nbsp;&nbsp;&nbsp;&nbsp;指定协议族</a>
+</h3>
+<h3 class="topic">
+<a name="0g4b86fq8ujisb9gcfurk1qqej">&nbsp;&nbsp;&nbsp;&nbsp;端口号</a>
+</h3>
+<h3 class="topic">
+<a name="542hmv2g86r1336aorfnpvqmrs">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;每个端口号不能被重复使用，如果其他进程已经使用类该端口号，其他的进程不能再使用该端口号</a>
+</h3>
+<h3 class="topic">
+<a name="7scrnomgpqndgsvlkcplg6t9ds">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用WORD保存，最大为65535</a>
+</h3>
+<h3 class="topic">
+<a name="192h01tilagmg2rrpfokrtpv3b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;端口号必须使用大端序指定，使用htons(10086)转换10086为大端序</a>
+</h3>
+<h3 class="topic">
+<a name="1kgh3li2nak1b71rlc2qesfv6h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该函数用于将本机字节序转网络字节序</a>
+</h3>
+<h3 class="topic">
+<a name="3d2ts2ddgsag5d85r1vpemijs9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;字节序转换函数</a>
+</h3>
+<h3 class="topic">
+<a name="67j1aqakecjdi8gbetka5l9g02">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;见资料49页</a>
+</h3>
+<h3 class="topic">
+<a name="5nmtk3gsl0e3ndol47sg50ceur">&nbsp;&nbsp;&nbsp;&nbsp;IP地址</a>
+</h3>
+<h3 class="topic">
+<a name="0rnfm92r4cdbpbg2gvhn4cso64">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用 inet_addr("0.0.0.0");</a>
+</h3>
+<h3 class="topic">
+<a name="51icommi0j9tji6k6ig1kuma51">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将字符串转为四字节的ip地址，可以保存在指定字段</a>
+</h3>
+<h3 class="topic">
+<a name="7ae1c1614jetvpv1if1d6kdbnc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;127.0.0.1是回环地址如果指定，则不能进行网络通讯</a>
+</h3>
+<h3 class="topic">
+<a name="7324vigqdg7ohm971j97gtb0f7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0.0.0.0是本机所有网卡的ip地址</a>
+</h3>
+<h3 class="topic">
+<a name="2e8kqi7q3pajrn94lvpmg3oivc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;inet_nroa</a>
+</h3>
+<h3 class="topic">
+<a name="5f8c7em9sl16pq0q9vq71i5pb5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;与之前转化方向相反</a>
+</h3>
+<h3 class="topic">
+<a name="6b58173r0b6nbb3779c8mu2dlg">&nbsp;&nbsp;&nbsp;参数</a>
+</h3>
+<h3 class="topic">
+<a name="5gafebnakhka3eq6q5234dea7t">&nbsp;&nbsp;&nbsp;&nbsp;绑定的地址结构体</a>
+</h3>
+<h3 class="topic">
+<a name="6stujp8jrkt4k5mtlr7qm45vq8">&nbsp;&nbsp;&nbsp;&nbsp;地址占用的字节数</a>
+</h3>
+<h3 class="topic">
+<a name="39fma0eprjonsbk359btrbk7jl">&nbsp;&nbsp;将服务端套接字进入监听状态</a>
+</h3>
+<h3 class="topic">
+<a name="77d5odn2ihhuqp8jdieduftqst">&nbsp;&nbsp;&nbsp;参数</a>
+</h3>
+<h3 class="topic">
+<a name="01au4v6bulnrbumom0d4ieughv">&nbsp;&nbsp;&nbsp;&nbsp;服务端套接字</a>
+</h3>
+<h3 class="topic">
+<a name="09obsh7ub679dl5evrpjc900ch">&nbsp;&nbsp;&nbsp;&nbsp;监听个数的最大值</a>
+</h3>
+<h3 class="topic">
+<a name="3antpbt6qfsbvoneq6n5350j06">&nbsp;&nbsp;等待客户端链接</a>
+</h3>
+<h3 class="topic">
+<a name="0iu1k2qr52omoq56j5ugml754k">&nbsp;&nbsp;&nbsp;在死循环中使用accept函数</a>
+</h3>
+<h3 class="topic">
+<a name="74d4i2ef23u439a87ngbfnfcl2">&nbsp;&nbsp;&nbsp;&nbsp;参数</a>
+</h3>
+<h3 class="topic">
+<a name="1niesjhk45s3u0n9l21k2f3goo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;服务端套接字</a>
+</h3>
+<h3 class="topic">
+<a name="08vqhnnnoor77tbk4kl243t2rl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;地址结构体</a>
+</h3>
+<h3 class="topic">
+<a name="1i5lkd4sts36ij8qhgufuf4blr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;需要提前定义sockaddr_in结构体</a>
+</h3>
+<h3 class="topic">
+<a name="0fuva28a0v0t9q40979l6k1gvp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用于保存客户端的地址和端口消息</a>
+</h3>
+<h3 class="topic">
+<a name="0s8qualocc48soqdihde55jcm7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;地址结构体大小</a>
+</h3>
+<h3 class="topic">
+<a name="264vs8o5625m9r0kgh3hnrbr9u">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;客户端传进来的客户端的大小</a>
+</h3>
+<h3 class="topic">
+<a name="7cml5gl8l0q35euk17hm19s8he">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用sizeof</a>
+</h3>
+<h3 class="topic">
+<a name="045tum1dpt6507cocolkftbpoa">&nbsp;&nbsp;&nbsp;&nbsp;函数返回一个套接字</a>
+</h3>
+<h3 class="topic">
+<a name="3ehpi6ecbek2bfp6mg5u185kkj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;返回的是客户端的套接字句柄</a>
+</h3>
+<h3 class="topic">
+<a name="0pfp8ckdfof1npf548e51b4vgr">&nbsp;&nbsp;&nbsp;&nbsp;该函数是一个阻塞性函数，会一直等待客户端链接进来，函数会将客户端的信息获取出来</a>
+</h3>
+<h3 class="topic">
+<a name="1a2pko2t8pr29906bn25ek28dk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;获取</a>
+</h3>
+<h3 class="topic">
+<a name="6bqp4fbm4frmeiselltqt9fht6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;客户端的套接字句柄</a>
+</h3>
+<h3 class="topic">
+<a name="26u68lsvknt327b60326ohpmkj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;客户端的地址</a>
+</h3>
+<h3 class="topic">
+<a name="5t9m3kft1sqm3cojebh8qsf32f">&nbsp;&nbsp;&nbsp;&nbsp;新建线程，用于处理与客户消息收发过程</a>
+</h3>
+<h3 class="topic">
+<a name="2bhjagtd7qu18d7p0aermki88e">&nbsp;&nbsp;&nbsp;&nbsp;需要约定客户端和服务端哪一个先发送消息</a>
+</h3>
+<h3 class="topic">
+<a name="1sopsfh2fojh0aikhluiqunldh">&nbsp;&nbsp;与客户端收发数据（在新线程中构造死循环）</a>
+</h3>
+<h3 class="topic">
+<a name="60g1i99g70k8usgk9hdtl4hak3">&nbsp;&nbsp;&nbsp;提前定义用于接收和发送数据的缓冲区</a>
+</h3>
+<h3 class="topic">
+<a name="7bi5oha9u8dffocvdgocilq2eo">&nbsp;&nbsp;&nbsp;接收数据</a>
+</h3>
+<h3 class="topic">
+<a name="37h7oq9b12v1unh9br43g44tg0">&nbsp;&nbsp;&nbsp;&nbsp;参数</a>
+</h3>
+<h3 class="topic">
+<a name="4gp978b543uvtl24t3alejp10u">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;客户端套接字句柄</a>
+</h3>
+<h3 class="topic">
+<a name="6n3tgkagn60a3cpeskcbgad6p0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;缓冲区指针</a>
+</h3>
+<h3 class="topic">
+<a name="6heslkpjl1gvdrdntrmmkq3cpi">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;最大接收数据字节数</a>
+</h3>
+<h3 class="topic">
+<a name="161hoi2htqr95gufoeok31heqm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;一般为缓冲区字节数</a>
+</h3>
+<h3 class="topic">
+<a name="11r5afib3vbla8u0kqb8rq9ljg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0</a>
+</h3>
+<h3 class="topic">
+<a name="11cev4vp4spahn8e7e2k5odj66">&nbsp;&nbsp;&nbsp;发送数据</a>
+</h3>
+<h3 class="topic">
+<a name="4kq9rvq2c6p0ar6a4noa4um5sb">&nbsp;&nbsp;&nbsp;&nbsp;参数</a>
+</h3>
+<h3 class="topic">
+<a name="1k3p7629k7fc88gh0l75o02mrp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;客户端的套接字句柄</a>
+</h3>
+<h3 class="topic">
+<a name="533iumvvmcmk2o2660sce0rocb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;缓冲区指针</a>
+</h3>
+<h3 class="topic">
+<a name="2e5bo5njmmn4g36msq1fv27u3f">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;发送的字符串长度</a>
+</h3>
+<h3 class="topic">
+<a name="231ratvjmiaequ7askha440ml3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;一般为缓冲区字节数+1</a>
+</h3>
+<h3 class="topic">
+<a name="71f6vs9la9o1l3q4a1024vtlsr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0</a>
+</h3>
+<h3 class="topic">
+<a name="3okma2nsvbh1h711sm7mhpvns4">&nbsp;&nbsp;关闭服务端套接字</a>
+</h3>
+<h3 class="topic">
+<a name="6t3hf3dr2je4lgj4ri99876b21">&nbsp;&nbsp;&nbsp;如果关闭客户端套接字，则链接失效</a>
+</h3>
+<h3 class="topic">
+<a name="2bblv1uc301kplhonln97lu4td">&nbsp;&nbsp;清空网络环境</a>
+</h3>
+<h3 class="topic">
+<a name="2pk5e27dsn7ltb59b4fui6acvn">&nbsp;&nbsp;注意服务器流程中</a>
+</h3>
+<h3 class="topic">
+<a name="4hrm16e23bvo8vjuf7l2cdq36d">&nbsp;&nbsp;&nbsp;需要两种线程</a>
+</h3>
+<h3 class="topic">
+<a name="1v3gkqidcf8m1qcgae0j7p0s0m">&nbsp;&nbsp;&nbsp;&nbsp;接收客户链接的线程</a>
+</h3>
+<h3 class="topic">
+<a name="0vunlu5lt3avq9l2b3s7heolj8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;因为接收客户端链接的函数（accept）是阻塞的，需要单独存在一个线程运行 从而不影响与客户端的交互</a>
+</h3>
+<h3 class="topic">
+<a name="5eogvfoia8vtcfabekj7v3f616">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;每次有客户端链接，会为该客户端创建一个新的线程，从而支持多个客户端</a>
+</h3>
+<h3 class="topic">
+<a name="308rm32nump8gvarqao39n2a2v">&nbsp;&nbsp;&nbsp;&nbsp;与客户进行消息收发的线程</a>
+</h3>
+<h3 class="topic">
+<a name="1cpc4tj3ogidd29399itua6u8l">&nbsp;&nbsp;&nbsp;recv函数和accept函数均为阻塞函数，为了两者之间不相互影响（一个将另一个阻塞住了），需要在不同的线程中运行</a>
+</h3>
+<h3 class="topic">
+<a name="717qag6f9u7hdep811dovgt3e6">&nbsp;&nbsp;&nbsp;该模型问题在于，有多少个客户端，就需要多少个线程</a>
+</h3>
+<h3 class="topic">
+<a name="4lavpbtkma2daqf7vp991ud9cu">&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="7bgc9544k08njqmebvuo055ifb">&nbsp;&nbsp;&nbsp;#include "pch.h"&#13;
+#define _WINSOCK_DEPRECATED_NO_WARNINGS&#13;
+#include &lt;winsock2.h&gt;&#13;
+#include &lt;windows.h&gt;&#13;
+#include &lt;stdio.h&gt;&#13;
+#pragma comment(lib,"ws2_32.lib")&#13;
+&#13;
+//创建子线程，专门用于处理客户端的消息收发 接收消息是一个阻断函数（recv函数）&#13;
+//主线程主要用于接收客户发起的链接（accept函数） &#13;
+DWORD CALLBACK clientHandler(LPVOID pArg)&#13;
+{&#13;
+	SOCKET hClient = (SOCKET)pArg;//形参为客户端的套接字句柄&#13;
+	while (1)&#13;
+	{&#13;
+		//创建缓冲区用于接收客户端消息&#13;
+		char buff[100] = { 0 };&#13;
+		//接收客户端消息，参数分别为客户端套接字句柄、缓冲区指针、最大接收数据的字节数、一般填0&#13;
+		//是阻塞函数，在接收到客户端输入的数据之前不会返回&#13;
+		recv(hClient, buff, 100, 0);&#13;
+		printf("客户端&gt;:%s\n", buff);&#13;
+&#13;
+		printf("&gt; ");&#13;
+		// 接收控制台输入&#13;
+		scanf_s("%s", buff, sizeof(buff));&#13;
+		// 将控制台输入的内容发送给服务端&#13;
+		//参数分别为，客户端套接字句柄、缓冲区指针、要发送的数据的字节数、一般填0&#13;
+		send(hClient, buff, strlen(buff) + 1, 0);&#13;
+	}&#13;
+	return 0;&#13;
+}&#13;
+&#13;
+int main()&#13;
+{&#13;
+	// 1. 初始化套接字环境&#13;
+	//该结构体需要作为参数向WSAStartup传递socket版本信息&#13;
+	WSADATA wd = { 0 };&#13;
+	WSAStartup(MAKEWORD(2, 2),/*指定使用2.2的版本*/&#13;
+			   &amp;wd);&#13;
+	&#13;
+	////////////////////////////////////////////////////////////////	&#13;
+	// 2. 创建一个服务端的套接字&#13;
+	SOCKET hServer = socket(&#13;
+		AF_INET,/*协议族,AF_INET表示因特网的套接字*/&#13;
+		SOCK_STREAM,/*套接字类型: SOCK_STREAM表示流式套接字*/&#13;
+		IPPROTO_TCP/*协议的类型:IPPROTO_TCP表示TCP协议*/&#13;
+	);&#13;
+&#13;
+	////////////////////////////////////////////////////////////////&#13;
+	// 3. 将服务端的套接字和本机&#13;
+	//    IP及端口绑定&#13;
+	//定义sockaddr_in类的结构体，用于向绑定函数bind()传递要绑定的IP地址的端口号&#13;
+	sockaddr_in addr = { 0 };&#13;
+	//设置该结构体的协议族字段&#13;
+	addr.sin_family = AF_INET;/*协议族*/&#13;
+	// htons&#13;
+	// host to net short&#13;
+	// 本机字节序转网络字节序, 按short类型来转&#13;
+	//设置结构体端口号&#13;
+	addr.sin_port = htons(10086);/*必须用大端序来指定,端口号,端口不能被重复&#13;
+					             使用,如果其他进程已经使用&#13;
+						         了这个端口号,则另外的进程就不能再使用该端口号了*/&#13;
+	addr.sin_addr.S_un.S_addr = &#13;
+		inet_addr("0.0.0.0"); /*0.0.0.0表示本机所有的网卡的ip地址，服务器的套接字绑定本机ip即可*/&#13;
+	bind(hServer,//客户端套接字句柄&#13;
+		(sockaddr*)&amp;addr,/*要绑定的地址结构体*/&#13;
+		 sizeof(addr)/*地址结构体占用的字节数*/);&#13;
+&#13;
+	////////////////////////////////////////////////////////////////&#13;
+	// 4. 将服务端套接字进入监听状态&#13;
+	listen(hServer, SOMAXCONN);//这里listen的第二个参数为该端口最多可以开放的线程&#13;
+	&#13;
+	////////////////////////////////////////////////////////////////&#13;
+	// 5. 等待客户端的连接&#13;
+	while ( 1 )&#13;
+	{&#13;
+		//定义sockaddr_in结构体用于保存客户端的IP地址和端口号&#13;
+		sockaddr_in clientAddr = { 0 };&#13;
+		//socketaddr_in结构体的大小&#13;
+		int nAddrSize = sizeof(clientAddr);&#13;
+		//定义一个socket句柄，用于接收客户端的套接字句柄&#13;
+		SOCKET hClient = INVALID_SOCKET;&#13;
+		// accept是一个阻塞性函数, &#13;
+		// 它会一直等待客户端连接进来&#13;
+		// 连接进来之后,函数会将客户端的信息&#13;
+		// 获取出来:&#13;
+		// 1. 客户端的套接字句柄&#13;
+		// 1. 客户端的地址&#13;
+		hClient = accept(&#13;
+			hServer,/*通过服务端套接字来等待客户端的连接*/&#13;
+			(sockaddr*)&amp;clientAddr,/*[输出]连接进来的客户端的IP地址*/&#13;
+			&amp;nAddrSize/*[输入]客户端的地址的大小*/);&#13;
+&#13;
+		printf("客户端上线: %d.%d.%d.%d\n",//输出客户端的IP地址&#13;
+			   clientAddr.sin_addr.S_un.S_un_b.s_b1,&#13;
+			   clientAddr.sin_addr.S_un.S_un_b.s_b2,&#13;
+			   clientAddr.sin_addr.S_un.S_un_b.s_b3,&#13;
+			   clientAddr.sin_addr.S_un.S_un_b.s_b4);&#13;
+&#13;
+        ////////////////////////////////////////////////////////////////////&#13;
+		// 6. 和客户端收发数据&#13;
+		//    一个服务端可能会有几个客户端连接&#13;
+		//   要给哪个客户端发送数据,就使用哪个客户端&#13;
+		//   端的套接字.&#13;
+		send(hClient, "欢迎连接", 9, 0);&#13;
+&#13;
+		//创建一个新进程，用于于客户端持续收发数据&#13;
+		//这个函数既可以打开一个线程，也可以创建一个线程，如果相应线程之前没有被创建过，该函数会创建&#13;
+		//如果相应线程之前被创建过，该函数会打开&#13;
+		//所以这里服务端可以支持多个客户端的链接，并为每一个客户端创建收发消息的线程&#13;
+		CreateThread(0, 0,&#13;
+					 clientHandler,//新线程的回调函数&#13;
+					 (LPVOID)hClient,//将客户端的套接字句柄作为附加参数传给新线程的回调函数&#13;
+					 0, &#13;
+					 0);&#13;
+	}&#13;
+	// 7. 关闭套接字&#13;
+	closesocket(hServer);&#13;
+	// 8. 清空套接字环境.&#13;
+	WSACleanup();&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="5l22is6c82onrn3ng7o7sup46j">&nbsp;代码是实现tcp客户端</a>
+</h3>
+<h3 class="topic">
+<a name="2fuqvh2nt2shvb5hugqal967hf">&nbsp;&nbsp;包含头文件</a>
+</h3>
+<h3 class="topic">
+<a name="3qbvlju990eo2inhejqnjjsjno">&nbsp;&nbsp;&nbsp;windows.h</a>
+</h3>
+<h3 class="topic">
+<a name="3imoj7j7v9aqdgd90unm0ntvrv">&nbsp;&nbsp;&nbsp;winsock2.h</a>
+</h3>
+<h3 class="topic">
+<a name="45dou9nm31g0qi2hpppjttgif5">&nbsp;&nbsp;包含库</a>
+</h3>
+<h3 class="topic">
+<a name="2inqv2hb312m9v7ekjtgn58m10">&nbsp;&nbsp;初始化套接字环境</a>
+</h3>
+<h3 class="topic">
+<a name="02gdnlfgfj2uiogruhl4mrte4r">&nbsp;&nbsp;&nbsp;需要定义版本号结构体</a>
+</h3>
+<h3 class="topic">
+<a name="39roo6h6prd63sojj3rsskvs14">&nbsp;&nbsp;&nbsp;参数</a>
+</h3>
+<h3 class="topic">
+<a name="1e1ops9o58aapm2vj1hmqoedoq">&nbsp;&nbsp;&nbsp;&nbsp;版本号一般是2.2</a>
+</h3>
+<h3 class="topic">
+<a name="53kl2fka7j8bmju21p976arafj">&nbsp;&nbsp;创建一个客户端的套接字</a>
+</h3>
+<h3 class="topic">
+<a name="6j845m2stbg0qf5o466tc4mr1f">&nbsp;&nbsp;&nbsp;参数</a>
+</h3>
+<h3 class="topic">
+<a name="1nhiepd1t8j7efr5he0lfnus5g">&nbsp;&nbsp;&nbsp;&nbsp;套接字协议族</a>
+</h3>
+<h3 class="topic">
+<a name="424an3iar5pmgmsgqpuensuels">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AF_INET</a>
+</h3>
+<h3 class="topic">
+<a name="6id769l4ijlg5h06n04g5ap9sh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;英特网协议族</a>
+</h3>
+<h3 class="topic">
+<a name="2ptvigsear64da8t5320d55il6">&nbsp;&nbsp;&nbsp;&nbsp;套接字类型</a>
+</h3>
+<h3 class="topic">
+<a name="20lvl49suvihj73jhguah7og8l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SOCEKT_STREAM</a>
+</h3>
+<h3 class="topic">
+<a name="67ckq1egd6c0ifusueefr53is1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;流式套接字</a>
+</h3>
+<h3 class="topic">
+<a name="5g9qnnhpp8tnfhtqpbk6m4b1aa">&nbsp;&nbsp;&nbsp;&nbsp;协议类型</a>
+</h3>
+<h3 class="topic">
+<a name="6tur2b9epjsok2qlr272ae3mu4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TCP</a>
+</h3>
+<h3 class="topic">
+<a name="1n0jo1bg6nvl19gnf00viajuab">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;会影响套接字类型</a>
+</h3>
+<h3 class="topic">
+<a name="6i2vl26sgcqa4q4jkhaurp1gu1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;比如如果是udp协议，不能使用流式套接字</a>
+</h3>
+<h3 class="topic">
+<a name="2g6oqetijp4k68kpc9tb5p9iuv">&nbsp;&nbsp;配置要连接的ip地址和端口</a>
+</h3>
+<h3 class="topic">
+<a name="3upsjtc5jofm9079df36uncf1q">&nbsp;&nbsp;&nbsp;使用sockaddr_in地址结构体进行配置</a>
+</h3>
+<h3 class="topic">
+<a name="2fin24e16t8subfq1qktgb7s92">&nbsp;&nbsp;&nbsp;&nbsp;ip地址要设置为服务端的ip地址，因为要与服务端通讯</a>
+</h3>
+<h3 class="topic">
+<a name="77ql2pij1arpb78jcv7pbqk9vd">&nbsp;&nbsp;&nbsp;&nbsp;端口号设置服务端的端口号</a>
+</h3>
+<h3 class="topic">
+<a name="74ompriqh28o2g0ja42vk2sqs8">&nbsp;&nbsp;开始链接</a>
+</h3>
+<h3 class="topic">
+<a name="2shjungns6dnqt3j8utold2bni">&nbsp;&nbsp;&nbsp;参数</a>
+</h3>
+<h3 class="topic">
+<a name="4dvc3vnii42apdrn0geoblku0m">&nbsp;&nbsp;&nbsp;&nbsp;客户端套接字句柄</a>
+</h3>
+<h3 class="topic">
+<a name="577bj1sf7h5rhhc33u53233343">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;即一个未连接的套接字的句柄</a>
+</h3>
+<h3 class="topic">
+<a name="4dkh4gsodp903fg4snntocn9q5">&nbsp;&nbsp;&nbsp;&nbsp;sockaddr_in结构体地址</a>
+</h3>
+<h3 class="topic">
+<a name="24dqbvil7lch1s3eb6f7j8lcqs">&nbsp;&nbsp;&nbsp;&nbsp;sockaddr_in结构体地址大小</a>
+</h3>
+<h3 class="topic">
+<a name="7th3uah0vouf91jppekpp9t75k">&nbsp;&nbsp;收发数据</a>
+</h3>
+<h3 class="topic">
+<a name="3q0djhfsgshc97u694bt8268fb">&nbsp;&nbsp;&nbsp;根据规定的顺序，这里客户端先接收</a>
+</h3>
+<h3 class="topic">
+<a name="78mbfsul4e9omhj2eh5jqihtun">&nbsp;&nbsp;&nbsp;&nbsp;需要创建缓冲区</a>
+</h3>
+<h3 class="topic">
+<a name="2fklasotqp9qpkhlasib3ui289">&nbsp;&nbsp;&nbsp;&nbsp;参数</a>
+</h3>
+<h3 class="topic">
+<a name="0a7olh8ggsf86vph2nievss87h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;客户端套接字句柄</a>
+</h3>
+<h3 class="topic">
+<a name="31ufhhl4n37dk5mu1j448k62or">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;缓冲区</a>
+</h3>
+<h3 class="topic">
+<a name="7fcdvd07fni1266v49v6duf812">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;缓冲区字节数+1</a>
+</h3>
+<h3 class="topic">
+<a name="1p4mdogjs24peukqc3cn582kio">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0</a>
+</h3>
+<h3 class="topic">
+<a name="3mh9un50ng82jmcfdofmbqn3nv">&nbsp;&nbsp;&nbsp;在死循环中，</a>
+</h3>
+<h3 class="topic">
+<a name="44o6nhr48l32jsb02781hq60tt">&nbsp;&nbsp;&nbsp;&nbsp;接收控制台输入</a>
+</h3>
+<h3 class="topic">
+<a name="69jgfq1sg2762dpignnou3li1e">&nbsp;&nbsp;&nbsp;&nbsp;将输入发送给服务端</a>
+</h3>
+<h3 class="topic">
+<a name="4op2tnrpasc3rh0lkfcd1gv7f2">&nbsp;&nbsp;&nbsp;&nbsp;等待服务端的恢复 recv</a>
+</h3>
+<h3 class="topic">
+<a name="5pcqsnj5lvvesnmka0cqrlj61e">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;是一个阻塞函数</a>
+</h3>
+<h3 class="topic">
+<a name="510pt1cpmkoh128gtn8l14u25p">&nbsp;&nbsp;关闭套接字</a>
+</h3>
+<h3 class="topic">
+<a name="7q3ppt6bv1hpla2vom94t7sr4s">&nbsp;&nbsp;清空网络环境</a>
+</h3>
+<h3 class="topic">
+<a name="1r2rmic7ihm1m5k1s60lu1qvcr">&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="4s68s4vjmkuio0h5u3me6murfs">&nbsp;&nbsp;&nbsp;#include "pch.h"&#13;
+#define _WINSOCK_DEPRECATED_NO_WARNINGS&#13;
+#include &lt;winsock2.h&gt;&#13;
+#include &lt;windows.h&gt;&#13;
+#include &lt;stdio.h&gt;&#13;
+#pragma comment(lib,"ws2_32.lib")&#13;
+&#13;
+int main()&#13;
+{&#13;
+	// 1. 初始化套接字环境&#13;
+	WSADATA wd = { 0 };&#13;
+	WSAStartup(MAKEWORD(2, 2),/*指定使用2.2的版本*/&#13;
+			   &amp;wd);&#13;
+	// 2. 创建一个客户端的套接字&#13;
+	SOCKET hClient = socket(&#13;
+		AF_INET,/*协议族,AF_INET表示因特网的套接字*/&#13;
+		SOCK_STREAM,/*套接字类型: SOCK_STREAM表示流式套接字*/&#13;
+		IPPROTO_TCP/*协议的类型:IPPROTO_TCP表示TCP协议*/&#13;
+	);&#13;
+	&#13;
+	// 3. 连接到服务端&#13;
+	// 3.1 配置服务端的IP地址和端口&#13;
+	sockaddr_in addr = { 0 };&#13;
+	addr.sin_family = AF_INET;/*协议族*/&#13;
+	// htons&#13;
+	// host to net short&#13;
+	// 本机字节序转网络字节序, 按short类型来转&#13;
+	//设置要连接的服务端的端口号&#13;
+	addr.sin_port = htons(10086);/*必须用大端序来指定,端口号,端口不能被重复&#13;
+						使用,如果其他进程已经使用&#13;
+						了这个端口号,则另外的进程就不能再使用该端口号了*/&#13;
+	// 服务端具体的IP地址&#13;
+	addr.sin_addr.S_un.S_addr =&#13;
+		inet_addr("192.168.10.95");//这里因为是客户端，故需要填要连接的服务端的ip&#13;
+	// 3.2 开始连接，该函数用于建立与服务端的链接，服务端的ip端口信息，保存在sockaddr_in结构体中&#13;
+	//之后所有涉及数据的收发，全部使用客户端套接字&#13;
+	connect(&#13;
+		hClient,//客户端套接字句柄&#13;
+		(sockaddr*)&amp;addr,//客户端的sockaddr_in结构体，其中保存了需要服务端的ip和端口号&#13;
+		sizeof(addr));//sockaddr_in结构体的大小&#13;
+&#13;
+	// 4. 收发数据&#13;
+	char buff[100];&#13;
+	char name[32] = { 0 };&#13;
+	printf("起个名字:");&#13;
+	scanf_s("%s", name, sizeof(name));&#13;
+	//使用字符串拼接，将客户端名称拼接到要发送的消息中&#13;
+	//当服务端收到了消息，可以从中提取出客户端姓名，判断客户端身份，进而实现转发等功能&#13;
+	sprintf_s(buff,sizeof(buff),"&lt;%s&gt;", name);&#13;
+&#13;
+	//这里发送消息，使用的是客户端套接字句柄&#13;
+	//这里根据约定，是客户端先向服务端发起消息，这是根据代码的先后顺序决定的&#13;
+	send(hClient, buff, strlen(buff)+1, 0);&#13;
+	//recv(hClient, buff, 100, 0);&#13;
+	//printf("服务端说&gt; %s\n", buff);&#13;
+&#13;
+	while (1)&#13;
+	{&#13;
+		printf("昵称&gt; ");&#13;
+		// 接收控制台输入&#13;
+		scanf_s("%s", name, sizeof(name));&#13;
+		printf("消息&gt; ");&#13;
+		scanf_s("%s", buff, sizeof(buff));&#13;
+		// 将控制台输入的内容发送给服务端&#13;
+		char buff2[1000];&#13;
+		//将昵称与要发送的消息拼接为"@%s:%s"的形式，从而被服务端处理，用于向另一个客户端发消息&#13;
+		sprintf_s(buff2, &#13;
+				  sizeof(buff2),&#13;
+				  "@%s:%s", name, &#13;
+				  buff);&#13;
+		//发送消息&#13;
+		send(hClient, &#13;
+			 buff2, &#13;
+			 strlen(buff2) + 1, 0);&#13;
+&#13;
+		// 等待接收服务端的回复&#13;
+		recv(hClient, buff, sizeof(buff), 0);&#13;
+		printf("服务端说: %s\n", buff);&#13;
+	}&#13;
+	// 5. 关闭套接字&#13;
+	closesocket(hClient);&#13;
+	// 6. 清空套接字环境.&#13;
+	WSACleanup();&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="5sqjf0ho143fh7mlvra71hkajb">&nbsp;&nbsp;注意</a>
+</h3>
+<h3 class="topic">
+<a name="4n88b07h66cd3k3lk2v67fi9n9">&nbsp;&nbsp;&nbsp;需要定义相关宏，定义在头文件，保证不会报错</a>
+</h3>
+<h3 class="topic">
+<a name="14jkft3pnmcpbui1ut67i6om9g">&nbsp;&nbsp;&nbsp;头文件的顺序有讲究</a>
+</h3>
+<h3 class="topic">
+<a name="115i7716137f0grdubfcc7mv3n">&nbsp;&nbsp;&nbsp;注意在客户端中，收发消息使用的句柄均为客户端中定义的套接字句柄，在连接服务端时使用connect函数，服务端相关ip和端口是在sockaddr_in中保存的</a>
+</h3>
+<h3 class="topic">
+<a name="06dchem9rin2cforjl4irssilk">&nbsp;UDP中客户端和服务端区别不大</a>
+</h3>
+<h3 class="topic">
+<a name="6q5qu864f0d7ev3kacaiocsenj">&nbsp;&nbsp;不需要接收链接，只需要通过recvfrom和sendto函数进行消息收发</a>
+</h3>
+<h3 class="topic">
+<a name="1ia0gq6dvfgfchnorove2a4rop">&nbsp;&nbsp;一般显式绑定ip的被称为服务端，客户端可以不绑定ip</a>
+</h3>
+<h3 class="topic">
+<a name="1srht7s9asi5rtgua9bu9kadsh">&nbsp;&nbsp;服务端代码</a>
+</h3>
+<h3 class="topic">
+<a name="722903a3ioi77s7ojl9kehicc7">&nbsp;&nbsp;&nbsp;初始化套接字环境</a>
+</h3>
+<h3 class="topic">
+<a name="6boh0bq6huj778jiuitgftcdj0">&nbsp;&nbsp;&nbsp;创建套接字</a>
+</h3>
+<h3 class="topic">
+<a name="79hd173sm908mhektt0qr84qgq">&nbsp;&nbsp;&nbsp;&nbsp;协议为udp</a>
+</h3>
+<h3 class="topic">
+<a name="1mrhqngpp9pdammgq2i1m99p9b">&nbsp;&nbsp;&nbsp;&nbsp;socket类型不同</a>
+</h3>
+<h3 class="topic">
+<a name="7q8qrgbbl0kg0bfm7jj8o1knlu">&nbsp;&nbsp;&nbsp;绑定地址和端口号</a>
+</h3>
+<h3 class="topic">
+<a name="31fpqnfdv8ohjlju84ggt3a0ju">&nbsp;&nbsp;&nbsp;收发数据</a>
+</h3>
+<h3 class="topic">
+<a name="6rraa8k698t833bshhjnr3cl9r">&nbsp;&nbsp;&nbsp;&nbsp;收数据（recvfrom）</a>
+</h3>
+<h3 class="topic">
+<a name="1tn2ldgg5dqtvno949iupgeihh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;服务端套接字句柄</a>
+</h3>
+<h3 class="topic">
+<a name="4qe9d64jr82nd0t8thkadvfggr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;缓冲区</a>
+</h3>
+<h3 class="topic">
+<a name="2crnelucvr73kup9uohm2k7v9f">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;保存接收到的数据</a>
+</h3>
+<h3 class="topic">
+<a name="1d01osica94ehvoe60bfg1pk65">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;缓冲区大小</a>
+</h3>
+<h3 class="topic">
+<a name="3rok2tlrna7eckhl3n64re3e7t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;收发标志</a>
+</h3>
+<h3 class="topic">
+<a name="3kjd8mst7frulrgdivqbfufo9s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;传0</a>
+</h3>
+<h3 class="topic">
+<a name="5p0u90cfp08qvesm6vd607434h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;地址结构体</a>
+</h3>
+<h3 class="topic">
+<a name="5o4ie1ar0m8vvp4to0mqbfktfs">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;输出参数：数据来源放的ip和端口</a>
+</h3>
+<h3 class="topic">
+<a name="65m9ol21b5vkp89kfpbs7fshed">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用于接收客户端的ip和端口</a>
+</h3>
+<h3 class="topic">
+<a name="3ak4h7soplf8p2e81j7f6gkv1e">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;地址结构体的大小</a>
+</h3>
+<h3 class="topic">
+<a name="0j3le2i32jdbaoki5vq744sn9n">&nbsp;&nbsp;&nbsp;&nbsp;发数据（sendto）</a>
+</h3>
+<h3 class="topic">
+<a name="5duvpls6uo0tbqmh79osirbu7b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;参数与收数据的相同</a>
+</h3>
+<h3 class="topic">
+<a name="53u7ul23q65lvlj1h4jg4iaclo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;仍然传入服务端句柄</a>
+</h3>
+<h3 class="topic">
+<a name="32hd1k77iigc06og4n9kkuolmg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该函数的地址结构体和地址结构体的大小需要使用recvfrom函数中输出的客户端的地质结构体</a>
+</h3>
+<h3 class="topic">
+<a name="5frutu0mk0h7fg513rbi6f8qe1">&nbsp;&nbsp;&nbsp;将输入的数据发送出去</a>
+</h3>
+<h3 class="topic">
+<a name="30uo0cklpkb57g0o5qtocvsegb">&nbsp;&nbsp;&nbsp;&nbsp;sendto</a>
+</h3>
+<h3 class="topic">
+<a name="0dheocrufigh13obfpqol0pauu">&nbsp;&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="24dendlkrvisfgdma8b0qmnrav">&nbsp;&nbsp;&nbsp;&nbsp;#include "pch.h"&#13;
+#define _WINSOCK_DEPRECATED_NO_WARNINGS&#13;
+#include &lt;winsock2.h&gt;&#13;
+#include &lt;windows.h&gt;&#13;
+#include &lt;stdio.h&gt;&#13;
+#pragma comment(lib,"ws2_32.lib")&#13;
+&#13;
+int main()&#13;
+{&#13;
+	// 1. 初始化套接字环境/////////////////////////////////////////////////////&#13;
+	WSADATA wd = { 0 };&#13;
+	WSAStartup(MAKEWORD(2, 2),/*指定使用2.2的版本*/&#13;
+			   &amp;wd);&#13;
+	&#13;
+	// 2. 创建套接字///////////////////////////////////////////////////////////&#13;
+	SOCKET hServer = socket(&#13;
+		AF_INET,&#13;
+		SOCK_DGRAM,//socket类型需要与协议匹配&#13;
+		IPPROTO_UDP);//协议选择dup&#13;
+	&#13;
+    // 3. 绑定套接字的地址和端口号////////////////////////////////////////////////&#13;
+	sockaddr_in addr = { 0 };&#13;
+	addr.sin_family = AF_INET;/*协议族*/&#13;
+	// htons&#13;
+	// host to net short&#13;
+	// 本机字节序转网络字节序, 按short类型来转&#13;
+	addr.sin_port = htons(10010);/*必须用大端序来指定,端口号,端口不能被重复&#13;
+						使用,如果其他进程已经使用&#13;
+						了这个端口号,则另外的进程就不能再使用该端口号了*/&#13;
+	addr.sin_addr.S_un.S_addr =&#13;
+		inet_addr("0.0.0.0"); /*0.0.0.0表示本机IP地址*/&#13;
+	bind(hServer,&#13;
+		(sockaddr*)&amp;addr,/*要绑定到的地址*/&#13;
+		 sizeof(addr)/*地址占用的字节数*/);&#13;
+&#13;
+	// 4. 收发数据/////////////////////////////////////////////////////////&#13;
+	while ( 1 )&#13;
+	{&#13;
+		//定义sockaddr_in结构体用于保存客户端的ip和端口信息&#13;
+		//之后向客户端发送数据，需要使用该sockaddr_in结构体&#13;
+		sockaddr_in clientAddr = { 0 };&#13;
+		int nAddrSize = sizeof(sockaddr);&#13;
+		char buff[100];&#13;
+		// 接收客户端对的信息&#13;
+		recvfrom(hServer,&#13;
+				 buff,/*[输出]保存接收到的数据*/&#13;
+				 sizeof(buff),/*[输入]缓冲区的字节数*/&#13;
+				 0,/*标志*/&#13;
+				 (sockaddr*)&amp;clientAddr,/*[输出]发送数据过来的客户端的地址*/&#13;
+				 &amp;nAddrSize/*[输入和输出]客户端地址的大小*/);&#13;
+&#13;
+		printf("%s &gt; %s\n",&#13;
+			   inet_ntoa(clientAddr.sin_addr),&#13;
+			   buff);&#13;
+&#13;
+		printf("&gt;");&#13;
+		// 发送数据给客户端&#13;
+		scanf_s("%s", buff, sizeof(buff));&#13;
+		sendto(hServer,&#13;
+			   buff,&#13;
+			   strlen(buff) + 1,&#13;
+			   0,&#13;
+			   (sockaddr*)&amp;clientAddr,&#13;
+			   nAddrSize);&#13;
+	}&#13;
+	//关闭套接字句柄&#13;
+	closesocket(hServer);&#13;
+	//恢复网络环境&#13;
+	WSACleanup();&#13;
+}&#13;
+</a>
+</h3>
+<h3 class="topic">
+<a name="465v2l50vrjsn5ecvlame1sp41">&nbsp;&nbsp;客户端代码</a>
+</h3>
+<h3 class="topic">
+<a name="7nqn9rq6kjaoud7olua2jkhfv2">&nbsp;&nbsp;&nbsp;与服务端代码的区别</a>
+</h3>
+<h3 class="topic">
+<a name="59ps2fclkq6jv88g306fq7m9sb">&nbsp;&nbsp;&nbsp;&nbsp;sockaddr_in结构体中应设置服务端的ip和端口，用于与服务端收发数据</a>
+</h3>
+<h3 class="topic">
+<a name="1ku7lvvladka2ia2merk3p80oi">&nbsp;&nbsp;&nbsp;&nbsp;不需要绑定ip地址</a>
+</h3>
+<h3 class="topic">
+<a name="5p31qb92ned3da02l8gp7qgto4">&nbsp;&nbsp;&nbsp;#include "pch.h"&#13;
+#define _WINSOCK_DEPRECATED_NO_WARNINGS&#13;
+#include &lt;winsock2.h&gt;&#13;
+#include &lt;windows.h&gt;&#13;
+#include &lt;stdio.h&gt;&#13;
+#pragma comment(lib,"ws2_32.lib")&#13;
+int main()&#13;
+{&#13;
+	printf("UDP客户端正在运行...\n");&#13;
+	// 1. 初始化套接字环境&#13;
+	WSADATA wd = { 0 };&#13;
+	WSAStartup(MAKEWORD(2, 2),/*指定使用2.2的版本*/&#13;
+			   &amp;wd);&#13;
+	// 2. 创建套接字&#13;
+	SOCKET hClient = socket(&#13;
+		AF_INET,&#13;
+		SOCK_DGRAM,&#13;
+		IPPROTO_UDP);&#13;
+	// 3. 设置服务端的网络地址&#13;
+	sockaddr_in serverAddr = { 0 };&#13;
+	serverAddr.sin_family = AF_INET;/*协议族*/&#13;
+	// htons&#13;
+	// host to net short&#13;
+	// 本机字节序转网络字节序, 按short类型来转&#13;
+	serverAddr.sin_port = htons(10010);/*必须用大端序来指定,端口号,端口不能被重复&#13;
+						使用,如果其他进程已经使用&#13;
+						了这个端口号,则另外的进程就不能再使用该端口号了*/&#13;
+	serverAddr.sin_addr.S_un.S_addr =&#13;
+		inet_addr("192.168.10.95"); /*注意这里要设置要连接的服务端的ip地址*/&#13;
+&#13;
+	// 4. 收发数据&#13;
+	while (1)&#13;
+	{&#13;
+		// 发送数据给服务端&#13;
+		char buff[100];&#13;
+		printf("&gt;");&#13;
+		scanf_s("%s", buff, sizeof(buff));&#13;
+		sendto(hClient,&#13;
+			   buff,&#13;
+			   strlen(buff) + 1,&#13;
+			   0,&#13;
+			   (sockaddr*)&amp;serverAddr,&#13;
+			   sizeof(sockaddr));&#13;
+		//用于接收从服务端发送过来的客户端的地址信息，&#13;
+		//因为当前客户端不需给自己发消息，所以这里暂时没用&#13;
+		sockaddr_in clientAddr = { 0 };&#13;
+		int nAddrSize = sizeof(sockaddr);&#13;
+		&#13;
+		// 接收服务端返回的信息&#13;
+		recvfrom(hClient,&#13;
+				 buff,/*[输出]保存接收到的数据*/&#13;
+				 sizeof(buff),/*[输入]缓冲区的字节数*/&#13;
+				 0,/*标志*/&#13;
+				 (sockaddr*)&amp;clientAddr,/*[输出]发送数据过来的客户端的地址*/&#13;
+				 &amp;nAddrSize/*[输入和输出]客户端地址的大小*/);	&#13;
+		printf("%s &gt; %s\n",&#13;
+			   inet_ntoa(clientAddr.sin_addr),&#13;
+			   buff);&#13;
+	}&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="27b47t8fqf1ao1v79d46eavpi4">&nbsp;注意</a>
+</h3>
+<h3 class="topic">
+<a name="4q5phlqvi2069d999pjm1knr8m">&nbsp;&nbsp;注意地址结构体(sockaddr_in)带不带in是一样的，</a>
+</h3>
+<h3 class="topic">
+<a name="5kn7t9vi8l1anfvsu8jsvnsmei">&nbsp;&nbsp;这里客户端与服务端的通讯必须服从相应的规则，你发一句，我发一句，这是由代码执行顺序决定的</a>
+</h3>
+<h2 class="topic">
+<a name="2ger4vr0a4tr760s06dpgn5njg">网络编程模型</a>
+</h2>
+<h3 class="topic">
+<a name="6s93nbtehfnl098lu0v4im5tev">&nbsp;如何提升tcp udp服务端的并发效率</a>
+</h3>
+<h3 class="topic">
+<a name="7t7c08l6bqqqq0j8hh25f1vmq1">&nbsp;iocp模型</a>
+</h3>
+<h3 class="topic">
+<a name="06vjq10fe95ihdkatqln6vfs1k">&nbsp;&nbsp;即完成端口</a>
+</h3>
+<h3 class="topic">
+<a name="5a5uk907nj4g3nf5e15afst8k1">&nbsp;&nbsp;&nbsp;是一个内核对象</a>
+</h3>
+<h3 class="topic">
+<a name="64dgb3k8g9d26q7lq5chnqp37v">&nbsp;&nbsp;&nbsp;不能独立使用，必须辅助其他的使用</a>
+</h3>
+<h3 class="topic">
+<a name="2d9cimctt57mc81ba9m68cevh1">&nbsp;&nbsp;创建完成端口</a>
+</h3>
+<h3 class="topic">
+<a name="5s8srecf16jq7mb40qit5of1s1">&nbsp;&nbsp;&nbsp;创建完成端口</a>
+</h3>
+<h3 class="topic">
+<a name="5j3gi8de2o4esslelmlijkgf1m">&nbsp;&nbsp;&nbsp;&nbsp;参数</a>
+</h3>
+<h3 class="topic">
+<a name="2sat2qstmak6m83238asrld6dp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;无效句柄</a>
+</h3>
+<h3 class="topic">
+<a name="5k7jsei94249o1o1ehnt666q3t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;null</a>
+</h3>
+<h3 class="topic">
+<a name="4ncdhasrvd2j8eib1led4rsb8n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0</a>
+</h3>
+<h3 class="topic">
+<a name="64p5du5n4dc2b821f38a32or14">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;完成端口上最多运行的线程数量</a>
+</h3>
+<h3 class="topic">
+<a name="606tjchm2ol4t4qvggla51lsap">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;核心数量*2</a>
+</h3>
+<h3 class="topic">
+<a name="1fupad9tiov98h414gir5mmb6e">&nbsp;&nbsp;&nbsp;该函数也可以将一个io设备句柄（套接字句柄、文件、、）与完成端口关联起来（即将对应设备加入到设备队列）</a>
+</h3>
+<h3 class="topic">
+<a name="73057feacmr5sj61at1lh2a4io">&nbsp;&nbsp;&nbsp;可以和多个内核对象绑定</a>
+</h3>
+<h3 class="topic">
+<a name="1keqgd8j8qsbl6e0780s4eva9l">&nbsp;&nbsp;&nbsp;&nbsp;使用完成键，用于标识到底和哪个进行绑定的</a>
+</h3>
+<h3 class="topic">
+<a name="7mb8nuh3s11vpkikjtjhifpr59">&nbsp;&nbsp;创建工作线程</a>
+</h3>
+<h3 class="topic">
+<a name="7f63tautk1u1l5a4em2qiogcl7">&nbsp;&nbsp;&nbsp;可以用一个函数获取计算机核心数量，一般适宜的线程数量是计算机核心数量的2倍</a>
+</h3>
+<h3 class="topic">
+<a name="1od57s4cimuc4m15151a2bm0on">&nbsp;&nbsp;完成端口原理</a>
+</h3>
+<h3 class="topic">
+<a name="0p005p9u1pspc2p4irib6ucalc">&nbsp;&nbsp;&nbsp;多个客户端套接字在同一个线程中，一旦你有一个客户端套接字在接收信息，则其他所有的阻塞，除非开多个线程，但是不现实</a>
+</h3>
+<h3 class="topic">
+<a name="6sr2g6cb4p2gd85drgdtrmquj0">&nbsp;&nbsp;&nbsp;完成端口对象中存在</a>
+</h3>
+<h3 class="topic">
+<a name="71clu6vrk3mfb0mh0c4dsblpk8">&nbsp;&nbsp;&nbsp;&nbsp;设备队列</a>
+</h3>
+<h3 class="topic">
+<a name="5tdk957lvengrmbbl37e7ucehc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将完成端口对象与套接字对象绑定，则后者进入设备队列</a>
+</h3>
+<h3 class="topic">
+<a name="6opasa7qmbq57lrvsneft0t10m">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;完成对象可以轮询设备队列中的设备的io任务</a>
+</h3>
+<h3 class="topic">
+<a name="6omjqf1oooc54o3l2bcfk85h2j">&nbsp;&nbsp;&nbsp;&nbsp;io任务队列</a>
+</h3>
+<h3 class="topic">
+<a name="0l710l2u0ik1lmp49pfiert14h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当设备队列中有设备产生io任务，将io任务存储到任务队列，会动态查询当前的io任务是否完成，如果完成，将io任务放在完成队列中</a>
+</h3>
+<h3 class="topic">
+<a name="5pnb4rkcfmfo58to8cer8aadjp">&nbsp;&nbsp;&nbsp;&nbsp;完成队列</a>
+</h3>
+<h3 class="topic">
+<a name="5nas1tjmq1983uq6tedkrk7b2p">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;队列中有任务，则说明有任务完成</a>
+</h3>
+<h3 class="topic">
+<a name="51d5taukh33iha6ahng9k09d19">&nbsp;&nbsp;&nbsp;只要两个函数就可以完成该机制</a>
+</h3>
+<h3 class="topic">
+<a name="7nrrnl1jfu01lvq4rd8ek7davk">&nbsp;&nbsp;&nbsp;&nbsp;创建完成端口对象同时绑定设备</a>
+</h3>
+<h3 class="topic">
+<a name="040j4ka1u9csp9n3psbhtsjmqt">&nbsp;&nbsp;&nbsp;&nbsp;查询完成队列任务</a>
+</h3>
+<h3 class="topic">
+<a name="2l2963nsk94q1utv9935n2mlss">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;阻塞性函数，当队列为空，则阻塞</a>
+</h3>
+<h3 class="topic">
+<a name="2lv3mijrs0h4laeu4mkujkuale">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在该函数内部可以调度线程</a>
+</h3>
+<h3 class="topic">
+<a name="7tkd65kcu9512s3fqllhc36asn">&nbsp;&nbsp;&nbsp;作用</a>
+</h3>
+<h3 class="topic">
+<a name="23fbm5c5jvufarb84hd8o40bt5">&nbsp;&nbsp;&nbsp;&nbsp;用于高效查找设备io任务有没有完成</a>
+</h3>
+<h3 class="topic">
+<a name="7k9maafflvd14oosrs15ka2hs6">&nbsp;&nbsp;&nbsp;&nbsp;主要提供一种机制，将多个客户端的消息收发集中在一个线程中处理，且多个客户端之间消息的收发不会阻塞彼此</a>
+</h3>
+<h3 class="topic">
+<a name="0aaksq9jtbs2tf1kt65p8fd9tj">&nbsp;&nbsp;完成端口使用（iocp的原理）</a>
+</h3>
+<h3 class="topic">
+<a name="1fapt06qo5d6lmnmlclbvvfqus">&nbsp;&nbsp;&nbsp;创建一个完成端口对象</a>
+</h3>
+<h3 class="topic">
+<a name="09r8hitvrgpj6j2al2c42pt9lc">&nbsp;&nbsp;&nbsp;&nbsp;创建的时候前三个参数有固定要求</a>
+</h3>
+<h3 class="topic">
+<a name="58me833pe3ffs51u2sf7527cp7">&nbsp;&nbsp;&nbsp;和设备对象（主要是设备对象的套接字）进行绑定</a>
+</h3>
+<h3 class="topic">
+<a name="4muam9p9n8hi8q0f2i5vsqajeq">&nbsp;&nbsp;&nbsp;&nbsp;要创建服务端整体流程</a>
+</h3>
+<h3 class="topic">
+<a name="1nav79b93cj3tdh8vsu62a2but">&nbsp;&nbsp;&nbsp;&nbsp;参数</a>
+</h3>
+<h3 class="topic">
+<a name="3ndkd44mnogng1ts7h2guei2hd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;套接字句柄</a>
+</h3>
+<h3 class="topic">
+<a name="37io41jk1sl7rkc6kp12hf952a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;完成端口的句柄</a>
+</h3>
+<h3 class="topic">
+<a name="61n1n2m3ea3p57p51elebpb53e">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;完成键</a>
+</h3>
+<h3 class="topic">
+<a name="2fp43alafpc3lk08qt487ff7oa">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以没有</a>
+</h3>
+<h3 class="topic">
+<a name="0q8b31gh0nofh7mjvtenll6lpa">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;类似于创建线程回调函数的附加参数</a>
+</h3>
+<h3 class="topic">
+<a name="4dukckv83el12r5gks5s156bqa">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0</a>
+</h3>
+<h3 class="topic">
+<a name="4dajgneq1u6i8gu7240ml96k28">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;绑定的时候不需要用到</a>
+</h3>
+<h3 class="topic">
+<a name="10p2l3rmnn8usg05gn7g7f79pl">&nbsp;&nbsp;&nbsp;&nbsp;结果是</a>
+</h3>
+<h3 class="topic">
+<a name="1411l08dri84n8cjdleom8rala">&nbsp;&nbsp;&nbsp;向完成端口投递一个接收客户端数据的io任务，</a>
+</h3>
+<h3 class="topic">
+<a name="1r8gdnpt8qc9s93kdivk5b1alk">&nbsp;&nbsp;&nbsp;&nbsp;该函数不会阻塞，将io任务插入到队列中直接返回，</a>
+</h3>
+<h3 class="topic">
+<a name="2gghu084d3h9297eqj8sghq81s">&nbsp;&nbsp;&nbsp;&nbsp;参数</a>
+</h3>
+<h3 class="topic">
+<a name="1nsabtt74o99d5sqk4i79jj46a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;客户端套接字</a>
+</h3>
+<h3 class="topic">
+<a name="4usoale4uiu5vseeip2n768an3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wsabuf结构体，表示要接受的字节数</a>
+</h3>
+<h3 class="topic">
+<a name="6ksncvq6jth75kg6ibc547vb20">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;子主题 1</a>
+</h3>
+<h3 class="topic">
+<a name="7pdkf9b84ai4rjpt798j7orepr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;缓冲区个数</a>
+</h3>
+<h3 class="topic">
+<a name="4gd6htp0unlp4efsgls2kasbrs">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;实际接收到的字节数</a>
+</h3>
+<h3 class="topic">
+<a name="19kuh6iuo75mccts7jv15b2gt2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;创建一个传进去</a>
+</h3>
+<h3 class="topic">
+<a name="5jhce2dnjhc7eq28qkgna5tadu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;实际输出的参数</a>
+</h3>
+<h3 class="topic">
+<a name="0ue80rev1icru7nfn6bjsagqob">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;重叠io的结构体</a>
+</h3>
+<h3 class="topic">
+<a name="0ujqok0crmgsqdp87gf1ccban9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;io任务的载体</a>
+</h3>
+<h3 class="topic">
+<a name="20s6f4navj6je6ft512orl8k50">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;回调函数</a>
+</h3>
+<h3 class="topic">
+<a name="7snc7il865reb2c7p7c9792r8o">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;也可以为null</a>
+</h3>
+<h3 class="topic">
+<a name="2rj6gnlsl6le271up2tgdlctqq">&nbsp;&nbsp;&nbsp;&nbsp;该函数只能投递一个io任务</a>
+</h3>
+<h3 class="topic">
+<a name="7d9mgv30s6eei6rd6d5fb154s3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果需要多次接收io任务，需要服务端持续投递io任务</a>
+</h3>
+<h3 class="topic">
+<a name="64dr5nvonpcsste9va0o3oc0d8">&nbsp;&nbsp;&nbsp;在另一个线程中（线程一般为操作系统核心数量的2倍）</a>
+</h3>
+<h3 class="topic">
+<a name="3dk538cv6e487qko0plpfq6m4n">&nbsp;&nbsp;&nbsp;&nbsp;建立死循环</a>
+</h3>
+<h3 class="topic">
+<a name="18lkjf1dpaovpot2ciie8u8n14">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用重叠io的结构体在死循环中查询</a>
+</h3>
+<h3 class="topic">
+<a name="1eo4buc720lj5vf5uhigc5ntti">&nbsp;&nbsp;&nbsp;&nbsp;调用查询函数</a>
+</h3>
+<h3 class="topic">
+<a name="67qj1u2ukhh4c3dm3gbkst014p">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;输入参数</a>
+</h3>
+<h3 class="topic">
+<a name="2ffbjnetqejui29pq0qim8ma14">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;要取已完任务的完成端口对象</a>
+</h3>
+<h3 class="topic">
+<a name="5aoaqoidl1p8so6ljq265927si">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;获取已经完成的任务，从输出参数中获取重叠结构体，从重叠结构体中获取发送的数据</a>
+</h3>
+<h3 class="topic">
+<a name="1c0jqhu921euhvfgenne5ev08j">&nbsp;&nbsp;&nbsp;&nbsp;获取cpu核心数量使用函数</a>
+</h3>
+<h3 class="topic">
+<a name="4n3l5j81i9dhe8iund7nafqcl9">&nbsp;&nbsp;&nbsp;客户端只要为普通的tcp即可，可以使用多个客户端给服务端发送消息</a>
+</h3>
+<h3 class="topic">
+<a name="163826slip1jcup5c4ohc12a3l">&nbsp;&nbsp;&nbsp;服务器端的转发</a>
+</h3>
+<h3 class="topic">
+<a name="44mrj88ai2cocq66h04h5fil4g">&nbsp;&nbsp;&nbsp;&nbsp;建立一个客户端名称和套接字句柄的关系，</a>
+</h3>
+<h3 class="topic">
+<a name="7oi4l58ismi6cimlo9nbonui6k">&nbsp;&nbsp;&nbsp;&nbsp;规定消息传递的机制</a>
+</h3>
+<h3 class="topic">
+<a name="43m4usvsbbonc8hnmpe82mhqgo">&nbsp;&nbsp;&nbsp;&nbsp;把得到的消息与客户端的名称相连接，对消息进行转发</a>
+</h3>
+<h3 class="topic">
+<a name="303jvmvclmhhq3da88q91g8vv4">&nbsp;&nbsp;原理</a>
+</h3>
+<h3 class="topic">
+<a name="36vjql40q334jqkql3f4v340ha">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class37day0320%EF%BC%88%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B%EF%BC%89_files/2d79te03v4om7d9v7ke4ovh0t0.png"></p>
+<h3 class="topic">
+<a name="0dmgtip7u0u7551eemdcf70q13">&nbsp;&nbsp;&nbsp;1、有客户端连接进入服务器，将该客户端的套接字句柄与当前完成接口的句柄相绑定（即将该客户端加入到该完成端口对象的设备队列中）完成对象会轮询设备队列，是否会发生io任务</a>
+</h3>
+<h3 class="topic">
+<a name="2s7e3kcsi5rhgf7sie0jt9np3a">&nbsp;&nbsp;&nbsp;2、针对每一个连接的客户端，均会使用WSARecv等函数投递对应的io任务，其实质是以客户端套接字句柄和重叠结构体为参数，为对应的客户端在任务队列中创建异步io任务，完全端口会轮询设备队列，如果发生了io任务，会由系统提供的机制进行读写处理</a>
+</h3>
+<h3 class="topic">
+<a name="08cef2i9ua0v4keuofmfep6o9u">&nbsp;&nbsp;&nbsp;3、程序中只需要对io任务是否执行完毕做出判断即可，该判断是放在完成端口的多个线程中进行的，当任务完成，任务会进入完成队列，使用特定函数可以取出文件处理结果，可以对文件处理结果进行相应的操作，以上过程均在完成端口申请的多个线程中完成，一般最大线程为计算机核心数量的两倍</a>
+</h3>
+<h3 class="topic">
+<a name="5gcqks52el3o8gc5htdkvolvk1">&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="0tuep4b8qk47c8hd4k77kjt2h0">&nbsp;&nbsp;&nbsp;&#13;
+#include "pch.h"&#13;
+#define _WINSOCK_DEPRECATED_NO_WARNINGS&#13;
+#include &lt;winsock2.h&gt;&#13;
+#include &lt;windows.h&gt;&#13;
+#include &lt;stdio.h&gt;&#13;
+#pragma comment(lib,"ws2_32.lib")&#13;
+#include &lt;map&gt;&#13;
+#include &lt;string&gt;&#13;
+using namespace std;&#13;
+&#13;
+//将需要创建的异步io任务的相关信息封装到一个结构体中&#13;
+struct SOCKETOVERLAPPED : public OVERLAPPED&#13;
+{&#13;
+	SOCKET hSocket; // 用于IO任务的套接字句柄&#13;
+	WSABUF buff; // 保存IO任务的缓冲区&#13;
+	sockaddr_in address;&#13;
+	int opcode=0;//如果等于0, 表示客户端第一次连接进来,需要接收一个名字&#13;
+};&#13;
+map&lt;string, SOCKET&gt; g_clients;&#13;
+&#13;
+DWORD CALLBACK iocpProc(LPVOID pArg)&#13;
+{&#13;
+	HANDLE hIocp = (HANDLE)pArg;&#13;
+	while (1)&#13;
+	{&#13;
+		DWORD dwTranSize = 0;&#13;
+		ULONG_PTR key = 0;&#13;
+		SOCKETOVERLAPPED* pSocketOl = NULL;&#13;
+		&#13;
+		//使用作为参数传进来的完成端口句柄调用GetQueuedCompletionStatus函数&#13;
+		//用于获取&#13;
+		BOOL bRet = GetQueuedCompletionStatus(&#13;
+			hIocp,// [输入] 要取已完成的任务的完成端口对象&#13;
+			&amp;dwTranSize,/*[输出]实际完成的字节数*/&#13;
+			&amp;key,/*[输出]完成键,是将套接字和完成端口绑定时,指定的完成键*/&#13;
+			(LPOVERLAPPED*)&amp;pSocketOl,//[输出]用于获取io任务的完成结果&#13;
+			-1);&#13;
+		if( bRet == FALSE)&#13;
+			continue;&#13;
+&#13;
+		printf("[%s:%d]%s\n",&#13;
+			   inet_ntoa(pSocketOl-&gt;address.sin_addr),//客户端的ip&#13;
+			   (int)pSocketOl-&gt;address.sin_port,//客户端的端口号&#13;
+			   pSocketOl-&gt;buff.buf);//接收到的消息内容&#13;
+&#13;
+//以下代码用于对发送消息的客户端进行分辨，用于达到消息转发给其他客户端的效果，代码本身存在一定问题&#13;
+// 		char buff[32];&#13;
+// 		if (pSocketOl-&gt;opcode == 0) {&#13;
+// 			pSocketOl-&gt;opcode = 1;&#13;
+// 			// &lt;名字&gt;&#13;
+// 			int nRet = sscanf_s(&#13;
+// 				pSocketOl-&gt;buff.buf,&#13;
+// 				"&lt;%[^&gt;]&gt;",&#13;
+// 				buff,&#13;
+// 				sizeof(buff));&#13;
+// 			printf("客户端连接:%s\n", buff);&#13;
+// 			if (nRet == 0) {&#13;
+// 				printf("客户端的名称格式错误,拒绝连接\n");&#13;
+// 				closesocket(pSocketOl-&gt;hSocket);&#13;
+// 				delete pSocketOl-&gt;buff.buf;&#13;
+// 				delete pSocketOl;&#13;
+// 				continue;&#13;
+// 			}&#13;
+// 			else {&#13;
+// 				pair&lt;string, SOCKET&gt; item(buff, pSocketOl-&gt;hSocket);&#13;
+// 				g_clients.insert(item);&#13;
+// 			}&#13;
+// &#13;
+// 		}&#13;
+// 		else {&#13;
+// 			char buff[1000];&#13;
+// 			char name[32];&#13;
+// 			// @xxx:氨基酸看到了房间爱拉斯科的附加了&#13;
+// 			if (0 == sscanf_s(pSocketOl-&gt;buff.buf,&#13;
+// 							  "@%[^:]:%s",&#13;
+// 							  name,&#13;
+// 							  sizeof(name),&#13;
+// 							  buff,&#13;
+// 							  sizeof(buff) )&#13;
+// 				)&#13;
+// 			{&#13;
+// 				printf("客户端发送的数据格式有误\n");&#13;
+// 			}&#13;
+// 			else {&#13;
+// 				if (g_clients.find(name) != g_clients.end()) {&#13;
+// 					send(g_clients[name],&#13;
+// 						 buff,&#13;
+// 						 strlen(buff) + 1,&#13;
+// 						 0);&#13;
+// 					printf("转发[%s]的数据到[%s]: %s\n",&#13;
+// 						   inet_ntoa(pSocketOl-&gt;address.sin_addr),&#13;
+// 						   name,&#13;
+// 						   pSocketOl-&gt;buff.buf);&#13;
+// 				}&#13;
+// 				else {&#13;
+// 					printf("转发数据时,找不到客户端:%s\n",&#13;
+// 						   name);&#13;
+// 				}&#13;
+// 			}&#13;
+// 		}&#13;
+&#13;
+		// 需要再次投递接收的IO任务, 否则,下次客户端&#13;
+		// 发送数据过来时完成端口就监视不到了.&#13;
+		// 向完成端口投递一个接受客户端数据的IO任务&#13;
+		// 函数不会阻塞, 将IO任务插入到队列中就直接返回&#13;
+		// 了, 系统内部会监听这个IO任务, 当这个任务完成&#13;
+		// 时, 就以另外的方式来处理此任务.&#13;
+		DWORD dwRecvSize = 0;&#13;
+		DWORD dwFlag = 0;&#13;
+		WSARecv(pSocketOl-&gt;hSocket,/*客户端套接字*/&#13;
+				&amp;pSocketOl-&gt;buff/*要接收的字节数*/,&#13;
+				1/*缓冲区的个数*/,&#13;
+				&amp;dwRecvSize,&#13;
+				&amp;dwFlag,&#13;
+				pSocketOl,/*重叠结构体*/&#13;
+				NULL);&#13;
+	}&#13;
+	return 0;&#13;
+}&#13;
+&#13;
+&#13;
+int main()&#13;
+{&#13;
+&#13;
+	// 1. 创建一个完成端口对象//////////////////////////////////////////////////////////////////&#13;
+	// 1.1 创建时, 前三个参数是不能指定的.&#13;
+	//创建一个SYSTEM_INFO结构体，用于获取当前系统信息&#13;
+	SYSTEM_INFO si = { 0 };&#13;
+	//获取当前系统信息&#13;
+	GetSystemInfo(&amp;si);&#13;
+	//创建一个完成端口，前三个参数不能变，最后一个参数是完成端口上最多运行的线程数&#13;
+	//该线程数一般为计算机核心数的两倍&#13;
+	HANDLE hIocp = CreateIoCompletionPort(&#13;
+		INVALID_HANDLE_VALUE,&#13;
+		0,&#13;
+		0,&#13;
+		si.dwNumberOfProcessors*2);//从系统信息中获得当前系统的核心数&#13;
+	//为完成端口创建多个线程&#13;
+	for (int i = 0; i &lt; si.dwNumberOfProcessors * 2; ++i) {&#13;
+		CreateThread(0,&#13;
+					 0,&#13;
+					 iocpProc,//设置线程的回调函数，消息收发的过程将在回调函数中完成&#13;
+					 (LPVOID)hIocp,//将完成端口作为附加参数传给回调函数&#13;
+					 0,&#13;
+					 0);&#13;
+	}&#13;
+&#13;
+	// 2.创建套接字且绑定ip//////////////////////////////////////////////////////////////////&#13;
+	// 初始化套接字环境&#13;
+	WSADATA wd = { 0 };&#13;
+	WSAStartup(MAKEWORD(2, 2),/*指定使用2.2的版本*/&#13;
+			   &amp;wd);&#13;
+	// 2. 创建一个服务端的套接字&#13;
+	SOCKET hServer = socket(&#13;
+		AF_INET,/*协议族,AF_INET表示因特网的套接字*/&#13;
+		SOCK_STREAM,/*套接字类型: SOCK_STREAM表示流式套接字*/&#13;
+		IPPROTO_TCP/*协议的类型:IPPROTO_TCP表示TCP协议*/&#13;
+	);&#13;
+&#13;
+	// 3. 将服务端的套接字和本机IP及端口绑定&#13;
+	sockaddr_in addr = { 0 };&#13;
+	addr.sin_family = AF_INET;/*协议族*/&#13;
+	addr.sin_port = htons(10086);&#13;
+	addr.sin_addr.S_un.S_addr =inet_addr("0.0.0.0"); /*0.0.0.0表示本机IP地址*/&#13;
+&#13;
+	bind(hServer,&#13;
+		(sockaddr*)&amp;addr,/*要绑定到的地址*/&#13;
+		 sizeof(addr)/*地址占用的字节数*/);&#13;
+&#13;
+	// 4. 将服务端套接字进入监听状态&#13;
+	listen(hServer, SOMAXCONN);&#13;
+&#13;
+	// 5. 等待客户端的连接&#13;
+	while ( 1 )&#13;
+	{&#13;
+		//创建用于获取服务端ip端口号的sockaddr_in的结构体&#13;
+		sockaddr_in clientAddr = { 0 };&#13;
+		int nAddrSize = sizeof(clientAddr);&#13;
+		SOCKET hClient = INVALID_SOCKET;&#13;
+		// accept是一个阻塞性函数, &#13;
+		// 它会一直等待客户端连接进来&#13;
+		// 连接进来之后,函数会将客户端的信息&#13;
+		// 获取出来:&#13;
+		// 1. 客户端的套接字句柄&#13;
+		// 1. 客户端的地址&#13;
+		hClient = accept(&#13;
+			hServer,/*通过服务端套接字来等待客户端的连接*/&#13;
+			(sockaddr*)&amp;clientAddr,/*[输出]连接进来的客户端的IP地址*/&#13;
+			&amp;nAddrSize/*[输出]客户端的地址的大小*/);&#13;
+&#13;
+		&#13;
+		// 使用客户端套接字句柄与完成端口对象进行绑定，相当于将当前设备加入到完成接口的设备队列&#13;
+		//因为之前的accept函数是阻塞的，所以只要有要一个客户端联入服务端，就会将其加入到设备队列&#13;
+		CreateIoCompletionPort(&#13;
+			(HANDLE)hClient,/*要进行绑定的设备句柄*/&#13;
+			hIocp,/*要绑定到的完成端口对象的句柄*/&#13;
+			NULL,/*完成键*/&#13;
+			0&#13;
+		);&#13;
+&#13;
+		// 向完成端口投递一个接受客户端数据的IO任务&#13;
+		// 函数不会阻塞, 将IO任务插入到队列中就直接返回&#13;
+		// 了, 系统内部会监听这个IO任务, 当这个任务完成&#13;
+		// 时, 就以另外的方式来处理此任务.&#13;
+		//这里完成端口相当于使用异步io的方式在完成读写任务，过程不需要主动介入，只要能够准确获悉其任务完成情况即可&#13;
+&#13;
+		SOCKETOVERLAPPED* pSOl = new SOCKETOVERLAPPED;&#13;
+		memset(pSOl, 0, sizeof(SOCKETOVERLAPPED));&#13;
+		pSOl-&gt;buff.buf = new CHAR[100];// 保存接收到的数据&#13;
+		pSOl-&gt;buff.len = 100; // 要接收的字节数&#13;
+		pSOl-&gt;hSocket = hClient;// 用于接收网络数据的套接字&#13;
+		pSOl-&gt;address = clientAddr;&#13;
+&#13;
+		DWORD dwRecvSize = 0;&#13;
+		DWORD dwFlag = 0;&#13;
+&#13;
+		//该函数使用了重叠结构体，所以相当于是用异步io的方式在处理io任务队列中的任务&#13;
+		//该函数使用了客户端套接字作为参数，说明完成队列会对每一个联入的客户端单独创建接收数据的io任务到人呢务队列&#13;
+		//被投递的任务专门用于接收对应的设备可能产生的io任务，&#13;
+		WSARecv(hClient,/*客户端套接字*/&#13;
+				&amp;pSOl-&gt;buff/*要接收的字节数*/,&#13;
+				1/*缓冲区的个数*/,&#13;
+				&amp;dwRecvSize,&#13;
+				&amp;dwFlag,&#13;
+				pSOl,/*重叠结构体*/&#13;
+				NULL);&#13;
+	}&#13;
+}&#13;
+</a>
+</h3>
+</body>
+</html>

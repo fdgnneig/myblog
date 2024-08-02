@@ -1,0 +1,933 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>class8day0101</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="4smptucb34v668mcorh80tu3i5">class8day0101</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="class8day0101_files/images/class8day0101.jpg"></div>
+<h2 class="topic">
+<a name="634jp9u0p8hu3uou9176f3et25">c语言中的内存</a>
+</h2>
+<h3 class="topic">
+<a name="2u99hrsopbmd4574kvq3d45hai">&nbsp;内存的种类(为了便于管理)</a>
+</h3>
+<h3 class="topic">
+<a name="7sucpbs8llo6lhgebbeovoqr3r">&nbsp;&nbsp;程序的内存划分</a>
+</h3>
+<h3 class="topic">
+<a name="2oub8a1atb643b9calfnik501d">&nbsp;&nbsp;&nbsp;代码区</a>
+</h3>
+<h3 class="topic">
+<a name="7fhjkb34lrtbie1rcmi2noj0f0">&nbsp;&nbsp;&nbsp;常量区</a>
+</h3>
+<h3 class="topic">
+<a name="064dgt6nn0gh56mq0kb2rifo6u">&nbsp;&nbsp;&nbsp;&nbsp;包括字符串常量等</a>
+</h3>
+<h3 class="topic">
+<a name="7j2ggojbv6mhsc76qo70qgomvu">&nbsp;&nbsp;&nbsp;堆区</a>
+</h3>
+<h3 class="topic">
+<a name="7ivesr0ut4imuamnm5qqpg0fe8">&nbsp;&nbsp;&nbsp;栈区</a>
+</h3>
+<h3 class="topic">
+<a name="3rqc167ooiona5a4dt7fvnf5hs">&nbsp;&nbsp;&nbsp;全局数据区</a>
+</h3>
+<h3 class="topic">
+<a name="0l711v2ga3md6kreed1isi639a">&nbsp;&nbsp;&nbsp;&nbsp;包括全局变量以及static局部变量</a>
+</h3>
+<h3 class="topic">
+<a name="45oii78l73b1adml3is1srmce3">&nbsp;&nbsp;&nbsp;int *p1=(int*)malloc(10);</a>
+</h3>
+<h3 class="topic">
+<a name="05q437je2101ceac7jtrlcdt7f">&nbsp;&nbsp;&nbsp;&nbsp;printf("%p",p1);</a>
+</h3>
+<h3 class="topic">
+<a name="5u0i4n47hqte1g1qs0kgpugffe">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这里打印出的是指针变量中储存的地址值,该地址为之前malloc函数在堆空间中分配的内存 位于堆区</a>
+</h3>
+<h3 class="topic">
+<a name="702lpcpgicjco74punu6jnho8t">&nbsp;&nbsp;&nbsp;&nbsp;printf("%p",&amp;p1);</a>
+</h3>
+<h3 class="topic">
+<a name="2pjlfahrdtmnjlo4d2n9v0td11">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;打印出指针变量的内存地址,这里指针变量是局部变量,故打印出来的内存地址位于栈区</a>
+</h3>
+<h3 class="topic">
+<a name="6fmvocr6v6u1u8dtkfp55k05it">&nbsp;&nbsp;栈空间</a>
+</h3>
+<h3 class="topic">
+<a name="5q7bgrlc3g416pnm4u58dqe5nt">&nbsp;&nbsp;&nbsp;一般非常小,只有1M</a>
+</h3>
+<h3 class="topic">
+<a name="7fut8omvb3sjd39p7k80hldfg5">&nbsp;&nbsp;&nbsp;所有的局部变量内存空间均来源于此</a>
+</h3>
+<h3 class="topic">
+<a name="015odef3tc9g798bcj62dqauu2">&nbsp;&nbsp;&nbsp;无法定义的大容量的数组或变量</a>
+</h3>
+<h3 class="topic">
+<a name="7kmf8rtu10tj1pmh5u54ipdd3q">&nbsp;&nbsp;&nbsp;&nbsp;char nArry[1024*1024*1024*2];  //请求分配2M的栈空间,会分配失败,栈溢出</a>
+</h3>
+<h3 class="topic">
+<a name="6meh8em1v2sltb1lool8uj749q">&nbsp;&nbsp;静态空间</a>
+</h3>
+<h3 class="topic">
+<a name="2vpj7omhhl1u1f5j7j0912j1oa">&nbsp;&nbsp;&nbsp;最大大小超过1GB以上</a>
+</h3>
+<h3 class="topic">
+<a name="4rvd8i3bul3vjrk23pmuqehd3o">&nbsp;&nbsp;&nbsp;所有静态变量 全局变量的内存空间来源于此</a>
+</h3>
+<h3 class="topic">
+<a name="59lo2ksns7phpv6snc2arid5va">&nbsp;&nbsp;&nbsp;占用磁盘空间保存初始值(静态空间越大,文件越大)</a>
+</h3>
+<h3 class="topic">
+<a name="57rbnj9t73ejgmgbb79buadnpf">&nbsp;&nbsp;常量空间</a>
+</h3>
+<h3 class="topic">
+<a name="1h2a5sqpsf45u7vh2ldm384vs0">&nbsp;&nbsp;&nbsp;大小不定</a>
+</h3>
+<h3 class="topic">
+<a name="2d22l7ar42g0kh1n7u3bpusrmf">&nbsp;&nbsp;&nbsp;常量字符串的内存空间一般来源于此,虽然占据内存空间,但是其值不能修改,否则会导致程序崩溃</a>
+</h3>
+<h3 class="topic">
+<a name="49grfuf0iarq7ii69btj1bf304">&nbsp;&nbsp;&nbsp;&nbsp;"123"[0]='a'//这种用法不对</a>
+</h3>
+<h3 class="topic">
+<a name="5itj313kkvjrkesp73gar9cr9b">&nbsp;&nbsp;&nbsp;初始值保存在磁盘空间中,保存在可执行文件中</a>
+</h3>
+<h3 class="topic">
+<a name="0hccd9tvaojjr1rlouvvnfed61">&nbsp;&nbsp;堆空间</a>
+</h3>
+<h3 class="topic">
+<a name="32qvb1hkvtam8g5aqsmlgfelsd">&nbsp;&nbsp;&nbsp;大小不定,一般大小在2~4gb之间</a>
+</h3>
+<h3 class="topic">
+<a name="5o75t4drlosukeln4ii7c0brr8">&nbsp;&nbsp;&nbsp;不是自动分配的内存空间,需要调用函数malloc进行堆空间分配 free()用于释放分配的堆空间</a>
+</h3>
+<h3 class="topic">
+<a name="1j18ld31btni9keahoj3cfbjns">&nbsp;&nbsp;&nbsp;int main(){&#13;
+//定义一个超过2m的字符数组&#13;
+&#13;
+char*pBuff=NULL;&#13;
+//内存申请函数的原型&#13;
+&#13;
+void*malloc(size_t size)  //通过f12进去可以查看到看不懂的数据类型的信息 比如size_t;  void* 返回一个空类型指针&#13;
+&#13;
+pBuff=(char*)malloc(1024*1024*2);//这里是申请内存空间的大小是以字节为单位的&#13;
+&#13;
+这里需要加上if语句判断内存是否分配成功&#13;
+&#13;
+//释放堆空间&#13;
+free(pBuff)&#13;
+pBuff=NULL;//为避免悬空指针,需要将pBuff赋值为空&#13;
+}&#13;
+堆空间在debug中空间开头以及结尾会用四个fd填充&#13;
+在release版本中不会存在</a>
+</h3>
+<h3 class="topic">
+<a name="15qqcnnojk3or4dkbtjiq6cur5">&nbsp;&nbsp;&nbsp;&nbsp;悬空指针</a>
+</h3>
+<h3 class="topic">
+<a name="142215qarpd9jvu5n8260cjao7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在一段堆空间被释放,但是指针仍然指向该堆空间首地址,有可能导致程序崩溃</a>
+</h3>
+<h3 class="topic">
+<a name="73p64ir81lvf0os2i2i41jqajo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;一般释放空间之后,需要将对应指针直接置为空,为了避免悬空指针的出现</a>
+</h3>
+<h3 class="topic">
+<a name="3jmmg1059ilg1tq2t8n7l0tv7s">&nbsp;&nbsp;&nbsp;&nbsp;野指针</a>
+</h3>
+<h3 class="topic">
+<a name="21h65nn1fjk6d07ac55erg3ths">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;未进行初始化的指针</a>
+</h3>
+<h3 class="topic">
+<a name="1equkfrdg2cphbkcf8cp7ii89a">&nbsp;&nbsp;&nbsp;堆空间的使用</a>
+</h3>
+<h3 class="topic">
+<a name="1jf9gvfio7be51aht6142kfl17">&nbsp;&nbsp;&nbsp;&nbsp;定义一个指针,先赋值为空,之后用于保存申请到的堆空间首地址</a>
+</h3>
+<h3 class="topic">
+<a name="7jvnbjq8d2mgh6tmrgv73h1s96">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PERSON*pObj=NULL;</a>
+</h3>
+<h3 class="topic">
+<a name="0brck43m4rctudgrnj2uukme78">&nbsp;&nbsp;&nbsp;&nbsp;调用malloc函数,来获取堆空间并将函数返回值赋值给指针变量</a>
+</h3>
+<h3 class="topic">
+<a name="4f87o6lurr9jjmrv1h48msffor">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pObj=(PERSON*)malloc(sizeof(PERSON)*10);</a>
+</h3>
+<h3 class="topic">
+<a name="75089kej0idf22b3s48c392drf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意这一步中需要加上判断内存分配是成功的字段,函数分配失败后,malloc函数返回flase</a>
+</h3>
+<h3 class="topic">
+<a name="6ai921aob6i1tgfevd6ntpigkl">&nbsp;&nbsp;&nbsp;&nbsp;因为mallo函数返回类型是void*,因此在将它的返回值赋值给指针变量之前需要强制类型转换</a>
+</h3>
+<h3 class="topic">
+<a name="1ilvgicbr4e52jdn987ev3fps0">&nbsp;&nbsp;&nbsp;&nbsp;释放堆空间free();然后将该指针赋值为空</a>
+</h3>
+<h3 class="topic">
+<a name="4rkj8thr5el9pblj3ktvd3bono">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;free(pObj); pObj=NULL;</a>
+</h3>
+<h3 class="topic">
+<a name="0j77cvni8q4d0jmhrdutg50r5e">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果同一个指针进行了多次内存申请,则free()函数一般将相应指针距离最近的一次内存申请的空间作为内存释放的对象</a>
+</h3>
+<h3 class="topic">
+<a name="08vi11t4iseocukhhamkh5ro5g">&nbsp;&nbsp;&nbsp;结构体和堆空间</a>
+</h3>
+<h3 class="topic">
+<a name="4agogf57g7hth2q0hj04u4dr4s">&nbsp;&nbsp;&nbsp;&nbsp;typedef struct _PERSONN{&#13;
+    char name[32];&#13;
+    int age;&#13;
+}PERSON;&#13;
+&#13;
+&#13;
+int main(){&#13;
+//申请1000个结构体变量大小的内存空间&#13;
+//注意这里不能先定义一个结构体数组,然后将结构体数组名放在等号右边使用malloc进行内存分配,因为结构体数组名是一个常量不能被赋值,且结构体数组如果被定义,就必须指定数组长度,无法完成malloc动态分配数组的操作&#13;
+&#13;
+//PERSON*pobj=&#13;
+    (PERSON*)malloc(sizeof(PERSON)*1000)&#13;
+    &#13;
+&#13;
+//可以把申请到的内存空间当做结构体数组进行使用,这里继承了数组名就是指针的思想  &#13;
+&#13;
+//前提是该数组元素已经被初始化&#13;
+&#13;
+    pobj[0].nAge=10;      &#13;
+    pobj[1].nAge=10;&#13;
+&#13;
+free(pobj);&#13;
+}&#13;
+</a>
+</h3>
+<h3 class="topic">
+<a name="1uc7uiunvrj3qt3966kicrt8vk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;内存泄漏:程序运行期间申请的内存没有被及时释放,在程序关闭后内存才会被程序收回</a>
+</h3>
+<h3 class="topic">
+<a name="7kt048ngqj6kp550n71bn6fnfd">&nbsp;&nbsp;&nbsp;&nbsp;使用指针表示结构体数组的时候,如果需要遍历数组每个元素,则循环需要指定循环次数,因为申请内存空间的操作一定是在循环遍历之前,所以循环遍历的时候,数组元素的数量一定是可以知道的,循环直接使用即可</a>
+</h3>
+<h3 class="topic">
+<a name="6te6thg75m4evcs7sqoiqnhffm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对于结构体数组能不能使用_count函数计算函数元素个数?用指针表示呢?</a>
+</h3>
+<h3 class="topic">
+<a name="46f5o9f4gl81lej8a06m3nemtk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;结构体数组可以使用_count函数计算数组元素个数</a>
+</h3>
+<h3 class="topic">
+<a name="347fanvfu53pkqdek1trpplaui">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;但是当结构体数组是动态分配得,需要使用指针来表示结构体,此时使用指针作为参数带入_count()中存在问题</a>
+</h3>
+<h3 class="topic">
+<a name="2u6k902hrfftrauirkc2416evn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;因为_count()本身的实现是使用sizeof()  而数组名和指针名在sizeof()的使用方面存在差异点</a>
+</h3>
+<h3 class="topic">
+<a name="0o3qndrlqhqa0vvbosgu9uqbfs">&nbsp;&nbsp;&nbsp;&nbsp;结构体数组的输入</a>
+</h3>
+<h3 class="topic">
+<a name="7evmsomf0hqqv76ma326kr4ib5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;scanf_s("%s %d"&#13;
+,pobj[i].name,sizeof(pobj[0].name),&amp;pobj[i].age);</a>
+</h3>
+<h3 class="topic">
+<a name="2d0m8f8rlhife1o28kbi861qv0">&nbsp;&nbsp;&nbsp;内存相关函数</a>
+</h3>
+<h3 class="topic">
+<a name="6f2p31um13ibo719g3n7vm488n">&nbsp;&nbsp;&nbsp;&nbsp;内存初始化函数</a>
+</h3>
+<h3 class="topic">
+<a name="1dlghoi8tmm7hh5omdcmvfdlcd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;void memset(目标缓存void*dest,初始化信息int c,初始大小size_t count);</a>
+</h3>
+<h3 class="topic">
+<a name="5ap2q9q1qi68ip5b1e7nodc9pc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这里的目标缓存只要是能够表示内存地址的变量即可,可以为指针 数组名等等</a>
+</h3>
+<h3 class="topic">
+<a name="1il03s3efplmjsl9pnj3gcj4ls">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;memeset(*ppPwd,0,sizeof(PASSWORD)*g_nNum);</a>
+</h3>
+<h3 class="topic">
+<a name="7g62g14e3vgdt5v5peshnkt0rr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在密码本项目中使用0将申请的用于储存结构体数组的内存空间全部复制为0</a>
+</h3>
+<h3 class="topic">
+<a name="73cgsglvne4ngn1ncohkrsbf0c">&nbsp;&nbsp;&nbsp;&nbsp;内存拷贝函数</a>
+</h3>
+<h3 class="topic">
+<a name="6b0g70ugc7b3acj0f2ln7prb96">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;memcpy</a>
+</h3>
+<h3 class="topic">
+<a name="5hmc2mr57epl9sjb23jra23frn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;目标缓存  原缓存  赋值大小</a>
+</h3>
+<h3 class="topic">
+<a name="1tbbjh72e660hinqfn997rqlmb">&nbsp;&nbsp;&nbsp;生存期</a>
+</h3>
+<h3 class="topic">
+<a name="6rm5iouu1ip276vrciufluid4a">&nbsp;&nbsp;&nbsp;&nbsp;是一个变量占有内存的时间</a>
+</h3>
+<h3 class="topic">
+<a name="3ovcab5f6jo2dr7f3covii7lhq">&nbsp;&nbsp;&nbsp;动态内存分配使用注意</a>
+</h3>
+<h3 class="topic">
+<a name="6d5ftrkf562kskofph5o9d24ut">&nbsp;&nbsp;&nbsp;&nbsp;刚分配的动态内存其初始值不确定</a>
+</h3>
+<h3 class="topic">
+<a name="5qgi4kn5m4nhrc6577r6p7uoam">&nbsp;&nbsp;&nbsp;&nbsp;不能对同一指针连续两次进行free操作</a>
+</h3>
+<h3 class="topic">
+<a name="0f03urlsonlsnl2k665hodq7vu">&nbsp;&nbsp;&nbsp;&nbsp;不能对指向静态内存区以及栈内存区的指针应用free</a>
+</h3>
+<h3 class="topic">
+<a name="3371qirk010pcmhfvqpvb5237d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以对空指针应用free</a>
+</h3>
+<h3 class="topic">
+<a name="7g31hde5k0lqpldjo3atf9r9fn">&nbsp;&nbsp;&nbsp;&nbsp;没有及时释放内存,会造成内存泄露</a>
+</h3>
+<h2 class="topic">
+<a name="5reep8ccrqn88bsf08o75maovk">指针进阶</a>
+</h2>
+<h3 class="topic">
+<a name="6d6ij7av7icri9udq755a8jv0g">&nbsp;指针与数组</a>
+</h3>
+<h3 class="topic">
+<a name="6q0cd1ar8f87rj96cc96ta8292">&nbsp;&nbsp;指针数组每一个元素都是指针,其指针指向的变量类型可以为任意的</a>
+</h3>
+<h3 class="topic">
+<a name="31su79vdoc9bhjdd4t00nflrdm">&nbsp;&nbsp;数组指针指向一个数组,根据指向的数组的类型分为普通数组指针   一维数组指针  二维数组指针等</a>
+</h3>
+<h3 class="topic">
+<a name="2vf7a24kemb97j68v692p6vfeg">&nbsp;&nbsp;普通数组指针int*p ;用于指向一维数组</a>
+</h3>
+<h3 class="topic">
+<a name="1lo4dfkr4hb1t891ca3eq6q5fi">&nbsp;&nbsp;保存一个二维数组的地址用什么类型? 一维数组指针(指向二维数组) :例如: `int(*)[3];`</a>
+</h3>
+<h3 class="topic">
+<a name="6gjmo9klng4dpljt8h0qnuov83">&nbsp;&nbsp;保存一个三维数组的地址用什么类型? 二维数组指针(指向三维数组), 例如:`int(*)[3][4];`</a>
+</h3>
+<h3 class="topic">
+<a name="1mrc244o9o3bf2d3j00vjlk45r">&nbsp;对一维数组名取地址</a>
+</h3>
+<h3 class="topic">
+<a name="75gll71m5hnjl8e1i6f5vpaeo2">&nbsp;&nbsp;int a[3];</a>
+</h3>
+<h3 class="topic">
+<a name="07fvo8po3gc1cg8ksr30grt0ae">&nbsp;&nbsp;&nbsp;a表示数组第一个元素的首地址&#13;
+&amp;a的值与a的值相同,均表示数组第一个元素的地址,但是两者有不同的的地方&#13;
+&#13;
+a表示&amp;a[0],也即对数组首元素取地址，&#13;
+&#13;
+a+1表示 首地址+sizeof(元素类型大小)。&#13;
+&#13;
+&amp;a虽然值为数组首元素地址，&#13;
+&#13;
+但类型为：类型 (*)[数组大小], 即对于一维数组数组名取地址,都会得到二维数组指针,其值不变&#13;
+&#13;
+所以&amp;a+1大小为：首地址+sizeof(a)  </a>
+</h3>
+<h3 class="topic">
+<a name="71l99rs99o21hhkdacmtnn2irk">&nbsp;指针有两个性质</a>
+</h3>
+<h3 class="topic">
+<a name="6osontl10kgs732q7hupnec18q">&nbsp;&nbsp;地址</a>
+</h3>
+<h3 class="topic">
+<a name="31vislhfacanfl2a82v37acuq9">&nbsp;&nbsp;&nbsp;通过该地址修改对应内容</a>
+</h3>
+<h3 class="topic">
+<a name="6l7msuf4g432m3npoc0stu4ipf">&nbsp;&nbsp;类型</a>
+</h3>
+<h3 class="topic">
+<a name="51v9npmegp2bol3goh6rdc234c">&nbsp;&nbsp;&nbsp;从特定地址取数据的时候要取几个字节,当指针+1的时候,需要加几个字节</a>
+</h3>
+<h3 class="topic">
+<a name="24ckhc5b96at894724t0169u9i">&nbsp;快速分析数组指针和指针数组</a>
+</h3>
+<h3 class="topic">
+<a name="0h0rahiiktj1l17fuuvgbdsog2">&nbsp;&nbsp;当表达式中同时存在*和[]时,[]优先级更高,</a>
+</h3>
+<h3 class="topic">
+<a name="4unfcadbie8dfdh6b2i254h1ul">&nbsp;&nbsp;当定义一个变量时,变量先和*结合,该变量即为指针,如果先和[]结合,该变量为数组</a>
+</h3>
+<h3 class="topic">
+<a name="0hbtv5pag91qkrdaueqa0ehime">&nbsp;&nbsp;int *p[2]</a>
+</h3>
+<h3 class="topic">
+<a name="1972dpt8lrvbiuhaghib1sg2hl">&nbsp;&nbsp;&nbsp;数组指针,元素有两个,每一个元素都是一个int类型指针</a>
+</h3>
+<h3 class="topic">
+<a name="11eih7rp0hsvs9j88kf9qa1el0">&nbsp;&nbsp;int(*p)[2]</a>
+</h3>
+<h3 class="topic">
+<a name="3b5tdb715jtrj4dciaijc6ogvb">&nbsp;&nbsp;&nbsp;数组指针,一个指向具有两个元素的数组的指针</a>
+</h3>
+<h3 class="topic">
+<a name="7l5gr8kgtt6o4ubf59qs5ek6lg">&nbsp;&nbsp;&nbsp;&nbsp;即二维数组中的行指针</a>
+</h3>
+<h3 class="topic">
+<a name="6enqoook3rihh4s2i9lcubk1ib">&nbsp;int(*p[3])[4]</a>
+</h3>
+<h3 class="topic">
+<a name="38q6hol795481s77d43ed8qpjl">&nbsp;&nbsp;p先与[]结合,标明p是一个数组,有三个元素</a>
+</h3>
+<h3 class="topic">
+<a name="528tvuagq68s7326kk86hb23j2">&nbsp;&nbsp;int(*)[4]</a>
+</h3>
+<h3 class="topic">
+<a name="0ot5g3ebk2j6fevo5crovq1mcl">&nbsp;&nbsp;&nbsp;是一个指针,指向一个存在四个元素的数组</a>
+</h3>
+<h3 class="topic">
+<a name="07rtnapehrga4eamtg0vt15pf4">&nbsp;&nbsp;这个是一个数组,有三个元素,每个元素是一个数组指针,指向的是具有四个元素的数组</a>
+</h3>
+<h3 class="topic">
+<a name="2dovcbil9idm43s4m8tfk5l245">&nbsp;//一个函数需要接受int[4]][3]&#13;
+&#13;
+&#13;
+&#13;
+void fun(int(*p)[3],int nCount)&#13;
+{&#13;
+    for(int i=0;i&lt;nCount;++i)&#13;
+    {&#13;
+         for(int j=0;j&lt;_count(p[0]);++j) &#13;
+          打印  p[i][j]&#13;
+    }&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="1thk0jsdaln0m90c3b7e4ufa9o">&nbsp;一维数组指针</a>
+</h3>
+<h3 class="topic">
+<a name="73gtmd27ud1rlro04rre6apujs">&nbsp;&nbsp;int *p</a>
+</h3>
+<h3 class="topic">
+<a name="1ds736nge8h5l7nd756l103eu8">&nbsp;&nbsp;&nbsp;这里其实是一个二维数组的行指针,为了使用指向一维数组的指针,可以直接使用数组名结合加减运算结合*和&amp;,此时一维数组指针使用 int*p的定义即可</a>
+</h3>
+<h3 class="topic">
+<a name="0c72kpcccqdb61cvjviorqfqq6">&nbsp;&nbsp;&nbsp;注意一维数组的指针时直接定义一个指针指向数组,即使用数组名为其初始化,</a>
+</h3>
+<h3 class="topic">
+<a name="1ab1224e7ierfsod3pt3efjvuo">&nbsp;&nbsp;&nbsp;一维数组的指针形式不能使用int(*p)[列数],这种形式只能运用于二维数组</a>
+</h3>
+<h3 class="topic">
+<a name="0t0afcnb9oivi87sookfotibma">&nbsp;二维数组指针</a>
+</h3>
+<h3 class="topic">
+<a name="3s7u7o7bb7utci7s9ual3d5ngh">&nbsp;&nbsp;二维数组的行指针:  int(*p)[3];</a>
+</h3>
+<h3 class="topic">
+<a name="6jhhvtv2btvcligju2lbgpc5od">&nbsp;&nbsp;&nbsp;初始化: p=数组名</a>
+</h3>
+<h3 class="topic">
+<a name="4egsln0bl5f78ai0ls7u2f1hjm">&nbsp;&nbsp;&nbsp;&nbsp;这里因为二维数组a看做由多个一维数组组成,则a+0  a+1等分别表示一维数组的行地址a[0]  a[1]</a>
+</h3>
+<h3 class="topic">
+<a name="08gvog4pbsn670tvqkcl0fidfc">&nbsp;&nbsp;&nbsp;由于初始化,所以行指针p=*a=a[0]</a>
+</h3>
+<h3 class="topic">
+<a name="7hf9uvaeq5v8ukpmacqink1uhc">&nbsp;&nbsp;&nbsp;行指针的优点在于可以使用p[i][j]的方式访问数组元素</a>
+</h3>
+<h3 class="topic">
+<a name="25t6kdqg6j8p16us7kuenke5f1">&nbsp;&nbsp;二维数组的列指针 int*p;</a>
+</h3>
+<h3 class="topic">
+<a name="0h5vulmsnv6hfldbhn89mm9mqf">&nbsp;&nbsp;&nbsp;int a[3][3];&#13;
+初始化:int*p=*a</a>
+</h3>
+<h3 class="topic">
+<a name="396oec9mkgueacg5hgcj3q544p">&nbsp;&nbsp;&nbsp;int a[3][3];&#13;
+初始化:int*p=(int*)a</a>
+</h3>
+<h3 class="topic">
+<a name="1m3482n3r3konj16kdorcgjhmv">&nbsp;&nbsp;&nbsp;int a[3][3];&#13;
+初始化：int* p=a[0];</a>
+</h3>
+<h3 class="topic">
+<a name="0q6shp6o1rs5h8c5blqep51cvi">&nbsp;&nbsp;&nbsp;是等效的都可以</a>
+</h3>
+<h3 class="topic">
+<a name="22chs4tjv8015fdn6jk4hls2vs">&nbsp;&nbsp;&nbsp;列指针不能使用p[i][j]的方法访问数组元素</a>
+</h3>
+<h3 class="topic">
+<a name="58cl6ak10a8crp1mto4jvn26nm">&nbsp;&nbsp;以上两种指针使用() * &amp; ncount即可完数组元素的引用</a>
+</h3>
+<h3 class="topic">
+<a name="5meloth5kbqkha6koasvt492dt">&nbsp;&nbsp;实例</a>
+</h3>
+<h3 class="topic">
+<a name="190pkhc2a52j985l64tl6emt92">&nbsp;&nbsp;&nbsp;int main()&#13;
+{&#13;
+	int str[][10] = { {1,2,3,4},{5,6,7,8,9} };&#13;
+	//列指针&#13;
+	int*p = *str;  //也可以int*p = str[10];//列指针的初始化&#13;
+&#13;
+	//行指针&#13;
+	int(*p1)[10] = str;&#13;
+&#13;
+	printf("%d\n", *(++p));//列指针能通过一次解引用进行元素访问&#13;
+	&#13;
+	printf("%d\n",*(*(++p1)));//行指针必须通过两次指针解引用才能访问数组元素&#13;
+	//打印结果分别为2和5&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="4rk7tl05aolj17194butk3r0g0">&nbsp;&nbsp;区分行指针与列值针的主要方法是行指针一定是一个数组指针，其自增1会增加一个数组长度的内存大小，其需要两次解引用才能访问数组元素</a>
+</h3>
+<h3 class="topic">
+<a name="0q21d01a0re0ckfm07tfa33ujt">&nbsp;&nbsp;列值针是是一个基本类型的指针，只需要一次解引用即可访问数组元素</a>
+</h3>
+<h3 class="topic">
+<a name="7rd2k9v5di4b9n4laum6mgik71">&nbsp;函数指针</a>
+</h3>
+<h3 class="topic">
+<a name="4dt69t003n6vkafla342ipgvve">&nbsp;&nbsp;int (*p) (int a,int b)</a>
+</h3>
+<h3 class="topic">
+<a name="08i290satairsl462smlto9k3j">&nbsp;指针的算数运算</a>
+</h3>
+<h3 class="topic">
+<a name="3mrh85iukli20j2e9kser6jv62">&nbsp;&nbsp;只能做加减运算</a>
+</h3>
+<h3 class="topic">
+<a name="7phimurmnbuvsu82ki2cmg5ip7">&nbsp;&nbsp;指针加减整数</a>
+</h3>
+<h3 class="topic">
+<a name="17hheosels58huboh6175u695f">&nbsp;&nbsp;指针减指针</a>
+</h3>
+<h3 class="topic">
+<a name="5ob1ot04vp990a0ivndm5gtrl1">&nbsp;&nbsp;&nbsp;要求两个指针同类型,减法得到的是两个地址之间能够存放多少个这种类型的数据</a>
+</h3>
+<h3 class="topic">
+<a name="6lb98t4djf676icukqd07j8nrc">&nbsp;&nbsp;&nbsp;指针与指针之间不能做加法运算</a>
+</h3>
+<h3 class="topic">
+<a name="4m08p958b0jofnmss9gdl76acp">&nbsp;数组名和指针的区别</a>
+</h3>
+<h3 class="topic">
+<a name="3tvmpnhf1g36l2p9hdipckn06m">&nbsp;&nbsp;int a[3];&#13;
+int*p=a;</a>
+</h3>
+<h3 class="topic">
+<a name="6d0h7g65d0hb1r41kh4se7pf1s">&nbsp;&nbsp;sizeof(p)值为4</a>
+</h3>
+<h3 class="topic">
+<a name="5kfgu6jl4datsirr7m94dongau">&nbsp;&nbsp;&nbsp;sizeof(a)值为12</a>
+</h3>
+<h3 class="topic">
+<a name="6g64qvo32c5l2cbno1mr1432cu">&nbsp;&nbsp;&amp;p指的指针变量的内存地址</a>
+</h3>
+<h3 class="topic">
+<a name="086jet48eqrereb2k87banckvt">&nbsp;&nbsp;&nbsp;&amp;a[0]指的是特定数组元素的内存地址</a>
+</h3>
+<h3 class="topic">
+<a name="50t27ghfp784h8gt3ditquf2ce">&nbsp;&nbsp;数组名和指针名在sizeof和&amp;两个运算符下面是不一样的,其他运用场景是一样的</a>
+</h3>
+<h3 class="topic">
+<a name="4u4mdsk35qp873alv2qn3619bi">&nbsp;&nbsp;for(p=a;p&lt;a+5;p++)  遍历一维数组的方式</a>
+</h3>
+<h3 class="topic">
+<a name="49c79h6nqfdnla4k5pvk0pvs84">&nbsp;&nbsp;二维数组如果想要使用指针名替代二维数组名,需要使用行指针来表示,列指针只能使用解引用的方法来表示数组元素,不能使用[]表示数组元素</a>
+</h3>
+<h3 class="topic">
+<a name="7cqvfnvcundpc69e5gi9qlbnmb">&nbsp;&nbsp;数组名为数组的起始地址,可以隐式转换为数组储存元素的指针类型</a>
+</h3>
+<h3 class="topic">
+<a name="5vhhk5j1cbmt1djuvht81eag99">&nbsp;&nbsp;对多维数组指针解引用会降维,变成降一维的数组的指针,直到最后取到实际数据</a>
+</h3>
+<h3 class="topic">
+<a name="0rnlvdneu217o5pkiogv6k5uih">&nbsp;&nbsp;对低维数组名取地址会将其(&amp;a),会将其转换为高维的数组指针类型</a>
+</h3>
+<h3 class="topic">
+<a name="3d8f7s3ibmt3450hephhpcureu">&nbsp;char*p[6]={"red","green","blue"};</a>
+</h3>
+<h3 class="topic">
+<a name="6f89p1atm6acl19m3o81jtolgr">&nbsp;结构体指针使用-&gt;引用成员</a>
+</h3>
+<h3 class="topic">
+<a name="2b5epg9prd96ppruh1bhjachj3">&nbsp;指针数组:数组的元素是指针,可以根据指针的类型进行分类</a>
+</h3>
+<h3 class="topic">
+<a name="1g7h8rvhn03po3lq24q5435dt8">&nbsp;&nbsp;int*p[5]:一级指针数组</a>
+</h3>
+<h3 class="topic">
+<a name="5jhgjns93bltolotn2hajmnprk">&nbsp;&nbsp;int**p[5]:二级指针叔祖</a>
+</h3>
+<h3 class="topic">
+<a name="7624lil4mqtc0gfd3r3vb7khgq">&nbsp;&nbsp;&nbsp;数组元素是二级指针</a>
+</h3>
+<h3 class="topic">
+<a name="5gkpjfeknsgt19nm2ck2t29rep">&nbsp;&nbsp;int(*p[5])[10]:数组指针数组</a>
+</h3>
+<h3 class="topic">
+<a name="7fradfp77di2rujqk8g7bm68fo">&nbsp;&nbsp;&nbsp;数组元素是数组指针</a>
+</h3>
+<h2 class="topic">
+<a name="2umvpqr2tt36vu5nh8f2jmgbre">文件操作</a>
+</h2>
+<h3 class="topic">
+<a name="63h963s1hofnl89qiet75f5h9s">&nbsp;文件</a>
+</h3>
+<h3 class="topic">
+<a name="27gep0pj0gaiihr485k9btkjsd">&nbsp;&nbsp;文本文件</a>
+</h3>
+<h3 class="topic">
+<a name="1lqeuo6k4m5uret1r2csp80i52">&nbsp;&nbsp;&nbsp;文件的每一字节用于存放ascii码,每一个字节与实际字符对应</a>
+</h3>
+<h3 class="topic">
+<a name="63nkc2dpb85tvbq287qlma890l">&nbsp;&nbsp;&nbsp;&nbsp;需要较大的存储空间</a>
+</h3>
+<h3 class="topic">
+<a name="46adqdbkleb1571o9blbbjiavf">&nbsp;&nbsp;二进制文件</a>
+</h3>
+<h3 class="topic">
+<a name="6dhv1aat054gcvbmdc33p8ijc5">&nbsp;&nbsp;&nbsp;数据值在文件中按照对应的二进制代码存放</a>
+</h3>
+<h3 class="topic">
+<a name="0d6ih8vddd2m6gqff0vtopiikv">&nbsp;文件操作的目的</a>
+</h3>
+<h3 class="topic">
+<a name="2rriconoqc1dmgu0ll7g6dbhsa">&nbsp;&nbsp;用于操作文件</a>
+</h3>
+<h3 class="topic">
+<a name="4gg9cla226mld7fmjit53tce03">&nbsp;步骤</a>
+</h3>
+<h3 class="topic">
+<a name="06pvai3k0ig52kftjq4ivr8kp4">&nbsp;&nbsp;打开一个文件(即创建一个文件对象)</a>
+</h3>
+<h3 class="topic">
+<a name="7jg0acek24dhvdvvpv4lcna4bk">&nbsp;&nbsp;&nbsp;FILE* fopen(char*path,int model);</a>
+</h3>
+<h3 class="topic">
+<a name="39dp7e16s3q73jq8p6lb4a2k9n">&nbsp;&nbsp;&nbsp;&nbsp;char*path表示一个路径</a>
+</h3>
+<h3 class="topic">
+<a name="0jtn0vmcfbfoj4r9bs6cuqpgq0">&nbsp;&nbsp;&nbsp;&nbsp;该函数返回打开文件的内存首地址</a>
+</h3>
+<h3 class="topic">
+<a name="71f60hpn71g1jigibj7h6qml7c">&nbsp;&nbsp;&nbsp;&nbsp;文件打开模式</a>
+</h3>
+<h3 class="topic">
+<a name="5rvf7qhajb05rgjugmkqm0uq2q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;只读</a>
+</h3>
+<h3 class="topic">
+<a name="58c79mv6g96esrd4qir5ac1rrt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;只写</a>
+</h3>
+<h3 class="topic">
+<a name="2vqjof9gpht3dsptrc0kqc42ol">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;文件存在时才打开</a>
+</h3>
+<h3 class="topic">
+<a name="6fiio39aib7tc29e56ai93kurt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;不管文件是否存在,都新建一个文件打开</a>
+</h3>
+<h3 class="topic">
+<a name="5r1ddsa1o76kpu9sb9j68j83uh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;以追加的方式打开文件</a>
+</h3>
+<h3 class="topic">
+<a name="2rn8vfhh258vqdc1hd30j773qj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'r'只读,存在时才打开</a>
+</h3>
+<h3 class="topic">
+<a name="1s708ng7vfvqk7vhoshrng3o0h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"w" 只写,文件不存在就新建</a>
+</h3>
+<h3 class="topic">
+<a name="4e28l3itf5q0ughk5j18vrmipm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"A"只写打开,追加模式打开文件,文件不存在则新建</a>
+</h3>
+<h3 class="topic">
+<a name="1o1puq64vrlgfo61krs8tk607c">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"b"二进制文件模式打开</a>
+</h3>
+<h3 class="topic">
+<a name="7ucuih0l2s35d9nr5b7a2t2n6m">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+"模式实际上是使文件变的刻可读可写</a>
+</h3>
+<h3 class="topic">
+<a name="6mk8qo7il3qf24jchlhak1pofn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;包括"r+" "w+" "a+"</a>
+</h3>
+<h3 class="topic">
+<a name="3qc1nd6rc27qc2qdadh7rc2328">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;r+ 打开可读可写的文件，该文件必须存在(这里的写文件是指将之前的文件覆盖 )</a>
+</h3>
+<h3 class="topic">
+<a name="2ddeu6dcu2bb841odtv38bmvpa">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;w+ 打开可读写文件，若文件存在，则文件长度清零，即文件内容会消失，若文件不存在则建立该文件(这里的读文件，同样需要使用rewind()函数)</a>
+</h3>
+<h3 class="topic">
+<a name="4vnjtgpf4q0ga41i093jg73c79">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a+以附加的方式打开可读写文件，不存在则建立文件，存在则写入数据到文件尾(这里的读文件，同样需要使用rewind()函数，但是写文件不需要rewind()函数，a是追加) </a>
+</h3>
+<h3 class="topic">
+<a name="4m9poebreosgp5jdldr0t0uob6">&nbsp;&nbsp;&nbsp;&nbsp;文件一旦打开,其他程序无法操作本文件</a>
+</h3>
+<h3 class="topic">
+<a name="4d9peidacuveuqgdhn4daqdt3t">&nbsp;&nbsp;&nbsp;&nbsp;若文件打开失败,则该函数返回一个空指针</a>
+</h3>
+<h3 class="topic">
+<a name="2tuhc6hsjcm4a1kmtmnftktfi1">&nbsp;&nbsp;&nbsp;fopen_s(&amp;fb,"D:\\123.txt","w");</a>
+</h3>
+<h3 class="topic">
+<a name="70ioqffsgrhs7vfbrcvsmbuj6r">&nbsp;&nbsp;&nbsp;&nbsp;这里是将指针的地址作为参数传递到函数fopen_s中,因为fb指针将从该函数中获得内存空间分配,所以该函数需要使用二级指针作为函数参数,该函数的返回值若为0,说明文件打开成功,若为非0,则文件打开失败</a>
+</h3>
+<h3 class="topic">
+<a name="5k0gchot5ivrubfhqhp3mk49g4">&nbsp;&nbsp;&nbsp;&nbsp;该函数的原型说明该函数返回值为 errno_t数据类型</a>
+</h3>
+<h3 class="topic">
+<a name="1kp4qgi3itl0tpj536di8os6he">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class8day0101_files/6h5s0p2s95vg91v9rkov6lblr0.png"></p>
+<h3 class="topic">
+<a name="4822eo8858f5km1hi63p5suaig">&nbsp;&nbsp;&nbsp;&nbsp;所以验证文件打开是否成功可以使用如下语句判断</a>
+</h3>
+<h3 class="topic">
+<a name="2rrsub3n65p2bhvo0afe9qq3n1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;errno_t erro=fopen_s(&amp;fb,"D:\\123.txt","w");&#13;
+&#13;
+if(erro!=0)&#13;
+{说明文件打开失败}</a>
+</h3>
+<h3 class="topic">
+<a name="2dgumoi2nutgqdvb1uuh98s8e0">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class8day0101_files/65vk0htkf19adfb55revleoe60.png"></p>
+<h3 class="topic">
+<a name="6mdqfn4k707519c2vvcr4mbmg5">&nbsp;&nbsp;读写文件对象</a>
+</h3>
+<h3 class="topic">
+<a name="76n1p860rehleg5rnfm0q7d25d">&nbsp;&nbsp;&nbsp;写入</a>
+</h3>
+<h3 class="topic">
+<a name="3pgvn60i2u6c4olfv0mieg0mo8">&nbsp;&nbsp;&nbsp;&nbsp;逐个字符写入</a>
+</h3>
+<h3 class="topic">
+<a name="0tep6gsle1f6kgbhdsieckvtau">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fputc('b',fb);</a>
+</h3>
+<h3 class="topic">
+<a name="49ke0f13r5g1mbd5lfs8pbqmv4">&nbsp;&nbsp;&nbsp;&nbsp;逐行写入</a>
+</h3>
+<h3 class="topic">
+<a name="6sre7udo8pbbc1vfnlh1re6579">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fputs("hello\n",fb);</a>
+</h3>
+<h3 class="topic">
+<a name="3tepmopjopn4edn9bmck0slf09">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;以该函数进行字符串输入的时候,字符串末尾的'/0'不会被写入进去</a>
+</h3>
+<h3 class="topic">
+<a name="3isi9ffsulqg3hc3squ25ga89v">&nbsp;&nbsp;&nbsp;&nbsp;格式化写入</a>
+</h3>
+<h3 class="topic">
+<a name="4e1f09vmn1ei9lfj4lje6t0s2h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fprintf</a>
+</h3>
+<h3 class="topic">
+<a name="2sm8aics6n0sqk17i2kkfkahgd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;int n=100;&#13;
+fprintf(fb,"n=%d %s %lf\n",n,"hahaha",3.14);</a>
+</h3>
+<h3 class="topic">
+<a name="1frkaualh3ir4qc439kq8qp1g7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;int nArr[5] = { 1,2,3,4,5 };&#13;
+for(int i = 0; i &lt; 5; ++i)&#13;
+{&#13;
+	fprintf( fd, "%d,", nArr[i] );&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="0ochev083kur83h6743ljfu71b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fprintf( fd, "%s-%d-%lf\n",&#13;
+			 obj.name,&#13;
+			 obj.n,&#13;
+			 obj.d );</a>
+</h3>
+<h3 class="topic">
+<a name="2351fn0k99sr15e8ri3q7rh4u3">&nbsp;&nbsp;&nbsp;&nbsp;二进制写入</a>
+</h3>
+<h3 class="topic">
+<a name="58ohjuhdfsodsar0fdnskjf7g5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fwrite</a>
+</h3>
+<h3 class="topic">
+<a name="5iilud89pu17jgccco35casrt6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;上面的函数会对输入视作文本格式,转换成ascii码保存在文件中,即文本的形式写入内存,该函数不会进行该转换,源数据内存中是什么形态,就在文件中保存什么</a>
+</h3>
+<h3 class="topic">
+<a name="5tapmvsdvmm5hafud1cseuqg88">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;int nArr[5] = { 1,2,3,4,5 };&#13;
+fwrite(nArr,sizeof(nArr[0]),5,fb);</a>
+</h3>
+<h3 class="topic">
+<a name="38gr5dtoi5lpil14jbe6cast5j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fwrite( nArr,/*要写入到文件中的内存首地址*/&#13;
+		sizeof( nArr[0] ),/*元素字节数*/&#13;
+		5,/*总共有几个元素*/&#13;
+		fd/*要写入到的文件*/ );</a>
+</h3>
+<h3 class="topic">
+<a name="2ksb7hj9bd2ppo3cvdgtmpduh4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fwrite( &amp;obj,&#13;
+	sizeof( MyStruct ),&#13;
+	1,&#13;
+	fd );</a>
+</h3>
+<h3 class="topic">
+<a name="2hd42hps1onrboab1lvubpgbnp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;若函数调用成功,则返回值为实际写入文件的数据块的个数</a>
+</h3>
+<h3 class="topic">
+<a name="0m2hpgfpbnle82p462eh04rsg3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;所以一般使用这种写入方法的时候可以通过返回值验证文件写入是否正确</a>
+</h3>
+<h3 class="topic">
+<a name="4ka2nol4lvrf244v31mkoumv6j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;int len=fwrite(&amp;obj,sizeof(MyStruct),1,fd);&#13;
+if(len!=1)&#13;
+{说明文件写入失败}</a>
+</h3>
+<h3 class="topic">
+<a name="7m537flk81hqchrvn44vnsvjgc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;以数据块为单位进行文件读取是以二进制文件进行读写,通过记事本打开时,文件数据以ascii的形式展示,所以文件内容中除了字符类型的数据可以直接在记事本中看到,其他类型数据在记事本中都是乱码,相当于以ascii的格式解释相应数据在内存中的表现,则不能正确显示,</a>
+</h3>
+<h3 class="topic">
+<a name="79fqc1ahrkaoh2timkof9ojlhr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果想要数值类型的数据能够在文本文件中直接读到,应该使用功能格式化读写函数对文件进行操作 即fprintf以及fscanf</a>
+</h3>
+<h3 class="topic">
+<a name="6e4q176friv0rk7slsr83o036i">&nbsp;&nbsp;&nbsp;读取</a>
+</h3>
+<h3 class="topic">
+<a name="5r9195vblgd9jp9nqeuk3mv2kb">&nbsp;&nbsp;&nbsp;&nbsp;逐个字符写入fgetc();</a>
+</h3>
+<h3 class="topic">
+<a name="6003hagh3ilq4i8pvdjihhldni">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;char ch;&#13;
+ch = fgetc( fd );</a>
+</h3>
+<h3 class="topic">
+<a name="5hosg5ml62h0qvqvund6jb770l">&nbsp;&nbsp;&nbsp;&nbsp;逐行写入fgets();</a>
+</h3>
+<h3 class="topic">
+<a name="3tqsanbe3nccvdbsetmifqbl2c">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;char szBuff[100];&#13;
+fgets( szBuff, 100, fd );</a>
+</h3>
+<div class="overview">
+<img src="class8day0101_files/images/char szBuff[100]; fgets( szBuff, 100, fd );.jpg"></div>
+<h3 class="topic">
+<a href="file://E:/book.txt" name="783cqchqfhv2eqpdiba5g6ueqd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;book.txt</a>
+</h3>
+<h3 class="topic">
+<a name="5fqlae4lu6o9vhe6pvrnmq4oom">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fgets(ch1,100,fb);//100为读取100个字符,而对于之前已经读过的内容,本次读取直接从上一次读取结束的地方开始继续读 该函数以换行符作为按行读取的依据</a>
+</h3>
+<h3 class="topic">
+<a name="0raov4187rjtishplu2ni4kqjg">&nbsp;&nbsp;&nbsp;&nbsp;格式化写入fscanf();</a>
+</h3>
+<h3 class="topic">
+<a name="285c88vrer17i3b7dtolagggsb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;int n1;&#13;
+char s[100];&#13;
+double d;&#13;
+fscanf_s(fd, &#13;
+		"%d %s %lf",&#13;
+		&amp;n1,&#13;
+		s,100,&#13;
+		&amp;d);</a>
+</h3>
+<h3 class="topic">
+<a name="0bn543hq30grfcm5hgo9cpqgqa">&nbsp;&nbsp;&nbsp;&nbsp;二进制写入fread();</a>
+</h3>
+<h3 class="topic">
+<a name="4ib9n36jb3qf756q7n1e422h9j">&nbsp;&nbsp;&nbsp;重置文件读写位置</a>
+</h3>
+<h3 class="topic">
+<a name="1b5njjrep1bedmp3d01mibgl4r">&nbsp;&nbsp;&nbsp;&nbsp;rewind()</a>
+</h3>
+<h3 class="topic">
+<a name="1g9qvbge6qlguoqan1e6hnhcmf">&nbsp;&nbsp;&nbsp;设置文件读写位置</a>
+</h3>
+<h3 class="topic">
+<a name="69rdoos9ot3nuu795f8019e4fu">&nbsp;&nbsp;&nbsp;&nbsp;fseek</a>
+</h3>
+<h3 class="topic">
+<a name="599cfg3raf04qugr423hb8mvfv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SEEK_SET</a>
+</h3>
+<h3 class="topic">
+<a name="1dkjk0a7bog8hmmpam7vcnk563">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;以文件开头作为文件读写位置</a>
+</h3>
+<h3 class="topic">
+<a name="6og6uv7fu1kf063t5culsl4a1s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SEEK_CUR</a>
+</h3>
+<h3 class="topic">
+<a name="7slit793v29krf4ebjlnvjteeg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当前位置作为文件读写位置</a>
+</h3>
+<h3 class="topic">
+<a name="3pcdalrtediido2eq2t3nicojg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SEEK_END</a>
+</h3>
+<h3 class="topic">
+<a name="3p3f1992parbp8tcm8tgk7v7rk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;以文件结尾作为读写位置</a>
+</h3>
+<h3 class="topic">
+<a name="4fibk4dcb3f30cmgg1aelgp277">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fseek(fb,10,SEEK_SET);</a>
+</h3>
+<h3 class="topic">
+<a name="40adoc9dimac1u9gj7ap2rti88">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将文件读写位置设置为文件开头后面10位</a>
+</h3>
+<h3 class="topic">
+<a name="66hb996dnnu753tmim2vsuu5eb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fseek(fb,-10,SEEK_END);</a>
+</h3>
+<h3 class="topic">
+<a name="7nejpu9iitmofkvcajqv6238od">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将文件读写位置设置为文件结束位置开始倒回十位</a>
+</h3>
+<h3 class="topic">
+<a name="18rd4r0f5oolcp9ts5e1qg3i6q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;指针设置成功,则返回值为0,否则返回非0值</a>
+</h3>
+<h3 class="topic">
+<a name="5ktm7ld9k2bckncekfrdh3ne68">&nbsp;&nbsp;&nbsp;获取当前文件读写位置</a>
+</h3>
+<h3 class="topic">
+<a name="6dt6mmem3be38gtes2u9adsfrn">&nbsp;&nbsp;&nbsp;&nbsp;ftell</a>
+</h3>
+<h3 class="topic">
+<a name="7fblmafai8r1ktje4c1035me84">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.函数 ftell 用于得到文件位置指针当前位置相对于文件首的偏移字节数。</a>
+</h3>
+<h3 class="topic">
+<a name="0pg3k24sggs17ugq5vs66n18j0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当将文件读写位置设置为最后,然后通过,ftell函数,可以得到当前文件的大小</a>
+</h3>
+<h3 class="topic">
+<a name="1v5afi79lcc411l0ua32evgrrr">&nbsp;&nbsp;&nbsp;对文件进行的读写都是从上一次调用的结束位置开始的,所以部分情况下需要改变当前文件读写取位置以从特定位置开始读写文件</a>
+</h3>
+<h3 class="topic">
+<a name="3dta59q8ahkphvjij63dn84ffd">&nbsp;&nbsp;关闭文件</a>
+</h3>
+<h3 class="topic">
+<a name="3l0jh7ilabmobum7ss7l4b5kda">&nbsp;&nbsp;&nbsp;fclose(fb);</a>
+</h3>
+<h3 class="topic">
+<a name="2svq18umfoes2mtsc81o9glcuk">&nbsp;&nbsp;注意读写使用的函数需要配对才能正确操作数据</a>
+</h3>
+<h3 class="topic">
+<a name="2p12fn6g7aabnu7hijlag6prfk">&nbsp;&nbsp;注意,fprintf 与fscanf调用规范中,文件指针通常放在第一个参数,而fwrite与fread函数中,文件指针通常放在最后一个参数</a>
+</h3>
+<h3 class="topic">
+<a name="4iasps1v91khc315ufrn2k5bgn">&nbsp;将结构体写入文件中</a>
+</h3>
+<h3 class="topic">
+<a name="14bcfoce9vc387hu29m49h04bs">&nbsp;&nbsp;结构体&#13;
+{&#13;
+int n;&#13;
+char[32];&#13;
+double d;&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="4echmlmhmt8lc7qa6dpcrilr96">&nbsp;&nbsp;&nbsp;以二进制方式读写</a>
+</h3>
+<h3 class="topic">
+<a name="0rjdskmdj7q45bq6vbvq58tfkk">&nbsp;&nbsp;&nbsp;&nbsp;fwrite(&amp;obj,sizeof(Mystruct),1,fb)</a>
+</h3>
+<h3 class="topic">
+<a name="5a40kt1h5smqgls9rk63v0ja2j">&nbsp;&nbsp;&nbsp;以格式化方式进行读写</a>
+</h3>
+<h3 class="topic">
+<a name="3d853c32o5d5kjedj51sfkrp3b">&nbsp;&nbsp;&nbsp;&nbsp;fprintf(fb,"%s-%d-%lf\n",obj.name,obj.n,obj.d);</a>
+</h3>
+<h3 class="topic">
+<a name="3k954sqlbl30vgn5po8j1fhq84">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;写入</a>
+</h3>
+<h3 class="topic">
+<a name="0c3doa3hk7vo10f7mjmae07pua">&nbsp;&nbsp;&nbsp;&nbsp;fscanf_s( fd, "%s-%d-%lf\n"&#13;
+		 &amp;obj.name,sizeof( obj.name ),&#13;
+		 &amp;obj.n,&#13;
+		 &amp;obj.d );</a>
+</h3>
+<h3 class="topic">
+<a name="09n16fbm4ufs28llcneht23t50">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;读出</a>
+</h3>
+<h3 class="topic">
+<a name="1cc3jqk6vpdl3o0j27gsokiupm">&nbsp;获取文件大小</a>
+</h3>
+<h3 class="topic">
+<a name="7sqkunsctg06rb8qfs20unl7e0">&nbsp;&nbsp;将文件读写位置设置到文件末尾</a>
+</h3>
+<h3 class="topic">
+<a name="2t1kmnn0r9osh580cokk5dqs9m">&nbsp;&nbsp;&nbsp;fseek( fd, 0, SEEK_END);</a>
+</h3>
+<h3 class="topic">
+<a name="1mcn9lh8h04idu8a62e7u55vl9">&nbsp;&nbsp;获取当前末尾的文件位置</a>
+</h3>
+<h3 class="topic">
+<a name="5k25fd7b1kp5d5p94sh9h5pg12">&nbsp;&nbsp;&nbsp;int nSize=ftell(fb);</a>
+</h3>
+<h3 class="topic">
+<a name="161ah4r7a5jhvpp3vl01s6ghj7">&nbsp;&nbsp;重置文件读写位置</a>
+</h3>
+<h3 class="topic">
+<a name="29tbmleg0k72jmsa672qpi0hlv">&nbsp;&nbsp;&nbsp;fseek(fseek( fd, 0, SEEK_CUR);</a>
+</h3>
+</body>
+</html>

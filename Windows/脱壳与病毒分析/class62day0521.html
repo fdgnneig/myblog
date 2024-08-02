@@ -1,0 +1,1385 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>class62day0521（脱壳与病毒分析第二天）</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="7gbf9pbs8irtt04mio878ivftv">class62day0521（脱壳与病毒分析第二天）</a>
+</h1>
+<h2 class="topic">
+<a name="2jrqh24gg9icid8e9evro8gis3">脱壳学习流程</a>
+</h2>
+<h3 class="topic">
+<a name="3kjt0apkqnj86q88gusc4e9a0e">&nbsp;手工加壳</a>
+</h3>
+<h3 class="topic">
+<a name="3b9mf2bprvteqmve45lkhh6vc8">&nbsp;脱自己的壳，熟悉脱壳的步骤和流程</a>
+</h3>
+<h3 class="topic">
+<a name="78bgj9uge3q5ai47gmvnbtn1ec">&nbsp;脱压缩壳</a>
+</h3>
+<h3 class="topic">
+<a name="202o4a7o3in6kvflf832l06ngn">&nbsp;脱加密壳</a>
+</h3>
+<h3 class="topic">
+<a name="3lbt24vuglit7mec3pmhgdgitq">&nbsp;&nbsp;涉及花指令、混淆</a>
+</h3>
+<h3 class="topic">
+<a name="0tmd6ka9qi8if3ja793ipv3equ">&nbsp;脱具有反调试的加密壳</a>
+</h3>
+<h3 class="topic">
+<a name="3ndanf7fvutmb6uumdhajt06va">&nbsp;脱有反虚拟机的加密壳</a>
+</h3>
+<h2 class="topic">
+<a name="3an55j9c9kn97gh5h4eo5edhju">加壳</a>
+</h2>
+<h3 class="topic">
+<a name="3fji6ac7k3qognscrmn1cftr3t">&nbsp;壳是一种程序，能够对pe文件进行各种操作（加密，压缩等)，并且会在程序中新创建一个区段，程序从该区段开始执行，在执行原有程序指令之前，运行该区段中的代码，将可执行文件恢复成正常状态，随后执行原有代码，</a>
+</h3>
+<h3 class="topic">
+<a name="4f71110gdki2vcna0lbfcoeiaj">&nbsp;通过加壳使得原有程序不能被静态分析，只有在程序执行时，壳代码才会将与原有得程序还原，继续执行</a>
+</h3>
+<h2 class="topic">
+<a name="07upq2m52svdhfcbgnm3qmc5kq">脱壳</a>
+</h2>
+<h3 class="topic">
+<a name="7lk8p4lq51ete96a7mfaj4ufl8">&nbsp;分析pe文件被加密，压缩的过程，获得未加壳状态下的程序原代码</a>
+</h3>
+<h2 class="topic">
+<a name="5d67fmebq3lpcu44demlm7belj">脱壳前置知识</a>
+</h2>
+<h3 class="topic">
+<a name="48fkpn027m2n8ipv7uvtapc8n1">&nbsp;常用汇编指令</a>
+</h3>
+<h3 class="topic">
+<a name="12kgj7654386jauftuli1677jb">&nbsp;pe文件结构</a>
+</h3>
+<h3 class="topic">
+<a name="6jd62v502qs5ktachdmbojkibv">&nbsp;pe文件加载流程</a>
+</h3>
+<h2 class="topic">
+<a name="7fb5ij7mdhkrd6akscmgep357o">手工加壳</a>
+</h2>
+<h3 class="topic">
+<a name="1ltrp8csq224av2jq80d2ji366">&nbsp;步骤</a>
+</h3>
+<h3 class="topic">
+<a name="2jgbvrgfgbj3e4egpfils902md">&nbsp;&nbsp;添加区段</a>
+</h3>
+<h3 class="topic">
+<a name="1dcn0ur8f6n23e8nt201da2gu6">&nbsp;&nbsp;&nbsp;LordPE  区段目录  右键  添加区段</a>
+</h3>
+<h3 class="topic">
+<a name="32ff097n2lu9sfi0joo7mkv4m0">&nbsp;&nbsp;&nbsp;&nbsp;lordpe分析文件时会自动修正，可能会直接修改pe文件相关内容</a>
+</h3>
+<h3 class="topic">
+<a name="7aevevperi61jbfc375hksol1t">&nbsp;&nbsp;&nbsp;&nbsp;刚添加的区段的Vsize Rsize为0，没有大小 </a>
+</h3>
+<h3 class="topic">
+<a name="4nhhov4dc9bc6p2sudd4pletp5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在LordPE区段窗口  右键编辑区段</a>
+</h3>
+<h3 class="topic">
+<a name="6gb76dfs4knfkg2vsplfjjc13k">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;增加虚拟区段 物理区大小</a>
+</h3>
+<h3 class="topic">
+<a name="4vupf4klu0qla2snpv73549jvp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LordPE增加的区段大小不会直接作用在文件中，需要使用010editor手动添加0到内存区段中</a>
+</h3>
+<h3 class="topic">
+<a name="4umvb0f7f5bl7v7evg483kbm0k">&nbsp;&nbsp;将oep修改为新区段的起始地址</a>
+</h3>
+<h3 class="topic">
+<a name="1ipbhjl0s2mcmcb00hmsrg16ur">&nbsp;&nbsp;&nbsp;在lordpe中将程序oep修改为新区段的起始位置</a>
+</h3>
+<h3 class="topic">
+<a name="14sscb00orup65qa8lc7iv3hvu">&nbsp;&nbsp;&nbsp;当新区段中壳代码执行完毕，需要设置jmp指令，将执行流重新跳转到原来的oep</a>
+</h3>
+<h3 class="topic">
+<a name="72dq3795k1isor8ersjclvuiqa">&nbsp;&nbsp;&nbsp;&nbsp;注意jmp指令操作数为偏移量，其操作数具体值在计算时需要考虑指令长度</a>
+</h3>
+<h3 class="topic">
+<a name="43h5n0kfp2ke5ocbtj4d86854o">&nbsp;&nbsp;将代码代码断异或加密</a>
+</h3>
+<h3 class="topic">
+<a name="2rlmqgbkor31lutb70isih4qdj">&nbsp;&nbsp;&nbsp;注意是使用010editor在文件中数据进行异或加密，所以要从LordPE中获取代码段得文件偏移，之后在010editor中在对应地址处按位异或</a>
+</h3>
+<h3 class="topic">
+<a name="78upblmbj9svn36u6eqsav6dfi">&nbsp;&nbsp;在新区段中，添加异或解密代码</a>
+</h3>
+<h3 class="topic">
+<a name="20of0cv46886llslhs9a9vi0lg">&nbsp;&nbsp;&nbsp;需要修改新区段属性</a>
+</h3>
+<h3 class="topic">
+<a name="6qels2bhpjit77a7a978e7k96k">&nbsp;&nbsp;&nbsp;&nbsp;使用LordPE，通过勾选需要内存属性，将区段修改为可写可执行 e0000002</a>
+</h3>
+<h3 class="topic">
+<a name="0r1mf5aqh8psof98asctjhvm94">&nbsp;&nbsp;&nbsp;去掉随机基址属性</a>
+</h3>
+<h3 class="topic">
+<a name="070n31r8ul6nr9qegdqadltgft">&nbsp;&nbsp;&nbsp;&nbsp;使用010editor，找到0x4081 改为0x0081</a>
+</h3>
+<h3 class="topic">
+<a name="7h1bmii0hnit5g2hlk5utm0a2f">&nbsp;&nbsp;&nbsp;写解密代码</a>
+</h3>
+<h3 class="topic">
+<a name="7lrtovcpddkejhd2197blc5tth">&nbsp;&nbsp;&nbsp;&nbsp;保存所有寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="56sgk8dmvo4i5jabr3cj58j2aa">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pushad</a>
+</h3>
+<h3 class="topic">
+<a name="7bb425aindmdj6pvhbn3o0f8j7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;保存所有通用寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="1fivtsjqj0ndssaaotr7vr2sbh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pushfd</a>
+</h3>
+<h3 class="topic">
+<a name="5b2p4pvnsclt43hktjjo7n6ib6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;保存所有标志寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="3mhqs3tb68ppol6ahk1vduo0l8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mov esi,4010000</a>
+</h3>
+<h3 class="topic">
+<a name="6gsf2keruvhfgtavk485jacb8o">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mov ecx,a000</a>
+</h3>
+<h3 class="topic">
+<a name="7v8q4ta5er1tdf9nvt278mbrjv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dec ecx</a>
+</h3>
+<p class="relationships">参见: <a href="#3sgp10cmanfc07c7i4ucrddva6">jnz xxxxxx</a>
+</p>
+<h3 class="topic">
+<a name="2aq92i3d7siqnj2ra646fhsomr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xor byte ptr [ecx+esi],0x15</a>
+</h3>
+<h3 class="topic">
+<a name="7orltuqbm21crgimgdo4d2t2pm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0x15是密钥，代码段逐字节与密钥进行异或操作</a>
+</h3>
+<h3 class="topic">
+<a name="65ojp682rst56jd9v8ipm3tf85">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cmp ecx,0</a>
+</h3>
+<h3 class="topic">
+<a name="3sgp10cmanfc07c7i4ucrddva6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;jnz xxxxxx</a>
+</h3>
+<p class="relationships">参见: <a href="#7v8q4ta5er1tdf9nvt278mbrjv">dec ecx</a>
+</p>
+<h3 class="topic">
+<a name="15u93jf0kpvkcmgbjc5ogrm5vu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果ecx不为o则继续执行</a>
+</h3>
+<h3 class="topic">
+<a name="084g97dg1sephee8sri5vcqdlq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;popfd</a>
+</h3>
+<h3 class="topic">
+<a name="2ur2lccd9o013361bei9p0g9ms">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;popad</a>
+</h3>
+<h3 class="topic">
+<a name="7uk9m1k5s8i8teiqs165f605v3">&nbsp;&nbsp;通过以上操作，在ida中查看代码，代码段代码被异或加密，无法查看</a>
+</h3>
+<h3 class="topic">
+<a name="6ikc9adk1r0fpt3alu1fi884t2">&nbsp;注意</a>
+</h3>
+<h3 class="topic">
+<a name="440pkmbvh6shgcihvurs8e1jts">&nbsp;&nbsp;代码段默认没有可写属性，需要修改</a>
+</h3>
+<h3 class="topic">
+<a name="5pda5q7uhulhdvoedrlf25o6u4">&nbsp;&nbsp;有随机基址属性的程序会重定位代码，一般我们会去掉这个属性 如果没有去掉，就需要在壳代码中进行重定位</a>
+</h3>
+<h2 class="topic">
+<a name="1ma8qqarrfnjng0b9tetbp2ns7">脱壳</a>
+</h2>
+<h3 class="topic">
+<a name="07ghhn7ujcg004r25g8ui5uiod">&nbsp;目的</a>
+</h3>
+<h3 class="topic">
+<a name="3hapgim56qbf4q0k2dtsf44cin">&nbsp;&nbsp;破解者脱壳、解密、破解</a>
+</h3>
+<h3 class="topic">
+<a name="7he8bkpvm897rt0thh7jnb2e29">&nbsp;&nbsp;杀毒引擎(脱壳引擎，将、反病毒u虚拟机)解密 查杀病毒 扫描特征</a>
+</h3>
+<h3 class="topic">
+<a name="56hd7b2dua6ih2b431hq6bc1pu">&nbsp;&nbsp;&nbsp;如果一个病毒加壳，病毒无法被直接扫描特征，所以需要脱壳从而扫描特征，查杀病毒</a>
+</h3>
+<h3 class="topic">
+<a name="60603m238b9te7c0ujq97f46ag">&nbsp;步骤</a>
+</h3>
+<h3 class="topic">
+<a name="34nph1o484ob2d18as8281il0k">&nbsp;&nbsp;找到原始oep</a>
+</h3>
+<h3 class="topic">
+<a name="392pb0bk31g4b9doolr4udpr3j">&nbsp;&nbsp;&nbsp;一旦单步执行到了原始oep时，内存中的程序应该已经完成了解密操作，此时内存中所有代码应该是解密状态，而可以直接执行</a>
+</h3>
+<h3 class="topic">
+<a name="16imf4v9rtk9l4u5013p5c25dc">&nbsp;&nbsp;&nbsp;技巧</a>
+</h3>
+<h3 class="topic">
+<a name="199so01qm7c2gto61lvhrie5cm">&nbsp;&nbsp;&nbsp;&nbsp;堆栈平衡法（esp定律）</a>
+</h3>
+<h3 class="topic">
+<a name="3ju6kfiumfru5u5sv2d3gfajte">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;壳代码应该是堆栈平衡的，可以在壳代码操作了堆栈后在堆栈处下访问断点（数据窗口中 esp寄存器右键直接快捷键）当壳代码清空堆栈，准备跳转到原oep中执行时，会断住，此时向后分析即可找到原oep</a>
+</h3>
+<h3 class="topic">
+<a name="4eh4tov84vnrk368ltg4cajcee">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pushad</a>
+</h3>
+<h3 class="topic">
+<a name="2omlju38i1r3or2rvfrr1go7rv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pushfd</a>
+</h3>
+<h3 class="topic">
+<a name="7iddtc1s25sd89fias2ot5ks87">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;popfd</a>
+</h3>
+<h3 class="topic">
+<a name="6vvsmsg7cf1rljn8dhhshajrl9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;popad</a>
+</h3>
+<h3 class="topic">
+<a name="0io6id6moakei37lsrjn1oa2hs">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以直接在esp寄存器上右键，访问断点</a>
+</h3>
+<h3 class="topic">
+<a name="3s2q13253idj8tmb688hjsvk5d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class62day0521_files/6ukc57hfijq7vamp3tcd9suks3.png"></p>
+<h3 class="topic">
+<a name="0hkr9uphinkufdaakn4pq2i39o">&nbsp;&nbsp;&nbsp;&nbsp;特征定位法</a>
+</h3>
+<h3 class="topic">
+<a name="3g4dt5u8n60ljd40su5r202q5t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果熟悉没有加密的程序的特征，可以让程序先跑起来(即原代码已经被解密)，直接搜索程序入口点的特征，从而定位入口点</a>
+</h3>
+<h3 class="topic">
+<a name="7js6isi8lima6hvel8o30btem2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;特征类型</a>
+</h3>
+<h3 class="topic">
+<a name="0l66cop92orhfaq83ovts6214b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;程序入口点特征</a>
+</h3>
+<h3 class="topic">
+<a name="3uf5lduajg19rsha2trdj6bd1h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2013 release版</a>
+</h3>
+<h3 class="topic">
+<a name="1tkcg4k1olcngs1rtknjn5os49">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;call jmp</a>
+</h3>
+<h3 class="topic">
+<a name="6bcs1nj284j7cd2fbftuh87q3e">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;即：e8????????e9</a>
+</h3>
+<h3 class="topic">
+<a name="0l8snk8rejpt6ctlbrsrrqk0vl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;故可以在程序中搜索会二进制序列，以确定程序入口点</a>
+</h3>
+<h3 class="topic">
+<a name="4ie5nbun4gp6jlhfr41hngkf4l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;call  安全cookie初始化函数</a>
+</h3>
+<h3 class="topic">
+<a name="4nnvmkrecahug4p05hn7t6qdip">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该函数内部会调用获取系统时间、获取进程tid pid等等api，可以作为该函数标志</a>
+</h3>
+<h3 class="topic">
+<a name="7995sqf6a1orjnqu9n02cmccpd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;jmp main函数启动函数</a>
+</h3>
+<h3 class="topic">
+<a name="4keu8r64lvg3oq5mm6j1263k7i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;程序连接器版本特征可以用于判断加壳程序的编译环境</a>
+</h3>
+<h3 class="topic">
+<a name="7qihhd5e73qsb94o8u6g7ch22i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6.0</a>
+</h3>
+<h3 class="topic">
+<a name="1e92rdip36lh6asm7vau393hfu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vc6.0（vc98）</a>
+</h3>
+<h3 class="topic">
+<a name="42eqboadsc49b9r26u41fu4iof">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;7.0 7.1</a>
+</h3>
+<h3 class="topic">
+<a name="2udvb0dnmsqa23s4a6vt9abg95">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vs2003</a>
+</h3>
+<h3 class="topic">
+<a name="2je0i6s5qnjcjdkne7a113q296">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;8.0</a>
+</h3>
+<h3 class="topic">
+<a name="3fqpdfssn9m3apja4reqgrb8ul">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vs2005</a>
+</h3>
+<h3 class="topic">
+<a name="6ii3pp8n1j94hjfg84dc91amte">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;9.0</a>
+</h3>
+<h3 class="topic">
+<a name="41l3usimei63qfe2j7d57rcr40">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vs2008</a>
+</h3>
+<h3 class="topic">
+<a name="3pu4or545v498tfp9gpt6sn19h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;10</a>
+</h3>
+<h3 class="topic">
+<a name="0775sin341v4b09tpi5iemsoj6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vs2010</a>
+</h3>
+<h3 class="topic">
+<a name="2mglrbug1m3eap012gfcaue0a7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;11</a>
+</h3>
+<h3 class="topic">
+<a name="297auraj5p1mvm2m52iung2qe7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vs2012</a>
+</h3>
+<h3 class="topic">
+<a name="4b6u242vja62gmpnkva6oaa58b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;12</a>
+</h3>
+<h3 class="topic">
+<a name="738ci7l6iodm626sl5j860fl8l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vs2013</a>
+</h3>
+<h3 class="topic">
+<a name="6cb70k6nekhcoio3v5ao41no1b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;14</a>
+</h3>
+<h3 class="topic">
+<a name="24l5honftft8r55m9pnkgj6e0b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vs2015</a>
+</h3>
+<h3 class="topic">
+<a name="74cav6gudd131s0bp05kme4ttj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;14.1</a>
+</h3>
+<h3 class="topic">
+<a name="1gk0nlbhn4knbmmfpvtiv8vqid">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vs2017</a>
+</h3>
+<h3 class="topic">
+<a name="1gvlis8r0tm42d1i6ks76lrvp7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;14.2</a>
+</h3>
+<h3 class="topic">
+<a name="1vmv6upvb7s05tu31blqbk8klc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vs2019</a>
+</h3>
+<h3 class="topic">
+<a name="12cmo6qmjm0gj3c5ac4b18hk0k">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;api特征</a>
+</h3>
+<h3 class="topic">
+<a name="2rjg7gou3o38f95it49v2euauh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;比如vs2013 release版第一个函数为初始化安全cookie</a>
+</h3>
+<h3 class="topic">
+<a name="5v2vqdcpk13368553t1e25c8ki">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该函数第一个调用的api为xxx</a>
+</h3>
+<h3 class="topic">
+<a name="266do5r3lolh75qoallp0osldq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;需要补充!!!!!!!!!!!!!!!!!!!!!!</a>
+</h3>
+<h3 class="topic">
+<a name="1ko9gv0hhjko5l5kdge7dukto7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;程序特征总结</a>
+</h3>
+<h3 class="topic">
+<a name="27ia288f9bov9djo68rdg8dgqj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;一个程序没有加壳时的特征需要总结，一般有几种特征</a>
+</h3>
+<h3 class="topic">
+<a name="2uhjl77f4f9q7g0rd7nrdinht2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;入口点特征</a>
+</h3>
+<h3 class="topic">
+<a name="5qo0bk59kv6j83abb3m21fi51v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;连接器版本</a>
+</h3>
+<h3 class="topic">
+<a name="7e5emjl1ihhk34tq22gt3160kf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;区段名称</a>
+</h3>
+<h3 class="topic">
+<a name="12838vur9qcs9r1bcio0210ncu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过peid区段名称也可以标识程序编译环境</a>
+</h3>
+<h3 class="topic">
+<a name="6jl3jecdhf795ccnafu4rk1u2g">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pe文件的区段名称程序运行时可以不需要，可以任意更改</a>
+</h3>
+<h3 class="topic">
+<a name="4u8dq5k2arjfef3m3pvhljifv5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;iat调用</a>
+</h3>
+<h3 class="topic">
+<a name="0to0ongqc7bbrou76ic7ehskts">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;即固定的api调用</a>
+</h3>
+<h3 class="topic">
+<a name="2n350g2vl85r4tcmi1h6m2tc34">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;exeinfo和peid的原理就是基于以上几个特征进行扫描</a>
+</h3>
+<h3 class="topic">
+<a name="20p264al5d1dp8s5sks9863hr5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;而可以通过对程序入口特征的修改，使得相关工具不能识别该程序的编译环境</a>
+</h3>
+<h3 class="topic">
+<a name="2g658f8bfa6bqmctmdtdjf4e19">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;需要知道原来没有加壳的程序的入口点特征，才能知道加壳程序的函数特征</a>
+</h3>
+<h3 class="topic">
+<a name="7950goqjcdnk28m27ni8j089ts">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;补充总结在后面</a>
+</h3>
+<h3 class="topic">
+<a name="09m04s0s8n7b0fpq98qd6av50h">&nbsp;&nbsp;&nbsp;&nbsp;单步跟踪法</a>
+</h3>
+<h3 class="topic">
+<a name="5lrfi71r4m7kpfak6rqi17mdep">&nbsp;&nbsp;&nbsp;&nbsp;二次断点</a>
+</h3>
+<h3 class="topic">
+<a name="6sfmuvb6br70vj82eke9reinne">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;给.text整个区段下一个执行断点（x32dbg中）或下访问断点（在od中），当程序执行完成壳代码之后会从text段执行第一条代码，该代码常为oep</a>
+</h3>
+<h3 class="topic">
+<a name="6k32uh0jksnr5sg4kl73pvag2j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;od中使用二次断点的</a>
+</h3>
+<h3 class="topic">
+<a name="1fqfv12uvddid318fbauvac883">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1、程序调试运行，让程序断在壳代码的起始位置</a>
+</h3>
+<h3 class="topic">
+<a name="59kefdkpovr0fn0vesqp4if8qa">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2、在工具栏m中，右键.text区段，在访问上设置中断，（或者直接使用F2）</a>
+</h3>
+<h3 class="topic">
+<a name="7li0mgt4dofnt17rl3e02olclc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3、让程序跑起来，观察每次断点位置是否为oep</a>
+</h3>
+<h3 class="topic">
+<a name="61m04mmcuc78rkjp67l9clbqdj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果没有反调试机制，则该该种找oep的方法具有广泛适用性</a>
+</h3>
+<h3 class="topic">
+<a name="48jlue82ef3u70b8ab6e9i9spf">&nbsp;&nbsp;&nbsp;&nbsp;末次异常</a>
+</h3>
+<h3 class="topic">
+<a name="71743a2udg23nh6sppj4gsc0ka">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;针对特定壳，以触发异常的方式进行反调试的方式的壳，脱壳时可以让程序忽略异常以继续执行，</a>
+</h3>
+<h3 class="topic">
+<a name="6ol6ghmttno3njbs49eq5ro5v3">&nbsp;&nbsp;Dump内存到文件</a>
+</h3>
+<h3 class="topic">
+<a name="31b42hahu3dnm7rtc6a3689m13">&nbsp;&nbsp;&nbsp;当可执行文件在内存中已经完成解密之后，将内存中代码转储到文件，此时内存中的代码已经被解密，保存在文件中时，可以选择内存中的代码原封不动的拷贝到文件（此时文件中内存对齐粒度是0x1000，与内存中一样），也可以使用文件中的对齐粒度（0x200）将内存中数据保存在文件中</a>
+</h3>
+<h3 class="topic">
+<a name="5b0ivsph5g50t1vff1k0ukg711">&nbsp;&nbsp;&nbsp;使用od插件ollydump将指定代码从内存中dump到文件，需要指定内存中程序的oep等参数，dump生成的文件在执行时就会以该oep作为程序执行入口</a>
+</h3>
+<h3 class="topic">
+<a name="2ia19grvl2a690lr88fsrbv7g3">&nbsp;&nbsp;&nbsp;有随机基址的程序，dump时程序加载基址和oep地址不能使用pe默认值，需要参考本次程序运行的加载基址</a>
+</h3>
+<h3 class="topic">
+<a name="6k66q1u6fmk3kn5aqvbcj4nmj8">&nbsp;&nbsp;修复文件（修复iat 重建导入表）</a>
+</h3>
+<h3 class="topic">
+<a name="4o72c9mh5oourpvc65un4ouirg">&nbsp;&nbsp;&nbsp;从内存中转储的部分数据代码与原文件中得不一样，根据pe规则，iat表在文件中与int表内容相同均是函数名称，但是在dump的文件中，iat表中保存的是函数地址，要想程序正常运行，就需要将iat修复，因为加壳后的程序一般都会自己处理导入表、iat、以及重定位等</a>
+</h3>
+<h3 class="topic">
+<a name="3kho5cnq6254e0h89lnmcsjtnd">&nbsp;&nbsp;&nbsp;使用工具imporrec</a>
+</h3>
+<h3 class="topic">
+<a name="3lea9tpocuof6bdk17j6ssdjif">&nbsp;&nbsp;&nbsp;&nbsp;原理 通过以指定oep为起始点进行代码扫描，获取不同的函数特征，将其用于识别不同的函数 &#13;
+即通过ff15 ff25找到被调用得api，通过函数特征识别该函数得函数原型，以此恢复iat以及导入表</a>
+</h3>
+<h3 class="topic">
+<a name="6fe92trq3ucff2nlnetfafp3d0">&nbsp;&nbsp;&nbsp;&nbsp;工具使用方法</a>
+</h3>
+<h3 class="topic">
+<a name="0rrvbdrmgthipmin8iu9v9hd4i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class62day0521_files/3ih548n7pd526s73b1130bijor.png"></p>
+<h3 class="topic">
+<a name="4g335euujk61hrsvgsd38tkuc4">&nbsp;&nbsp;&nbsp;使用该工具，打开加壳的程序的进程，将oep设置为我们分析出的程序原始oep（即未加壳状态下的oep）以此可以分析出程序的iat表（导入表）相关信息，然后将分析出的信息转储存在上一步dump出的文件中，可以使文件获得导入函数表</a>
+</h3>
+<h3 class="topic">
+<a name="52k1r5i6ma3ccfb2v1coear6rr">&nbsp;&nbsp;&nbsp;&nbsp;使用该工具之后，会根据iat表为被信息转储存dump文件创建一个区段，其中保存程序的导入表，包括int iat等信息</a>
+</h3>
+<h3 class="topic">
+<a name="172h9qoimcdn4pfi42njqp3n2q">&nbsp;&nbsp;程序存在随机基址机制时，壳运行过程中会完成代码的重定位操作，从而保证程序正常运行，</a>
+</h3>
+<h3 class="topic">
+<a name="3mb2cekjr13bcj3itava7dmlv4">&nbsp;&nbsp;&nbsp;因为dump文件中部分指令使用了虚拟地址，而dump文件中没有壳代码的运行，所以dump文件再次运行时此类指令中的地址么没有被重定位，会导致程序无法运行</a>
+</h3>
+<h3 class="topic">
+<a name="68vq5njn7f9cboc5esjk26adnr">&nbsp;&nbsp;&nbsp;&nbsp;此时需要修复重定位表，如果重定位表在壳的代码中修复，此时需要分析壳代码才能恢复重定位表，</a>
+</h3>
+<h3 class="topic">
+<a name="5dfrcajcmu5ah7rjlogvt0v342">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;恢复重定位表后需要记录重定位表在dump文件中的rva，并使用lordpe将程序重定位表进行设置，才能使脱壳的dump文件支持重定位</a>
+</h3>
+<p class="topicImage">
+<img src="class62day0521_files/5h04udl715fji2571oo387lc79.png"></p>
+<h3 class="topic">
+<a name="2bo6jetlktvghnno28j0gqg2ha">&nbsp;&nbsp;&nbsp;&nbsp;如果不分析壳代码，需要为dump文件修复iat表并取消dump文件的随机加载基址，才能使dump程序运行</a>
+</h3>
+<h2 class="topic">
+<a name="5ss0ggamivk5a8k8n8cf5c7vel">脱壳其他程序</a>
+</h2>
+<h3 class="topic">
+<a name="6085nhlhe8q2l18eb3ddod9j04">&nbsp;概述</a>
+</h3>
+<h3 class="topic">
+<a name="2o5kejpvehb8sapfdu9c6j0uhu">&nbsp;&nbsp;主要壳类型</a>
+</h3>
+<h3 class="topic">
+<a name="1d86sbv22kssbscqkeagaaivtt">&nbsp;&nbsp;&nbsp;压缩壳</a>
+</h3>
+<h3 class="topic">
+<a name="3gukjj64uo7pg6csn4lcuui2e7">&nbsp;&nbsp;&nbsp;&nbsp;压缩算法</a>
+</h3>
+<h3 class="topic">
+<a name="3ubqhjan1ph75fj08nn3qih9um">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;有损压缩</a>
+</h3>
+<h3 class="topic">
+<a name="3p6j1ro5j0eiv79u8317vtjq8m">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;电影、图片</a>
+</h3>
+<h3 class="topic">
+<a name="4puqulgv0fq1n0bdfrbcifasi7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;无损压缩</a>
+</h3>
+<h3 class="topic">
+<a name="1u7u647ndavv4kckblqhbrpi2e">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;压缩壳</a>
+</h3>
+<h3 class="topic">
+<a name="28onqpompu4n6b1vnelodfnl5l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;原理：通过某种数据结构保存压缩数据，</a>
+</h3>
+<h3 class="topic">
+<a name="5amrauskp6l0eil40d1lcusavv">&nbsp;&nbsp;&nbsp;&nbsp;脱压缩壳一般不对压缩算法深入分析</a>
+</h3>
+<h3 class="topic">
+<a name="56jpe83ruftm4kr636i8gmin22">&nbsp;&nbsp;&nbsp;加密壳</a>
+</h3>
+<h3 class="topic">
+<a name="1mi7cq7qlpltgls98eferd9rle">&nbsp;&nbsp;&nbsp;&nbsp;将pe问文件中的数据进行加密，并在策程序运行时载进行解密</a>
+</h3>
+<h3 class="topic">
+<a name="6krcia90iclud50s4lkjtv056h">&nbsp;壳代码的基本流程</a>
+</h3>
+<h3 class="topic">
+<a name="3l78vu5k4snu5o816kuq3nb4a3">&nbsp;&nbsp;①&nbsp;保存寄存器环境&nbsp;&nbsp; ②&nbsp;加载一些必要的API&nbsp;&nbsp; ③&nbsp;解密代码和数据&nbsp;&nbsp; ④&nbsp;修复重定位&nbsp;&nbsp; ⑤&nbsp;填充IAT&nbsp;&nbsp; ⑥&nbsp;恢复寄存器环境</a>
+</h3>
+<h3 class="topic">
+<a name="124kctth0h5k7h512uff22494o">&nbsp;对于未加壳的程序，修复程序中重定位以及填充程序iat的操作由系统提供（具体而言是系统的加载器），不需要程序自身修复重定位以及填充iat</a>
+</h3>
+<h3 class="topic">
+<a name="08trnvkt1rvt06nbncf3a11th5">&nbsp;&nbsp;壳代码中之所以需要修复重定位表以及填充iat，壳将程序的代码和数据区段均进行加密，系统修复重定位和填充iat的操作发生在程序自己的代码执行之前，此时数据和代码仍处于加密状态，系统无法给程序提供修复重定位和填充iat的操作，所以在程序自己的代码运行起之后，先运行壳代码，即解密数据，之后需要完成重定位表的修复和iat的填充，再运行程序程序，才能使程序正常运行</a>
+</h3>
+<h3 class="topic">
+<a name="0kcepgd1orrvdj9pjjqg18sk3s">&nbsp;脱壳asp</a>
+</h3>
+<h3 class="topic">
+<a name="34f1q93leaoddtd89pccq8bl53">&nbsp;&nbsp;有随机基址的程序，dump时程序加载基址和oep地址不能使用pe默认值，需要参考本次程序运行的加载基址</a>
+</h3>
+<h3 class="topic">
+<a name="45s2pkhec51994jsvp6pjummp3">&nbsp;&nbsp;修复iat和导入表</a>
+</h3>
+<h3 class="topic">
+<a name="020i94usbjv2qhvpnfok8a8uaj">&nbsp;&nbsp;&nbsp;使用imporrec</a>
+</h3>
+<h3 class="topic">
+<a name="6qpvq070t6tb8drrq1splk7nas">&nbsp;&nbsp;程序存在随机基址机制时，壳运行过程中会完成代码的重定位操作，从而保证程序正常运行，</a>
+</h3>
+<h3 class="topic">
+<a name="15578e02gfgca8np7b8okpqonh">&nbsp;&nbsp;&nbsp;因为dump文件中部分指令使用了虚拟地址，而dump文件中没有壳代码的运行，所以dump文件再次运行时此类指令中的地址么没有被重定位，会导致程序无法运行</a>
+</h3>
+<h3 class="topic">
+<a name="25ujosdo0f5k06fcfdhepo6vl5">&nbsp;&nbsp;&nbsp;&nbsp;此时需要修复重定位表，如果重定位表在壳的代码中修复，此时需要分析壳代码才能恢复重定位表，</a>
+</h3>
+<h3 class="topic">
+<a name="6imiqirj3efb1pfsaekmps0sem">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;恢复重定位表后需要记录重定位表在dump文件中的rva，并使用lordpe将程序重定位表进行设置，才能使脱壳的dump文件支持重定位</a>
+</h3>
+<p class="topicImage">
+<img src="class62day0521_files/6q1mqcqgviihhsf4ivi8q1h9ug.png"></p>
+<h3 class="topic">
+<a name="4kp1ah4ms01uj6mskn2e11ck17">&nbsp;&nbsp;&nbsp;&nbsp;如果不分析壳代码，需要为dump文件修复iat表并取消dump文件的随机加载机制，才能使dump程序运行</a>
+</h3>
+<h3 class="topic">
+<a name="1g80trs8e1k81k7almt3mg7fsa">&nbsp;&nbsp;壳代码分析</a>
+</h3>
+<h3 class="topic">
+<a name="554p67d6pl40im2bf72srihvfu">&nbsp;&nbsp;&nbsp;如果call一个地址，发现跳转的目的地址是一条指令的中间，可能存在花指令，可以将花指令的第一个字节置为nop，将花指令拆开，看到其中的真正代码</a>
+</h3>
+<h3 class="topic">
+<a name="33bj650rgks2rfhgj6iagcm6l2">&nbsp;&nbsp;&nbsp;&nbsp;花指令会干扰反汇编引擎反汇编，并且不执行</a>
+</h3>
+<h3 class="topic">
+<a name="3k0nh7psshsbb7dkqadmf74v3f">&nbsp;&nbsp;&nbsp;壳代码中的call指令不一定是函数调用</a>
+</h3>
+<h3 class="topic">
+<a name="5tujvhb17s90en6rpiq1jjlak4">&nbsp;&nbsp;&nbsp;&nbsp;因为call与 push jmp 等效，所以call指令可能被用于实现代码跳转执行，如果此时使用f8单步步过，程序可能会直接运行起来，不在被单步调试</a>
+</h3>
+<h3 class="topic">
+<a name="7t528talc8on13inen71ipc3jn">&nbsp;&nbsp;&nbsp;当一个地址的后三位为0时，要考虑该地址是不是一个基址</a>
+</h3>
+<h3 class="topic">
+<a name="1ng021qki2fs4vlapgd89sr8cr">&nbsp;&nbsp;&nbsp;&nbsp;模块基地址对壳代码用处很大，因为需要通过基地址加偏移进行pe文件的字段的访问</a>
+</h3>
+<h3 class="topic">
+<a name="08u4rhr7928226epleko2kkmvl">&nbsp;&nbsp;&nbsp;模块的句柄和模块基地址是一样的</a>
+</h3>
+<h3 class="topic">
+<a name="51l3mo53sgv8gttlm9i0u1pqhq">&nbsp;&nbsp;&nbsp;&nbsp;可使用GetModuleHandle获得模块基地址</a>
+</h3>
+<h3 class="topic">
+<a name="386pfg67mh4lu81lcjkmd1b3ef">&nbsp;&nbsp;&nbsp;壳代码中的代码和数据可能均放在新创建的区段中</a>
+</h3>
+<h3 class="topic">
+<a name="7u7cs6tq7p0saacm34798v46i2">&nbsp;&nbsp;&nbsp;&nbsp;代码中也可以数据，数据和代码可能都放在壳代码中</a>
+</h3>
+<h3 class="topic">
+<a name="6e82l0uh8cj78td3eknm9upkgt">&nbsp;&nbsp;&nbsp;&nbsp;故壳代码中变量访问可能略显诡异</a>
+</h3>
+<h2 class="topic">
+<a name="0q3ejs14an8qeck2nkns82adcs">其他</a>
+</h2>
+<h3 class="topic">
+<a name="30ovjgvpvnoeosbirv65jg6qmr">&nbsp;读汇编流程</a>
+</h3>
+<h3 class="topic">
+<a name="2hg0qrb9ut5m0jkiofjespp64k">&nbsp;&nbsp;看懂汇编指令</a>
+</h3>
+<h3 class="topic">
+<a name="0h6ep3mci6alf15va7mehoqq4t">&nbsp;&nbsp;看懂汇编操作的数据</a>
+</h3>
+<h3 class="topic">
+<a name="6spgm7llg2deuk5smut8t2605t">&nbsp;&nbsp;看会汇编指令的意义</a>
+</h3>
+<h3 class="topic">
+<a name="5d6567csvci2b1b6cmeoavrleq">&nbsp;lordpe，对具体区段右键，可以查看该区段的属性，可以通过勾选，修改区段的属性</a>
+</h3>
+<h3 class="topic">
+<a name="1i6e6b3jcqr2tsj4coklkqkc6u">&nbsp;脱壳重要的数据目录表</a>
+</h3>
+<h3 class="topic">
+<a name="268b2a8hqkhh0ajjj8qhtmeekl">&nbsp;&nbsp;导入表</a>
+</h3>
+<h3 class="topic">
+<a name="6gvg7vf8uccol5e231qeklcio0">&nbsp;&nbsp;&nbsp;最重要</a>
+</h3>
+<h3 class="topic">
+<a name="2sptl8uqmvv2rg8o3paf4ndrae">&nbsp;&nbsp;IAT表</a>
+</h3>
+<h3 class="topic">
+<a name="4rtkgohec8jdmrmmtjep21q697">&nbsp;&nbsp;&nbsp;通过导入表进行填充</a>
+</h3>
+<h3 class="topic">
+<a name="5t770rqkvu8dom3fv47msgkju0">&nbsp;&nbsp;重定位表</a>
+</h3>
+<h3 class="topic">
+<a name="17d83m0mmmj8ranq4i59abc64l">&nbsp;&nbsp;&nbsp;如果壳代码在修复程序中需要重定位的位置后，将重定位表加密或删除，就需要分析壳代码，以此恢复重定位表，这样dump文件才能支持随即基址，否则若想dump正常运行，需要关闭随机基址</a>
+</h3>
+<h3 class="topic">
+<a name="499jrpu8ps89203kaj5cbl05qo">&nbsp;导入表的结构体需要注意</a>
+</h3>
+<h3 class="topic">
+<a name="249690s91mmb40c1nlimpalbed">&nbsp;&nbsp;在文件中INT表内容与IAT表内容相同</a>
+</h3>
+<h3 class="topic">
+<a name="0sf62c4jvo6kcqn5fu0uic7m60">&nbsp;&nbsp;内存中IAT表存放导入函数的地址</a>
+</h3>
+<h3 class="topic">
+<a name="4uvut6mh6ajniqkep3e17tt3nd">&nbsp;跳转指令</a>
+</h3>
+<h3 class="topic">
+<a name="60mga2c7h07k5b1vole1ghcojj">&nbsp;&nbsp;e8</a>
+</h3>
+<h3 class="topic">
+<a name="3v07patnlsvkneqe4o2n12l41e">&nbsp;&nbsp;&nbsp;+offset</a>
+</h3>
+<h3 class="topic">
+<a name="71jho5cqu7hhbc2qlru57pf9n3">&nbsp;&nbsp;&nbsp;call</a>
+</h3>
+<h3 class="topic">
+<a name="35161pit6mfuc6rlicdrfgrp4k">&nbsp;&nbsp;e9</a>
+</h3>
+<h3 class="topic">
+<a name="5gk134vm8idt9c9h0sgj0fp6uu">&nbsp;&nbsp;&nbsp;+offset</a>
+</h3>
+<h3 class="topic">
+<a name="1897ftio4bin0f71nfdvo44ol8">&nbsp;&nbsp;&nbsp;jmp</a>
+</h3>
+<h3 class="topic">
+<a name="133jsof1hr7jfujui7rv0ear28">&nbsp;&nbsp;ff15</a>
+</h3>
+<h3 class="topic">
+<a name="2ht54iqrpatikhf5ijtmi208q2">&nbsp;&nbsp;&nbsp;+va</a>
+</h3>
+<h3 class="topic">
+<a name="7hc81mip54b76gabi9k6dgpfnb">&nbsp;&nbsp;&nbsp;call</a>
+</h3>
+<h3 class="topic">
+<a name="3m89a3714l2mivtchhvlplns6t">&nbsp;&nbsp;ff25</a>
+</h3>
+<h3 class="topic">
+<a name="3hrcpklv31c3119c9cnclk9crn">&nbsp;&nbsp;&nbsp;+va</a>
+</h3>
+<h3 class="topic">
+<a name="3qr85st1o9eeof6nobl28d1kp4">&nbsp;&nbsp;&nbsp;jmp</a>
+</h3>
+<h3 class="topic">
+<a name="3meppkbs21kprnd03it94b3ddo">&nbsp;&nbsp;e8（call） e9（jmp）形式，都是本程序调用自身函数或进行跳转</a>
+</h3>
+<h3 class="topic">
+<a name="0rssdqaboimi2fejr3vbn163gr">&nbsp;&nbsp;所有的iat相关的引用均会被翻译为ff15 ff25形式</a>
+</h3>
+<h3 class="topic">
+<a name="7oq3u40m0kqtafskc584v82hag">&nbsp;&nbsp;&nbsp;即所有的导入函数的调用</a>
+</h3>
+<h3 class="topic">
+<a name="6f7kdm3ceph7ctpom47i4rsuqt">&nbsp;&nbsp;ff15 或ff25形式的调用 ，是访问iat数组中的地址</a>
+</h3>
+<h3 class="topic">
+<a name="6s3cucjo9uiou9rqopn6dldp6i">&nbsp;&nbsp;ff15为call，被调用的函数常为api</a>
+</h3>
+<h3 class="topic">
+<a name="6qqtmhtokmjbfflq2ef19jlhvp">&nbsp;&nbsp;&nbsp;多见于vs系列的编译环境</a>
+</h3>
+<h3 class="topic">
+<a name="0su2f8imdk2v1d953t5e4v8lv2">&nbsp;&nbsp;ff25为jmp jmp操作数是一个函数的地址</a>
+</h3>
+<h3 class="topic">
+<a name="6aa8a9v2k8rc80ub38papqavmb">&nbsp;&nbsp;&nbsp;多见于宝蓝公司的编译环境、汇编语言的编译环境</a>
+</h3>
+<h3 class="topic">
+<a name="6h85d0gin8hjsfr8mrn4t6ghkb">&nbsp;汇编指令混淆</a>
+</h3>
+<h3 class="topic">
+<a name="262ic6lturg1ep8u7kv9dl38as">&nbsp;&nbsp;原理：：汇编指令等价替换</a>
+</h3>
+<h3 class="topic">
+<a name="66tspfvou58fnsp02emc9mnv8o">&nbsp;&nbsp;&nbsp;call</a>
+</h3>
+<h3 class="topic">
+<a name="5de44n94h65d7o8e8ae7mdiic1">&nbsp;&nbsp;&nbsp;&nbsp;push jmp</a>
+</h3>
+<h3 class="topic">
+<a name="4l0iavhvqemqksf8a7hkgd9u39">&nbsp;&nbsp;&nbsp;push</a>
+</h3>
+<h3 class="topic">
+<a name="34r54po7cb7v3mgn3p8sscha5r">&nbsp;&nbsp;&nbsp;&nbsp;sub esp,0x4  mov [esp],401500</a>
+</h3>
+<h3 class="topic">
+<a name="2if3h0vsbv54tofuqr94vjaj8s">&nbsp;&nbsp;&nbsp;sub esp,0x4</a>
+</h3>
+<h3 class="topic">
+<a name="7gi4h2mk0dkle7h3dolgtcod8m">&nbsp;&nbsp;&nbsp;&nbsp;dec esp</a>
+</h3>
+<h3 class="topic">
+<a name="1il03n8i4npf7jbe37d0hst5lk">&nbsp;&nbsp;&nbsp;&nbsp;dec esp</a>
+</h3>
+<h3 class="topic">
+<a name="6rd9hb3vi64fdujru9hhbf0196">&nbsp;&nbsp;&nbsp;&nbsp;dec esp</a>
+</h3>
+<h3 class="topic">
+<a name="602p7dv13n1lc0rqd7djf9ntfp">&nbsp;&nbsp;&nbsp;&nbsp;dec esp</a>
+</h3>
+<h3 class="topic">
+<a name="16hv1kmfuj24dk9vic5voe8fof">&nbsp;&nbsp;将原本的指令混淆膨胀，拖延逆向分析的时间</a>
+</h3>
+<h3 class="topic">
+<a name="3jd18iom3e6cqait2kf5jjab7k">&nbsp;所有的vs程序，.rdata区段开头保存的是iat表，od中程序一旦加载，数据窗口默认先显示iat信息，即内存中函数地址，</a>
+</h3>
+<h3 class="topic">
+<a name="46bincp4dktvn807ejl49ojv5c">&nbsp;&nbsp;如果在数据窗口中看到大量连续的导入函数的地址，说明此内存空间为保存iat表</a>
+</h3>
+<h3 class="topic">
+<a name="1m0fkt7u3orgrmkar7inb2jrj8">&nbsp;ImportRES不能识别处全部导入模块及其导入函数（fsg壳的坑）</a>
+</h3>
+<h3 class="topic">
+<a name="7hp7rtptr1thnsn6o44rv2d230">&nbsp;&nbsp;fsg壳中将不同模块的iat之间使用ffffffff隔开（正常是00000000），导致工具分析导入表不能识别全部iat，在内存中将f手动改为0，再使用工具识别</a>
+</h3>
+<h3 class="topic">
+<a name="37hu1utkueulrsncveimnt73t1">&nbsp;&nbsp;识别出内存中iat表后，可以在ImportRES指定oep、iat的rva 、iat的size，放弃自动查找，直接获取输入表，然后将无效的项目删除，得到完整iat</a>
+</h3>
+<h3 class="topic">
+<a name="6ldajg8bum2m3omr2q6tgdo7of">&nbsp;&nbsp;1处为ffffffff将两个模块中的iat隔开&#13;
+如果已知2、3可以修改后直接选择获取输入表，删除无效函数，得到完整iat</a>
+</h3>
+<p class="topicImage">
+<img src="class62day0521_files/2ihuisuvcs5d888pia19nura5o.png"></p>
+<h3 class="topic">
+<a name="4kvul6f437b5hal1vmfn5gl9lu">&nbsp;执行到光标所在位置 ：f4</a>
+</h3>
+<h3 class="topic">
+<a name="2p8p56n30jvdbt4t77vdm4t6m3">&nbsp;程序特征</a>
+</h3>
+<h3 class="topic">
+<a name="3ucvfeftm78rc938s9c71r4ips">&nbsp;&nbsp;vc6.0&amp;易语言</a>
+</h3>
+<h3 class="topic">
+<a name="5ep2o4hno91d6bu6flkkmtn1hb">&nbsp;&nbsp;&nbsp;易语言底层通过vc6编译链接，两者的程序入口点特征相同</a>
+</h3>
+<h3 class="topic">
+<a name="5l0umib7dhj33ag4444piilhtb">&nbsp;&nbsp;&nbsp;平衡堆栈一般是sub esp,0x58</a>
+</h3>
+<h3 class="topic">
+<a name="3hqd00vp7vn0o5jt57ncdehpev">&nbsp;&nbsp;&nbsp;链接器版本</a>
+</h3>
+<h3 class="topic">
+<a name="2ngaotag9nujgp71vofo34fmbk">&nbsp;&nbsp;&nbsp;&nbsp;6.0</a>
+</h3>
+<h3 class="topic">
+<a name="7mlci24ruf3t5l0io595b3oudi">&nbsp;&nbsp;&nbsp;区段名称</a>
+</h3>
+<h3 class="topic">
+<a name="5g5ijh0lbnjh587rf1eqp0eln2">&nbsp;&nbsp;&nbsp;&nbsp;没有重定位区段</a>
+</h3>
+<h3 class="topic">
+<a name="6p8p5om3530kkcj1td2ovk90c3">&nbsp;&nbsp;&nbsp;&nbsp;区段划分一般只有四个区段，区段划分不够精细</a>
+</h3>
+<h3 class="topic">
+<a name="3oe9kha26rtam2rg9tfoojga4d">&nbsp;&nbsp;&nbsp;&nbsp;rdata区段一开始保存的是iat，od中程序一旦加载，数据窗口显示iati信息</a>
+</h3>
+<h3 class="topic">
+<a name="758cd7at9th29do228acfb0r05">&nbsp;&nbsp;&nbsp;iat调用</a>
+</h3>
+<h3 class="topic">
+<a name="0h5i6172pm1o98jevee3g17sid">&nbsp;&nbsp;&nbsp;&nbsp;ff15</a>
+</h3>
+<h3 class="topic">
+<a name="1d8ksdvd6suokd0996vrvsrlhg">&nbsp;&nbsp;&nbsp;&nbsp;第一个api调用时GetVersion</a>
+</h3>
+<h3 class="topic">
+<a name="5mil79n9iksk1qgegs22j8odbj">&nbsp;&nbsp;宝蓝c++</a>
+</h3>
+<h3 class="topic">
+<a name="3b52dl0c4ai32s6hnlduj5kvrl">&nbsp;&nbsp;&nbsp;入口点</a>
+</h3>
+<h3 class="topic">
+<a name="7pvqtr1ie9290k5osmo7ns5ju9">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class62day0521_files/613ute8ri1gmmp3j38f5pggk4b.png"></p>
+<h3 class="topic">
+<a name="0rgbt16ft4j5i4c52e7qic2fp7">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class62day0521_files/2d3inecao240s2kv29ohf95kah.png"></p>
+<h3 class="topic">
+<a name="48quura6k71sqd2hp12jsn7ddh">&nbsp;&nbsp;&nbsp;链接器</a>
+</h3>
+<h3 class="topic">
+<a name="6bme99d5ajdbpstpur4be49ipr">&nbsp;&nbsp;&nbsp;&nbsp;5.0</a>
+</h3>
+<h3 class="topic">
+<a name="3iscqim0jp2ssmgib9ehe7tutu">&nbsp;&nbsp;&nbsp;区段名称</a>
+</h3>
+<h3 class="topic">
+<a name="4rodi7iknv414ksu05ot7nv815">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class62day0521_files/3n8ndspni1ca8osd00sqh3r87u.png"></p>
+<h3 class="topic">
+<a name="6c7dujdei2ff7povm4poh50bln">&nbsp;&nbsp;&nbsp;iat调用</a>
+</h3>
+<h3 class="topic">
+<a name="1l0va5gd4kpordp93o3n9udur7">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class62day0521_files/59p2v0himb68mhek4qmasv7jtq.png"></p>
+<h3 class="topic">
+<a name="5vpfjip8u9irsf9iv0mf6eec2k">&nbsp;&nbsp;宝蓝Delphi7</a>
+</h3>
+<h3 class="topic">
+<a name="7kjrekk160lj5ene4n7mc6cblf">&nbsp;&nbsp;&nbsp;入口点</a>
+</h3>
+<h3 class="topic">
+<a name="3n2k32j2nmjh3pjrf5fpb8v0of">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class62day0521_files/7m4t00oq21c73e1gjsntdd2k1i.png"></p>
+<h3 class="topic">
+<a name="4to8ecqdu513bul1e2g6dqudre">&nbsp;&nbsp;&nbsp;&nbsp;1中会调用GetModuleHandleA函数</a>
+</h3>
+<p class="relationships">参见: <a href="#3crtcd7mt0hdj92m7qbic240ff"></a>
+</p>
+<h3 class="topic">
+<a name="2t873k1j0bjau62ruvahiq4lsb">&nbsp;&nbsp;&nbsp;链接器</a>
+</h3>
+<h3 class="topic">
+<a name="3hmek2r7aovmcgjv0uejbn8jt3">&nbsp;&nbsp;&nbsp;&nbsp;2.25</a>
+</h3>
+<h3 class="topic">
+<a name="4vnah57mm4j830t0d688j7aahg">&nbsp;&nbsp;&nbsp;区段名称</a>
+</h3>
+<h3 class="topic">
+<a name="42chpoihao7b4pecku51uhc9t0">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class62day0521_files/29nq9h05asoiv3cs6uqd28i63g.png"></p>
+<h3 class="topic">
+<a name="002sdv6ea098aj86u1j5ilbt9n">&nbsp;&nbsp;&nbsp;iat调用</a>
+</h3>
+<h3 class="topic">
+<a name="3crtcd7mt0hdj92m7qbic240ff">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class62day0521_files/2a54ojahfc45ecaecb5413o2be.png"></p>
+<p class="relationships">参见: <a href="#4to8ecqdu513bul1e2g6dqudre">1中会调用GetModuleHandleA函数</a>
+</p>
+<h3 class="topic">
+<a name="4443qplfn260sk04d6rtkabnng">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class62day0521_files/4lpgv8rpcthj09rj7h3t99udjg.png"></p>
+<h3 class="topic">
+<a name="0itg3cfkb28hniq4p34nn4acbc">&nbsp;&nbsp;MASM汇编</a>
+</h3>
+<h3 class="topic">
+<a name="5sf06f9sbh0r116n6d078b41vm">&nbsp;&nbsp;&nbsp;入口点</a>
+</h3>
+<h3 class="topic">
+<a name="2577nfpei6b2lasv8120f2um3m">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class62day0521_files/3blcut7jtdonu74thvcvdvqcgo.png"></p>
+<h3 class="topic">
+<a name="5kd5nk787jmblim0fu1aauelr2">&nbsp;&nbsp;&nbsp;&nbsp;直接了当</a>
+</h3>
+<h3 class="topic">
+<a name="02jbvb1uq5el0ac73uk7eiasls">&nbsp;&nbsp;&nbsp;链接器</a>
+</h3>
+<h3 class="topic">
+<a name="1oh09npqm8iep6uat8knu0eifb">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class62day0521_files/1rklhkjs3trgn7oi8u08uf0kkc.png"></p>
+<h3 class="topic">
+<a name="1lohmdu6h793l8vk8m6el59e2t">&nbsp;&nbsp;&nbsp;区段名</a>
+</h3>
+<h3 class="topic">
+<a name="33vtacver9blt3iboo2snrstmh">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class62day0521_files/0b6fnfa7aogqu1dej4k3ni6mcd.png"></p>
+<h3 class="topic">
+<a name="4l7jukehf04n0a7grltarbt4lg">&nbsp;&nbsp;&nbsp;iat调用</a>
+</h3>
+<h3 class="topic">
+<a name="4sb04d8ldp0h2vem2pmtrq3knt">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class62day0521_files/453bplgftcq9otpqj6p9pmmvnc.png"></p>
+<h3 class="topic">
+<a name="1n6agb6at22i1dpecq52dhdqhi">&nbsp;&nbsp;&nbsp;&nbsp;ff15</a>
+</h3>
+<h3 class="topic">
+<a name="75jktnkjfmlinvaqq4efg87k0q">&nbsp;&nbsp;x86汇编</a>
+</h3>
+<h3 class="topic">
+<a name="2dtf4eo0o38bhjfiesg3aemt6d">&nbsp;&nbsp;&nbsp;入口点</a>
+</h3>
+<h3 class="topic">
+<a name="515q0ckjohu6ao69936emkinr1">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class62day0521_files/66il1r26onedaugb6fkkeeotdi.png"></p>
+<h3 class="topic">
+<a name="2gjgj1gsss0iur72fbtc0mnrvo">&nbsp;&nbsp;&nbsp;链接器</a>
+</h3>
+<h3 class="topic">
+<a name="2sd35f9cvlere3v2mussgb7865">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class62day0521_files/5et958sp72l0c3l9kv4m8pd01u.png"></p>
+<h3 class="topic">
+<a name="6pfoaos4eqc0gg7jtfr70alqch">&nbsp;&nbsp;&nbsp;区段名</a>
+</h3>
+<h3 class="topic">
+<a name="7bfl00r7o37hhltva7b5ka0ckm">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class62day0521_files/1iurbe5hdrp8jl46ck1adtl6hr.png"></p>
+<h3 class="topic">
+<a name="1dqiqr3kovq3btl1k81i2bf5gf">&nbsp;&nbsp;&nbsp;iat调用</a>
+</h3>
+<h3 class="topic">
+<a name="4r94t3theh179mdobv545oprt7">&nbsp;&nbsp;&nbsp;&nbsp;ff15</a>
+</h3>
+<h3 class="topic">
+<a name="6blkrbtcni3gdnp9jn1du7fvnf">&nbsp;&nbsp;vs2008debug</a>
+</h3>
+<h3 class="topic">
+<a name="40s6iq7o5hb5n8jl7b6m7a2n85">&nbsp;&nbsp;&nbsp;入口点</a>
+</h3>
+<h3 class="topic">
+<a name="572t4tq86sos14p8iij3soee1q">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class62day0521_files/0bbekrbetlfg2b382nasoi9dvo.png"></p>
+<h3 class="topic">
+<a name="3ol0lv1v544vs418d3g7siq5gt">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class62day0521_files/2ucujhokr4qlogju873oiam3vs.png"></p>
+<h3 class="topic">
+<a name="6luh8i2jeuhus8rsojhi4q33i5">&nbsp;&nbsp;&nbsp;&nbsp;安全cookie下一个函数中第一个被调用的api</a>
+</h3>
+<p class="topicImage">
+<img src="class62day0521_files/44db6br5dplsp6gmip5q6d459h.png"></p>
+<h3 class="topic">
+<a name="4sfrs0igfvgsu5fh6jhmu3lh2p">&nbsp;&nbsp;&nbsp;链接器</a>
+</h3>
+<h3 class="topic">
+<a name="6bt2ta777roo5rdv8oi9qeqela">&nbsp;&nbsp;&nbsp;&nbsp;9</a>
+</h3>
+<h3 class="topic">
+<a name="23b5flj3uet63u0nnvumlvc3cn">&nbsp;&nbsp;&nbsp;区段名</a>
+</h3>
+<h3 class="topic">
+<a name="5fgvr510fpr1m39h1ecmc18rg0">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class62day0521_files/6ufr4hi9nt54e508nakhatbacg.png"></p>
+<h3 class="topic">
+<a name="448e35aktvolf4ljgjrnl27jqu">&nbsp;&nbsp;&nbsp;iat调用</a>
+</h3>
+<h3 class="topic">
+<a name="2afiohq0kbr8vduv0dn5bgmvk5">&nbsp;&nbsp;&nbsp;&nbsp;ff15(call)</a>
+</h3>
+<h3 class="topic">
+<a name="1kt4b4au18ok823qhhcl98catt">&nbsp;&nbsp;vs2008relsase</a>
+</h3>
+<h3 class="topic">
+<a name="0e0jb10eo8p9ba790sdidiatit">&nbsp;&nbsp;&nbsp;入口点</a>
+</h3>
+<h3 class="topic">
+<a name="3aeduql6v8mtig0m2rft8b4pbh">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class62day0521_files/70ij2qd56497fbdg0rsrnh12m8.png"></p>
+<h3 class="topic">
+<a name="70d86itf7gej8el9q6gferdp14">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class62day0521_files/35b50cmfsmne8i6ksi9va7angp.png"></p>
+<h3 class="topic">
+<a name="651ko1qdeap5e9aribkshcn9ub">&nbsp;&nbsp;&nbsp;链接器</a>
+</h3>
+<h3 class="topic">
+<a name="1hp9gpq5tdf9721spebqd80e5r">&nbsp;&nbsp;&nbsp;&nbsp;9</a>
+</h3>
+<h3 class="topic">
+<a name="7b225sptj2vk6h3k61dp9dsctd">&nbsp;&nbsp;&nbsp;区段名</a>
+</h3>
+<h3 class="topic">
+<a name="4jcpak8q227lq6dgidjtlncb82">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class62day0521_files/6dhjo86g6rllc403m1lsl3vprg.png"></p>
+<h3 class="topic">
+<a name="6q9orbof7a54sjl9m6djghf04k">&nbsp;&nbsp;&nbsp;iat调用</a>
+</h3>
+<h3 class="topic">
+<a name="7i49t48a6rh55fo3oi9b8cljou">&nbsp;&nbsp;&nbsp;&nbsp;ff15</a>
+</h3>
+<p class="topicImage">
+<img src="class62day0521_files/1pnhj9lt32mr9cdknmdqo6hbgj.png"></p>
+<h3 class="topic">
+<a name="6r0b4a3ck9a8o98kje3gpuqrlo">&nbsp;&nbsp;vs2013debug</a>
+</h3>
+<h3 class="topic">
+<a name="2v7ac3aaf34uqbuq3qd4nhdrpv">&nbsp;&nbsp;&nbsp;入口点</a>
+</h3>
+<h3 class="topic">
+<a name="25dnd2ce07qssf0kplga2527o2">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class62day0521_files/7b239v6hsho4of38v6sodqo4c4.png"></p>
+<h3 class="topic">
+<a name="75dv4cqtn10qdkfrrv7gltbnhi">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class62day0521_files/2ofbd9frqbvfg779csdea3klgb.png"></p>
+<h3 class="topic">
+<a name="7npaftalaadq8g16vs1r0tes4t">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class62day0521_files/2eknd3ur6f024j22cq5pra6f3n.png"></p>
+<h3 class="topic">
+<a name="486k8alibmtr1fu7q5lvakmo8p">&nbsp;&nbsp;&nbsp;链接器</a>
+</h3>
+<h3 class="topic">
+<a name="267mbmmsbs6612e3p0nc8sjjjk">&nbsp;&nbsp;&nbsp;&nbsp;12.00</a>
+</h3>
+<h3 class="topic">
+<a name="2cpdp5jfhnbiln9iilcoj7s1vi">&nbsp;&nbsp;&nbsp;区段名</a>
+</h3>
+<h3 class="topic">
+<a name="22kldoqihtmeuh2u6ki5rr6r0m">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class62day0521_files/5qmus36gdtki1vhj8a7l2e1k5u.png"></p>
+<h3 class="topic">
+<a name="3vcasjhph1j9f7ko5b468jigcn">&nbsp;&nbsp;&nbsp;iat调用</a>
+</h3>
+<h3 class="topic">
+<a name="6ck790o61at8bhdl7tgajv60lk">&nbsp;&nbsp;&nbsp;&nbsp;ff15</a>
+</h3>
+<p class="topicImage">
+<img src="class62day0521_files/192aqlcutrjt0m1m7g1aetbhsi.png"></p>
+<h3 class="topic">
+<a name="32hccob409opj1kv00v0es1jnc">&nbsp;&nbsp;vs2013release</a>
+</h3>
+<h3 class="topic">
+<a name="1rkf1dmeuei65ljelc84sebh46">&nbsp;&nbsp;&nbsp;入口点</a>
+</h3>
+<h3 class="topic">
+<a name="5t1s9ncn46ebrq2a6j8ifkkoum">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class62day0521_files/7g9ia63hvd1tsmvbf3sn9m2rha.png"></p>
+<h3 class="topic">
+<a name="01ljm2n6lie3c7cl7ovc8drmse">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class62day0521_files/6gnfcrvb3b709a3uuv3lvei10c.png"></p>
+<h3 class="topic">
+<a name="2ecpmfvs5liqd47tif0jgu12oi">&nbsp;&nbsp;&nbsp;链接器</a>
+</h3>
+<h3 class="topic">
+<a name="3cd1oph8mujgofduhlv09arot9">&nbsp;&nbsp;&nbsp;&nbsp;12.00</a>
+</h3>
+<h3 class="topic">
+<a name="0l4gn91k08rb6ua194dsp10e97">&nbsp;&nbsp;&nbsp;区段名</a>
+</h3>
+<h3 class="topic">
+<a name="0p56h2s5bciil4jmarmuif7hl1">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class62day0521_files/747adv2b245iir4knrirqouetf.png"></p>
+<h3 class="topic">
+<a name="6bj7s01gj96u10qk2imjidss6t">&nbsp;&nbsp;&nbsp;iat调用</a>
+</h3>
+<h3 class="topic">
+<a name="20cmi8jv80cm7ol7488j30lp4i">&nbsp;&nbsp;&nbsp;&nbsp;ff15</a>
+</h3>
+<h3 class="topic">
+<a name="2nvr652fro4me8t89c080l99m3">&nbsp;&nbsp;vc6.0debug</a>
+</h3>
+<h3 class="topic">
+<a name="6i6neufn53nkkeck9dqvp2glf9">&nbsp;&nbsp;&nbsp;入口点</a>
+</h3>
+<h3 class="topic">
+<a name="1qk0ile62hok19l0d2psnpa9p9">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class62day0521_files/440io7h0let4irg16t0mlc9v87.png"></p>
+<h3 class="topic">
+<a name="1uom6vhkq437evdc8gtjtdeusv">&nbsp;&nbsp;&nbsp;链接器</a>
+</h3>
+<h3 class="topic">
+<a name="087t235t26j9v016nlbn1lrqkb">&nbsp;&nbsp;&nbsp;&nbsp;6.00</a>
+</h3>
+<h3 class="topic">
+<a name="0geq3c2anvm7nekiqce39vsfek">&nbsp;&nbsp;&nbsp;区段名</a>
+</h3>
+<h3 class="topic">
+<a name="01o112aq2ofl0ghvr7pctstuja">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class62day0521_files/7cllqv4v4ilil3aoq4emerlfnv.png"></p>
+<h3 class="topic">
+<a name="31ddlg1jqact0fedlh9r17mn9i">&nbsp;&nbsp;&nbsp;iat调用</a>
+</h3>
+<h3 class="topic">
+<a name="6qutgfr7phb145b9r1o38l5k0k">&nbsp;&nbsp;&nbsp;&nbsp;ff15</a>
+</h3>
+<h3 class="topic">
+<a name="00g27shtflmaiftem4oufgomn4">&nbsp;&nbsp;vc6.0release</a>
+</h3>
+<h3 class="topic">
+<a name="21pkv1ohotsfld65sk4eb3ihap">&nbsp;&nbsp;&nbsp;入口点</a>
+</h3>
+<h3 class="topic">
+<a name="0fn4gdgs873lf96s9lmtggo40t">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class62day0521_files/2euuptlatcsafj9epcsh9esaik.png"></p>
+<h3 class="topic">
+<a name="3tcs5jpjh2l2i6pk2k9ut2ji9f">&nbsp;&nbsp;&nbsp;链接器</a>
+</h3>
+<h3 class="topic">
+<a name="02iivt23pcasgkro4f05lc8snn">&nbsp;&nbsp;&nbsp;&nbsp;6.00</a>
+</h3>
+<h3 class="topic">
+<a name="0r0hue6p2fmqpthkgkf4ud5k9g">&nbsp;&nbsp;&nbsp;区段名</a>
+</h3>
+<h3 class="topic">
+<a name="20o2d26qcrf6u90njqjm0l8mml">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class62day0521_files/2b46o5v4ilfjcumb2c798cdq3g.png"></p>
+<h3 class="topic">
+<a name="30bvbvf6kv4qs6d0n1iaueedac">&nbsp;&nbsp;&nbsp;iat调用</a>
+</h3>
+<h3 class="topic">
+<a name="23fce8c7lg345ufk5t7fjb7gm5">&nbsp;&nbsp;&nbsp;&nbsp;ff15</a>
+</h3>
+<h3 class="topic">
+<a name="02h35gufiuqvic4464sfu0nkhu">&nbsp;&nbsp;vb5</a>
+</h3>
+<h3 class="topic">
+<a name="011r9h7mj67lmot33bujfs6n20">&nbsp;&nbsp;&nbsp;入口点</a>
+</h3>
+<h3 class="topic">
+<a name="6fk46gol1clq4uegh7vj0rjlqb">&nbsp;&nbsp;&nbsp;链接器</a>
+</h3>
+<h3 class="topic">
+<a name="4o0204ko94eo9qhtjbbcsbv8f1">&nbsp;&nbsp;&nbsp;区段名</a>
+</h3>
+<h3 class="topic">
+<a name="6u1qb0md5ltp5ca2nv43s4ppd4">&nbsp;&nbsp;&nbsp;iat调用</a>
+</h3>
+<h3 class="topic">
+<a name="50b1uf4011i3ke1elhe8houq1i">&nbsp;&nbsp;&nbsp;却上相关dll，特征暂缺</a>
+</h3>
+<h3 class="topic">
+<a name="7cffld0n338ni63ajqdsq5chv9">&nbsp;&nbsp;vb6</a>
+</h3>
+<h3 class="topic">
+<a name="5el4c9rfrq7fcabomr0pef1ugl">&nbsp;&nbsp;&nbsp;入口点</a>
+</h3>
+<h3 class="topic">
+<a name="31736u4tbu2r7vnvghl7qabf4j">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class62day0521_files/7lb4l5dav1jujodlm6rke550gq.png"></p>
+<h3 class="topic">
+<a name="0uu6qn9jeu85l12im1l6kl6j7u">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class62day0521_files/0edhiqs2dt7int64fip7kqcgfq.png"></p>
+<h3 class="topic">
+<a name="6b2dc37ja70msfdo88lkltl9em">&nbsp;&nbsp;&nbsp;链接器</a>
+</h3>
+<h3 class="topic">
+<a name="6mfatdqrs96e7khudtvlg75t91">&nbsp;&nbsp;&nbsp;&nbsp;6.00</a>
+</h3>
+<h3 class="topic">
+<a name="3ir5gp3e900pmppgcmeaptvncm">&nbsp;&nbsp;&nbsp;区段名</a>
+</h3>
+<h3 class="topic">
+<a name="0un9vq4200vvp2793cjec6ab90">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class62day0521_files/139a48srfbdhrh8ue04p3n3t8m.png"></p>
+<h3 class="topic">
+<a name="71lkak9376fgp760he90rj5i86">&nbsp;&nbsp;&nbsp;iat调用</a>
+</h3>
+<h3 class="topic">
+<a name="63l30bhr8f7abi378g1bgr09k7">&nbsp;&nbsp;&nbsp;&nbsp;ff25</a>
+</h3>
+<h3 class="topic">
+<a name="569g6om88jd18vnjopiranpqkv">&nbsp;&nbsp;vs2017debug</a>
+</h3>
+<h3 class="topic">
+<a name="46d9ak9laujm1hfvgub6rcgilq">&nbsp;&nbsp;&nbsp;入口点</a>
+</h3>
+<h3 class="topic">
+<a name="4bamgu88ngbp57ruflkdp28cpq">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class62day0521_files/68m7fmvb8nflqtvo1bsauuftc2.png"></p>
+<h3 class="topic">
+<a name="462pilunsqplfg3ljk71uqlm4t">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class62day0521_files/7bv6mpfmrnp3rhvokgcis1vl26.png"></p>
+<h3 class="topic">
+<a name="4p54v6d4qnjl0diolmat6firqq">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class62day0521_files/1lsso8o55pboi0ap7g0h73s7m2.png"></p>
+<h3 class="topic">
+<a name="1atjjck6ut20o68d172sk9sse7">&nbsp;&nbsp;&nbsp;链接器</a>
+</h3>
+<h3 class="topic">
+<a name="47s8kf1nd67c43lent71sh31vk">&nbsp;&nbsp;&nbsp;&nbsp;14.12</a>
+</h3>
+<h3 class="topic">
+<a name="4jsci84cidkruuipq8vj36dimj">&nbsp;&nbsp;&nbsp;区段名</a>
+</h3>
+<h3 class="topic">
+<a name="1fm5t16vbdm49751lm8c5nnr5t">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class62day0521_files/7fsprm780dle6b764m7l6aev1a.png"></p>
+<h3 class="topic">
+<a name="5v454t6blpp20p38mo8ekn73gk">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class62day0521_files/0plnm5m31gpedpkq82bc1l85ta.png"></p>
+<h3 class="topic">
+<a name="4ck0n5b2ccu4sbjgdfstrd0gg1">&nbsp;&nbsp;&nbsp;iat调用</a>
+</h3>
+<h3 class="topic">
+<a name="6jdlub3nahq0473j971uugkg4q">&nbsp;&nbsp;&nbsp;&nbsp;没有特明显的标志性api</a>
+</h3>
+<h3 class="topic">
+<a name="2bg0e4qder2u7cm3vhvt9iok3e">&nbsp;&nbsp;&nbsp;&nbsp;ff15</a>
+</h3>
+<h3 class="topic">
+<a name="2gbna0ivlo2prh0bpp2hvjcpe5">&nbsp;&nbsp;vs2017release</a>
+</h3>
+<h3 class="topic">
+<a name="59r6fimflbkbauk3r4idelfld0">&nbsp;&nbsp;&nbsp;入口点</a>
+</h3>
+<h3 class="topic">
+<a name="433i9icn0b7fn6ei7k47o8jj8s">&nbsp;&nbsp;&nbsp;&nbsp;1是初始化安全cookie的函数，第二个jmp是转到main函数</a>
+</h3>
+<p class="topicImage">
+<img src="class62day0521_files/61hvcp3hcureqs4cehp21bk2ta.png"></p>
+<h3 class="topic">
+<a name="4lvsep3ckaekcpqinij5ivppvh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1是main函数调用&#13;
+2中的几个函数分别用户获得main函数参数</a>
+</h3>
+<p class="topicImage">
+<img src="class62day0521_files/7ij6892h1qa7fjcs4feqqlt2jt.png"></p>
+<h3 class="topic">
+<a name="2knno6p2u5qteu31639f11g5n8">&nbsp;&nbsp;&nbsp;链接器</a>
+</h3>
+<h3 class="topic">
+<a name="1tgg948v3htjll3s6v60o63cjt">&nbsp;&nbsp;&nbsp;&nbsp;14.12</a>
+</h3>
+<h3 class="topic">
+<a name="05162amgve39icsvquqqhib19u">&nbsp;&nbsp;&nbsp;区段名</a>
+</h3>
+<h3 class="topic">
+<a name="5qps6pp2pdqcl5m71vsmtnrtdn">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class62day0521_files/47evdpp74r1til4k6m7p6fd0p7.png"></p>
+<h3 class="topic">
+<a name="2v9368khi9as21q0pvc4nm8ggl">&nbsp;&nbsp;&nbsp;iat调用</a>
+</h3>
+<h3 class="topic">
+<a name="6lnutfffv8t83km1v8uosjnn4e">&nbsp;&nbsp;&nbsp;&nbsp;ff15</a>
+</h3>
+<h3 class="topic">
+<a name="74q7hgnl17djp5633m133jpdgh">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class62day0521_files/6v95bcbiubfr62fekvoi3ucurv.png"></p>
+<h3 class="topic">
+<a name="436cmv3ebu5akt0pb3ukrq150b">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class62day0521_files/0g40oqjvv8g2bq49e0mtr0hjrc.png"></p>
+<h3 class="topic">
+<a name="276q9bbn8i19e6i0fl9tt8au2i">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class62day0521_files/785hkvambulic4ri440up21347.png"></p>
+<h3 class="topic">
+<a name="4smn86veqtm436afacgqqsmmeh">&nbsp;&nbsp;&nbsp;&nbsp;123是安全函数调用顺序，安全函数中第一个被调用的函数为 GetSystemTimeAsFileTime</a>
+</h3>
+<h3 class="topic">
+<a name="7t2ond9hgg5pmh26gd8smj0uag">&nbsp;&nbsp;易语言</a>
+</h3>
+<h3 class="topic">
+<a name="5i6vamlqosks5q0khc01ehtpkt">&nbsp;&nbsp;&nbsp;入口点</a>
+</h3>
+<h3 class="topic">
+<a name="0vhpir930kps8dcguo6749s8vr">&nbsp;&nbsp;&nbsp;链接器</a>
+</h3>
+<h3 class="topic">
+<a name="41btosip9fl935290jqiolhsp5">&nbsp;&nbsp;&nbsp;区段名</a>
+</h3>
+<h3 class="topic">
+<a name="7jn2f2j6gvcjsp3si286ejka7t">&nbsp;&nbsp;&nbsp;iat调用</a>
+</h3>
+<h3 class="topic">
+<a name="283geuqjur360fd94malquqc3p">&nbsp;&nbsp;&nbsp;与vc6.0release一样</a>
+</h3>
+<h2 class="topic">
+<a name="1nj354hdpqc2v7h66sr9stjd20">手动加壳</a>
+</h2>
+<h3 class="topic">
+<a name="2b8s7bko3oc21d9sesvlkqudn9">&nbsp;将oep设置为新区段的rva，程序执行时第一条执行的代码就是新区段的首地址出处的代码，此时新区段的首地址=程序加载基址+新区段rva</a>
+</h3>
+<h3 class="topic">
+<a name="6rt791kk99bmpjaq157v218549">&nbsp;&nbsp;在新区段的头部，可以使用jmp语句将执行流跳转回原来的oep位置继续执行，在od中写会汇编代码时，可以直接在jmp后面跟跳转的目的地址，od汇编引擎会将jmp的操作数转换为偏移，保存在汇编代码中</a>
+</h3>
+<h3 class="topic">
+<a name="6fq838m0h7inv831tg4vmaad9n">&nbsp;&nbsp;如果是在vs中写会汇编指令，因为vs中不存在反汇编引擎，故jmp指令的操作数必须是自己计算出来的偏移</a>
+</h3>
+<h3 class="topic">
+<a name="7sp9912c3auf520v5spes301c6">&nbsp;&nbsp;注意call指令的操作数也必须是偏移 ，在od中可以直接写call 函数首地址，不需要手动计算跳转偏移，汇编引擎会直接计算并写入汇编指令</a>
+</h3>
+<h3 class="topic">
+<a name="6bknbtknthboai22td5abcbj0c">&nbsp;&nbsp;od的汇编窗口中，如果跳转指令中使用到了va，则会有下划线标识，除此之外，跳转指令中的操作数均为偏移，不需要考虑重定位问题</a>
+</h3>
+<h3 class="topic">
+<a name="64j6m0laphg2i1983kke2olrfo">&nbsp;通过010editor修改程序是否随即基址（即扩展头中某字段为4081时，为随即基址，0081时，为默认基址）</a>
+</h3>
+<h3 class="topic">
+<a name="3089icu0bkf8c6mpciff3ugls9">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class62day0521_files/0bkhp1j5pitati1m60r0p1qa6a.png"></p>
+<h3 class="topic">
+<a name="6vfhkhkti56rgg1pv56jogppr2">&nbsp;4081：随机基址</a>
+</h3>
+<h3 class="topic">
+<a name="279u94slr2uum7uc4kl99ve81u">&nbsp;0081：默认基址</a>
+</h3>
+</body>
+</html>

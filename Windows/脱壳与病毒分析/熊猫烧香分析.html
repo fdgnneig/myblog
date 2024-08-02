@@ -1,0 +1,604 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>熊猫烧香分析</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="41emaub7o4d1q7f397ftui13uq">熊猫烧香分析</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="%E7%86%8A%E7%8C%AB%E7%83%A7%E9%A6%99%E5%88%86%E6%9E%90_files/images/%E7%86%8A%E7%8C%AB%E7%83%A7%E9%A6%99%E5%88%86%E6%9E%90.jpg"></div>
+<h2 class="topic">
+<a name="5ntrkbqli2sh6e135t2qttb1qn">火绒剑行为分析</a>
+</h2>
+<h3 class="topic">
+<a name="178au2854qfd517j5tot9p171i">&nbsp;进程监控</a>
+</h3>
+<h3 class="topic">
+<a name="5rsamrho3t98lk23r2qbjtqtf0">&nbsp;&nbsp;主进程、其他进程的创建和销毁</a>
+</h3>
+<h3 class="topic">
+<a name="56kuidosf2c21ia6fot3jchjo8">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%86%8A%E7%8C%AB%E7%83%A7%E9%A6%99%E5%88%86%E6%9E%90_files/5o7vie5suhgienig26uvkr50p9.png"></p>
+<h3 class="topic">
+<a name="7k0mils2n78jpamq4v9tgf2qgn">&nbsp;&nbsp;创建cmd进程用于关闭网络共享</a>
+</h3>
+<h3 class="topic">
+<a name="2v1du3o5nkh3md0kbhflmh1f6d">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%86%8A%E7%8C%AB%E7%83%A7%E9%A6%99%E5%88%86%E6%9E%90_files/0qd9cjje2qts0disqj787u0fia.png"></p>
+<h3 class="topic">
+<a name="5i6mobr5en552g7mab221qvkbr">&nbsp;文件监控</a>
+</h3>
+<h3 class="topic">
+<a name="5njiu9emm6eg799ar24nj5kv1r">&nbsp;&nbsp;文件创建与修改</a>
+</h3>
+<h3 class="topic">
+<a name="4b1s9f5vp1e13c6qnkh0fgvt3s">&nbsp;&nbsp;&nbsp;创建病毒样本spo0lsv.exe，并在多个目录上创建Desktop_.ini</a>
+</h3>
+<h3 class="topic">
+<a name="3rg3iamjm5a4uffultbntuef0k">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%86%8A%E7%8C%AB%E7%83%A7%E9%A6%99%E5%88%86%E6%9E%90_files/0j24er99lfrigj81ct2eccoh5p.png"></p>
+<h3 class="topic">
+<a name="5do1tphv2h044d4mdiug3is98q">&nbsp;&nbsp;&nbsp;c盘根目录创建setup.exe(与病毒样本大小一致，疑似副本) autorun.exe（根据010editor 内容为自动启动setup.exe）</a>
+</h3>
+<h3 class="topic">
+<a name="2bu06588h8out6uihrt8moorrn">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%86%8A%E7%8C%AB%E7%83%A7%E9%A6%99%E5%88%86%E6%9E%90_files/56pt9daip2c3vicbqi37ku9ght.png"></p>
+<h3 class="topic">
+<a name="460vo53jl29bj012olpptn29k3">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%86%8A%E7%8C%AB%E7%83%A7%E9%A6%99%E5%88%86%E6%9E%90_files/2k6mh7oagkdubal0topshld20f.png"></p>
+<h3 class="topic">
+<a name="0cmlkoltbbj4p490jr17j6fhr9">&nbsp;&nbsp;文件修改</a>
+</h3>
+<h3 class="topic">
+<a name="6uummq2shihtvrg21e2mbjs14t">&nbsp;&nbsp;&nbsp;通过文件修改将exe文件的图标改为熊猫烧香</a>
+</h3>
+<h3 class="topic">
+<a name="41r1h8v348erju1fvso8nfb35r">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%86%8A%E7%8C%AB%E7%83%A7%E9%A6%99%E5%88%86%E6%9E%90_files/0d6gi2v531be314d5e2m0p8v8i.png"></p>
+<h3 class="topic">
+<a name="7d1co1giirebkmh87ma042h1as">&nbsp;注册表监控</a>
+</h3>
+<h3 class="topic">
+<a name="147a7lo9jras8pl1meefbhvliq">&nbsp;&nbsp;创建注册表项后填充该注册表项</a>
+</h3>
+<h3 class="topic">
+<a name="75hqj7lemdjvj5iut7eddr2tbr">&nbsp;&nbsp;&nbsp;1</a>
+</h3>
+<h3 class="topic">
+<a name="52sajngbfi9n6a64k486jkkaj1">&nbsp;&nbsp;&nbsp;2</a>
+</h3>
+<h3 class="topic">
+<a name="4bk183vbimvbc01us2qshohavj">&nbsp;&nbsp;设置其他注册表项</a>
+</h3>
+<h3 class="topic">
+<a name="5dfiib7ueds2iti26uan2als3i">&nbsp;&nbsp;&nbsp;3</a>
+</h3>
+<h3 class="topic">
+<a name="1hud2ps2c73971nes1mtsdib1c">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%86%8A%E7%8C%AB%E7%83%A7%E9%A6%99%E5%88%86%E6%9E%90_files/6k2126cdan56oqvco90lou4pdf.png"></p>
+<h3 class="topic">
+<a name="2fac741kqv9nktqep207tl2lbn">&nbsp;进程监控</a>
+</h3>
+<h3 class="topic">
+<a name="54gvkr6qsq6tsgoeolcihv4e2g">&nbsp;&nbsp;枚举进程</a>
+</h3>
+<h3 class="topic">
+<a name="6qh8auqderjh53l0dcictf30ij">&nbsp;&nbsp;打开进程</a>
+</h3>
+<h3 class="topic">
+<a name="7qifuooq4vgtae06p5l7k599fc">&nbsp;&nbsp;执行进程</a>
+</h3>
+<h3 class="topic">
+<a name="2utjad4igpfein2mh8la927u3d">&nbsp;&nbsp;写入进程</a>
+</h3>
+<h3 class="topic">
+<a name="56sglu35govuevg49trrgmd1h9">&nbsp;&nbsp;恢复线程环境</a>
+</h3>
+<h3 class="topic">
+<a name="54ooeh0vu6i3qj2e8u0haor4ub">&nbsp;&nbsp;枚举进程</a>
+</h3>
+<h3 class="topic">
+<a name="1fluo53tusiou8720dvcgbqrlr">&nbsp;&nbsp;查找窗口</a>
+</h3>
+<h3 class="topic">
+<a name="1nm5s6kbkepcsip9crih8v2r9g">&nbsp;&nbsp;。。。</a>
+</h3>
+<h3 class="topic">
+<a name="1lpvhovcs1vg5cibeoknsh2obi">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%86%8A%E7%8C%AB%E7%83%A7%E9%A6%99%E5%88%86%E6%9E%90_files/0qirgp2m70rq8rqivbccqkb6s4.png"></p>
+<h3 class="topic">
+<a name="63vk79e6a3jp6njnh82oaifdha">&nbsp;高危行为监控</a>
+</h3>
+<h3 class="topic">
+<a name="68eb9ehilas1vgcm4nst4g9e0s">&nbsp;&nbsp;释放pe文件（样本文件spo0lsv.exe）</a>
+</h3>
+<h3 class="topic">
+<a name="6sh14dnv2felvitv4c2uhn710u">&nbsp;&nbsp;自我拷贝（样本文件spo0lsv.exe）</a>
+</h3>
+<h3 class="topic">
+<a name="2hg0v5t4uhavg38abnegpeormi">&nbsp;&nbsp;启动自释放文件（样本文件spo0lsv.exe）</a>
+</h3>
+<h3 class="topic">
+<a name="7549t57cp05onp6dp6gv01tfbq">&nbsp;&nbsp;释放隐藏文件（Desktop_.ini）</a>
+</h3>
+<h3 class="topic">
+<a name="70638cl9j66471fjii057456up">&nbsp;&nbsp;修改自启动项</a>
+</h3>
+<h3 class="topic">
+<a name="07gk85cbk9l6l48h4jh5jj56ro">&nbsp;&nbsp;&nbsp;spo0lsv.exe</a>
+</h3>
+<h3 class="topic">
+<a name="5pf1dlbm6oagep06oi9kv1kuh7">&nbsp;&nbsp;释放pe文件</a>
+</h3>
+<h3 class="topic">
+<a name="10mpjtg4o1d6v9kb30615gtdu9">&nbsp;&nbsp;&nbsp;setup.exe</a>
+</h3>
+<h3 class="topic">
+<a name="4co7fh2mt0es0mmpogokone7l6">&nbsp;&nbsp;自我复制</a>
+</h3>
+<h3 class="topic">
+<a name="65uanbjqoi5hqj7pfb46lgs6bc">&nbsp;&nbsp;&nbsp;setup.exe</a>
+</h3>
+<h3 class="topic">
+<a name="561c13d8qdsift237ss9uop3op">&nbsp;&nbsp;修改自启动</a>
+</h3>
+<h3 class="topic">
+<a name="5js9kieqbpblbev3ctjpknklq3">&nbsp;&nbsp;&nbsp;setup.exe</a>
+</h3>
+<h3 class="topic">
+<a name="5kufn123tja71hirvtin9aq29j">&nbsp;&nbsp;释放隐藏文件</a>
+</h3>
+<h3 class="topic">
+<a name="23uaket9609j8kv55kr50s8ovi">&nbsp;&nbsp;&nbsp;setup.exe</a>
+</h3>
+<h3 class="topic">
+<a name="1p3qgk4slsv0anqutt0p6qt03g">&nbsp;&nbsp;释放隐藏文件</a>
+</h3>
+<h3 class="topic">
+<a name="1shdgvs3de5soc9vb9at5p3ai3">&nbsp;&nbsp;&nbsp;autorun.inf</a>
+</h3>
+<h3 class="topic">
+<a name="50oagphbuaeonjngr3ro4701nm">&nbsp;&nbsp;修改自启动</a>
+</h3>
+<h3 class="topic">
+<a name="3gsrncm80mq1lg5o92rcb09nt2">&nbsp;&nbsp;&nbsp;autorun.inf</a>
+</h3>
+<h3 class="topic">
+<a name="55ibu954n78j6pf4rjldl2uoss">&nbsp;&nbsp;修改exe图标操作</a>
+</h3>
+<h3 class="topic">
+<a name="4pdfuq2gsp80ofn2m17igt6vl3">&nbsp;&nbsp;&nbsp;感染exe文件，或覆写exe文件</a>
+</h3>
+<h3 class="topic">
+<a name="04qnoe94cipb6nmqq1h499unlk">&nbsp;&nbsp;&nbsp;将exe文件自我复制</a>
+</h3>
+<h3 class="topic">
+<a name="32kiq379q9ffd2a3ieget24mns">&nbsp;&nbsp;&nbsp;覆写exe文件</a>
+</h3>
+<h3 class="topic">
+<a name="5drdr26us89r3egn8ntvupgv45">&nbsp;delphi程序的调用约定是fastcall，前两个参数使用寄存器进行传参</a>
+</h3>
+<h3 class="topic">
+<a name="7f3bfjt2df6h9gkoqhgjb0dic3">&nbsp;如何快速定位病毒感染exe程序的代码</a>
+</h3>
+<h3 class="topic">
+<a name="5o5nc4e2da8qiki14g35dmr1sr">&nbsp;以写入文件的方式对文件图标进行修改 以写入文件的方式修改Desktop_.ini文件</a>
+</h3>
+<h3 class="topic">
+<a name="1f0r8jl32ld6dkqa0o7m4id6qv">&nbsp;user32.SetTimer</a>
+</h3>
+<h3 class="topic">
+<a name="56u9r20esg20morieggbefu4jt">&nbsp;&nbsp;SetTimer是一种API函数，位于user32.dll中。你想每隔一段时间执行一件事的的时候，你可以使用它。 使用定时器的方法比较简单，通常告诉Windows一个时间间隔，然后Windows以此时间间隔周期性触发程序。通常有两种方法来实现：发送WM_TIMER消息和调用应用程序定义的回调函数。不需要指定定时器时，可以调用对应的KillTimer函数销毁指定的时钟。</a>
+</h3>
+<h2 class="topic">
+<a name="7ia89h1p4j0v1ml89hjqkfpol3">delphi多通过eax edx进行传参</a>
+</h2>
+<h2 class="topic">
+<a name="65su9jedl4ol5vstrh1mb5k5an">注意再od中使用map，复制ida进行对比分析</a>
+</h2>
+<h2 class="topic">
+<a name="2i4qvtsl4s71qje6bejncn56io">补充</a>
+</h2>
+<h3 class="topic">
+<a name="4or46qt61avp0iminr4ne9lqmv">&nbsp;分析目标</a>
+</h3>
+<h3 class="topic">
+<a name="0he82k4prqi8pmvn6hh2vaaov3">&nbsp;&nbsp;判断是否是病毒</a>
+</h3>
+<h3 class="topic">
+<a name="0irlm2u14u01jtjemc4h5rouh0">&nbsp;&nbsp;找到病毒的行为</a>
+</h3>
+<h3 class="topic">
+<a name="6obsq578uag5gfgdt2eptsmgij">&nbsp;&nbsp;&nbsp;文件操作行为</a>
+</h3>
+<h3 class="topic">
+<a name="5cionhicr3tp2kho4efodf9bmd">&nbsp;&nbsp;&nbsp;&nbsp;是否改写磁盘上的文件</a>
+</h3>
+<h3 class="topic">
+<a name="7i0r49osm8nciniev2f0s0ebnf">&nbsp;&nbsp;&nbsp;注册表行为</a>
+</h3>
+<h3 class="topic">
+<a name="7vnmnun24nnge57gq0bepkcv5u">&nbsp;&nbsp;&nbsp;&nbsp;是否增删了注册表</a>
+</h3>
+<h3 class="topic">
+<a name="7qmn25gddpqa5sj7tnj6om8vvf">&nbsp;&nbsp;&nbsp;网络行为</a>
+</h3>
+<h3 class="topic">
+<a name="59gmq5jgpuntfq576sq61o2dd4">&nbsp;&nbsp;找到恢复中毒的方法</a>
+</h3>
+<h3 class="topic">
+<a name="20r3sm2laicva6a5ifnp325afh">&nbsp;&nbsp;&nbsp;删掉病毒</a>
+</h3>
+<h3 class="topic">
+<a name="23icn3nd47h7aifs041mhh8tfs">&nbsp;&nbsp;&nbsp;恢复被病毒破坏的文注册表</a>
+</h3>
+<h3 class="topic">
+<a name="1dnkf2t9jjigjd68bb2kt9qcvs">&nbsp;&nbsp;&nbsp;删除病毒下载下来的东西</a>
+</h3>
+<h3 class="topic">
+<a name="21h7deb551lmnvn26d1d1vbhfq">&nbsp;分析方法</a>
+</h3>
+<h3 class="topic">
+<a name="6n3mq5rf1c07t866ohsjlqpabf">&nbsp;&nbsp;静态分析</a>
+</h3>
+<h3 class="topic">
+<a name="3uh2tri9lk7397nuq48kb6p95k">&nbsp;&nbsp;&nbsp;分析导入表（没有壳）</a>
+</h3>
+<h3 class="topic">
+<a name="21lpbrh1194irne315mdhc867b">&nbsp;&nbsp;&nbsp;分析特征值</a>
+</h3>
+<h3 class="topic">
+<a name="2mm5f0k0orbmjr866t3d5cimnf">&nbsp;&nbsp;&nbsp;&nbsp;获取hash值，在云查杀工具查看，可以直接得到病毒分析报告</a>
+</h3>
+<h3 class="topic">
+<a name="2lae2v2cp7oohcu7m2bv4fpeem">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;viruscan</a>
+</h3>
+<h3 class="topic">
+<a name="1g2u4r0rkno0ds7ph8lq4192rs">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;virustotal</a>
+</h3>
+<h3 class="topic">
+<a name="49okkm72gfhlqt184djuuhql6g">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;哈勃</a>
+</h3>
+<h3 class="topic">
+<a name="1jc5fhqer1uqrld0v41n2evpr7">&nbsp;&nbsp;行为分析</a>
+</h3>
+<h3 class="topic">
+<a name="23a1bulurd95gh39vor2abkln4">&nbsp;&nbsp;&nbsp;火绒剑</a>
+</h3>
+<h3 class="topic">
+<a name="0nnu2nqsubmd7mn9ub5frob5jj">&nbsp;&nbsp;&nbsp;&nbsp;火绒剑中看动作详细信息的调用栈的时候，可以直接找到特定动作的调用地址，可以直接用于在od中看对应汇编代码</a>
+</h3>
+<h3 class="topic">
+<a name="4peepaknmiddtedk199aps7tch">&nbsp;&nbsp;&nbsp;API Monitor</a>
+</h3>
+<h3 class="topic">
+<a name="56oi1jj7uiju21i7gf8bjbrv1d">&nbsp;分析步骤</a>
+</h3>
+<h3 class="topic">
+<a name="4qi533ag8bjinmrr7bu5ph07q2">&nbsp;&nbsp;有的时候对注册表的操作来源于api调用，而不是恶意代码刻意为之</a>
+</h3>
+<h3 class="topic">
+<a name="45k153mv2rj8r56i4lb4r14pns">&nbsp;&nbsp;&nbsp;给线程回调函数开始处下一个断点，等待下次执行断住</a>
+</h3>
+<h3 class="topic">
+<a name="5ijjq80rhamjd6e5cunuls0uci">&nbsp;&nbsp;通过火绒剑可以直接定位到可以病毒文件行为发生在代码中的位置，可以将位置记录下来，在代码中寻找对应位置的代码进行分析</a>
+</h3>
+<h3 class="topic">
+<a name="1nh5anu64t8lk8f8flf86m7nc5">&nbsp;&nbsp;&nbsp;只有在无法分析出病毒具体行为的时候，再去逐个指令分析病毒</a>
+</h3>
+<h3 class="topic">
+<a name="2qv0gnt4osnavkfk4rpjejjpgk">&nbsp;&nbsp;分析汇编代码时关键可以看敏感的api和敏感的字符串</a>
+</h3>
+<h3 class="topic">
+<a name="16jtvjjkvbtpdnquhfpk39t5qu">&nbsp;&nbsp;如果是数据变化很不明显的函数，分析时可以忽略掉</a>
+</h3>
+<h3 class="topic">
+<a name="4i42becreaq77ob9pks6h8027p">&nbsp;&nbsp;如果遇到创建线程，需要对线程的回调函数进行分析</a>
+</h3>
+<h3 class="topic">
+<a name="5bvieb25hqtgidg7g8uqvvjr72">&nbsp;&nbsp;可以个定时器的回调函数也下一个断点，等待断下时再进行分析</a>
+</h3>
+<h3 class="topic">
+<a name="11v7kb6crql9fl4c0aieqnorgu">&nbsp;&nbsp;将所有的回调函数（创建的线程的 定时器的）下断点后，让程序跑起来，分析其断下的位置，即逐层分析</a>
+</h3>
+<h3 class="topic">
+<a name="54q5uhp82amllm0t0gfu79oar8">&nbsp;&nbsp;如果想直接调试某个回调函数，也可以直接将eip设置到这里，前提是该回调函数没有附加参数，也不使用全局变量</a>
+</h3>
+<h3 class="topic">
+<a name="2idksjad3r4l39dc1ogmstscgj">&nbsp;调试技巧</a>
+</h3>
+<h3 class="topic">
+<a name="3etbbemebbfjj61a5a6cp75s3d">&nbsp;&nbsp;针对线程、定时器的会回调函数，如果没有使用到其他线程的运行结果或全局变量之类，可以直接将eip设置为回调函数其起点</a>
+</h3>
+<h3 class="topic">
+<a name="7e3ka26fs0nd559s15ua9vk0mg">&nbsp;&nbsp;分析汇编代码步骤</a>
+</h3>
+<h3 class="topic">
+<a name="4f5up7l44q0a8lbf2ifbmt2gv7">&nbsp;&nbsp;&nbsp;找到已知信息</a>
+</h3>
+<h3 class="topic">
+<a name="74oop5al5pdfetbu3331er83p7">&nbsp;&nbsp;&nbsp;&nbsp;字符串</a>
+</h3>
+<h3 class="topic">
+<a name="2mpi5dahm181g7f7bisrk4f641">&nbsp;&nbsp;&nbsp;&nbsp;库函数名、api名</a>
+</h3>
+<h3 class="topic">
+<a name="42roh8hsnaijsvc9ihucqu3i6p">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;弄清函数功能</a>
+</h3>
+<h3 class="topic">
+<a name="7v89vc44r7fiedt4mngt2s6i2i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;所需的函数参数个数以及传参方式</a>
+</h3>
+<h3 class="topic">
+<a name="33146nliitsmmfjhin1lpo55fn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;返回值类型</a>
+</h3>
+<h3 class="topic">
+<a name="0ttcsldbvs1r92ii1u0upu9qbj">&nbsp;&nbsp;&nbsp;从已知退未知</a>
+</h3>
+<h2 class="topic">
+<a name="55imfblhj3fa3qqhp2669sj4h8">病毒主要恶意行为分析</a>
+</h2>
+<h3 class="topic">
+<a name="69ehht104s09fjfbap38psanqo">&nbsp;函数：sub_40819C();</a>
+</h3>
+<h3 class="topic">
+<a name="7svf87rp414gfh02kgh8s4tqfc">&nbsp;&nbsp;进行病毒副本的拷贝，运行病毒副本,结束进程，如果该进程是被病毒副本启动，则该函数没有执行有效功能</a>
+</h3>
+<h3 class="topic">
+<a name="2nnik0u4lb17g9q5pd1qk3f684">&nbsp; 函数：sub_40D18C();（主要调用三个函数）</a>
+</h3>
+<h3 class="topic">
+<a name="76v39tbcieaovpjpqdsd1uddi2">&nbsp;&nbsp;sub_40A5B0();</a>
+</h3>
+<h3 class="topic">
+<a name="0mmkak6or99ijs58rlivmq7219">&nbsp;&nbsp;&nbsp;创建线程，线程回调函数为0x40A48C</a>
+</h3>
+<h3 class="topic">
+<a name="4sn5vek6qvp0cjn2ihpqp6997l">&nbsp;&nbsp;&nbsp;&nbsp;对特定后缀的文件进行感染 同时在每个目录下创建Desktop_.ini,删除系统GHOST文件</a>
+</h3>
+<h3 class="topic">
+<a name="3o7rln4v9l8k2h6demjispusk1">&nbsp;&nbsp;sub_40C374();</a>
+</h3>
+<h3 class="topic">
+<a name="38vkd36p2s6jo9s6m5smhf0gt6">&nbsp;&nbsp;&nbsp;设置计时器 ,回调函数为0x40BE7C</a>
+</h3>
+<h3 class="topic">
+<a name="4omu9pq6cnt5ne4fr8c2eh5lcm">&nbsp;&nbsp;&nbsp;&nbsp;函数用于在c盘根目录下创建setup.exe autorun.inf 文件,设置这两个文件的文件属性</a>
+</h3>
+<h3 class="topic">
+<a name="4gjs3f1u8eq75ndpjcbb6cqosb">&nbsp;&nbsp;sub_40BACC();</a>
+</h3>
+<h3 class="topic">
+<a name="24lkiaummk8ea4ajjhde2n7j0o">&nbsp;&nbsp;&nbsp;创建十条线程，回调函数均为0x40BA8C</a>
+</h3>
+<h3 class="topic">
+<a name="3vvvk6rq7rrvu21ip9er4889gg">&nbsp;&nbsp;&nbsp;&nbsp;回调函数相同均用于创建socket网络连接</a>
+</h3>
+<h3 class="topic">
+<a name="3v9svit5s343t5pcnbgr6ghp4a">&nbsp;函数： sub_40D088();（设置6个定时器,回调函数分别为）</a>
+</h3>
+<h3 class="topic">
+<a name="30tgchipcio53i35lmfpqn0cja">&nbsp;&nbsp;0x40CEE4 </a>
+</h3>
+<h3 class="topic">
+<a name="6u5ofkl04mujn5polc2kb5lg4r">&nbsp;&nbsp;&nbsp;调用函数sub_406E2C();</a>
+</h3>
+<h3 class="topic">
+<a name="7i1a2dkvteb9c3hiqgasegihbs">&nbsp;&nbsp;&nbsp;&nbsp;创建线程，线程回调函数为0x4061B8</a>
+</h3>
+<h3 class="topic">
+<a name="57tj034to0mtj52hgnrd496l7i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果窗口名称包含&ldquo;防火墙&rdquo;等信息，则发送消息关闭窗口</a>
+</h3>
+<h3 class="topic">
+<a name="1s1k64rgk1f3inccgfltr1p7hv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过模拟按键点击，关闭冰刃等安全软件</a>
+</h3>
+<h3 class="topic">
+<a name="3jsqo75lh0a4bvamq1ip447b0n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;根据进程名称，关闭杀软进程以及任务管理器、注册表编辑器进程等系统进程</a>
+</h3>
+<h3 class="topic">
+<a name="0sl85p5vfd3ip50buesq8tuf29">&nbsp;&nbsp;&nbsp;修改注册表键值，设置病毒自启动以及病毒文件隐藏</a>
+</h3>
+<h3 class="topic">
+<a name="1dm4181lq4kk59957e5auv9pme">&nbsp;&nbsp;0x40D040</a>
+</h3>
+<h3 class="topic">
+<a name="5adatng255p5ce2o23454eplgk">&nbsp;&nbsp;&nbsp;调用函数sub_40CC34</a>
+</h3>
+<h3 class="topic">
+<a name="00em7mgt308q16rr68f7dd6skb">&nbsp;&nbsp;&nbsp;&nbsp;创建线程，回调函数为sub_40C9B0</a>
+</h3>
+<h3 class="topic">
+<a name="3m6r40m7ekvknr2q62hopmvo63">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该函数连接http://www.ac86.cn/66/up.txt 下载文件到C:\Windows\ 下载完成后执行文件、疑似病毒更新</a>
+</h3>
+<h3 class="topic">
+<a name="7i7jksjgpldbom52nhodebef61">&nbsp;&nbsp;0x40D048</a>
+</h3>
+<h3 class="topic">
+<a name="5v5t90mkkses5d2mnke91tlnd6">&nbsp;&nbsp;&nbsp;创建线程0x40CC34</a>
+</h3>
+<h3 class="topic">
+<a name="4fj5jqn6sr25k96er4su51vvc1">&nbsp;&nbsp;&nbsp;&nbsp;创建线程0x40C9B0</a>
+</h3>
+<h3 class="topic">
+<a name="7vm7v92j98flfhispbsk1s8qdv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该函数连接http://www.ac86.cn/66/up.txt 下载文件到C:\Windows\ 下载完成后执行文件、疑似病毒更新</a>
+</h3>
+<h3 class="topic">
+<a name="64prnk8hj78bcm803ffedscmcq">&nbsp;&nbsp;&nbsp;创建线程0x40CDEC</a>
+</h3>
+<h3 class="topic">
+<a name="1mhqs14uht2jbuoemkhmub99pu">&nbsp;&nbsp;&nbsp;&nbsp;执行关闭网络共享的cmd指令</a>
+</h3>
+<h3 class="topic">
+<a name="7aedguq1th5jb4ggudnnvj3otk">&nbsp;&nbsp;&nbsp;解除第0个计时器</a>
+</h3>
+<h3 class="topic">
+<a name="48d2qk645m136v6lk7ibof7295">&nbsp;&nbsp;0x407430</a>
+</h3>
+<h3 class="topic">
+<a name="0o38jchhhfs1h6kupcjcm90f47">&nbsp;&nbsp;&nbsp;创建一个线程 回调函数0x406E44</a>
+</h3>
+<h3 class="topic">
+<a name="4vcqd53gajkg314cnlvrmg9adi">&nbsp;&nbsp;&nbsp;&nbsp;修改注册表键值，关闭杀毒软件服务</a>
+</h3>
+<h3 class="topic">
+<a name="2igdhd1dgr9i4uie1mss5ge3ks">&nbsp;&nbsp;0x40CC4C</a>
+</h3>
+<h3 class="topic">
+<a name="5e2dbvuthfj23o6mto4ca3d854">&nbsp;&nbsp;&nbsp;对特定网址发起连接（www.tom.com等），并接受网站返回信息</a>
+</h3>
+<h3 class="topic">
+<a name="5gbddifike68jge1cc4j9nrkdg">&nbsp;&nbsp;0x40C728</a>
+</h3>
+<h3 class="topic">
+<a name="41uev10otjech4uhjm9p9nhnb2">&nbsp;&nbsp;&nbsp;在"http://update.whboy.net/worm.txt"网站下载文件并执行，疑似病毒更新</a>
+</h3>
+<h2 class="topic">
+<a name="1m86vtesslj2ir1h3pnjef189u">当od调试多进程程序时，可以先将程序只留一个进程，将其他进程挂起进行分析</a>
+</h2>
+<h3 class="topic">
+<a name="3ov6g6gf291fn8ebsj5kkpjpb1">&nbsp;也可以每次只在一个进程的回调函数上下断点，进程创建后，只会断在该进程的回调函数，每次只分析一个进程的回调</a>
+</h3>
+<h3 class="topic">
+<a name="13aj8o0hjnnbp079qg10lqb0nt">&nbsp;如果时定时器，只将一个定时器的回调函数下断点，然后将定时器执行间隔时间设置的比较小，之后F9让程序运行，大概率程序断在该定时器的回调函数位置</a>
+</h3>
+<h2 class="topic">
+<a name="4c0o182tljgduj77jnbamgo0jc">多线程调试</a>
+</h2>
+<h3 class="topic">
+<a name="60id6623pit2r2epk7bhbd2ggt">&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%86%8A%E7%8C%AB%E7%83%A7%E9%A6%99%E5%88%86%E6%9E%90_files/2nql4itpno2ls6s5rcmrf9kh6q.png"></p>
+<h3 class="topic">
+<a name="11t5qhi23j345i4908r594fh4i">&nbsp;1、暂停所有线程，2开始所有线程 如果程序线程因为某种原因断住无法调试，可以尝试将先暂停，后启动</a>
+</h3>
+<h2 class="topic">
+<a name="6mrmpgnu8bbpnq7em7eg0bebv6">病毒感染文件</a>
+</h2>
+<h3 class="topic">
+<a name="79q4hkvkqk11ur1b41l707kuq1">&nbsp;将被感染的文件内容复制一份到内存</a>
+</h3>
+<h3 class="topic">
+<a name="78dt2tci5j5v6hatna97rqn8jp">&nbsp;将病毒样本覆盖到被感染文件上使用CopyFileA</a>
+</h3>
+<h3 class="topic">
+<a name="2c3j30g31q856fh8iica2t1d2p">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%86%8A%E7%8C%AB%E7%83%A7%E9%A6%99%E5%88%86%E6%9E%90_files/3ah0adn145e9nsol4ab8fk7vmg.png"></p>
+<h3 class="topic">
+<a name="3q3oi8f02cc1m2oj4mcrqqqqpb">&nbsp;部分程序被覆盖之后就退出该函数</a>
+</h3>
+<h3 class="topic">
+<a name="7r1epbbchan3lklabre3osltt5">&nbsp;部分程序被覆盖后会被修改图标</a>
+</h3>
+<h3 class="topic">
+<a name="0vf0rgl6gm3ece4tnlnjrkk8ro">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%86%8A%E7%8C%AB%E7%83%A7%E9%A6%99%E5%88%86%E6%9E%90_files/4tsn95i8qmdbjs3d89kpns67jt.png"></p>
+<h2 class="topic">
+<a name="06e3dgp5omot5fmpm88itllvjg">delphi文件操作</a>
+</h2>
+<h3 class="topic">
+<a name="1i75n3j21dfv0u4eum8mluh8c7">&nbsp;https://www.cr173.com/html/16596_1.html</a>
+</h3>
+<h3 class="topic">
+<a href="https://www.cnblogs.com/chenJazz/p/5736323.html" name="19cs73rgqhamqj7911ej7qtaee">&nbsp;https://www.cnblogs.com/chenJazz/p/5736323.html</a>
+</h3>
+<h2 class="topic">
+<a name="0k3rmuuhbud058hhe9d7vqkm36">delphi传参方式</a>
+</h2>
+<h3 class="topic">
+<a name="70pkidk8qpduejd2sjlbaahvc1">&nbsp;使用寄存器传参（eax edx）</a>
+</h3>
+<h3 class="topic">
+<a name="6reg5v2rq9hnd0u7viumgnidl5">&nbsp;输出参数一般通过edx传出来</a>
+</h3>
+<h2 class="topic">
+<a name="4ij6rq9epnld9j0jcik5tauous">文件在内存中的空间，在系统是是使用大小表示的</a>
+</h2>
+<h3 class="topic">
+<a name="4q410hd9ln5stkd1f4fpuhe33c">&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E7%86%8A%E7%8C%AB%E7%83%A7%E9%A6%99%E5%88%86%E6%9E%90_files/11fre6050os3k8evt78ku1294q.png"></p>
+<h3 class="topic">
+<a name="01vsnhdvldjrfrsj1gmb3vle4s">&nbsp;程序中文件大小为1014Ch，转换为10进制即65868字节</a>
+</h3>
+<h2 class="topic">
+<a name="4qn0e7mu3rstgn9b7hpf27gnv8">恢复被熊猫烧香感染的可执行文件</a>
+</h2>
+<h3 class="topic">
+<a name="51unrm1ulhrsreej6dng9pe039">&nbsp;思路：只要将被感染的可执行文件开头处的病毒代码删掉即可</a>
+</h3>
+<h3 class="topic">
+<a name="3st98hhd1bqt6sbg4n0f3vhv6v">&nbsp;注意在使用fwrite将原文件的数据写入到新建的文件中时，需要使用二进制方式读写，才能保证最终生成的文件符合pe文件格式，否则内存中部分数据会被解释为字符串</a>
+</h3>
+<h3 class="topic">
+<a name="7upbge736bj4ri1t6g9u3doejt">&nbsp;#include "pch.h"&#13;
+#include &lt;iostream&gt;&#13;
+#include &lt;windows.h&gt;&#13;
+char* ReadFileToMemory(char* pFilePath,int*pfileSize)&#13;
+{&#13;
+	FILE* pFile;&#13;
+	fopen_s(&amp;pFile, pFilePath, "rb");&#13;
+	if (!pFile)&#13;
+	{&#13;
+		printf("文件打开失败\n");&#13;
+		return 0;&#13;
+	}&#13;
+	//获取文件大小&#13;
+	fseek(pFile, 0, SEEK_END);&#13;
+	int nSize = ftell(pFile);&#13;
+	*pfileSize = nSize;&#13;
+	char* pBuf = new char[nSize] {};&#13;
+	//读文件到内存中&#13;
+	fseek(pFile, 0, SEEK_SET);&#13;
+	fread(pBuf, nSize, 1, pFile);&#13;
+	//关闭文件&#13;
+	fclose(pFile);&#13;
+	return pBuf;&#13;
+}&#13;
+int main()&#13;
+{&#13;
+	int fileSize = 0;&#13;
+	int *pfileSize = &amp;fileSize;&#13;
+	char* pBuf = ReadFileToMemory((char*)"C:/Users/李嘉柏/Desktop/clamscan(感染).vir", pfileSize);&#13;
+&#13;
+	//指向正常文件的内存空间,0x7531为恶意代码的总大小，占据了被感染文件0~0x7531内存空间&#13;
+	pBuf += 0x7531;&#13;
+	FILE *fpassword;&#13;
+	&#13;
+	//注意使用二进制方式写文件，避免部分数据被解释为字符串&#13;
+	errno_t erro = fopen_s(&amp;fpassword, "C:/Users/李嘉柏/Desktop/clamav.exe", "ab+");&#13;
+	if (erro != 0)&#13;
+	{&#13;
+		printf("addpassword():文件打开失败,程序结束\n");&#13;
+		return 0 ;&#13;
+	}&#13;
+	//将从被感染文件中截取出的原文件代码保存到新建文件中&#13;
+	fwrite(pBuf, fileSize - 0x7531, 1, fpassword);&#13;
+}</a>
+</h3>
+</body>
+</html>

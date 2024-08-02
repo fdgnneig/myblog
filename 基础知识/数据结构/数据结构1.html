@@ -1,0 +1,471 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>数据结构第一天</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="3tpgghqorbgcpr1qp1uigp2mav">数据结构第一天</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%841_files/images/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%AC%AC%E4%B8%80%E5%A4%A9.jpg"></div>
+<h2 class="topic">
+<a name="08nnf8lunktsebopr6gil14egs">数据结构概论</a>
+</h2>
+<h3 class="topic">
+<a name="0igr51eemd0ooj937i5tjarvpt">&nbsp;参考书目：数据结构 严蔚敏   大话数据结构 数据结构与算法分析（c语言描述）（推荐）</a>
+</h3>
+<h3 class="topic">
+<a name="5nutuvtvacrsoln8u4akaog2pc">&nbsp;大O记法的推导（重点）</a>
+</h3>
+<h3 class="topic">
+<a name="4fbqbsv3617hhp0ehkfo0611qv">&nbsp;&nbsp;f(n)=2n+3  -&gt;O(n)=N   -&gt;T(N)=O(f(n));</a>
+</h3>
+<h3 class="topic">
+<a name="4i3amrnfmplsk45bok4lfpgd9v">&nbsp;&nbsp;推导逻辑</a>
+</h3>
+<h3 class="topic">
+<a name="3jvo5mpc5jne80gc79uab5ip36">&nbsp;&nbsp;&nbsp;用常数1取代运行次数函数中所有加法常数</a>
+</h3>
+<h3 class="topic">
+<a name="5kcus5t2b96dlgrf1hmbdfpgaf">&nbsp;&nbsp;&nbsp;修改后的运行次数函数中，只保留最高阶</a>
+</h3>
+<h3 class="topic">
+<a name="067lf07amk3vanqpg42kch2oas">&nbsp;&nbsp;&nbsp;如果最高阶存在且不是1，则去掉最高阶的常数</a>
+</h3>
+<h3 class="topic">
+<a name="6th642pmkscs5gu0gh9m98mfp7">&nbsp;&nbsp;举例</a>
+</h3>
+<h3 class="topic">
+<a name="50n4gfv77o9l8dk8dmdvi2mf7m">&nbsp;&nbsp;&nbsp;两个n循环的嵌套执行次数是2n^2+2n</a>
+</h3>
+<h3 class="topic">
+<a name="5kaan98tkhr399i09lmujf166d">&nbsp;&nbsp;&nbsp;&nbsp;在大O记法中，O(n^2)</a>
+</h3>
+<h3 class="topic">
+<a name="2d6iv0aemsjm8smmhos7142nrn">&nbsp;&nbsp;&nbsp;嵌套for循环最后的时间复杂是以循环最内层语句的执行次数决定的</a>
+</h3>
+<h3 class="topic">
+<a name="0gl7i3kb6o8cj5j8s4vai1c6o5">&nbsp;&nbsp;常见的大O记法</a>
+</h3>
+<h3 class="topic">
+<a name="25d5vv6ghk8sefr8ou88gip24h">&nbsp;&nbsp;&nbsp;常数阶</a>
+</h3>
+<h3 class="topic">
+<a name="0i82eo2ta3n6q1opee1pk9arrp">&nbsp;&nbsp;&nbsp;线性</a>
+</h3>
+<h3 class="topic">
+<a name="4v5ngp62okshru85mi3vim0goa">&nbsp;&nbsp;&nbsp;平方</a>
+</h3>
+<h3 class="topic">
+<a name="5a9imbvq1m1t4t96g2fb96gglv">&nbsp;&nbsp;&nbsp;对数阶</a>
+</h3>
+<h3 class="topic">
+<a name="2u70kpoibnrfu40tck9a8j4hut">&nbsp;&nbsp;&nbsp;&nbsp;O(log2n)</a>
+</h3>
+<h3 class="topic">
+<a name="49fsbr8go2u1hln8jto88rf7ha">&nbsp;&nbsp;&nbsp;对数阶</a>
+</h3>
+<h3 class="topic">
+<a name="7vkvo30ukqgso5suiq77ekb3ej">&nbsp;&nbsp;&nbsp;&nbsp;O(nlog2n)</a>
+</h3>
+<h3 class="topic">
+<a name="3fd5mdp76bprubv4s0sktt51b4">&nbsp;&nbsp;&nbsp;立方阶</a>
+</h3>
+<h3 class="topic">
+<a name="7d6tf85race4ak0m8in7s4fe0a">&nbsp;&nbsp;&nbsp;指数阶</a>
+</h3>
+<h3 class="topic">
+<a name="3kjhl2d0790ks3akb83b4f3igi">&nbsp;逻辑结构与物理结构（重点）</a>
+</h3>
+<h3 class="topic">
+<a name="185g6v6hejf1qrjbf4i5dld0ae">&nbsp;&nbsp;逻辑结构</a>
+</h3>
+<h3 class="topic">
+<a name="761ruf6lk3vev2mo2itf827ier">&nbsp;&nbsp;&nbsp;数据对象中数据元素之间的相互关系</a>
+</h3>
+<h3 class="topic">
+<a name="3aqtfeubi8lhegm5l94i8pvmq4">&nbsp;&nbsp;&nbsp;分类</a>
+</h3>
+<h3 class="topic">
+<a name="69a365pnk5e4h67rr5pt14m9es">&nbsp;&nbsp;&nbsp;&nbsp;集合结构</a>
+</h3>
+<h3 class="topic">
+<a name="7o5srmk8988drh1h69c38bliqe">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;数据元素之间没有特定的关系</a>
+</h3>
+<h3 class="topic">
+<a name="108lgk12c6r5o9gmmut6jq1n8r">&nbsp;&nbsp;&nbsp;&nbsp;线性结构</a>
+</h3>
+<h3 class="topic">
+<a name="0a0u31nhjugoll8ukvbkb2bfan">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;数据元素之间是一对一的关系</a>
+</h3>
+<h3 class="topic">
+<a name="3pmauvu1dd5qs7ig25mc3fj9hn">&nbsp;&nbsp;&nbsp;&nbsp;树结构</a>
+</h3>
+<h3 class="topic">
+<a name="54iq99gvfhi7vr42fjob8ua91m">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;数据元素之间存在一对一或一对多的层次关系</a>
+</h3>
+<h3 class="topic">
+<a name="43fau2v6sfidp1qj5hlgecfp7m">&nbsp;&nbsp;&nbsp;&nbsp;图结构</a>
+</h3>
+<h3 class="topic">
+<a name="4tbasa7o7g53mamqrid4hn9o91">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;数据元素之间是多对多的关系</a>
+</h3>
+<h3 class="topic">
+<a name="3m4n36jdh8niok9pp9g5s7oin7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;逆向中用的比较少</a>
+</h3>
+<h3 class="topic">
+<a name="2qd5m3u938pri8eloclkq7njet">&nbsp;&nbsp;物理结构</a>
+</h3>
+<h3 class="topic">
+<a name="0kevvul8330bcekqfi7lfcojvv">&nbsp;&nbsp;&nbsp;数据在计算机中的存储结构</a>
+</h3>
+<h3 class="topic">
+<a name="377pbr1j0276djfaikpteo4a3k">&nbsp;&nbsp;&nbsp;&nbsp;数据在计算机中以二进制补码的的形式存储</a>
+</h3>
+<h3 class="topic">
+<a name="5u10gbjccldn8hsih1s1cc44k3">&nbsp;&nbsp;&nbsp;分类</a>
+</h3>
+<h3 class="topic">
+<a name="06r7vc4ggscrto46o8m7u8i6id">&nbsp;&nbsp;&nbsp;&nbsp;顺序存储结构</a>
+</h3>
+<h3 class="topic">
+<a name="5s2fm47l14qob1m2jrpqekr548">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;把数据元素放在连续存储单元中</a>
+</h3>
+<h3 class="topic">
+<a name="6c06g4u0nasfkpvk964ht9jjgd">&nbsp;&nbsp;&nbsp;&nbsp;链式存储结构</a>
+</h3>
+<h3 class="topic">
+<a name="33lr61hhhmtmp2r769cuqucrom">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;每个数据元素不直接相连，前一个元素中记录有后一个元素的存储地址</a>
+</h3>
+<h3 class="topic">
+<a name="7lok5ore18mbaadldhk8k2rrsi">&nbsp;数据结构历史</a>
+</h3>
+<h3 class="topic">
+<a name="581ltce2aam42mf3cb277r6e9l">&nbsp;&nbsp;作者：高德纳（唐纳德克鲁特）</a>
+</h3>
+<h3 class="topic">
+<a name="7fn0cbesime55ruice9v8gukkl">&nbsp;什么是数据结构</a>
+</h3>
+<h3 class="topic">
+<a name="21eun6rpcla1uibms5crf367u4">&nbsp;&nbsp;数据项</a>
+</h3>
+<h3 class="topic">
+<a name="29c93ua1b4c49muqdbhmhiu2a6">&nbsp;&nbsp;&nbsp;是数据不可分割的最小单位</a>
+</h3>
+<h3 class="topic">
+<a name="7m4pc98ucd5oi0cakr913468tn">&nbsp;&nbsp;&nbsp;数据项可以组成数据</a>
+</h3>
+<h3 class="topic">
+<a name="3v3nc11ojihfp8oi16mprqs832">&nbsp;&nbsp;数据元素</a>
+</h3>
+<h3 class="topic">
+<a name="32v32r5ir3rb9flkesd649qtf8">&nbsp;&nbsp;&nbsp;是组成数据的具有一定意义的基本单位</a>
+</h3>
+<h3 class="topic">
+<a name="7bma9h5h21g57m40e11jd3upl3">&nbsp;&nbsp;&nbsp;类比：结构体或类定义出来的对象</a>
+</h3>
+<h3 class="topic">
+<a name="3985j70ps9jc0igitrmvkt4tdt">&nbsp;&nbsp;数据对象</a>
+</h3>
+<h3 class="topic">
+<a name="0k96n58t1gp8e9hbgda3v6fl7h">&nbsp;&nbsp;&nbsp;类比：一组结构体或类定义出来的对象，类似于对象数组</a>
+</h3>
+<h3 class="topic">
+<a name="0lrndij5ia9c9gefr347lauao5">&nbsp;&nbsp;数据结构</a>
+</h3>
+<h3 class="topic">
+<a name="5n8dq2qufi18obrvoji3fhgrlv">&nbsp;&nbsp;&nbsp;类比结构体或类</a>
+</h3>
+<h3 class="topic">
+<a name="3br3b422hi3mfh9rs1po0475ee">&nbsp;&nbsp;&nbsp;&nbsp;保存一组相互之间存在关系的数据的集合</a>
+</h3>
+<h3 class="topic">
+<a name="2lhs8d908vgo4v54m7dg0ib6b2">&nbsp;抽象数据类型</a>
+</h3>
+<h3 class="topic">
+<a name="7n0ldcrhihptf2pn0i1aa20r1r">&nbsp;&nbsp;数据类型：一组性质相同的值的集合以及定义在此集合中操作的总称</a>
+</h3>
+<h3 class="topic">
+<a name="72o6nafef1ftk7h86r5dmv8af3">&nbsp;&nbsp;分类</a>
+</h3>
+<h3 class="topic">
+<a name="6sm679vglfssvm2bd0coen3bg7">&nbsp;&nbsp;&nbsp;原子类型</a>
+</h3>
+<h3 class="topic">
+<a name="6vio9gk2ovng3msrf0f4pg54sk">&nbsp;&nbsp;&nbsp;&nbsp;不可再分割的类型</a>
+</h3>
+<h3 class="topic">
+<a name="1r6m2emh7di6jd9b288euks7q9">&nbsp;&nbsp;&nbsp;结构类型</a>
+</h3>
+<h3 class="topic">
+<a name="3m98fn6kfjnsjc5mlbtheve3d8">&nbsp;&nbsp;&nbsp;&nbsp;若干个类型的组合</a>
+</h3>
+<h3 class="topic">
+<a name="2eefpj4flptfb6ajulfl34qjj5">&nbsp;&nbsp;抽象数据类型(ADT)</a>
+</h3>
+<h3 class="topic">
+<a name="4egec60332vbt2aimal4o31t9u">&nbsp;&nbsp;&nbsp;是一个数学模型以及定义在该模型上的一组操作，通常可以描述为以下形式</a>
+</h3>
+<h3 class="topic">
+<a name="2m3e2vvjqr439i0j85uorgnh1o">&nbsp;&nbsp;&nbsp;&nbsp;ADT&#13;
+&#13;
+DATA&#13;
+&#13;
+OPERATION&#13;
+&#13;
+ENDADT</a>
+</h3>
+<h3 class="topic">
+<a name="355itl381lo5jgcrndevohrku4">&nbsp;算法</a>
+</h3>
+<h3 class="topic">
+<a name="4q1tgtplr0k9akakfnif1c4rk3">&nbsp;&nbsp;算法：解决问题的步骤和方式</a>
+</h3>
+<h3 class="topic">
+<a name="5ntqbp6uihti9macpoq9n4cki0">&nbsp;&nbsp;&nbsp;计算机中表现为指令的有限序列，每条指令表示一个或多个操作</a>
+</h3>
+<h3 class="topic">
+<a name="4h0phi1o8oo4u7bfn6fgcu1jcq">&nbsp;&nbsp;算法要具有的特性</a>
+</h3>
+<h3 class="topic">
+<a name="4dvh72rspims58s4mk2mqpqgki">&nbsp;&nbsp;&nbsp;输入输出</a>
+</h3>
+<h3 class="topic">
+<a name="7bedf8gb4iq1r30p7fb1ondj2b">&nbsp;&nbsp;&nbsp;有穷性</a>
+</h3>
+<h3 class="topic">
+<a name="6153s8s2df50ub3oqvppefo55h">&nbsp;&nbsp;&nbsp;&nbsp;在当前的计算条件下是可以执行出结果的</a>
+</h3>
+<h3 class="topic">
+<a name="6r1ou24c2isbtct6rkt1vb4kvc">&nbsp;&nbsp;&nbsp;确定性</a>
+</h3>
+<h3 class="topic">
+<a name="6e5da090bf3cmramk8sht697hn">&nbsp;&nbsp;&nbsp;可行性</a>
+</h3>
+<h3 class="topic">
+<a name="1pg6brlrhhgco771kv3s19nkgv">&nbsp;&nbsp;&nbsp;&nbsp;每一步都能够通过已经实现的基本运算执行有限次来实现</a>
+</h3>
+<h3 class="topic">
+<a name="4o67in4i2apt77d9i9eu5pfsfe">&nbsp;&nbsp;&nbsp;&nbsp;算法是正确的，但是现有情况下不可行</a>
+</h3>
+<h3 class="topic">
+<a name="5ljcprqn4ni5lv5tsg4pp1tjtp">&nbsp;&nbsp;算法不是唯一的，一个问题可能有多种算法</a>
+</h3>
+<h3 class="topic">
+<a name="19dcvtm76693m0gn7d9h8399eo">&nbsp;&nbsp;判断算法的好坏</a>
+</h3>
+<h3 class="topic">
+<a name="13lnu387q1ro0i917lmi9tp5ai">&nbsp;&nbsp;&nbsp;正确性</a>
+</h3>
+<h3 class="topic">
+<a name="37tlurgip3ptcqc06cs94qqsdk">&nbsp;&nbsp;&nbsp;可读性</a>
+</h3>
+<h3 class="topic">
+<a name="4qjv0t9jp1slrc85fs84vkocvp">&nbsp;&nbsp;&nbsp;健壮性</a>
+</h3>
+<h3 class="topic">
+<a name="7kjj55suraniaf4pkc2fi0jq5j">&nbsp;&nbsp;&nbsp;&nbsp;处理错误数据，畸形数据的能力</a>
+</h3>
+<h3 class="topic">
+<a name="5sb0b0ult17vbasuikmt52i3cp">&nbsp;&nbsp;&nbsp;耗时少体积小</a>
+</h3>
+<h3 class="topic">
+<a name="6uo2lu85vpcgm2e0cfptae5jhm">&nbsp;&nbsp;&nbsp;&nbsp;时间效率高 储存消耗低</a>
+</h3>
+<h3 class="topic">
+<a name="1i707lpi47np1mja57gbtt7o17">&nbsp;&nbsp;&nbsp;&nbsp;时间复杂度与空间复杂度</a>
+</h3>
+<h3 class="topic">
+<a name="11qklfn94msi1btqpiomhn6pjp">&nbsp;&nbsp;算法执行时间的计算</a>
+</h3>
+<h3 class="topic">
+<a name="54ebdvrsc09a6urj28akhjomrc">&nbsp;&nbsp;&nbsp;事后统计</a>
+</h3>
+<h3 class="topic">
+<a name="1q1kiaavsafcf630jitcnss1ci">&nbsp;&nbsp;&nbsp;&nbsp;不推荐</a>
+</h3>
+<h3 class="topic">
+<a name="2li1gll5835d5gqan8nr256luk">&nbsp;&nbsp;&nbsp;&nbsp;缺点</a>
+</h3>
+<h3 class="topic">
+<a name="2kj9dbehn7fa965428rpkm2t08">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;要把程序先编写出来</a>
+</h3>
+<h3 class="topic">
+<a name="0moqmkf5ortrbuqb6v391mtt53">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;不同测试的机器上，测试结果不一样</a>
+</h3>
+<h3 class="topic">
+<a name="3olfv4ju8tfvndlalqta6ddgc6">&nbsp;&nbsp;&nbsp;事前估算</a>
+</h3>
+<h3 class="topic">
+<a name="0auvgdbtis6kklbmqdn3n7vij3">&nbsp;&nbsp;&nbsp;&nbsp;再计算机编写完成之前对程序运行时间进行估算</a>
+</h3>
+<h2 class="topic">
+<a name="21f0g0hcod31s86jecr4r6vjpo">线性表</a>
+</h2>
+<h3 class="topic">
+<a name="227ekmkd6h56o6ci43uhn64tfe">&nbsp;定义</a>
+</h3>
+<h3 class="topic">
+<a name="69gflmuke140bk16i7rbakt6nc">&nbsp;&nbsp;0个或多个数据元素的有限序列</a>
+</h3>
+<h3 class="topic">
+<a name="55njrkb9dj0rv0bprtq0i7j5mc">&nbsp;线性表的顺序存储结构(即顺序表)</a>
+</h3>
+<h3 class="topic">
+<a name="3btuukv7gkp3c66r4jfmd3bumt">&nbsp;&nbsp;一般用一维数组或一段连续的缓存（堆空间）来存储线性表</a>
+</h3>
+<h3 class="topic">
+<a name="0v25on29k6t6vbqbj6qeb15jou">&nbsp;&nbsp;向顺序表中插入或删除数据，平均时间复杂度为O(n)</a>
+</h3>
+<h3 class="topic">
+<a name="02q2er3auogdt8bdohttop10ms">&nbsp;&nbsp;顺序表中遍历一个数据，时间复杂度为O(1)</a>
+</h3>
+<h3 class="topic">
+<a name="6o0a93i81ismrr98ttlje1smop">&nbsp;&nbsp;适合存取操作较多，添加、删除较少的情况</a>
+</h3>
+<h3 class="topic">
+<a name="4fcost85ntvsbaodtkha378vgo">&nbsp;&nbsp;顺序表中每个元素类型相同</a>
+</h3>
+<h3 class="topic">
+<a name="3s0e5dvd5t4bjd4akfd1eld5g9">&nbsp;&nbsp;相当于在数组的基础上实现更多的功能</a>
+</h3>
+<h3 class="topic">
+<a name="1iklsai8ivrnntp21t6ce4eqa3">&nbsp;&nbsp;STL中对应的是vector类</a>
+</h3>
+<h3 class="topic">
+<a name="52c02ept5bs0jj1guhtkm9q9sp">&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="271d77aqkqfigi7i3uabnk11mp">&nbsp;&nbsp;&nbsp;当定义动态数组时使用vector作为名称时，为了防止名称二义性，可以将自己定义的vector放在一个命名空间中</a>
+</h3>
+<h3 class="topic">
+<a name="25bjol3rea187oq1fkgd4aabab">&nbsp;&nbsp;&nbsp;&nbsp;注意在.cpp和.h中均需要指定命名空间</a>
+</h3>
+<h3 class="topic">
+<a name="65jjf1r1jmd3l4hhne4cdias7a">&nbsp;&nbsp;&nbsp;一般使用指针指向顺序表的内存空间，因为这样顺序表的空间是可以被更改的</a>
+</h3>
+<h3 class="topic">
+<a name="487p5ius5s02ovm382opoiv36d">&nbsp;&nbsp;&nbsp;当new语句返回值为null时表示内存申请成功</a>
+</h3>
+<h3 class="topic">
+<a name="4cl9tg27bepap4gmpniolmn77r">&nbsp;&nbsp;&nbsp;使用_LINE_在错误处输出可以输出出错的程序所在的行数</a>
+</h3>
+<h3 class="topic">
+<a name="4jnl63opl13bjpei3qf75pnq68">&nbsp;&nbsp;&nbsp;为了修改顺序表中的数据，需要重载[]运算符，体现出顺序结构寻找数据的时间复杂度为O(1)</a>
+</h3>
+<h3 class="topic">
+<a name="6cvm8295j83r1n2jhr7jo4300n">&nbsp;线性表的链式存储结构（即链表）</a>
+</h3>
+<h3 class="topic">
+<a name="5phugvp0344c23gjjtg2cm2jpm">&nbsp;&nbsp;物理结构上非连续，非顺序的存储结构</a>
+</h3>
+<h3 class="topic">
+<a name="2a1johnhfuo5qugj8j7d9s3tsa">&nbsp;&nbsp;适合添加、删除操作较多，查找操作较少的情况</a>
+</h3>
+<h3 class="topic">
+<a name="0vs5nve3ehoml67ev8udh452oj">&nbsp;&nbsp;向链表中增删数据，平均时间复杂度为O(1)</a>
+</h3>
+<h3 class="topic">
+<a name="7csa49c77no91ilnjrsctirpdv">&nbsp;&nbsp;链表遍历的时间复杂度为O(n)</a>
+</h3>
+<h3 class="topic">
+<a name="2nnkscor4so3mnctoo8dl3muc2">&nbsp;&nbsp;种类</a>
+</h3>
+<h3 class="topic">
+<a name="4mq06724611u3m3lqne88b9c8u">&nbsp;&nbsp;&nbsp;有头节点的</a>
+</h3>
+<h3 class="topic">
+<a name="7hmpj343g4qv92p5480vv8tivp">&nbsp;&nbsp;&nbsp;&nbsp;windows中实现的</a>
+</h3>
+<h3 class="topic">
+<a name="0k7jkf543irdib9uu31k1cc1cf">&nbsp;&nbsp;&nbsp;无头节点的</a>
+</h3>
+<h3 class="topic">
+<a name="3g37agt7ndp4rja6mro27s87me">&nbsp;&nbsp;&nbsp;&nbsp;相对较复杂</a>
+</h3>
+<h3 class="topic">
+<a name="6ba6173jc3qjbkg120fqf54c23">&nbsp;&nbsp;执行的函数与顺序表基本相同只是底层实现不相同</a>
+</h3>
+<h3 class="topic">
+<a name="0eomak8p8pip4nnvp80aorrqrj">&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="39mapjm4578osk7qi5qb2bq3lo">&nbsp;&nbsp;&nbsp;链表的节点一般为结构体 包括一个数据域，一个指针域</a>
+</h3>
+<h3 class="topic">
+<a name="6kn2nbaks22bdne31movqftid7">&nbsp;&nbsp;&nbsp;&nbsp;typedef struct  xxx{}xxx ,*xxx;</a>
+</h3>
+<h3 class="topic">
+<a name="0e5sevvfm0hm7d1de0sro2vj3a">&nbsp;&nbsp;&nbsp;头节点不存放数据，仅仅指向首元素</a>
+</h3>
+<h3 class="topic">
+<a name="58d7b1m32i855io4nq52tmpe84">&nbsp;&nbsp;&nbsp;输出数据使用成员函数重载&lt;&lt;的方式进行</a>
+</h3>
+<h3 class="topic">
+<a name="7um90uggncheau1upflodrecr8">&nbsp;&nbsp;&nbsp;&nbsp;首先要获取头节点指向的节点，</a>
+</h3>
+<h3 class="topic">
+<a name="44l62ot8a0fu31seiqjn6740fq">&nbsp;&nbsp;&nbsp;&nbsp;如果当前节点不为空</a>
+</h3>
+<h3 class="topic">
+<a name="21tv9p7ujr168mue4cvh29asc2">&nbsp;&nbsp;&nbsp;构造函数用于初始化头节点和大小</a>
+</h3>
+<h3 class="topic">
+<a name="4o821gb41t4f2t3e73jkd3iqgf">&nbsp;&nbsp;&nbsp;&nbsp;header =new NODE{0,nullptr};</a>
+</h3>
+<h3 class="topic">
+<a name="2o33pdgv4r51rbq3fkdq40v561">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用new定义结构体居然可以这样初始化！！！！！！！！！！！！！！！！！！！！！！！1</a>
+</h3>
+<h3 class="topic">
+<a name="1jp56bhdfuibtpef66ec3513ru">&nbsp;&nbsp;&nbsp;在链表中某些功能性函数，不需要被外部直接调用，但是需要被public的函数使用，可以将此类函数声明为protected</a>
+</h3>
+<h3 class="topic">
+<a name="793p6l4t9jnoub5hcp0d29m2im">&nbsp;&nbsp;&nbsp;在插入界节点时，先让新节点指向其下一个位置的节点，再让上一个位置的节点，指向刚插入的节点，这样才不会乱</a>
+</h3>
+<h3 class="topic">
+<a name="1j1usncomorm4bj338jl2vfmfo">&nbsp;&nbsp;&nbsp;再析构的过程中，先保存首节点的下一个节点，删除首节点，将保存的节点再置为首节点，进行下一次循环</a>
+</h3>
+<h3 class="topic">
+<a name="51m21fa4cp2noc7hh0jkedkpq2">&nbsp;另外两种实现</a>
+</h3>
+<h3 class="topic">
+<a name="2bcae7vkkv64rcano7esafs68f">&nbsp;&nbsp;栈</a>
+</h3>
+<h3 class="topic">
+<a name="6gkgbn2l5a8nha1ds1ah5km7lk">&nbsp;&nbsp;&nbsp;数据的添加与删除只能在栈顶进行</a>
+</h3>
+<h3 class="topic">
+<a name="6oki02ku0ojppgap74ufkglc6r">&nbsp;&nbsp;队列</a>
+</h3>
+<h3 class="topic">
+<a name="6m72cklldjkoabdho657ciu2e2">&nbsp;&nbsp;&nbsp;数据的添加只能在队尾， 数据的删除只能在队头</a>
+</h3>
+<h3 class="topic">
+<a name="6eb42tim3b0feihb7lfg2t5upb">&nbsp;&nbsp;&nbsp;双向队列</a>
+</h3>
+<h3 class="topic">
+<a name="5lbv0vdt41a0f07ga64beve16g">&nbsp;&nbsp;&nbsp;&nbsp;添加与删除可以在队头，也可以在队尾</a>
+</h3>
+<h2 class="topic">
+<a name="0j2dp2u31libav0995auaqhkfq">tips</a>
+</h2>
+<h3 class="topic">
+<a name="75vor1hvlp5fc2vvt7f4c198hq">&nbsp;std::ends 是输出一个空格</a>
+</h3>
+<h3 class="topic">
+<a name="63ha1iijsnv1u4gl2taa9mgmr4">&nbsp;header =new NODE{0,nullptr};//初始化链表的头节点</a>
+</h3>
+<h3 class="topic">
+<a name="71d0gvn680p2eg409er50719ra">&nbsp;&nbsp;使用new定义结构体居然可以这样初始化！</a>
+</h3>
+<h2 class="topic">
+<a name="4mdrltgtbp384sotnu7oeraknf">如何计算程序的运行时间</a>
+</h2>
+<h3 class="topic">
+<a name="0b1dfcr576a5ak61r9t5pdtkl5">&nbsp;忽略细节的程序运行次数，从n的角度进行思考</a>
+</h3>
+</body>
+</html>

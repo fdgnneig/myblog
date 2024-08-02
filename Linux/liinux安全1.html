@@ -1,0 +1,1137 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>class75day0624（linux安全第一天）</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="6snd8poccpvg8d8e2h4a681j7r">class75day0624（linux安全第一天）</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="liinux%E5%AE%89%E5%85%A81_files/images/class75day0624%EF%BC%88linux%E5%AE%89%E5%85%A8%E7%AC%AC%E4%B8%80%E5%A4%A9%EF%BC%89.jpg"></div>
+<h2 class="topic">
+<a name="6pg5u01bgkroemmoev7et5foru">主要使用学习Ununtu（与安卓源码编译修改相关）</a>
+</h2>
+<h2 class="topic">
+<a name="5jdea9cf0ple8druvfahe6jdbn">简介</a>
+</h2>
+<h3 class="topic">
+<a name="49sa4k3o6ff8a09usfukp9p649">&nbsp;linux是类unix操作系统</a>
+</h3>
+<h3 class="topic">
+<a name="6obrr40974sqmkv8k22unsipjj">&nbsp;支持多用户、多进程、多线程</a>
+</h3>
+<h3 class="topic">
+<a name="5am2obbf2u6b696evnankgf8s8">&nbsp;运行硬件平台最多的操作系统</a>
+</h3>
+<h3 class="topic">
+<a name="0i7rhjhnronnala53uqke5prvo">&nbsp;完全符符合POSIX标准的操作系统</a>
+</h3>
+<h3 class="topic">
+<a name="46fb3eg8b2dkub06a15ak0c3h3">&nbsp;&nbsp;可移植操作系统标准</a>
+</h3>
+<h3 class="topic">
+<a name="129mrlc4tktr6279m1dnpnmj4k">&nbsp;&nbsp;故即使是不同的linux版本，软件均可以通用</a>
+</h3>
+<h3 class="topic">
+<a name="3ls73nk5lmu6uhg4ukj39spk17">&nbsp;可以免费使用、可以自由修改传播，遵守GPL</a>
+</h3>
+<h3 class="topic">
+<a name="2g3gd0072p5du1nifci98np5l5">&nbsp;GNU</a>
+</h3>
+<h3 class="topic">
+<a name="7lm96tl1n4qevd151u5psa1eqa">&nbsp;&nbsp;开源计划，所有linux环境下的程序均进行开源</a>
+</h3>
+<h3 class="topic">
+<a name="08ae08db5p2b1a20pvf84ft4se">&nbsp;&nbsp;GPL：GNU的开源协议</a>
+</h3>
+<h3 class="topic">
+<a name="1107ju3j48fervg4b8bcd05ud7">&nbsp;linux组成</a>
+</h3>
+<h3 class="topic">
+<a name="5o52cc2ppjodqqol0f9ldi71m4">&nbsp;&nbsp;linux核心</a>
+</h3>
+<h3 class="topic">
+<a name="4o2k0h41s4qf1i66gq0j6unbqn">&nbsp;&nbsp;&nbsp;宏内核，不仅包含核心api，还包含驱动等程序，内核与许多程序联系在一起</a>
+</h3>
+<h3 class="topic">
+<a name="43ov7ilnin6i7tkm8nrooobgbm">&nbsp;&nbsp;linux shell</a>
+</h3>
+<h3 class="topic">
+<a name="131hpao5froima91o4bn73l425">&nbsp;&nbsp;&nbsp;用户界面，用户与内核交互的接口</a>
+</h3>
+<h3 class="topic">
+<a name="1r5rtdnr3pec504u3h18m2ilq1">&nbsp;&nbsp;linux 文件系统</a>
+</h3>
+<h3 class="topic">
+<a name="0vsh1e69b0mmorhd8d54dqcdoh">&nbsp;&nbsp;&nbsp;支持多种流行的文件系统</a>
+</h3>
+<h3 class="topic">
+<a name="3566vl18kao8gpo71tefta82e2">&nbsp;&nbsp;linux应用系统</a>
+</h3>
+<h3 class="topic">
+<a name="5tueagmdrvr9in7k1eg47qi5ch">&nbsp;linux商业发行版</a>
+</h3>
+<h3 class="topic">
+<a name="10vvbgk0s7giqn9tcb26ggkn5f">&nbsp;&nbsp;在linux基础上增加了安装程序、中文平台、计划支持</a>
+</h3>
+<h3 class="topic">
+<a name="5hv32cl19hi9mifjig28ghaq81">&nbsp;&nbsp;商业版本的版本号和内核版本的版本号没有对应关系</a>
+</h3>
+<h3 class="topic">
+<a name="53j6q2998gaabvnjavrhjk8bom">&nbsp;linux版本号</a>
+</h3>
+<h3 class="topic">
+<a name="740ph9b2ega09anq6fnmmhpu4j">&nbsp;&nbsp;x.yy.zz</a>
+</h3>
+<h3 class="topic">
+<a name="4h146afsjon5ct8geofqbe9r64">&nbsp;&nbsp;&nbsp;x 重大技术更新</a>
+</h3>
+<h3 class="topic">
+<a name="5br9tp5pn05k8sfg8eklonnojt">&nbsp;&nbsp;&nbsp;yy</a>
+</h3>
+<h3 class="topic">
+<a name="0beo02b3po837a18pq8ivcu5c6">&nbsp;&nbsp;&nbsp;&nbsp;偶数</a>
+</h3>
+<h3 class="topic">
+<a name="4jl3bveouds119ek3pmrobimh5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;发行版，运行稳定</a>
+</h3>
+<h3 class="topic">
+<a name="569lerf13ck4u9a74589q3u5te">&nbsp;&nbsp;&nbsp;&nbsp;奇数</a>
+</h3>
+<h3 class="topic">
+<a name="6pdvme0q07sbv0le6ijfoo30a5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;开发版，技术最新</a>
+</h3>
+<h3 class="topic">
+<a name="7a83ij9f3u21cvqqhjdr8tsdn7">&nbsp;&nbsp;&nbsp;zz</a>
+</h3>
+<h3 class="topic">
+<a name="7g3g38l1dnbuk68rfn980079rt">&nbsp;&nbsp;&nbsp;&nbsp;细微更新</a>
+</h3>
+<h3 class="topic">
+<a name="6k1hqpf22uv11rbs3cc7qfcddv">&nbsp;linux系统桌面环境</a>
+</h3>
+<h3 class="topic">
+<a name="7vfet3tr7tsvarpbidanm6d93c">&nbsp;&nbsp;默认的桌面环境</a>
+</h3>
+<h3 class="topic">
+<a name="2k2n2ma7a977oau4bm7htqmv9g">&nbsp;&nbsp;&nbsp;unity</a>
+</h3>
+<h3 class="topic">
+<a name="30vcckdsm2tbv7uiaujt3lcfot">&nbsp;&nbsp;xfce、kde等</a>
+</h3>
+<h3 class="topic">
+<a name="6gpv9mg4924sln1oju4o74fpg8">&nbsp;linux shell</a>
+</h3>
+<h3 class="topic">
+<a name="137p33l4gnekeenc2f3vl8pibk">&nbsp;&nbsp;hash</a>
+</h3>
+<h3 class="topic">
+<a name="50vl10noirpbjp49h9vvapeqs0">&nbsp;&nbsp;&nbsp;是GNU操作系统上默认的shell</a>
+</h3>
+<h3 class="topic">
+<a name="49fpc89q95p0q9ap1tjpn7srk9">&nbsp;使用windows中的linux子系统</a>
+</h3>
+<h3 class="topic">
+<a name="4fmooo0rrg4lek77qvobu5mo4a">&nbsp;&nbsp;控制面板-》程序-》启用或关闭window功能-》使用linux-》微软商店安装ubunutu</a>
+</h3>
+<h2 class="topic">
+<a name="1d6nfgah8lm0eq63mfjspn80bm">系统安装</a>
+</h2>
+<h3 class="topic">
+<a name="5hsfjmbuo6rj2ei6jqcqfddrqj">&nbsp;没有c、d等盘符，只有一个根目录，特定目录存在特定用途</a>
+</h3>
+<h3 class="topic">
+<a name="5nkbrd2lfopsgacang52fleft8">&nbsp;&nbsp;bin 存放系统文件</a>
+</h3>
+<h3 class="topic">
+<a name="14n87nsao943879eld372hearv">&nbsp;&nbsp;cdrm 光驱</a>
+</h3>
+<h3 class="topic">
+<a name="0hciv78jkbc4g0gkr3ocniqr3n">&nbsp;&nbsp;etc</a>
+</h3>
+<h3 class="topic">
+<a name="6tcdfa7lihogg6jqneop35oaqh">&nbsp;&nbsp;&nbsp;配置文件夹</a>
+</h3>
+<h3 class="topic">
+<a name="1n3pnura9mpnenv6035ai2d4pr">&nbsp;&nbsp;home</a>
+</h3>
+<h3 class="topic">
+<a name="6d4girtevvhlkjpr1osi7pqehi">&nbsp;&nbsp;&nbsp;用户文件一般保存在home目录下，有几个用户，该目录下就有几个文件夹</a>
+</h3>
+<h3 class="topic">
+<a name="1p6l4eu6fb4a0ecc8rl2e9ne5c">&nbsp;&nbsp;。。。。</a>
+</h3>
+<h3 class="topic">
+<a name="27p292mcvpvt5eobeuagru44vb">&nbsp;安装流程</a>
+</h3>
+<h3 class="topic">
+<a name="5m50t9e2a4fhf349gbkh93m8i7">&nbsp;&nbsp;使用iso镜像安装</a>
+</h3>
+<h3 class="topic">
+<a name="3c8c7mcbji0ao6ffhsfls9d20k">&nbsp;&nbsp;如果不进行虚拟机拷贝，可以选择单文件安装，加快程序运行，缩小虚拟机体积</a>
+</h3>
+<h3 class="topic">
+<a name="3g0ual0n3g9gaaag9ga074spek">&nbsp;&nbsp;安装过程中如果有网可以安装更新</a>
+</h3>
+<h3 class="topic">
+<a name="2rtc8gfvtdqj7panvrtm9eno52">&nbsp;更新源</a>
+</h3>
+<h3 class="topic">
+<a name="5sq42gt3v3ivk7u8il1jtkndl5">&nbsp;&nbsp;调出终端</a>
+</h3>
+<h3 class="topic">
+<a name="7bpeinlagl2o1cj82rd5ucqbi7">&nbsp;&nbsp;&nbsp;ctrl+alt+t</a>
+</h3>
+<h3 class="topic">
+<a name="405u8nm9b2kt3ip5n3g34bhf9e">&nbsp;&nbsp;配置更新源</a>
+</h3>
+<h3 class="topic">
+<a name="2mcu0knjsl9ijm5l213pn9sr3e">&nbsp;&nbsp;&nbsp;/etc/apt/sources.list</a>
+</h3>
+<h3 class="topic">
+<a name="795msoqtoh14lpgdrhu1kdlsu4">&nbsp;&nbsp;&nbsp;sudo apt-get update</a>
+</h3>
+<h3 class="topic">
+<a name="25s9br4e0hgsrsjlaa4n1vg0os">&nbsp;$ </a>
+</h3>
+<h3 class="topic">
+<a name="7h0clvspa67hrnhh0qeo6m83mj">&nbsp;&nbsp;普通用户权限</a>
+</h3>
+<h3 class="topic">
+<a name="0jcpv2sad216u8919foivg4f15">&nbsp;#</a>
+</h3>
+<h3 class="topic">
+<a name="52cmgc1mqq8flb9j52m8q4mhja">&nbsp;&nbsp;管理员权限</a>
+</h3>
+<h2 class="topic">
+<a name="2eqi7anr98lh5p70r7ltek4mr4">常用命令</a>
+</h2>
+<h3 class="topic">
+<a name="06u63hb315ut770npbm7pgonq8">&nbsp;文件系统相关</a>
+</h3>
+<h3 class="topic">
+<a name="521pfv44csughdcpote0qnl5qa">&nbsp;&nbsp;目录</a>
+</h3>
+<h3 class="topic">
+<a name="6o8kd3nbij0ljt7lg8q3if8jmt">&nbsp;&nbsp;&nbsp;ls</a>
+</h3>
+<h3 class="topic">
+<a name="7vij33oiprcftlh0t56k41adfl">&nbsp;&nbsp;&nbsp;&nbsp;查看当前文件列表</a>
+</h3>
+<h3 class="topic">
+<a name="0un861b6cgg3ejb3hp8vij859k">&nbsp;&nbsp;&nbsp;&nbsp;ls -a</a>
+</h3>
+<h3 class="topic">
+<a name="7vqap8kl3uk7ecbopdd3kelv9g">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;查看详细信息</a>
+</h3>
+<h3 class="topic">
+<a name="2f9ct4i4f5diq9hbqmosbgj5em">&nbsp;&nbsp;&nbsp;&nbsp;ls -al</a>
+</h3>
+<h3 class="topic">
+<a name="14spagvh6rvo3kncv5bqfrlbb0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用户权限</a>
+</h3>
+<h3 class="topic">
+<a name="358ec2cb5tde1hjp8po1epvfjm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;分为三部分</a>
+</h3>
+<h3 class="topic">
+<a name="65cd6sqr09l9sjv8v60v0hfsep">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;本用户权限</a>
+</h3>
+<h3 class="topic">
+<a name="20s3n2dil8n2l7ouaunp1pvgou">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用户组权限</a>
+</h3>
+<h3 class="topic">
+<a name="5di67hqmua72rk8gehed2u8p0l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;其他用户权限</a>
+</h3>
+<h3 class="topic">
+<a name="5t4a4ol12ct0ueuhffb5v78h45">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;第一个字母</a>
+</h3>
+<h3 class="topic">
+<a name="37530fjqsf3kc05kvig38sehum">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;d</a>
+</h3>
+<h3 class="topic">
+<a name="26aquo7bf5kasrs50e8uujfutv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;目录</a>
+</h3>
+<h3 class="topic">
+<a name="76bhkrv8fu1rguk7hm7bt2pc45">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;l</a>
+</h3>
+<h3 class="topic">
+<a name="5v2f5csvpcsivml268l5isaika">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;链接</a>
+</h3>
+<h3 class="topic">
+<a name="76ts5trsj3iecrgoau6omjmi2o">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;r</a>
+</h3>
+<h3 class="topic">
+<a name="1ph2j917odf72mv4ip7vq31u3s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;读</a>
+</h3>
+<h3 class="topic">
+<a name="3lljp52330p9l41288kvj4l65p">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;w</a>
+</h3>
+<h3 class="topic">
+<a name="02q672f2fo1r1rqtac697ec53q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;写</a>
+</h3>
+<h3 class="topic">
+<a name="676idtctid0dcla97mvbv05bal">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x</a>
+</h3>
+<h3 class="topic">
+<a name="16fcop92671mo6lupen7g8f7bj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;执行</a>
+</h3>
+<h3 class="topic">
+<a name="1d787kd10lbkoufcm599pa8cs1">&nbsp;&nbsp;&nbsp;&nbsp;ls /ect</a>
+</h3>
+<h3 class="topic">
+<a name="7u77pcfl7stk9udruc0ejsjt9e">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;查看指定目录下的文件</a>
+</h3>
+<h3 class="topic">
+<a name="13ohdqerbbi1oc7p3ok8eoth94">&nbsp;&nbsp;&nbsp;cd</a>
+</h3>
+<h3 class="topic">
+<a name="7trqu4f7mg9559j04ou6skk93s">&nbsp;&nbsp;&nbsp;&nbsp;cs /bin</a>
+</h3>
+<h3 class="topic">
+<a name="6m51mf9c8c19tdq26dc3fkmvdl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;进入指定目录</a>
+</h3>
+<h3 class="topic">
+<a name="0g4veuo1n2a2nqv7ehecsa3r1f">&nbsp;&nbsp;&nbsp;&nbsp;cd ..</a>
+</h3>
+<h3 class="topic">
+<a name="2r2u89150npaqvmulr9drvvuig">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;返回上一级目录</a>
+</h3>
+<h3 class="topic">
+<a name="51qig86vukao774bu6faqaaf5m">&nbsp;&nbsp;&nbsp;&nbsp;cd /home/ez</a>
+</h3>
+<h3 class="topic">
+<a name="1e9pd9q4trqdr53kmla9jas0vh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;进入指定目录</a>
+</h3>
+<h3 class="topic">
+<a name="5u4cuck7orrau9tedrk7987p9d">&nbsp;&nbsp;&nbsp;&nbsp;cd ~</a>
+</h3>
+<h3 class="topic">
+<a name="6mcps8nrc7io6t9li8lcf3liiv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;进入home目录</a>
+</h3>
+<h3 class="topic">
+<a name="5m71kp4n6a16uhok15lud97b9m">&nbsp;&nbsp;&nbsp;pwd</a>
+</h3>
+<h3 class="topic">
+<a name="70klpsr5i1pufq6d0ungg50kt5">&nbsp;&nbsp;&nbsp;&nbsp;查看当前文件夹绝对路径</a>
+</h3>
+<h3 class="topic">
+<a name="3n3oe1aak9dtha129frg234gvo">&nbsp;&nbsp;&nbsp;clear</a>
+</h3>
+<h3 class="topic">
+<a name="20pbtbr4cjch81knb77l77rcn4">&nbsp;&nbsp;&nbsp;&nbsp;清屏</a>
+</h3>
+<h3 class="topic">
+<a name="1kdionr7eon549i08ahoqef0sn">&nbsp;&nbsp;&nbsp;mkdir</a>
+</h3>
+<h3 class="topic">
+<a name="2pkfpbsu8ftc7ak8b1ircedocp">&nbsp;&nbsp;&nbsp;&nbsp;创建文件夹</a>
+</h3>
+<h3 class="topic">
+<a name="6l55buhbrkffb10osipeek1oi2">&nbsp;&nbsp;&nbsp;&nbsp;mdkir testdir</a>
+</h3>
+<h3 class="topic">
+<a name="4p2lvvla88a4selenod7ja3k7p">&nbsp;&nbsp;&nbsp;&nbsp;mkdir 文件夹</a>
+</h3>
+<h3 class="topic">
+<a name="7pl4aek95bv03bojr3e3k49bp8">&nbsp;&nbsp;&nbsp;rmdir</a>
+</h3>
+<h3 class="topic">
+<a name="1ojndk0ghjafq99hq7l073avqo">&nbsp;&nbsp;&nbsp;&nbsp;删除空文件夹</a>
+</h3>
+<h3 class="topic">
+<a name="7p13upl0vtrut312vb5hnts1ni">&nbsp;&nbsp;&nbsp;&nbsp;rmdir 目录名</a>
+</h3>
+<h3 class="topic">
+<a name="1cvdud21ur455svjd0ibo6ngha">&nbsp;&nbsp;文件</a>
+</h3>
+<h3 class="topic">
+<a name="07hkuc54k61tds3aot0ivmvnsk">&nbsp;&nbsp;&nbsp;touch</a>
+</h3>
+<h3 class="topic">
+<a name="4bls41romgrihpj32oi7m6o9a6">&nbsp;&nbsp;&nbsp;&nbsp;当前目录下创建空文件</a>
+</h3>
+<h3 class="topic">
+<a name="27v5km53smoi8m84td54hokoob">&nbsp;&nbsp;&nbsp;&nbsp;touch 1.txt</a>
+</h3>
+<h3 class="topic">
+<a name="43d4r0g4hjfja0t9ncpfp0e9fo">&nbsp;&nbsp;&nbsp;查看文件内容</a>
+</h3>
+<h3 class="topic">
+<a name="3r81ojf0l3efe57fsi6s0hb0dj">&nbsp;&nbsp;&nbsp;&nbsp;cat</a>
+</h3>
+<h3 class="topic">
+<a name="1aearjm31dn7d4rkoea2tmru0r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;显示文件所有内容</a>
+</h3>
+<h3 class="topic">
+<a name="61tcqhrjh07earo43vbttke7jh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cat ls /etc &gt;1.txt </a>
+</h3>
+<h3 class="topic">
+<a name="6dejqo9vtbkc1s9g5otq75fjs3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将文件内容重定位到txt文件中</a>
+</h3>
+<h3 class="topic">
+<a name="2t692fo2a8tn0rgp578tpn9qab">&nbsp;&nbsp;&nbsp;&nbsp;more</a>
+</h3>
+<h3 class="topic">
+<a name="3c6qrrhgv9lh7t8phd07qfci13">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将文件内容分批次显示</a>
+</h3>
+<h3 class="topic">
+<a name="7nu74r9pj433bcdvqgmqk2ri8p">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;每次只输出一屏信息</a>
+</h3>
+<h3 class="topic">
+<a name="0l1pabas3tsgq8c52hk975klqs">&nbsp;&nbsp;&nbsp;&nbsp;less</a>
+</h3>
+<h3 class="topic">
+<a name="3vh98p8h79rpe7ejpdn3vl4r5k">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将文件内容分输出，输出结果不保存在终端</a>
+</h3>
+<h3 class="topic">
+<a name="61lass9l9pngt1p2d5t221m0ab">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用q退出</a>
+</h3>
+<h3 class="topic">
+<a name="43mr7cflfr5tnb417i0sgf6unq">&nbsp;&nbsp;&nbsp;&nbsp;hexdump</a>
+</h3>
+<h3 class="topic">
+<a name="2o3frqppe2efeb8fg3en2ehppj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;十六进制查看</a>
+</h3>
+<h3 class="topic">
+<a name="4g16q9tof8flli389md09nnu2v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hexdump ls.txt -c</a>
+</h3>
+<h3 class="topic">
+<a name="1nkei8flm528692281kvlhmjea">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hexdump --help</a>
+</h3>
+<h3 class="topic">
+<a name="38s5a9c5393j9lf3flu21ss9oe">&nbsp;&nbsp;&nbsp;&nbsp;file</a>
+</h3>
+<h3 class="topic">
+<a name="5tlaa0rtassrsbeei7a76jucb3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;查看文件类型</a>
+</h3>
+<h3 class="topic">
+<a name="31ulv6ocv5auei964cp1splij3">&nbsp;&nbsp;&nbsp;rm</a>
+</h3>
+<h3 class="topic">
+<a name="1h3dsg3pvp6thb0994burvk3mj">&nbsp;&nbsp;&nbsp;&nbsp;删除文件</a>
+</h3>
+<h3 class="topic">
+<a name="2m98g5a7bpnuf0g87g1k5s65f8">&nbsp;&nbsp;&nbsp;&nbsp;rm t*</a>
+</h3>
+<h3 class="topic">
+<a name="6algf6nv6hgss3vge7v0ulll3i">&nbsp;&nbsp;&nbsp;&nbsp;rm testdir -r</a>
+</h3>
+<h3 class="topic">
+<a name="1ihs8d655ga3ni47t6aadhudvb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;递归删除文件内容</a>
+</h3>
+<h3 class="topic">
+<a name="321afgo22m6cc5ma52c955osmg">&nbsp;&nbsp;&nbsp;&nbsp;rm -rf testdir </a>
+</h3>
+<h3 class="topic">
+<a name="1135aa8ms1gbavqjva63r0ud4f">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;强制递归删除文件内容</a>
+</h3>
+<h3 class="topic">
+<a name="0cdq3orofkqca4j8akoo93bpv3">&nbsp;&nbsp;&nbsp;vi</a>
+</h3>
+<h3 class="topic">
+<a name="388nsdibb4bemcup4d9n9k5s0e">&nbsp;&nbsp;&nbsp;&nbsp;编辑文件（命令行文本编辑器）</a>
+</h3>
+<h3 class="topic">
+<a name="2bdcjvkj8233o8lv8vvg9g0fv2">&nbsp;&nbsp;&nbsp;cp</a>
+</h3>
+<h3 class="topic">
+<a name="5k0vd5re03j62de5gr87u816op">&nbsp;&nbsp;&nbsp;&nbsp;cp -r</a>
+</h3>
+<h3 class="topic">
+<a name="29gc0pkl9j3oa0rbesu2knfcc6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;复制文件夹</a>
+</h3>
+<h3 class="topic">
+<a name="399j83q57fb38fn4l0evg9rc4e">&nbsp;&nbsp;&nbsp;&nbsp;cp -f</a>
+</h3>
+<h3 class="topic">
+<a name="75qo4m4o8jled1c5a60tjm733r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;强制复制</a>
+</h3>
+<h3 class="topic">
+<a name="640rmipek9vakn9t8fhf0fkhel">&nbsp;&nbsp;&nbsp;mv</a>
+</h3>
+<h3 class="topic">
+<a name="5nkke17qnccks0otfd1226t80m">&nbsp;&nbsp;&nbsp;&nbsp;剪切/重命名文件、文件夹</a>
+</h3>
+<h3 class="topic">
+<a name="79pan1tpod3b16o7l6nptas5bk">&nbsp;&nbsp;&nbsp;链接文件</a>
+</h3>
+<h3 class="topic">
+<a name="7ruv4cbde1fh1vehup7q28objb">&nbsp;&nbsp;&nbsp;&nbsp;软链接</a>
+</h3>
+<h3 class="topic">
+<a name="73k2h2u357r869hm734dikqh4j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ln -s 源文件名，链接文件名</a>
+</h3>
+<h3 class="topic">
+<a name="5uio4mp70a5ficmeemen16j1go">&nbsp;&nbsp;&nbsp;&nbsp;硬链接</a>
+</h3>
+<h3 class="topic">
+<a name="1all59f0ils6krv5th6ebrc6be">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ln 源文件名，链接文件名</a>
+</h3>
+<h3 class="topic">
+<a name="5s95qrbvh4aoms5j12af4fhek4">&nbsp;获得帮助信息</a>
+</h3>
+<h3 class="topic">
+<a name="2p2s0r81bq9s482mss8ib6ps08">&nbsp;&nbsp;man</a>
+</h3>
+<h3 class="topic">
+<a name="4udpmr9d5do9v34vmem62i71fo">&nbsp;&nbsp;&nbsp;查询man手册</a>
+</h3>
+<h3 class="topic">
+<a name="6m7rs7tulg70ops76t1jarbr7s">&nbsp;&nbsp;&nbsp;man</a>
+</h3>
+<h3 class="topic">
+<a name="33bn67f83hoig0boqjbpfe2im9">&nbsp;&nbsp;&nbsp;&nbsp;man ls</a>
+</h3>
+<h3 class="topic">
+<a name="3jfne824ssovj6vf8k89hemg75">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用于查看man版主文档</a>
+</h3>
+<h3 class="topic">
+<a name="4v01skja0h38idqablulehkpsh">&nbsp;&nbsp;&nbsp;&nbsp;man 1 ls</a>
+</h3>
+<h3 class="topic">
+<a name="746qk5lfoivnfsar0hrobgpf2h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;linux命令</a>
+</h3>
+<h3 class="topic">
+<a name="6e6p8e254u9jlst7v7b8b1e7mq">&nbsp;&nbsp;&nbsp;&nbsp;man 2 xxx</a>
+</h3>
+<h3 class="topic">
+<a name="6iidhtalfhiorteq2eat9sut3p">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;linux api</a>
+</h3>
+<h3 class="topic">
+<a name="7siqs5dtfuqaujr7fhtcoq588q">&nbsp;&nbsp;&nbsp;&nbsp;man 3 xx</a>
+</h3>
+<h3 class="topic">
+<a name="69rm49og7dkt95qlevfelbqieo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;c语言库函数</a>
+</h3>
+<h3 class="topic">
+<a name="3qmdo8kjtbkjur4qe4qkhqd0er">&nbsp;&nbsp;命令 --help</a>
+</h3>
+<h3 class="topic">
+<a name="21bhgoor75ons86v9i2f05f6o9">&nbsp;&nbsp;&nbsp;使用命令的help选项</a>
+</h3>
+<h3 class="topic">
+<a name="26tu0vug6as29unbjuee39l2s4">&nbsp;权限相关</a>
+</h3>
+<h3 class="topic">
+<a name="12emrtppisaafoobf6smq0pffh">&nbsp;&nbsp;一个文件或文件夹有以下与权限相关属性</a>
+</h3>
+<h3 class="topic">
+<a name="5dpngqukc8d2m2lg42649f3mlv">&nbsp;&nbsp;&nbsp;拥有者权限（默认情况下，文件创建者即文件拥有者）</a>
+</h3>
+<h3 class="topic">
+<a name="69le5eld6o1dukp7o32s9acteo">&nbsp;&nbsp;&nbsp;文件用户组权限</a>
+</h3>
+<h3 class="topic">
+<a name="1p0ogs5du2rl3kppi3k7159ejf">&nbsp;&nbsp;&nbsp;其他人权限</a>
+</h3>
+<h3 class="topic">
+<a name="0t7prpd7j3jtnkmi9hbcuvkiva">&nbsp;&nbsp;&nbsp;&nbsp;非以上两种权限</a>
+</h3>
+<h3 class="topic">
+<a name="2n4680l65v8v652d1ssnmhbkj3">&nbsp;&nbsp;&nbsp;权限使用rwx 可读可写可执行，-标识没有权限</a>
+</h3>
+<h3 class="topic">
+<a name="3mvbjie2q015pcb95jq4c3kssr">&nbsp;&nbsp;chmod</a>
+</h3>
+<h3 class="topic">
+<a name="02j6d5lpakcj0bagkhmiro1riu">&nbsp;&nbsp;&nbsp;设置权限时，使用8进制数表示3组权限 &#13;
+751 7拥有者权限 5用户组权限 1其他人权限</a>
+</h3>
+<h3 class="topic">
+<a name="14kkhpansqbk6i552s9j4l2dce">&nbsp;&nbsp;&nbsp;&nbsp;八进制数</a>
+</h3>
+<h3 class="topic">
+<a name="7iiog8e01iu5p1ob2gali9gr8e">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1</a>
+</h3>
+<h3 class="topic">
+<a name="6709cg8eqdp9d9ara5te1lcuil">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;执行</a>
+</h3>
+<h3 class="topic">
+<a name="41mov2lpcqh3h7177ka1ecfoj9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2</a>
+</h3>
+<h3 class="topic">
+<a name="3munu5ddnrt6758ij2okljmmgh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;写</a>
+</h3>
+<h3 class="topic">
+<a name="47l43ljn5ogmj91r4d1kbu8vkr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4</a>
+</h3>
+<h3 class="topic">
+<a name="5bkn6v51oprpu8ad1vpidjnbss">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;读</a>
+</h3>
+<h3 class="topic">
+<a name="7t76gsc4berf5e1btjqj79m9u1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;上面两两相加的值为同时具有两种权限</a>
+</h3>
+<h3 class="topic">
+<a name="4igqukqa6me8il0gshntg98ep8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;三个相加即7 意为可读可写可执行</a>
+</h3>
+<h3 class="topic">
+<a name="0a48ltpef0d9n31iuilufq1r9o">&nbsp;&nbsp;&nbsp;可以使用`u`表示用户自身, `g`表示用户组,用`o`表示其它人, 再配合`+`和`-`也可以完成修改 , 例如: 去掉文件的用户组的执行权限: `chmod g-x 文件名` ,给其他人加上执行权限: `chmod o+x 文件名` </a>
+</h3>
+<h3 class="topic">
+<a name="1ot6cum24br1nc2ur6kctdbf5h">&nbsp;&nbsp;&nbsp;&nbsp;chmod 3个八进制数 文件名</a>
+</h3>
+<h3 class="topic">
+<a name="3s8qh2jjgkqcfbgcmft7ivmfda">&nbsp;&nbsp;&nbsp;&nbsp;chmod u-x 100.txt</a>
+</h3>
+<h3 class="topic">
+<a name="30h539g9cnegboudtpb0kbp9ue">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;去掉用户权限中的执行权限</a>
+</h3>
+<h3 class="topic">
+<a name="0l26r6ddtm72d3nvnfmohbl5ng">&nbsp;&nbsp;&nbsp;&nbsp;chmod g-x 100.txt</a>
+</h3>
+<h3 class="topic">
+<a name="3ogj6aqakhpchga1kdu9b1sert">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;去掉用户组权限中的执行权限</a>
+</h3>
+<h3 class="topic">
+<a name="3gf9oitda77pg93ki7d1aj9jtr">&nbsp;&nbsp;&nbsp;&nbsp;chmod o-r 100.txt</a>
+</h3>
+<h3 class="topic">
+<a name="4qoifu5t8uc5vhpsetumus0j7b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;去掉其他人权限中的只读权限</a>
+</h3>
+<h3 class="topic">
+<a name="18832660a8vt2093kva1gk4jdo">&nbsp;&nbsp;&nbsp;&nbsp;chmod o+x 100.txt</a>
+</h3>
+<h3 class="topic">
+<a name="06a6vcjet6skjoqnnhvr4p445a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;增加其他人权限中的执行权限</a>
+</h3>
+<h3 class="topic">
+<a name="5bck3aoligjhe3r94k9s9dse3m">&nbsp;&nbsp;sudo su</a>
+</h3>
+<h3 class="topic">
+<a name="6q6fs2harktcvtvaqrk2d2g3ap">&nbsp;&nbsp;&nbsp;切换到root账户</a>
+</h3>
+<h3 class="topic">
+<a name="31mkqh29emj9t3kt8ed9bpg0nv">&nbsp;&nbsp;&nbsp;exit 退出管理员账户</a>
+</h3>
+<h3 class="topic">
+<a name="3t7v0vjt4i1jcjgb612eksgsk0">&nbsp;&nbsp;chown</a>
+</h3>
+<h3 class="topic">
+<a name="0590menaim5nhn8dluqmq5s407">&nbsp;&nbsp;&nbsp;修改文件拥有者</a>
+</h3>
+<h3 class="topic">
+<a name="5401e0ohf6sm5r0aeac6l9h69f">&nbsp;&nbsp;&nbsp;只能使用root账户</a>
+</h3>
+<h3 class="topic">
+<a name="3g2c2ohnu6c85e4r23smghu2fm">&nbsp;&nbsp;&nbsp;chown 用户名 文件名</a>
+</h3>
+<h3 class="topic">
+<a name="08ucrffgb8b4dq6kq09lqbeurb">&nbsp;&nbsp;chgrp</a>
+</h3>
+<h3 class="topic">
+<a name="10qmbs3j7maet4dpjag59opv9s">&nbsp;&nbsp;&nbsp;修改用户组</a>
+</h3>
+<h3 class="topic">
+<a name="0iiq1adfejiudajf9o250p8eqi">&nbsp;&nbsp;&nbsp;chgrp 用户组名 文件名</a>
+</h3>
+<h3 class="topic">
+<a name="3gnlfcb4o3rb9s3fvk1u61nok1">&nbsp;&nbsp;以管理员身份运行一条指令</a>
+</h3>
+<h3 class="topic">
+<a name="4c99ounie37v5juvcb07p23436">&nbsp;&nbsp;&nbsp;sudo 指令xxx</a>
+</h3>
+<h3 class="topic">
+<a name="5o25ftkmsqnlak0r2hjpq5hfbv">&nbsp;软件管理包相关</a>
+</h3>
+<h3 class="topic">
+<a name="707i1tqarhmpvjkp9e690bc6jj">&nbsp;&nbsp;需要管理员权限</a>
+</h3>
+<h3 class="topic">
+<a name="42cmmatg30rnftbb1a5tcig2uo">&nbsp;&nbsp;需要先配置好源列表</a>
+</h3>
+<h3 class="topic">
+<a name="1n806uagct6gpt1hti73mmjb2j">&nbsp;&nbsp;sudo apt-get update</a>
+</h3>
+<h3 class="topic">
+<a name="59sitpo9dtd616r6l2dlbs8rms">&nbsp;&nbsp;&nbsp;更新安装列表</a>
+</h3>
+<h3 class="topic">
+<a name="241nqi7aontqntdvc08e0pjcpe">&nbsp;&nbsp;apt-get upgrade 更新系统中实际的软件数据</a>
+</h3>
+<h3 class="topic">
+<a name="12b4ofkj810di3vpij0e31tgdf">&nbsp;&nbsp;sudo apt-get inatall gcc</a>
+</h3>
+<h3 class="topic">
+<a name="459f5j812f3dqqbutt5uba6jm4">&nbsp;&nbsp;&nbsp;安装gcc</a>
+</h3>
+<h3 class="topic">
+<a name="6lba1le5mhugv514698c6qefl2">&nbsp;&nbsp;sudo apt-get autoremove gcc</a>
+</h3>
+<h3 class="topic">
+<a name="4ps5oa0fnf6a58tshrh3biunbg">&nbsp;&nbsp;&nbsp;卸载gcc</a>
+</h3>
+<h3 class="topic">
+<a name="4rdf7r3k2gmp5r48mt75sq1trg">&nbsp;&nbsp;apt与apt-get的区别</a>
+</h3>
+<h3 class="topic">
+<a name="6pntcqb48taeuiepjvj0g2a23t">&nbsp;&nbsp;&nbsp;https://blog.csdn.net/maizousidemao/article/details/79859669</a>
+</h3>
+<h3 class="topic">
+<a name="4b29pfh6fbnobdpapocqt8v0kr">&nbsp;进程相关</a>
+</h3>
+<h3 class="topic">
+<a name="3cesnkaoqfur9kdeqcm2rhg5qd">&nbsp;&nbsp;ps</a>
+</h3>
+<h3 class="topic">
+<a name="1b27mrlrd5j2p2jvnvos5qj21o">&nbsp;&nbsp;ps aux</a>
+</h3>
+<h3 class="topic">
+<a name="6bfqiir91pbq8msf4jb0og9b6d">&nbsp;&nbsp;&nbsp;查看进程信息</a>
+</h3>
+<h3 class="topic">
+<a name="3n2rt34jolvntv8cd8gq8lcmnb">&nbsp;&nbsp;top</a>
+</h3>
+<h3 class="topic">
+<a name="7v1tcs665k2mto3j9j0av6nu05">&nbsp;&nbsp;&nbsp;实时更新的进程信息</a>
+</h3>
+<h3 class="topic">
+<a name="2spq3fingj87l9rguvuf9d33gd">&nbsp;&nbsp;&nbsp;按q退出</a>
+</h3>
+<h3 class="topic">
+<a name="15p492eiq8naksb7mhdi7ta5nu">&nbsp;管道</a>
+</h3>
+<h3 class="topic">
+<a name="4ialb8oagl309519mrj9rfdqag">&nbsp;&nbsp;将两条指令结合在一起,前一条命令的输出作为后一条命令的输入</a>
+</h3>
+<h3 class="topic">
+<a name="0e92im1566m42ig8pr650u9k3c">&nbsp;&nbsp;ps aux | grep -ni dhclient</a>
+</h3>
+<h3 class="topic">
+<a name="0li9vv2o9n9g7n4ck82r1dgsoj">&nbsp;&nbsp;&nbsp;在进程查找的结果中，查询有关dhclient的记录</a>
+</h3>
+<h3 class="topic">
+<a name="74lbhgi6o3skio13um1vv09lqn">&nbsp;其他命令</a>
+</h3>
+<h3 class="topic">
+<a name="1f8bocg4o3hrtimo1ui2ppu5rg">&nbsp;&nbsp;find </a>
+</h3>
+<h3 class="topic">
+<a name="7d2r71kfjvh7c0pfb6gva1brmh">&nbsp;&nbsp;&nbsp;查找文件</a>
+</h3>
+<h3 class="topic">
+<a name="66i0gkpe1upf4ftdqj6qocrme8">&nbsp;&nbsp;&nbsp;sudo find /home/ez -name '*.txt'</a>
+</h3>
+<h3 class="topic">
+<a name="78lf0m4qehe510q6ra860q3hct">&nbsp;&nbsp;&nbsp;&nbsp;在home/ez路径下根据名称查找 后缀为txt的文件</a>
+</h3>
+<h3 class="topic">
+<a name="6n4avmd8csb9hgvq79sjookib4">&nbsp;&nbsp;whereis</a>
+</h3>
+<h3 class="topic">
+<a name="1ut09rqmb4a3ptqlck9svd5ng3">&nbsp;&nbsp;&nbsp;whereis cp</a>
+</h3>
+<h3 class="topic">
+<a name="1vah35etehjv91cbu6qg7nvjnn">&nbsp;&nbsp;&nbsp;&nbsp;查看cp命令放在哪个文件夹</a>
+</h3>
+<h3 class="topic">
+<a name="7jclignk9u94gr5me3ivfc6c7v">&nbsp;&nbsp;which</a>
+</h3>
+<h3 class="topic">
+<a name="7gqkiunodbglou0o1olne6li6s">&nbsp;&nbsp;&nbsp;which ls</a>
+</h3>
+<h3 class="topic">
+<a name="1tgoo2mfj3iceikhjat7v88qvh">&nbsp;&nbsp;&nbsp;&nbsp;获得命令的路径</a>
+</h3>
+<h3 class="topic">
+<a name="1pfskujerv2itfm8jqggsceumd">&nbsp;&nbsp;echo</a>
+</h3>
+<h3 class="topic">
+<a name="5saonlrdhe53mm0nhbbvlgclam">&nbsp;&nbsp;&nbsp;echo $PATH</a>
+</h3>
+<h3 class="topic">
+<a name="2tqp9f50r1dr303nun9j8lajki">&nbsp;&nbsp;&nbsp;查看环境变量</a>
+</h3>
+<h3 class="topic">
+<a name="1oemdrd16fohe85nsm4b27nv24">&nbsp;&nbsp;set</a>
+</h3>
+<h3 class="topic">
+<a name="1hfl3gi8dflvhsf1gelebd3f8q">&nbsp;&nbsp;&nbsp;设置环境变量</a>
+</h3>
+<h3 class="topic">
+<a name="03kvrb5t0jv6ooungm2hotthpp">&nbsp;&nbsp;&nbsp;如果要永久设置环境变量，需要修改环境变量配置文件</a>
+</h3>
+<h3 class="topic">
+<a name="07gudctal1iv7nmukhiu7kd6gq">&nbsp;&nbsp;grep</a>
+</h3>
+<h3 class="topic">
+<a name="4233e5uf69hov2galv6tvlosko">&nbsp;&nbsp;&nbsp;查找文件内容</a>
+</h3>
+<h3 class="topic">
+<a name="2mf55r32lvdv5l10iur9s6begh">&nbsp;&nbsp;&nbsp;grep 文件名 'ssh'</a>
+</h3>
+<h3 class="topic">
+<a name="3mbc6q08dtlb9e4ji48pqsn3m7">&nbsp;&nbsp;&nbsp;&nbsp;在文件名中查找指定ssh字符串</a>
+</h3>
+<h3 class="topic">
+<a name="247t0v6ftr7k4e3tvccl6j0ucq">&nbsp;&nbsp;&nbsp;grep -ni 文件名 'ssh'</a>
+</h3>
+<h3 class="topic">
+<a name="20tqc4bso8cje793u0bqvgbsr7">&nbsp;&nbsp;&nbsp;&nbsp;忽略大小写 显示行号</a>
+</h3>
+<h3 class="topic">
+<a name="0o10kl4ki4ap4pqr1hhl690eqm">&nbsp;&nbsp;查看内核版本</a>
+</h3>
+<h3 class="topic">
+<a name="078ao8kcmsre7jl8sdbha2qvd3">&nbsp;&nbsp;&nbsp;uname -sr</a>
+</h3>
+<h3 class="topic">
+<a name="35cr07r4efn2dkrtd96mlo9800">&nbsp;&nbsp;查看当前shell类型</a>
+</h3>
+<h3 class="topic">
+<a name="1q6eqqslhs3h8invjo2ofbag1i">&nbsp;&nbsp;&nbsp;echo $SHELL</a>
+</h3>
+<h3 class="topic">
+<a name="1a5ruje7vcq8btocni2rnmtrc8">&nbsp;解压缩命令</a>
+</h3>
+<h3 class="topic">
+<a name="4t7q3pq2541cc04prrr8enho0p">&nbsp;&nbsp;tar</a>
+</h3>
+<h3 class="topic">
+<a name="1mv24on7ohbvn88eu6n8cedr9d">&nbsp;&nbsp;&nbsp;打包命令，将很多个文件打包在一起</a>
+</h3>
+<h3 class="topic">
+<a name="7jpl6u21m030j44o13k33maai7">&nbsp;&nbsp;&nbsp;打包使用-c</a>
+</h3>
+<h3 class="topic">
+<a name="5891ghctv9f5aa2mhcnnkaecre">&nbsp;&nbsp;&nbsp;&nbsp;-cf 打包包名称 被打包的文件名</a>
+</h3>
+<h3 class="topic">
+<a name="6esrfc8eqd4j5s586soci086v2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;没有压缩效果</a>
+</h3>
+<h3 class="topic">
+<a name="47jn46pgkps33rjlv8ieumq0t8">&nbsp;&nbsp;&nbsp;&nbsp;-caf 打包包名称 被打包的文件名</a>
+</h3>
+<h3 class="topic">
+<a name="7qi6jnj0cvqcd88r5b48qbjqco">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;根据不同的文件后缀名执行压缩算法</a>
+</h3>
+<h3 class="topic">
+<a name="2cecq4u7fifp4utp0ujt24t902">&nbsp;&nbsp;&nbsp;&nbsp;-avf 打包</a>
+</h3>
+<h3 class="topic">
+<a name="0bh5r4fm42gnv0uemcpbrh6m0n">&nbsp;&nbsp;&nbsp;&nbsp;-cavf 打包后文件名称 被打包的文件名</a>
+</h3>
+<h3 class="topic">
+<a name="4vsd3shjnih098t87f2nbq30ln">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;显示压缩过程</a>
+</h3>
+<h3 class="topic">
+<a name="0n7c4ucqs4vc2d7jo661iogpqs">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tar -caf manpages-zh.tar.gz manpages-zh</a>
+</h3>
+<h3 class="topic">
+<a name="6ppqnoo8pijh3g9ngrq844tgt4">&nbsp;&nbsp;&nbsp;解包使用-x</a>
+</h3>
+<h3 class="topic">
+<a name="2e985e85ro2t86bfrhaktbt6ki">&nbsp;&nbsp;&nbsp;&nbsp;tar -xf 文件名</a>
+</h3>
+<h3 class="topic">
+<a name="4025rhjh8tbuv6rge6sl808ojd">&nbsp;&nbsp;&nbsp;&nbsp;tar -xvf 压缩文件名</a>
+</h3>
+<h3 class="topic">
+<a name="48d09mcatarepnfakg5qe4q3en">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;显示解压过程</a>
+</h3>
+<h3 class="topic">
+<a name="5hicg9qbgr27r59l7f506vsti1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tar -xvf manpages-zh.tar.gz</a>
+</h3>
+<h3 class="topic">
+<a name="2kb28e6l3squlja3odjf2p7b6u">&nbsp;&nbsp;zip/unzip</a>
+</h3>
+<h3 class="topic">
+<a name="1ad5coi3tqih0kl7ip8llpopfn">&nbsp;&nbsp;&nbsp;解压或压缩文件</a>
+</h3>
+<h3 class="topic">
+<a name="3vvne8q89fjqbo9ue8nfdao2d4">&nbsp;&nbsp;&nbsp;unzip -d 文件夹名称</a>
+</h3>
+<h3 class="topic">
+<a name="62b9vs7fbf3stnamqn9mg22en5">&nbsp;&nbsp;&nbsp;&nbsp;指定解压路径</a>
+</h3>
+<h3 class="topic">
+<a name="24s58fcb9dmrqso4r6vvc5p0s0">&nbsp;&nbsp;&nbsp;针对zip压缩的文件使用unzip进行解压缩</a>
+</h3>
+<h3 class="topic">
+<a name="0fk65472d5gpapfej7a3o378ss">&nbsp;执行当前目录下的文件</a>
+</h3>
+<h3 class="topic">
+<a name="69vjcu6leoadhj4lqgg38rda0f">&nbsp;&nbsp;chmod赋予下执行权限</a>
+</h3>
+<h3 class="topic">
+<a name="10095q4ria9luu4236hd29uq25">&nbsp;&nbsp;./文件名</a>
+</h3>
+<h3 class="topic">
+<a name="2uj67a862mkrqtmquofor2teb9">&nbsp;&nbsp;&nbsp;执行文件</a>
+</h3>
+<h3 class="topic">
+<a name="1iah7kt8qjqjis159jvvej5plq">&nbsp;&nbsp;&nbsp;执行过程可能会要求当前系统安装某些程序，使用apy-get进行安装</a>
+</h3>
+<h3 class="topic">
+<a name="6ddo9gdaoi75qb6tr6vjtfnr67">&nbsp;配置环境变量</a>
+</h3>
+<h3 class="topic">
+<a name="6ckjn1b2jor17cb744kpidfo39">&nbsp;&nbsp;gedit</a>
+</h3>
+<h3 class="topic">
+<a name="1t8jjfb9oq1sk9f1b9fkqkrsaj">&nbsp;&nbsp;主目录下有.打头的文件</a>
+</h3>
+<h3 class="topic">
+<a name="18qgo3517o1c21i9o3m5n2hc18">&nbsp;&nbsp;gedit ~/.bashrc</a>
+</h3>
+<h3 class="topic">
+<a name="3hps8376et98r92i8osmd1qe1a">&nbsp;&nbsp;&nbsp;编辑bash命令的初始化脚本文件（bash即在linux终端中输入的指令）</a>
+</h3>
+<h3 class="topic">
+<a name="41og8hhmp9vvismhol3qkmhmfv">&nbsp;&nbsp;&nbsp;修改之后需要重启终端，或者重置初始化脚本</a>
+</h3>
+<h3 class="topic">
+<a name="3d9t2p8mpond5foh2aj4mqqat9">&nbsp;&nbsp;source ~/.bashrc</a>
+</h3>
+<h3 class="topic">
+<a name="73k2qqtmotodmdh3v1jolve4l2">&nbsp;&nbsp;&nbsp;重置bash命令初始化脚本</a>
+</h3>
+<h3 class="topic">
+<a name="24c2ui1sb4dci7ls84p455hhe6">&nbsp;&nbsp;alias cld='clear'</a>
+</h3>
+<h3 class="topic">
+<a name="5e25nhr48psqmul82ui1sccgf6">&nbsp;&nbsp;&nbsp;指令重命名 clear指令重命名为cls</a>
+</h3>
+<h3 class="topic">
+<a name="19vciv5voui3abthv0q2se87eg">&nbsp;&nbsp;&nbsp;可以将指令重命名指令卸载bashrc中，每次打开终端的时候bashrc中会执行</a>
+</h3>
+<h3 class="topic">
+<a name="1sch5ib2qjrom9b9j687c5pif7">&nbsp;&nbsp;echo $PATH</a>
+</h3>
+<h3 class="topic">
+<a name="388ml2j5kbhte3r81pnojr76p7">&nbsp;&nbsp;&nbsp;输出环境变量PATH的值</a>
+</h3>
+<h3 class="topic">
+<a name="1q7jpmt63p1tvq86b011hgau39">&nbsp;切换tty</a>
+</h3>
+<h3 class="topic">
+<a name="33vvama2rhs0280g3n8p718hnp">&nbsp;&nbsp;crtl+alt+f7</a>
+</h3>
+<h3 class="topic">
+<a name="7pjipe718qjkhbphnu4d7eokot">&nbsp;&nbsp;&nbsp;f7默认是界面窗口</a>
+</h3>
+<h3 class="topic">
+<a name="172uqehqiov53m8postk69fk2d">&nbsp;&nbsp;ctrl +alt +f1~f7</a>
+</h3>
+<h3 class="topic">
+<a name="3subgs5jhe6aq764ma376qe4ot">&nbsp;&nbsp;&nbsp;一共可以支持7个tty，即支持7个用户同时使用当前操作系统</a>
+</h3>
+<h3 class="topic">
+<a name="63huh8hfoe74soatssikkb3s82">&nbsp;tab键可以自动补全指令或路径</a>
+</h3>
+<h2 class="topic">
+<a name="36823dv5n5smuon8un96gmvthg">vim：神之编辑器</a>
+</h2>
+<h3 class="topic">
+<a name="09t1banthnmshui50pt09voqkp">&nbsp;vimtutor</a>
+</h3>
+<h3 class="topic">
+<a name="5erfhfip0l5q6v257c6q48o926">&nbsp;&nbsp;vim教程</a>
+</h3>
+<h3 class="topic">
+<a name="4icfj86os1tul4lejfdatg9fs1">&nbsp;模式</a>
+</h3>
+<h3 class="topic">
+<a name="3ii3pimgki0odvjqtj89ggffc7">&nbsp;&nbsp;浏览模式</a>
+</h3>
+<h3 class="topic">
+<a name="6l069fpqo1aq75e985mkprbuus">&nbsp;&nbsp;&nbsp;无法输入内容</a>
+</h3>
+<h3 class="topic">
+<a name="3r2psav2ookrpq0kdp1tu0amia">&nbsp;&nbsp;&nbsp;输入的内容均当作命令解析</a>
+</h3>
+<h3 class="topic">
+<a name="6mv9j3l94i6d1350g8dh9m3p7k">&nbsp;&nbsp;&nbsp;dd</a>
+</h3>
+<h3 class="topic">
+<a name="3mge52v4v5hjgmo146504m5fd9">&nbsp;&nbsp;&nbsp;&nbsp;删除整行</a>
+</h3>
+<h3 class="topic">
+<a name="7irs3hftl514nqkhs8m129h1s3">&nbsp;&nbsp;&nbsp;x        删除当前光标下的字符</a>
+</h3>
+<h3 class="topic">
+<a name="5v860b1giqf0854q8drejsdktc">&nbsp;&nbsp;编辑模式</a>
+</h3>
+<h3 class="topic">
+<a name="1eat6p9dsa1hb24k8ehb21cn4a">&nbsp;&nbsp;&nbsp;i</a>
+</h3>
+<h3 class="topic">
+<a name="09hinftop7ainekbp16kall2m5">&nbsp;&nbsp;&nbsp;&nbsp;从浏览模式进入编辑模式</a>
+</h3>
+<h3 class="topic">
+<a name="5k2nl97iu1q8502gm4qaf0shbv">&nbsp;&nbsp;&nbsp;o a </a>
+</h3>
+<h3 class="topic">
+<a name="12erpda82lslu74slok8eab3e8">&nbsp;&nbsp;&nbsp;&nbsp;均可以进入编辑模式</a>
+</h3>
+<h3 class="topic">
+<a name="4eti3fnkb3j1v628jhnkt7ujic">&nbsp;&nbsp;&nbsp;I、O、A</a>
+</h3>
+<h3 class="topic">
+<a name="6ltlo71pqnhgcst2k9lbqa0va5">&nbsp;&nbsp;&nbsp;&nbsp;与小写ioa不同</a>
+</h3>
+<h3 class="topic">
+<a name="4mhufc6sphij44ampnkpujrado">&nbsp;&nbsp;&nbsp;esc</a>
+</h3>
+<h3 class="topic">
+<a name="1d1s09ir5q5l3tti9858mo927s">&nbsp;&nbsp;&nbsp;&nbsp;返回浏览模式</a>
+</h3>
+<h3 class="topic">
+<a name="1r36666k8o4hr102kkfr4e6o9a">&nbsp;&nbsp;命令模式</a>
+</h3>
+<h3 class="topic">
+<a name="1osghbopmhubl19edpei3tpidv">&nbsp;&nbsp;&nbsp;shift+:</a>
+</h3>
+<h3 class="topic">
+<a name="38rjh37gofsdsce9bopib7sh1t">&nbsp;&nbsp;&nbsp;&nbsp;从浏览模式进入命令模式</a>
+</h3>
+<h3 class="topic">
+<a name="76rdgc5id3ngqjdfqrajrb5t9m">&nbsp;&nbsp;&nbsp;在命令模式中 输入q，退出vim编辑器</a>
+</h3>
+<h3 class="topic">
+<a name="7688c0ptluj2c86bkmgqhr2r0c">&nbsp;退出</a>
+</h3>
+<h3 class="topic">
+<a name="2jsv3euea5ra76mi9a5novsa5b">&nbsp;&nbsp;q!</a>
+</h3>
+<h3 class="topic">
+<a name="2nt7uenkblvjtqm37lf66ftf14">&nbsp;&nbsp;&nbsp;不保存修改强制退出</a>
+</h3>
+<h3 class="topic">
+<a name="0gg9r2r080h6jpv252h2fsjbik">&nbsp;&nbsp;w</a>
+</h3>
+<h3 class="topic">
+<a name="69fihuse30uughp4cjdk3bqt0t">&nbsp;&nbsp;&nbsp;保存啊当前内容</a>
+</h3>
+<h3 class="topic">
+<a name="50gf95brmk4uhr150u2h43ia5m">&nbsp;&nbsp;wq</a>
+</h3>
+<h3 class="topic">
+<a name="392apavct6mdnis93glj2er3si">&nbsp;&nbsp;&nbsp;保存并退出</a>
+</h3>
+<h3 class="topic">
+<a name="6i6cpue186ionmhrjdu0ki79tm">&nbsp;修改配置文档</a>
+</h3>
+<h3 class="topic">
+<a name="0nf8umc718u3htfu49vtpsm2tc">&nbsp;&nbsp;在vim配置文件中设置指令</a>
+</h3>
+<h3 class="topic">
+<a name="06lp8qrnv627cd0v9evn4ku001">&nbsp;&nbsp;vi ~/.vimrc</a>
+</h3>
+<h3 class="topic">
+<a name="6puv9pvjgr3brmkgie1f3e21l6">&nbsp;&nbsp;&nbsp;vim配置文件</a>
+</h3>
+<h3 class="topic">
+<a name="67djsdqo8t29qjsd77aclriahf">&nbsp;&nbsp;set nu</a>
+</h3>
+<h3 class="topic">
+<a name="6bl57k8evfnfd4t6i5a5g1tnct">&nbsp;&nbsp;&nbsp;将set nu 保存在配置文件中，保存，可以显示行号</a>
+</h3>
+<h3 class="topic">
+<a name="4ddnv4e3dffbhv1upt2d3fti44">&nbsp;vim教程</a>
+</h3>
+<h3 class="topic">
+<a name="0vgftsj1bglqbqq33lhnst0e7v">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="liinux%E5%AE%89%E5%85%A81_files/6o34hnmf0jn4asurk8bhat9aai.png"></p>
+<h2 class="topic">
+<a name="4nkn8kp5gqdepm0gqqslmr0ada">快捷键</a>
+</h2>
+<h3 class="topic">
+<a name="6v9dj5kqk1m5uj539amri8s3g7">&nbsp;窗口切换</a>
+</h3>
+<h3 class="topic">
+<a name="3ckhss3qfmnqjr307fn7in0m2i">&nbsp;&nbsp;Ctrl+Shift+T 打开多个终端</a>
+</h3>
+<h3 class="topic">
+<a name="5colt64gvr9333taqrkj9oh8cl">&nbsp;&nbsp;Ctrl+D 关闭终端</a>
+</h3>
+<h3 class="topic">
+<a name="4pgr6sth5s9kkt0vuvjoqcv24e">&nbsp;&nbsp;1、正常方式打开一个terminal&#13;
+Ctrl + Alt + T&#13;
+&#13;
+2、同一个terminal开启另一个窗口&#13;
+Ctrl  + shift + T&#13;
+&#13;
+3、切换窗口&#13;
+切换第一个窗口&#13;
+Alt + 1&#13;
+&#13;
+切换第二个窗口&#13;
+Alt + 2&#13;
+&#13;
+切换第n个窗口&#13;
+Alt + n</a>
+</h3>
+<h2 class="topic">
+<a name="25f9s5p463ccu9387k96n8lok0">常用功能</a>
+</h2>
+<h3 class="topic">
+<a name="7pj0dpinmp60g09mesr8u7dd7r">&nbsp;设置linux更新源注意更新源与系统版本相关</a>
+</h3>
+<h3 class="topic">
+<a href="https://www.cnblogs.com/kehaimin/p/8616057.html" name="4al0geirefvljoo0b4iukfd046">&nbsp;&nbsp;https://www.cnblogs.com/kehaimin/p/8616057.html</a>
+</h3>
+<h3 class="topic">
+<a href="https://blog.csdn.net/weixin_44437586/article/details/87647112" name="6071kscjh86gjrqni3qo4s8tj3">&nbsp;&nbsp;https://blog.csdn.net/weixin_44437586/article/details/87647112</a>
+</h3>
+<h3 class="topic">
+<a name="70gb790f6u52sj30n1av9qupg2">&nbsp;&nbsp;https://blog.csdn.net/maizousidemao/article/details/79127695</a>
+</h3>
+<h3 class="topic">
+<a name="0tjjt37ghem78lqf2h6l9ccnf9">&nbsp;&nbsp;注意如果刚安装虚拟机，无法使用vmware tools向其中复制数据，可以将虚拟机重启</a>
+</h3>
+<h3 class="topic">
+<a name="2eejeqcu50f7q7g22nofsh2n02">&nbsp;pip安装</a>
+</h3>
+<h3 class="topic">
+<a name="3hv7fgd4teukdmmtp3chpclajd">&nbsp;&nbsp;https://blog.csdn.net/jinruoyanxu/article/details/53947570</a>
+</h3>
+<h3 class="topic">
+<a name="54o1b46237kqmgmfkgh7fe5qhb">&nbsp;&nbsp;wget https://bootstrap.pypa.io/get-pip.py  &#13;
+python get-pip.py  </a>
+</h3>
+<h3 class="topic">
+<a name="0p667v70uj0j36cjr5mgqdlv4a">&nbsp;给新安装的ubuntu设置root密码</a>
+</h3>
+<h3 class="topic">
+<a href="https://www.cnblogs.com/lichengbei/p/11706235.html" name="6h2vrtgll8g4918h6vgm8pqmfp">&nbsp;&nbsp;https://www.cnblogs.com/lichengbei/p/11706235.html</a>
+</h3>
+<h3 class="topic">
+<a name="3asseq0m0quqrr4gnbe2u6pvdg">&nbsp;ubuntu16.04iso文件下载</a>
+</h3>
+<h3 class="topic">
+<a name="5oj0efmq85dca1ncao0kmlo83p">&nbsp;&nbsp;https://blog.csdn.net/qq_40667143/article/details/83387615</a>
+</h3>
+<h3 class="topic">
+<a name="50horsftilerce22jtrol3te1k">&nbsp;设置dns服务器</a>
+</h3>
+<h3 class="topic">
+<a href="https://blog.csdn.net/longcheng217/article/details/81316877" name="3sbvbpfc9hvrb4oub5b90h3ch7">&nbsp;&nbsp;https://blog.csdn.net/longcheng217/article/details/81316877</a>
+</h3>
+<h3 class="topic">
+<a name="2rjq8vmjvbej09cgafhj73rpju">&nbsp;如何查看linux中pethon的位数</a>
+</h3>
+<h3 class="topic">
+<a href="https://blog.csdn.net/lwgkzl/article/details/76696842" name="33tag6q3mpu68i2gnki9devke0">&nbsp;&nbsp;https://blog.csdn.net/lwgkzl/article/details/76696842</a>
+</h3>
+<h3 class="topic">
+<a name="1rj9sus1ggm18e8asn3vvj2nti">&nbsp;linux中vi与vim</a>
+</h3>
+<h3 class="topic">
+<a name="48a6mt4la1c7ld0i4s1o57vjet">&nbsp;&nbsp;https://www.cnblogs.com/baichuanhuihai/p/7928404.html</a>
+</h3>
+<h2 class="topic">
+<a name="57v7ioloi5br8d92kui8co8thv">32位linux使用栈传参，参数从右到左依次入栈</a>
+</h2>
+<h2 class="topic">
+<a name="53k0ot5lmvhce5kh2lbr2bipcc">64位linux参数传递确实是按照rdi、rsi、rdx、rcx、r8、r9的顺序存放第一个参数到第六个参数。对于超出6个参数的入参还是和32位机器一样放入栈中。</a>
+</h2>
+<h3 class="topic">
+<a name="15h9jhq72eo0eoi0hc719kfqi9">&nbsp;对于windows中x64传参前四个参数使用 rcx rdx r8 r9寄存器传参，其他的参数使用栈传递</a>
+</h3>
+</body>
+</html>

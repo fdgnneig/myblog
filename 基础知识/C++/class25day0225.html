@@ -1,0 +1,1534 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>class25day0225</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="4po94hua95brbvojp3a7tirqlv">class25day0225</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="class25day0225_files/images/class25day0225.jpg"></div>
+<h2 class="topic">
+<a name="6qd3d2bb0fn2lusmjkh4954adn">c++提高第四天</a>
+</h2>
+<h3 class="topic">
+<a name="7ata99ske0s4mq1euv1upu7re6">&nbsp;继承(有新内容)</a>
+</h3>
+<h3 class="topic">
+<a name="7ug0foiohf1suu7lrglpjhdeqd">&nbsp;&nbsp;继承方式影响的是父类数据能否在子类中访问，或如何被访问</a>
+</h3>
+<h3 class="topic">
+<a name="4qhjqr508ji6nkqu3fnc4m577k">&nbsp;&nbsp;&nbsp;公有继承</a>
+</h3>
+<h3 class="topic">
+<a name="4d135f8ouc3mpio21qjqeainak">&nbsp;&nbsp;&nbsp;保护继承</a>
+</h3>
+<h3 class="topic">
+<a name="7jgllhs8h025qvt744on1bie9p">&nbsp;&nbsp;&nbsp;私有继承</a>
+</h3>
+<h3 class="topic">
+<a name="677ckmagulnho268lqrlgporbp">&nbsp;&nbsp;派生类会包含基类中所有数据，只是有的数据不能被访问到</a>
+</h3>
+<h3 class="topic">
+<a name="5svfh71t38jbgd62sole1g4ert">&nbsp;&nbsp;派生类成员的重定义</a>
+</h3>
+<h3 class="topic">
+<a name="2c41hsd5b5tei53hetgluuh32r">&nbsp;&nbsp;&nbsp;当子类成员的名称和父类相同时，子类成员会覆盖父类成员</a>
+</h3>
+<h3 class="topic">
+<a name="0gp0g6su8t597m0jm8k19thvub">&nbsp;&nbsp;&nbsp;&nbsp;数据的重定义</a>
+</h3>
+<h3 class="topic">
+<a name="2iuacljredgjnvdet5thd6sg9f">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;默认访问子类的</a>
+</h3>
+<h3 class="topic">
+<a name="70a1d48u3en562v42jckfg9kcn">&nbsp;&nbsp;&nbsp;&nbsp;函数的重定义（函数名必须相同，参数可以相同可以不相同）</a>
+</h3>
+<h3 class="topic">
+<a name="13seucip5g91jo879moq3qap9p">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;函数名和参数均相同的重定义</a>
+</h3>
+<h3 class="topic">
+<a name="3flr1q4vfib9hjoqb6ggrr9ms2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;默认访问的是子类的，且隐藏了父类函数，可以使用作用域::进行访问</a>
+</h3>
+<h3 class="topic">
+<a name="4r4t18i61d384i4gdn98qtrjkn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;函数名相同，参数不同的重定义</a>
+</h3>
+<h3 class="topic">
+<a name="6k456folgqu0aneu09g37k8avq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;此时子类会覆盖父类中的同名不同参的函数，如果需要访问父类中的函数，需要在函数名之前加上  父类::</a>
+</h3>
+<h3 class="topic">
+<a name="5eaqi0ta8u90t2l03ibetgoipj">&nbsp;&nbsp;单一继承与多重继承下的内存模型</a>
+</h3>
+<h3 class="topic">
+<a name="3rrc1d15tld0tkdjhns9vphoud">&nbsp;&nbsp;&nbsp;子类中根据继承的顺序，先保存所有的父类的数据，再保存子类的数据</a>
+</h3>
+<h3 class="topic">
+<a name="702uuqdfj6u2nqni6kog9j8m1o">&nbsp;&nbsp;&nbsp;&nbsp;using namespace std;&#13;
+class BASE1&#13;
+{&#13;
+private:&#13;
+	int numberA = 0x1111111;&#13;
+	// numberA(int): 0x11111111&#13;
+};&#13;
+&#13;
+// 父类2&#13;
+class BASE2&#13;
+{&#13;
+private:&#13;
+	int numberB = 0x22222222;&#13;
+	// numberB(int): 0x22222222&#13;
+};&#13;
+&#13;
+// 子类继承自两个父类&#13;
+class CHILD : public BASE1, public BASE2&#13;
+{&#13;
+	// 子类中根据继承的的顺序分别显示父类的数据，最后是子类自己的数据&#13;
+public:&#13;
+	int numberC = 0x33333333;&#13;
+	// BASE1&#13;
+	// numberA(int) 0x11111111&#13;
+	// BASE2&#13;
+	// numberB(int) 0x22222222&#13;
+	// CHILD&#13;
+	// numberC(int) 0x33333333&#13;
+};&#13;
+&#13;
+int main()&#13;
+{&#13;
+	BASE1 base1;&#13;
+	BASE2 base2;&#13;
+	CHILD child;&#13;
+	return 0;&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="5427fca5s7nrdg09r887200fio">&nbsp;&nbsp;&nbsp;多个父类中存在相同名称的公有变量，则在子类中访问此类公有变量时，会造成访问不明确的情况，可以使用指定作用域的方法分别访问两个公有数据</a>
+</h3>
+<h3 class="topic">
+<a name="6b45bpqviaq1uufvq00pd4odvu">&nbsp;&nbsp;&nbsp;&nbsp;使用作用域解决父类成员名称相同的问题，但是治标不治本</a>
+</h3>
+<h3 class="topic">
+<a name="73crfcmsf93ri77t8i0pubc2lj">&nbsp;&nbsp;&nbsp;&nbsp;使用菱形继承+虚继承的方法解决该问题</a>
+</h3>
+<h3 class="topic">
+<a name="4th28mq5uv2d3tcd6sfd9sgf6m">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;让相关同名数据仅仅保存一份</a>
+</h3>
+<h3 class="topic">
+<a name="3necdekvnd7ne3semf5hokleno">&nbsp;&nbsp;菱形继承</a>
+</h3>
+<h3 class="topic">
+<a name="66opc618kai939j0pf9p2uu0be">&nbsp;&nbsp;&nbsp;在菱形继承中，爷爷类的数据在最后的子类中被保存两次，虚继承是为了将这种数据只保存一次</a>
+</h3>
+<h3 class="topic">
+<a name="6lrs2do3m7478fi58q9cn7m50c">&nbsp;&nbsp;&nbsp;菱形继承中的内存</a>
+</h3>
+<h3 class="topic">
+<a name="0unqb0dpvq87eskitgq6ttu3li">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class25day0225_files/7vmb11gh5lnkojhtdccvmtnr3d.png"></p>
+<h3 class="topic">
+<a name="26l52kplo1saksb6fdrbordde9">&nbsp;&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="7tpqvu618l6ofs9u65unmv4opd">&nbsp;&nbsp;&nbsp;&nbsp;#include &lt;iostream&gt;&#13;
+using namespace std;&#13;
+&#13;
+// 菱形继承中的爷爷类，放置的是父类中重复的数据&#13;
+class BASE&#13;
+{&#13;
+public:&#13;
+	int numberA = 0x11111111;&#13;
+};&#13;
+&#13;
+// 父类继承自爷爷类，目的是获取到 numberA&#13;
+class BASE1 : public BASE&#13;
+{&#13;
+public:&#13;
+	int numberB = 0x22222222;&#13;
+&#13;
+	// BASE&#13;
+	//		0x00000000 numberA 0x11111111&#13;
+	// CHILD&#13;
+	//		0x00000004 numberB 0x22222222&#13;
+};&#13;
+&#13;
+// 父类继承自爷爷类，目的是获取到 numberA&#13;
+class BASE2 : public BASE&#13;
+{&#13;
+public:&#13;
+	int numberC = 0x33333333;&#13;
+&#13;
+	// BASE&#13;
+	//		0x00000000 numberA 0x11111111&#13;
+	// CHILD&#13;
+	//		0x00000004 numberC 0x33333333&#13;
+};&#13;
+&#13;
+class CHILD : public BASE1, public BASE2&#13;
+{&#13;
+public:&#13;
+	int numberD = 0x44444444;&#13;
+&#13;
+	// 首先放的是所有父类的数据&#13;
+	// 父类按照继承的顺序进行放置&#13;
+	// 所有父类之后是子类的数据&#13;
+&#13;
+	// BASE1&#13;
+	//		0x00EFFBF0  numberA 0x11111111&#13;
+	//		0x00EFFBF4  numberB 0x22222222&#13;
+	// BASE2&#13;
+	//		0x00EFFBF8  numberA 0x11111111&#13;
+	//		0x00EFFBFC  numberC 0x33333333&#13;
+	// CHILD&#13;
+	//		0x00EFFC00  numberD 0x44444444&#13;
+};&#13;
+&#13;
+int main()&#13;
+{&#13;
+	CHILD child;&#13;
+&#13;
+	return 0;&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="4j3mpv8fejcrns96qvk9lf57sq">&nbsp;&nbsp;虚继承</a>
+</h3>
+<h3 class="topic">
+<a name="7onu6a55mvqoi9n4lmt645upd0">&nbsp;&nbsp;&nbsp;虚继承的语法 : virtual</a>
+</h3>
+<h3 class="topic">
+<a name="0uqi06h8nbd2k34v5vsdvp2ecq">&nbsp;&nbsp;&nbsp;虚继承: 父类继承自爷爷类使用虚继承</a>
+</h3>
+<h3 class="topic">
+<a name="7ingvcrofrfmsc8olq73c2200n">&nbsp;&nbsp;&nbsp;class BASE1 : virtual public BASE</a>
+</h3>
+<h3 class="topic">
+<a name="43t2f8jef8bhkkf0bghm538nea">&nbsp;&nbsp;&nbsp;class BASE2 : public virtual BASE</a>
+</h3>
+<h3 class="topic">
+<a name="7jfe5arq46ctsfr02lrhde4n8s">&nbsp;&nbsp;&nbsp;&nbsp;两者等价</a>
+</h3>
+<h3 class="topic">
+<a name="5ltdl2517rf9po6l5s1t6k5994">&nbsp;&nbsp;&nbsp;虚继承内存结构（面试可能被问到）</a>
+</h3>
+<h3 class="topic">
+<a name="0qsdnmg3kcrftdqv7fpectr2m8">&nbsp;&nbsp;&nbsp;&nbsp;发生在父类和爷爷类的继承之间</a>
+</h3>
+<h3 class="topic">
+<a name="6ip4pbqii25sgdc438bipnp4b6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;class BASE1:virtual public BASE</a>
+</h3>
+<h3 class="topic">
+<a name="6j93dn9cmdgubji5e7cq469dmq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;内存布局</a>
+</h3>
+<h3 class="topic">
+<a name="1hl6fl3175htsuger9ro7sd9kb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;虚基表指针[0]</a>
+</h3>
+<h3 class="topic">
+<a name="4tv1iqj2ufs0fdebtkrg0u96nv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;指向的内存空间前两个字节（虚基表）</a>
+</h3>
+<h3 class="topic">
+<a name="2sadnar8he9rl6hc5vks3todhh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;第一个字节均为0</a>
+</h3>
+<h3 class="topic">
+<a name="09jpq2ba0rn3aiknbs3idc2fuk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;第二个字节为数据值为0x8</a>
+</h3>
+<p class="relationships">参见: <a href="#2fqjbscepghqamvatq0hkussto">BASE的数据对该该类数据首地址的偏移为0x8 (表示爷爷类数据在父类数据对象中的偏移)</a>
+</p>
+<h3 class="topic">
+<a name="7pc22ackk9cvis5r9as1n68djs">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当一个类存在虚继承时，就会产生一个虚基表指针（vbptr），其指向一块int类型空间（虚基表），虚基表中第二个元素是一个偏移，可以通过偏移获取父类数据在当前类中保存的位置（偏移是相对于对象内存首地址的）</a>
+</h3>
+<h3 class="topic">
+<a name="553h503q5lnksd83c0iq2f0lgp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;距对象内存首地址偏移为0</a>
+</h3>
+<h3 class="topic">
+<a name="3pmebuh31paam3duma4ltjujjk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;子类数据[4]</a>
+</h3>
+<h3 class="topic">
+<a name="1jhljgs8mufsm6pf75a15irg9u">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BASE1的数据</a>
+</h3>
+<h3 class="topic">
+<a name="0krpbbu6h63rja3efp1onh2qlc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;基类数据[8]</a>
+</h3>
+<h3 class="topic">
+<a name="2fqjbscepghqamvatq0hkussto">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BASE的数据对该该类数据首地址的偏移为0x8</a>
+</h3>
+<p class="relationships">参见: <a href="#09jpq2ba0rn3aiknbs3idc2fuk">第二个字节为数据值为0x8 (表示爷爷类数据在父类数据对象中的偏移)</a>
+</p>
+<h3 class="topic">
+<a name="7evr45uvc9ifutcj09e7f11hsp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;class BASE2: public virtual BASE</a>
+</h3>
+<h3 class="topic">
+<a name="2rok5ivta0ehv7rdsotasal2l2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;类似</a>
+</h3>
+<h3 class="topic">
+<a name="4kvkeeivsrojjfrf2gflar9atr">&nbsp;&nbsp;&nbsp;&nbsp;孙子类继承两个父类</a>
+</h3>
+<h3 class="topic">
+<a name="6627756f8sssjcj7l31mj3ruc9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;class CHILD:public BASE1,public BASE2</a>
+</h3>
+<h3 class="topic">
+<a name="2jagmr0f8436gui16qvdu4vl2l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;内存布局</a>
+</h3>
+<h3 class="topic">
+<a name="5e89o9o49nm7jmoadv3g7al3u0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;虚基表指针[0]</a>
+</h3>
+<h3 class="topic">
+<a name="09omsvgad6t3s9r35e9h8ma3vt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;来自BASE1的虚基表指针</a>
+</h3>
+<h3 class="topic">
+<a name="0fktr3fp7os55l5o5alo96bkp2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;指向的内存空间（虚基表）</a>
+</h3>
+<h3 class="topic">
+<a name="1udrtcjp4kr6l13dchhakcefom">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;第一个字节均为0</a>
+</h3>
+<h3 class="topic">
+<a name="02ttat7o1qa1ogamsaabhe9mss">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;第二个字节为数据值为0x14，即当前虚基表指针在相对类的内存首地址偏移为0x0，爷爷类数据相对当前的内存地址偏移为0x14</a>
+</h3>
+<p class="relationships">参见: <a href="#48g3hn6nsc6u5l53jmh4j873q5">来自BASE的数据 (从当前虚基表指针的内存地址偏移到)</a>
+</p>
+<h3 class="topic">
+<a name="62036j6uon75i5bileg6gscb7d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当一个类存在虚继承时，就会产生一个虚基表指针（vbptr），其指向一块int类型空间（虚基表），虚基表中第二个元素是一个偏移，可以通过偏移获取爷爷类在当前类中保存的位置</a>
+</h3>
+<h3 class="topic">
+<a name="5766fbtoennnvdf0lectvpfs4c">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当前虚基表指针在相对类的内存首地址偏移为0x0，爷爷类数据相对当前的内存地址偏移为0x14</a>
+</h3>
+<h3 class="topic">
+<a name="431ivldkjn2r56kukp1d5shoak">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;数据[4]</a>
+</h3>
+<h3 class="topic">
+<a name="39f90i4eboesnvndudpnlssnk7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;来自BASE1的数据</a>
+</h3>
+<h3 class="topic">
+<a name="0j7a465sh6q61e90sgm87vsh3f">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;虚基表指针[8]</a>
+</h3>
+<h3 class="topic">
+<a name="4vqrq73rnvd3hvp582bli90p79">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;来自BASE2的虚基表指针</a>
+</h3>
+<h3 class="topic">
+<a name="1vkk8oto5qv54mdif93b93stt5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;指向的内存空间（虚基表）</a>
+</h3>
+<h3 class="topic">
+<a name="5gl3ruaasht7e0vetl0ianmuct">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;第一个字节均为0</a>
+</h3>
+<h3 class="topic">
+<a name="6b9vscgp2tcbgkhsl5dvsflc6p">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;第二个字节为数据值为0xc，即当前虚基表指针在相对类的内存首地址偏移为0x8，爷爷类数据相对当前的内存地址偏移为0xc</a>
+</h3>
+<p class="relationships">参见: <a href="#48g3hn6nsc6u5l53jmh4j873q5">来自BASE的数据 (从当前虚基表指针内存地址偏移到)</a>
+</p>
+<h3 class="topic">
+<a name="6uaaa4b0srvjiaf0b8jl1s6ecl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当一个类存在虚继承时，就会产生一个虚基表指针（vbptr），其指向一块int类型空间（虚基表），虚基表中第二个元素是一个偏移，可以通过偏移获取爷爷类在当前类中保存的位置</a>
+</h3>
+<h3 class="topic">
+<a name="16mbj5ldp8hd5jaqhq458eq19j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当前虚基表指针在相对类的内存首地址偏移为0x8，爷爷类数据相对当前的内存地址偏移为0xc</a>
+</h3>
+<h3 class="topic">
+<a name="4e4n9so450g85op77t9ch97l9t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;数据[c]</a>
+</h3>
+<h3 class="topic">
+<a name="3aic620lcb23bc14dav62iua5g">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;来自BASE2的数据</a>
+</h3>
+<h3 class="topic">
+<a name="293sivle7708mp4npe1n90j0vs">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;数据[10]</a>
+</h3>
+<h3 class="topic">
+<a name="40bss2lsqk3mdc7lg4nerosej1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CHILD本身的数据</a>
+</h3>
+<h3 class="topic">
+<a name="26pj1cit4j8t8jck37nr5hlb59">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;数据[14]</a>
+</h3>
+<h3 class="topic">
+<a name="48g3hn6nsc6u5l53jmh4j873q5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;来自BASE的数据</a>
+</h3>
+<p class="relationships">参见: <a href="#02ttat7o1qa1ogamsaabhe9mss">第二个字节为数据值为0x14，即当前虚基表指针在相对类的内存首地址偏移为0x0，爷爷类数据相对当前的内存地址偏移为0x14 (从当前虚基表指针的内存地址偏移到)</a>, <a href="#6b9vscgp2tcbgkhsl5dvsflc6p">第二个字节为数据值为0xc，即当前虚基表指针在相对类的内存首地址偏移为0x8，爷爷类数据相对当前的内存地址偏移为0xc (从当前虚基表指针内存地址偏移到)</a>
+</p>
+<h3 class="topic">
+<a name="2sjpm0ad8ufff8853unb7kmcjr">&nbsp;&nbsp;&nbsp;&nbsp;当父类虚继承自同一个爷爷类中，父类中爷爷类的数据只保存一份，但是父类是虚继承自爷爷类的，所以父类中有虚基表指针，子类继承自父类，所以子类也继承了父类中的虚基表指针，只不过指向的虚基表可能不同</a>
+</h3>
+<h3 class="topic">
+<a name="5u7lfo4h0bedc090c4ptnvsbi2">&nbsp;&nbsp;&nbsp;&nbsp;最终，来自父类和爷爷类的数据只在子类中保存一份，当爷爷类数据比较大时，虚继承的继承方法可以使子类的数据体量尽量小，保证爷爷类数据不被重复保存</a>
+</h3>
+<h3 class="topic">
+<a name="62i44hcckbdf0vj93b5hsc44d8">&nbsp;&nbsp;&nbsp;&nbsp;记住虚继承中被继承的爷爷类的数据在派生类的对象中都是放在内存空间最后的</a>
+</h3>
+<h3 class="topic">
+<a name="0c38jenc8ksos9h7s5sv6qucdf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;其他数据根据继承的顺序，先存放继承自父类的数据，再存在子类自身的数据，最后存在爷爷类数据</a>
+</h3>
+<h3 class="topic">
+<a name="41047ahj18c60mgv2con3gueq5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;父类中的所有数据均被继承了下来，包括父类中的数据以及虚基表指针，所以在菱形继承中孙子类中有存在两个虚基表指针，因为其两个父类均虚继承自爷爷类</a>
+</h3>
+<h3 class="topic">
+<a name="6c4jd7hqq2k9e9vi9vobebe48n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;故，孙子类中有多少个虚基表指针你，取决于其有多少个父类是虚继承自爷爷类的</a>
+</h3>
+<h3 class="topic">
+<a name="6oi38f68hmuu28q0v6b1l7h27g">&nbsp;&nbsp;&nbsp;&nbsp;图片</a>
+</h3>
+<h3 class="topic">
+<a name="42umgi553outdl15s9llqf20t5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class25day0225_files/5qo36vncrd20sv40k3uofalgp8.png"></p>
+<h3 class="topic">
+<a name="5qgsp0j3tbg7hu9ul0rrt8b5ko">&nbsp;多态</a>
+</h3>
+<h3 class="topic">
+<a name="3kthau6sej44mnpciighb6ei9n">&nbsp;&nbsp;主要目的：接口重用</a>
+</h3>
+<h3 class="topic">
+<a name="5707pab5kkbcp6lc7kt9vuja3p">&nbsp;&nbsp;c++多态的表现形式</a>
+</h3>
+<h3 class="topic">
+<a name="6r0vto9puaq1jui4m5qrp4tsu8">&nbsp;&nbsp;&nbsp;重载</a>
+</h3>
+<h3 class="topic">
+<a name="2mnvdd7isiha8q6fdngt2k5im3">&nbsp;&nbsp;&nbsp;&nbsp;静态联编</a>
+</h3>
+<h3 class="topic">
+<a name="1fuaipq108mc89539l84o6um6e">&nbsp;&nbsp;&nbsp;重定义</a>
+</h3>
+<h3 class="topic">
+<a name="6mifd0s8qe3d0tqe2nss0tnk8a">&nbsp;&nbsp;&nbsp;&nbsp;静态联编</a>
+</h3>
+<h3 class="topic">
+<a name="0nujdfb24jsa628gubgaagtnoq">&nbsp;&nbsp;&nbsp;虚函数</a>
+</h3>
+<h3 class="topic">
+<a name="4ibhfik2k37fp4q9sq9ckj1avh">&nbsp;&nbsp;&nbsp;&nbsp;动态联编</a>
+</h3>
+<h3 class="topic">
+<a name="6h3bsq1b8shdpmq8jqqrtt5qur">&nbsp;&nbsp;&nbsp;&nbsp;即重写</a>
+</h3>
+<h3 class="topic">
+<a name="6771rkdmvehfe6q5bi0vc1skkd">&nbsp;&nbsp;&nbsp;模板</a>
+</h3>
+<h3 class="topic">
+<a name="1fmkhuktp9215qrpdke04pn4b4">&nbsp;&nbsp;&nbsp;&nbsp;静态联编</a>
+</h3>
+<h3 class="topic">
+<a name="7skr7f95au0uu5adh1q7ku52c8">&nbsp;&nbsp;虚函数</a>
+</h3>
+<h3 class="topic">
+<a name="6loe46svlj1d3itjeleke5clgh">&nbsp;&nbsp;&nbsp;语法</a>
+</h3>
+<h3 class="topic">
+<a name="48icm1gn6lerdma87mpplb9vkv">&nbsp;&nbsp;&nbsp;&nbsp;virtual 函数声明</a>
+</h3>
+<h3 class="topic">
+<a name="7s0c2opojbgt5bc4kikver8fp7">&nbsp;&nbsp;&nbsp;可以作为虚函数的情况</a>
+</h3>
+<h3 class="topic">
+<a name="7ahhsrgn02fhgn92532225vbhf">&nbsp;&nbsp;&nbsp;&nbsp;只有为成员函数且拥有this指针才可以作为虚函数</a>
+</h3>
+<h3 class="topic">
+<a name="69a1b1viek56u1p4qbs2vs33sn">&nbsp;&nbsp;&nbsp;&nbsp;构造函数不能作为虚函数</a>
+</h3>
+<h3 class="topic">
+<a name="0l1iig9u0dp38lnmjspibudce5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;因为构造函数相对于每一个类必须是是确定的</a>
+</h3>
+<h3 class="topic">
+<a name="5n88o319ruvp388sgh5vb4kh46">&nbsp;&nbsp;&nbsp;&nbsp;静态成员函数不能作为虚函数</a>
+</h3>
+<h3 class="topic">
+<a name="11judeg9i5ol7vmhijualpefsp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;因为虚函数的实现需要用到this指针，静态成员函数虽然也是成员函数，但是没有this指针</a>
+</h3>
+<h3 class="topic">
+<a name="3p42b6u49ddht7vo7rb4gdm7jg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;静态成员函数是类的成员函数，但是没有this指针</a>
+</h3>
+<h3 class="topic">
+<a name="2qso59qv6r2vrm89kend6413q5">&nbsp;&nbsp;&nbsp;&nbsp;友元函数不是成员函数，故不能作为虚函数</a>
+</h3>
+<h3 class="topic">
+<a name="5s40b7ucqvkdc95cgkc680is0l">&nbsp;&nbsp;&nbsp;&nbsp;友元成员函数是成员函数，但是没有this指针，不能作为虚函数</a>
+</h3>
+<h3 class="topic">
+<a name="14rv8lsc8bfcoj2a26jvjdrla0">&nbsp;&nbsp;&nbsp;&nbsp;析构函数推荐作为虚函数</a>
+</h3>
+<h3 class="topic">
+<a name="6ao6v103omv29hocd7g8nl23s2">&nbsp;&nbsp;&nbsp;作用：使用基类指针（或引用）指向不同的子类对象，使用基类指针（或引用）调用虚函数，调用的是子类中的虚函数</a>
+</h3>
+<h3 class="topic">
+<a name="4987qlgpbo02gptogaf0u7aito">&nbsp;&nbsp;&nbsp;特点</a>
+</h3>
+<h3 class="topic">
+<a name="4hg9grbmcc4094o7dmrv6g1d4k">&nbsp;&nbsp;&nbsp;&nbsp;虚函数的声明一般在父类中进行</a>
+</h3>
+<h3 class="topic">
+<a name="6c2uvf3o61avbvv9t2g8ctldr2">&nbsp;&nbsp;&nbsp;&nbsp;父类中的虚函数，通常需要在子类中有不同的实现</a>
+</h3>
+<h3 class="topic">
+<a name="0b4qejoc2a3em80e54busv48pa">&nbsp;&nbsp;&nbsp;&nbsp;当父类中存在一个同名虚函数时，子类中可以省去关键字virtual</a>
+</h3>
+<h3 class="topic">
+<a name="1d0qpuesr1dbl98adnr112t4sj">&nbsp;&nbsp;&nbsp;&nbsp;实现动态联编的方法</a>
+</h3>
+<h3 class="topic">
+<a name="77giubg9invopetv4m6q0msd5p">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用父类的指针（或引用）指向子类的对象</a>
+</h3>
+<h3 class="topic">
+<a name="0fb02fonspum5spg4ov9o28uss">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Animal *animal[4]={new Animal,new Dog,new Cat,new pig}</a>
+</h3>
+<h3 class="topic">
+<a name="79dvb3vknj4kekttcn247topb3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;数组里不能放置引用，所以引用没有数组的写法</a>
+</h3>
+<h3 class="topic">
+<a name="5av4g3fls1k74rtofff2fu498s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;引用的一般写法为</a>
+</h3>
+<h3 class="topic">
+<a name="1q91p7imbrgqnmh7n59gon1fap">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;父类&amp; 引用名=子类对象；</a>
+</h3>
+<h3 class="topic">
+<a name="5bul5q7521gkeh91ot2sjkscju">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该引用也可以实现动态联编</a>
+</h3>
+<h3 class="topic">
+<a name="3grr9ihr2303cjn933qut6gbdc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用父类指针调用子类的虚函数</a>
+</h3>
+<h3 class="topic">
+<a name="3p00kpajggig0g08ae079binj6">&nbsp;&nbsp;&nbsp;虚函数表在构造函数中被初始化</a>
+</h3>
+<h3 class="topic">
+<a name="3sjgsa7fn6s5lv2bcbrt27pfko">&nbsp;&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="6bggfm7mopnr9l2id55qghtqne">&nbsp;&nbsp;&nbsp;&nbsp;class Animal&#13;
+{&#13;
+public:&#13;
+	// 父类中的虚函数，通常需要在子类中有不同的实现&#13;
+	virtual void voice(){printf("动物叫\n");}&#13;
+};&#13;
+&#13;
+// 继承自动物的狗类&#13;
+class Dog : public Animal&#13;
+{&#13;
+public:&#13;
+	// 父类中的虚函数，通常需要在子类中有不同的实现&#13;
+	// 当父类中存在一个同名虚函数时，子类中可以省去关键字 virtual	&#13;
+	void voice(){printf("狗叫\n");}&#13;
+};&#13;
+&#13;
+// 继承自动物的猫类-&#13;
+class Cat : public Animal&#13;
+{&#13;
+public:&#13;
+	// 父类中的虚函数，通常需要在子类中有不同的实现&#13;
+	virtual void voice(){printf("猫叫\n");}&#13;
+};&#13;
+&#13;
+// 继承自动物的猪类&#13;
+class Pig : public Animal&#13;
+{&#13;
+public:&#13;
+	// 父类中的虚函数，通常需要在子类中有不同的实现&#13;
+	virtual void voice(){printf("猪叫\n");}&#13;
+};&#13;
+int main()&#13;
+{&#13;
+	// 想要实现动态联编，需要的步骤&#13;
+	// 1. 使用父类的指针(引用)指向子类对象&#13;
+	Animal* animal[4] = {&#13;
+		new Animal, new Dog,&#13;
+		new Cat, new Pig&#13;
+	};&#13;
+&#13;
+	// 2. 使用父类的指针调用虚函数&#13;
+	for (int i = 0; i &lt; 4; ++i)&#13;
+		animal[i]-&gt;voice();&#13;
+&#13;
+	// 使用引用构成动态联编(不推荐)&#13;
+	Dog dog;&#13;
+	Animal &amp; ref_animal = dog;&#13;
+	ref_animal.voice();&#13;
+	return 0;&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="3spnla8lnh08gakh0mo0usdp5p">&nbsp;&nbsp;override</a>
+</h3>
+<h3 class="topic">
+<a name="7v2098lj94jl8p5leluus1dsnu">&nbsp;&nbsp;&nbsp;一般是为防止函数名看错</a>
+</h3>
+<h3 class="topic">
+<a name="02s2i7654739kdbqn8val5f4a6">&nbsp;&nbsp;&nbsp;当在子类成员函数名()后, {}前 加override后编译器会检查是否该函数是否将父类中同名函数重写</a>
+</h3>
+<h3 class="topic">
+<a name="7lrgr7t80kiphudmgro6hc2bbk">&nbsp;&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="7dimdo3n2250tjqv4a3sfb0pae">&nbsp;&nbsp;&nbsp;&nbsp;class BASE&#13;
+{&#13;
+public: virtual void show1() { }&#13;
+};&#13;
+&#13;
+class CHILD : public BASE&#13;
+{&#13;
+public: &#13;
+	// 如果函数名被看错了，就会自己实现一个 show[l]&#13;
+	// 但是 showl 在父类中不存在，就可能发生错误&#13;
+	// 当添加了关键字 override 后编译器会检查是否重写成功&#13;
+	virtual void show1() override { }&#13;
+};</a>
+</h3>
+<h3 class="topic">
+<a name="79brqueeli1uuev86iq0h6t468">&nbsp;&nbsp;虚析构函数</a>
+</h3>
+<h3 class="topic">
+<a name="77g3d53br2psd4l5ac4dl5r2m5">&nbsp;&nbsp;&nbsp;一般建议将父类的析构函数设置为虚函数</a>
+</h3>
+<h3 class="topic">
+<a name="24u41eldnh43cdkmurjbqefu02">&nbsp;&nbsp;&nbsp;当使用父类指针指向子类对象时</a>
+</h3>
+<h3 class="topic">
+<a name="7qao9733124d1c7c6b723viqt8">&nbsp;&nbsp;&nbsp;&nbsp;BASE*pobj=new CHILD;</a>
+</h3>
+<h3 class="topic">
+<a name="02bl2d8h1kjgbj1ug3uc81n3cb">&nbsp;&nbsp;&nbsp;若子类的析构函数没有设置为虚函数时，手动析构父类指针，不会调用子类的析构函数</a>
+</h3>
+<h3 class="topic">
+<a name="53b4jquo05qdjd34k19mfao6en">&nbsp;&nbsp;&nbsp;&nbsp;即delete pobj时，直接调用父类的析构函数而没有调用子类的析构函数，可能会造成内存泄露的问题</a>
+</h3>
+<h3 class="topic">
+<a name="46qq7fva71g09l401fkofc495g">&nbsp;&nbsp;&nbsp;因为没有将父类析构函数设置为虚函数，就不会产生动态联编，就是说实际调用的函数和指针类型相关</a>
+</h3>
+<h3 class="topic">
+<a name="017iocd22gnf62peqt6r02l561">&nbsp;&nbsp;&nbsp;最终目的：为了防止类似内存泄漏的问题</a>
+</h3>
+<h3 class="topic">
+<a name="0cs9r5nn2atr6mv0f86gis32a8">&nbsp;&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="4su6iq672q0aoicd27ms0je9ds">&nbsp;&nbsp;&nbsp;&nbsp;class BASE&#13;
+{&#13;
+public: &#13;
+	virtual ~BASE()&#13;
+	{&#13;
+		printf("BASE::~BASE()\n");&#13;
+	}&#13;
+};&#13;
+&#13;
+class CHILD: public BASE&#13;
+{&#13;
+public:&#13;
+	~CHILD()&#13;
+	{&#13;
+		// 当子类的析构函数没有设置为虚函数时&#13;
+		// 手动析构父类的指针，不会调用到子类的析构&#13;
+		printf("CHILD::~CHILD()\n");&#13;
+	}&#13;
+};&#13;
+&#13;
+int main()&#13;
+{&#13;
+	// 父类指针可以指向子类对象&#13;
+	BASE* obj = new CHILD;&#13;
+&#13;
+	// 手动析构父类的指针，查看子类析构有没有调用&#13;
+	delete obj;&#13;
+	// 如果没有将析构函数设置为虚函数&#13;
+	// 就不会产生动态联编，也就是说实&#13;
+	// 际调用的函数和指针类型相关&#13;
+	// 虚析构函数主要是为了调用子类的析构函数&#13;
+	// 防止类似于内存泄漏产生的问题。&#13;
+	return 0;&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="3hcuuj7i49nmr3qdjnr9bpo5bb">&nbsp;&nbsp;重载、重写 重定义</a>
+</h3>
+<h3 class="topic">
+<a name="2cqvjijqsj6nls1pma4j92bq5f">&nbsp;&nbsp;&nbsp;重载</a>
+</h3>
+<h3 class="topic">
+<a name="6f3frv04domqbbbiefd4m98qoj">&nbsp;&nbsp;&nbsp;&nbsp;作用域相同</a>
+</h3>
+<h3 class="topic">
+<a name="19pj4s6m2e119gpjush5g90bjv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;参数不同（类型 顺序 个数）</a>
+</h3>
+<h3 class="topic">
+<a name="6bvjphtfk0rqsonp4fg7pi5kvf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;函数名相同</a>
+</h3>
+<h3 class="topic">
+<a name="07kmr2saalj2jhrpi6mu4j2vm9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;同一类中的成员函数的重载</a>
+</h3>
+<h3 class="topic">
+<a name="24da537eded8a8j618j9l5l100">&nbsp;&nbsp;&nbsp;重定义</a>
+</h3>
+<h3 class="topic">
+<a name="35eaoai33sf6l8dgg4j7gk42ch">&nbsp;&nbsp;&nbsp;&nbsp;作用域不同</a>
+</h3>
+<h3 class="topic">
+<a name="2188hm3k44lcodbblbqtq7j7be">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;参数可以相同，可以不相同</a>
+</h3>
+<h3 class="topic">
+<a name="1iig1hni5hthqki6ccjl368npe">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;函数名相同</a>
+</h3>
+<h3 class="topic">
+<a name="5072a0cvhh415e35dggcjffl4d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;主要体现在子类重写父类成员函数</a>
+</h3>
+<h3 class="topic">
+<a name="300aqls4kcric15ougfcv7srvd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;会隐藏父类的对应成员（函数或数据）</a>
+</h3>
+<h3 class="topic">
+<a name="4pdssq78vdtorthhackcqgds05">&nbsp;&nbsp;&nbsp;重写</a>
+</h3>
+<h3 class="topic">
+<a name="5a38iijg35q6kh7hq52b5jb7r8">&nbsp;&nbsp;&nbsp;&nbsp;作用域不同</a>
+</h3>
+<h3 class="topic">
+<a name="6vhtjfhjapjeujq6c2ck9j6ofb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;参数相同</a>
+</h3>
+<h3 class="topic">
+<a name="5dhu6q7o9ah8qamridr68ug168">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;函数名相同</a>
+</h3>
+<h3 class="topic">
+<a name="0ul0ddsectkan2e89tlugn8lqr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;是实现虚函数的方式</a>
+</h3>
+<h3 class="topic">
+<a name="5vtd2hquevl58odllbd4s6la7g">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;要求函数的原型必须相同</a>
+</h3>
+<h3 class="topic">
+<a name="13sumk7spjp58r8o4ij4b20q59">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;实际上返回值可以有所不同，但目前暂不考虑</a>
+</h3>
+<h3 class="topic">
+<a name="1umi46186p1v21pkj9170b6uh5">&nbsp;&nbsp;&nbsp;代码（重定义 重写）</a>
+</h3>
+<h3 class="topic">
+<a name="1ouupkv3okt8d1g45pm25fqjd7">&nbsp;&nbsp;&nbsp;&nbsp;class OBJECT&#13;
+{&#13;
+public: &#13;
+	// 函数的重定义&#13;
+	void show() { printf("OBJECT::SHOW()\n"); }&#13;
+	// 函数的重写： virtual &#13;
+	virtual void print() { printf("OBJECT::print()\n"); }&#13;
+};&#13;
+&#13;
+class CHILD: public OBJECT&#13;
+{&#13;
+public:&#13;
+	// 需要对父类的 show 进行重定义&#13;
+	// 1. 作用域分别是父类 OBJECT:: 和当前类 CHILD::&#13;
+	// 2. 参数可以是一样的，也可以不一样，都会隐藏父类的对应成员&#13;
+	void show() { printf("CHILD::SHOW()\n"); }&#13;
+&#13;
+	// 需要对父类的 print 进行重写&#13;
+	// 1. 作用域分别是父类 OBJECT:: 和当前类 CHILD::&#13;
+	// 2. 重写要求函数的原型完全相同，必须使用虚函数&#13;
+	void print() { printf("CHILD::print()\n");  }&#13;
+};&#13;
+&#13;
+int main()&#13;
+{&#13;
+	CHILD obj;&#13;
+	obj.print();&#13;
+	obj.show();&#13;
+	return 0;&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="050p35sfv3s471f6h8mddoi2oc">&nbsp;&nbsp;&nbsp;代码（重载）</a>
+</h3>
+<h3 class="topic">
+<a name="4uk7o7kkn1muqqfktp2n5v7o5b">&nbsp;&nbsp;&nbsp;&nbsp;void show() {}&#13;
+void show(int) {}&#13;
+void show(int, double) {}&#13;
+void show(double, int) {}</a>
+</h3>
+<h3 class="topic">
+<a name="1b0edeht6feojf8vem0ib928fm">&nbsp;&nbsp;纯虚函数与抽象类</a>
+</h3>
+<h3 class="topic">
+<a name="6830oevcm4b0sbtdku2blcub4d">&nbsp;&nbsp;&nbsp;抽象类不能被实例化，最少有一个纯虚函数</a>
+</h3>
+<h3 class="topic">
+<a name="1t3k3dr338be0ohr0s6u6drggd">&nbsp;&nbsp;&nbsp;纯虚函数的语法</a>
+</h3>
+<h3 class="topic">
+<a name="1b4m2m18genl8hhfddbpn4egtl">&nbsp;&nbsp;&nbsp;&nbsp;virtual void voice()=0;</a>
+</h3>
+<h3 class="topic">
+<a name="5ti02a6c5tmhgh82ap3ga617ur">&nbsp;&nbsp;&nbsp;&nbsp;virtual void voice(){};</a>
+</h3>
+<h3 class="topic">
+<a name="7ikbrrr9mo1ommqmlhtla5cbt0">&nbsp;&nbsp;&nbsp;如果一个类中有一个纯虚函数，这个类一定为一个抽象类</a>
+</h3>
+<h3 class="topic">
+<a name="5dhnombauqmivg58qmb007u7bo">&nbsp;&nbsp;&nbsp;若纯虚函数的子类没有实现抽象类的[所有]纯虚函数，该子类仍为抽象类</a>
+</h3>
+<h3 class="topic">
+<a name="6sk455k3su68dqr3mlkhfoa0in">&nbsp;&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="7efhjb218ho14nfovpdjftjaha">&nbsp;&nbsp;&nbsp;&nbsp;class Animal&#13;
+{&#13;
+public:&#13;
+	// 因为动物的声音很抽象，不能直接说明动物的具体声音&#13;
+	// 所以可以把动物的声音函数设置为纯虚函数供具体的动物实现&#13;
+	virtual void voice() = 0;&#13;
+};&#13;
+&#13;
+// 继承自动物的狗类&#13;
+class Dog : public Animal&#13;
+{&#13;
+public:&#13;
+	// 父类中的虚函数，通常需要在子类中有不同的实现&#13;
+	void voice()&#13;
+	{&#13;
+		// 当父类中存在一个同名虚函数时，子类中可以省去关键字 virtual&#13;
+		printf("狗叫\n");&#13;
+	}&#13;
+};&#13;
+&#13;
+// 继承自动物的猫类-&#13;
+class Cat : public Animal&#13;
+{&#13;
+public:&#13;
+	// 父类中的虚函数，通常需要在子类中有不同的实现&#13;
+	virtual void voice()&#13;
+	{&#13;
+		printf("猫叫\n");&#13;
+	}&#13;
+};&#13;
+&#13;
+// 继承自动物的鸟类&#13;
+class Brid : public Animal&#13;
+{&#13;
+	// 因为鸟的叫声也有很多种，所以也不能具体的描述&#13;
+	// 那么就保留纯虚函数，供具体的鸟数显&#13;
+};&#13;
+int main()&#13;
+{&#13;
+	Animal * animal = new Dog;&#13;
+	animal-&gt;voice();&#13;
+	// 记得释放&#13;
+	animal = new Cat;&#13;
+	animal-&gt;voice();&#13;
+	return 0;&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="2pge3ad9ojhguc576qu0q52cbo">&nbsp;&nbsp;不考虑继承的虚函数内存模型</a>
+</h3>
+<h3 class="topic">
+<a name="7k1q5mc4624704frkc5i973m9h">&nbsp;&nbsp;&nbsp;存在一个或一个以上个虚函数的类</a>
+</h3>
+<h3 class="topic">
+<a name="3l2g5hdunngrqptmhrmecp6mfe">&nbsp;&nbsp;&nbsp;当一个类中存在虚函数时就会产生一个虚函数指针（vfptr），该类大小会发生变化，最小变为一个指针变量的大小（因为有内存对齐）</a>
+</h3>
+<h3 class="topic">
+<a name="63itjoobg58m79dqfl8hogbbad">&nbsp;&nbsp;&nbsp;虚函数指针位于一个类对象的首地址</a>
+</h3>
+<h3 class="topic">
+<a name="3fvdjgli2ebc69a2e3ek4pidtu">&nbsp;&nbsp;&nbsp;&nbsp;如果存在虚继承，还在虚继承的虚基表指针的前面</a>
+</h3>
+<h3 class="topic">
+<a name="07vj2qb9himmi68f26aaiqpn4p">&nbsp;&nbsp;&nbsp;虚函数指针指向一张虚函数表，虚函数表内存放的是当前类拥有的所有虚函数的首地址</a>
+</h3>
+<h3 class="topic">
+<a name="5oun0p8vrt5sq8jov9f7uq5om7">&nbsp;&nbsp;&nbsp;&nbsp;实际上存放的跳转的指令</a>
+</h3>
+<h3 class="topic">
+<a name="0c7g4aq30k3tijsakfbj0m4hsk">&nbsp;&nbsp;&nbsp;同一个类生成的对象，共用同一张虚函数表，即虚函数指针值相同的</a>
+</h3>
+<h3 class="topic">
+<a name="06vg8fadt0bkoaa0apkc0s68ag">&nbsp;&nbsp;&nbsp;一个类只有一个对应的虚函数表</a>
+</h3>
+<h3 class="topic">
+<a name="0rusgi0ncr3v733b6cvo3shbq0">&nbsp;&nbsp;&nbsp;&nbsp;但是一个类如果继承了多个存在虚函数的类，就会保存有对应数量张虚函数表</a>
+</h3>
+<h3 class="topic">
+<a name="4iif7ddrk7lsdnfh0pe19p8fke">&nbsp;&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="0j27bflke2oum8d4cai5v0r0ld">&nbsp;&nbsp;&nbsp;&nbsp; class OBJECT&#13;
+{&#13;
+public:&#13;
+	virtual void show1() { }&#13;
+	virtual void show2() { }&#13;
+	// 当一个类中存在虚函数时，就会产生一个虚函数指针(vfptr)&#13;
+	// 虚函数指针位于一个类对象的首地址&#13;
+	// 虚函数指针指向了一个虚函数表，表内存放的是所有的虚函数&#13;
+	// 同一个类生成的对象，共用一张虚函数表，一个类如果继承了多个存在虚函数的父类就会产生多张虚函数表&#13;
+&#13;
+	// [0]vfptr&#13;
+	//		- jmp OBJECT::show1();&#13;
+	//		- jmp OBJECT::show2();&#13;
+};&#13;
+&#13;
+int main()&#13;
+{&#13;
+	OBJECT object1;&#13;
+	OBJECT object2;&#13;
+	return 0;&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="4c035j97s711a3nmbek9ihln33">&nbsp;&nbsp;单一继承的虚函数内存模型</a>
+</h3>
+<h3 class="topic">
+<a name="3494uq1vg32ai5hiegdplatoc4">&nbsp;&nbsp;&nbsp;子类中函数有三种情况</a>
+</h3>
+<h3 class="topic">
+<a name="3n30o7q2jri89i176ufhj8hsru">&nbsp;&nbsp;&nbsp;&nbsp;子类中会重写父类中的虚函数</a>
+</h3>
+<h3 class="topic">
+<a name="2qmusqfdd47qj607o0dmnincov">&nbsp;&nbsp;&nbsp;&nbsp;子类中没有重写父类中的虚函数</a>
+</h3>
+<h3 class="topic">
+<a name="082lvi87ne9nbp7h0mo63u097j">&nbsp;&nbsp;&nbsp;&nbsp;子类中自己添加的虚函数</a>
+</h3>
+<h3 class="topic">
+<a name="4ne5p839bf81f20j27t5ra1qoe">&nbsp;&nbsp;&nbsp;子类第一个字节存放一个虚函数表指针，指向一个虚函数表</a>
+</h3>
+<h3 class="topic">
+<a name="4j1i2l4br2usu0o20alr65655r">&nbsp;&nbsp;&nbsp;虚函数表中存有以上三类虚函数的首地址</a>
+</h3>
+<h3 class="topic">
+<a name="1bm95c7fnoj2gfkqlpdtiinrhh">&nbsp;&nbsp;&nbsp;&nbsp;实际上存放的跳转的指令</a>
+</h3>
+<h3 class="topic">
+<a name="0a6ih1hcb0hqv7r6fq3mcem6p3">&nbsp;&nbsp;&nbsp;规律（虚函数表中的数据是根据什么被添加进去的）</a>
+</h3>
+<h3 class="topic">
+<a name="60535g70r9pf7m0ges4r3v8io8">&nbsp;&nbsp;&nbsp;&nbsp;当子类重写父类中的虚函数，虚函数中存储的就是子类的虚函数</a>
+</h3>
+<h3 class="topic">
+<a name="48kv9ktketesap6s393iovbuln">&nbsp;&nbsp;&nbsp;&nbsp;当子类没有重写父类的虚函数，虚函数表中存放的就是父类的虚函数</a>
+</h3>
+<h3 class="topic">
+<a name="2gfd4veqvj0pjoecjk7ra734oj">&nbsp;&nbsp;&nbsp;&nbsp;当子类自己添加新的虚函数，添加的函数就会存储在表的最后</a>
+</h3>
+<h3 class="topic">
+<a name="2o6hijjmi57pdmepo399q8n1q6">&nbsp;&nbsp;&nbsp;&nbsp;为了调用方便，同名的虚函数，在父类与子类的虚函数表中，距离表头的偏移是一样的</a>
+</h3>
+<h3 class="topic">
+<a name="3d6guth7v4krdoegeoem2bp2cs">&nbsp;&nbsp;&nbsp;虚函数调用顺序</a>
+</h3>
+<h3 class="topic">
+<a name="3iel9o04kubf8fg22nf7246kie">&nbsp;&nbsp;&nbsp;&nbsp;找到对象首地址的虚函数指针</a>
+</h3>
+<h3 class="topic">
+<a name="32lp3pt7f424o48oji8repb654">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;int vfptr=*(int*)&amp;object;</a>
+</h3>
+<h3 class="topic">
+<a name="4cslijp67h35a58r9r2r6d6h87">&nbsp;&nbsp;&nbsp;&nbsp;通过指针找到虚函数表</a>
+</h3>
+<h3 class="topic">
+<a name="121rq2mijd0933556nu8idrlor">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;int *vftable=(int*)vfptr;</a>
+</h3>
+<h3 class="topic">
+<a name="1n2rfveok1uo2qos394hs5uumb">&nbsp;&nbsp;&nbsp;&nbsp;通过虚函数表以及偏移找到虚函数</a>
+</h3>
+<h3 class="topic">
+<a name="3l856ciqor6n66l2qrn5ai8p2k">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;void (*pfun)=(void(*)())vftable[1];</a>
+</h3>
+<h3 class="topic">
+<a name="55a26tekq368dijhqjnv1ck34p">&nbsp;&nbsp;&nbsp;&nbsp;调用虚函数</a>
+</h3>
+<h3 class="topic">
+<a name="3cjnidf6ibc561504ahkd70jgj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pfun();</a>
+</h3>
+<h3 class="topic">
+<a name="4dtfh6pe71nmpjrft1nimclc2j">&nbsp;&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="7pmt0e11l37rhspisks73b64eo">&nbsp;&nbsp;&nbsp;&nbsp;#include &lt;iostream&gt;&#13;
+using namespace std;&#13;
+&#13;
+class OBJECT&#13;
+{&#13;
+public:&#13;
+	virtual void show1() { }&#13;
+	virtual void show2() { }&#13;
+&#13;
+	// [0]vfptr&#13;
+	//		- [0]jmp OBJECT::show1();&#13;
+	//		- [1]jmp OBJECT::show2();&#13;
+};&#13;
+class CHILD : public OBJECT &#13;
+{&#13;
+public:&#13;
+	// 重写父类中的虚函数 show1()&#13;
+	virtual void show1() { }&#13;
+&#13;
+	// 没有重写父类的虚函数 show2()，继承了 show2()&#13;
+&#13;
+	// CHILD 类自己添加的虚函数 show3()&#13;
+	virtual void show3() { }&#13;
+&#13;
+	// - 虚函数表内的数据是根据什么被添加进去的&#13;
+	// 0. 为了调用方便，同名的虚函数在父类和子类中对应的下标是一样的&#13;
+	// 1. 当子类重写了父类中的虚函数，虚函数表中存储的就是子类的虚函数&#13;
+	// 2. 当子类没有重写父类的虚函数，虚函数表中存储的就是父类的虚函数&#13;
+	// 3. 当子类自己添加的了新的虚函数，添加的函数就会存储在表的最后&#13;
+&#13;
+	// vfptr&#13;
+	//	- [0]CHILD::show1:&#13;
+	//		- 01331433  jmp         CHILD::show1 (013319A0h)  &#13;
+	//	- [1]OBJECT::show2:&#13;
+	//		- 01331424  jmp         OBJECT::show2 (01334760h)  &#13;
+	//	- [3]CHILD::show3:&#13;
+	//		- 01331438  jmp         CHILD::show3 (013339D0h) &#13;
+};&#13;
+&#13;
+int main()&#13;
+{&#13;
+	CHILD child;&#13;
+&#13;
+	// - 传入的对象类型可能不同，但是肯定要按照下面的步骤找到对应的函数&#13;
+	// 1. 找到对象首地址内的虚函数指针&#13;
+	// 2. 通过虚函数指针找到虚函数表&#13;
+	// 3. 假设想要调用的是 show2(), 下标就应该是1&#13;
+	return 0;&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="7981kmlnit0r62q1jeuni4gv4h">&nbsp;&nbsp;&nbsp;在这里，子类自身的虚函数被放在虚函数表最后储存</a>
+</h3>
+<h3 class="topic">
+<a name="0a8rsukb2ukaehdei5i7b3lt4d">&nbsp;&nbsp;多个继承的虚函数内存模型</a>
+</h3>
+<h3 class="topic">
+<a name="6n6ogl3l7umga5c2a3v75d29f7">&nbsp;&nbsp;&nbsp;在子类中</a>
+</h3>
+<h3 class="topic">
+<a name="2252sdpndstq0g4uk3bh8ip7nt">&nbsp;&nbsp;&nbsp;&nbsp;重写父类1中的虚函数</a>
+</h3>
+<h3 class="topic">
+<a name="5v9d67ljun8vb59fr41b95p3so">&nbsp;&nbsp;&nbsp;&nbsp;重写父类2中的虚函数</a>
+</h3>
+<h3 class="topic">
+<a name="77d0utc1eols47mcghc1sufmbe">&nbsp;&nbsp;&nbsp;&nbsp;添加自己的虚函数</a>
+</h3>
+<h3 class="topic">
+<a name="21a8di91hns85vbmlef3cf17rg">&nbsp;&nbsp;&nbsp;内存中</a>
+</h3>
+<h3 class="topic">
+<a name="3sfkc9op4h84ikl9p5l366p4uj">&nbsp;&nbsp;&nbsp;&nbsp;有两个虚函数指针</a>
+</h3>
+<h3 class="topic">
+<a name="7jdronnf817nlma5443abnsmlo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;第一张虚函数表</a>
+</h3>
+<h3 class="topic">
+<a name="4jpblslbfp7pt3lvk699as6e0h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;第二张虚函数表</a>
+</h3>
+<h3 class="topic">
+<a name="4024aqgipfk2pf65kknh16vg7s">&nbsp;&nbsp;&nbsp;规律</a>
+</h3>
+<h3 class="topic">
+<a name="54obs9d5sv2s4rdcmcipr2gj20">&nbsp;&nbsp;&nbsp;&nbsp;当继承了多个含有虚函数的父类，就会生成对应个数的虚函数指针和虚函数表</a>
+</h3>
+<h3 class="topic">
+<a name="48r1crsab6fltno5q4ig8934d3">&nbsp;&nbsp;&nbsp;&nbsp;虚函数指针对应的虚函数表存储的对应父类的虚函数，</a>
+</h3>
+<h3 class="topic">
+<a name="733p81th8mdrs7u6q52le55mk5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当子类重写父类中的虚函数，对应虚函数中存储的就是子类的虚函数</a>
+</h3>
+<h3 class="topic">
+<a name="52tjkrru77nbho1oigfajqkopb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当子类没有重写父类的虚函数，对应虚函数表中存放的就是父类的虚函数</a>
+</h3>
+<h3 class="topic">
+<a name="2gjf1tfltr61879tvqulhboqop">&nbsp;&nbsp;&nbsp;&nbsp;当添加了新的虚函数，新的虚函数被添加到了第一张虚函数表的末尾</a>
+</h3>
+<h3 class="topic">
+<a name="2hrfc1if23afgjqvr1c2q7uc36">&nbsp;&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="4r4gsne1t3c3g1asmtp4m7m10o">&nbsp;&nbsp;&nbsp;&nbsp;class OBJECT1&#13;
+{&#13;
+public:&#13;
+	virtual void show1() { }&#13;
+	virtual void show2() { }&#13;
+};&#13;
+&#13;
+class OBJECT2&#13;
+{&#13;
+public:&#13;
+	virtual void show3() { }&#13;
+	virtual void show4() { }&#13;
+};&#13;
+&#13;
+class CHILD : public OBJECT1, public OBJECT2&#13;
+{&#13;
+public:&#13;
+	// 重写 OBJECT1 中存放的虚函数&#13;
+	virtual void show1() { }&#13;
+&#13;
+	// 重写 OBJECT2 中存放的虚函数&#13;
+	virtual void show3() { }&#13;
+&#13;
+	// 添加自己的虚函数&#13;
+	virtual void show5() { }&#13;
+&#13;
+	// 1. 当继承了多个含有虚函数的父类，就会生成对应个数的虚函数指针和虚函数表&#13;
+	// 2. 对应的虚函数表内存储的是对应父类的虚函数&#13;
+&#13;
+	// 1. 当子类重写了父类中的虚函数，对应虚函数表中存储的就是子类的虚函数&#13;
+	// 2. 当子类没有重写父类的虚函数，对应虚函数表中存储的就是父类的虚函数&#13;
+	// 3. 当添加了新的虚函数，那么新的虚函数被放在了第一张虚函数表的末尾&#13;
+&#13;
+	// vfptr(OBJECT1)&#13;
+	// - CHILD::show1:&#13;
+	//		- 00BB1433  jmp         CHILD::show1(0BB2FE0h)&#13;
+	// - OBJECT1::show2 :&#13;
+	//		- 00BB1451  jmp         OBJECT1::show2(0BB39D0h)&#13;
+	// - CHILD::show5 :&#13;
+	//		- 00BB145B  jmp         CHILD::show5(0BB44B0h)&#13;
+	&#13;
+	// vfptr(OBJECT2)&#13;
+	//	- CHILD::show3 :&#13;
+	//		- 00BB1438  jmp         CHILD::show3(0BB19E0h)&#13;
+	//	- OBJECT2::show4 :&#13;
+	//		- 00BB1456  jmp         OBJECT2::show4(0BB3FF0h)&#13;
+};&#13;
+&#13;
+int main()&#13;
+{&#13;
+	CHILD child;&#13;
+	return 0;&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="127a60473svq0r063t3q3ogius">&nbsp;&nbsp;函数的调用效率</a>
+</h3>
+<h3 class="topic">
+<a name="5vj796jse6vkcvs5f80lhgbon1">&nbsp;&nbsp;&nbsp;内联函数</a>
+</h3>
+<h3 class="topic">
+<a name="4a20611ppmnutmgagrn3h0bbgh">&nbsp;&nbsp;&nbsp;&nbsp;调用效率最高，简单的展开，没有生成调用代码</a>
+</h3>
+<h3 class="topic">
+<a name="3j7v8hq6b66ntlg13qpb6tsqng">&nbsp;&nbsp;&nbsp;全局函数（友元函数）、成员函数、静态成员函数（调用效率一样）</a>
+</h3>
+<h3 class="topic">
+<a name="6klncdvh10lvm4lcv71h3p2ikd">&nbsp;&nbsp;&nbsp;&nbsp;调用方式 全局函数（传参）</a>
+</h3>
+<h3 class="topic">
+<a name="7putouped59vttrkbvhfo70ap3">&nbsp;&nbsp;&nbsp;&nbsp;调用方式 友元函数（传参）</a>
+</h3>
+<h3 class="topic">
+<a name="4fhs2j3armc1pe58opmats34pm">&nbsp;&nbsp;&nbsp;&nbsp;调用方式 成员函数（this ，传参）</a>
+</h3>
+<h3 class="topic">
+<a name="705ich11tokrvqhia5etrt3voe">&nbsp;&nbsp;&nbsp;&nbsp;调用方式 类域::静态成员函数（传参）</a>
+</h3>
+<h3 class="topic">
+<a name="6drkns943a7ds75uo4r6977blm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;静态成员函数是对应类的成员函数，但没有this指针</a>
+</h3>
+<h3 class="topic">
+<a name="7vck5oacdp3n3fjpj0d07vl68c">&nbsp;&nbsp;&nbsp;虚函数</a>
+</h3>
+<h3 class="topic">
+<a name="64tsvi9oo1ia4351rf6rj7ehdl">&nbsp;&nbsp;&nbsp;&nbsp;调用最慢，需要多几个寻址过程</a>
+</h3>
+<h3 class="topic">
+<a name="7uhk2okqa0u0s510kvnbs420cf">&nbsp;&nbsp;&nbsp;&nbsp;虚函数的调用</a>
+</h3>
+<h3 class="topic">
+<a name="3pa130q6si9ap4nvde4ld26m3v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;找到对象首地址的虚函数指针</a>
+</h3>
+<h3 class="topic">
+<a name="18bt6fi2fepgvavl0l8i48ae57">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;int vfptr=*(int*)&amp;object;</a>
+</h3>
+<h3 class="topic">
+<a name="603aia85vqba7up9glu2kfq2cf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过指针找到虚函数表</a>
+</h3>
+<h3 class="topic">
+<a name="08ut5nbiuqn203scgpf9p3gnh5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;int *vftable=(int*)vfptr;</a>
+</h3>
+<h3 class="topic">
+<a name="0qok6qut096d6lfkch1nhq96bi">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;获取对应下标的指针，转换成函数指针</a>
+</h3>
+<h3 class="topic">
+<a name="4eculbjru2oge3vphg3r6h8h80">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;void (*pfun)=(void(*)())vftable[1];</a>
+</h3>
+<h3 class="topic">
+<a name="3ghtouuocb62f8lelrlfvq725i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;上一行语句还可以写为</a>
+</h3>
+<h3 class="topic">
+<a name="3ttg6mru46altl532p00t8eunf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;typedef void(*pfun)()</a>
+</h3>
+<h3 class="topic">
+<a name="55ge9egifg64os46qec8devveb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;定义一个函数指针</a>
+</h3>
+<h3 class="topic">
+<a name="0gvib5ma7i69hhdkq0091semej">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;using pfun void(*)();!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!</a>
+</h3>
+<h3 class="topic">
+<a name="3t5cv37djcep0p90tgt1gqk2ho">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;调用虚函数</a>
+</h3>
+<h3 class="topic">
+<a name="3j1dpjihflma175h5a9ogprep7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pfun();</a>
+</h3>
+<h3 class="topic">
+<a name="254fq3h6dvmn1aobo68gdmbiee">&nbsp;&nbsp;&nbsp;&nbsp;若虚函数访问了成员函数或数据成员，需要传入this指针</a>
+</h3>
+<h3 class="topic">
+<a name="7gnm2l4k9n4f1056j736m4tflj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;找到对象首地址的虚函数指针</a>
+</h3>
+<h3 class="topic">
+<a name="2nsr1r38tqoo02iqqm9ol6rh0e">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;int vfptr=*(int*)&amp;object;</a>
+</h3>
+<h3 class="topic">
+<a name="347qq2d6okq5s67isbuap1s8ho">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过指针找到虚函数表</a>
+</h3>
+<h3 class="topic">
+<a name="418e0rnbnf3m2lncpa12gn3snm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;int *vftable=(int*)vfptr;</a>
+</h3>
+<h3 class="topic">
+<a name="5l25ap6ur01cg5qu6oldc922tj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;获取对应下标的指针，转换成函数指针</a>
+</h3>
+<h3 class="topic">
+<a name="3v4ik4s3rom3qkoaoilgfmp5to">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;void (*pfun)=(void(*)())vftable[1];</a>
+</h3>
+<h3 class="topic">
+<a name="75q1t9sp1meictisg4092l7tmp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;或者写为</a>
+</h3>
+<h3 class="topic">
+<a name="6bpjhqcat1o8hv2l6ajq5viq4b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;typedef void(pfun)!!!!!!!!!!</a>
+</h3>
+<h3 class="topic">
+<a name="48asnrrio26ri7f8qasn0n7s83">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!</a>
+</h3>
+<h3 class="topic">
+<a name="5mqtnlra4lcoqj601j92ohvca3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;调用虚函数</a>
+</h3>
+<h3 class="topic">
+<a name="72rp9hvsi1f596r5a6ir1gbtem">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_asm lea ecx [obj];</a>
+</h3>
+<h3 class="topic">
+<a name="2908dd1a0vuekgjb0a10u9a0o4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pfun();</a>
+</h3>
+<h3 class="topic">
+<a name="386ig642nr6dti0o3t711rrskv">&nbsp;&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="2083c6c29gjejh9uaj2r54i3sm">&nbsp;&nbsp;&nbsp;&nbsp;class  OBJECT&#13;
+{&#13;
+public:&#13;
+	// 成员函数&#13;
+	void show1() { }&#13;
+&#13;
+	// 静态成员函数&#13;
+	static void show2() { }&#13;
+&#13;
+	// 友元函数&#13;
+	friend void show3();&#13;
+&#13;
+	// 虚函数&#13;
+	virtual void show4() { }&#13;
+	virtual void show44() { }&#13;
+};&#13;
+//友元函数&#13;
+void show3() { }&#13;
+&#13;
+// 全局函数&#13;
+void show5() { }&#13;
+&#13;
+// 内联函数&#13;
+inline int show6(int a, int b) { return a + b; }&#13;
+&#13;
+int main()&#13;
+{&#13;
+	OBJECT obj, *pobj = &amp;obj;&#13;
+	obj.show1();&#13;
+	obj.show2();&#13;
+	show3();&#13;
+	//虚函数为了发动动态联编，必须使用父类指针进行函数调用&#13;
+	pobj-&gt;show44();&#13;
+	show5();&#13;
+	show6(1, 2);&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="3o3imu39qfset90iilsn2m7an0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;手动调用虚函数</a>
+</h3>
+<h3 class="topic">
+<a name="5n75dor2umossniu4h0s72lcj9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;class  OBJECT&#13;
+{&#13;
+public:&#13;
+	virtual void show1() { printf("Hello show1\n"); }&#13;
+	virtual void show2() { printf("Hello show2\n"); }&#13;
+};&#13;
+&#13;
+int main()&#13;
+{&#13;
+	OBJECT object;&#13;
+&#13;
+	// 找到对象首地址中的到虚函数指针 vfptr&#13;
+	int vfptr = *(int*)&amp;object;&#13;
+&#13;
+	// 从虚函数指针找到对应的虚函数表&#13;
+	int* vftable = (int*)vfptr;&#13;
+&#13;
+	// 获取对应下标的指针，转换成函数指针&#13;
+	//这里虚函数表下标为1，说明取得的是show2()函数的内存首地址&#13;
+	void(*pfun)() = (void(*)())vftable[1];&#13;
+&#13;
+	// 直接调用对应的函数&#13;
+	pfun();		// show2&#13;
+&#13;
+	return 0;&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="679rl4dmh7ihfm47n58bafdqs5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;手动调用访问了成员的虚函数</a>
+</h3>
+<h3 class="topic">
+<a name="0vojcm2csdnaho2bdlou4kparf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;class  OBJECT&#13;
+{&#13;
+public:&#13;
+	int number = 10;&#13;
+public:&#13;
+	virtual void show(/*    OBJECT* this   */)&#13;
+	{&#13;
+		printf("number = %d\n", number);&#13;
+		// printf("number = %d\n", this-&gt;number);&#13;
+	}&#13;
+};&#13;
+&#13;
+int main()&#13;
+{&#13;
+	OBJECT object;&#13;
+&#13;
+	// 找到对象首地址中的到虚函数指针 vfptr&#13;
+	int vfptr = *(int*)&amp;object;&#13;
+&#13;
+	// 从虚函数指针找到对应的虚函数表&#13;
+	int* vftable = (int*)vfptr;&#13;
+&#13;
+	// 获取对应下标的指针，转换成函数指针&#13;
+	void(*pfun)() = (void(*)())vftable[0];&#13;
+&#13;
+	// 如果虚函数访问了任何的成员，都需要传入对象的地址&#13;
+	__asm lea ecx, [object]&#13;
+&#13;
+	// 直接调用对应的函数&#13;
+	pfun();		// show2&#13;
+	return 0;&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="00iq939r1s1e5mb86m8jv8l94m">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;另一种手动调用虚函数的代码</a>
+</h3>
+<h3 class="topic">
+<a name="20233gin6eifjqe7u7m0pq676c">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	//将对象首地址转换为虚函数指针&#13;
+	int* pvf = (int*)&amp;obj;   &#13;
+	//虚函数指针解引用得到虚函数表的首地址&#13;
+	//虚函数表的首地址转换为指针类型，赋值给指针用于寻址虚函数入口函数&#13;
+	int*pvftable = (int*)*pvf;&#13;
+	//将特定入口函数转为函数指针&#13;
+	void(*pfun)() = (void(*)())pvftable[2];&#13;
+	//使用函数指针调用函数&#13;
+	pfun();</a>
+</h3>
+<h3 class="topic">
+<a name="54md956dlnvco5o1qn66ufmrg5">&nbsp;复习，运算符重载</a>
+</h3>
+<h3 class="topic">
+<a name="3ipva6446d0mt3bnc8e9orn8ca">&nbsp;&nbsp;string类 重载[] = + &gt;&gt; &lt;&lt;</a>
+</h3>
+<h3 class="topic">
+<a name="7kt7ldh6q9nq9oit7p3f62smd7">&nbsp;&nbsp;步骤</a>
+</h3>
+<h3 class="topic">
+<a name="1elj23g0vara82eumh5v5g87vf">&nbsp;&nbsp;&nbsp;设置构造函数</a>
+</h3>
+<h3 class="topic">
+<a name="3op9i16mi3ptdp5mb7fsoqgpos">&nbsp;&nbsp;&nbsp;&nbsp;class STRING&#13;
+{&#13;
+public&#13;
+STRING (consr char*s ){&#13;
+strcpy_s(str,100,s);&#13;
+}&#13;
+&#13;
+&#13;
+&#13;
+}&#13;
+&#13;
+</a>
+</h3>
+<h3 class="topic">
+<a name="6sekg3bb213jj7v3pvpkbe57dt">&nbsp;&nbsp;&nbsp;重载[]运算符</a>
+</h3>
+<h3 class="topic">
+<a name="3pk76aufg68fjeiml7t5ibjjki">&nbsp;&nbsp;&nbsp;&nbsp;	char &amp; operator[](int index)&#13;
+	{&#13;
+		// 返回值为引用才可以进行赋值&#13;
+		return s[index];&#13;
+	}</a>
+</h3>
+<h3 class="topic">
+<a name="77tl1okglnqricpgdpo71k8r0j">&nbsp;&nbsp;&nbsp;重载+运算符</a>
+</h3>
+<h3 class="topic">
+<a name="3anum320oq1kabmun4fe76drbp">&nbsp;&nbsp;&nbsp;&nbsp;STRING operator+(STRING &amp; str)&#13;
+	{&#13;
+		STRING temp("");&#13;
+		// 拼接了+左边的字符串&#13;
+		strcat_s(temp.s, 100, this-&gt;s);&#13;
+		// 拼接了+右边的字符串&#13;
+		strcat_s(temp.s, 100, str.s);&#13;
+		return temp;&#13;
+	}</a>
+</h3>
+<h3 class="topic">
+<a name="64re6vo98se50b1olspfge0trd">&nbsp;&nbsp;&nbsp;重载=运算符</a>
+</h3>
+<h3 class="topic">
+<a name="6ed4iu6vfc9mp6q6etprfju7qp">&nbsp;&nbsp;&nbsp;&nbsp;	STRING operator=(STRING str)&#13;
+	{&#13;
+		strcpy_s(this-&gt;s, 100, str.s);&#13;
+		return *this;&#13;
+	}&#13;
+&#13;
+	STRING operator=(const char* str)&#13;
+	{&#13;
+		strcpy_s(this-&gt;s, 100, str);&#13;
+		return *this;&#13;
+	}&#13;
+</a>
+</h3>
+<h3 class="topic">
+<a name="01rcrbqfkl9nhcalj9kma5ds61">&nbsp;&nbsp;&nbsp;重载+=</a>
+</h3>
+<h3 class="topic">
+<a name="23robasc6nlg3k8m0fti8ftgs3">&nbsp;&nbsp;&nbsp;&nbsp;	STRING operator+=(int number)&#13;
+	{&#13;
+		使用sprintf()函数将数组转为字符串然后与原来的字符串拼接到一起&#13;
+		sprintf_s(this-&gt;s, 100, "%s%d", this-&gt;s, number);&#13;
+		return *this;&#13;
+	}</a>
+</h3>
+<h3 class="topic">
+<a name="4jui94edstigq31e4l3qhup162">&nbsp;&nbsp;&nbsp;重载&lt;&lt;  &gt;&gt;(使用友元函数)</a>
+</h3>
+<h3 class="topic">
+<a name="7ldl4m4ta8c7457rtvt7fh32eq">&nbsp;&nbsp;&nbsp;&nbsp;	friend istream &amp; operator&gt;&gt;(istream &amp; i, STRING &amp; str)&#13;
+	{&#13;
+		i &gt;&gt; str.s;&#13;
+		return i;&#13;
+	}</a>
+</h3>
+<h3 class="topic">
+<a name="0iso4ssvfvi1gi1ru12k7o8ap5">&nbsp;&nbsp;&nbsp;&nbsp;	friend ostream &amp; operator&lt;&lt;(ostream &amp; o, const STRING &amp; str)&#13;
+	{&#13;
+		o &lt;&lt; str.s;&#13;
+		return o;&#13;
+	}</a>
+</h3>
+<h3 class="topic">
+<a name="116t9t3rq2eqi7ds2hssqge8ip">&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="26hr2lrgp391drgtm3lv95abrp">&nbsp;&nbsp;&nbsp;class STRING&#13;
+{&#13;
+private:&#13;
+	char s[100] = { 0 };&#13;
+public:&#13;
+	// 传入一个字符串初始化&#13;
+	STRING(const char* str)&#13;
+	{&#13;
+		strcpy_s(s, 100, str);&#13;
+	}&#13;
+&#13;
+	// 重载 [] 运算符&#13;
+	char &amp; operator[](int index)&#13;
+	{&#13;
+		// 返回值为引用才可以进行赋值&#13;
+		return s[index];&#13;
+	}&#13;
+&#13;
+	STRING operator+(STRING &amp; str)&#13;
+	{&#13;
+		STRING temp("");&#13;
+		// 拼接了+左边的字符串&#13;
+		strcat_s(temp.s, 100, this-&gt;s);&#13;
+		// 拼接了+右边的字符串&#13;
+		strcat_s(temp.s, 100, str.s);&#13;
+		return temp;&#13;
+	}&#13;
+&#13;
+	STRING operator=(STRING str)&#13;
+	{&#13;
+		strcpy_s(this-&gt;s, 100, str.s);&#13;
+		return *this;&#13;
+	}&#13;
+&#13;
+	STRING operator=(const char* str)&#13;
+	{&#13;
+		strcpy_s(this-&gt;s, 100, str);&#13;
+		return *this;&#13;
+	}&#13;
+&#13;
+	STRING operator+=(int number)&#13;
+	{&#13;
+		使用sprintf()函数将数组转为字符串然后与原来的字符串拼接到一起&#13;
+		sprintf_s(this-&gt;s, 100, "%s%d", this-&gt;s, number);&#13;
+		return *this;&#13;
+	}&#13;
+&#13;
+	friend istream &amp; operator&gt;&gt;(istream &amp; i, STRING &amp; str)&#13;
+	{&#13;
+		i &gt;&gt; str.s;&#13;
+		return i;&#13;
+	}&#13;
+&#13;
+	friend ostream &amp; operator&lt;&lt;(ostream &amp; o, const STRING &amp; str)&#13;
+	{&#13;
+		o &lt;&lt; str.s;&#13;
+		return o;&#13;
+	}&#13;
+};&#13;
+int main()&#13;
+{&#13;
+	STRING str("123"), str1("456");&#13;
+&#13;
+	str[0] = 'a';&#13;
+	str1 = str + str;&#13;
+	str1 = str;&#13;
+	str1 = "1234567";&#13;
+	str += 123;&#13;
+	cin &gt;&gt; str;&#13;
+	cout &lt;&lt; str &lt;&lt; endl;&#13;
+	return 0;&#13;
+}</a>
+</h3>
+<h2 class="topic">
+<a name="7l9rces7jchnf72q13hnbikqfb">tips</a>
+</h2>
+<h3 class="topic">
+<a name="61puds8tvup7lnu3620sfscgkn">&nbsp;类中虚函数表指针以及虚基表指针的数量</a>
+</h3>
+<h3 class="topic">
+<a name="4el89otvfshbank93jum75e17d">&nbsp;&nbsp;虚基表指针</a>
+</h3>
+<h3 class="topic">
+<a name="6err9ipagelgk2optrtjn40n26">&nbsp;&nbsp;&nbsp;孙子类中有多少个虚基表指针，取决于其有多少个父类是虚继承自爷爷类的</a>
+</h3>
+<h3 class="topic">
+<a name="57eeo1rjlrgpk9q7qa50e6o696">&nbsp;&nbsp;虚函数表指针</a>
+</h3>
+<h3 class="topic">
+<a name="6r37gh4tv4l9alh52rfigiihid">&nbsp;&nbsp;&nbsp;1、如果没有继承，一个类中如果有虚函数，则该类中一定有一个虚函数表指针</a>
+</h3>
+<h3 class="topic">
+<a name="17qof4v6mr8vh7auth3gigfdck">&nbsp;&nbsp;&nbsp;2、单继承中，子类只可能有一个虚函数表指针，如果该类继承了一个虚函数的父类，会将父类的虚函数加到该类中已有的虚函数表中，虚函数指针仍只有一个</a>
+</h3>
+<h3 class="topic">
+<a name="5tbbdmi3md318mkqcm6l4b225d">&nbsp;&nbsp;&nbsp;3、一个类如果继承了多个存在虚函数的类，就会保存有对应数量张虚函数表</a>
+</h3>
+<h3 class="topic">
+<a name="0mmc38huuqsi5t4gehgd501b8c">&nbsp;&nbsp;&nbsp;4、对于爷爷类 父类 孙子类的继承关系，其虚函数表指针的数量仍不知道</a>
+</h3>
+<h3 class="topic">
+<a name="5p795arg1rk7dqs3msbjjhm0sa">&nbsp;&nbsp;&nbsp;总之&#13;
+没有继承但本类有虚函数-》只有一个虚函数表指针&#13;
+继承自一个父类-》只有一个虚函数表指针&#13;
+继承自来两个父类-》有两个虚函数表指针（该两个父类相互独立且都有虚函数存在）</a>
+</h3>
+<h3 class="topic">
+<a name="2kklpbki521a8mld3f7ick8lmo">&nbsp;书目《深入探索c++对象模型》</a>
+</h3>
+</body>
+</html>

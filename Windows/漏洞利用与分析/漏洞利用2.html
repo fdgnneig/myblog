@@ -1,0 +1,307 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>class68day0604（漏洞利用第二天）</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="0kpsprqjp671hnsk9jcp8jdms9">class68day0604（漏洞利用第二天）</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A82_files/images/class68day0604%EF%BC%88%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8%E7%AC%AC%E4%BA%8C%E5%A4%A9%EF%BC%89.jpg"></div>
+<h2 class="topic">
+<a name="1erg94p1kkrrk66qb941f4kog0">问题</a>
+</h2>
+<h3 class="topic">
+<a name="0f32otev4ot6hbitrhquisnevi">&nbsp;昨天编写的shellcode，shellcode的基址基于栈空间的首地址，栈空间地址常会变化，不固定</a>
+</h3>
+<h2 class="topic">
+<a name="4vskit8nk5igvnp5a493qdpvqc">跳板指令攻击</a>
+</h2>
+<h3 class="topic">
+<a name="6epehelsackjimg6u1am75sbag">&nbsp;为了解决栈地址随机的问题</a>
+</h3>
+<h3 class="topic">
+<a name="4pptv532m3op5ccqnrbfm8vl81">&nbsp;找到系统中jmp esp指令固定的地址，将函数返回地址设置为该指令的地址，将shellcode保存在以esp为首地址的内存空间</a>
+</h3>
+<h3 class="topic">
+<a name="7v2s9do2sn6p73ad2jvvp8874i">&nbsp;x64中找jmp esp -》右键-》搜索-》所有模块-》命令</a>
+</h3>
+<h2 class="topic">
+<a name="7nscu9n22sp38s5j0o0ehdp7me">步骤</a>
+</h2>
+<h3 class="topic">
+<a name="7niba14f6t37717plv2sm660cm">&nbsp;整崩</a>
+</h3>
+<h3 class="topic">
+<a name="0mgrap4a078o9ljep05g8jc9o8">&nbsp;找溢出点</a>
+</h3>
+<h3 class="topic">
+<a name="0rgaivvlkjq97p4jaafdplvr77">&nbsp;验证溢出点</a>
+</h3>
+<h3 class="topic">
+<a name="22aapg9kjdig7ujjencmhfkide">&nbsp;找jmp esp的地址</a>
+</h3>
+<h3 class="topic">
+<a name="1vacjs8mbpe335pii7b3rorfqe">&nbsp;组装shellcode</a>
+</h3>
+<h2 class="topic">
+<a name="5ig1b6pb0g6oca0gh6crmod3t7">payload编写</a>
+</h2>
+<h3 class="topic">
+<a name="5taqinskvha573ugvq5eu95vdm">&nbsp;payload的体积需要小巧</a>
+</h3>
+<h3 class="topic">
+<a name="42543i2o5etok3hfr10apbel22">&nbsp;payload的指令、字符串在内存中不能存在过于明显特征</a>
+</h3>
+<h3 class="topic">
+<a name="1ls5c7k3qo96vt5beu0ufsisf0">&nbsp;&nbsp;需要对api进行加密</a>
+</h3>
+<h3 class="topic">
+<a name="49fs8dijfqorbs77pjk5ubpu6c">&nbsp;&nbsp;&nbsp;hash算法需要手写</a>
+</h3>
+<h3 class="topic">
+<a name="5m811pli39ns3j8tkobndndhh0">&nbsp;&nbsp;&nbsp;通过hash计算得到hash寻找对应api的地址</a>
+</h3>
+<h3 class="topic">
+<a name="5ph1hmp557an0dl0v9tdob2j4g">&nbsp;&nbsp;&nbsp;&nbsp;通过api的名称的hash值去遍历ent表，将表中函数名称算出hash，与当前hash进行对比，进行遍历，寻找对应的api</a>
+</h3>
+<h3 class="topic">
+<a name="7373l9jldtghnnaicu28agt1bp">&nbsp;&nbsp;&nbsp;注意hash算法编写的过程中，要注意尽可能避免发生碰撞（即不同的api名称计算得到的hash相同），尽可能要求生成的hash中不出现0x00 0x0a 0x0d （因为可能产生截断）</a>
+</h3>
+<h3 class="topic">
+<a name="0c5qo3974qgprbgu83qhmr4i63">&nbsp;&nbsp;&nbsp;&nbsp;具体算法看书</a>
+</h3>
+<h2 class="topic">
+<a name="0ehdvt5tiit0pamk582hb6ivut">碰撞</a>
+</h2>
+<h3 class="topic">
+<a name="3kimtdn1m524bovevtb61qnkbi">&nbsp;通过添加某些信息，使得两个文件的md5值相同</a>
+</h3>
+<h3 class="topic">
+<a name="384rjga894v9s1nfu50notv7ai">&nbsp;即两个文件的hash值相同</a>
+</h3>
+<h2 class="topic">
+<a name="4lp5pmqdfkqmv85aseuc5edg6r">Bindshell	壳绑定即端口绑定</a>
+</h2>
+<h3 class="topic">
+<a name="661ncbmc5ou88g4b6i5cdi6vn9">&nbsp;右键&mdash;&mdash;》属性-》常规-》平台工具集选择xp，生成的pe文件才能在xp中运行</a>
+</h3>
+<h3 class="topic">
+<a name="1tloou8icf0iqs1bei7rvm5i49">&nbsp;选择在静态库中使用mfc，可以避免xp系统中运行shellcode时缺少运行时库的问题</a>
+</h3>
+<h3 class="topic">
+<a name="2a967bkbfd7bda23ls5vs3s3hu">&nbsp;扣opcode时可以将两个编译设置修改回来，保证opcode的正确</a>
+</h3>
+<h3 class="topic">
+<a name="7d6vu72gr3a4egc92m88tm12m2">&nbsp;在宿主机中可以ping目标主机，测试网络是否联通</a>
+</h3>
+<h3 class="topic">
+<a name="5q9blas3mntaqbeh8sj0nsbikh">&nbsp;&nbsp;如果ping不通，尝试关闭防火墙</a>
+</h3>
+<h3 class="topic">
+<a name="5ffjp5gbam93idrohp88j3sg8e">&nbsp;宿主机中需要安装telnet ，才能与被攻击端通讯 &#13;
+控制面板中安装telnet客户端</a>
+</h3>
+<h3 class="topic">
+<a name="6ks0pb8o6c4u4b8gjis472f6n7">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A82_files/6pv7552fautttpb4713gtli5v5.png"></p>
+<h3 class="topic">
+<a name="471edmaj7nf50mjejvvbmhj5h0">&nbsp;注意被连接主机需要关闭防火墙</a>
+</h3>
+<h3 class="topic">
+<a name="2nlahp54f6fkfih4648fhur2hs">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A82_files/2dc0fhtfank5en7dsee3ijeabs.png"></p>
+<h3 class="topic">
+<a name="463otq42h5tt68pk428gkm3lup">&nbsp;发起telnet连接</a>
+</h3>
+<h3 class="topic">
+<a name="6ggl4j281iuopp5b7o3kvfl71a">&nbsp;&nbsp;telnet 被连接的主机的ip 端口号</a>
+</h3>
+<h3 class="topic">
+<a name="0pu2deq02f8etl1j280kci95to">&nbsp;关闭连接</a>
+</h3>
+<h3 class="topic">
+<a name="6o5h8v3tkef12s4uils7a4kr15">&nbsp;&nbsp;exit</a>
+</h3>
+<h2 class="topic">
+<a name="472fehjenb5f182vc0c1v05lbd">漏洞利用实战</a>
+</h2>
+<h3 class="topic">
+<a name="1ao34off1s33idb75drdjj767f">&nbsp;如果溢出文件过大，可以通过二分法创建溢出文件，定位溢出点的位置</a>
+</h3>
+<h3 class="topic">
+<a name="78k245o06hmsdng6088fod6n8j">&nbsp;可以在jmp esp的位置下断点，方便调试溢出程序</a>
+</h3>
+<h3 class="topic">
+<a name="46tnpiarcqotoagpv7m4cnlg5p">&nbsp;&nbsp;0a换行 0d回车 00 以上三种字符均会在文本文件的内存拷贝过程中导致拷贝的文本被截断</a>
+</h3>
+<h3 class="topic">
+<a name="3tl9h653iomd0vtc9hv56so609">&nbsp;如果溢出的返回地址中存在00，则可能导致截断，造成单字节溢出</a>
+</h3>
+<h3 class="topic">
+<a name="6f6iqdc9mkvu3qj776cfpqk7bu">&nbsp;&nbsp;scanf strcmp等内存拷贝函数均以 00作为内存拷贝的截断</a>
+</h3>
+<h3 class="topic">
+<a name="4vs2a7kjb2rf9dfd4pkud7ppnr">&nbsp;当被溢出的函数是stdcall，由被调用者平衡堆栈，该函数的返回使用了类似 ret 4的指令，导致函数返回后栈顶地址+8，导致shellcode不能正常执行</a>
+</h3>
+<h3 class="topic">
+<a name="0dh4oh978cc02t35m882d521ge">&nbsp;&nbsp;可以通过在shellcode之前写多个nop，即防止esp在ret的过程中被过分降低</a>
+</h3>
+<h3 class="topic">
+<a name="35ocmuo07nprp5qh302vqf2sv7">&nbsp;shellcode在传输过程（即传输进入栈空间）中可能因为其中的指令而被截断，可能是任意指令序列导致的，如果shellcode中出现了不可避免的00，只能通过对shellcode加密，并且在shellcode运行之前运行解密代码解密</a>
+</h3>
+<h3 class="topic">
+<a name="1hqaqic5v8dblfvulnbfbiqqii">&nbsp;&nbsp;解密代码中一定不能出现被截断的字符串，这需要详细选择加密的算法</a>
+</h3>
+<h3 class="topic">
+<a name="3rpc0oc2qh2dfs0dhb33menud4">&nbsp;有的时候溢出点可能出现变化，是因为程序可能存在多个溢出漏洞，即存在多个溢出点，此时需要把shellcode在每个溢出点都进行设置</a>
+</h3>
+<h3 class="topic">
+<a name="15n3gq5kipf43uo7ckhhseg2fn">&nbsp;&nbsp;该程序一共有三个溢出点，可以将三个溢出点位置全部置为成shellcode</a>
+</h3>
+<h3 class="topic">
+<a name="0r3dpjanij6flvpmkjqir1lsdv">&nbsp;注意当用于溢出的文件过大时，其可能不能获得正确的溢出异常偏移，可能会出现错误的异常偏移，该异常偏移与溢出文件中的内容无关</a>
+</h3>
+<h2 class="topic">
+<a name="5b1hlsjgv00esc5heaq1u37s2k">shellcode快速开发</a>
+</h2>
+<h3 class="topic">
+<a name="2ectp9h53po1n8c1tigsca2vv4">&nbsp;需要使用到vs的特性</a>
+</h3>
+<h3 class="topic">
+<a name="1mqcmoocg7f0fnp9kaeot2m4o2">&nbsp;&nbsp;可以通过函数名之直接定义函数类型的decltype的功能</a>
+</h3>
+<h3 class="topic">
+<a name="0r0qudrq7ls8bg9n114k7689gc">&nbsp;&nbsp;&nbsp;不需要函数原型，直接通过函数名称定义函数指针</a>
+</h3>
+<h3 class="topic">
+<a name="4ahtoc9pi8m5pc6erkfalods1r">&nbsp;&nbsp;可以显示函数状态的map文件生成功能</a>
+</h3>
+<h3 class="topic">
+<a name="2bq2d7aejkggiti5kphdevg4bj">&nbsp;&nbsp;可以控制函数按顺序生成并摆放的函数顺序功能</a>
+</h3>
+<h3 class="topic">
+<a name="6vamt9n562q6f8rqv4hfap0eek">&nbsp;需要调整相关编译选项</a>
+</h3>
+<h3 class="topic">
+<a name="1rgb77vsgj61rai8611g8m3are">&nbsp;可能的问题</a>
+</h3>
+<h3 class="topic">
+<a name="6d1efij7fb4155i53o386rka5s">&nbsp;&nbsp;1、不能使用全局变量与字符串，因为其保存在数据区</a>
+</h3>
+<h3 class="topic">
+<a name="35cc235i6cd48j299bi7oc5sbu">&nbsp;&nbsp;&nbsp;处理</a>
+</h3>
+<h3 class="topic">
+<a name="0q90hguuoejrv1jkddv5vnpap4">&nbsp;&nbsp;&nbsp;&nbsp;char szcmd[]={'a','b','c'}</a>
+</h3>
+<h3 class="topic">
+<a name="5iv547is2vk1pjv26rbdjf8ol6">&nbsp;&nbsp;&nbsp;&nbsp;自己实现一个内存赋值为0的函数</a>
+</h3>
+<h3 class="topic">
+<a name="0ioko92lavki380cvksq8l5021">&nbsp;&nbsp;2、不能直接使用windows api函数</a>
+</h3>
+<h3 class="topic">
+<a name="0s2tkbk2j9bfkn2tmoh9h73rt8">&nbsp;&nbsp;&nbsp;使用decltype宏定义函数</a>
+</h3>
+<h3 class="topic">
+<a name="2vbuin6gt8r5oolv0l1qsa7vro">&nbsp;&nbsp;3、不能使用c语言库函数</a>
+</h3>
+<h3 class="topic">
+<a name="1q9uv5iioeu88so23trq9an9qp">&nbsp;&nbsp;4、不能使用类似int nar[15]={0}的方式清零，因为会导致编译器调用memset()</a>
+</h3>
+<h3 class="topic">
+<a name="6tdqcpnfqbj8tj1ct4p98s4so9">&nbsp;代码使用</a>
+</h3>
+<h3 class="topic">
+<a name="2l6na1kii6i2sfsah9js57eqps">&nbsp;&nbsp;修改编译选项</a>
+</h3>
+<h3 class="topic">
+<a name="54c6r5mp4htfl9io85ohto12vg">&nbsp;&nbsp;生成map映射文件</a>
+</h3>
+<h3 class="topic">
+<a name="1m5k66s3q262be19ncbn41epm7">&nbsp;&nbsp;修改函数顺序，是入口点函数放在最前面</a>
+</h3>
+<h3 class="topic">
+<a name="65hh6luhde2ba7g5vb5fus76ek">&nbsp;&nbsp;&nbsp;看得到的映射文件，将粉碎版的函数名称保留下来，将入口点名称放在最前面，保存文件</a>
+</h3>
+<h3 class="topic">
+<a name="6q62r34b1tqosf1um279iseln0">&nbsp;&nbsp;&nbsp;在调试设置中设置函数顺序，并重新生成程序</a>
+</h3>
+<h3 class="topic">
+<a name="57g0cqkh32q1gdr3a544pmec3h">&nbsp;&nbsp;&nbsp;将生成的程序放进x64调试，将shellcode扣出来</a>
+</h3>
+<h3 class="topic">
+<a name="541pv0hnqt96l1bmflc9ogfkqk">&nbsp;&nbsp;参考老师发的模板</a>
+</h3>
+<h3 class="topic">
+<a name="3gt8jtilft8lvs41q68no3g6us">&nbsp;相关代码</a>
+</h3>
+<h3 class="topic">
+<a name="3pkv0tbah2iedd0emve7q8l66e">&nbsp;&nbsp;	DefineFuncPtr( LoadLibraryExA, hKeyModule );&#13;
+	//LoadLibraryExA(_In_ LPCSTR lpLibFileName,	_Reserved_ HANDLE hFile,_In_ DWORD dwFlags);&#13;
+	HMODULE hKernel32 = My_LoadLibraryExA( szKernel32, 0, 0 );</a>
+</h3>
+<h3 class="topic">
+<a name="2thp761bsg2lnlhhkqq7r4n7vc">&nbsp;&nbsp;#define DefineFuncPtr(name,base) decltype(name) *My_##name = (decltype(name)*) GetFunAddrByHash(HASH_##name,base)</a>
+</h3>
+<h3 class="topic">
+<a name="2nj4iav8nf660309r0idp90ke1">&nbsp;相关网页</a>
+</h3>
+<h3 class="topic">
+<a name="3sg4ar1q8ejintlse68pmbnb4t">&nbsp;&nbsp;https://blog.51cto.com/haidragon/2125496</a>
+</h3>
+<h3 class="topic">
+<a name="2doa2gbhie1nj1il68o1bk14l0">&nbsp;在老师资料中有详细保存</a>
+</h3>
+<h2 class="topic">
+<a name="2ehve90k27vg9t09in288355t6">远程溢出</a>
+</h2>
+<h2 class="topic">
+<a name="2sgcap7rh5d6ee72g9p5h3oitk">dep</a>
+</h2>
+<h3 class="topic">
+<a name="3jtc1nkmctcmj29apohpov0tn2">&nbsp;所有可写的地址不可执行</a>
+</h3>
+<h3 class="topic">
+<a name="3j2c7s2pq73e2upd8gij8fv7ql">&nbsp;所有可执行的位置都不可写</a>
+</h3>
+<h2 class="topic">
+<a name="6nhlu42tjut27jq2tddtea375b">aslr</a>
+</h2>
+<h3 class="topic">
+<a name="42adu69hf0ik65s7j5j6js9dtg">&nbsp;动态随机基址</a>
+</h3>
+<h2 class="topic">
+<a name="3r3a9j3lukadjphtor5apvv48u">浏览器漏洞</a>
+</h2>
+<h2 class="topic">
+<a name="1dtlgtb4mj28qab9lt2ejmcrmf">作业</a>
+</h2>
+<h3 class="topic">
+<a name="025mhpr4ungb6laf4tcmj893k1">&nbsp;用hash调用api</a>
+</h3>
+<h3 class="topic">
+<a name="61jiq5rkbl0d65cbgvqb20fi5s">&nbsp;拿一血</a>
+</h3>
+<h3 class="topic">
+<a name="1qdsfbi6pur35s00rujkpmvsjh">&nbsp;bindshell</a>
+</h3>
+<h3 class="topic">
+<a name="2legj66n6j9cb7eurk1ls4kgvl">&nbsp;shellcode自解密+自加密-》壳的自解密+自加密 = 自变形蠕虫的基础</a>
+</h3>
+<h2 class="topic">
+<a name="3u27apd2s9amalq8ld9004pe47">注意</a>
+</h2>
+<h3 class="topic">
+<a name="3cvlivk1o1a5i4hsqe8738jds7">&nbsp;针对vs项目的项目属性的修改debug版本和release版本是不一样的，需要分别单独修改</a>
+</h3>
+</body>
+</html>

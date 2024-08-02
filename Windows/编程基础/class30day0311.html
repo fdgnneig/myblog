@@ -1,0 +1,1214 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>class30day0311</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="19t44itlg4em0tu9179n86ua31">class30day0311</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="class30day0311_files/images/class30day0311.jpg"></div>
+<h2 class="topic">
+<a name="6hpj4dfh4de20d0jmg3qvptst2">win编程基础</a>
+</h2>
+<h3 class="topic">
+<a name="355i70oavhoq2uqq4nvbbkk0rd">&nbsp;sdk</a>
+</h3>
+<h3 class="topic">
+<a name="6ichaok9r7117m3p43hq3t5nvg">&nbsp;&nbsp;win编程框架详解</a>
+</h3>
+<h3 class="topic">
+<a name="36in1paglt5pbe0onrm1idl546">&nbsp;&nbsp;win消息详解</a>
+</h3>
+<h3 class="topic">
+<a name="4drnq5ohrr8p9d30f4o6vnjcac">&nbsp;&nbsp;窗口程序与控件</a>
+</h3>
+<h3 class="topic">
+<a name="62d8qstvmo09lm0ep0qinuammt">&nbsp;&nbsp;磁盘文件操作</a>
+</h3>
+<h3 class="topic">
+<a name="240acr3kgntd6koqci9de9rplg">&nbsp;&nbsp;动态链接库</a>
+</h3>
+<h3 class="topic">
+<a name="09u8aevcqiq47fu85fhhspcd0o">&nbsp;mfc</a>
+</h3>
+<h3 class="topic">
+<a name="7jji9qofn81ffdsf3p7492toal">&nbsp;&nbsp;快速掌握mfc基本编程方法</a>
+</h3>
+<h3 class="topic">
+<a name="212osd66n3r1le59mfb63u37ig">&nbsp;&nbsp;常见控件使用</a>
+</h3>
+<h3 class="topic">
+<a name="15d8sj8gr2qjq1m6480pk55eav">&nbsp;从控制台到windows</a>
+</h3>
+<h3 class="topic">
+<a name="6n9d5lhjk18ovf27fgkib4n6iv">&nbsp;&nbsp;书目：《windows程序设计第五版》&#13;
+          《windows API开发详解》&#13;
+          《windows核心编程》</a>
+</h3>
+<h3 class="topic">
+<a name="08s2nqflsqniin73des2lrsj80">&nbsp;&nbsp;win编程分类</a>
+</h3>
+<h3 class="topic">
+<a name="5q9ukj1bat7o2kjb7hepbf3ie9">&nbsp;&nbsp;&nbsp;cui</a>
+</h3>
+<h3 class="topic">
+<a name="63cuid7vsgf43v7idnbr827h4v">&nbsp;&nbsp;&nbsp;&nbsp;控制台编程</a>
+</h3>
+<h3 class="topic">
+<a name="2nqo63kvk67dga75o7rgkaeq7c">&nbsp;&nbsp;&nbsp;gui</a>
+</h3>
+<h3 class="topic">
+<a name="613ggl1fd5sj71ar20o421fr5f">&nbsp;&nbsp;&nbsp;&nbsp;图形界面编程</a>
+</h3>
+<h3 class="topic">
+<a name="2trmkjl1j5ca1ufhg2vu0f0j52">&nbsp;&nbsp;所需头文件</a>
+</h3>
+<h3 class="topic">
+<a name="5cnq2ss247fdk1tekcnh7f1qad">&nbsp;&nbsp;&nbsp;Windows.h</a>
+</h3>
+<h3 class="topic">
+<a name="5o0sheje1a9vb5ej626d47fsfa">&nbsp;&nbsp;&nbsp;其中有绝大部分api</a>
+</h3>
+<h3 class="topic">
+<a name="5k24vptt881ll6pa47brdlm9qo">&nbsp;&nbsp;新的数据类型</a>
+</h3>
+<h3 class="topic">
+<a name="3nes76mr6uc4vgi73tes6ke6eq">&nbsp;&nbsp;&nbsp;一般是由c/c++重定义而来</a>
+</h3>
+<h3 class="topic">
+<a name="17930e5fdq2cd7tqr3qv05rj8k">&nbsp;&nbsp;&nbsp;DWORD</a>
+</h3>
+<h3 class="topic">
+<a name="1k66ieongloblda3ms0srrlmp4">&nbsp;&nbsp;&nbsp;&nbsp;32位无符号整型数</a>
+</h3>
+<h3 class="topic">
+<a name="6jbftg6vrh70q0hvv9n7lnjqde">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;是 unsigned long定义的</a>
+</h3>
+<h3 class="topic">
+<a name="48qffd9g6citt2eb4o6rcnjpvs">&nbsp;&nbsp;&nbsp;PDWORD</a>
+</h3>
+<h3 class="topic">
+<a name="11t83t37kbtmuj59ln6rktiv08">&nbsp;&nbsp;&nbsp;&nbsp;32位无符号整型指针</a>
+</h3>
+<h3 class="topic">
+<a name="2n83kg3d18nl387687ogmljqur">&nbsp;&nbsp;&nbsp;BOOL</a>
+</h3>
+<h3 class="topic">
+<a name="0t68p1l2u3fj1vt951vi0dv89m">&nbsp;&nbsp;&nbsp;&nbsp;是int重定义的</a>
+</h3>
+<h3 class="topic">
+<a name="2s7qf96tbdasft6f8pk8g4gse4">&nbsp;&nbsp;句柄</a>
+</h3>
+<h3 class="topic">
+<a name="54k1rj8kc28pvrkmip9gov3do3">&nbsp;&nbsp;&nbsp;作用类似于c++中的this指针，使得api接口能够知道处理的是哪个窗口对象的数据</a>
+</h3>
+<h3 class="topic">
+<a name="2st145vk7vpgbq9cs99dujcabk">&nbsp;&nbsp;&nbsp;HANDLE</a>
+</h3>
+<h3 class="topic">
+<a name="3cdqh0hpfl0l1jkgjbjvoppipf">&nbsp;&nbsp;&nbsp;&nbsp;通用句柄</a>
+</h3>
+<h3 class="topic">
+<a name="7hkplc11tej0dkqkmod25r9hfb">&nbsp;&nbsp;&nbsp;HWND</a>
+</h3>
+<h3 class="topic">
+<a name="3lamc7fmsvqsninstddged2163">&nbsp;&nbsp;&nbsp;&nbsp;窗口句柄</a>
+</h3>
+<h3 class="topic">
+<a name="14tttbasm1la7jk3cm34g02rd2">&nbsp;&nbsp;&nbsp;HINSTANCE</a>
+</h3>
+<h3 class="topic">
+<a name="7g4t9lvhati88ge0javecsj52v">&nbsp;&nbsp;&nbsp;&nbsp;实例句柄</a>
+</h3>
+<h3 class="topic">
+<a name="666blg7bhmg7goeek7of6a32q4">&nbsp;&nbsp;&nbsp;APIENTRY</a>
+</h3>
+<h3 class="topic">
+<a name="6pefntfcv65scs4jqgriv9qjp3">&nbsp;&nbsp;&nbsp;&nbsp;就是winapi</a>
+</h3>
+<h3 class="topic">
+<a name="3mp9ioah7pbleg1ceoo23sknqn">&nbsp;&nbsp;&nbsp;等等.......</a>
+</h3>
+<h3 class="topic">
+<a name="0fqf5m8ena67gkjmi0ci5a6hjt">&nbsp;&nbsp;&nbsp;相关博客</a>
+</h3>
+<h3 class="topic">
+<a name="0bcpdnf01mgfh30o2t9n873eql">&nbsp;&nbsp;&nbsp;&nbsp;https://www.cnblogs.com/mlgjb/p/8588028.html</a>
+</h3>
+<h3 class="topic">
+<a name="11jv2vc0lbulms4ej576kb0djk">&nbsp;&nbsp;&nbsp;&nbsp;https://blog.csdn.net/h1023417614/article/details/42526725</a>
+</h3>
+<h3 class="topic">
+<a name="6sgbt1a1i9qpmn3skl6ll2frqj">&nbsp;&nbsp;程序入口程序</a>
+</h3>
+<h3 class="topic">
+<a name="3tc7vv69rbqmsqgebegbe8jdeb">&nbsp;&nbsp;&nbsp;main函数</a>
+</h3>
+<h3 class="topic">
+<a name="7hcdfm4npej7sb7nupk85p1aun">&nbsp;&nbsp;&nbsp;&nbsp;int main(int argc,//参数个数&#13;
+   char*argv[]//命令行字符串)&#13;
+{&#13;
+	for(int i=0;i&lt;argc;i++)&#13;
+	{&#13;
+	printf("%d  %s\n",i,argv[i]);&#13;
+	}&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="6cadp5rajtkfima9khjarnj1bb">&nbsp;&nbsp;&nbsp;&nbsp;该函数用于输出在控制台窗口中调用该函数所在exe程序时，调用的参数个数以及参数字符串</a>
+</h3>
+<h3 class="topic">
+<a name="3gsqb19phm129s2rb576a6bet2">&nbsp;&nbsp;&nbsp;main函数有多种形式，对于winmain函数四个参数一个都不能少</a>
+</h3>
+<h3 class="topic">
+<a name="7uo1m7o7ekg8otcm69jjj5rv1n">&nbsp;&nbsp;&nbsp;WinMain函数的原型</a>
+</h3>
+<h3 class="topic">
+<a name="1bjki2cni09ribqgr1a9vi7ook">&nbsp;&nbsp;&nbsp;&nbsp;int APIENTRY WinMain(HINSTANCE hInstance//实例句柄&#13;
+                                     HINSTANCE hPerInstance//前实例句柄&#13;
+                                     LPSTR szCmdLine   //参数字符串&#13;
+                                     int nShowCmd//显示方式)&#13;
+{&#13;
+       MessageBox(NULL,L"第一个windows程序"，L"hello",NULL);&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="185dsta9fab8402qqug5rf98vp">&nbsp;&nbsp;字符串处理</a>
+</h3>
+<h3 class="topic">
+<a name="43rj30fb2edbprqj8v3vu4p0um">&nbsp;&nbsp;&nbsp;数字转成字符，或者将字符转成数字成为了windows编程常见需求</a>
+</h3>
+<h3 class="topic">
+<a name="7g1js5l46jhn04qpas8p46pgai">&nbsp;&nbsp;&nbsp;&nbsp;字符转数字</a>
+</h3>
+<h3 class="topic">
+<a name="7l9ok0acahhn13scra3o41mgdd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a版</a>
+</h3>
+<h3 class="topic">
+<a name="08n1a43k6e785hlgnpdbsqf0gt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sscanf_s(buff, "%d", &amp;b);</a>
+</h3>
+<h3 class="topic">
+<a name="11v53bdg6ketpo8rbefe6bj0fb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;buf为接受转换结果的缓冲区</a>
+</h3>
+<h3 class="topic">
+<a name="0glfbmc5t14f4ufbt7q4ncf0lp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;%d为转换目标格式的格式控制字符</a>
+</h3>
+<h3 class="topic">
+<a name="2usc0ocgneernsjogn716mteil">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&amp;b为待转换的变量的空间首地址</a>
+</h3>
+<h3 class="topic">
+<a name="50hj73al1kif3q4bdcj6l4juac">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;即多字节版 即ascii码版</a>
+</h3>
+<h3 class="topic">
+<a name="2dnpfkmk8irge9prm1ec4cjf9o">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;w版</a>
+</h3>
+<h3 class="topic">
+<a name="1nu4bk54174veqngrib8m5n4am">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;swscanf_s(buffw, L"%d", &amp;b);</a>
+</h3>
+<h3 class="topic">
+<a name="183as8s2d265feihelneh9eksf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;即宽字节版 即unicode码版</a>
+</h3>
+<h3 class="topic">
+<a name="5j2akk4k307ii5imhhifuci2rc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;t版</a>
+</h3>
+<h3 class="topic">
+<a name="6i4uhthl9iuf58ab0p25flq08h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_stscanf_s(bufft, _T("%d"), &amp;b);</a>
+</h3>
+<h3 class="topic">
+<a name="2k9nl45mrghsa0khfalh5c3rpc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;t版是通用版，可以根据当前程序的编码方式对程序中的字符进行转换</a>
+</h3>
+<h3 class="topic">
+<a name="5tdkn4hcvr3i53riuq5u42nfdm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这里的格式化控制字符%d指的是将字符串转为十进制数</a>
+</h3>
+<h3 class="topic">
+<a name="2mjgfh0f1h87raj2tr4mg811li">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该参数也可以指定为转为十六进制数和八进制数</a>
+</h3>
+<h3 class="topic">
+<a name="066tu6n16aoarh0arunpn3read">&nbsp;&nbsp;&nbsp;&nbsp;数字转字符</a>
+</h3>
+<h3 class="topic">
+<a name="4ostjcqumohpbi4ne5dpel77es">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a版</a>
+</h3>
+<h3 class="topic">
+<a name="7kfb4qkdq1cunev499tcmbvn62">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sprintf_s(buff,100, "%d",a);</a>
+</h3>
+<h3 class="topic">
+<a name="4gtfecjoh3k60kqo28gucldp85">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;w版</a>
+</h3>
+<h3 class="topic">
+<a name="6j1kaib23r8p1pkm71eh1uhs1b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;swprintf_s(buffw,100, L"%d", a);</a>
+</h3>
+<h3 class="topic">
+<a name="3k8hejbbgds6kkb81ov010srm4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;t版</a>
+</h3>
+<h3 class="topic">
+<a name="6suv2aghec432gofr2s6ccbh43">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_stprintf_s(bufft,100, _T("%d"), a);</a>
+</h3>
+<h3 class="topic">
+<a name="3mjolne6291bl7vk2sg61s0s1p">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;函数原型</a>
+</h3>
+<h3 class="topic">
+<a name="71s1vo6v0e7no4phfuvq6a0i4k">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;int sprintf_s(&#13;
+char *buffer,           //字符串指针&#13;
+size_t sizeOfBuffer,  //缓冲区大小&#13;
+const char *format [,  //格式化控制符&#13;
+argument] ...           //变参&#13;
+);</a>
+</h3>
+<h3 class="topic">
+<a name="5end9h8agnuuhiqmd183h06tn1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;int swprintf_s(&#13;
+wchar_t *buffer,&#13;
+size_t sizeOfBuffer,&#13;
+const wchar_t *format [,&#13;
+argument]...&#13;
+);</a>
+</h3>
+<h3 class="topic">
+<a name="7cct984b5acd4n9ffh7r2susd7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sprintf_s函数中的格式化字符%d意思是将数字以十进制的形式写入到字符串中</a>
+</h3>
+<h3 class="topic">
+<a name="7htakdpgus82bfqdl578cmst46">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这个参数也可以是八进制或十六进制</a>
+</h3>
+<h3 class="topic">
+<a name="40qdl30189ocudnr705mvels4b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意sprintf()安全版函数需要指定缓冲区大小，但是sscanf_s()函数不需要指定缓冲区的大小</a>
+</h3>
+<h3 class="topic">
+<a name="4j15sfr2fdsphfi1lngrjkogdq">&nbsp;&nbsp;&nbsp;&nbsp;示例代码</a>
+</h3>
+<h3 class="topic">
+<a name="6a5a9mom76uf709tsta49vmp0j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	// 数字转字符&#13;
+	int a = 100;&#13;
+	int b = 0;&#13;
+	char buff[100];&#13;
+	wchar_t buffw[100];&#13;
+	TCHAR bufft[100];&#13;
+	sprintf_s(buff,100,"%d",a);&#13;
+	swprintf_s(buffw,100,L"%d", a);&#13;
+	_stprintf_s(bufft,100, _T("%d"), a);&#13;
+&#13;
+	//字符转数字&#13;
+	sscanf_s(buff,"%d", &amp;b);&#13;
+	swscanf_s(buffw, L"%d", &amp;b);&#13;
+	_stscanf_s(bufft, _T("%d"), &amp;b);</a>
+</h3>
+<h3 class="topic">
+<a name="0krltc7u6g2b9qeneu2i3t8ueb">&nbsp;&nbsp;&nbsp;&nbsp;灵活使用sprintf_s函数可以达到字符串拼接的目的</a>
+</h3>
+<h3 class="topic">
+<a name="6t5ee4tjnagv5eh9mven1nqe6c">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sprintf_s(buff,100,"分数:%d",a);</a>
+</h3>
+<h3 class="topic">
+<a name="361017bc8nhm9evgnusuflcst5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;即在格式化字符串处做文章</a>
+</h3>
+<h3 class="topic">
+<a name="4ekggulb5248ll62e86lfjro1l">&nbsp;&nbsp;&nbsp;字符串的类型</a>
+</h3>
+<h3 class="topic">
+<a name="3vace37871tchdhb2eqvdihv8g">&nbsp;&nbsp;&nbsp;&nbsp;ascii（即多字节）</a>
+</h3>
+<h3 class="topic">
+<a name="4s7oqtn9t7he0r7tb1q6o1j8gq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;char *p=(char*)"hello";&#13;
+int len=strlen(p);</a>
+</h3>
+<h3 class="topic">
+<a name="1m9pj3e1d4dovjhj10ispgv8dn">&nbsp;&nbsp;&nbsp;&nbsp;unicode（即宽字节）</a>
+</h3>
+<h3 class="topic">
+<a name="1huufasdue70eegtebl5mqnpnq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wchar_t *szName= (wchar_t*)L"hello";&#13;
+int len =wcslen(szName);</a>
+</h3>
+<h3 class="topic">
+<a name="0a4341fdj1n43s9vnqtvkk8r29">&nbsp;&nbsp;&nbsp;&nbsp;T版（即通用版）</a>
+</h3>
+<h3 class="topic">
+<a name="78qjn36gsng1en0ofqqels72pr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TCAHR *szNameT=(TCAHR *)_T("hello");&#13;
+int lenT=_tcslen(*szNameT);</a>
+</h3>
+<h3 class="topic">
+<a name="1bu2fvbf0ra159iqbiqfv2iqo6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;需要包含头文件 tchar.h</a>
+</h3>
+<h3 class="topic">
+<a name="28hheknaa80p3kj9ffdsha6io6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;推荐使用：根据当前程序编码的版本（ascii或unicode）对程序中的字符类型进行转换</a>
+</h3>
+<h3 class="topic">
+<a name="7648qguli45snspdgg8v3v8srv">&nbsp;&nbsp;&nbsp;ascii与unicode的转换</a>
+</h3>
+<h3 class="topic">
+<a name="158jtlt8hjt3ngb10bo83o0mja">&nbsp;&nbsp;&nbsp;&nbsp;将宽字节转换为多字节（即_wchar 转为 char 将unicode转为ascii）</a>
+</h3>
+<h3 class="topic">
+<a name="3frph9sfda68jlitd0j15crl8m">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//宽字符转换为多字符(Unicode --&gt; ASCII)</a>
+</h3>
+<h3 class="topic">
+<a name="5305u9jeh1dftclq4lr10bsqg0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//使用有参宏定义该函数</a>
+</h3>
+<h3 class="topic">
+<a name="3rt0or7hj4ujiisfpgtksqm8gg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#define  WCHAR_TO_CHAR(lpW_Char, lpChar) WideCharToMultiByte(CP_ACP, NULL, lpW_Char, -1, lpChar, _countof(lpChar), NULL, FALSE);</a>
+</h3>
+<h3 class="topic">
+<a name="39jed29m40l5ta96ul4tegv4s0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;例：WCHAR_TO_CHAR(L"hello", buff);</a>
+</h3>
+<h3 class="topic">
+<a name="2j96i4u1dsop9drna4c3lhb0ch">&nbsp;&nbsp;&nbsp;&nbsp;将多字节转换为宽字节（即char 转将_wchar 将ascii转为unicode）</a>
+</h3>
+<h3 class="topic">
+<a name="4kk7h6ulviiituodau7ppshboj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// 多字符转换为宽字符(ASCII --&gt; Unicode)</a>
+</h3>
+<h3 class="topic">
+<a name="234plfmv4ql7ncujeubreq9quo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//使用有参宏定义该函数</a>
+</h3>
+<h3 class="topic">
+<a name="4pr616suqomds24jnfo7hcue8r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#define  CHAR_TO_WCHAR(lpChar, lpW_Char) MultiByteToWideChar(CP_ACP, NULL, lpChar, -1, lpW_Char, _countof(lpW_Char));</a>
+</h3>
+<h3 class="topic">
+<a name="69mblrt6b8lble4j1eod8g3vje">&nbsp;&nbsp;win程序调试技巧</a>
+</h3>
+<h3 class="topic">
+<a name="4hfqbv0rpjd4bfrtlutr8b6t3n">&nbsp;&nbsp;&nbsp;OutputDebugString()</a>
+</h3>
+<h3 class="topic">
+<a name="4cov2upak51ggf72t0hfudtt9e">&nbsp;&nbsp;&nbsp;&nbsp;该函数用于在vs的调试过程中，将信息输出到输出窗口</a>
+</h3>
+<h3 class="topic">
+<a name="0o8pk4bf61h0b6b5sp99o19ete">&nbsp;&nbsp;&nbsp;_trace</a>
+</h3>
+<h3 class="topic">
+<a name="0tpv4v32f79jnknv40lbne7ahs">&nbsp;&nbsp;&nbsp;&nbsp;在vs调试模式的输出窗口进行输出，方便调试</a>
+</h3>
+<h3 class="topic">
+<a name="155mp9atgh3ohddkqs4kuv7c8q">&nbsp;&nbsp;&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="46bk7b8kk82r3s1tjtuuuu5kai">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bool _trace(TCHAR *format, ...) //变参函数&#13;
+{&#13;
+	TCHAR buffer[1000];&#13;
+	va_list argptr;&#13;
+	va_start(argptr, format);&#13;
+	//将格式化信息写入指定的缓冲区&#13;
+	wvsprintf(buffer, format, argptr);&#13;
+	va_end(argptr);&#13;
+	//将缓冲区信息输出&#13;
+	OutputDebugString(buffer);&#13;
+	return true;&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="762hjbkpcu90uj5cupvv38cgro">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_trace(_T("%d %s"),100,"100");</a>
+</h3>
+<h3 class="topic">
+<a name="56bphgk14581ukjjehoe7amnva">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意该函数拥有可变长参数，调用方法类似于printf("%d",100);其中TCAHR*format指的是格式控制字符，...指的是与格式控制字符相匹配的内容</a>
+</h3>
+<h3 class="topic">
+<a name="6upu0oehell33cblam3nocue9p">&nbsp;&nbsp;&nbsp;&nbsp;可以对其进行改造，使其可以在窗口进行弹窗</a>
+</h3>
+<h3 class="topic">
+<a name="7sf7omcib886qdt5h14bqhps30">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="4ekon0vh3qv5v5rteq31ru3iu0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bool NewMessageBox(TCHAR *format, ...) //变参函数&#13;
+{&#13;
+	TCHAR buffer[1000];&#13;
+	va_list argptr;&#13;
+	va_start(argptr, format);&#13;
+	//将格式化信息写入指定的缓冲区&#13;
+	wvsprintf(buffer, format, argptr);&#13;
+	va_end(argptr);&#13;
+	//将缓冲区信息输出&#13;
+	//这里是主要的区别，使用弹出窗口的方式显示调试信息&#13;
+	MessageBox(NULL,buffer,NULL,NULL);&#13;
+	return true;&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="7af4pgtbao4esh9vpukbsecgnc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;NewMessageBox((wchar_t *)_T("%d %s"), 1000, L"hello");</a>
+</h3>
+<h3 class="topic">
+<a name="1d86cn33981jtkol6rql2g3gsq">&nbsp;&nbsp;&nbsp;&nbsp;使用这两个函数注意形参为TCHAR* 故格式控制字符需要使用  _T(%d %s)的形式，如果需要将其输出为特定编码格式的内容，需要使用(char*) (wchar_t*)进行强转</a>
+</h3>
+<h3 class="topic">
+<a name="4stv6j82c3r1s4muen9gmaqbie">&nbsp;&nbsp;错误处理</a>
+</h3>
+<h3 class="topic">
+<a name="73bcj67902i02sp31055j5tv0a">&nbsp;&nbsp;&nbsp;绝大多数winapi执行完毕后调用 SetLastError()函数用于设置线程的错误码，如果没有错误，则错误码为0</a>
+</h3>
+<h3 class="topic">
+<a name="49vbj8ksbptf0p8f91l2b30od0">&nbsp;&nbsp;&nbsp;可以在函数执行完毕后，使用GetLastError()函数对错误码进行获取</a>
+</h3>
+<h3 class="topic">
+<a name="7vrv8pmcg93uitqshoj58u13oc">&nbsp;&nbsp;&nbsp;其他错误获取方法</a>
+</h3>
+<h3 class="topic">
+<a name="298g023fvam5vnnmk0btsu3lri">&nbsp;&nbsp;&nbsp;&nbsp;在窗口输入 "err,hr" 可以查看当前错误的类型</a>
+</h3>
+<h3 class="topic">
+<a name="3oq0c0cvfcmdb6tjt90k696vu9">&nbsp;&nbsp;&nbsp;&nbsp;vs提供错误码小工具，可以查找错误码对应的错误内容</a>
+</h3>
+<h3 class="topic">
+<a name="0h15gh5csl995u5s98g8sc424h">&nbsp;&nbsp;&nbsp;&nbsp;使用获取当前错误的程序，获取错误码的弹窗</a>
+</h3>
+<h3 class="topic">
+<a name="6b5ug55hd91pmp0me5ebh3v2ed">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;void MyGetErrorInfo(LPCTSTR lpErrInfo,&#13;
+    UINT unErrCode,&#13;
+    UINT unLine) // unLine=__LINE__&#13;
+{&#13;
+    LPTSTR lpMsgBuf = nullptr;&#13;
+    WCHAR  szMessage[128] = { 0 };&#13;
+    WCHAR  szCaption[32] = { 0 };&#13;
+    FormatMessage(0x1300, NULL, unErrCode,&#13;
+        0x400, (LPTSTR)&amp;lpMsgBuf, 64, NULL);&#13;
+    swprintf_s(szMessage, 128,&#13;
+        L"Error_0x%08X:%s", unErrCode, lpMsgBuf);&#13;
+    swprintf_s(szCaption, 32,&#13;
+        L"%s (Error Line:%05d)", lpErrInfo, unLine);&#13;
+    MessageBox(NULL, szMessage, szCaption, MB_OK);&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="3dn3s0om4hokdehghfcrlphd6u">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用用例</a>
+</h3>
+<h3 class="topic">
+<a name="04k6tkvpq2dirgr05c2hq2riim">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;int APIENTRY WinMain(&#13;
+	HINSTANCE hInstance,	//实例句柄&#13;
+	HINSTANCE hPerInstance,//前实例句柄&#13;
+	LPSTR     szCmdLine,	//参数字符串&#13;
+	int       nShowCmd	//显示方式)&#13;
+{&#13;
+	CreateFile(0,0,0,0,0,0,0);&#13;
+	int x = GetLastError();&#13;
+	MyGetErrorInfo(_T("打开失败"), x, __LINE__);&#13;
+		return 0;&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="4drnubhb5qtfbam8ga2l6sgdd8">&nbsp;windows框架</a>
+</h3>
+<h3 class="topic">
+<a name="4jrf7mso13hh1tumcebcid1vtm">&nbsp;&nbsp;窗口类(WNDCLASS)</a>
+</h3>
+<h3 class="topic">
+<a name="7l9ogm4digdhaca4f02t3v47av">&nbsp;&nbsp;&nbsp;窗口类是一个结构体而不是一个c++的类</a>
+</h3>
+<h3 class="topic">
+<a name="4bgb7ibdk34n2fm1l3f2g4sj38">&nbsp;&nbsp;&nbsp;&nbsp;重要成员变量</a>
+</h3>
+<h3 class="topic">
+<a name="1tdi5jn6sfsa7kno4k44uofcos">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;窗口类名</a>
+</h3>
+<h3 class="topic">
+<a name="0t1rla7bh03nj7gqarbfq2e3bd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;指向窗口过程的指针</a>
+</h3>
+<h3 class="topic">
+<a name="6qtctqods3qunqjlp95538r5nl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;即消息回调函数的函数名</a>
+</h3>
+<h3 class="topic">
+<a name="0jq40hbsnltg55mhnuc5otmiff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;实例句柄</a>
+</h3>
+<h3 class="topic">
+<a name="0jf8hvni0fgpfmciigbt6t9tpc">&nbsp;&nbsp;&nbsp;创建窗口</a>
+</h3>
+<h3 class="topic">
+<a name="3vj1l9cl7v16ac32t9miql3r9f">&nbsp;&nbsp;&nbsp;&nbsp;CreateWindows()</a>
+</h3>
+<h3 class="topic">
+<a name="0cm55v9r5jakjftvqe2g1om4r5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;重要参数</a>
+</h3>
+<h3 class="topic">
+<a name="148t4spdb4572epk76khp6ujs6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;窗口类名</a>
+</h3>
+<h3 class="topic">
+<a name="57head1ujussjb04ldorjsmmh2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;窗口名</a>
+</h3>
+<h3 class="topic">
+<a name="77s6s36son0nm0ge0i697d2pov">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;窗口风格</a>
+</h3>
+<h3 class="topic">
+<a name="56acg0vdojbcntajohkp00k6lp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;实例</a>
+</h3>
+<h3 class="topic">
+<a name="5v4ntp0jtojv8jj9lv54bimn2g">&nbsp;&nbsp;消息</a>
+</h3>
+<h3 class="topic">
+<a name="56fhqt0cl27mgsje26h86l9dpp">&nbsp;&nbsp;&nbsp;windows系统的事件驱动模型</a>
+</h3>
+<h3 class="topic">
+<a name="2uhuqpb4b36cnfnajgpiq14r83">&nbsp;&nbsp;&nbsp;&nbsp;windows是基于消息的操作系统</a>
+</h3>
+<h3 class="topic">
+<a name="1hcqgh5qc530159m5u5mistprr">&nbsp;&nbsp;&nbsp;消息的处理</a>
+</h3>
+<h3 class="topic">
+<a name="264gdf2svv4i60caruhmf2cvmf">&nbsp;&nbsp;&nbsp;&nbsp;获取消息的消息循环机制（消息泵）</a>
+</h3>
+<h3 class="topic">
+<a name="520ja2fogfd4102cosqdfl63r2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;获取消息</a>
+</h3>
+<h3 class="topic">
+<a name="4k33gjcs3bdqetjojjt51sc36h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;GetMessage()</a>
+</h3>
+<h3 class="topic">
+<a name="0elgcpu66hvp7b3nqag94ni47v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对消息进行一些处理</a>
+</h3>
+<h3 class="topic">
+<a name="51irg6qsm2u9dn741t5fgkfg8r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TranslateMessage()</a>
+</h3>
+<h3 class="topic">
+<a name="2hgtfa5i4h3un6n2hekiddj4dq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将消息发给处理函数</a>
+</h3>
+<h3 class="topic">
+<a name="19rjaib6trk6q11abm23ejnc9j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DispatchMessage()</a>
+</h3>
+<h3 class="topic">
+<a name="0r9vpuq434stfr182b50hnbl2i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    while (GetMessage(&amp;msg, NULL, NULL, NULL))&#13;
+    {&#13;
+        TranslateMessage(hwnd, NULL, &amp;msg);&#13;
+        DispatchMessage(&amp;msg);&#13;
+    }</a>
+</h3>
+<h3 class="topic">
+<a name="5cvaha2abu9ibm83v7mn9ep67g">&nbsp;&nbsp;&nbsp;&nbsp;处理消息的窗口回调函数</a>
+</h3>
+<h3 class="topic">
+<a name="0dcb40i9lb0c89dd8salmenn59">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;处理消息的函数是编程者自己是现实的，但是函数原型有严格的限制</a>
+</h3>
+<h3 class="topic">
+<a name="0v3jmlfmcha5uv7klmtkn45t83">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;需要的参数</a>
+</h3>
+<h3 class="topic">
+<a name="0t26q8vuh8jferv4deaeu0v8ti">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;得到消息的窗口句柄</a>
+</h3>
+<h3 class="topic">
+<a name="1mk9usratoqb7lol6oaphqb0ks">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;消息类型</a>
+</h3>
+<h3 class="topic">
+<a name="7h2h9ajtd2s6259ottthdoqn9o">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;附加消息1</a>
+</h3>
+<h3 class="topic">
+<a name="0bgh30hm6qfshakr1d8mn9l27u">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;附加消息2</a>
+</h3>
+<h3 class="topic">
+<a name="5m46vl4fva4esnrihh92f0uock">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;消息回调函数原型</a>
+</h3>
+<h3 class="topic">
+<a name="34dd4t04f6g17t1dop8v5mgllg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LRESULT CALLBACK CallBackProc(&#13;
+    HWND hwnd,        //窗口句柄&#13;
+    UINT msg,        //消息类型&#13;
+    WPARAM wparam,    //附加消息1&#13;
+    LPARAM lparam //附加消息2&#13;
+	)&#13;
+{&#13;
+    return DefWindowProc(hwnd, msg, wparam, lparam);&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="71s91gci7heokl31nv5bc6rf8r">&nbsp;&nbsp;&nbsp;产生消息的方式</a>
+</h3>
+<h3 class="topic">
+<a name="3elnle3bhgopprlraua0t7scvm">&nbsp;&nbsp;&nbsp;&nbsp;用户主动产生的消息</a>
+</h3>
+<h3 class="topic">
+<a name="1btmdlvlpvqrd2lv75i6tr53on">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;点击鼠标</a>
+</h3>
+<h3 class="topic">
+<a name="7lei1vk5jqmd4ssn5ev944kkic">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;按下键盘</a>
+</h3>
+<h3 class="topic">
+<a name="6rl8jmgnip8r6r3sbff4p43jkt">&nbsp;&nbsp;&nbsp;&nbsp;windows系统本身产生的消息</a>
+</h3>
+<h3 class="topic">
+<a name="4kgpofa03kt4c0eqf0o57rfaku">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;时间更改</a>
+</h3>
+<h3 class="topic">
+<a name="6e8e8droopcnq9dm1omhtdei8n">&nbsp;&nbsp;&nbsp;&nbsp;应用程序本身产生的消息</a>
+</h3>
+<h3 class="topic">
+<a name="5dgjg0k664tp0dtuu4areg896d">&nbsp;&nbsp;&nbsp;&nbsp;其他应用产生的消息</a>
+</h3>
+<h3 class="topic">
+<a name="02stsvdkesl2ru5m1lh1krlrfr">&nbsp;&nbsp;&nbsp;消息的存放</a>
+</h3>
+<h3 class="topic">
+<a name="5t3019k7n5ke5l60ucn7jkqlbv">&nbsp;&nbsp;&nbsp;&nbsp;windows操作系统存在一个系统消息队列</a>
+</h3>
+<h3 class="topic">
+<a name="5h8vuf16vg171dbubagab6n1i5">&nbsp;&nbsp;&nbsp;&nbsp;每一个GUI程序，都有自己的消息队列</a>
+</h3>
+<h3 class="topic">
+<a name="0mi9bis9ibnde0qh6qhriq6dul">&nbsp;&nbsp;&nbsp;&nbsp;系统消息队列负责将消息分发给不同的程序消息队列，消息在程序消息队列中被消息循环依次进行处理，发给相应的处理函数，产生相应的效果</a>
+</h3>
+<h3 class="topic">
+<a name="6mj27fo5jqd6i5u4bffb02ne5l">&nbsp;&nbsp;&nbsp;消息的处理</a>
+</h3>
+<h3 class="topic">
+<a name="7msmggtvfbfr67kb97no96dehs">&nbsp;&nbsp;&nbsp;&nbsp;自定义消息的创建和处理</a>
+</h3>
+<h3 class="topic">
+<a name="1csfs2j30c8jtqqat94d7feotg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;自定义消息的值只能定义在WM_USER之后，且由于该信息在系统中不存在，所以系统中没有特定的信息触发机制与其对应，所以需要通过系统中已有的消息命令发挥作用</a>
+</h3>
+<h3 class="topic">
+<a name="0stcmrhn5bo37f7dgbvrvu1k4j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#define MYMSG WM_USER+1&#13;
+case WM_LBUTTONDOWN:	//鼠标左键点击&#13;
+{&#13;
+  int xPos = LOWORD(lparam);&#13;
+  int yPos = HIWORD(lparam);&#13;
+&#13;
+  //以非队列的方式向当前窗口发送用户自定义的消息，此时用户的回调函数中需要有MYMSG信息对应的处理过程&#13;
+  //此种发送消息的方式会导致阻塞，只有当该条消息处理完毕后，程序才继续运行  &#13;
+  SendMessage(hwnd，MYMSG, 0x1000, 0x500);&#13;
+  break;&#13;
+}&#13;
+//例如&#13;
+case MYMSG:&#13;
+(0,0,0,0);//这里是什么意思？&#13;
+break;</a>
+</h3>
+<h3 class="topic">
+<a name="141dnqe5tnm1e3d443g0o6jpej">&nbsp;&nbsp;&nbsp;&nbsp;系统定义消息的处理</a>
+</h3>
+<h3 class="topic">
+<a name="447gu538606pgek5orajshk0ho">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;键盘按键按下消息</a>
+</h3>
+<h3 class="topic">
+<a name="1cbgtc2m9rlqdqak0ede73lsng">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;case WM_KEYDOWN: //键盘消息&#13;
+   wparam;		// 键盘码&#13;
+   _trace((TCHAR*)L"按下%c\n", wparam);&#13;
+   break;</a>
+</h3>
+<h3 class="topic">
+<a name="2hnjf0pr48o59ruuagl2e1nvkb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_trace()函数为自定义的函数将相关信息输出到调试的输出窗口</a>
+</h3>
+<h3 class="topic">
+<a name="4pl6145d6gvk74dtj639b1rnq7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;鼠标移动消息</a>
+</h3>
+<h3 class="topic">
+<a name="3ript7ml70g3sc6td9lo4s1ie6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;case WM_MOUSEMOVE:  //鼠标移动消息&#13;
+{&#13;
+  break;&#13;
+  int xPos = LOWORD(lparam);&#13;
+  int yPos = HIWORD(lparam);&#13;
+  _trace((wchar_t *)L"x = %d y=%d\n", xPos, yPos);&#13;
+  break;&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="4sl6jj7rrasm2prqfrq9jcenet">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;输出鼠标在窗口上的x y坐标</a>
+</h3>
+<h3 class="topic">
+<a name="62d2kvikqn76vp0geti1nfhu5o">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;窗口销毁命令</a>
+</h3>
+<h3 class="topic">
+<a name="21h0inf7o5rej04anpthe7afah">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;case WM_DESTROY:	//窗口被销毁&#13;
+  PostQuitMessage(0);&#13;
+  break;</a>
+</h3>
+<h3 class="topic">
+<a name="6a733har24f17l659f6pro3qjv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;只有加了该命令，窗口才能在点击关闭按钮后停止运行窗口程序</a>
+</h3>
+<h3 class="topic">
+<a name="41hr6ori04dksrpp8frfsfbk2a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;鼠标单击左键命令</a>
+</h3>
+<h3 class="topic">
+<a name="620uhio8din20k258967voqglg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;case WM_LBUTTONDOWN:	//鼠标左键点击&#13;
+{&#13;
+  int xPos = LOWORD(lparam);//获取光标x坐标&#13;
+  int yPos = HIWORD(lparam);//获取光标y坐标&#13;
+  MessageBox(NULL, L"左键按下", NULL, NULL);&#13;
+  break;&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="2p130q444q12d7buv29hb3rvgr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;弹出窗口，显示左键按下</a>
+</h3>
+<h3 class="topic">
+<a name="2lpeubeh0gu1e67c131qme5uk0">&nbsp;&nbsp;编程实践</a>
+</h3>
+<h3 class="topic">
+<a name="6tau7o16su316v8ublo1ehjlub">&nbsp;&nbsp;&nbsp;定义winmain函数</a>
+</h3>
+<h3 class="topic">
+<a name="53mgfrkj1d1vn1gnm6qn3dotn5">&nbsp;&nbsp;&nbsp;设计窗口类</a>
+</h3>
+<h3 class="topic">
+<a name="4ilpq4vg9m5cee60ed39lv1i0b">&nbsp;&nbsp;&nbsp;&nbsp;WNDCLASS wcs={0}；</a>
+</h3>
+<h3 class="topic">
+<a name="49q6idouknv5fbbee99jaih0ds">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;定义窗口类</a>
+</h3>
+<h3 class="topic">
+<a name="5e8e1duuspfu81cftcvsaiqmam">&nbsp;&nbsp;&nbsp;&nbsp;wcs.lpszClassName = L"15pb";</a>
+</h3>
+<h3 class="topic">
+<a name="3foofaiv3nff285omum5f1m94b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;窗口类名</a>
+</h3>
+<h3 class="topic">
+<a name="7r6ru43of7cksdfenv8t4dnb29">&nbsp;&nbsp;&nbsp;&nbsp;wcs.lpfnWndProc = CallBackProc;</a>
+</h3>
+<h3 class="topic">
+<a name="0hrnledmlugbpbop4hqkds53n6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;指向回调函数的指针</a>
+</h3>
+<h3 class="topic">
+<a name="60dvd96elgb4mji2kvqa445pko">&nbsp;&nbsp;&nbsp;&nbsp;wcs.hInstance = hInstance;</a>
+</h3>
+<h3 class="topic">
+<a name="05qu7hb28gte5en3fp1dgnc5aj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;实例句柄代表调用这个窗口的程序</a>
+</h3>
+<h3 class="topic">
+<a name="6rlgi320t3t3paf3qcu12317l6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;实例句柄是调用窗口的函数提供的</a>
+</h3>
+<h3 class="topic">
+<a name="7jo1g6crubuc10qen2m43vkanj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;比如WinMain函数</a>
+</h3>
+<h3 class="topic">
+<a name="641ptjqb72ada0jqtkos4a5o8n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;实例句柄标识什么？？？？？?????????????????????????????????????????????????????????????????????????</a>
+</h3>
+<h3 class="topic">
+<a name="6i186kkq1r71hqe0hu4rl5q14n">&nbsp;&nbsp;&nbsp;&nbsp;窗口类原型</a>
+</h3>
+<h3 class="topic">
+<a href="https://blog.csdn.net/liu_yude/article/details/44736555" name="32hvjt9tuplvgd8opupb10je8s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://blog.csdn.net/liu_yude/article/details/44736555</a>
+</h3>
+<h3 class="topic">
+<a name="7bera091p0kktbnju4h7olu1ei">&nbsp;&nbsp;&nbsp;注册窗口类</a>
+</h3>
+<h3 class="topic">
+<a name="4a7bjpd7re6qpgbb4933r1ah55">&nbsp;&nbsp;&nbsp;&nbsp;RegisterClass(&amp;wcs)</a>
+</h3>
+<h3 class="topic">
+<a name="05iauj912adc9k408ol4idru1a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;需要的参数为刚设计的窗口类</a>
+</h3>
+<h3 class="topic">
+<a name="2igv6vsocvcqmed6ab738oh71k">&nbsp;&nbsp;&nbsp;创建窗口(使用函数CreateWindows())</a>
+</h3>
+<h3 class="topic">
+<a name="5s4duvldi50sh27r4gj3n1pelp">&nbsp;&nbsp;&nbsp;&nbsp;第一个参数是窗口类名</a>
+</h3>
+<h3 class="topic">
+<a name="0n5duft2h3f0f8seg28bm5tc52">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;与设计窗口时定义的需要一模一样</a>
+</h3>
+<h3 class="topic">
+<a name="5jen9fnqsqdo5gsignlhatnt6m">&nbsp;&nbsp;&nbsp;&nbsp;第二个参数是窗口名</a>
+</h3>
+<h3 class="topic">
+<a name="61d8m7n9h9fjgtdaqp6ea40gns">&nbsp;&nbsp;&nbsp;&nbsp;第三次参数是窗口风格</a>
+</h3>
+<h3 class="topic">
+<a name="3dj5rrd51o58glv53el3k994bo">&nbsp;&nbsp;&nbsp;&nbsp;第四个参数是窗口x坐标</a>
+</h3>
+<h3 class="topic">
+<a name="3njh3s1eatt2jit7gfnl9s9rie">&nbsp;&nbsp;&nbsp;&nbsp;第四个参数是窗口y坐标</a>
+</h3>
+<h3 class="topic">
+<a name="1p0ni2pnhg64v1e2keecmgnvou">&nbsp;&nbsp;&nbsp;&nbsp;第五个参数是窗口宽度</a>
+</h3>
+<h3 class="topic">
+<a name="0sd1k8b6dvdetb0g5si1kgqk3h">&nbsp;&nbsp;&nbsp;&nbsp;第六个参数是窗口高度</a>
+</h3>
+<h3 class="topic">
+<a name="0ss6tm48617lrkogq60abstjkj">&nbsp;&nbsp;&nbsp;&nbsp;父窗口</a>
+</h3>
+<h3 class="topic">
+<a name="1ko9gk7j554in3rb2pk3i2bkni">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以为NULL</a>
+</h3>
+<h3 class="topic">
+<a name="3jvm4a9457srudsco83s9fdbsf">&nbsp;&nbsp;&nbsp;&nbsp;按钮（菜单）</a>
+</h3>
+<h3 class="topic">
+<a name="5ao5u8tjtm9hgs73p3g4h4shrh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以为NULL</a>
+</h3>
+<h3 class="topic">
+<a name="4jv2d42khap1uj57c0q1qkqks7">&nbsp;&nbsp;&nbsp;&nbsp;实例句柄</a>
+</h3>
+<h3 class="topic">
+<a name="5kvpuo5jvo2g628gn3ls850sn5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;与设计窗口时定义的需要一模一样</a>
+</h3>
+<h3 class="topic">
+<a name="3u4goq5vq6gemlhfehf2novfd4">&nbsp;&nbsp;&nbsp;&nbsp;附加参数</a>
+</h3>
+<h3 class="topic">
+<a name="04mcje0kisjbj4ic7if4f3hgav">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以为NULL</a>
+</h3>
+<h3 class="topic">
+<a name="4m4qqr8tdo6s7mk9um0nrnn3n5">&nbsp;&nbsp;&nbsp;更新显示窗口</a>
+</h3>
+<h3 class="topic">
+<a name="384u35pvi6e1hnc5888l8al4e9">&nbsp;&nbsp;&nbsp;&nbsp;UpdateWindow(hwnd); //参数为新建窗口的句柄</a>
+</h3>
+<h3 class="topic">
+<a name="4uqubsnfqs96r1kgp41rs9g1fp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;窗口句柄在创建窗口时获得</a>
+</h3>
+<h3 class="topic">
+<a name="06or581snbd3j1a2koi2isvjm1">&nbsp;&nbsp;&nbsp;&nbsp;ShowWindow(hwnd, SW_SHOW);</a>
+</h3>
+<h3 class="topic">
+<a name="2f597jb6br0i04cgtitafpgjlj">&nbsp;&nbsp;&nbsp;消息循环（消息泵）</a>
+</h3>
+<h3 class="topic">
+<a name="6oaj4tfj140foejsgda0pmpjkn">&nbsp;&nbsp;&nbsp;&nbsp;MSG msg;//定义信息&#13;
+while(GetMessage(&amp;msg,NULL,NULL,NULL))&#13;
+{&#13;
+        TranslateMessage(hwnd, NULL, &amp;msg);&#13;
+        DispatchMessage(&amp;msg);&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="2ek7rvjhu4vjq1cme3mott94i9">&nbsp;&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="4s876clvh0dq32g6r1ot9ivhid">&nbsp;&nbsp;&nbsp;&nbsp;    LRESULT CALLBACK CallBackProc(&#13;
+        HWND hwnd,        //窗口句柄&#13;
+        UINT msg,        //消息类型&#13;
+        WPARAM wparam,    //附加消息&#13;
+        LPARAM lparam ) &#13;
+	{&#13;
+        return DefWindowProc(hwnd, msg, wparam, lparam);&#13;
+    }&#13;
+&#13;
+&#13;
+    int APIENTRY WinMain(&#13;
+        HINSTANCE hInstance,    //实例句柄&#13;
+        HINSTANCE hPerInstance,    //前实例句柄&#13;
+        LPSTR     szCmdLine,    //参数字符串&#13;
+        int       nShowCmd        //显示方式&#13;
+    )&#13;
+    {&#13;
+        //1  设计一个窗口类&#13;
+        WNDCLASS  wcs = {0};&#13;
+        wcs.lpszClassName = L"15pb";&#13;
+        wcs.lpfnWndProc = CallBackProc;&#13;
+        wcs.hInstance = hInstance;&#13;
+        //2  注册窗口类&#13;
+        RegisterClass(&amp;wcs);&#13;
+        //3  创建窗口&#13;
+        HWND hwnd = CreateWindow(&#13;
+            L"15pb",                    //类名&#13;
+            L"第一个windows窗口程序",    //窗口名&#13;
+            WS_OVERLAPPEDWINDOW,        //窗口风格&#13;
+            100,                        //x&#13;
+            100,                        //y&#13;
+            500,                        //宽度&#13;
+            500,                        //高度&#13;
+            NULL,                        //父窗口&#13;
+            NULL,                        //菜单&#13;
+            hInstance,                    //实例&#13;
+            NULL);                        //附加参数&#13;
+        //4  更新显示窗口&#13;
+        UpdateWindow(hwnd);&#13;
+        ShowWindow(hwnd, SW_SHOW);&#13;
+        //    5  消息循环（消息泵）&#13;
+        //   5.1获取消息&#13;
+        //   5.2翻译消息&#13;
+        //   5.3转发到消息回调函数&#13;
+        MSG msg;&#13;
+        while (GetMessage(&amp;msg, NULL, NULL, NULL))&#13;
+        {&#13;
+            TranslateMessage(hwnd, NULL, &amp;msg);&#13;
+            DispatchMessage(&amp;msg);&#13;
+        }&#13;
+        return 0;&#13;
+    }</a>
+</h3>
+<h3 class="topic">
+<a name="7gqfk88mera4509q3gkv074i7k">&nbsp;&nbsp;&nbsp;&nbsp;TranslateAccelerator，函数功能：翻译加速键表。该函数处理菜单命令中的加速键。该函数将一个WM_KEYDOWN或WM_SYSKEYDOWN消息翻译成一个WM_COMMAND或WM_SYSCOMMAND消息（如果在给定的加速键表中有该键的入口），然后将WM_COMMAND或WM_SYSCOMMAND消息直接送到相应的窗口处理过程。</a>
+</h3>
+<h3 class="topic">
+<a name="7eat9ib9hnahqb7t5vghkhnlme">&nbsp;&nbsp;windows编程中一切阶窗口</a>
+</h3>
+<h3 class="topic">
+<a name="00956sp9fv2srbgftj977v2qtb">&nbsp;&nbsp;&nbsp;vs工具spy++可以查看</a>
+</h3>
+<h3 class="topic">
+<a name="528nef8mp334ndpacdts04q44a">&nbsp;&nbsp;&nbsp;&nbsp;窗口类：类名，类风格</a>
+</h3>
+<h3 class="topic">
+<a name="5iop7jmb0vg2ei4q0pa21k6m6e">&nbsp;&nbsp;&nbsp;&nbsp;窗口：窗口类名，窗口句柄，窗口风格</a>
+</h3>
+<h3 class="topic">
+<a name="04cheqn6gmctr1911ci4n6fh8q">&nbsp;&nbsp;&nbsp;&nbsp;消息：捕获窗口消息</a>
+</h3>
+<h3 class="topic">
+<a name="3r5n52j42ngj47aee26tlqirsq">&nbsp;&nbsp;windows编程的复杂性</a>
+</h3>
+<h3 class="topic">
+<a name="1jmnfn9odr7bntgtlgcngs3i3m">&nbsp;&nbsp;&nbsp;创建窗口</a>
+</h3>
+<h3 class="topic">
+<a name="7rqs3t94iti0hekcvq1fspe3mg">&nbsp;&nbsp;&nbsp;&nbsp;注册窗口类与创建窗口</a>
+</h3>
+<h3 class="topic">
+<a name="6m8n33g5fmgg6jthm8jfuo2cc4">&nbsp;&nbsp;&nbsp;消息循环</a>
+</h3>
+<h3 class="topic">
+<a name="48phe6691v1eahcr4d0pcjl2n3">&nbsp;&nbsp;&nbsp;&nbsp;获取消息和派发消息</a>
+</h3>
+<h3 class="topic">
+<a name="60lfhcr7kr72652d9a7bcf56n3">&nbsp;&nbsp;&nbsp;消息回调函数</a>
+</h3>
+<h3 class="topic">
+<a name="5mbdvlonrnfu61kfbtdu9lm1a2">&nbsp;&nbsp;&nbsp;&nbsp;根据消息类型的不同对消息进行不同的处理</a>
+</h3>
+<h3 class="topic">
+<a name="023nggrojjahdf2v2io682j8at">&nbsp;&nbsp;&nbsp;&nbsp;一般处理消息使用的都是各种winapi 加switch case</a>
+</h3>
+<h3 class="topic">
+<a name="09gpv3fh1i3ssbtuloenvn4vjf">&nbsp;&nbsp;&nbsp;&nbsp;一种消息还有两个附加信息，会提高复杂度</a>
+</h3>
+<h3 class="topic">
+<a name="0aqlborgl6obvikulosr9qsntg">&nbsp;&nbsp;sdk编程的三大要素</a>
+</h3>
+<h3 class="topic">
+<a name="291p6llv2j09tiambdqv747on9">&nbsp;&nbsp;&nbsp;消息</a>
+</h3>
+<h3 class="topic">
+<a name="47tbg7o6e6qo39uf1kcklldqd5">&nbsp;&nbsp;&nbsp;&nbsp;消息的含义</a>
+</h3>
+<h3 class="topic">
+<a name="4cedbcqrocm4p8f3712s14la7d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;消息的含义</a>
+</h3>
+<h3 class="topic">
+<a name="351f92ft39im6q9p0eu254e828">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;其实就是宏定义的一些数值</a>
+</h3>
+<h3 class="topic">
+<a name="5dd7soec3f5nnbd68bokr03hc5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;消息附加信息的含义</a>
+</h3>
+<h3 class="topic">
+<a name="2aggjov4g45uf49higgv41vnr5">&nbsp;&nbsp;&nbsp;窗口</a>
+</h3>
+<h3 class="topic">
+<a name="5a3107jsbreev4gi3mbi2josas">&nbsp;&nbsp;&nbsp;&nbsp;windows默认窗口</a>
+</h3>
+<h3 class="topic">
+<a name="4fr7j41i2mrgjni45olvb3q6r5">&nbsp;&nbsp;&nbsp;&nbsp;windows控件</a>
+</h3>
+<h3 class="topic">
+<a name="1aopf7osd2clfhg6qa84g8sso5">&nbsp;&nbsp;&nbsp;api</a>
+</h3>
+<h3 class="topic">
+<a name="007bolibd0j97pvbd1tjkvjibp">&nbsp;&nbsp;&nbsp;&nbsp;常用的api含义以及用法</a>
+</h3>
+<h3 class="topic">
+<a name="45trii1pn92jj89grbbo4l57u3">&nbsp;&nbsp;&nbsp;&nbsp;实现特定功能的api</a>
+</h3>
+<h3 class="topic">
+<a name="0gohe94vhb9fks2nium566ecuv">&nbsp;深入win消息模型</a>
+</h3>
+<h3 class="topic">
+<a name="5n3iplnes577a6na7dq6ri08no">&nbsp;&nbsp;win消息格式</a>
+</h3>
+<h3 class="topic">
+<a name="1tov1c5lglrjftrss4vhn087if">&nbsp;&nbsp;&nbsp;消息结构体</a>
+</h3>
+<h3 class="topic">
+<a name="2qff53ng8gd09nii3us4hqae66">&nbsp;&nbsp;&nbsp;&nbsp;参数</a>
+</h3>
+<h3 class="topic">
+<a name="6fn073454a8haa8n19bfrl3ei9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;获得消息的窗口句柄</a>
+</h3>
+<h3 class="topic">
+<a name="0bral2kn0t9q2i4jbu9mlptrk2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;消息标志</a>
+</h3>
+<h3 class="topic">
+<a name="6ci176ue3iiqj1218b4j9f3irl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;是一个无符号整数</a>
+</h3>
+<h3 class="topic">
+<a name="75tso82vd0g5grni54q2e6ch7k">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;消息的附加信息1</a>
+</h3>
+<h3 class="topic">
+<a name="131dgirddrmuhm6p367p0joqiv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;消息的附加信息2</a>
+</h3>
+<h3 class="topic">
+<a name="5brbkdtt276ec0v3eofq712k6q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;消息投递消息队列的时间</a>
+</h3>
+<h3 class="topic">
+<a name="7j5di3kvimd4mnhavs5p01bt4p">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;鼠标当前位置</a>
+</h3>
+<h3 class="topic">
+<a name="0dh1gfig0oeup5j0m1gbkpej36">&nbsp;&nbsp;&nbsp;&nbsp;前面四个参数会发送给消息回调函数,作为相应形参的实参</a>
+</h3>
+<h3 class="topic">
+<a name="0ql2r968ou2egvq28dj4ga1dk9">&nbsp;&nbsp;实际上在编写消息回调函数时候，是在消息回调函数中使用switch case针对不同的消息进行不同的处理,具体处理多使用windows api</a>
+</h3>
+<h3 class="topic">
+<a name="5g5nhp7rs9ucjataicgqcmh9jq">&nbsp;&nbsp;队列消息与非队列消息</a>
+</h3>
+<h3 class="topic">
+<a name="1th95ckb5bnvcumju4ujjej96u">&nbsp;&nbsp;&nbsp;系统使用两种方法传递消息</a>
+</h3>
+<h3 class="topic">
+<a name="7qi69gqmrnakmn6fni72hds6gh">&nbsp;&nbsp;&nbsp;对列消息发送到消息队列，等待被消息回调函数处理</a>
+</h3>
+<h3 class="topic">
+<a name="17j1j07ejthsojbth13ve7b90f">&nbsp;&nbsp;&nbsp;&nbsp;Postmessage()</a>
+</h3>
+<h3 class="topic">
+<a name="3cpqefn6leuvjt2kv6r0mbm3bi">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;进入消息队列</a>
+</h3>
+<h3 class="topic">
+<a name="4ughjgeojr7eaqf43m1b18176c">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;程序不会发生阻塞，会继续执行消息循环</a>
+</h3>
+<h3 class="topic">
+<a name="59uj26j5odauud111iagl6lg31">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;不存在返回值，仅仅将消息压入队列</a>
+</h3>
+<h3 class="topic">
+<a name="7qo7lk0fso8abtuu7154uib5se">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该函数形参与回调函数形参相同</a>
+</h3>
+<h3 class="topic">
+<a name="1tfe88c7uhr8r7dls66952vib7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;窗口句柄</a>
+</h3>
+<h3 class="topic">
+<a name="15vj570pk3p32hh2nsbv39818d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;消息码</a>
+</h3>
+<h3 class="topic">
+<a name="2i4i51em2rneo6btafb71julku">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;附加消息1</a>
+</h3>
+<h3 class="topic">
+<a name="5dsoevr8d4orniir8oo3r68sse">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;附加消息2</a>
+</h3>
+<h3 class="topic">
+<a name="4rgm9gp2kbiq8t330g08pre2cl">&nbsp;&nbsp;&nbsp;非队列消息不进入消息队列，直接被消息回调函数处理</a>
+</h3>
+<h3 class="topic">
+<a name="7ev3dfpfqhtiuoittspkvog904">&nbsp;&nbsp;&nbsp;&nbsp;SendMessage()</a>
+</h3>
+<h3 class="topic">
+<a name="3papf6hclvauu09coc83404vhl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;不进入消息队列</a>
+</h3>
+<h3 class="topic">
+<a name="4aqq68kps07qpbks8n6081gvpn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;程序会发生堵塞，直到消息处理完毕后才会继续执行</a>
+</h3>
+<h3 class="topic">
+<a name="45aljgdsc4rhmpvsuo5c7gbgt9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;会返回消息回调函数的参数</a>
+</h3>
+<h3 class="topic">
+<a name="7b5g3cdj71esi2q1pg5bnl7n3a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该函数形参与回调函数形参相同</a>
+</h3>
+<h3 class="topic">
+<a name="237geuh0i3u7gc48i2o9pp1pje">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;窗口句柄</a>
+</h3>
+<h3 class="topic">
+<a name="43q879dsr44v36p9up5n968m17">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;消息码</a>
+</h3>
+<h3 class="topic">
+<a name="0i1arue8u31oemhmps8vbabf3u">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;附加消息1</a>
+</h3>
+<h3 class="topic">
+<a name="0hiol049vbsna143uos898mdtt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;附加消息2</a>
+</h3>
+<h3 class="topic">
+<a name="0usof43rogrt6kg82s189v3jp1">&nbsp;&nbsp;&nbsp;具体使用</a>
+</h3>
+<h3 class="topic">
+<a name="1n72elg7rbapq576vmc2j6mcvf">&nbsp;&nbsp;&nbsp;&nbsp;#include "pch.h"&#13;
+#include &lt;windows.h&gt;&#13;
+&#13;
+//自定义消息&#13;
+#define MYMSG WM_USER+1&#13;
+int main()&#13;
+{&#13;
+   	 //获取窗口句柄&#13;
+	HWND hwnd = FindWindow(L"15pb", NULL);&#13;
+	// post ,进消息队列,程序不会堵塞&#13;
+	PostMessage(hwnd, MYMSG, 0, 0);&#13;
+	// send，不进消息队列，等待回调函数返回&#13;
+	SendMessage(hwnd, MYMSG, 0, 0);&#13;
+	return 0;&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="2skqvul85tktdc5ln1lk5jvceg">&nbsp;&nbsp;总结</a>
+</h3>
+<h3 class="topic">
+<a name="1aaohqp883p1lcd23hqevm9s49">&nbsp;&nbsp;&nbsp;消息</a>
+</h3>
+<h3 class="topic">
+<a name="6qmkogbv11vr5f2qkfslhadacs">&nbsp;&nbsp;&nbsp;&nbsp;按消息功能分</a>
+</h3>
+<h3 class="topic">
+<a name="5painujp52n5k8vige8232ke48">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;系统定义消息</a>
+</h3>
+<h3 class="topic">
+<a name="64jmn8emmed2c7dr7qton6c0c3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通用窗口消息&#13;
+(通用消息定义在WINUSER.H中,以WM_开头)</a>
+</h3>
+<h3 class="topic">
+<a name="5st201j3phec52lgprq0l4vqm0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;窗口消息</a>
+</h3>
+<h3 class="topic">
+<a name="1lp140rss2jfcoh9te1r6ftagb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;与窗口内部运作相关</a>
+</h3>
+<h3 class="topic">
+<a name="09au2utmk2a4tkojjk7nsjb6ja">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;命令消息</a>
+</h3>
+<h3 class="topic">
+<a name="5gi7rlqv95e7fikmhciu6uhblq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;与处理用户请求有关</a>
+</h3>
+<h3 class="topic">
+<a name="01o8thvmrtnjugo357067jsjlh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;专指WM_COMMAND</a>
+</h3>
+<h3 class="topic">
+<a name="1d582th5lvpa72bqcbfmr45pkh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通知消息</a>
+</h3>
+<h3 class="topic">
+<a name="7ft9qba6nrp8a4abjs7sn7b9nu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;只适用于windows公共控件</a>
+</h3>
+<h3 class="topic">
+<a name="01j4u6617oed36t94o0adkdq58">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;专指WM_NOTIFY</a>
+</h3>
+<h3 class="topic">
+<a name="7l1vimst925q3bc1t0pv5espq5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;控件消息</a>
+</h3>
+<h3 class="topic">
+<a name="5k90bmt1i9dncdc6pela5khtqk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该部分消息用于控制控件的一些行为，不同的控件有不同的消息 例如 BM_开头的是按钮空控件消息</a>
+</h3>
+<h3 class="topic">
+<a name="7pcg9pjjcmq1iq794s4dmbu6hp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用户定义消息</a>
+</h3>
+<h3 class="topic">
+<a name="7ha8ek3br2f9gk6onsqcpl1meo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;系统定义的消息码在0~WM_USER,&#13;
+WM_USER之后的消息都是可以使用的</a>
+</h3>
+<h3 class="topic">
+<a name="4ujagl5c4l6sdo814pl1cde43n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用自定义的消息进行函数处理</a>
+</h3>
+<h3 class="topic">
+<a name="7q8j8312vh0a8tf1kvcfnofru0">&nbsp;&nbsp;&nbsp;&nbsp;按消息去向分</a>
+</h3>
+<h3 class="topic">
+<a name="3qblucnqkv5teel87gb6g39l50">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;消息队列</a>
+</h3>
+<h3 class="topic">
+<a name="12uo8j7et2hua2kho3sndr41pi">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;非消息队列</a>
+</h3>
+<h3 class="topic">
+<a name="4o0mkk3g343grj0npn5vm00kon">&nbsp;win编程练习</a>
+</h3>
+<h3 class="topic">
+<a name="1hqulunnpbvb5p19rqfg8n8i3c">&nbsp;&nbsp;windows编程中有一个函数可以播放音频的文件</a>
+</h3>
+<h3 class="topic">
+<a name="1cjsq2coset0e1h5h15eura8a3">&nbsp;&nbsp;&nbsp;播放音乐的函数PlaySoundW()</a>
+</h3>
+<h3 class="topic">
+<a name="381ugs45t6avv88he1iud0ljul">&nbsp;&nbsp;键盘按下消息</a>
+</h3>
+<h2 class="topic">
+<a name="6o87itlaoepegate67rcdq1l5k">tips</a>
+</h2>
+<h3 class="topic">
+<a name="7ec7oivpmin4aijn6qnbs9vee7">&nbsp;注意wchar_t类型的字符串需要在前面加L  例如 L"hello"&#13;
+同理 格式控制字符为 L"%d"</a>
+</h3>
+<h3 class="topic">
+<a name="5bcdbl423rd967gmjr8ja75mgh">&nbsp;TCHAR类型的字符串需要使用_T()  例如：_T("hello")&#13;
+同理 格式控制字符为 _T("%d")</a>
+</h3>
+<h3 class="topic">
+<a name="4857811jh0igjat3ee9bbbg6tl">&nbsp;关闭SDL检查可以使得char*p="hello";而不需要类型强转</a>
+</h3>
+<h3 class="topic">
+<a name="7itdhk9en2kis92n3b36uobedo">&nbsp;实例句柄可以在程序中定义为全局变量，用于标识该程序</a>
+</h3>
+</body>
+</html>

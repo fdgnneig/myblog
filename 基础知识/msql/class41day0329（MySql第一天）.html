@@ -1,0 +1,463 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>class41day0329（MySql第一天）</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="383r0t5eini7a5stdh9he47ujf">class41day0329（MySql第一天）</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="class41day0329%EF%BC%88MySql%E7%AC%AC%E4%B8%80%E5%A4%A9%EF%BC%89_files/images/class41day0329%EF%BC%88MySql%E7%AC%AC%E4%B8%80%E5%A4%A9%EF%BC%89.jpg"></div>
+<h2 class="topic">
+<a name="5u2i2mh3jq4l3mpugg8sga7b3a">介绍</a>
+</h2>
+<h3 class="topic">
+<a name="456j586lgrdemv6685ombr8p5i">&nbsp;什么是数据库</a>
+</h3>
+<h3 class="topic">
+<a name="2oqpvkffhmfvd5eqrq5fsbeofq">&nbsp;&nbsp;数据库的容器是磁盘文件</a>
+</h3>
+<h3 class="topic">
+<a name="3fkgtkq78knu6fvecvdpfv56vj">&nbsp;数据库管理系统</a>
+</h3>
+<h3 class="topic">
+<a name="6gd9j3hsvhvhhsj4bq2qqg30a0">&nbsp;&nbsp;管理数据库的一套软件</a>
+</h3>
+<h3 class="topic">
+<a name="1s94j35haek01ggjvio3f0plc5">&nbsp;&nbsp;mysql  sqlserver。。。</a>
+</h3>
+<h3 class="topic">
+<a name="39hcuodq4o3kq444gusddfnu0j">&nbsp;数据库应用程序</a>
+</h3>
+<h3 class="topic">
+<a name="74h9laep25lon6g0q81ujt604q">&nbsp;&nbsp;应用程序、网站</a>
+</h3>
+<h3 class="topic">
+<a name="0vd320h8hjpm66sk2llasfan6b">&nbsp;sql语句：是一种对于数据库的脚本语言，无论哪种数据库管理软件均支持</a>
+</h3>
+<h3 class="topic">
+<a name="4ri4tjd5m2pk65nttueh31l082">&nbsp;sql四种语句类型</a>
+</h3>
+<h3 class="topic">
+<a name="334vv2qh7b1vqb4o7jgjecaagf">&nbsp;&nbsp;数据定义语句</a>
+</h3>
+<h3 class="topic">
+<a name="1rjg86nij11uq21elf28c2rcmn">&nbsp;&nbsp;&nbsp;用于定义数据数据库对象，数据表等</a>
+</h3>
+<h3 class="topic">
+<a name="5h7i68fg5t44bmjm7ddkuklv8m">&nbsp;&nbsp;数据操作语句</a>
+</h3>
+<h3 class="topic">
+<a name="1mss3m1sg1ghm65id36c9rch01">&nbsp;&nbsp;&nbsp;数据的增删改</a>
+</h3>
+<h3 class="topic">
+<a name="215j95p8pva33fulna7cdlmk80">&nbsp;&nbsp;数据查询语句</a>
+</h3>
+<h3 class="topic">
+<a name="5e0919tm97d1ovnd7sstqadifp">&nbsp;&nbsp;&nbsp;数据的查询</a>
+</h3>
+<h3 class="topic">
+<a name="0lcakr2dd2cuf81i455jqnitao">&nbsp;&nbsp;数据控制语句</a>
+</h3>
+<h3 class="topic">
+<a name="6djpld2cb5suovfses2lqe1qos">&nbsp;&nbsp;&nbsp;控制访问权限等</a>
+</h3>
+<h3 class="topic">
+<a name="1lt4ok3npl43spepqd6jjujd1p">&nbsp;主线：创建聊天室项目所需要的数据库</a>
+</h3>
+<h3 class="topic">
+<a name="0kehc70c3mgg6l5rjil709galf">&nbsp;&nbsp;使三种环境</a>
+</h3>
+<h2 class="topic">
+<a name="65gq6ik3mu01ib908t51mq8q6o">mysql使用</a>
+</h2>
+<h3 class="topic">
+<a name="2na6arqk93vujedh0h41ol4v4b">&nbsp;数据类型</a>
+</h3>
+<h3 class="topic">
+<a name="5d780q5bqet86sqe0kgotpi4j9">&nbsp;&nbsp;整数</a>
+</h3>
+<h3 class="topic">
+<a name="4b0cpn56krnfp4gl16qvanpbto">&nbsp;&nbsp;&nbsp;int类型</a>
+</h3>
+<h3 class="topic">
+<a name="5sjas6i5k1sgfo4rohbt7eoapi">&nbsp;&nbsp;浮点，定点类型（小数类型）</a>
+</h3>
+<h3 class="topic">
+<a name="5ckfdbj4vr90qik4j1c2f1nru7">&nbsp;&nbsp;&nbsp;定点数类型可以指定数据的总位数以及小数位数</a>
+</h3>
+<h3 class="topic">
+<a name="0drhn2mvkjd59h13b1bt8c24ou">&nbsp;&nbsp;日期时间类型</a>
+</h3>
+<h3 class="topic">
+<a name="7jnndcsbjkardoubfh52c53i0p">&nbsp;&nbsp;&nbsp;均是字符串类型</a>
+</h3>
+<h3 class="topic">
+<a name="7mg0se491anmfhthtjaj5daijs">&nbsp;&nbsp;&nbsp;sql中字符串以单引号显示  ''</a>
+</h3>
+<h3 class="topic">
+<a name="0dcjvn3rbv492s3ggt735k09j5">&nbsp;&nbsp;字符串和二进制类型</a>
+</h3>
+<h3 class="topic">
+<a name="3seelut1j83sr2qnkqkvnpmbev">&nbsp;&nbsp;&nbsp;char</a>
+</h3>
+<h3 class="topic">
+<a name="2uu8v01pfuftig5mlgd387ojtp">&nbsp;&nbsp;&nbsp;&nbsp;定长字符</a>
+</h3>
+<h3 class="topic">
+<a name="0albukkt43ilrptdl3t3m0dm4j">&nbsp;&nbsp;&nbsp;varchar</a>
+</h3>
+<h3 class="topic">
+<a name="6kpv1oe2bldc1cctfheivp6suu">&nbsp;&nbsp;&nbsp;&nbsp;变长字符</a>
+</h3>
+<h3 class="topic">
+<a name="7ap7o75fssit7st39o6ha1jk9h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;建议使用</a>
+</h3>
+<h3 class="topic">
+<a name="1qftko6musme585uveflpbmoj7">&nbsp;创建数据库，查看数据库</a>
+</h3>
+<h3 class="topic">
+<a name="77ji5ppjgdfna3j6ltg3v993v2">&nbsp;&nbsp;创建数据库</a>
+</h3>
+<h3 class="topic">
+<a name="53ibvlftjijh0hqjl2k2jpbm9t">&nbsp;&nbsp;&nbsp;create database chatroom charset utf8;</a>
+</h3>
+<h3 class="topic">
+<a name="7s81vovcduj1b4aogivprag938">&nbsp;&nbsp;&nbsp;create database if not exists chatroom;</a>
+</h3>
+<h3 class="topic">
+<a name="1g9jjcgkcnktr24q3oi4u2tvlg">&nbsp;&nbsp;&nbsp;&nbsp;如果数据库已经存在，则不再重复创建</a>
+</h3>
+<h3 class="topic">
+<a name="63tkcpdhmtl43flbq6gsadcfo2">&nbsp;&nbsp;显示数据库</a>
+</h3>
+<h3 class="topic">
+<a name="0h5gvlt2cntvjrcsfu4ug3prqd">&nbsp;&nbsp;&nbsp;show database;</a>
+</h3>
+<h3 class="topic">
+<a name="681doer9c29p2ragjrh8cg4fa1">&nbsp;&nbsp;&nbsp;show create database chatroom;</a>
+</h3>
+<h3 class="topic">
+<a name="3l9r5c2f5vdphej13ii95tvkn6">&nbsp;&nbsp;&nbsp;&nbsp;显示一个已经创建了的数据库</a>
+</h3>
+<h3 class="topic">
+<a name="3i8civi7iae2jmluekfkqoojrt">&nbsp;&nbsp;修改数据库编码方式</a>
+</h3>
+<h3 class="topic">
+<a name="0v2rlj2hk6ai3o5rd6mmb5neu1">&nbsp;&nbsp;&nbsp;alter database chatroom charset=gbk;</a>
+</h3>
+<h3 class="topic">
+<a name="6jbd13jvrp61g094tsgf1umhq8">&nbsp;&nbsp;删除数据库</a>
+</h3>
+<h3 class="topic">
+<a name="06mgf41qf2l0ub365ihhlistsu">&nbsp;&nbsp;&nbsp;drop database chatroom</a>
+</h3>
+<h3 class="topic">
+<a name="1g2kgqh7ed18hsor3vu3o6dd9d">&nbsp;创建表（在命令行中）</a>
+</h3>
+<h3 class="topic">
+<a name="53jbt7nq664mpg6lbb10f53cv5">&nbsp;&nbsp;需要进入指定的数据库</a>
+</h3>
+<h3 class="topic">
+<a name="52034bir9as63g5vbpualgn3oc">&nbsp;&nbsp;&nbsp;use chatroom;</a>
+</h3>
+<h3 class="topic">
+<a name="4l3pgnrq8h7de00jtrfjffcirj">&nbsp;&nbsp;创建表</a>
+</h3>
+<h3 class="topic">
+<a name="7bkegapr1kfnb3kjgia5is86gu">&nbsp;&nbsp;&nbsp;创建一张表之前需要是员工use指定使用的数据库</a>
+</h3>
+<h3 class="topic">
+<a name="07h6uluqvq2bbf2tmtm7cp8m9d">&nbsp;&nbsp;&nbsp;create table user_table(&#13;
+	user_id int,&#13;
+	user_name varchar(50)&#13;
+	user_pass varchar(50)&#13;
+	user_sex enum('male','female')&#13;
+)charset utf8;</a>
+</h3>
+<h3 class="topic">
+<a name="0kbp4u6m83090mdb3na32ojdcr">&nbsp;&nbsp;显示数据表的信息</a>
+</h3>
+<h3 class="topic">
+<a name="5p3beq9cmm7fmt9v951oumltmi">&nbsp;&nbsp;&nbsp;show tables;</a>
+</h3>
+<h3 class="topic">
+<a name="78upruu4iki2lsmc59mlo5jao4">&nbsp;表的修改（在navicat中）</a>
+</h3>
+<h3 class="topic">
+<a name="50q9qan4glujj46j90l6dcbkia">&nbsp;&nbsp;需要进入指定的数据库</a>
+</h3>
+<h3 class="topic">
+<a name="3s9ahsluhcrto6nvh4ihf6f2lu">&nbsp;&nbsp;&nbsp;use chatroom;</a>
+</h3>
+<h3 class="topic">
+<a name="1f6c552aug1sb75mjqdb41jdd7">&nbsp;&nbsp;添加字段 （列）</a>
+</h3>
+<h3 class="topic">
+<a name="2fbrk5u9kocnuhs4a9vcolv8h9">&nbsp;&nbsp;&nbsp;alter table user_table&#13;
+	add column register_date datetime first; --创建注册时间列，列明为register_date  数据类型为datetime  first将该列置为第一列</a>
+</h3>
+<h3 class="topic">
+<a name="4l63bml54nnrsb9cllrsfl5a6k">&nbsp;&nbsp;查看表的结构</a>
+</h3>
+<h3 class="topic">
+<a name="4g8plr67b2fc9lbble3e58qrho">&nbsp;&nbsp;&nbsp;desc user_table;</a>
+</h3>
+<h3 class="topic">
+<a name="0324gtcgeerbu5d1vakgp4r51h">&nbsp;&nbsp;修改表字段</a>
+</h3>
+<h3 class="topic">
+<a name="7tpi0k06ubn56mnn7h2a86ol4m">&nbsp;&nbsp;&nbsp;alter table user_table&#13;
+	change column register_date reg_date datetime; --修改字段名称</a>
+</h3>
+<h3 class="topic">
+<a name="3eha2a3seivitfsovq84cn3lqb">&nbsp;&nbsp;&nbsp;alter table user_table&#13;
+	modify column reg_date date; --修改字段数据类型</a>
+</h3>
+<h3 class="topic">
+<a name="6ocovt00g4i5isk8ll3f10590o">&nbsp;&nbsp;删除表中字段</a>
+</h3>
+<h3 class="topic">
+<a name="3f9qdf0lppj89v2ckmsba9ngqu">&nbsp;&nbsp;&nbsp;alter table user_table&#13;
+	drop reg_date;</a>
+</h3>
+<h3 class="topic">
+<a name="1snhdrfodvunrprp69gl989qmf">&nbsp;&nbsp;删除表中的数据</a>
+</h3>
+<h3 class="topic">
+<a name="7m0adi9m3pke081h3nde85dfk7">&nbsp;&nbsp;&nbsp;truncate  table user_table</a>
+</h3>
+<h3 class="topic">
+<a name="138ued950t2vhoc1oh5tmo72l0">&nbsp;&nbsp;&nbsp;&nbsp;清空表中所有数据，但是保留表的数据结构</a>
+</h3>
+<h3 class="topic">
+<a name="6n3k6m0mn36tkprb725qhbd83n">&nbsp;&nbsp;删除表</a>
+</h3>
+<h3 class="topic">
+<a name="1o31ijcv4sclk7edork1694jvm">&nbsp;&nbsp;&nbsp;drop table user_table;</a>
+</h3>
+<h3 class="topic">
+<a name="32cnks8r4j69e49gl6cptkltdn">&nbsp;&nbsp;&nbsp;&nbsp;删除表的内容和定义，释放内存空间</a>
+</h3>
+<h3 class="topic">
+<a name="5p1ne1soc821oej59v7btrhhba">&nbsp;&nbsp;删除表中一行</a>
+</h3>
+<h3 class="topic">
+<a name="1v9otf74b3bpo401pt1o0m8r7s">&nbsp;&nbsp;&nbsp;delete from 表名称 where 列名称 = 值</a>
+</h3>
+<h3 class="topic">
+<a name="744k900m0mbo3ekg66t4l390hi">&nbsp;数据操作</a>
+</h3>
+<h3 class="topic">
+<a name="3eh3bhgrarm0hpnr872k71qtmk">&nbsp;&nbsp;添加数据</a>
+</h3>
+<h3 class="topic">
+<a name="1vmrmoq12jtsr2vffpgbfilvia">&nbsp;&nbsp;&nbsp;use chatroom;</a>
+</h3>
+<h3 class="topic">
+<a name="20amlvctb86f6i6joqmbnkhp6r">&nbsp;&nbsp;&nbsp;insert into user_table  --添加数据的表名&#13;
+	(user_id,user_name,user_pass)  --添加数据的字段&#13;
+	values(1000,'小明','123456'),     --添加的数据值 两者必须对应&#13;
+	          (1002,'小花','123')；</a>
+</h3>
+<h3 class="topic">
+<a name="3lkcopj5jh4ptkup21l7bajd56">&nbsp;&nbsp;修改数据</a>
+</h3>
+<h3 class="topic">
+<a name="018d559ctnt9sfa11lu7sfi5ho">&nbsp;&nbsp;&nbsp;update user_table&#13;
+	set user_pass='12';</a>
+</h3>
+<h3 class="topic">
+<a name="4klnrfdg5hkc7e528gjtipkr4b">&nbsp;&nbsp;&nbsp;&nbsp;修改改字段所有值</a>
+</h3>
+<h3 class="topic">
+<a name="35nuqun461r0p7u05eouipcc17">&nbsp;&nbsp;&nbsp;update user_table&#13;
+	set user_pass='12'&#13;
+	where user_name='小明';</a>
+</h3>
+<h3 class="topic">
+<a name="0b0dlarhde7oaoqabnstcf3ub7">&nbsp;&nbsp;&nbsp;&nbsp;字段的特定值</a>
+</h3>
+<h3 class="topic">
+<a name="4ardnlcoltu6m187j8hbvkq72i">&nbsp;&nbsp;删除数据</a>
+</h3>
+<h3 class="topic">
+<a name="44jubvnf9s5ebjutddqj7uqi1t">&nbsp;&nbsp;&nbsp;delete from user_table;	</a>
+</h3>
+<h3 class="topic">
+<a name="532g5nu8cpl3vru5tf50em6n6j">&nbsp;&nbsp;&nbsp;&nbsp;删除所有数据</a>
+</h3>
+<h3 class="topic">
+<a name="16teu5oqic170m62drfd1olh35">&nbsp;&nbsp;&nbsp;delete from user_table&#13;
+	where user_name="小花";--删除小花一行的所有数据</a>
+</h3>
+<h3 class="topic">
+<a name="46r8h4gk2vckl3pe7ctevf0fkd">&nbsp;表的约束</a>
+</h3>
+<h3 class="topic">
+<a name="1goohspi7dkf6094aqpsi0iptc">&nbsp;&nbsp;类型</a>
+</h3>
+<h3 class="topic">
+<a name="7p3vpbkg741uslbvpkvu45hfp6">&nbsp;&nbsp;&nbsp;主键约束</a>
+</h3>
+<h3 class="topic">
+<a name="764jospcrjjp3gfbfv5ttoh276">&nbsp;&nbsp;&nbsp;&nbsp;可以将某一列（或多列）作为主键</a>
+</h3>
+<h3 class="topic">
+<a name="2i2rfopg5pg36npeh780kopj38">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;主键列值不能为空，不能重复</a>
+</h3>
+<h3 class="topic">
+<a name="5nktovdkb2mhp0iq79kllba75a">&nbsp;&nbsp;&nbsp;&nbsp;一个表中只能有一个主键约束</a>
+</h3>
+<h3 class="topic">
+<a name="1gafotcq89a9p416celeuq6mbm">&nbsp;&nbsp;&nbsp;&nbsp;设置表的主键为自动增长类型</a>
+</h3>
+<h3 class="topic">
+<a name="4748g96nrqmsoh9d1k4ldl4etf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当在表添加数据的时候，主键字段不需要添加，自动在前一个主键值的基础上加1作为添加行的主键</a>
+</h3>
+<h3 class="topic">
+<a name="5ilcsf040lbf0k4plg7ikff3gc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当然也可以将其他字段设置为自动增长类型，添加数据是无需指定值</a>
+</h3>
+<h3 class="topic">
+<a name="57n2663qnbuatu25sracljklng">&nbsp;&nbsp;&nbsp;&nbsp;种类</a>
+</h3>
+<h3 class="topic">
+<a name="11vguiknd94i4cn7gh5646qv80">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;多字段主键</a>
+</h3>
+<h3 class="topic">
+<a name="6o3n6c9qfq6drvf9bn90euov8j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;单字段主键</a>
+</h3>
+<h3 class="topic">
+<a name="554jvh6admbuomnv63ic9enhjc">&nbsp;&nbsp;&nbsp;非空约束</a>
+</h3>
+<h3 class="topic">
+<a name="77mbdottkvoke56ruk3b01ia7p">&nbsp;&nbsp;&nbsp;&nbsp;限制某列的值不能为空，必须有值</a>
+</h3>
+<h3 class="topic">
+<a name="4n6756rq5r6fb3gfddbvfmchlb">&nbsp;&nbsp;&nbsp;唯一约束</a>
+</h3>
+<h3 class="topic">
+<a name="48l2iqtata86uc271o3gsqiomt">&nbsp;&nbsp;&nbsp;&nbsp;限制某列中值不能重复</a>
+</h3>
+<h3 class="topic">
+<a name="2j001uqeannuuihqff5gobh92p">&nbsp;&nbsp;&nbsp;默认约束</a>
+</h3>
+<h3 class="topic">
+<a name="4r7civtdjt0feijmahlfebsr2e">&nbsp;&nbsp;&nbsp;&nbsp;设置某列的默认值</a>
+</h3>
+<h3 class="topic">
+<a name="4jq6b4e4d6vsvb8l1o3k2kkb16">&nbsp;&nbsp;&nbsp;外键约束</a>
+</h3>
+<h3 class="topic">
+<a name="4k81njp4uqueio09klv33vgdt1">&nbsp;&nbsp;&nbsp;&nbsp;设置某列引用至另一列</a>
+</h3>
+<h3 class="topic">
+<a name="1u3kelr3lu8rh3n7keuipbn5mh">&nbsp;&nbsp;主键约束和唯一约束的区别</a>
+</h3>
+<h3 class="topic">
+<a name="5389rfbf53v117kp6kugt19iqd">&nbsp;&nbsp;&nbsp;主键约束</a>
+</h3>
+<h3 class="topic">
+<a name="3kd84731s277i3gjm4udgaihhd">&nbsp;&nbsp;&nbsp;&nbsp;1) 主键用于唯一地标识表中的每一条记录，可以定义一列或多列为主键。 </a>
+</h3>
+<h3 class="topic">
+<a name="3l1n3gmt4iceuhlg0jvo2t6tg0">&nbsp;&nbsp;&nbsp;&nbsp;2) 是不可能（或很难）更新． </a>
+</h3>
+<h3 class="topic">
+<a name="2rq8tjo0domk75ugpneus0189p">&nbsp;&nbsp;&nbsp;&nbsp;3) 主键列上没有任何两行具有相同值（即重复值），不允许空（NULL）．</a>
+</h3>
+<h3 class="topic">
+<a name="53gmqh7ktamia047gpu7tln5n5">&nbsp;&nbsp;&nbsp;&nbsp;4) 主健可作外健，唯一索引不可；</a>
+</h3>
+<h3 class="topic">
+<a name="096sqcke3a39k9qff2linok5ej">&nbsp;&nbsp;&nbsp;唯一约束</a>
+</h3>
+<h3 class="topic">
+<a name="5f777ehj0fnfmbc83mb3vv80hi">&nbsp;&nbsp;&nbsp;&nbsp;1) 唯一性约束用来限制不受主键约束的列上的数据的唯一性，用于作为访问某行的可选手段，一个表上可以放置多个唯一性约束．</a>
+</h3>
+<h3 class="topic">
+<a name="5mv7eg1uf2gpcfb536jchhi49e">&nbsp;&nbsp;&nbsp;&nbsp;2) 只要唯一就可以更新． </a>
+</h3>
+<h3 class="topic">
+<a name="7s6vootbor35i5gu1vo2t0q3bd">&nbsp;&nbsp;&nbsp;&nbsp;3) 即表中任意两行在  指定列上都不允许有相同的值，允许空（NULL）．</a>
+</h3>
+<h3 class="topic">
+<a name="22dftj3s7el3cij6fr7k8j6gub">&nbsp;&nbsp;&nbsp;&nbsp;4) 一个表上可以放置多个唯一性约束</a>
+</h3>
+<h3 class="topic">
+<a name="3uhu8hk4ikjofjcq21iant6rmg">&nbsp;&nbsp;&nbsp;两者均用于保证列中不存在重复值，区别主要在于前者不允许为空，后者允许为空</a>
+</h3>
+<h3 class="topic">
+<a name="2oj9ec96nimpbihf35nrifl4a3">&nbsp;&nbsp;示例代码</a>
+</h3>
+<h3 class="topic">
+<a name="4smnl7bbfej2sosdn458kbh68d">&nbsp;&nbsp;&nbsp;添加主键</a>
+</h3>
+<h3 class="topic">
+<a name="6hf3kbrpevil7jvdr1b2lttlfr">&nbsp;&nbsp;&nbsp;&nbsp;ALTER TABLE `user_table`&#13;
+	ADD PRIMARY KEY (`user_id`);</a>
+</h3>
+<h3 class="topic">
+<a name="7fv1f9lrlhf8d2bic5do443q2h">&nbsp;&nbsp;&nbsp;自动增长且非空约束</a>
+</h3>
+<h3 class="topic">
+<a name="4k4mfrs5eh7uq0amrdcp2s3aev">&nbsp;&nbsp;&nbsp;&nbsp;ALTER TABLE `user_table`&#13;
+	MODIFY COLUMN `user_id`  int(11) NOT NULL AUTO_INCREMENT FIRST ;</a>
+</h3>
+<h3 class="topic">
+<a name="26b1dhjglundo6nog15t7hrt3o">&nbsp;&nbsp;&nbsp;默认约束</a>
+</h3>
+<h3 class="topic">
+<a name="72tbd5ucbv2s7ucuj55riesjbn">&nbsp;&nbsp;&nbsp;&nbsp;暂缺</a>
+</h3>
+<h3 class="topic">
+<a name="29dt037ijnm5bhgim9tnb7im6p">&nbsp;&nbsp;&nbsp;唯一约束</a>
+</h3>
+<h3 class="topic">
+<a name="573pll7p306gpku1pe0fr4jo8d">&nbsp;&nbsp;&nbsp;&nbsp;alter table user_table&#13;
+	add unique(user_name);</a>
+</h3>
+<h3 class="topic">
+<a name="151kocvf0pl1duso1daitm1ac5">&nbsp;&nbsp;&nbsp;具体添加删除约束的代码可以参考资料</a>
+</h3>
+<h3 class="topic">
+<a name="4h7ctqntks226v2ecbk9vqhaa8">&nbsp;表的索引</a>
+</h3>
+<h3 class="topic">
+<a name="2aj60rt62nhmjck2itcm259pj8">&nbsp;&nbsp;定义：对数据表中的一列或多列进行排序后的一种结构，用于提高表中的数据查询速度</a>
+</h3>
+<h3 class="topic">
+<a name="7lo7v4nm7djhkek5i5lvbmh4t9">&nbsp;&nbsp;类型</a>
+</h3>
+<h3 class="topic">
+<a name="7kgev279l4p7qg0r9ttdqsgj5j">&nbsp;&nbsp;&nbsp;普通索引</a>
+</h3>
+<h3 class="topic">
+<a name="5a464umj05bqf9121q91270jp3">&nbsp;&nbsp;&nbsp;&nbsp;类似于添加了一个唯一索引</a>
+</h3>
+<h3 class="topic">
+<a name="19pjljf5lsjvicmq9trmk6opl2">&nbsp;&nbsp;&nbsp;唯一索引</a>
+</h3>
+<h3 class="topic">
+<a name="6mn92v1esv2ko2ik2bmub0rg14">&nbsp;&nbsp;&nbsp;全文索引</a>
+</h3>
+<h3 class="topic">
+<a name="7lu8imf1mgkgc7cfb07hf2a2ir">&nbsp;&nbsp;&nbsp;空间索引</a>
+</h3>
+<h3 class="topic">
+<a name="412ipge6vktmpisskhsmeg4jal">&nbsp;&nbsp;添加唯一索引</a>
+</h3>
+<h3 class="topic">
+<a name="74128d011c65vbiolavcojhdj7">&nbsp;&nbsp;删除唯一索引</a>
+</h3>
+<h2 class="topic">
+<a name="3soo7ir5c30gt8o54qckdimnks">tips</a>
+</h2>
+<h3 class="topic">
+<a name="69amgcr9t5vu90f7eashglsrlf">&nbsp;使用navicat可以直接图形化界面生成需要的表格，得到相应的sql代码</a>
+</h3>
+</body>
+</html>

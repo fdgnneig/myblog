@@ -1,0 +1,676 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>class61day0520（逆向与脱壳第一天）</title>
+</h3>
+<p class="topicImage">
+<img src="class61day0520_files/2024-08-02_102255.png"></p>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="5k0n5n9s8sjgnfvj7tcgbmuk07">class61day0520（逆向与脱壳第一天）</a>
+</h1>
+<h2 class="topic">
+<a name="06pk5hjuldb3prn95hdm91t42c">上周复习</a>
+</h2>
+<h3 class="topic">
+<a name="5g21lsih7a334e9drpdke7qfkm">&nbsp;1、逆向理论与基础工具（重点）</a>
+</h3>
+<h3 class="topic">
+<a name="1jjbfucghsl7p9lie4662admkt">&nbsp;&nbsp;逆向理论论，逆向的目的、逆向的方法</a>
+</h3>
+<h3 class="topic">
+<a name="2mrjoglh52c1e7ugh13anrglmt">&nbsp;&nbsp;&nbsp;逆向目的</a>
+</h3>
+<h3 class="topic">
+<a name="6ab3cdqq80c2ffuc43tkdffvan">&nbsp;&nbsp;&nbsp;&nbsp;分析算法或提取数据</a>
+</h3>
+<h3 class="topic">
+<a name="1n8clf0v1q8tqtrhm0tcju9mbn">&nbsp;&nbsp;&nbsp;&nbsp;补丁技术，增强软件原有功能</a>
+</h3>
+<h3 class="topic">
+<a name="2m4mmdlh2gf3hj3hadt4m4m982">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;游戏私服目前发展瓶颈是黑吃黑</a>
+</h3>
+<h3 class="topic">
+<a name="0mbgg0j35qrmjtb82p85khjqvd">&nbsp;&nbsp;&nbsp;逆向应用</a>
+</h3>
+<h3 class="topic">
+<a name="7dcr84jo5166s9k779dkgrhaqe">&nbsp;&nbsp;&nbsp;&nbsp;软件破解</a>
+</h3>
+<h3 class="topic">
+<a name="28b0noi4q9ui21pv4ohd1q4f5u">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;软件逆向工程师</a>
+</h3>
+<h3 class="topic">
+<a name="3s3i689h803clvqc2ofaui9k9t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;行业范围比较广  汽车软件等</a>
+</h3>
+<h3 class="topic">
+<a name="76n7cekvvhqohd8lmka5vg64p7">&nbsp;&nbsp;&nbsp;&nbsp;病毒分析</a>
+</h3>
+<h3 class="topic">
+<a name="7vgp7tvnfvesthhuu4nfh5mkkq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;恶意代码分析师、反病毒工程师</a>
+</h3>
+<h3 class="topic">
+<a name="6qd9ee9cmjlgrlbmnlsea3j5kt">&nbsp;&nbsp;&nbsp;&nbsp;协议分析</a>
+</h3>
+<h3 class="topic">
+<a name="21525iu6r80o703j5lq0uvtnbo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;网络内容安全工程师</a>
+</h3>
+<h3 class="topic">
+<a name="4fv703bnjkop1o3e71oi897hdo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;协议分析师</a>
+</h3>
+<h3 class="topic">
+<a name="0gl5nrq3nt4uvmrglokmsaon03">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通讯软件协议分析，针对网络传输的聊天信息进行分析、监控</a>
+</h3>
+<h3 class="topic">
+<a name="3554jhspigdsqit040m0fcolul">&nbsp;&nbsp;&nbsp;&nbsp;漏洞分析</a>
+</h3>
+<h3 class="topic">
+<a name="11q1cfg2rt21k3qp1h78mob0n3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;漏洞挖掘</a>
+</h3>
+<h3 class="topic">
+<a name="28m6mahctjr85ib560ea1suti8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;漏洞分析</a>
+</h3>
+<h3 class="topic">
+<a name="2jb6iommjpm4lt37dej5pgj7j3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;漏洞利用</a>
+</h3>
+<h3 class="topic">
+<a name="0cvqer8mli9mjruv23ebqhp3hl">&nbsp;&nbsp;&nbsp;&nbsp;游戏逆向</a>
+</h3>
+<h3 class="topic">
+<a name="51n74sh39mt7ci5ifs66totbtv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;游戏安全工程师</a>
+</h3>
+<h3 class="topic">
+<a name="1tui1u9ulcgmvc3lnpajg1m7ps">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;岗位比较少</a>
+</h3>
+<h3 class="topic">
+<a name="6irvtruea9m8i840n7a6v5cr54">&nbsp;&nbsp;&nbsp;逆向方法</a>
+</h3>
+<h3 class="topic">
+<a name="5d3bf5n0gg4l5ndijl5581jeoa">&nbsp;&nbsp;&nbsp;&nbsp;源码对比分析</a>
+</h3>
+<h3 class="topic">
+<a name="0vdtak916ad7r1dk572om98r0s">&nbsp;&nbsp;&nbsp;&nbsp;单步跟踪</a>
+</h3>
+<h3 class="topic">
+<a name="0gfb98011t089savmc27k2s0ae">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;自上而下</a>
+</h3>
+<h3 class="topic">
+<a name="2vd5inetdb9r7cueih36nthlc9">&nbsp;&nbsp;&nbsp;&nbsp;api下断 栈回溯</a>
+</h3>
+<h3 class="topic">
+<a name="70c8vq15qtnhfrd6a6ev4ru4i0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;自下而上</a>
+</h3>
+<h3 class="topic">
+<a name="5esuugqqgbl5mbufg0qpsl564j">&nbsp;&nbsp;&nbsp;&nbsp;字符串查找 栈回溯</a>
+</h3>
+<h3 class="topic">
+<a name="591p5h97nddep3j11nkta4ni8r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;自下而上</a>
+</h3>
+<h3 class="topic">
+<a name="1d1s7duk4l6ti1uf525984gtc3">&nbsp;2、od使用</a>
+</h3>
+<h3 class="topic">
+<a name="28qptvm33pkcldd2bj7rlb4shl">&nbsp;3、ida使用</a>
+</h3>
+<h3 class="topic">
+<a name="464qmgeiv9nhvdchc7sd1d1fl9">&nbsp;4、c++逆向</a>
+</h3>
+<h3 class="topic">
+<a name="4g66g1d9u4k1323v3l3asno6j7">&nbsp;5、数据结构和mfc逆向</a>
+</h3>
+<h3 class="topic">
+<a name="39cv3r6lfcd5g06u1ehn0q88qj">&nbsp;&nbsp;程序实例分析</a>
+</h3>
+<h3 class="topic">
+<a name="781262raetp939jq92o85vvgbd">&nbsp;&nbsp;&nbsp;程序：00</a>
+</h3>
+<h3 class="topic">
+<a name="7o91qgq2chsja752kh1i91dras">&nbsp;&nbsp;&nbsp;&nbsp;如何点亮按钮</a>
+</h3>
+<h3 class="topic">
+<a name="0u3evajl8g9ljqjh9a0m2h6r2h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;EnableWindow</a>
+</h3>
+<h3 class="topic">
+<a name="5nk5s0dh9p9h6itaba7k0uo2k6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该函数可以使按钮变成灰色</a>
+</h3>
+<h3 class="topic">
+<a name="6m6e2m1j1lii2fjvch0uh05kp7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;给该函数下断，通过栈回溯，找到该函数被调用的位置，修改调用该函数的参数</a>
+</h3>
+<h3 class="topic">
+<a name="0rc6bgon38urro5p9vc5mdqrlh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该函数的参数可能来源于上一层的函数传入，需要分析上一层函数被调用时参数传入情况</a>
+</h3>
+<h3 class="topic">
+<a name="26qsg11pmu5tqkgj8re3v1adki">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;字符串搜索</a>
+</h3>
+<h3 class="topic">
+<a name="74201hfp8u4dshdhq5nov7vj22">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;有的程序中可能不奏效</a>
+</h3>
+<h3 class="topic">
+<a name="5401odjjh3kjajppbn5gqo8asd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过工具（spy++ 、reshacker）获得资源特征信息（比如按钮控件id、窗口类名），通过在源码中比对特征，找到操作该资源的代码</a>
+</h3>
+<h3 class="topic">
+<a name="5o4rmhgffi2tc3eblv4uq68knk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在reshacker中获得按钮控件的id，然后在源代码中查找该控件id，全部下断，触发断点</a>
+</h3>
+<h3 class="topic">
+<a name="7icfv9hou8ovjg5usnd0pp8b99">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;修改控件的函数常将控件id作为一个参数使用，故可以搜索所有命令序列   push 0x3e8</a>
+</h3>
+<h3 class="topic">
+<a name="6ql2if5gp0o45vs453udhu3mhj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;也可以搜索所有常量，常量值为 0x3e</a>
+</h3>
+<h3 class="topic">
+<a name="02nlvppb8hu1imkgksaa3kc667">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;spy++搜索</a>
+</h3>
+<h3 class="topic">
+<a name="60tfmd11poa8hbdq1ao35vulb3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class61day0520_files/1llqj8rh66gceogudfug25hiu9.png"></p>
+<h3 class="topic">
+<a name="3ica983o0if2pkm5sd2ikkj3ki">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;reshacak搜索</a>
+</h3>
+<h3 class="topic">
+<a name="7d54r264a13o4qodf7r44osdd1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class61day0520_files/09bgta1m2b9d8l1gl5pki5aij6.png"></p>
+<h3 class="topic">
+<a name="6ukv1tf2bp5ilsol06psh69mtl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;窗口类名</a>
+</h3>
+<h3 class="topic">
+<a name="28jphabig91u8j6adcse6349ih">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class61day0520_files/218cgi2o0helsr2fen7v15593v.png"></p>
+<h3 class="topic">
+<a name="0h8ms7c6rfj08bqvl0dmng9lgh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;直接通过资源修改工具修改资源，使按钮可见（相关资源的属性（可见、不可见、点亮、灰暗）在内存中一定是以结构体形式保存，修改相关结构体更改控件属性)</a>
+</h3>
+<h3 class="topic">
+<a name="75hldccjbotebsvf1367pbmcqv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用lordpe直接修改资源 （在资源表中），对照reshacker中资源的id，找到对应对话框的资源位置，并显示二进制数据（十六进制编辑器），在二进制数据中更改资源属性</a>
+</h3>
+<h3 class="topic">
+<a name="6mc6v9vhvk0n17ftjjbflsnho3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class61day0520_files/796603jublu3p9rugq50krugsj.png"></p>
+<h3 class="topic">
+<a name="1mviontrpa55k5q5jd9328nqvk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class61day0520_files/1tlsqjh1f190cs3li2jbou134i.png"></p>
+<h3 class="topic">
+<a name="49ifabgsg3372jk6gjkgb2b8ec">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用LordPE修改文件需要保证文件不在被调试的状态下，否则无法修改</a>
+</h3>
+<h3 class="topic">
+<a name="37gklr37sql65koesihe4bol9c">&nbsp;&nbsp;&nbsp;程序：01</a>
+</h3>
+<h3 class="topic">
+<a name="23efvopf6atbfq6hr39rmbtni2">&nbsp;&nbsp;&nbsp;&nbsp;确定编译语言版本，从而确定什么样的特征</a>
+</h3>
+<h3 class="topic">
+<a name="3qs8r81ligl60rlhp431qnnk9b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class61day0520_files/17onrljd9bk3528o635bv8inhd.png"></p>
+<h3 class="topic">
+<a name="7qlrgpc7o2q0t2pm6vpf9a9t1q">&nbsp;&nbsp;&nbsp;&nbsp;通过对程序编译环境的分析，找到对应的版本的按钮点击函数特征，程序运行起来，所有命中特征函数下断点，点击按钮，程序断在按钮点击处理函数位置分析函数</a>
+</h3>
+<h3 class="topic">
+<a name="4aqd20skrbn71d0v6ccbv2cs9q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class61day0520_files/168pu3arsllb4scf27of73thbk.png"></p>
+<h3 class="topic">
+<a name="0a1ao61q3jiu3o5paabp8761im">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class61day0520_files/0anb6oojb85urtpnkllue00lod.png"></p>
+<h3 class="topic">
+<a name="7kn5kpn0qcnds099onk6lsuje7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class61day0520_files/4olq07ommik8ujlh6b0c82vu8l.png"></p>
+<h3 class="topic">
+<a name="2qmmiikfu4s23tna6nsat0bg72">&nbsp;&nbsp;&nbsp;&nbsp;在mfc控件的程序中</a>
+</h3>
+<h3 class="topic">
+<a name="7tnlagqneasuk7cbqllccs668n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;涉及控件可能会有UpDateData(1)  UpDateData(0)  汇编中存在push 0或1 -  mov ecx,xxxx - call 函数</a>
+</h3>
+<h3 class="topic">
+<a name="7lk64qgkhnjfh4gmlk9mlnqoh9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class61day0520_files/5t0v6qcqain8mtv0hk2a607aqq.png"></p>
+<h3 class="topic">
+<a name="7n9ihv53ci6aablkaba7mh1ouk">&nbsp;&nbsp;&nbsp;&nbsp;mfc中获取成员变量是通过this指针加上偏移并且解引用</a>
+</h3>
+<h3 class="topic">
+<a name="1hnsnn71nmuednk173pfmd8137">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;类似于根据this指针取虚函数表指针，只不过需要加上偏移</a>
+</h3>
+<h2 class="topic">
+<a name="3h9c2ishgpobv8qe8keojm0ppd">软件破解</a>
+</h2>
+<h3 class="topic">
+<a name="2hsto8on0otibbq0uroa66abjn">&nbsp;去广告</a>
+</h3>
+<h3 class="topic">
+<a name="31ovjigjh13slolvdepc4otdid">&nbsp;&nbsp;winrar</a>
+</h3>
+<h3 class="topic">
+<a name="54jruhvvs0q99i8lgq8rqq7kbn">&nbsp;&nbsp;&nbsp;可能的api断点</a>
+</h3>
+<h3 class="topic">
+<a name="500iu5icvdbmhr919pa17srktp">&nbsp;&nbsp;&nbsp;&nbsp;弹出窗口相关的函数.....</a>
+</h3>
+<h3 class="topic">
+<a name="46ts0aloblmi03icpptv8cuo3p">&nbsp;&nbsp;&nbsp;&nbsp;MessageBoxA/W</a>
+</h3>
+<h3 class="topic">
+<a name="6m1dr73li4e84899sgviijmj3a">&nbsp;&nbsp;&nbsp;思路</a>
+</h3>
+<h3 class="topic">
+<a name="0viviakusi3hb87o3lb39kfbqk">&nbsp;&nbsp;&nbsp;&nbsp;可以进入指定的dll，通过右键-》当前模块中的名称（标签）可以查找当前模块中所有函数名，从而确定该程序可能使用了哪些api</a>
+</h3>
+<h3 class="topic">
+<a name="29s4q6o89kqc5h9vgkhj4t2vc3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;也可以通过pe工具查看导入表，看该程序使用了那些api，从而下断点</a>
+</h3>
+<h3 class="topic">
+<a name="7e6dnle9vjqdd3rctplnipqh5s">&nbsp;&nbsp;&nbsp;&nbsp;messagebox系列函数的最底层是messageboxtimeoutw，</a>
+</h3>
+<h3 class="topic">
+<a name="32bq2uk5ii22hdll57v2g1ht58">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;api下断点可以在对应api最底层调用的函数上下断点，从而将所有位置断下，断下后通过栈回溯进行分析</a>
+</h3>
+<h3 class="topic">
+<a name="70nnfrqe48d8kmjvik92qpn650">&nbsp;&nbsp;&nbsp;&nbsp;一般在od中只有对应模块的导出函数可以被识别出来，不是所有模块中的函数名均可以被识别，除非你添加了该模块的符号文件</a>
+</h3>
+<h3 class="topic">
+<a name="4jggk01o9qkhcmm4u79eki2vsp">&nbsp;&nbsp;&nbsp;&nbsp;当前cpu架构均基于unicode 如果使用a版api，其内部均会调用w版函数，故可以优先使用w版函数下断</a>
+</h3>
+<h3 class="topic">
+<a name="5sgsr92or6slec4oafgg4r0s8m">&nbsp;&nbsp;&nbsp;&nbsp;创建窗口的函数的参数会涉及窗口类等信息，通过spy++获取窗口类名（窗口类名一般不会发生变化，可以用于标识窗口，一般不使用窗口名判断窗口）在创建窗口的函数中，根据窗口类名下条件断点，可以将程序断在指定窗口的创建上</a>
+</h3>
+<h3 class="topic">
+<a name="3p8unml5h9q5gkfkineqvqornj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[UNICODE[ESP+8]=="RarReminder"是条件断点表达式</a>
+</h3>
+<h3 class="topic">
+<a name="0p3ntlsenugrrq3nbem2bru718">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;窗口类名的获取</a>
+</h3>
+<h3 class="topic">
+<a name="6pprn6pun7oaqqlnp56ignkhcc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class61day0520_files/23v7bq84ed80v5k1t1gaok73tq.png"></p>
+<h3 class="topic">
+<a name="1lvfp7pinni7ehseo0pck6vpgf">&nbsp;&nbsp;&nbsp;&nbsp;代码如果涉及重定位的数据，不能随意nop掉，除非先将程序的随机基址去掉基址</a>
+</h3>
+<h3 class="topic">
+<a name="2echn8nmppqaq4t79edk68trua">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;（随机基址在010editor中的特征为40 81  去掉随机基址可以直接改为0081）</a>
+</h3>
+<h3 class="topic">
+<a name="13nepgqf9peu0i5nn74bddo99m">&nbsp;&nbsp;&nbsp;&nbsp;直接nop比较暴力，可以尝试jmp掉该段程序，注意保持栈平衡</a>
+</h3>
+<h3 class="topic">
+<a name="2qbru3b63umo9mpqbor4h5ri8k">&nbsp;&nbsp;&nbsp;&nbsp;ctrl+x 而可以复制选中指令的地址</a>
+</h3>
+<h3 class="topic">
+<a name="2haskfimr67t38lj59211mm3hj">&nbsp;&nbsp;&nbsp;&nbsp;选中窗口 ctrl+c可以复制当前窗口显示的内容</a>
+</h3>
+<h3 class="topic">
+<a name="7vh99u2ds7qncd2umo20oa5hfg">&nbsp;&nbsp;&nbsp;关键流程</a>
+</h3>
+<h3 class="topic">
+<a name="2k16bqd9su285725to5uu636pr">&nbsp;&nbsp;&nbsp;&nbsp;识别相关api-》api处下条件断点</a>
+</h3>
+<h3 class="topic">
+<a name="6kutfqlpv0gm6bvogr92uq31mb">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class61day0520_files/509n0mguoit8cjh47k8ksgbid6.png"></p>
+<h3 class="topic">
+<a name="561cuc0uafpnvv2380a85csa5u">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;创建广告窗口的api是CreateWindowExW，再该函数处下断</a>
+</h3>
+<h3 class="topic">
+<a name="1r8c65j6bd4a5k3ij531sopfa0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过spy++找到广告窗口类名为RarReminder，即1的位置得知窗口类名后，可在CreateWindowsExW内部下条件断点</a>
+</h3>
+<h3 class="topic">
+<a name="1rdkhk1ohif297qgdidmicsq8k">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意一定要在api内部下条件断点，因为该函数可能在程序不同的位置被调用，如果在函数调用位置下断，则无法断住所有调用该api的位置</a>
+</h3>
+<h3 class="topic">
+<a name="6u4h65bnso0g2fqbr5tpm4ahpa">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;条件断点下在函数一开始，此时该函数参数已经入栈完毕，esp指向该函数的执行完成后的返回地址，此时esp+0x8的堆栈位置保存窗口类名字符串</a>
+</h3>
+<h3 class="topic">
+<a name="512be6tcpsnijfhpadb9ffl1sj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用[UNICODE[ESP+8]=="RarReminder"可以使程序断在广告窗口的创建位置</a>
+</h3>
+<h3 class="topic">
+<a name="676utl5et92kqslvrlopko9k3r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过栈回溯，找到调用创建广告窗口的位置</a>
+</h3>
+<h3 class="topic">
+<a name="6qjjftrpof2jj389nac47l0420">&nbsp;&nbsp;&nbsp;存在的问题，定位了创建广告窗口的CcreateWindowExW之后，发现api地调用使用了重定位，如果直接修改nop可能会导致程序崩溃不能使用</a>
+</h3>
+<h3 class="topic">
+<a name="1nuk44b2pt9bkg41p616q61tc9">&nbsp;&nbsp;&nbsp;&nbsp;解决方法</a>
+</h3>
+<h3 class="topic">
+<a name="06a280kvttob6qh4htb1cn5qjs">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将api  nop掉，将程序的随机基址机制去除</a>
+</h3>
+<h3 class="topic">
+<a name="2uc67ql63eueoslqb1llltg965">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;尝试通过jmp指令将创建广告窗口的函数跳过，问题在于，有时不能确定某些指令的跳过会对之后指令的正常执行产生影响</a>
+</h3>
+<h3 class="topic">
+<a name="6j32k51ajhe3h7l7er0ntd7kco">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;最后，找出CreateWindowExW是在哪个函数中被调用，该函数没有使用va调用，将该函数更改为add esp,8,即将该函数跳过并且平衡堆栈</a>
+</h3>
+<h3 class="topic">
+<a name="1u5hj5q6d4sdokiepchdcpa7ll">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;结果是广告窗口不会弹出，但是时不时程序运行会崩溃</a>
+</h3>
+<h3 class="topic">
+<a name="5ti3g1ulepus2vbufdv9sgt1r6">&nbsp;修改窗口名称</a>
+</h3>
+<h3 class="topic">
+<a name="0uk5gmknnjf6jk1dibv246v63a">&nbsp;&nbsp;winrar</a>
+</h3>
+<h3 class="topic">
+<a name="332vp5cc06kl3v2pd19tf3c6n0">&nbsp;&nbsp;&nbsp;代码中指定窗口名称的位置</a>
+</h3>
+<h3 class="topic">
+<a name="2g6tbm0j16sqv0ls9bnia8v748">&nbsp;&nbsp;&nbsp;&nbsp;如果是sdk</a>
+</h3>
+<h3 class="topic">
+<a name="1chhaisq6jkrbds98gb047hntf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CreateWindows</a>
+</h3>
+<h3 class="topic">
+<a name="7t4h1pe29hldsmvmlhmvuiln0f">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RegisterClassEx</a>
+</h3>
+<h3 class="topic">
+<a name="0abq6a0gkq1h9jsg1ninr4aop8">&nbsp;&nbsp;&nbsp;&nbsp;如果是mfc</a>
+</h3>
+<h3 class="topic">
+<a name="751107gqa3h9beqt8leq4i6042">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DoModal</a>
+</h3>
+<h3 class="topic">
+<a name="5ci3jsc3e3qko2a3t22ts8udl6">&nbsp;&nbsp;&nbsp;如果上面窗口没有将窗口名设置为默认值，则默认的窗口名是单另调用api设置的</a>
+</h3>
+<h3 class="topic">
+<a name="4bjo32o9lmd8crjdiqvk0ihnu0">&nbsp;&nbsp;&nbsp;&nbsp;SetWindowtText可以用于修改窗口文本，可以进行下断</a>
+</h3>
+<h3 class="topic">
+<a name="44099873njnsm0mjo22dq01m35">&nbsp;&nbsp;&nbsp;可以在程序中搜索一段0的内存，用于保存需要更改的目的字符串，这里注意保存的地址不能是堆中开辟出的空间，需要可以转换为文件偏移</a>
+</h3>
+<h3 class="topic">
+<a name="3ishivnc02ihnqsd659g35j17r">&nbsp;&nbsp;&nbsp;&nbsp;可以尝试保存修改，之后再打开，验证是否保存成功</a>
+</h3>
+<h3 class="topic">
+<a name="2ag6vnovm9vlskp1scdrinvrqm">&nbsp;&nbsp;&nbsp;在窗口创建过程中需要将上面的字符串作为参数传参，这里如果使用va虚拟地址传参，需要考虑将随机基址关闭修改才能奏效</a>
+</h3>
+<h3 class="topic">
+<a name="54v0v53a550lbcl762me62u507">&nbsp;&nbsp;&nbsp;如果在使用随机基址的条件下保存对窗口名的修改，可以使用获取eip的编程技巧</a>
+</h3>
+<h3 class="topic">
+<a name="3qtqshq2j53acqi0i9c1bvs2gj">&nbsp;&nbsp;&nbsp;&nbsp;使用获取当前eip的技巧可以在不用关闭随机基址的情况下将成功</a>
+</h3>
+<h3 class="topic">
+<a name="1e0locgpehv0eavcc2chcr7tuf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;主要思路</a>
+</h3>
+<h3 class="topic">
+<a name="6heevd8ke3qfhcclqr4tmp9di8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当程序执行到传参指令时，获取当前eip，当前指令地址与保存新窗口名的字符串的地址之间的偏移不随随机基址而改变，可以通过当前指令地址（eip）+某固定偏移，得到保存新窗口名字符串的地址</a>
+</h3>
+<h3 class="topic">
+<a name="517i08ssngumqi7n2uai5g3i17">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;相关代码</a>
+</h3>
+<h3 class="topic">
+<a name="6jote5lqn8umgal0c2mtef22bd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;E8 00000000</a>
+</h3>
+<h3 class="topic">
+<a name="4jsofeo3no4tup0irjro7i7d49">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;即call当前指令的下一条指令</a>
+</h3>
+<h3 class="topic">
+<a name="28g958qmusg034522jdpmhi1ff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;call的目的地址：当前指令地址+5+偏移（这里为0），即会执行该指令的下一条指令</a>
+</h3>
+<h3 class="topic">
+<a name="0sfj3h9akaqtco99gb0slj6mpc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;59</a>
+</h3>
+<h3 class="topic">
+<a name="5rg3e8h8rgkdrtre7gn1v78ljp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;即pop ecx ；由此ecx获得当前eip寄存器中的值</a>
+</h3>
+<h3 class="topic">
+<a name="2qqge7erva6vij4iu5m3qdal6t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;因为字符串地址和当前eip之间距离是不变的，所以可以根据该差值和eip的动态算出字符串地址</a>
+</h3>
+<h3 class="topic">
+<a name="3tco8q5t8lq2p04scbm04hpd2l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;58是pop eax</a>
+</h3>
+<h3 class="topic">
+<a name="7qbacfdcevahcr2rhvsu12op08">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;add ecx,某固定偏移</a>
+</h3>
+<h3 class="topic">
+<a name="7dc36qfdlrtt0v07s9hrcvtodf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;新窗口名的字符串的地址</a>
+</h3>
+<h3 class="topic">
+<a name="4psv7jvqhkis7laquu8vudnclr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;push ecx</a>
+</h3>
+<h3 class="topic">
+<a name="3rf89aj3cn0tpbfstu3sb0f03t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将该参数入栈，用于相关函数调用</a>
+</h3>
+<h3 class="topic">
+<a name="3fq1s319s7ljk4bfqu1q48o0qj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果程序给出的空间不够可以找附近一段空间，先jmp到该空间执行以上部分代码，之后再跳转回来</a>
+</h3>
+<h3 class="topic">
+<a name="1dnkec2ebe512aerishp118m4k">&nbsp;&nbsp;&nbsp;主要以上操作中会涉及相关内存读写执行属性</a>
+</h3>
+<h3 class="topic">
+<a name="1dg634ic89dm0l7mlp6b78uunl">&nbsp;010editor破解</a>
+</h3>
+<h3 class="topic">
+<a name="4f2l8dnbiknup4v2avkhvf0tko">&nbsp;&nbsp;010安装目录中dll可以发现该程序使用了qt和msvcr的库</a>
+</h3>
+<h3 class="topic">
+<a name="03ohqc1kob2ed8263sr9gov12f">&nbsp;&nbsp;&nbsp;qt开发的程序一般很难静态编译，多数为动态编译，可以从文件根目录进行判断程序是否使用qt进行编程（是否有qt相关模块）</a>
+</h3>
+<h3 class="topic">
+<a name="6qpjn2nnt0gfkvjt7cv4nurfk4">&nbsp;&nbsp;通过exeinfo可以看到该程序使用vs2013编译</a>
+</h3>
+<h3 class="topic">
+<a name="4055pd4u25mnmecmsgoeklgti8">&nbsp;&nbsp;一般为了方便计算，程序的注册码一般是数字，是0~f</a>
+</h3>
+<h3 class="topic">
+<a name="6hkp25s4f8g8c7fs3gb2g452aj">&nbsp;&nbsp;&nbsp;部分程序使用base6对密码进行编码，密码是字符串，在正确性判断时被转化二进制</a>
+</h3>
+<h3 class="topic">
+<a name="1r5k5g4kfrlnoms19vpe4dqsus">&nbsp;&nbsp;&nbsp;base可以将二进制数据转化为字符串，常用于网络传输</a>
+</h3>
+<h3 class="topic">
+<a name="3ebde5q0vtmb0nqid83i37ptsg">&nbsp;&nbsp;&nbsp;base64编码算法，有一张表，其中有64个字符，每六位二进制位对应一个base64表字符</a>
+</h3>
+<h3 class="topic">
+<a name="0muqhis91b4i84uu0ppu1ca9jr">&nbsp;&nbsp;qt库的窗口程序创建对话框，底层封装的都是CreateWindowExW函数底层</a>
+</h3>
+<h3 class="topic">
+<a name="3a1qnekm1m3j0ldd9foeacb31q">&nbsp;&nbsp;&nbsp;除了mfc，大多数界面库创建窗口底层多使用CreateWindowExW</a>
+</h3>
+<h3 class="topic">
+<a name="58n8p538iqqdoia4gv6q6aivpd">&nbsp;&nbsp;qt框架因为是大多数是动态编译，所以可以从导出表中获知该程序使用了那些qt的api</a>
+</h3>
+<h3 class="topic">
+<a name="7g8mlc1hhu8sh65hg3bpsbohcr">&nbsp;&nbsp;虚函数的调用框架</a>
+</h3>
+<h3 class="topic">
+<a name="47ihmu54uml9vnr0l3aeu0mms8">&nbsp;&nbsp;&nbsp;mov eax,this指针      ;this指针&#13;
+mov ecx,this指针      ;this指针&#13;
+call [eax+虚函数表偏移]</a>
+</h3>
+<h3 class="topic">
+<a name="1mbmu9bi0ihs8j55gaha561kft">&nbsp;&nbsp;关键位置第一次分析可以先看大致字符串，</a>
+</h3>
+<h3 class="topic">
+<a name="1ka9m18a7mske7ggp7ql41l2uj">&nbsp;&nbsp;&nbsp;可以从关键代码位置多看向上几层，查询是否存在关键字符串</a>
+</h3>
+<h3 class="topic">
+<a name="56c23k6112mqqi4tbpj94a2pqk">&nbsp;&nbsp;一般逆行主要针对主模块，很少分析的dll，除非相关dll是程序自己写的，而不是库函数</a>
+</h3>
+<h3 class="topic">
+<a name="3e0ktf4sibb8b1ukofbletcbdo">&nbsp;&nbsp;对于序列号验证函数，可以在验证函数内部直接修改验证函数的的返回值，使该函数在任何验证过程中，都能返回验证成功的结果</a>
+</h3>
+<h3 class="topic">
+<a name="780tabl5b56sfof72b9ep0764c">&nbsp;&nbsp;算法验证分析</a>
+</h3>
+<h3 class="topic">
+<a name="4rroapq7h8i63mtaunf265pvdd">&nbsp;&nbsp;&nbsp;函数参数数量可以通过函数平衡堆栈信息看到</a>
+</h3>
+<h3 class="topic">
+<a name="11vdmujaiu7l5f380mvsbolmjb">&nbsp;&nbsp;&nbsp;一个函数的调用，如果要看函数的参数，可能需要在内存数据窗口查看多次，因为参数的结构体中可能保存的是指针，该指针也可能指向一个结构体</a>
+</h3>
+<h3 class="topic">
+<a name="7prr9b11fqj6g1fckq4rekqb8o">&nbsp;&nbsp;&nbsp;看视频</a>
+</h3>
+<h3 class="topic">
+<a name="1b54cpomjcik0eh8pi9ifi8cbv">&nbsp;&nbsp;注意当对CreateWindowExW下条件断点(根据注册窗口的窗口类名)后，通过栈回溯，观察哪里调用了该函数，发现1以内的函数调用均来自系统dll，不需要分析，找到第一个主模块函数调用位置，对字符串进行分析</a>
+</h3>
+<h3 class="topic">
+<a name="48hb8ec4lq6p1g9jbh1r3j569r">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class61day0520_files/3d6a231ifaa7913v4r2i9uvu5b.png"></p>
+<h2 class="topic">
+<a name="0rpl4bec7145rocmfpctg1dbqm">注意点</a>
+</h2>
+<h3 class="topic">
+<a name="3m365r51p7m0es97qrlhn8ldka">&nbsp;如果mfc某个函数中出现IsWindow()函数，说明当前函数是mfc的库函数，不需要分析</a>
+</h3>
+<h3 class="topic">
+<a name="7fugqg312tgd0l0l9jrabonkop">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class61day0520_files/4hmf53j4id52gukevfmpm0e9aq.png"></p>
+<h3 class="topic">
+<a name="56v1qggb8jnqk30hsvdd4e1uej">&nbsp;mfc的MessageBox存在三个参数 而全局api存在四个参数，说明mfc对该函数封装过</a>
+</h3>
+<h3 class="topic">
+<a name="0529j42u2b4o2c9us309joeu1h">&nbsp;push 1&#13;
+push  2&#13;
+&#13;
+call 3&#13;
+call 4</a>
+</h3>
+<h3 class="topic">
+<a name="5g7mh63s5vrfmahvsmkidq3ses">&nbsp;&nbsp;2是函数3的参数</a>
+</h3>
+<h3 class="topic">
+<a name="3akosvqqne43nr7u916kv8jj0f">&nbsp;&nbsp;1是函数4的参数</a>
+</h3>
+<h3 class="topic">
+<a name="1k51is1tffbuoaq579ra3fj0h6">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class61day0520_files/76j0c67fiihqo6nj6rdf5nkj4n.png"></p>
+<h3 class="topic">
+<a name="3dbah2ldklrv5fq0kn5sm5j08m">&nbsp;识别程序的编译器版本</a>
+</h3>
+<h3 class="topic">
+<a name="5skj3fhgs7d68coskp8shbkt27">&nbsp;&nbsp;可以通过链接器版本进行判断</a>
+</h3>
+<h3 class="topic">
+<a name="1lg6n29cha85bodk6gemnf9fk6">&nbsp;&nbsp;&nbsp;2013</a>
+</h3>
+<h3 class="topic">
+<a name="617cafd08o0gbso0vt8hfsdj0i">&nbsp;&nbsp;&nbsp;&nbsp;12.0</a>
+</h3>
+<h3 class="topic">
+<a name="0g7r4i3qkt183d0givbemcqhib">&nbsp;&nbsp;&nbsp;2015</a>
+</h3>
+<h3 class="topic">
+<a name="1vifansm0bgpp5t1qung26d3u8">&nbsp;&nbsp;&nbsp;&nbsp;14.0</a>
+</h3>
+<h3 class="topic">
+<a name="2i29f9togl2asno0n1jpclkgoj">&nbsp;&nbsp;&nbsp;2017</a>
+</h3>
+<h3 class="topic">
+<a name="575id5as9dtja0ibpk4tll42g2">&nbsp;&nbsp;&nbsp;&nbsp;14.1</a>
+</h3>
+<h3 class="topic">
+<a name="2hps8itcsn21afr4icsg9q1r4k">&nbsp;选中窗口进行ctrl+c，可以将窗口中的字符串复制下来</a>
+</h3>
+<h3 class="topic">
+<a name="5bbda63kerel83uajlk0tcm22b">&nbsp;界面库逆向的技巧</a>
+</h3>
+<h3 class="topic">
+<a name="554ckde9g42fkh2ta3enov5oem">&nbsp;&nbsp;栈回溯</a>
+</h3>
+<h3 class="topic">
+<a name="4dhiv4uraifl0je58iovgquq5h">&nbsp;&nbsp;源码比较法</a>
+</h3>
+<h3 class="topic">
+<a name="7kr7pptni4tf30260ite6lcl62">&nbsp;通过spy++的message选项，可以对该对话框中发生的消息进行截获和观察</a>
+</h3>
+<h3 class="topic">
+<a name="3964boni85cpio47gjodk1dkgl">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class61day0520_files/1ec2s8sn7evr6s5q963mtjnj2q.png"></p>
+<h3 class="topic">
+<a name="5euv0os932bfsn1d5acn0t4grd">&nbsp;&nbsp;其原理是hook，有时会出现hook失败的问题</a>
+</h3>
+<h3 class="topic">
+<a name="784erk3nnpk8ucj19m5rlfbqm9">&nbsp;使用spy++寻找控件id的方法</a>
+</h3>
+<h3 class="topic">
+<a name="2aim00b1n6f1jnr3d6de6u7vou">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class61day0520_files/0ebjn74qs95t262sovm5r2ure7.png"></p>
+<h3 class="topic">
+<a name="4q1ploohdk2eok2fdpe59moq2v">&nbsp;&nbsp;1：能够查找对应主窗口的所有信息</a>
+</h3>
+<h3 class="topic">
+<a name="17u99k9627qomn8parur34ssiq">&nbsp;&nbsp;&nbsp;通过1可以总窗口中找到需要查找的窗口</a>
+</h3>
+<h3 class="topic">
+<a name="2jd1lu5k1mgjc5358sqkn69ojc">&nbsp;&nbsp;&nbsp;&nbsp;注意搜索窗口前刷新spy++的窗口列表，否则可能搜索不到新打开的窗口</a>
+</h3>
+<h3 class="topic">
+<a name="7frum0ipa9g46ohd8jourdie2s">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class61day0520_files/7073nhcol3mcc183gi9p38nn2e.png"></p>
+<h3 class="topic">
+<a name="1sntgcjjlev1aq81aa58jab45e">&nbsp;&nbsp;&nbsp;通过右键可以监控指定控件的消息、高亮控件、刷新控件、查看控件具体信息</a>
+</h3>
+<h3 class="topic">
+<a name="05u7daf178p19k7r9a04poe6hu">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class61day0520_files/7v56v1a8gghk729gb7c67h52bo.png"></p>
+<h3 class="topic">
+<a name="1er4hmq82qa4t7p1e869qilpu4">&nbsp;&nbsp;&nbsp;通过具体信息可以查看控件id，该控件id在可以直接用于在汇编代码中搜索，全部下断，从而确定该控件相关代码在汇编中的位置</a>
+</h3>
+<h3 class="topic">
+<a name="00v6d4ri80arc5qo8hrsr4tnvk">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class61day0520_files/26l5fplq7mf65rvqig16gj1lig.png"></p>
+<h3 class="topic">
+<a name="5n9vapo4m38733m5fkq9qe21ep">&nbsp;&nbsp;&nbsp;&nbsp;修改控件的函数常将控件id作为一个参数使用，故可以搜索所有命令序列   push 0x3e8</a>
+</h3>
+<h3 class="topic">
+<a name="5v03v39l8jq04ais94cd9gc6g0">&nbsp;&nbsp;&nbsp;&nbsp;也可以搜索所有常量，常量值为 0x3e</a>
+</h3>
+<h3 class="topic">
+<a name="3ltr4spdtjc64odgiu5aqh2t3f">&nbsp;&nbsp;2：查找特定窗口的信息，窗口中有多个控件嵌套，可能不能正确识别控件</a>
+</h3>
+<h3 class="topic">
+<a name="7veh8gvfa60o2pc5kl2vmjilpe">&nbsp;通过reshack也可以找到控件id</a>
+</h3>
+<h3 class="topic">
+<a name="7393g9l2pm345mghvojus7balr">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class61day0520_files/2prvoj6t3lv3fc3qvhlp3qmnp3.png"></p>
+<h3 class="topic">
+<a name="1uboccoltv17aitff7l4c61nfn">&nbsp;&nbsp;1是控件id(十进制) 2该控件的属性</a>
+</h3>
+<h3 class="topic">
+<a name="4gjf6rv63fk67o2p16k5i3ccrt">&nbsp;&nbsp;注意是否显示的默认属性是显示，如果需要显示，则要写明WS_VISIBLE</a>
+</h3>
+<h3 class="topic">
+<a name="43ovttjvld151qr1f1e5197qek">&nbsp;注意下断点时不要在需要修改的语句上下断，应该在这之前一句下断，方便断在此处之后，修改下一句指令，继续执行</a>
+</h3>
+</body>
+</html>

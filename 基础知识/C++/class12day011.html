@@ -1,0 +1,772 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>class12day011</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="6ob73cb99cf822n9qnkt8bn1lo">class12day011</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="class12day011_files/images/class12day011.jpg"></div>
+<h2 class="topic">
+<a name="691vr4fin4jf0mognu51ftbiq1">预习</a>
+</h2>
+<h3 class="topic">
+<a name="32mqv9tjfgd2ujbaan04ujgij5">&nbsp;虚函数</a>
+</h3>
+<h3 class="topic">
+<a name="5or2peadbkuvjgd3ga056ps6o8">&nbsp;&nbsp;在基类中使用virtual加在成员函数前面,该函数则虚函数,且说明在派生类中存在与该函数同名但不同实现的的成员函数</a>
+</h3>
+<h3 class="topic">
+<a name="5galvebm5gi9ukclm6ck8buu4u">&nbsp;&nbsp;&nbsp;基类中使用virtual指定虚函数之后,派生类中的同名函数会自动变成虚函数,无需再次指定virtual</a>
+</h3>
+<h3 class="topic">
+<a name="65hifgkhdd336qmtb85356jcq4">&nbsp;&nbsp;定义一个基类的指针,将该指针指向不同的派生类对象,则在使用该指针引用虚函数时,被引用的虚函数是指针所指向的派生类的对应的同名函数</a>
+</h3>
+<h3 class="topic">
+<a name="7qgssmddd8vc7nl3qphun4f5qo">&nbsp;&nbsp;通过这种机制,基类指针指向不同的派生类的对象后就可以调用该派生类对象中的对应虚函数</a>
+</h3>
+<h3 class="topic">
+<a name="7oelsoko3kccv4rtrhl15se52o">&nbsp;纯虚函数</a>
+</h3>
+<h3 class="topic">
+<a name="3p4bbou2sevblhdukud93cnqjr">&nbsp;&nbsp;一种没有具体实现的虚函数,</a>
+</h3>
+<h3 class="topic">
+<a name="7920t8hpefr5lm6ct5m14h1c57">&nbsp;抽象类</a>
+</h3>
+<h3 class="topic">
+<a name="2a3m1rj4u9rpmu6sis84tnse69">&nbsp;&nbsp;包含虚函数的类就是抽象类</a>
+</h3>
+<h3 class="topic">
+<a name="2noua3d28msobihtk5ciotgof8">&nbsp;&nbsp;抽象类不能再定义对象</a>
+</h3>
+<h3 class="topic">
+<a name="7chfpc56q54gtqtuh59qho45j9">&nbsp;&nbsp;抽象类只能等有类将其继承,并在继承类中完成虚函数的实现</a>
+</h3>
+<h3 class="topic">
+<a name="54u2ounkp5dlr1nr2le5h4i363">&nbsp;虚析构函数</a>
+</h3>
+<h3 class="topic">
+<a name="634nv5t14csapchcgkhv4mlc6g">&nbsp;&nbsp;即在析构函数前面加上virtural</a>
+</h3>
+<h3 class="topic">
+<a name="2mc8cm97v8g2f7vpner6pkk4f0">&nbsp;&nbsp;&nbsp;基类的析构函数加了virtural之后,派生类中的析构函数自动变成虚析构函数,不需要再加virtual</a>
+</h3>
+<h3 class="topic">
+<a name="4pbrauch1ni5c8dqdgiim8nad8">&nbsp;&nbsp;主要用法</a>
+</h3>
+<h3 class="topic">
+<a name="4oi0n7b71ddk2dobvh6jl7ttv6">&nbsp;&nbsp;&nbsp;基类指针指向派生类对象从而调用完派生类的虚函数的实现之后,在delete基类指针时,只有基类的析构函数被执行,当设置虚析构函数时,当delete基类指针,基类的析构函数与派生类的析构函数会同时被被执行</a>
+</h3>
+<h3 class="topic">
+<a name="79mgr2cg6i9mch7q4b9rp483v8">&nbsp;多态</a>
+</h3>
+<h3 class="topic">
+<a name="6jh0o1pkpov67u7rqra27i73gl">&nbsp;&nbsp;不同的主体对相同的指令做出不同的应答</a>
+</h3>
+<h3 class="topic">
+<a name="1aq3msa42p1vbtdhp94rtd6as9">&nbsp;&nbsp;多态实现方法</a>
+</h3>
+<h3 class="topic">
+<a name="02ben271805653tss5rhtbm9e9">&nbsp;&nbsp;&nbsp;重载</a>
+</h3>
+<h3 class="topic">
+<a name="36p5j2ao12jbekqp5jauhbhe45">&nbsp;&nbsp;&nbsp;&nbsp;在程序编译阶段即可确定关系</a>
+</h3>
+<h3 class="topic">
+<a name="0e3nvmc2qnlttkoc93kji6h5mc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;静态联编</a>
+</h3>
+<h3 class="topic">
+<a name="63mhdfte6mvu5p8kl0sig1947t">&nbsp;&nbsp;&nbsp;重定义</a>
+</h3>
+<h3 class="topic">
+<a name="6hj4oqmeisqapil3bbne6rt20s">&nbsp;&nbsp;&nbsp;&nbsp;在程序编译阶段即可确定关系</a>
+</h3>
+<h3 class="topic">
+<a name="3lvbr72b9ad8mdvoksntq3qp3i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;静态联编</a>
+</h3>
+<h3 class="topic">
+<a name="7o0jd75nbvlhoh0a7fakqh23f6">&nbsp;&nbsp;&nbsp;虚函数</a>
+</h3>
+<h3 class="topic">
+<a name="5ul04cb96a6c7tegr96e56ki2u">&nbsp;&nbsp;&nbsp;&nbsp;动态联编</a>
+</h3>
+<h3 class="topic">
+<a name="5n2pesgf4vhabr626ki20m8vr9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在程序运行阶段才能确定函数调用与函数执行体之间的关系</a>
+</h3>
+<h3 class="topic">
+<a name="0n3qjk4pt66tfm9d8sicc7kav7">&nbsp;&nbsp;继承是动态联编的基础,虚函数时是动态</a>
+</h3>
+<h3 class="topic">
+<a name="4s4c6j2a8aisfa3nru87lspnoi">&nbsp;&nbsp;虚函数要求</a>
+</h3>
+<h3 class="topic">
+<a name="19nos39nelqnmi7e3t7s610re9">&nbsp;&nbsp;&nbsp;函数的返回值类型 参数类型 顺序 个数必须与基类的虚函数一模一样</a>
+</h3>
+<h2 class="topic">
+<a name="4aehk45psp3u4nuk1b1ljg1lgr">多态</a>
+</h2>
+<h3 class="topic">
+<a name="50o3li3hc599nvtrcu4ricilpr">&nbsp;动态联编的触发</a>
+</h3>
+<h3 class="topic">
+<a name="2m1orffbkcpgc6qgqjqo3ceqlm">&nbsp;&nbsp;只有通过父类指针指向子类对象,并通过父类指针调用虚函数才会触发动态联编</a>
+</h3>
+<h3 class="topic">
+<a name="7bhb5b0ktlmn1r16akgs01p2p8">&nbsp;虚函数的原理</a>
+</h3>
+<h3 class="topic">
+<a name="20ek1q99ah8847qh7t3h3sp5ct">&nbsp;&nbsp;如何动态识别出一个指针保存了哪个类的类对象</a>
+</h3>
+<h3 class="topic">
+<a name="53kpb7i7t89a68m7vvd8tv0ig1">&nbsp;&nbsp;&nbsp;一个类如果存在一个或一个以上的虚函数时,该类的对象的内存空间前四个字节会被占用,多出来的东西是虚函数表指针</a>
+</h3>
+<h3 class="topic">
+<a name="47tnt9h2pgbguc8lavubp70456">&nbsp;&nbsp;&nbsp;&nbsp;拥有虚函数的类的对象的前四个字节存储的是虚函数表地址,该地址指向一数组,该数组中存放的是该类所有虚函数的内存地址</a>
+</h3>
+<h3 class="topic">
+<a name="3ohqr43gv472f4hj83kt2psjmn">&nbsp;&nbsp;&nbsp;&nbsp;每一个不同的类均有一张不同的虚函数表,常用于存储本类中所有虚函数的地址,同一个类的对象的前四个字节存储的得虚地址表指针时相同的</a>
+</h3>
+<h3 class="topic">
+<a name="60vbabsguhdojbi8fp8e3l9ait">&nbsp;&nbsp;&nbsp;&nbsp;当类重写了父类的虚函数时,虚函数表中保存的就是本类的虚函数地址,如果没有重写,虚函数表中保存的就是父类的虚函数地址</a>
+</h3>
+<h3 class="topic">
+<a name="367ta8jkhlpp5m0pe67k7li2qs">&nbsp;&nbsp;&nbsp;&nbsp;当通过父类指针调用虚函数时,通过指针得到对象内存首地址,通过内存首地址得到前四个字节的虚函数表首地址,通过虚函数表中虚函数的首地址可以调用对应虚函数</a>
+</h3>
+<h3 class="topic">
+<a name="51c3vnqmmufqmngrj5opmguqk7">&nbsp;函数重写(针对虚函数)</a>
+</h3>
+<h3 class="topic">
+<a name="7272r7verglivf63ujd3353rh6">&nbsp;&nbsp;子类中父类重名且同参数的函数被称为子类当中的虚函数,目的在于当基类指针指向子类对象时,使用基类指针调用虚函数时可以调用子类中的虚函数这种机制成为函数重写</a>
+</h3>
+<h3 class="topic">
+<a name="1rbpfpal8h2fsn2orsqlvoisp6">&nbsp;&nbsp;在子类中重写虚函数不需要使用virtula,只要在父类中有即可</a>
+</h3>
+<h3 class="topic">
+<a name="0a1dtm0pkvmtglnme9om29um14">&nbsp;&nbsp;&nbsp;不过如果从可读性角度来说,加上是最好的</a>
+</h3>
+<h3 class="topic">
+<a name="2hnu79rjersvlbuh2rre0pu9ag">&nbsp;&nbsp;重写函数要求函数名 函数参数 等个方面必须相同</a>
+</h3>
+<h3 class="topic">
+<a name="2ltc1v2bkqacmppt56dii42lst">&nbsp;子类型</a>
+</h3>
+<h3 class="topic">
+<a name="2visniekstqsh3hokq7suaehd4">&nbsp;&nbsp;通过public继承方法继承的子类就称为基类的子类型</a>
+</h3>
+<h3 class="topic">
+<a name="6jvuhivcr4urhj1q9ra8i3alht">&nbsp;&nbsp;&nbsp;为了更方便重用代码</a>
+</h3>
+<h3 class="topic">
+<a name="7hsc1ojin30dpkn1u60521hu07">&nbsp;&nbsp;&nbsp;完成基类相关的具体实现工作</a>
+</h3>
+<h3 class="topic">
+<a name="2op3gj5v6vha9vu9a62qtmfkgc">&nbsp;成员函数和析构函数可以被定义为虚函数(其余类似于构造函数等不能被定义为虚函数)</a>
+</h3>
+<h3 class="topic">
+<a name="4odqr9irvjcg2jugs6rrjq87jb">&nbsp;&nbsp;正常情况下子类被释放,会主动调用父类的析构函数</a>
+</h3>
+<h3 class="topic">
+<a name="411irkvgudgipl7hfmj3a195fh">&nbsp;&nbsp;析构函数一般定义为虚函数,方便在delete基类指针的时候在调用基类析构函数的同时也调用子类的析构函数</a>
+</h3>
+<h3 class="topic">
+<a name="4rkvi9o53ohc0ue68hhvr1889i">&nbsp;&nbsp;&nbsp;因为正常情况下,子类的析构函数调用顺序在基类析构函数之前,在delete基类指针的时候,相当于直接调用了基类的析构函数,子类的析构相当于是被跳过了</a>
+</h3>
+<h3 class="topic">
+<a name="1fs5n7lm3agvcggtg5j714go2s">&nbsp;&nbsp;静态函数和友元函数不能被定义为虚函数</a>
+</h3>
+<h3 class="topic">
+<a name="18fke2hg4e0vb3v0q561tmbru2">&nbsp;纯虚函数</a>
+</h3>
+<h3 class="topic">
+<a name="0anj04uili8s5o7m0vec2k988p">&nbsp;&nbsp;子类继承父类时，可以重写父类的纯虚函数，函数名、返回类型、参数个数和类型都不能改,若没有进行虚函数的具体实现,子类会被看是抽象类,对应函数还被看作是纯虚函数</a>
+</h3>
+<h3 class="topic">
+<a name="1qieahpfmli870v6d0q809uuu4">&nbsp;&nbsp;定义;没有具体实现的虚函数</a>
+</h3>
+<h3 class="topic">
+<a name="4ckjntvsaevo0eqtf73egd6cd3">&nbsp;&nbsp;&nbsp;可能有参数,但是有参数也没什么意义,因为该函数没有实现的</a>
+</h3>
+<h3 class="topic">
+<a name="2d5gvu0me2i7brp9k2tan03103">&nbsp;&nbsp;&nbsp;纯虚函数需要在函数的最后面写   balabala()=0;</a>
+</h3>
+<h3 class="topic">
+<a name="0ho61jtj9frc8ni0329ovfroib">&nbsp;&nbsp;实例</a>
+</h3>
+<h3 class="topic">
+<a name="314l58dhnuisbn0nc00ropll0i">&nbsp;&nbsp;&nbsp;class Shape {&#13;
+&#13;
+public:&#13;
+	virtual ~Shape() {}&#13;
+	virtual double area() = 0;&#13;
+};</a>
+</h3>
+<h3 class="topic">
+<a name="2aas2s512kp4uvtg6n7p1l958d">&nbsp;抽象类</a>
+</h3>
+<h3 class="topic">
+<a name="2g87cau32l2j990fa7oufr79qp">&nbsp;&nbsp;继承了抽象类的派生类中可以重写纯虚函数,将纯虚函数进行具体实现,,否则该派生类将仍然是一个抽象类</a>
+</h3>
+<h3 class="topic">
+<a name="2tklb61g383rrogg172l34hu3v">&nbsp;&nbsp;定义纯虚函数所在的类称为抽象类</a>
+</h3>
+<h3 class="topic">
+<a name="01s1b3mj8n1scnd8jilnsm7n70">&nbsp;&nbsp;抽象类不能定义对象,但是可以声明指针和引用</a>
+</h3>
+<h3 class="topic">
+<a name="7pbtcscv7c1sdb98f09jlhgev5">&nbsp;使用纯虚函数进行框架编程</a>
+</h3>
+<h3 class="topic">
+<a name="30uoedtunbm9kki8jdpca253d3">&nbsp;&nbsp;即在封闭的系统中添加代码只能通过增加新的类来添加代码与功能</a>
+</h3>
+<h3 class="topic">
+<a name="77hh33agqj7mo8kv6rk98tktee">&nbsp;面向对象设计的原则</a>
+</h3>
+<h3 class="topic">
+<a name="2v9flupoot1ho68d2a9klhh1hc">&nbsp;&nbsp;单一职责原则</a>
+</h3>
+<h3 class="topic">
+<a name="15gmj05l6finsbuendj51r9i11">&nbsp;&nbsp;&nbsp;一个类只做一件事请,仅有一个引起其变化的原因</a>
+</h3>
+<h3 class="topic">
+<a name="4jeaea3mlrh8ojvgm6o50sau5h">&nbsp;&nbsp;开放封闭原则</a>
+</h3>
+<h3 class="topic">
+<a name="4ep66q9j9a6eho7gl79lliu6kq">&nbsp;&nbsp;&nbsp;对扩展开放,对修改关闭</a>
+</h3>
+<h3 class="topic">
+<a name="5ioopt9gvuqd3ndhmb8lmvd7t3">&nbsp;&nbsp;&nbsp;&nbsp;只可以增加代码不饿可以修改代码</a>
+</h3>
+<h3 class="topic">
+<a name="6e2mrv6rf42u9ebipiltc6fvph">&nbsp;&nbsp;依赖倒转原则</a>
+</h3>
+<h3 class="topic">
+<a name="1u6lbmg6kaef7mrl46eb1us730">&nbsp;&nbsp;&nbsp;面向接口编程,</a>
+</h3>
+<h3 class="topic">
+<a name="4je23kk9r5atju8r95f92ntpto">&nbsp;&nbsp;&nbsp;&nbsp;具体实现依赖于抽象类与虚函数</a>
+</h3>
+<h3 class="topic">
+<a name="12hqs54m3qcetm13ceh4ap52oi">&nbsp;虚函数的重写与重载</a>
+</h3>
+<h3 class="topic">
+<a name="5ueue36r7k65p943ntglk993ha">&nbsp;&nbsp;在基类中的虚函数为纯虚函数</a>
+</h3>
+<h3 class="topic">
+<a name="37vst0audd4kpj44pjfcb0qb3v">&nbsp;&nbsp;&nbsp;子类继承父类时，可以重写父类的纯虚函数，函数名、返回类型、参数个数和类型都不能改,而且要对虚函数的具体操作进行实现</a>
+</h3>
+<h3 class="topic">
+<a name="02394nqond8pec6uta41uerfko">&nbsp;&nbsp;基类中的虚函数不是纯虚函数</a>
+</h3>
+<h3 class="topic">
+<a name="6e871f0muoqi7jaoqkj5jh822i">&nbsp;&nbsp;&nbsp;当子类中的虚函数与父类中函数名,参数信息均完全相同(子类中的虚函数不用写virtual),此时子类中的虚函数是对父类中的虚函数进行了重写,可以通过指向该子类的基类指针进行调用,显示了c++的多态性</a>
+</h3>
+<h3 class="topic">
+<a name="448onacj51mm84ur8thfs4i5kb">&nbsp;&nbsp;&nbsp;当子类中的虚函数与父类中虚函数函数名相同,但是参数不同,此时子类中的虚函数相当于对基类中虚函数进行了重载,此时只能通过子类对象以及子类指针对敢函数进行调用,不能通过基类指针对该函数进行调用,相当于虚函数多态机制没有被完成</a>
+</h3>
+<h3 class="topic">
+<a name="45gnvhjj8mpuoolomhjsjgbfnv">&nbsp;&nbsp;&nbsp;&nbsp;这里应该是重定义????????????????????????????????????????????????????????????????????????????????????????????????????????</a>
+</h3>
+<h3 class="topic">
+<a name="2j6tlcnhugp9l408cfc1jnll0i">&nbsp;使用虚函数时,只能通过基类指针调用子类的虚函数,没有办法通过基类指针访问到子类的其他成员函数或成员变量,想要对其访问需要在子类中设置专门操作成员变量的函数</a>
+</h3>
+<h2 class="topic">
+<a name="00pkf298idg0gbo327dlntgqfn">模板</a>
+</h2>
+<h3 class="topic">
+<a name="53l38dusrvv77ib80m2rpbvcuq">&nbsp;函数模板</a>
+</h3>
+<h3 class="topic">
+<a name="54c6ouoqmeeopos17v33i5tcih">&nbsp;&nbsp;有的时候算法的逻辑是一样的,只不过是参数的类型不同,此时为了实现代码重用,需要用到函数模板</a>
+</h3>
+<h3 class="topic">
+<a name="3f43hn38huuocl757ovf3ju5a7">&nbsp;&nbsp;template&lt;typename T&gt;//这里也可以用多个模板标识符(例如&lt;typename T,typename T2&gt;)使用,隔开&#13;
+T swap(T&amp; a,T&amp; b)&#13;
+{&#13;
+	T&amp; t=a;&#13;
+	a=b;&#13;
+	b=t;&#13;
+}&#13;
+&#13;
+使用的时候&#13;
+int n,n2;&#13;
+swap&lt;int&gt;(n,n2);&#13;
+&#13;
+double n3,n4;&#13;
+swap(n3,n4);//这里甚至不需要指定数据类型,编译器会自动根据实参类型替换函数模板中的标记类型,生成一份函数代码,最后调用代码,&#13;
+&#13;
+如果这份代码已经生成了某种类型的代码后,再次以相同类型调用该函数,编译器不会再次生成代码(即该模板已经被实例化了)</a>
+</h3>
+<h3 class="topic">
+<a name="0god3909884k3o5mt7qa97gao9">&nbsp;&nbsp;&nbsp;这里如果模板中定义的数据类型是类类型,需要在最开始的声明中使用class   即template&lt;class 类名&gt;</a>
+</h3>
+<h3 class="topic">
+<a name="4iv862dmmtsiuo8h8t0lfnt2co">&nbsp;&nbsp;模板特化(即模板的显式实例化)</a>
+</h3>
+<h3 class="topic">
+<a name="6gv5ecsi6rjqc1sc50lhh13c58">&nbsp;&nbsp;&nbsp;某个模板对某种数据类型的处理不能达到预期要求,就需要对模本进行特化</a>
+</h3>
+<h3 class="topic">
+<a name="1sa7prceft47rf12gsr7sdkrq4">&nbsp;&nbsp;&nbsp;如果不加模板特化相关标记,可以看做是函数的重载</a>
+</h3>
+<h3 class="topic">
+<a name="0f348psm0i4ga93vcml2fca5kd">&nbsp;&nbsp;&nbsp;分类</a>
+</h3>
+<h3 class="topic">
+<a name="5redb7sbtj92d997fdp16kmte1">&nbsp;&nbsp;&nbsp;&nbsp;全特化</a>
+</h3>
+<h3 class="topic">
+<a name="3dkdsnsqurnvqbdmim3osqskdl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对&lt;&gt;中所有的替换类型进行特别处理</a>
+</h3>
+<h3 class="topic">
+<a name="1ve0arhrgn6cjvi2heivdsk266">&nbsp;&nbsp;&nbsp;&nbsp;偏特化</a>
+</h3>
+<h3 class="topic">
+<a name="2sh4403uagnaj0acafj1tp3bhd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对&lt;&gt;中部分替换类型进行特别处理</a>
+</h3>
+<h3 class="topic">
+<a name="5t7l088qo6n4jecnucv2g4vaoe">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;函数模板不支持偏特化</a>
+</h3>
+<h3 class="topic">
+<a name="3apddrce6dhvlnpvrf6uos1l2v">&nbsp;&nbsp;&nbsp;实例</a>
+</h3>
+<h3 class="topic">
+<a name="5gpbqrp140k4h4ashkuvq0l7sf">&nbsp;&nbsp;&nbsp;&nbsp;template&lt;typename T&gt;&#13;
+T MyMax(const T Numa,const T Numb)&#13;
+{&#13;
+		return Numa&lt;Numb?Numb:Numa;&#13;
+}&#13;
+&#13;
+&#13;
+template&lt;&gt;&#13;
+const char* MyMax(const char* pa,const char* pb)&#13;
+{&#13;
+		return(strcmp(pa,pb)&lt;0)?pb:pa;&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="6p1ne713v1a1ufqoc4crp3b79j">&nbsp;&nbsp;重载模板函数</a>
+</h3>
+<h3 class="topic">
+<a name="798cr49pi8hjn4hdjeqfak0naq">&nbsp;&nbsp;&nbsp;针对同函数名,不同参数的函数模板进行重载,利用多态性能够使用不同的函数模板对函数引用进行实例化</a>
+</h3>
+<h3 class="topic">
+<a name="4aabf9quslu50m14hh2u7i34hd">&nbsp;&nbsp;&nbsp;实例</a>
+</h3>
+<h3 class="topic">
+<a name="45t45lglakijoi1r2g00edgp9t">&nbsp;&nbsp;&nbsp;&nbsp;template&lt;typename T1,typename T2&gt;&#13;
+T add(T1 Numa,T2 Numb)&#13;
+{&#13;
+		return Numa+Numb;&#13;
+}&#13;
+&#13;
+template&lt;typename T3&gt;&#13;
+T add(T3 Num)&#13;
+{&#13;
+		return Num+1;&#13;
+}&#13;
+&#13;
+add(1,2);&#13;
+add(3);</a>
+</h3>
+<h3 class="topic">
+<a name="29gj7a8qgs92r9dppc19dqv1fa">&nbsp;&nbsp;编译器调用模板的顺序</a>
+</h3>
+<h3 class="topic">
+<a name="03uvf8e7fqrr2p1k4tlpbi4qs7">&nbsp;&nbsp;&nbsp;1 找到普通版本函数,只要形参实参匹配就调用</a>
+</h3>
+<h3 class="topic">
+<a name="37eebnjr8g21l1ojntin4rj4oa">&nbsp;&nbsp;&nbsp;2 找到一个已经实例化的模板函数(已经根据函数模板实例化出来),如果有就调用   </a>
+</h3>
+<h3 class="topic">
+<a name="7384bosuoqjjvf5n0rttu5g79s">&nbsp;&nbsp;&nbsp;&nbsp;函数特化实际就是一个手工实例化一个模板函数,特化比编译器自动实例化(即之前被执行过)的模板优先级要高</a>
+</h3>
+<h3 class="topic">
+<a name="599fqfbobrhoaj97th6anh24dv">&nbsp;&nbsp;&nbsp;3 找到一个符合的函数模板,用这个函数模板根据实参实例化一个模板函数,调用该模板函数</a>
+</h3>
+<h3 class="topic">
+<a name="3v5i50bobfksm95ajncdqm132b">&nbsp;&nbsp;&nbsp;4 找不到就报错:找不到标识符</a>
+</h3>
+<h3 class="topic">
+<a name="66b7qtqf0pkq69u0tpsguh498j">&nbsp;&nbsp;模板可以用于建立具有通用类型特点的函数库和类库</a>
+</h3>
+<h3 class="topic">
+<a name="3jm548mritf6bfoargv3v7ekbm">&nbsp;&nbsp;模板一般让相同逻辑处理不同的数据类型</a>
+</h3>
+<h3 class="topic">
+<a name="5bk6bmi83qdgjdnhj5g5mrnk4s">&nbsp;&nbsp;模板不是一个实际的函数,仅仅是一组函数的描述,不产生实际代码占用空间</a>
+</h3>
+<h3 class="topic">
+<a name="7tql65q194fld86k0da658v2jk">&nbsp;&nbsp;函数模板会增加代码的体积,但是没有办法进行避免</a>
+</h3>
+<h3 class="topic">
+<a name="7ur438qhst6nfi4jjbcpuivmqt">&nbsp;类模板</a>
+</h3>
+<h3 class="topic">
+<a name="59eq093dvash2i9bjvt98h8n50">&nbsp;&nbsp;动态数组</a>
+</h3>
+<h3 class="topic">
+<a name="05j7thoq5d3f4bcrl9fqfjqqmp">&nbsp;&nbsp;&nbsp;通过一个类实现一个动态增长的数组</a>
+</h3>
+<h3 class="topic">
+<a name="5rkn8c90mq1gttvb2ekjjnqfr6">&nbsp;&nbsp;&nbsp;&nbsp;类成员变量为指针</a>
+</h3>
+<h3 class="topic">
+<a name="3e9cans5kgkjrl2pvip5eja8q7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;定义一个变量保存目前数组中保存了多少个元素</a>
+</h3>
+<h3 class="topic">
+<a name="78fb16hibpke98u8n8jkrpt9be">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;定义一个变量保存当前数组最多能够存多少个元素</a>
+</h3>
+<h3 class="topic">
+<a name="088gvkoo8qlkd9qp3dojagtt7s">&nbsp;&nbsp;&nbsp;&nbsp;成员函数用于</a>
+</h3>
+<h3 class="topic">
+<a name="4thle8gslnieh42qbi46a9ojf4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;修改堆空间大小</a>
+</h3>
+<h3 class="topic">
+<a name="0hrte1kc0ttl8962ecd0fn4vmg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果初始指针指向空,则申请特定大小的内存空间</a>
+</h3>
+<h3 class="topic">
+<a name="1g6hodsuh17nftpcb9akr7ids9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;子主题 2</a>
+</h3>
+<h3 class="topic">
+<a name="4ld8phvndqb0h9s6pdccgbuiot">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;清空堆空间</a>
+</h3>
+<h3 class="topic">
+<a name="1j5ughmgb919eubjcal2dgddqf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;查到相应下标的元素</a>
+</h3>
+<h3 class="topic">
+<a name="13dabj45iu471rntcaujffkj0p">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;改写对应下标的数组元素</a>
+</h3>
+<h3 class="topic">
+<a name="7j59c774ni5rpo6q7l6d1apdpn">&nbsp;&nbsp;&nbsp;一个动态数组只能保存相应类型变量的数据,比较麻烦,所以多将动态数组类写成模板,方便不同类型的数据调用该动态数组类</a>
+</h3>
+<h3 class="topic">
+<a name="1iafenjlakus2fsohissugebme">&nbsp;&nbsp;类模板的定义方式类似于模板函数的定义,只不过是&lt;&gt;内放class T</a>
+</h3>
+<h3 class="topic">
+<a name="16t528633phlkc32dhkdhgdroe">&nbsp;&nbsp;&nbsp;在使用类模板的时候,必须明确指定使用的数据类型,不存在编译器自动进行类型转换</a>
+</h3>
+<h3 class="topic">
+<a name="13oacigd3mrnn8f0jkkfdi4bi8">&nbsp;&nbsp;&nbsp;使用类模板时会生成一个对应类型的对象</a>
+</h3>
+<h3 class="topic">
+<a name="22tg5d9nb12apeneuquv67jr8m">&nbsp;&nbsp;&nbsp;类模板成员函数的实现只能在.h中,不能放在cpp中</a>
+</h3>
+<h3 class="topic">
+<a name="4ebtd15j22pm0te4kkmkk5rp7n">&nbsp;&nbsp;&nbsp;&nbsp;如果在类实现</a>
+</h3>
+<h3 class="topic">
+<a name="5pc93ojtsujs14qlk1257cvght">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;和普通类在类内定义实现成员函数差不多,只不过是可以用到格式标识符作为数据类型</a>
+</h3>
+<h3 class="topic">
+<a name="7h740jo2v0ete3ojcbllgf1ge2">&nbsp;&nbsp;&nbsp;&nbsp;如果在类外实现,需要单独加上模板类型</a>
+</h3>
+<h3 class="topic">
+<a name="71bau7o66o7l7gc1v71sip4l1f">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// 在类外定义模板类的成员函数&#13;
+template &lt;typename T&gt;&#13;
+T MyVector&lt;T&gt;::at(int index) {  //该函数返回特定下标的数组元素&#13;
+	return m_pData[index];&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="4i710u963s48iko5m3jg3t8t7l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;模板类的成员函数在类外定义时需要声明的是 template&lt;typename T&gt;而不是 template&lt;class T&gt;,后者是在定义模板类或者定义模板数据类型为类的模板函数时使用</a>
+</h3>
+<h3 class="topic">
+<a name="6nlfnsginih7aa6lv5epuqdn12">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;模板类的类名必须加上&lt;T&gt;</a>
+</h3>
+<h3 class="topic">
+<a name="50hpqu9psjomkq5ahse2pdj3jh">&nbsp;&nbsp;&nbsp;实例</a>
+</h3>
+<h3 class="topic">
+<a name="7s69v7hkrc5tnm7ohal0s42ni9">&nbsp;&nbsp;&nbsp;&nbsp;template&lt;class T&gt;&#13;
+class 类名&#13;
+{&#13;
+//类体说明&#13;
+};</a>
+</h3>
+<h3 class="topic">
+<a name="7t10mobvuekeuvuvaq6vm406s6">&nbsp;&nbsp;&nbsp;&nbsp;template&lt;class T&gt;&#13;
+class CVector}{&#13;
+public:&#13;
+	CVector(int nCount):m_Size(nCount)&#13;
+	{&#13;
+			m_pData=new T[nCount];&#13;
+			memset(m_pData,0,nCount);&#13;
+	}&#13;
+&#13;
+	~CVector()  {  delete m_pData;  }&#13;
+	T operator[](int nIndex)  {  return m_pData[nIndex];  }//这个operator函数是啥?&#13;
+  &#13;
+private:&#13;
+	T*m_pData;&#13;
+	int m_Size;&#13;
+&#13;
+};&#13;
+&#13;
+int main(){&#13;
+&#13;
+	CVector&lt;int&gt; objNum(15);  //这里的&lt;int&gt;与函数模板不同,不能省略&#13;
+	cout&lt;&lt;objNum[1]&lt;&lt;endl;&#13;
+	return 0;&#13;
+}&#13;
+&#13;
+</a>
+</h3>
+<h3 class="topic">
+<a name="5k25rjs2i38o0c05s0pelhh6uh">&nbsp;&nbsp;模板类的继承与类模板的继承</a>
+</h3>
+<h3 class="topic">
+<a name="778ffjo3cuv8j99ccaum3pfii1">&nbsp;&nbsp;&nbsp;子类继承模板类</a>
+</h3>
+<h3 class="topic">
+<a name="66k9mf6jmcso7k5cmebt70i1da">&nbsp;&nbsp;&nbsp;&nbsp;class PasswordBook :public MyVector&lt;Passwd&gt; </a>
+</h3>
+<h3 class="topic">
+<a name="4svjm675uka38durv65dsn35ft">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;密码本类  继承了类模板 即以passwd作为参数,以动态数组作为模板的类</a>
+</h3>
+<h3 class="topic">
+<a name="3b0lie3c4g151rep87stanjsqs">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在该类中,可以使用 passwd类定义变量,也可以使用passwd类作为返回值</a>
+</h3>
+<h3 class="topic">
+<a name="1ql5kbgc2maqfu3kt9ap2gecqh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;详情参见老师上课代码</a>
+</h3>
+<h3 class="topic">
+<a name="3rkmep1eon4ct551iiev0k3uba">&nbsp;&nbsp;&nbsp;子类继承类模板</a>
+</h3>
+<h3 class="topic">
+<a name="5sbl7uh26k0gk8hsia95nsksd9">&nbsp;&nbsp;&nbsp;&nbsp;template &lt;typename T&gt;&#13;
+class Stack : public MyVector&lt;T&gt;    //该类为栈类,继承自动态数组模板类</a>
+</h3>
+<h3 class="topic">
+<a name="2ogi5f9ck4jrld6e56slun0s6n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;详情参见老师上课代码</a>
+</h3>
+<h3 class="topic">
+<a name="18ec3852hffa48ahl5grn2eunj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;因为该类继承了一个模板类,所以实质上该类是一个类模板</a>
+</h3>
+<h3 class="topic">
+<a name="5tc2neq5i3u23g57kpsr5hii5g">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在该模板类中可以使用T作为格式标识符</a>
+</h3>
+<h3 class="topic">
+<a name="4bl9euq7umv8tdmorvcq90g75u">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意这里使用的是&lt;typename T&gt;而不是&lt;class T&gt;</a>
+</h3>
+<h3 class="topic">
+<a name="6d7ioeelulvr42ge8986tuoved">&nbsp;&nbsp;通过继承的方式进行模板特化</a>
+</h3>
+<h3 class="topic">
+<a name="78vq9ph0bvv6m189kh4kuerv6e">&nbsp;&nbsp;&nbsp;?????????????????????????????????????????????????????????????????????????????????????????????????????</a>
+</h3>
+<h3 class="topic">
+<a name="4t7b40rlf9tkv8qg2tiqvld5gc">&nbsp;模板技术即泛式编程</a>
+</h3>
+<h2 class="topic">
+<a name="4uceu2k7sof9gsme76vc3u408o">stl标准模板类库</a>
+</h2>
+<h3 class="topic">
+<a name="3uo2dags70686r899bpfkpfgdq">&nbsp;里面的每一个类均是模板</a>
+</h3>
+<h2 class="topic">
+<a name="2mvs9r5ql5u93m13mo5ga2d8as">复习</a>
+</h2>
+<h3 class="topic">
+<a name="5s6jk92n2f89pqj28a7702ieka">&nbsp;什么是静态联编,什么是动态联编</a>
+</h3>
+<h3 class="topic">
+<a name="1gnao5sl5fkjco3a5o77bt5s1m">&nbsp;&nbsp;静态联编:使用就近原则来编译程序的函数调用,</a>
+</h3>
+<h3 class="topic">
+<a name="62susk33sjl7ncse3fl6d4o5h7">&nbsp;&nbsp;&nbsp;对于函数重载,此时确定了调用哪个版本的函数</a>
+</h3>
+<h3 class="topic">
+<a name="1qlj4mao0666tr5889kiqqckkf">&nbsp;&nbsp;&nbsp;对于函数重定义,此时确定了调用了那个类的成员函数</a>
+</h3>
+<h3 class="topic">
+<a name="4cvsfshd5qs98oj94epgrgm0fc">&nbsp;&nbsp;动态联编,不使用就近原则编译函数的调用,当指针指向的是那个类的对象,就调用哪个类的虚函数</a>
+</h3>
+<h3 class="topic">
+<a name="3unllfbhikvafe92scboink6fu">&nbsp;&nbsp;&nbsp;条件</a>
+</h3>
+<h3 class="topic">
+<a name="6li8kjq42mdr7mq4m1liqaofcc">&nbsp;&nbsp;&nbsp;&nbsp;被调用的函数是一个虚函数</a>
+</h3>
+<h3 class="topic">
+<a name="23bp47ji6sgmui02rn0hd9qoie">&nbsp;&nbsp;&nbsp;&nbsp;通过基类指针指向派生类对象</a>
+</h3>
+<h3 class="topic">
+<a name="34u3lfb1tg9f9bh4rmnuvq14rt">&nbsp;&nbsp;&nbsp;&nbsp;必须通过基类指针调用虚函数</a>
+</h3>
+<h3 class="topic">
+<a name="7ub5ea2fddee6plllqdvccne1i">&nbsp;多态是如何实现的</a>
+</h3>
+<h3 class="topic">
+<a name="4aban1gpb96tuf31l7h0q2e599">&nbsp;&nbsp;什么是多态:对于相同的指令,不同的个体具有不同的实现</a>
+</h3>
+<h3 class="topic">
+<a name="7jm8106ucbj8u1iuungqak692s">&nbsp;&nbsp;静态的多态</a>
+</h3>
+<h3 class="topic">
+<a name="4tc38ap9k2jam402ag8n107p0i">&nbsp;&nbsp;&nbsp;函数重载</a>
+</h3>
+<h3 class="topic">
+<a name="580g9gjgsmqgm4k2jrrmdqu41u">&nbsp;&nbsp;&nbsp;函数模板</a>
+</h3>
+<h3 class="topic">
+<a name="7fn73v3ljalslg570mpc6pg2qi">&nbsp;&nbsp;动态的多态</a>
+</h3>
+<h3 class="topic">
+<a name="63d427or829kmefahbos5ti586">&nbsp;&nbsp;&nbsp;使用虚函数实现的动态联编实现的多态</a>
+</h3>
+<h3 class="topic">
+<a name="3dvn19jhbh8e07p93u9b6l9le8">&nbsp;什么是重写</a>
+</h3>
+<h3 class="topic">
+<a name="0chc2638kha23psh2o3tmi1mpk">&nbsp;&nbsp;重载</a>
+</h3>
+<h3 class="topic">
+<a name="2l8p53s6su60g1snedm6m4sa5j">&nbsp;&nbsp;&nbsp;相同作用域</a>
+</h3>
+<h3 class="topic">
+<a name="6qr5uo742gdu2a06g8182hqt8q">&nbsp;&nbsp;&nbsp;相同函数名</a>
+</h3>
+<h3 class="topic">
+<a name="4ei0nh5mh4rhdsacv6drvlq5do">&nbsp;&nbsp;&nbsp;参数不能相同</a>
+</h3>
+<h3 class="topic">
+<a name="1v1tiptlahstko5lefbd791ol5">&nbsp;&nbsp;&nbsp;常用于多个构造函数进行重载,从而接收不同的变量进行对象的初始化</a>
+</h3>
+<h3 class="topic">
+<a name="472f7jjh1ts4uooph8nj1r827t">&nbsp;&nbsp;重定义</a>
+</h3>
+<h3 class="topic">
+<a name="06o25k3eksvurfbpqhojmnb6gb">&nbsp;&nbsp;&nbsp;不同作用域</a>
+</h3>
+<h3 class="topic">
+<a name="5kr7an9g50lbuufa8s4uj43nl3">&nbsp;&nbsp;&nbsp;相同函数名</a>
+</h3>
+<h3 class="topic">
+<a name="1e3l52j980t2j556qhmjpal4us">&nbsp;&nbsp;&nbsp;参数可以相同,可以不相同</a>
+</h3>
+<h3 class="topic">
+<a name="33hv5ie5obv86d8of8scjgj811">&nbsp;&nbsp;&nbsp;常用于子类中的函数重定义其父类中的同名函数,依照就近原则</a>
+</h3>
+<h3 class="topic">
+<a name="63epihittkn0npghh2vp381j5j">&nbsp;&nbsp;重写</a>
+</h3>
+<h3 class="topic">
+<a name="3funmh0n2lk6npjmtdd7402iu8">&nbsp;&nbsp;&nbsp;不同作用域</a>
+</h3>
+<h3 class="topic">
+<a name="0p05ngjnj1oaj22s78ju8dna58">&nbsp;&nbsp;&nbsp;相同的函数</a>
+</h3>
+<h3 class="topic">
+<a name="4k7m5libf2blinqi4rjc5nd5av">&nbsp;&nbsp;&nbsp;相同的参数</a>
+</h3>
+<h3 class="topic">
+<a name="30dom0n8iq7f0os9m4jk40tjdp">&nbsp;&nbsp;&nbsp;只能用于虚函数机制,使用基类指针指向不同的子类,调用不同的虚函数</a>
+</h3>
+<h3 class="topic">
+<a name="6qcr7lsaaoqt7mjfj80otibmnn">&nbsp;&nbsp;&nbsp;实际上是重新定义父类的功能,进一步实现多态</a>
+</h3>
+<h3 class="topic">
+<a name="3m8u0scdcuu4tjcvqpuhae7cdu">&nbsp;什么是抽象类</a>
+</h3>
+<h3 class="topic">
+<a name="2bpceatt5vve45n1mtlh6f930l">&nbsp;&nbsp;一个具有纯虚函数的类</a>
+</h3>
+<h3 class="topic">
+<a name="6kd783bh4o7cctk848qc0ngfvu">&nbsp;&nbsp;纯虚函数</a>
+</h3>
+<h3 class="topic">
+<a name="7ka0v4bp2nn20fevkq2c2deppe">&nbsp;&nbsp;&nbsp;一个虚函数没有定义,且声明时等于0,也不需要花括号</a>
+</h3>
+<h3 class="topic">
+<a name="1c5rlctiau04ugjrnleedggabo">&nbsp;&nbsp;&nbsp;&nbsp;virtual void fun()=0;</a>
+</h3>
+<h3 class="topic">
+<a name="1qfc9o6rgj82mhsviqnmp91tes">&nbsp;&nbsp;一个类继承了抽象类,,不重写父类虚函数,这个类还是抽象类</a>
+</h3>
+<h3 class="topic">
+<a name="0rfasjpk5j1km1r2s41j3qfs8u">&nbsp;&nbsp;&nbsp;不强制抽象类的子类一定要对纯虚函数进行实现</a>
+</h3>
+<h3 class="topic">
+<a name="36co1kf10m7v705bfh3i0lc1h6">&nbsp;&nbsp;抽象类不能直接定义对象,但是可以定义指针个引用</a>
+</h3>
+<h3 class="topic">
+<a name="1n1uni64vth6pecmvfkio6fuv6">&nbsp;函数模板</a>
+</h3>
+<h3 class="topic">
+<a name="4hhm4i0a7uskrukmh047abkegs">&nbsp;&nbsp;定义</a>
+</h3>
+<h3 class="topic">
+<a name="2rpkrv4ugri4n1evkkq866btec">&nbsp;&nbsp;&nbsp;template&lt;typename T&gt;&#13;
+T fun(T n){&#13;
+   T n1;&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="2v4ufac6bn9v6mae7h4jp5shv3">&nbsp;&nbsp;使用方式</a>
+</h3>
+<h3 class="topic">
+<a name="3e4drhbl6h63veprb7jitk1cgi">&nbsp;&nbsp;&nbsp;与普通函数调用相同</a>
+</h3>
+<h3 class="topic">
+<a name="3d6rlr55gf7pjp02grark45vg7">&nbsp;&nbsp;模板特化</a>
+</h3>
+<h3 class="topic">
+<a name="2r2uigk7o26fnak22700hmlma5">&nbsp;&nbsp;&nbsp;为具体的数据类型实例化出一个模板函数,使得使用这个数据类型调用的是自己是实例化出来的模板函数,而不是调用函数模板生成的模板函数</a>
+</h3>
+<h3 class="topic">
+<a name="4is1jv1tlavnmeffd2tp7ho7fh">&nbsp;&nbsp;&nbsp;只能全特化,不能偏特化</a>
+</h3>
+<h3 class="topic">
+<a name="6g51pkb222koe7vpovfkt5gfnr">&nbsp;类模板</a>
+</h3>
+<h3 class="topic">
+<a name="3jgg25sgrshkik0l7gjognrfth">&nbsp;&nbsp;定义</a>
+</h3>
+<h3 class="topic">
+<a name="3cpdkrhbpff60qoje48rb275lm">&nbsp;&nbsp;&nbsp;template&lt;class T&gt;&#13;
+class MyClass{&#13;
+&#13;
+..........&#13;
+}&#13;
+</a>
+</h3>
+<h3 class="topic">
+<a name="2th43830msi2ogb6srvqpfqbof">&nbsp;&nbsp;&nbsp;&nbsp;在c++中,类模板的定义中&lt;typename T&gt;与&lt;class T&gt;是同样的</a>
+</h3>
+<h3 class="topic">
+<a name="0eo13fot5cu95bm9hf7nuhip7r">&nbsp;&nbsp;类模板的使用</a>
+</h3>
+<h3 class="topic">
+<a name="14lcpl9916fs4tqdf8b49e9fpr">&nbsp;&nbsp;&nbsp;在使用的时候要在类名后面加上&lt;&gt;和具体数据类型</a>
+</h3>
+<h3 class="topic">
+<a name="3qrs4flqqdjvthtrj64eusiscm">&nbsp;&nbsp;&nbsp;&nbsp;MyClass&lt;int&gt;obj;</a>
+</h3>
+<h2 class="topic">
+<a name="6099uo5t23je6qoeujer9mtcgd">tips</a>
+</h2>
+<h3 class="topic">
+<a name="6lfngdj3ff78rh1ig3kgp085hf">&nbsp;子类指针指向父类地址时,因为子类一般是父类的扩充,所以子类指针指向的</a>
+</h3>
+<h3 class="topic">
+<a name="6djrpusuo1fp8t8tjmgbijn1eg">&nbsp;子类想要访问父类中的数据成员时,为了保护数据的封装性,不能将数据设置为public,这样违反类的封装性</a>
+</h3>
+<h3 class="topic">
+<a name="31l90c45iadq3011oi8h9mekhn">&nbsp;在编写程序输入姓名的时候,一般会指定字符数组为char Arr[32],一般不用纠结于非要为保存名字的数组实现动态数组</a>
+</h3>
+<h2 class="topic">
+<a name="7g1ch9j6ri2tbt9ncuv2i1qbet">通过new申请抽象类的指针数组(用于后期指向不同的子类成员)</a>
+</h2>
+<h3 class="topic">
+<a name="2025a0oq62q773okfouqnn5s2s">&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class12day011_files/3ldo7pal3ja7m5l2jg8s2ac91t.png"></p>
+</body>
+</html>

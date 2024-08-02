@@ -1,0 +1,556 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>class67day0603（漏洞利用第一天）</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="3bpkhp07dsdq7c5lefhecuspli">class67day0603（漏洞利用第一天）</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A81_files/images/class67day0603%EF%BC%88%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8%E7%AC%AC%E4%B8%80%E5%A4%A9%EF%BC%89.jpg"></div>
+<h2 class="topic">
+<a name="3bqhshml0rpn7kaub4ljpemkrf">基础</a>
+</h2>
+<h3 class="topic">
+<a name="2c37skp50tcjhrjq72u2glr20u">&nbsp;汇编语言组织能力</a>
+</h3>
+<h3 class="topic">
+<a name="47c2pn7k3mnpm6cjsstcej4bmg">&nbsp;调试能力</a>
+</h3>
+<h2 class="topic">
+<a name="2thu0bdvcalqi0r7rmvhpd89q3">分类</a>
+</h2>
+<h3 class="topic">
+<a name="1r7ram3t6ujt56mf4dh8dvkktb">&nbsp;漏洞挖掘</a>
+</h3>
+<h3 class="topic">
+<a name="2ln486faj0ghrob2cbc21obarg">&nbsp;&nbsp;系统级漏洞挖掘</a>
+</h3>
+<h3 class="topic">
+<a name="3thn2s81mm6f0bh4fi2end0qve">&nbsp;&nbsp;&nbsp;二进制代码审核</a>
+</h3>
+<h3 class="topic">
+<a name="47dtota5b213v80nno1kq7ccp7">&nbsp;&nbsp;&nbsp;fastfuzz</a>
+</h3>
+<h3 class="topic">
+<a name="5hhmgne2t8065lcpov67lppsk3">&nbsp;&nbsp;脚本级漏洞挖掘</a>
+</h3>
+<h3 class="topic">
+<a name="6btt3ppplof1c7g3t9butdksef">&nbsp;&nbsp;&nbsp;php</a>
+</h3>
+<h3 class="topic">
+<a name="5db8a4k3183dblinbfjq789g52">&nbsp;&nbsp;&nbsp;jsp</a>
+</h3>
+<h3 class="topic">
+<a name="5p4d21j7tk2v7u5bjbgbae25rs">&nbsp;漏洞利用</a>
+</h3>
+<h2 class="topic">
+<a name="6h579l66q3sjqjrvhsjgb23qg5">漏洞成因</a>
+</h2>
+<h3 class="topic">
+<a name="2l88lpa8eupgmhmo7aonr6vcmo">&nbsp;当前计算机架构无法从原点上区分数据与代码</a>
+</h3>
+<h3 class="topic">
+<a name="34gvps1133k585etij6k3oep1l">&nbsp;&nbsp;包括冯诺依曼架构和哈佛架构</a>
+</h3>
+<h2 class="topic">
+<a name="6ara94taq87bgh2368rlqmk0ir">常见名词</a>
+</h2>
+<h3 class="topic">
+<a name="1kb1536f1mo0f8pdqc0jv3m9eg">&nbsp;Vulnerability</a>
+</h3>
+<h3 class="topic">
+<a name="4qheib8aocsu6gus8dm5i7k1bf">&nbsp;Exploit</a>
+</h3>
+<h3 class="topic">
+<a name="07p7q4tdl1qclva8v4v4dqgbsl">&nbsp;&nbsp;能够触发漏洞的一段代码</a>
+</h3>
+<h3 class="topic">
+<a name="28fbvpcscvp9vbpkm3u10cc4v2">&nbsp;&nbsp;类比导弹的发射方式</a>
+</h3>
+<h3 class="topic">
+<a name="0rjtvjt8j5mrscgt257gqeq578">&nbsp;Shellcode</a>
+</h3>
+<h3 class="topic">
+<a name="2puonjnchslhpiulvlbdiabsk3">&nbsp;&nbsp;保证攻击代码不被拦截，为payload的执行创建稳定的执行环境</a>
+</h3>
+<h3 class="topic">
+<a name="6fht73k2486uhcerlcr6t4hpav">&nbsp;&nbsp;类比导弹变轨技术</a>
+</h3>
+<h3 class="topic">
+<a name="1egacn803jun1h532gr56g6i79">&nbsp;Payload</a>
+</h3>
+<h3 class="topic">
+<a name="602lindt75np23rbp1ld9f4prv">&nbsp;&nbsp;有效载荷</a>
+</h3>
+<h3 class="topic">
+<a name="5ed2hesqc5mm1hlo1hsj6k1u1i">&nbsp;&nbsp;类比导弹头的有效攻击</a>
+</h3>
+<h3 class="topic">
+<a name="31m7m6oqo8e0lruggla3vthamf">&nbsp;poc</a>
+</h3>
+<h3 class="topic">
+<a name="41ij04obmlneie6l1tgj00vj3e">&nbsp;&nbsp;验证漏洞存在的代码</a>
+</h3>
+<h3 class="topic">
+<a name="0ffbljdbre012vaon4p3rgc5el">&nbsp;学习顺序是从下往上学</a>
+</h3>
+<h3 class="topic">
+<a name="1c4eq60k3fcaf3npph5b5umoel">&nbsp;&nbsp;从易到难</a>
+</h3>
+<h2 class="topic">
+<a name="6stu134830nt713250g3dosbf3">fuzz原则</a>
+</h2>
+<h3 class="topic">
+<a name="3sgvuq4qka7m8achfbrsfsfcp9">&nbsp;当程序只有一种输入途径时，可以的单纯将大量数据输入，等待程序崩溃</a>
+</h3>
+<h3 class="topic">
+<a name="62u5rl0fa38hv2450ht8hr5kl0">&nbsp;当程序的输入途径越多，模糊测试需要覆盖的面就更多</a>
+</h3>
+<h2 class="topic">
+<a name="0e8rtbvb7l0v7rp8g38589dmej">win10中如何查看程序崩溃信息</a>
+</h2>
+<h3 class="topic">
+<a name="2r1o5jjdeqhg9m3goj62uiqso7">&nbsp;控制面板-》管理工具-》事件查看器-》windows日志2-》应用程序</a>
+</h3>
+<h3 class="topic">
+<a name="3a354phk0c28tff7v313ciufkm">&nbsp;&nbsp;win10对程序的报错不进行显示，通过这种方法可以查看程序的错误</a>
+</h3>
+<h2 class="topic">
+<a name="52fq27u7kas65cb01d7h3g8dv6">第一个程序需要修改IDE设置，不要使用数据检查，方便正确溢出</a>
+</h2>
+<h3 class="topic">
+<a name="3h98rtnrpll5traa9lpl7e8121">&nbsp;基本运行时检查-》默认</a>
+</h3>
+<h3 class="topic">
+<a name="5621mlknsvbtfrfp6lh00ev6hu">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A81_files/1lttdlbckbgr23il0sd7v31ti2.png"></p>
+<h3 class="topic">
+<a name="0k1kutfbstuln0hrp2lfckbp5u">&nbsp;&nbsp;就是针对程序编写过程中的指令进行检查（比如当较大类型的数据赋值给较小数据类型的时）</a>
+</h3>
+<h3 class="topic">
+<a name="0n5terkvnl4d5dpp1pukc3lvn9">&nbsp;禁用安全检查（GS）</a>
+</h3>
+<h3 class="topic">
+<a name="2s9h9vp2a6fcilhnp17agp5p6m">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A81_files/3v06ni6imphe08616hosk9i26g.png"></p>
+<h3 class="topic">
+<a name="3cbpm498mj1tltbdhhkuc1qqr3">&nbsp;&nbsp;如果启用安全检查，程序会引入安全cookie机制，在每次函数调用结束后会检查esp的值，检测是否发生栈溢出</a>
+</h3>
+<h3 class="topic">
+<a name="2q3eb3pqr5fc2r3delfj6jtot2">&nbsp;需要关闭随机基址</a>
+</h3>
+<h3 class="topic">
+<a name="1o0tqbmce4pjc1bvq0tpc67ja3">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A81_files/2g83522ek5kvd98udc143rqa4o.png"></p>
+<h3 class="topic">
+<a name="1nfhca2nbpgk3bf0mb7baq0ged">&nbsp;需要将dep（数据保护）关闭</a>
+</h3>
+<h3 class="topic">
+<a name="19qbjr1brlt3nsv7bftm3svnl2">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A81_files/5sni1utcs99u3k7783b33rp31d.png"></p>
+<h3 class="topic">
+<a name="7n0u0vo99iq9e54gmoc0hf48af">&nbsp;&nbsp;dep如果开启是将栈中的数据变成不可执行的</a>
+</h3>
+<h3 class="topic">
+<a name="72j889uqdji6kq6udnccmqpd8c">&nbsp;关闭代码优化</a>
+</h3>
+<h3 class="topic">
+<a name="02kamn5vtb2ckogf8o7rj5k6o9">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A81_files/55ga28jh7ugqpeis81q8or3q69.png"></p>
+<h2 class="topic">
+<a name="4fr7sbkk81rhp3m8olf58ms9rn">整体流程</a>
+</h2>
+<h3 class="topic">
+<a name="2mkjt1dd36v21o3crfrs80v100">&nbsp;整崩</a>
+</h3>
+<h3 class="topic">
+<a name="209kbhs75oic6fdt2qfnr985bj">&nbsp;&nbsp;手动fuzz</a>
+</h3>
+<h3 class="topic">
+<a name="634fpohk4c8m7735fb2irhk6eh">&nbsp;&nbsp;aaaaaa</a>
+</h3>
+<h3 class="topic">
+<a name="6gev6vn19bq9kdh5em01l6dlrl">&nbsp;找溢出点</a>
+</h3>
+<h3 class="topic">
+<a name="25h0gog8i22bhr98bt0cs0mtmn">&nbsp;&nbsp;通过构造不重复字符串，定位溢出点在哪里</a>
+</h3>
+<h3 class="topic">
+<a name="2f5lhuspdr30viptkijc5i13di">&nbsp;&nbsp;A1a1..........</a>
+</h3>
+<h3 class="topic">
+<a name="1mnu9voqs0t0mdl21t9f41u7k2">&nbsp;验证溢出点</a>
+</h3>
+<h3 class="topic">
+<a name="66t9evnjpqqng38b6lo7vbbvep">&nbsp;&nbsp;溢出点实际上就是函数的返回地址，因为是局部变量在栈中，局部变量被溢出，淹没了函数返回地址</a>
+</h3>
+<h3 class="topic">
+<a name="3gac3bdgvhl2mhnulc2qkgt921">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A81_files/7stpbe81ad449pnubvvqcpu9je.png"></p>
+<h3 class="topic">
+<a name="21vers3dj31hlijj172vs5mlm0">&nbsp;通过修改返回地址，使程序弹出一个MessageBox</a>
+</h3>
+<h3 class="topic">
+<a name="6d9spc0qv2v3ia1fivf2igvrlj">&nbsp;&nbsp;将溢出点的内容改成MB的地址，使用010editor将溢出点的数据修改为MB的地址</a>
+</h3>
+<h3 class="topic">
+<a name="11s5k3h6pu6l8kf9kdkp4jr8ru">&nbsp;&nbsp;MB函数传参的时候需要注意参数应该写在返回地址后面</a>
+</h3>
+<h3 class="topic">
+<a name="1vc10fuqnb5pjpsavph4lkborq">&nbsp;&nbsp;&nbsp;注意也要给MB函数的返回地址分配空间，后面一共要写20个字节的0</a>
+</h3>
+<h3 class="topic">
+<a name="0kf5ktifcun2s11sjnkibt0vc1">&nbsp;&nbsp;&nbsp;&nbsp;即：mb函数的地址&#13;
+       返回地址的四字节空间&#13;
+       mb函数参数一&#13;
+       mb函数参数二</a>
+</h3>
+<h3 class="topic">
+<a name="2o1aggibuutr2ba5djbp7jdlq2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;因为在函数一开始，第一个参数使用esp+8进行寻址的</a>
+</h3>
+<h3 class="topic">
+<a name="06imj6ljsescee9c9egfvtt3lt">&nbsp;&nbsp;&nbsp;需要注意内存拷贝的顺序以及栈空间中内存的顺序</a>
+</h3>
+<h3 class="topic">
+<a name="4unfetlpjjmkvemj07brm54i89">&nbsp;&nbsp;如果指定MB窗口的内容，即给MB函数传参，就需要编写shellcode</a>
+</h3>
+<h3 class="topic">
+<a name="6u2eukvdtaejbgf4kb5q5455ki">&nbsp;&nbsp;先使用010editor创建一个十六进制文件，然后将该文件保存为txt，将溢出代码复制到该文本文件中，在010editor中重载该txt文件，就可以编辑txt文件中的ascii</a>
+</h3>
+<h3 class="topic">
+<a name="2castnm4iqhhtq1vvnd1stkiai">&nbsp;编写shellcode</a>
+</h3>
+<h3 class="topic">
+<a name="0bnnjcgaoqtm5n070dd3dvgq4o">&nbsp;&nbsp;shellcode是一段纯粹的代码，不依赖外部环境运行，其用到的数据和代码均在shellcode中</a>
+</h3>
+<h3 class="topic">
+<a name="7ootgib2aikaga9b8qbib9dp6o">&nbsp;&nbsp;编写shellcode的问题</a>
+</h3>
+<h3 class="topic">
+<a name="252k0iud4n50rtpfk4ve5katuu">&nbsp;&nbsp;&nbsp;如何调试shellcode</a>
+</h3>
+<h3 class="topic">
+<a name="58vmvj6c2oe6sqcvla15o6o8rt">&nbsp;&nbsp;&nbsp;&nbsp;编写内联汇编</a>
+</h3>
+<h3 class="topic">
+<a name="23dskuajk269g2729apjj3o8ld">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;char bShellcode[]="\x90\x90\x91.........."&#13;
+__asm{&#13;
+	lea eax,,bShellcode&#13;
+	push eax&#13;
+	ret&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="4bartoldriu6via7lsh44kckue">&nbsp;&nbsp;&nbsp;如何访问全局变量</a>
+</h3>
+<h3 class="topic">
+<a name="15rn2rh6pbpr2bc85mbj79139s">&nbsp;&nbsp;&nbsp;&nbsp;通过GetPC获得当前指令的地址</a>
+</h3>
+<h3 class="topic">
+<a name="7thirl8vbjha46avmvb5p8n8oo">&nbsp;&nbsp;&nbsp;如何调用系统api</a>
+</h3>
+<h3 class="topic">
+<a name="6j1p9ff3sd8bq32v6laepae9t9">&nbsp;&nbsp;&nbsp;&nbsp;使用系统api的地址</a>
+</h3>
+<h3 class="topic">
+<a name="769ufuuuvon1jb4ogqp4e0pfsb">&nbsp;&nbsp;&nbsp;shllcode运行的程序没有导入我们需要的api，而又必须要使用，怎么办</a>
+</h3>
+<h3 class="topic">
+<a name="66uo89s8mhlsjt4e15fb9at837">&nbsp;&nbsp;&nbsp;&nbsp;shellcode中动态获取api地址</a>
+</h3>
+<h3 class="topic">
+<a name="6cppmt7aev1kd8ec9ev8sebmnk">&nbsp;&nbsp;Getpc</a>
+</h3>
+<h3 class="topic">
+<a name="57u12gco9ppm6rolgh6r24s2r6">&nbsp;&nbsp;&nbsp;获取当前eip</a>
+</h3>
+<h3 class="topic">
+<a name="5bcqava60qme9crtkrqibjtjdr">&nbsp;&nbsp;&nbsp;&nbsp;type_a</a>
+</h3>
+<h3 class="topic">
+<a name="2quq10mnfhs6690t7v0bp093sg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;E8 00000000&#13;
+58</a>
+</h3>
+<h3 class="topic">
+<a name="00on93e31n9bnr3bta6p9usivh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;call 下一条指令地址&#13;
+pop eax</a>
+</h3>
+<h3 class="topic">
+<a name="3j4aibmicr8n7rndkf4q85m819">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;优点、缺点</a>
+</h3>
+<h3 class="topic">
+<a name="4jmn1qpt7ij95oes74tmqrr22i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;由于字符串以0结尾，所以如果shellcode中出现00，可能导致shellcode被截断</a>
+</h3>
+<h3 class="topic">
+<a name="37md73vjrv3cqmcer6mt851438">&nbsp;&nbsp;&nbsp;&nbsp;type_b</a>
+</h3>
+<h3 class="topic">
+<a name="1k07uoi0tbj40gli50b67qft4n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;E8 FEFFFFFF&#13;
+C3&#13;
+58</a>
+</h3>
+<h3 class="topic">
+<a name="3ujsc47uto6jpkhop8thecqi2q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ff c3被cpu解析为 inc ebx 对堆栈没有影响</a>
+</h3>
+<h3 class="topic">
+<a name="5v7kan46t1p6if96ocuqbfpcrq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;58 是pop eax</a>
+</h3>
+<h3 class="topic">
+<a name="31afjbf3ff4ridbrn8rjgck2mq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;称为OPCode HACK</a>
+</h3>
+<h3 class="topic">
+<a name="4av06mdqjebg0c6pcbq48t0pee">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过有意识地指令截断，在有限字节内实现复杂指令</a>
+</h3>
+<h3 class="topic">
+<a name="0l4dmareeeutu1dfd7f94g619u">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;优点、缺点</a>
+</h3>
+<h3 class="topic">
+<a name="1qduu8r79sjud50nmplvv8379c">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;优点</a>
+</h3>
+<h3 class="topic">
+<a name="38oca12s8oekmj1fc4k55mvb6b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;不产生0x00</a>
+</h3>
+<h3 class="topic">
+<a name="0nrcrfu57g3g40dvagp0ah6n4v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;缺点</a>
+</h3>
+<h3 class="topic">
+<a name="4ja4ra7g493qo26p3dov78aq6b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;产生冗余指令inc ebx</a>
+</h3>
+<h3 class="topic">
+<a name="7s3dd9icaq16k9qo1811kaojt5">&nbsp;&nbsp;&nbsp;&nbsp;利用x87浮点单元（FPU）</a>
+</h3>
+<h3 class="topic">
+<a name="20o9np7idid4lgt4ra2h3e3ns3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该结构中第四个成员保存最后一次执行fpu指令的地址，只要执行一条fpu指令，之后获得该成员，可以获得该指令的地址</a>
+</h3>
+<h3 class="topic">
+<a name="4np0vnk7thft9jtu16i0go0ntl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用FNSTENV指令获取结构体，将该结构体读到esp-0xc的位置，此时esp指向的就是第四个成员，即fpu指令的地址</a>
+</h3>
+<h3 class="topic">
+<a name="0036tm8iggk7svlnqjq9496f83">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A81_files/07sgube5ccsdiuj0gajgifspqv.png"></p>
+<h3 class="topic">
+<a name="0fgcpk96ota8q607fj8f25083v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;正确答案是d</a>
+</h3>
+<h3 class="topic">
+<a name="684tn4l10rkvdns8okqst6rc6v">&nbsp;&nbsp;编写helloworld的shellcode</a>
+</h3>
+<h3 class="topic">
+<a name="1ld92cb1nhiko9raol970liah1">&nbsp;&nbsp;&nbsp;在执行shellcode之后，因为堆栈被破坏，所以后续程序无法运行</a>
+</h3>
+<h3 class="topic">
+<a name="3rqvikha5tqgnmftmja3o4usbj">&nbsp;&nbsp;&nbsp;需要在shellcode执行之后使用ExitProcess 结束进程，避免管理员发现异常进程，从而导致0day暴露</a>
+</h3>
+<h3 class="topic">
+<a name="07b21bmq4o5gnvm83ueou9mn3a">&nbsp;&nbsp;&nbsp;push edx只要一个字节 push 0需要5个字节，而且0最好不要出现在shellcode中，避免被截断</a>
+</h3>
+<h3 class="topic">
+<a name="74ote52oa55pb7jmjskve3f4d0">&nbsp;&nbsp;调试shellcode</a>
+</h3>
+<h3 class="topic">
+<a name="7807o5asrd2pok9em0vnu2rm9n">&nbsp;&nbsp;将opcode从shellchode中抠出来</a>
+</h3>
+<h3 class="topic">
+<a name="17eet7dpehkbicuf2u1hp1j6k6">&nbsp;&nbsp;&nbsp;x32-》选中-》右键-》二进制-》编辑-》复制数据-》shellcode字符串-》复制</a>
+</h3>
+<h3 class="topic">
+<a name="67hkc965oanegm4nd9sc4t20h9">&nbsp;&nbsp;&nbsp;使用一个数组保存刚才的产生的字符串</a>
+</h3>
+<h3 class="topic">
+<a name="4phqa566r70vcs750hbo62077k">&nbsp;&nbsp;&nbsp;char bShellcode[]="\x90\x90\x91.........."&#13;
+__asm{&#13;
+	lea eax,,bShellcode&#13;
+	push eax&#13;
+	ret&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="3ed0ogpehgskusg9icmkqugsqv">&nbsp;&nbsp;&nbsp;&nbsp;让shellcode字符串跑起来</a>
+</h3>
+<h3 class="topic">
+<a name="3nplei1jttq0jtj3bhd2bccgok">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;看是否能成功</a>
+</h3>
+<h3 class="topic">
+<a name="46tg5jame25hoe9aaj6dv8eprq">&nbsp;&nbsp;将该opcode复制到被溢出程序的输入渠道中</a>
+</h3>
+<h3 class="topic">
+<a name="0eml2f3mpdfbbrmpqen273jgn4">&nbsp;&nbsp;&nbsp;使用010editor-》复制到十六进制</a>
+</h3>
+<h3 class="topic">
+<a name="37qcfc5ncgsl4ubd56tngkc1eu">&nbsp;&nbsp;&nbsp;将溢出的返回地址设置为buffer的地址</a>
+</h3>
+<h3 class="topic">
+<a name="2vjj4b0baabjtj9id7fs30htef">&nbsp;&nbsp;&nbsp;&nbsp;shellcode保存栈空间中，如果栈刚开始开辟的空间不够大，会导致栈顶和shellcode代码部分重合</a>
+</h3>
+<h3 class="topic">
+<a name="7rbm5gkc1qf14pho38d6i5c48s">&nbsp;&nbsp;&nbsp;&nbsp;因为关闭了随机基址，所以此时buffer的地址是固定值，可以直接得到</a>
+</h3>
+<h3 class="topic">
+<a name="1383nvarbbn3a214q1j37p0gs8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对于存在随机基址的情况，之后进行讨论</a>
+</h3>
+<h3 class="topic">
+<a name="6adodt23nrqvihegp4irng80mr">&nbsp;&nbsp;注意因为shellcode中api地址是固定的，所以该shellcode不能再其他环境中运行</a>
+</h3>
+<h3 class="topic">
+<a name="0omuh4a551sii85qu1hqh3cp2u">&nbsp;动态获取api的地址</a>
+</h3>
+<h3 class="topic">
+<a name="2ar90bk3jbgrbg5ie4pqtvpps7">&nbsp;&nbsp;peb中特定结构保存当前进程中所有加载模块的基址</a>
+</h3>
+<h3 class="topic">
+<a name="23rfkcosrtenjdmo5bqdmjfno2">&nbsp;&nbsp;&nbsp;该结构是一个链表，链表中保存的dll基址，链表中第二个节点常常保存kernel32或kernelbase的基址，两个dll中都导出我们需要的GetProcAddress地址</a>
+</h3>
+<h3 class="topic">
+<a name="0f5lv5q5iisifnrfm8hkj65967">&nbsp;&nbsp;&nbsp;链表中保存dll基址的顺序</a>
+</h3>
+<h3 class="topic">
+<a name="3ebv08dbvaqki18saqf059c48v">&nbsp;&nbsp;&nbsp;&nbsp;ntdll-》kernel32或kernelbase-》到处</a>
+</h3>
+<h3 class="topic">
+<a name="0n0lfr5j6b3b0943vnquhtkbcm">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A81_files/6ofjej671eq8fkh0vc6jjcubvi.png"></p>
+<h3 class="topic">
+<a name="6r33untuab1mis4gbmucnf2r7v">&nbsp;&nbsp;找到加载模块基址后，通过搜索pe文件中导出表的方式在特定dll中找到关键api地址</a>
+</h3>
+<h3 class="topic">
+<a name="2u0f0gt7r9a6ls9oavqsadtuo2">&nbsp;&nbsp;部分安全软件将dll中的基址在链表中的顺序改变</a>
+</h3>
+<h3 class="topic">
+<a name="0hl8hqoev1ojf14aivtqdkg7kh">&nbsp;&nbsp;&nbsp;此时可以</a>
+</h3>
+<h3 class="topic">
+<a name="2dv55mhqarh5uu2am9f758e24h">&nbsp;&nbsp;&nbsp;&nbsp;遍历链表，看指定api是否在该dll中</a>
+</h3>
+<h3 class="topic">
+<a name="4ho90e6bamr6iuq6j68hbjso67">&nbsp;&nbsp;&nbsp;&nbsp;peb结构体中存在dll名称字段，通过判断dll的名称，判断是否找到正确的模块</a>
+</h3>
+<h3 class="topic">
+<a name="4pc63fj6jhpt0c5a43gnpjurtq">&nbsp;&nbsp;&nbsp;&nbsp;取kekrnel32的特征，判断当前模块是否为kernel32模块</a>
+</h3>
+<h3 class="topic">
+<a name="5iq1cvblub6ht531ug576intgp">&nbsp;使用汇编手动实现strcmp</a>
+</h3>
+<h3 class="topic">
+<a name="2c9n0kamn9rh3m94e1eerjlts3">&nbsp;通过偏移直接获得dll的导出表等信息，进一步获得api的地址</a>
+</h3>
+<h2 class="topic">
+<a name="1asfp4ih13eo1v9rli5j4tc1u0">其他</a>
+</h2>
+<h3 class="topic">
+<a name="7ltmgb90tdjs5im9flc7oge6s9">&nbsp;应用程序只要崩了，基本上就能证明有漏洞，因为输入的数据是在程序员意料之外的</a>
+</h3>
+<h3 class="topic">
+<a name="3eti9n0d2udcrbu7fcdqd29nrc">&nbsp;函数调用规则是语法层的东西，可以自己自由操作</a>
+</h3>
+<h3 class="topic">
+<a name="7if4f8jq016v84n13p9mh9ri6l">&nbsp;在执行shellocode之前，指令对于寄存器所做的所有操作均可以视为nop，不影响shellcode的执行</a>
+</h3>
+<h3 class="topic">
+<a name="1bki9i0kcf10lbrsfdbqm8t9ue">&nbsp;注意漏洞利用代码作为特征，可能会被杀毒软件查杀，导致漏洞利用程序被查杀</a>
+</h3>
+<h3 class="topic">
+<a name="2eq89sh250m0i3nki3f8nbj2iq">&nbsp;&nbsp;免杀主要思路</a>
+</h3>
+<h3 class="topic">
+<a name="00m65m6fd8cqug45hlit3hme52">&nbsp;&nbsp;&nbsp;修改指令的特征</a>
+</h3>
+<h3 class="topic">
+<a name="2g9u2cv8cio4dkt8jc0krt2thv">&nbsp;&nbsp;&nbsp;通过代码将杀毒软件关闭</a>
+</h3>
+<h3 class="topic">
+<a name="1r9q85g6tfa7msgnc1qfcj54vi">&nbsp;od尽可能少用（除非过反调试）</a>
+</h3>
+<h3 class="topic">
+<a name="662u2s8kmv64vg2fdajku5h6t9">&nbsp;&nbsp;od在获得shellcode方面比x32弱</a>
+</h3>
+<h3 class="topic">
+<a name="0m5q3eepjnb6uo07vupl149d5r">&nbsp;&nbsp;od不开源，有bug</a>
+</h3>
+<h3 class="topic">
+<a name="5v8g0h3akmiffcb8rnkvg5q02h">&nbsp;&nbsp;od插件之间存在冲突</a>
+</h3>
+<h3 class="topic">
+<a name="34919kf3urplgpvrlg307om40u">&nbsp;&nbsp;&nbsp;od可能导致漏洞利用实验失败</a>
+</h3>
+<h3 class="topic">
+<a name="5941p21hvsg4c1btu0fabaacvd">&nbsp;&nbsp;od的优势是反调试插件，X64目前的问题在反调试插件不全</a>
+</h3>
+<h3 class="topic">
+<a name="0h4ac15c528vg5j2mtki284qj1">&nbsp;在栈溢出攻击中，被执行的shellcoode一般是作为软件的一个输入，一个软件有多少输入来源，shellcode就有多少来源，一般输入源可以来自文件，来自控制台scanf的接受，可能来自界面编辑框的接受，可能来自于tcp通讯中recv的接收，shellcode被当作是数据来接受，本身不会被当作代码执行，是由于当shellcode被作为数据保存在栈中，栈溢出了，原本的函数返回地址被精确覆盖为保存shellcode的内存首地址，以至于shellcode被cpu当作机器码执行</a>
+</h3>
+<h3 class="topic">
+<a name="4v49cqojkl3ouonqmdnhqq1998">&nbsp;程序中的dll，在系统每次启动后，系统dll都是支持随机基址的，每次加载的地址都是不同的，如果在shellcode中写死了api的地址，下次开机该地址就不正确</a>
+</h3>
+<h3 class="topic">
+<a name="4807vlspi5tqs9n0erhidrmnr7">&nbsp;如何在shellcode中获得字符串地址</a>
+</h3>
+<h3 class="topic">
+<a name="0fk3s4ecpfs00l8rfqfdeb9be2">&nbsp;&nbsp;1</a>
+</h3>
+<h3 class="topic">
+<a name="3pm9m12jrtdus9k2n0335iiu7l">&nbsp;&nbsp;&nbsp;使GetPC的技巧并通过偏移获得字符串地址</a>
+</h3>
+<h3 class="topic">
+<a name="5i741m6m1k2jr7gjvhks7es1gb">&nbsp;&nbsp;2</a>
+</h3>
+<h3 class="topic">
+<a name="0iuo105pt81gjsrkvfduva69be">&nbsp;&nbsp;&nbsp;call case0&#13;
+db "hello"&#13;
+case0:&#13;
+call printf</a>
+</h3>
+<h3 class="topic">
+<a name="1grant9opf1j62725pgj4jbfhd">&nbsp;&nbsp;&nbsp;&nbsp;第一个call将其后面的字符串数据入栈，然后跳转调用printf</a>
+</h3>
+<h3 class="topic">
+<a name="79v7j2hehhnmliajv1uq9dcs1k">&nbsp;如何避免栈操作影响shellcode</a>
+</h3>
+<h3 class="topic">
+<a name="19kl3q6edf7kd6do8hpkba0dfs">&nbsp;&nbsp;在进行栈操作之前，先将esp的往上抬高（sub esp,xxx）</a>
+</h3>
+<h3 class="topic">
+<a name="2bauu04mbpjjehf0oodqulsoc5">&nbsp;进行栈溢出时，而可以通过将程序在x64中充分运行，出现异常，查看日志，异常地址，从而定位溢出点</a>
+</h3>
+<h2 class="topic">
+<a name="45j8mtkr6eibrvmlmq3kb8kfu6">注意，在使用fopen以相对路径打开文件时，当前目录针对的时vs工程所在的目录，而不是被生成的exe所在的目录</a>
+</h2>
+<h3 class="topic">
+<a name="4h31q2e4qcc3t38qb85t9v0htl">&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A81_files/1lgvd45tn9a2hfifjm9pop6ldd.png"></p>
+<h2 class="topic">
+<a name="7u6v17160bpktkeqrceti098pt">作业</a>
+</h2>
+<h3 class="topic">
+<a name="5ldfpk16oba1a2l2j753nqatsu">&nbsp;当使用编译器编译比较简单的代码时，如果编译目标为release版本，编译器可能会将代码优化掉，所以od中调试时看不到程序代码</a>
+</h3>
+<h3 class="topic">
+<a name="5ffq8fdn12lqo4sjv6nt3m1c2g">&nbsp;&nbsp;需要关闭编译器优化选项</a>
+</h3>
+<h3 class="topic">
+<a name="09u59ilo6kbidm8h8svh1uvntp">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A81_files/5ahicdiisd2l37otemg18sm2tm.png"></p>
+</body>
+</html>

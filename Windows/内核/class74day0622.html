@@ -1,0 +1,469 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>class74day0622（内核编程第五天）</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="15a0hl9n4u1ennedjhq7vk6bb2">class74day0622（内核编程第五天）</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="class74day0622_files/images/class74day0622%EF%BC%88%E5%86%85%E6%A0%B8%E7%BC%96%E7%A8%8B%E7%AC%AC%E4%BA%94%E5%A4%A9%EF%BC%89.jpg"></div>
+<h2 class="topic">
+<a name="7ahca44etc8ks8drn296nbg9ou">进程挂靠</a>
+</h2>
+<h3 class="topic">
+<a name="2tbv4alalrkfinjq289f4fmgch">&nbsp;背景</a>
+</h3>
+<h3 class="topic">
+<a name="03qdg545tv57t9skokus5csfnv">&nbsp;&nbsp;内核中不能随意访问3环虚拟地址，因为3环虚拟地址需要当前进程的页目录基址进行转换，当前进程不断被切换，当内核中使用虚拟地址时，用于解析该虚拟地址的页目录基址错误时，就会造成解析失败，找不到真正的物理地址，就会产生问题</a>
+</h3>
+<h3 class="topic">
+<a name="4ca2d3ap0vjusn0g2mq5h2cq1l">&nbsp;&nbsp;只要将当前进程的页目录基址切换成对应进程的页目录基址，就能将虚拟地址成功解析</a>
+</h3>
+<h3 class="topic">
+<a name="1af4597kpmu8irsrcdso3brrqr">&nbsp;两个api</a>
+</h3>
+<h3 class="topic">
+<a name="0jtevu5595p2uca4uedtkllrgp">&nbsp;&nbsp;进程挂靠</a>
+</h3>
+<h3 class="topic">
+<a name="1qire9gv1r2mgi5hmdujvskpij">&nbsp;&nbsp;&nbsp;KeAttachProcess</a>
+</h3>
+<h3 class="topic">
+<a name="0r5kjslj47t8pf8r6h7a99jgm6">&nbsp;&nbsp;进程解挂靠</a>
+</h3>
+<h3 class="topic">
+<a name="34urrv3kj6olp7a0e9s03c4ugj">&nbsp;&nbsp;&nbsp;KeDeAttachProcess</a>
+</h3>
+<h3 class="topic">
+<a name="1tjo49nqe64ja9jddmsueiles2">&nbsp;利用进程挂靠，可以遍历所有进程的所有模块</a>
+</h3>
+<h3 class="topic">
+<a name="2ce21mt1437fbq977bu43op6is">&nbsp;&nbsp;可以获得对应进程页目录基址，从而访问对应进程的内核空间地址，得到EPROCESS结构体中的指定字段</a>
+</h3>
+<h3 class="topic">
+<a name="0ufd3h7i4u8cluqt3s8ss639cd">&nbsp;相关代码</a>
+</h3>
+<h3 class="topic">
+<a name="6loe353rvb826url7rpl8u8gp2">&nbsp;步骤</a>
+</h3>
+<h3 class="topic">
+<a name="1u3gaamlha5kq23h2lpfs02sru">&nbsp;&nbsp;得到要遍历的模块的进程的EPROCESS</a>
+</h3>
+<h3 class="topic">
+<a name="59c12a7fvntnu6f65sbc1n239f">&nbsp;&nbsp;从EPROCESS中得到PEB地址</a>
+</h3>
+<h3 class="topic">
+<a name="0m0ooas6b74npohdfhng6dc6tb">&nbsp;&nbsp;从PEB中得到PEB_LDR_DATA地址</a>
+</h3>
+<h3 class="topic">
+<a name="26bd16pkbrna0bd19bu8h57qig">&nbsp;&nbsp;从PEB_LDR_DATA中得到LDR_DATA_TABLE_ENTRY结构</a>
+</h3>
+<h3 class="topic">
+<a name="7qdjseih9fhseoh9554jr61236">&nbsp;&nbsp;开始遍历双向链表，得到模块信息</a>
+</h3>
+<h2 class="topic">
+<a name="0p6seliv8b3ungumu6quiug2sd">内核对象</a>
+</h2>
+<h3 class="topic">
+<a name="3pduihl4fuo7om528mlb7cc0fv">&nbsp;windows中有所有的内核对象，有两个部分组成（这种思想类似于继承的思想）</a>
+</h3>
+<h3 class="topic">
+<a name="2qgcn2ar3u4bttnn9mn7okntqt">&nbsp;&nbsp;对象头</a>
+</h3>
+<h3 class="topic">
+<a name="298t6ugnb3n84r170c37nkor38">&nbsp;&nbsp;&nbsp;保存所有内核对象的共同部分</a>
+</h3>
+<h3 class="topic">
+<a name="7uvdr1frs7rtlgurl1fltj3iff">&nbsp;&nbsp;&nbsp;&nbsp;有字段指示对象类型</a>
+</h3>
+<h3 class="topic">
+<a name="71f0efcrt3vfa5jvphso3c9v5c">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unicode_string保存内核对象的类型</a>
+</h3>
+<h3 class="topic">
+<a name="66sgr45frr1qosejuagjem43c6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;此类型对象在全局数组中的索引</a>
+</h3>
+<h3 class="topic">
+<a name="68n1h90g92saa1h2vhbqc4b858">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;全局数组中保存系统中已创建的各种内核对象的原型，当新创建内核对象时，会从该全局数组中获得内核对象原型，将其复制到进程内核空间，初始化该内核对象</a>
+</h3>
+<h3 class="topic">
+<a name="40kvq20nang189mblnbm6t7m5b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以针对该全局数组进行hook，找到指定种类的内核对象的结构体，修改该结构体中特定回调函数的地址，让此类内核对象被创建时，可以调用被hook的回调函数</a>
+</h3>
+<h3 class="topic">
+<a name="54pg74028f2j8en76rt6qud63p">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对象类型的初始化信息</a>
+</h3>
+<h3 class="topic">
+<a name="1bpesicrn32efuob5iub7m56fn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;其中包含一些回调函数，类似于虚函数，可以被实际创建的内核对象调用</a>
+</h3>
+<h3 class="topic">
+<a name="2c386v5dkg2p6o5bqubdev9ffa">&nbsp;&nbsp;&nbsp;&nbsp;有字段指示对象体的开始</a>
+</h3>
+<h3 class="topic">
+<a name="36sbaav6jbijvpai3vs4o9kj14">&nbsp;&nbsp;对象体</a>
+</h3>
+<h3 class="topic">
+<a name="4cid6gn54v0160vuomdheloi7c">&nbsp;内核对象回调函数hook</a>
+</h3>
+<h3 class="topic">
+<a name="2g0beg5697pk5m3shk3mcp2eeq">&nbsp;&nbsp;。。。。。</a>
+</h3>
+<h2 class="topic">
+<a name="4m3531mc28585mk6seof8g83ro">hook</a>
+</h2>
+<h3 class="topic">
+<a name="66rimh5rnj7lv2o70tuen50tki">&nbsp;从3环进0环的过程分析</a>
+</h3>
+<h3 class="topic">
+<a name="0b0q74cojsbg63gn864o995em6">&nbsp;&nbsp;老的方法：系统调用（通过中断门从3环进入0环）&#13;
+（具体是通过指令int 0x2E，调用IDT表中的0x2E号异常的处理函数，从而进入0环）</a>
+</h3>
+<h3 class="topic">
+<a name="2j63bao3ni85pq4f38c742agh5">&nbsp;&nbsp;&nbsp;系统的api通过一层一层的调用，通过ntdll，进入0环，0环中才有实际功能的代码</a>
+</h3>
+<h3 class="topic">
+<a name="2mnmq1kepnlpvgs5t77tfs4bhi">&nbsp;&nbsp;&nbsp;&nbsp;kernel32 user32 gdi32 三大dll中的api的调用最终都会通过ntdll进入0环</a>
+</h3>
+<h3 class="topic">
+<a name="47ihatbhdio8vk9ef0p26vngsv">&nbsp;&nbsp;&nbsp;从0环到3环是通过门描述符</a>
+</h3>
+<h3 class="topic">
+<a name="5ecufgq88dfn7in7ep6370i0v4">&nbsp;&nbsp;&nbsp;&nbsp;每当使用门描述符，会将门描述符中的段选择子和地址无条件赋值给cs和eip，从而达到跳转到内核层的目的</a>
+</h3>
+<h3 class="topic">
+<a name="667n9i5f1pfgr67eel9377c99f">&nbsp;&nbsp;&nbsp;进入到0环需要切换寄存器 cs eip  ss esp</a>
+</h3>
+<h3 class="topic">
+<a name="2bhnphijvkdel9pmgiqmn5ju5g">&nbsp;&nbsp;&nbsp;&nbsp;cs eip通过门描述符提供</a>
+</h3>
+<h3 class="topic">
+<a name="34rndjg3uj6dcq90mk8q76sgtq">&nbsp;&nbsp;&nbsp;&nbsp;ss esp通过TSS段提供</a>
+</h3>
+<h3 class="topic">
+<a name="4a0s72ru1u9ljdlct08gurkt7s">&nbsp;&nbsp;&nbsp;以上过程获取cs eip ss esp的过程都需要读取内存，比较慢</a>
+</h3>
+<h3 class="topic">
+<a name="19j57kaqlnf44808h6ur7r49lg">&nbsp;&nbsp;新的方式：通过cpu从3环切换到0环</a>
+</h3>
+<h3 class="topic">
+<a name="30hg8820nmbu9468uh475iltu3">&nbsp;&nbsp;&nbsp;使用SYSENTER指令，控制权传递给特殊模块寄存器所指向的函数中</a>
+</h3>
+<h3 class="topic">
+<a name="2bdv39c807pgfm1hri2tpi0fff">&nbsp;&nbsp;&nbsp;&nbsp;使用3个MSR寄存器完成寄存器值的切换</a>
+</h3>
+<h3 class="topic">
+<a name="07ushh4kgb3hluf6v117thsgm4">&nbsp;&nbsp;&nbsp;使用特殊模块寄存器保存0环的cs eip ss esp</a>
+</h3>
+<h3 class="topic">
+<a name="7j4mj77l0id2ii7misqu20qmrt">&nbsp;&nbsp;&nbsp;&nbsp;0x174</a>
+</h3>
+<h3 class="topic">
+<a name="3ol099u6ti0tvcit0bboqik72c">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;保存cs</a>
+</h3>
+<h3 class="topic">
+<a name="1e22oheimn1un2l6ohokhg8h56">&nbsp;&nbsp;&nbsp;&nbsp;0x175</a>
+</h3>
+<h3 class="topic">
+<a name="7veb504tm0uiim9796dk0tmjgn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;保存esp</a>
+</h3>
+<h3 class="topic">
+<a name="7od2jhjija8skretlibtqn13pa">&nbsp;&nbsp;&nbsp;&nbsp;0x176</a>
+</h3>
+<h3 class="topic">
+<a name="3lqi6kd3jqmraptkpqlvmdro7t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;保存eip</a>
+</h3>
+<h3 class="topic">
+<a name="4mefvhvmhu3rvepl3j77bpob18">&nbsp;&nbsp;&nbsp;&nbsp;保存cs的寄存器+8，得到保存ss值的寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="1csnjdg86bu8j6pmrg8tkh8cjq">&nbsp;&nbsp;&nbsp;通过将特殊模块寄存器中的值赋值给cs eip ss esp，完成0环的切换</a>
+</h3>
+<h3 class="topic">
+<a name="0fpujqk3o33c85ik7toq8e276s">&nbsp;&nbsp;&nbsp;3环~0环切换流程</a>
+</h3>
+<h3 class="topic">
+<a name="2ln8km3b1pj1tk0120ubr4qknt">&nbsp;&nbsp;&nbsp;&nbsp;设置cs寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="7kcjpq28q1n2jt6q2gk9d3gkem">&nbsp;&nbsp;&nbsp;&nbsp;设置eip寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="7gt8al8mtp95qsv4ca64nfa828">&nbsp;&nbsp;&nbsp;&nbsp;设置ss寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="7ef9r0522mmd15jmj8mma0h369">&nbsp;&nbsp;&nbsp;&nbsp;设置esp寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="5d6u736d3jmkqsovmt9h6nj4mo">&nbsp;&nbsp;&nbsp;&nbsp;切换RING0</a>
+</h3>
+<h3 class="topic">
+<a name="6hus3ao1nq8eagkuej4oq894rs">&nbsp;&nbsp;&nbsp;&nbsp;清除EFLAGd的VM标志</a>
+</h3>
+<h3 class="topic">
+<a name="7piqnq0hf3qiir728e09f3vpkk">&nbsp;&nbsp;&nbsp;&nbsp;执行位于EIP处的RING0例程</a>
+</h3>
+<h3 class="topic">
+<a name="7korv0l0ifk2096ubldm87klbv">&nbsp;&nbsp;新老方式相比，实质是一样的，均是修改cs eip ss esp寄存器的值，只不过老方式是通过中断门，在idt表以及tss找到寄存器的值，新方式是通过特殊寄存器直接赋值四个寄存器</a>
+</h3>
+<h3 class="topic">
+<a name="4s4bgfa94f6ar4tijo856mfhb3">&nbsp;&nbsp;0环结构体</a>
+</h3>
+<h3 class="topic">
+<a name="6nrudoiakflgceh88j8roa59hi">&nbsp;&nbsp;&nbsp;ntdll.dll</a>
+</h3>
+<h3 class="topic">
+<a name="0j1nivcupdhijn37id6dn9i2p4">&nbsp;&nbsp;&nbsp;&nbsp;通过SYSENTER指令进入内核层</a>
+</h3>
+<h3 class="topic">
+<a name="3ged2ajgkuhvdkr92gpeht6113">&nbsp;&nbsp;&nbsp;系统服务派发器</a>
+</h3>
+<h3 class="topic">
+<a name="3c67g5120nth930r3r7qpvn2bh">&nbsp;&nbsp;&nbsp;内核层</a>
+</h3>
+<h3 class="topic">
+<a name="7p8b2jdm7hmqud5hc24q9612b3">&nbsp;&nbsp;&nbsp;硬件抽象层（hal）</a>
+</h3>
+<h3 class="topic">
+<a name="7do4976spsgfrpo12dmp336vk6">&nbsp;&nbsp;&nbsp;硬件接口层</a>
+</h3>
+<h3 class="topic">
+<a name="6rthp8li0iskhj4ajh3ggqnehs">&nbsp;kifastcallentry的hook</a>
+</h3>
+<h3 class="topic">
+<a name="7k874hcnjslanfptsssu9rdmvp">&nbsp;&nbsp;分析该函数 </a>
+</h3>
+<h3 class="topic">
+<a name="0pr4j6drpblefqj7p57mh0npre">&nbsp;&nbsp;&nbsp;windbg中找到该函数</a>
+</h3>
+<h3 class="topic">
+<a name="7g2lhn5gj4elqpt3topk01omgt">&nbsp;&nbsp;&nbsp;&nbsp;rdmsr 176</a>
+</h3>
+<h3 class="topic">
+<a name="21fg9blf42l3rrlf2flhjpqm6v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;获得kefastcallentry函数的地址</a>
+</h3>
+<h3 class="topic">
+<a name="0k906asjvmjo4hsgahf5qeuo61">&nbsp;&nbsp;&nbsp;&nbsp;u 该地址 100</a>
+</h3>
+<h3 class="topic">
+<a name="2kvh0q907ph01beraalh9940ij">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;显示100条该函数的地址</a>
+</h3>
+<h3 class="topic">
+<a name="64ck639j8nifjspou2tfr7coc3">&nbsp;&nbsp;&nbsp;&nbsp;dg 30</a>
+</h3>
+<h3 class="topic">
+<a name="151nn2sadan7tcsu9ln0261kdp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将30作为段选择子，查看段描述符内容</a>
+</h3>
+<h3 class="topic">
+<a name="22c9smaos4ptdtefha0t5hv9bb">&nbsp;&nbsp;&nbsp;0环中fs中不是teb而是kpcr结构体的地址</a>
+</h3>
+<h3 class="topic">
+<a name="5qke79rhutk5rkh63uhp3e5138">&nbsp;&nbsp;&nbsp;&nbsp;一个处理器就有一个kpcr</a>
+</h3>
+<h3 class="topic">
+<a name="07d3u4a42vqf7gg1adrqg419cv">&nbsp;&nbsp;&nbsp;分析该函数汇编代码</a>
+</h3>
+<h3 class="topic">
+<a name="0ghrjugremvu76q92o29bobkla">&nbsp;&nbsp;&nbsp;&nbsp;根据调用号的结构，结果要么为0，要么为0x10</a>
+</h3>
+<h3 class="topic">
+<a name="0v7b6ti9qim3qentn7ccshv70b">&nbsp;&nbsp;三种hook方法</a>
+</h3>
+<h3 class="topic">
+<a name="7guhq58256iinma93emtdl159t">&nbsp;&nbsp;&nbsp;通过修改msr176寄存器的值，使其指向我们自己的函数</a>
+</h3>
+<h3 class="topic">
+<a name="7fdnjdf0f7cksk4vepesce078m">&nbsp;&nbsp;&nbsp;通过修改汇编指令，通过inlinehook</a>
+</h3>
+<h3 class="topic">
+<a name="5fj63s1rjbdljrvdgir6dakecc">&nbsp;&nbsp;&nbsp;通过修改</a>
+</h3>
+<h3 class="topic">
+<a name="5ddbtef562gkh42oakotmni95q">&nbsp;&nbsp;&nbsp;&nbsp;某个寄存器的值</a>
+</h3>
+<h3 class="topic">
+<a name="51pbvd07b07ufsq8j4v7en56km">&nbsp;&nbsp;3环每次调用sysenter之后，先调用我们自己的函数，之后才调用kifastcallentry</a>
+</h3>
+<h3 class="topic">
+<a name="0o2fa6oj5fe836pekbc7q1ptvk">&nbsp;&nbsp;该hook可以用于保护某个进程不被结束</a>
+</h3>
+<h3 class="topic">
+<a name="5tp8kl1br77lvhj37au04ejkkk">&nbsp;&nbsp;&nbsp;也可以实现内核层的反调试</a>
+</h3>
+<h3 class="topic">
+<a name="0a4n79d5a2qeno0hvho9qro3tu">&nbsp;去除内存页保护</a>
+</h3>
+<h3 class="topic">
+<a name="3sj5cs04crj2b95sifhh1lf1e2">&nbsp;&nbsp;修改注册表禁用保护</a>
+</h3>
+<h3 class="topic">
+<a name="3f66e85inqv0dgpas6nqm6fps3">&nbsp;&nbsp;利用CR0寄存器关闭保护</a>
+</h3>
+<h3 class="topic">
+<a name="6ji6914lk4knr99td5tq9n2028">&nbsp;&nbsp;标准MDL去除保护</a>
+</h3>
+<h3 class="topic">
+<a name="2le7ab8v43btnc822umj6l6hf1">&nbsp;ssdk hook</a>
+</h3>
+<h3 class="topic">
+<a name="6av7k95mctfjeu1p7f6r14u5e7">&nbsp;&nbsp;比上面更加简单</a>
+</h3>
+<h3 class="topic">
+<a name="7ri26s73hmus32qsbduckcrif0">&nbsp;&nbsp;将ssdt表中的地址进行修改</a>
+</h3>
+<h3 class="topic">
+<a name="4d1opg3jpsp6k0s562orp7t9at">&nbsp;&nbsp;&nbsp;ssdt函数调用表中函数的序号可以从pchunter中的ssdt中找到</a>
+</h3>
+<h3 class="topic">
+<a name="0ar02jptvp4g23hq4vfeijahv5">&nbsp;检测hook</a>
+</h3>
+<h3 class="topic">
+<a name="38okdhg10apfsqee9bibh9gpud">&nbsp;&nbsp;判断地址是否在ntoskrnl模块区间</a>
+</h3>
+<h3 class="topic">
+<a name="1td3c9bkt5fpmiecd7gnllroat">&nbsp;&nbsp;检测kifastcall的hook</a>
+</h3>
+<h3 class="topic">
+<a name="5phq8l6okrjc64g991p60sak1j">&nbsp;&nbsp;&nbsp;获取0x176号模组寄存器，判断器地址的正确性</a>
+</h3>
+<h3 class="topic">
+<a name="5tlk5jl09oooujqv9in5grn2rl">&nbsp;&nbsp;&nbsp;检查kifastcallentry的机器码是否被修改</a>
+</h3>
+<h3 class="topic">
+<a name="6drqclrfgib8g1ohkpierao9de">&nbsp;&nbsp;检测ssdt</a>
+</h3>
+<h3 class="topic">
+<a name="6br8rkk90ltbkv9bcem6redsj3">&nbsp;&nbsp;&nbsp;遍历ssdt取出的函数地址验证这些地址是否在内核模块的内存区间（不太准确）</a>
+</h3>
+<h3 class="topic">
+<a name="5uku1v7b4kbm73bsbolsto4gjd">&nbsp;&nbsp;&nbsp;ssfdt在ntoskrnl.exe这个pe文件中，是保存有原始数据，但是这些数据是服务函数的地址的rva，可以这些函数的rva读取出来，加上当前内核模块的当前加载基址，就可以得到服务函数的真正地址，然后使用内存中的ssdt，的函数地址和文件中的原始函数地址比较</a>
+</h3>
+<h3 class="topic">
+<a name="69vlr6am9hhu17aqo3croslm4f">&nbsp;&nbsp;检测对象hook</a>
+</h3>
+<h3 class="topic">
+<a name="3jq6oljdffs9rr3ugr3j9lhj14">&nbsp;&nbsp;&nbsp;遍历原型数组</a>
+</h3>
+<h3 class="topic">
+<a name="6phldstinc6ltbo88lrhf8ifh5">&nbsp;如何修复内联hook</a>
+</h3>
+<h3 class="topic">
+<a name="72nkg6em01llp98lg8rg3il244">&nbsp;&nbsp;通过内核重载</a>
+</h3>
+<h2 class="topic">
+<a name="6bp55o5ppm8ifvchb1o2ij38p0">内核重载</a>
+</h2>
+<h3 class="topic">
+<a name="3pv5m19um2mbjhffjbof9jm97v">&nbsp;背景</a>
+</h3>
+<h3 class="topic">
+<a name="0giisqkvnc79n3357g10bvhghm">&nbsp;&nbsp;用于去除hook</a>
+</h3>
+<h3 class="topic">
+<a name="0ijn3a4eelspffpe8qqlcqrc43">&nbsp;将没有被hook修改的内核文件加载到内存</a>
+</h3>
+<h3 class="topic">
+<a name="3ukri9nl4ob6pe45mtb9q46e9d">&nbsp;当系统调用原始的ssdt函数时，使用的时新内核文件中的函数</a>
+</h3>
+<h3 class="topic">
+<a name="7vrie6l71fe0cqhng95u96qn0c">&nbsp;问题在于，当前在新内核中访问全局变量的时候，因为加载基址不同，可能造成访问全局变量的地址不对</a>
+</h3>
+<h3 class="topic">
+<a name="5igk275q4eplec42d7docrfoe7">&nbsp;新的内核中仅仅是读取到内存中，新内核没有执行初始化代码，所以其中的全局变量数据没有被初始化，无法使用</a>
+</h3>
+<h3 class="topic">
+<a name="7clcbrfu7sn6ifasg8krfnr7uk">&nbsp;&nbsp;解决方式是此类数据使用原来的内核中的数据</a>
+</h3>
+<h3 class="topic">
+<a name="58oig3vj5b5vdngipejlh9dfie">&nbsp;&nbsp;问题在于ssdt中有需要进行重定位的数据，即函数的绝对地址，</a>
+</h3>
+<h3 class="topic">
+<a name="1icjl20mh0fatuf3nrduf4asnf">&nbsp;代码流程</a>
+</h3>
+<h3 class="topic">
+<a name="6jud8h0mkocor63ks6bcio2ve7">&nbsp;&nbsp;将内核加载到内存中</a>
+</h3>
+<h3 class="topic">
+<a name="5om1usqv01bcb7qm14pob3qmu5">&nbsp;&nbsp;&nbsp;找到内核模块的文件路径</a>
+</h3>
+<h3 class="topic">
+<a name="5su6pai3f756ac38s3qkj4o7k0">&nbsp;&nbsp;&nbsp;&nbsp;通过遍历模块链表的路径</a>
+</h3>
+<h3 class="topic">
+<a name="4kbdeu3ahch2fb1unjqb6tl9cr">&nbsp;&nbsp;&nbsp;注意要将内核文件以内存粒度读取到内存空间中</a>
+</h3>
+<h3 class="topic">
+<a name="2ps4ntndlqg5h3e97a2c8mre7n">&nbsp;&nbsp;修复重定位表</a>
+</h3>
+<h3 class="topic">
+<a name="6ahm595ful40gjn8h9beha9mqa">&nbsp;&nbsp;&nbsp;减去默认加载基址+当前加载基址（老内核加载基址）</a>
+</h3>
+<h3 class="topic">
+<a name="4hnnukhk4qnt1852red8tm3hfi">&nbsp;&nbsp;修复ssdt表</a>
+</h3>
+<h3 class="topic">
+<a name="3kmtgthbj7am9mmc6coltf3qk9">&nbsp;&nbsp;&nbsp;减去原来内核的加载基址+当前内核的加载基址</a>
+</h3>
+<h3 class="topic">
+<a name="16shg9nol9dovesrp18o1f9e54">&nbsp;&nbsp;安装hook，使内联hook的方法，将新内核替代老内核</a>
+</h3>
+<h3 class="topic">
+<a name="2hajsck97vgc4e90cme77kk0b9">&nbsp;&nbsp;&nbsp;将内联hook的位置选定为也是5个字节的位置</a>
+</h3>
+<h3 class="topic">
+<a name="5jfs9f2tifjb5fqoml7sdj3fcp">&nbsp;可以用于过滤一些hoook</a>
+</h3>
+<h3 class="topic">
+<a name="2bd3kqalksvj7jeit459edhk77">&nbsp;当前去除hook较为新的技术是使用vt</a>
+</h3>
+<h2 class="topic">
+<a name="7ai8tere7ap9o52sdkbr0mt3dl">内核通讯中的另一种方式</a>
+</h2>
+<h3 class="topic">
+<a name="5ues2kqpirt9pb767p65qnrfov">&nbsp;DeviceIoControl</a>
+</h3>
+<h3 class="topic">
+<a name="4aocmefelm2eijd1or5kgin29o">&nbsp;&nbsp;支持较为复杂的通讯操作</a>
+</h3>
+<h3 class="topic">
+<a name="28njbdtqlnrpp581ktkong1c47">&nbsp;&nbsp;输入的同时能数输出</a>
+</h3>
+<h3 class="topic">
+<a name="1q81mc6vg700srohmq4qv9987c">&nbsp;&nbsp;控制码可以控制io操作的类型，驱动层获取控制码，进行对应操作</a>
+</h3>
+<h3 class="topic">
+<a name="3b7e3fk6j2s857ptp50ubjo17g">&nbsp;&nbsp;&nbsp;控制码由四个部分组成</a>
+</h3>
+<h3 class="topic">
+<a name="6rbdkgioqrh150uthbhp4sjkco">&nbsp;&nbsp;&nbsp;&nbsp;设备类型</a>
+</h3>
+<h3 class="topic">
+<a name="5ld08hg4jlnguvupf0dpu6r4oj">&nbsp;&nbsp;&nbsp;&nbsp;需要的访问权限</a>
+</h3>
+<h3 class="topic">
+<a name="5ttkh5qa3lgc7rg0ba7e055hhs">&nbsp;&nbsp;&nbsp;&nbsp;功能码</a>
+</h3>
+<h3 class="topic">
+<a name="5i3opk14the5abmu3hf9pnbs7n">&nbsp;&nbsp;&nbsp;&nbsp;传输类型</a>
+</h3>
+<h3 class="topic">
+<a name="7g1repdahlcdc8usece8pla5hv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;都可以通过asss来获得缓冲区</a>
+</h3>
+<h3 class="topic">
+<a name="68rnmpustg4n7jnfd81c39bmk2">&nbsp;flag不能同故宫控制Flags控制数据传输出方式</a>
+</h3>
+<h2 class="topic">
+<a name="4mg4c7sspccdnq2qudrodosjcb">系统中真正的内核ntoskrnl</a>
+</h2>
+<h3 class="topic">
+<a name="4clrm4ig43f14qh1hsovnjepot">&nbsp;内核相关api都是从该内核模块导出</a>
+</h3>
+<h2 class="topic">
+<a name="1pjdadc2htt4um89o22ef5vpab">未文档化结构体查询网址&middot;</a>
+</h2>
+<h3 class="topic">
+<a name="7kss8o4371mhlkhipptstl2c1d">&nbsp;https://www.vergiliusproject.com/</a>
+</h3>
+</body>
+</html>

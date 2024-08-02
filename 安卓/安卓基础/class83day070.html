@@ -1,0 +1,510 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>class83day0705(安卓安全第四天)</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="1kdi3i4d1ps4c6kdqdkntkvl73">class83day0705(安卓安全第四天)</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="class83day070_files/images/class83day0705(%E5%AE%89%E5%8D%93%E5%AE%89%E5%85%A8%E7%AC%AC%E5%9B%9B%E5%A4%A9).jpg"></div>
+<h2 class="topic">
+<a name="69rvv12f6mpp9vsd6f6d8eh7bk">java和smali语言</a>
+</h2>
+<h2 class="topic">
+<a name="77dibo74jijl8r88l1foh90ola">安卓四大组件和权限分析</a>
+</h2>
+<h3 class="topic">
+<a name="39b18anb45tj4n65lgeao6d69k">&nbsp;均注册在清单文件</a>
+</h3>
+<h2 class="topic">
+<a name="5igkkdng2mlilmh91ejbnchhu1">安卓病毒分析</a>
+</h2>
+<h3 class="topic">
+<a name="6iei5fkdhlcgjuqjaq5tq15j95">&nbsp;命名规则</a>
+</h3>
+<h3 class="topic">
+<a name="22it85re3no4rreml9vgn0s0dd">&nbsp;&nbsp;安卓(a) 病毒类型 病毒家族 病毒变种</a>
+</h3>
+<h3 class="topic">
+<a name="795fsthk5a4ds4st29pevs4hlr">&nbsp;&nbsp;例如：a.privacy.GpsSpy.a</a>
+</h3>
+<h3 class="topic">
+<a name="26vr8m5ipcfcgqr1ebsh8mn4jm">&nbsp;常见病毒行为</a>
+</h3>
+<h3 class="topic">
+<a name="34kk84fci6a100n7u8asddeb1k">&nbsp;&nbsp;获取手机信息</a>
+</h3>
+<h3 class="topic">
+<a name="4pfs81otd76knee55305g5vqdc">&nbsp;&nbsp;&nbsp;手机的硬件信息存在黑市买卖</a>
+</h3>
+<h3 class="topic">
+<a name="2v5tdasgrn54tklemptdidpj0t">&nbsp;&nbsp;&nbsp;信息种类</a>
+</h3>
+<h3 class="topic">
+<a name="61ui06deh8nf1ibce4k3lf63b4">&nbsp;&nbsp;&nbsp;&nbsp;手机号</a>
+</h3>
+<h3 class="topic">
+<a name="300eulgn4pvos1dmiu2mtg8634">&nbsp;&nbsp;&nbsp;&nbsp;用户位置信息</a>
+</h3>
+<h3 class="topic">
+<a name="7dt7sovh1pqi2q9epqfr85lpkm">&nbsp;&nbsp;&nbsp;&nbsp;设备id</a>
+</h3>
+<h3 class="topic">
+<a name="65835kjqd7cgamfqkq3upf2p5h">&nbsp;&nbsp;&nbsp;&nbsp;获取ismi号</a>
+</h3>
+<h3 class="topic">
+<a name="4tdt7pbcf0u3lnp3d2qasfgash">&nbsp;&nbsp;&nbsp;&nbsp;获得sim卡的序号</a>
+</h3>
+<h3 class="topic">
+<a name="794094d0hp36eoh6ho2auvhmtc">&nbsp;&nbsp;&nbsp;&nbsp;手机型号</a>
+</h3>
+<h3 class="topic">
+<a name="420sc6u66vk6nfqj8kao922an3">&nbsp;&nbsp;&nbsp;常见后续操作</a>
+</h3>
+<h3 class="topic">
+<a name="42r8n2367dvtl9oov20qreubrh">&nbsp;&nbsp;&nbsp;&nbsp;上传服务器</a>
+</h3>
+<h3 class="topic">
+<a name="3ilfj07pbl2uk3lkr6iv2ag47i">&nbsp;&nbsp;&nbsp;&nbsp;获取详细地址信息</a>
+</h3>
+<h3 class="topic">
+<a name="1du9fqid3i1kon1qrit8mdnf9d">&nbsp;&nbsp;发送短信</a>
+</h3>
+<h3 class="topic">
+<a name="57v93oucg48hqcc5bn88m52ehk">&nbsp;&nbsp;&nbsp;SmsManger类</a>
+</h3>
+<h3 class="topic">
+<a name="785mm6vmbr9aloidn582ii1bq2">&nbsp;&nbsp;获取手机联系人信息</a>
+</h3>
+<h3 class="topic">
+<a name="2k9la1mqisdjnr0d1k5nh9s7q6">&nbsp;&nbsp;获取手机上的短信信息</a>
+</h3>
+<h3 class="topic">
+<a name="42gofogkuk5kih4e6d4cfduhtc">&nbsp;&nbsp;获取手机安装应用列表和运行时列表</a>
+</h3>
+<h3 class="topic">
+<a name="5basvcuukg3bqfpos0fgdiinfc">&nbsp;&nbsp;&nbsp;检测杀毒软件</a>
+</h3>
+<h3 class="topic">
+<a name="2eg7v4bvfbag3sqsf5c6l63p1i">&nbsp;&nbsp;&nbsp;分析用户行为习惯</a>
+</h3>
+<h3 class="topic">
+<a name="22tqi9kqkofasc87c10ajm78gb">&nbsp;&nbsp;获取root权限</a>
+</h3>
+<h3 class="topic">
+<a name="7hahm3m52q16o9umbm1p8n3tun">&nbsp;&nbsp;&nbsp;如果能执行su命令，说明已经获得root权限，可以进行很多非提示性操作</a>
+</h3>
+<h3 class="topic">
+<a name="7fmdkka2ufs50e3rrqee3hcq8d">&nbsp;&nbsp;激活设备管理器</a>
+</h3>
+<h3 class="topic">
+<a name="0f8kblfnfl567irjk4c1u10n7m">&nbsp;&nbsp;&nbsp;如果要卸载某些函数，需要先关闭设备管理器</a>
+</h3>
+<h3 class="topic">
+<a name="7u74jq81co1d66o0n3j32lqhj7">&nbsp;&nbsp;&nbsp;用于隐藏自身图标</a>
+</h3>
+<h3 class="topic">
+<a name="74oafettv63hdsmoi5qvi63aj0">&nbsp;&nbsp;私自关闭用户wifi，开启移动网络跑流量</a>
+</h3>
+<h3 class="topic">
+<a name="1r6s7cp9q7uva68640efop4aqb">&nbsp;病毒的激活条件</a>
+</h3>
+<h3 class="topic">
+<a name="20043naft12onnv53b95fe6om6">&nbsp;&nbsp;检测用户滑屏解锁</a>
+</h3>
+<h3 class="topic">
+<a name="6mrt2q0cq37bt18vqc94ieg6ev">&nbsp;&nbsp;检测用户开机启动</a>
+</h3>
+<h3 class="topic">
+<a name="5as8i0t4cokl9or2fdv8vaslap">&nbsp;&nbsp;检测用户网络变化启动</a>
+</h3>
+<h3 class="topic">
+<a name="4mgjn2j79sd15sua9t3ldf6d1s">&nbsp;病毒传播方式</a>
+</h3>
+<h3 class="topic">
+<a name="2ah1epp7a47b27n0etp37bbb7t">&nbsp;&nbsp;浏览器下载安装</a>
+</h3>
+<h3 class="topic">
+<a name="19fclq3s6iu9671t9kfr44uqcd">&nbsp;&nbsp;短信传播下载地址</a>
+</h3>
+<h3 class="topic">
+<a name="3g09516pa7dgip8ebikf4p3ibf">&nbsp;&nbsp;捆绑正常的APP，伪装广告诱导用户下载</a>
+</h3>
+<h3 class="topic">
+<a name="77lu9efmkq4ehlm3fhvgc046bg">&nbsp;&nbsp;二维码</a>
+</h3>
+<h3 class="topic">
+<a name="30fpumsqdu6qe6n0vbmvhjsrq9">&nbsp;&nbsp;&nbsp;二维码扫描，解析可能发生溢出，可以执行恶意代码</a>
+</h3>
+<h3 class="topic">
+<a name="5b9hiq3eof6vld397l7nn0otg6">&nbsp;&nbsp;&nbsp;只要能影响安卓中的文件就可能产生溢出，包括图片解析等</a>
+</h3>
+<h3 class="topic">
+<a name="1peiqs3nm38vkkk7o81otsm985">&nbsp;&nbsp;加壳、加密</a>
+</h3>
+<h3 class="topic">
+<a name="2201dg3jgf3eruq5l3uurovhpo">&nbsp;分析步骤</a>
+</h3>
+<h3 class="topic">
+<a name="241jtpramjovm5fkvrlm431uqb">&nbsp;&nbsp;上传到第三方及逆行分析</a>
+</h3>
+<h3 class="topic">
+<a name="4t48jn6dadr6qncl1814auroma">&nbsp;&nbsp;反编译apk</a>
+</h3>
+<h3 class="topic">
+<a name="1qchmfh7vkglfnfbash22rb2v7">&nbsp;&nbsp;将反编译得到的java代码导入ide分析</a>
+</h3>
+<h3 class="topic">
+<a name="3qg2p3m7e1jpuhpf770g14utr6">&nbsp;&nbsp;从清单文件开始分析</a>
+</h3>
+<h3 class="topic">
+<a name="5d2kr0rp714ljgd6cu3rt6du1h">&nbsp;&nbsp;定位关键api函数</a>
+</h3>
+<h3 class="topic">
+<a name="590bgcshogpf0kjaka1qka64pt">&nbsp;&nbsp;&nbsp;各种病毒功能对应的api</a>
+</h3>
+<h3 class="topic">
+<a name="21up83l14usvlucov5obhqu4f2">&nbsp;&nbsp;使用手机杀毒软件测试</a>
+</h3>
+<h3 class="topic">
+<a name="6n2odo5r4jm63bhkfl1kciej4e">&nbsp;&nbsp;抓包分析</a>
+</h3>
+<h3 class="topic">
+<a name="7u8hlehcb4ttnbal1ea4u474m8">&nbsp;&nbsp;有加密，则可以进行动态调试</a>
+</h3>
+<h3 class="topic">
+<a name="31cgdu216jhob74s0i0vsvalac">&nbsp;&nbsp;如果特征api很少，可能相关恶意文件隐藏在资源中，等待释放，需要分析资源文件</a>
+</h3>
+<h3 class="topic">
+<a name="72pq27onqdk1oeor3ds4nu3t0k">&nbsp;&nbsp;通过ida分析so文件</a>
+</h3>
+<h2 class="topic">
+<a name="06aqo6e7quf4jo9k5avafe5cuh">病毒分析实例</a>
+</h2>
+<h3 class="topic">
+<a name="4ferkiul80qrqkntldorficet1">&nbsp;病毒：免流服务器</a>
+</h3>
+<h3 class="topic">
+<a name="0h6o0k1dkmn69dv48jthm82705">&nbsp;&nbsp;使用adb关闭病毒app</a>
+</h3>
+<h3 class="topic">
+<a name="6uhruv6p9r2nooghdf7t73lscp">&nbsp;&nbsp;&nbsp;通过adb shell进入安卓shell界面，其中可以使用linux的指令</a>
+</h3>
+<h3 class="topic">
+<a name="614q5b35ggtfkpj7k2s2g461hk">&nbsp;&nbsp;&nbsp;ps</a>
+</h3>
+<h3 class="topic">
+<a name="3rptbv8p4foqq32nmb4lii03hf">&nbsp;&nbsp;&nbsp;&nbsp;查看进程，排除系统进程，找到恶意进程（com.android.stk3）</a>
+</h3>
+<h3 class="topic">
+<a name="3h9jq69cf41fjnsr2pj9l5i6gg">&nbsp;&nbsp;&nbsp;kill -9 pid</a>
+</h3>
+<h3 class="topic">
+<a name="00agls4rlfi1s07dg14bp8a3ur">&nbsp;&nbsp;&nbsp;&nbsp;根据pid关闭恶意进程</a>
+</h3>
+<h3 class="topic">
+<a name="4gvrv74qnhhpq1berapu3gjkjv">&nbsp;&nbsp;&nbsp;&nbsp;如果将本病毒恶意进程com.android.stk3关闭，病毒会重新开启一个新的com.android.stk3进程</a>
+</h3>
+<h3 class="topic">
+<a name="2q73hsamufpod6nacpvdsj7l8m">&nbsp;&nbsp;&nbsp;&nbsp;无法只通过关闭进程结束病毒进程</a>
+</h3>
+<h3 class="topic">
+<a name="6tqo0go3uitfjsuema62jlmi95">&nbsp;&nbsp;&nbsp;查看指定目录中查看新安装的文件，看是否有可以病毒文件</a>
+</h3>
+<h3 class="topic">
+<a name="0fpecr6fntqdro0eb7f1ichvm6">&nbsp;&nbsp;&nbsp;&nbsp;安卓中安装apk的可能位置</a>
+</h3>
+<h3 class="topic">
+<a name="50kmnfursstbn5csam1sshhjsb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;system/app</a>
+</h3>
+<h3 class="topic">
+<a name="449n99174qv80jl07u3lqbmnth">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;系统预装app，其中的app会自动重启</a>
+</h3>
+<h3 class="topic">
+<a name="2uqf4h9f02ka0ao0snkqa3n87i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dataapp/app</a>
+</h3>
+<h3 class="topic">
+<a name="1s9p2gcctaf9lub2ilqg59e9k3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用户安装app所在目录，存储完整app</a>
+</h3>
+<h3 class="topic">
+<a name="205ijcrb6u5mi1g4jbn4odb2qb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;data/data</a>
+</h3>
+<h3 class="topic">
+<a name="42d53psastmhcfkra7p5s6aq90">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;存贮app相关配置数据等</a>
+</h3>
+<h3 class="topic">
+<a name="3l6dtr7ni0rq0dhkp5t6oapd8o">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class83day070_files/314n361rmpstj8qhm28o8ivn44.png"></p>
+<h3 class="topic">
+<a name="6790mflqrcf9qjrqf699k55cm3">&nbsp;&nbsp;&nbsp;修改文件夹属性，删除病毒文件</a>
+</h3>
+<h3 class="topic">
+<a name="3arc5ddtj0bovvgls79ikgdfp2">&nbsp;&nbsp;&nbsp;&nbsp;修改文件夹时，老师笔记上的指令不能加,</a>
+</h3>
+<h3 class="topic">
+<a name="25raq9idungqema4rjok27r9go">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class83day070_files/2ef6f2vlv3n8dfmr6ki8prg1ou.png"></p>
+<h3 class="topic">
+<a name="73sk4m8dubvel5fe3bejklkm1b">&nbsp;&nbsp;&nbsp;具体指令查看 android病毒分析.pdf</a>
+</h3>
+<h3 class="topic">
+<a name="2pg4l1nqv0gscda1igo4kf7rpv">&nbsp;&nbsp;使用AndroidKiller分析病毒</a>
+</h3>
+<h3 class="topic">
+<a name="7nitbo63osn20lhq2ics6jp4bk">&nbsp;&nbsp;&nbsp;androidkiller中工程信息已经将部分清单文件中的信息分析出来，包括包名，权限等</a>
+</h3>
+<h3 class="topic">
+<a name="5734tskuqqcl13rf8vl602cp22">&nbsp;&nbsp;&nbsp;免流服务是将指定目录的文件写入到安卓设备中</a>
+</h3>
+<h3 class="topic">
+<a name="15bltfo3t9f3s81v17636jrbsn">&nbsp;&nbsp;&nbsp;&nbsp;可以通过夜神查看安卓指定目录下的文件</a>
+</h3>
+<h3 class="topic">
+<a name="2uglv2pnkhpkqp9ajtnvo552jt">&nbsp;&nbsp;&nbsp;如果有原代码中有按钮的回调函数，需要分析资源文件，保存app界面的目录是layout，可以在其中查看app界面的按钮资源及其对应的按钮回调函数名称</a>
+</h3>
+<h3 class="topic">
+<a name="7hani4a7p46b8gqhp6f28ak72s">&nbsp;&nbsp;&nbsp;病毒获得root权限，相当于获得了一个root权限的shell，可以一些执行指令</a>
+</h3>
+<h3 class="topic">
+<a name="2qlr1n7dhpjvf9nif3t8dauf01">&nbsp;&nbsp;&nbsp;从免流服务器中将其释放的恶意程序stk程序拖出来，进行分析</a>
+</h3>
+<h3 class="topic">
+<a name="5jg25561394cl5mhm98usd7qu4">&nbsp;&nbsp;&nbsp;在androidkiller的反编译工具的界面中 ctrl+f 可以在当前界面中搜索字符串</a>
+</h3>
+<h3 class="topic">
+<a name="6ava6a8flnojop1mi80vmu0sb9">&nbsp;&nbsp;&nbsp;服务的生命周期</a>
+</h3>
+<h3 class="topic">
+<a name="1l3et6634aa5slfrbg9e7gsjnl">&nbsp;&nbsp;&nbsp;&nbsp;启动服务型时会执行</a>
+</h3>
+<h3 class="topic">
+<a name="3osv15urierk2qdf7sv3k0obhs">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;onCreate</a>
+</h3>
+<h3 class="topic">
+<a name="4dssi8o3k311mkmmounjlfs3rc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;onStartcommand</a>
+</h3>
+<h3 class="topic">
+<a name="5pdn3v9djt60aglepaes46fhdc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;onStart</a>
+</h3>
+<h3 class="topic">
+<a name="7gp0m8vnlnqtja2fpv67jlee3u">&nbsp;&nbsp;&nbsp;&nbsp;关闭服务时会执行</a>
+</h3>
+<h3 class="topic">
+<a name="3nn6cob1egdnv0dvjug5ano1lj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;onDestory</a>
+</h3>
+<h3 class="topic">
+<a name="5erhqur2os6sa2pbhv1d433hut">&nbsp;&nbsp;&nbsp;注意结合服务的声明周期，分析一个服务过程，先分析onCreate，之后分析onStartcommand，再分析onStart</a>
+</h3>
+<h3 class="topic">
+<a name="6b1cmi2h2nmk7v4aqeshsilc36">&nbsp;&nbsp;&nbsp;&nbsp;同样的原理适用于所有存在声明周期的系统机制</a>
+</h3>
+<h3 class="topic">
+<a name="286m2gv77g3gt2v57i9lf3b0an">&nbsp;病毒：王者荣耀</a>
+</h3>
+<h3 class="topic">
+<a name="0dbc95gnnholanuhcg8gmf3ln5">&nbsp;&nbsp;使用androidkiller分析</a>
+</h3>
+<h3 class="topic">
+<a name="73ubouapjacmts0hnmv9nbnf48">&nbsp;&nbsp;&nbsp;查看工程概要信息</a>
+</h3>
+<h3 class="topic">
+<a name="20bkq1l28lhoh02fnm3aqou2hq">&nbsp;&nbsp;&nbsp;查看入口类</a>
+</h3>
+<h3 class="topic">
+<a name="2vivkvve92kui0t0rh7ti7kifg">&nbsp;&nbsp;&nbsp;&nbsp;查看onCreate</a>
+</h3>
+<h3 class="topic">
+<a name="1nf3k267cvdunkmejnl9qovsfu">&nbsp;&nbsp;&nbsp;&nbsp;如果流程不清晰，可以先每个函数看一下</a>
+</h3>
+<h3 class="topic">
+<a name="12q6ppoep48s7kbj9mljb7plk7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以关注函数名</a>
+</h3>
+<h3 class="topic">
+<a name="0ieg25nqt558osdjfrnv3ik9u4">&nbsp;&nbsp;&nbsp;如果病毒需要激活设备管理器，就会执行一个DeviceAdminReceiver类或其子类，并执行该类中的onEnabled函数</a>
+</h3>
+<h3 class="topic">
+<a name="38t8p5kjgk2ar5aofcaf076eob">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<h3 class="topic">
+<a name="0slrol35r1gfqal42bb38gkccn">&nbsp;&nbsp;&nbsp;该病毒是一个拼凑的病毒，即使存在相关加密解密类，最终的密码还是以明文保存在代码中</a>
+</h3>
+<h3 class="topic">
+<a name="1otluc3siehq3e1sebj030eig7">&nbsp;&nbsp;&nbsp;该病毒在删除的时候，需要将设备管理器取消激活</a>
+</h3>
+<h3 class="topic">
+<a name="65bvvf0ecar99unq03b99n00p1">&nbsp;病毒：秒抢红包</a>
+</h3>
+<h3 class="topic">
+<a name="1oekuqpmbl2sfpsni74fgr2cc4">&nbsp;&nbsp;使用androidkiller分析</a>
+</h3>
+<h3 class="topic">
+<a name="0md4o3csok8tj854lmp619ubs9">&nbsp;&nbsp;&nbsp;该病毒一上来就会要求激活设备管理器</a>
+</h3>
+<h3 class="topic">
+<a name="4db99kkspnujal99jfccdca2hc">&nbsp;&nbsp;&nbsp;&nbsp;问题：安卓的设备管理器是干什么的</a>
+</h3>
+<h3 class="topic">
+<a name="28031t59m7lhna32qpkl1lmu6b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;类似于windows管理器，用于管理、显示android设备硬件相关信息</a>
+</h3>
+<h3 class="topic">
+<a name="0s196rq4tcbvn6nsthgng27gv9">&nbsp;&nbsp;&nbsp;查看工程信息</a>
+</h3>
+<h3 class="topic">
+<a name="1iv2jrkdcv14afe0rujpa6o2r6">&nbsp;&nbsp;&nbsp;查看入口类</a>
+</h3>
+<h3 class="topic">
+<a name="0l9am10sna9hcoqn35n5o66vh4">&nbsp;&nbsp;&nbsp;&nbsp;按照程序的执行流程看每一个函数</a>
+</h3>
+<h3 class="topic">
+<a name="48f4j94kj1vl6r83jdfvqtqasa">&nbsp;&nbsp;&nbsp;&nbsp;如果代码中引用了某个类，就需要到对应类中去查看信息</a>
+</h3>
+<h3 class="topic">
+<a name="22548r0dpb5u9bhbvvdopje02r">&nbsp;&nbsp;&nbsp;该病毒涉及双层密码</a>
+</h3>
+<h3 class="topic">
+<a name="49481lejhnmkbut4hujfq8rbc0">&nbsp;&nbsp;&nbsp;&nbsp;第一层是锁机密码</a>
+</h3>
+<h3 class="topic">
+<a name="64325os6qvior08l1sgiioi8pp">&nbsp;&nbsp;&nbsp;&nbsp;第二层密码是从xml文件中获取的</a>
+</h3>
+<h3 class="topic">
+<a name="73sltbmdfmfo7qfpdkfvnvj430">&nbsp;&nbsp;&nbsp;可以使用多个反编译工具尝试反编译代码</a>
+</h3>
+<h3 class="topic">
+<a name="31d6k3if94mf64gdofr2kh58tj">&nbsp;&nbsp;&nbsp;找到病毒软件的主界面，搜索equals函数</a>
+</h3>
+<h3 class="topic">
+<a name="5kh3cugdrhiampa8jtritksn9q">&nbsp;&nbsp;&nbsp;在安装目录中存在xml文件，判断密码是否正确的equals函数会从该xml文件中取出加密后的密码字符串</a>
+</h3>
+<h3 class="topic">
+<a name="34bmrjaj0top0vo4qcmqldlj9a">&nbsp;&nbsp;&nbsp;&nbsp;getSharedPreferences函数用于根据xml文件名（Flowers）取得xml文件的编辑对象</a>
+</h3>
+<h3 class="topic">
+<a name="6fdpbobdl7ck5ooinmkmccmonf">&nbsp;&nbsp;&nbsp;&nbsp;问题的关键是找到保存密码的XML文件</a>
+</h3>
+<h3 class="topic">
+<a name="3qtrkf3i9jht1m1inh156rdfoo">&nbsp;&nbsp;&nbsp;&nbsp;getSharedPreferences函数是从固定路径取得xml文件，路径为：当前程序安装目录下的 shared_prefs 文件夹</a>
+</h3>
+<h3 class="topic">
+<a name="1161stignnhn3i86cndq7c1d5c">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class83day070_files/7hgc87srscapqq7eibktu0s3j9.png"></p>
+<h3 class="topic">
+<a name="4h6lf3l2c1he28b7q3phm0h1up">&nbsp;&nbsp;&nbsp;&nbsp;如何找到xml文件是关键，这涉及到android开发知识</a>
+</h3>
+<h3 class="topic">
+<a name="6t3k8ka9ei7utqv4j2j35r3laj">&nbsp;&nbsp;&nbsp;得到加密后的密码字符串，可以对解密算法进行分析，进行解密后得到密钥</a>
+</h3>
+<h3 class="topic">
+<a name="1nfs1bdtl1fcjtqbh1ldtstm96">&nbsp;&nbsp;&nbsp;页可以在smali中解密函数返回的位置插入日志输出，输出解密完成的密钥，&#13;
+在app中之后点击解密按钮，观察日志信息，得到密钥</a>
+</h3>
+<h3 class="topic">
+<a name="644o10qbrm330hqlmo8d5umue8">&nbsp;&nbsp;该病毒也可以通过smali注入破解</a>
+</h3>
+<h3 class="topic">
+<a name="49sdht0vgn1gu0lt60g02os53q">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class83day070_files/28bflpfhdqrkqm82fgrbb6t7ls.png"></p>
+<h2 class="topic">
+<a name="61svkl6evshhjctoouhq8hggal">smali注入</a>
+</h2>
+<h3 class="topic">
+<a name="28jac3tvg5ng5lfp84i3aoqu3q">&nbsp;如果确定关键点，可以在samli代码中插入日志，进行判断</a>
+</h3>
+<h3 class="topic">
+<a name="7h9qshkh95dkmsltt5429f31tu">&nbsp;比如在解密函数中插入日志，输出解密函数的返回值，可以获得解密后的密码</a>
+</h3>
+<h3 class="topic">
+<a name="22mqrmnckaobecadr8r2k1lgpv">&nbsp;编译的时候会出错</a>
+</h3>
+<h3 class="topic">
+<a name="1i76igc44lusn47ntmomv435q5">&nbsp;&nbsp;比如处理资源失败</a>
+</h3>
+<h3 class="topic">
+<a name="4j19k9gcsl896p6g3ii8rk1blr">&nbsp;&nbsp;将图片放入020editor，发现该图片是jpg格式的，但是代码是通过png方式解析该图片，可以通过图片编辑器，将该图片另存为png格式的，可以解决该错误</a>
+</h3>
+<h3 class="topic">
+<a name="23oomrap7bfih8spk1u66ch3ji">&nbsp;查看app输出的日志可以通过androidkiller，如果androidkiller不能遍历到进程，不能输出日志，可以通过monitor查看指定进程的日志</a>
+</h3>
+<h2 class="topic">
+<a name="2h5n3gut2e09o8gdjeodfcajjs">安卓病毒分析经验</a>
+</h2>
+<h3 class="topic">
+<a name="3q204v7vs78hto7h34a3c7bcus">&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class83day070_files/7o3hua6uhfj4hnecjpaffnghrc.png"></p>
+<h3 class="topic">
+<a name="5jt93enjshp4aceqrjp6fn9obd">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class83day070_files/1odq7s3eb92shvpcbch8rtn0q5.png"></p>
+<h3 class="topic">
+<a name="6lrtbe99rabnj2nev2rlebmk0g">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class83day070_files/7jg8o9l8ok39e692n4hgffjrb9.png"></p>
+<h3 class="topic">
+<a name="1o5jgo2jj3m79vo2502r55ll70">&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class83day070_files/51k4eaddhc2pjqacogvb37m9lp.png"></p>
+<h3 class="topic">
+<a name="5mutt8h5pn5qv5dqk3qk7qfd61">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class83day070_files/4e1br0j62njoknohpg25ll8dts.png"></p>
+<h3 class="topic">
+<a name="0gkacf9enb0onfgt6n58ksk3et">&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class83day070_files/0dhsd6d7mm90c1t1issc7hn2aj.png"></p>
+<h3 class="topic">
+<a name="39h865a3gr5ksnkkjhiemj57dg">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class83day070_files/3i1g58km5nqa3muivmbv4ens86.png"></p>
+<h3 class="topic">
+<a name="5sfe5gsmnffh9qq2pkqjbd5gol">&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class83day070_files/2m7u6aplrq1a5etlalbgnl2iuq.png"></p>
+<h3 class="topic">
+<a name="0k26jg7jvjvq8qa6ko269mbhm5">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class83day070_files/1tstf1l30ej1ahdr5pgeqavnv0.png"></p>
+<h3 class="topic">
+<a name="05e48il2pfk9o9fj50p5l3lne7">&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class83day070_files/0s282k215k5kuod7nc1emq2r3t.png"></p>
+<h3 class="topic">
+<a name="10vajoj7t2n23fnluh82qggrll">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class83day070_files/7v75d0fnpksvks4rt14q9t0sub.png"></p>
+<h3 class="topic">
+<a name="7imbn8dpv31g3ca544lvb9sf6a">&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class83day070_files/7e6ouduphgdus18nhk315m5b03.png"></p>
+<h3 class="topic">
+<a name="6ibs6s1059k0apg0p69ilei55c">&nbsp;&nbsp;修改图片格式可以通过图片-》右键-》编辑 在画图软件中将图片另存为其他格式</a>
+</h3>
+<h3 class="topic">
+<a name="20uqmrc67sdo8lk3jc0caf9dgq">&nbsp;如果有界面，界面上有按钮，按钮上有文字，文字可以查询清单文件，可以找到按钮的响应函数</a>
+</h3>
+</body>
+</html>

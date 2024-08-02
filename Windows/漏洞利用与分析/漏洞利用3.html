@@ -1,0 +1,747 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>class69day0605（漏洞利用第三天）</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="31ok07r2g1t9jukod03h0ib0b4">class69day0605（漏洞利用第三天）</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A83_files/images/class69day0605%EF%BC%88%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8%E7%AC%AC%E4%B8%89%E5%A4%A9%EF%BC%89.jpg"></div>
+<h2 class="topic">
+<a name="3hbpc40a2f2hdd5hth2olqovm6">first_cve</a>
+</h2>
+<h3 class="topic">
+<a name="4sqq98oqucnmb8qrm25b751hnl">&nbsp;可以从EXPLOIT-DB网站下载漏洞执行环境和存在漏洞的软件，从而写漏洞报告</a>
+</h3>
+<h2 class="topic">
+<a name="7b277uc0j2knogj789qr4nvmcv">远程溢出攻击</a>
+</h2>
+<h3 class="topic">
+<a name="4h1oob46kmmm7e4ei80l6d1750">&nbsp;PCMan FTP Server</a>
+</h3>
+<h3 class="topic">
+<a name="5262t946dpf4ahe7hir9a79p4g">&nbsp;&nbsp;在用户登陆指令USER处存在缓冲区溢出漏洞</a>
+</h3>
+<h2 class="topic">
+<a name="7ibj43kg6nrqin5p6jfov8qr5c">攻击步骤</a>
+</h2>
+<h3 class="topic">
+<a name="2e19fbhmotucdtlnstp084qodm">&nbsp;基于win7的远程溢出漏洞利用</a>
+</h3>
+<h3 class="topic">
+<a name="3ntmfemkr2u5jolg35v0ilm8b5">&nbsp;启动ftp服务器软件，得到服务器ip地址</a>
+</h3>
+<h3 class="topic">
+<a name="42prvs1e09h27nh714mer1eghf">&nbsp;使用代码与远程服务器进行通讯</a>
+</h3>
+<h3 class="topic">
+<a name="0rcc6quu26v05ftpf0ojuom9bi">&nbsp;&nbsp;代码在书上</a>
+</h3>
+<h3 class="topic">
+<a name="07rp41m0176bak62ku8ke5vb8f">&nbsp;使用user指令发送顺序字符串，进行溢出</a>
+</h3>
+<h3 class="topic">
+<a name="6prmhmeb4o8d1vcedon1ld0ojh">&nbsp;&nbsp;秘籍： windbg-》 附加ftp服务器进程-》命令行.load pykd.pyd 为windbg添加python执行环境 执行mona脚本 生成随机字符串</a>
+</h3>
+<h3 class="topic">
+<a name="6rahausj8odqmmn7skgic72qv1">&nbsp;&nbsp;&nbsp;!py mona 3000</a>
+</h3>
+<h3 class="topic">
+<a name="6cf8mlops0lp9nq8gqolq92c8g">&nbsp;发送消息后，使用附加了ftp服务器进程的windbg查看服务器被溢出的异常</a>
+</h3>
+<h3 class="topic">
+<a name="161rjncif2li4d66pq8lk2mo93">&nbsp;&nbsp;得到溢出点的内容，通过mona指令，自动计算出溢出点在随机字符串中的偏移</a>
+</h3>
+<h3 class="topic">
+<a name="3ed60e0ok2a3njbdkvveoc8s6e">&nbsp;创建一个字符数组，数组长度为溢出点偏移的长度，之后在后面拼接"\x80\x80\x80\x80"测试溢出点是否正确</a>
+</h3>
+<h3 class="topic">
+<a name="0u0bhbh6dmikk6b5bc823kaf1m">&nbsp;准备jm pesp	</a>
+</h3>
+<h3 class="topic">
+<a name="4rrv4r4a6c3kn1r1r9orpgdvo7">&nbsp;&nbsp;.load pykd.pyd</a>
+</h3>
+<h3 class="topic">
+<a name="707l242qumtlc332clrpd8oct3">&nbsp;&nbsp;&nbsp;需要加载python的执行环境</a>
+</h3>
+<h3 class="topic">
+<a name="70k80pm135m687bi7tm6c83upf">&nbsp;&nbsp;!py mona -jmp -r esp -m "kernel32.dll"</a>
+</h3>
+<h3 class="topic">
+<a name="552lliigiqj7932e4j2og1j40d">&nbsp;&nbsp;&nbsp;找到kernel32中的jmp esp指令</a>
+</h3>
+<h3 class="topic">
+<a name="5mabe5s3up7bv40fs066equ898">&nbsp;给jmp esp指令上下断点，且将该指令的地址覆盖到溢出点，对程序进行溢出操作，看程序是否会执行该指令</a>
+</h3>
+<h3 class="topic">
+<a name="439s1rc09qfloeoennfpp9mm5d">&nbsp;&nbsp;给jmp esp指令下断点</a>
+</h3>
+<h3 class="topic">
+<a name="3k5b79l6j1c7grg3iiq6gj1i0t">&nbsp;&nbsp;&nbsp;bp jmp esp 指令的地址</a>
+</h3>
+<h3 class="topic">
+<a name="6uic1d8rhh3i56a29aamv4ble2">&nbsp;&nbsp;bl</a>
+</h3>
+<h3 class="topic">
+<a name="193fr453bebfi1gnk903dtdm62">&nbsp;&nbsp;&nbsp;断点是否设置成功</a>
+</h3>
+<h3 class="topic">
+<a name="7bplf1fi1grqd3c80hh2sl2ta4">&nbsp;加密处理shellcode，避免否产生截断</a>
+</h3>
+<h3 class="topic">
+<a name="1k7bo3n1kd6nqmrjc5qadds5h6">&nbsp;构造shellcode，进行溢出攻击</a>
+</h3>
+<h3 class="topic">
+<a name="0nr7dob1gp347es6im28davn5m">&nbsp;&nbsp;占位字符+jmp esp地址+滑板指令若干（nop）+decode+加密后的shellcode</a>
+</h3>
+<h2 class="topic">
+<a name="0ir1cc0h8glt0dm53lrvmmp3dp">暴雷漏洞（浏览器漏洞）（ie8利用需要过保护）</a>
+</h2>
+<h3 class="topic">
+<a name="6s5j7nsvi043o3pa8nen7andvp">&nbsp;MS12-043</a>
+</h3>
+<h3 class="topic">
+<a name="47cdeu6s242i99nbhi8rhq48f1">&nbsp;影响Microsoft XML Core Services 3.0 4.0 5.0 6.0</a>
+</h3>
+<h3 class="topic">
+<a name="3kq90bp6hhgb5u6k6ddu78fg5n">&nbsp;该漏洞源于访问未初始化内存位置</a>
+</h3>
+<h3 class="topic">
+<a name="6orast2jh84959enloo869tjmh">&nbsp;漏洞触发场景</a>
+</h3>
+<h3 class="topic">
+<a name="1h6on856q9ahb5egpiton1n8fa">&nbsp;&nbsp;与三级指针相关</a>
+</h3>
+<h3 class="topic">
+<a name="1tduvlgse489k2b73k2jenckj4">&nbsp;&nbsp;&nbsp;mov eax,dword ptr[ebp-14]&#13;
+mov ecx,dword ptr[eax]&#13;
+call dword ptr[ecx+18h]</a>
+</h3>
+<h3 class="topic">
+<a name="66pslv732e8qhet7rmqlrunpii">&nbsp;&nbsp;无从下手时，先把第一步弄清楚，开始一个坏开始</a>
+</h3>
+<h3 class="topic">
+<a name="2bdu7jeo7makpn97ahaidq578c">&nbsp;&nbsp;如果一片对于漏洞利用方法没有概念与思路，说明缺少相关基础知识，需要补充相关知识</a>
+</h3>
+<h3 class="topic">
+<a name="6s88u2ahjqt5vfb79ue6eoilv6">&nbsp;html的poc</a>
+</h3>
+<h3 class="topic">
+<a name="6006m8fmksgd3lm7jlkpoa4mh8">&nbsp;&nbsp;html头一般放网址标题 图标等信息 网页编码方式 网页描述等</a>
+</h3>
+<h3 class="topic">
+<a name="6j1g8nhvbrfbh9b7jndas0igka">&nbsp;&nbsp;html的body中描述所有网页看到的内容</a>
+</h3>
+<h3 class="topic">
+<a name="4k5vog09i2d8l5542nq6p6oncr">&nbsp;&nbsp;&nbsp;classid表示调用xml核心服务3.0，该字符串一般不会变</a>
+</h3>
+<h3 class="topic">
+<a name="10ldik5kspj10re19b3lf711l7">&nbsp;&nbsp;&nbsp;document 代表 body整体</a>
+</h3>
+<h3 class="topic">
+<a name="4jm1vnrvc53no17b4vlgu33ut7">&nbsp;ie6浏览器打开poc，导致ie程序崩溃，说明存在该漏洞</a>
+</h3>
+<h3 class="topic">
+<a name="4qf2e3m1r0lqfv5o5lvidg938q">&nbsp;影响栈空间（即[ebp-14]）的代码</a>
+</h3>
+<h3 class="topic">
+<a name="3hvk509d59fgun4ubsu0it6uqg">&nbsp;&nbsp;通过构造网页的图片元素的路径，将路径写入内存，产生溢出，此时定义对象，对象初始化的指令会访问未初始化的内存</a>
+</h3>
+<h3 class="topic">
+<a name="2ahqojsi4j3qnibnu2n3j01lq2">&nbsp;使用windbg附加 ie6  允许附加的内容</a>
+</h3>
+<h3 class="topic">
+<a name="2hl885qkn3n44f2h053jm6sfc0">&nbsp;&nbsp;查看esp的内容db esp</a>
+</h3>
+<h3 class="topic">
+<a name="1ka64vtqru4tsgpcieurv2soh2">&nbsp;使用归并法</a>
+</h3>
+<h3 class="topic">
+<a name="52aoc8g6laqfe4vtbe81h9bd43">&nbsp;&nbsp;将多个问题舍弃限制条件，转化为一个关键问题进行解决，在逐步将限制条件加上，尝试解决</a>
+</h3>
+<h3 class="topic">
+<a name="5hm71phg8e0nmp40u5h2bpfnul">&nbsp;堆喷射：将指定地址处改为指定内容</a>
+</h3>
+<h3 class="topic">
+<a name="05eonmblsc5qa77dav0uh0edkd">&nbsp;&nbsp;使用堆喷射将指定地址的内存覆盖为指定内容</a>
+</h3>
+<h3 class="topic">
+<a name="3hee5nnsekgp0b98n8pq86fpg6">&nbsp;&nbsp;用于堆喷的的内存片</a>
+</h3>
+<h3 class="topic">
+<a name="7ho6n37rkvf230j4odn96ju3bn">&nbsp;bste是js的字符串格式</a>
+</h3>
+<h3 class="topic">
+<a name="6dd8qglk14lhb95mn5rd1dhv3a">&nbsp;0c0c0c0c指令</a>
+</h3>
+<h3 class="topic">
+<a name="5v8he12mt5vnurrgdv4tje994c">&nbsp;&nbsp;使用堆喷射将</a>
+</h3>
+<h3 class="topic">
+<a name="4ra0enn54ufqk3r8ar8bcjvdfm">&nbsp;&nbsp;&nbsp;使用nop的滑板指令</a>
+</h3>
+<h3 class="topic">
+<a name="1aac353u5od6d3c4qqqumq4g35">&nbsp;分块喷射</a>
+</h3>
+<h3 class="topic">
+<a name="3t8ivvjrbdp758ejd63d5e8rar">&nbsp;&nbsp;使用理想连续的虚拟内存空间</a>
+</h3>
+<h3 class="topic">
+<a name="6aqc3h0b6na85m7v1ecknov6s9">&nbsp;&nbsp;构造一整块的特殊内存数据（常为nop+shellcode）然后将该一整块数据多次写入内存，保证每次喷射的结果都是一整块精心构造的内容</a>
+</h3>
+<h2 class="topic">
+<a name="4lf2me78fa5taudi8ut706fis3">ie6中没有dep，所以可以使用上面的方式利用</a>
+</h2>
+<h2 class="topic">
+<a name="694h32r36s3psn5ltoj5s99ukf">ie8默认开启了dep，需要过dep</a>
+</h2>
+<h3 class="topic">
+<a name="2b3bv08rdhubiav91prubmmha9">&nbsp;dep：数据执行保护</a>
+</h3>
+<h3 class="topic">
+<a name="3ef5r2tljj1s76b6atfptqrgi5">&nbsp;源于windows xp sp2</a>
+</h3>
+<h3 class="topic">
+<a name="4vp0nr5ac2tq8at4fm7u05m49v">&nbsp;&nbsp;但是至今在windows系统中不能完全开启dep，否则部分软件不能运行</a>
+</h3>
+<h3 class="topic">
+<a name="164v34j6nvced7hjjvp61eifs2">&nbsp;原理：通过设置内存页的NX / XD标志，防止堆空间、栈空间的代码执行</a>
+</h3>
+<h3 class="topic">
+<a name="18k89s089q62le1p08flgj1uuj">&nbsp;&nbsp;amd最先使用此类硬件防病毒技术， 之后有intel的禁用执行位技术，原理均相同</a>
+</h3>
+<h3 class="topic">
+<a name="4dqfchrnsgk54bve10p69j2khh">&nbsp;dep选项</a>
+</h3>
+<h3 class="topic">
+<a name="25vkk07vsf43g0uqu1dddtn7c1">&nbsp;&nbsp;option</a>
+</h3>
+<h3 class="topic">
+<a name="7c1770qujetbhcjgenvcsdkj1t">&nbsp;&nbsp;&nbsp;指定应用程序开启DEP</a>
+</h3>
+<h3 class="topic">
+<a name="6r48fs2qkd7bugiiged9rllvft">&nbsp;&nbsp;optout</a>
+</h3>
+<h3 class="topic">
+<a name="085svhfkkej5ngc5rdc4e8ctkt">&nbsp;&nbsp;&nbsp;win10一般使用该选项，排除列表程序外的所有程序和服务启动edp</a>
+</h3>
+<h3 class="topic">
+<a name="7aktod1oun6oaojen9gkos76lf">&nbsp;&nbsp;alwayson</a>
+</h3>
+<h3 class="topic">
+<a name="33jmh9fnv6g44s9764pplvuve8">&nbsp;&nbsp;&nbsp;完全开启dep</a>
+</h3>
+<h3 class="topic">
+<a name="3jb876esnv0q7n1ast43apofj0">&nbsp;&nbsp;alwaysoff</a>
+</h3>
+<h3 class="topic">
+<a name="5093ko33uicm3po6rlas2maeof">&nbsp;&nbsp;&nbsp;完全关闭dep</a>
+</h3>
+<h3 class="topic">
+<a name="70ltrctb0dg6n646o45tagmm5s">&nbsp;过dep的技术</a>
+</h3>
+<h3 class="topic">
+<a name="7sdoeih9r9dbr8jhbe8aqodp5p">&nbsp;&nbsp;借助第三方应用与组件（此类应用与组件没有开启dep），结合堆喷射，实现shellcode的布局与执行</a>
+</h3>
+<h3 class="topic">
+<a name="6kapok27m1m9089rghh1diq0ca">&nbsp;&nbsp;&nbsp;其申请的内存空间具有可读可写可执行的特点</a>
+</h3>
+<h3 class="topic">
+<a name="64qt0kd614h37jitgkvkltt8li">&nbsp;&nbsp;代码重用</a>
+</h3>
+<h3 class="topic">
+<a name="66ppvuobp8ltsji10niv4ldhel">&nbsp;&nbsp;&nbsp;调用指定api将不可执行的内存页设置为可执行，或者将dep关闭</a>
+</h3>
+<h3 class="topic">
+<a name="5ccm23ecu56jt90f4csca3vjcg">&nbsp;&nbsp;&nbsp;&nbsp;存在一系列api可以达到该目的，下面仅仅举一个例子</a>
+</h3>
+<h3 class="topic">
+<a name="6iin5of2v5t71bpv9ik9b1058c">&nbsp;&nbsp;&nbsp;执行VirtualProtect</a>
+</h3>
+<h3 class="topic">
+<a name="5s36jck4j89akb3isdit8daker">&nbsp;&nbsp;&nbsp;&nbsp;问题是当前还是需要执行代码 即执行VirtualProtect函数修改内存属性为可执行</a>
+</h3>
+<h3 class="topic">
+<a name="2sbb26dhg76egnok515vobth27">&nbsp;&nbsp;&nbsp;&nbsp;执行数据的方法是在栈空间中保存系统领空的地址，该系统领空地址保存着指令，一般指令结构例如 mov eax,ebx  ret,当cpu从被溢出的函数返回之后，eip被设置为栈顶的系统领空地址，执行完一条系统领空指令之后，会ret返回，此时取出栈中下一个系统领空地址，继续执行一条指令，以此，通过不断在栈空间和系统指令空间进行跳转，从而逐条执行指令</a>
+</h3>
+<h3 class="topic">
+<a name="3turbfpe56sk4qt7rm4u9hl763">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;也称：ROP（返回导向编程）</a>
+</h3>
+<h3 class="topic">
+<a name="05951llvdl86kd4jjo7pmre7ug">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;针对复杂的操作</a>
+</h3>
+<h3 class="topic">
+<a name="74vjo3627va8b725ng9e3rg2f8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;也称：Ret2Libc（返回到库函数执行）</a>
+</h3>
+<h3 class="topic">
+<a name="3ukn504b6ng0t48d3bvi2bqjlc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return to lib</a>
+</h3>
+<h3 class="topic">
+<a name="32ejal0skc925igou953k9foe7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;针对简单的操作</a>
+</h3>
+<h3 class="topic">
+<a name="6bviacue9d509252bl9va1lrnp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ret2Libc是ROP的一个子集</a>
+</h3>
+<h3 class="topic">
+<a name="32en6hadnhskj3omgq6mjkjr67">&nbsp;&nbsp;&nbsp;&nbsp;仅需要c语言库，可以拼接出当前程序的所有执行逻辑</a>
+</h3>
+<h3 class="topic">
+<a name="6se8ss5mjdcss3a6arv92tmu9i">&nbsp;&nbsp;打开一个文件，创建文件映射，向文件映射内存空间中写入需要执行的恶意代码，使程序执行流程转移到文件映射内存空间执行恶意代码，可以而绕过dep</a>
+</h3>
+<h3 class="topic">
+<a name="0mf6fri71h8eo92o54io147t2g">&nbsp;如何控制栈空间与堆空间的转换</a>
+</h3>
+<h3 class="topic">
+<a name="0nak7dp237ne30vl06ekmlmt1c">&nbsp;&nbsp;XCHG EAX,ESP&#13;
+RETN</a>
+</h3>
+<h3 class="topic">
+<a name="77l2kulgag86lv2u5n8dm7tdd0">&nbsp;&nbsp;将指定的堆空间变成栈空间</a>
+</h3>
+<h3 class="topic">
+<a name="0qm3bvq0qpdgcqop1qt8b8dst2">&nbsp;如何精准更改堆喷射结果</a>
+</h3>
+<h3 class="topic">
+<a name="00q1tbnivnaoa1h8lfu6km9svk">&nbsp;&nbsp;精准堆喷射</a>
+</h3>
+<h3 class="topic">
+<a name="43bc6rri38men8bqsbij4ei28i">&nbsp;&nbsp;&nbsp;windows系统管理内存的单位是内存分页，是4kb是0x1000</a>
+</h3>
+<h3 class="topic">
+<a name="2t0cil921d4qthem3hh8sftmae">&nbsp;&nbsp;&nbsp;则申请的内存空间的基地址一定是0x1000的倍数，所以在内存分页的指定偏移处写上指定指令，然后以整个内存分页为单位填充堆空间，则可以将指定堆空间地址处填充为指定指令，(例如将0c0c0c0c地址处修改为指定指令）</a>
+</h3>
+<h3 class="topic">
+<a name="3ifn2l30vr61fqghe7a93cmmm2">&nbsp;&nbsp;&nbsp;需要进行偏移的计算，存在某公式</a>
+</h3>
+<h3 class="topic">
+<a name="5m245pi0uqnuuu8k5gmehtu7u4">&nbsp;&nbsp;&nbsp;具体实现原理可以看漏洞分析报告</a>
+</h3>
+<h3 class="topic">
+<a name="6eif2nqlb909o6l9gjuugk3a93">&nbsp;ie8存在防止堆喷射的机制，需要突破</a>
+</h3>
+<h3 class="topic">
+<a name="0kl3gil9kdtbfls27ohvtg265n">&nbsp;&nbsp;使用js的字符串自己的函数去不停的申请堆空间，而不是使用用户的代码申请堆空间，即可突破防御机制</a>
+</h3>
+<h3 class="topic">
+<a name="24nuto7o406h5ifl1ol4asuc5g">&nbsp;使用windbug附加ie8进程(注意附加主进程)，测试精准堆喷射</a>
+</h3>
+<h3 class="topic">
+<a name="3n968vqjcssppqq82lcu8eq6i7">&nbsp;&nbsp;db 0c0c0c0c</a>
+</h3>
+<h3 class="topic">
+<a name="1munnt6645bsu42rdm1kgktcfp">&nbsp;&nbsp;&nbsp;查看内存0c0c0c0c处的内容</a>
+</h3>
+<h3 class="topic">
+<a name="789e8j5i4s86oi6bf3j9bdi6m6">&nbsp;&nbsp;是否堆喷成功存在概率因素</a>
+</h3>
+<h3 class="topic">
+<a name="0j7hrtj6mgnr61dficednr8ona">&nbsp;&nbsp;&nbsp;存在堆风水，即存在随机因素导致能否成功精准堆喷射</a>
+</h3>
+<h3 class="topic">
+<a name="421cin9bodgn7o967di20d12dv">&nbsp;构造rop链</a>
+</h3>
+<h3 class="topic">
+<a name="2tce96k1la5id5ieioh6f3p9df">&nbsp;&nbsp;需要使用xchg eax，esp</a>
+</h3>
+<h2 class="topic">
+<a name="3g1kt64svhunn4odltdgmv8r5g">从系统领空得到指令块，如果有随机基址（aslr）怎么办	</a>
+</h2>
+<h3 class="topic">
+<a name="3unnmmfb5o910u5m5f5iel3gfv">&nbsp;四种绕过方式</a>
+</h3>
+<h3 class="topic">
+<a name="1dal3sp34ql30dbtgstlcgf8kb">&nbsp;&nbsp;找到没有开启随机基址的模块</a>
+</h3>
+<h3 class="topic">
+<a name="3l2ok9aj29bn4cfm775grdrchi">&nbsp;&nbsp;&nbsp;使用该模块中的指令构造Ret2Libc链</a>
+</h3>
+<h3 class="topic">
+<a name="3amkrckfs8sflgn9cspp7abnmi">&nbsp;&nbsp;使用堆喷射</a>
+</h3>
+<h3 class="topic">
+<a name="1f0458k7g8s49ug41mpkt58o4l">&nbsp;&nbsp;&nbsp;可以在任意地址保存任意内容</a>
+</h3>
+<h3 class="topic">
+<a name="5hirutqd7rr47j91e8bs0384mo">&nbsp;&nbsp;利用操作系统的固定点，3环中部分函数的地址是不变的</a>
+</h3>
+<h3 class="topic">
+<a name="026tg3ftlecgpvi485lvsjnegv">&nbsp;&nbsp;随机基址，只能随机imagebase，rva不是随机的，intel的cpu保存数据使用小端，即高位数据存放在高地址内存，通过淹没rva  即只修改rva，不修改基址，因为基址是随机生成的，就仍然可以访问到指定内存位置</a>
+</h3>
+<h3 class="topic">
+<a name="0867nrpq0ggb5rnf5cllh06beo">&nbsp;&nbsp;&nbsp;memcpy函数的返回值为拷贝到目标数据保存的地址，即拷贝数据的目的地址</a>
+</h3>
+<h3 class="topic">
+<a name="7752usmc21v8pqpc73kl8oia08">&nbsp;&nbsp;&nbsp;&nbsp;使用静态库编译程序，可以增加可以选用的指跳板令</a>
+</h3>
+<h3 class="topic">
+<a name="1o0v3ig19sajjfrnu0049m0om2">&nbsp;&nbsp;&nbsp;淹没被溢出的返回地址的rva 即地址的后两个字节被淹没，而不修改基址，从而可以进行跳转到指定位置</a>
+</h3>
+<h3 class="topic">
+<a name="40gl5chqsi10b3q1r75lo0rket">&nbsp;&nbsp;&nbsp;保留imagebase 淹没rva</a>
+</h3>
+<h2 class="topic">
+<a name="09rfgk6jj4cmefnj61nd4f6r6c">暴雷漏洞与堆喷射</a>
+</h2>
+<h3 class="topic">
+<a href="https://www.jianshu.com/p/92221e7a50ce" name="6ocaaa9rl46n7sktjki3v9de7a">&nbsp;https://bbs.pediy.com/thread-219222.htm</a>
+</h3>
+<h3 class="topic">
+<a href="https://bbs.pediy.com/thread-215974.htm" name="1tp8bk2rv3d4m8c0u0hll9o149">&nbsp;https://bbs.pediy.com/thread-215974.htm</a>
+</h3>
+<h3 class="topic">
+<a href="https://zhuanlan.zhihu.com/p/50891465" name="2h9f7uuvfgnl0a3jas6eutitnb">&nbsp;https://zhuanlan.zhihu.com/p/50891465</a>
+</h3>
+<h2 class="topic">
+<a name="7ifa2962su2em6tram91kn1r95">ie浏览器漏洞简史</a>
+</h2>
+<h3 class="topic">
+<a name="6vmqd7kffecs066jhpoec3n5p6">&nbsp;http://security.zhiding.cn/security_zone/2016/0121/3071931.shtml</a>
+</h3>
+<h3 class="topic">
+<a name="58ndqaftfm4hji8j89iguavt9s">&nbsp;微软从Windows XP SP2开始提供DEP的支持。DEP全称是Data Execution Prevention，可以分为硬件的DEP和软件的DEP。但是目的都是一致的。阻止数据页上代码执行。（图1.2.3）</a>
+</h3>
+<h3 class="topic">
+<a name="4snuttljhb1r5q5dhen8qr3en7">&nbsp;微软在VS2008和之后的编译器加入了一个编译选项GS。也就是Security Cookie也可以称为Stack Cookie。</a>
+</h3>
+<h3 class="topic">
+<a name="271g8i97agk0no0ajfes2e52ve">&nbsp;&nbsp;堆溢出中也有相类似的情况，即Header Cookie</a>
+</h3>
+<h3 class="topic">
+<a name="1ul4q4sreru25avk6srd1rcjih">&nbsp;需要说明的是64位的windows系统SEH已经不是放在栈中了。想要通过栈溢出覆盖异常处理例程来实现漏洞利用已经是不可能的了。</a>
+</h3>
+<h2 class="topic">
+<a name="0p98ic570u669scrfspgm81jdd">如何开始分析一个漏洞</a>
+</h2>
+<h3 class="topic">
+<a name="7h9728reeap47dm31tfg326536">&nbsp;搜索poc，分析漏洞的复现</a>
+</h3>
+<h2 class="topic">
+<a name="1mm0i2pv081avgkvfra9mj5jv1">课程中没有的</a>
+</h2>
+<h3 class="topic">
+<a name="3bcje4rr7psd666356001336pm">&nbsp;虚拟机逃逸</a>
+</h3>
+<h3 class="topic">
+<a name="715a4vfabt1blgkmm1699brem8">&nbsp;双层虚拟机逃逸</a>
+</h3>
+<h2 class="topic">
+<a name="4vgupl1kbqlf64pd3r34t2hkfh">其他</a>
+</h2>
+<h3 class="topic">
+<a name="47im30ernc00nnn3ia6tk9gh38">&nbsp;漏洞利用最耗时间的搞清楚对应漏洞软件的脚本语言</a>
+</h3>
+<h3 class="topic">
+<a name="786dmq1099dh1uv8hals9v0s0h">&nbsp;漏洞利用的常见套路和几大保护能够过，找工作ok</a>
+</h3>
+<h3 class="topic">
+<a name="0u5d3mus8fh0s5jdbe0pknmsk0">&nbsp;windbg在win7中的路径</a>
+</h3>
+<h3 class="topic">
+<a name="0aid17hfj6lloq20aasqa181c5">&nbsp;&nbsp;C:\Program Files\Windows Kits\8.1\Debuggers\x86</a>
+</h3>
+<h3 class="topic">
+<a name="2kgfkmilb31o5mpvgvpf2bsa9o">&nbsp;堆空间与栈空间</a>
+</h3>
+<h3 class="topic">
+<a name="1001paoslr1lc89aanh4imlhb5">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A83_files/1kvkn2d4pto97hv8duokprg9j2.png"></p>
+<h3 class="topic">
+<a name="1l4f6kdldt8uip4gedh8ll9ok2">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A83_files/784e8ihsuqn5nnuunpe9lgeg1l.png"></p>
+<h3 class="topic">
+<a name="31cttk6tnsuvf8ud1se9i5pd94">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A83_files/1laj361omljnj0p3sbmk3rcs3t.png"></p>
+<h3 class="topic">
+<a name="4u4292l5tqogj3p9loiikvqfra">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A83_files/10ppp04qjs3q2e4un54uid0vvm.png"></p>
+<h2 class="topic">
+<a name="3hgehgj7jpjcr7tvgnpuc2b18o">问题</a>
+</h2>
+<h3 class="topic">
+<a name="4o3bd59ge0ghbhsr3f00m96rp0">&nbsp;堆喷射如何实现</a>
+</h3>
+<h3 class="topic">
+<a name="5f8fqd9kb7h4chuaksuhevpjur">&nbsp;&nbsp;js的机制：数据从内存低地址到内存高地址进行填充</a>
+</h3>
+<h3 class="topic">
+<a name="24arv9ftt74fipll1gv1gb60lv">&nbsp;&nbsp;js中字符串的保存在堆空间，且字符串保存的地址小于0c0c0c0c</a>
+</h3>
+<h3 class="topic">
+<a name="5lmdoq4j8lqj5q65ksv2uudu05">&nbsp;&nbsp;通过不断拼接字符串，使得堆空间中字符串不断变长，向高地址延伸，直到淹没ocococ</a>
+</h3>
+<h3 class="topic">
+<a name="5qae52ppmc3gfkmq4hr03gg8bl">&nbsp;&nbsp;申请一段堆空间，如果向堆空间中写入的数据大于堆申请的空间，就会出现堆的溢出，也就是堆喷射</a>
+</h3>
+<h3 class="topic">
+<a name="3eslbtvrlo3260qjie7mr6vmfa">&nbsp;&nbsp;堆的fdfdfdfd边界只在debug版本的程序中存在，在release版本中不存在</a>
+</h3>
+<h3 class="topic">
+<a name="7tl30uqpakh5pb0n9fbmobu2bm">&nbsp;分块如何实现</a>
+</h3>
+<h3 class="topic">
+<a name="7q6li2kjla5jvtfr5ha34hp1jp">&nbsp;将shellcode转为unicode字符串</a>
+</h3>
+<h3 class="topic">
+<a name="1rsi67mmj5mhskjo9gnnds91nt">&nbsp;&nbsp;使用x64</a>
+</h3>
+<h3 class="topic">
+<a name="7v2a4btf6659hoigvqs5b5g762">&nbsp;问题</a>
+</h3>
+<h3 class="topic">
+<a name="0fl27ujgg3sfunev2r178evgkv">&nbsp;&nbsp;mov eax,dword ptr[ebp-14]&#13;
+mov ecx,dword ptr[eax]&#13;
+call dword ptr[ecx+18h]</a>
+</h3>
+<h3 class="topic">
+<a name="231o366q4cocu5b01ve1d5qacd">&nbsp;&nbsp;ebp-14中的值被以0c0c0c0c填充，则eax把地址0c0c0c0c中的内容取出给ecx 如果地址0c0c0c0中的内容也为0c0c0c0c,则ecx会取出0c0c0c0c,之后加上18h得到0c0c0c24,指令会将0c0c0c24地址处保存的数据当作函数地址进行函数调用</a>
+</h3>
+<h3 class="topic">
+<a name="1dugtaeojsfea1ertnuqkqt35u">&nbsp;&nbsp;当保存的数据比较长时0c0c0c24中保存的内容还是0c0c0c0c,,则会在地址0c0c0c0c处开始执行代码</a>
+</h3>
+<h3 class="topic">
+<a name="7gko9e3a7stok0ieutejenrnl0">&nbsp;&nbsp;如果0c0c0c0c使用nop填充</a>
+</h3>
+<h3 class="topic">
+<a name="14sk1h76jabimfqmj3d1o4atpn">&nbsp;&nbsp;&nbsp;0c0c0c0c本身也是一个滑板指令，可以起到nop的功能</a>
+</h3>
+<h3 class="topic">
+<a name="5sdk2geaiccat7jvmebsopo8m4">&nbsp;&nbsp;&nbsp;&nbsp;即为： OR AL,0C</a>
+</h3>
+<h3 class="topic">
+<a name="5csf3mjaeqgp186i09ct0pfh7p">&nbsp;&nbsp;&nbsp;0c0d0c0d也是滑板指令，即为OR AL,0C</a>
+</h3>
+<h3 class="topic">
+<a name="7ebvj2ohuouqrkq5h7bq3o81uk">&nbsp;&nbsp;&nbsp;为什么选择0c0c0c0c作为地址和填充的值？</a>
+</h3>
+<h3 class="topic">
+<a name="6mujtskbdbpgmip0b3fob9b47e">&nbsp;&nbsp;&nbsp;&nbsp;一方面0c0c0c0c是滑板指令，不影响shellcode执行</a>
+</h3>
+<h3 class="topic">
+<a name="56b1eqnht1im8jto6f64ggnj09">&nbsp;&nbsp;&nbsp;&nbsp;另一方面作为滑板指令 0c0c0c0c代表的地址比90909090代表的地址更小，因为堆的填充是从低地址到高地址的，所以堆喷射需要覆盖的数据量较小就可以覆盖0c0c0c0c</a>
+</h3>
+<h3 class="topic">
+<a name="577tmvmirfo7k8dgfbd304fnn7">&nbsp;&nbsp;oc不是内核空间？？？</a>
+</h3>
+<h3 class="topic">
+<a name="527da3nidb4ivehlieso4kkvn8">&nbsp;&nbsp;&nbsp;不是7fffffff之上的内存地址才是内核空间</a>
+</h3>
+<h2 class="topic">
+<a name="5g4b2vv3nngdekh1edsaglnsa8">注意</a>
+</h2>
+<h3 class="topic">
+<a name="077kvvfieee9suphl1d7oaq6v9">&nbsp;在构造shellcode的过程中，只有将shelcode编写为"\x91\xfe\x42\x47\x99\xfe\x91\xfe\x02\xf9\x32\x71\x7f\x76\x3c\x77"此种类似的格式，才能保证写入被溢出程序的shellcode的正确性，如果将shellcode对应的十六进制保存为字符串，并使用字符串进行溢出工具，很可能导致用于攻击的字符串转化为十六进制之后，与原来的十六进制序列不同，导致攻击的失败</a>
+</h3>
+<h3 class="topic">
+<a name="6mu0dks0ejs568tj6pdv5769bf">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A83_files/611p1jeinpo1hvmpg3i5q62ibq.png"></p>
+<h3 class="topic">
+<a name="5ofaf00vaqg2raoacmiushssn4">&nbsp;&nbsp;&nbsp;1之前是溢出的占位字符，1处是jmp esp指令的地址，2的0c0c0c0c是滑板指令，等同于nop</a>
+</h3>
+<h3 class="topic">
+<a name="6fh4b3k4s10g8e7i3bum3eo14l">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A83_files/00i33ghdjof0ij1co6qfn4s606.png"></p>
+<h3 class="topic">
+<a name="5ok8dpnoe15v1s882ek04qn08u">&nbsp;&nbsp;&nbsp;上面的数据以字符串形式显示，并将其复制为3</a>
+</h3>
+<h3 class="topic">
+<a name="7os57ic3ttqla8ipc6sp19gd5l">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A83_files/7hptletvqdmo464vv7ig3f4uc2.png"></p>
+<h3 class="topic">
+<a name="7pht7776o70j35omhof29g7a4j">&nbsp;&nbsp;&nbsp;将3赋值给4，然后将4与shellcode结合起来，用于溢出攻击</a>
+</h3>
+<h3 class="topic">
+<a name="5d8p03lqp9sl94j8jk3qmfddct">&nbsp;&nbsp;以上，因为1、2只有是十六进制时才能保证正确溢出，但是这里将1、2保存为字符串再拼接到溢出攻击的代码，会导致攻击代码的1、2内容不是原有的十六进制数据，导致攻击失败</a>
+</h3>
+<h3 class="topic">
+<a name="4ddgr1n2odv3pt62vmg9rtbf8i">&nbsp;所以再进行溢出攻击时，要么通过文件保存溢出数据，要么在指令中以 \x01\x02 的形式保存shellcode，才能保证shellcode的正确</a>
+</h3>
+<h3 class="topic">
+<a name="3v095bb7pmlq7el4buhbj8s3ab">&nbsp;&nbsp;用于占位溢出的字节可以使用字符串保存，但是指令相关的必须使用"\x01\x02"格式</a>
+</h3>
+<h3 class="topic">
+<a name="2nel1ct1k1cpikqqamm10emna5">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A83_files/13rfhg8k7i29sllagmntd549qj.png"></p>
+<h2 class="topic">
+<a name="19fcnfre32cffbtsptjp11iuun">暴雷漏洞分析</a>
+</h2>
+<h3 class="topic">
+<a name="41es8rqheqcnukr7jhspipf1st">&nbsp;windbug监控ie进程，exp1拖进ie执行</a>
+</h3>
+<h3 class="topic">
+<a name="55dd1in3ps3tuetsfg3tut37in">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A83_files/2nmd431s7799fbl2hegua1g5h8.png"></p>
+<h3 class="topic">
+<a name="18844ptj51o09rkcaodeg36m43">&nbsp;exp2导致的崩溃</a>
+</h3>
+<h3 class="topic">
+<a name="7vnaud0a9sc29iti5nursk1s99">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A83_files/2dtf8j6t5ipr6elf9psuu4ct9c.png"></p>
+<h2 class="topic">
+<a name="7v73v5d1lhretd2ut8eqbukbj5">mona安装</a>
+</h2>
+<h3 class="topic">
+<a name="4oo6dhc3iobm9gvnn23e8j83jp">&nbsp;资料第33页</a>
+</h3>
+<h3 class="topic">
+<a href="https://blog.csdn.net/qq_35519254/article/details/52847911" name="2jjlij0onnd8hlq8jh8es97vr0">&nbsp;https://blog.csdn.net/qq_35519254/article/details/52847911</a>
+</h3>
+<h3 class="topic">
+<a name="608md45a5knqu99iu1bifscvtd">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A83_files/39ogjs9emkco3da66vn4q9u1s3.png"></p>
+<h3 class="topic">
+<a name="30c3th0j0gro94ril96vunivkh">&nbsp;官方文档：https://github.com/corelan/windbglib</a>
+</h3>
+<h3 class="topic">
+<a name="5gfjj2ff87v2kousqbn9ar7kr9">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A83_files/57b9mc2cl313nebf5q8b68o183.png"></p>
+<h3 class="topic">
+<a name="6k40jlmkatjlj6hubmts055019">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A83_files/6spaods8o653nb298v2o9pigcj.png"></p>
+<h2 class="topic">
+<a name="624b42qv7cc4beppa8jikeeie6">分析报告：暴雷漏洞</a>
+</h2>
+<h3 class="topic">
+<a name="3096mo8km5ivh524b0sccs8qlt">&nbsp;漏洞触发堆栈</a>
+</h3>
+<h3 class="topic">
+<a name="5bgso8sdgchvfckkkkkftqqndq">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A83_files/0o25fqt77t1oiabv017mldelua.png"></p>
+<h3 class="topic">
+<a name="6ikckn2apv35gvi7go1cnnvrim">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A83_files/628956jrbjoufi9lmps96qud54.png"></p>
+<h3 class="topic">
+<a name="7851jqba1jsme7a061ftja82gr">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A83_files/6sbjdh4vf445ri0coedf7bikl6.png"></p>
+<h3 class="topic">
+<a name="075c0rt8j2njlo77pj72ltj2ak">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A83_files/7jtbn7d747imjr2esgm9jhe0ju.png"></p>
+<h3 class="topic">
+<a name="6pgv9etripa4uflkcb58iknins">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A83_files/2sn18immimvtsjpkgck5ambhjt.png"></p>
+<h3 class="topic">
+<a name="1jupocu2ndrucobq61oo2al52t">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A83_files/6qeqeu72ef4op0gvpbnk6vf8id.png"></p>
+<h2 class="topic">
+<a name="4f4e4fp22l8uicsidisdlvh32n">极光行动漏洞分析</a>
+</h2>
+<h3 class="topic">
+<a name="58p96u9j1s49kn7fdrfrjjgbg7">&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A83_files/0ls7jp6rqgi9heb781mu8tlna8.png"></p>
+<h3 class="topic">
+<a name="2dojqe5skj1t7gfo2rjav9q2js">&nbsp;如果要分析出漏洞具体是由于什么原因导致的，需要对产生漏洞的程序具有深刻认识（比如uaf漏洞中释放后被重用的结构体具体是哪一个，具体在什么位置被申请、被释放、被重用），此类任务工作量较大，如果不具备此类知识，就无法分析</a>
+</h3>
+<h3 class="topic">
+<a name="74n2kiq4dmctbq17duvhlsijlg">&nbsp;所以一般通过溢出程序的函数名、函数参数等特征推测漏洞发生时函数在进行哪些操作，操作对象可能是哪些</a>
+</h3>
+<h3 class="topic">
+<a name="1mg9n0hhkphm9r8e5avgal2te9">&nbsp;所以必须要有漏洞模块的符号，ida中可以通过file-》load file-》PDB file导入模块的符号文件，从而进行分析</a>
+</h3>
+<h3 class="topic">
+<a name="3p616burq15894et233pp3gll0">&nbsp;在漏洞分析过程中查找指定结构体内容，如果在msdn中没有查找到，说明该结构体是微软未公开结构体，无法查询</a>
+</h3>
+<h2 class="topic">
+<a name="35n7kg4c9t4lo53kdssvudms2r">查找漏洞的网站</a>
+</h2>
+<h3 class="topic">
+<a name="64vqrer0sqc69o0bptp74kcm00">&nbsp;https://www.securityfocus.com/bid/60380/references</a>
+</h3>
+<h3 class="topic">
+<a name="6fmn7ln39sd4f4h61m32jv4our">&nbsp;http://www.geoffchappell.com/studies/windows/ie/mshtml/classes/ceventobj.htm</a>
+</h3>
+<h2 class="topic">
+<a name="79vmpqf20rni1frqa6qakugsdd">windbg中查看指定内存的属性</a>
+</h2>
+<h3 class="topic">
+<a name="2vc67cg8eirbljokrsjb564hk1">&nbsp;!address 内存地址</a>
+</h3>
+<h2 class="topic">
+<a name="6jobauvqj402ovo1o9u6a0ovhj">使用mona构造rop链</a>
+</h2>
+<h3 class="topic">
+<a name="1gnb9madpb56jm6kobd8tc3je6">&nbsp;!py mona rop</a>
+</h3>
+<h2 class="topic">
+<a name="0df6oimaoo19t7u6u7tp6v9hn4">bypassdep面试题分析</a>
+</h2>
+<h3 class="topic">
+<a name="52t685vaa0mcu1857f0flc5rrn">&nbsp;当被溢出的程序本身没有开随即基址，但是其模块开启了随即基址时，模块中api的地址在主程序中是随机的，但是保存这些api地址的iat表的地址是固定的（因为程序本身没有随即基址）</a>
+</h3>
+<h3 class="topic">
+<a name="60udel90nj0kp6j7l5rjo0use5">&nbsp;&nbsp;此时在程序中可以通过固定的iat表地址的解引用找到指定的函数的地址</a>
+</h3>
+<h3 class="topic">
+<a name="7pinp4u5jjqv0rbdg4djqe4nqd">&nbsp;&nbsp;如果需要是使用的函数在主程序中没有没有导出，即在iar中找不到该函数地址，因为同一个模块中各个api之间的偏移是不变的，所以可以通过iat表中该模块的其他api的地址加上偏移寻找到需要的地址</a>
+</h3>
+<h3 class="topic">
+<a name="56tqc9p9m1ccf6ldpb9irifuqh">&nbsp;&nbsp;通过在没有开启随即基址的主程序中寻找指令片段构造rop链，从而完成对iat表地址取内容，对取到的地址加偏移得到指定函数地址等操作，从而得到VritualProtect函数的地址，从而执行该函数绕过dep</a>
+</h3>
+<h3 class="topic">
+<a name="7f58ut3n8a8c2v75r11g8e1rem">&nbsp;注意一个模块中的函数之间的偏移是固定的，如果能够确定一个函数的地址就可以根据偏移找到其他同模块的地址</a>
+</h3>
+<h3 class="topic">
+<a name="28i2378j3209qtthl1ak327trd">&nbsp;遇到的问题</a>
+</h3>
+<h3 class="topic">
+<a name="7424ll99fnh371v2pjk5m904ep">&nbsp;&nbsp;文件不能过大</a>
+</h3>
+<h3 class="topic">
+<a name="35b2t47mpseptr38igq8os7n36">&nbsp;&nbsp;&nbsp;如果栈溢出的数据溢出到另一个内存页会触发错误，导致漏洞利用失败，这就限制了shellcode不能太长，导致在shellcode中不能容下遍历kernel32模块找virtualprotect的代码，所以难以获得virtualprotect函数的地址，故难以绕过dep</a>
+</h3>
+<h3 class="topic">
+<a name="0hj77epssittr3kriiocnofin4">&nbsp;&nbsp;&nbsp;解决方案在于</a>
+</h3>
+<h3 class="topic">
+<a name="4s6oftv8isbhmg52runj6ohrib">&nbsp;&nbsp;&nbsp;&nbsp;1，主程序没有开启随即基址，故iat表的地址不会发生变换，指定iat表项中存储的函数地址可能发生变化（因为模块均开启了随即基址），但函数地址对应的函数对于一个iat表项应当是不变的，只要对iat表项地址解引用，就可以获得指定的api地址</a>
+</h3>
+<h3 class="topic">
+<a name="6pvsgcu8sb4tboo8uaoajdhnev">&nbsp;&nbsp;&nbsp;&nbsp;2、同一个模块中的不同api之间的偏移是固定的，如果能够确定一个函数的地址就可以根据偏移找到其他同模块的地址，从而获得所需的VirtualProtect函数地址，进一步调用VirtualProtect绕过dep</a>
+</h3>
+<h3 class="topic">
+<a name="6vjjkj13nrni1p2do41pfkv9go">&nbsp;&nbsp;dep</a>
+</h3>
+</body>
+</html>

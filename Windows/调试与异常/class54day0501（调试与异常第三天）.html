@@ -1,0 +1,1402 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>class54day0501（调试与异常第三天）</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="50paqai3jur1493vdtdruqjudr">class54day0501（调试与异常第三天）</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="class54day0501%EF%BC%88%E8%B0%83%E8%AF%95%E4%B8%8E%E5%BC%82%E5%B8%B8%E7%AC%AC%E4%B8%89%E5%A4%A9%EF%BC%89_files/images/class54day0501%EF%BC%88%E8%B0%83%E8%AF%95%E4%B8%8E%E5%BC%82%E5%B8%B8%E7%AC%AC%E4%B8%89%E5%A4%A9%EF%BC%89.jpg"></div>
+<h2 class="topic">
+<a name="63utth189qdsmt24l9k0sqpgqp">复习</a>
+</h2>
+<h3 class="topic">
+<a name="509oteilf3c34osh8liv6itgqk">&nbsp;异常的分发一共有两轮，在KiDispatchException的最后一个参数（FirstChance）处进行判断 或者在RaiseException（用于主动抛出异常）最后一个参数表示是否第一次产生异常</a>
+</h3>
+<h3 class="topic">
+<a name="32hrduveb7k550k8c07c1cdgc8">&nbsp;通过cs寄存器的最后两位用于表示当前处于R0 R3，被作为先前模式传给KiDispatchException</a>
+</h3>
+<h3 class="topic">
+<a name="4486r8k6im48onbpibef70f9fr">&nbsp;异常产生方式有两种</a>
+</h3>
+<h3 class="topic">
+<a name="7roq0pt6961ap8c3sdnolrc9ll">&nbsp;&nbsp;cpu执行到特定指令或满足特定条件时会主动触发一个异常，并且到idt[n]的位置找到对应处理函数并执行</a>
+</h3>
+<h3 class="topic">
+<a name="6uencpnuc92a2n46s2n4ed25o9">&nbsp;&nbsp;通过RaiseException（throw）主动抛出异常，不会主动查找IDT会直接进入KiDispatchException</a>
+</h3>
+<h3 class="topic">
+<a name="4j72ksj22gsosj7hn9mtrkde0g">&nbsp;编译器会为用户自定义的_try _except添加怎样的异常处理函数</a>
+</h3>
+<h3 class="topic">
+<a name="6td91pmefgi6rgpcdc3n2n69cg">&nbsp;&nbsp;无论添加了多少组,只会添加一个_except_handler4，并且在其中处理用户自定义的SEH</a>
+</h3>
+<h3 class="topic">
+<a name="6g1703k15di9nbbs1g677jb3e2">&nbsp;用户模式产生异常时，seh会被在什么时候调用</a>
+</h3>
+<h3 class="topic">
+<a name="5eimomqilrnmh6t3lh38q9gphi">&nbsp;&nbsp;【3】int 3-》cpu-》【0】idt[3](_KiTrap03)-》【0】CommDispatchException-》【0】KiDispatchExcecption（KiDebugRoutine+ DbgForwardException）-》【3】KiUserExceptionDispatcher-》【3】RtlDispatchException-》【3】RtlpExecuteHandlerForException-》【3】_excecpt_handler4-&gt;【3】_excecpt_handle4_common-》【3】SEH处理函数</a>
+</h3>
+<h3 class="topic">
+<a name="0k41fqfogtoc00438f2414s775">&nbsp;r0异常如何传递给三环调试器</a>
+</h3>
+<h3 class="topic">
+<a name="55mvu502baeh5jsoqm36mh50vp">&nbsp;&nbsp;内核通过DbgkForwardException将异常信息传到r3</a>
+</h3>
+<h3 class="topic">
+<a name="2ib1n4s1tndgugcgi5996ecsvn">&nbsp;&nbsp;该函数内部调用了DbgkpSendApiMessage，该函数负责调试器与被调试程序之间的通讯</a>
+</h3>
+<h3 class="topic">
+<a name="20btefmn781esh8r1ah6bo6vre">&nbsp;R0  和R3的RtlDispathException有什么区别</a>
+</h3>
+<h3 class="topic">
+<a name="43p0nlde01g1hpej6g5gdjfcuv">&nbsp;&nbsp;r3调用的异常处理函数比较多</a>
+</h3>
+<h3 class="topic">
+<a name="7f7ijvaui31108r6ckvq7515cc">&nbsp;&nbsp;r0：只调用了SEH </a>
+</h3>
+<h3 class="topic">
+<a name="5jm7pabm1h77cc6e722boa9ft8">&nbsp;&nbsp;r3 ：veh-》seh-》ueh   如果处理成功调用vch</a>
+</h3>
+<h3 class="topic">
+<a name="3rpetra0m47pv0tmgv79kfgftb">&nbsp;&nbsp;&nbsp;由KiUserExceptionDispatcher调用</a>
+</h3>
+<h2 class="topic">
+<a name="1cmag6jvcc76hfu7mcnjalqrr8">反调试与反反调试</a>
+</h2>
+<h3 class="topic">
+<a name="0tfcd1eblbnvfl0skufmi38dot">&nbsp;分类</a>
+</h3>
+<h3 class="topic">
+<a name="28buqsh2bua2cfuk9akflafq05">&nbsp;&nbsp;静态反调试</a>
+</h3>
+<h3 class="topic">
+<a name="5us2nuerqc77hnsovj7sb91kbj">&nbsp;&nbsp;&nbsp;通过检查PEB（进程环境块）某些字段进行反调试</a>
+</h3>
+<h3 class="topic">
+<a name="0ioqar2b2iuki0kog6gbgt9in9">&nbsp;&nbsp;&nbsp;&nbsp;注意peb是进程环境块，teb是线程环境块，一个进程只有一个进程环境块，最少有一个线程环境块（该进程有多少线程就有多少teb）</a>
+</h3>
+<h3 class="topic">
+<a name="4qkhrt5e3r0gmn4gie8aogqrm9">&nbsp;&nbsp;&nbsp;&nbsp;进程在内核中是一个结构体，如果进行内核级别的反调试，可以直接修改该结构体中的字段。</a>
+</h3>
+<h3 class="topic">
+<a name="0v4b35a16lk8vdmitjci15afqd">&nbsp;&nbsp;&nbsp;&nbsp;相关字段</a>
+</h3>
+<h3 class="topic">
+<a name="311adn7m5mkcuic19ein98kkae">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BeingDebugged</a>
+</h3>
+<h3 class="topic">
+<a name="0kq9hubj2cgv9d08fa7hl647hn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;NtGlobalFalgs</a>
+</h3>
+<h3 class="topic">
+<a name="7s5nqev1s3dg081qjpmgntosl7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ProcessHeap</a>
+</h3>
+<h3 class="topic">
+<a name="4qddm14abf2opj5qbhvvikscib">&nbsp;&nbsp;&nbsp;使用原始API</a>
+</h3>
+<h3 class="topic">
+<a name="7ht15k99dc29enr5dpb2uhsju5">&nbsp;&nbsp;&nbsp;&nbsp;NtQueryInformationProcess</a>
+</h3>
+<h3 class="topic">
+<a name="7lepspv6vsk766rki9518m1pnn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;子主题 2</a>
+</h3>
+<h3 class="topic">
+<a name="09gseg44idturn1677afhlupoe">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;获取调试端口、调试对象、调试标志、父进程等信息</a>
+</h3>
+<h3 class="topic">
+<a name="2o5ndhufqvtbi3ud5dmjpmfjvh">&nbsp;&nbsp;&nbsp;攻击调试器</a>
+</h3>
+<h3 class="topic">
+<a name="0figb04v1kb8ki87vl16mdv1rj">&nbsp;&nbsp;&nbsp;打开进程检查</a>
+</h3>
+<h3 class="topic">
+<a name="3pr4g4q88kttc4htg6obff7f7q">&nbsp;&nbsp;&nbsp;&nbsp;与令牌有关</a>
+</h3>
+<h3 class="topic">
+<a name="1issjnvl0ukk55js2tbb5m5eop">&nbsp;&nbsp;&nbsp;利用TLS回调函数</a>
+</h3>
+<h3 class="topic">
+<a name="1r9iipvg9qob48fibt8drorlmm">&nbsp;&nbsp;&nbsp;&nbsp;TLS回调函数会先于mian函数执行</a>
+</h3>
+<h3 class="topic">
+<a name="369r42d36f37btroooml4tu2g7">&nbsp;&nbsp;&nbsp;利用普通api</a>
+</h3>
+<h3 class="topic">
+<a name="1mchghu1r5coojd6vbneo22si1">&nbsp;&nbsp;&nbsp;&nbsp;进程和窗口名检查等</a>
+</h3>
+<h3 class="topic">
+<a name="0inj6kldjcesubi5q19o1il9ap">&nbsp;&nbsp;动态反调试</a>
+</h3>
+<h3 class="topic">
+<a name="1p2dt6erh8kkkfppn0ctlant1h">&nbsp;&nbsp;&nbsp;使用SEH调用默认的ueh</a>
+</h3>
+<h3 class="topic">
+<a name="737cfna8daan3udd894a00fsg4">&nbsp;&nbsp;&nbsp;&nbsp;使用ueh，ueh当处于调试状态下不会被调用到</a>
+</h3>
+<h3 class="topic">
+<a name="01lun2gr26a28qpcrccuq9iijo">&nbsp;&nbsp;&nbsp;时间检查</a>
+</h3>
+<h3 class="topic">
+<a name="2hu256mouoiio4urrm3qal2s8l">&nbsp;&nbsp;&nbsp;&nbsp;RDTSC获取两个指令执行之间经过了多少个时间片</a>
+</h3>
+<h3 class="topic">
+<a name="0m1rcr1od9vganainu52kn71de">&nbsp;&nbsp;&nbsp;&nbsp;如果指令执行时间过长，说明正在被调试</a>
+</h3>
+<h3 class="topic">
+<a name="0sp3af5q2np7njuqa0q7s2v8n6">&nbsp;&nbsp;&nbsp;补丁检查</a>
+</h3>
+<h3 class="topic">
+<a name="2s1qk63kk79ka4edet1pbc2kqd">&nbsp;&nbsp;&nbsp;&nbsp;扫描程序中的0xcc</a>
+</h3>
+<h3 class="topic">
+<a name="542uc5ju589mpjv7mj4f1np6bb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;软件断点常与api断点结合</a>
+</h3>
+<h3 class="topic">
+<a name="5gakrafp55o1ps92herp9ffhf0">&nbsp;&nbsp;&nbsp;&nbsp;hash扫描</a>
+</h3>
+<h3 class="topic">
+<a name="4215k77spo14eq484lfupidhl2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;检查程序代码是否被修改</a>
+</h3>
+<h3 class="topic">
+<a name="0bv30u4c7ndfq90rcfh5m1m0r2">&nbsp;&nbsp;&nbsp;&nbsp;API断点扫描</a>
+</h3>
+<h3 class="topic">
+<a name="05qvqha5isr9if348vci325vqb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;扫描api的第一个字节是否为0xcc，如果是证明被下断点调试了</a>
+</h3>
+<h3 class="topic">
+<a name="7dvio7n8al8khdsm45i2t05q36">&nbsp;&nbsp;&nbsp;反反汇编</a>
+</h3>
+<h3 class="topic">
+<a name="2en9c5gkc5nvulra9fqmmnpr04">&nbsp;&nbsp;&nbsp;&nbsp;指令截断</a>
+</h3>
+<h3 class="topic">
+<a name="34e30nsbcfvvujpftgjhnoig1g">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将一条指令截断</a>
+</h3>
+<h3 class="topic">
+<a name="6lam9l5cnq1ksqs0gd6h91936v">&nbsp;&nbsp;&nbsp;&nbsp;指令混淆</a>
+</h3>
+<h3 class="topic">
+<a name="7ll3v40uo8qlckjmoo7i8i97sr">&nbsp;&nbsp;&nbsp;&nbsp;指令膨胀</a>
+</h3>
+<h3 class="topic">
+<a name="3u6fqlports59ddf5ktuacnu85">&nbsp;&nbsp;&nbsp;&nbsp;代码乱序</a>
+</h3>
+<h3 class="topic">
+<a name="40qn5mbrg6u826hbfsqpp37rm8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将原有的代码执行顺序在内存级别打乱，使用jmp链接</a>
+</h3>
+<h3 class="topic">
+<a name="775c8v8btl6m3lacqpg5hmka6s">&nbsp;&nbsp;&nbsp;偷取代码</a>
+</h3>
+<h3 class="topic">
+<a name="0hgt42753i4b6rp2647koaonkg">&nbsp;&nbsp;&nbsp;&nbsp;不同编译器编译的程序的启动代码不一样，将一个程序启动代码模拟成其他编译器对应的启动代码</a>
+</h3>
+<h3 class="topic">
+<a name="43s4rr24ap83cp84f8elmidmcd">&nbsp;&nbsp;&nbsp;&nbsp;偷取api代码</a>
+</h3>
+<h3 class="topic">
+<a name="40dej43krv4o6rujlla8gt896o">&nbsp;&nbsp;&nbsp;分页保护</a>
+</h3>
+<h3 class="topic">
+<a name="33jptmrqdf9130cve4b8i2eeqr">&nbsp;&nbsp;&nbsp;&nbsp;运行时保护分页，修改代码及数据段保护属性干扰分析</a>
+</h3>
+<h3 class="topic">
+<a name="6l82cm194akdvlgv27iu87bne1">&nbsp;&nbsp;&nbsp;壳</a>
+</h3>
+<h3 class="topic">
+<a name="68ompe7l3jkigqv9c6j2h14ap7">&nbsp;&nbsp;&nbsp;&nbsp;压缩壳</a>
+</h3>
+<h3 class="topic">
+<a name="3blknuattbu7ha1n7idg0rhqc5">&nbsp;&nbsp;&nbsp;&nbsp;加密壳</a>
+</h3>
+<h3 class="topic">
+<a name="6uktkbt7r7mocgcc01e19c7n4j">&nbsp;&nbsp;&nbsp;虚拟机</a>
+</h3>
+<h3 class="topic">
+<a name="1dr4a78l7r4m91ag930ush35e2">&nbsp;&nbsp;&nbsp;&nbsp;api虚拟机</a>
+</h3>
+<h3 class="topic">
+<a name="49e566agrhcqgij73sei6agjbj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将部分常用api放在虚拟机中模拟执行</a>
+</h3>
+<h3 class="topic">
+<a name="3pt2pa7e87q2hqv1vmbuf8up46">&nbsp;&nbsp;&nbsp;&nbsp;指令级虚拟机</a>
+</h3>
+<h3 class="topic">
+<a name="3n9obgqr0rkg4fc1pjcqpo1520">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将任意一段指令放在虚拟机中保护起来</a>
+</h3>
+<h3 class="topic">
+<a name="3obamkgl20f37qusr5t7cub3gf">&nbsp;&nbsp;&nbsp;&nbsp;vmp是一种虚拟机壳</a>
+</h3>
+<h3 class="topic">
+<a name="1vracmpdnug21hv6vqom20teah">&nbsp;&nbsp;&nbsp;&nbsp;将代码按照某种方式进行组织，使得只有特定的解释程序（虚拟机）才能将这部分代码处理成cpu可以解释的代码</a>
+</h3>
+<h2 class="topic">
+<a name="02tkop9rk90trrjsu4rjdfj0cv">反调试手段</a>
+</h2>
+<h3 class="topic">
+<a name="5ah9kj30m63gj1fh95pr3kruon">&nbsp;peb</a>
+</h3>
+<h3 class="topic">
+<a name="0q7lc1rr0460spbd0lfbpkvoge">&nbsp;&nbsp;依赖peb的BeingDebugged进行反调试</a>
+</h3>
+<h3 class="topic">
+<a name="4r4vvg42ulfs27t9o94dth1rql">&nbsp;&nbsp;&nbsp;windbg可以查看peb结构</a>
+</h3>
+<h3 class="topic">
+<a name="0jr9jgud5of2khlloqap5a06lg">&nbsp;&nbsp;&nbsp;&nbsp;!peb</a>
+</h3>
+<h3 class="topic">
+<a name="2m0eh97cq6c05mb9a08t5lciek">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以获得peb的地址</a>
+</h3>
+<h3 class="topic">
+<a name="1jp201b7vcgsadpureud2uokrv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class54day0501%EF%BC%88%E8%B0%83%E8%AF%95%E4%B8%8E%E5%BC%82%E5%B8%B8%E7%AC%AC%E4%B8%89%E5%A4%A9%EF%BC%89_files/7vti06li5l3tvrovjanlma86d0.png"></p>
+<h3 class="topic">
+<a name="6rm3ru700h9s9u1f033atson3c">&nbsp;&nbsp;&nbsp;&nbsp;dt _PEB</a>
+</h3>
+<h3 class="topic">
+<a name="2aula63i3b8hk1t0medoc2m53q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以查看PEB结构体</a>
+</h3>
+<h3 class="topic">
+<a name="3tm2e9sar7iqhs2drq0id5377l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class54day0501%EF%BC%88%E8%B0%83%E8%AF%95%E4%B8%8E%E5%BC%82%E5%B8%B8%E7%AC%AC%E4%B8%89%E5%A4%A9%EF%BC%89_files/33b67gs58gl08vdku3v2k4u4er.png"></p>
+<h3 class="topic">
+<a name="6bns8cd96vmpft5pshvjnuae66">&nbsp;&nbsp;&nbsp;&nbsp;dt _PEB 004c7000</a>
+</h3>
+<h3 class="topic">
+<a name="6t6a4ed1j5rsnqo4dvl0a6bh4d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将特定地址处的内存解释为peb结构体显示出来</a>
+</h3>
+<h3 class="topic">
+<a name="70rdjagnbqj55mjd1vaftnlvot">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class54day0501%EF%BC%88%E8%B0%83%E8%AF%95%E4%B8%8E%E5%BC%82%E5%B8%B8%E7%AC%AC%E4%B8%89%E5%A4%A9%EF%BC%89_files/69k28fj6arnn738vhpie4un411.png"></p>
+<h3 class="topic">
+<a name="0vq2ga8gfqlc86469bok2n4cn8">&nbsp;&nbsp;&nbsp;通过teb可以找到peb</a>
+</h3>
+<h3 class="topic">
+<a name="7s7f7ncc7pv0572svpbnh3l8h4">&nbsp;&nbsp;&nbsp;&nbsp;即peb的地址是teb中的一个字段，teb可以通过FS:[0]找到</a>
+</h3>
+<h3 class="topic">
+<a name="5qtki5d0to4qd3bdm0i592g6oa">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class54day0501%EF%BC%88%E8%B0%83%E8%AF%95%E4%B8%8E%E5%BC%82%E5%B8%B8%E7%AC%AC%E4%B8%89%E5%A4%A9%EF%BC%89_files/5bdardv10drd9erb2ttrsg7lhm.png"></p>
+<h3 class="topic">
+<a name="2su17svfueol99av8g5lbprnt6">&nbsp;&nbsp;&nbsp;结构体中字段BeingDbgged，如果进程正在被调试，则字段为1，否则为0</a>
+</h3>
+<h3 class="topic">
+<a name="7mqj28q00qpfqk2266adb0lp8l">&nbsp;&nbsp;&nbsp;反反调试方法</a>
+</h3>
+<h3 class="topic">
+<a name="39gi1podsh6m3f0pp7sbcc8t1k">&nbsp;&nbsp;&nbsp;&nbsp;在程序还没有创建出来之前，重置BeingDbgged</a>
+</h3>
+<h3 class="topic">
+<a name="4e0953g2gv1tdli8k38empmca4">&nbsp;&nbsp;&nbsp;也可以通过IsDebuggerPresent()函数判断当前是否处于被调试状态</a>
+</h3>
+<h3 class="topic">
+<a name="7vsapt5rh79pv4r6jkuu03qpbg">&nbsp;&nbsp;&nbsp;&nbsp;该函数内部实现原理同样是检查peb的beingdbug字段</a>
+</h3>
+<h3 class="topic">
+<a name="7r4hl3u56iodht5877mdvjjl4k">&nbsp;&nbsp;&nbsp;&nbsp;反反调试方法</a>
+</h3>
+<h3 class="topic">
+<a name="7m9p2n26smf19vbst3iml6vrfr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;更改标志位beingdbug</a>
+</h3>
+<h3 class="topic">
+<a name="6r52rodp7jdn9pb5q68eanjcit">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hook该函数</a>
+</h3>
+<h3 class="topic">
+<a name="0vni9ivr5dgjt03enc5b8ie6bg">&nbsp;&nbsp;&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="3rt68l8h4qal0jtgaqjfg9efth">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#include &lt;iostream&gt;&#13;
+#include &lt;windows.h&gt;&#13;
+&#13;
+int main()&#13;
+{&#13;
+	// 内部的实现原理就是检查 Peb.BeingDebugged&#13;
+	// 反反调试方法: 知道原理改标志，不知道原理 Hook&#13;
+	if (IsDebuggerPresent())&#13;
+		printf("当前处于[被]调试状态\n");&#13;
+	else&#13;
+		printf("当前处于[非]调试状态\n");&#13;
+&#13;
+	system("pause");&#13;
+	return 0;&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="06ahg0vs556j0a181gefb1a0is">&nbsp;&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="0ohehun10tel4v12icfogo0s5c">&nbsp;&nbsp;&nbsp;&nbsp;获取当前程序的peb</a>
+</h3>
+<h3 class="topic">
+<a name="4vqlvbit25gpsalgjhbfj3fpo6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过FS:[0x30]获得peb的首地址</a>
+</h3>
+<h3 class="topic">
+<a name="2mlhvqdmjhf65sdb33rav5a5nd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class54day0501%EF%BC%88%E8%B0%83%E8%AF%95%E4%B8%8E%E5%BC%82%E5%B8%B8%E7%AC%AC%E4%B8%89%E5%A4%A9%EF%BC%89_files/68hidldcc56jbi8oqvenojq0ce.png"></p>
+<h3 class="topic">
+<a name="72g41dq9g10qmmt6oiiktvktob">&nbsp;&nbsp;&nbsp;&nbsp;获取到BeingDbugged字段</a>
+</h3>
+<h3 class="topic">
+<a name="2ei3r1sdqigus760t7j7sgch14">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;movzx eax,byte ptr[eax+0x02]</a>
+</h3>
+<h3 class="topic">
+<a name="5acros172t5ketu2rsjtva9h3u">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;movzx是将从源地址处获取到的数据扩展到四个字节</a>
+</h3>
+<h3 class="topic">
+<a name="6bqcd6grrgequ2dc16ih1f6m4b">&nbsp;&nbsp;&nbsp;&nbsp;示例代码</a>
+</h3>
+<h3 class="topic">
+<a name="313o0ks5524rofeuddi4h4vfgt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#include &lt;iostream&gt;&#13;
+#include &lt;windows.h&gt;&#13;
+&#13;
+// 依赖于 PEB.BeingDebugged 进行反调试&#13;
+// 当前程序处于被调试状态时， 值为 1，否则为0&#13;
+// 反反调试方法：在程序还没有创建时，重置标志位&#13;
+bool CheckBeingDebugged()&#13;
+{&#13;
+	__asm &#13;
+	{&#13;
+		; 1. 通过TEB（fs:[0]）获取当前程序的 PEB &#13;
+		mov eax, fs:[0x30]&#13;
+&#13;
+		; 2. 获取当 BeingDebugged&#13;
+		movzx eax, byte ptr[eax + 0x02]&#13;
+&#13;
+		; eax 通常被用于作为返回值&#13;
+	}&#13;
+}&#13;
+&#13;
+&#13;
+int main()&#13;
+{&#13;
+	if (CheckBeingDebugged())&#13;
+		printf("当前处于[被]调试状态\n");&#13;
+	else&#13;
+		printf("当前处于[非]调试状态\n");&#13;
+&#13;
+	system("pause");&#13;
+	return 0;&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="34s7fjc2gg3eslpebktlk48bkt">&nbsp;&nbsp;依赖peb的NtGlobalFalgs字段</a>
+</h3>
+<h3 class="topic">
+<a name="0jrca9278jsu3q42akrh59k6se">&nbsp;&nbsp;&nbsp;当处于调试状态，该字段为0x70，非调试状态则值不定</a>
+</h3>
+<h3 class="topic">
+<a name="7rduhto4iqdasj769jg53grhhv">&nbsp;&nbsp;&nbsp;&nbsp;注意如果以附加状态调试，则该字段的值不会为0x70，说明该字段不能用于判断附加调试状态</a>
+</h3>
+<h3 class="topic">
+<a name="0a956v2qo1r4b0vhlr3stfh76p">&nbsp;&nbsp;&nbsp;反反调试方法</a>
+</h3>
+<h3 class="topic">
+<a name="2koi1fe0p5g92s70ml72la8emg">&nbsp;&nbsp;&nbsp;&nbsp;改标志位</a>
+</h3>
+<h3 class="topic">
+<a name="2jg6f4lo79944d92h90s0eo0eq">&nbsp;&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="4ko5iu6jsmqfp3bctel00dqfu2">&nbsp;&nbsp;&nbsp;&nbsp;定义用于保存标志位的dword变量</a>
+</h3>
+<h3 class="topic">
+<a name="4p8lte07lq1v4ouuoas35cf6v3">&nbsp;&nbsp;&nbsp;&nbsp;获取PEB</a>
+</h3>
+<h3 class="topic">
+<a name="4n5sdfsgtdv28642th52uf24rg">&nbsp;&nbsp;&nbsp;&nbsp;获取到偏移为0x68处保存的NtGlobalFalgs</a>
+</h3>
+<h3 class="topic">
+<a name="31vvp7mdeuijfdqvf02pha78om">&nbsp;&nbsp;&nbsp;&nbsp;返回比较结果</a>
+</h3>
+<h3 class="topic">
+<a name="20bdpn2fhuhgt4cqaautuc34r0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果被调试该字段为0x70</a>
+</h3>
+<h3 class="topic">
+<a name="1vmun7fu731l7769569sbb0okc">&nbsp;&nbsp;&nbsp;&nbsp;示例代码</a>
+</h3>
+<h3 class="topic">
+<a name="6mc8q55nfj4a8ccpp4am8qftio">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#include &lt;iostream&gt;&#13;
+#include &lt;windows.h&gt;&#13;
+bool CheckNtGlobalFlag()&#13;
+{&#13;
+	// 用于保存获取的标志位&#13;
+	DWORD NtGlobalFalgs = 0;&#13;
+&#13;
+	__asm&#13;
+	{&#13;
+		; 1. 获取到 PEB&#13;
+		mov eax, fs:[0x30]&#13;
+&#13;
+		; 2. 获取到偏移为 0x68 保存的 NtGlobalFalgs&#13;
+		mov eax, [eax + 0x68]&#13;
+&#13;
+		; 3. 保存获取到的标志&#13;
+		mov NtGlobalFalgs, eax&#13;
+	}&#13;
+&#13;
+	// 返回比较结果，如果被调试就是 0x70&#13;
+	// 如果以附加状态调试是不会被检查到的&#13;
+	return NtGlobalFalgs == 0x70 ? true : false;&#13;
+}&#13;
+&#13;
+int main()&#13;
+{&#13;
+	if (CheckNtGlobalFlag())&#13;
+		printf("当前处于[被]调试状态\n");&#13;
+	else&#13;
+		printf("当前处于[非]调试状态\n");&#13;
+&#13;
+	system("pause");&#13;
+	return 0;&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="284o1pom57r895ngq35qv6a1gq">&nbsp;&nbsp;依赖peb的ProcessHeap字段（当前进程的默认堆）的Flags和ForceFlags字段（两者在非调试状态下为2，0）</a>
+</h3>
+<h3 class="topic">
+<a name="584j25grkk70qldd7lu658v83t">&nbsp;&nbsp;&nbsp;teb和peb的结构体属于未公开结构，不同的操作系统版本可能结构不一样</a>
+</h3>
+<h3 class="topic">
+<a name="79p1iu179h1fjgtuq62is3gi68">&nbsp;&nbsp;&nbsp;所以Flags和ForceFlags两个字段在结构中的位置根据系统版本的不同而不同，使用的时候需要注意</a>
+</h3>
+<h3 class="topic">
+<a name="30qgnjhne7m9b4abe4rahmf4fc">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class54day0501%EF%BC%88%E8%B0%83%E8%AF%95%E4%B8%8E%E5%BC%82%E5%B8%B8%E7%AC%AC%E4%B8%89%E5%A4%A9%EF%BC%89_files/149t0qqi5agma9c012pme7tdev.png"></p>
+<h3 class="topic">
+<a name="424o3uho0kj8lf0iltl0s1pnfs">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当前系统中ProcessHeap结构体在 peb中的偏移为0x18</a>
+</h3>
+<h3 class="topic">
+<a name="4evpeql2pod7e8e0g2sd6egsg3">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class54day0501%EF%BC%88%E8%B0%83%E8%AF%95%E4%B8%8E%E5%BC%82%E5%B8%B8%E7%AC%AC%E4%B8%89%E5%A4%A9%EF%BC%89_files/1tre4q4b5d1csj1vlj2tta7fhi.png"></p>
+<h3 class="topic">
+<a name="05nagjh4evsldht1ie5lgj2v9f">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Flags和ForceFlags在_HEAP结构体中的偏移分别为0x40和0x44</a>
+</h3>
+<h3 class="topic">
+<a name="54tags4ugtigul2sflakcmqrd8">&nbsp;&nbsp;&nbsp;这两个字段同样不能用于检查当前进程是否是附加调试状态</a>
+</h3>
+<h3 class="topic">
+<a name="5kajn2i24t5afsdrgp7ri8pei3">&nbsp;&nbsp;&nbsp;反反调试方法</a>
+</h3>
+<h3 class="topic">
+<a name="029ojelifsv5296da60uimqqsv">&nbsp;&nbsp;&nbsp;&nbsp;改标志位</a>
+</h3>
+<h3 class="topic">
+<a name="3qpeq6eddto4353knlp36i118i">&nbsp;&nbsp;&nbsp;示例代码</a>
+</h3>
+<h3 class="topic">
+<a name="5hrgtvlhj9k5mca1qmla0j740t">&nbsp;&nbsp;&nbsp;&nbsp;#include &lt;iostream&gt;&#13;
+#include &lt;windows.h&gt;&#13;
+&#13;
+// 通过检查默认堆的两个标志位来确定是否被调试&#13;
+// 当处于没有被调试的状态，两个值分别是 2 和 0&#13;
+bool CheckProcessHeap()&#13;
+{&#13;
+	// 定义变量保存 Flag&#13;
+	DWORD Flags = 0;&#13;
+	DWORD ForceFlags = 0;&#13;
+&#13;
+	__asm&#13;
+	{&#13;
+		; 1. 获取 PEB&#13;
+		mov eax, fs:[0x30]&#13;
+&#13;
+		; 2. 获取当前进程的默认堆结构&#13;
+		mov eax, [eax + 0x18]&#13;
+&#13;
+		; 3. 根据不同的系统取不同的偏移&#13;
+&#13;
+		; 3.1 获取到 Heap.Flags&#13;
+		mov ecx, [eax + 0x40]&#13;
+		mov Flags, ecx&#13;
+&#13;
+		; 3.2 获取到 Heap.ForceFlags&#13;
+		mov ecx, [eax+0x44]&#13;
+		mov ForceFlags, ecx&#13;
+	}&#13;
+&#13;
+	printf("%08X %08X\n", Flags, ForceFlags);&#13;
+&#13;
+	// 不能用于检查附加状态的调试&#13;
+	return (Flags == 2 &amp;&amp; ForceFlags == 0) ? false : true;&#13;
+}&#13;
+&#13;
+int main()&#13;
+{&#13;
+	if (CheckProcessHeap())&#13;
+		printf("当前处于[被]调试状态\n");&#13;
+	else&#13;
+		printf("当前处于[非]调试状态\n");&#13;
+&#13;
+	system("pause");&#13;
+	return 0;&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="1ms6r6am8fmhlhhe6fiq671c1b">&nbsp;通过windows提供的api（NtQueryInformationProcess）查看进程相关信息</a>
+</h3>
+<h3 class="topic">
+<a name="0shjlsfmfoud0irobo4f58mjea">&nbsp;&nbsp;NtQueryInformationProcess函数可以运行在0环或3环</a>
+</h3>
+<h3 class="topic">
+<a name="5qu1h4obkcuv2qj8it5iq0ruu9">&nbsp;&nbsp;&nbsp;该函数可以查询大量进程信息，部分信息的结构体不显式给出，需要通过微软有关windows内核源码获得</a>
+</h3>
+<h3 class="topic">
+<a name="5p7niofiiln905r9kifk2b7ic4">&nbsp;&nbsp;使用时需要有对应lib（函数实现）和头文件（函数声明）</a>
+</h3>
+<h3 class="topic">
+<a name="3odr46rt4iit00u9nasm5ulfhv">&nbsp;&nbsp;&nbsp;#include &lt;winternl.h&gt;&#13;
+#pragma comment(lib,"ntdll.lib")</a>
+</h3>
+<h3 class="topic">
+<a name="6m6hr0e80tvjo6vqsd2hsi9vs5">&nbsp;&nbsp;参数</a>
+</h3>
+<h3 class="topic">
+<a name="0ipte09e5ql9ajos9n7bpmour1">&nbsp;&nbsp;&nbsp;目标进程句柄</a>
+</h3>
+<h3 class="topic">
+<a name="72fslbl7k3srtc1b2f7ipanulh">&nbsp;&nbsp;&nbsp;&nbsp;返回一个伪句柄</a>
+</h3>
+<h3 class="topic">
+<a name="10ihd0hbqrogne0va992mhdeu3">&nbsp;&nbsp;&nbsp;查询信息类型</a>
+</h3>
+<h3 class="topic">
+<a name="1smtg64f6k1n38jmlm97kpfenq">&nbsp;&nbsp;&nbsp;&nbsp;但是实际上可以查找的比表面上得更多</a>
+</h3>
+<h3 class="topic">
+<a name="0o53e9ulum60hq31290jeri2ug">&nbsp;&nbsp;&nbsp;输出查询信息</a>
+</h3>
+<h3 class="topic">
+<a name="3k1dif1ls05drchkk8tq446ere">&nbsp;&nbsp;&nbsp;查询类型得大小</a>
+</h3>
+<h3 class="topic">
+<a name="7n91rqiivoom4jho311g133mva">&nbsp;&nbsp;&nbsp;实际查询得大小</a>
+</h3>
+<h3 class="topic">
+<a name="52pkigjp0a8d7n8o9ap4995hbh">&nbsp;&nbsp;通过该函数查询进程调试端口，获取当前进程是否被调试的信息，如果进程调试端口为-1，则说明当前进程被调试</a>
+</h3>
+<h3 class="topic">
+<a name="7v87dsj83sabtpqpr3cjq2ptro">&nbsp;&nbsp;反反调试</a>
+</h3>
+<h3 class="topic">
+<a name="4qdthajajhj6n091ck1te0iara">&nbsp;&nbsp;&nbsp;hook该函数，但是需要判断当前函数是否是在查询调试端口</a>
+</h3>
+<h3 class="topic">
+<a name="72bme92m5q9pbhvr4nbm3ivj0f">&nbsp;&nbsp;示例代码</a>
+</h3>
+<h3 class="topic">
+<a name="0edg0h09n7vieatpjpp40c7fr6">&nbsp;&nbsp;&nbsp;#include &lt;iostream&gt;&#13;
+#include &lt;windows.h&gt;&#13;
+#include &lt;winternl.h&gt;&#13;
+#pragma comment(lib,"ntdll.lib")&#13;
+&#13;
+// 通过查询调试端口来确定程序是否被调试&#13;
+// Hook NtQueryInformationProcess 可以进行反反调试&#13;
+bool CheckProcessDebugPort() &#13;
+{&#13;
+	int nDebugPort = 0;&#13;
+&#13;
+	NtQueryInformationProcess(&#13;
+		GetCurrentProcess(), 	// 目标进程句柄&#13;
+		ProcessDebugPort, 		// 查询信息类型&#13;
+		&amp;nDebugPort, 			// 输出查询信息&#13;
+		sizeof(nDebugPort), 	// 查询类型大小&#13;
+		NULL); 			// 实际返回数据大小&#13;
+&#13;
+	// 如果为 -1 就是被调试&#13;
+	return nDebugPort == 0xFFFFFFFF ? true : false;&#13;
+}&#13;
+&#13;
+&#13;
+int main()&#13;
+{&#13;
+	if (CheckProcessDebugPort())&#13;
+		printf("当前处于[被]调试状态\n");&#13;
+	else&#13;
+		printf("当前处于[非]调试状态\n");&#13;
+&#13;
+	system("pause");&#13;
+	return 0;&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="5s5cbasemafb1e6p7fbggujisc">&nbsp;通过windows提供的api（NtQueryInformationProcess）查看进程相关信息</a>
+</h3>
+<h3 class="topic">
+<a name="6upaugv0t7c9gchm7qdb69ej8g">&nbsp;&nbsp;通过该函数获取调试对象的句柄，这里使用了未公开的宏</a>
+</h3>
+<h3 class="topic">
+<a name="49es7rba2e5nhi4akehvtiuc68">&nbsp;&nbsp;如果获得的句柄为非0值，则说明当前进程被调试</a>
+</h3>
+<h3 class="topic">
+<a name="2p5fbtiqsm32r4k1u4bskb6klv">&nbsp;&nbsp;反反调试</a>
+</h3>
+<h3 class="topic">
+<a name="183f64q8nflgfks7gh4pfka66h">&nbsp;&nbsp;&nbsp;hook该函数，但是需要判断当前函数是否是在查询调试对象句柄</a>
+</h3>
+<h3 class="topic">
+<a name="3gtpg8ch7phg36ivd4c0rk1f56">&nbsp;&nbsp;示例代码</a>
+</h3>
+<h3 class="topic">
+<a name="2e18ddq3kb89jhbie89ahdqjgu">&nbsp;&nbsp;&nbsp;#include &lt;iostream&gt;&#13;
+#include &lt;windows.h&gt;&#13;
+#include &lt;winternl.h&gt;&#13;
+#pragma comment(lib,"ntdll.lib")&#13;
+&#13;
+&#13;
+bool CheckProcessDebugObjectHandle()&#13;
+{&#13;
+	// 反反调试: HOOK NtQueryInformationProcess&#13;
+&#13;
+	HANDLE hProcessDebugObjectHandle = 0;&#13;
+	NtQueryInformationProcess(&#13;
+		GetCurrentProcess(), 			// 目标进程句柄&#13;
+		(PROCESSINFOCLASS)0x1E, 		// 查询信息类型&#13;
+		&amp;hProcessDebugObjectHandle, 	// 输出查询信息&#13;
+		sizeof(hProcessDebugObjectHandle), // 查询类型大小&#13;
+		NULL); 		&#13;
+	&#13;
+	// 实际返回大小&#13;
+	return hProcessDebugObjectHandle ? true : false;&#13;
+&#13;
+}&#13;
+&#13;
+int main()&#13;
+{&#13;
+	if (CheckProcessDebugObjectHandle())&#13;
+		printf("当前处于[被]调试状态\n");&#13;
+	else&#13;
+		printf("当前处于[非]调试状态\n");&#13;
+&#13;
+	system("pause");&#13;
+	return 0;&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="6te6uglmf5qo7jl98m92si01br">&nbsp;通过windows提供的api（NtQueryInformationProcess）查看进程相关信息</a>
+</h3>
+<h3 class="topic">
+<a name="2ekivn4bu3010tn0qtqlk83act">&nbsp;&nbsp;查询进程的调试标志</a>
+</h3>
+<h3 class="topic">
+<a name="71diqiu73k7pj33vbi82pebebl">&nbsp;&nbsp;通过函数获取当前进程的调试标志，如果为0值说明是正在被调试</a>
+</h3>
+<h3 class="topic">
+<a name="6t510m78poeghko3k29s898k3k">&nbsp;&nbsp;反反调试</a>
+</h3>
+<h3 class="topic">
+<a name="1fiu3tek1oelkku4cla8ufrm8f">&nbsp;&nbsp;&nbsp;hook该函数</a>
+</h3>
+<h3 class="topic">
+<a name="6t6ba0ppqjds2ppqo0s818rksd">&nbsp;&nbsp;示例代码</a>
+</h3>
+<h3 class="topic">
+<a name="32gude319a3fgn1ojrsgl0lruq">&nbsp;&nbsp;&nbsp;#include &lt;iostream&gt;&#13;
+#include &lt;windows.h&gt;&#13;
+#include &lt;winternl.h&gt;&#13;
+#pragma comment(lib,"ntdll.lib")&#13;
+&#13;
+bool CheckProcessDebugFlag()&#13;
+{&#13;
+	BOOL bProcessDebugFlag = 0;&#13;
+	NtQueryInformationProcess(&#13;
+		GetCurrentProcess(), 		// 目标进程句柄&#13;
+		(PROCESSINFOCLASS)0x1F, 	// 查询信息类型&#13;
+		&amp;bProcessDebugFlag, 		// 输出查询信息&#13;
+		sizeof(bProcessDebugFlag), 	// 查询类型大小&#13;
+		NULL); 				// 实际返回大小&#13;
+	return bProcessDebugFlag ? false : true;&#13;
+}&#13;
+&#13;
+int main()&#13;
+{&#13;
+	if (CheckProcessDebugFlag())&#13;
+		printf("当前处于[被]调试状态\n");&#13;
+	else&#13;
+		printf("当前处于[非]调试状态\n");&#13;
+&#13;
+	system("pause");&#13;
+	return 0;&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="2253l3dbh5oitpao9ntug7vd1s">&nbsp;通过windows提供的api（NtQueryInformationProcess）查看进程相关信息</a>
+</h3>
+<h3 class="topic">
+<a name="60cs7c3vhbvo97vi5skc5lusih">&nbsp;&nbsp;通过检查当前进程的父进程是否为资源管理器，从而确定当前进程是否被调试</a>
+</h3>
+<h3 class="topic">
+<a name="1s4a4ijj56ejvr2j9cqqj4r3g4">&nbsp;&nbsp;需要手动定义一个结构体接收用户进程信息</a>
+</h3>
+<h3 class="topic">
+<a name="66kupl6jdiunt4jrp5j9dihf68">&nbsp;&nbsp;&nbsp;主要为了获取父进程pid</a>
+</h3>
+<h3 class="topic">
+<a name="4lia7mfvqin2oese9b3ejkrh2r">&nbsp;&nbsp;如果父进程是资源管理器，则说明当前进程是在资源管理器中双击打开，而不是调试运行，</a>
+</h3>
+<h3 class="topic">
+<a name="501s0a4ea7brerjcs4vhsq1ev3">&nbsp;&nbsp;通过窗口句柄（资源管理器句柄）获取到对应的进程id（资源管理器进程id）</a>
+</h3>
+<h3 class="topic">
+<a name="2sffmgnk9ra20uce1ju5svtcch">&nbsp;&nbsp;&nbsp;如果当前进程的父进程id等于资源管理器进程id，说明当前进程没有被调试</a>
+</h3>
+<h3 class="topic">
+<a name="534j8rrgat9ikqaq720t8nnb4u">&nbsp;&nbsp;反反调试</a>
+</h3>
+<h3 class="topic">
+<a name="6n88fe83cqcn2gp57dnk30ahbo">&nbsp;&nbsp;&nbsp;通过hook函数，更改结构体中父进程的pid</a>
+</h3>
+<h3 class="topic">
+<a name="1s4e75e371c2ei0tc2f9htq8oh">&nbsp;&nbsp;示例代码</a>
+</h3>
+<h3 class="topic">
+<a name="1p3k09o5oe67sl5gp1cnla33a3">&nbsp;&nbsp;&nbsp;#include &lt;iostream&gt;&#13;
+#include &lt;windows.h&gt;&#13;
+#include &lt;winternl.h&gt;&#13;
+#pragma comment(lib,"ntdll.lib")&#13;
+&#13;
+// 通过检查父窗口来确定当前是否被调试&#13;
+bool CheckParentProcess()&#13;
+{&#13;
+	//定义结构体用于返回查询结果&#13;
+	struct PROCESS_BASIC_INFORMATION {&#13;
+		ULONG ExitStatus; 					// 进程返回码&#13;
+		PPEB  PebBaseAddress; 				// PEB地址&#13;
+		ULONG AffinityMask; 				// CPU亲和性掩码&#13;
+		LONG  BasePriority; 				// 基本优先级&#13;
+		ULONG UniqueProcessId; 				// 本进程PID&#13;
+		ULONG InheritedFromUniqueProcessId; // 父进程PID&#13;
+	}stcProcInfo;&#13;
+&#13;
+	// 主要是为了获取父进程ID&#13;
+	NtQueryInformationProcess(&#13;
+		GetCurrentProcess(), &#13;
+		ProcessBasicInformation, &#13;
+		&amp;stcProcInfo,&#13;
+		sizeof(stcProcInfo), &#13;
+		NULL);&#13;
+	//用于保存资源管理器进程id&#13;
+	DWORD ExplorerPID = 0;&#13;
+&#13;
+	//获得的当前进程的父进程id&#13;
+	DWORD CurrentPID = stcProcInfo.InheritedFromUniqueProcessId;&#13;
+	&#13;
+	// 通过窗口句柄获取到文件管理器进程ID&#13;
+	GetWindowThreadProcessId(&#13;
+		FindWindow(L"Progman", NULL), &amp;ExplorerPID);&#13;
+	&#13;
+	printf("%d %d\n", ExplorerPID, CurrentPID);&#13;
+&#13;
+	// 如果当前进程的父进程ID == 资源管理器ID，说明当前进程是从资源管理器中双击打开的，而非调试打开&#13;
+	return ExplorerPID == CurrentPID ? false : true;&#13;
+}&#13;
+&#13;
+int main()&#13;
+{&#13;
+	if (CheckParentProcess())&#13;
+		printf("当前处于[被]调试状态\n");&#13;
+	else&#13;
+		printf("当前处于[非]调试状态\n");&#13;
+	system("pause");&#13;
+	return 0;&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="18l6vda3biqrmviec4enqmnfbo">&nbsp;通过NtQuerySystemInformation确定操作系统是否被调试</a>
+</h3>
+<h3 class="topic">
+<a name="300k1pr4o8j0t0ilkg97ffj3ar">&nbsp;&nbsp;需要使用一个自定的结构体</a>
+</h3>
+<h3 class="topic">
+<a name="7h8nlqc2ukaksgv95re3dk2t7b">&nbsp;&nbsp;&nbsp;该结构体包括是否开启调试模式的字段</a>
+</h3>
+<h3 class="topic">
+<a name="7jafrvoprvu3gp23bgtmv9tsdf">&nbsp;&nbsp;使用的是未公开的结构</a>
+</h3>
+<h3 class="topic">
+<a name="52273m8sairsgmls4oijt8d24o">&nbsp;&nbsp;反反调试</a>
+</h3>
+<h3 class="topic">
+<a name="0b02ekvr8n07s2vqnr0qsqsqi6">&nbsp;&nbsp;&nbsp;hook</a>
+</h3>
+<h3 class="topic">
+<a name="0cet8nchtnvm3s22nn5ovp3hkh">&nbsp;&nbsp;示例代码</a>
+</h3>
+<h3 class="topic">
+<a name="4n2olbpql0ullg958bi272tein">&nbsp;&nbsp;&nbsp;#include &lt;iostream&gt;&#13;
+#include &lt;windows.h&gt;&#13;
+#include &lt;winternl.h&gt;&#13;
+#pragma comment(lib,"ntdll.lib")&#13;
+&#13;
+bool CheckSystemKernelDebuggerInformation() &#13;
+{&#13;
+	// 保存系统的调试信息&#13;
+	struct _SYSTEM_KERNEL_DEBUGGER_INFORMATION {&#13;
+		BOOLEAN KernelDebuggerEnabled;		// 是否开启调试&#13;
+		BOOLEAN KernelDebuggerNotPresent;&#13;
+	} DebuggerInfo = { 0 };&#13;
+&#13;
+&#13;
+	NtQuerySystemInformation(&#13;
+		(SYSTEM_INFORMATION_CLASS)0x23,			// 查询信息类型&#13;
+		&amp;DebuggerInfo, 							// 输出查询信息&#13;
+		sizeof(DebuggerInfo), 			        // 查询类型大小&#13;
+		NULL); 									// 实际返回大小&#13;
+	return DebuggerInfo.KernelDebuggerEnabled;&#13;
+}&#13;
+int main()&#13;
+{&#13;
+	if (CheckSystemKernelDebuggerInformation())&#13;
+		printf("当前处于[被]调试状态\n");&#13;
+	else&#13;
+		printf("当前处于[非]调试状态\n");&#13;
+&#13;
+	system("pause");&#13;
+	return 0;&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="2jldtfdlinqfao8buqd2hfnmk0">&nbsp;主动脱离调试器</a>
+</h3>
+<h3 class="topic">
+<a name="6815deofbnt620v9p7g596fokm">&nbsp;&nbsp;原理:设置当前线程为不可调试状态</a>
+</h3>
+<h3 class="topic">
+<a name="3jagjih4hrs4is6masjphpo6n8">&nbsp;&nbsp;会用到一个未公开函数，所以需要声明公开函数</a>
+</h3>
+<h3 class="topic">
+<a name="3pen8u74g60j21mfenotm9fgq4">&nbsp;&nbsp;&nbsp;动态获取未公开的函数（从ntdll.dll）</a>
+</h3>
+<h3 class="topic">
+<a name="5srcc5maa0vasfcajfmm8p74ti">&nbsp;&nbsp;&nbsp;&nbsp;调用该函数，隐藏当前进程的线程</a>
+</h3>
+<h3 class="topic">
+<a name="180ai479pg1520jqfa4jei4pmt">&nbsp;&nbsp;示例代码</a>
+</h3>
+<h3 class="topic">
+<a name="4f5jahf5bc19sgni8s0m2jba47">&nbsp;&nbsp;&nbsp;#include &lt;iostream&gt;&#13;
+#include &lt;windows.h&gt;&#13;
+&#13;
+// 脱离调试器的原理是设置当前的线程为不可调试状态&#13;
+typedef enum _THREAD_INFO_CLASS {&#13;
+	ThreadHideFromDebugger = 17&#13;
+} THREAD_INFO_CLASS;&#13;
+&#13;
+// 声明未公开函数类型&#13;
+typedef NTSTATUS(NTAPI *ZW_SET_INFORMATION_THREAD)(&#13;
+	IN  HANDLE 			ThreadHandle,&#13;
+	IN  THREAD_INFO_CLASS	ThreadInformaitonClass,&#13;
+	IN  PVOID 			ThreadInformation,&#13;
+	IN  ULONG 			ThreadInformationLength);&#13;
+&#13;
+void ZSIT_DetachDebug()&#13;
+{&#13;
+	// 动态的获取未公开的函数未公开函数保存在ntdll中，函数名为ZwSetInformationThread&#13;
+	ZW_SET_INFORMATION_THREAD Func;&#13;
+	Func = (ZW_SET_INFORMATION_THREAD)GetProcAddress(LoadLibrary(L"ntdll.dll"), "ZwSetInformationThread");&#13;
+&#13;
+	// 设置线程信息&#13;
+	Func(GetCurrentThread(), ThreadHideFromDebugger, NULL, NULL);&#13;
+}&#13;
+&#13;
+int main()&#13;
+{&#13;
+	ZSIT_DetachDebug();&#13;
+	printf("runnning...\n");&#13;
+	system("pause");&#13;
+	return 0;&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="036j9kr3p6a8t395mt0h8v3r5o">&nbsp;判断窗口</a>
+</h3>
+<h3 class="topic">
+<a name="5b0mmdp4amt5s1ldfh5bbaviir">&nbsp;&nbsp;通用性极差</a>
+</h3>
+<h3 class="topic">
+<a name="00gk4f76semd9daat6qjbc06gt">&nbsp;&nbsp;遍历当前窗口名，如果窗口名出现调试器信息，说明当前程序被调试</a>
+</h3>
+<h3 class="topic">
+<a name="5uchogn1do4098k3puh0r1a043">&nbsp;&nbsp;更加推荐遍历进程，进程名称比窗口名更有效</a>
+</h3>
+<h3 class="topic">
+<a name="06hapvo22fp4chnqpa1g3hrahb">&nbsp;&nbsp;&nbsp;或者模糊匹配特定字段（比如ollydbg）确定当前运行环境中有无调试器</a>
+</h3>
+<h3 class="topic">
+<a name="2rje9ueihq74ft2vu9jtbmsavv">&nbsp;&nbsp;示例代码</a>
+</h3>
+<h3 class="topic">
+<a name="0spva0edpu3ua5sg985o2m5702">&nbsp;&nbsp;&nbsp;#include &lt;iostream&gt;&#13;
+#include &lt;windows.h&gt;&#13;
+&#13;
+int main()&#13;
+{	&#13;
+	//通用性极差: 推荐遍历进程比较进程名称&#13;
+	//或者通过模糊匹配窗口名的方式判断当前运行环境中有没有调试器&#13;
+	if (FindWindowA(NULL, "OllyDbg"))&#13;
+		printf("存在调试器\n");&#13;
+	else&#13;
+		printf("没检测到调试器\n");&#13;
+	return 0;&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="336os6r4a26t43orb258lgdnmb">&nbsp;注意程序在vs中调试可能被判断为不处于调试状态，需要使用windbg进行是否调试状态的检验</a>
+</h3>
+<h3 class="topic">
+<a name="7bajrk3uhu4qo0denie5lsno8k">&nbsp;反调试一般在程序加载的时候进行</a>
+</h3>
+<h3 class="topic">
+<a name="3f83b0k44qt2a39gir8kf5trim">&nbsp;windows反反调试汇总</a>
+</h3>
+<h3 class="topic">
+<a href="https://www.cnblogs.com/lxykl/p/10075849.html" name="7i6hgptj30breo73prlidg8egm">&nbsp;&nbsp;https://www.cnblogs.com/lxykl/p/10075849.html</a>
+</h3>
+<h3 class="topic">
+<a name="2t359tuouvlmguthqqbabksi23">&nbsp;&nbsp;https://www.4hou.com/web/15211.html</a>
+</h3>
+<h2 class="topic">
+<a name="065uff3pidd2ads949j7d4h5eb">od插件编写</a>
+</h2>
+<h3 class="topic">
+<a name="3729lloji0mngrng2cb662e99l">&nbsp;插件是以什么形式存在的?</a>
+</h3>
+<h3 class="topic">
+<a name="3iqk03dipcaf9lrqrt8ng4bofl">&nbsp;&nbsp;通常以dll形式存在，但是后缀名可能会改变</a>
+</h3>
+<h3 class="topic">
+<a name="2iu3ofji2bvsrecjfhqgjqtjsv">&nbsp;主程序是如何发现插件的</a>
+</h3>
+<h3 class="topic">
+<a name="2bvr6vnff5onkrgr25v8oftirf">&nbsp;&nbsp;遍历一个固定的文件夹，加载其中的dll</a>
+</h3>
+<h3 class="topic">
+<a name="2as06n1sd6gn3pmqfhe763obld">&nbsp;主程序如何知道一个插件是和主程序匹配</a>
+</h3>
+<h3 class="topic">
+<a name="3j363aa663d3f97mtcghmjt1uk">&nbsp;&nbsp;通常插件需要导出一些必须的函数，该函数用于提供插件本身信息</a>
+</h3>
+<h3 class="topic">
+<a name="3ar1u42dlnmss324m9qb0e32ja">&nbsp;主程序如何执行插件提供的功能</a>
+</h3>
+<h3 class="topic">
+<a name="23q1f5oho6t5bqv9ugkjt24cpk">&nbsp;&nbsp;插件通过在dll中实现指定的函数，让主程序主动调用</a>
+</h3>
+<h3 class="topic">
+<a name="40dev5lltqd4vu5ni5of75di30">&nbsp;一般插件</a>
+</h3>
+<h3 class="topic">
+<a name="2esqef5n80ikt5rak7n80aqp1a">&nbsp;&nbsp;初始化主程序</a>
+</h3>
+<h3 class="topic">
+<a name="41ous00jetrogc3g6e8q9lo03n">&nbsp;&nbsp;&nbsp;加载插件</a>
+</h3>
+<h3 class="topic">
+<a name="7b02d5pvm0fcl8os93m08rpbop">&nbsp;&nbsp;&nbsp;&nbsp;遍历文件目录</a>
+</h3>
+<h3 class="topic">
+<a name="72jaqsk1tfblrn6s73v2dqe8pm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;构建结构体存放文件信息</a>
+</h3>
+<h3 class="topic">
+<a name="7h9fu4ae0ek676b57mq3pdtquo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;尝试查找第一个文件</a>
+</h3>
+<h3 class="topic">
+<a name="7g2ah3dqd8r8basiv8bo75pd1j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FindFirstFile</a>
+</h3>
+<h3 class="topic">
+<a name="3ll3amaohj26d8nb0jfgglknbj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果找到就拼接出路径（string），并加载dll到程序中（LoadLibraryA）</a>
+</h3>
+<h3 class="topic">
+<a name="62c6j0ismm8k54v3c3j6dkc406">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果加载成功,则判断插件是否符合主程序需要的版本信息（需要定义结构体和导出函数用于导出版本信息）</a>
+</h3>
+<h3 class="topic">
+<a name="70inpnf12uk7ub6j46vdfhogs7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;调用插件中的特定函数判断插件版本信息</a>
+</h3>
+<h3 class="topic">
+<a name="6ila5en24qn99bsm9vjfcnriqq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果版本条件符合则使用vector保存函数名和当前模块句柄</a>
+</h3>
+<h3 class="topic">
+<a name="16q9j6noj492mrnhdf8lv126kg">&nbsp;&nbsp;使用插件中的函数时</a>
+</h3>
+<h3 class="topic">
+<a name="2creh71jd5fvkkpgsimv8sdb51">&nbsp;&nbsp;&nbsp;遍历vector中的的元素，从模块的句柄使用GetProcAddress获得模块中的函数</a>
+</h3>
+<h3 class="topic">
+<a name="1h3tu1be1ppl3l9vtpup8mpf3p">&nbsp;&nbsp;主程序插件加载与使用</a>
+</h3>
+<h3 class="topic">
+<a name="2sgdgs6u29hc635jhd4jquqp8t">&nbsp;&nbsp;&nbsp;#include &lt;vector&gt;&#13;
+#include &lt;string&gt;&#13;
+#include &lt;iostream&gt;&#13;
+#include &lt;windows.h&gt;&#13;
+using namespace std;&#13;
+&#13;
+// 1. 插件是以什么样的形式存在的？&#13;
+//	答： 插件通常是以 DLL 的形式存在，后缀名可能有变&#13;
+&#13;
+// 2. 主程序是如何发现插件的？&#13;
+//  答： 通常是遍历一个固定的文件夹，加载其中的 dll 文件&#13;
+&#13;
+// 3. 主程序如何知道一个插件是否和当前的程序匹配？&#13;
+//  答： 通常插件都需要导出一些必须的函数用于提供插件本身的信息&#13;
+&#13;
+// 4. 主程序是如何执行插件提供的功能的？&#13;
+//	答： 插件通过实现一些指定的函数，让主程序主动的调用&#13;
+&#13;
+//该结构体用于保存从dll中获得的模块名称&#13;
+struct Info&#13;
+{&#13;
+	char name[20];&#13;
+};&#13;
+&#13;
+//该结构体用于保存成功导入的插件的模块名称和模块句柄&#13;
+struct PluginInfo&#13;
+{&#13;
+	char name[20];&#13;
+	HMODULE Module;&#13;
+};&#13;
+&#13;
+//该函数为dll中判断dll版本信息的函数，主程序会调用该函数判断能否加载该插件&#13;
+typedef int(*pfunc)(Info&amp; info);&#13;
+&#13;
+typedef void(*pfunc2)();&#13;
+&#13;
+vector&lt;PluginInfo&gt; plugins;&#13;
+&#13;
+void funcA()&#13;
+{&#13;
+	//插件dll的保存路径，之后程序遍历该路径，寻找可加载的dll&#13;
+	string path(".\\plugin\\");&#13;
+&#13;
+	// 用于存放文件信息 &#13;
+	WIN32_FIND_DATAA FindData = { 0 };&#13;
+&#13;
+	// 尝试查找该路径下后缀为.dll的文件&#13;
+	HANDLE FindHandle = FindFirstFileA(".\\plugin\\*.dll", &amp;FindData);&#13;
+	&#13;
+	// 如果找到了&#13;
+	if (FindHandle != INVALID_HANDLE_VALUE)&#13;
+	{&#13;
+		// 拼接出路径&#13;
+		string currentfile = path + FindData.cFileName;&#13;
+&#13;
+		// 加载DLL到程序&#13;
+		HMODULE Handle = LoadLibraryA(currentfile.c_str());&#13;
+&#13;
+		// 是否加载成功&#13;
+		if (Handle != NULL)&#13;
+		{&#13;
+			// 获取函数判断是否符合版本&#13;
+			pfunc func = (pfunc)GetProcAddress(Handle, "getinfo");//插件dll中返回插件版本信息的函数为getinfo&#13;
+&#13;
+			// 调用插件的函数判断版本&#13;
+			if (func != NULL)&#13;
+			{&#13;
+				Info info = { 0 };&#13;
+                //这里是关键，如果dll中的函数返回值为1，说明当前插件适用于版本1的主程序，说明该插件可以用于当前主程序&#13;
+				if (func(info) == 1)&#13;
+				{&#13;
+					// 如果符合条件，保存插件信息&#13;
+					PluginInfo Plugin = { 0 };&#13;
+					strcpy_s(Plugin.name, 20, info.name);&#13;
+					Plugin.Module = Handle;&#13;
+                    //将该模块的名称和句柄保存在动态数组，用于以后从该模块中导出函数（使用GetProcAddress）&#13;
+					plugins.push_back(Plugin);&#13;
+				}&#13;
+			}&#13;
+		}&#13;
+	}&#13;
+}&#13;
+&#13;
+void funcB()&#13;
+{&#13;
+	// 打印自己的名字&#13;
+	for (int i = 0; i &lt; plugins.size(); ++i)&#13;
+	{&#13;
+		pfunc2 fun = (pfunc2)GetProcAddress(plugins[i].Module, "show");//遍历多个模块，找出特定导出函数并使用&#13;
+&#13;
+		if (fun != NULL)&#13;
+			fun();&#13;
+	}&#13;
+}&#13;
+&#13;
+void funcC()&#13;
+{&#13;
+&#13;
+}&#13;
+&#13;
+void funcD()&#13;
+{&#13;
+&#13;
+}&#13;
+&#13;
+&#13;
+int main()&#13;
+{&#13;
+	// 1. 初始化主程序&#13;
+	funcA();&#13;
+&#13;
+	// 2. 操作 1&#13;
+	funcB();&#13;
+&#13;
+	// 3. 操作 2&#13;
+	funcC();&#13;
+&#13;
+	// 4. 清理程序&#13;
+	funcD();&#13;
+&#13;
+	return 0;&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="6rmknfgfg7kuuis7k895khuudg">&nbsp;&nbsp;插件代码（dll）</a>
+</h3>
+<h3 class="topic">
+<a name="5m1tk9bqnt6nqjkov8hj7op713">&nbsp;&nbsp;&nbsp;#include &lt;windows.h&gt;&#13;
+#include &lt;string.h&gt;&#13;
+#include &lt;stdio.h&gt;&#13;
+&#13;
+struct Info&#13;
+{&#13;
+	char name[20];&#13;
+};&#13;
+&#13;
+&#13;
+// 提供一个函数用于导出信息&#13;
+extern "C" __declspec(dllexport) int getinfo(Info&amp;info)&#13;
+{&#13;
+	strcpy_s(info.name, 20, "myplugin");&#13;
+&#13;
+	return 1;//这里就是当前插件的版本信息&#13;
+}&#13;
+&#13;
+extern "C" __declspec(dllexport) void show()&#13;
+{&#13;
+	printf("muplugin\n");&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="45kfn0dmsv98s1qek80ggs36ut">&nbsp;OD插件</a>
+</h3>
+<h3 class="topic">
+<a name="1e8bjt7h9vgglb5t4g0rds68tk">&nbsp;&nbsp;需要加载od提供的头文件和lib</a>
+</h3>
+<h3 class="topic">
+<a name="7thtu6cjdh4qqac0hlc2bthmd1">&nbsp;&nbsp;&nbsp;#include "Plugin/od_plugin.h"&#13;
+#pragma comment(lib, "Plugin/ollydbg.lib")</a>
+</h3>
+<h3 class="topic">
+<a name="3ajgqqu03gknjt25h5olso8s12">&nbsp;&nbsp;od要求插件必须提供特定函数，该函数用于告诉od能否支插件</a>
+</h3>
+<h3 class="topic">
+<a name="7d9e6j403peos6od8j4spav6a1">&nbsp;&nbsp;&nbsp;参数</a>
+</h3>
+<h3 class="topic">
+<a name="7qag529d5lg19racmv1i479u3d">&nbsp;&nbsp;&nbsp;&nbsp;od的版本</a>
+</h3>
+<h3 class="topic">
+<a name="7hlh09a2i7nol9appq1b9fhqd1">&nbsp;&nbsp;&nbsp;&nbsp;不用考虑</a>
+</h3>
+<h3 class="topic">
+<a name="6qt5pbqvfqogpe85o5grb4imf9">&nbsp;&nbsp;&nbsp;&nbsp;插件名称</a>
+</h3>
+<h3 class="topic">
+<a name="2v454mrqaln7a6tqrpfp2gl01f">&nbsp;&nbsp;&nbsp;&nbsp;插件版本号</a>
+</h3>
+<h3 class="topic">
+<a name="550hehapgs09rgupppkihs4a2m">&nbsp;&nbsp;设置插件（dll）的输出目录为od的pulgin，从而将生成的dll放在od目录下面</a>
+</h3>
+<h3 class="topic">
+<a name="497s6ucige93jf8dlim3ehtqte">&nbsp;&nbsp;设置调试程序为OD</a>
+</h3>
+<h3 class="topic">
+<a name="7bc3sg8orocuejqkqtk15vfovl">&nbsp;od中菜单以结构体实现的</a>
+</h3>
+<h3 class="topic">
+<a name="2b1o58q2nlcvqo1hemil76gpda">&nbsp;&nbsp;每一个菜单的结构体均已全0结尾</a>
+</h3>
+<h3 class="topic">
+<a name="371a65i4tqpebrj5r2nlfrhck8">&nbsp;&nbsp;&nbsp;可以在初始化函数中进行初始化菜单</a>
+</h3>
+<h3 class="topic">
+<a name="1rsqfjht7i2fv76cv29bmlistg">&nbsp;&nbsp;菜单结构体中index字段类似于菜单的控件id</a>
+</h3>
+<h3 class="topic">
+<a name="3o8kuuh1h3kdgefkdi7kt7vluq">&nbsp;&nbsp;需要实现全局菜单回调函数，才能弹出菜单</a>
+</h3>
+<h3 class="topic">
+<a name="7rk4nnd819ijetuh9b1belmtg6">&nbsp;&nbsp;&nbsp;菜单回调函数会在两种情况被触发</a>
+</h3>
+<h3 class="topic">
+<a name="2lpio1shjfcotdrpcgsoo52ueu">&nbsp;&nbsp;&nbsp;&nbsp;弹出菜单</a>
+</h3>
+<h3 class="topic">
+<a name="2ph772r3lv8vnrck0i1lq56bad">&nbsp;&nbsp;&nbsp;&nbsp;点击菜单</a>
+</h3>
+<h3 class="topic">
+<a name="1sv6mb0a2udjf374vfsju8c3g2">&nbsp;反调试一般在程序加载的时候进行</a>
+</h3>
+<h3 class="topic">
+<a name="6ssne6crb7be3n2c2k6f0gt4aq">&nbsp;od插件示例代码</a>
+</h3>
+<h3 class="topic">
+<a name="0ot1a81v5c1j520cnre6dm60e7">&nbsp;&nbsp;#include &lt;string.h&gt;&#13;
+#include &lt;windows.h&gt;&#13;
+#include &lt;winternl.h&gt;&#13;
+#pragma comment(lib,"ntdll.lib")&#13;
+&#13;
+// 1. OD 提供的头文件和其它的必备模块&#13;
+#include "Plugin/od_plugin.h"&#13;
+#pragma comment(lib, "Plugin/ollydbg.lib")&#13;
+&#13;
+// 2. 设置输出目录为 OD 的插件目录，项目属性 -&gt; 常规 -&gt; 输出目录&#13;
+// 3. 设置调试程序为 OD ，项目属性 -&gt; 调试 -&gt; 命令&#13;
+&#13;
+// 定义当前插件的名字和版本&#13;
+#define PLUGINNAME L"my_plugin"  // 插件名称&#13;
+#define MY_VERSION L"1.0.0.0.1"  // 插件版本&#13;
+&#13;
+// 定义两个菜单，每一个菜单都应该以一个全 0 的结构结尾&#13;
+//该菜单结构体是在Plugin/od_plugin.h中定义的&#13;
+t_menu g_stcMainMenu[2] = { 0 };		// 主菜单&#13;
+t_menu g_stcDasmMenu[2] = { 0 };		// 汇编菜单&#13;
+&#13;
+&#13;
+// 必须提供的一个函数，用于告诉 OD 能否支持它&#13;
+extc int __cdecl ODBG2_Pluginquery(int ollydbgversion, ulong *features,&#13;
+	wchar_t pluginname[SHORTNAME], wchar_t pluginversion[SHORTNAME])&#13;
+{&#13;
+	// 1. 检查OllyDBG的兼容版本&#13;
+	if (ollydbgversion &lt; 201)//如果主程序传入的od版本效于201，则该插件不支持od，返回0&#13;
+		return 0;&#13;
+&#13;
+	// 2. 设置OllyDBG插件的名称与版本&#13;
+	//如果插件支持当前主程序od，返回插件的名称和插件版本给主程序od&#13;
+	wcscpy_s(pluginname, SHORTNAME, PLUGINNAME);&#13;
+	wcscpy_s(pluginname, SHORTNAME, MY_VERSION);&#13;
+&#13;
+	// 3. 返回需要的API版本&#13;
+	return PLUGIN_VERSION;&#13;
+};&#13;
+&#13;
+// 菜单的相应函数，可以判断当前是在哪里弹出的菜单&#13;
+extc t_menu* __cdecl ODBG2_Pluginmenu(wchar_t *type)&#13;
+{&#13;
+	// 1. 判断是否为主菜单弹出请求，是则弹出主菜单&#13;
+	if (!wcscmp(type, PWM_MAIN))&#13;
+		return g_stcMainMenu;//该结构体对应主菜单&#13;
+&#13;
+	// 2. 判断是否为CPU窗口右键菜单弹出请求，是则弹出右键菜单&#13;
+	if (!wcscmp(type, PWM_DISASM))&#13;
+		return g_stcDasmMenu;//该结构体对应会反汇编窗口&#13;
+&#13;
+	// 3. 返回空&#13;
+	return NULL;&#13;
+};&#13;
+&#13;
+&#13;
+// 菜单的回调函数&#13;
+&#13;
+static int MenuFun(t_table *pt, wchar_t *name, ulong index, int mode) &#13;
+{&#13;
+	// 弹出菜单的时候&#13;
+	if (mode == MENU_VERIFY)    &#13;
+		return MENU_NORMAL;&#13;
+&#13;
+	// 点击菜单的时候&#13;
+	if (mode == MENU_EXECUTE)&#13;
+	{&#13;
+		// 如果是主菜单点击&#13;
+		if (index == 1)&#13;
+			MessageBoxA(NULL, "主菜单", "主菜单", MB_OK);&#13;
+		// 汇编窗口的点击&#13;
+		else&#13;
+			MessageBoxA(NULL, "汇编菜单", "汇编菜单", MB_OK);&#13;
+&#13;
+		return MENU_NOREDRAW; &#13;
+	}&#13;
+&#13;
+	return MENU_ABSENT;&#13;
+};&#13;
+&#13;
+//   实现一个用于插件dll初始化的函数&#13;
+extc int __cdecl ODBG2_Plugininit(void) &#13;
+{&#13;
+	// 初始化主菜单&#13;
+	g_stcMainMenu-&gt;name = L"主菜单";&#13;
+	g_stcMainMenu-&gt;help = L"主菜单帮助";&#13;
+	g_stcMainMenu-&gt;index = 1;&#13;
+	g_stcMainMenu-&gt;menufunc = MenuFun;&#13;
+	&#13;
+	// 初始化汇编菜单&#13;
+	g_stcDasmMenu-&gt;name = L"汇编菜单";&#13;
+	g_stcDasmMenu-&gt;help = L"汇编菜单帮助";&#13;
+	g_stcDasmMenu-&gt;index = 2;&#13;
+	g_stcDasmMenu-&gt;menufunc = MenuFun;&#13;
+&#13;
+	return 0;&#13;
+};&#13;
+&#13;
+// 通知函数，会在各种关键的时候调用这个函数&#13;
+pentry(void) ODBG2_Pluginnotify(int code, void *data,&#13;
+	ulong parm1, ulong parm2)&#13;
+{&#13;
+	// 判断消息类型&#13;
+	if (code == PN_NEWPROC)&#13;
+	{&#13;
+		// 保存进程信息&#13;
+		struct PROCESS_BASIC_INFORMATION {&#13;
+			ULONG ExitStatus; 					// 进程返回码&#13;
+			LPVOID  PebBaseAddress; 			// PEB地址&#13;
+			ULONG AffinityMask; 				// CPU亲和性掩码&#13;
+			LONG  BasePriority; 				// 基本优先级&#13;
+			ULONG UniqueProcessId; 				// 本进程PID&#13;
+			ULONG InheritedFromUniqueProcessId; // 父进程PID&#13;
+		}stcProcInfo;&#13;
+&#13;
+		// 进行反调试操作 BeingDebugged&#13;
+		// 通过 PID 获取句柄&#13;
+		HANDLE Handle = OpenProcess(PROCESS_ALL_ACCESS, FALSE, parm1);//parm1中保存被调试器调试的进程的pid&#13;
+&#13;
+		// 获取到进程的PEB&#13;
+		NtQueryInformationProcess(&#13;
+			Handle,&#13;
+			ProcessBasicInformation,&#13;
+			&amp;stcProcInfo,&#13;
+			sizeof(stcProcInfo),&#13;
+			NULL);&#13;
+&#13;
+		DWORD PEBAddr = (DWORD)stcProcInfo.PebBaseAddress;&#13;
+&#13;
+		// 写入数据到PEB 0x02&#13;
+		DWORD Number = 0;&#13;
+		//将目的进程中peb结构体的BeingDbgged字段改为0，即处于非调试，如果被调试进程存在以BeingDbgged为基础的反调试机制，此举可以破解该反调试&#13;
+		WriteProcessMemory(Handle, (LPVOID)(PEBAddr + 0x02), "", 1, &amp;Number);&#13;
+&#13;
+		CloseHandle(Handle);&#13;
+	}&#13;
+&#13;
+}</a>
+</h3>
+<h2 class="topic">
+<a name="5koiq5mf6gh45shvnr0dlf39i4">vs中创建dll，导出的函数要写在dllmain文件中</a>
+</h2>
+</body>
+</html>

@@ -1,0 +1,1224 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>class50day0419(权限管理、内存管理第一天)</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="3rbink361qbvq7q0ul31v9295j">class50day0419(权限管理、内存管理第一天)</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="class50day0419(%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86%E3%80%81%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E7%AC%AC%E4%B8%80%E5%A4%A9)_files/images/class50day0419(%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86%E3%80%81%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E7%AC%AC%E4%B8%80%E5%A4%A9).jpg"></div>
+<h2 class="topic">
+<a name="6l869bfg0okq57esc8h2ore7ma">权限管理</a>
+</h2>
+<h3 class="topic">
+<a name="2p4tce92fjmvv9nl5a48epl2jt">&nbsp;windows权限管理通过账户机制表现</a>
+</h3>
+<h3 class="topic">
+<a name="197kehecmkpc4fdcso5ffg57b6">&nbsp;&nbsp;此时使用账户创建的所有进程的权限与账户的权限相同</a>
+</h3>
+<h3 class="topic">
+<a name="01s2p9j5httvjc3snjmbbq46jj">&nbsp;&nbsp;此进程创建的线程默认与进程拥有同样的权限</a>
+</h3>
+<h3 class="topic">
+<a name="3gqm8kt9jp0b58ki2cl9g6crur">&nbsp;一个线程对一个对象的能否访问是由这个线程的访问令牌和该对象的安全描述符决定的</a>
+</h3>
+<h3 class="topic">
+<a name="5dvvn2p3g3q6lvendlkmn52t1o">&nbsp;创建一个内核对象，一般有一个安全描述符</a>
+</h3>
+<h3 class="topic">
+<a name="5qv3j4h4lkat0ifvqgkodck66h">&nbsp;&nbsp;用于描述什么样的账户，具有什么权限可以访问该对象</a>
+</h3>
+<h3 class="topic">
+<a name="7v56cpussgjm15grg21cda28pn">&nbsp;令牌</a>
+</h3>
+<h3 class="topic">
+<a name="7nvvfbjcu3o5p5d0a4sot5t8ep">&nbsp;&nbsp;是一个内核对象</a>
+</h3>
+<h3 class="topic">
+<a name="7tgip23kk552gb67i8a17407ji">&nbsp;&nbsp;是系统中访问权限的抽象</a>
+</h3>
+<h3 class="topic">
+<a name="5re0a2vkkhahuhbi9gvg28t308">&nbsp;&nbsp;存储当前账户的SID，以及其所具有的权限</a>
+</h3>
+<h3 class="topic">
+<a name="0oao3g6rhml5suqfld03omn63t">&nbsp;&nbsp;&nbsp;每个账户都有一个SID，是其全局标识符</a>
+</h3>
+<h3 class="topic">
+<a name="59afrs10lf13f14on35e6mt60c">&nbsp;&nbsp;&nbsp;每一个用户组也有一个SID，是其全局变量的标识符</a>
+</h3>
+<h3 class="topic">
+<a name="36qs3hja9hmg7or13qna1cgph7">&nbsp;&nbsp;&nbsp;在账户创建时分配，伴随账户的一生</a>
+</h3>
+<h3 class="topic">
+<a name="50d76q29sclpgr4bht28ipja1n">&nbsp;安全描述符</a>
+</h3>
+<h3 class="topic">
+<a name="1imfi0q2c5hhimvcm8gp21une5">&nbsp;&nbsp;记录可以访问的账户的SID以及可以访问的权限</a>
+</h3>
+<h3 class="topic">
+<a name="7m68rg72qjlgmug7qitshd9pnv">&nbsp;&nbsp;通过遍历访问控制列表（ACL）中的访问控制入口(ACE)，已确定哪一个账户拥有什么权限才能访问，哪些账户是拒绝的</a>
+</h3>
+<h3 class="topic">
+<a name="3rar8g3eesfv744rvdgivr4n5p">&nbsp;&nbsp;如果需要访问，则需要得到对应内核对象的句柄</a>
+</h3>
+<h3 class="topic">
+<a name="7kt4q1cm4m5ckrtspsp9diu4gs">&nbsp;UAC（用户账户控制）</a>
+</h3>
+<h3 class="topic">
+<a name="3i2d7f419kep8gkr1s3kuq6a0k">&nbsp;&nbsp;之前，进程的权限就是账户的权限，UAC出现之后，如果对应管理员账户创建的进程需要使用管理员权限，会弹出对话框进行提示</a>
+</h3>
+<h3 class="topic">
+<a name="2l9ngdf7k24f1d6gpsjeo31pfa">&nbsp;&nbsp;即给管理员账户先分配一个低权限令牌（过滤令牌），之后需要使用管理员权限的时候进行弹窗提示</a>
+</h3>
+<h3 class="topic">
+<a name="002ii95ogliuvptmimid767ck3">&nbsp;&nbsp;在windows中使用&ldquo;用户账户控制设置&rdquo;进行开启/关闭UAC</a>
+</h3>
+<h3 class="topic">
+<a name="6b7aipsktc85bthovibm010p9b">&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="3q341knjr5ufmh5475hoogcb1k">&nbsp;&nbsp;&nbsp;显示UAC提升按钮的代码</a>
+</h3>
+<h3 class="topic">
+<a name="0frck84drfnssc3fvbh9g7n1aa">&nbsp;&nbsp;&nbsp;&nbsp;bool CheckAdmin()&#13;
+{&#13;
+	//在相关按钮上显示UAC提升按钮，如果当前账户的权限较低，则会显示盾牌，点击之后弹出对话框显示是否以管理员权限运行&#13;
+    //如果当前账户权限较高则不会显示盾牌&#13;
+	// 1. 获得本进程的令牌&#13;
+	HANDLE hToken = NULL;&#13;
+	if (!OpenProcessToken(GetCurrentProcess(), TOKEN_QUERY, &amp;hToken))&#13;
+		return false;&#13;
+	// 2. 获取提升类型&#13;
+	TOKEN_ELEVATION_TYPE ElevationType = TokenElevationTypeDefault;&#13;
+	BOOL                 bIsAdmin = false;&#13;
+	DWORD                dwSize = 0;&#13;
+	if (GetTokenInformation(hToken, TokenElevationType, &amp;ElevationType,&#13;
+		sizeof(TOKEN_ELEVATION_TYPE), &amp;dwSize)) {&#13;
+		// 2.1 创建管理员组的对应SID&#13;
+		BYTE adminSID[SECURITY_MAX_SID_SIZE];&#13;
+		dwSize = sizeof(adminSID);&#13;
+		CreateWellKnownSid(WinBuiltinAdministratorsSid, NULL, &amp;adminSID, &amp;dwSize);&#13;
+		// 2.2 判断当前进程运行用户角色是否为管理员&#13;
+		if (ElevationType == TokenElevationTypeLimited) {&#13;
+			// a. 获取连接令牌的句柄&#13;
+			HANDLE hUnfilteredToken = NULL;&#13;
+			GetTokenInformation(hToken, TokenLinkedToken, (PVOID)&amp;hUnfilteredToken,&#13;
+				sizeof(HANDLE), &amp;dwSize);&#13;
+			// b. 检查这个原始的令牌是否包含管理员的SID&#13;
+			if (!CheckTokenMembership(hUnfilteredToken, &amp;adminSID, &amp;bIsAdmin))&#13;
+				return false;&#13;
+			CloseHandle(hUnfilteredToken);&#13;
+		}&#13;
+		else {&#13;
+			bIsAdmin = IsUserAnAdmin();&#13;
+		}&#13;
+		CloseHandle(hToken);&#13;
+	}&#13;
+	// 3. 判断具体的权限状况&#13;
+	BOOL bFullToken = false;&#13;
+	switch (ElevationType) {&#13;
+	case TokenElevationTypeDefault: /* 默认的用户或UAC被禁用 */&#13;
+		if (IsUserAnAdmin())  bFullToken = true; // 默认用户有管理员权限&#13;
+		else                  bFullToken = false;// 默认用户不是管理员组&#13;
+		break;&#13;
+	case TokenElevationTypeFull:    /* 已经成功提高进程权限 */&#13;
+		if (IsUserAnAdmin())  bFullToken = true; //当前以管理员权限运行&#13;
+		else                  bFullToken = false;//当前未以管理员权限运行&#13;
+		break;&#13;
+	case TokenElevationTypeLimited: /* 进程在以有限的权限运行 */&#13;
+		if (bIsAdmin)  bFullToken = false;//用户有管理员权限，但进程权限有限&#13;
+		else           bFullToken = false;//用户不是管理员组，且进程权限有限&#13;
+	}&#13;
+	// 4. 根据权限的不同控制按钮的显示&#13;
+	if (!bFullToken)   &#13;
+		//按钮要有标题才能显示小盾牌&#13;
+		Button_SetElevationRequiredState(m_Button.GetSafeHwnd(),&#13;
+		TRUE);&#13;
+	else&#13;
+		::ShowWindow(m_Button.m_hWnd, SW_HIDE);&#13;
+	return true;&#13;
+}&#13;
+</a>
+</h3>
+<h3 class="topic">
+<a name="7q3j0jshf6vauquju73eru53o4">&nbsp;&nbsp;&nbsp;以管理员权限打开进程</a>
+</h3>
+<h3 class="topic">
+<a name="6cdnocm057l100cj1go35tovaq">&nbsp;&nbsp;&nbsp;&nbsp;	// 1. 隐藏当前窗口&#13;
+	ShowWindow( SW_HIDE);&#13;
+	// 2. 获取当前程序路径&#13;
+	WCHAR szApplication[MAX_PATH] = { 0 };&#13;
+	DWORD cchLength = _countof(szApplication);&#13;
+	QueryFullProcessImageName(GetCurrentProcess(), 0,&#13;
+		szApplication, &amp;cchLength);&#13;
+	// 3. 以管理员权限重新打开进程&#13;
+	SHELLEXECUTEINFO sei = { sizeof(SHELLEXECUTEINFO) };&#13;
+	sei.lpVerb = L"runas";      // 请求提升权限&#13;
+	sei.lpFile = szApplication; // 可执行文件路径&#13;
+	sei.lpParameters = NULL;          // 不需要参数&#13;
+	sei.nShow = SW_SHOWNORMAL; // 正常显示窗口&#13;
+	if (ShellExecuteEx(&amp;sei))&#13;
+		exit(0);&#13;
+	else&#13;
+		ShowWindow( SW_SHOWNORMAL);</a>
+</h3>
+<h3 class="topic">
+<a name="5uohbthdma00tv896uer8inqdd">&nbsp;&nbsp;&nbsp;遍历当前进程的令牌的所有权限</a>
+</h3>
+<h3 class="topic">
+<a name="5i4j7l1e7t90o0nej5bd5ucap4">&nbsp;&nbsp;&nbsp;&nbsp;//遍历当前进程令牌中拥有的权限&#13;
+void ShowTokenPrivileges()&#13;
+{&#13;
+	//获取令牌句柄&#13;
+	HANDLE hToken;&#13;
+	OpenProcessToken(GetCurrentProcess(), TOKEN_QUERY, &amp;hToken);&#13;
+	if (!hToken)&#13;
+	{&#13;
+		printf("令牌打开失败\n");&#13;
+		return;&#13;
+	}&#13;
+	//查看令牌中的权限&#13;
+	DWORD dwSize;&#13;
+	//第一次调用，获取想要查询内容的大小&#13;
+	GetTokenInformation(hToken, TokenPrivileges, 0, 0, &amp;dwSize);&#13;
+	//第二次调用，就可以获取到想要的内容了&#13;
+	char* pBuf = new char[dwSize]{};&#13;
+	GetTokenInformation(hToken,&#13;
+		TokenPrivileges, pBuf, dwSize, &amp;dwSize);&#13;
+&#13;
+	TOKEN_PRIVILEGES* pTp = (TOKEN_PRIVILEGES*)pBuf;&#13;
+	//权限个数&#13;
+	DWORD dwPrivileageCount = pTp-&gt;PrivilegeCount;&#13;
+	LUID_AND_ATTRIBUTES* pLaa = pTp-&gt;Privileges;&#13;
+	//遍历权限&#13;
+	for (int i = 0; i &lt; dwPrivileageCount;i++)&#13;
+	{&#13;
+		char seStr[100] = {};&#13;
+		DWORD dwSize = sizeof(seStr);&#13;
+		//将表示权限的luid转化为权限名称和权限状态&#13;
+		LookupPrivilegeNameA(0, &amp;pLaa-&gt;Luid, seStr, &amp;dwSize);&#13;
+		printf("权限：【%s】  状态：【%d】\n", &#13;
+			seStr,pLaa-&gt;Attributes);&#13;
+		pLaa++;&#13;
+	}&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="3r2ggpcj58271dnqsf42lq8068">&nbsp;&nbsp;&nbsp;提升当前进程权限为调试权限</a>
+</h3>
+<h3 class="topic">
+<a name="5uehcrese1akkl8s7por12etde">&nbsp;&nbsp;&nbsp;&nbsp;BOOL EnableDebugPrivilege(BOOL fEnable){ //参数为TRUE或FALSE&#13;
+	BOOL fOk = FALSE;    HANDLE hToken;&#13;
+	// 以修改权限的方式，打开进程的令牌&#13;
+	if (OpenProcessToken(GetCurrentProcess(), TOKEN_ADJUST_PRIVILEGES,&#13;
+		&amp;hToken)) {&#13;
+		// 令牌权限结构体&#13;
+		TOKEN_PRIVILEGES tp;&#13;
+		tp.PrivilegeCount = 1;&#13;
+		//获得LUID&#13;
+		LookupPrivilegeValue(NULL, SE_DEBUG_NAME, &amp;tp.Privileges[0].Luid);&#13;
+		tp.Privileges[0].Attributes = fEnable ? SE_PRIVILEGE_ENABLED : 0;&#13;
+		AdjustTokenPrivileges(hToken, FALSE, &amp;tp, sizeof(tp), NULL, NULL); //修改权限&#13;
+		fOk = (GetLastError() == ERROR_SUCCESS);&#13;
+		CloseHandle(hToken);&#13;
+	}&#13;
+	return(fOk);&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="1oiohqkp6t5tgnvi5uso1hn5sl">&nbsp;&nbsp;&nbsp;资料上有套路化编程，不要求会写，只要求会使用</a>
+</h3>
+<h3 class="topic">
+<a name="2r4mvjer4cu6l23k5acnekcj2u">&nbsp;权限</a>
+</h3>
+<h3 class="topic">
+<a name="5fp4594gv1ujks3d37uf2mqh6i">&nbsp;&nbsp;每种权限均通过luid进行标识</a>
+</h3>
+<h3 class="topic">
+<a name="6vbdf30l83ifcc1i8alshs397a">&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class50day0419(%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86%E3%80%81%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E7%AC%AC%E4%B8%80%E5%A4%A9)_files/30mcovusta6hqriub7otms0fhb.png"></p>
+<h2 class="topic">
+<a name="0nu0p3d842qneh123putb9def3">内存管理</a>
+</h2>
+<h3 class="topic">
+<a name="7fi1im1931c00tvpj4a7cn4cff">&nbsp;内存中的每一个字节都有一个地址编号</a>
+</h3>
+<h3 class="topic">
+<a name="2ctob9vt4182c2ii77056erfek">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class50day0419(%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86%E3%80%81%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E7%AC%AC%E4%B8%80%E5%A4%A9)_files/3h4ev5ksh4tv35illtvmup3sin.png"></p>
+<h3 class="topic">
+<a name="5tb3lf49s85jllel2rcjei7us1">&nbsp;内存管理要求</a>
+</h3>
+<h3 class="topic">
+<a name="0joo57m6orebhjo6jecqhkp7su">&nbsp;&nbsp;一个进程不能访问其他进程的内存</a>
+</h3>
+<h3 class="topic">
+<a name="3r7i4aq4ac8b9vfvt7ih124dkc">&nbsp;&nbsp;内存可以在进程中动分配</a>
+</h3>
+<h3 class="topic">
+<a name="52n0b94vk2tutfvtavh81bg9uh">&nbsp;&nbsp;内存管理方法应该一样</a>
+</h3>
+<h3 class="topic">
+<a name="0gsoq68hr9vec6o8cpm5s92h8d">&nbsp;&nbsp;内存需要有属性，不同属性内存干不同的事情</a>
+</h3>
+<h3 class="topic">
+<a name="6gbgjgfcqa5b4ajifpv436hhhb">&nbsp;&nbsp;程序员使用起来不会感受到设计意图</a>
+</h3>
+<h3 class="topic">
+<a name="7odmf8u3p5bq1a9tousp0ndc7p">&nbsp;虚拟内存</a>
+</h3>
+<h3 class="topic">
+<a name="6qesh21f614fjdjtm1vq9j7l8c">&nbsp;&nbsp;无论物理内存多大，每一个进程都有4gb的虚拟地址空间</a>
+</h3>
+<h3 class="topic">
+<a name="362ohh62s35e92ahg8cnvc3uan">&nbsp;&nbsp;低2gb是用户空间 高2gb是系统内核空间</a>
+</h3>
+<h3 class="topic">
+<a name="2dsnl51hm0ddnkc3erddcasii0">&nbsp;&nbsp;&nbsp;高2gb对于每个进程都是一样的</a>
+</h3>
+<h3 class="topic">
+<a name="4je0l2hctnt78as2p92uk4rlrl">&nbsp;&nbsp;进程中使用的全部是虚拟地址，虚拟地址到物理地址的转换由操作系统完成，故无法在自己的进程中访问到其他进程的内存</a>
+</h3>
+<h3 class="topic">
+<a name="6fcuf785q711jpl9hd10entusq">&nbsp;&nbsp;一个进程的虚拟空间只有使用的一部分与物理内存有映射关系，并且windows尽量保证对于不同进程的同一份数据，在物理内存中只有一份</a>
+</h3>
+<h3 class="topic">
+<a name="705ieaa27bj4dim3bdnngp0f32">&nbsp;&nbsp;当各个进程使用的内存数量超过物理内存之后，会使用一部分硬盘空间用于暂存内存中暂时用不到的数据</a>
+</h3>
+<h3 class="topic">
+<a name="14eiklik17bm3jjedv1bhehh6f">&nbsp;&nbsp;&nbsp;这部分被转存到硬盘上的内存也称分页内存</a>
+</h3>
+<h3 class="topic">
+<a name="52rdemsnr9r5tag1pb6iv9v06g">&nbsp;虚拟内存与物理内存换算使用页表机制进行</a>
+</h3>
+<h3 class="topic">
+<a name="5845ehagdev24an0eo4of6v9o4">&nbsp;&nbsp;第三阶段讲</a>
+</h3>
+<h3 class="topic">
+<a name="6rbh9gvdduusfrocsj5g5agq2o">&nbsp;32位vs64位内存的区别</a>
+</h3>
+<h3 class="topic">
+<a name="65jvcev243s5usr6h1a9hh8mrq">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class50day0419(%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86%E3%80%81%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E7%AC%AC%E4%B8%80%E5%A4%A9)_files/5mslfgsefcdn0te3s8mk0kqjg3.png"></p>
+<h3 class="topic">
+<a name="4l0h0ncr77lc73dtna4jcl0b0s">&nbsp;&nbsp;1eb=1024pb</a>
+</h3>
+<h3 class="topic">
+<a name="6tmm349okgnnp3jhmk1drcsj7p">&nbsp;内存管理方式</a>
+</h3>
+<h3 class="topic">
+<a name="6v8fvlhm6jlu7bva9qcisk7cpc">&nbsp;&nbsp;堆</a>
+</h3>
+<h3 class="topic">
+<a name="2lgdso1e2lek0taf95k1p8bvek">&nbsp;&nbsp;&nbsp;用于管理小型对象，可申请的内存空间比较小</a>
+</h3>
+<h3 class="topic">
+<a name="5to20t4an2rpb21qjtddvv4nf5">&nbsp;&nbsp;&nbsp;在windwos中作为一个对象进行管理</a>
+</h3>
+<h3 class="topic">
+<a name="69bsf0nlilramhmbffbc3u30e2">&nbsp;&nbsp;&nbsp;windows中系统创建一个进程之后，会为这个进程创建一个默认堆，只有系统可以销毁，用户不能销毁</a>
+</h3>
+<h3 class="topic">
+<a name="4eppbrqrsv6q87i7ph1dk3c0ah">&nbsp;&nbsp;&nbsp;使用malloc free申请、释放堆空间是申请、释放默认堆上的空间</a>
+</h3>
+<h3 class="topic">
+<a name="7e3nqndcua3s8m9r8352spc6s8">&nbsp;&nbsp;&nbsp;相关api</a>
+</h3>
+<h3 class="topic">
+<a name="497p52auu3eocurbo88jh7o4n9">&nbsp;&nbsp;&nbsp;&nbsp;HeapCreate()</a>
+</h3>
+<h3 class="topic">
+<a name="5naabkdrc321170o1h9pcplsbi">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;创建一个独立的内存堆</a>
+</h3>
+<h3 class="topic">
+<a name="5m9u6ukl0nkb6uftol7hv9p54l">&nbsp;&nbsp;&nbsp;&nbsp;HeapAlloc()</a>
+</h3>
+<h3 class="topic">
+<a name="76trpmt6mufjkpi4okgjf4ktdv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在内存堆上申请空间</a>
+</h3>
+<h3 class="topic">
+<a name="11kdchitceg457ep95srnm7k7t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;申请的空间以内存页的大小为单位，即每次至少申请一个内存页大小的内存空间，即4096个字节大小的内存</a>
+</h3>
+<h3 class="topic">
+<a name="3mvqssbrahrddtj24e9ljq4s3l">&nbsp;&nbsp;&nbsp;&nbsp;HeapFree()</a>
+</h3>
+<h3 class="topic">
+<a name="73gp15rvcs7117oh8i5sqfqjog">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;释放申请的内存</a>
+</h3>
+<h3 class="topic">
+<a name="0vkthcoq156qu8cobs50p9voql">&nbsp;&nbsp;&nbsp;&nbsp;HeapDestroy()</a>
+</h3>
+<h3 class="topic">
+<a name="5bc2c9nfacg5p4n151mssep8js">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将内存堆所有内存释放掉</a>
+</h3>
+<h3 class="topic">
+<a name="3i5qkgjh5qa0hjko647gfaie5t">&nbsp;&nbsp;&nbsp;&nbsp;GetProcessHeap()</a>
+</h3>
+<h3 class="topic">
+<a name="161q5k982ajf0kqarjmr0bmmsv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;获取已经存在的堆</a>
+</h3>
+<h3 class="topic">
+<a name="2n3rdi1ufct2ptjscbobor819c">&nbsp;&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="7ti23v47a4vu3thoqad5vgjoms">&nbsp;&nbsp;&nbsp;&nbsp;创建一个可增长的堆</a>
+</h3>
+<h3 class="topic">
+<a name="5su7abtk3us3ms6l93qp7pkeg2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;暂无</a>
+</h3>
+<h3 class="topic">
+<a name="7mhmu5vj1s3afmq4ao8rn4uvb9">&nbsp;&nbsp;&nbsp;&nbsp;创建一个堆，并在堆上分配内存空间</a>
+</h3>
+<h3 class="topic">
+<a name="2e7bfg673vjjhee546pfoil6f6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#include "stdafx.h"&#13;
+#include &lt;windows.h&gt;&#13;
+int _tmain(int argc, _TCHAR* argv[])&#13;
+{&#13;
+	HANDLE      hHeap = HeapCreate(0, 0, 0);&#13;
+	SYSTEM_INFO si;     //系统信息&#13;
+	GetSystemInfo(&amp;si); // 获取系统信息&#13;
+	//在堆上分配3个页面大小的内存&#13;
+	LPVOID lpMem = HeapAlloc(hHeap, HEAP_ZERO_MEMORY, si.dwPageSize * 3);&#13;
+	HeapFree(hHeap, 0, lpMem);&#13;
+	HeapDestroy(hHeap);&#13;
+	return 0;&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="194ooaqs91930b7ta0fk4psigs">&nbsp;&nbsp;&nbsp;&nbsp;通过已经存在的堆申请堆内存</a>
+</h3>
+<h3 class="topic">
+<a name="7k9kprc5a743a3f9h14jr3ma1a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;资料p38</a>
+</h3>
+<h3 class="topic">
+<a name="3l16c21f1e9p43kl206hlqnvrn">&nbsp;&nbsp;虚拟内存</a>
+</h3>
+<h3 class="topic">
+<a name="4724rshk6gm2ev5suj23jbigbi">&nbsp;&nbsp;&nbsp;适合用于处理大型数据结构</a>
+</h3>
+<h3 class="topic">
+<a name="1b506f62h38shk7cqpdoue29fk">&nbsp;&nbsp;&nbsp;虚拟内存是按内存分页进行管理，当前一个内存分页为4KB，故而管理内存的时候总是以4KB为单位进行</a>
+</h3>
+<h3 class="topic">
+<a name="2nkd8hertgeseoceohbbrp1r68">&nbsp;&nbsp;&nbsp;一个进程内核对象被创建成功后，系统内核会给其划拨一部分物理内存，并创建一块虚拟内存，此时虚拟内存仅仅是逻辑上的，并未与物理内存发生映射关系（此时虚拟内存状态被称为空闲的或保留的）</a>
+</h3>
+<h3 class="topic">
+<a name="59ktfb4eddd99m2qacfaa0j5ll">&nbsp;&nbsp;&nbsp;如果需要使用虚拟内存，就需要调用VirtualAlloc()函数来分配其中某一块内存区域</a>
+</h3>
+<h3 class="topic">
+<a name="5do31oqhtsh53kleudd9vpsnvr">&nbsp;&nbsp;&nbsp;&nbsp;分配的内存区域的起始地址正好是其内存分配粒度的整数倍，X86中内存分配粒度是64KB</a>
+</h3>
+<h3 class="topic">
+<a name="4caq62meoj872rn3bss7ojm9ch">&nbsp;&nbsp;&nbsp;虚拟内存的状态</a>
+</h3>
+<h3 class="topic">
+<a name="2jj8gt0ao44p8l0n9fvsf28uv7">&nbsp;&nbsp;&nbsp;&nbsp;空闲的</a>
+</h3>
+<h3 class="topic">
+<a name="5djaahl16ck5u9m9peh74h9if6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;不能使用，此页面还没有分配</a>
+</h3>
+<h3 class="topic">
+<a name="63813omqlr6k2j40q6bqbtviem">&nbsp;&nbsp;&nbsp;&nbsp;保留的</a>
+</h3>
+<h3 class="topic">
+<a name="2q001745msodgqtf08jh74ej95">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;不能直接使用，还未与物理内存映射</a>
+</h3>
+<h3 class="topic">
+<a name="7r80507qp9gtoisu8culriesbb">&nbsp;&nbsp;&nbsp;&nbsp;提交的</a>
+</h3>
+<h3 class="topic">
+<a name="5ve0sm1s6rj2ggp9c4t1uj939g">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;内存已经被分配，且与物理存储器映射，进程可以访问</a>
+</h3>
+<h3 class="topic">
+<a name="7bnqmsbti78ve2gk0apbbikdnm">&nbsp;&nbsp;&nbsp;虚拟内存提交方式</a>
+</h3>
+<h3 class="topic">
+<a name="3gkeksqlf06k441togqt83fssn">&nbsp;&nbsp;&nbsp;&nbsp;private</a>
+</h3>
+<h3 class="topic">
+<a name="3m0a9ugaqbmv63s9b84ai1caae">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;私有</a>
+</h3>
+<h3 class="topic">
+<a name="5sl0nln4ieldi95fvre7n820i6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;只提供给进程本身使用，不与其他进程共享</a>
+</h3>
+<h3 class="topic">
+<a name="3bjin9dirumimioqamq0hmgtgf">&nbsp;&nbsp;&nbsp;&nbsp;mapped</a>
+</h3>
+<h3 class="topic">
+<a name="0lqp1hiud79pj29a4t4omohfm4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;从别的内存映射而来</a>
+</h3>
+<h3 class="topic">
+<a name="4bg2so9amet5ognl959450ug1s">&nbsp;&nbsp;&nbsp;&nbsp;image</a>
+</h3>
+<h3 class="topic">
+<a name="5o7dq0oc22cpv18bgpgq6c0icb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;从程序pe映像映射而来，一般是映射的区段</a>
+</h3>
+<h3 class="topic">
+<a name="3vo986pm3pvtc6h3lap3dc8eur">&nbsp;&nbsp;&nbsp;虚拟内存属性</a>
+</h3>
+<h3 class="topic">
+<a name="050t4a0g2jickemogfrbi95ote">&nbsp;&nbsp;&nbsp;&nbsp;只读</a>
+</h3>
+<h3 class="topic">
+<a name="4ov0gvfpcf2ib71oubml6557fb">&nbsp;&nbsp;&nbsp;&nbsp;可读可写</a>
+</h3>
+<h3 class="topic">
+<a name="7ufnmb48g8mck821p3k50srobc">&nbsp;&nbsp;&nbsp;&nbsp;可执行</a>
+</h3>
+<h3 class="topic">
+<a name="0c1o1fh784g5bsgisnjnjc4h4r">&nbsp;&nbsp;&nbsp;&nbsp;可读可写可执行</a>
+</h3>
+<h3 class="topic">
+<a name="0krnqhfa6gp0fppngfv5btlhd2">&nbsp;&nbsp;&nbsp;&nbsp;写时拷贝</a>
+</h3>
+<h3 class="topic">
+<a name="4rtk8epqke7pjtt0ab47mk23tp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;写内存时不能直接修改目标数据，只能修改目标数据的拷贝，对目标数据本体没有影响</a>
+</h3>
+<h3 class="topic">
+<a name="019jot47lfe999k1k1033gvnie">&nbsp;&nbsp;&nbsp;&nbsp;。。。。</a>
+</h3>
+<h3 class="topic">
+<a name="2fv31cmfhkd33gcdlvlj0nsq00">&nbsp;&nbsp;&nbsp;访问虚拟内存中的数据</a>
+</h3>
+<h3 class="topic">
+<a name="492fugbp47ofqesaq1n570b1br">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class50day0419(%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86%E3%80%81%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E7%AC%AC%E4%B8%80%E5%A4%A9)_files/2k0fofgjc95mb9pbmfvlqn07n1.png"></p>
+<h3 class="topic">
+<a name="0r7jlcpf9tl9mkunag6a4642e2">&nbsp;&nbsp;&nbsp;关键api</a>
+</h3>
+<h3 class="topic">
+<a name="35t5cg54bivndefe7mpjfbfo2t">&nbsp;&nbsp;&nbsp;&nbsp;分配</a>
+</h3>
+<h3 class="topic">
+<a name="3cifs7fp2nff4dn9remcov07lv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;VirtualAlloc</a>
+</h3>
+<h3 class="topic">
+<a name="5rv20fdqgncvmeacjthq633pa5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;参数</a>
+</h3>
+<h3 class="topic">
+<a name="4uups5jcnhpgjf6m1aahamnk4q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;内存分配的起始地址</a>
+</h3>
+<h3 class="topic">
+<a name="4dlrogcu3s1ivt85b4pupufebp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以为默认的NULL</a>
+</h3>
+<h3 class="topic">
+<a name="7slbna54ksiuph5nj6556rkp1f">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;分配的内存空间大小</a>
+</h3>
+<h3 class="topic">
+<a name="1fgtpf4tf3suahcg8in6ovhrri">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;按照内存页的粒度进行分配</a>
+</h3>
+<h3 class="topic">
+<a name="29vf2u1h87grgeal3effm409kh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果填1，则分配一个内存页大小的内存空间</a>
+</h3>
+<h3 class="topic">
+<a name="0oshonuj48qm2qe42k1nabtnca">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;即4096个字节</a>
+</h3>
+<h3 class="topic">
+<a name="7o9f1m9eh3jgqqn6msmitr34cv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;预定内存的方式</a>
+</h3>
+<h3 class="topic">
+<a name="7f1b9tbj3imli5t5mrt0n1ig90">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;即预定（MEM_RESERVE）还是提交(MEM_COMMIT)，后者可以立即使用该内存空间</a>
+</h3>
+<h3 class="topic">
+<a name="3f08ia6euv0lqebi02uvv9ofoc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;预定内存区域的初始保护属性</a>
+</h3>
+<h3 class="topic">
+<a name="07o5h05e2nh35jqfrjdfgp51o1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PAGE_READWRITE</a>
+</h3>
+<h3 class="topic">
+<a name="6rtc0c27eu22nsafspm35saj79">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可读可写</a>
+</h3>
+<h3 class="topic">
+<a name="45nl6aecl3spcik3gajgaqtf39">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;预定的地址只是一块逻辑上可以使用的空间，只有提交之后才能使用</a>
+</h3>
+<h3 class="topic">
+<a name="026k01aspfh0jqft2l88lr7pqb">&nbsp;&nbsp;&nbsp;&nbsp;释放</a>
+</h3>
+<h3 class="topic">
+<a name="6v64ope1efoe356a1c5m9caa9q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;VirtualFree</a>
+</h3>
+<h3 class="topic">
+<a name="5cqkit93hd0q5sftb6oq3h8h1s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;参数</a>
+</h3>
+<h3 class="topic">
+<a name="1gdnh7slojoebl86tomih3phma">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;释放的内存空间的起始地址</a>
+</h3>
+<h3 class="topic">
+<a name="5n22vmb0ov07bjtvevbap5b935">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;释放内存空间的大小</a>
+</h3>
+<h3 class="topic">
+<a name="663njurrd61nnpnd9ir1l4fh33">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;释放类型</a>
+</h3>
+<h3 class="topic">
+<a name="5qbshasua9vcta2r8q89gamin4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;若为MEM_DECOMMIT则将内存变为保留状态，若为MEM_RELEASE,则释放内存，将内存变为空闲状态</a>
+</h3>
+<h3 class="topic">
+<a name="5o7boloasi0deb0c9tjljim9vn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以释放内存的同时改变内存的属性</a>
+</h3>
+<h3 class="topic">
+<a name="58v0t0th3q3k2i70gmaqfi6huh">&nbsp;&nbsp;&nbsp;&nbsp;VirtualLock</a>
+</h3>
+<h3 class="topic">
+<a name="4o571285f5ds5mpi37cpn0gskh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以将内存锁定，不能交换到硬盘</a>
+</h3>
+<h3 class="topic">
+<a name="30fakk9a5egn26eri51krohn87">&nbsp;&nbsp;&nbsp;&nbsp;锁定与解锁</a>
+</h3>
+<h3 class="topic">
+<a name="2jfc1msugj6l6pt5iorj7oej1k">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;VirtualUnlock</a>
+</h3>
+<h3 class="topic">
+<a name="7qj52na153jovse3e8re5sv5be">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将内存解锁</a>
+</h3>
+<h3 class="topic">
+<a name="5o5uqo7kck247jmi5mp6n6c30m">&nbsp;&nbsp;&nbsp;&nbsp;修改保护属性</a>
+</h3>
+<h3 class="topic">
+<a name="12h0rtc7eghqc0d2eo0fmcvh6n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;VirtualProtect</a>
+</h3>
+<h3 class="topic">
+<a name="2fpc6qf5br95jmutvkiben5h5v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;参数</a>
+</h3>
+<h3 class="topic">
+<a name="5onuhd5rir0hkqqakaaegek9ih">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;内存地址</a>
+</h3>
+<h3 class="topic">
+<a name="4uej3k1facccafpe5084brgkq7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;内存大小</a>
+</h3>
+<h3 class="topic">
+<a name="4d2mtkgtqjgauj6kum5jrgmsio">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;内存新属性</a>
+</h3>
+<h3 class="topic">
+<a name="3esevubf4c7ihac0f1j2q6k0af">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;内存原来的属性</a>
+</h3>
+<h3 class="topic">
+<a name="473kmutdagml1hfife5dd1qigi">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//该函数函数第二个参数是要改变内存属性的内存空间的范围，该范围内内存地址所处的内存页均会被更改内存保护属性&#13;
+//注意如果内存页面边界2字节的内存属性被改变可能导致两个页的属性同时被改变</a>
+</h3>
+<h3 class="topic">
+<a name="6c80b4n1lo9nsmrlikokbnkmo7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MSDN:受影响页面的区域包括包含从 lpAddress 参数到 (lpAddress + dwSize) 范围内的一个或多个字节的所有页面。</a>
+</h3>
+<h3 class="topic">
+<a name="5v6vpq8srsm8k9kgia09qm04dh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//该函数第四个参数用于接收之前该内存页面的访问保护的值，且该参数不能为空，否则函数将执行失败</a>
+</h3>
+<h3 class="topic">
+<a name="4vhahvd18ek177o9gq3t83ce1j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;一个地址的内存读写属性被修改，会导致该内存地址所在内存页中所有内存保护属性被修改</a>
+</h3>
+<h3 class="topic">
+<a name="3o24q30ub66vmtk8t64r8858l8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;因为一个内存页的大小是4kb，4kb等于4096个字节，转换为16进制数即为0x1000个字节，当内存地址以十六进制数表示的时候，一个内存页首部的地址一定为0x1000的倍数，，查询一个内存地址所属内存页首地址的方法是将该地址 与0xfffff000做与运算，例如 401234&amp;0xfffff000  （这里因为32位程序中地址是32个二进制位，即8个十六进制数，所以需要使用5个f来获取内存页的首地址）</a>
+</h3>
+<h3 class="topic">
+<a name="1rgcr300so6tqc3qlntjf6vf37">&nbsp;&nbsp;&nbsp;&nbsp;读写其他进程内存</a>
+</h3>
+<h3 class="topic">
+<a name="4upjmt56e2ugdqjd7vuhfa9d55">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ReadProcessMemory</a>
+</h3>
+<h3 class="topic">
+<a name="662ivcfpqnshc0cfrgm055ub87">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;读取其他进程的内存数据</a>
+</h3>
+<h3 class="topic">
+<a name="0ti025i2jhgvbv9b7k02aqtr7s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WriteProcessMemory</a>
+</h3>
+<h3 class="topic">
+<a name="50sa58h2n4v9kn3sudgrmqjj9t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将数据写入其他进程</a>
+</h3>
+<h3 class="topic">
+<a name="6fupgctqvqmc0vi32tq4lj3f0p">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;函数原型：ReadProcessMemory(HANDLE hProcess, LPCVOID lpBaseAddress, LPVOID lpBuffer, DWORD nSize, LPDWORD lpNumberOfBytesRead);</a>
+</h3>
+<h3 class="topic">
+<a name="4b2tiqkdvl6cdrlm4h3evc9e89">&nbsp;&nbsp;&nbsp;&nbsp;查询内存状态</a>
+</h3>
+<h3 class="topic">
+<a name="307udlqrlrr3silu1e8pe4q23i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;VirtualQuery</a>
+</h3>
+<h3 class="topic">
+<a name="0u28fedk33ujmln3daime9vk1s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;查询内存状态</a>
+</h3>
+<h3 class="topic">
+<a name="2ct8g49l33448h1u2btd7pl9it">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以用于遍历一个进程的虚拟内存的信息</a>
+</h3>
+<h3 class="topic">
+<a name="2tifu1d2okb63d6rhlrusm0me2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以通过进程的虚拟内存的类型信息，推测出该程序模块组成等特征，可以用于安全对抗</a>
+</h3>
+<h3 class="topic">
+<a name="2cpreon4s90ht7fqqn8einqbrk">&nbsp;&nbsp;&nbsp;&nbsp;以上函数中处理分配、释放、修改保护属性、查询内存状态均存在Ex版本，用于操作其他进程的内存</a>
+</h3>
+<h3 class="topic">
+<a name="37llae4v1gk2c1j4394473hfmi">&nbsp;&nbsp;&nbsp;代码使用</a>
+</h3>
+<h3 class="topic">
+<a name="312ete7l9esecjcsgb02var9he">&nbsp;&nbsp;&nbsp;&nbsp;使用普通版的api为本进程申请内存空间并使用</a>
+</h3>
+<h3 class="topic">
+<a name="5783k2jcqbq3021g7nrs0fpcge">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;void fun1()&#13;
+{&#13;
+	//申请虚拟内存&#13;
+	LPVOID lpBuf = VirtualAlloc(NULL,&#13;
+		1, MEM_COMMIT, PAGE_READWRITE);&#13;
+	//修改指定内存空间的指针&#13;
+	*(int*)lpBuf = 0x123;&#13;
+	//修改内存属性&#13;
+	DWORD dwOld;//该变量用于接收之前该内存页面的访问保护值，&#13;
+	//该函数函数第二个参数是要改变内存属性的内存空间的大小，&#13;
+	//注意如果内存页面边界2字节的内存属性被改变可能导致两个页的属性同时被改变&#13;
+	//该函数第四个参数不能为空，否则函数将执行失败&#13;
+	VirtualProtect(lpBuf, 1, PAGE_READONLY, &amp;dwOld);&#13;
+	//*(int*)lpBuf = 0x999;// 此时因为内存保护全新已经设置为只读，如果此时修改内存内存，会报错&#13;
+	//释放虚拟内存&#13;
+    VirtualFree(lpBuf, 0, MEM_RELEASE);&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="2hcr7l9jub29c6v5jlctth6p08">&nbsp;&nbsp;&nbsp;&nbsp;使用扩展版的api，为其他进程申请内存</a>
+</h3>
+<h3 class="topic">
+<a name="1otjod8fao863r1gr472jvs0oe">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;向其他进程的内存空间写数据</a>
+</h3>
+<h3 class="topic">
+<a name="5ravd7dtse3sp2sb7tjsmmtesq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意申请到的内存指针直接进行修改只能修改本进程对应地址的数据，如果需要修改其他继承的数据，还是需要通过api</a>
+</h3>
+<h3 class="topic">
+<a name="3lt79pvui4h4e28af2geg7cikv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过od将对应进程附加，查看对应的内存是否被修改</a>
+</h3>
+<h3 class="topic">
+<a name="2fnasn3uf2srpjssug6jhq7vav">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果要写的目标内存地址没有可写属性，需要使用api将内存空间属性进行修改</a>
+</h3>
+<h3 class="topic">
+<a name="2vrntf91lqpa0nqugdcmv4m4ba">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;读取其他进程的内存</a>
+</h3>
+<h3 class="topic">
+<a name="3s88n9iordpe1drk3hiveqooea">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ReadProcessMemory</a>
+</h3>
+<h3 class="topic">
+<a name="6bafh71m0og4nc2u0tr0efad7n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;int _tmain(int argc, _TCHAR* argv[])&#13;
+{&#13;
+	//根据进程号，获得特定进程的句柄，如果想要查看该进程内存空间的变化情况，&#13;
+	//可以使用od将对应的进程附加&#13;
+	HANDLE hProcess = OpenProcess(PROCESS_ALL_ACCESS,&#13;
+		FALSE, 6012);&#13;
+&#13;
+	LPVOID lpBuf = VirtualAllocEx(hProcess,&#13;
+		NULL, 1, MEM_COMMIT, PAGE_READWRITE);&#13;
+	&#13;
+	//*(int*)lpBuf = 0x999;//以该种方式修改内存修改的是本进程相应虚拟地址内存的值&#13;
+&#13;
+	//只有通过api才能修改其他进程内存空间&#13;
+	DWORD dwWrite;&#13;
+	WriteProcessMemory(hProcess, lpBuf, "fun", 4, &amp;dwWrite);//第四个参数用于表示成功写入的字节数&#13;
+	//将对应虚拟内存空间的保护属性修改为不可访问&#13;
+	VirtualProtectEx(hProcess, lpBuf, 1, PAGE_NOACCESS, &amp;dwWrite);&#13;
+&#13;
+	//则此时如果对该内存进行读取，程序不会报错，但是不会从内存中读取出任何信息&#13;
+	char str[100] = {};&#13;
+	ReadProcessMemory(hProcess, lpBuf, str, 100, &amp;dwWrite);//第四个参数用于表示成功读出的字节数&#13;
+	return 0;&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="44tv53gtv1rmiktgkq06be8jf8">&nbsp;&nbsp;文件映射</a>
+</h3>
+<h3 class="topic">
+<a name="18b9pfurfdfiu0dqefecm1guvb">&nbsp;&nbsp;&nbsp;文件映射是一个内核对象，使用时需要创建文件映射对象</a>
+</h3>
+<h3 class="topic">
+<a name="27vgi1bnevsmh6am7hdh7gdska">&nbsp;&nbsp;&nbsp;&nbsp;分为命名和非命名的文件对象，前者可以用于跨进程读写，并在不同进程之间共享数据</a>
+</h3>
+<h3 class="topic">
+<a name="0bnf1rqa6l8df30vici3jap6lf">&nbsp;&nbsp;&nbsp;可以将文件内容映射到进程虚拟内存中</a>
+</h3>
+<h3 class="topic">
+<a name="3v5reek7tdotmkrpv930b8pqqh">&nbsp;&nbsp;&nbsp;&nbsp;映射成功的文件可以使用视图（View）来引用该段内存，从而操作内存中的文件</a>
+</h3>
+<h3 class="topic">
+<a name="2ncg3nodmqd5lljsgltpd39evd">&nbsp;&nbsp;&nbsp;&nbsp;对内存中的内容的修改可以反映到文件中</a>
+</h3>
+<h3 class="topic">
+<a name="63ajqkr80a7rfr23c3hivuv1du">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用api将修改反映到文件中</a>
+</h3>
+<h3 class="topic">
+<a name="7ovbpoebotq7kg5rgg7j9hl2fv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FlushViewOfFile</a>
+</h3>
+<h3 class="topic">
+<a name="21l7f6sr4nf4och78l1efbl3rg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;文件映射正常结束之后，文件被修改</a>
+</h3>
+<h3 class="topic">
+<a name="3n759og996uo9a33jatrr3hm01">&nbsp;&nbsp;&nbsp;相关api</a>
+</h3>
+<h3 class="topic">
+<a name="60sjp88i9asaahb86i4bd0t09i">&nbsp;&nbsp;&nbsp;&nbsp;GetSystemInfo</a>
+</h3>
+<h3 class="topic">
+<a name="71li6dbkhu45nge202v54c6tmb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;获取系统信息，用于确定内存分配粒度</a>
+</h3>
+<h3 class="topic">
+<a name="65ed4b7q5dq6lctg8blq6umb56">&nbsp;&nbsp;&nbsp;&nbsp;CreatFileMapping</a>
+</h3>
+<h3 class="topic">
+<a name="043q3fe6cr709e63ie93s2o67n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;创建一个mapping的对象</a>
+</h3>
+<h3 class="topic">
+<a name="6tnf2c5t392j23atusat1o9g2j">&nbsp;&nbsp;&nbsp;&nbsp;OpenFileMapping</a>
+</h3>
+<h3 class="topic">
+<a name="13r2aq5scj2hbjncv06cduhgg9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;打开以命名的mapping对象（可以跨进程）</a>
+</h3>
+<h3 class="topic">
+<a name="59ie923346gtpd9s541e4l4c97">&nbsp;&nbsp;&nbsp;&nbsp;MapViewOfFile</a>
+</h3>
+<h3 class="topic">
+<a name="1igdnjbs5ms2jdk4viqnj0raq2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将mapping对象的文件映射到内存</a>
+</h3>
+<h3 class="topic">
+<a name="7agpfdnsf3p6trtefklfq3l0e9">&nbsp;&nbsp;&nbsp;&nbsp;FlushViewOfFile</a>
+</h3>
+<h3 class="topic">
+<a name="6jav5ab30tcctjmc6nooav0tsc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将映射到内存中的文件写回到硬盘中</a>
+</h3>
+<h3 class="topic">
+<a name="3k8815v4jobpdkh8qnhjfgvr6b">&nbsp;&nbsp;&nbsp;&nbsp;UnmapViewOfFile</a>
+</h3>
+<h3 class="topic">
+<a name="5hp0qf5hcbpivi5q6lomk64sj6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;取消问文件映射</a>
+</h3>
+<h3 class="topic">
+<a name="0csee5m0tfe7eh0ctd6jmcu9j5">&nbsp;&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="4f9n8sq0fn3a81uc1ld1fkl9h3">&nbsp;&nbsp;&nbsp;&nbsp;典型运用</a>
+</h3>
+<h3 class="topic">
+<a name="77ftlmdlmg3d2otcbgbi2kovs2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;打开文件，获取文件句柄</a>
+</h3>
+<h3 class="topic">
+<a name="616ff76eq45c7oh3rs1eim680v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CreateFile</a>
+</h3>
+<h3 class="topic">
+<a name="17pj1a02iuauhm653r0cjimo9d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;判断文件是否打开失败</a>
+</h3>
+<h3 class="topic">
+<a name="2qkni7naojh01e9m3h4dbc2op4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果函数返回的文件句柄为INVALID_HANDLE_VALUE,说明函数打开失败</a>
+</h3>
+<h3 class="topic">
+<a name="6sjvcgjs5nkhi7h4m7oei41tsi">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;创建文件映射</a>
+</h3>
+<h3 class="topic">
+<a name="27tcp4voapn05n11r233m207po">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CreateFileMapping</a>
+</h3>
+<h3 class="topic">
+<a name="1cqsq945lm040sli3lhqjmg2in">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;参数</a>
+</h3>
+<h3 class="topic">
+<a name="0ac6r900oe79j53ffpmjfvi85m">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;文件句柄</a>
+</h3>
+<h3 class="topic">
+<a name="4c4fmqbeo3le0b474hgc38c86m">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;NULL</a>
+</h3>
+<h3 class="topic">
+<a name="25ma57f4it09okv558eguj872b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;保护属性</a>
+</h3>
+<h3 class="topic">
+<a name="10k3li0ofpc3ovfhp1gm89hgss">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;即仅读、仅写，可读可写等</a>
+</h3>
+<h3 class="topic">
+<a name="0kceq9b15fmmnq2s63iq68la82">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0</a>
+</h3>
+<h3 class="topic">
+<a name="1v6m2lmfifl9vqfla6hral9d0p">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;获取文件大小</a>
+</h3>
+<h3 class="topic">
+<a name="00pspqttoo3hanhb6h0inq8iu5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;GetFileSize()</a>
+</h3>
+<h3 class="topic">
+<a name="3e4pfg8ks50geelkghl7eksiun">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;参数</a>
+</h3>
+<h3 class="topic">
+<a name="32e9vuqh13o8sqk7vi4ntraa3l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;文件句柄</a>
+</h3>
+<h3 class="topic">
+<a name="3074hb2nsii4e2aubj80t6m7h2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;null</a>
+</h3>
+<h3 class="topic">
+<a name="2ifr0us9jerpsf0escqklpdfkt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;null</a>
+</h3>
+<h3 class="topic">
+<a name="6uabllmm52t6slpgnkuathr5o5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;若该函数为NULL，说明文件映射失败</a>
+</h3>
+<h3 class="topic">
+<a name="56d7rjd1vuomi5af63f6lhsj31">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用view映射内存</a>
+</h3>
+<h3 class="topic">
+<a name="0rb1rn4glujhlqhv0rjiimik5s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MapViewOfFile</a>
+</h3>
+<h3 class="topic">
+<a name="7c90adgisqrip3q2allujbqp3n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;参数</a>
+</h3>
+<h3 class="topic">
+<a name="0gd5nu1fq1mv7hus86nf6hvo0j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;文件映射句柄</a>
+</h3>
+<h3 class="topic">
+<a name="0c8in0bn4l66cp22b18coo6acc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;文件映射属性</a>
+</h3>
+<h3 class="topic">
+<a name="0ppoce5p0a2a8ietkl6d2fa6b7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;宏</a>
+</h3>
+<h3 class="topic">
+<a name="575f7enhnpl7h6jpkmtp4cfmmv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0</a>
+</h3>
+<h3 class="topic">
+<a name="1ahrcco2sf6q78q9qirid2qakm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;映射大小</a>
+</h3>
+<h3 class="topic">
+<a name="1cgemehh5fe3dim23t9118qj69">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;高位写0</a>
+</h3>
+<h3 class="topic">
+<a name="6k6ftq9h3umdig8fpehqilmm2h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;低位写0</a>
+</h3>
+<h3 class="topic">
+<a name="6lm835a820tluc8ppp5957k3og">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0</a>
+</h3>
+<h3 class="topic">
+<a name="68mv4k6s6ekt97qlqr7ihi941v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0</a>
+</h3>
+<h3 class="topic">
+<a name="7jm54bljresgh0o2ugi2crcr6v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;若该函数为NULL，说明View映射失败</a>
+</h3>
+<h3 class="topic">
+<a name="4hj00ikmusakrri0h8v8ugna21">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以使用获得的返回值对文件进行修改</a>
+</h3>
+<h3 class="topic">
+<a name="5j9s5rq7jag6n9uke4qn0an7pk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用上面函数的返回值修改文件</a>
+</h3>
+<h3 class="topic">
+<a name="7kp2gbtt7s760vt4rs0jtd7knv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将映射的数据写回硬盘</a>
+</h3>
+<h3 class="topic">
+<a name="3t1ro5eno881it20u2jn22nkmt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FlushViewOfFile</a>
+</h3>
+<h3 class="topic">
+<a name="60f784149louovj4ih3u9le7ni">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;参数</a>
+</h3>
+<h3 class="topic">
+<a name="4pjn910nj7ps5iesbnerecqk78">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MapViewOfFile函数返回的内存映射区域的首地址</a>
+</h3>
+<h3 class="topic">
+<a name="6m30bshsf8dubu2eoqfdacujed">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关闭mapping对象</a>
+</h3>
+<h3 class="topic">
+<a name="5pojuigkuel6uqq3efqpjbf1cg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CloseHandle()</a>
+</h3>
+<h3 class="topic">
+<a name="2kmk6l49cakp41vte7ocuu8pvn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关闭文件句柄</a>
+</h3>
+<h3 class="topic">
+<a name="61e1hf4t567qqtepu94p0kv617">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CloseHandle()</a>
+</h3>
+<h3 class="topic">
+<a name="7ka4dksst3fgef4l6l33p0nba2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以使用参数间接修改文件大小</a>
+</h3>
+<h3 class="topic">
+<a name="768fn5188mum065km562b9gqkd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="6ambsntaev7td5lglgoel2idhg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#include "stdafx.h"&#13;
+#include &lt;windows.h&gt;&#13;
+&#13;
+int _tmain(int argc, _TCHAR* argv[])&#13;
+{&#13;
+	//打开文件&#13;
+	HANDLE hFile = CreateFile(&#13;
+		L"C:\\Users\\李嘉柏\\Desktop\\Acid burn.exe",//文件路径&#13;
+		GENERIC_WRITE | GENERIC_READ,//可读可写&#13;
+		FILE_SHARE_READ, NULL, OPEN_EXISTING,&#13;
+		FILE_ATTRIBUTE_NORMAL, NULL);&#13;
+&#13;
+	if (hFile == INVALID_HANDLE_VALUE)&#13;
+	{&#13;
+		printf("文件打开失败\n");&#13;
+		return 0;&#13;
+	}&#13;
+&#13;
+	//创建文件映射&#13;
+	HANDLE hMap = CreateFileMapping(hFile, NULL,&#13;
+		PAGE_READWRITE, 0, GetFileSize(hFile, 0)+10, NULL);&#13;
+	&#13;
+	//该函数返回的是文件被映射到的内存空间的首地址&#13;
+	LPVOID lpBuf = &#13;
+		MapViewOfFile(hMap, FILE_MAP_ALL_ACCESS, 0, 0, 0);&#13;
+	//使用该地址解引用，修改文件中的内容，因为当前指针指向文件首地址，&#13;
+	//所以该语句更改的是pe文件的dos头部分&#13;
+	*(int*)lpBuf = 0x99998888;&#13;
+&#13;
+	//  将映射的数据写回到硬盘上&#13;
+	FlushViewOfFile(lpBuf, 0);&#13;
+	//取消映射&#13;
+	UnmapViewOfFile(lpBuf);&#13;
+	// 5. 关闭mapping对象&#13;
+	if (!CloseHandle(hMap))  return FALSE;&#13;
+	if (!CloseHandle(hFile))     return FALSE;&#13;
+	return 0;&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="6ndfu8vjt3rc6c3fndunqc46kb">&nbsp;&nbsp;&nbsp;&nbsp;跨进程通讯</a>
+</h3>
+<h3 class="topic">
+<a name="4fd4seua29urp9t7mec8dvh1vq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以不映射文件，只用一块内存进行映射，另一块需要给文件映射对象起一个名字，从而在其他进程中访问读写</a>
+</h3>
+<h3 class="topic">
+<a name="35qlnhfi5otos8nameogqpf74f">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;进程1</a>
+</h3>
+<h3 class="topic">
+<a name="3cut1tlbt51cma2ig10qf2ptjm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	//进程1&#13;
+	//1. 创建命名的文件映射，在使用文件映射进行进程间通讯时，&#13;
+	//CreateFileMapping函数的第一个参数使用INVALID_HANDLE_VALUE即可&#13;
+		HANDLE hMapFile = CreateFileMapping(INVALID_HANDLE_VALUE,&#13;
+			NULL, PAGE_READWRITE, 0,&#13;
+			16, L"File_Mapping_Test");&#13;
+		if (NULL == hMapFile || INVALID_HANDLE_VALUE == hMapFile)&#13;
+			return FALSE;&#13;
+		// 2. 创建View&#13;
+		PVOID pBuf = MapViewOfFile(hMapFile, FILE_MAP_ALL_ACCESS, 0, 0, 16);&#13;
+		if (NULL == pBuf)&#13;
+			return FALSE;&#13;
+		// 3. 将共享数据复制到文件映射中&#13;
+		wcscpy_s((PWCHAR)pBuf, 6, L"测试文本");&#13;
+		// 4. 循环等待&#13;
+		while (*((PBYTE)pBuf))&#13;
+			Sleep(200);&#13;
+		// 5. 取消Mapping，关闭句柄&#13;
+		UnmapViewOfFile(pBuf);&#13;
+		CloseHandle(hMapFile);</a>
+</h3>
+<h3 class="topic">
+<a name="3v9u89d7qtk0ofah2hjgib9i63">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;进程2</a>
+</h3>
+<h3 class="topic">
+<a name="7e2a12aiqckjh92n570fk132v2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//进程2&#13;
+ 	1. 打开文件Mapping&#13;
+ 	HANDLE hMapFile = OpenFileMapping(FILE_MAP_ALL_ACCESS,&#13;
+ 		FALSE, L"File_Mapping_Test");&#13;
+ 	if (NULL == hMapFile)&#13;
+ 		return FALSE;&#13;
+ 	// 2. 创建View&#13;
+ 	PVOID pBuf = MapViewOfFile(hMapFile, FILE_MAP_ALL_ACCESS,&#13;
+ 		0, 0, 16);&#13;
+ 	if (NULL == pBuf)&#13;
+ 		return FALSE;&#13;
+ 	// 3. 显示共享数据&#13;
+ 	MessageBox(NULL, (LPWSTR)pBuf, L"FileMapping", MB_OK);&#13;
+ 	// 4. 修改共享数据&#13;
+ 	*((PBYTE)pBuf) = 0;&#13;
+ 	// 5. 取消Mapping，关闭句柄&#13;
+ 	UnmapViewOfFile(pBuf);&#13;
+ 	CloseHandle(hMapFile);</a>
+</h3>
+<h3 class="topic">
+<a name="1s7e5encdl4u8buo5tae3hot59">&nbsp;内存遍历</a>
+</h3>
+<h3 class="topic">
+<a name="29a7mrfoigcghc6jjbegnqhp4o">&nbsp;&nbsp;进程地址空间中所有的内存，会将相关信息返回到一个结构体中</a>
+</h3>
+<h3 class="topic">
+<a name="3af072ojrfr60hiqug5rdk4p0u">&nbsp;&nbsp;&nbsp;因为文件映射是一个内核对象</a>
+</h3>
+<h3 class="topic">
+<a name="4po5co01ldh6j3vnjju00sfi6b">&nbsp;&nbsp;&nbsp;结构体</a>
+</h3>
+<h3 class="topic">
+<a name="4lmpvj7nqkvnsu6ruidt774t0a">&nbsp;&nbsp;&nbsp;&nbsp;页面状态可以是闲置、预定、调拨</a>
+</h3>
+<h3 class="topic">
+<a name="77cbcaqe0pk979es1m52g3mdt7">&nbsp;&nbsp;使用VirtualAlloc申请的内存都是私有的</a>
+</h3>
+<h3 class="topic">
+<a name="54ssqq8gt8ks6d75k8hdqtru5l">&nbsp;&nbsp;dll在文件中的内存类型为image</a>
+</h3>
+<h3 class="topic">
+<a name="7n5plchoj5858l677stlds63jj">&nbsp;&nbsp;通过遍历内存可以找到相关隐藏的模块</a>
+</h3>
+<h3 class="topic">
+<a name="26knpca506m0p5efctbckp258o">&nbsp;&nbsp;只需要知道api如何使用</a>
+</h3>
+<h3 class="topic">
+<a name="41vh8q7emi793lk1o0vblc4b4q">&nbsp;&nbsp;遍历指定进程虚拟内存空间的信息</a>
+</h3>
+<h3 class="topic">
+<a name="4fdl732dkvud36dpdi9ht97jmk">&nbsp;&nbsp;&nbsp;#include "stdafx.h"&#13;
+#include &lt;Windows.h&gt;&#13;
+#include &lt;list&gt;&#13;
+using std::list;&#13;
+&#13;
+enum MEMORYSTATE {&#13;
+	e_stat_free = MEM_FREE,&#13;
+	e_stat_reserve = MEM_RESERVE,&#13;
+	e_stat_commit = MEM_COMMIT&#13;
+};&#13;
+&#13;
+enum MEMORYTYPE {&#13;
+	e_type_image = MEM_IMAGE,&#13;
+	e_type_mapped = MEM_MAPPED,&#13;
+	e_type_private = MEM_PRIVATE,&#13;
+};&#13;
+&#13;
+typedef struct VMINFO {&#13;
+	DWORD		address;&#13;
+	DWORD		size;&#13;
+	MEMORYSTATE state;&#13;
+}VMINFO;&#13;
+&#13;
+void queryVirtualMemoryStatue(HANDLE hProcess, list&lt;VMINFO&gt;* memoryStatue) {&#13;
+&#13;
+	MEMORY_BASIC_INFORMATION	mbi = { 0 };&#13;
+	VMINFO						statue = { 0 };&#13;
+	DWORD						dwAddress = 0;&#13;
+	DWORD						dwSize = 0;&#13;
+	BOOL						bRet = FALSE;&#13;
+	while (1) {&#13;
+&#13;
+		bRet = VirtualQueryEx(hProcess,&#13;
+			(LPCVOID)dwAddress,&#13;
+			&amp;mbi,&#13;
+			sizeof(MEMORY_BASIC_INFORMATION));&#13;
+		if (bRet == FALSE)&#13;
+			break;&#13;
+&#13;
+		statue.address = dwAddress;&#13;
+		statue.state = (MEMORYSTATE)mbi.State;&#13;
+		dwSize = mbi.RegionSize;&#13;
+&#13;
+		// 输出内存状态, &#13;
+		// 内存状态用于描述虚拟内存有没有和物理存储器进行关联.&#13;
+		// 或是否被预定.&#13;
+		// free   : 闲置,没有预定,没有和物理存储器关联&#13;
+		// reserve: 保留,被预定,没有和物理存储器关联&#13;
+		// commit : 提交,已经和物理存储器关联&#13;
+		switch (statue.state) {&#13;
+		case e_stat_free:&#13;
+			printf("0x%08X : Free\n", statue.address);&#13;
+			break;&#13;
+		case e_stat_reserve:&#13;
+			printf("0x%08X : reserve\n", statue.address);&#13;
+			break;&#13;
+		case e_stat_commit:&#13;
+			printf("0x%08X : commit\n", statue.address);&#13;
+			break;&#13;
+		}&#13;
+&#13;
+		// 如果内存地址已经提交到物理内存,则遍历提交到的每一个内存块.&#13;
+		if (statue.state == e_stat_commit) {&#13;
+&#13;
+			dwSize = 0;&#13;
+			LPVOID	dwAllocationBase = mbi.AllocationBase;&#13;
+			DWORD	dwBlockAddress = (DWORD)dwAddress;&#13;
+			while (1) {&#13;
+&#13;
+				bRet = VirtualQueryEx(hProcess,&#13;
+					(LPCVOID)dwBlockAddress,&#13;
+					&amp;mbi,&#13;
+					sizeof(MEMORY_BASIC_INFORMATION));&#13;
+				if (bRet == FALSE) {&#13;
+					break;&#13;
+				}&#13;
+&#13;
+				// 判断遍历出来的内存块是否是同一块.(看它们的分配的首地址是否相等.)&#13;
+				// 如果不是,则跳出循环.&#13;
+				if (mbi.AllocationBase != dwAllocationBase)&#13;
+					break;&#13;
+&#13;
+				printf("\t0x%08X ", dwBlockAddress);&#13;
+&#13;
+				// 输出内存类型&#13;
+				// 内存类型表示虚拟内存是以何种方式和物理存储器进行关联&#13;
+				// image  : 是从影像文件中映射而来&#13;
+				// mapped : 内存映射&#13;
+				// private: 私有内存,其它进程无法访问.&#13;
+				switch (mbi.Type) {&#13;
+				case e_type_image:&#13;
+					printf(" 类型: image   ");&#13;
+					break;&#13;
+				case e_type_mapped:&#13;
+					printf(" 类型: mapped  ");&#13;
+					break;&#13;
+				case e_type_private:&#13;
+					printf(" 类型: private ");&#13;
+					break;&#13;
+				default:&#13;
+					break;&#13;
+				}&#13;
+&#13;
+				// 输出内存分页属性&#13;
+				// 内存分页属性用于表示内存分页能够进行何种访问,如读,写,执行,写时拷贝.&#13;
+				if (mbi.Protect == 0)&#13;
+					printf("---");&#13;
+				else if (mbi.Protect &amp; PAGE_EXECUTE)&#13;
+					printf("E--");&#13;
+				else if (mbi.Protect &amp; PAGE_EXECUTE_READ)&#13;
+					printf("ER-");&#13;
+				else if (mbi.Protect &amp; PAGE_EXECUTE_READWRITE)&#13;
+					printf("ERW");&#13;
+				else if (mbi.Protect &amp; PAGE_READONLY)&#13;
+					printf("-R-");&#13;
+				else if (mbi.Protect &amp; PAGE_READWRITE)&#13;
+					printf("-RW");&#13;
+				else if (mbi.Protect &amp; PAGE_WRITECOPY)&#13;
+					printf("WCOPY");&#13;
+				else if (mbi.Protect &amp; PAGE_EXECUTE_WRITECOPY)&#13;
+					printf("EWCOPY");&#13;
+&#13;
+				// 输出内存块的大小.&#13;
+				printf(" 大小:0x%X\n", mbi.RegionSize);&#13;
+&#13;
+				// 索引到下一个内存块&#13;
+				dwBlockAddress += mbi.RegionSize;&#13;
+&#13;
+				// 累加内存块的大小&#13;
+				dwSize += mbi.RegionSize;&#13;
+			}&#13;
+		}&#13;
+		statue.size = dwSize;&#13;
+		memoryStatue-&gt;push_back(statue);&#13;
+		// 遍历下一块虚拟内存.&#13;
+		dwAddress += dwSize;&#13;
+	}&#13;
+}&#13;
+&#13;
+int _tmain(int argc, _TCHAR* argv[])&#13;
+{&#13;
+	list&lt;VMINFO&gt; vmList;&#13;
+	queryVirtualMemoryStatue(GetCurrentProcess(), &amp;vmList);&#13;
+	return 0;&#13;
+}&#13;
+</a>
+</h3>
+<h3 class="topic">
+<a name="6faetc07r7fnjbbpt57k7362tq">&nbsp;重点：内存管理中的api和相关概念</a>
+</h3>
+<h3 class="topic">
+<a name="5tdc71107rdkb55e8edg9de3d4">&nbsp;&nbsp;堆的api不需要重点关注，主要是虚拟内存的操作和文件映射的操作</a>
+</h3>
+<h3 class="topic">
+<a name="0kqcnv9f5a3aivib5qp4b1mrge">&nbsp;&nbsp;书目：深入解析windows原理第六章</a>
+</h3>
+<h3 class="topic">
+<a name="26i8djlmlvpkplmq91dp57f00p">&nbsp;调试器中，通过动态获取进程句柄，动态获取程序的加载基址</a>
+</h3>
+<h2 class="topic">
+<a name="50oifan64gj4b1o376u02dpbro">内存分页机制</a>
+</h2>
+<h3 class="topic">
+<a name="1qgcigk32psuafhdemgs7ck4ut">&nbsp;在80386中一个内存页的大小为4kb，意思是说一个内存页的大小是0~4kb，因为内存中是一个字节分配一个内存地址，所以一个内存页的内存地址是0~4096(即4kb 4*1024等同于4*2^10)，所以一个内存页占有4096个字节的内存空间</a>
+</h3>
+</body>
+</html>

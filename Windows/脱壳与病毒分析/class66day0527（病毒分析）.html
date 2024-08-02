@@ -1,0 +1,1062 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>class66day0527（病毒分析）</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="783n7ajkjvdpb0g97dcifgs7rg">class66day0527（病毒分析）</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="class66day0527%EF%BC%88%E7%97%85%E6%AF%92%E5%88%86%E6%9E%90%EF%BC%89_files/images/class66day0527%EF%BC%88%E7%97%85%E6%AF%92%E5%88%86%E6%9E%90%EF%BC%89.jpg"></div>
+<h2 class="topic">
+<a name="3955389rfpqatpuuni27r7da5j">回顾</a>
+</h2>
+<h3 class="topic">
+<a name="0l0jhgi4224a3gnq92kll3sa67">&nbsp;常见的病毒类型</a>
+</h3>
+<h3 class="topic">
+<a name="60qb8papvfoain3jdgv86s8vpf">&nbsp;&nbsp;感染性病毒</a>
+</h3>
+<h3 class="topic">
+<a name="5rm1vt18hja8d0psqmi490s4c5">&nbsp;&nbsp;蠕虫</a>
+</h3>
+<h3 class="topic">
+<a name="5tubultpc7hj231i65bc6bav1k">&nbsp;&nbsp;木马</a>
+</h3>
+<h3 class="topic">
+<a name="274v7a69tsalh7fcho4pguv041">&nbsp;&nbsp;&nbsp;apt木马</a>
+</h3>
+<h3 class="topic">
+<a name="02mv43jab4psihru30gcrn8f91">&nbsp;&nbsp;&nbsp;后门</a>
+</h3>
+<h3 class="topic">
+<a name="3m11qkcnh6ha0g7hrddcekgdtc">&nbsp;&nbsp;&nbsp;间谍软件</a>
+</h3>
+<h3 class="topic">
+<a name="4qkptfo0mbd5i7bbc8bgfslc76">&nbsp;&nbsp;勒索病毒</a>
+</h3>
+<h3 class="topic">
+<a name="52sbvkg2v72llrsr8n06oohn0k">&nbsp;&nbsp;。。。。。</a>
+</h3>
+<h3 class="topic">
+<a name="6kmpu8k9l5desl4d6lu27drr0r">&nbsp;安卓病毒大爆发是在2013年</a>
+</h3>
+<h3 class="topic">
+<a name="3gmm27k4e0nt2rmoo502ve6rg7">&nbsp;&nbsp;起因</a>
+</h3>
+<h3 class="topic">
+<a name="0cm03g076ghl5go66dkoq4p3ad">&nbsp;&nbsp;&nbsp;用户量逐渐增大</a>
+</h3>
+<h3 class="topic">
+<a name="3rdbbcslav06s3acnjien4cp0p">&nbsp;&nbsp;&nbsp;linux内核漏洞</a>
+</h3>
+<h3 class="topic">
+<a name="6ba1gbpia6u4km5crer4lf9f17">&nbsp;2017年最出名的勒索病毒</a>
+</h3>
+<h3 class="topic">
+<a name="0dusf93trgjguu4eem2382dmmn">&nbsp;&nbsp;WannyCry永恒之蓝</a>
+</h3>
+<h3 class="topic">
+<a name="5eef4cvtnvcmv72cb0o145g1q6">&nbsp;恶意代码传播方式</a>
+</h3>
+<h3 class="topic">
+<a name="66hqvmlfq4vs5ba31tm07eh0p0">&nbsp;&nbsp;移动介质传播</a>
+</h3>
+<h3 class="topic">
+<a name="7mddm17upvtbaapjlqnd34fr8b">&nbsp;&nbsp;网络传播</a>
+</h3>
+<h3 class="topic">
+<a name="6l073bjs03f9hl7u33fqk2i751">&nbsp;&nbsp;文件传播</a>
+</h3>
+<h3 class="topic">
+<a name="53hg4c3916jivhpuq6mmfglmkv">&nbsp;桌面进程</a>
+</h3>
+<h3 class="topic">
+<a name="6j2ql6tfvii0c9h8arbdiebfcg">&nbsp;&nbsp;explorer.exe</a>
+</h3>
+<h3 class="topic">
+<a name="2tp5pib49idocptkl9ml1lq17j">&nbsp;&nbsp;&nbsp;正常路径：c\Windows</a>
+</h3>
+<h3 class="topic">
+<a name="0i2jdm2dn07u8o8efltrhatau9">&nbsp;ie浏览器进程</a>
+</h3>
+<h3 class="topic">
+<a name="71coppj4ge44b4qd59hpq7p290">&nbsp;&nbsp;iexplore.exe</a>
+</h3>
+<h3 class="topic">
+<a name="2bc337p6dnnee97qr7ab7qeub5">&nbsp;&nbsp;&nbsp;正常路径：c\Program Files(x86)\Inernet Explorer</a>
+</h3>
+<h3 class="topic">
+<a name="39vqa5cngbcbh8ot6oamochi25">&nbsp;杀毒引擎的五个阶段</a>
+</h3>
+<h3 class="topic">
+<a name="5dku62lg1ferc9i30j9sbf8gj6">&nbsp;&nbsp;简单特征查杀</a>
+</h3>
+<h3 class="topic">
+<a name="0dvd8dot5j1un4rk0ej03ekg8v">&nbsp;&nbsp;广谱特征码查杀</a>
+</h3>
+<h3 class="topic">
+<a name="42qv9a12n6b5ptqvkql539vaba">&nbsp;&nbsp;启发式查杀</a>
+</h3>
+<h3 class="topic">
+<a name="4e7ogc1f395s410fp99q3rlp4a">&nbsp;&nbsp;云查杀、av虚拟机</a>
+</h3>
+<h3 class="topic">
+<a name="2s9rcqrg07qlnvt7oib7dfv11u">&nbsp;&nbsp;人工智能</a>
+</h3>
+<h3 class="topic">
+<a name="157bscnnaff0ehmombpth7vegp">&nbsp;&nbsp;&nbsp;当前工业界用的比较少</a>
+</h3>
+<h3 class="topic">
+<a name="6kshqrpge5chgn6j7j455nn0j4">&nbsp;特征码查杀中的特征码有哪些</a>
+</h3>
+<h3 class="topic">
+<a name="358ktk08o0p69j1j15fpilbmen">&nbsp;&nbsp;哈希值</a>
+</h3>
+<h3 class="topic">
+<a name="0mqi4rkargjigeo3esah6m2g40">&nbsp;&nbsp;&nbsp;文件md5</a>
+</h3>
+<h3 class="topic">
+<a name="30p74su0s4gjh0d029v2a7571e">&nbsp;&nbsp;&nbsp;文件sha-1</a>
+</h3>
+<h3 class="topic">
+<a name="2v9kddo8vhsc62govua5rvq2dd">&nbsp;&nbsp;&nbsp;文件sha-256</a>
+</h3>
+<h3 class="topic">
+<a name="2m1pu44jgpsjeh2m6mj641kque">&nbsp;&nbsp;&nbsp;区段md5</a>
+</h3>
+<h3 class="topic">
+<a name="34016qbc1hrb1oeb41a2jdtlbn">&nbsp;&nbsp;&nbsp;pe头md5</a>
+</h3>
+<h3 class="topic">
+<a name="76n15qsu04041lcfvlvupohl02">&nbsp;&nbsp;&nbsp;分块md5</a>
+</h3>
+<h3 class="topic">
+<a name="0qjjlcdaln2grpj86lga4ld3gr">&nbsp;&nbsp;&nbsp;文件校验和</a>
+</h3>
+<h3 class="topic">
+<a name="04o7qkecldsdqjesn3psmjat5e">&nbsp;&nbsp;&nbsp;crc32</a>
+</h3>
+<h3 class="topic">
+<a name="1tuk1blh994baoji3rg9l5fqo6">&nbsp;&nbsp;字符串</a>
+</h3>
+<h3 class="topic">
+<a name="77lmncgud9prk13fs29sfj84ou">&nbsp;&nbsp;&nbsp;病毒中特征字符串</a>
+</h3>
+<h3 class="topic">
+<a name="0ncntr0mkdivr8hm5v2ob9vvpq">&nbsp;&nbsp;&nbsp;ip地址</a>
+</h3>
+<h3 class="topic">
+<a name="0v9irsj8a3v1f5bmihv55k457h">&nbsp;&nbsp;&nbsp;域名</a>
+</h3>
+<h3 class="topic">
+<a name="7kqujb1tsmhim5jbe8hbn35o5j">&nbsp;&nbsp;机器码</a>
+</h3>
+<h3 class="topic">
+<a name="27ebqkcl1er9o76jc84hm1j5no">&nbsp;&nbsp;&nbsp;oep特征</a>
+</h3>
+<h3 class="topic">
+<a name="6ub7890lv0k2296k0no1lcvi4m">&nbsp;&nbsp;&nbsp;&nbsp;如果程序加了强壳，杀毒软件会识别该壳，直接报毒</a>
+</h3>
+<h3 class="topic">
+<a name="55uoa920a6mrl1nlt95gi2n09m">&nbsp;&nbsp;其他</a>
+</h3>
+<h3 class="topic">
+<a name="3dloq8br22b25n4l5a45ih699r">&nbsp;&nbsp;&nbsp;文件图标的hash</a>
+</h3>
+<h3 class="topic">
+<a name="41nlkjbcnr3gc8oinf66rmemp7">&nbsp;&nbsp;&nbsp;文件的大小（精确到字节）</a>
+</h3>
+<h3 class="topic">
+<a name="2n56vk04il76hgb3dd6tbr8igu">&nbsp;&nbsp;&nbsp;固定的文件路径名</a>
+</h3>
+<h3 class="topic">
+<a name="2uv285a8ibj2ng7245i326k5k5">&nbsp;&nbsp;&nbsp;&nbsp;即该文件不应该出现在该路径下，就会被查杀</a>
+</h3>
+<h3 class="topic">
+<a name="2490ev4hdgogvd90i9jb9mnkj2">&nbsp;杀毒软件查杀的技术</a>
+</h3>
+<h3 class="topic">
+<a name="7rdua59ptc1tednkac3thrbbq3">&nbsp;&nbsp;扫描器</a>
+</h3>
+<h3 class="topic">
+<a name="68veh3mpi7chrf24tbi5bjklc1">&nbsp;&nbsp;&nbsp;文件扫描</a>
+</h3>
+<h3 class="topic">
+<a name="44geqhdreso2f23mie165eptif">&nbsp;&nbsp;&nbsp;内存扫描</a>
+</h3>
+<h3 class="topic">
+<a name="5uve6k1aglue8d9tajbb9gt854">&nbsp;&nbsp;脱壳引擎</a>
+</h3>
+<h3 class="topic">
+<a name="00dufgs8fo0ia9fnc1i9r5l5k2">&nbsp;&nbsp;av虚拟机</a>
+</h3>
+<h3 class="topic">
+<a name="2bjqd03mv5cpa9h61ph9d5gnht">&nbsp;&nbsp;主动防御</a>
+</h3>
+<h3 class="topic">
+<a name="3kqkcn362d19p0icvchttjfcsd">&nbsp;&nbsp;&nbsp;针对敏感位置的敏感操作进行监控</a>
+</h3>
+<h3 class="topic">
+<a name="330bul7d5i1qab9m46r2uvso96">&nbsp;&nbsp;云查杀</a>
+</h3>
+<h3 class="topic">
+<a name="5cj5f74pq4ljjioj761av6b1qn">&nbsp;&nbsp;沙箱</a>
+</h3>
+<h3 class="topic">
+<a name="7kmb1mcl4mmppd2j6e1fd0p6ea">&nbsp;杀毒软件的扫描器是怎么设计的</a>
+</h3>
+<h3 class="topic">
+<a name="6r6lru192hlk5gq08cjvu8oafb">&nbsp;&nbsp;进行特定文件格式的匹配</a>
+</h3>
+<h3 class="topic">
+<a name="46qbk7nm4cf2r8ptc35j3vcock">&nbsp;&nbsp;&nbsp;一般磁盘上所有的文件均会被扫描</a>
+</h3>
+<h3 class="topic">
+<a name="2h4rhpsrebc4f1o0ig3j7de3ml">&nbsp;&nbsp;进行文件的特征码的匹配</a>
+</h3>
+<h3 class="topic">
+<a name="37abgfcdsmjsd4jgokgcase5a6">&nbsp;病毒样本分析方法</a>
+</h3>
+<h3 class="topic">
+<a name="424b6m7p8s4eip03mhkn0o0ogk">&nbsp;&nbsp;静态分析</a>
+</h3>
+<h3 class="topic">
+<a name="2usrnbubq2o7dptesjfiemco0c">&nbsp;&nbsp;动态分析</a>
+</h3>
+<h3 class="topic">
+<a name="325t8ul20s4ni5prbuveep4or2">&nbsp;&nbsp;行为分析</a>
+</h3>
+<h3 class="topic">
+<a name="7bjvscm122tpnq988s2i3nqsf2">&nbsp;&nbsp;&nbsp;火绒剑等</a>
+</h3>
+<h3 class="topic">
+<a name="3nqj15ul304j49qnqr2b77onhn">&nbsp;样本分析的目的</a>
+</h3>
+<h3 class="topic">
+<a name="4oeu96kon5fn6eht0f2fertct1">&nbsp;&nbsp;辨别黑白</a>
+</h3>
+<h3 class="topic">
+<a name="25ce408bfeud71ll2jp9dl25al">&nbsp;&nbsp;找到恶意代码并提取特征，加入病毒库，查杀病毒</a>
+</h3>
+<h3 class="topic">
+<a name="2b2nrstq05k2rmcpkihbp5e088">&nbsp;&nbsp;能够修复病毒感染的文件</a>
+</h3>
+<h3 class="topic">
+<a name="3rr6ctbrjanjlfiomphon7uoht">&nbsp;扩展名为txt的文件仍有可能是病毒</a>
+</h3>
+<h3 class="topic">
+<a name="1v1qt5fimsda7c6a0e6elj66qd">&nbsp;&nbsp;因为扩展名是可以任意修改的</a>
+</h3>
+<h3 class="topic">
+<a name="13eqdd0ghi6bm6gde21ceh58vr">&nbsp;&nbsp;&nbsp;可以使用阿拉伯写法，让扩展名显示在左边</a>
+</h3>
+<h3 class="topic">
+<a name="2j5t4k7l5fq82phrjhcit94kg7">&nbsp;&nbsp;&nbsp;扩展名改过后，可以修改文件关联，让其能运行</a>
+</h3>
+<h3 class="topic">
+<a name="0jnf7tvmojegm0mp34hvrqbo77">&nbsp;&nbsp;&nbsp;可以通过api，比如CreateProcessA/W，启动程序</a>
+</h3>
+<h3 class="topic">
+<a name="0nka14qb4r2ju132m7t80o3a45">&nbsp;沙箱、沙盘、虚拟机、av虚拟机</a>
+</h3>
+<h3 class="topic">
+<a name="3rma2v3vqc15iljghvbfq4tcnv">&nbsp;&nbsp;沙盘（sandboxie）和影子系统</a>
+</h3>
+<h3 class="topic">
+<a name="3csrurdb7p6d59lpuaf3oocvo1">&nbsp;&nbsp;&nbsp;将关键的程序目录复制一份，形成一个隔离层，运行程序的时候直接将程序运行在隔离层中，程序对系统做的操作被限制在隔离层中，不会真正触及系统</a>
+</h3>
+<h3 class="topic">
+<a name="5vf7eh6geml20ajmd8tg00ja9u">&nbsp;&nbsp;&nbsp;是计算机资源有限的条件下对虚拟机的替代性方案</a>
+</h3>
+<h3 class="topic">
+<a name="10jerf9mt2pm388pm51u172fod">&nbsp;&nbsp;沙箱</a>
+</h3>
+<h3 class="topic">
+<a name="4s3cufn75dntdp3epon49e29dm">&nbsp;&nbsp;&nbsp;按照安全策略限制程序行为的执行环境</a>
+</h3>
+<h3 class="topic">
+<a name="6hp71u152r48t8uqr97l2dudqt">&nbsp;&nbsp;&nbsp;其实就是虚拟机</a>
+</h3>
+<h3 class="topic">
+<a name="7e8gv1hfon5qrt43eup54b7lh8">&nbsp;&nbsp;反病毒虚拟机</a>
+</h3>
+<h3 class="topic">
+<a name="21omvtrbbfhg4e3sslth0a9q9s">&nbsp;&nbsp;&nbsp;主要包括</a>
+</h3>
+<h3 class="topic">
+<a name="65ro9i757scn6qpqlmu5p4ad8j">&nbsp;&nbsp;&nbsp;&nbsp;虚拟cpu</a>
+</h3>
+<h3 class="topic">
+<a name="0oqtde8s34s1jisj5jk6ifprsc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用于识别每个指令的执行（即反映指令对寄存器的修改）</a>
+</h3>
+<h3 class="topic">
+<a name="2cb7ime118po8eubvnk9icabk5">&nbsp;&nbsp;&nbsp;&nbsp;虚拟操作环境</a>
+</h3>
+<h3 class="topic">
+<a name="1uthjarvspquh4mltodcukj2o5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使病毒能够发挥运行行为，以便捕捉</a>
+</h3>
+<h3 class="topic">
+<a name="6ennc1hqq09h24r9mc14ka62vg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;模拟操作系统api，分析病毒对api的调用</a>
+</h3>
+<h2 class="topic">
+<a name="4236s6ridtn88toureatmg1ldn">恶意代码分析</a>
+</h2>
+<h3 class="topic">
+<a name="71tg3i21hreor0j2cbmg4jds4j">&nbsp;获取样本途径</a>
+</h3>
+<h3 class="topic">
+<a name="5tusai85ipcfdsi28tb54pq3j0">&nbsp;&nbsp;在已中毒的机器上提取样本</a>
+</h3>
+<h3 class="topic">
+<a name="196tqr15sqs4g875fd28s2four">&nbsp;&nbsp;&nbsp;使用ark工具手工查杀病毒并提取病毒样本</a>
+</h3>
+<h3 class="topic">
+<a name="4oq3fegh79if5b8g2b8gol15v0">&nbsp;&nbsp;&nbsp;&nbsp;使用PChunter手动杀毒</a>
+</h3>
+<h3 class="topic">
+<a name="4uoacntdtgl48a89p058s90c2k">&nbsp;&nbsp;&nbsp;使用抓包工具检测流量</a>
+</h3>
+<h3 class="topic">
+<a name="44p0bp7bf7jjdhujh0rspe0kvp">&nbsp;&nbsp;企业内部获取样本</a>
+</h3>
+<h3 class="topic">
+<a name="23f8ard45u9he8vpgpmn8in64f">&nbsp;&nbsp;&nbsp;客户端上传</a>
+</h3>
+<h3 class="topic">
+<a name="6305qabanm01791cgpvp965kjq">&nbsp;&nbsp;&nbsp;用户上传样本</a>
+</h3>
+<h3 class="topic">
+<a name="6ju7emvr6j7o3reo53143lmu2t">&nbsp;&nbsp;&nbsp;行业公司之间交换样本</a>
+</h3>
+<h3 class="topic">
+<a name="6bn52b74b6fd49fdh0co1bc2eu">&nbsp;&nbsp;网络样本</a>
+</h3>
+<h3 class="topic">
+<a name="1ad9bevd795qbcti0ndphje9oj">&nbsp;&nbsp;&nbsp;专业论坛共享样本</a>
+</h3>
+<h3 class="topic">
+<a name="205vljhc3h3098eo832l1o7lls">&nbsp;&nbsp;&nbsp;&nbsp;卡饭论坛</a>
+</h3>
+<h3 class="topic">
+<a name="4j0q36houodj5pitg3qd1jqh7p">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;病毒样本分享分析区</a>
+</h3>
+<h3 class="topic">
+<a name="7c4rgaf1loluvafm98fauu9ulp">&nbsp;&nbsp;&nbsp;&nbsp;精睿论坛</a>
+</h3>
+<h3 class="topic">
+<a name="791o6tm3o4gq9ejnjv7bm2cfou">&nbsp;&nbsp;&nbsp;&nbsp;吾爱破解</a>
+</h3>
+<h3 class="topic">
+<a name="5booa91c9qne1f48s6jil4mg5p">&nbsp;&nbsp;&nbsp;&nbsp;各大杀毒软件论坛样本上报板块</a>
+</h3>
+<h3 class="topic">
+<a name="3iurfa1prcre57n6c90gu0q7dg">&nbsp;&nbsp;&nbsp;&nbsp;国外恶意代码分析</a>
+</h3>
+<h3 class="topic">
+<a name="33d5e1rjugif5hek4ujnqks06i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;VirusTotal</a>
+</h3>
+<h3 class="topic">
+<a name="1vhbgrj3idlrfag20fjjaj4ig3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;恶意程序在线分析</a>
+</h3>
+<h3 class="topic">
+<a name="2sqfbpghffndak839chmf7lvnb">&nbsp;&nbsp;&nbsp;&nbsp;国内沙箱</a>
+</h3>
+<h3 class="topic">
+<a name="52jbv6k3fb6cc185ghaigcb2qr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;微步云沙箱</a>
+</h3>
+<h3 class="topic">
+<a name="7272o5c4cb984e3ot5qkae0irp">&nbsp;&nbsp;&nbsp;使用蜘蛛爬虫批量获取样本</a>
+</h3>
+<h3 class="topic">
+<a name="6vbc53khaqhevmke5120gnauii">&nbsp;&nbsp;avtest专业评测杀毒软件的网站</a>
+</h3>
+<h2 class="topic">
+<a name="38cfo1sbevdq5j0p732ao4p0bt">样本分析方法</a>
+</h2>
+<h3 class="topic">
+<a name="5ln7sd6bkj7vo4cmc62nrt7aso">&nbsp;环境搭建</a>
+</h3>
+<h3 class="topic">
+<a name="7vds746a44i53asrr9dgm0brbm">&nbsp;&nbsp;虚拟机、组策略配置</a>
+</h3>
+<h3 class="topic">
+<a name="7gm05mdbcar25l1ja29vq0tt98">&nbsp;行为分析</a>
+</h3>
+<h3 class="topic">
+<a name="2t9eaator3pesa2nd1ngf2srvb">&nbsp;详细分析</a>
+</h3>
+<h2 class="topic">
+<a name="5l483sn70sfir8ifo9l5qe1tnv">开源杀毒软件使用</a>
+</h2>
+<h3 class="topic">
+<a name="4gr0mrt919g2g44o1abqgo3gpo">&nbsp;clamav的使用</a>
+</h3>
+<h3 class="topic">
+<a name="0i10t927rlidaf7utvj8t94vo2">&nbsp;&nbsp;ClamAV，开源杀毒引擎，命令行工具</a>
+</h3>
+<h3 class="topic">
+<a name="4k94b11nu2cfiq79cq7igqcrld">&nbsp;&nbsp;在任意路径下 shift+右键打开命令行界面</a>
+</h3>
+<h3 class="topic">
+<a name="30esniv511bvhlqvqbpjlrgb2b">&nbsp;&nbsp;输入clamsccan，打开杀毒软件，扫描当前目录下程序是否有病毒</a>
+</h3>
+<h3 class="topic">
+<a name="4gqti3855tfvca9ftgosapsis2">&nbsp;&nbsp;创建文件MD5值特征</a>
+</h3>
+<h3 class="topic">
+<a name="52co2qmfa8ud76oqviptiukf9m">&nbsp;&nbsp;&nbsp;sigtool --md5 文件名</a>
+</h3>
+<h3 class="topic">
+<a name="41gaphesfpk335e8kl1s3j4clb">&nbsp;&nbsp;&nbsp;sigtool --md5 文件名 &gt;1.hdb</a>
+</h3>
+<h3 class="topic">
+<a name="6flie496rsoapbdk9j4mpq60s4">&nbsp;&nbsp;&nbsp;&nbsp;将程序md5值保存到文件中</a>
+</h3>
+<h3 class="topic">
+<a name="505v7d0jesooqtrp65lbht43io">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;针对特定文件生成md5值</a>
+</h3>
+<h3 class="topic">
+<a name="2k69akbnl2qmtf98d7e8huhk9r">&nbsp;&nbsp;&nbsp;&nbsp;不同种类的病毒特征，使用的特征文件的后缀名不一样</a>
+</h3>
+<h3 class="topic">
+<a name="493281n64uo13tdqtcnphep1mj">&nbsp;&nbsp;&nbsp;将该文件放进ClamVirus 的database目录下</a>
+</h3>
+<h3 class="topic">
+<a name="2aul3nioagus45iv2ncmh1uqpu">&nbsp;&nbsp;&nbsp;&nbsp;再次查杀的时候会查到该文件</a>
+</h3>
+<h3 class="topic">
+<a name="5aps2vvc48qgtaf8895ivjitan">&nbsp;&nbsp;创建十六进制码特征</a>
+</h3>
+<h3 class="topic">
+<a name="73nbuo3lim28r3c29dfv0213h6">&nbsp;&nbsp;&nbsp;将病毒的十六进制特征码保存在后缀为db的文件中 并保存在database文件夹下，可以用于查杀所有符合该特征的文件</a>
+</h3>
+<h3 class="topic">
+<a name="5nu0bpliuevp1gkr78gubk1uv8">&nbsp;&nbsp;&nbsp;相对于文件md5查杀，可以做到具有该特征的一类程序的通杀</a>
+</h3>
+<h3 class="topic">
+<a name="4h1d96t1h29r7nvju5t69jc26s">&nbsp;&nbsp;创建逻辑特征</a>
+</h3>
+<h3 class="topic">
+<a name="7a7rrhb3rssjvkd3jl98c41moc">&nbsp;&nbsp;&nbsp;通过该表达式，满足具有一定逻辑规律的特征的组合的文件，就会被查杀</a>
+</h3>
+<h3 class="topic">
+<a name="7e65shfkbfp9caorea3q9615dd">&nbsp;&nbsp;创建扩展的十六进制特征码</a>
+</h3>
+<h3 class="topic">
+<a name="2uc0khtd0gb2ni4gob2ujn4uks">&nbsp;&nbsp;&nbsp;可以指定具体十六进制特征出文件哪个偏移位置时，会被判断为病毒</a>
+</h3>
+<h3 class="topic">
+<a name="5n4mmniqobq0nfjrbqdelphr2s">&nbsp;&nbsp;&nbsp;注意区别dump文件和非dump文件，前者文件中为内存对齐粒度（0x1000），后者为文件对齐粒度（0x200）</a>
+</h3>
+<h3 class="topic">
+<a name="4kqo24n2abck2mpadve1cs1i9e">&nbsp;&nbsp;&nbsp;&nbsp;所以同一个特征在两种文件中的偏移是不同的</a>
+</h3>
+<h3 class="topic">
+<a name="2ghigfrmg87eae7umunqv2qscu">&nbsp;&nbsp;&nbsp;clamav的扫描是针对文件的扫描，所有的偏移均是基于文件对齐粒度（0x200）</a>
+</h3>
+<h3 class="topic">
+<a name="7fgq1kas2dj1i7dg0jqls438jh">&nbsp;&nbsp;解压程序已有的打包的程序特征</a>
+</h3>
+<h3 class="topic">
+<a name="1u94gv1uq8gnjau8oo8kgeth2a">&nbsp;&nbsp;&nbsp;sigtool -u 文件名</a>
+</h3>
+<h3 class="topic">
+<a name="1oqemm4ng5jbcp8t6lr4292fs0">&nbsp;&nbsp;&nbsp;&nbsp;解压文件</a>
+</h3>
+<h3 class="topic">
+<a name="5ajp64gvig5f6u6c08tgci519f">&nbsp;&nbsp;&nbsp;通过notepad打开，进行查看</a>
+</h3>
+<h3 class="topic">
+<a name="0894jg5jo4936la3vil5eoagil">&nbsp;yara规则的使用</a>
+</h3>
+<h3 class="topic">
+<a name="75rnrccpbeclrsn25tg5j5df0b">&nbsp;&nbsp;是用于编写病毒查杀逻辑的规则，编写的规则可以适用于大多数杀毒引擎用于进行病毒特征匹配</a>
+</h3>
+<h3 class="topic">
+<a name="05n2ua99t9vi3gpqm8n3nhmpb6">&nbsp;&nbsp;可以使用yara插件，在指定目录下对符合某个yara规则的文件进行匹配</a>
+</h3>
+<h2 class="topic">
+<a name="7rnnfnba2707si54eum1ah9ucb">分析伪装文件夹的病毒</a>
+</h2>
+<h3 class="topic">
+<a name="5l6ig2nkkljc0ague34pc3bmi2">&nbsp;宝蓝delphi程序 upx壳</a>
+</h3>
+<h3 class="topic">
+<a name="17qinc16ftunbtb9rtehkess9c">&nbsp;upx壳程序提供脱壳程序，命令行界面，</a>
+</h3>
+<h3 class="topic">
+<a name="5h8cn9c1v3ov4clncban55kbsu">&nbsp;&nbsp;upx -d 文件名</a>
+</h3>
+<h3 class="topic">
+<a name="5n2i6un1f8vpe072uqgjct95ea">&nbsp;&nbsp;&nbsp;脱壳指令</a>
+</h3>
+<h3 class="topic">
+<a name="5dosruc173g438s5k2k1sc68nb">&nbsp;使用官方脱壳工具可以完美脱壳</a>
+</h3>
+<h3 class="topic">
+<a name="7ku6dn4h0t244bk3mn7jhqa9fm">&nbsp;&nbsp;恢复区段名称等信息</a>
+</h3>
+<h3 class="topic">
+<a name="7t61t27qidukfea7h2ormii6dl">&nbsp;当upx壳作用在有随机基址的vs程序，自动脱壳可能出现一定问题</a>
+</h3>
+<h3 class="topic">
+<a name="5l7eisempkchclct9fqnggo07j">&nbsp;分析思路</a>
+</h3>
+<h3 class="topic">
+<a name="7302ss90k60if5kguon4ecdtl1">&nbsp;&nbsp;静态分析</a>
+</h3>
+<h3 class="topic">
+<a name="7mhfvkp036bsnir0j89kpr728j">&nbsp;&nbsp;&nbsp;文件大小</a>
+</h3>
+<h3 class="topic">
+<a name="3bmcl05et5hl8968gv283og94f">&nbsp;&nbsp;&nbsp;&nbsp;当应用程序小于300k一般可以认为是程序较小，属于可疑文件</a>
+</h3>
+<h3 class="topic">
+<a name="6cp6ps1if15tvij2rkogf2agus">&nbsp;&nbsp;&nbsp;文件图标</a>
+</h3>
+<h3 class="topic">
+<a name="7h2vsc0lkhgf3crci1n4ohs204">&nbsp;&nbsp;&nbsp;&nbsp;伪装成文件夹图标是一个病毒的可疑点</a>
+</h3>
+<h3 class="topic">
+<a name="58k4bl7a3sdavq3j3ig703uhlr">&nbsp;&nbsp;&nbsp;文件修改时间</a>
+</h3>
+<h3 class="topic">
+<a name="5g04sf104h0gu7glfl2dgigpv9">&nbsp;&nbsp;&nbsp;使用hash工具分析</a>
+</h3>
+<h3 class="topic">
+<a name="7c2f9mndput4qqrlt883hjpmt9">&nbsp;&nbsp;&nbsp;&nbsp;求文件的MD5、sha1、crc32</a>
+</h3>
+<h3 class="topic">
+<a name="25nn4rkjr8tlnavjr1b1vooksg">&nbsp;&nbsp;&nbsp;&nbsp;将md5 sha1 crc32拿到云查杀网站上验证，看有没有查杀记录</a>
+</h3>
+<h3 class="topic">
+<a name="32t1upl156ban3ifio4votpunu">&nbsp;&nbsp;&nbsp;&nbsp;不要将样本直接拿到云查杀网站上验证，病毒样本是杀毒软件公司的珍贵资产</a>
+</h3>
+<h3 class="topic">
+<a name="6fpk07nh089j9s1l4n196k8e8h">&nbsp;&nbsp;&nbsp;使用peid分析pe文件</a>
+</h3>
+<h3 class="topic">
+<a name="1ac7jsda0jkvcfi2e7rjsmap49">&nbsp;&nbsp;&nbsp;&nbsp;是否有壳，如果有壳，最好进行脱壳，如果时间紧迫或脱壳难度大，则可以直接运行程序，然后将程序内存dump下来，用于静态分析</a>
+</h3>
+<h3 class="topic">
+<a name="61csmc3dl8uvu2tirjedt6r1r6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;虚拟机的tool中存在upx官方脱壳工具，任意路径下shift+右键 运行命令函数窗口 输入upx即可使用</a>
+</h3>
+<h3 class="topic">
+<a name="1ac5c2orjdjff926s9h6rbbul1">&nbsp;&nbsp;&nbsp;查看并推测编译语言和环境</a>
+</h3>
+<h3 class="topic">
+<a name="15envt8j7vov8d64ertanibv1c">&nbsp;&nbsp;&nbsp;&nbsp;peid</a>
+</h3>
+<h3 class="topic">
+<a name="78jee1p2fk4lorik8id0dcm49s">&nbsp;&nbsp;&nbsp;&nbsp;exeinfo</a>
+</h3>
+<h3 class="topic">
+<a name="5q1ovn318cviilsj7an9oh6uvu">&nbsp;&nbsp;&nbsp;查看区段信息</a>
+</h3>
+<h3 class="topic">
+<a name="4shfjsflnntpbiji58htu4oe5v">&nbsp;&nbsp;&nbsp;&nbsp;lordpe</a>
+</h3>
+<h3 class="topic">
+<a name="7tmi039a4nekk9klu3l15b7242">&nbsp;&nbsp;&nbsp;查看文件导入表中引入了那些函数</a>
+</h3>
+<h3 class="topic">
+<a name="5lt8ltqt0ljniekah9s4vuij7u">&nbsp;&nbsp;&nbsp;&nbsp;推测程序功能</a>
+</h3>
+<h3 class="topic">
+<a name="780k8buek1g5bppf4fs8l7ovcq">&nbsp;&nbsp;&nbsp;&nbsp;使用dumpbin查看导入api的信息</a>
+</h3>
+<h3 class="topic">
+<a name="60knitg5ip04r310idmnmr700b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该工具在vs的命令行界面可以直接使用</a>
+</h3>
+<h3 class="topic">
+<a name="70l8sg9m28mgeib3psr45ua0c0">&nbsp;&nbsp;&nbsp;&nbsp;也可以直接在lordpe查看</a>
+</h3>
+<h3 class="topic">
+<a name="5jepdiug3pkap1iio1k7l9c1vl">&nbsp;&nbsp;&nbsp;查看引入了那些动态链接库</a>
+</h3>
+<h3 class="topic">
+<a name="73ijk0f8eonfss90pknasgk2i0">&nbsp;&nbsp;&nbsp;&nbsp;Kernel32.dll</a>
+</h3>
+<h3 class="topic">
+<a name="55pabitnovp8ub3gg2mtp6e2ac">&nbsp;&nbsp;&nbsp;&nbsp;主要是提供服务、修改注册表、进行网络连接的dll比较重要</a>
+</h3>
+<h3 class="topic">
+<a name="6661s4hafqkkhdi95gs4asp5tb">&nbsp;&nbsp;&nbsp;&nbsp;......</a>
+</h3>
+<h3 class="topic">
+<a name="09b8c0onpak15c1kkqv4b75b00">&nbsp;&nbsp;&nbsp;查看文件中是否有导出</a>
+</h3>
+<h3 class="topic">
+<a name="5h2g83neeicnh6dseqc2iv0ov9">&nbsp;&nbsp;&nbsp;查看程序中是否有tls回调函数</a>
+</h3>
+<h3 class="topic">
+<a name="6m0q06h741hsk6kk82ipkoh419">&nbsp;&nbsp;&nbsp;&nbsp;在lordpe中查看</a>
+</h3>
+<h3 class="topic">
+<a name="197kp4m1o8al9nnm24nli2utr7">&nbsp;&nbsp;&nbsp;&nbsp;因为可能涉及tls反调试</a>
+</h3>
+<h3 class="topic">
+<a name="433hfj8bc8a1tk1c4v1clktk0f">&nbsp;&nbsp;&nbsp;查看资源，病毒可能将pe文件隐藏在资源中，并在运行时将pe文件释放</a>
+</h3>
+<h3 class="topic">
+<a name="56vbloj1snj1soukl0ti5o122v">&nbsp;&nbsp;&nbsp;&nbsp;使用resoursehacker</a>
+</h3>
+<h3 class="topic">
+<a name="7qg9aj103ep8luiq224kmgjkvg">&nbsp;&nbsp;行为分析(尽可能使用原版程序在火绒剑中跑，因为病毒部分功能可能在壳中实现，脱壳后的病毒可能功能不全)</a>
+</h3>
+<h3 class="topic">
+<a name="1dobor01q5i1csuf7a5annvduu">&nbsp;&nbsp;&nbsp;使用火绒剑</a>
+</h3>
+<h3 class="topic">
+<a name="5dnco39r5gocr7dshgtmudqm01">&nbsp;&nbsp;&nbsp;&nbsp;就直接将样本拖进来</a>
+</h3>
+<h3 class="topic">
+<a name="0gv4ahdi6vin210s6i76irkqdl">&nbsp;&nbsp;&nbsp;&nbsp;查看动作过滤</a>
+</h3>
+<h3 class="topic">
+<a name="6j1koa5rasc9fgks42ed0cnd4g">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;执行监控</a>
+</h3>
+<h3 class="topic">
+<a name="3okbb0d1enqntf0472elht8qfu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;右键可以查看详细信息</a>
+</h3>
+<h3 class="topic">
+<a name="2sb094gncoenuo8gkm68l7tlcv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果发现了恶意进程的创建，在进程标签栏中将进程关闭或可以右键-》跳转到 ，从而查看进程对应程序所在的文件目录（病毒文件目录中常是隐藏的 ，使用火绒剑的文件系统或者PChunter可以看到）</a>
+</h3>
+<h3 class="topic">
+<a name="3lhbsnrqf2105embfumpgfpana">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;搜索病毒文件可以使用火绒剑，对病毒文件作操作（拷贝样本等）可以使用pchunter（专门用作手动杀毒）</a>
+</h3>
+<h3 class="topic">
+<a name="7564riuv8sq74hb7n7avgkl941">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以在pchunter中找到病毒文件，右键-》修改只读隐藏读写属性，则病毒可以在文件资源管理器中显示</a>
+</h3>
+<h3 class="topic">
+<a name="1t2ofhf557haglk63idhq58ov7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;文件监控</a>
+</h3>
+<h3 class="topic">
+<a name="17uf58v666qc0h7v3g1en33e28">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;有时候病毒访问文件的操作特别多，一方面为了混淆病毒行为，另一方面为了避开杀毒软件的主动防御策略</a>
+</h3>
+<h3 class="topic">
+<a name="6b0anhda1vp2vvn6g802kk9hqt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;因为主动防御是通过监控程序对敏感目录的访问判断恶意行为，如果混淆病毒行为，进行大量文件访问，可能避免触发杀毒软件的监控策略</a>
+</h3>
+<h3 class="topic">
+<a name="6r8ok3cv58iv10cri4n29m97jp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注册表监控</a>
+</h3>
+<h3 class="topic">
+<a name="45e7pablm98ve3k8b00a6tc9qe">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;查看设置注册表键值的操作</a>
+</h3>
+<h3 class="topic">
+<a name="0f0uejgoqorqf45gcfd2f87r6c">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;进行映像劫持</a>
+</h3>
+<h3 class="topic">
+<a name="793odr6e9vgjdobj6faifk3cr8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;病毒通过修改注册表特定键值，将杀毒软件进行重定位，使得杀软运行时不能找到正确路径，使其无法运行</a>
+</h3>
+<h3 class="topic">
+<a name="0ffqgd2u7204mdge8dnhljpu79">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;avp.exe 是卡巴斯基的进程名称</a>
+</h3>
+<h3 class="topic">
+<a name="04ic4c1di4f5lk4icd033tvke8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;不显示exe的扩展名</a>
+</h3>
+<h3 class="topic">
+<a name="4golkfrmn0jhgj8o2shjvpnhas">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;禁止注册表程序</a>
+</h3>
+<h3 class="topic">
+<a name="6qh10tefb7p7vtkk3mephslqr1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以唱尝试使用pchunter的注册表管理程序</a>
+</h3>
+<h3 class="topic">
+<a name="485dtbu037q68coijrtq031hr0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;分析注册表遵循一个原则：能查到的就是有用的，不能查到的就是没有用的 搜索引擎：baidu.com,bing.com,google.com </a>
+</h3>
+<h3 class="topic">
+<a name="7j4bfbo46qeobns0dn3a0v7hd1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1为映像劫持，可以使大量杀毒程序无法运行（将注册表指定项设置为空）&#13;
+2为显示exe程序的后缀名&#13;
+3为禁用regedit 即注册表编辑器</a>
+</h3>
+<p class="topicImage">
+<img src="class66day0527%EF%BC%88%E7%97%85%E6%AF%92%E5%88%86%E6%9E%90%EF%BC%89_files/6hp782fmrpv0f13cc139dfj4c4.png"></p>
+<h3 class="topic">
+<a name="3idlujgvi7lqqg4lcq3sq2grg7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;有关注册表的修改可以通过右键-》跳转到，转到注册表标签栏修改</a>
+</h3>
+<h3 class="topic">
+<a name="585tpffse7m8jts6pujavbckqh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注册表修改生效需要重启计算机</a>
+</h3>
+<h3 class="topic">
+<a name="6hg5jojdviio0j1hgb04vsfglm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class66day0527%EF%BC%88%E7%97%85%E6%AF%92%E5%88%86%E6%9E%90%EF%BC%89_files/4i0hbprm2oealao74dkmb9tm9v.png"></p>
+<h3 class="topic">
+<a name="2bocna3lghi4vlikc9t4i1jrj6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class66day0527%EF%BC%88%E7%97%85%E6%AF%92%E5%88%86%E6%9E%90%EF%BC%89_files/0t8nbrq7ki36ri45cfm8kct03a.png"></p>
+<h3 class="topic">
+<a name="352vg3dllhv8kf70dfmm6baa2n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;进程监控</a>
+</h3>
+<h3 class="topic">
+<a name="4a8hqbgchm2arurotrtigspbtl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;有很多用于混淆视听的进程操作</a>
+</h3>
+<h3 class="topic">
+<a name="35i33fp780tf23b04h25nn9ogm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;有时不能弄清全部进程的作用，部分进程信息可以忽略，因为windows本身的运行机制会产生大量进程</a>
+</h3>
+<h3 class="topic">
+<a name="5kqf7485q496fouv6b3gbq10da">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以查看特定进程的调用栈，确定进程的实际调用方，从而确定进程运行目的</a>
+</h3>
+<h3 class="topic">
+<a name="0h7hho2mf4qmcbe1douvbm0jkl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;病毒遍历进程可能是为了查看当前机器中是否有杀毒软件运行，如果有杀软运行，病毒可能选择不执行，从而隐藏自己，不被杀软查杀</a>
+</h3>
+<h3 class="topic">
+<a name="5jcinapm5b6074nbulqh9hn6m0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;网络监控</a>
+</h3>
+<h3 class="topic">
+<a name="3gcru95m62otk1sqk38khpc59m">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;行为监控</a>
+</h3>
+<h3 class="topic">
+<a name="0drlbal74u7tqbo7pa9acuk0ms">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;火绒剑总结的恶意程序高危行为</a>
+</h3>
+<h3 class="topic">
+<a name="0d69e6gp3e8jrlpk2fbb0mquad">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;释放pe文件</a>
+</h3>
+<h3 class="topic">
+<a name="1e5vn361gm4rsfe41nnk288eov">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;释放隐藏文件</a>
+</h3>
+<h3 class="topic">
+<a name="454cnvmiim5tv0nbt65ucn72e3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;自我复制</a>
+</h3>
+<h3 class="topic">
+<a name="77mp4jgtd6qqt9mj517kt6kanv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果出现则说明多半是病毒</a>
+</h3>
+<h3 class="topic">
+<a name="76b8nlga85pcsm0a2at1qm8eb7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.....</a>
+</h3>
+<h3 class="topic">
+<a name="7cvdin5pl8pegaajov0m5d7p2p">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;查看动作修改的资源</a>
+</h3>
+<h3 class="topic">
+<a name="4bnv4f0rv0eals2fvfc6cmbnit">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class66day0527%EF%BC%88%E7%97%85%E6%AF%92%E5%88%86%E6%9E%90%EF%BC%89_files/0gj4sslp581e66s3fcivfk0nel.png"></p>
+<h3 class="topic">
+<a name="3vhrha1lekem13l6tv5fqmkh23">&nbsp;&nbsp;ida od动态调试程序</a>
+</h3>
+<h3 class="topic">
+<a name="1pqtje08km8tkobvu0d8tkoc6i">&nbsp;&nbsp;&nbsp;在签名文件中加入恶意软件对应的编译器的签名文件，从而可以区分库程序和用户程序</a>
+</h3>
+<h3 class="topic">
+<a name="7npijc38cniruqq3qmb3g7i35a">&nbsp;&nbsp;&nbsp;分析病毒一般要将程序全部看下来，所以多使用 IDA F5</a>
+</h3>
+<h3 class="topic">
+<a name="79lge1k4dvskb601vj99anuebt">&nbsp;&nbsp;&nbsp;如果ida中某些指令看不懂，可以使用od进行动态调试，可以不逐条指令跟踪，通过函数参数，返回值猜测函数执行目的</a>
+</h3>
+<h3 class="topic">
+<a name="0219ljcc1cf3jeh4nef66e4cen">&nbsp;&nbsp;&nbsp;对于程序重要行为（修改注册表、读写文件），必须将函数行为分析清楚</a>
+</h3>
+<h3 class="topic">
+<a name="53l7desc4hioh7tfdjkl9uvqia">&nbsp;手动查杀（使用pchunter）</a>
+</h3>
+<h3 class="topic">
+<a name="1as2b4ka81s1pt49rh411avoq6">&nbsp;&nbsp;如果程序无法删除，说明该程序正在被另一个程序打开，说明程序的句柄正在被占用，没有释放，通过pchunter可以查看进程句柄，并关闭进程句柄，从而删除恶意程序</a>
+</h3>
+<h3 class="topic">
+<a name="0c7okme28ugjg30u08ch817a2u">&nbsp;&nbsp;procexp也可以查看进程句柄</a>
+</h3>
+<h2 class="topic">
+<a name="2tsrssiltdstsr3rfg2l1m3ta8">使用pchunter进行手动杀毒流程</a>
+</h2>
+<h3 class="topic">
+<a name="7th538ru002qfg5o9q3fe7tl9s">&nbsp;运行恶意代码之后，发现进程中出现两个explorer.exe进程，且其中一个进程路径不是C:\Windows\explorer.exe,故为异常进程</a>
+</h3>
+<h3 class="topic">
+<a name="1o6rcq1ulgaflqbh7135c5rtg0">&nbsp;&nbsp;如果恶意代码不单独生成进程，则另说</a>
+</h3>
+<h3 class="topic">
+<a name="57julgl5hu07747u51nj6go72h">&nbsp;右键异常进程-》定位到进程文件，发现系统资源管理器中未显示该程序，可能是恶意软件修改了系统属性从而隐藏自身</a>
+</h3>
+<h3 class="topic">
+<a name="69im559kadn0d30hkk8vfcngpj">&nbsp;右键异常进程-》定位到PCHunter文件管理器，可以在pchunter的自己的文件管理器中找到该文件，右键该文件可以去除隐藏属性，从而让其在系统文件管理器中显示</a>
+</h3>
+<h3 class="topic">
+<a name="4ctrlnk3u7iqermbjblut16li1">&nbsp;删除该恶意文件时，会提示文件已被explorer.exe进程调用，pchunter中右键结束异常进程之后就可以删除该文件</a>
+</h3>
+<h3 class="topic">
+<a name="797fltnrlgb4cj2ukqbg3kml47">&nbsp;pchunter中查看启动项，发现可疑启动项TSPS.Ink 右键在pchunter文件管理器中查看该文件，修改文件隐藏属性，试着删除该文件，提示文件已经被winlogon.exe程序运行</a>
+</h3>
+<h3 class="topic">
+<a name="0tklsr4upijempkgcatsab2t11">&nbsp;&nbsp;恶意程序可以通过进程注入的方式，在系统进程（winlogon.exe等）执行相关操作（只要是需要使用文件句柄的api即可），只要让恶意程序的句柄被占用，就可以防止该程序对应的文件被删除</a>
+</h3>
+<h3 class="topic">
+<a name="62u6pcgsi4he9ac3qnio03hlbn">&nbsp;winlogon.exe是系统启动时运行的用户登陆进程，（该进程在程序运行期间不能结束，否则意味着当前用户未登陆）右键该进程，查看进程句柄，发现进程句柄名称为TSPS.Ink的句柄，点击关闭句柄，可以停止TSPS.Ink中被占用的状态，进而删除TSPS.Ink文件</a>
+</h3>
+<h3 class="topic">
+<a name="25lffo83noahfhrlidd1f9p5q6">&nbsp;删除TSPS.In文件之前，将其拖到010editor中可以看到其在系统启动时会与运行 C:\TSTP\winlogon.exe的程序，在指定目录下找到该文件仍然时不可删除的，所以在winlogon.exe中找到该程序（TSTP\winlogon.exe）的句柄，，将句柄关闭，然后删除C:\TSTP\winlogon.exe文件</a>
+</h3>
+<h3 class="topic">
+<a name="26j3as8s04jc3vcbu4pjb79832">&nbsp;详细操作图片查看病毒分析第一天老师笔记《伪装文件夹病毒分析》</a>
+</h3>
+<h3 class="topic">
+<a name="1crb6tji512mtf7bpn57atf3o7">&nbsp;手工查杀有时只能将病毒程序找出来并删除，对于病毒对系统进行的某些修改（比如熊猫烧香的图标），手工杀毒无法解决，需要使用专杀工具</a>
+</h3>
+<h2 class="topic">
+<a name="35q56uprf5qf0kp2u0malvfbnq">ida中快捷键面试时可能被问到</a>
+</h2>
+<h2 class="topic">
+<a name="40c7chd1kech76bbdp8st4e7ps">ida中在Option中可以选择显示指令的十六进制数</a>
+</h2>
+<h2 class="topic">
+<a name="6admqkjre2un0i1c5ib0lcgj4n">ida和od的联合使用</a>
+</h2>
+<h3 class="topic">
+<a name="65ictpmb8ctmjn9tjtjuk9b92q">&nbsp;通过ida中的创建map文件的操作可以输出已经分析好的ida代码</a>
+</h3>
+<h3 class="topic">
+<a name="3gpkpdfisg622p4lktm8ug3hmj">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class66day0527%EF%BC%88%E7%97%85%E6%AF%92%E5%88%86%E6%9E%90%EF%BC%89_files/2n27a8t57670dmn6q6pgv1t028.png"></p>
+<h3 class="topic">
+<a name="7ps2aj1ng2rgmhcb99otuhgtv7">&nbsp;&nbsp;创建map文件时可以将以上全部勾选</a>
+</h3>
+<p class="topicImage">
+<img src="class66day0527%EF%BC%88%E7%97%85%E6%AF%92%E5%88%86%E6%9E%90%EF%BC%89_files/2bci0ubolcgqbdlqj70ssc1u9l.png"></p>
+<h3 class="topic">
+<a name="1kn13tunp9tfam0oufq2s14cm7">&nbsp;得到的map文件可以在od中使用loadmap插件将map文件导入od，使得od中可以看到ida的函数命名、变量命名等</a>
+</h3>
+<h3 class="topic">
+<a name="4ipkf86h44vi5aiejm4bip7bnc">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class66day0527%EF%BC%88%E7%97%85%E6%AF%92%E5%88%86%E6%9E%90%EF%BC%89_files/2gf1g1663dsrc0kgt7l3o4vm99.png"></p>
+<h2 class="topic">
+<a name="4aj685leh8jik93p3qq0t393hf">入口点前下断点</a>
+</h2>
+<h3 class="topic">
+<a name="79ft080eah5e5gbfie3deqa6su">&nbsp;进入oep的函数是系统模块调用的（kernel32.dll）</a>
+</h3>
+<h3 class="topic">
+<a name="7vtf1ctcoq8v6ruvvdvf26siup">&nbsp;如果能够确定oep是在kernel中哪个位置被调用的，就可以在oep前下断，从而避开病毒的反调试</a>
+</h3>
+<h3 class="topic">
+<a name="5us6eo08993j9fdv21h481riav">&nbsp;有的病毒针对oep下断点存在反调试（比如使用tls回调函数）</a>
+</h3>
+<h2 class="topic">
+<a name="1rh52npinhbcuqk42fab2i5gnj">ida中的汇编代码地址与od中对应指令的地址是相同的，可以相互寻址</a>
+</h2>
+<h2 class="topic">
+<a name="312bllb5tspnr6obqijfumjk7s">程序自启动时修改的键值</a>
+</h2>
+<h3 class="topic">
+<a name="4rtg8v8v7c93lpcaelcema9csg">&nbsp;HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run\svcshare</a>
+</h3>
+<h2 class="topic">
+<a name="6dbueipt8967fj7lqc1i6ud62q">病毒的修改程序的启动信息，需要修改注册表的键值，键值的修改在火绒剑显示不完整，需要在pchunter中查看，找到对应的自启动名称和启动路径（常为病毒样本的路径）</a>
+</h2>
+<h2 class="topic">
+<a name="198l989pvfe2b798edh5rq8ru9">使用工具procexp、火绒剑、pchunter均可以查看进程，从中找出隐藏的病毒进程</a>
+</h2>
+<h2 class="topic">
+<a name="0dodgne60uvbai2p45k1adoj38">当病毒已经运行过之后，再使用火绒剑进行病毒行为分析可能病毒的行为与初次病毒运行不同，因为一些文件已经被创建或修改，所以进行病毒行为分析要保证病毒再虚拟机中是第一次被运行</a>
+</h2>
+<h2 class="topic">
+<a name="0ro2se70ce1etms32o0d4mj9qa">手动查杀框架流程</a>
+</h2>
+<h3 class="topic">
+<a name="2ruqndaefinikh3e2ah710qeek">&nbsp;查看进程是否异常(重要)</a>
+</h3>
+<h3 class="topic">
+<a name="4alm22icuepaq3p22pulpj44jp">&nbsp;&nbsp;进程的鉴别通常见名知义，一般不确定的进程信息，可以进行查询</a>
+</h3>
+<h3 class="topic">
+<a name="4nccv9s36arf3pe3tv14fjturu">&nbsp;&nbsp;文件厂商也可以提供参考</a>
+</h3>
+<h3 class="topic">
+<a name="7hbeg9udpbkeaanh8c04c9taqh">&nbsp;查看启动信息是否异常（重要），包括</a>
+</h3>
+<h3 class="topic">
+<a name="0peatidvblesm9abd75vgvgmsl">&nbsp;&nbsp;启动项</a>
+</h3>
+<h3 class="topic">
+<a name="3i07ee5hcqoegvccqh48ametkj">&nbsp;&nbsp;服务</a>
+</h3>
+<h3 class="topic">
+<a name="2rurffr59j0si2ru1qtu3dd5kq">&nbsp;以上信息查看时优先查看蓝色字段（用户相关）后看黑色字段（系统相关）</a>
+</h3>
+<h3 class="topic">
+<a name="3vbiff5m4lbrgsgt4nqmkfn2q9">&nbsp;查看驱动、内核、钩子信息（内核钩子&middot;、应用层钩子）</a>
+</h3>
+<h3 class="topic">
+<a name="3bvpjpaodsqek3fevv7so7aaut">&nbsp;&nbsp;驱动，内核可以优先根据厂商进行筛选，优先查看红色的字段</a>
+</h3>
+<h3 class="topic">
+<a name="30ta2u5bqd8n6s5dh1lvs0bkjg">&nbsp;&nbsp;一般win7中的病毒最常见的行为是hook，可以针对钩子进行查看</a>
+</h3>
+<h3 class="topic">
+<a name="3au04rusi2o6grpal32sigj4ub">&nbsp;查看网络信息</a>
+</h3>
+<h3 class="topic">
+<a name="5hdm542jng0hdfhno4cu589a2e">&nbsp;&nbsp;如果病毒产生网络连接，则在网络中可以查看到相关信息</a>
+</h3>
+<h3 class="topic">
+<a name="0ev67p9njslhm7odene97nrpo6">&nbsp;查看被感染的文件的属性，可以使用各种pe查看工具</a>
+</h3>
+<h3 class="topic">
+<a name="70ohc2huvsmta7921kof6n44m9">&nbsp;&nbsp;针对熊猫烧香，发现所有被感染的程序均被加了fsg壳，并且入口点均被改为相同，说明病毒可能将源文件覆盖</a>
+</h3>
+<h3 class="topic">
+<a name="10pa7tsfe4lj6mi9oes2u267ma">&nbsp;使用抓包工具对可以流量进行抓取，尝试分析可疑流量</a>
+</h3>
+<h3 class="topic">
+<a name="5j23hprgd8vkqb5h13t28026uv">&nbsp;&nbsp;工具wireshark WSExplorer</a>
+</h3>
+<h3 class="topic">
+<a name="7vl12lsb1vplq2l72iqcfvddte">&nbsp;&nbsp;后者可以对特定进程进行抓包</a>
+</h3>
+<h2 class="topic">
+<a name="01mfb2aoqp10nh7phfgmcc0uuo">病毒行为分析框架</a>
+</h2>
+<h3 class="topic">
+<a name="0j2a2omff1lu70dejrmak6fap1">&nbsp;文件操作监控</a>
+</h3>
+<h3 class="topic">
+<a name="4ldevdtpie8o5lc7236ah7t7gv">&nbsp;&nbsp;着重看文件修改和文件写入操作</a>
+</h3>
+<h3 class="topic">
+<a name="612v55dn9vnm719bi307i2lcng">&nbsp;&nbsp;&nbsp;ini为后缀的程序是windows系统配置文件，点击右键可以编辑</a>
+</h3>
+<h3 class="topic">
+<a name="13pmhsod02rne7bdo19i89vt49">&nbsp;&nbsp;当病毒将属性设置为系统文件隐藏属性后，火绒剑的文件管理器可能无法找到文件路径，可以通过pchunter将对应文件的隐藏属性去掉，找到该文件</a>
+</h3>
+<h3 class="topic">
+<a name="22f6ie6b3m5l6ahopvevn1cfh3">&nbsp;注册表监控</a>
+</h3>
+<h3 class="topic">
+<a name="05ts754qg5pu3882ddctluh0r8">&nbsp;&nbsp;主要看设置注册表项的操作</a>
+</h3>
+<h3 class="topic">
+<a name="5f9pvt2tvv75f7o3e2b26bi8qo">&nbsp;&nbsp;&nbsp;对Run键的设置，主要是进行程序自启动的设置</a>
+</h3>
+<h3 class="topic">
+<a name="0p918hvci3bo3d40m2788kjqqn">&nbsp;&nbsp;&nbsp;对于文件显示属性的修改</a>
+</h3>
+<h3 class="topic">
+<a name="573870cm14qmk22dau6a5laj61">&nbsp;进程监控</a>
+</h3>
+<h3 class="topic">
+<a name="6afum8oeuv46g54roa6368gd15">&nbsp;&nbsp;一般不好做过滤，一般全部看一下</a>
+</h3>
+<h3 class="topic">
+<a name="0i5e0clirrrkjlos9d6dium4co">&nbsp;&nbsp;对于打开设备的行为，可能是程序的恶意行为，也可能是其他api调用完之后产生的行为</a>
+</h3>
+<h3 class="topic">
+<a name="2ffti5kg7t7s8sl7vm68hpn9ts">&nbsp;&nbsp;&nbsp;可以在调用栈靠近栈底的位置发现该操作最终的调用来源api ，即调用栈靠最下面的位置</a>
+</h3>
+<h3 class="topic">
+<a name="65758jl2237s9k5bl3n2k15dmk">&nbsp;&nbsp;如果有查找窗口的操作可以看一下该动作的参数是什么</a>
+</h3>
+<h3 class="topic">
+<a name="7o5l352hsu5tjqs87s38t0r7c0">&nbsp;&nbsp;枚举进程行为可能是对杀软进行查找</a>
+</h3>
+<h3 class="topic">
+<a name="3me17tr52dj1qchhfegcoir9cv">&nbsp;网络操作</a>
+</h3>
+<h3 class="topic">
+<a name="34r3lh4k7iatm1hpqknh5bs4rt">&nbsp;&nbsp;火绒剑的网络操作监控比较弱仅对几个api进行了监控</a>
+</h3>
+<h3 class="topic">
+<a name="35r3cd2fqgj6hqr2tsr20ab754">&nbsp;&nbsp;病毒访问门户网站可能是在试探网络连接是否正常</a>
+</h3>
+<h3 class="topic">
+<a name="6ln98p1ndtcr31kme8v5aa1ouk">&nbsp;&nbsp;可以查看局域网信息或外网信息等</a>
+</h3>
+<h3 class="topic">
+<a name="75ank870fsfuaph3b6h8h9gcml">&nbsp;行为监控</a>
+</h3>
+<h3 class="topic">
+<a name="1ns7gd9qkq41ghqqg2vsvesiq0">&nbsp;执行监控</a>
+</h3>
+<h2 class="topic">
+<a name="56th965icho2o4is4gljl6dp3o">fsg壳特征</a>
+</h2>
+<h3 class="topic">
+<a name="72fl71e16ocnhk1q10e8tvajc4">&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class66day0527%EF%BC%88%E7%97%85%E6%AF%92%E5%88%86%E6%9E%90%EF%BC%89_files/5agfk8nokcpjumr1rff90kulii.png"></p>
+<h3 class="topic">
+<a name="21jlnkjcmh43qhu2tqb1k4avjt">&nbsp;该壳的问题在于在iat中，使用ffffffff将不同模块的导入函数项隔开，导致最后在修复iat时不能识别出完整的导入地址，需要将ffffffff改为0</a>
+</h3>
+<h2 class="topic">
+<a name="7ivjrj1jh0tld96hr6emf218hk">使用importres识别出来的无效函数可能本使是有效的，可以不进行删除，直接忽略，导入到dump文件中</a>
+</h2>
+<h2 class="topic">
+<a name="76uufogvlcmlhal891mkbcdbt4">当识别程序编译环境后，使用ida分析程序，可以加载对应编译环境的签名库，从而在汇编中区分系统和用户代码</a>
+</h2>
+<h3 class="topic">
+<a name="391cq5ch20u9iiuq9v3r2ph2va">&nbsp;shift+f5打开签名窗口 insert按键添加签名库  ctrl+f 搜索签名库</a>
+</h3>
+<h3 class="topic">
+<a name="2mumv1tvc06ujr26igqo1d3pol">&nbsp;当添加签名库时会出现提示</a>
+</h3>
+<h3 class="topic">
+<a name="1hand252bhm3m1sumsqjdauq6h">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class66day0527%EF%BC%88%E7%97%85%E6%AF%92%E5%88%86%E6%9E%90%EF%BC%89_files/3lal6epl5gfbj4l4ubo46rpudm.png"></p>
+<h3 class="topic">
+<a name="3qessf90p0k9ne8r32id5pfqei">&nbsp;&nbsp;是因为ida默认的编译器版本为vc++，此时导入的是delphi的编译器，说明该程序是delphi编译的，这里提醒你是否要切换编译器版本，可以选切换编译器</a>
+</h3>
+<h3 class="topic">
+<a name="4hglvtf1t7fhl9nnlrepc5pp7n">&nbsp;点击改变编译器后，继续弹出对话框，</a>
+</h3>
+<h3 class="topic">
+<a name="4rkbs9qvdfgijccb8sdoa7rrrl">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class66day0527%EF%BC%88%E7%97%85%E6%AF%92%E5%88%86%E6%9E%90%EF%BC%89_files/45vettp9f7hifn2m7qt8l7tfni.png"></p>
+<h3 class="topic">
+<a name="07bjm0v46a6so62eal7ug71029">&nbsp;&nbsp;提示当前编译器环境已经修改为宝蓝，原来的签名库mssdk对应的是vc++的编译器，需要进行修改，此时只要卸载mssdk库即可</a>
+</h3>
+<h2 class="topic">
+<a name="2c2a80dgdb4efncbn93ofbg2q8">peid存在深度扫描的功能，可以到扫描出第一次没有扫描出的信息</a>
+</h2>
+<h3 class="topic">
+<a name="77gock1msiqb9934p69s44lrsm">&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class66day0527%EF%BC%88%E7%97%85%E6%AF%92%E5%88%86%E6%9E%90%EF%BC%89_files/3tfg5jjn04s6o9nv7slnqr9i4m.png"></p>
+<h2 class="topic">
+<a name="0du94refkaugjjmbmj0p1acoje">ida使用细节</a>
+</h2>
+<h3 class="topic">
+<a name="30c6dm5piq84629vtdd6ebe8k0">&nbsp;ida分析出的伪代码可能存在问题，此时可以先进入该函数，然后点击esc退出，ida就会根据内部的函数特征修改外部函数的伪代码</a>
+</h3>
+<h3 class="topic">
+<a name="49buq18u2no2taug3sqj0n0184">&nbsp;ida生成的伪代码中在函数开始可能存在大量库函数的初始化函数以及变量的初始化，可以不关注，从第一个用户函数开始分析</a>
+</h3>
+<h3 class="topic">
+<a name="1gg3tvqufhapi5plk1oipm98tu">&nbsp;IDA中函数命名使用sub+函数地址，该函数地址可以用在od中匹配函数名称、在指定地址寻找对应函数</a>
+</h3>
+<h3 class="topic">
+<a name="6i041m24v3n8f7b11n9segagv5">&nbsp;同一个函数可能在ida中已经分析出来为系统函数（因为使用了签名文件），但是od中还没有分析出来，所以ida与od中的汇编代码可以相互对照，进行判断</a>
+</h3>
+<h2 class="topic">
+<a name="4e81mnd4rmr2vf4krq169gum7v">od ida结合分析程序思路</a>
+</h2>
+<h3 class="topic">
+<a name="5ic07oa9aofa8nvjph4qsmg49p">&nbsp;通过函数的参数 返回值 在函数执行前后的变化，猜测函数的功能</a>
+</h3>
+<h3 class="topic">
+<a name="66a70k6naf334ur7e01jo2vg3b">&nbsp;可以构造执行环境，同时执行代码，观察执行环境变化，从而验证推测</a>
+</h3>
+<h3 class="topic">
+<a name="5nh54uko88bbe3f8vj0uoagehg">&nbsp;&nbsp;推测某函数用于结束某个名称的进程，可以在执行环境中创建一个同名进程，再启动该进程，看该进程会不会被结束</a>
+</h3>
+<h2 class="topic">
+<a name="4mse2ohfp4plbprh58c039hbfj">针对kernel32模块的CreateFileA函数下断时，可以在od的跟随表达式中输入 kernel32.CreateFileA 从而避免将断点下在kernelbase模块的同名函数上</a>
+</h2>
+<h2 class="topic">
+<a name="5mbbi9nol75mj0903ct3mle9j2">注意分析熊猫烧香病毒的感染原理</a>
+</h2>
+</body>
+</html>

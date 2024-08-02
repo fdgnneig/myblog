@@ -1,0 +1,952 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>class81day0702（安卓安全第二天）</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="76fe2vnooigctniu5ho6jl7ho6">class81day0702（安卓安全第二天）</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="class81day0702_files/images/class81day0702%EF%BC%88%E5%AE%89%E5%8D%93%E5%AE%89%E5%85%A8%E7%AC%AC%E4%BA%8C%E5%A4%A9%EF%BC%89.jpg"></div>
+<h2 class="topic">
+<a name="4a1n06mf2l215q9dd65mfnhon4">安卓四大组件</a>
+</h2>
+<h3 class="topic">
+<a name="7um8o0i5v1g777o5jsfftal802">&nbsp;本质上是四个类，均会在清单文件进行注册</a>
+</h3>
+<h3 class="topic">
+<a name="30hg6gg87fttf8ctjhq8ebd062">&nbsp;&nbsp;Activity（可以通过向导注册）</a>
+</h3>
+<h3 class="topic">
+<a name="0jg6qc8eobdb6v7cegp5tb37s8">&nbsp;&nbsp;&nbsp;是什么</a>
+</h3>
+<h3 class="topic">
+<a name="1l2vb9umjiab13fsko32upsgis">&nbsp;&nbsp;&nbsp;&nbsp;一种包含用户界面的组件，主要与用户进行交互，程序中可以包含0个或多个活动</a>
+</h3>
+<h3 class="topic">
+<a name="3c62spll6qi3ilb6muhhnpee6p">&nbsp;&nbsp;&nbsp;重点相关</a>
+</h3>
+<h3 class="topic">
+<a name="34utsuk77lijdhqr7v35dgsbec">&nbsp;&nbsp;&nbsp;&nbsp;对活动本身的操作</a>
+</h3>
+<h3 class="topic">
+<a name="1kja08ipqrm0f7fdk0ihnrj3a6">&nbsp;&nbsp;&nbsp;&nbsp;活动间的切换和数据传输</a>
+</h3>
+<h3 class="topic">
+<a name="63tq47mdj874c5vagtrdl5pdmh">&nbsp;&nbsp;&nbsp;&nbsp;活动的生命周期（活动的暂时停止与重启）</a>
+</h3>
+<h3 class="topic">
+<a name="11s80ldjggt041kmdqa1jhbahd">&nbsp;&nbsp;&nbsp;&nbsp;活动的启动模式</a>
+</h3>
+<h3 class="topic">
+<a name="5rmlp40bc4vabn5sqi1hqf6tps">&nbsp;&nbsp;&nbsp;一个新的activity即可对应一个资源，可以对应一个页面，两个activity之间可以进行页面转换</a>
+</h3>
+<h3 class="topic">
+<a name="5hh156o2rn9iq5svshmo32jpl4">&nbsp;&nbsp;&nbsp;每一activiey均可以在清单文件中查看到，即可以查看到所有的界面</a>
+</h3>
+<h3 class="topic">
+<a name="2isdijvfrhcfg825emvkchauaq">&nbsp;&nbsp;&nbsp;两个页面转换</a>
+</h3>
+<h3 class="topic">
+<a name="4a3cps9s49r3l5p1g9unbpava9">&nbsp;&nbsp;&nbsp;&nbsp;设置一个按钮</a>
+</h3>
+<h3 class="topic">
+<a name="4bvf0muk8q6l68vcfhpd2750qn">&nbsp;&nbsp;&nbsp;&nbsp;创建Intent</a>
+</h3>
+<h3 class="topic">
+<a name="6ehq9o7k0rufcb73b8qq5ai1iq">&nbsp;&nbsp;&nbsp;&nbsp;设置启动信息</a>
+</h3>
+<h3 class="topic">
+<a name="7u4qo1ghdusr696k0chp33kbm3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;参数</a>
+</h3>
+<h3 class="topic">
+<a name="50vrmtk9qfrr4oob1ruornl2e2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;自己的</a>
+</h3>
+<h3 class="topic">
+<a name="1n6f7b38ph74nm4gvas2j8t8j6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;被启动的activity</a>
+</h3>
+<h3 class="topic">
+<a name="15f22rmt21pnth95q30gpkr34u">&nbsp;&nbsp;&nbsp;&nbsp;启动类</a>
+</h3>
+<h3 class="topic">
+<a name="5pfj7femh4c85365pj57caq8nt">&nbsp;&nbsp;&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="05s0b0mrkubj5buq27odo9fgav">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;        //启动另一个activity&#13;
+        Button button5=findViewById(R.id.btn5);&#13;
+        button5.setOnClickListener(new View.OnClickListener() {&#13;
+            @Override&#13;
+            public void onClick(View view) {&#13;
+                Intent intent = new Intent(MainActivity.this,Main2Activity.class);&#13;
+                startActivity(intent);&#13;
+            }&#13;
+        });</a>
+</h3>
+<h3 class="topic">
+<a name="7so90ljcljmqr7hv0psrtbkegd">&nbsp;&nbsp;&nbsp;activity存在一个生命周期，即在创建运行销毁时会执行一些函数</a>
+</h3>
+<h3 class="topic">
+<a name="34ctagqd5rj6rjd52ls0cahc80">&nbsp;&nbsp;&nbsp;&nbsp;可能执行7种函数</a>
+</h3>
+<h3 class="topic">
+<a name="60ugivs49u72h11irq95e261qq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;onCreate</a>
+</h3>
+<h3 class="topic">
+<a name="0csk2mkk5uhs22ihpnonj5kkpm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;onStop</a>
+</h3>
+<h3 class="topic">
+<a name="5uck6e4vsm5bqj7rb1a5m9psh5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;onStart</a>
+</h3>
+<h3 class="topic">
+<a name="041ea99rfl7ch5od5bnrrbgep2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;onPause</a>
+</h3>
+<h3 class="topic">
+<a name="7di0rhj48civkn6jkod90p7t1b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;onResume</a>
+</h3>
+<h3 class="topic">
+<a name="49vftrnmloii6b637edqgj105b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;onRestart</a>
+</h3>
+<h3 class="topic">
+<a name="6ftj861fnh290kg0hff8r06hhr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;onDestory</a>
+</h3>
+<h3 class="topic">
+<a name="5a9gh4tdvd6a8iiqeukb2lp720">&nbsp;&nbsp;&nbsp;&nbsp;7种函数两两相对（除了onRestart）形成3种生存期</a>
+</h3>
+<h3 class="topic">
+<a name="6e3ei1okli9fq4di21sqm6in1k">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;完整生存期</a>
+</h3>
+<h3 class="topic">
+<a name="15gmogd977u03f51nbffvb0dsr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;onCreate</a>
+</h3>
+<h3 class="topic">
+<a name="19cotcbsmhkfnq6fcjnieq91s2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;onDestory</a>
+</h3>
+<h3 class="topic">
+<a name="3ng8af5vevm40ksmanrbehs1co">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可见生存期</a>
+</h3>
+<h3 class="topic">
+<a name="0ndlmi2sqtpe6597a95nk2gi5p">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;onStart</a>
+</h3>
+<h3 class="topic">
+<a name="4amurvjkeq7q927erespj8dmn8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;onStop</a>
+</h3>
+<h3 class="topic">
+<a name="4m5h8rillsgamip44n66bccds0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;前台生存期</a>
+</h3>
+<h3 class="topic">
+<a name="5h2c73e52ir4ill3o9lkeeuaof">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;onPause</a>
+</h3>
+<h3 class="topic">
+<a name="7ngdt9a3f3qabqb9jb55thn5ct">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;onResume</a>
+</h3>
+<h3 class="topic">
+<a name="3m5nq5m2duijkpnbkn3kij4kec">&nbsp;&nbsp;&nbsp;&nbsp;以上函数用于activity对应界面生成，切换，关闭等时刻调用</a>
+</h3>
+<h3 class="topic">
+<a name="2f70ilh769c4ohlvnpc5sth985">&nbsp;&nbsp;&nbsp;&nbsp;程序运行起来</a>
+</h3>
+<h3 class="topic">
+<a name="1j1e6oe7s8ak884g2gu7ti3k7m">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;onCreate</a>
+</h3>
+<h3 class="topic">
+<a name="5gr9mc9l1je7gkre57s515bqu0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;onStart</a>
+</h3>
+<h3 class="topic">
+<a name="18o7dqv7v14m26r0djovq8ef81">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;onResume</a>
+</h3>
+<h3 class="topic">
+<a name="485uqtp8c11bbtpcd73rhu3ms3">&nbsp;&nbsp;&nbsp;&nbsp;当activity被覆盖的时候</a>
+</h3>
+<h3 class="topic">
+<a name="6ec7bpio8jqb9bmiv45legsc0k">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;onPause</a>
+</h3>
+<h3 class="topic">
+<a name="6b2srf0i39ujbbtbaq2f1uskj1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;onStop</a>
+</h3>
+<h3 class="topic">
+<a name="1aipcl4khfbfisc99fspc65hqd">&nbsp;&nbsp;&nbsp;&nbsp;当重新显示</a>
+</h3>
+<h3 class="topic">
+<a name="64uo44t5uqsgtgpuu9t1b9j4f6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;onRestart</a>
+</h3>
+<h3 class="topic">
+<a name="1i0v53ov0h1d6kudq932s91sro">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;onStart</a>
+</h3>
+<h3 class="topic">
+<a name="1bv36ka100v7eqs70626gmei2i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;onResume</a>
+</h3>
+<h3 class="topic">
+<a name="5g6ff6q0h99igsv28ed5d3eubf">&nbsp;&nbsp;&nbsp;&nbsp;当关闭</a>
+</h3>
+<h3 class="topic">
+<a name="4g5r5uiln0oa4m6gqa1nugfb9u">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;onPause</a>
+</h3>
+<h3 class="topic">
+<a name="3fst4ev9aijulv9kch279qd3it">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;onStop</a>
+</h3>
+<h3 class="topic">
+<a name="6dkbopb97ajakp7ro41ff50lj4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;onDestory</a>
+</h3>
+<h3 class="topic">
+<a name="64ihn85aje3otsql61g478q89u">&nbsp;&nbsp;BroadcastReceiver（可以通过向导注册）</a>
+</h3>
+<h3 class="topic">
+<a name="6eu2gr3g36r3a2lsdfibqfvi96">&nbsp;&nbsp;&nbsp;当app产生一些事件（电量不足、收发短信），会在系统中产生广播，该组件可以接受广播，类似于windows系统中的系统消息hook</a>
+</h3>
+<h3 class="topic">
+<a name="5bomiunce78l40lkk8c4v5pptm">&nbsp;&nbsp;&nbsp;是一种全局的监视器，可以用于实现系统中不同组件的通讯</a>
+</h3>
+<h3 class="topic">
+<a name="4p012r93le86eq0dqqs3cqpt4h">&nbsp;&nbsp;&nbsp;创建广播</a>
+</h3>
+<h3 class="topic">
+<a name="71ub6p7dshtmc1taid3h9ve7p2">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class81day0702_files/0eipkcdphmka9thhmmg7hkphqm.png"></p>
+<h3 class="topic">
+<a name="4lf353brea4257gpq7akdbpkor">&nbsp;&nbsp;&nbsp;使用流程</a>
+</h3>
+<h3 class="topic">
+<a name="6hpsde25icffho1ff70ilm907m">&nbsp;&nbsp;&nbsp;&nbsp;创建广播接收者的子类</a>
+</h3>
+<h3 class="topic">
+<a name="727a01sqokrua5odmo9i8m1dfa">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在广播接收者子类中指定接收到广播后的处理函数</a>
+</h3>
+<h3 class="topic">
+<a name="7nfep0t241gnjfguu52i9pi1qm">&nbsp;&nbsp;&nbsp;&nbsp;指定拦截广播的类型</a>
+</h3>
+<h3 class="topic">
+<a name="366beb8vkmotic61aenu2igsi7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在清单文件中指定</a>
+</h3>
+<h3 class="topic">
+<a name="3emgggm9glvs7meq4fkc2kci71">&nbsp;&nbsp;&nbsp;&nbsp;指定拦截广播的权限</a>
+</h3>
+<h3 class="topic">
+<a name="20beh8haajl7nscfj0j3oe73ra">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在清单文件中指定</a>
+</h3>
+<h3 class="topic">
+<a name="67517kdbtih6n2m8l3lrnrit5o">&nbsp;&nbsp;&nbsp;示例</a>
+</h3>
+<h3 class="topic">
+<a name="11m6hmrdcqgaa6bpfs04ddaia6">&nbsp;&nbsp;&nbsp;&nbsp;拦截修改电话消息</a>
+</h3>
+<h3 class="topic">
+<a name="44bat4a59g5q8t48lmaq7vm6uc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="73e7r0urr0cr39og0b4g5ogvnf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public class MyReceiver2 extends BroadcastReceiver {&#13;
+    @Override&#13;
+    public void onReceive(Context context, Intent intent) {&#13;
+        // TODO: This method is called when the BroadcastReceiver is receiving&#13;
+        // an Intent broadcast.&#13;
+        //throw new UnsupportedOperationException("Not yet implemented");&#13;
+        String num =getResultData();&#13;
+        setResultData("54321"+num);&#13;
+        }&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="6sftdhvuvji43mk7vbts3mvp3c">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;        &lt;receiver&#13;
+            android:name=".MyReceiver2"&#13;
+            android:enabled="true"&#13;
+            android:exported="true"&gt;&#13;
+            &lt;intent-filter&gt;&#13;
+                &lt;action android:name="android.intent.action.NEW_OUTGOING_CALL" /&gt;&#13;
+&#13;
+                &lt;category android:name="android.intent.category.DEFAULT" /&gt;&#13;
+            &lt;/intent-filter&gt;&#13;
+        &lt;/receiver&gt;</a>
+</h3>
+<h3 class="topic">
+<a name="1v9lroe4k4pio5k2r9t9poar51">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS" /&gt;</a>
+</h3>
+<h3 class="topic">
+<a name="1qf57tu4of7hejbmc0gv0q82q5">&nbsp;&nbsp;&nbsp;&nbsp;设置开机启动</a>
+</h3>
+<h3 class="topic">
+<a name="6pbts8skurca79ha0cp02pak7t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在开机启动函数中启动一个activity&#13;
+注意此时需要为该ativity指定flag，从而设置创建一个任务栈，然后才能启动activity</a>
+</h3>
+<h3 class="topic">
+<a name="6elnieogodkrpe7jh2q3cqhgo9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用adb reboot 指令重启虚拟设备</a>
+</h3>
+<h3 class="topic">
+<a name="13epgpcv42rg7it9da52b7mvn0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;病毒可能会利用该操作</a>
+</h3>
+<h3 class="topic">
+<a name="0t16sedealold4los9hfp0um7a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="5pmhrq7q1r5pd5mcnrke3esl6f">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    &lt;uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" /&gt;</a>
+</h3>
+<h3 class="topic">
+<a name="2c1jds2j5fv6vaupo4lprkjb4p">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;        &lt;receiver&#13;
+            android:name=".MyReceiver"&#13;
+            android:enabled="true"&#13;
+            android:exported="true"&gt;&#13;
+            &lt;intent-filter&gt;&#13;
+                &lt;action android:name="android.intent.action.BOOT_COMPLETED" /&gt;&#13;
+&#13;
+                &lt;category android:name="android.intent.category.DEFAULT" /&gt;&#13;
+            &lt;/intent-filter&gt;&#13;
+        &lt;/receiver&gt;</a>
+</h3>
+<h3 class="topic">
+<a name="754g75n12frihdus2j48hmn74t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//开机自启动&#13;
+public class MyReceiver extends BroadcastReceiver {&#13;
+&#13;
+    @Override&#13;
+    public void onReceive(Context context, Intent intent) {&#13;
+        // TODO: This method is called when the BroadcastReceiver is receiving&#13;
+        // an Intent broadcast.&#13;
+        // throw new UnsupportedOperationException("Not yet implemented");&#13;
+        Intent intent1=new Intent();&#13;
+        intent1.setClass(context,Main2Activity.class);&#13;
+        intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);&#13;
+        context.startActivity(intent1);&#13;
+    }&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="638di4u5abc61k6cvkgf2v8rqk">&nbsp;&nbsp;Service(通过向导注册)</a>
+</h3>
+<h3 class="topic">
+<a name="4rv5lq0qgculjsnm42p350790p">&nbsp;&nbsp;&nbsp;服务的特点</a>
+</h3>
+<h3 class="topic">
+<a name="5isaht5k65qoajs1ni9s3ogrsv">&nbsp;&nbsp;&nbsp;&nbsp;后台运行</a>
+</h3>
+<h3 class="topic">
+<a name="0itolk1pj01o3f5r2qtkh70993">&nbsp;&nbsp;&nbsp;&nbsp;没有界面</a>
+</h3>
+<h3 class="topic">
+<a name="7b1a5167ivrg9qc2rqgnhsqk5i">&nbsp;&nbsp;&nbsp;&nbsp;服务无法自己启动</a>
+</h3>
+<h3 class="topic">
+<a name="4e80pjk02e20eqi7f6d53np6bm">&nbsp;&nbsp;&nbsp;&nbsp;单例模式</a>
+</h3>
+<h3 class="topic">
+<a name="2msoa1ufbbrjq5fro6fms36upa">&nbsp;&nbsp;&nbsp;服务一般用于不需要界面，需要在后台长时间运行的程序</a>
+</h3>
+<h3 class="topic">
+<a name="65umf9017m6q6u6tg625v2rnbe">&nbsp;&nbsp;&nbsp;使用步骤</a>
+</h3>
+<h3 class="topic">
+<a name="7dr8fbd4u1trclcddkhdqglf63">&nbsp;&nbsp;&nbsp;&nbsp;继承自Serivce</a>
+</h3>
+<h3 class="topic">
+<a name="7fm8kgp66fqa8nv4r7udsicg4m">&nbsp;&nbsp;&nbsp;&nbsp;在清单文件中使用&lt;service&gt;节点配置</a>
+</h3>
+<h3 class="topic">
+<a name="3g0o4s4n2gqgqmasi1n7j40bvj">&nbsp;&nbsp;&nbsp;&nbsp;启动服务</a>
+</h3>
+<h3 class="topic">
+<a name="42nnpvbp8olsl1pbfu5u5nlj99">&nbsp;&nbsp;&nbsp;两种启动方式</a>
+</h3>
+<h3 class="topic">
+<a name="60s646rvko7kc17gcvjpthoi6h">&nbsp;&nbsp;&nbsp;&nbsp;启动方式</a>
+</h3>
+<h3 class="topic">
+<a name="0go61jv489m4mau520fh4h2e7q">&nbsp;&nbsp;&nbsp;&nbsp;绑定方式</a>
+</h3>
+<h3 class="topic">
+<a name="3bmblmq81o80td2epkssc10bp3">&nbsp;&nbsp;&nbsp;通过界面上的按钮，可以启动服务，可以关闭服务</a>
+</h3>
+<h3 class="topic">
+<a name="6a6lph97u2ntntj54917bno33j">&nbsp;&nbsp;&nbsp;启动服务和启动activity的方法类似，使用Intent</a>
+</h3>
+<h3 class="topic">
+<a name="18b55j22o6fuh3ccqqddkb6si8">&nbsp;&nbsp;&nbsp;启动服务型时会执行</a>
+</h3>
+<h3 class="topic">
+<a name="67fqojv52h5cpa7p15hmdh6t2a">&nbsp;&nbsp;&nbsp;&nbsp;onCreate</a>
+</h3>
+<h3 class="topic">
+<a name="4065n48oclvg12e6dpsrkl6vck">&nbsp;&nbsp;&nbsp;&nbsp;onStartcommand</a>
+</h3>
+<h3 class="topic">
+<a name="3tr2fq97uvogn5fnsvpl01rhoa">&nbsp;&nbsp;&nbsp;&nbsp;onStart</a>
+</h3>
+<h3 class="topic">
+<a name="7adimbc942i3l904pk4a4tvcga">&nbsp;&nbsp;&nbsp;关闭服务时会执行</a>
+</h3>
+<h3 class="topic">
+<a name="6q9m564bbn2muhua60ce1vac5n">&nbsp;&nbsp;&nbsp;&nbsp;onDestory</a>
+</h3>
+<h3 class="topic">
+<a name="7olg62p50sk26sp7m41bkp52lr">&nbsp;&nbsp;&nbsp;分析程序时，只要是on开头的函数必须看一遍，因为其往往是回调函数</a>
+</h3>
+<h3 class="topic">
+<a name="62sskt1ck7f1jn2odsjgfjifph">&nbsp;&nbsp;&nbsp;创建服务</a>
+</h3>
+<h3 class="topic">
+<a name="1t4c17t9rbr5s2g8hdbv176qli">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class81day0702_files/1ss8bk3s1m3tjcf8jujdh7s1mi.png"></p>
+<h3 class="topic">
+<a name="2reb3o29215e1dbbevtktlspss">&nbsp;&nbsp;&nbsp;启动服务与关闭服务</a>
+</h3>
+<h3 class="topic">
+<a name="2g3gbtokh8jmn64f9vh0oiech5">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class81day0702_files/6ml4ebrjbsaahrbb63rucfu0qf.png"></p>
+<h3 class="topic">
+<a name="39h46j0lil4cumjb9j8pho51sq">&nbsp;&nbsp;Content Provider</a>
+</h3>
+<h3 class="topic">
+<a name="1f1ci2uu1juea8vmfcb1ropd46">&nbsp;&nbsp;&nbsp;内容提供商/注册表</a>
+</h3>
+<h3 class="topic">
+<a name="64sd5bt5kegj8vmi46i78fkppk">&nbsp;&nbsp;&nbsp; android平台提供了Content Provider使一个应用程序的指定数据集提供给其他应用程序。其他应用可以通过ContentResolver类从该内容提供者中获取或存入数据。只有需要在多个应用程序间共享数据是才需要内容提供者。例如，通讯录数据被多个应用程序使用，且必须存储在一个内容提供者中。它的好处是统一数据访问方式。</a>
+</h3>
+<h2 class="topic">
+<a name="2pu5896n80fbcscc79uec5o9cj">intent</a>
+</h2>
+<h3 class="topic">
+<a name="5ebsbatd5as5om4f905f7qlveh">&nbsp;是什么</a>
+</h3>
+<h3 class="topic">
+<a name="27q8ibv7fsg50h51n6du8lm9s9">&nbsp;&nbsp;一个类，用于启动Activity、BroadcastReceiver、Service，并为被启动的组件提供数据交换</a>
+</h3>
+<h3 class="topic">
+<a name="3evrnqg42ecpd7089drv9124p0">&nbsp;分类</a>
+</h3>
+<h3 class="topic">
+<a name="5fjcf500eorej6nm1t5nbei7qs">&nbsp;&nbsp;显示Intent</a>
+</h3>
+<h3 class="topic">
+<a name="4ikp1flf1vqbb8objuhaghlo31">&nbsp;&nbsp;隐式Intent</a>
+</h3>
+<h3 class="topic">
+<a name="7hgavknq0rhvvhoa0m9mr6qc4k">&nbsp;重点</a>
+</h3>
+<h3 class="topic">
+<a name="5naihi9f4m7enro78fvajtv026">&nbsp;&nbsp;在一个activity中启动另一个activity</a>
+</h3>
+<h2 class="topic">
+<a name="6560u0iddaf6jlkdrf6spis6be">安卓的多线程和消息机制</a>
+</h2>
+<h3 class="topic">
+<a name="2he6csvdk7tfmf0djg9tco5g2q">&nbsp;添加一个按钮进行网络访问，&#13;
+获取百度页面的源码</a>
+</h3>
+<h3 class="topic">
+<a name="6rah824pmtmgg7b66in1rar78h">&nbsp;&nbsp;创建url对象</a>
+</h3>
+<h3 class="topic">
+<a name="45qcl53pacb5trah9nsfqe1upe">&nbsp;&nbsp;&nbsp;需要捕获异常</a>
+</h3>
+<h3 class="topic">
+<a name="451b8ni8c99tmcuvuiv17d7mkj">&nbsp;&nbsp;打开连接</a>
+</h3>
+<h3 class="topic">
+<a name="18l3mpp0d9j1lkojmirqgkhpti">&nbsp;&nbsp;&nbsp;使用对象 HttpURLConnection</a>
+</h3>
+<h3 class="topic">
+<a name="4615fv5sebslpc3dnn4pbqd7uh">&nbsp;&nbsp;&nbsp;&nbsp;需要捕获异常</a>
+</h3>
+<h3 class="topic">
+<a name="5jcm65mu2e85dpj6ag8gr09fk2">&nbsp;&nbsp;设置属性</a>
+</h3>
+<h3 class="topic">
+<a name="6of85grv9ufa55efiv9oqfp30c">&nbsp;&nbsp;&nbsp;连接超时</a>
+</h3>
+<h3 class="topic">
+<a name="5i56d7bvo3br6bb1shq4h9m5n6">&nbsp;&nbsp;获取应答数据</a>
+</h3>
+<h3 class="topic">
+<a name="7vnqvbgsr6opqobbj6ffkohngv">&nbsp;&nbsp;&nbsp;获得应答码如果应答码为200，说明访问成功</a>
+</h3>
+<h3 class="topic">
+<a name="23904jmup3th2ag77hfrdhc5ro">&nbsp;&nbsp;&nbsp;将打开的网页源码以字符串形式输出</a>
+</h3>
+<h3 class="topic">
+<a name="17l6gkl95jjje9ij535u3slju7">&nbsp;&nbsp;&nbsp;&nbsp;获取输入流</a>
+</h3>
+<h3 class="topic">
+<a name="2vd2946dntdib5g4ur5oj55pd7">&nbsp;&nbsp;&nbsp;&nbsp;创建字节流对象</a>
+</h3>
+<h3 class="topic">
+<a name="1hdh7g0o1g4qtp46g2b3ntrgfp">&nbsp;&nbsp;&nbsp;&nbsp;定义一些临时变量</a>
+</h3>
+<h3 class="topic">
+<a name="1nfd6hbddikumfsm1p6ql3lee3">&nbsp;&nbsp;&nbsp;&nbsp;循环读取</a>
+</h3>
+<h3 class="topic">
+<a name="45l4890qlo5kkbr19j1vqs7qgm">&nbsp;&nbsp;以日志形式输出，也可以以java形式输出</a>
+</h3>
+<h3 class="topic">
+<a name="1sr9tkb961gaor84e2h7pcujf6">&nbsp;将百度页面的源码输出到界面上</a>
+</h3>
+<h3 class="topic">
+<a name="39cdri5oqkq5jni55q7drud2sf">&nbsp;&nbsp;在界面上设置textview，然后将获得的源码显示在界面上</a>
+</h3>
+<h3 class="topic">
+<a name="11c6b7ju0vg36ti8rhj4j275mg">&nbsp;&nbsp;&nbsp;会出问题，只有创建该界面的主线程才能控制界面，其他线程不能控制界面</a>
+</h3>
+<h3 class="topic">
+<a name="4g60rqni66gnmafohpqqikv681">&nbsp;&nbsp;&nbsp;可以通过在主线程中设置Handler 和回调函数，之后再其他线程中使用Handler对象往主线程发送消息，使主线程根据消息类型，调用对应回调函数，设置界面</a>
+</h3>
+<h3 class="topic">
+<a name="6mq8u76j3c3ahg7c0a2idp6r8c">&nbsp;&nbsp;&nbsp;在其他线程中只能通过往主程序发送消息，从而修改界面，说明一个线程如果发消息，则该线程不是主线程</a>
+</h3>
+<h3 class="topic">
+<a name="5t0rq5clhh9mevob3fjjb1fr1h">&nbsp;安卓系统强制规定网络操作不能放在主线程，只能放在子线程中</a>
+</h3>
+<h3 class="topic">
+<a name="36m6884c0a3ir1053cjn6jkpuo">&nbsp;可能出现系统权限不足的问题</a>
+</h3>
+<h3 class="topic">
+<a name="16l0p9ohl7t98jldmhugmv3ior">&nbsp;&nbsp;需要在清单文件中加上访问网络的权限</a>
+</h3>
+<h3 class="topic">
+<a name="426l80qlmakl1u21n92i1vjuhn">&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="0evc84f98e2c71udpp515emqae">&nbsp;&nbsp;    //网络操作&#13;
+       public  void btnConnect(View view){&#13;
+           //需要创建子线程以进行网络操作&#13;
+           Thread thread=new Thread(){&#13;
+               //重写线程回调函数&#13;
+               @Override&#13;
+               public void run() {&#13;
+                   super.run();&#13;
+                   Log.d("15pb-log","thread操作");&#13;
+                   //访问百度页面源码&#13;
+                   String path="https://www.baidu.com/";&#13;
+                   try{&#13;
+                       //1、创建url&#13;
+                       URL url=new URL(path);&#13;
+                       //2 打开链接&#13;
+                       HttpURLConnection urlConnection=(HttpURLConnection)url.openConnection();&#13;
+                       //3 设置属性&#13;
+                       //设置超时属性为5秒&#13;
+                       urlConnection.setConnectTimeout(5000);&#13;
+                       Log.d("15pb-log","urlConnection");&#13;
+                       //获取应答数据&#13;
+                       int Ret=urlConnection.getResponseCode();&#13;
+                       Log.d("15pb-log","返回码："+Ret);&#13;
+                       //如果网页返回码为200&#13;
+                       if(Ret==200) {&#13;
+                          //获取输入流，用于获取输入&#13;
+                           InputStream inputStream=urlConnection.getInputStream();&#13;
+                           //创建字节流对象 ，用于进行输出&#13;
+                           ByteArrayOutputStream byteArrayOutputStream=new ByteArrayOutputStream();&#13;
+                           //定义临时变量&#13;
+                           byte bytes[]=new byte[1024];&#13;
+                           int nReadLen=0;&#13;
+                           //循环读取&#13;
+                           while(true){&#13;
+                               //一次读取1024个字节的内容&#13;
+                               nReadLen=inputStream.read(bytes,0,1024);&#13;
+                               if(nReadLen==-1)break;;&#13;
+                               //将读取到的内容写入到输出字节流中&#13;
+                               byteArrayOutputStream.write(bytes,0,nReadLen);&#13;
+                           }&#13;
+                           //输出信息&#13;
+                           //将输出字节流转换为数组&#13;
+                           byte[] bytes1=byteArrayOutputStream.toByteArray();&#13;
+                           //将数组转换为String字符串&#13;
+                           String context=new String(bytes1);&#13;
+                           Log.d("15pb-log","长度："+bytes1.length);&#13;
+                           //将该字符串输出&#13;
+                           System.out.println(context);&#13;
+&#13;
+                           //创建消息对象&#13;
+                           Message message=new Message();&#13;
+                           //消息标号为0x111&#13;
+                           message.what=0x111;&#13;
+                           //消息内容为网页源码&#13;
+                           message.obj=context;&#13;
+                           //使用之前主线程定义好的 handler将消息传输给主线程&#13;
+                           handler.sendMessage(message);&#13;
+                       }&#13;
+                   }catch (MalformedURLException e){&#13;
+                       e.printStackTrace();&#13;
+                   } catch (IOException e) {&#13;
+                       e.printStackTrace();&#13;
+                   }&#13;
+               }&#13;
+           };&#13;
+           //线程启动&#13;
+           thread.start();&#13;
+       }&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="28cii29kbrj399t7g40f9qrkmk">&nbsp;&nbsp;    //用于接收从其他线程发送到主线程的消息&#13;
+    Handler handler=new Handler(){&#13;
+        @Override&#13;
+        public void handleMessage(Message msg) {&#13;
+            super.handleMessage(msg);&#13;
+            //如果消息码为0x111则将消息内容显示在组件中&#13;
+            if(msg.what==0x111)&#13;
+            {&#13;
+                TextView textView=findViewById(R.id.tv1);&#13;
+                textView.setText((String)msg.obj);&#13;
+            }&#13;
+        }&#13;
+    };</a>
+</h3>
+<h3 class="topic">
+<a name="1aoovrkdcfs0ra2seal7kqgbh9">&nbsp;&nbsp;    &lt;uses-permission android:name="android.permission.INTERNET"&gt;&lt;/uses-permission&gt;</a>
+</h3>
+<h2 class="topic">
+<a name="69j5n7slfhf45srmidc16sise3">日志</a>
+</h2>
+<h3 class="topic">
+<a name="7mg4iq0un0uc5vqcir77dmc6fb">&nbsp;Log.v</a>
+</h3>
+<h3 class="topic">
+<a name="2c3tbsbbq8v2cee7m0imntb3lj">&nbsp;&nbsp;verbose</a>
+</h3>
+<h3 class="topic">
+<a name="3ckfid4b8e6fjr418fra77rjs1">&nbsp;&nbsp;&nbsp;啰嗦，显示所有日志</a>
+</h3>
+<h3 class="topic">
+<a name="7q76d3ftqghr89afvt2cis0ae5">&nbsp;Log.d</a>
+</h3>
+<h3 class="topic">
+<a name="3r3e3g0m8imie3lmb4he4755oq">&nbsp;&nbsp;debug日志</a>
+</h3>
+<h3 class="topic">
+<a name="2eqsbttvfd80i4fhlgdiiebhqd">&nbsp;Log.i</a>
+</h3>
+<h3 class="topic">
+<a name="4nmc255li7adahgak5qspe13r7">&nbsp;&nbsp;info日志</a>
+</h3>
+<h3 class="topic">
+<a name="6jnmhcfsop0k6srrsnsspn1l7a">&nbsp;Log.w</a>
+</h3>
+<h3 class="topic">
+<a name="4bo5kqk8djgt4son534knq5koh">&nbsp;&nbsp;warn日志</a>
+</h3>
+<h3 class="topic">
+<a name="0dphpa37bs8jr9t92ben3mjlce">&nbsp;Log.e</a>
+</h3>
+<h3 class="topic">
+<a name="4djh86irf7c6gjtlcu1vmpb6lk">&nbsp;&nbsp;error日志</a>
+</h3>
+<h3 class="topic">
+<a name="3tb5mo1rra6vap12tr1ptdi33o">&nbsp;详细程度依次降低</a>
+</h3>
+<h3 class="topic">
+<a name="3ls92t39s3p4i98ccgsgjrjvff">&nbsp;在日志窗口中可以选择查看不同类型的日志</a>
+</h3>
+<h3 class="topic">
+<a name="4h8h4g7sgjrode7a1u0u1khq4h">&nbsp;在日志中直接搜索 Cause by  直接查看造成错误相关的日志信息</a>
+</h3>
+<h2 class="topic">
+<a name="2cbgdtgkmi0pcfd3g3pl9lki8r">安卓逆向</a>
+</h2>
+<h3 class="topic">
+<a name="3f8a46e7plulb1uiqo20agmuvk">&nbsp;apk文件结构</a>
+</h3>
+<h3 class="topic">
+<a name="0n60p16bduai2e6fdt0hmjrpla">&nbsp;&nbsp;apk本质上是一个压缩包，可以用7-zip打开,其中包括</a>
+</h3>
+<h3 class="topic">
+<a name="08f0hfd0gnaknmosnken5cideq">&nbsp;&nbsp;&nbsp;META-INF目录</a>
+</h3>
+<h3 class="topic">
+<a name="2sfrep311vu9cfb8d0917oqjkv">&nbsp;&nbsp;&nbsp;&nbsp;签名信息</a>
+</h3>
+<h3 class="topic">
+<a name="4qfhifpg4rj981tc2vapgjkgvr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;文件hash值</a>
+</h3>
+<h3 class="topic">
+<a name="4ks43l7p9k7lbt7o8sedurnk05">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果修改apk包，则需要重新替换签名，才能运行apk</a>
+</h3>
+<h3 class="topic">
+<a name="6du5r99nct4i5mmioum4jln24t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;公司信息</a>
+</h3>
+<h3 class="topic">
+<a name="1alrmk19ta0rte7cp8gvs0m5be">&nbsp;&nbsp;&nbsp;res</a>
+</h3>
+<h3 class="topic">
+<a name="43kn3cpbuoifke6jnctc76ghlr">&nbsp;&nbsp;&nbsp;&nbsp;资源目录</a>
+</h3>
+<h3 class="topic">
+<a name="4ks49gdr7aenclbd8cvfvhk2cp">&nbsp;&nbsp;&nbsp;&nbsp;包括图片、xml(布局文件、字符串、风格样式等)&nbsp;&nbsp;</a>
+</h3>
+<h3 class="topic">
+<a name="4qnlnidkimemvl5l852ctuk913">&nbsp;&nbsp;&nbsp;AndroidMainfest.xml</a>
+</h3>
+<h3 class="topic">
+<a name="7sicdul1a8dpuftrqo9b4iim07">&nbsp;&nbsp;&nbsp;&nbsp;清单文件</a>
+</h3>
+<h3 class="topic">
+<a name="13ft0ovgpid7g2j45i154gnm8c">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;包括APK包名、四大组件的一些申明定义、权限、程序的入口&nbsp;&nbsp; </a>
+</h3>
+<h3 class="topic">
+<a name="66a1its26ruhicn6r66c82pbu8">&nbsp;&nbsp;&nbsp;&nbsp;编译后的xml文件都是加密的</a>
+</h3>
+<h3 class="topic">
+<a name="6ft8bid41fhgcqaf3hgalatroj">&nbsp;&nbsp;&nbsp;Classes.dex</a>
+</h3>
+<h3 class="topic">
+<a name="0mebvls0lmri9tt0ia8a3kslj5">&nbsp;&nbsp;&nbsp;&nbsp;可执行文件</a>
+</h3>
+<h3 class="topic">
+<a name="7crt02vio42i7fa05slah00ij2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Dex文件是android&nbsp;java代码编译生成的二进制文件，包含了虚拟机指令(dalvik虚拟机)</a>
+</h3>
+<h3 class="topic">
+<a name="2fgco80rf9kk4g0c96dg7lcai1">&nbsp;&nbsp;&nbsp;&nbsp;包括java的类信息、方法信息、字段信息、虚拟机指令</a>
+</h3>
+<h3 class="topic">
+<a name="2dekl7dar45d678asq1njnlau7">&nbsp;&nbsp;&nbsp;&nbsp;dex文件的生成流程是从java源码&shy;&gt;class文件&shy;&gt;dex文件&nbsp;&nbsp;</a>
+</h3>
+<h3 class="topic">
+<a name="1ic5k88p53c7qjjkrc6occetd8">&nbsp;&nbsp;&nbsp;Resources.arsc</a>
+</h3>
+<h3 class="topic">
+<a name="6q8j9f8a2852htjkg0vp09lvuv">&nbsp;&nbsp;&nbsp;&nbsp;资源序号文件，包括资源里的所有ID、名称。</a>
+</h3>
+<h3 class="topic">
+<a name="1u2cfg9rciqvr813t4ocg0otg7">&nbsp;&nbsp;&nbsp;&nbsp;资源ID对应文件是 R.class</a>
+</h3>
+<h3 class="topic">
+<a name="117aelvd8vo94o4ki8adh12tjv">&nbsp;&nbsp;&nbsp;Lib目录</a>
+</h3>
+<h3 class="topic">
+<a name="2u353e1uco9at5qu1aq2mm5gna">&nbsp;&nbsp;&nbsp;&nbsp;如果创建的是c++项目，则会多出lib目录，存放so文件</a>
+</h3>
+<h3 class="topic">
+<a name="5q1drtkn3hc6ll930b07iieg3q">&nbsp;&nbsp;&nbsp;assets</a>
+</h3>
+<h3 class="topic">
+<a name="4b0gfnq7co1gblnmebgnvn7kei">&nbsp;&nbsp;&nbsp;&nbsp;自定义资源</a>
+</h3>
+<h3 class="topic">
+<a name="3r6n7chkks8l6jn1nntpgcsvt3">&nbsp;&nbsp;&nbsp;&nbsp;.txt .mp4等</a>
+</h3>
+<h3 class="topic">
+<a name="6voaujjdvqkkffsbvv3ldch740">&nbsp;安卓apk的入口函数</a>
+</h3>
+<h3 class="topic">
+<a name="64m1serfit21feu3c2nei6l8ks">&nbsp;&nbsp;attachBaseContext</a>
+</h3>
+<h3 class="topic">
+<a name="1vg1cbojbhn5q6lt9gn128ng6u">&nbsp;&nbsp;&nbsp;是app最早运行的函数，一般是壳代码执行的位置</a>
+</h3>
+<h3 class="topic">
+<a name="11i6s78psh0sb1cje551lcrdvq">&nbsp;&nbsp;清单文件中application节点可以添加android:name属性，用于指定继承自application的类。&#13;
+&#13;
+该类用于初始化整个app的全局信息。&#13;
+&#13;
+继承自application的类有两个重写函数会执行， 是程序最早执行的函数。&nbsp;&nbsp; ①&nbsp;attachBaseContext&nbsp;&nbsp; ②&nbsp;onCreate</a>
+</h3>
+<h3 class="topic">
+<a name="3dlgqb0jrier19adgelcr7sdl2">&nbsp;&nbsp;执行顺序</a>
+</h3>
+<h3 class="topic">
+<a name="7ejusll6as7pdodpir9h8v0bjh">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class81day0702_files/2covkkp9dlifhgsk4e6qipddhc.png"></p>
+<h3 class="topic">
+<a name="6c56521nbjipp691aao78fgdd2">&nbsp;&nbsp;所以一个app最早执行的函数是&nbsp;&#13;
+application的类中的attachBaseContext函数&nbsp;&nbsp;</a>
+</h3>
+<h3 class="topic">
+<a name="6rjbsmo8ovim3lq78k3g6ib52t">&nbsp;&nbsp; 一般apk加固之后，都会自定义application类，并重写其中的attachBaseContext函数 或onCreate函数，并且声明为native类型的函数</a>
+</h3>
+<h3 class="topic">
+<a name="01185loig1m1ctolps6mo7lkub">&nbsp;安卓系统历史</a>
+</h3>
+<h3 class="topic">
+<a name="1engjo2kcj0m0qflblofo6b910">&nbsp;&nbsp;逆向分析环境</a>
+</h3>
+<h3 class="topic">
+<a name="7h09bmtjlmitl9nsfktmvh8efp">&nbsp;&nbsp;&nbsp;手机</a>
+</h3>
+<h3 class="topic">
+<a name="72taddccno2a7t65jnh582edod">&nbsp;&nbsp;&nbsp;&nbsp;google nexus 5</a>
+</h3>
+<h3 class="topic">
+<a name="309k32jle4dhfg05bk8o70k1qp">&nbsp;&nbsp;&nbsp;系统</a>
+</h3>
+<h3 class="topic">
+<a name="4ovtm541umq46v11a3kmvhg3d8">&nbsp;&nbsp;&nbsp;&nbsp;android4.4</a>
+</h3>
+<h3 class="topic">
+<a name="1rbnkf7vvhqdqfr8f86ot65e0v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;具有两款虚拟机</a>
+</h3>
+<h3 class="topic">
+<a name="4j37se2uhhn3i1vhs70droi78b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dalvik</a>
+</h3>
+<h3 class="topic">
+<a name="3c6gra1bn69p5v6hfili3uo3og">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;art</a>
+</h3>
+<h3 class="topic">
+<a name="5psrn2in97d2q178eumnviocbv">&nbsp;&nbsp;目前最新的版本为9.0</a>
+</h3>
+<h3 class="topic">
+<a name="6miojn8ti4ppc8muo3t9dqd9k2">&nbsp;sdk工具</a>
+</h3>
+<h3 class="topic">
+<a name="0m2fh6t8aoa5jjqlslhugo3mro">&nbsp;&nbsp;adb</a>
+</h3>
+<h3 class="topic">
+<a name="0inrpp7mjppsjnrqon0a361m7f">&nbsp;&nbsp;&nbsp;需要在sdk中找到adb设置目录到PATH环境变量中</a>
+</h3>
+<h3 class="topic">
+<a name="0m8gh0oaceg4a4ofifb43duac0">&nbsp;&nbsp;&nbsp;作用：与安卓设备进行通讯</a>
+</h3>
+<h3 class="topic">
+<a name="5fuml8uq96c9bdi25ct8dnqspu">&nbsp;&nbsp;&nbsp;&nbsp;与安卓设备进行上传和下载</a>
+</h3>
+<h3 class="topic">
+<a name="5gu7hro2hkmvdoso205ohioqm4">&nbsp;&nbsp;&nbsp;各种手机助手使用了该工具</a>
+</h3>
+<h3 class="topic">
+<a name="0ao1l2rodg352erpm5mklp89sk">&nbsp;&nbsp;&nbsp;各种命令详见老师笔记</a>
+</h3>
+<h3 class="topic">
+<a name="7tclff084nkap71munnul3uani">&nbsp;&nbsp;monitor</a>
+</h3>
+<h3 class="topic">
+<a name="1mn3s30gc33bg0osed1qgpv0eo">&nbsp;&nbsp;&nbsp;在sdk目录指定路径下启动</a>
+</h3>
+<h3 class="topic">
+<a name="7eqlcpnasg6gbug7fjn2o07ri5">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class81day0702_files/5274lvi296as5sl4la1emjicpk.png"></p>
+<h3 class="topic">
+<a name="0socv33493t63h88gmavjjm1li">&nbsp;&nbsp;&nbsp;三大部分</a>
+</h3>
+<h3 class="topic">
+<a name="2qm2uqelg2g4h9isrd23gqctda">&nbsp;&nbsp;&nbsp;&nbsp;设备列表</a>
+</h3>
+<h3 class="topic">
+<a name="199cr0ah9gedburdp43srmc4er">&nbsp;&nbsp;&nbsp;&nbsp;文件列表</a>
+</h3>
+<h3 class="topic">
+<a name="59d4nr6ck683nf916ghf4jl5lb">&nbsp;&nbsp;&nbsp;&nbsp;日志</a>
+</h3>
+<h3 class="topic">
+<a name="385l3maec3p334e6dktc3gdnge">&nbsp;&nbsp;&nbsp;相当于有界面的adb</a>
+</h3>
+<h3 class="topic">
+<a name="2rbr7vohsc0ctkc2e8uf060d7k">&nbsp;安卓逆向工具</a>
+</h3>
+<h3 class="topic">
+<a name="29fnv7k0a4sns74slr0mklcgct">&nbsp;&nbsp;命令行工具</a>
+</h3>
+<h3 class="topic">
+<a name="63t43tvhrkv4b75fg5vothsrn6">&nbsp;&nbsp;&nbsp;xml清单文件解密工具</a>
+</h3>
+<h3 class="topic">
+<a name="5sue5g4strbvee9c28cbv14dnm">&nbsp;&nbsp;&nbsp;&nbsp;AXMLPrinter2.jar</a>
+</h3>
+<h3 class="topic">
+<a name="2bj7innjbb2feshp0s6odf23v1">&nbsp;&nbsp;&nbsp;&nbsp;APK15PBParser.jar</a>
+</h3>
+<h3 class="topic">
+<a name="5erhnjgh68d2s1sf2u10nbcth2">&nbsp;&nbsp;&nbsp;dex文件反汇编，汇编工具</a>
+</h3>
+<h3 class="topic">
+<a name="4huqthlms0v5qso9etjpg3mnp2">&nbsp;&nbsp;&nbsp;&nbsp;Baksmali.jar</a>
+</h3>
+<h3 class="topic">
+<a name="6on1ft6pv47jj2aoirf3gpk14u">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;默认会生成out目录</a>
+</h3>
+<h3 class="topic">
+<a name="1d048t3kju0e36ca2ol64eiqnq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将dex中的每一个类生成一个对应的smali文件</a>
+</h3>
+<h3 class="topic">
+<a name="3ufho2iae0f8lqni5ovdc27n4e">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;外部类</a>
+</h3>
+<h3 class="topic">
+<a name="4kdvmoa082rh4vfk79nd9kged0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;内部类</a>
+</h3>
+<h3 class="topic">
+<a name="40jg7o6bmvesu6k130l28brcaf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;匿名类</a>
+</h3>
+<h3 class="topic">
+<a name="0tjt8mc73eku5lfusp6ouqo770">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;命名方式不同</a>
+</h3>
+<h3 class="topic">
+<a name="3hhmidgq6gq30uhrpkl6lmal1e">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;外部类：MainActivity.java&nbsp;&shy;&gt;&nbsp;MainActivity.smali&nbsp;&nbsp; 内部类：MainActivity类中MyOnClickListener类&nbsp; MainActivity$MyOnClickListener.smali &nbsp;&nbsp; 匿名内部类：MainActivity类中new&nbsp;OnClickListener对象&nbsp;&shy;&gt;&nbsp;MainActivity$1.smali </a>
+</h3>
+<h3 class="topic">
+<a name="6usqjtdg9sm6hiuormtd9834rn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以使用记事本打开smali，分析代码</a>
+</h3>
+<h3 class="topic">
+<a name="2uf2obqcbetenpej2adtb0pomn">&nbsp;&nbsp;&nbsp;&nbsp;smali.jar</a>
+</h3>
+<h3 class="topic">
+<a name="2v3gi9lcjcjpj8n60f917k539m">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;汇编工具，将smali代码汇编生成dex文件</a>
+</h3>
+<h3 class="topic">
+<a name="4055m1hlv8n7foc7pln9ln8qeg">&nbsp;&nbsp;&nbsp;apk签名工具</a>
+</h3>
+<h3 class="topic">
+<a name="29hmp8e74lreksk1jsahdf5t39">&nbsp;&nbsp;&nbsp;&nbsp;当apk被修改之后，需要重新签名才能运行</a>
+</h3>
+<h3 class="topic">
+<a name="37deijknaugl56d1rj9hk7tnuf">&nbsp;&nbsp;&nbsp;apk反编译工具</a>
+</h3>
+<h3 class="topic">
+<a name="3cqptd5vg3m7pn1s010han49fa">&nbsp;&nbsp;&nbsp;&nbsp;apktool</a>
+</h3>
+<h3 class="topic">
+<a name="0h3uja7r975jot3aupv1asm4ee">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;不含签名功能，需要使用其他工具另外进行签名</a>
+</h3>
+<h3 class="topic">
+<a name="0ctdvsd2ilqrj9t0qhil25pni3">&nbsp;&nbsp;&nbsp;转换文件格式</a>
+</h3>
+<h3 class="topic">
+<a name="2s54afqmq1tr8dg1r2n1e5umjs">&nbsp;&nbsp;&nbsp;&nbsp;Dex2jar工具</a>
+</h3>
+<h3 class="topic">
+<a name="7fovapg99hlkmpug03n50f0knq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将dex转为jar文件 将安卓文件转为java文件，方便直接分析java代码</a>
+</h3>
+<h3 class="topic">
+<a name="0rcjc2qjea1095i3lacqi5rj49">&nbsp;&nbsp;&nbsp;java反编译工具</a>
+</h3>
+<h3 class="topic">
+<a name="5nkv25ps075q2cj1rfduj7a152">&nbsp;&nbsp;&nbsp;&nbsp;将jar文件转换为java源码</a>
+</h3>
+<h3 class="topic">
+<a name="24v2pucf3p6lsho6vfbl9d3lbh">&nbsp;&nbsp;可视化工具</a>
+</h3>
+<h3 class="topic">
+<a name="0bc44t3gl7dm25g29bsah3ib3t">&nbsp;&nbsp;&nbsp;AndroidKiller</a>
+</h3>
+<h3 class="topic">
+<a name="1rn0lqcp0didna33pjqh9m0q89">&nbsp;&nbsp;&nbsp;&nbsp;相当于集成了 apktool dex2jar工具集 adb jd-jui</a>
+</h3>
+<h3 class="topic">
+<a name="04hf80i5t8f14i13aofdl1ba51">&nbsp;&nbsp;&nbsp;&nbsp;如果app没有加密，可以直接看到JAVA源码</a>
+</h3>
+<h3 class="topic">
+<a name="57bnd6k7j3liuc9np7b63bhhpv">&nbsp;&nbsp;&nbsp;&nbsp;将最新更新的apktool放在工具的文件夹中</a>
+</h3>
+<h3 class="topic">
+<a name="1drt6cj5eo7fpjmqd81hr81q7n">&nbsp;&nbsp;&nbsp;&nbsp;需要配置jdk路径</a>
+</h3>
+<h3 class="topic">
+<a name="4292av9qeffgkdefcv949tpjda">&nbsp;&nbsp;&nbsp;&nbsp;搜索时不能直接用中文，需要先转换为unicode码</a>
+</h3>
+<h3 class="topic">
+<a name="36r7kjb397os2av0b4rg2pmb9m">&nbsp;&nbsp;&nbsp;JEB</a>
+</h3>
+<h3 class="topic">
+<a name="7i92s791k77mr0kpf58904etv7">&nbsp;&nbsp;&nbsp;&nbsp;收费</a>
+</h3>
+<h3 class="topic">
+<a name="3dbk0ut10hg50o32obn31988cm">&nbsp;&nbsp;&nbsp;Jadx-GUI</a>
+</h3>
+<h3 class="topic">
+<a name="10nhf1dkr0k34ptgllk9tp28t6">&nbsp;&nbsp;&nbsp;GDA</a>
+</h3>
+</body>
+</html>

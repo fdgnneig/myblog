@@ -1,0 +1,663 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>class60day0518（软件逆向第五天）</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="784gherl3i89ick8tp9bhqojsv">class60day0518（软件逆向第五天）</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="class60day0518_files/images/class60day0518%EF%BC%88%E8%BD%AF%E4%BB%B6%E9%80%86%E5%90%91%E7%AC%AC%E4%BA%94%E5%A4%A9%EF%BC%89.jpg"></div>
+<h2 class="topic">
+<a name="4tsqdop4s6g0flma5am3o8p4et">复习</a>
+</h2>
+<h3 class="topic">
+<a name="5qqoqch67l6ikkmbusl4ise2f2">&nbsp;ecx在c++反汇编中有什么作用</a>
+</h3>
+<h3 class="topic">
+<a name="1el41v0v05vbc3krsf5upimo71">&nbsp;&nbsp;传递this指针</a>
+</h3>
+<h3 class="topic">
+<a name="4ut53khu4m3tva7jsfhbldrj85">&nbsp;&nbsp;&nbsp;尤其是传参的时候，this指针即类对象结构体的地址</a>
+</h3>
+<h3 class="topic">
+<a name="7vs6ruk9e4rt43jj6eif97nb05">&nbsp;&nbsp;&nbsp;&nbsp;可以以此找到类对象结构体在内存中的内容</a>
+</h3>
+<h3 class="topic">
+<a name="6olj5t964amdoubnqlg5b76fhf">&nbsp;&nbsp;&nbsp;对于类中的静态或友元类方法，调用的时候不需要使用ecx传递this指针</a>
+</h3>
+<h3 class="topic">
+<a name="6ts9tajbo2vf5r7b6s2l1g8pa9">&nbsp;&nbsp;用于计数器</a>
+</h3>
+<h3 class="topic">
+<a name="1s1vuagd6p8ccdsojikf1nfvjt">&nbsp;以下代码的反汇编代码是什么</a>
+</h3>
+<h3 class="topic">
+<a name="72gomkumsqraboc9as0ps1sc9d">&nbsp;&nbsp;定义类成员的汇编代码</a>
+</h3>
+<h3 class="topic">
+<a name="6jvbko2kr160tvehjod2p7frm1">&nbsp;&nbsp;&nbsp;lea ecx,[ebp+0x10] ;使用ecx进行this指针传参&#13;
+call 类构造函数</a>
+</h3>
+<h3 class="topic">
+<a name="7lp2sdhp5p35f2jjqft543hrre">&nbsp;&nbsp;父类指针指向子类对象</a>
+</h3>
+<h3 class="topic">
+<a name="4iejcqt7f96tn5d0k4dnjeamgq">&nbsp;&nbsp;&nbsp;mov [esp+0x1c],地址值</a>
+</h3>
+<h3 class="topic">
+<a name="46nh5qb7gseatbkiq6p33cq9gu">&nbsp;&nbsp;&nbsp;本质是指针变量的赋值</a>
+</h3>
+<h3 class="topic">
+<a name="12d6turcv9528rg8tpbb1eo5s4">&nbsp;&nbsp;使用父类指针调用子类中的虚函数</a>
+</h3>
+<h3 class="topic">
+<a name="30nhufupn8v7fcq6pnn2sm00uo">&nbsp;&nbsp;&nbsp;需要使用[]进行两次指针解引用，第一次用于获取虚函数表指针，第二次用于从虚函数表中获得虚函数地址</a>
+</h3>
+<h2 class="topic">
+<a name="73nq3n52sb7rg268m7i3df3vtj">数据结构体</a>
+</h2>
+<h3 class="topic">
+<a name="14l7sqmcihq5bea6ne5r8ahdeb">&nbsp;vector</a>
+</h3>
+<h3 class="topic">
+<a name="5005o1iqhqeu9b7dn0bt2cuvie">&nbsp;&nbsp;动态数组</a>
+</h3>
+<h3 class="topic">
+<a name="43f9840i6cfnrogbvkr8l631fj">&nbsp;list</a>
+</h3>
+<h3 class="topic">
+<a name="1hai80qpe05lpehrk8anq129fl">&nbsp;&nbsp;双向循环链表</a>
+</h3>
+<h3 class="topic">
+<a name="4m8gtj8alqjauif32g7ql88ocd">&nbsp;&nbsp;初始化函数</a>
+</h3>
+<h3 class="topic">
+<a name="7mc5f5l6r3gbeheskf4lpch6va">&nbsp;&nbsp;&nbsp;vector和list等STL类对象都是通过两个函数进行初始化，第一函数将类对象的结构体的堆空间初始化为0，第二个函数是将结构体中字段值进行初始化</a>
+</h3>
+<h3 class="topic">
+<a name="6c8mvju8vu7ia4c80ckbd12ecp">&nbsp;&nbsp;list结构体格式</a>
+</h3>
+<h3 class="topic">
+<a name="66te87d1ec01d116q3lq9huqeh">&nbsp;&nbsp;&nbsp;三个字段，每个字段四个字节</a>
+</h3>
+<h3 class="topic">
+<a name="6tht17jor4smcblpl6jhv27meb">&nbsp;&nbsp;&nbsp;第一个字段</a>
+</h3>
+<h3 class="topic">
+<a name="3rm140b3hlpj7nt8f6da2nctuj">&nbsp;&nbsp;&nbsp;&nbsp;指向该结构体本身</a>
+</h3>
+<h3 class="topic">
+<a name="0f9b3v3gdfcmj8mhs0h5pc161n">&nbsp;&nbsp;&nbsp;第二个字段</a>
+</h3>
+<h3 class="topic">
+<a name="2shh2tpoh8ajq51eeml5npnlmf">&nbsp;&nbsp;&nbsp;&nbsp;指向链表头节点</a>
+</h3>
+<h3 class="topic">
+<a name="13pgfgcg55d3fhcajh31cjhrlh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;链表头节点结构</a>
+</h3>
+<h3 class="topic">
+<a name="4nu1nom8o3897ooadmom0dn225">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;三个字段</a>
+</h3>
+<h3 class="topic">
+<a name="0vq1kumqhcf3caru8s7j41bquq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;指向下一个节点的指针</a>
+</h3>
+<h3 class="topic">
+<a name="2ga4ofp2bpn8isv4draoae7cnt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;指向前一个节点的指针</a>
+</h3>
+<h3 class="topic">
+<a name="7d32s7suubppabkoti937ikkvi">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当前节点的数据</a>
+</h3>
+<h3 class="topic">
+<a name="6v6mdbpigg99pnqmuqh2dtsdmd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;list结构体第二个字段指向的头节点中不保存值，故头节点这个字段没有意义</a>
+</h3>
+<h3 class="topic">
+<a name="64l49cremvtarq2h666c5mcc2b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;list指向的头节点不保存数据，只作为寻址真正节点的节点</a>
+</h3>
+<h3 class="topic">
+<a name="76oatksrp6gcr62motk9nr6k93">&nbsp;&nbsp;&nbsp;第三个字段</a>
+</h3>
+<h3 class="topic">
+<a name="2bmimqm89qte03p1o55vhvb5pm">&nbsp;&nbsp;&nbsp;&nbsp;存放着元素的个数</a>
+</h3>
+<h3 class="topic">
+<a name="6j8nq1tclh7r6b7hsl2l3vrg75">&nbsp;map</a>
+</h3>
+<h3 class="topic">
+<a name="72cn4gn8og5acjc1fc2ten4nok">&nbsp;&nbsp;红黑树（是一种平衡二叉树）</a>
+</h3>
+<h3 class="topic">
+<a name="3mqtg2png9940d9poa9k4ock6j">&nbsp;&nbsp;初始化函数</a>
+</h3>
+<h3 class="topic">
+<a name="43h7k1jgt1lapv7j7d9t5e8ll5">&nbsp;&nbsp;&nbsp;同样通过两个函数进行初始化，一个函数将map对象结构体的堆空间初始化为0，一个对堆空间中结构体赋初值</a>
+</h3>
+<h3 class="topic">
+<a name="37c2gflj084eajvaqdjsni875r">&nbsp;&nbsp;map结构体结构</a>
+</h3>
+<h3 class="topic">
+<a name="6vn725fc7pis57pv1s9l9qilje">&nbsp;&nbsp;&nbsp;有三个字段</a>
+</h3>
+<h3 class="topic">
+<a name="46tcuhbe0na1k2q85r4gjj39pi">&nbsp;&nbsp;&nbsp;第一个字段</a>
+</h3>
+<h3 class="topic">
+<a name="6g1piup7ghq5mqsag8e1m416u6">&nbsp;&nbsp;&nbsp;&nbsp;指向该结构体本身</a>
+</h3>
+<h3 class="topic">
+<a name="5f5mmp7jcarm2pjlrpapu1m9bk">&nbsp;&nbsp;&nbsp;第二个字段</a>
+</h3>
+<h3 class="topic">
+<a name="2defpig7nq72ebdrrnss677e56">&nbsp;&nbsp;&nbsp;&nbsp;指针，指向一个结构体，称之为头节点</a>
+</h3>
+<h3 class="topic">
+<a name="3cpl6mkm5gvk3ndlnlci6gu37a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;头节点结构体</a>
+</h3>
+<h3 class="topic">
+<a name="26bb282upkqfs68pohot823tkl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;字段1</a>
+</h3>
+<h3 class="topic">
+<a name="0bgqqv7rp6p3ed9p8rabobco4m">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;指向二叉树根节点左子节点</a>
+</h3>
+<h3 class="topic">
+<a name="7duredp4cdmi2mdurf86lg0cls">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;字段2</a>
+</h3>
+<h3 class="topic">
+<a name="3jie4979n0jrrdbspbc20murpi">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;指向二叉树根节点</a>
+</h3>
+<h3 class="topic">
+<a name="340vfkrqmg6sv4h9thifj3s4rr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;二叉树节点结构体</a>
+</h3>
+<h3 class="topic">
+<a name="4prei4f9oc0va792t4pi67pho1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;与头节点结构体相同，不过有的字段意义有偏差</a>
+</h3>
+<h3 class="topic">
+<a name="69ii7l08n0v9aufcgf866eun0a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;字段1</a>
+</h3>
+<h3 class="topic">
+<a name="3pmnemtjdu97nefpcth5nlnd0f">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;指针 指向左子节点</a>
+</h3>
+<h3 class="topic">
+<a name="6kcjgd66vjfkhaep9ii4boc3rn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;字段2</a>
+</h3>
+<h3 class="topic">
+<a name="37snf8da0kh5p24suqqpjidr8t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;指针 指向父节点</a>
+</h3>
+<h3 class="topic">
+<a name="1k61kcjgbl61dibma5h128e9n6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;字段3</a>
+</h3>
+<h3 class="topic">
+<a name="7tvfnlkmqj43fjd3vnt2nrkb9q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;指针 指向右子节点</a>
+</h3>
+<h3 class="topic">
+<a name="61eif1ehsgtlkr49h36gaml4vt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;字段4</a>
+</h3>
+<h3 class="topic">
+<a name="46cvinv8jfjfg3apgh8ritfa08">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;暂时没有用到</a>
+</h3>
+<h3 class="topic">
+<a name="2pspard482jp93rdt8c9huchse">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;字段5</a>
+</h3>
+<h3 class="topic">
+<a name="4jl1equbhtl4k12iis36tje56h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果是二叉树树节点则为key值</a>
+</h3>
+<h3 class="topic">
+<a name="3lqons48mp6i0282t6tdrjofmp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;字段6</a>
+</h3>
+<h3 class="topic">
+<a name="1hl60p95q3kh7l0hmni3rsbc12">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果是二叉树树节点则为value值</a>
+</h3>
+<h3 class="topic">
+<a name="39mlvgkjfl4d9rakba1q4atuo9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;字段3</a>
+</h3>
+<h3 class="topic">
+<a name="2m84e2u7mseus8qihkpn4347hv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;指向二叉树根节点右子节点</a>
+</h3>
+<h3 class="topic">
+<a name="1a6rgnj19otc9phqltvcj8f9vl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;字段4</a>
+</h3>
+<h3 class="topic">
+<a name="5l1j1putcrsnuhkml62lm1uvsn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;暂时没有用到</a>
+</h3>
+<h3 class="topic">
+<a name="5rfjcs6o6l1arge7gffg976t9i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;字段5</a>
+</h3>
+<h3 class="topic">
+<a name="7n1ulojrh65rcab36prcbvuqfm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cd</a>
+</h3>
+<h3 class="topic">
+<a name="5khiqg4v3v2fe3lhdd566qvtn6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;字段6</a>
+</h3>
+<h3 class="topic">
+<a name="1ai8i7f79chi19r6srcq537t89">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cd</a>
+</h3>
+<h3 class="topic">
+<a name="4u3348epf5jjc55kc8qf6eqtva">&nbsp;&nbsp;&nbsp;第三个字段</a>
+</h3>
+<h3 class="topic">
+<a name="3fpn3ek98k95trge050cl7fgh2">&nbsp;&nbsp;&nbsp;&nbsp;节点数量</a>
+</h3>
+<h3 class="topic">
+<a name="3dfgf080o3hg5lljb4njqvcuhn">&nbsp;&nbsp;二叉树的关注点在于二叉树的遍历</a>
+</h3>
+<h3 class="topic">
+<a name="249ieap0njtv8gnj5e2s0r5n4a">&nbsp;逆向分析的重点</a>
+</h3>
+<h3 class="topic">
+<a name="11eksptpuhakk53g5m2sacuk2k">&nbsp;&nbsp;算法</a>
+</h3>
+<h3 class="topic">
+<a name="76acousggvnc3vqetg9uqaicbu">&nbsp;&nbsp;&nbsp;获取其他软件的算法让自己使用</a>
+</h3>
+<h3 class="topic">
+<a name="3b289jjr31u9n3site5g9rufsg">&nbsp;&nbsp;数据结构</a>
+</h3>
+<h3 class="topic">
+<a name="5ec4k7nunigjlcf1kbmcv4mk4d">&nbsp;&nbsp;&nbsp;复杂的程序数据多用结构体构造，甚至使用类进行保存</a>
+</h3>
+<h3 class="topic">
+<a name="1epr10ictueba4bflefst3eikk">&nbsp;&nbsp;&nbsp;知道数据结构体可以通过构造特定数据结构作为输入，影响程序运行结果</a>
+</h3>
+<h2 class="topic">
+<a name="0plvoeveliljiefj02t9vnmvp5">mfc程序的分析</a>
+</h2>
+<h3 class="topic">
+<a name="45h81bu6tinh0apsuvfi6ci1h9">&nbsp;一个基于对话框的mfc程序结构</a>
+</h3>
+<h3 class="topic">
+<a name="68jdaekhm4qr8vv0hbqsdurdu4">&nbsp;&nbsp;MFCTest.h</a>
+</h3>
+<h3 class="topic">
+<a name="374aadda30c2rb0rbu556qgutq">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class60day0518_files/7l4625l6g5nqpm2l1aumtav364.png"></p>
+<h3 class="topic">
+<a name="4daspsj9pj25ormr37rkhsiua3">&nbsp;&nbsp;&nbsp;一个继承自CWinApp的类</a>
+</h3>
+<h3 class="topic">
+<a name="2urpmqdioh3a3p28uujf3ip75l">&nbsp;&nbsp;MFCTest.cpp</a>
+</h3>
+<h3 class="topic">
+<a name="3930373nd02ankaf96tfq2f0iq">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class60day0518_files/49ruu3qi1i8ntmk63dafgd9i2s.png"></p>
+<h3 class="topic">
+<a name="5j8a6n608m0u1antja4isvme49">&nbsp;&nbsp;&nbsp;定义一个全局的类对象，并且存在一个该类的初始化函数（InitInstance）该函数中存在创建主模态对话框的函数</a>
+</h3>
+<h3 class="topic">
+<a name="3vaeg8nd5jrc8ekrv9ivsn1a1a">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class60day0518_files/77otovgg432ecqmssrgvvo8ok8.png"></p>
+<h3 class="topic">
+<a name="2dejr00pkofk2b6v19cbdlhro5">&nbsp;&nbsp;&nbsp;之后程序执行流就运行在主模态对话框的消息循环中</a>
+</h3>
+<h3 class="topic">
+<a name="070c6dv1trnno3ab0oinkdnqc1">&nbsp;&nbsp;&nbsp;&nbsp;MFCTestDlg.cpp   MFCTestDlg.h是模态对话框类，当中可以构造对话框相关控件，并针对不同的窗口消息进行响应</a>
+</h3>
+<h3 class="topic">
+<a name="7m71fu5pu3o5e1s1uh6bb3qmns">&nbsp;一个sdk框架的窗口程序</a>
+</h3>
+<h3 class="topic">
+<a name="0fkjelef42bu8sqdviuv1ri71s">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class60day0518_files/0vigeor6lfbqf59vc27k8bd3hd.png"></p>
+<h3 class="topic">
+<a name="3sfdph3bvsjae30clmkrpfa85e">&nbsp;&nbsp;起始函数是winmian函数，函数中需要通过CreateWindows() RegisterClassExW()等函数创建注册函数、并手动进行消息循环的建立</a>
+</h3>
+<h3 class="topic">
+<a name="0pivvab8t9jh7dgvgcjgn38ghq">&nbsp;注意mfc中也i有winmain函数</a>
+</h3>
+<h3 class="topic">
+<a name="71cap0jos9jb0fk1ao61nt05p5">&nbsp;&nbsp;在initterm函数之后不远处可以找到 invoke_main函数，该处就是调用winmain函数的地方，invoke_main函数中会调用winmain函数，winmain函数内部是AfcWinMain，这部分的代码在od汇编中是存在的，invoke_main函数就是汇编中 push4个参数调用的函数</a>
+</h3>
+<h3 class="topic">
+<a name="6p3018mp74pfso1jhpq3foqfus">&nbsp;&nbsp; winmain  invoke_main   afxwinmain 均有四个参数，调用前存在四个push，可以以此进行识别</a>
+</h3>
+<h3 class="topic">
+<a name="015artffsdpgh35ctrk162ma14">&nbsp;&nbsp;mfc的main函数的程序执行流程</a>
+</h3>
+<h3 class="topic">
+<a name="5m9gcvo1mhqe7o2gvmvm2cr7i5">&nbsp;&nbsp;&nbsp;invoke_main-&gt;winmain-&gt;afxwinmain-&gt;InitInstance</a>
+</h3>
+<h3 class="topic">
+<a name="1ikt717he2fsgtfjsnhj6sgsed">&nbsp;不同种类程序的分析起点</a>
+</h3>
+<h3 class="topic">
+<a name="1363ka54nt19dobur768ejnv6m">&nbsp;&nbsp;控制台程序一般从main函数开始分析</a>
+</h3>
+<h3 class="topic">
+<a name="37bp7cnvm1f1f0s5533rgs1k8d">&nbsp;&nbsp;sdk程序可以从winmain函数开始分析</a>
+</h3>
+<h3 class="topic">
+<a name="46jgma669j86202lo9l361sppl">&nbsp;&nbsp;mfc程序可以从InitInstance函数开始分析</a>
+</h3>
+<h3 class="topic">
+<a name="13l86pbhvndk4cp6jmtkric56e">&nbsp;主要分思路</a>
+</h3>
+<h3 class="topic">
+<a name="4ab7pppu1on48vlj6t40eqvqgp">&nbsp;&nbsp;源码对比法，即通过自定义mfc程序（编译器版本等信息与被分析程序相同），获取mfc系统框架代码在特定编译环境下的汇编，在被分析程序中进行比对，找到被分析程序中的对应的系统框架代码</a>
+</h3>
+<h3 class="topic">
+<a name="5dknsgoma7a9gle6s6r57cotuh">&nbsp;&nbsp;将指定函数的特征提取出来，通过与被分析程序的二进制或指令序列进行对比，从而定位目标程序中的对应函数</a>
+</h3>
+<h3 class="topic">
+<a name="5qrie1an6rbiiol71p7jb33pam">&nbsp;&nbsp;问题</a>
+</h3>
+<h3 class="topic">
+<a name="2hsgu716gas2647o7mrh8u6dko">&nbsp;&nbsp;&nbsp;vs中缺少指定dll的符号文件，导致无法通过栈回溯找到目标函数对应位置</a>
+</h3>
+<h3 class="topic">
+<a name="1mu0b5q6bts4cv90t26nu3todu">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class60day0518_files/4aoal0jm7q9bbkq5tmse274eq7.png"></p>
+<h3 class="topic">
+<a name="13p30h26kiusjqp2b72u8sts2i">&nbsp;&nbsp;&nbsp;待解决</a>
+</h3>
+<h3 class="topic">
+<a name="3tilkb02mkackd5vjisuqsi7gu">&nbsp;&nbsp;&nbsp;&nbsp;虽然不能显示符号，但是双击还是可以找到调用指定函数的位置</a>
+</h3>
+<h3 class="topic">
+<a name="30rhehpjhncgia517ep0h5kbf9">&nbsp;可能藏匿初始化代码或是反调试代码的位置</a>
+</h3>
+<h3 class="topic">
+<a name="6pjbbb9ei0nh4ocsm3ni2uc3jl">&nbsp;&nbsp;全局对象的构造函数</a>
+</h3>
+<h3 class="topic">
+<a name="4guimlp8s3s8lv6u37fc7s8mm6">&nbsp;&nbsp;&nbsp;CMFCDemoApp theApp；</a>
+</h3>
+<h3 class="topic">
+<a name="5md6eks68sqf05hoanv2pl77k5">&nbsp;&nbsp;&nbsp;&nbsp;一般mfc程序在进入main函数之前都需要定义theApp类对象，则该类的构造函数会先于main函数执行</a>
+</h3>
+<h3 class="topic">
+<a name="55edeuqe1ve3deg7lf35dodb17">&nbsp;&nbsp;&nbsp;CMFCDemoApp 类的构造函数即为 initerm函数</a>
+</h3>
+<h3 class="topic">
+<a name="7sliqgks4d0lqc84rtogi7marr">&nbsp;&nbsp;&nbsp;&nbsp;可以通过vs调试器，在main函数开始的源码处下断点，通过栈回溯，得到initterm函数的汇编代码，拿着这段汇编代码到被分析的程序中去寻找相同的地方，就找到了被分析程序的initterm函数的位置</a>
+</h3>
+<h3 class="topic">
+<a name="151b2m8rohhs1ctl10qro8g5t5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以直接以汇编指令序列进行搜索，也可以将汇编指令的二进制用于二进制搜索</a>
+</h3>
+<h3 class="topic">
+<a name="3qja5antmaod1iv6fmlja4l9uo">&nbsp;&nbsp;&nbsp;&nbsp;该函数的特征是使用call调用函数之前，使用两个push进行传参， push的目标操作数为地址，一般符合该调用特征的在程序中有两个，一般第一个是inititerm_e，第二个是inititerm</a>
+</h3>
+<h3 class="topic">
+<a name="3tve77a148m3e02n08p4m04i2h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该函数调用的位置一般在初始化安全cookie函数之后的函数中</a>
+</h3>
+<h3 class="topic">
+<a name="36f690b9crr3vro98pogtf6mlb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class60day0518_files/0qc0obqdmt9lli3larg3vkda50.png"></p>
+<p class="relationships">参见: <a href="#2vhpclb20adtukn2f5ff24n570"></a>
+</p>
+<h3 class="topic">
+<a name="2vhpclb20adtukn2f5ff24n570">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class60day0518_files/3rprk8j0nre3qtbrmb3qgkih66.png"></p>
+<p class="relationships">参见: <a href="#36f690b9crr3vro98pogtf6mlb"></a>
+</p>
+<h3 class="topic">
+<a name="257bc4o0ah45cjmn0u2mjgvfos">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过栈回溯找到的InitIterm函数的调用位置</a>
+</h3>
+<h3 class="topic">
+<a name="1muf20qlcg7of99ducmr4ta7bp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class60day0518_files/17rtkh2buvppilg4r9drj13il3.png"></p>
+<h3 class="topic">
+<a name="3u3f423cv7oacmjrels4f2bqnl">&nbsp;&nbsp;&nbsp;问题是，在initterm中是存在一个循环，难以确定是哪一次循环调用了全局对象的构造函数</a>
+</h3>
+<h3 class="topic">
+<a name="5im53p7hh0rl797g76na88abde">&nbsp;&nbsp;&nbsp;&nbsp;所以一般多使用ida的交叉引用从而确定全局对象的构造函数调用时机</a>
+</h3>
+<h3 class="topic">
+<a name="2sqj7ufbujs8kbt8s6rc1taani">&nbsp;&nbsp;&nbsp;initerm函数汇编代码</a>
+</h3>
+<h3 class="topic">
+<a name="5v4ltc8jo8lqjcp7r8itsiemrs">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class60day0518_files/7tjnthvjgbtte6d2qftfv5g5df.png"></p>
+<h3 class="topic">
+<a name="33abo0d6i015eu2ngk6i6h3lit">&nbsp;&nbsp;&nbsp;&nbsp;0F7259A0  mov         edi,edi  &#13;
+0F7259A2  push        ebp  &#13;
+0F7259A3  mov         ebp,esp  &#13;
+0F7259A5  sub         esp,8  &#13;
+0F7259A8  mov         eax,dword ptr [ebp+8]  &#13;
+0F7259AB  mov         dword ptr [ebp-4],eax  &#13;
+0F7259AE  jmp         0F7259B9  &#13;
+0F7259B0  mov         ecx,dword ptr [ebp-4]  &#13;
+0F7259B3  add         ecx,4  &#13;
+0F7259B6  mov         dword ptr [ebp-4],ecx  &#13;
+0F7259B9  mov         edx,dword ptr [ebp-4]  &#13;
+0F7259BC  cmp         edx,dword ptr [ebp+0Ch]  &#13;
+0F7259BF  je          0F7259E1  &#13;
+0F7259C1  mov         eax,dword ptr [ebp-4]  &#13;
+0F7259C4  cmp         dword ptr [eax],0  &#13;
+0F7259C7  jne         0F7259CB  &#13;
+0F7259C9  jmp         0F7259B0  &#13;
+0F7259CB  mov         ecx,dword ptr [ebp-4]  &#13;
+0F7259CE  mov         edx,dword ptr [ecx]  &#13;
+0F7259D0  mov         dword ptr [ebp-8],edx  &#13;
+0F7259D3  mov         ecx,dword ptr [ebp-8]  &#13;
+0F7259D6  call        dword ptr ds:[0F7E626Ch]  &#13;
+0F7259DC  call        dword ptr [ebp-8]  &#13;
+0F7259DF  jmp         0F7259B0  &#13;
+0F7259E1  mov         esp,ebp  &#13;
+0F7259E3  pop         ebp  &#13;
+0F7259E4  ret  </a>
+</h3>
+<h3 class="topic">
+<a name="5pqrmdcuuhn6cvjluvg4jitr31">&nbsp;&nbsp;&nbsp;通过命令序列在目标程序中找到InitIterm函数</a>
+</h3>
+<h3 class="topic">
+<a name="3ekvtoqkhoolhbr3bl58e78gvj">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class60day0518_files/2jga8u72ibpuiulf6cg5jp7sk7.png"></p>
+<h3 class="topic">
+<a name="57snh02he6j4edpgu4q2nl8moi">&nbsp;&nbsp;&nbsp;特征汇编代码与对应的dll</a>
+</h3>
+<h3 class="topic">
+<a name="0fpp3ueifolupbr10or3pc7vid">&nbsp;&nbsp;&nbsp;&nbsp;ucrbase.dll搜索</a>
+</h3>
+<h3 class="topic">
+<a name="4nvtm7f16m36n4paq45n67a210">&nbsp;&nbsp;&nbsp;&nbsp;mov edi,edi&#13;
+push ebp  &#13;
+mov ebp,esp  &#13;
+sub esp,8  &#13;
+mov eax,dword ptr [ebp+8]  &#13;
+mov dword ptr [ebp-4],eax</a>
+</h3>
+<h3 class="topic">
+<a name="0urk96uhbqbjt24gm7nhulb45s">&nbsp;&nbsp;theApp对象的InitInstance函数</a>
+</h3>
+<h3 class="topic">
+<a name="43ggjm6deofgadbmtps4b6bp98">&nbsp;&nbsp;&nbsp;mfc程序一般从initinstance函数开始分析</a>
+</h3>
+<h3 class="topic">
+<a name="6gil2ingsp0mg68g9ojoft2g5c">&nbsp;&nbsp;&nbsp;&nbsp;该函数中有DoModal函数,用于创建模态对话框</a>
+</h3>
+<h3 class="topic">
+<a name="0i1r6tbq9lblhsqi594c7a21lk">&nbsp;&nbsp;&nbsp;&nbsp;这里很难将mfc代码和用户代码区分开</a>
+</h3>
+<h3 class="topic">
+<a name="3h7v51k9gfca2frj9fvn44ls7g">&nbsp;&nbsp;&nbsp;&nbsp;所以需要用一些特征去寻找关键代码</a>
+</h3>
+<h3 class="topic">
+<a name="1nb10bjigrvll1h947r5ndon4m">&nbsp;&nbsp;&nbsp;Initinstance是一个虚函数，是通过theApp对象的指针被调用的， Initinstance函数的地址在虚函数表中的偏移为0x58，可以依据此特征找到initinstance</a>
+</h3>
+<h3 class="topic">
+<a name="6vjpku9q38o82btl9v277ah9dp">&nbsp;&nbsp;&nbsp;initistance函数汇编</a>
+</h3>
+<h3 class="topic">
+<a name="268kgsb2jrsp3bopihh2l904tc">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class60day0518_files/5vne4hpn8g02mbl2kn5o5g68m5.png"></p>
+<h3 class="topic">
+<a name="7j637k57vc07jmru02afk2e0gs">&nbsp;&nbsp;&nbsp;特征汇编代码与对应的dll</a>
+</h3>
+<h3 class="topic">
+<a name="2pkthab10cm7od3i8qc0lst8mk">&nbsp;&nbsp;&nbsp;&nbsp;mfc140ud.dll搜索</a>
+</h3>
+<h3 class="topic">
+<a name="2vf8u8071lddog83i1o8lk3g3v">&nbsp;&nbsp;&nbsp;&nbsp;mov eax,dword ptr fs:[00000000h]  &#13;
+push eax  &#13;
+sub esp,238h  &#13;
+push ebx  &#13;
+push esi  &#13;
+push edi  &#13;
+push ecx  &#13;
+lea edi,[ebp-244h]  &#13;
+mov ecx,8Eh  &#13;
+mov eax,0CCCCCCCCh  &#13;
+rep stos dword ptr es:[edi]  &#13;
+pop ecx  &#13;
+</a>
+</h3>
+<h3 class="topic">
+<a name="64cjsqulah2rjut2tph6q47tl8">&nbsp;&nbsp;模态对话框对象中OnInitDialog函数</a>
+</h3>
+<h3 class="topic">
+<a name="4npkdqbhnlnk2f784nbibi1j61">&nbsp;&nbsp;&nbsp;该函数的上一层是AfxDlgProc</a>
+</h3>
+<h3 class="topic">
+<a name="6vedjqbjr0tgammvhjutmfjei5">&nbsp;&nbsp;&nbsp;该函数也是虚函数，通过指针调用，会访问虚函数表</a>
+</h3>
+<h3 class="topic">
+<a name="1ud665up7g90fo09d9r5fl38ei">&nbsp;&nbsp;&nbsp;在虚函数表中偏移为8的位置</a>
+</h3>
+<h3 class="topic">
+<a name="0iq0mtio9q4pkvejckfar5bdus">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class60day0518_files/7fmo3qkvreht9u4h62e8tc4mcc.png"></p>
+<h3 class="topic">
+<a name="3b29s5ov6l7m6tasrjnv6la26o">&nbsp;&nbsp;&nbsp;&nbsp;1:调用了OnInitDialg</a>
+</h3>
+<h3 class="topic">
+<a name="4o2nq1icq6s9gmgpp76f9vs2r8">&nbsp;&nbsp;&nbsp;&nbsp;2：是通过在源码的OnInitDialog函数内下断点，进行栈回溯，双击2处得到的</a>
+</h3>
+<h3 class="topic">
+<a name="3ntcb3eohb6invf5gi2utg47fh">&nbsp;&nbsp;按钮事件</a>
+</h3>
+<h3 class="topic">
+<a name="28q33pcn6dmk5om84m2mrkr6n1">&nbsp;&nbsp;&nbsp;是最重要的一个点</a>
+</h3>
+<h3 class="topic">
+<a name="0odn9ppvki6oma4ud81esbufoo">&nbsp;&nbsp;&nbsp;该函数在afxdispatchcmdmessage</a>
+</h3>
+<h3 class="topic">
+<a name="6kkpaccfgo7mhg85am4uv2kmlr">&nbsp;&nbsp;&nbsp;通过函数指针的方法进行调用</a>
+</h3>
+<h3 class="topic">
+<a name="1qk90danuonpd9h779ad74td2m">&nbsp;&nbsp;&nbsp;特征</a>
+</h3>
+<h3 class="topic">
+<a name="2uq8kr3c0luv0dmqrjupaougmn">&nbsp;&nbsp;&nbsp;&nbsp;call dword ptr [ebp-48h]</a>
+</h3>
+<h3 class="topic">
+<a name="4fmvrm5ai3nukeieo0nf3pu5no">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;debug版</a>
+</h3>
+<h3 class="topic">
+<a name="02bm2kf4seu9iab5dq8f11ldir">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;按钮事件定位</a>
+</h3>
+<h3 class="topic">
+<a name="5i4sk0bdmnmv0foeekgdbd0mpf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;根据特征搜索程序序列，给所有的特征处下断点（右键&mdash;&mdash;》查找所有命令），触发按钮，断下位置即为按钮事件相关函数</a>
+</h3>
+<h3 class="topic">
+<a name="2qbcds0h86dp72dt85ir163jvs">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;按钮事件一定是类的成员函数，会有ecx传递this指针</a>
+</h3>
+<h3 class="topic">
+<a name="7i7qei3lvl8jvrl7ouf1jdkqvd">&nbsp;&nbsp;&nbsp;&nbsp;call dword ptr [ebp+14h]</a>
+</h3>
+<h3 class="topic">
+<a name="2i03t6b5edb5bfb95qn4kfjkms">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;release版</a>
+</h3>
+<h3 class="topic">
+<a name="7moohmskavv674b6b895t8gj3j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;一直都没有变过</a>
+</h3>
+<h3 class="topic">
+<a name="7nosq1dmug9fmak01o3771kd98">&nbsp;&nbsp;&nbsp;定位方法：&#13;
+在mfc程序的按钮事件处理函数中下断点，点击按钮断在OnBnClickedButton1()函数处，通过栈回溯，可以找到调用该函数的位置</a>
+</h3>
+<h3 class="topic">
+<a name="2sb9dpb1r0uqpmoe5nf2sbnclj">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class60day0518_files/0ifg7pr7ns0mk76dkav3mt8nt2.png"></p>
+<h3 class="topic">
+<a name="1tqr5t7dgar3lpqpbjs5iqkqt5">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class60day0518_files/55s4h24lq52225pgid7rj8451s.png"></p>
+<h3 class="topic">
+<a name="54alb7ks912gl9h9jbmh78p2hk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1处是OnBnClickedButton()函数的调用位置</a>
+</h3>
+<h3 class="topic">
+<a name="67ajqth1n5o26ui9fcargci2dk">&nbsp;&nbsp;&nbsp;特征</a>
+</h3>
+<h3 class="topic">
+<a name="29frh6su1n4d2fi4b0avu4nfra">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class60day0518_files/6bj1v6dji6nt4033822pkpfi0d.png"></p>
+<h2 class="topic">
+<a name="0vg9pueu3rs8mupjenh3revs74">重点</a>
+</h2>
+<h3 class="topic">
+<a name="1ab5630mjdb28qmflaq9cdat3v">&nbsp;mov FS:[0],EAX</a>
+</h3>
+<h3 class="topic">
+<a name="4dorma0buoml6t8gitndrqmrb1">&nbsp;&nbsp;该函数用于给seh链中添加元素</a>
+</h3>
+<h3 class="topic">
+<a name="54loe6plbq8afklo586k5l1fgq">&nbsp;一般分析程序的时候数据窗口多使用地址格式进行表示</a>
+</h3>
+<h3 class="topic">
+<a name="571aqq4kbqqsqtkrgmqvko59al">&nbsp;&nbsp;内存值是否为地址，可以尝试数据窗口跟随，如果能够跟随，则相关数据是地址</a>
+</h3>
+<h3 class="topic">
+<a name="23l9c85olaamln97hdi9ai8h0v">&nbsp;逆向分析过程中可以多关注此内存窗口，需要进行多次尝试，多次失败</a>
+</h3>
+<h3 class="topic">
+<a name="1rucck6p1ql5n7iknlta1oc00f">&nbsp;分析过程中需要不停猜测源码是什么</a>
+</h3>
+<h3 class="topic">
+<a name="5dpjk7bu3hi4lpffvlo0160knn">&nbsp;一般jmp往上跳，该语句一般都是循环</a>
+</h3>
+<h3 class="topic">
+<a name="054fiq3o748bgmlcul8cujoe6j">&nbsp;od中汇编有下划线---- 意指重定位</a>
+</h3>
+<h3 class="topic">
+<a name="2n61ovhcbgaj1meptobkc21ncm">&nbsp;Afx开头的函数是mfc中的全局函数</a>
+</h3>
+<h3 class="topic">
+<a name="2s0kcpepmtv4noiqa079dm7q1u">&nbsp;ida与od中地址的相互转换</a>
+</h3>
+<h3 class="topic">
+<a name="0t87q8objj75vp1re6ga98phtp">&nbsp;&nbsp;1、 ida中 Export中start函数地址是程序入口点，即oep</a>
+</h3>
+<h3 class="topic">
+<a name="5tmponisfrv0uf5mu95vbnslgb">&nbsp;&nbsp;2、od的工具栏e界面中，主模块记录中第一列为该模块加载基址，第三列入口中保存程序的oep，此数据才能与ida中start函数的地址对应</a>
+</h3>
+<h3 class="topic">
+<a name="171ftoq1evuqqqr0gmtpa3bu45">&nbsp;&nbsp;3、同一行代码距离oep的位置在ida与od中是一样的，可以以此进行转换</a>
+</h3>
+<h3 class="topic">
+<a name="6csqumth0bgkggmnbjkrijdqbj">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class60day0518_files/5uelf6ketg69h1p91do70lvqu7.png"></p>
+</body>
+</html>

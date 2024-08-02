@@ -1,0 +1,739 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>class10day0108</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="3or02faf78dfnaa1sbqn0c3cc2">class10day0108</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="class10day0108_files/images/class10day0108.jpg"></div>
+<h2 class="topic">
+<a name="04tfunp44hrsprqfj37vvpusfv">类</a>
+</h2>
+<h3 class="topic">
+<a name="40ln22adbn1o7ra4j119fc43bo">&nbsp;类的定义及使用</a>
+</h3>
+<h3 class="topic">
+<a name="6f00ljpa26emf7vvhvspdkpcjh">&nbsp;&nbsp;类是结构体的改进\是一种复杂数据类型\将不同类型的数据和这些数据的操作(即函数)封装在一起</a>
+</h3>
+<h3 class="topic">
+<a name="36crckahranrf2hal3lv29mtv0">&nbsp;&nbsp;&nbsp;类的{}中的范围被称为类的作用域</a>
+</h3>
+<h3 class="topic">
+<a name="7348kr03p80ocfmgdimdq10vel">&nbsp;&nbsp;类的定义</a>
+</h3>
+<h3 class="topic">
+<a name="4hue9n3jb3guqi0rkaas03fpmv">&nbsp;&nbsp;&nbsp;类名一般大写字母开头  类中成员变量一般m_开头</a>
+</h3>
+<h3 class="topic">
+<a name="7kb09o3k659sdbgrkdt9ggplqp">&nbsp;&nbsp;&nbsp;声明部分</a>
+</h3>
+<h3 class="topic">
+<a name="4m5lf9d17brbqc58j55l8rfqq4">&nbsp;&nbsp;&nbsp;&nbsp;访问权限控制符</a>
+</h3>
+<h3 class="topic">
+<a name="5041i6ct3bdqftndv8e8guko9n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;private</a>
+</h3>
+<h3 class="topic">
+<a name="03f93gai144i59rbc7kacgs6as">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;只有该类的成员才可以访问,类外部无法访问,通常将数据成员定义为私有成员</a>
+</h3>
+<h3 class="topic">
+<a name="563rq6mchss28p1ciq3pu1v4vo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;只能通过成员函数进行安全访问</a>
+</h3>
+<h3 class="topic">
+<a name="345q8nobns7g8a0r8ctuscv8cj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;不能被子类继承</a>
+</h3>
+<h3 class="topic">
+<a name="749eks3kb9n69rojoe35nm569d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public</a>
+</h3>
+<h3 class="topic">
+<a name="2b610n9c1678gf6edr4g1auhk4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对外部提供访问接口,能够被类外访问</a>
+</h3>
+<h3 class="topic">
+<a name="3m6v751c4h4ub02084544d5fl6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;protected</a>
+</h3>
+<h3 class="topic">
+<a name="5rk7df2n3bic8okeevjiatmrcj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;只能在类内被访问</a>
+</h3>
+<h3 class="topic">
+<a name="3b5sa65tjv0oinaq70fl9g0g2j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以被子类继承</a>
+</h3>
+<h3 class="topic">
+<a name="1s1aqqbvbd1sk8luiicf18um8e">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当不给出访问权限时,默认是privat权限</a>
+</h3>
+<h3 class="topic">
+<a name="3dvt0h85mjs7uundd6l53ajn1r">&nbsp;&nbsp;&nbsp;&nbsp;声明成员变量</a>
+</h3>
+<h3 class="topic">
+<a name="6sa8bjnfoemehc531g6ofh21l6">&nbsp;&nbsp;&nbsp;&nbsp;声明成员函数</a>
+</h3>
+<h3 class="topic">
+<a name="5r4nppboq18vr0ordi5ebg44m6">&nbsp;&nbsp;&nbsp;实现部分(特指成员函数的实现)</a>
+</h3>
+<h3 class="topic">
+<a name="31d3ol75t9acbkomls8q4lmp4q">&nbsp;&nbsp;&nbsp;&nbsp;在类中中定义和实现</a>
+</h3>
+<h3 class="topic">
+<a name="6ke08tthh9jsqk6nbb700dp5eo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;int getNum(int n){return m_nNum};</a>
+</h3>
+<h3 class="topic">
+<a name="458e4o8vkgj7mmhu1aobn9s6u7">&nbsp;&nbsp;&nbsp;&nbsp;在类的中定义,在外部实现</a>
+</h3>
+<h3 class="topic">
+<a name="0a0ptl49r00sqlfho8quckco61">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;声明在类中  int getNum(int n);</a>
+</h3>
+<h3 class="topic">
+<a name="49ds0b5chajlk5aets788cn38v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;函数返回值类型 类名::函数名(参数){..........};   </a>
+</h3>
+<h3 class="topic">
+<a name="1soegtnt0df9nnl5hd7l29bgfb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(类似于命名空间的用法)</a>
+</h3>
+<h3 class="topic">
+<a name="51qrfoqqkeg47795pqpssgssle">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;int MyClass::getNum(int n){.......}:</a>
+</h3>
+<h3 class="topic">
+<a name="0fs9gn5utob1ha9e7aa5nc6h2m">&nbsp;&nbsp;&nbsp;&nbsp;在类中定义,在不同的文件中实现</a>
+</h3>
+<h3 class="topic">
+<a name="4cf0g65vtr33ca3l29gabjdat6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;实现方式与上一个相同,只不过不在一个文件中</a>
+</h3>
+<h3 class="topic">
+<a name="5c7sqgt3ma9vk5mnm0kjro29pu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;需要添加相应的头文件</a>
+</h3>
+<h3 class="topic">
+<a name="5apkfig50r1lt52l5e5hdv0k3k">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在vs中选择添加类,生成相应的.h和.cpp</a>
+</h3>
+<h3 class="topic">
+<a name="57lsiqbl61ska5i7cr0prn6tej">&nbsp;&nbsp;定义类对象</a>
+</h3>
+<h3 class="topic">
+<a name="6441lnb7o2kto0sv9qd9lu3h3i">&nbsp;&nbsp;&nbsp;类名 对象名;</a>
+</h3>
+<h3 class="topic">
+<a name="2ekq17bt83kbjhrqgq6n7phg9b">&nbsp;&nbsp;&nbsp;&nbsp;类似于使用数据类型定义变量</a>
+</h3>
+<h3 class="topic">
+<a name="6c6uofhjv9lcdblc28kq6ved9k">&nbsp;&nbsp;&nbsp;一个类对象大小的计算</a>
+</h3>
+<h3 class="topic">
+<a name="1opm2rmegufs5kleidqnvpsgob">&nbsp;&nbsp;&nbsp;&nbsp;和结构体一样,但成员函数不会占用类型对象的内存空间</a>
+</h3>
+<h3 class="topic">
+<a name="63f1bn0eqtm6mcnv53umle6ska">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;存在内存对齐的问题</a>
+</h3>
+<h3 class="topic">
+<a name="6q941sd3a0a8d12qad0v4kbdq5">&nbsp;&nbsp;&nbsp;&nbsp;一个空的类(不含有成员变量的类)最少占一个字节</a>
+</h3>
+<h3 class="topic">
+<a name="7b7q7vnp40aan597nv80bai8vb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;而且这一个字节对于非空的类也是存在的,无论如何会被占用的</a>
+</h3>
+<h3 class="topic">
+<a name="0jj3a6gkv3gh82gt0ffh2bvrn9">&nbsp;&nbsp;通过类对象访问成员变量 成员函数</a>
+</h3>
+<h3 class="topic">
+<a name="5sgqqtuf2n0r0t1s0g53enrqlf">&nbsp;&nbsp;&nbsp;和结构体访问字段一样的,使用.进访问</a>
+</h3>
+<h3 class="topic">
+<a name="0q7rukjj8ehe292pp62rkd2jok">&nbsp;&nbsp;&nbsp;&nbsp;只是相应成员变量和成员函数需要时public类型的才能被这样访问</a>
+</h3>
+<h3 class="topic">
+<a name="7pc6r5igqbaltjsqschkcc7r25">&nbsp;&nbsp;&nbsp;对于类的指针,可以使用-&gt;访问 调用成员数及变量成员函数</a>
+</h3>
+<h3 class="topic">
+<a name="4n7tmlsuo19693908ij4pdij3i">&nbsp;&nbsp;&nbsp;成员变量不能够单独使用,只能配合对象进行使用</a>
+</h3>
+<h3 class="topic">
+<a name="2aab8pr8d13sp19afh8a9qedu4">&nbsp;&nbsp;this指针 (每次成员函数被调用的时候,编译器自动将this指针指向调用成员函数的对象,然后将this指针作为参数传入成员函数)  (this指向一个对象,该对象调用了成员函数)</a>
+</h3>
+<h3 class="topic">
+<a name="41jomv82cp6hpahen3v4ajjhdm">&nbsp;&nbsp;&nbsp;每一个c++的成员函数均会有一个本类类型的指针作为参数,当调用成员函数的时候编译器会将对象的地址赋值给该指针</a>
+</h3>
+<h3 class="topic">
+<a name="0nj1fbtlehf0jesh6he719m1bt">&nbsp;&nbsp;&nbsp;在成员函数中访问成员变量的时候,会在成员变量前面加上this-&gt; （当然也可以不加，默认使用的数据成员就是调用该成员函数的数据成员）（但是当数据成员名称与函数中局部变量的名称相同时，施使用this指针指明使用的是数据成员也是有意义的）</a>
+</h3>
+<h3 class="topic">
+<a name="4lrtan6242k3u6fl05n7af3q9l">&nbsp;&nbsp;&nbsp;当一个类中的成员比变量有a b c时,成员函数的形参也为a b c时this指针可以用于指定哪个是成员变量</a>
+</h3>
+<h3 class="topic">
+<a name="5gj1kqkelupvp4cmrrpg0fk6kb">&nbsp;&nbsp;&nbsp;&nbsp;void MyClass::fun(int a,int b,int c)&#13;
+{&#13;
+	this-&gt;a=a;&#13;
+	this-&gt;b=b;&#13;
+	this-&gt;c=c;&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="29rrkgrv3l5lq1b8fge86ick9v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;旨在用成员函数参数给对象的成员变量赋值</a>
+</h3>
+<h3 class="topic">
+<a name="68mgggcqmvuifd5m0dtl8hbebp">&nbsp;&nbsp;&nbsp;this指针一般只在成员函数中访问成员变量使用</a>
+</h3>
+<h3 class="topic">
+<a name="44ruqf68msbtqbdbqj3doii1lk">&nbsp;&nbsp;&nbsp;而且对于同一类的多个对象调用同一个成员函数的时候,通过调用者的不同,导致传入的this指针不同,最终修改的对象也不同</a>
+</h3>
+<h3 class="topic">
+<a name="5hqc816m6dd98iq10qmmn691h4">&nbsp;&nbsp;&nbsp;&nbsp;类中成员函数是所有对象共用的</a>
+</h3>
+<h3 class="topic">
+<a name="0k6ot1e41feasmr0tf3o5ofhrv">&nbsp;可见性</a>
+</h3>
+<h3 class="topic">
+<a name="3c0t6obf1e2e94n3n0c0e65d7f">&nbsp;&nbsp;当类名与其他变量名或函数名同名时,存在就近原则,哪个定义的比较近,就把对应标识当做哪个执行</a>
+</h3>
+<h3 class="topic">
+<a name="3fjc331ufnqfglbsmvet1guvqv">&nbsp;&nbsp;&nbsp;如果类名因为就近原则被屏蔽了,可以在类名前面加class来指定处理的是类</a>
+</h3>
+<h3 class="topic">
+<a name="1nnbti4rpcr0gqpmh4dpd5k0tn">&nbsp;&nbsp;&nbsp;&nbsp;class MyClass a;</a>
+</h3>
+<h3 class="topic">
+<a name="50a728enalcvgjakl52s12e9ki">&nbsp;&nbsp;&nbsp;如果函数名或变量名被类名屏蔽了,可以在其前面加上::指定其作用域为文件作用域,从而使用</a>
+</h3>
+<h3 class="topic">
+<a name="1tbunuknci357q81vn1m43vops">&nbsp;&nbsp;&nbsp;&nbsp;int MyClass;&#13;
+::MyClass=2;</a>
+</h3>
+<h3 class="topic">
+<a name="7p9i38f62igqnbqddj3qb6uflf">&nbsp;c++中的结构体与类的区别</a>
+</h3>
+<h3 class="topic">
+<a name="54qolrgk3bsl7ctuls58768q0v">&nbsp;&nbsp;类中的默认访问权限是私有的</a>
+</h3>
+<h3 class="topic">
+<a name="6t00as4eoma4962k9069lijj6l">&nbsp;&nbsp;&nbsp;类中的默认继承权限是私有的</a>
+</h3>
+<h3 class="topic">
+<a name="2kci0utd815155im07lj8fmleo">&nbsp;&nbsp;结构体中默认访问权限为公有的</a>
+</h3>
+<h3 class="topic">
+<a name="4bu064dk31q5k6d38l8bj2frhs">&nbsp;&nbsp;&nbsp;结构体中默认继承权限为公有的</a>
+</h3>
+<h3 class="topic">
+<a name="2gnkdvmb3u172vsggk7jp80piq">&nbsp;构造函数</a>
+</h3>
+<h3 class="topic">
+<a name="1491h1eota8brcvvrdcnk7jc40">&nbsp;&nbsp;构造函数的原型</a>
+</h3>
+<h3 class="topic">
+<a name="2j3dauv91u68ar1fu140tonnvl">&nbsp;&nbsp;&nbsp;构造函数名必须与类名同名</a>
+</h3>
+<h3 class="topic">
+<a name="2s8lfui0ao09pf0jedc2tqtdir">&nbsp;&nbsp;&nbsp;不能定义返回值类型</a>
+</h3>
+<h3 class="topic">
+<a name="6284c8td5nj72080up6o5tnt7b">&nbsp;&nbsp;&nbsp;直接在构造函数内赋值不算是初始化,使用初始化列表才算是初始化</a>
+</h3>
+<h3 class="topic">
+<a name="11efg4on37uvt6pq2i6sureuge">&nbsp;&nbsp;&nbsp;&nbsp;MyClass():m_nMax(100),m_nprivate(0){    }</a>
+</h3>
+<h3 class="topic">
+<a name="26f3e73cqknmnogjq9hksp2riu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意这里使用初始化列表进行赋初值是通过()符号,</a>
+</h3>
+<h3 class="topic">
+<a name="4gsot97t461nls59tnq98no1eq">&nbsp;&nbsp;&nbsp;&nbsp;如果这里()中没有内容,默认初始化为0</a>
+</h3>
+<h3 class="topic">
+<a name="0qjnmh9iv2r7debc3742hjahl3">&nbsp;&nbsp;&nbsp;&nbsp;这里的初始化赋值不支持直接初始化数组</a>
+</h3>
+<h3 class="topic">
+<a name="04tdqt0klndlsf8m94o96p0d7o">&nbsp;&nbsp;构造函数和初始化列表</a>
+</h3>
+<h3 class="topic">
+<a name="07i5d0nkjpa4kovev4592d4u5d">&nbsp;&nbsp;&nbsp;因为封装性的存在,有的成员变量是私有的,无法直接在类外被初始化,只能在类内被初始化,初始化时存在一些要求</a>
+</h3>
+<h3 class="topic">
+<a name="2cms18mc2vtn1b2iefuc5hvqte">&nbsp;&nbsp;&nbsp;&nbsp;一些变量(常量类型的变量\引用类型的变量)必须在定义的时候进行初始化,一般的成员函数不具备这种条件,因为只能在对象定义完成之后才能运行,此时需要使用构造函数,该函数在对象被定义的时候自动调用</a>
+</h3>
+<h3 class="topic">
+<a name="1oe3q06kt54ejendss2jij12go">&nbsp;&nbsp;&nbsp;初始化列表的作用</a>
+</h3>
+<h3 class="topic">
+<a name="6e5jmntlfdv5njd1u5n353g6q4">&nbsp;&nbsp;&nbsp;&nbsp;给本类的成员变量初始化,成员变量如果是常量(const) 引用类型变量(&amp;)只能在初始化列表中初始化</a>
+</h3>
+<h3 class="topic">
+<a name="0b2nmmciirjltpciqqurhlo4tr">&nbsp;&nbsp;&nbsp;&nbsp;调用父类的构造函数(和继承有关)</a>
+</h3>
+<h3 class="topic">
+<a name="0o57jjtuo773u6r5g22u3e0gmm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;即给父类的构造函数传参(如果有的话)</a>
+</h3>
+<h3 class="topic">
+<a name="2hbdj5nlpt72gdulhql0umbh5j">&nbsp;&nbsp;&nbsp;&nbsp;给成员对象(即对象作为成员)调用构造函数,不在这里写编译器也会调用成员对象的默认构造函数,但是如果该成员对象对应的类不存在默认构造函数(即初始化需要进行参数传递),就需要在初始化列表中调用该成员带参的构造函数(带参)</a>
+</h3>
+<h3 class="topic">
+<a name="4migv3pap6e565hqq08ug33omn">&nbsp;&nbsp;构造函数的参数 初始化列表以及带参构造函数对应的类生成对象</a>
+</h3>
+<h3 class="topic">
+<a name="48l5c1bnd2rlr031dsqhtuea8p">&nbsp;&nbsp;&nbsp;classs A{&#13;
+	public:&#13;
+	A(int nNumA,int nNumB):m_x(nNumA),m_y(nNumb)&#13;
+	{&#13;
+		cout&lt;&lt;"两个参数的构造函数"&lt;&lt;&#13;
+	}&#13;
+	private:&#13;
+	int m_x,m_y;&#13;
+};&#13;
+&#13;
+A obj(1,2);</a>
+</h3>
+<h3 class="topic">
+<a name="12cu6crq1evvvrgmucervji6tb">&nbsp;&nbsp;&nbsp;&nbsp;构造函数通过()接收参数</a>
+</h3>
+<h3 class="topic">
+<a name="0aakoe1fru3dai6rqn0flou4u4">&nbsp;&nbsp;&nbsp;&nbsp;定义类相应的对象时通过()指定要传入构造函数的参数</a>
+</h3>
+<h3 class="topic">
+<a name="5ka1bc90c7s82apuo6jq8l2ksr">&nbsp;&nbsp;&nbsp;&nbsp;初始化列表通过()使得成员变量被初始化  ()中可以是构造函数传入的参数,也可以是自己指定的数据,若()中为空,则默认将其赋值为0,</a>
+</h3>
+<h3 class="topic">
+<a name="21ok6gg70id3pjh7kqdhrc2ph4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;初始化列表中也应该包括</a>
+</h3>
+<h3 class="topic">
+<a name="22lsfq5hqfa2db3pitfm77lraq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;父类的构造函数</a>
+</h3>
+<h3 class="topic">
+<a name="0qjlv346ce92q7f6n0qj9v3jbp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;结构:     构造函数名()</a>
+</h3>
+<h3 class="topic">
+<a name="3j4aieuks0ql1p0i3k57isgldh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;成员对象指定构造函数的参数</a>
+</h3>
+<h3 class="topic">
+<a name="21jno9dp9da676tmsigvjo0ieq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;结构:    成员对象名()</a>
+</h3>
+<h3 class="topic">
+<a name="55hi283lsju0pcanmeoghu33p0">&nbsp;&nbsp;当有参构造函数,参数全部都有默认值时,此时也可以相当于有默认构造函数</a>
+</h3>
+<h3 class="topic">
+<a name="2ibbtp9s1jb4rnd5jigls31euj">&nbsp;&nbsp;&nbsp;一般是在函数声明中指定默认参数,注意不能在定义和声明中均指定默认参数</a>
+</h3>
+<h3 class="topic">
+<a name="2le30rpdvoqv7ni1v4rq2tl2e0">&nbsp;&nbsp;&nbsp;经试验,此时只有当默认参数在构造函数声明的时候指定才能使该构造函数等同于默认构造函数(在构造函数定义与声明不在一个类中或函数中时)</a>
+</h3>
+<h3 class="topic">
+<a name="4tdnb4qsb5cc85933vcbmsamf7">&nbsp;&nbsp;构造函数的重载</a>
+</h3>
+<h3 class="topic">
+<a name="3r5hcqirnv2ofaevbvd8t1gvc3">&nbsp;&nbsp;&nbsp;定义对象的时候,如果希望对象被初始化成一定的值,此时需要将构造函数外部的数据传递给构造函数内部,构造函数内部才可能进行成员变变量初始化,故构造函数是存在形参的,用于接收数据并初始化成员变量</a>
+</h3>
+<h3 class="topic">
+<a name="7hjeh9b1nat48m2idrfdk35m7t">&nbsp;&nbsp;&nbsp;可以设置多个构造函数,每个形参不同,用于接收多种类型的对对象的初始化输入,编译器自动根据不同的输入,选择不同的构造函数对对象进行初始化</a>
+</h3>
+<h3 class="topic">
+<a name="4j24dlduljlavpu177ano22pmv">&nbsp;&nbsp;&nbsp;如果使用了自定义的构造函数,则默认的构造函数失效,如果想要保留,需要自己再添加一个默认函数</a>
+</h3>
+<h3 class="topic">
+<a name="7scdee4jrc52dmae37neoelsb0">&nbsp;&nbsp;构造函数的种类和调用时期</a>
+</h3>
+<h3 class="topic">
+<a name="1tejoh64vbsa8ghdilvu0b8o1q">&nbsp;&nbsp;&nbsp;默认构造</a>
+</h3>
+<h3 class="topic">
+<a name="3ja8ikgj1ig6a1uvnrlafi9jks">&nbsp;&nbsp;&nbsp;&nbsp;参数0个</a>
+</h3>
+<h3 class="topic">
+<a name="476vju7fquunsi0sgb261j7786">&nbsp;&nbsp;&nbsp;&nbsp;定义对象的时候执行,无参数</a>
+</h3>
+<h3 class="topic">
+<a name="72nrljn4ra7lktfupuphlnr32r">&nbsp;&nbsp;&nbsp;转换构造</a>
+</h3>
+<h3 class="topic">
+<a name="37ofg82d3ptesnkddtffl4k50l">&nbsp;&nbsp;&nbsp;&nbsp;参数个数1个</a>
+</h3>
+<h3 class="topic">
+<a name="7c63qq3ojtq6h7t7a2mup4oaeg">&nbsp;&nbsp;&nbsp;&nbsp;参数类型:非本类类型</a>
+</h3>
+<h3 class="topic">
+<a name="7jeq0au57hasrh13vcncis244g">&nbsp;&nbsp;&nbsp;&nbsp;调用时间;调用构造时,传递一个参数,且实参类型不是本类的类型</a>
+</h3>
+<h3 class="topic">
+<a name="0hpp6fjt5in1mot4hkocu2b147">&nbsp;&nbsp;&nbsp;&nbsp;作用:为了满足编译器的隐式转换需求</a>
+</h3>
+<h3 class="topic">
+<a name="4vapsscpv9hasqkgva4m7mi8un">&nbsp;&nbsp;&nbsp;&nbsp;转换构造函数(conversion constructor function) 的作用是将一个其他类型的数据转换成一个类的对象,  当一个构造函数只有一个参数，而且该参数又不是本类的const引用时，这种构造函数称为转换构造函数。</a>
+</h3>
+<h3 class="topic">
+<a name="6pmhc4lmv5i9at5jgvl68v69am">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;其实就是一个构造函数,其目的是接收各种数据类型的参数用于构建一个相应的对象</a>
+</h3>
+<h3 class="topic">
+<a name="1qndhmfals84npek9fvo3b8jok">&nbsp;&nbsp;&nbsp;&nbsp;传参过程 调用相应类的构造函数,构造出一个对象,再将对象传递给函数</a>
+</h3>
+<h3 class="topic">
+<a name="2obq0q312gq4v62h1pffe4qcql">&nbsp;&nbsp;&nbsp;&nbsp;实参和形参不匹配,编译器尝试进行隐式转换,对于基本数据类型,可以隐式转换,如果函数形参参数为对象,就要求该对象对应的类内存在转换构造函数,</a>
+</h3>
+<h3 class="topic">
+<a name="0vr4f6sp8151dd48kqco3nka5m">&nbsp;&nbsp;&nbsp;&nbsp;实质上是将数据传进专门处理该种数据类型的构造函数</a>
+</h3>
+<h3 class="topic">
+<a name="66cp6fbog5dufbcguicrbs9r7r">&nbsp;&nbsp;&nbsp;&nbsp;这个过程中会产生一个匿名对象,当函数的参数为一个对象的时候,传入函数的实参会调用构造函数产生一个匿名对象,该对象生存周期是该函数</a>
+</h3>
+<h3 class="topic">
+<a name="2gpm8k9jbjf71adlf42uik423p">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;匿名对象的创建于销毁也会分别调用构造函数于析构函数</a>
+</h3>
+<h3 class="topic">
+<a name="16aq66sq3i35s1pjq8d83rnbib">&nbsp;&nbsp;&nbsp;拷贝构造</a>
+</h3>
+<h3 class="topic">
+<a name="2njand3ii2jai3c70mr7dn4q12">&nbsp;&nbsp;&nbsp;&nbsp;参数个数:1个</a>
+</h3>
+<h3 class="topic">
+<a name="5clnt6t6go7i4ca2uiib0t30ii">&nbsp;&nbsp;&nbsp;&nbsp;参数类型:本类类型的对象的引用</a>
+</h3>
+<h3 class="topic">
+<a name="7lcakgoq0ls79e2eo53fia9sir">&nbsp;&nbsp;&nbsp;&nbsp;作用是自定义拷贝函数拷贝什么,不拷贝什么函数,如何拷贝</a>
+</h3>
+<h3 class="topic">
+<a name="0os717mv0vs3as80g8snqajc6q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对应代码是深拷贝与浅拷贝的实现代码</a>
+</h3>
+<h3 class="topic">
+<a name="5pprq3hsr8k900rtv7iua4e02m">&nbsp;&nbsp;&nbsp;&nbsp;定义对象时,被定义的对象的值是从已经存在的对象的值复制过来的</a>
+</h3>
+<h3 class="topic">
+<a name="43r2vt0r0a4bgme1m1o3jo6fvj">&nbsp;&nbsp;&nbsp;&nbsp;使用拷贝构造的时机</a>
+</h3>
+<h3 class="topic">
+<a name="49nnbbb1gr3154qbe07tuppfvn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用值传递传递对象型参数的时候</a>
+</h3>
+<h3 class="topic">
+<a name="1nkehsn7ohfbnv8gqsrvh4rc63">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当参数类型和返回值类型是类对象的时候,均会调用拷贝构造</a>
+</h3>
+<h3 class="topic">
+<a name="19uo2sqsu7g2vcnm1ed6p7lhca">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当参数类型和返回值类型是类的对象的引用的时候,均不会调用拷贝构造</a>
+</h3>
+<h3 class="topic">
+<a name="14kjv39codnf4rk46qpmf0461f">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;函数的返回值使用值传递返回对象类型数据</a>
+</h3>
+<h3 class="topic">
+<a name="7k71eu6n66rb2pabojugegb95o">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;理解</a>
+</h3>
+<h3 class="topic">
+<a name="4jj3d1fopcfhskd97fbr8d98le">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;类作为一种复杂数据类型,而对象是这种数据类型的变量,其可以作为函数的形参,也可以作为函数的返回值,但是问题在于,当对象作为函数形参时,实参也为一个对象,实参赋值给形参的过程就是一个对象将自身复制给另一个对象的过程,相当于创建并初始化了一个对象作为形参,所以需要一种以另一个对象作为参数对本对象进行初始化的方式,即拷贝构造函数</a>
+</h3>
+<h3 class="topic">
+<a name="0s1qq0if67ibg8t3p6tb926erd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;class A(){.....};// A是一个类&#13;
+&#13;
+A fun (A obj);{  return obj;  }  //该函数的形参以及返回值类型均为A类型的对象&#13;
+A&amp; fun2 (A&amp; obj);{  return obj;  } //此时按引用传递更加高效,因为引用于被引用的对象使用相同内存空间,所以不用调用拷贝构造函数&#13;
+&#13;
+int main(){&#13;
+	A obj1;&#13;
+	A&amp;obj2=fun(obj1);  //这里就是一个A类的对象obj1作为实参传递给函数fun(),此时根据对象obj1的值初始化形参obj,就用到了该类型的拷贝构造函数&#13;
+   	//类似 返回值也为A类型的对象,所以最后fun()函数返回时也需要使用拷贝构造函数	&#13;
+	&#13;
+	A&amp;obj3=fun2(obj1);	&#13;
+	//在这里使用A类的引用来接收fun()和fun2函数返回的对象以及对象的引用,区别就在于前者需要调用到构造函数,后者不需要调用构造函数&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="6p68idl15r4eiiujgb17i8bo0j">&nbsp;&nbsp;&nbsp;&nbsp;Person(const Person&amp; obj)//拷贝构造函数,这里形参是同类的引用,所以实参应该同类的对象&#13;
+{&#13;
+	this-&gt;m_name = obj.m_name;&#13;
+	this-&gt;m_nAge = obj.m_nAge;&#13;
+	this-&gt;m_dHeight = obj.m_dHeight;&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="3q7v03ulgrm64h28shrhcekh0g">&nbsp;&nbsp;&nbsp;&nbsp;拷贝构造函数的结构</a>
+</h3>
+<h3 class="topic">
+<a name="4fhde272su4skkomr662jbl24i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;类名::拷贝构造函数名(与类名相同)(类名 &amp;引用名)初始化列表{....}</a>
+</h3>
+<h3 class="topic">
+<a name="1g87de6i6t10gk02esrsbkn5v7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;拷贝构造函数的形参有两种形式</a>
+</h3>
+<h3 class="topic">
+<a name="06a6imfj9veob9pn2r43nt7heu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const 类名 &amp;引用名</a>
+</h3>
+<h3 class="topic">
+<a name="4ai699638de7crjkqqbv4eovqe">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;类名 &amp;引用名</a>
+</h3>
+<h3 class="topic">
+<a name="576ckjqejc3so6854fbt0c3jm7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果不加&amp;符号,可能构造出无限调用拷贝构造的情况</a>
+</h3>
+<h3 class="topic">
+<a name="30cvl4dlrca6cmi77od46tqdfo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;拷贝构造函数中也可以使用初始化列表,但如果像是申请内存空间等比较复杂的操作时,还是需要在函数体内使用赋值</a>
+</h3>
+<h3 class="topic">
+<a name="55er8gvl4p6ppna4h1j2rqfvpl">&nbsp;&nbsp;&nbsp;&nbsp;注意类默认是存在默认的拷贝构造函数的,也就是说,即使不自行编写拷贝构造函数,也可以使用一个对象作为参数,通过构造函数给同类型的另一个对象初始化</a>
+</h3>
+<h3 class="topic">
+<a name="2ij03gsf5kf7fqri7hj51q6agp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;class A(){.....};&#13;
+A s1(5);//s1这个对象通过5这个值作为参数调用构造函数初始化&#13;
+A s2(s1);//这里默认是可以使用对象s1作为参数调用默认的拷贝构造函数初始化s2</a>
+</h3>
+<h3 class="topic">
+<a name="24r3116oc95bc98dm5rfsv8ceg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当s1 s2中的内成员变量为指针类型的时候,使用A s2(s1);这种默认拷贝构造函数会将s1,s2中存储的指针成员变量指向同一个内存空间(但是注意s1 s2两个指针成员变量还是储存在不同的内存空间的),当对象s1 s2均结束使用时,均会调用析构函数,会对同一段内存空间释放两次,造成程序错误</a>
+</h3>
+<h3 class="topic">
+<a name="112hmb0loo5c45dj70fiebd0tf">&nbsp;&nbsp;&nbsp;&nbsp;为了解决上面的问题,需要使用自己定义的拷贝构造函数,在该拷贝构造函数中执行申请内存,将被赋值的对象存入另一个内存空间,解决之前同一内存被释放两次的问题</a>
+</h3>
+<h3 class="topic">
+<a name="3se7eh8mrdjg7m7mshhsm3jbvd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;构造函数的必要性,浅拷贝与深拷贝</a>
+</h3>
+<h3 class="topic">
+<a name="5rr7vk2l9tsv4esn0pllhl1e70">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;深拷贝的构造是在类中申请一个内存空间,用于保存传入的实参的数据</a>
+</h3>
+<h3 class="topic">
+<a name="4c9bcnb3dt5egn6llf9diplf2u">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;所以什么时候需要编写拷贝构造:</a>
+</h3>
+<h3 class="topic">
+<a name="6iiq5odq9go7fnp5j33c45ntsg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当类型的成员含有指针成员的时候,为了防止浅拷贝造成的后续影响,一般会编写拷贝构造函数</a>
+</h3>
+<h3 class="topic">
+<a name="16lbutmjlsjro60f2fjebuc1mn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;综上深拷贝,浅拷贝的问题只存在对象中存在为指针类型的成员变量赋值并申请堆空间储存相关内容的时候</a>
+</h3>
+<h3 class="topic">
+<a name="6g7hj43j85noja41r4t4p3or0f">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;默认拷贝构造函数提供的是浅拷贝,当成员变量为指针的时候,使用默认拷贝构造函数生成的新的对象中的成员变量(即被复制的指针)与作为参数的对象的成员变量指针指向的是同一片内存空间,不会为新的成员变量单独分配内存空间,所以如果将两个对象分别进行析构时,汇兑同一片内存空间释放两次,出现程序错误,</a>
+</h3>
+<h3 class="topic">
+<a name="3vg2fv6vqge672ov60p1untp9i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;深拷贝相当于在拷贝构造函数中对类中指针成员变量指向的空间单独进行内存申请,用于储存其他对象中拷贝进来的数据,所以在两个对象析构过程中释放的是不同的内存空间,不会带来内存空间重复释放问题</a>
+</h3>
+<h3 class="topic">
+<a name="6n3kdn1vlngq5egdor69vtlmb7">&nbsp;析构函数</a>
+</h3>
+<h3 class="topic">
+<a name="6ahadhlla6lvspfecsusc5nk4k">&nbsp;&nbsp;负责对象的销毁,当一个类对象的生存周期到期后,系统会自动调用类对象的析构函数完成对象的销毁工作</a>
+</h3>
+<h3 class="topic">
+<a name="4lqdt9mmght1u9p2me1lmo6fs2">&nbsp;&nbsp;&nbsp;原型~类名(){};</a>
+</h3>
+<h3 class="topic">
+<a name="38ofbk6fstsgfmv85vlov9hfpk">&nbsp;&nbsp;用途</a>
+</h3>
+<h3 class="topic">
+<a name="5kjp8deotih7b46s81is4ve1tn">&nbsp;&nbsp;&nbsp;将申请堆空间的代码(成员函数中存在申请资源的行为,包括申请内存,打开文件等)放在构造函数,将释放堆空间,关闭文件的代码放在析构函数</a>
+</h3>
+<h3 class="topic">
+<a name="40sr9bdpbj98n7v6iafd08djbp">&nbsp;&nbsp;&nbsp;&nbsp;也可以在成员函数中完整完成资源申请 资源释放的过程</a>
+</h3>
+<h3 class="topic">
+<a name="5o1r9re7mia6h6e8o3sv3fqdvk">&nbsp;&nbsp;&nbsp;&nbsp;对于动态数组作为对象的成员变量的时候可以将内存申请放在构造函数中,将内存释放放在析构函数中,将变量定义放在成员变量中</a>
+</h3>
+<h3 class="topic">
+<a name="4omir404dsnlbbuqk2lq8galnc">&nbsp;类的默认成员</a>
+</h3>
+<h3 class="topic">
+<a name="1a66otdfg1ngs6926m82f7s4qg">&nbsp;&nbsp;编译器自动分配的默认成员（有六个）</a>
+</h3>
+<h3 class="topic">
+<a name="7ont64ku4ivkift9sajkf1jpmb">&nbsp;&nbsp;&nbsp;无参的构造函数</a>
+</h3>
+<h3 class="topic">
+<a name="60l1i15uvcdgk9mcdo38vapp2h">&nbsp;&nbsp;&nbsp;&nbsp;也称默认构造函数</a>
+</h3>
+<h3 class="topic">
+<a name="1bo3ofte5qccceiqh0vfnd3ud7">&nbsp;&nbsp;&nbsp;默认拷贝构造函数</a>
+</h3>
+<h3 class="topic">
+<a name="26lfu45pkkg5523pvpc9ruc184">&nbsp;&nbsp;&nbsp;析构函数</a>
+</h3>
+<h3 class="topic">
+<a name="23mig4f7imgd6ln91u1s90tnjl">&nbsp;&nbsp;&nbsp;...</a>
+</h3>
+<h3 class="topic">
+<a name="0iu3r74p8350n7nk6egdt4le6i">&nbsp;c++连缀类型的操作</a>
+</h3>
+<h3 class="topic">
+<a name="0s2dvj7lhb1nuluba471phsjib">&nbsp;&nbsp;person&amp; name(string name){&#13;
+	m_name=name;&#13;
+	return *this&#13;
+}&#13;
+person&amp; heigh(int heigh){&#13;
+	m_heigh=hrigh;&#13;
+	return *this&#13;
+}&#13;
+perObj.name("如花").heigh(180);&#13;
+&#13;
+&#13;
+关键在于函数返回值为类型的引用,且在函数中最后 返回this指针的解引用 (this指针在函数调用的时候被传进来,指向调用该函数的对象)</a>
+</h3>
+<h3 class="topic">
+<a name="3hdsjkr4ee8pj4k5kqd2kbbanj">&nbsp;复习</a>
+</h3>
+<h3 class="topic">
+<a name="08f7lscu4ubihcn9r64t1re09a">&nbsp;&nbsp;三大特性</a>
+</h3>
+<h3 class="topic">
+<a name="62tbd78jaahg3et95g49sqc1mg">&nbsp;&nbsp;&nbsp;封装继承多态</a>
+</h3>
+<h3 class="topic">
+<a name="1nu38gop5llq9rep87n339njug">&nbsp;&nbsp;&nbsp;&nbsp;三大访问控制符</a>
+</h3>
+<h3 class="topic">
+<a name="6r0g3bid9h70gjn8e12e1r027e">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public</a>
+</h3>
+<h3 class="topic">
+<a name="1ugseoqklsout1ivqdnf0082sk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;类内外均可以访问</a>
+</h3>
+<h3 class="topic">
+<a name="09e9scgm127b87tbs7j1pft6aj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;protected</a>
+</h3>
+<h3 class="topic">
+<a name="1ki21f6phga315jbdtp66sbe1j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;类内和子类可以访问,类外无法访问(注意这里的类内 子类指的是在类定义的花括号中,而类外指的是相应类的对象)</a>
+</h3>
+<h3 class="topic">
+<a name="7s3laqvuc92osru0h7e8hd1jqk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;private</a>
+</h3>
+<h3 class="topic">
+<a name="6ngi84v2go0pesij33lmnk1het">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;只有类内可以访问</a>
+</h3>
+<h3 class="topic">
+<a name="2t3hf6logbr4f7jnasbv9drb2g">&nbsp;&nbsp;this指针</a>
+</h3>
+<h3 class="topic">
+<a name="3t9brbmktaf0qbe1m0ptu32p6a">&nbsp;&nbsp;&nbsp;有一个函数的形参为常量引用类时,无法在该函数内调用该常量的对象的成员函数,因为形参为常量引用,而调用成员函数可能对该对象的数据成员产生改变</a>
+</h3>
+<h3 class="topic">
+<a name="3cir3m4letd6m0lmrst0h9ubnd">&nbsp;&nbsp;&nbsp;&nbsp;除非把该成员函数修饰为const</a>
+</h3>
+<h3 class="topic">
+<a name="1avoqbdbm1vjc4pun655ehj1sn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;class Myclass{&#13;
+&#13;
+public:&#13;
+void fun(...){this-&gt;m_num=0};&#13;
+void fun1()const{&#13;
+		//这里的const是const Myclass*this&#13;
+&#13;
+		//此时若this-&gt;m_num=0;是错误的,因为成员函数名中的const已经修饰了this指针,导致在该成员函数中,类中的数据并不能被修改&#13;
+		};&#13;
+		private:&#13;
+		int m_num;&#13;
+}&#13;
+&#13;
+void fun3 (const Myclass&amp;obj){&#13;
+	obj.fun();//此时因为形参obj为常量对象的引用,且fun()中对象的成员数据会被修改,所以这里会报错&#13;
+&#13;
+	obj.fun1();//这里因为fun1()函数的this指针是一个const常量,所以在该函数中对象的成员数据不会被改变,所以可以在本函数中正常调用 &#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="6tb27vcgcu3n2j9j46u48ka14o">&nbsp;&nbsp;&nbsp;&nbsp;此时实际修饰的是this指针</a>
+</h3>
+<h3 class="topic">
+<a name="6g8vc1ccrojq3ebrumqe1trmu1">&nbsp;&nbsp;&nbsp;&nbsp;成员函数后面放const,保证了对象中成员变量不会被修改,常用于构造输出对象内成员变量的函数</a>
+</h3>
+<h3 class="topic">
+<a name="0rne6tds6b0onejt65qucv9k2b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;string getText()const { return m_text; }</a>
+</h3>
+<h3 class="topic">
+<a name="6uo09isep94souu1g93p94l86o">&nbsp;&nbsp;一个类的构造函数是私有的,则这个类不能定义对象</a>
+</h3>
+<h3 class="topic">
+<a name="6gkt70379pk2qqjppbr3pd2qno">&nbsp;&nbsp;&nbsp;私有的成员无法在类外使用,而构造函数若不在类外使用则不能构造对象</a>
+</h3>
+<h3 class="topic">
+<a name="6j63ijkmf1qbc1mrhefu1asm5m">&nbsp;&nbsp;什么是匿名对象</a>
+</h3>
+<h3 class="topic">
+<a name="3ubijhjg8vlhkuvf3u3860p836">&nbsp;&nbsp;&nbsp;产生于表达式的隐式转换中</a>
+</h3>
+<h3 class="topic">
+<a name="7sm2np4feoqvbckp7s7btraqo8">&nbsp;&nbsp;&nbsp;&nbsp;1+2+3;会产生中间结果,再和3相加,中间结果即为匿名对象</a>
+</h3>
+<h3 class="topic">
+<a name="3esjel82oqgvtndnoj2vqtdcgt">&nbsp;&nbsp;&nbsp;&nbsp;当一数据需要被隐式转换成为一个类对象时,会产生匿名对象</a>
+</h3>
+<h3 class="topic">
+<a name="0r465k77vo4879s9tjhqrbpnc2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2. 当一个数据需要被隐式转换成一个类对象的时候, 也会产生匿名对象.&#13;
+      class MyClass&#13;
+	{&#13;
+      public:&#13;
+     	MyClass(){};      &#13;
+		MyClass(int n){}&#13;
+      };&#13;
+      &#13;
+	void fun( const MyClass&amp; obj ){}&#13;
+&#13;
+	int main( ){&#13;
+          fun( 5 );//此时传入的参数与实参类型不符,调用转换构造生成匿名对象,再使用匿名对象传参,由于匿名对象不能改变,所以fun的形参应该为const类型&#13;
+          fun(Myclass obj);//此时传入的参数与形参相符,调用拷贝构造函数,生成形参&#13;
+	}&#13;
+&#13;
+&#13;
+          //fun的形参类型是类类型.&#13;
+          // 而实参是整型.&#13;
+          // 两边类型不匹配, 编译器会做隐式转换.&#13;
+          // 做隐式转换的时候就会调用类的相应的构造函数(就是一个形参是int型的构造函数.)&#13;
+          // 这个过程中, 就无形中多出了一个MyClass类的对象. 而这个对象就是匿名对象了.&#13;
+          // 匿名对象是一个常量. 不允许被修改的.&#13;
+          // 一般形参需要加上const修饰符才能接收&#13;
+          // 这个匿名对象.&#13;
+          //跟着之前this指针的讨论,此时因为void fun( const MyClass&amp; obj ){}形参为const,所以在该函数中,传入对象的成员变量不能发生变化,只能调用类中this指针被定义为const的成员函数   (  形如void fun()const{}  )&#13;
+</a>
+</h3>
+<h3 class="topic">
+<a name="719cbmjaj0ki9avsuq3ttdrofo">&nbsp;&nbsp;&nbsp;&nbsp;有了转换构造	MyClass(int n){},以后定义对象可以使用 MyClass obj=2;的方式</a>
+</h3>
+<h3 class="topic">
+<a name="20cobgaao5eii7s99gdv336cbp">&nbsp;&nbsp;&nbsp;生存周期在一条语句中</a>
+</h3>
+<h3 class="topic">
+<a name="0eua1l2pjbneraqugbiv0blocs">&nbsp;&nbsp;&nbsp;&nbsp;所以一旦调用转换构造生成了匿名对象,传参完毕后一定会有析构函数被调用</a>
+</h3>
+<h3 class="topic">
+<a name="73tpvqroh27d69935gebbrruj1">&nbsp;&nbsp;&nbsp;如果想要禁用类因为隐式转换产生匿名队对象,可以在转换构造函数前面加上  explicit  禁用隐式转换,此时如果想要在fun()中使用5作为参数,需要在fun()中主动调用构造函数再传进去  my(5)</a>
+</h3>
+<h3 class="topic">
+<a name="2jqckobb7askab3au7ktubh7b8">&nbsp;&nbsp;&nbsp;&nbsp;class MyClass {&#13;
+      public:&#13;
+      	explicit MyClass(int n) {}&#13;
+      	~MyClass() {}&#13;
+      };&#13;
+&#13;
+fun（Myclass(5));//主动调用转换构造&#13;
+//因为你禁用隐式转换,上例中的fun函只能通过主动调用转换构造从而调用</a>
+</h3>
+<h3 class="topic">
+<a name="1cpftmsgen5ffmkieok73d78qs">&nbsp;&nbsp;普通成员变量生存周期</a>
+</h3>
+<h3 class="topic">
+<a name="7m7o1dgi054m2utqlkfvaiin5r">&nbsp;&nbsp;&nbsp;普通成员变量的内存空间是对象的一部分,成员对象的生存周期是以对象为单位的,对象被销毁,成员变量也被销毁</a>
+</h3>
+<h3 class="topic">
+<a name="2kb8fvu5n36ovvl4tumfoojj94">&nbsp;&nbsp;类对象的构造函数调用顺序</a>
+</h3>
+<h3 class="topic">
+<a name="35t5vpnmt6ov0o54bbqeepttmd">&nbsp;&nbsp;&nbsp;先调用父类的构造函数，之后调用成员对象的构造函数,最后调用本类的构造函数</a>
+</h3>
+<h3 class="topic">
+<a name="2bpgqphdprdi7l33kakgkc8n3n">&nbsp;&nbsp;&nbsp;析构函数的调用顺序与之相反,先调用本类析构函数,再调用成员对象的析构函数，最后调用的是父类析构函数</a>
+</h3>
+<h2 class="topic">
+<a name="4jrovcco1da45ccuabg9u0jfrk">tips</a>
+</h2>
+<h3 class="topic">
+<a name="4j5cevi8r27sfn68gfpoaigujr">&nbsp;引用和常量必须在定义的时候就被初始化</a>
+</h3>
+<h3 class="topic">
+<a name="20dtialv8sqrig8t7rol2ja1ri">&nbsp;使用new为相应类的对象分配内存空间&#13;
+class Person&#13;
+{.........};&#13;
+&#13;
+Person* p=new Person();//这里是调用相应类的构造函数,如果该构造函数存在参数,也需要在()中指定,如果相应类的构造函数是默认构造函数,也可以使用&#13;
+Person* p=new Person;进行分配内存空间,不需要使用()指定参数</a>
+</h3>
+<h3 class="topic">
+<a name="5j5te8k92f7gcbubkrm0b7ihap">&nbsp;注意一个对象一旦被定义,其内存空间中储存的是对应类的的成员变量,成员函数没有在对象中被储存</a>
+</h3>
+<h3 class="topic">
+<a name="2m0hrdt8e82up1mh3gcb08lbrn">&nbsp;在c中如果需要输出变量的内存地址,可以使用强转(void*)将需要输出的地址值强制转换为无类型进行输出</a>
+</h3>
+<h3 class="topic">
+<a name="6ukgsumo116a94p84errt5v3t9">&nbsp;当有参构造函数,参数全部都有默认值时,此时也可以相当于有默认构造函数</a>
+</h3>
+<h3 class="topic">
+<a name="671b7qialjnvav1o801ck2ek9s">&nbsp;&nbsp;一般是在函数声明中指定默认参数,注意不能在定义和声明中均进行默认参指定</a>
+</h3>
+<h3 class="topic">
+<a name="4bvpir5h58kl0k90hroe8h2ahe">&nbsp;&nbsp;经试验,此时只有当默认参数在构造函数声明的时候指定才能使该构造函数等同于默认构造函数(在构造函数定义与声明不在一个类中或函数中时)</a>
+</h3>
+<h3 class="topic">
+<a name="1t3qt9ekcl2bke2n5c7jq26bjg">&nbsp;转换构造</a>
+</h3>
+<h3 class="topic">
+<a name="7s6ktn2psuvpu6kjt464a0b0ga">&nbsp;&nbsp;总结</a>
+</h3>
+</body>
+</html>

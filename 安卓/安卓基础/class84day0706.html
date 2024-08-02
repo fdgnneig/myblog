@@ -1,0 +1,602 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>class84day0706(安卓安全第五天)</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="479ubatg5tpnglj8cuijcum1u1">class84day0706(安卓安全第五天)</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="class84day0706_files/images/class84day0706(%E5%AE%89%E5%8D%93%E5%AE%89%E5%85%A8%E7%AC%AC%E4%BA%94%E5%A4%A9).jpg"></div>
+<h2 class="topic">
+<a name="4d7e697ooashufs2qgql6pq99c">android hook入门</a>
+</h2>
+<h3 class="topic">
+<a name="6caag4lm2l0h5qd62nbmgs15cv">&nbsp;安卓hook框架</a>
+</h3>
+<h3 class="topic">
+<a name="0sehv6u08uhoksg5hrui9tdelf">&nbsp;&nbsp;Cydia substrate</a>
+</h3>
+<h3 class="topic">
+<a name="5c4vjhf2chcfb2olf2sqq6u559">&nbsp;&nbsp;&nbsp;闭源</a>
+</h3>
+<h3 class="topic">
+<a name="2c5m6c33qedmuqu2i90l6dv5el">&nbsp;&nbsp;&nbsp;从苹果发展到安卓</a>
+</h3>
+<h3 class="topic">
+<a name="17845gpl6a3rl5kh8re1vh4v24">&nbsp;&nbsp;&nbsp;安卓4.4之后没有更新，兼容性可能有问题</a>
+</h3>
+<h3 class="topic">
+<a name="1is3oeuubqm1c7878o8o36n3pt">&nbsp;&nbsp;&nbsp;该框架内仅支持真机环境的hook，不支持安卓模拟器</a>
+</h3>
+<h3 class="topic">
+<a name="113dvp5eotk48c1ufddh813m9j">&nbsp;&nbsp;xposed</a>
+</h3>
+<h3 class="topic">
+<a name="59hdagded9br73i81uqg4jne6v">&nbsp;&nbsp;&nbsp;开源</a>
+</h3>
+<h3 class="topic">
+<a name="1ii9ctqj0lfm3vkugpu07uqqv2">&nbsp;&nbsp;&nbsp;从安卓发展到苹果</a>
+</h3>
+<h3 class="topic">
+<a name="4331pdp95qbl7hii4f7pmvkkq1">&nbsp;&nbsp;YAHFA</a>
+</h3>
+<h3 class="topic">
+<a name="59pbsaiq7thjfd3qo5rqop2v72">&nbsp;&nbsp;hook框架可以hook其他程序，也可以hook自己</a>
+</h3>
+<h3 class="topic">
+<a name="38gihg8vmcvsapq4ku3r6etor8">&nbsp;Cydia Substrate简介</a>
+</h3>
+<h3 class="topic">
+<a name="5oin7rfrcek066vdhfes5dmqps">&nbsp;&nbsp;使用步骤</a>
+</h3>
+<h3 class="topic">
+<a name="2jjjiu9ohnccf1b0312cv6548s">&nbsp;&nbsp;&nbsp;安装框架</a>
+</h3>
+<h3 class="topic">
+<a name="0ndo08bctvh64l1hbokpupkm7r">&nbsp;&nbsp;&nbsp;编写插件</a>
+</h3>
+<h3 class="topic">
+<a name="0m29lnmvel9lpnpdeji8001tbb">&nbsp;&nbsp;两个主要函数</a>
+</h3>
+<h3 class="topic">
+<a name="123o7ei18g8vgaspcrhcapnom1">&nbsp;&nbsp;使用流程</a>
+</h3>
+<h3 class="topic">
+<a name="2ef6t674hcnm491qgaik30lcfv">&nbsp;&nbsp;&nbsp;创建插件项目</a>
+</h3>
+<h3 class="topic">
+<a name="5eaa8tkc0rkm30j0rs48uk5u81">&nbsp;&nbsp;&nbsp;将jar包复制插件项目的app/lib目录下</a>
+</h3>
+<h3 class="topic">
+<a name="003rrfq3h5j30kdnea7d75klrv">&nbsp;&nbsp;&nbsp;设置项目的依赖，使该项目对jar包进行依赖</a>
+</h3>
+<h3 class="topic">
+<a name="0hr25efo3rb3v54cq0mf2437m6">&nbsp;&nbsp;&nbsp;在清单文件中加上cydia项目的配置属性和相关的权限</a>
+</h3>
+<h3 class="topic">
+<a name="28apdmrbaj5l3iv20u1f8hovi4">&nbsp;&nbsp;&nbsp;&nbsp;在application中加上meta-data的标签</a>
+</h3>
+<h3 class="topic">
+<a name="0q9j9t436a931huj5jc9vupc5j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;设置name属性和value属性</a>
+</h3>
+<h3 class="topic">
+<a name="7rjfps623u9gpabd0kascims7s">&nbsp;&nbsp;&nbsp;&nbsp;加上自定义权限</a>
+</h3>
+<h3 class="topic">
+<a name="06l4irvr3vgmd4fhkq19t0c0pa">&nbsp;&nbsp;&nbsp;在java源码目录下创建一个入口类，入口类名与上面标签中nam属性规定的一样</a>
+</h3>
+<h3 class="topic">
+<a name="1udtbnq4n7d8jbi59fm6n04grp">&nbsp;&nbsp;&nbsp;在类中的Initialize函数中设置回调函数，在回调函数中编写hook的代码</a>
+</h3>
+<h3 class="topic">
+<a name="4hcqn8uls04i4hebrbvabnlc2t">&nbsp;&nbsp;&nbsp;&nbsp;使用MS.hookClassLoad</a>
+</h3>
+<h3 class="topic">
+<a name="57h33k823oiu61tdofj00jklhf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;获取方法对象</a>
+</h3>
+<h3 class="topic">
+<a name="7pccj00jd2nitd28nccitialtf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过类类型对象获取老的方法</a>
+</h3>
+<h3 class="topic">
+<a name="0vg2sphcreqlg6d9cid6aed68v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在运行过程中获取类的成员变量和成员方法</a>
+</h3>
+<h3 class="topic">
+<a name="008hj9qshu5in6a4dvopnh9osu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;java反射机制</a>
+</h3>
+<h3 class="topic">
+<a name="39dc4ak9v8klmnqp6hk9veq19i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hook该方法，将老的方法替换为新方法</a>
+</h3>
+<h3 class="topic">
+<a name="1qmj947r5frgiajuoup1h4k20f">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;参数</a>
+</h3>
+<h3 class="topic">
+<a name="6led5qfc5ui11jrae343kabi97">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;被hook的类的类型</a>
+</h3>
+<h3 class="topic">
+<a name="2m14g8p4kp4fjrb5gs970pnj4s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;老方法的对象</a>
+</h3>
+<h3 class="topic">
+<a name="0m3fnfum3heutvg5t4ig5mcskg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;进行hook的函数</a>
+</h3>
+<h3 class="topic">
+<a name="3rgi3uf76gginafq8d531fa16i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以在调用老方法，需要老方法的指针</a>
+</h3>
+<h3 class="topic">
+<a name="5ghab79rmga6fi29qgl9vs36ad">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;老方法的指针</a>
+</h3>
+<h3 class="topic">
+<a name="4ppai9rfgsgvjub65lcq09o7ve">&nbsp;&nbsp;&nbsp;编译完成，安装到手机上</a>
+</h3>
+<h3 class="topic">
+<a name="11dicqih2oncrfo8s7fq29rt1b">&nbsp;&nbsp;&nbsp;手机上安装hook框架，插件才能有效</a>
+</h3>
+<h3 class="topic">
+<a name="1i0k3moen5mcqc7jbs0hhufihu">&nbsp;&nbsp;&nbsp;具体流程看安卓第五天笔记</a>
+</h3>
+<h3 class="topic">
+<a name="3p3r4d8oivunnblimmbhupfq9o">&nbsp;&nbsp;如果在手机上要使用该hook框架，需要在手机上安装hook相关的api</a>
+</h3>
+<h3 class="topic">
+<a name="79dgqo5a0hbbcpa87cvka9698b">&nbsp;&nbsp;执行hook功能的关键函数</a>
+</h3>
+<h3 class="topic">
+<a name="79uu1061dnh2p9lbl8b5hs4crr">&nbsp;&nbsp;&nbsp;hook指定类</a>
+</h3>
+<h3 class="topic">
+<a name="6q59fouilng66ls49n31kabcfg">&nbsp;&nbsp;&nbsp;&nbsp;MS.hookMethod</a>
+</h3>
+<h3 class="topic">
+<a name="1vu6nu17dr5a9pe3foj0s6a6h4">&nbsp;&nbsp;&nbsp;&nbsp;函数原型</a>
+</h3>
+<h3 class="topic">
+<a name="3fj15l11ko4i9e5b2i1lned8td">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;void hookClassLoad(String name,MS.ClassLoadHook hook)</a>
+</h3>
+<h3 class="topic">
+<a name="051umjpd5a6kllcrunbli32110">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;String name</a>
+</h3>
+<h3 class="topic">
+<a name="69k7u19v9q488jujb72h1j9m3q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;包名+类名</a>
+</h3>
+<h3 class="topic">
+<a name="309asuiqeknir9ena1gqhokm9n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MS.ClassLoadHook hook</a>
+</h3>
+<h3 class="topic">
+<a name="3r8v4bjvlbqjtrlc94rk67kuvm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;是ClassLoadHook类的一个实例，当该类被加载时，其classLoad方法会被执行</a>
+</h3>
+<h3 class="topic">
+<a name="709j29bfd2v4v86j56a73pf3e0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;实际hook的过程中，hookMethod函数和真正执行的函数均位于classLoad中</a>
+</h3>
+<h3 class="topic">
+<a name="4001kctvfsq359r5m00f0mkl3i">&nbsp;&nbsp;&nbsp;hook指定的方法</a>
+</h3>
+<h3 class="topic">
+<a name="13c2rauknopqrdjdmlm7f1468p">&nbsp;&nbsp;&nbsp;&nbsp;MS.hookMethod</a>
+</h3>
+<h3 class="topic">
+<a name="3ev9iterhk3latnvth3vmp3kj7">&nbsp;&nbsp;&nbsp;&nbsp;函数原型</a>
+</h3>
+<h3 class="topic">
+<a name="3vqoiupn2etu7f47ab5cjlh7od">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;void hookMethod(Class _class ,&#13;
+							Member member ,&#13;
+							MS.MethodHook hook 							,MS.MethodPointer old)</a>
+</h3>
+<h3 class="topic">
+<a name="2nk6p8gqdg3tlkoeq2guoldnop">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;参数1</a>
+</h3>
+<h3 class="topic">
+<a name="2n0vfc505ae0maa8cnet6d578a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;加载的目标类，是classLoad传下来的类参数</a>
+</h3>
+<h3 class="topic">
+<a name="34v3l2egg853plt0mgaq7sdf5a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;参数2</a>
+</h3>
+<h3 class="topic">
+<a name="7ag33csogf85v82ai9mlaghaei">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;需要hook的方法</a>
+</h3>
+<h3 class="topic">
+<a name="0m97h6a5fj72tq2ks75a40oaph">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;参数3</a>
+</h3>
+<h3 class="topic">
+<a name="43heun6cho1fgv5anrom4kvvj8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MS.MethodHook 的一个实例，其中的invoked方法会被调用，用于替代第二个参数中的方法进行执行</a>
+</h3>
+<h3 class="topic">
+<a name="654p2835kumu6usid5luvgndsu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;参数4</a>
+</h3>
+<h3 class="topic">
+<a name="2hduv98cka1ibpadll9jie151b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;老的函数指针</a>
+</h3>
+<h3 class="topic">
+<a name="0ma5ej6e172q19qdg8uvbjqfhh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以为空</a>
+</h3>
+<h3 class="topic">
+<a name="1l11hc1hgnqna8c5if1srg31c1">&nbsp;xposed插件（主要会被用于做灰色产业）</a>
+</h3>
+<h3 class="topic">
+<a name="27mm9urmvdtv395o1l2s45niq7">&nbsp;&nbsp;非常重要、应用广泛</a>
+</h3>
+<h3 class="topic">
+<a name="5b8vdmu404lefclg3o87vk2i7u">&nbsp;&nbsp;开源的Hook框架，可定制性强，其提供了SDK可以插件，轻松完成Hoook</a>
+</h3>
+<h3 class="topic">
+<a name="5a7gatemfd2u7aeldlvpg71r3j">&nbsp;&nbsp;有两种hook模式</a>
+</h3>
+<h3 class="topic">
+<a name="4a38ngnsf2gebggkpkd4dc3611">&nbsp;&nbsp;&nbsp;替换原本的方法</a>
+</h3>
+<h3 class="topic">
+<a name="2ddm8h82dq3ikci5rui58m38pk">&nbsp;&nbsp;&nbsp;在原方法后面加上自己的函数</a>
+</h3>
+<h3 class="topic">
+<a name="667shmtmpsdfdh8tpqe4ef9sjg">&nbsp;&nbsp;使用范例</a>
+</h3>
+<h3 class="topic">
+<a name="1h04kbtr6tu197m4dr840u3n2i">&nbsp;&nbsp;&nbsp;新建工程</a>
+</h3>
+<h3 class="topic">
+<a name="7tlp1m767ulkg8o88o52n3evei">&nbsp;&nbsp;&nbsp;将jar文件拷贝到app下的新建目录下，注意不能放在libs目录下，会造成重复包含的问题</a>
+</h3>
+<h3 class="topic">
+<a name="3thv0cvfm58cehlu2dlucjt067">&nbsp;&nbsp;&nbsp;&nbsp;可以新建一个lib目录用于存放jar包</a>
+</h3>
+<h3 class="topic">
+<a name="591biglus0akj9qt1o0jc32f0h">&nbsp;&nbsp;&nbsp;设置依赖，注意将导入类型选择为 Compile only</a>
+</h3>
+<h3 class="topic">
+<a name="5vcko7hgs4vjhnqhesr8fcqi54">&nbsp;&nbsp;&nbsp;&nbsp;只编译不连接</a>
+</h3>
+<h3 class="topic">
+<a name="0i13j82bkt95ospdfihtg2hspt">&nbsp;&nbsp;&nbsp;&nbsp;依赖之后可以使用其中的类</a>
+</h3>
+<h3 class="topic">
+<a name="73hc9q76h1kfp1bvdbjqhrqapn">&nbsp;&nbsp;&nbsp;在清单文件中</a>
+</h3>
+<h3 class="topic">
+<a name="37gdigo45805p29jn4ljdc46r1">&nbsp;&nbsp;&nbsp;&nbsp;在application中写三个 meta-data标签</a>
+</h3>
+<h3 class="topic">
+<a name="7ljd0u56d2c2j3i9bg4dndot44">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;第一个指定是xposemodule模块</a>
+</h3>
+<h3 class="topic">
+<a name="70g43s8vsegfeeb639arsr3e4s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使模块有效</a>
+</h3>
+<h3 class="topic">
+<a name="0c7f0ldogla2098691dcv39isr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;第二个指定描述</a>
+</h3>
+<h3 class="topic">
+<a name="4mu3n54bqoeuu5oovlcqo56api">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xposeddescription</a>
+</h3>
+<h3 class="topic">
+<a name="1rkschc44r6eflms4iunhhgonc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;指定插件列表</a>
+</h3>
+<h3 class="topic">
+<a name="3g97pc13qb21gs7mu7as4gmqoe">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;第三个指定</a>
+</h3>
+<h3 class="topic">
+<a name="1aor3kckc7jvt6cmv8vbvfjk37">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xopesdminversionn</a>
+</h3>
+<h3 class="topic">
+<a name="337re5akss72riv2on7cisj27f">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;指定插件最低版本</a>
+</h3>
+<h3 class="topic">
+<a name="28tkm1ovddi6j7vnlguad3qlgv">&nbsp;&nbsp;&nbsp;新建一个入口类</a>
+</h3>
+<h3 class="topic">
+<a name="56dtn5qb1p2s58od8cdhgtekrl">&nbsp;&nbsp;&nbsp;&nbsp;指定该类需要实现接口：IXposedHookLoadPackage</a>
+</h3>
+<h3 class="topic">
+<a name="6dqavtjgo8qvt3d95nsc6a1cjj">&nbsp;&nbsp;&nbsp;&nbsp;在该函数中实现接口的重写，重写函数中实现hook代码</a>
+</h3>
+<h3 class="topic">
+<a name="3186grjk9lr3mrga70kjsfa3pm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hook代码</a>
+</h3>
+<h3 class="topic">
+<a name="36lac5g1boea6hseb60i5dpspd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hook必备信息：包名、类名、方法原型</a>
+</h3>
+<h3 class="topic">
+<a name="42pms07tck5fckabjieobmnkf9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;判断包名</a>
+</h3>
+<h3 class="topic">
+<a name="0pjpclut5q293m6lsi1riu1t8c">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果当前加载模块是对应的包名，进行hook，如果判断不是，直接返回</a>
+</h3>
+<h3 class="topic">
+<a name="3ctsvrk96meifpr9kvhcgtl1tn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用findAndHookMethod函数进行hook</a>
+</h3>
+<h3 class="topic">
+<a name="4ladsuvmqvalhhse3eoq74adn3">&nbsp;&nbsp;&nbsp;在main目录下新建asserts目录，该路下新建文件 文件名为 xposed_init</a>
+</h3>
+<h3 class="topic">
+<a name="2n15gluo61pug9qs17cp5ejlaj">&nbsp;&nbsp;&nbsp;&nbsp;在该文件中声明入口类的名称</a>
+</h3>
+<h3 class="topic">
+<a name="2oqi82nfk8al628c6kessienou">&nbsp;&nbsp;&nbsp;写完代码、编译、安装</a>
+</h3>
+<h3 class="topic">
+<a name="75bnpgv6duu3617ikntg9nl8il">&nbsp;&nbsp;&nbsp;在模拟器中安装hook框架</a>
+</h3>
+<h3 class="topic">
+<a name="77k06n3o792hf9o8vhksosvm54">&nbsp;&nbsp;&nbsp;&nbsp;需要安装最新的hook框架</a>
+</h3>
+<h3 class="topic">
+<a name="7teneb2qs5d5afdl2sr1vb4csg">&nbsp;&nbsp;&nbsp;具体流程在老师安卓第五天笔记</a>
+</h3>
+<h3 class="topic">
+<a name="5eavgj8sjknqamffg3gsslvv87">&nbsp;&nbsp;hook程序01</a>
+</h3>
+<h3 class="topic">
+<a name="0nvlvqghluefbus7v680fungk2">&nbsp;&nbsp;&nbsp;hook获取设备id的api</a>
+</h3>
+<h3 class="topic">
+<a name="0vpu4tsn05mvfdfjpht32mjcpp">&nbsp;&nbsp;&nbsp;&nbsp;类名：android.telephony.TelephonyManger</a>
+</h3>
+<h3 class="topic">
+<a name="57kldbrggnpicrmql5ksdq33aj">&nbsp;&nbsp;&nbsp;&nbsp;方法名：getDeviceId</a>
+</h3>
+<h3 class="topic">
+<a name="25g6e9btuc0sl4p5sa9kj7850k">&nbsp;&nbsp;&nbsp;&nbsp;包名 :</a>
+</h3>
+<h3 class="topic">
+<a name="227pmqu1v0dr10juisvi38kigs">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;包名在清单文件中找</a>
+</h3>
+<h3 class="topic">
+<a name="7kd2g59dlm9vtaee6k2kjobjfg">&nbsp;&nbsp;&nbsp;将hook代码封装成一个函数</a>
+</h3>
+<h3 class="topic">
+<a name="45rtkcq8kcqc6o68faldhu8cjh">&nbsp;&nbsp;hook程序02</a>
+</h3>
+<h3 class="topic">
+<a name="39rse94ud5mspl1cj2e6rqvtrk">&nbsp;&nbsp;&nbsp;一个creakme，需要将用户名、密码比较函数hook掉，永远返回true</a>
+</h3>
+<h3 class="topic">
+<a name="3ek6mj6na7b7amejpp2u218rqa">&nbsp;&nbsp;&nbsp;&nbsp;类名</a>
+</h3>
+<h3 class="topic">
+<a name="7p4or9vhlce10fuvkvoaaarrej">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;是一个完成的路径</a>
+</h3>
+<h3 class="topic">
+<a name="6rfhp516as8flueto289u4dlr5">&nbsp;&nbsp;&nbsp;&nbsp;方法名</a>
+</h3>
+<h3 class="topic">
+<a name="1cgjsdrl9k3s3rq5ogpm6cqg3a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;被hook的函数原型</a>
+</h3>
+<h3 class="topic">
+<a name="1hevvnn68vmj6ofjkiea037tbu">&nbsp;&nbsp;&nbsp;&nbsp;包名</a>
+</h3>
+<h3 class="topic">
+<a name="0qrh00qu80mi3q3staei904o01">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;需要在清单文件中找</a>
+</h3>
+<h3 class="topic">
+<a name="7n7celcj8vs7u5cmdvmqku6lcv">&nbsp;&nbsp;&nbsp;类加载器的概念</a>
+</h3>
+<h3 class="topic">
+<a name="5qjnqhl6m8r74ami0c7lvd4k5n">&nbsp;&nbsp;&nbsp;&nbsp;java中全部是类 dex中也全部是类，在类加载器中可以根据类名找到对应的类</a>
+</h3>
+<h3 class="topic">
+<a name="08ns143icglbph8e385928mtfi">&nbsp;&nbsp;hook程序03</a>
+</h3>
+<h3 class="topic">
+<a name="0rpjrlo404s2m2bs39fmhv0m47">&nbsp;&nbsp;&nbsp;使用findAndHookConstructor</a>
+</h3>
+<h3 class="topic">
+<a name="41strdfp6h70fm5maq58mjj80a">&nbsp;&nbsp;&nbsp;&nbsp;包名</a>
+</h3>
+<h3 class="topic">
+<a name="7io6r3lkjlj97ge8jqb4t17aj5">&nbsp;&nbsp;&nbsp;&nbsp;类名</a>
+</h3>
+<h3 class="topic">
+<a name="7650qn7h32o5rqmhb97o835oju">&nbsp;&nbsp;&nbsp;&nbsp;函数原型</a>
+</h3>
+<h3 class="topic">
+<a name="53bcn9klnpd5tagae88f3of2ju">&nbsp;&nbsp;&nbsp;流程</a>
+</h3>
+<h3 class="topic">
+<a name="3aisv718a0q59hoenj21t1d5r3">&nbsp;&nbsp;&nbsp;&nbsp;通过类加载器查找类型</a>
+</h3>
+<h3 class="topic">
+<a name="6g5f5ak254q2a99n1phqm4v8t3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;因为hook的是程序的类，而不是系统的类，所以需要先获取类</a>
+</h3>
+<h3 class="topic">
+<a name="6v79rjar4pamm36caop8q8v88k">&nbsp;&nbsp;&nbsp;&nbsp;使用findAndHookConstructor</a>
+</h3>
+<h3 class="topic">
+<a name="2kti2bhva3ecfijnqhi5dsihqv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;参数</a>
+</h3>
+<h3 class="topic">
+<a name="5gd0pfu4ued5opijs8trm7p9t3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;类类型</a>
+</h3>
+<h3 class="topic">
+<a name="09ae6tnmadao0cvki3foeqog1p">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;参数类型</a>
+</h3>
+<h3 class="topic">
+<a name="06rforo1a408h3jul3oq23f1ra">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hook的函数</a>
+</h3>
+<h3 class="topic">
+<a name="5155t2sllgrl41bnlr6ajt17iu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意不进行替换，而是在被hook函数之前hook或在被hook函数之后设置hook函数</a>
+</h3>
+<h3 class="topic">
+<a name="1ug9qrcnmaib568qd4t9ngptv8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;此类hook可以在逆向分析的时候作为输出辅助信息的方式</a>
+</h3>
+<h3 class="topic">
+<a name="21vb6updcjfcfq74kc0gm5nduu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用hook框架的日志输出信息</a>
+</h3>
+<h3 class="topic">
+<a name="5260hu65hk7tqqhq5o183uetou">&nbsp;&nbsp;hook程序04</a>
+</h3>
+<h3 class="topic">
+<a name="5855q939ut5lnbdj2nhkkb1l6b">&nbsp;&nbsp;&nbsp;直接安装会出问题，因为该app只用于测试 ，在清单文件中多出一个android:testOnly=true,可以将该属性去掉，或者安装的时候使用   adb install -t 04.apk</a>
+</h3>
+<h3 class="topic">
+<a name="2chic3k7eua5qsbli236nmhvrm">&nbsp;&nbsp;&nbsp;hook 内部类</a>
+</h3>
+<h3 class="topic">
+<a name="4ijje7q2ia4ktb29pk95p60gek">&nbsp;&nbsp;&nbsp;需要的信息</a>
+</h3>
+<h3 class="topic">
+<a name="0voscqa2559ch5i81te543puev">&nbsp;&nbsp;&nbsp;&nbsp;方法原型</a>
+</h3>
+<h3 class="topic">
+<a name="1vthv7ss1h1thnedckr783nbqn">&nbsp;&nbsp;&nbsp;&nbsp;类名</a>
+</h3>
+<h3 class="topic">
+<a name="5mnq3d2juoek29noepfaovt7a8">&nbsp;&nbsp;&nbsp;&nbsp;包名</a>
+</h3>
+<h3 class="topic">
+<a name="1egkf9931sk88n368p32koid37">&nbsp;&nbsp;&nbsp;安卓中无论类在什么位置，均可以被hook</a>
+</h3>
+<h3 class="topic">
+<a name="54sf1abff5gi23l2i6odl791fp">&nbsp;&nbsp;关键函数</a>
+</h3>
+<h3 class="topic">
+<a name="7q6m3tag57am7gic031ij3o2hl">&nbsp;&nbsp;&nbsp;XposedHelper.findAndHookMethod</a>
+</h3>
+<h3 class="topic">
+<a name="0sj8jklri3s5v6737ton4b4rfq">&nbsp;&nbsp;&nbsp;&nbsp;可以重载为两种形式</a>
+</h3>
+<h3 class="topic">
+<a name="6ffuhbch8clbn7vb7ueiijjoch">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;findAndHookMethod(类类型，方法名，参数类型，new出的匿名对象及其回调函数)</a>
+</h3>
+<h3 class="topic">
+<a name="7utod0hqbvn93ec4p7sko5pjfj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;new出的匿名对象及其回调函数，目的是实现接口，该参数对应的接口为 XC_MethodReplacement </a>
+</h3>
+<h3 class="topic">
+<a name="3ssld7oah55as0lk8tj1ctbn67">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;实现该接口需要重写 Object replaceHookedMethod(MethodHookParam)</a>
+</h3>
+<h3 class="topic">
+<a name="206ha82okfrne35eodemaoq2s2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该函数用于替代被hook函数执行</a>
+</h3>
+<h3 class="topic">
+<a name="2pvl6naialod71htdrvlq64lkt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;findAndHookMethod(类名，类加载器，参数类型，new出的匿名对象及其回调函数)</a>
+</h3>
+<h3 class="topic">
+<a name="2crdike030i40csje8gu5cc390">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;new出的匿名对象及其回调函数，目的是实现接口，该参数对应的接口为 XC_MethodHook</a>
+</h3>
+<h3 class="topic">
+<a name="127uqtkmje1cvhobenhmb4j3t0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该接口需要重写</a>
+</h3>
+<h3 class="topic">
+<a name="1gnaqmu48u0jcd8dpq061r7plo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;void beforeHookedMethod(MethodHookParam param)</a>
+</h3>
+<h3 class="topic">
+<a name="1mc8tiogrf7vp48iseu9q1cv87">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;void afterHookedMethod(MethodHookParam param)</a>
+</h3>
+<h3 class="topic">
+<a name="7ss4mv663r81uv51cnfu2k4hiu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;以上函数调用之后需要设置返回值</a>
+</h3>
+<h3 class="topic">
+<a name="4tkkils5j1461dsnrhjqklprbp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;param.setResult(true)</a>
+</h3>
+<h3 class="topic">
+<a name="7788p3f7t14ffo3kcl91ojrgpd">&nbsp;以上两种hook框架内均是通过编写插件，使插件运行在安卓系统的中（前提安卓系统安装了对应的框架），插件中对于需要被hook的进程进行过滤（通过包名），并用插件自身的函数或类完成hook操作</a>
+</h3>
+<h3 class="topic">
+<a name="49e20i6u1nck273fbbn2r1nl21">&nbsp;两种hook框架的运用可以查看</a>
+</h3>
+<h3 class="topic">
+<a name="5ga9jjb07imcmq5klscc2nu3qb">&nbsp;&nbsp;教材</a>
+</h3>
+<h3 class="topic">
+<a name="5b143fpsbr0oblbuaak2fr8hl7">&nbsp;&nbsp;安卓第五天笔记</a>
+</h3>
+<h3 class="topic">
+<a name="4s84j4mf0chu0kn4rt8c5dls4c">&nbsp;&nbsp;安卓第五天老师源代码</a>
+</h3>
+<h2 class="topic">
+<a name="1lgpm4r75cn028okjeehffjsf0">安卓的可执行文件dex文件</a>
+</h2>
+<h3 class="topic">
+<a name="0ribig9s2u4ku7inpgh457ajej">&nbsp;smali文件被编译成dex文件</a>
+</h3>
+<h3 class="topic">
+<a name="47p37pnh568ujtct33ge83frto">&nbsp;将dex打包，包名为hello，打包为zip文件</a>
+</h3>
+<h3 class="topic">
+<a name="64l42to747slvp7k8r0q8h020b">&nbsp;使用命令将zip包执行</a>
+</h3>
+<h3 class="topic">
+<a name="4vdmnaamme650nukrsavth9fk8">&nbsp;powershell 可以用于执行后门，可以支持linux指令，也支持脚本语言</a>
+</h3>
+<h3 class="topic">
+<a name="5i8hggruhls691kud4bi4h2m0e">&nbsp;使用010editor分析dex文件</a>
+</h3>
+<h3 class="topic">
+<a name="2oc3pbqg03joq2bb6qvm6hedda">&nbsp;&nbsp;dex文件格式</a>
+</h3>
+<h3 class="topic">
+<a name="04e4q8navd8suqn9237knbqb7j">&nbsp;&nbsp;&nbsp;Dex文件头</a>
+</h3>
+<h3 class="topic">
+<a name="4mjc3tt7qgan5hhsc2fsnkhpun">&nbsp;&nbsp;&nbsp;&nbsp;前四个字段重要</a>
+</h3>
+<h3 class="topic">
+<a name="2pm90mpk5j73ckkr6r3on0ia71">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;文件标识</a>
+</h3>
+<h3 class="topic">
+<a name="1b96kg2c36l2kcp3g4ealcg2s4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;校验和</a>
+</h3>
+<h3 class="topic">
+<a name="26cknikrjsvm9mququtfk7lpa2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对文件求了32为hash值</a>
+</h3>
+<h3 class="topic">
+<a name="5quvp04huhhjkffruev4jb2e3o">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;标识sha1，来源于对文件求hash</a>
+</h3>
+<h3 class="topic">
+<a name="1jqa1r81o1qrbpo473srup31ik">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;文件大小</a>
+</h3>
+<h3 class="topic">
+<a name="3e5jj298au0otrncmq80mc7chb">&nbsp;&nbsp;&nbsp;各种数据 字符串、数组。。。</a>
+</h3>
+<h3 class="topic">
+<a name="1gau7k1auch1dhobfqg2pbvs5h">&nbsp;&nbsp;&nbsp;&nbsp;第二个表</a>
+</h3>
+<h3 class="topic">
+<a name="206n3ddv0vp148pts698f1fh93">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;类型表，其中保存的是索引</a>
+</h3>
+<h3 class="topic">
+<a name="5aiq9c45hfbd77f9j6jjkahk6i">&nbsp;&nbsp;&nbsp;&nbsp;第三个表</a>
+</h3>
+<h3 class="topic">
+<a name="3jepklovbfrv61g0qkddlaro2j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用于保存函数的原型</a>
+</h3>
+<h3 class="topic">
+<a name="6rop5tlrt31hsiepbliko4kjq1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果是</a>
+</h3>
+<h3 class="topic">
+<a name="07gg2uspto56bfqglige339ome">&nbsp;&nbsp;&nbsp;&nbsp;第四个表</a>
+</h3>
+<h3 class="topic">
+<a name="7jeuhm8k1iall1f45cptj5mqer">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;字段表</a>
+</h3>
+<h3 class="topic">
+<a name="4d11mn08l3ovkeo0ugqiphfpni">&nbsp;&nbsp;&nbsp;&nbsp;第五个表</a>
+</h3>
+<h3 class="topic">
+<a name="6riu9mdlkbpr2uj5kbep28shqj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;方法表</a>
+</h3>
+<h3 class="topic">
+<a name="1hef0jj1rqm8ptovj4ajc6n9j6">&nbsp;&nbsp;&nbsp;类数据</a>
+</h3>
+<h3 class="topic">
+<a name="0erc22q2fv6tcnvrv3phjg08dm">&nbsp;&nbsp;&nbsp;&nbsp;结构比较复杂</a>
+</h3>
+<h3 class="topic">
+<a name="5vvirejrqf6orgc644lnq1aogm">&nbsp;&nbsp;&nbsp;&nbsp;会包含很多的结构</a>
+</h3>
+<h3 class="topic">
+<a name="7jt45pgga6974snqdb3m9tsd31">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;insns数组存放虚拟机得指令</a>
+</h3>
+<h3 class="topic">
+<a name="3fivvd24e4luf5f1buouqlp4o7">&nbsp;&nbsp;存在一个dalvik操作码的文档</a>
+</h3>
+<h3 class="topic">
+<a name="0m01e61injf97dgdhggut5k4ce">&nbsp;&nbsp;&nbsp;对于dex的格式解析的文档</a>
+</h3>
+<h3 class="topic">
+<a name="2afsh43ckq5bh7oqjndvo78f41">&nbsp;dex文件是如如何加载到内存的是关键</a>
+</h3>
+<h2 class="topic">
+<a name="5hvi9v9al7bnkrfkvl1hh175qa">windows下也是有hook框架的</a>
+</h2>
+</body>
+</html>

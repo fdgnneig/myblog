@@ -1,0 +1,1604 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>class80day0701（安卓安全第一天）</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="00fpoo5pn6sj1hkg92ohtvf9vs">class80day0701（安卓安全第一天）</a>
+<p class="topicImage">
+    <img src="class80day0701_files/2024-08-02_094721.png"></p>
+</h1>
+<h2 class="topic">
+<a name="226ook48krokg5d65or7snjiki">安卓逆向基础</a>
+</h2>
+<h3 class="topic">
+<a name="3p6ud0703tjioap502s9s2mk26">&nbsp;课程安排</a>
+</h3>
+<h3 class="topic">
+<a name="50dpcam9rdhhf1c7cdfukh0h8q">&nbsp;&nbsp;java基础</a>
+</h3>
+<h3 class="topic">
+<a name="2sul0onvk8tsula6i6a2mo3842">&nbsp;&nbsp;android sdk基础</a>
+</h3>
+<h3 class="topic">
+<a name="2rejeqfb4ihkp2tvnmsgpgogoa">&nbsp;&nbsp;android逆向入门smali汇编</a>
+</h3>
+<h3 class="topic">
+<a name="47p6vh8sfu0qvgeta9i4skf00e">&nbsp;&nbsp;android ndk</a>
+</h3>
+<h3 class="topic">
+<a name="7qkgak4s54kfitkucu8tbtfrgk">&nbsp;&nbsp;&nbsp;是c++代码</a>
+</h3>
+<h3 class="topic">
+<a name="4r2ps8k890s2rpaa5bl6mn3tif">&nbsp;&nbsp;android so文件动态分析</a>
+</h3>
+<h3 class="topic">
+<a name="5rm83uqseqrg3kspg8lbqhupca">&nbsp;学习辅助书籍</a>
+</h3>
+<h3 class="topic">
+<a name="08fm2c6m4hlrjlo32r2ejuo4a2">&nbsp;&nbsp;任何一本 java基础语法书《第一行代码》《android软件安全权威指南》</a>
+</h3>
+<h3 class="topic">
+<a name="2pra6rj01r0vh8u7psu5afnpgi">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img height="210" src="class80day0701_files/5q6svgl6l53uj269cboeit0fcb.jpg" width="400"></p>
+<h3 class="topic">
+<a name="583ej8h1seqf4gv0rv066mfdoa">&nbsp;安卓逆向可以分为 java程序的逆向和c++程序的逆向</a>
+</h3>
+<h3 class="topic">
+<a name="6p050gvhuv458gruaodanajd52">&nbsp;&nbsp;java程序</a>
+</h3>
+<h3 class="topic">
+<a name="3371gldlcdf82c6jn64odhnju5">&nbsp;&nbsp;&nbsp;反编译得到类似于源码</a>
+</h3>
+<h3 class="topic">
+<a name="79kic2q8bjkcou37t66l9j2rok">&nbsp;&nbsp;&nbsp;使用smali</a>
+</h3>
+<h3 class="topic">
+<a name="41u8cnjk9q47d0is1ovrkiv01e">&nbsp;&nbsp;c++程序</a>
+</h3>
+<h3 class="topic">
+<a name="47tt07i2uc0c2c4rji7dicvu6s">&nbsp;Java环境搭建</a>
+</h3>
+<h3 class="topic">
+<a name="15n5qj3e9nvm84c7j0muhb5huq">&nbsp;&nbsp;jdk的安装</a>
+</h3>
+<h3 class="topic">
+<a name="6g9pr9n1aefmpgu4af5tkiqmbc">&nbsp;&nbsp;&nbsp;不能安装最新的，逆向工具使用不了</a>
+</h3>
+<h3 class="topic">
+<a name="1qd2h1493id2co1s5qkfb3pv02">&nbsp;&nbsp;&nbsp;使用版本是jdk 8.0</a>
+</h3>
+<h3 class="topic">
+<a name="5vavct0dv4kbl93d7383l9qma0">&nbsp;&nbsp;环境变量的配置与使用</a>
+</h3>
+<h3 class="topic">
+<a name="62pkfuhfhgj874jhagvnnsdqjp">&nbsp;&nbsp;&nbsp;在cmd中验证java版本信息</a>
+</h3>
+<h3 class="topic">
+<a name="6g0r1qke5oj7jstttd9jd930jc">&nbsp;&nbsp;jdk jre jvm</a>
+</h3>
+<h3 class="topic">
+<a name="73eieuc01dtcit5k9t1immn789">&nbsp;&nbsp;&nbsp;jdk</a>
+</h3>
+<h3 class="topic">
+<a name="3io886ruqdb1lbrjausu3dc8td">&nbsp;&nbsp;&nbsp;&nbsp;语言开发包</a>
+</h3>
+<h3 class="topic">
+<a name="6emb9715raq62mb55nkkrt03bb">&nbsp;&nbsp;&nbsp;jre</a>
+</h3>
+<h3 class="topic">
+<a name="00nh1pn1svts0e7seb4joji1hu">&nbsp;&nbsp;&nbsp;&nbsp;运行时环境</a>
+</h3>
+<h3 class="topic">
+<a name="5amtjpovtgvt80as51odjsqfbg">&nbsp;&nbsp;&nbsp;jvm</a>
+</h3>
+<h3 class="topic">
+<a name="685n8cmo47ubsoq8rg4hmr4i75">&nbsp;&nbsp;&nbsp;&nbsp;java虚拟机</a>
+</h3>
+<h3 class="topic">
+<a name="244uj43n9qahktco8tdbaikhrv">&nbsp;&nbsp;&nbsp;jdk&gt;jre&gt;jvm</a>
+</h3>
+<h3 class="topic">
+<a name="5r8mkesbos3jimhchnnb3r6683">&nbsp;&nbsp;jse</a>
+</h3>
+<h3 class="topic">
+<a name="02od7dc5lkk6o4b25rrv25pie4">&nbsp;&nbsp;&nbsp;Java标准开发</a>
+</h3>
+<h3 class="topic">
+<a name="1hr1kb8i2i2mnkrboqovri5r20">&nbsp;&nbsp;&nbsp;其余的还有 javaEE, javaMe 前者是java的企业应用，后者是java的嵌入式开发，例如java手机程序。</a>
+</h3>
+<h3 class="topic">
+<a name="39347b5djgu8q0uuh04in8gv90">&nbsp;idea工具的安装与配置</a>
+</h3>
+<h3 class="topic">
+<a name="2bd0l9cj62hbcurs5vgnukpm3n">&nbsp;&nbsp;下载社区版本</a>
+</h3>
+<h3 class="topic">
+<a name="755qug33fakp4t9a8gnmh65nj4">&nbsp;&nbsp;需要配置</a>
+</h3>
+<h3 class="topic">
+<a name="5p2ft1lkos43heb14qs3ie4q6v">&nbsp;&nbsp;&nbsp;代码补全</a>
+</h3>
+<h3 class="topic">
+<a name="6mrb00e7g9bhtb41ct0fl70pmq">&nbsp;&nbsp;&nbsp;启动时显示欢迎界面</a>
+</h3>
+<h3 class="topic">
+<a name="5bgnrj3fnnbuvjcgjb256l3b5j">&nbsp;&nbsp;&nbsp;新建项目时需要找到jdk的路径</a>
+</h3>
+<h3 class="topic">
+<a name="0csmdfnbmgllfirf15oflsaov8">&nbsp;&nbsp;&nbsp;base package</a>
+</h3>
+<h3 class="topic">
+<a name="26dvfed22cahqphe37s8vkcivl">&nbsp;&nbsp;&nbsp;&nbsp;在一开始会选择类似于命名空间的选项</a>
+</h3>
+<h3 class="topic">
+<a name="4r720o4e46aosif8rqh3cpe7ok">&nbsp;&nbsp;&nbsp;&nbsp;命名空间一般与公司域名以项目名称相关</a>
+</h3>
+<h3 class="topic">
+<a name="18qr05jal43pu2gf8bcbh6ssab">&nbsp;java基本语法</a>
+</h3>
+<h3 class="topic">
+<a name="1m18kp145i5l3vb4sice29bcin">&nbsp;&nbsp;java所有的函数均在类中</a>
+</h3>
+<h3 class="topic">
+<a name="6fpvj4msbmosfi5cl7umjb0mc8">&nbsp;&nbsp;java类的特点</a>
+</h3>
+<h3 class="topic">
+<a name="6304qq2bdm0qfs02lab32g78t1">&nbsp;&nbsp;&nbsp;。。</a>
+</h3>
+<h3 class="topic">
+<a name="2a48shd6pkjfc38rf24dbi7eki">&nbsp;&nbsp;&nbsp;。。</a>
+</h3>
+<h3 class="topic">
+<a name="50sfrvm6vciarrll0jrmnusivr">&nbsp;&nbsp;&nbsp;单继承</a>
+</h3>
+<h3 class="topic">
+<a name="3r3rjfcap8ih6sfg7pabcsrgar">&nbsp;&nbsp;main函数的定义</a>
+</h3>
+<h3 class="topic">
+<a name="2v734oqbcfp1oo2tehdbv5l2nb">&nbsp;&nbsp;数据类型与关键字</a>
+</h3>
+<h3 class="topic">
+<a name="1g3c3our44p1872jqimk6rtu33">&nbsp;&nbsp;&nbsp;基本类型</a>
+</h3>
+<h3 class="topic">
+<a name="3nhi3561j3r729bnonp85ptlb0">&nbsp;&nbsp;&nbsp;&nbsp;与c++不同的是</a>
+</h3>
+<h3 class="topic">
+<a name="7js9dhm087fta6gnq0lshk9k32">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;java中char是两个字节</a>
+</h3>
+<h3 class="topic">
+<a name="75jbude11t165jts69kmmpu45c">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;java中long是8个字节</a>
+</h3>
+<h3 class="topic">
+<a name="7n3i3d7npg06e7b512i597kjep">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;布尔类型是boolean</a>
+</h3>
+<h3 class="topic">
+<a name="08i92t2o169g4ne7hbh6c9siqo">&nbsp;&nbsp;&nbsp;引用类型</a>
+</h3>
+<h3 class="topic">
+<a name="2b3vha2cbdus8vreo5b3tsu5hh">&nbsp;&nbsp;&nbsp;&nbsp;与c++中的引用相同</a>
+</h3>
+<h3 class="topic">
+<a name="3bchlqmhgdl2kbg1jqjb6b9h05">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;定义的类对象或数组，堆栈中只存放类对象或数组的指针，类对象或数据的实际内容保存在其他空间，由java虚拟机进行管理与释放，不需要程序员自己释放</a>
+</h3>
+<h3 class="topic">
+<a name="0f8hl6ln06tkiu9qoht1mkmtvb">&nbsp;&nbsp;&nbsp;&nbsp;类对象</a>
+</h3>
+<h3 class="topic">
+<a name="1l8u3t5akfdfg3mcovvlbeucr8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;定义的任何类的对象都是引用类型</a>
+</h3>
+<h3 class="topic">
+<a name="3koo87n76mee0cbbpujd638h7o">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;java中大多数对象都是通过 new 出来的</a>
+</h3>
+<h3 class="topic">
+<a name="4v7g2t3c4b4nd49o7fjnnmi78q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;类名 对象名 = new 类名();</a>
+</h3>
+<h3 class="topic">
+<a name="4k4r66dp9jefdnkqphu4s4lvmh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;new完成之后不需要delete，由java自身体提供机制清理</a>
+</h3>
+<h3 class="topic">
+<a name="0fbj9rspq56e3u419ie4jta164">&nbsp;&nbsp;&nbsp;&nbsp;数组</a>
+</h3>
+<h3 class="topic">
+<a name="6o4ngiksle6vqlmecv57cetp8m">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;定义数组并初始化</a>
+</h3>
+<h3 class="topic">
+<a name="4rctklhjvq6b8mmg6c3o15ha1v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;定义数组并申请空间</a>
+</h3>
+<h3 class="topic">
+<a name="2gl8k7ff4gq3m735rpk03qse0f">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;二维数组</a>
+</h3>
+<h3 class="topic">
+<a name="5k38hnluirhqlv0m6bsbnh4cct">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;int&nbsp;nNums2[][]&nbsp;=&nbsp;{{1,2,3},{4,5,6}};&#13;
+int&nbsp;nNums3[][]&nbsp;=&nbsp;new&nbsp;int[2][3];&#13;
+nNums3[0][0]&nbsp;=&nbsp;1;</a>
+</h3>
+<h3 class="topic">
+<a name="5ohctgi0kced4rfdgbnkc5cl3j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;数组名也可以点出方法来</a>
+</h3>
+<h3 class="topic">
+<a name="3vh140j25klhrmkrm0kkvni8so">&nbsp;&nbsp;&nbsp;关键字</a>
+</h3>
+<h3 class="topic">
+<a name="13h3q6nojb4up8387a77aroa50">&nbsp;&nbsp;&nbsp;&nbsp;大部分与c++相同</a>
+</h3>
+<h3 class="topic">
+<a name="45oagbqlp01cpc1dvpspa7hgu9">&nbsp;&nbsp;&nbsp;&nbsp;extends 表明一个类型是另一个类型的子类型，这里常见的类型有类和接口</a>
+</h3>
+<h3 class="topic">
+<a name="3pid8gq9an0aupfq175818n7qu">&nbsp;&nbsp;&nbsp;&nbsp;implements 表明一个类实现了给定的接口</a>
+</h3>
+<h3 class="topic">
+<a name="6ua4dl81dqtnh94atpllhdlq9r">&nbsp;&nbsp;&nbsp;&nbsp;import 表明要访问指定的类或包</a>
+</h3>
+<h3 class="topic">
+<a name="71tsjrn6e4r5680ouelun97fi1">&nbsp;&nbsp;&nbsp;&nbsp;native 用来声明一个方法是由与计算机相关的语言（如C/C++/FORTRAN语言）实现的</a>
+</h3>
+<h3 class="topic">
+<a name="4sd7js82g9ct9j6alugghirhon">&nbsp;&nbsp;&nbsp;&nbsp;super 表明当前对象的父类型的引用或者父类型的构造方法</a>
+</h3>
+<h3 class="topic">
+<a name="7pab3fa41f7f510ooe7bgki2gj">&nbsp;&nbsp;&nbsp;&nbsp;abstract 表明类或者成员方法具有抽象属性 即虚函数</a>
+</h3>
+<h3 class="topic">
+<a name="5822ecr60t67e8gl2p3alsk3f2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在类中定义纯虚函数</a>
+</h3>
+<p class="topicImage">
+<img src="class80day0701_files/7fse4jhd726evjgojhsc4em5j3.png"></p>
+<h3 class="topic">
+<a name="08ldrn7lc1blj0j7ta5bc57k5j">&nbsp;&nbsp;&nbsp;主要看老师的笔记</a>
+</h3>
+<h3 class="topic">
+<a name="6p3j4n53qbcimc08he70nv96a9">&nbsp;&nbsp;循环结构与分支结构</a>
+</h3>
+<h3 class="topic">
+<a name="73ug7puubfo8opfsm68vc2gl94">&nbsp;&nbsp;&nbsp;三大循环</a>
+</h3>
+<h3 class="topic">
+<a name="7ls2tuvooq5nhqnpcjv97nojac">&nbsp;&nbsp;&nbsp;&nbsp;与c++没有区别</a>
+</h3>
+<h3 class="topic">
+<a name="68uga72pua8i2vi5tt1rulvs17">&nbsp;&nbsp;&nbsp;foreach循环</a>
+</h3>
+<h3 class="topic">
+<a name="5ml1hg10k1qojdpvqrt511g11f">&nbsp;&nbsp;&nbsp;&nbsp;for(数据类型 局部变量 ：数组对象)</a>
+</h3>
+<h3 class="topic">
+<a name="7rhg0nrta7g7df3q2nlu0gds71">&nbsp;&nbsp;&nbsp;&nbsp;局部变量分别被置为数组对象元素，参与循环</a>
+</h3>
+<h3 class="topic">
+<a name="0c1ceqv0j6gl79ck19rtpetfmp">&nbsp;&nbsp;&nbsp;ifelse</a>
+</h3>
+<h3 class="topic">
+<a name="62qj14ikv0ttfemhfhdj10rbta">&nbsp;&nbsp;&nbsp;switch case</a>
+</h3>
+<h3 class="topic">
+<a name="62dc7i6m3u0sc6sfqirf4anepm">&nbsp;&nbsp;&nbsp;continue</a>
+</h3>
+<h3 class="topic">
+<a name="547cno9rjr9r7ebnivntk3jsli">&nbsp;&nbsp;&nbsp;break</a>
+</h3>
+<h3 class="topic">
+<a name="47qsq87b4v3oc3oc0n76v9rk2k">&nbsp;&nbsp;java类对象创建与使用</a>
+</h3>
+<h3 class="topic">
+<a name="1ivp6jhqkc98rv7qsmgvcdhi8g">&nbsp;&nbsp;&nbsp;所有的java类如果没有父类，则默认继承Object类</a>
+</h3>
+<h3 class="topic">
+<a name="14sn6bbr2at2brnn6ofl0rmfau">&nbsp;&nbsp;&nbsp;调用静态函数</a>
+</h3>
+<h3 class="topic">
+<a name="004o9k0ubroqg0d72rtse9r2ia">&nbsp;&nbsp;&nbsp;&nbsp;如果该静态函数是本类的，则可以直接通过函数名调用</a>
+</h3>
+<h3 class="topic">
+<a name="5gi81mo1vnle76hjmaasfo59l7">&nbsp;&nbsp;&nbsp;&nbsp;如果静态函数是其他类的，则可以通过对应类名或类成员调用该函数</a>
+</h3>
+<h3 class="topic">
+<a name="0v4neod2jtqjbnnnbmbgia78m0">&nbsp;&nbsp;&nbsp;调用成员函数</a>
+</h3>
+<h3 class="topic">
+<a name="505idm9quhjj01coa6lvvhlmcs">&nbsp;&nbsp;&nbsp;&nbsp;创建类对象 调用成员函数</a>
+</h3>
+<h3 class="topic">
+<a name="6j3ongnist3cksjt97fmmdepcs">&nbsp;&nbsp;&nbsp;&nbsp;创建对象只需要new，不需要delete</a>
+</h3>
+<h3 class="topic">
+<a name="1beu0s22p42ujid71ol9v61j7v">&nbsp;&nbsp;类中常见函数</a>
+</h3>
+<h3 class="topic">
+<a name="0qtsif90hqueqp3e3uq5drq4dd">&nbsp;&nbsp;&nbsp;构造函数</a>
+</h3>
+<h3 class="topic">
+<a name="11sf2tdr0m0aoqn93nvtr5tr3b">&nbsp;&nbsp;&nbsp;&nbsp;this.成员变量 =某值</a>
+</h3>
+<h3 class="topic">
+<a name="4digshai5aj2s0rcafhjrporlj">&nbsp;&nbsp;&nbsp;释放函数</a>
+</h3>
+<h3 class="topic">
+<a name="3jic362557kq8ricfo9lvggirl">&nbsp;&nbsp;&nbsp;&nbsp;通过重写finalize 进行释放</a>
+</h3>
+<h3 class="topic">
+<a name="5trldp7itk98g4m19qsl3r082g">&nbsp;&nbsp;&nbsp;Setter</a>
+</h3>
+<h3 class="topic">
+<a name="3sa15kkd0dvs7tgdh6grdl3gvn">&nbsp;&nbsp;&nbsp;&nbsp;设置类成员变量</a>
+</h3>
+<h3 class="topic">
+<a name="0rsv4e9epi340o8pnrvda0gvr9">&nbsp;&nbsp;&nbsp;Getter</a>
+</h3>
+<h3 class="topic">
+<a name="4arf0j3lsc8oqu52680hkpetb3">&nbsp;&nbsp;&nbsp;&nbsp;获取类成员变量</a>
+</h3>
+<h3 class="topic">
+<a name="6ae43ond05sonmho92nod68a6p">&nbsp;&nbsp;&nbsp;alt+insert</a>
+</h3>
+<h3 class="topic">
+<a name="4goqil5eov8lqu33g0vok9di5p">&nbsp;&nbsp;&nbsp;&nbsp;通过向导直接创建构造、Setter、Getter</a>
+</h3>
+<h3 class="topic">
+<a name="4o2lnkmms4ntvj3ff60qtet7ve">&nbsp;&nbsp;&nbsp;ctrl+o</a>
+</h3>
+<h3 class="topic">
+<a name="737oaaijcaujikl554f4m3c6o9">&nbsp;&nbsp;&nbsp;&nbsp;可以重写父类相关的函数</a>
+</h3>
+<h3 class="topic">
+<a name="0btqd7uuiborbo9rp4f9o2kp1k">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以重写释放函数</a>
+</h3>
+<h3 class="topic">
+<a name="50s43q33rj6os2a2aji6hnf414">&nbsp;&nbsp;&nbsp;alt +回车可以针对报错代码排错</a>
+</h3>
+<h3 class="topic">
+<a name="70gni1sb5rbf5c8dern9rrm2om">&nbsp;&nbsp;&nbsp;ctrl+q查看文档</a>
+</h3>
+<h3 class="topic">
+<a name="6m26r28sdmhi0q6f990c2f87am">&nbsp;&nbsp;类中的访问属性</a>
+</h3>
+<h3 class="topic">
+<a name="04hcb4lppudgn51ukm9nt99qb6">&nbsp;&nbsp;&nbsp;比c++多个默认属性</a>
+</h3>
+<h3 class="topic">
+<a name="2vs0148cvd5vug3tl8n7kedue5">&nbsp;&nbsp;&nbsp;&nbsp;默认属性作用与整个包，即整个命名空间</a>
+</h3>
+<h3 class="topic">
+<a name="1096lppvrs9t36k706hk8rpcae">&nbsp;&nbsp;&nbsp;public,protected,private,默认属性&nbsp;&nbsp; </a>
+</h3>
+<h3 class="topic">
+<a name="3h8mhjg7i2kjj61kifo52m0tc6">&nbsp;&nbsp;&nbsp;public&gt;默认属性&gt;protected&gt;private&nbsp;&nbsp;</a>
+</h3>
+<h3 class="topic">
+<a name="57u2rntfeljnrfdhvsd3fvb3lc">&nbsp;&nbsp;&nbsp;默认属性：作用域整个包&nbsp;&nbsp; &#13;
+protected:&nbsp;作用域是继承的类&nbsp;&nbsp; &#13;
+private:&nbsp;作用域是类本身</a>
+</h3>
+<h3 class="topic">
+<a name="6r402m0an24u8ena4ptpgdgl35">&nbsp;&nbsp;java中的包管理</a>
+</h3>
+<h3 class="topic">
+<a name="2athq1kpa2bb9lpjjt40icqmnf">&nbsp;&nbsp;&nbsp;java中的包相当于c++中的命名空间</a>
+</h3>
+<h3 class="topic">
+<a name="778kidfk0ok9954vggcejttsf4">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class80day0701_files/08s3g51ejce2afhdgc6ncf6did.png"></p>
+<h3 class="topic">
+<a name="0p5fjvrubiaqu3sonog3epi2kg">&nbsp;&nbsp;&nbsp;同一个包中的类可以相互使用，如果类分在不同的包中，则需要导入</a>
+</h3>
+<h3 class="topic">
+<a name="1h8fj7farc51ru2mvlj79bthp8">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class80day0701_files/0mm3s95johla4cir143dmigkc2.png"></p>
+<h3 class="topic">
+<a name="6mssl01i7opo0k0nl46prsja02">&nbsp;&nbsp;&nbsp;&nbsp;使用import导入其他包的文件</a>
+</h3>
+<h3 class="topic">
+<a name="0pomc50k8fkg5odobu1fu4f7vu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class80day0701_files/756nvjqbp139hbpekqvnta7ea6.png"></p>
+<h3 class="topic">
+<a name="003p7agtiq24fr6h4qan6kidam">&nbsp;&nbsp;&nbsp;&nbsp;被导入的文件中包含了该文件所在包的包名</a>
+</h3>
+<h3 class="topic">
+<a name="328ou08iu3vuk3lgq0nqm2oe7m">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class80day0701_files/26j1m22n5cofjapefqj7qkq0cc.png"></p>
+<h3 class="topic">
+<a name="6l96s7guk9oom7u9sdiaj2sqal">&nbsp;&nbsp;&nbsp;当一个java类中使用一个不同包的类中的静态函数时，该静态函数需要是public 才能被成功被不同包的类使用</a>
+</h3>
+<h3 class="topic">
+<a name="79d76j2h6dgkf504mct2ua5khv">&nbsp;&nbsp;&nbsp;如果两个java类在同一个包中，引用另一个类中的静态函数时，不要求该静态函数为public</a>
+</h3>
+<h3 class="topic">
+<a name="1plvpunok30bkmf9v1d7kursa2">&nbsp;&nbsp;&nbsp;创建一个包</a>
+</h3>
+<h3 class="topic">
+<a name="5ivnrk5rvhj1vost7nvupdp45d">&nbsp;&nbsp;&nbsp;&nbsp;1</a>
+</h3>
+<h3 class="topic">
+<a name="69cls4gat4k89er4hj7r6cf10p">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class80day0701_files/05bf3fq1poqr9fpfsekgbo3in0.png"></p>
+<h3 class="topic">
+<a name="6lrqdmuu0n9g0vfof929ubffbk">&nbsp;&nbsp;&nbsp;&nbsp;2</a>
+</h3>
+<h3 class="topic">
+<a name="3ti0tujp9og6t5vmuh5f1hc4lo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class80day0701_files/6u0egbmh01pculapdvphg12ain.png"></p>
+<h3 class="topic">
+<a name="27qeb544sk1gj7d0tm28272quk">&nbsp;&nbsp;&nbsp;&nbsp;3</a>
+</h3>
+<h3 class="topic">
+<a name="1tpu7ket9uh0ggdfrspeemdlo8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class80day0701_files/2qiogndkcppajqsqi1a7mh1vd4.png"></p>
+<h3 class="topic">
+<a name="0hm6tfgkiqmn9f7t5p9hcu2mj3">&nbsp;&nbsp;内部类、匿名类</a>
+</h3>
+<h3 class="topic">
+<a name="7jvtuqkbqr2lmfs3hdcccvulit">&nbsp;&nbsp;&nbsp;与c++完全不同</a>
+</h3>
+<h3 class="topic">
+<a name="2d9sjr2f9gfk7v8e6ebdmv44co">&nbsp;&nbsp;&nbsp;内部类</a>
+</h3>
+<h3 class="topic">
+<a name="1lqsdm0qmdtp2ha7q193hv4ujt">&nbsp;&nbsp;&nbsp;&nbsp;一个类中可以再定义一个类</a>
+</h3>
+<h3 class="topic">
+<a name="10m406kuda4s2q27g4u7d84kqn">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class80day0701_files/0bb7p35sauatng8ique1m1fmvj.png"></p>
+<h3 class="topic">
+<a name="0186f572cdrf2tnptaokg95a4f">&nbsp;&nbsp;&nbsp;接口</a>
+</h3>
+<h3 class="topic">
+<a name="4gef2dp2hmclujslm4tnuf3c7r">&nbsp;&nbsp;&nbsp;&nbsp;类似于抽象类</a>
+</h3>
+<h3 class="topic">
+<a name="166pqf2edsbb0l62nk8kn39920">&nbsp;&nbsp;&nbsp;&nbsp;关键字：interface</a>
+</h3>
+<h3 class="topic">
+<a name="3k0vs2dortgb792ikhq3gatqvh">&nbsp;&nbsp;&nbsp;&nbsp;其中的函数默认是公有函数，且不实现</a>
+</h3>
+<h3 class="topic">
+<a name="7jt738230mes7numrs1vnhk74q">&nbsp;&nbsp;&nbsp;&nbsp;接口一般内部定义的都是纯虚函数，需要在使用该接口的类中实现该接口，即实现接口中对应函数</a>
+</h3>
+<h3 class="topic">
+<a name="43d8rri1vdde4fs2t5k3kv3rq8">&nbsp;&nbsp;&nbsp;&nbsp;java中因为只能单继承，即一个类只能继承一个父类，&#13;
+所以通过接口使一个类支持多种功能，一个类可以实现多个接口（关键字 implement），需要将该接口中的函数进行实现</a>
+</h3>
+<h3 class="topic">
+<a name="1e6i2kakoplt8o4qmir8bsr1bb">&nbsp;&nbsp;&nbsp;&nbsp;创建一个接口</a>
+</h3>
+<h3 class="topic">
+<a name="5cdft928vp2pv438nv7ecm8avu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;创建一个类</a>
+</h3>
+<h3 class="topic">
+<a name="1lddj5rf4dorf9bu9bqrhr0sm6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class80day0701_files/5darps62ue66qknn9c1hfnrlsm.png"></p>
+<h3 class="topic">
+<a name="6db3aa8585a5fl9cu491e0kq1t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将类中的class改成interfafce</a>
+</h3>
+<h3 class="topic">
+<a name="2893sbni0l5sndv70412t3rarj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class80day0701_files/3ab4sik8m4hk120350ndqkuqih.png"></p>
+<h3 class="topic">
+<a name="3eaqbfqko10sm1lg60ok4mmnp6">&nbsp;&nbsp;&nbsp;匿名类</a>
+</h3>
+<h3 class="topic">
+<a name="77dodd0k4nt2fhn1bp4epaer07">&nbsp;&nbsp;&nbsp;&nbsp;当函数的参数为接口时，不能直接通过 new 接口名 进行传参，因为此时接口类中的函数没有实现</a>
+</h3>
+<h3 class="topic">
+<a name="6egoohtrthabuekgtmo0c5r7pm">&nbsp;&nbsp;&nbsp;&nbsp;解决方法</a>
+</h3>
+<h3 class="topic">
+<a name="0rq3mt3cm4v9tk8cupncqda9d5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;传一个实现了该接口的类对象</a>
+</h3>
+<h3 class="topic">
+<a name="5m50qq9jh3apq8lsicfsgj2ita">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;直接new出来该接口，但是会自动要求将接口中的函数进行实现</a>
+</h3>
+<h3 class="topic">
+<a name="08i5v7366t2shbthnksf49ib2p">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;即匿名类</a>
+</h3>
+<h3 class="topic">
+<a name="7d8s8jt00f6aafrsi51d0ckpel">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;相当于实现了一个类，因为该类没有名字，所以被称为匿名类</a>
+</h3>
+<h3 class="topic">
+<a name="32q0ore78nacr2fpqbt834sb1a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class80day0701_files/05u8e2rhghvtu1gm3j2a8ul5gg.png"></p>
+<h3 class="topic">
+<a name="252r201kqdbb5pjh8919baupt1">&nbsp;&nbsp;继承某类与接口实现</a>
+</h3>
+<h3 class="topic">
+<a name="2t8hftj2iuatqe0c4lu973cs0d">&nbsp;&nbsp;&nbsp;extends 父类类名</a>
+</h3>
+<h3 class="topic">
+<a name="6lm3nnbjmsfck78d1355r3n832">&nbsp;&nbsp;&nbsp;implement 接口名</a>
+</h3>
+<h3 class="topic">
+<a name="7jm7654r8o64p028d46fqijgir">&nbsp;&nbsp;java中的异常处理</a>
+</h3>
+<h3 class="topic">
+<a name="77a20rf7vtg1gq5s1a71nhobhb">&nbsp;&nbsp;&nbsp;抛出异常、异常的捕获</a>
+</h3>
+<h3 class="topic">
+<a name="387lbhsf51qi6u85qcqpmuujkl">&nbsp;&nbsp;&nbsp;try catch throw</a>
+</h3>
+<h3 class="topic">
+<a name="0098ds3gphitcpqad42pndmdqb">&nbsp;&nbsp;&nbsp;当出现错误的时候可以直接抛出异常</a>
+</h3>
+<h3 class="topic">
+<a name="3jabm5kf88mmg3s1gef8h99o7h">&nbsp;&nbsp;&nbsp;只要函数的定义过程中 使用了throws Exception，说明说明该函数可能抛出异常，则在调用该函数时，需要使用try catch进行异常捕获</a>
+</h3>
+<h3 class="topic">
+<a name="6nh8jhvh87mns57bt97902rntk">&nbsp;&nbsp;&nbsp;&nbsp;可以使用alt+enter自动补上try catch</a>
+</h3>
+<h3 class="topic">
+<a name="65intbsqkn2fq6k4i5cmf9kjjt">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class80day0701_files/52p6vqk00e513j2km98765lie3.png"></p>
+<h3 class="topic">
+<a name="3v2gbbgi0eu59ieuk1b224jin6">&nbsp;&nbsp;&nbsp;Java中运行时异常的基类是Exception，在catch时，只要捕获Exception&nbsp;类型的异常就可以处理所有的运行时异常。</a>
+</h3>
+<h3 class="topic">
+<a name="7qccsji4tpe2ru2a17l4a8snmf">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class80day0701_files/2gt30ad0lpeikpsr0i0brmio4s.png"></p>
+<h3 class="topic">
+<a name="6s5gc5gkh90liqj1h1kpvn6tup">&nbsp;&nbsp;&nbsp;可以看老师笔记或源码</a>
+</h3>
+<h3 class="topic">
+<a name="23lcnotqntkp54npg7l1rjvpg4">&nbsp;&nbsp;java类更类似于数据存储，具体类的功能是使用接口进行实现</a>
+</h3>
+<h3 class="topic">
+<a name="04iho9lk1kotd6j9b6ats37i68">&nbsp;&nbsp;关于Java基本语法的使用可见&#13;
+第一天文档&#13;
+e盘的JavaFirstCode项目&#13;
+以及上课第一天老师hello123项目（最完整，其中包括了java基本语法、类、异常处理、cmd控制、文件控制，线程控制、xml文件解析等内容）</a>
+</h3>
+<h3 class="topic">
+<a name="5hre2hkg0saceq27tvcitgaeia">&nbsp;&nbsp;&nbsp;java语法看这个demo</a>
+</h3>
+<p class="topicImage">
+<img src="class80day0701_files/7ju1qnpaqr7946hpc4e50t909t.png"></p>
+<h3 class="topic">
+<a name="2sgaan0fhe2ap3kev3rh10mk8n">&nbsp;java常用类</a>
+</h3>
+<h3 class="topic">
+<a name="7h0t12ufo36b6te7sft93dsqbg">&nbsp;&nbsp;包装类</a>
+</h3>
+<h3 class="topic">
+<a name="3780p9kaa2mjl1i7spid0tha5r">&nbsp;&nbsp;&nbsp;java中没有运算符重载</a>
+</h3>
+<h3 class="topic">
+<a name="27hjbsnfk37l56jdgut0irki8f">&nbsp;&nbsp;&nbsp;基本数据类型有包装类</a>
+</h3>
+<h3 class="topic">
+<a name="190aabnpub6o9i34ocigvq3nv7">&nbsp;&nbsp;&nbsp;&nbsp;使用包装类可以方便操作数据，进行数据类型转换等操作</a>
+</h3>
+<h3 class="topic">
+<a name="1akrh26jlum6me5m1hjkt0a10h">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class80day0701_files/33p9h8l9orekijnk99agocgdj4.png"></p>
+<h3 class="topic">
+<a name="3qab7msng7grkhcg87mr2enlca">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class80day0701_files/2pv7bi0n6e0nm6voerh7is90a1.png"></p>
+<h3 class="topic">
+<a name="3en3858272m0ps9pn0rierpitj">&nbsp;&nbsp;字符串类</a>
+</h3>
+<h3 class="topic">
+<a name="66k10bs87aatb2ibvcpal1e1kp">&nbsp;&nbsp;&nbsp;String</a>
+</h3>
+<h3 class="topic">
+<a name="6n3u22he1m3r61dvns08jqda3p">&nbsp;&nbsp;&nbsp;&nbsp;函数</a>
+</h3>
+<h3 class="topic">
+<a name="3caunp19elomdg9766sj6dsfkv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;toString</a>
+</h3>
+<h3 class="topic">
+<a name="59785v2ep7depohaqbvllh3cer">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;equals</a>
+</h3>
+<h3 class="topic">
+<a name="52i8c2u39ntik23lg4hbtsu7fa">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用于字符串比较</a>
+</h3>
+<h3 class="topic">
+<a name="4psmfjr67dgs1jmnt6ovc450se">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果直接用==进行比较，仅仅是比较字符串对象的地址，而不是比较字符串</a>
+</h3>
+<h3 class="topic">
+<a name="096ihr7dbfsdvkn2o2puqcq11r">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class80day0701_files/2pkp189009mevp17qekokbg5hq.png"></p>
+<h3 class="topic">
+<a name="30o8kuc4sui9ncbpti6labdpe7">&nbsp;&nbsp;&nbsp;StringBuffer</a>
+</h3>
+<h3 class="topic">
+<a name="0vhiki83qph06dr29e7mme9v4e">&nbsp;&nbsp;&nbsp;&nbsp;字符串连接对象</a>
+</h3>
+<h3 class="topic">
+<a name="5gsp35oioga44q37970o16k8ee">&nbsp;&nbsp;&nbsp;&nbsp;可以用于连接多个字符串</a>
+</h3>
+<h3 class="topic">
+<a name="6sv2snpi85gpeh0gqiqpn94t54">&nbsp;&nbsp;&nbsp;StringBuilder</a>
+</h3>
+<h3 class="topic">
+<a name="42m6rj51o86mmmtfh0u7lb850v">&nbsp;&nbsp;&nbsp;&nbsp;安卓逆向中见的比较多</a>
+</h3>
+<h3 class="topic">
+<a name="0ld8ap0sk611pcbni48qs49rv7">&nbsp;&nbsp;&nbsp;&nbsp;与StringBuffer基本一致，不一样的地方在于</a>
+</h3>
+<h3 class="topic">
+<a name="4cera9j7ptk1nfpje4ol5qu42d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class80day0701_files/2ji41ht2l2eqrrl9nuq4tg5h69.png"></p>
+<h3 class="topic">
+<a name="69e9ifpanlnnd4snajg4k5i1sv">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class80day0701_files/3dahaq4sfiu258fr42gf1bgfm0.png"></p>
+<h3 class="topic">
+<a name="5r26jak0qo5te428bhojerocvu">&nbsp;&nbsp;&nbsp;&nbsp;String  StringBuffer StringBuilder之间的区别</a>
+</h3>
+<p class="topicImage">
+<img src="class80day0701_files/47t1vt7h51mhhmrfh57ucesuth.png"></p>
+<h3 class="topic">
+<a name="32atq5bm4j0kemo6gu7mv6pspd">&nbsp;&nbsp;集合类的使用（类似于c++的stl库，是java中的一种数据结构类）</a>
+</h3>
+<h3 class="topic">
+<a name="2t2jhectk1f3qfpo0d2vvopqnm">&nbsp;&nbsp;&nbsp;list ArrayLiat</a>
+</h3>
+<h3 class="topic">
+<a name="06ptnu8os6u51agsr5pjfqpk7d">&nbsp;&nbsp;&nbsp;&nbsp;类似于链表</a>
+</h3>
+<h3 class="topic">
+<a name="2bs23hrn111dtbdel8upru5ar4">&nbsp;&nbsp;&nbsp;map HashMap</a>
+</h3>
+<h3 class="topic">
+<a name="6ts44sjcllb457mnbvkg81ahnb">&nbsp;&nbsp;&nbsp;&nbsp;类似于树</a>
+</h3>
+<h3 class="topic">
+<a name="0qqi69cn3e8na4rnkr5350beld">&nbsp;&nbsp;&nbsp;&nbsp;是键值对</a>
+</h3>
+<h3 class="topic">
+<a name="2aiehponca5dtvuj1em2u910lf">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class80day0701_files/2i34gince8tj0i8mb3fr7m4hei.png"></p>
+<h3 class="topic">
+<a name="74e1vp14el1sm8ehabod4h0h0j">&nbsp;&nbsp;文件操作类</a>
+</h3>
+<h3 class="topic">
+<a name="1dos7j4p2mtla3pdimv7jlkr4h">&nbsp;&nbsp;&nbsp;创建文件  File类</a>
+</h3>
+<h3 class="topic">
+<a name="0pcu3o4upjmusrls4i87vj0g41">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class80day0701_files/4kbdaktb7kml0drpm6tgcet13s.png"></p>
+<h3 class="topic">
+<a name="311rcilk5rl2881v519nlq6k0n">&nbsp;&nbsp;&nbsp;读取文件</a>
+</h3>
+<h3 class="topic">
+<a name="2u6u4u2rh9ibq9dsfo70msiigf">&nbsp;&nbsp;&nbsp;&nbsp;FileInputStream</a>
+</h3>
+<h3 class="topic">
+<a name="3jk8rrso772rtaupc2smjkloo1">&nbsp;&nbsp;&nbsp;&nbsp;一般需要创建字节输出流对象，用于就接受读出的数据，并以字符串形式返回</a>
+</h3>
+<h3 class="topic">
+<a name="3lit9m589p0nh4im9ej5db5rpr">&nbsp;&nbsp;&nbsp;&nbsp;代码示例</a>
+</h3>
+<h3 class="topic">
+<a name="6mg273a7lkt5ujs9ts1epj2m2f">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class80day0701_files/6gbsi2jokfr81m92u1ast3s10a.png"></p>
+<h3 class="topic">
+<a name="3dm6l6l02c9n4n5i0duqsbptgn">&nbsp;&nbsp;&nbsp;写入文件</a>
+</h3>
+<h3 class="topic">
+<a name="7af11t9b714042og6lb1u923gc">&nbsp;&nbsp;&nbsp;&nbsp;FileOutputStream</a>
+</h3>
+<h3 class="topic">
+<a name="5rldvm7g6rfc8ri10aolknhv8j">&nbsp;&nbsp;&nbsp;&nbsp;创建字节数组，用于保存写入文件的内容</a>
+</h3>
+<h3 class="topic">
+<a name="2rjjtrfofgq788gfh1c6jsdhln">&nbsp;&nbsp;&nbsp;&nbsp;代码示例</a>
+</h3>
+<h3 class="topic">
+<a name="67rgouodombu9avjk77f9t16e9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class80day0701_files/5j9amgjtbsubnksaeecvvmfapk.png"></p>
+<h3 class="topic">
+<a name="3fantcmcps2rlifo0elt22p30p">&nbsp;&nbsp;&nbsp;删除文件</a>
+</h3>
+<h3 class="topic">
+<a name="71cc0ehoe6dn1b6sgbhdn0rk3i">&nbsp;&nbsp;&nbsp;&nbsp;File类中的delete方法</a>
+</h3>
+<h3 class="topic">
+<a name="0e6viqupfqfb7t2l4tbl87eu65">&nbsp;&nbsp;&nbsp;&nbsp;示例代码（支持递归方式删除文件夹）</a>
+</h3>
+<h3 class="topic">
+<a name="22tm91s1b40hp0m3j4e593t43t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class80day0701_files/0ifln1t4hf3db9ss61fp41ev1v.png"></p>
+<h3 class="topic">
+<a name="4tvfdsfks783n637i4m2nbcg2s">&nbsp;&nbsp;&nbsp;主要代码实现在老师的第一天工程中</a>
+</h3>
+<h3 class="topic">
+<a name="1qraf44dddvenpqjlhnug4f41u">&nbsp;&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="2hr0d6l4r7v8m2mi7vf51os7vg">&nbsp;&nbsp;&nbsp;&nbsp;import java.io.*;&#13;
+public class FileCtrl {&#13;
+    public static File CreateFile(String filePath){&#13;
+        // 创建文件对象&#13;
+        File file = new File(filePath);&#13;
+        // 判断文件是否存在&#13;
+        if( !file.exists()) {&#13;
+            // 创建文件，因为createNewFile函数本身抛出了异常，需要try&#13;
+            try {&#13;
+                file.createNewFile();&#13;
+            } catch (IOException e) {&#13;
+                e.printStackTrace();&#13;
+                return null;&#13;
+            }&#13;
+        }&#13;
+        // 返回文件对象&#13;
+        return file;&#13;
+    }&#13;
+&#13;
+    public static String ReadFile(File file){&#13;
+        try {&#13;
+            //  1. 创建文件输入流对象&#13;
+            FileInputStream inputStream = new FileInputStream(file);&#13;
+            //  2. 创建字节输出流对象&#13;
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();&#13;
+            // 3. 创建字节数组&#13;
+            byte bytes[] = new byte[1024];&#13;
+            int nReadLen = 0;&#13;
+            //  4. 使用文件输入流对象读取文件内容&#13;
+            while ( (nReadLen =  inputStream.read(bytes,0,1024)) !=-1){&#13;
+                //  5. 将读取的内容写入到字节对象&#13;
+                byteArrayOutputStream.write(bytes,0,nReadLen);&#13;
+            }&#13;
+            // 以字符串方式返回字节对象&#13;
+            return new String(byteArrayOutputStream.toByteArray());&#13;
+        } catch (Exception e) {&#13;
+            e.printStackTrace();&#13;
+        }&#13;
+        return null;&#13;
+    }&#13;
+&#13;
+    public static String WriteFile(File file, String content){&#13;
+        try {&#13;
+            //  1. 创建文件输出流对象&#13;
+            FileOutputStream outputStream = new FileOutputStream(file);&#13;
+            // 2. 创建字节数组&#13;
+            byte bytes[] = content.getBytes();&#13;
+            int nReadLen = 0;&#13;
+            //  3. 使用文件输出流对象写入文件内容&#13;
+            outputStream.write(bytes);&#13;
+        } catch (Exception e) {&#13;
+            e.printStackTrace();&#13;
+        }&#13;
+        return null;&#13;
+    }&#13;
+&#13;
+    public static String DeleteFile(File file){&#13;
+        if (file.exists()){&#13;
+            // 删除文件&#13;
+            if (file.isFile()){&#13;
+                file.delete();&#13;
+            }&#13;
+            // 删除目录&#13;
+            else if (file.isDirectory()){&#13;
+                // 删除目录下的每一个文件&#13;
+                File[] files = file.listFiles();&#13;
+                for (int i = 0; i &lt; files.length; i++) {&#13;
+                    // 递归删除&#13;
+                    DeleteFile(files[i]);&#13;
+                }&#13;
+                // 删除目录&#13;
+                file.delete();&#13;
+            }&#13;
+        }&#13;
+        return null;&#13;
+    }&#13;
+&#13;
+    public static void DeleteDir(String destDir) {&#13;
+        File file = new File(destDir);&#13;
+        DeleteFile(file);&#13;
+    }&#13;
+}&#13;
+</a>
+</h3>
+<h3 class="topic">
+<a name="59r3pkph0qsrkbv04h2ce9bvvj">&nbsp;&nbsp;cmd命令操作</a>
+</h3>
+<h3 class="topic">
+<a name="1adohkn1l0ntarjqq7uhj9s8r0">&nbsp;&nbsp;&nbsp;cmd.exe /c 命令行字符串</a>
+</h3>
+<h3 class="topic">
+<a name="5op175f0utdlgc0gfjj81hs314">&nbsp;&nbsp;&nbsp;&nbsp;静默执行cmd命令</a>
+</h3>
+<h3 class="topic">
+<a name="7td59jjr7bs32j9gjskh204iam">&nbsp;&nbsp;&nbsp;会用在自动化脚本中</a>
+</h3>
+<h3 class="topic">
+<a name="4ghtba8n21lk2vs346khdjudpu">&nbsp;&nbsp;&nbsp;jar文件就是java的可执行文件</a>
+</h3>
+<h3 class="topic">
+<a name="7dqebqt4mc5ufcahgstkohjtpr">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class80day0701_files/764h668ll5j57bek7jv1fhcfk9.png"></p>
+<h3 class="topic">
+<a name="0rg2601skn7k8ihv0go4o9m34b">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class80day0701_files/3s7l9birfhbmi1cdvv66r7vc93.png"></p>
+<h3 class="topic">
+<a name="2a95va820nu5k46996a5udpve8">&nbsp;&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="28lnkvejk94klv507hoevf3ng5">&nbsp;&nbsp;&nbsp;&nbsp;import java.io.BufferedReader;&#13;
+import java.io.File;&#13;
+import java.io.InputStream;&#13;
+import java.io.InputStreamReader;&#13;
+&#13;
+public class CmdCtrl {&#13;
+    public static void runCMD(String command){&#13;
+&#13;
+        try {&#13;
+            String cmd = "cmd.exe /c " +command;&#13;
+            // 1. 执行命令，获取Process对象&#13;
+            Process process = Runtime.getRuntime().exec(cmd);&#13;
+            // 2. 获取cmd输出信息&#13;
+            // 2.1 获取输入流对象&#13;
+            InputStream inputStream = process.getInputStream();&#13;
+            // 2.2 封装流读取对象&#13;
+            InputStreamReader reader = new InputStreamReader(inputStream);&#13;
+            // 2.3 封装缓冲流读取对象&#13;
+            BufferedReader br = new BufferedReader(reader);&#13;
+            // 2.4 循环读取&#13;
+            String string = null;&#13;
+            while ( (string = br.readLine()) != null){&#13;
+                System.out.println(string);&#13;
+            }&#13;
+            br.close();&#13;
+            // 2.5 等待读取完毕&#13;
+            process.waitFor();&#13;
+        } catch (Exception e) {&#13;
+            e.printStackTrace();&#13;
+        }&#13;
+    }&#13;
+&#13;
+    public static void runCMD(String command, String dir){&#13;
+        try {&#13;
+            String cmd = "cmd.exe /c " +command;&#13;
+            // 1. 执行命令，获取Process对象&#13;
+            Process process = Runtime.getRuntime().exec(cmd, null, new File(dir));&#13;
+            // 2. 获取cmd输出信息&#13;
+            // 2.1 获取输入流对象&#13;
+            InputStream inputStream = process.getInputStream();&#13;
+            // 2.2 封装流读取对象&#13;
+            InputStreamReader reader = new InputStreamReader(inputStream);&#13;
+            // 2.3 封装缓冲流读取对象&#13;
+            BufferedReader br = new BufferedReader(reader);&#13;
+            String string = null;&#13;
+            // 2.4 循环读取&#13;
+            while ( (string = br.readLine()) != null){&#13;
+                System.out.println(string);&#13;
+            }&#13;
+            br.close();&#13;
+            // 2.5 等待读取完毕&#13;
+            process.waitFor();&#13;
+        } catch (Exception e) {&#13;
+            e.printStackTrace();&#13;
+        }&#13;
+    }&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="6o3cb1hfaivhc5pbeumnnj54fo">&nbsp;&nbsp;文件格式解析</a>
+</h3>
+<h3 class="topic">
+<a name="2tmbebi8d6b6s299cjahro3eje">&nbsp;&nbsp;&nbsp;dom4j -XML解析库</a>
+</h3>
+<h3 class="topic">
+<a name="2ldda7dqrerpqs36n63nrvd2kt">&nbsp;&nbsp;&nbsp;&nbsp;该库可以用于解析xml文件</a>
+</h3>
+<h3 class="topic">
+<a name="3ahoht260rlpv29vl7sfakbqf4">&nbsp;&nbsp;&nbsp;什么是XML</a>
+</h3>
+<h3 class="topic">
+<a name="0cjcbvcgn9lv4if8ifiequ7nmq">&nbsp;&nbsp;&nbsp;&nbsp;XML 指可扩展标记语言（EXtensible Markup Language）</a>
+</h3>
+<h3 class="topic">
+<a name="0utccpqeti3imofh9501vosjn4">&nbsp;&nbsp;&nbsp;&nbsp;XML 是一种标记语言，很类似 HTML</a>
+</h3>
+<h3 class="topic">
+<a name="1t9o5ra2tv51pakahb6850gfjb">&nbsp;&nbsp;&nbsp;&nbsp;XML 的设计宗旨是传输、存储数据，而非显示数据</a>
+</h3>
+<h3 class="topic">
+<a name="55pnkl9ep5clr1cr6q02vkl2ht">&nbsp;&nbsp;&nbsp;&nbsp;java中的xml文件用于存储安卓程序、网站程序的相关数据</a>
+</h3>
+<h3 class="topic">
+<a name="5fng6o9pn7aoog8aaru8rkdjdn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xml文件是一个文档对象，有了文档对象java就可以操作里面的元素，以及元素的属性</a>
+</h3>
+<h3 class="topic">
+<a name="5kbi0ftm9t55l3pon8pvlihv11">&nbsp;&nbsp;&nbsp;导入dom4j库</a>
+</h3>
+<h3 class="topic">
+<a name="4pps6krqe0q878u89injbhvp4f">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class80day0701_files/0khde2ks8m5bnb3gkm4t0enl44.png"></p>
+<h3 class="topic">
+<a name="7uifcko9vbco0ch9jneq9dgah2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class80day0701_files/4totv2in97acq5t2624t9m8hur.png"></p>
+<h3 class="topic">
+<a name="7o6nr0vmlqkd6ftbffilce09b4">&nbsp;&nbsp;&nbsp;xml中的内容</a>
+</h3>
+<h3 class="topic">
+<a name="3k0k522pgb03ruvtu2tcr9bbq8">&nbsp;&nbsp;&nbsp;&nbsp;标签</a>
+</h3>
+<h3 class="topic">
+<a name="24j0e5mrholp4q4enl2pvunj3i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;也称标签</a>
+</h3>
+<h3 class="topic">
+<a name="03snmtfe12va8dq0gcfg00vaen">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;也称节点</a>
+</h3>
+<h3 class="topic">
+<a name="50v6e0doe1758khsu645u3c51m">&nbsp;&nbsp;&nbsp;&nbsp;属性</a>
+</h3>
+<h3 class="topic">
+<a name="4al4gq0n5begn6p4rtu12puul9">&nbsp;&nbsp;&nbsp;&nbsp;内容</a>
+</h3>
+<h3 class="topic">
+<a name="7eb0oacequlonc38hvbsliqqkh">&nbsp;&nbsp;&nbsp;基本操作</a>
+</h3>
+<h3 class="topic">
+<a name="4pe7mfovbte3ggjh8g07d6ot0v">&nbsp;&nbsp;&nbsp;&nbsp;获取文档对象</a>
+</h3>
+<h3 class="topic">
+<a name="0qantjd43nl9q04u816v6m9coe">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class80day0701_files/183kvkr7m3sqrt2epe0uem1fkm.png"></p>
+<h3 class="topic">
+<a name="0bskcuj5l5fel7kmlhpb0sjbuv">&nbsp;&nbsp;&nbsp;&nbsp;获取xml文档元素</a>
+</h3>
+<h3 class="topic">
+<a name="70k2lme2bfnbv1mlt1hel6kn85">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class80day0701_files/3hnirckej735uva2qvv6sqn4oc.png"></p>
+<h3 class="topic">
+<a name="1v7ssb9i5l2evakhpfjsuv2gol">&nbsp;&nbsp;&nbsp;&nbsp;获取xml元素属性</a>
+</h3>
+<h3 class="topic">
+<a name="57kg00upbcq76jkkjmui5d07kc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class80day0701_files/52h01p28keqamd9sm3fa5l0mk6.png"></p>
+<h3 class="topic">
+<a name="4394eqi11hqkge40ch4s7r5fcv">&nbsp;&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="56hg3ir6lm2lfm5q8c2gvi9d5n">&nbsp;&nbsp;&nbsp;&nbsp;import org.dom4j.Attribute;&#13;
+import org.dom4j.Document;&#13;
+import org.dom4j.DocumentException;&#13;
+import org.dom4j.Element;&#13;
+import org.dom4j.io.SAXReader;&#13;
+&#13;
+import java.io.FileInputStream;&#13;
+import java.io.FileNotFoundException;&#13;
+import java.io.InputStream;&#13;
+import java.util.List;&#13;
+&#13;
+public class XmlCtrl {&#13;
+&#13;
+    // 获取Document对象，一个xml文件就是一个文档对象&#13;
+    public static Document getDocument(String xml) {&#13;
+        try {&#13;
+            SAXReader saxReader = new SAXReader();&#13;
+            InputStream inputStream = new FileInputStream(xml);&#13;
+            Document doc = saxReader.read(inputStream);&#13;
+            return doc;&#13;
+        } catch (DocumentException e) {&#13;
+            e.printStackTrace();&#13;
+        } catch (FileNotFoundException e) {&#13;
+            e.printStackTrace();&#13;
+        }&#13;
+        return null;&#13;
+    }&#13;
+&#13;
+&#13;
+    public static Element getElement(Document doc, String name) {&#13;
+        // 获取根节点&#13;
+        Element root = doc.getRootElement();&#13;
+        // 返回子节点的元素列表&#13;
+        List&lt;Element&gt; child = root.elements();&#13;
+        for (int i = 0; i &lt; child.size(); i++) {&#13;
+            Element element = child.get(i);&#13;
+            //System.out.println("元素：" + element.getName());&#13;
+            if (element.getName().equals(name))&#13;
+            {&#13;
+                return element;&#13;
+            }&#13;
+        }&#13;
+        return null;&#13;
+    }&#13;
+&#13;
+    public static Attribute getAttr(Element app, String name) {&#13;
+        List&lt;Attribute&gt; atts = app.attributes();&#13;
+        for (Attribute att: atts) {&#13;
+            //System.out.println("属性：" + att.getName());&#13;
+            if (att.getName().equals(name)){&#13;
+                return att;&#13;
+            }&#13;
+        }&#13;
+        return null;&#13;
+    }&#13;
+}&#13;
+</a>
+</h3>
+<h3 class="topic">
+<a name="7on9fq9l3kl8soauj0q2uk2cmr">&nbsp;&nbsp;线程类</a>
+</h3>
+<h3 class="topic">
+<a name="4sjndn9p4mcampgjp00sfr1mki">&nbsp;&nbsp;&nbsp;Thread</a>
+</h3>
+<h3 class="topic">
+<a name="0liq0mvlm411c4ucs14miqdq35">&nbsp;&nbsp;&nbsp;Runnable</a>
+</h3>
+<h3 class="topic">
+<a name="14uke3q9jgmrp9o8v0tnq58un9">&nbsp;&nbsp;&nbsp;创建线程</a>
+</h3>
+<h3 class="topic">
+<a name="2o89h9ufb9ai1sid2b3oaq50cr">&nbsp;&nbsp;&nbsp;&nbsp;通过匿名类所表示回调函数</a>
+</h3>
+<h3 class="topic">
+<a name="78rf4veoa2k2abn5v8rve5gh3i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;手工重写run函数</a>
+</h3>
+<h3 class="topic">
+<a name="6kp00i25i1unlkhmir7tmvbuds">&nbsp;&nbsp;&nbsp;&nbsp;通过接口表示回调函数</a>
+</h3>
+<h3 class="topic">
+<a name="2pabit5d28raie65dj242ir6qk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;new Runable(){}</a>
+</h3>
+<h3 class="topic">
+<a name="7j7r0rlhu8l2puqei48o179a2i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Runable是一个接口，重写里面的run</a>
+</h3>
+<h3 class="topic">
+<a name="5440hpfamaarmhsahnkkhq00lk">&nbsp;&nbsp;&nbsp;启动线程</a>
+</h3>
+<h3 class="topic">
+<a name="0folrob27kc3kq7kor7epdev91">&nbsp;&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="1l313f02aobsnmhc22qnor2pvo">&nbsp;&nbsp;&nbsp;&nbsp;public class ThreadCtrl {&#13;
+&#13;
+//    线程操作&#13;
+    public static void test(){&#13;
+        // 1. 创建线程&#13;
+        // Thread是一个类，run没有强制重写&#13;
+        Thread thread = new Thread(){&#13;
+            @Override&#13;
+            public void run() {&#13;
+                super.run();&#13;
+                // 线程代码&#13;
+                System.out.println("线程1 ....");&#13;
+            }&#13;
+        };&#13;
+        // 2. 启动线程&#13;
+        thread.start();&#13;
+&#13;
+        // 1. 创建线程2&#13;
+        // Runnable是一个接口，run必须重写&#13;
+        Thread thread1 = new Thread(new Runnable() {&#13;
+            @Override&#13;
+            public void run() {&#13;
+                // 线程代码2&#13;
+                System.out.println("线程2 ....");&#13;
+            }&#13;
+        });&#13;
+        // 2. 启动线程&#13;
+        thread1.start();&#13;
+    }&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="7phiv8fc9jissm2tu8i6jnuad2">&nbsp;&nbsp;网络操作类</a>
+</h3>
+<h3 class="topic">
+<a name="1q0cbnct9k35rs6go1g89h3r4u">&nbsp;&nbsp;&nbsp;URLConnection</a>
+</h3>
+<h3 class="topic">
+<a name="2v4oe3mrdk29j9g97hnqvrsm29">&nbsp;&nbsp;具体内容也可见&#13;
+第一天文档&#13;
+以及上课第一天老师hello123项目</a>
+</h3>
+<h3 class="topic">
+<a name="7r89cq1scfttr8jml7kqtllf3f">&nbsp;安卓相关</a>
+</h3>
+<h3 class="topic">
+<a name="1964jls7ofqfr1e2pf077mkepr">&nbsp;&nbsp;android studio开发一个demo</a>
+</h3>
+<h3 class="topic">
+<a name="07paqipgptnbnk114agb5ert0s">&nbsp;&nbsp;&nbsp;创建安卓工程</a>
+</h3>
+<h3 class="topic">
+<a name="3nmg094687f4a6i5hgi8eursqa">&nbsp;&nbsp;&nbsp;&nbsp;界面1</a>
+</h3>
+<h3 class="topic">
+<a name="5g696k4fuecu4cl11rp0a3dmgg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;application name</a>
+</h3>
+<h3 class="topic">
+<a name="2qfehug5jqfbq6t7ccdjsmcmo9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;应用m名称</a>
+</h3>
+<h3 class="topic">
+<a name="5pm2p21e78kbe8dlk8g9g01id0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Company domain</a>
+</h3>
+<h3 class="topic">
+<a name="0ge8ncpb4tk0e5p8ac0g3c0t4f">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;公司域名</a>
+</h3>
+<h3 class="topic">
+<a name="1vkvonjriek4hjon6v8nb9usvs">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Project location</a>
+</h3>
+<h3 class="topic">
+<a name="2pckm21s9fj22i7mrjsi7c5mbk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;项目路径</a>
+</h3>
+<h3 class="topic">
+<a name="3j12ppdq38i33rahqsouggddjr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;package name</a>
+</h3>
+<h3 class="topic">
+<a name="5uip20qg9u36jn9327j9fm6udg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;包名</a>
+</h3>
+<h3 class="topic">
+<a name="6oo1llgsdcpogivfod9t97953l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;不需要勾选 c++ 或 koylin</a>
+</h3>
+<h3 class="topic">
+<a name="2u2fvqbtjrt64beflkpvltdlv8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;koylin</a>
+</h3>
+<h3 class="topic">
+<a name="655lt5r68htq8tgtt93pf3tijo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可能日后会替代java用于安卓开发</a>
+</h3>
+<h3 class="topic">
+<a name="0908rr6qjgoejaqkesrj4gu8cu">&nbsp;&nbsp;&nbsp;&nbsp;界面2</a>
+</h3>
+<h3 class="topic">
+<a name="4psa7af6616bpbsdkguepf0a8b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;选择手机平台</a>
+</h3>
+<h3 class="topic">
+<a name="76sc5pccsns18le84ctmdigedv">&nbsp;&nbsp;&nbsp;&nbsp;界面3</a>
+</h3>
+<h3 class="topic">
+<a name="57kdp7k7gctkn3548nugpritkd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;选择安卓界面</a>
+</h3>
+<h3 class="topic">
+<a name="5rom2lolmng0e496qbdj3kres1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;空的即可</a>
+</h3>
+<h3 class="topic">
+<a name="7fll6llnjjf06jl4amvm3v611r">&nbsp;&nbsp;&nbsp;&nbsp;界面4</a>
+</h3>
+<h3 class="topic">
+<a name="0od9k03ndbt1nqm2b6040pg6a0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;设置界面的类名</a>
+</h3>
+<h3 class="topic">
+<a name="6btg7hcfrogtid3rrddkiriql3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;即：Activity Name</a>
+</h3>
+<h3 class="topic">
+<a name="5g7m3fb8fuvjstdplf2f3ggeu8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;设置界面资源文件名称</a>
+</h3>
+<h3 class="topic">
+<a name="53qblfvpv28soot9enqt7cia07">&nbsp;&nbsp;&nbsp;主要部分</a>
+</h3>
+<h3 class="topic">
+<a name="1msbqj3ubh1f4ilrs0l13fu0o1">&nbsp;&nbsp;&nbsp;&nbsp;xml文件：AndroidManifest</a>
+</h3>
+<h3 class="topic">
+<a name="0agjjsql11ebpol6caqui47t43">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用于保存app的配置信息和全局信息</a>
+</h3>
+<h3 class="topic">
+<a name="017tog98db38uvqhiu4n62epl1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以修改lable属性，即修改app桌面显示的名称</a>
+</h3>
+<h3 class="topic">
+<a name="10clk2fni5skgkuece0ltoc2hu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;application标签中存放整个程序的信息</a>
+</h3>
+<h3 class="topic">
+<a name="48nvh46dhlshrmu96ap7btf4p0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;activity中存放的是当前程序的activity组件的信息</a>
+</h3>
+<h3 class="topic">
+<a name="7nthmhonfm994rml4o0bkgdk7a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;里面包含了入口类的相关信息</a>
+</h3>
+<h3 class="topic">
+<a name="7fit4j7de9qco9j9e3hpngdcfb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当activity中存在 MAIN LAUNCHER说明该类为入口类</a>
+</h3>
+<h3 class="topic">
+<a name="1m258g74atr27r7ldtevcb8m1t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;存在package字段</a>
+</h3>
+<h3 class="topic">
+<a name="4chtlrldimuhrqcr2claak3c24">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;即包名，标识当前程序的命名空间</a>
+</h3>
+<h3 class="topic">
+<a name="476p09r30asaunofg9eo389qt9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以用于标识程序，用于防多开</a>
+</h3>
+<h3 class="topic">
+<a name="1rtpuajv3jif5l70p5bovpq9e7">&nbsp;&nbsp;&nbsp;&nbsp;java文件夹</a>
+</h3>
+<h3 class="topic">
+<a name="1n7chqfnokkd5f6h0t3ma81pmi">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MainActivity</a>
+</h3>
+<h3 class="topic">
+<a name="5s0q4s9q6jqtrktmbb2eslrfe6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;源码</a>
+</h3>
+<h3 class="topic">
+<a name="6pm082nim27uvejs56eqkn97ma">&nbsp;&nbsp;&nbsp;&nbsp;res资源文件夹</a>
+</h3>
+<h3 class="topic">
+<a name="7r3b82r8o07am49ssm6btk1i21">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;资源</a>
+</h3>
+<h3 class="topic">
+<a name="47fv6pt5ritjktng84ib6v98tb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;资源也是xml文件</a>
+</h3>
+<h3 class="topic">
+<a name="3t2g9emdrn0ia55l164ho0ae4o">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;app页面中显示的按钮、文本框等都保存在对应的资源文件夹，通过修改对应xml文件即可设置</a>
+</h3>
+<h3 class="topic">
+<a name="647gvnlj1c321b7llrpg9pcrps">&nbsp;&nbsp;&nbsp;安卓界面开发</a>
+</h3>
+<h3 class="topic">
+<a name="09nj0gdcg97riqtp3mml75ppfd">&nbsp;&nbsp;&nbsp;&nbsp;无形组件</a>
+</h3>
+<h3 class="topic">
+<a name="6aoq8elrho6pkbmvrd9njma05j">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;即app界面中不显示的，仅仅用于组织有形组件显示方式的组件，主要用于定义app的布局和其他常见设置</a>
+</h3>
+<h3 class="topic">
+<a name="4pi75ie44hpg5v2q9pdd4sohk7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;其中可以设置组件显示为线性布局，并且纵向显示</a>
+</h3>
+<h3 class="topic">
+<a name="7dgq1pfuc0f96u8ug69nmer2to">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class80day0701_files/6i4uhubm1bcljn6ml1r0l1kqhs.png"></p>
+<h3 class="topic">
+<a name="76koveduaec62eal3rfiibu5jd">&nbsp;&nbsp;&nbsp;&nbsp;有形组件</a>
+</h3>
+<h3 class="topic">
+<a name="4poude06l6h6j07adseidk5pgu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;种类</a>
+</h3>
+<h3 class="topic">
+<a name="6bb6fknd9ockrtt0393mkuou9c">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;按钮</a>
+</h3>
+<h3 class="topic">
+<a name="3k4tgd2hqg0qgofe8qu1mph96r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;文本控件</a>
+</h3>
+<h3 class="topic">
+<a name="2d5fsdr12tb8t289tqhd5f95ol">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;图片</a>
+</h3>
+<h3 class="topic">
+<a name="13859apdcuisglis6b5kbtcnbl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;编辑框</a>
+</h3>
+<h3 class="topic">
+<a name="76978v34tdj47emp4ht6e34srl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;主要属性</a>
+</h3>
+<h3 class="topic">
+<a name="36cl55mrg1d1rkos0b3kt8tdsd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;组件宽度</a>
+</h3>
+<h3 class="topic">
+<a name="2h77pi2gsl6oftboe6q609qm47">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;组件高度</a>
+</h3>
+<h3 class="topic">
+<a name="25rai5jsen3ifntmlcvgqhferl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;指定组件id</a>
+</h3>
+<h3 class="topic">
+<a name="1rv9q8q7oqtkd99820n1ehat33">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;指定控件居中</a>
+</h3>
+<h3 class="topic">
+<a name="0fv9vlus4rl9ptvtlf2i38fe14">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;图片源路径</a>
+</h3>
+<h3 class="topic">
+<a name="7ig7h4rof27vt36858ju9mpbch">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;按钮的点击属性</a>
+</h3>
+<h3 class="topic">
+<a name="1s8tk4l0jnui5f4lg7g36pgnig">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用按钮的回调函数赋值</a>
+</h3>
+<h3 class="topic">
+<a name="1v1u281t5m6rggegjfltgvd82u">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;..........</a>
+</h3>
+<h3 class="topic">
+<a name="4a2u388p347kduga7dae7avrom">&nbsp;&nbsp;&nbsp;图形化拖动界面资源</a>
+</h3>
+<h3 class="topic">
+<a name="41ddlo50lb7qqp0tfue78k2c6f">&nbsp;&nbsp;&nbsp;&nbsp;源代码中找到设置资源文件的函数  ctrl+点击资源id 进入资源文件</a>
+</h3>
+<h3 class="topic">
+<a name="6rs2tf6u6leb0jbf1855d6ddge">&nbsp;&nbsp;&nbsp;&nbsp;进入资源文件之后，进入design，进行拖动</a>
+</h3>
+<h3 class="topic">
+<a name="26hac8qm3cqvateakirl3orq3c">&nbsp;&nbsp;&nbsp;&nbsp;这种方式生成的界面会有很多bug，更多时候是通过在资源文件中写代码，创建界面 （就是在xml文件中写代码）</a>
+</h3>
+<h3 class="topic">
+<a name="2r3msr48fh6i0dkm6bkqgdj1k4">&nbsp;&nbsp;&nbsp;响应按钮的方法</a>
+</h3>
+<h3 class="topic">
+<a name="7igcuq73pmsdfrfs47ml4ld56g">&nbsp;&nbsp;&nbsp;&nbsp;方法1</a>
+</h3>
+<h3 class="topic">
+<a name="64vn117nfeutk22v6cghupqco7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在xml中，在对应按钮的属性中添加按钮响应函数</a>
+</h3>
+<h3 class="topic">
+<a name="5djdimlhmrioubk8en6e00b4j5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class80day0701_files/0cuav8uu34jtlohtjtfi3799vs.png"></p>
+<h3 class="topic">
+<a name="5oh0rv5mcn4bt3e61pa8ssvnbu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;所有的控件都有onClick事件，可以通过设置点击事件的监听，实现点击按钮之后要发生什么动作</a>
+</h3>
+<h3 class="topic">
+<a name="1trqkek9q6mjk8vvcf0gf0icjk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在java代码中设置按钮响应函数</a>
+</h3>
+<h3 class="topic">
+<a name="3av7coo1ipkm9k1ff06mdjld2r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;获取界面对象</a>
+</h3>
+<h3 class="topic">
+<a name="4et2qalhn5bhp9c1n7047t4uv4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;findViewById</a>
+</h3>
+<h3 class="topic">
+<a name="3se143gti1bu2hum6955grsctg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;获取内容</a>
+</h3>
+<h3 class="topic">
+<a name="1civ1uv07l9avj8nbcif805qhi">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;比较</a>
+</h3>
+<h3 class="topic">
+<a name="6ih36usbi1gm0idavi70afsnvk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果相同弹出信息</a>
+</h3>
+<h3 class="topic">
+<a name="1c7b774s5fdq3bf7au5317vtd6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Toast.makeText().show();</a>
+</h3>
+<h3 class="topic">
+<a name="37nqh770eej4rn88v74528eedr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class80day0701_files/0ud8d753erj6lkl0qofs2mj0bl.png"></p>
+<h3 class="topic">
+<a name="0vl4ffu1onsiagail7s40e657g">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;查看第一天老师app项目</a>
+</h3>
+<h3 class="topic">
+<a name="483fomvtl3tq6vhv5h8rvv7521">&nbsp;&nbsp;&nbsp;&nbsp;设置监听器（监听器OnClickListener是一个接口）&#13;
+按钮对象.setOnClickListener(OnClickListener)</a>
+</h3>
+<h3 class="topic">
+<a name="3du1u2uhe5jr1pqf9nqj32q65c">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;方法2</a>
+</h3>
+<h3 class="topic">
+<a name="77b94l1655vmapf1odgrr0af2l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用匿名类</a>
+</h3>
+<h3 class="topic">
+<a name="5glh38movlregjboof7adoe7c3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在onCreate函数中设置按钮响应事件，函数参数为接口，通过匿名类设置按钮响应函数</a>
+</h3>
+<h3 class="topic">
+<a name="3ffkqof2qnn0vl50ii45advdcs">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;匿名类中的函数如果需要使用外部类的this指针，需要指定外部类的名称  外部类名.this  是因为匿名类相当于一个内部类，不能再内部类中直接使用外部类的内容</a>
+</h3>
+<h3 class="topic">
+<a name="1j0cjkj4mjgf34vpqt318bpgug">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;onCreate函数会在类使用时自动执行</a>
+</h3>
+<h3 class="topic">
+<a name="3l4a39rffhudkgi02buu0b4a3o">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="729fq1b3f86u2cvqnbruk8cus9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;        //匿名类方式响应按钮&#13;
+        Button button=findViewById(R.id.btn2);&#13;
+        button.setOnClickListener(new View.OnClickListener() {&#13;
+            @Override&#13;
+            public void onClick(View view) {&#13;
+                //Dialog dialog 可以有可以没有&#13;
+                new AlertDialog.Builder(MainActivity.this).setTitle("oops").setMessage("匿名类实现").show();&#13;
+                //Toast.makeText(MainActivity.this,"oops",Toast.LENGTH_SHORT).show();&#13;
+            }&#13;
+        });</a>
+</h3>
+<h3 class="topic">
+<a name="3a89b9bb65rf401g0r4c6hr5ri">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;方法3</a>
+</h3>
+<h3 class="topic">
+<a name="2dk3o235bo3lmv8k8mou8h7mqe">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过内部类设置响应事件</a>
+</h3>
+<h3 class="topic">
+<a name="0gr5614h2j0bdmsmr2ket5bk9a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在MainActivity类中定义一个内部类，该内部类实现了监听器接口</a>
+</h3>
+<h3 class="topic">
+<a name="19ilbottj333s23b1abhh1qq72">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;与匿名类的区别在于传参时不使用匿名类的方法，而是使用实现了对应接口的类对象</a>
+</h3>
+<h3 class="topic">
+<a name="156lj325k4qjlqlbppkhghfmdf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="1tv57domed4bjqnpfdki0b09vh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    //内部类实现监听接口&#13;
+       class MyClickListener implements View.OnClickListener{&#13;
+        @Override&#13;
+        public void onClick(View view) {&#13;
+            new AlertDialog.Builder(MainActivity.this).setTitle("oops2").setMessage("内部类实现").show();&#13;
+        }&#13;
+    }</a>
+</h3>
+<h3 class="topic">
+<a name="2en3ihus62k73mv59jn49vgq9q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;        //内部类实现按键响应&#13;
+        MyClickListener obj = new MyClickListener();&#13;
+        Button button2=findViewById(R.id.btn4);&#13;
+        button2.setOnClickListener(obj);</a>
+</h3>
+<h3 class="topic">
+<a name="5unprkmm1pi2oq4ugoin6dlv7b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;方法4</a>
+</h3>
+<h3 class="topic">
+<a name="7t806hij165undol8jq8rjrsd2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过外部类设置响应事件</a>
+</h3>
+<h3 class="topic">
+<a name="6721pj7pu1khpe651krmun7b3f">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;即在外部类（MainActivity）中实现监听器接口，所以setOnClickListener函数使用this作为参数，设置监听器</a>
+</h3>
+<h3 class="topic">
+<a name="0olgu46vjcsqr5fvdv7fg310c1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;和通过内部类设置按钮响应相比，本方法是让MainActivity实现了View.OnClickListener接口，然后利用MainActivity类对象（即this）作为参数传递给setOnClickListene</a>
+</h3>
+<h3 class="topic">
+<a name="1irgua19tko5qtfefuac1aou2p">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过内部类设置按钮响应是在MainActivity内部实现了一个类，该类实现了View.OnClickListener，所以在执行函数setOnClickListene时使用该内部类对象作为参数</a>
+</h3>
+<h3 class="topic">
+<a name="2ltd091tqpkdv7u9re1cbq6jur">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="3su9rdofde25iu02hu2ipolnf6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public class MainActivity extends AppCompatActivity implements  View.OnClickListener{    &#13;
+//外部类实现监听器接口&#13;
+    @Override&#13;
+    public void onClick(View view) {&#13;
+        new AlertDialog.Builder(MainActivity.this).setTitle("oops2").setMessage("外部类实现").show();&#13;
+        //Toast.makeText(MainActivity.this,"oops",Toast.LENGTH_SHORT).show();&#13;
+    }&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="2cs43k8j1fk3ssdpns8fu2he0i">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;        //外部类响应按钮&#13;
+        Button button1 = findViewById(R.id.btn3);&#13;
+        button1.setOnClickListener(this);</a>
+</h3>
+<h3 class="topic">
+<a name="79bco16v9asmlh1g3ogitolego">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;查看第二天老师app项目</a>
+</h3>
+<h3 class="topic">
+<a name="3lejlaft89kb7lv9am54k0rk22">&nbsp;&nbsp;&nbsp;&nbsp;主要思路</a>
+</h3>
+<h3 class="topic">
+<a name="0p60v7bbvlbmurl5v16pk89v3g">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在xml中创建控件</a>
+</h3>
+<h3 class="topic">
+<a name="238bl5qcjskane2f1b46luf0n5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在java中创建控件处理函数</a>
+</h3>
+<h3 class="topic">
+<a name="1b1lb220lp6fnl2uli47g8798j">&nbsp;&nbsp;&nbsp;&nbsp;java中所有设置回调函数相关的操作均需要使用全局函数，但是java中没有全局函数，所以需要通过类的方式得到得到一个函数</a>
+</h3>
+<h3 class="topic">
+<a name="5s14ak4inn7u1v076tjdppuba1">&nbsp;&nbsp;&nbsp;弹出对话框的方法</a>
+</h3>
+<h3 class="topic">
+<a name="6un4bed2rho76glempf4qg062u">&nbsp;&nbsp;&nbsp;&nbsp;toast</a>
+</h3>
+<h3 class="topic">
+<a name="6c0ll64m5bkt70ioru6kdasaf9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;弹出之后自行消失</a>
+</h3>
+<h3 class="topic">
+<a name="6u8vu296hkoe5vpf8o9juk0va8">&nbsp;&nbsp;&nbsp;&nbsp;AlertDialog </a>
+</h3>
+<h3 class="topic">
+<a name="6mplsmkemhfg9sbn2k8hbhp9p6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;弹出后一直存在，点击后消失</a>
+</h3>
+<h3 class="topic">
+<a name="1eapm6rpm32dhbke8frsjpv5os">&nbsp;&nbsp;进度：成功安装ide，可以运行默认空项目</a>
+</h3>
+<h3 class="topic">
+<a name="2scj54f28d47tt7ei6jekruess">&nbsp;&nbsp;&nbsp;根据老师的demo写好demo</a>
+</h3>
+<h2 class="topic">
+<a name="3bvtse947osc1l1d36ledb7m3q">什么是环境变量，为什么安装java需要设置环境变量PATH</a>
+</h2>
+<h3 class="topic">
+<a name="26hjumo94d5kcd1dvhho62i26h">&nbsp;  PATH是路径的意思，PATH环境变量中存放的值，就是一连串的路径。不同的路径之间，用英文的分号（;）分隔开。系统执行用户命令时，若用户未给出绝对路径，则首先在当前目录下寻找相应的可执行文件、批处理文件（另外一种可以执行的文件）等。若找不到，再依次在PATH保存的这些路径中寻找相应的可执行的程序文件。系统就以第一次找到的为准；若搜寻完PATH保存的所有路径都未找到，则会显示类似于图一的错误信息。</a>
+</h3>
+<h3 class="topic">
+<a name="3h3u0hcrsp5u9r0c71ac5f2d4u">&nbsp;当在命令行中执行指令时，实际执行的是可执行文件，如果在当前目录不存在指定可执行文件，就去path环境变量中保存到路径寻找可执行文件，如果仍没有，则程序执行失败</a>
+</h3>
+<h3 class="topic">
+<a href="https://www.cnblogs.com/gzhnan/articles/9590036.html" name="5s5st66loim80nug1kgjoo1n33">&nbsp;https://www.cnblogs.com/gzhnan/articles/9590036.html</a>
+</h3>
+<h2 class="topic">
+<a name="0oc7p3ajnn5955qgieda99jav9">Android stdio路径不能有中文</a>
+</h2>
+<h2 class="topic">
+<a name="57mlg7t2194ep49rmu7kq12moe">如果报错可以查看logcat</a>
+</h2>
+<h3 class="topic">
+<a name="4geqdaqlm68dr5f5rkmdqrsc2e">&nbsp;caused by</a>
+</h3>
+<h2 class="topic">
+<a name="52t8qoikvmmpsaqufkl1jjaak2">让AndroidStudio不要占用c盘空间（经尝试不成功）</a>
+</h2>
+<h3 class="topic">
+<a name="1h7nn99ubm26cvjs2l9t42db12">&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class80day0701_files/5etlg367flhaja4b2jmq7tf8sj.png"></p>
+<h3 class="topic">
+<a name="3dun26j6jrahtmshdu0hue1uk7">&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class80day0701_files/4abqq6kqap34b41i3o65jou3im.png"></p>
+<h3 class="topic">
+<a name="3egm6h22rbmk505kqiae2108av">&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class80day0701_files/0eut5eqc3q0e5du1qontub363e.png"></p>
+<h3 class="topic">
+<a name="7u7rq2vrthektd2r69vhnjcsv1">&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class80day0701_files/5nnejkvj9hiougacj19khr86ho.png"></p>
+<h2 class="topic">
+<a name="2870cnrjm7nb6om58svbcrq7oa">mainactivity类中  &#13;
+onCreate函数会在类使用时自动执行</a>
+</h2>
+<h2 class="topic">
+<a name="33mjg7vtejiknu5g46emdrv5de">AndroidStdio快捷键</a>
+</h2>
+<h3 class="topic">
+<a name="394gafepkov5mf268pcrl8rbcc">&nbsp;alt+insert</a>
+</h3>
+<h3 class="topic">
+<a name="0vofqnosiijpvcoic1itgdhn8m">&nbsp;&nbsp;通过向导直接创建构造、Setter、Getter</a>
+</h3>
+<h3 class="topic">
+<a name="48l12qb00a5ej78gthaha6c8ik">&nbsp;ctrl+o</a>
+</h3>
+<h3 class="topic">
+<a name="5msmh8logko2afgjinkdj6q84q">&nbsp;&nbsp;可以重写父类相关的函数</a>
+</h3>
+<h3 class="topic">
+<a name="4o5pdn6kpirgfmu1nnpi2u0qqj">&nbsp;&nbsp;&nbsp;可以重写释放函数</a>
+</h3>
+<h3 class="topic">
+<a name="2r0k3op5710quv6299j2iqq4g7">&nbsp;alt +回车可以针对报错代码排错</a>
+</h3>
+<h3 class="topic">
+<a name="0cn0p32dtmqmuv0rqjgqnq5ceb">&nbsp;ctrl+q查看文档</a>
+</h3>
+</body>
+</html>

@@ -1,0 +1,576 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>class29day0302</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="1u0uogcfvnq0eh9f155jvdalq2">class29day0302</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%843_files/images/class29day0302.jpg"></div>
+<h2 class="topic">
+<a name="4rg9fg9omu2e6eekrcv7erlaqe">数据结构第三天</a>
+</h2>
+<h3 class="topic">
+<a name="66qugv3ll1222p3h05k8bp32n6">&nbsp;stl介绍和使用</a>
+</h3>
+<h3 class="topic">
+<a name="65fl0vuf60ntl4ciifqa0mgbhd">&nbsp;&nbsp;定义：标准模板库 惠普实验室首先提出 包含大量数据结构和算法 具有高可重用性（使用模板技术） 是c++标准的一部分</a>
+</h3>
+<h3 class="topic">
+<a name="2pb4bf6vlh5fo68fr448bj5ftu">&nbsp;&nbsp;三大部件</a>
+</h3>
+<h3 class="topic">
+<a name="5q2t6brdbst06mm5sq9bfsmou4">&nbsp;&nbsp;&nbsp;容器</a>
+</h3>
+<h3 class="topic">
+<a name="67ck1l3glangjqqoi69r3jrud7">&nbsp;&nbsp;&nbsp;&nbsp;存放数据的地方</a>
+</h3>
+<h3 class="topic">
+<a name="0s8ojpsc8d69dmv1vfvtgbvqqi">&nbsp;&nbsp;&nbsp;&nbsp;分类</a>
+</h3>
+<h3 class="topic">
+<a name="6oig30tbku2dbr023s6g95dpas">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;动态数组</a>
+</h3>
+<h3 class="topic">
+<a name="32kck31reolu2h3oljog16vcm1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;链表</a>
+</h3>
+<h3 class="topic">
+<a name="3ddbem1pao5bjl8vicspjos8u7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;栈</a>
+</h3>
+<h3 class="topic">
+<a name="1kpo325h076eck4nt0riha6hlq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;双端队列</a>
+</h3>
+<h3 class="topic">
+<a name="05eop4iu1s77k7mt3jusicthq4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;队列</a>
+</h3>
+<h3 class="topic">
+<a name="06cdtgg8iva94cvnqume8glmc5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;映射</a>
+</h3>
+<h3 class="topic">
+<a name="70f8eun6gcsi3t87lvnkr9q79l">&nbsp;&nbsp;&nbsp;&nbsp;分类2</a>
+</h3>
+<h3 class="topic">
+<a name="23deg4rkm4ab9tdiu0e94ttbra">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;序列式容器</a>
+</h3>
+<h3 class="topic">
+<a name="7a0kpi9haf5iolo0874ce7f16c">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;排列顺序取决于插入的时机和位置</a>
+</h3>
+<h3 class="topic">
+<a name="14rric6oims2s438i798r886mi">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;自己可以指定插入位置</a>
+</h3>
+<h3 class="topic">
+<a name="1bsfp2mirsdj69hc9kgi997bnp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vector</a>
+</h3>
+<h3 class="topic">
+<a name="7ru8nok3hl67c7fc2jblr19tm1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;deque</a>
+</h3>
+<h3 class="topic">
+<a name="6hjbclmpgktmqg2nlg84no2j56">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;双端队列</a>
+</h3>
+<h3 class="topic">
+<a name="1lt1tgl2ht1h7dbt8g56krndp6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;list</a>
+</h3>
+<h3 class="topic">
+<a name="1m0jtetjmsomovunad7lmjs1ra">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关联式容器</a>
+</h3>
+<h3 class="topic">
+<a name="1pqm30kqcltfgdg505a7ld3anm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;排列顺序取决于类本身的排序准则</a>
+</h3>
+<h3 class="topic">
+<a name="5bu4v0oh87r59c78ej6ab14jcs">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;插入位置取决于容器本身规则</a>
+</h3>
+<h3 class="topic">
+<a name="3devjm90ccfa377kl97663nclp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;set</a>
+</h3>
+<h3 class="topic">
+<a name="7vk6i1cl34sks9r8203uhd2utp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;集合</a>
+</h3>
+<h3 class="topic">
+<a name="7gcmblm1kjh40vdp2jd5eqqppu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;集合内的元素只能有一个</a>
+</h3>
+<h3 class="topic">
+<a name="05nkdtov7akjaak1kaane1euqg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;底层实现是红黑树</a>
+</h3>
+<h3 class="topic">
+<a name="1p1tqh7hhtpdd5bk54jm5706ok">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;map</a>
+</h3>
+<h3 class="topic">
+<a name="7eeldqru6s2a3hq6rsi6saanio">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;是一个键值对序列</a>
+</h3>
+<h3 class="topic">
+<a name="4kksrea4pf0i7nnrgnml4k30hk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;具体实现上是红黑树变体的平衡二叉树</a>
+</h3>
+<h3 class="topic">
+<a name="7ac2hjrlug78jsat0l7d6knu19">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;容器适配器(包装适配了前两种容器)（是其他结构包装得到的）</a>
+</h3>
+<h3 class="topic">
+<a name="3sia1faqautl1ees0v0uuu54e0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;栈</a>
+</h3>
+<h3 class="topic">
+<a name="6obe2bkp4lpl4kc8ml6r4smnem">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;队列</a>
+</h3>
+<h3 class="topic">
+<a name="1sut53f6d543njgl0t4s79rus0">&nbsp;&nbsp;&nbsp;算法</a>
+</h3>
+<h3 class="topic">
+<a name="1aboggtkvnenafk3bmbgng1mei">&nbsp;&nbsp;&nbsp;&nbsp;用于操作数据</a>
+</h3>
+<h3 class="topic">
+<a name="0a45nlq8hrpd1uqb6a5qom8jqq">&nbsp;&nbsp;&nbsp;&nbsp;注意一定要用迭代器操作算法</a>
+</h3>
+<h3 class="topic">
+<a name="5i04ov4fevt31kgn0lg9k81o34">&nbsp;&nbsp;&nbsp;迭代器</a>
+</h3>
+<h3 class="topic">
+<a name="4bb6n05h5hqv11f0ncjm0jlsn3">&nbsp;&nbsp;&nbsp;&nbsp;是一种泛化的指针</a>
+</h3>
+<h3 class="topic">
+<a name="2acvmsemmoi7ge8si005tgohk3">&nbsp;&nbsp;&nbsp;&nbsp;是容器与算法的中间媒介</a>
+</h3>
+<h3 class="topic">
+<a name="7r7c5utfv2vm6n046kl1rtb7vc">&nbsp;&nbsp;stl的使用</a>
+</h3>
+<h3 class="topic">
+<a name="68ojee67ugmcp0qrdh2skmmifv">&nbsp;&nbsp;&nbsp;#include&lt;vector&gt;</a>
+</h3>
+<h3 class="topic">
+<a name="7hb27kqk1cbennigmbc21vp483">&nbsp;&nbsp;&nbsp;&nbsp;声明头文件</a>
+</h3>
+<h3 class="topic">
+<a name="0bfl8eb36ntlsonrs8pptn2kji">&nbsp;&nbsp;&nbsp;using std::vector;</a>
+</h3>
+<h3 class="topic">
+<a name="21kdbckdrjrg2t6c7cg6mvhdsr">&nbsp;&nbsp;&nbsp;&nbsp;声明命名空间</a>
+</h3>
+<h3 class="topic">
+<a name="5rbru82ppu0prfqhhbkp7po0if">&nbsp;&nbsp;&nbsp;vector&lt;int&gt;arr;</a>
+</h3>
+<h3 class="topic">
+<a name="74gkvs54lv1its8i0dcs6ccgbu">&nbsp;&nbsp;&nbsp;&nbsp;定于变量</a>
+</h3>
+<h3 class="topic">
+<a name="3vemq3r6pbkhgk0hl7k0ip4cd4">&nbsp;&nbsp;vector容器</a>
+</h3>
+<h3 class="topic">
+<a name="3jc43pa4rdtfl5ubnneqnn05em">&nbsp;&nbsp;&nbsp;特点</a>
+</h3>
+<h3 class="topic">
+<a name="38j563rbnctnv4253am1u3gjfm">&nbsp;&nbsp;&nbsp;&nbsp;若发现分配的内存空间不足，其大小是现有连续空间的2倍</a>
+</h3>
+<h3 class="topic">
+<a name="0jqc76ca7r9dl8ono3gndig6pr">&nbsp;&nbsp;&nbsp;&nbsp;插入删除数据比较慢，因为要拷贝内存空间</a>
+</h3>
+<h3 class="topic">
+<a name="4kuth3jilescessth8no2a5aeh">&nbsp;&nbsp;&nbsp;使用函数</a>
+</h3>
+<h3 class="topic">
+<a name="6l87qudvqvv875o80k7vr8ka9g">&nbsp;&nbsp;&nbsp;&nbsp;增</a>
+</h3>
+<h3 class="topic">
+<a name="20icarjbvj9ktmuftmvmkt1tg3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;push_back</a>
+</h3>
+<h3 class="topic">
+<a name="6vuqpurv91qoiickojei8uj1ti">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;insert</a>
+</h3>
+<h3 class="topic">
+<a name="4grf2nqmpfjion8e6qorkp8n89">&nbsp;&nbsp;&nbsp;&nbsp;删</a>
+</h3>
+<h3 class="topic">
+<a name="1ucc5a4mqv6ueba5jshvsjmnth">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pop_back</a>
+</h3>
+<h3 class="topic">
+<a name="0e0tl4d00rvnp23117t3jbqtau">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;erase</a>
+</h3>
+<h3 class="topic">
+<a name="45iq676nddl9up6bp20sqjt7mn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;clear</a>
+</h3>
+<h3 class="topic">
+<a name="18o4rflbvehoji957vdq9gh3re">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;只是把vector的size清零，对应内存空间并没有释放</a>
+</h3>
+<h3 class="topic">
+<a name="2ia163bl5bh3kjvp287mqkom96">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以使用swap解决</a>
+</h3>
+<h3 class="topic">
+<a name="3mhqimbb2s9do4jo307horjb5l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vector&lt;int&gt;vec;&#13;
+vector&lt;int&gt;().swap(vec);//将临时匿名对象与现有的对象相交换，达到清零vec的目的</a>
+</h3>
+<h3 class="topic">
+<a name="0i2a9a04slfvlqdv8tknl9i2hb">&nbsp;&nbsp;&nbsp;&nbsp;查</a>
+</h3>
+<h3 class="topic">
+<a name="6mlfuqii32c8pi7oot5nl6vmut">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vec[i]</a>
+</h3>
+<h3 class="topic">
+<a name="5mj79njdqfqnc0667voarijia8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;at</a>
+</h3>
+<h3 class="topic">
+<a name="5hj0upk0q7a3c5hho8rm66e0jh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;begin</a>
+</h3>
+<h3 class="topic">
+<a name="6dc45mbdggdjh4fqv82treb985">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;指向第一个元素的指针</a>
+</h3>
+<h3 class="topic">
+<a name="60c3auh76mnmvqqoa46qni0ooa">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;end</a>
+</h3>
+<h3 class="topic">
+<a name="3fckhnau6ap3gsr100vdfodpgk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;指向末尾元素下一个元素的指针</a>
+</h3>
+<h3 class="topic">
+<a name="160rp62sn76badvd71mn3ejbco">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;empty</a>
+</h3>
+<h3 class="topic">
+<a name="0htpjeg9s5v9pj0dsjk0na6hqn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;判断是否为空</a>
+</h3>
+<h3 class="topic">
+<a name="17gi7ng8c16j7084idliup18kk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;size</a>
+</h3>
+<h3 class="topic">
+<a name="5rhas6l5hcihas8jqrqu09rol3">&nbsp;&nbsp;&nbsp;&nbsp;其他</a>
+</h3>
+<h3 class="topic">
+<a name="0lcfqis8gp69pe5mhdvs76mc3r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;swap</a>
+</h3>
+<h3 class="topic">
+<a name="27gid8nid7gg4q1183csld93qn">&nbsp;&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="667l8qiq5m1r20kk555g2mn7d8">&nbsp;&nbsp;&nbsp;&nbsp;初始化容器</a>
+</h3>
+<h3 class="topic">
+<a name="09othv5pfbcjbhr3n725pln3g0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vector&lt;int&gt;veca;//空类&#13;
+vector&lt;int&gt;veca(10); //初始化动态数组为10个元素，全部被初始化为0&#13;
+vector&lt;int&gt;veca(10,2);//初始化动态数组为10个元素，全部被初始化为2&#13;
+vector&lt;int&gt;veca={1,2,3,4};//动态数组被初始化为1，2，3，4&#13;
+vector&lt;int&gt;veca();//这样是定义了一个函数，如果想调用无参构造，就不要加()</a>
+</h3>
+<h3 class="topic">
+<a name="43nr8hr286fl96mtelsigkuo9d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{} 是initializer_list&lt;int l&gt; 是初始化列表，可以将其作为类的构造函数的形参，用于支持  vector&lt;int&gt;veca={1,2,3,4}；的初始化方式</a>
+</h3>
+<h3 class="topic">
+<a name="7e4h80nnsurbttn1n10m9e60dt">&nbsp;&nbsp;&nbsp;&nbsp;查改</a>
+</h3>
+<h3 class="topic">
+<a name="0demr2glmnhccgmv77hr1huohr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;veca[0]=10;//会对非法下标访问进行检测，造成程序崩溃&#13;
+veca.at(0)=10;//非法下表访问只会抛出异常，不会造成程序崩溃&#13;
+veca.front()=100; //第一个元素赋值为100&#13;
+veca.back()=100;  //最后一个元素赋值为100</a>
+</h3>
+<h3 class="topic">
+<a name="3k5baohr0h4q3e2mq1gts0t07b">&nbsp;&nbsp;&nbsp;&nbsp;增加</a>
+</h3>
+<h3 class="topic">
+<a name="348l9o3g7hs8np2pf99g4ejo2v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vecd.push_back(10);//添加到末尾&#13;
+vecd.insert(vecd.begin()+1,16);//在下标为1的位置添加16</a>
+</h3>
+<h3 class="topic">
+<a name="10c5b3hclgt9j3l43rmq9konir">&nbsp;&nbsp;&nbsp;&nbsp;删除</a>
+</h3>
+<h3 class="topic">
+<a name="3q7p7sird5ep77vlidfgnlpg4v">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vecd.pop_back();//删除末尾&#13;
+vecd.erase(vecd.begin()+1);//擦除下标为1的位置&#13;
+vecd.erase(vecd.end()-1);//擦除最后一个元素</a>
+</h3>
+<h3 class="topic">
+<a name="71kc24b133noddsgsn2c8p7mte">&nbsp;&nbsp;&nbsp;&nbsp;遍历所有数据</a>
+</h3>
+<h3 class="topic">
+<a name="1aujkttjsdk0j2p0cqkrc2rm8n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用for循环直接遍历</a>
+</h3>
+<h3 class="topic">
+<a name="7smdh1gsghc7bqiqdnepqp3e4e">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//这可能会显示有符号数不能与无符号数进行比较，解决方法是将i的数据类型指定为 size_t或者auto（即自动数据类型）&#13;
+for(size_t i=0;i&lt;vecd.size();i++)&#13;
+printf("%d",vecd[i]);</a>
+</h3>
+<h3 class="topic">
+<a name="0ridj5rmh3pnjs7t18h71hd2nl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用for each（c++11版）</a>
+</h3>
+<h3 class="topic">
+<a name="64j97lvkrun7c4oe87fffr71ff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for(auto &amp;item:vecd) //如果不加&amp;，在会调用拷贝构造，修改item不会影响vecd&#13;
+{		//如果是进行输出的话，可以给形参加上const&#13;
+printf("%d",item);&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="5ie61tv71uj351ejcc9lbvgqae">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用迭代器进行遍历</a>
+</h3>
+<h3 class="topic">
+<a name="10oilhik9kh4iuj7v3g744u2l6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;end通常用于比较</a>
+</h3>
+<h3 class="topic">
+<a name="5gg0md5t107v0cbs2d521mk5b0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for(auto iter=vecd.begin();iter!=vecd.end();iter++)&#13;
+{&#13;
+	printf("%d",*iter);//如果不加*返回的是一个迭代器类型&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="024ckkv1l9mhf1kfilrel9084t">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#13;
+auto begin=vecd.begin();&#13;
+while(begin!=vecd.end()){&#13;
+	printf("%d",*begin);&#13;
+	begin++；&#13;
+}&#13;
+&#13;
+puts("");//换行打印字符  &#13;
+&#13;
+</a>
+</h3>
+<h3 class="topic">
+<a name="560uvs4ub8tab60ea3ve5vqj8c">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意不能再遍历过程中增加或者删除容器内的数据，很可能崩溃&#13;
+for(auto iter=vecd.begin();iter!=vecd.end();iter++)&#13;
+{&#13;
+	if(*iter==3)&#13;
+	{&#13;
+		//erase()返回的是被删除的元素的下一个迭代器&#13;
+		vecd.erase(vecd.begin() + i);&#13;
+&#13;
+	}&#13;
+}&#13;
+</a>
+</h3>
+<h3 class="topic">
+<a name="0cn5t06k674saghjou57rs845q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;begin=vecd.begin();&#13;
+ while(begin!=vecd.end()){&#13;
+	printf("%d",*begin);&#13;
+	if(16==*begin){	&#13;
+	begin=vecd.erase(begin);	//这里删除了值为16的节点，begin返回了被删除节点的下一个节点，此时需要进行continue，否则继续执行begin++会导致少遍历一个节点&#13;
+	continue;&#13;
+	}&#13;
+	begin++；&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="2ju0pvoucomarvlko63sh16ap0">&nbsp;&nbsp;list容器</a>
+</h3>
+<h3 class="topic">
+<a name="0hbcm51q7iu3u3sda1ja72ts5f">&nbsp;&nbsp;&nbsp;是一个双向链表</a>
+</h3>
+<h3 class="topic">
+<a name="1egsjb2d8671b44bb01kfeqcbh">&nbsp;&nbsp;&nbsp;没有[]重载，不支持任意下标访问</a>
+</h3>
+<h3 class="topic">
+<a name="1ibet1bp4cvtn196smjbio53uh">&nbsp;&nbsp;&nbsp;添加了push \pop front 的操作</a>
+</h3>
+<h3 class="topic">
+<a name="0l573nqa4ouf0hurpapntl714d">&nbsp;&nbsp;deque容器</a>
+</h3>
+<h3 class="topic">
+<a name="0hvf895dbh2u79e2ht6umdh80l">&nbsp;&nbsp;&nbsp;双端队列</a>
+</h3>
+<h3 class="topic">
+<a name="19kp2vjknn2ce48po6svu72sjv">&nbsp;&nbsp;&nbsp;遍历效率比list高，但是比vector低</a>
+</h3>
+<h3 class="topic">
+<a name="290o9309l3evhbaphlccjb9sip">&nbsp;&nbsp;&nbsp;增删效率比vector快，比list慢</a>
+</h3>
+<h3 class="topic">
+<a name="48jj6k3cg15821mp426elloclp">&nbsp;&nbsp;&nbsp;支持[]访问</a>
+</h3>
+<h3 class="topic">
+<a name="5d9k5og03dksf7905ucmmhat85">&nbsp;&nbsp;queue容器</a>
+</h3>
+<h3 class="topic">
+<a name="7k0gcrb73fgmgum329sdu9ltd7">&nbsp;&nbsp;&nbsp;普通队列</a>
+</h3>
+<h3 class="topic">
+<a name="0h7v8apgsdqcdntds6eloh3rr2">&nbsp;&nbsp;&nbsp;队头删除，队尾添加</a>
+</h3>
+<h3 class="topic">
+<a name="6f073k48apnr8a3an9d7rfbl9q">&nbsp;&nbsp;set容器（平衡数）</a>
+</h3>
+<h3 class="topic">
+<a name="6l04sb6a1rfp4opo4ttl1iigo4">&nbsp;&nbsp;&nbsp;底层使用红黑树实现</a>
+</h3>
+<h3 class="topic">
+<a name="14n2ib8dgodgg64t151u3g5h7t">&nbsp;&nbsp;&nbsp;数据自动被排序</a>
+</h3>
+<h3 class="topic">
+<a name="23kd6fh0dak7450u03suac4sip">&nbsp;&nbsp;&nbsp;元素值都是唯一的</a>
+</h3>
+<h3 class="topic">
+<a name="2fac1dgvd7dhc233trqfrerjtu">&nbsp;&nbsp;&nbsp;返回的数据是常量，不能修改，只能先删除旧元素，插入新元素</a>
+</h3>
+<h3 class="topic">
+<a name="5roddrn5vf5s5kb33s3nb3mmg0">&nbsp;&nbsp;&nbsp;使用</a>
+</h3>
+<h3 class="topic">
+<a name="5e8qrfve5v0npo3bc1l1807bvf">&nbsp;&nbsp;&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="63rbq4s2lp2em0pms84dvldgj9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;void set_test()&#13;
+{&#13;
+	// 初始化&#13;
+	set&lt;int&gt; s = { 1, 23, 4, 4 };&#13;
+&#13;
+	// 输出可知，一个元素只会出现一次，并且元素内容会排序&#13;
+	//输出时默认中序输出&#13;
+	for (const auto &amp; item : s)&#13;
+		printf("%d ", item);&#13;
+	putchar('\n');&#13;
+&#13;
+	// 获取元素在set中的次数&#13;
+	int count = s.count(4);&#13;
+&#13;
+	// 索引一个元素，返回的是迭代器(元素所在的位置)&#13;
+	auto item = s.find(0);&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="0eiuo15e9gm3l5kejkd45p2egp">&nbsp;&nbsp;&nbsp;&nbsp;获取元素在set中出现的次数</a>
+</h3>
+<h3 class="topic">
+<a name="2mp5k274u3ia57fe9u89tg756m">&nbsp;&nbsp;&nbsp;&nbsp;索引一个元素</a>
+</h3>
+<h3 class="topic">
+<a name="1vha9hr91usu0ldm0k2ctiu28s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;auto item=s.find(0);//返回的是迭代器，不能被修改</a>
+</h3>
+<h3 class="topic">
+<a name="0t8le5h6uuuevt37eke8mj0j7v">&nbsp;&nbsp;multiset容器</a>
+</h3>
+<h3 class="topic">
+<a name="274ob1fefcgn839dni8hcmfmcn">&nbsp;&nbsp;&nbsp;同一个元素可以在树中出现多次</a>
+</h3>
+<h3 class="topic">
+<a name="5i7gbr9nnkeca2fvu535amne5e">&nbsp;&nbsp;map容器（平衡数（键值对））</a>
+</h3>
+<h3 class="topic">
+<a name="4ls274hcppv2p7vs00btc9f6oi">&nbsp;&nbsp;&nbsp;底层使用红黑树实现</a>
+</h3>
+<h3 class="topic">
+<a name="1qgkldh2pfe863rlur3dlr432f">&nbsp;&nbsp;&nbsp;也称键值对</a>
+</h3>
+<h3 class="topic">
+<a name="5frnst6c1jucndc67c7dl45bmt">&nbsp;&nbsp;&nbsp;&nbsp;键可以用来检索值，</a>
+</h3>
+<h3 class="topic">
+<a name="4ohpdr76ht8ls28dkapaavuj5a">&nbsp;&nbsp;&nbsp;键只能存在一个，不能存在多个，如果重新赋值是不会产生新的新的节点</a>
+</h3>
+<h3 class="topic">
+<a name="1f5b9u4ku175a05u55k0ckqjlm">&nbsp;&nbsp;&nbsp;可以使用字符串等其他类型数据作为键，放在[]中对值进行检索</a>
+</h3>
+<h3 class="topic">
+<a name="45nt7md3uuskabpncj8bp7qb1v">&nbsp;&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="7fbilleup6hvfncc6jfd28udbc">&nbsp;&nbsp;&nbsp;&nbsp;void map_test()&#13;
+{&#13;
+	// 初始化，键的类型为const char*，值的类型为int&#13;
+	map&lt;const char*, int&gt; score;&#13;
+&#13;
+	// 添加元素值&#13;
+	score.insert({ "xiaoming", 10 });&#13;
+	score["xiaohong"] = 9;&#13;
+&#13;
+	// map 存储的是两个数据，所以需要使用 first 以及 second&#13;
+	for (const auto &amp; item : score)&#13;
+		printf("%s = %d\n", item.first, item.second);&#13;
+	putchar('\n');&#13;
+&#13;
+	printf("xiaoming = %d\n", score["xiaoming"]);&#13;
+&#13;
+	// 键只能存在一个，不能存在多个，如果重新赋值是不会产生新的键的&#13;
+	//这里xiaohong的值被改写为101&#13;
+	score["xiaohong"] = 101;&#13;
+	for (const auto &amp; item : score)&#13;
+		printf("%s = %d\n", item.first, item.second);&#13;
+	putchar('\n');&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="6djbjpgin8e4e55p8b2hu6q4h2">&nbsp;&nbsp;stack容器</a>
+</h3>
+<h3 class="topic">
+<a name="6s8unaabdt68nh1sjodbkkpg4p">&nbsp;&nbsp;&nbsp;栈</a>
+</h3>
+<h3 class="topic">
+<a name="0lrnml7rdn89ifo02mun8deger">&nbsp;&nbsp;注意事项</a>
+</h3>
+<h3 class="topic">
+<a name="4qa5hsgn52fpr6ebuaj3nm5fce">&nbsp;&nbsp;&nbsp;当对象被插入容器时，被插入的对象会调用拷贝构造，要考虑实现深拷贝</a>
+</h3>
+<h3 class="topic">
+<a name="3mg940abddq5ih5ss957s8qcam">&nbsp;&nbsp;&nbsp;对于set和map需要考虑实现==和&lt;的重载函数</a>
+</h3>
+<h3 class="topic">
+<a name="0rvo9ac0hk26ghaeakf079a4s8">&nbsp;a*算法</a>
+</h3>
+<h3 class="topic">
+<a name="0egi4aa8c2bhbtu3ng0lctamuo">&nbsp;&nbsp;理论</a>
+</h3>
+<h3 class="topic">
+<a name="7lk1i7upc17ckpvkncg2bpp3gl">&nbsp;&nbsp;&nbsp;三张表，三个值</a>
+</h3>
+<h3 class="topic">
+<a name="1bpi4hu7d56obrfsvjicr0k28m">&nbsp;&nbsp;&nbsp;&nbsp;open表</a>
+</h3>
+<h3 class="topic">
+<a name="4f6pnvnhovaoprq39g1gd6sr1u">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;待检测点的表</a>
+</h3>
+<h3 class="topic">
+<a name="7sgrg4otjsne346ot1vpqttdbv">&nbsp;&nbsp;&nbsp;&nbsp;close表</a>
+</h3>
+<h3 class="topic">
+<a name="6l6s883pialvnv6t8i32c0dp8a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;已检测过点的表</a>
+</h3>
+<h3 class="topic">
+<a name="29p9j0p6ngs7drjgve24255gj8">&nbsp;&nbsp;&nbsp;&nbsp;path表</a>
+</h3>
+<h3 class="topic">
+<a name="6993hcke50r8p9ciqo480aub5h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用于保存得到的路径</a>
+</h3>
+<h3 class="topic">
+<a name="21nlc4j2mglakqgq35o6t9jsrk">&nbsp;&nbsp;&nbsp;&nbsp;g值</a>
+</h3>
+<h3 class="topic">
+<a name="1pq3snr11f12287lj8f9cb94nv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;从起点开始走到当前节点走的步数</a>
+</h3>
+<h3 class="topic">
+<a name="6h2ddaio5h89f5occqn475apgk">&nbsp;&nbsp;&nbsp;&nbsp;h值</a>
+</h3>
+<h3 class="topic">
+<a name="2obck9rpmf3qtpqhm4jrr68nf9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当前节点到终点的直角距离</a>
+</h3>
+<h3 class="topic">
+<a name="0lu9op0v53boucrhlaf8d1vi0k">&nbsp;&nbsp;&nbsp;&nbsp;f=g+h值</a>
+</h3>
+<h3 class="topic">
+<a name="3ae5gj48epv2tjccii6kj0qf8h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;f是g h之和，表示当前点走到终点的距离，找到f最小的路径即为当前的最短距离</a>
+</h3>
+<h3 class="topic">
+<a name="0b1rht40uiq0urmdo9rhe9cdri">&nbsp;&nbsp;主要思想</a>
+</h3>
+<h3 class="topic">
+<a name="2ab5f78rcho37t7tm9rnpop5mi">&nbsp;&nbsp;&nbsp;以起点为中心，上下左右个方向扩展点，取四个点中f值最小的点进行作为下一层扩展中点</a>
+</h3>
+<h3 class="topic">
+<a name="06pap9emth1tufb0c9m9e1e8cb">&nbsp;&nbsp;&nbsp;如果坦克只能上下左右移动，则扩展四个方向的点，如果坦克可以对角线移动，则可以扩展中点周围8个点的坐标点</a>
+</h3>
+<h3 class="topic">
+<a name="6idgueuishai9q0c8u6k9npprm">&nbsp;&nbsp;三种情况当前节点无法延伸</a>
+</h3>
+<h3 class="topic">
+<a name="3u28e662m0o1gplc8fl0mkk9ar">&nbsp;&nbsp;&nbsp;障碍物</a>
+</h3>
+<h3 class="topic">
+<a name="2p7opodvjbo8mkl7l029lkcpsr">&nbsp;&nbsp;&nbsp;已经检测过的点</a>
+</h3>
+<h3 class="topic">
+<a name="4k747v0rukvaeunmg6h74m68pt">&nbsp;&nbsp;&nbsp;已经被扩展过的点</a>
+</h3>
+<h3 class="topic">
+<a name="4dbeb79gmrqfhdvu2ip1ujuv2c">&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="1mm395o0pb67s7q3aukftk72rt">&nbsp;&nbsp;&nbsp;见老师发的文档</a>
+</h3>
+<h2 class="topic">
+<a name="7co9s83n0n8d55mkif46rftbfv">tips</a>
+</h2>
+<h3 class="topic">
+<a name="5v94he0po438kd74uen1qdfek3">&nbsp;可以使用auto代替迭代器类型定义迭代器，比较方便</a>
+</h3>
+</body>
+</html>

@@ -1,0 +1,682 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>class70day0617</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="34kpp53945m2fjmllajrk2onoh">class70day0617</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="class70day0617_files/images/class70day0617.jpg"></div>
+<h2 class="topic">
+<a name="5hsp7t89q3mhh5uq4tmf84r7cq">内核基本概念</a>
+</h2>
+<h3 class="topic">
+<a name="7vtmh9rs268s6d1j6l3mltcqvm">&nbsp;每个进程都拥有独立的进程空间，低2gb为用户空间，高2gb为内核空间，内核空间是是各个进程间共享的</a>
+</h3>
+<h3 class="topic">
+<a name="12k8f1865tdav722noj3eam06h">&nbsp;内核编程-》一个sys后缀的程序加载到内存空间中</a>
+</h3>
+<h3 class="topic">
+<a name="5rvci1cjh5u0sd4sjc5qn6dmmu">&nbsp;驱动的加载过程更加接近于dll加载,而非exe的运行</a>
+</h3>
+<h3 class="topic">
+<a name="2oni38q2d6ov68l5r14u9d8gu3">&nbsp;在用户进程中：70000000~7fffffff</a>
+</h3>
+<h3 class="topic">
+<a name="7j7dl8f3k71kfg5njufekti62v">&nbsp;&nbsp;是系统领空,用于加载dll</a>
+</h3>
+<h3 class="topic">
+<a name="4nmjjgddgvivfftsed7sjpe6o2">&nbsp;&nbsp;相同的dll在不同的进程中加载基址可能相同，可能不相同</a>
+</h3>
+<h3 class="topic">
+<a name="6qntnfcl2l6isdc4kil5d36k9l">&nbsp;0~0x1000为空指针区域,无法访问</a>
+</h3>
+<h3 class="topic">
+<a name="7ulgum3fch8eitnqn4q52m24fs">&nbsp;驱动开发</a>
+</h3>
+<h3 class="topic">
+<a name="3rt4762m9nv1khe09nblua1p5g">&nbsp;&nbsp;开发驱动程序</a>
+</h3>
+<h3 class="topic">
+<a name="198119h2a10h8b9505b43ibok7">&nbsp;&nbsp;&nbsp;针对某一种硬件，作为硬件和操作系统的桥梁</a>
+</h3>
+<h3 class="topic">
+<a name="0q0safq3g7q8c1d63s6vnh2pr2">&nbsp;&nbsp;开发内核程序</a>
+</h3>
+<h3 class="topic">
+<a name="054mkshg4bqqii787bd0k1m4tc">&nbsp;&nbsp;&nbsp;针对某一项功能，作为操作系统的一种插件</a>
+</h3>
+<h3 class="topic">
+<a name="633j9h1k48bolispj8u5pd2nq0">&nbsp;&nbsp;&nbsp;定制操作系统功能</a>
+</h3>
+<h3 class="topic">
+<a name="3h8l40oqnjqjug4gdomfemc4qj">&nbsp;驱动类型</a>
+</h3>
+<h3 class="topic">
+<a name="0fju2mg2sc2941lqjlrriopgjd">&nbsp;&nbsp;nt式驱动</a>
+</h3>
+<h3 class="topic">
+<a name="5tq00lh5ogeilul9s8bv3ncgu9">&nbsp;&nbsp;&nbsp;类比直接使用winapi进行界面编程</a>
+</h3>
+<h3 class="topic">
+<a name="4ubobqdom099url6j2ojbdqcnq">&nbsp;&nbsp;wdm式驱动</a>
+</h3>
+<h3 class="topic">
+<a name="7ovo8b4cr4b274elr7ad8ung9j">&nbsp;&nbsp;&nbsp;类比简化版mfc编程</a>
+</h3>
+<h3 class="topic">
+<a name="7i2oid7mbhnic86psil5utbh47">&nbsp;&nbsp;wdf式驱动</a>
+</h3>
+<h3 class="topic">
+<a name="6u7i5vdh0q6iemr00gtosb42oo">&nbsp;&nbsp;&nbsp;类比完全版mfc编程</a>
+</h3>
+<h3 class="topic">
+<a name="7lgdrpupgmr81di8vummptqvbp">&nbsp;环境配置</a>
+</h3>
+<h3 class="topic">
+<a name="0amcvrjdi392e3pv0ems8l0vg4">&nbsp;&nbsp;环境安装顺序</a>
+</h3>
+<h3 class="topic">
+<a name="1jhi0i3603f6tultu2kpq3rro2">&nbsp;&nbsp;&nbsp;vs-》sdk-》mdk</a>
+</h3>
+<h3 class="topic">
+<a name="7t25llrbb9c4mnc981mt36n30g">&nbsp;&nbsp;vs2013-&gt; wdk8.1 -&gt; win7 win8 win8.1</a>
+</h3>
+<h3 class="topic">
+<a name="4ivovvsqkva7e22j9t10c005kn">&nbsp;&nbsp;&nbsp;不支持win10</a>
+</h3>
+<h3 class="topic">
+<a name="4ioqhp6p52h7er9i4ra82f52et">&nbsp;&nbsp;vs2017 + sdk1809 + wdk1809 </a>
+</h3>
+<h3 class="topic">
+<a name="35eefhadqsa9hb5h7u4g241k98">&nbsp;&nbsp;&nbsp;最好是用vs2017,到时候因为环境不同可能出现问题</a>
+</h3>
+<h3 class="topic">
+<a name="24ugp7usgqj6bfk280it43ss4j">&nbsp;&nbsp;vs2019 - 得装预览版得wdk,</a>
+</h3>
+<h3 class="topic">
+<a name="4o4n9oitfnrgbfd681ue08kupc">&nbsp;&nbsp;需要安装mdk,每个版本的mdk都对应着一个特定版本的操作系统,并且装特定版本的mdk之前，必须安装对应版本的sdk</a>
+</h3>
+<h3 class="topic">
+<a name="20gko83do8o727hue4n751d77m">&nbsp;&nbsp;如果报错显示vs未安装，可能是没有安装在系统盘，或系统盘可能不是c盘</a>
+</h3>
+<h3 class="topic">
+<a name="41lb8tce7nsr26cvkp8slobi0c">&nbsp;内核程序编程helloworld</a>
+</h3>
+<h3 class="topic">
+<a name="10ovailsn80n8k6fs94irjcc4f">&nbsp;&nbsp;新建驱动项目-》测试-》legacy-》wdk</a>
+</h3>
+<h3 class="topic">
+<a name="13rqo734pkge4l1g258qrvuhjo">&nbsp;&nbsp;&nbsp;在sourcefile 上新建项 使用.c结尾 点击添加</a>
+</h3>
+<h3 class="topic">
+<a name="6hif38qn65jd94ugt50bj9hdg6">&nbsp;&nbsp;#include&lt;ntddk.h&gt;&#13;
+VOID DriverUnload(PDRIVER_OBJECT driver)&#13;
+{&#13;
+	UNREFERENCED_PARAMETER(driver);&#13;
+	DbgPrint("unload");&#13;
+}&#13;
+NTSTATUS DriverEntry(PDRIVER_OBJECT driver,PUNICODE_STRING path)&#13;
+{&#13;
+	_asm {int 3}&#13;
+	UNREFERENCED_PARAMETER(path);&#13;
+	DbgPrint("hello ya");&#13;
+	driver-&gt;DriverUnload = DriverUnload;&#13;
+	return STATUS_SUCCESS;&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="7ukbgrq784830id153sb12sb09">&nbsp;&nbsp;需要修改该工程对应的项目属性-&gt;DriverSetting-&gt;选择目标系统的版本,即设置驱动程序对应的操作系统版本,如果没有设置,会导致驱动程序与对应操作系统版本不同,导致蓝屏</a>
+</h3>
+<h3 class="topic">
+<a name="63na6f7ponc4rtf77paemur6ct">&nbsp;&nbsp;如果程序编译警告:形参未被引用,则需要在DriverEntry函数中使用该形参&#13;
+（例如UNREFERENCED_PARAMETER(driver);）,或者将警告等级调整为3(不推荐)</a>
+</h3>
+<h3 class="topic">
+<a name="3m4mqtfq5sdtae1gr18petqnlr">&nbsp;&nbsp;如果报错显示找不到obj文件,可以将工程编码方式改成unicode方式</a>
+</h3>
+<h3 class="topic">
+<a name="53je4rn4c77gk2dsm1oe8ab9q8">&nbsp;&nbsp;如果报错显示SignTask相关,则说该报错与vs检验签名文件有关</a>
+</h3>
+<h3 class="topic">
+<a name="4kgrba8fg336ebg1hntkmm5vv5">&nbsp;&nbsp;&nbsp;具体看笔记目录下的文档</a>
+</h3>
+<h3 class="topic">
+<a name="4r4hirkvtb1nsua8bjae7cmt1u">&nbsp;&nbsp;如何使.sys后缀的程序运行-&gt;使用驱动加载工具</a>
+</h3>
+<h3 class="topic">
+<a name="5lp3je7semabbsed8rnu7mra0b">&nbsp;&nbsp;&nbsp;驱动加载核心原理:通过加载服务的方式将驱动加载到内核中</a>
+</h3>
+<h3 class="topic">
+<a name="4c38c6kdp4crjj5vbjldknm7sq">&nbsp;&nbsp;驱动程序不能直接创建窗口用于输出字符串,驱动程序只能输出调试信息,可以通过以下程序查看调试信息</a>
+</h3>
+<h3 class="topic">
+<a name="2i012ugfuj5ml7t3he0bp0f626">&nbsp;&nbsp;&nbsp;dbgview</a>
+</h3>
+<h3 class="topic">
+<a name="3h9mcgfbqur36dhuq8b5g46ldk">&nbsp;&nbsp;&nbsp;windbg</a>
+</h3>
+<h3 class="topic">
+<a name="5161f0t6mi32hdgbnp5d2in5kv">&nbsp;&nbsp;win7中对调试信息进行了过滤,如果要显示内核程序输出的hellworld的调试信息,需要修改win7的注册表</a>
+</h3>
+<h3 class="topic">
+<a name="71c8lmdjbbtika9rgia3rh2snm">&nbsp;&nbsp;调试方式</a>
+</h3>
+<h3 class="topic">
+<a name="11nk8bb9kv17qth6vrrldcegsk">&nbsp;&nbsp;&nbsp;传统方式</a>
+</h3>
+<h3 class="topic">
+<a name="1ki6mfr6v3f4gp6tq3d4gv4dfu">&nbsp;&nbsp;&nbsp;&nbsp;使用网络串口连接,将被调试系统与宿主系统连接</a>
+</h3>
+<h3 class="topic">
+<a name="0o5qdesqj2gfcsv301gsq3j280">&nbsp;&nbsp;&nbsp;使用工具</a>
+</h3>
+<h3 class="topic">
+<a name="34mlps0r8cs60728hdehdcvek4">&nbsp;&nbsp;&nbsp;&nbsp;使用VirtualKD 创建双机调试</a>
+</h3>
+<h3 class="topic">
+<a name="13elhs4qdnsu5etj855qlddf36">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将virtualkd中的target文件夹复制到目标虚拟机中,安装virtualkd</a>
+</h3>
+<h3 class="topic">
+<a name="0g17nm2j8om79pn36nf206pcns">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在宿主机中设置调试器的路径,即设置windbg的路径</a>
+</h3>
+<h3 class="topic">
+<a name="23jgdc1ve3nnvnmhlbije69cv2">&nbsp;&nbsp;针对驱动程序进行调试</a>
+</h3>
+<h3 class="topic">
+<a name="5vg5mmp4dsdaqu87pmsb9d714j">&nbsp;&nbsp;&nbsp;如果有源码,在源码中使用内联汇编写一个int 3</a>
+</h3>
+<h3 class="topic">
+<a name="22iillo9k0a6l0fn4rrr675856">&nbsp;&nbsp;&nbsp;&nbsp;如果使用debug方式对内核程序进行编译,则会保存工程的符号文件和源码,在windbg调试过程中,如果在指定路径找到了符号和源码,会将被调试程序以源码进行显示</a>
+</h3>
+<h3 class="topic">
+<a name="0ii3uf9sss9tviubdph4ttkrso">&nbsp;&nbsp;&nbsp;如果没有源码,而有符号,则可以在DriverEntry(相当于main函数)上下断点</a>
+</h3>
+<h3 class="topic">
+<a name="6rrjcsve6i5rhtoabiklcgrsja">&nbsp;&nbsp;&nbsp;&nbsp;sxe ld MyDriver3</a>
+</h3>
+<h3 class="topic">
+<a name="2bru27d76o70rgsiqm3tkj7gqi">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当MyDriver3被加载时,创建断点断下</a>
+</h3>
+<h3 class="topic">
+<a name="5earqtb6tge1nkddodipe669uh">&nbsp;&nbsp;&nbsp;&nbsp;bp MyDriver3!DriverEntry </a>
+</h3>
+<h3 class="topic">
+<a name="5pvi8apm29r4jd3tj5h7h66gqi">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;给特定模块中的函数下断点</a>
+</h3>
+<h3 class="topic">
+<a name="4t7h5io1sc4cmgtibk2ei3u5fa">&nbsp;&nbsp;&nbsp;&nbsp;g</a>
+</h3>
+<h3 class="topic">
+<a name="3ujgh009e3ju0lccc1aph1c3st">&nbsp;&nbsp;&nbsp;如果没有源码也没有符号,则可以在sys文件的oep处下断点</a>
+</h3>
+<h3 class="topic">
+<a name="12herorioredmjsa6d4bou9u8m">&nbsp;&nbsp;&nbsp;&nbsp;sxe ld MyDriver3</a>
+</h3>
+<h3 class="topic">
+<a name="30u5qjb7mpdm160otnu1f1aj5m">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当MyDriver3被加载时,创建断点断下</a>
+</h3>
+<h3 class="topic">
+<a name="6prgju9td61gjfqjmi5rs77mkv">&nbsp;&nbsp;&nbsp;&nbsp;lm /m MyDriver3</a>
+</h3>
+<h3 class="topic">
+<a name="3olnrcqqj1o4586ohs7gtohd8r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;查看模块的加载基址</a>
+</h3>
+<h3 class="topic">
+<a name="2glp9dvh924ijqljpongddo9ip">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;windbg中右键复制文本,右键粘贴文本</a>
+</h3>
+<h3 class="topic">
+<a name="72piuiv26jt7jd604hhcpkemv7">&nbsp;&nbsp;&nbsp;&nbsp;bp base+poi(base+poi(base+0x3c)+0x28)</a>
+</h3>
+<h3 class="topic">
+<a name="0uo8mvj7eghq1340ccmgdcnrv6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将找到的加载基址替换为base,在oep下断点</a>
+</h3>
+<h3 class="topic">
+<a name="0im1v07ikru07tu9jljm4jtqpm">&nbsp;&nbsp;&nbsp;&nbsp;断在oep之后可以通过汇编找到mian函数,在main函数下断点,或者直接g到main函数首地址</a>
+</h3>
+<h3 class="topic">
+<a name="0luetedsh6i6vknbpgbfq7k8bm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;g 地址</a>
+</h3>
+<h3 class="topic">
+<a name="755eb31uccbn0tg2aoo24rarai">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;类似于od中的f4</a>
+</h3>
+<h3 class="topic">
+<a name="43h12a9e1bh18e0ti2c8i6db20">&nbsp;&nbsp;&nbsp;如果没有驱动名称</a>
+</h3>
+<h3 class="topic">
+<a name="4laqo82bbuv01805vvbqtg4qol">&nbsp;&nbsp;&nbsp;&nbsp;所有的驱动模块的加载都在IopLoadDriver系统api的函数中完成,在该函数中call dword ptr[esi+2ch] 会调用驱动程序的oep</a>
+</h3>
+<h3 class="topic">
+<a name="753qmvms303bl2n6196g0q0tto">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uf /c IopLoadDriver</a>
+</h3>
+<h3 class="topic">
+<a name="6korpt0fgj58b24pm30saqjlsb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;显示该函数中所有调用到的函数</a>
+</h3>
+<h3 class="topic">
+<a name="077l83s2aecee5ckehg7okrsvd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;找到 call dword ptr[esi+2ch]函数的位置,进行下断点,然后加载驱动程序,从而断在内核程序的oep处</a>
+</h3>
+<h3 class="topic">
+<a name="1imnoq3fq74fmvs477r1hr51ca">&nbsp;&nbsp;如何针对蓝屏进行调试</a>
+</h3>
+<h3 class="topic">
+<a name="6qejml7vhnmq9g4puq8ppu9s9g">&nbsp;&nbsp;&nbsp;设置系统属性,保存蓝屏时的dump文件</a>
+</h3>
+<h3 class="topic">
+<a name="2t5st8l4j0gmom5tbiqod23v8u">&nbsp;&nbsp;&nbsp;&nbsp; 属性-&gt; 高级系统设置-&gt; 高级-&gt; 核心内存转储</a>
+</h3>
+<h3 class="topic">
+<a name="5sg9edcpmmkb7ufjgbd79aepi0">&nbsp;&nbsp;&nbsp;使用工具分析转储文件 </a>
+</h3>
+<h3 class="topic">
+<a name="6f752h877k5n7oaos8g28puqi7">&nbsp;&nbsp;&nbsp;&nbsp;工具 蓝屏查看器(BlueScreemView)</a>
+</h3>
+<h3 class="topic">
+<a name="31ajskprg1b004cbh7f5fvesu6">&nbsp;&nbsp;&nbsp;&nbsp;可以直接将windbg打开dump文件</a>
+</h3>
+<h3 class="topic">
+<a name="55t6m9uk8q2boup11mkinhbjo8">&nbsp;&nbsp;驱动是如何通过用户层加载到内核层的</a>
+</h3>
+<h3 class="topic">
+<a name="58fn8tgnds2as82l11gh21g83j">&nbsp;&nbsp;&nbsp;通过"门"</a>
+</h3>
+<h3 class="topic">
+<a name="27l12cjk8cske1hcmh203ndijg">&nbsp;&nbsp;内核helloworld代码</a>
+</h3>
+<h3 class="topic">
+<a name="2gud37h531oig3ggj3hhhljmgi">&nbsp;&nbsp;&nbsp;#include&lt;ntddk.h&gt;&#13;
+VOID DriverUnload(PDRIVER_OBJECT driver)&#13;
+{&#13;
+	UNREFERENCED_PARAMETER(driver);&#13;
+	DbgPrint("unload");&#13;
+}&#13;
+NTSTATUS DriverEntry(PDRIVER_OBJECT driver,PUNICODE_STRING path)&#13;
+{&#13;
+	_asm {int 3}//用于调试时作为断点断在DriverEntry函数&#13;
+	UNREFERENCED_PARAMETER(path);&#13;
+	DbgPrint("hello ya");&#13;
+	driver-&gt;DriverUnload = DriverUnload;&#13;
+	return STATUS_SUCCESS;&#13;
+}</a>
+</h3>
+<h2 class="topic">
+<a name="46nr4gqupnbc1cgs77ctqs7qhr">裸金属层原理</a>
+</h2>
+<h3 class="topic">
+<a name="2up50bm47f1862utljc334gr3i">&nbsp;十六位寄存器段寄存器以及分段概念</a>
+</h3>
+<h3 class="topic">
+<a name="14s6n990642hqfi693ov5kk4bc">&nbsp;32位程序中,有6个段寄存器,</a>
+</h3>
+<h3 class="topic">
+<a name="69gkvqcgebmafr30o8a9uap0he">&nbsp;&nbsp;6个段寄存器分为两部分</a>
+</h3>
+<h3 class="topic">
+<a name="0kg7tlmj4o884j4nm3pj3nq0gs">&nbsp;&nbsp;&nbsp;可见部分(16位)</a>
+</h3>
+<h3 class="topic">
+<a name="4gc60bhib1dl3s7t84ods5fivv">&nbsp;&nbsp;&nbsp;&nbsp;不能真实影响段的属性</a>
+</h3>
+<h3 class="topic">
+<a name="1urm04suka7opu9rl6t5tk7ps8">&nbsp;&nbsp;&nbsp;&nbsp;实质上是段选择子,系统根据段选择子填充段寄存器中不可见的部分</a>
+</h3>
+<h3 class="topic">
+<a name="68bcibsj4f106benj2lu3r1eb1">&nbsp;&nbsp;&nbsp;&nbsp;可以分为</a>
+</h3>
+<h3 class="topic">
+<a name="6o92csmtsrquv1s18dbo3e38ae">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;00 01二进制位</a>
+</h3>
+<h3 class="topic">
+<a name="5vblj3da7sid12m4tu9cov5gdv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;请求特权级（RPL）</a>
+</h3>
+<h3 class="topic">
+<a name="3ben295imgrgom2boh8aq9bc8h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;00</a>
+</h3>
+<h3 class="topic">
+<a name="62pefhtohtepuk36ekgr4unmp4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0环</a>
+</h3>
+<h3 class="topic">
+<a name="4v0cs83samf0u9nd0lq5h9dn92">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;11</a>
+</h3>
+<h3 class="topic">
+<a name="4bgl97adae1vg2omdvjaaq678q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3环</a>
+</h3>
+<h3 class="topic">
+<a name="6jroq2rdu4f4op0tsr0r6jrf7n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;02二进制位</a>
+</h3>
+<h3 class="topic">
+<a name="4bi3c2jj561l3no5aiaj586rs1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;表指示器</a>
+</h3>
+<h3 class="topic">
+<a name="41a6jtjkcbb56umlivpb6nkahn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0</a>
+</h3>
+<h3 class="topic">
+<a name="3hi7ukotufnkh361uqjhod21s2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;表示使用全局描述符表</a>
+</h3>
+<h3 class="topic">
+<a name="151pcheg0boi5uv9ms8agqtbhk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;GDT</a>
+</h3>
+<h3 class="topic">
+<a name="5e7msvn0alu6c1cmksapue4qlt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1</a>
+</h3>
+<h3 class="topic">
+<a name="1h5pda0dqrlgo0c5a6me4mspke">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;表示使用局部描述符表</a>
+</h3>
+<h3 class="topic">
+<a name="39l3k7jemrbfr53dnfpa38bkre">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LDT</a>
+</h3>
+<h3 class="topic">
+<a name="4o64h6lfktrvqbnp5llpbvnonr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;windows系统并不使用局部描述符表</a>
+</h3>
+<h3 class="topic">
+<a name="4fs4ebp96ccnths5oh4k18a1bn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;以上两者保存在cpu的两个寄存器中</a>
+</h3>
+<h3 class="topic">
+<a name="48p1j78ek4dn1tlmh2e9vaeacm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;GDTR</a>
+</h3>
+<h3 class="topic">
+<a name="16493jlvtu1vf0oa2m4un5kvjl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;分为32位和16位</a>
+</h3>
+<h3 class="topic">
+<a name="1s6uc0a3ih25cons7vltvn1lrb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LDTR</a>
+</h3>
+<h3 class="topic">
+<a name="38k9hetteckn3d2cscscjm1els">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;以上两个寄存器包括两个部分，表的基址和限长</a>
+</h3>
+<h3 class="topic">
+<a name="7mjp92blomgibv199v3hd27c53">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;03-15二进制位</a>
+</h3>
+<h3 class="topic">
+<a name="72ov5s6g4miti73ua4vn8hvtua">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;描述符索引</a>
+</h3>
+<h3 class="topic">
+<a name="7etf0da7m071a0n1aqq9lfb0mv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用于描述GDT或LDT表的下标,系统将对应下标的内容填充到段寄存器不可见部分</a>
+</h3>
+<h3 class="topic">
+<a name="0cvs8dmenld74e5r3vjogqrs6d">&nbsp;&nbsp;&nbsp;不可见部分（80位）</a>
+</h3>
+<h3 class="topic">
+<a name="5sbcji8m5o22kf3p18p5aq18jd">&nbsp;&nbsp;&nbsp;&nbsp;描述符高速缓存器</a>
+</h3>
+<h3 class="topic">
+<a name="686n028r0fsd8qoa90j1l5lm1s">&nbsp;&nbsp;&nbsp;&nbsp;用于保存段基地址 段的范围  段的属性</a>
+</h3>
+<h3 class="topic">
+<a name="4ab4i8q2nmkcu4f9gq3kakpbnt">&nbsp;&nbsp;&nbsp;&nbsp;操作系统通过段的属性对内核层内存和用户层内存进行区分</a>
+</h3>
+<h3 class="topic">
+<a name="1vdpc49l4hhk0nj8tdrgfocfp5">&nbsp;&nbsp;&nbsp;&nbsp;是根据可见部分,在GDTR LDTR中索引到的表项（GDT 表和LDT表）进行填充</a>
+</h3>
+<h3 class="topic">
+<a name="6ivd1qehbteujiuf8qda9g99rn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;windows系统中只使用GDT表，不适用LDT表</a>
+</h3>
+<h3 class="topic">
+<a name="4mvar04n2lq2pleaab1sl8tt0e">&nbsp;&nbsp;&nbsp;&nbsp;据资料有80位,但是具体是如何使用的不用详细了解,只要确定其中保存着段描述符相关信息即可</a>
+</h3>
+<h3 class="topic">
+<a name="1tdsfettd9v49opvn8c7ctusji">&nbsp;&nbsp;windbg指令</a>
+</h3>
+<h3 class="topic">
+<a name="51oispvhicg11iie2g22j99206">&nbsp;&nbsp;&nbsp;r gdtr</a>
+</h3>
+<h3 class="topic">
+<a name="7u7dhjdss6lrhqk4b9n24gtrva">&nbsp;&nbsp;&nbsp;&nbsp;查找gdtr寄存器的地址</a>
+</h3>
+<h3 class="topic">
+<a name="0hscuumve8c3ubg8qdtug9gdnr">&nbsp;&nbsp;&nbsp;dq gdtr寄存器的地址</a>
+</h3>
+<h3 class="topic">
+<a name="5jqsar3fv5e5q5g90okkqn7ih1">&nbsp;&nbsp;&nbsp;&nbsp;显示gdtr寄存器中的地址指向的内存空间</a>
+</h3>
+<h3 class="topic">
+<a name="623nugp4dcehb2jleempsje57p">&nbsp;&nbsp;段描述符的解析(段描述符一共8个字节)</a>
+</h3>
+<h3 class="topic">
+<a name="7rknggih2ujg0aggbh2qioghnu">&nbsp;&nbsp;&nbsp;p位</a>
+</h3>
+<h3 class="topic">
+<a name="1g5jlim6mmo412h3pbtd3mmitr">&nbsp;&nbsp;&nbsp;&nbsp;1当前段有效</a>
+</h3>
+<h3 class="topic">
+<a name="4fk7ku02296ukfnqeorumalovo">&nbsp;&nbsp;&nbsp;&nbsp;0当前段无效</a>
+</h3>
+<h3 class="topic">
+<a name="5esbf3nfstgjaoecuoa105rfp7">&nbsp;&nbsp;&nbsp;l位</a>
+</h3>
+<h3 class="topic">
+<a name="7jrdu6ggm3vr6kjltkhl1iusms">&nbsp;&nbsp;&nbsp;&nbsp;默认为0 为64位cpu准备</a>
+</h3>
+<h3 class="topic">
+<a name="3upa0p7q6ps8ppqj411tkto3an">&nbsp;&nbsp;&nbsp;avl</a>
+</h3>
+<h3 class="topic">
+<a name="2diqul69219o048gr8v07i5l2c">&nbsp;&nbsp;&nbsp;&nbsp;默认为0,位操作系统准备</a>
+</h3>
+<h3 class="topic">
+<a name="77ohk8oebimbn0l0a9566qbidm">&nbsp;&nbsp;&nbsp;dpl</a>
+</h3>
+<h3 class="topic">
+<a name="1julk5n199k0gc1f4tko6t3jnf">&nbsp;&nbsp;&nbsp;&nbsp;描述特权级标志</a>
+</h3>
+<h3 class="topic">
+<a name="5ao8r9sagjfh1b7uusa4fhm1p6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0~3</a>
+</h3>
+<h3 class="topic">
+<a name="02jhvshiuc8j3s6bj3vtes7ah3">&nbsp;&nbsp;&nbsp;&nbsp;描述访问本段内存需要的权限</a>
+</h3>
+<h3 class="topic">
+<a name="1tqil9m9fqbq2it5deerohq8qh">&nbsp;&nbsp;&nbsp;g</a>
+</h3>
+<h3 class="topic">
+<a name="3mel9et7qks75k4qgnueumrm1k">&nbsp;&nbsp;&nbsp;&nbsp;段限长单位标记位</a>
+</h3>
+<h3 class="topic">
+<a name="4jverv0huf5mf99tccnv7rrl3i">&nbsp;&nbsp;&nbsp;limit</a>
+</h3>
+<h3 class="topic">
+<a name="4f9i9k8k3bog78uebhhl4dma68">&nbsp;&nbsp;&nbsp;&nbsp;描述此段的大小</a>
+</h3>
+<h3 class="topic">
+<a name="3ltouv0pgigkv039u46h0vr3g0">&nbsp;&nbsp;&nbsp;base</a>
+</h3>
+<h3 class="topic">
+<a name="7mq7mc27q3u0isiqda647mo14c">&nbsp;&nbsp;&nbsp;&nbsp;描述此段的起始位置</a>
+</h3>
+<h3 class="topic">
+<a name="3v4o2mpns6jvaqjbiqumse4bol">&nbsp;&nbsp;&nbsp;s</a>
+</h3>
+<h3 class="topic">
+<a name="4rcclcmqi9rt34qpe20eis4pnq">&nbsp;&nbsp;&nbsp;&nbsp;段类型标志位</a>
+</h3>
+<h3 class="topic">
+<a name="4l0jctneglaoj8p7med2aks9ek">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1代码或数据</a>
+</h3>
+<h3 class="topic">
+<a name="31r9vf24ic49cuo2gp9bai1mse">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0门描述符</a>
+</h3>
+<h3 class="topic">
+<a name="5r2um78kl5qhommnfvm2ml0j3u">&nbsp;&nbsp;&nbsp;&nbsp;重要</a>
+</h3>
+<h3 class="topic">
+<a name="4gfc38l38n7s57p5k7n4evnmgf">&nbsp;&nbsp;&nbsp;type</a>
+</h3>
+<h3 class="topic">
+<a name="4t7ld2lm7feib4uuof534i450m">&nbsp;&nbsp;&nbsp;&nbsp;段类型描述符</a>
+</h3>
+<h3 class="topic">
+<a name="65ilh0mk8pm8a3hiltbgmcp328">&nbsp;&nbsp;&nbsp;&nbsp;占四位</a>
+</h3>
+<h3 class="topic">
+<a name="05dfdgoe7iq7lkjekomhi0e6ic">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;最高位为0</a>
+</h3>
+<h3 class="topic">
+<a name="7mm6dgbri3jc72uh9rm49goni6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;数据段</a>
+</h3>
+<h3 class="topic">
+<a name="5f21pqpjol4o91b4u327at8es1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;与向下扩展有关</a>
+</h3>
+<h3 class="topic">
+<a name="2emqt2svqsu6c9lo6pn4oii629">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;最高位为1</a>
+</h3>
+<h3 class="topic">
+<a name="5uqpnf52dnhjbl524h8h9nl8gh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;代码段</a>
+</h3>
+<h3 class="topic">
+<a name="4t89a479h8ut3d23787pucg1vg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;与一致性段有关</a>
+</h3>
+<h3 class="topic">
+<a name="21uc0ppdnqn6ftbmj5nhr95b1m">&nbsp;&nbsp;&nbsp;b/d</a>
+</h3>
+<h3 class="topic">
+<a name="3fehei13no9uopbjb0uno7tqq5">&nbsp;&nbsp;&nbsp;&nbsp;根据当前段属性的不同,值不同</a>
+</h3>
+<h3 class="topic">
+<a name="665rfkld764g1dob4q6i47ph36">&nbsp;&nbsp;&nbsp;&nbsp;栈大小描述符</a>
+</h3>
+<h3 class="topic">
+<a name="37pqkhvg9ohnetii01f38nojh8">&nbsp;&nbsp;&nbsp;&nbsp;默认操作数大小描述符</a>
+</h3>
+<h3 class="topic">
+<a name="5ufs0ds8qhjl95281lcmq929ci">&nbsp;&nbsp;&nbsp;向下拓展与一致性段</a>
+</h3>
+<h3 class="topic">
+<a name="1bvofevq0kfutedi9kfpgdfigk">&nbsp;&nbsp;&nbsp;&nbsp;前者</a>
+</h3>
+<h3 class="topic">
+<a name="73d0or1nb8dhd9nbempdv8jh5p">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;一般是0</a>
+</h3>
+<h3 class="topic">
+<a name="0o0bt6dlvb5fipeklrlikrf38e">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;上扩段</a>
+</h3>
+<h3 class="topic">
+<a name="2o7jopgk42tpnihhbo4sekqq52">&nbsp;&nbsp;&nbsp;&nbsp;后者</a>
+</h3>
+<h3 class="topic">
+<a name="1ina784dc786qglm87rumlu6qh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;非一致性段</a>
+</h3>
+<h3 class="topic">
+<a name="0u4go4dvdlm9bujiqcr7tfjkmm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;内存中不同的段的属性不同</a>
+</h3>
+<h3 class="topic">
+<a name="39cicu5cle9k6d4s1gs8g2iej0">&nbsp;&nbsp;&nbsp;注意limit段和base段并不是连续存放的,两者均分别存放在两个32位的数据中,具体不连续的数据如何组合在一起发挥作用,不需要深究,主要弄清其他描述位的描述的段属性即可</a>
+</h3>
+<h3 class="topic">
+<a name="3728joe7p1r6ngsdrjtj0q3u9c">&nbsp;&nbsp;解析用户层ds cs的异同</a>
+</h3>
+<h3 class="topic">
+<a name="5uu66gjuuruh1su0bvqb3imvga">&nbsp;&nbsp;&nbsp;ds = 0023</a>
+</h3>
+<h3 class="topic">
+<a name="45i0vgro5rdmm2jf0its790dp1">&nbsp;&nbsp;&nbsp;&nbsp;index    ti         rpl&#13;
+100       0        11&#13;
+4          GDT    3环</a>
+</h3>
+<h3 class="topic">
+<a name="7ldmdkh2l5sds9440ihfv0ghbj">&nbsp;&nbsp;&nbsp;&nbsp;dq gdtr</a>
+</h3>
+<h3 class="topic">
+<a name="67g15cv4h8retntun4hdeg0k4g">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;找到对应下标4的项</a>
+</h3>
+<h3 class="topic">
+<a name="6hbptme65j1tm4j56dkj1c5ov4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;项的低十六位为image和base</a>
+</h3>
+<h3 class="topic">
+<a name="7nlil902tcq3gkuhrm0e6f6jl7">&nbsp;&nbsp;&nbsp;cs=001b</a>
+</h3>
+<h3 class="topic">
+<a name="77b5k0s59987m38e0l0pr6lrof">&nbsp;&nbsp;解析3环下的cs和0环下的cs</a>
+</h3>
+<h3 class="topic">
+<a name="7v32r8i9nonl9bjs0squfp7oiu">&nbsp;&nbsp;&nbsp;查找内核层寄存器值,可以直接在windbg中使用r,查看寄存器的值</a>
+</h3>
+<h3 class="topic">
+<a name="4so3vmjuhhgfl0bgorrfh7adf1">&nbsp;&nbsp;寄存器结构</a>
+</h3>
+<h3 class="topic">
+<a name="6p2e7a0mh7jdlq4asmeul80lj2">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class70day0617_files/21lgmhhqifokho4nnhiajf25sk.png"></p>
+<h3 class="topic">
+<a name="5c69scrc6r4lme6jf4efp5fatf">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class70day0617_files/7qqeq9dfgbj159bud234dm2211.png"></p>
+<h3 class="topic">
+<a name="569vrhvsdiadm3db35dbm4p66i">&nbsp;权限问题</a>
+</h3>
+<h3 class="topic">
+<a name="7n2hmiqls5sl47l8046c5ubvbe">&nbsp;&nbsp;dpl</a>
+</h3>
+<h3 class="topic">
+<a name="66pcvdfjbb7b7o9gp970vmg2hg">&nbsp;&nbsp;&nbsp;段描述符中</a>
+</h3>
+<h3 class="topic">
+<a name="3bh47m0hb4opshsre3j874da7s">&nbsp;&nbsp;&nbsp;描述特权级</a>
+</h3>
+<h3 class="topic">
+<a name="1noev67elt9f701jmvaviavon5">&nbsp;&nbsp;rpl</a>
+</h3>
+<h3 class="topic">
+<a name="692ukih9g9o9sil9i106kfs30g">&nbsp;&nbsp;&nbsp;段选择子中低2位</a>
+</h3>
+<h3 class="topic">
+<a name="50u1r3is0017rnmchu1fmph7hv">&nbsp;&nbsp;&nbsp;请求特权级</a>
+</h3>
+<h3 class="topic">
+<a name="4hj026221q4tohbq834fgn7j4j">&nbsp;&nbsp;cpl</a>
+</h3>
+<h3 class="topic">
+<a name="3tlusujphiumelusb4ia40716b">&nbsp;&nbsp;&nbsp;cs段寄存器中的rpl</a>
+</h3>
+<h3 class="topic">
+<a name="774jnl066c2sv46590ocnigfnb">&nbsp;&nbsp;&nbsp;当前特权级</a>
+</h3>
+<h3 class="topic">
+<a name="7ut2sqrmi2vln9k53mq8h0jk9u">&nbsp;&nbsp;如果max(cpl,rpl)&lt;=dpl,则可以正确修改dpl</a>
+</h3>
+<h3 class="topic">
+<a name="5b4g47o7b1n00igvv6lv6ttamd">&nbsp;&nbsp;&nbsp;即当前特权级和请求特权级均需要权限大于等于描述特权级时，才具有段访问权限</a>
+</h3>
+<h3 class="topic">
+<a name="79gqrmelt10v5blinjqq3276nh">&nbsp;&nbsp;注意当给段寄存器赋值的时候，就已经进行了段寄存器的权限检查，如果成功，说明已经可以访问这个段</a>
+</h3>
+<h3 class="topic">
+<a name="3rd2o201aegr9t24hqhl32f20j">&nbsp;权限检查问题</a>
+</h3>
+<h2 class="topic">
+<a name="0h930q986emu5iqhcoprds3ppo">内核笔记</a>
+</h2>
+<h3 class="topic">
+<a href="https://note.wiz.cn/web/pages/manage/biz/applyInvited.html?code=fe321k" name="5bkgf33on9f4og02jv2eha04r4">&nbsp;https://note.wiz.cn/web/pages/manage/biz/applyInvited.html?code=fe321k</a>
+</h3>
+<h2 class="topic">
+<a name="2ndv8f1fpm3q1hd12e4td9083b">使用windbg查看反汇编代码</a>
+</h2>
+<h3 class="topic">
+<a name="0ct0gfaujjh5s3jl0avf7u31qt">&nbsp;命令&#13;
+&#13;
+==========&#13;
+    u .&#13;
+    u $ip &#13;
+上面的两个命令是效果是一样的, 反汇编当前$ip地址上的8条命令.&#13;
+&#13;
+    uf .&#13;
+    uf $ip &#13;
+上面两个命令的效果是一样的, 反汇编当前$ip地址上的整个函数.&#13;
+&#13;
+    ub .&#13;
+    ub $ip &#13;
+反汇编$ip之前的8条指令.&#13;
+&#13;
+    ub $ip L2a &#13;
+反汇编$ip地址之前的42条指令.&#13;
+&#13;
+    u $ip $ip+a &#13;
+反汇编地址$ip到地址$ip+10之间的指令. 注意, 这里包括$ip, 不包括$ip+10。 </a>
+</h3>
+</body>
+</html>

@@ -1,0 +1,822 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>class24day0223</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="5k5hu7u1gntpnuafreqot3pmoq">class24day0223</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="class24day0223_files/images/class24day0223.jpg"></div>
+<h2 class="topic">
+<a name="5igl78plovvda63lutatvt774s">c++提高第三天</a>
+</h2>
+<h3 class="topic">
+<a name="7jaa0g2jmu94di7untoaelsv9l">&nbsp;友元</a>
+</h3>
+<h3 class="topic">
+<a name="0kkmb4c40d9fr1girn9d066c2t">&nbsp;&nbsp;允许某一个类、全局函数、确切的类成员函数访问当前类所有的数据和函数</a>
+</h3>
+<h3 class="topic">
+<a name="3554vhgo7ds3dl6bq8c3g4sdoo">&nbsp;&nbsp;以合理的方式破坏封装性，不推荐使用</a>
+</h3>
+<h3 class="topic">
+<a name="4d6d5pen25qh6aq4i142p4p4bt">&nbsp;&nbsp;推荐使用的优先性</a>
+</h3>
+<h3 class="topic">
+<a name="36g607fc3bvlab8aefppng35tb">&nbsp;&nbsp;&nbsp;友元成员函数-&gt;友元类-&gt;友元函数-&gt;public</a>
+</h3>
+<h3 class="topic">
+<a name="0i0dfvqiqo0n3mp7ibn4he583c">&nbsp;&nbsp;分类</a>
+</h3>
+<h3 class="topic">
+<a name="3vo37lfd5f4b3irhjpl2t7bijj">&nbsp;&nbsp;&nbsp;友元函数</a>
+</h3>
+<h3 class="topic">
+<a name="7ln9peqr3k8kuvna5u70mcrsuc">&nbsp;&nbsp;&nbsp;&nbsp;允许一个特定函数访问当前类所有属性的成员（数据成员，成员函数）</a>
+</h3>
+<h3 class="topic">
+<a name="5kdenvd3fnb1t06elu9j3ildaf">&nbsp;&nbsp;&nbsp;&nbsp;friend应该写在被友元的类中，表示允许他人访问本类的数据</a>
+</h3>
+<h3 class="topic">
+<a name="1ec9omd5qnudp4j6f0gfg3e0f1">&nbsp;&nbsp;&nbsp;&nbsp;友元函数不是成员函数，因为在定义的时候其不需要添加类域，所有友元函数是普通全局函数</a>
+</h3>
+<h3 class="topic">
+<a name="0atf58gbi1lkkjc2bmjh8khhsv">&nbsp;&nbsp;&nbsp;&nbsp;友元函数的声明位置可以写在类的任意位置，与访问权限无关</a>
+</h3>
+<h3 class="topic">
+<a name="1skl93vj7ntev13h85uhqk3nmt">&nbsp;&nbsp;&nbsp;&nbsp;class OBJECT&#13;
+{&#13;
+	//可以使用friend关键字将一个函数设置为当前类的友元函数,&#13;
+	//则类允许show函数访问类中所有数据（包括私有、保护、公有数据以及函数）&#13;
+	// 友元函数的声明位置可以在任意位置，和访问权限无关&#13;
+	friend void show(const OBJECT&amp;obj);&#13;
+&#13;
+	//一个新的友元函数，虽然定义在类内，但是不是一个成员函数&#13;
+	//友元函数可以定义在类内，但是不能在其中使用this指针，因为友元函数不是成员函数，没有this指针&#13;
+	friend void show1(const OBJECT&amp;obj)&#13;
+	{&#13;
+	printf("number=%d\n",obj.number);&#13;
+	}&#13;
+&#13;
+private:&#13;
+	int number=1234;&#13;
+public:&#13;
+	void show() {&#13;
+	//成员函数可以访问类内所有数据&#13;
+		printf("%d", number);&#13;
+	}&#13;
+};&#13;
+&#13;
+//传入一个对象，用于访问内部的数据&#13;
+void show(const OBJECT&amp;obj) {&#13;
+	printf("%d", obj.number);&#13;
+}&#13;
+&#13;
+int main()&#13;
+{&#13;
+	OBJECT obj;&#13;
+	obj.show();&#13;
+	show(obj);&#13;
+&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="27qvklivqmfdk0phsh84v38c4e">&nbsp;&nbsp;&nbsp;&nbsp;使用友元函数的顺序</a>
+</h3>
+<h3 class="topic">
+<a name="4vhk9fo01c6g8s0k95equqk4im">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;定义一个允许被特定函数访问的类</a>
+</h3>
+<h3 class="topic">
+<a name="0d39jaccno89m3nvhs8el4mjni">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在类中声明某一个已存在的函数为友元函数</a>
+</h3>
+<h3 class="topic">
+<a name="46ectvtii738fis9o941n6p1p4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;实现友元函数，在友元函数内部访问类的数据</a>
+</h3>
+<h3 class="topic">
+<a name="131eiq0o366ahad0622is5ppr2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;想要访问类的数据，就需要将类的对象作为形参传进友元函数</a>
+</h3>
+<h3 class="topic">
+<a name="1969ai7q4391vptu8p3fg4hbtt">&nbsp;&nbsp;&nbsp;&nbsp;友元函数是可以在类中声明并定义的</a>
+</h3>
+<h3 class="topic">
+<a name="52bcjjan395eoitv9tjanm5bg1">&nbsp;&nbsp;&nbsp;友元类</a>
+</h3>
+<h3 class="topic">
+<a name="3l2v06971pk961t1tr7d1pa3m5">&nbsp;&nbsp;&nbsp;&nbsp;允许某一类的所有对象访问当前类的所有数据</a>
+</h3>
+<h3 class="topic">
+<a name="4r5r5jjv9oavfbi4vtdj1lce3b">&nbsp;&nbsp;&nbsp;&nbsp;class OBJECT&#13;
+{&#13;
+	//使用friend允许某一个类可以访问当前类的所有数据&#13;
+	//声明FRIEND是一个类时，以下两种写法均可&#13;
+	//class FRIEND;（这个要写在类外）&#13;
+	//friend FRIEND;&#13;
+	friend class FRIEND;&#13;
+private:&#13;
+	int number=12345;&#13;
+};&#13;
+&#13;
+//这个类需要访问object所有数据&#13;
+class FRIEND{&#13;
+public:&#13;
+	//为了访问OBJECT对象的数据，仍要传参&#13;
+	void show(const OBJECT obj) {&#13;
+		std::cout &lt;&lt; obj.number;&#13;
+	}&#13;
+};&#13;
+&#13;
+int main()&#13;
+{&#13;
+	FRIEND obj;&#13;
+	OBJECT obj2;&#13;
+	obj.show(obj2);&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="7rh8ladof0t45gvch77357tker">&nbsp;&nbsp;&nbsp;&nbsp;使用友元类的顺序</a>
+</h3>
+<h3 class="topic">
+<a name="7luunjcdiad2se3aa4q20kv65r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;定义一个允许被特定类访问的类</a>
+</h3>
+<h3 class="topic">
+<a name="21khoe13hdagksn5kj4gm73qvq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;告诉编译器FRIEND是一个类 class FRIEND</a>
+</h3>
+<h3 class="topic">
+<a name="263vsfnp9jd2a43pvf65j69isg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在类中声明friend xxx</a>
+</h3>
+<h3 class="topic">
+<a name="32hrdt8n5i6re9d14h8iutqrds">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;实现友元类，友元类中的成员函数可以使用被友元类中的所有数据</a>
+</h3>
+<h3 class="topic">
+<a name="5cn3d5hof30srqt44ujppftfl9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;要使友元类中的成员函数能够访问到被友元类中的数据，需要将被友元类的对象作为参数传进去，因为类中数据成员的调用一定要通过对象进行</a>
+</h3>
+<h3 class="topic">
+<a name="2mmjmr27f25tfu0ijgh5r25qqn">&nbsp;&nbsp;&nbsp;&nbsp;注意由友元类对被友元类的数据的访问要通过友元类的成员函数进行，该成员函数形参为被友元类对象的引用，以此操作被友元类的数据</a>
+</h3>
+<h3 class="topic">
+<a name="6sr5ka3qjajvsnf18peeq35i8e">&nbsp;&nbsp;&nbsp;&nbsp;注意被友元的类一定要定义在友元类之前，否则友元类的成员函数中不能调用被友元类的成员函数</a>
+</h3>
+<h3 class="topic">
+<a name="6adbm07lm0cpd9spjir9qldice">&nbsp;&nbsp;&nbsp;友元成员函数</a>
+</h3>
+<h3 class="topic">
+<a name="4d5aeffvsmugdfkqdla2eanmtb">&nbsp;&nbsp;&nbsp;&nbsp;允许某一个类对象的某一个函数，访问另一个类的所有数据</a>
+</h3>
+<h3 class="topic">
+<a name="4cr965pmgsa2fnunm0l67dpl92">&nbsp;&nbsp;&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="4b3ncujircub998su0r49pd485">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//1、首先声明要被其他类的成员函数访问的类&#13;
+class OBJECT;&#13;
+&#13;
+//2、定义一个类，类中包含了友元成员函数的声明&#13;
+class FRIEND{&#13;
+public:&#13;
+	//该成员函数为要访问其他类的数据&#13;
+	//这里只能声明该函数，不能定义该函数，因为其中的OBJECT还没有被定义&#13;
+	void visit(const OBJECT&amp; obj);&#13;
+&#13;
+	//除vist之外的所有函数都不能访问OBJECT&#13;
+	//void show(const OBJECT&amp; obj){&#13;
+	//	std::cout &lt;&lt; obj.number;&#13;
+	//}&#13;
+};&#13;
+&#13;
+//3、定义被友元的类&#13;
+class OBJECT&#13;
+{&#13;
+	//该类被友元到FRIEND类中的visit()成员函数&#13;
+	friend void FRIEND::visit(const OBJECT&amp; obj);&#13;
+private:&#13;
+	int number = 12345;&#13;
+};&#13;
+&#13;
+//4、在类外实现友元成员函数&#13;
+void FRIEND::visit(const OBJECT&amp; obj) {&#13;
+	std::cout &lt;&lt; obj.number;&#13;
+}&#13;
+&#13;
+&#13;
+int main()&#13;
+{&#13;
+	FRIEND obj;&#13;
+	OBJECT obj2;&#13;
+	obj.visit(obj2);&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="0hcb5q8qukos8hvf2mug4boo54">&nbsp;&nbsp;&nbsp;&nbsp;使用友元成员函数的顺序</a>
+</h3>
+<h3 class="topic">
+<a name="4vbemjjp8osuujssc5h8fndkk5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;声明允许被其他类的成员函数访问的类 通常是class xxx</a>
+</h3>
+<h3 class="topic">
+<a name="3k4b19n5viv92f426dvuj5pgnb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;即声明被友元的类</a>
+</h3>
+<h3 class="topic">
+<a name="1vj81a1550te020gso70jqqdck">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;定义一个类，类中包含了友元成员函数的声明，不能实现该友元成员函数，因为此时被友元的类（class xxx），仅仅被声明，没有被定义</a>
+</h3>
+<h3 class="topic">
+<a name="27jtbitmn11256res3bod5aeso">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;定义允许被友元的类</a>
+</h3>
+<h3 class="topic">
+<a name="7365poh8m9a5hqmqhdg9ginkoh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在被友元类中声明指定的成员函数是当前类的友元函数</a>
+</h3>
+<h3 class="topic">
+<a name="7am45imn25bo448dgu6bh5u6rm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;friend 返回值 类域::函数名(参数列表)；</a>
+</h3>
+<h3 class="topic">
+<a name="4f756pida97c8l19nmspsg8r9h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;此时已经知道了xxx的定义，在类外实现友元成员函数并进行访问</a>
+</h3>
+<h3 class="topic">
+<a name="4p5r4db6aenj8o193lc0p5dfkk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;同样，友元成员函数的形参必须为被友元类对象的引用</a>
+</h3>
+<h3 class="topic">
+<a name="3gcnnbvjkn9fk26mqk1r8nolqs">&nbsp;&nbsp;&nbsp;所有的友元函数（包括友元成员函数都是没有this指针的）</a>
+</h3>
+<h3 class="topic">
+<a name="19q4u0fs4vs7u3jjjsei7ln1v4">&nbsp;&nbsp;&nbsp;友元函数不能被继承</a>
+</h3>
+<h3 class="topic">
+<a name="01ec34s7m3ld7asfalp8nunc6t">&nbsp;符号重载（新内容）（c++重点内容）(使用多)</a>
+</h3>
+<h3 class="topic">
+<a name="65frdipho58ih5c4pmjt2lkv41">&nbsp;&nbsp;用途</a>
+</h3>
+<h3 class="topic">
+<a name="1gfpjvksg6tt3e96orhfbco5nt">&nbsp;&nbsp;&nbsp;实现类对象之间的运算</a>
+</h3>
+<h3 class="topic">
+<a name="19m8v0e2kho0enkeub3con5qm1">&nbsp;&nbsp;&nbsp;自定义一些特殊的操作，用于简化操作</a>
+</h3>
+<h3 class="topic">
+<a name="4nihs0grmfstgioaegttvl6t11">&nbsp;&nbsp;运算符重载规则</a>
+</h3>
+<h3 class="topic">
+<a name="20mmn4rjbale5ni8hjtmp28jse">&nbsp;&nbsp;&nbsp;运算符重载无法创造新的运算符号</a>
+</h3>
+<h3 class="topic">
+<a name="7tbah322ngaf08ftggidb21tjh">&nbsp;&nbsp;&nbsp;&nbsp;例如，不能创造一个新符号&ldquo;**&rdquo;，表示幂运算</a>
+</h3>
+<h3 class="topic">
+<a name="4nf4u3sopppiba212lt9ubmu4v">&nbsp;&nbsp;&nbsp;运算符重载无法改变运算符以下特性</a>
+</h3>
+<h3 class="topic">
+<a name="1s1i2uvbq9apknhv0jh15mm9fu">&nbsp;&nbsp;&nbsp;&nbsp;优先级和结合性不变</a>
+</h3>
+<h3 class="topic">
+<a name="4ll32cgr9r75s5sq6nk4qdjppf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;例如，重载后的运算符&ldquo;*&rdquo;要比&ldquo;+&rdquo;优先级高</a>
+</h3>
+<h3 class="topic">
+<a name="51hbu7uu56ps4se95mp59vq153">&nbsp;&nbsp;&nbsp;&nbsp;操作个数不变</a>
+</h3>
+<h3 class="topic">
+<a name="22ajvggk86pdt3m8t6om3h9861">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;例如，重载后的运算符&ldquo;*&rdquo;必须是双目运算</a>
+</h3>
+<h3 class="topic">
+<a name="13amtoum37adt889nmc6qpt0e4">&nbsp;&nbsp;&nbsp;&nbsp;语法结构不变</a>
+</h3>
+<h3 class="topic">
+<a name="5sdqeugege9kdd7j3au9n9jau0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;例如，重载后的&ldquo;&amp;&rdquo;必须在表达式的左边</a>
+</h3>
+<h3 class="topic">
+<a name="2uphmvovm55q1k4a1t6negovdd">&nbsp;&nbsp;&nbsp;运算符重载应符合使用习惯 便于理解</a>
+</h3>
+<h3 class="topic">
+<a name="0e0t81sev5f6cu2v3qobgppbis">&nbsp;&nbsp;&nbsp;&nbsp;例如，在字符串类中把&ldquo;/&rdquo;运算符重载为两个对象的合并操作，就不如用&ldquo;+&rdquo;运算符重载，更易于理解</a>
+</h3>
+<h3 class="topic">
+<a name="4si7bblqbj0ab3gmbv2bpd1jqg">&nbsp;&nbsp;运算符重载本质</a>
+</h3>
+<h3 class="topic">
+<a name="3g2jdjn3aghl92gm5lj15vlrpu">&nbsp;&nbsp;&nbsp;本质是编写一个函数，当使用特定运算符的时候会执行该函数，并将结果返回</a>
+</h3>
+<h3 class="topic">
+<a name="75fvltl7pn82c194r2e01p9t5t">&nbsp;&nbsp;使用方式operator</a>
+</h3>
+<h3 class="topic">
+<a name="07d8iu48mno3h0m06mfs2bpra5">&nbsp;&nbsp;&nbsp;成员函数形式</a>
+</h3>
+<h3 class="topic">
+<a name="2g1nb7lmc6fl42rlgnj73ekk86">&nbsp;&nbsp;&nbsp;&nbsp;返回值类型&lt;类域&gt;::operator&lt;被重载的运算符&gt;(参数列表){}</a>
+</h3>
+<h3 class="topic">
+<a name="060r61ia926oqucs87oe8q7mpa">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;若在类中定义可以不加&lt;类域&gt;::</a>
+</h3>
+<h3 class="topic">
+<a name="4e54m5qppgs4ofsg7ndqk5v9dj">&nbsp;&nbsp;&nbsp;&nbsp;返回值可以由编写者自己指定，没有固定类型</a>
+</h3>
+<h3 class="topic">
+<a name="2fpl47qb873p5a06jgecs9o6r2">&nbsp;&nbsp;&nbsp;&nbsp;参数列表最少有0个参数，原因是this指针已经表示一个操作数</a>
+</h3>
+<h3 class="topic">
+<a name="4qkdrlap8r9tb625f6lkhdpbgc">&nbsp;&nbsp;&nbsp;&nbsp;this指针始终是双目运算符左边的操作数，通过参数列表可以指定双目运算符右边的操作数</a>
+</h3>
+<h3 class="topic">
+<a name="4m30qq9u1r3htovchkcooi85on">&nbsp;&nbsp;&nbsp;友元函数形式</a>
+</h3>
+<h3 class="topic">
+<a name="48onhc0f71ih7hl3ce1en6h0tc">&nbsp;&nbsp;&nbsp;&nbsp;返回值类型operator&lt;被重载的运算符&gt;(参数列表){}</a>
+</h3>
+<h3 class="topic">
+<a name="66grfhnkfmdadk06g4mk83ejvn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;因为友元函数是一个全局函数，不属于某一类的成员函数，所以不需要指定类域</a>
+</h3>
+<h3 class="topic">
+<a name="1jvu02h6tm28n3gbg2jh49o00p">&nbsp;&nbsp;&nbsp;&nbsp;需要在类内进行友元的声明</a>
+</h3>
+<h3 class="topic">
+<a name="2h48mkn4ijsjg9na12al45vn7g">&nbsp;&nbsp;&nbsp;&nbsp;返回值可以由编写者自己指定，没有固定类型</a>
+</h3>
+<h3 class="topic">
+<a name="6kh2fodr6d85ibe7sea337tv0p">&nbsp;&nbsp;&nbsp;&nbsp;因为友元函数不是成员函数，所以没有this指针，所以最少需要传入1个参数</a>
+</h3>
+<h3 class="topic">
+<a name="00k61a2gmp8oi33du3a65ea2sn">&nbsp;&nbsp;&nbsp;&nbsp;此时，重载几元运算符，需要几个参数,第一个参数作为运算符左操作数，第二个作为运算符右操作数</a>
+</h3>
+<h3 class="topic">
+<a name="5nvo0u9bekibmqnequ6gs3k8iv">&nbsp;&nbsp;&nbsp;&nbsp;友元函数形式的运算符重载可以指定左边操作数的类型，而成员函数重载默认第一个参数是this指针</a>
+</h3>
+<h3 class="topic">
+<a name="1db8ot91jfr1eba9tu1ov22qhu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;其价值主要体现在两个操作数数据类型不一致的情况</a>
+</h3>
+<h3 class="topic">
+<a name="1q0e0ov62r6knle23rphlb2mjl">&nbsp;&nbsp;&nbsp;参数常为类对象的引用</a>
+</h3>
+<h3 class="topic">
+<a name="7f5t3p0g6acvetlc24oakm8qr9">&nbsp;&nbsp;&nbsp;返回类型常为类的类型</a>
+</h3>
+<h3 class="topic">
+<a name="7j6hfg7dv3t18qe53guhjm1mo1">&nbsp;&nbsp;重载二元+运算符</a>
+</h3>
+<h3 class="topic">
+<a name="68nqml2u79snji1m2bo8pdclah">&nbsp;&nbsp;&nbsp;使用成员函数方式重载</a>
+</h3>
+<h3 class="topic">
+<a name="0fj7nqpped8npni2hfcfhvd9u9">&nbsp;&nbsp;&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="05nsor1dgttrk56bdkhp48klhj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;class OBJECT&#13;
+{&#13;
+&#13;
+private:&#13;
+	int numberA = 0;&#13;
+	int numberB = 0;&#13;
+public:&#13;
+	//使用默认无参构造函数&#13;
+	OBJECT() = default;&#13;
+&#13;
+	//两个操作数进行初始化的构造函数&#13;
+	OBJECT(int n, int n2) :numberA(n), numberB(n2) {}&#13;
+	&#13;
+	//使用成员函数重载双目+运算符 ，用于计算两个对象的和&#13;
+	//返回值为OBJECT的对象，左边参数为调用该函数的this指针，右边参数为对象的引用&#13;
+	OBJECT operator+(OBJECT&amp; object)&#13;
+	{&#13;
+		OBJECT temp_obj;&#13;
+		temp_obj.numberA = this-&gt;numberA + object.numberA;&#13;
+		temp_obj.numberB = this-&gt;numberB + object.numberB;&#13;
+		return temp_obj;&#13;
+	}&#13;
+	&#13;
+	//返回值类型为int 左操作数为this指针，右操作数为int类型数据&#13;
+	//使用成员函数重载双目运算符+，计算一个对象和一个int相加的和&#13;
+	int operator+(int n)&#13;
+	{&#13;
+		//这里其实可以不用this-&gt;,因为默认会使用this&#13;
+		int n2= this-&gt;numberA+ this-&gt;numberB+n;&#13;
+		return n2;&#13;
+	}&#13;
+};&#13;
+&#13;
+int main()&#13;
+{&#13;
+	OBJECT obj(10,20);&#13;
+	OBJECT obj2(40, 30);&#13;
+	//obj作为左参数调用符号重载函数，obj2为右参数 返回值赋值给obj3，&#13;
+	//之所以可以返回是因为类中存在默认的赋值运算符重载&#13;
+	OBJECT obj3=obj+obj2;&#13;
+	//等价于OBJECT obj3=obj.operator+(obj2);&#13;
+	//等价于OBJECT obj3=operator+(&amp;obj,obj2);&#13;
+	int n = obj + 1;&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="42cmna3h94snlm7eql4eipbsfs">&nbsp;&nbsp;&nbsp;使用友元函数方式重载</a>
+</h3>
+<h3 class="topic">
+<a name="6fs4dm76fn9077cno790741820">&nbsp;&nbsp;&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="1360fej7r1e6so2rhs0jvk7ko6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;class OBJECT&#13;
+{&#13;
+	//在被友元类中声明友元函数，用于重载+运算符&#13;
+	friend OBJECT operator + (const OBJECT &amp;obj, const OBJECT &amp;obj2);&#13;
+	friend int operator+(OBJECT&amp; object, int number);&#13;
+	friend int operator+(int number, OBJECT&amp; object);&#13;
+private:&#13;
+	int numberA = 0;&#13;
+	int numberB = 0;&#13;
+public:&#13;
+	OBJECT() = default;&#13;
+	OBJECT(int n, int n2) :numberA(n), numberB(n2) {}&#13;
+};&#13;
+&#13;
+//使用友元函数重载+运算符&#13;
+//因为友元函数不是成员函数，所以没有this指针，所以最少需要传入一个参数&#13;
+//此时，重载几元运算符，需要几个参数&#13;
+//在类外定义友元函数&#13;
+OBJECT operator+(const OBJECT &amp;obj, const OBJECT &amp;obj2)&#13;
+{&#13;
+	OBJECT temp_obj;&#13;
+	temp_obj.numberA = obj.numberA + obj2.numberA;&#13;
+	temp_obj.numberB = obj.numberB + obj2.numberB;&#13;
+	return temp_obj;&#13;
+}&#13;
+// 重载  对象 + int 的方式&#13;
+int operator+(OBJECT&amp; object, int number)&#13;
+{&#13;
+	return object.numberA + object.numberB + number;&#13;
+}&#13;
+&#13;
+// 友元可以让第一操作数类型改变&#13;
+int operator+(int number, OBJECT&amp; object)&#13;
+{&#13;
+	return object.numberA + object.numberB + number;&#13;
+}&#13;
+    &#13;
+int main()&#13;
+{&#13;
+  OBJECT obj1(10, 20);&#13;
+  OBJECT obj2(40, 30);&#13;
+&#13;
+   OBJECT obj3 = obj1 + obj2;&#13;
+   // OBJECT obj3 = operator+(obj1, obj2);&#13;
+  	&#13;
+  	int count1 = obj1 + 20;&#13;
+    int count2 = 20 + obj1;&#13;
+  	return 0;&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="0rbrseu7ntara0vdacjv2up1ev">&nbsp;&nbsp;重载自增运算符</a>
+</h3>
+<h3 class="topic">
+<a name="0qtddltjisrh2n6aukmm8k8e40">&nbsp;&nbsp;&nbsp;如何区分重载的是前置自增还是后置自增？</a>
+</h3>
+<h3 class="topic">
+<a name="7j0u7oo1e84nfgohe5vq6rtbpi">&nbsp;&nbsp;&nbsp;&nbsp;参数列表内有int的函数就是后置类型，否则是前置类型</a>
+</h3>
+<h3 class="topic">
+<a name="7mplr12ho86m1r71ti1jig2jaq">&nbsp;&nbsp;&nbsp;使用成员函数重载</a>
+</h3>
+<h3 class="topic">
+<a name="5a32eakc5ldbgsunu10p5dj5tk">&nbsp;&nbsp;&nbsp;&nbsp;class OBJECT&#13;
+{&#13;
+private:&#13;
+	int number = 0;&#13;
+public:&#13;
+	// 无参构造函数&#13;
+	OBJECT() = default;&#13;
+&#13;
+	// 使用参数进行初始化操作&#13;
+	OBJECT(int num) : number(num) { }&#13;
+&#13;
+	// 自增运算符有两个，怎样区分前置和后置&#13;
+	// 在圆括号中有int的是后置类型&#13;
+	OBJECT operator++(int)&#13;
+	{&#13;
+		// 后置: 先返回再运算&#13;
+		OBJECT temp_object(number);&#13;
+		// 自增操作&#13;
+		++number;&#13;
+		return temp_object;&#13;
+	}&#13;
+	//前置&#13;
+	OBJECT operator++()&#13;
+	{&#13;
+		//先运算再返回&#13;
+		return OBJECT(++number);&#13;
+	}&#13;
+};&#13;
+int main()&#13;
+{&#13;
+	OBJECT obj1(1);&#13;
+	OBJECT obj2(1);&#13;
+&#13;
+	OBJECT number = obj1++;&#13;
+	OBJECT number2 =++obj2;&#13;
+	return 0;&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="2gg9m9o5vcsa5t46uo87hhtne4">&nbsp;&nbsp;&nbsp;&nbsp;成员函数可以直接定义在类中</a>
+</h3>
+<h3 class="topic">
+<a name="2i5mjb3fe3uncjksu3rkbuuoks">&nbsp;&nbsp;只能被重载为成员函数的运算符</a>
+</h3>
+<h3 class="topic">
+<a name="1th2dr48a9odtno11a7qcnodiv">&nbsp;&nbsp;&nbsp;[] () -&gt; =</a>
+</h3>
+<h3 class="topic">
+<a name="2p9uqijq64vrv21bkkfiq9p8ad">&nbsp;&nbsp;&nbsp;&nbsp;重载[]</a>
+</h3>
+<h3 class="topic">
+<a name="24qdmlcfg8cpe00h2mtlkcqjn7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//[]只能用于以成员的方式进行重载&#13;
+class OBJECT&#13;
+{&#13;
+private:&#13;
+	int number_array[10] = { 1, 2, 3, 4, 5, 6 };&#13;
+public:&#13;
+	// 无参构造函数&#13;
+	OBJECT() = default;&#13;
+	// 提供数组的大小&#13;
+	int size() const { return 10; }&#13;
+&#13;
+	// [] 只能用于以成员的方式进行重载&#13;
+	// 如果想要实现直接修改数组的内容，返回值必须为引用&#13;
+	//[]运算符本质上有两个参数，其一为数组名 其二为数组元素下标&#13;
+	//这里因为是成员函数，所以默认第一个参数将this指针已经存在&#13;
+	//只需要传入数组元素下标，并考虑运算后的结果的类型（函数返回值类型）&#13;
+	int&amp; operator[](int index)&#13;
+	{&#13;
+		// 增加功能，防止越界&#13;
+		if (index &lt; 0 || index &gt;= 10)&#13;
+		{&#13;
+			printf("数组越界: [%d]\n", index);&#13;
+			return number_array[0];&#13;
+		}&#13;
+		// 如果没越界，直接返回数据&#13;
+		//这里因为返回值类型为int &amp;，所以可以返回数组元素，&#13;
+		//所以可以将该函数放在赋值运算符左边&#13;
+		return number_array[index];&#13;
+	}&#13;
+};&#13;
+&#13;
+int main()&#13;
+{&#13;
+	OBJECT object;&#13;
+	for (int i = -1; i &lt; object.size() + 1; ++i)&#13;
+	{&#13;
+		printf("object[%d] = %d\n", i, object[i]);&#13;
+	}&#13;
+	// 一般情况下可以直接使用下标修改数据&#13;
+	object[0] = 100;&#13;
+	printf("object[0] = %d\n", object[0]);&#13;
+	return 0;&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="169gf0iipi0h1rs6l0ndu3qm6n">&nbsp;&nbsp;&nbsp;&nbsp;四个符号只能重载为成员函数的原因</a>
+</h3>
+<h3 class="topic">
+<a name="270u0t5uek8kn9qsoq8c8puqfi">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;四个符号如果没有在类中定义相应的重载成员函数，编译器会自动生成加入，</a>
+</h3>
+<h3 class="topic">
+<a name="1lvu0h7fld2v3pcaebm7s5mqhv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;以赋值运算符=为例，若类中没有定义符号重载成员函数，程序就会在默认生成的符号重载成员函数中调用与赋值语句右值类型匹配的构造函数，将右值作为该构造函数的实参</a>
+</h3>
+<h3 class="topic">
+<a name="358rc28kophshb0rql94qo5jeg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当类中有声明或定义符号重载函数时，程序就会调用相应的运算符重载函数</a>
+</h3>
+<h3 class="topic">
+<a name="6bhoottjdpcbn8jg5ql916jb88">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当运算符重载函数友元函数时，此时类中也会生成默认的运算符重载函数，则程序在执行到相应运算符时，就不知道该执行  运算符重载友元函数   还是   默认的运算符重载函数  造成程序矛盾</a>
+</h3>
+<h3 class="topic">
+<a name="7vr9ajiuddmbun1l1n7lhpqmov">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;故以上四个符号的符号重载函数必须为成员函数</a>
+</h3>
+<h3 class="topic">
+<a name="6r9lk5or4m6vtdegbo751pseiq">&nbsp;&nbsp;重载类型转换运算符</a>
+</h3>
+<h3 class="topic">
+<a name="16atjuhlq73g24fd2l01tnqbj4">&nbsp;&nbsp;&nbsp;将当前类类型转化为其他数据类型</a>
+</h3>
+<h3 class="topic">
+<a name="4dkdep35e7he792aphj60trued">&nbsp;&nbsp;&nbsp;&nbsp;通过运算符重载将当前类对象转换为不同类型数据</a>
+</h3>
+<h3 class="topic">
+<a name="46sn16nvr1nbvirq3ptdac38dh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;operator int(){return 10;};</a>
+</h3>
+<h3 class="topic">
+<a name="23j894m9l85tv6ru107sf7uduo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;operator const char*(){return "wq";};</a>
+</h3>
+<h3 class="topic">
+<a name="3r81bsar9cam7tg9dn3vlu6j9b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;operator double(){return 1.1;};</a>
+</h3>
+<h3 class="topic">
+<a name="5mhj4qa8gsa5ih3a6b0g49s4f0">&nbsp;&nbsp;&nbsp;&nbsp;没有返回值类型，因为返回值类型与转换目的类型相同</a>
+</h3>
+<h3 class="topic">
+<a name="4mdpd634nr789cj050c82knufu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;类型转换没有返回值的情况是因为  在operator的语法中，因为返回的类型与转换的类型是相同的，所以语法层面规定可以省略这个返回值不写</a>
+</h3>
+<h3 class="topic">
+<a name="0iu56vk5efm4c2traukpep4mhh">&nbsp;&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="3dvu0bbs2dihfvotjmfbu2n9qf">&nbsp;&nbsp;&nbsp;&nbsp;class OBJECT&#13;
+{&#13;
+private:&#13;
+	int int_number = 10;&#13;
+	double doublet_number = 3.14;&#13;
+	const char* str = "const char*";&#13;
+public:&#13;
+	// 通过运算符重载将当前类对象转换成不同类型的数据&#13;
+	// 返回值类型和需要转换的类型是相同的，所以不用写返回值&#13;
+	operator int()&#13;
+	{&#13;
+		return int_number;&#13;
+	}&#13;
+&#13;
+	operator double()&#13;
+	{&#13;
+		return doublet_number;&#13;
+	}&#13;
+	&#13;
+	operator const char*()&#13;
+	{&#13;
+		return str;&#13;
+	}&#13;
+};&#13;
+&#13;
+int main()&#13;
+{&#13;
+	OBJECT object;&#13;
+	//该函数会报错，因为char类型的转换可以转化为int或&#13;
+	//double类型的转换，无法确程序应该调用哪个&#13;
+	//char char_number = (char)(object);&#13;
+&#13;
+	int int_number = int(object);&#13;
+	double double_number = double(object);&#13;
+	//因为优先级问题，const char*需要加()&#13;
+	const char* str = (const char*)(object);&#13;
+	return 0;&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="38pkiul5tthm8tkq8i6hugsgjv">&nbsp;&nbsp;重载输入输出运算符（一般只使用友元函数进行重载，使用成员函数进行重载看上去比较怪）</a>
+</h3>
+<h3 class="topic">
+<a name="5mo3aj90fjmgi318hu0bviumub">&nbsp;&nbsp;&nbsp;输入输出重载规则</a>
+</h3>
+<h3 class="topic">
+<a name="2a40j0nii13565oidigtin44l3">&nbsp;&nbsp;&nbsp;&nbsp;为了与IO标准库一致，重载输入输出运算符函数的第一个形参应该是流的引用（ostream &amp;/istream &amp;），第二个形参是对象的引用。</a>
+</h3>
+<h3 class="topic">
+<a name="7ajc9pcd4serqfdspvt56p86eb">&nbsp;&nbsp;&nbsp;&nbsp;如果重载为类的成员函数，第一个形参应该是对象的引用，第二个形参是流的引用（ostream &amp;/istream&amp;）。</a>
+</h3>
+<h3 class="topic">
+<a name="3pacvicug7tg1icqcbvmu9mek8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用成员函数重载时，使用方式是 ClassObj &lt;&lt; cout 这样与标准IO库就不一致了，所以输入输出运算符不能重载为类的成员函数，可以重载为类的友元函数和普通函数。</a>
+</h3>
+<h3 class="topic">
+<a name="00j1f0ct9a3df1ohhpko076cu4">&nbsp;&nbsp;&nbsp;&nbsp;通常重载输出运算符的第二个形参是const的,因为输出一个类不需要更改它；</a>
+</h3>
+<h3 class="topic">
+<a name="0uurkia0o2nmss0nulc0678c7o">&nbsp;&nbsp;&nbsp;&nbsp;但是重载输入运算符的第二个形参必须是非const的,否则无法赋值。</a>
+</h3>
+<h3 class="topic">
+<a name="2tdvko5acmh0409c6f62v2qag3">&nbsp;&nbsp;&nbsp;关于输入输出流（istream和ostream）</a>
+</h3>
+<h3 class="topic">
+<a name="0n4dcqfj68cg0ekas64jdcnhgt">&nbsp;&nbsp;&nbsp;&nbsp;ostream在设计上是一个基类，抽象了底层行为，本身什么功能也没有</a>
+</h3>
+<h3 class="topic">
+<a name="1mheqefl9vqb2ht0viiovq7bgm">&nbsp;&nbsp;&nbsp;&nbsp;ostream的引用可以使用std::cout进行赋值，可以将cout看作是ostream的一个实例化</a>
+</h3>
+<h3 class="topic">
+<a name="02bc9pg9q6q5aro7g5kqco3rf4">&nbsp;&nbsp;&nbsp;&nbsp;在c++11中iostream的拷贝构造函数被设置为delete，旧版本中将其拷贝构造设置为private从而阻止拷贝</a>
+</h3>
+<h3 class="topic">
+<a name="019cgoq5bn66459o6fg4f5057l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;所以参数要使用iostream类对象的引用而非类对象</a>
+</h3>
+<h3 class="topic">
+<a name="2t84bcme1i608gcb9p1p2c38k4">&nbsp;&nbsp;&nbsp;&nbsp;阻止拷贝的目的是：C++系统为避免IO资源冲突或内存泄露问题</a>
+</h3>
+<h3 class="topic">
+<a name="497f4007kbfit8piho35tq2ucc">&nbsp;&nbsp;&nbsp;&nbsp;相关资料</a>
+</h3>
+<h3 class="topic">
+<a href="https://segmentfault.com/q/1010000007297802" name="7gcdsqe29sadn6p6etubp68t0e">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://segmentfault.com/q/1010000007297802</a>
+</h3>
+<h3 class="topic">
+<a name="3ksj0m6rjv762piaisoi4heci8">&nbsp;&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="2egk6g60fbgrfuh04pooua7rvo">&nbsp;&nbsp;&nbsp;&nbsp;友元函数重载（推荐，因为不需要定义对象即可调用运算符重载函数，看上去比较符合符号使用习惯）</a>
+</h3>
+<h3 class="topic">
+<a name="7f4l0p6rinn0khngopko7uoeip">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;using namespace std;&#13;
+&#13;
+class OBJECT&#13;
+{&#13;
+	friend ostream&amp; operator&lt;&lt;(ostream &amp; o, const OBJECT&amp; object);&#13;
+	friend istream&amp; operator&gt;&gt;(istream &amp; i, OBJECT &amp; object);&#13;
+private:&#13;
+	int int_number = 10;&#13;
+	double double_number = 3.14;&#13;
+	char str[100];&#13;
+public:&#13;
+	OBJECT() = default;&#13;
+};&#13;
+&#13;
+// 推荐使用友元的方式重载输入输出运算符&#13;
+// 使用 ostream &amp; 的原因是 osteam 对象的拷贝构造被删除了&#13;
+ostream &amp; operator&lt;&lt;(ostream &amp; o, const OBJECT&amp; object)&#13;
+{&#13;
+	o &lt;&lt; "double_number = " &lt;&lt; object.double_number &lt;&lt; endl;&#13;
+	o &lt;&lt; "int_number = " &lt;&lt; object.int_number &lt;&lt; endl;&#13;
+	o &lt;&lt; "str = " &lt;&lt; object.str &lt;&lt; endl;&#13;
+	return o;&#13;
+}&#13;
+&#13;
+istream&amp; operator&gt;&gt;(istream &amp; i, OBJECT&amp; object)&#13;
+{&#13;
+	printf("请分别输入 整数 浮点数 字符串: ");&#13;
+	// 起初把 str 设置成了常量指针，常量指针不能用于输入&#13;
+	// 需要把 cosnt char* -&gt; char[100]&#13;
+	// OBJECT 不能是 const，否则无法输入&#13;
+	i &gt;&gt; object.int_number &gt;&gt; object.double_number &gt;&gt; object.str;&#13;
+	return i;&#13;
+}&#13;
+&#13;
+int main()&#13;
+{&#13;
+	OBJECT object;&#13;
+	//这里输入输出运算符有两个参数 左参数为cin或cout 右参数为要输出的内容，&#13;
+	//从运算符重载函数中看到，ostream &amp;o对应了第一个参数，const OBJECT&amp; object对应第二个参数&#13;
+	//第二个参数在&gt;&gt;的重载中必须是 OBJECT&amp; object 因为需要为对象赋值&#13;
+	cin &gt;&gt; object;&#13;
+	cout &lt;&lt; object &lt;&lt; endl;&#13;
+	return 0;&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="1rvg3cae633dodbu8g7annmp2f">&nbsp;&nbsp;&nbsp;&nbsp;成员函数重载</a>
+</h3>
+<h3 class="topic">
+<a name="3tj3sdu0amr3dn8pdns1shgo95">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用成员函数重载，调用的时候会发生  object&lt;&lt;cout</a>
+</h3>
+<h3 class="topic">
+<a name="4v42gt076q86rqh6n4a9l6cqn0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;using namespace std;&#13;
+&#13;
+class OBJECT&#13;
+{&#13;
+private:&#13;
+	int int_number = 10;&#13;
+	double double_number = 3.14;&#13;
+	char str[100] = {"lol"};&#13;
+public:&#13;
+	OBJECT() = default;&#13;
+	//该语句用于关闭类中默认拷贝构造函数&#13;
+	OBJECT(OBJECT&amp; obj) = delete;&#13;
+&#13;
+	// 使用成员的方式进行重载&#13;
+	//第一个参数必须是this指针，这是由成员函数特性决定的&#13;
+	ostream&amp; operator&lt;&lt;(ostream&amp; o)&#13;
+	{&#13;
+		o &lt;&lt; int_number &lt;&lt; endl;&#13;
+		o &lt;&lt; double_number &lt;&lt; endl;&#13;
+		o &lt;&lt; str &lt;&lt; endl;&#13;
+		o &lt;&lt; endl;&#13;
+		return o;&#13;
+	}&#13;
+};&#13;
+int main()&#13;
+{&#13;
+	OBJECT object;&#13;
+	//因为是成员函数，故不能使用 cout &lt;&lt; object;&#13;
+	//使用的时候会感觉比较奇怪，不符合一般输入输出运算符的使用规范&#13;
+	object &lt;&lt; cout;&#13;
+	//等价于&#13;
+	object.operator&lt;&lt;(cout);&#13;
+	return 0;&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="3oa71ejs61727s91islecn55oa">&nbsp;&nbsp;不能被重载的运算符</a>
+</h3>
+<h3 class="topic">
+<a name="314l8ipv0ggrujvnf5osq2r6tl">&nbsp;&nbsp;&nbsp;C++中不能重载的运算符有五个。，分别为：&ldquo;?:&rdquo;&ldquo;::&rdquo;&ldquo;.&rdquo;&ldquo;.*&rdquo;&ldquo;sizeof&rdquo;。 </a>
+</h3>
+<h2 class="topic">
+<a name="3ertc3gq1vg6oeca6vql59tf0t">tips</a>
+</h2>
+<h3 class="topic">
+<a name="36tp76bnm1fknc8tenp3l0aq2r">&nbsp;在类中：&#13;
+类名()=default;//使用默认构造函数&#13;
+类名()=delete;//删除默认构造函数&#13;
+类名(类名&amp;obj)==default;//使用默认拷贝构造函数&#13;
+类名(类名&amp;obj)==delete;//删除默认拷贝构造函数</a>
+</h3>
+<h3 class="topic">
+<a name="0d6lttkihtnsb3ii5iqurggmv9">&nbsp;友元函数可以在类中定义</a>
+</h3>
+<h3 class="topic">
+<a name="45kp6er5ikglb6p4s0h51rva5b">&nbsp;空类中至少占一个字节内存空间</a>
+</h3>
+<h3 class="topic">
+<a name="1fua606vs09opubr35peup35q7">&nbsp;&nbsp;非空类是否也占用空类这一字节，取决于不同的编译器设置</a>
+</h3>
+</body>
+</html>

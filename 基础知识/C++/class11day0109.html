@@ -1,0 +1,753 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>class11day0109</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="1d9uj9nm5h85r4dcj4cn2a7ljv">class11day0109</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="class11day0109_files/images/class11day0109.jpg"></div>
+<h2 class="topic">
+<a name="3ajb8s5o0s6vjoqnvqdb4gkip6">继承</a>
+</h2>
+<h3 class="topic">
+<a name="6q8p39vtl4fv470dao7snuk50v">&nbsp;种类</a>
+</h3>
+<h3 class="topic">
+<a name="0ua8ln70mbbslqh8qrdikihl49">&nbsp;&nbsp;单继承</a>
+</h3>
+<h3 class="topic">
+<a name="0tur942ljjpo11kc5kdmd9k41p">&nbsp;&nbsp;&nbsp;语法</a>
+</h3>
+<h3 class="topic">
+<a name="7nvsdupe4uvs31jvc1ftch5o6i">&nbsp;&nbsp;&nbsp;&nbsp;class 子类类名:继承方式 父类类型</a>
+</h3>
+<h3 class="topic">
+<a name="3u25ou4c5mspt49moeuhfi4mpm">&nbsp;&nbsp;多继承</a>
+</h3>
+<h3 class="topic">
+<a name="5ttn118pgdigq4p12ge989pe0b">&nbsp;&nbsp;&nbsp;class 子类类名:继承方式 父类类型,继承方式 父类类型,.....</a>
+</h3>
+<h3 class="topic">
+<a name="1egvkr6ul15v04vr1hlqfuarbh">&nbsp;继承造成的影响</a>
+</h3>
+<h3 class="topic">
+<a name="04476go62sukh4mavmh7grasc1">&nbsp;&nbsp;子类继承了父类中所有的成员变量和成员函数(不分私有\公有\保护)</a>
+</h3>
+<h3 class="topic">
+<a name="1cka3nssstcf41evgmvej66nmi">&nbsp;&nbsp;默认继承方式</a>
+</h3>
+<h3 class="topic">
+<a name="01b869oktu52hipnk4a94amrq9">&nbsp;&nbsp;&nbsp;继承一个类时, 如果不指定继承方式, 默认的的继承方式就是私有方式,  而结构体的默认继承方式是公有.</a>
+</h3>
+<h3 class="topic">
+<a name="7n6q0sh4lhba674adi0f785v3o">&nbsp;&nbsp;继承时,封装性依然会对子类造成影响,子类虽然继承了所有成员,但是为了保护父类中的封装性,子类仍然无法直接访问父类的私有成员,只能通过父类中的成员函数去访问父类私有成员</a>
+</h3>
+<h3 class="topic">
+<a name="576ssu7cron2840mm0tqqhlh32">&nbsp;&nbsp;继承方式的影响:公有继承方式和保护继承不会影响子类的内部,(私有的继承方式会影响子类的内部)子类内部仍然可以使用父类所有非私有成员,</a>
+</h3>
+<h3 class="topic">
+<a name="6v4asi681ukktrih28cghq9kij">&nbsp;&nbsp;&nbsp;当使用私有方式继承时,在子类内部父类所有的成员变量和成员函数均是private类型的,是可以访问的</a>
+</h3>
+<h3 class="topic">
+<a name="6l7cjuautcp1d5kafj2put4rts">&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img height="531" src="class11day0109_files/13p82t71rbu2n1fgk048c9ffr2.png" width="851"></p>
+<h3 class="topic">
+<a name="6aomhojbbifhhubnfkcg2oe3oh">&nbsp;&nbsp;继承方式对子类的外部造成影响(即定义了子类的对象),决定了子类的外部(即子类的对象)是否能访问从父类中继承下来的成员</a>
+</h3>
+<h3 class="topic">
+<a name="1c2hf8hmcvomt46nm7oci77i5l">&nbsp;&nbsp;&nbsp;公有继承时:子类可以在外部访问父类的公有成员</a>
+</h3>
+<h3 class="topic">
+<a name="0i53rjddais757kd0b29fajdnn">&nbsp;&nbsp;&nbsp;通过保护方式\私有方式:无法在子类的外部使用父类成员,</a>
+</h3>
+<h3 class="topic">
+<a name="2njvqfmthan5v2ipfj92pvk784">&nbsp;&nbsp;&nbsp;&nbsp;通过保护方式,父类所有的公有成员在子类中都变成了保护成员</a>
+</h3>
+<h3 class="topic">
+<a name="0alb2sc7jk20o18vja8abkk4ue">&nbsp;&nbsp;&nbsp;&nbsp;通过私有方式继承父类的成员,父类所有保护成员和公有成员在子类中均变成私有成员,如果子类再派生出子类时,这些通过私有继承方式继承下来的成员在孙子类中就不能访问</a>
+</h3>
+<h3 class="topic">
+<a name="2h0bqs899p8qe24eru9ugap722">&nbsp;&nbsp;访问声明</a>
+</h3>
+<h3 class="topic">
+<a name="40rdfipdkd1vbs8rrb9r8gj1g6">&nbsp;&nbsp;&nbsp;将父类中的成员函数在子类中改变访问权限</a>
+</h3>
+<h3 class="topic">
+<a name="5nm17jphmj7iklu0lje4uj51ab">&nbsp;&nbsp;&nbsp;&nbsp;using 父类类型::父类中继承下来的成员</a>
+</h3>
+<h3 class="topic">
+<a name="27km8n94frfrq9d98qo8p54f71">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将该语句放在子类的定义的特定访问权限下面</a>
+</h3>
+<h3 class="topic">
+<a name="56fsar8n5if6u9g2psv3t02l3s">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img height="426" src="class11day0109_files/6sud1ok80mp1kbivk42rfaaoa1.png" width="782"></p>
+<h3 class="topic">
+<a name="6ctcmiuhqncu6sjhneud267135">&nbsp;&nbsp;继承后类对象大小和内存布局</a>
+</h3>
+<h3 class="topic">
+<a name="68p8v8u5nfjhnils9kjatgv8dq">&nbsp;&nbsp;&nbsp;内存布局</a>
+</h3>
+<h3 class="topic">
+<a name="2dpfpsifnf89dc52ksg5pnj8bh">&nbsp;&nbsp;&nbsp;&nbsp;先储存父类成员变量,后储存子类的成变量</a>
+</h3>
+<h3 class="topic">
+<a name="4tlf5nnp2fqg8bhg9t6r7lf1no">&nbsp;&nbsp;&nbsp;对象大小</a>
+</h3>
+<h3 class="topic">
+<a name="0kb2kc49l6e68t32834fmo1lr1">&nbsp;&nbsp;&nbsp;&nbsp;父类大小+子类新增成员的大小</a>
+</h3>
+<h3 class="topic">
+<a name="261qniarri2b63krjptcd54r74">&nbsp;&nbsp;派生类构造\析构调用顺序</a>
+</h3>
+<h3 class="topic">
+<a name="341pius2s09idoaevuti4amrcm">&nbsp;&nbsp;&nbsp;先调用父类构造(如果有多个父类,按照在类定义的时候继承的排序进行构造调用),再调用成员对象的构造函数(如果有成员对象的话),最后调用子类构造,析构函数顺序相反</a>
+</h3>
+<h3 class="topic">
+<a name="5rrtm5caqfb3atul2uit7afgbm">&nbsp;&nbsp;&nbsp;如果父类的构造函数没有默认的无参构造,就需要在子类构造的初始化列表中调用父类的有参构造</a>
+</h3>
+<h3 class="topic">
+<a name="4dth10fqcjqvii3f0n7s0cq1k6">&nbsp;&nbsp;&nbsp;&nbsp;class A&#13;
+{&#13;
+	public:  &#13;
+    A( int  n ){ }&#13;
+};&#13;
+&#13;
+class B : public A&#13;
+{&#13;
+	public:&#13;
+    B() : A(0)/*在子类中调用父类的构造函数*/&#13;
+            {&#13;
+            }&#13;
+};</a>
+</h3>
+<h3 class="topic">
+<a name="3g74339s63dt0vd9f739utghgq">&nbsp;&nbsp;重定义</a>
+</h3>
+<h3 class="topic">
+<a name="7avj562udm228k20st2v5vpshb">&nbsp;&nbsp;&nbsp;父类成员和子类成员的重定义</a>
+</h3>
+<h3 class="topic">
+<a name="4pjqh65lh1kkk4t11limggq61q">&nbsp;&nbsp;&nbsp;&nbsp;在父类和子类中存在成员变量重名,则两者各占一块内存空间,若在子类中使用重名成员变量或在子类对象引用重名成员变量时,默认使用子类的成员变量,(就近原则)存在覆盖原则(若能在调用对象的类中找,找不到才考虑找父类)</a>
+</h3>
+<h3 class="topic">
+<a name="0045t1lt6ug440uct8d4iildsv">&nbsp;&nbsp;&nbsp;&nbsp;子类父类中成员函数重名,子类对象调用重名函数时,调用的是子类成员函数(就近原则),存在覆盖行为(若能在调用对象的类中找,找不到才考虑找父类)</a>
+</h3>
+<h3 class="topic">
+<a name="63t0gb6b6n756p76sq3g24fln3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注意这里无论两个成员函数时形参相同还是形参不同,只要函数名相同,两个函数就会构成函数重定义</a>
+</h3>
+<h3 class="topic">
+<a name="4p6c6hq3mq8l7gcr45j1o1hf7i">&nbsp;&nbsp;&nbsp;&nbsp;如何在子类中使用父类的重名变量或重名函数</a>
+</h3>
+<h3 class="topic">
+<a name="6qie88baqqb2hsft06k83k6onj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在重名函数的函数名之前加上父类作用域即  &#13;
+子类对象名.父类::重名函数名</a>
+</h3>
+<h3 class="topic">
+<a name="3du14lona8mrq75l36gv1a7090">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;重名变量</a>
+</h3>
+<h3 class="topic">
+<a name="6s62r4c6tdcma88e46lfc97ide">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// 使用父类的重名成员变量.&#13;
+this-&gt;MyClassA::m_nProtected = 0;</a>
+</h3>
+<h3 class="topic">
+<a name="09gp418m2ocbpu965jgv593cfn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;重名函数</a>
+</h3>
+<h3 class="topic">
+<a name="3lpu3t622frn2srup1p6cns72d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// 调用父类的重名成员函数&#13;
+obj.MyClassA::funA();</a>
+</h3>
+<h3 class="topic">
+<a name="5lrhne1f7ju8ti43843mq145dj">&nbsp;&nbsp;&nbsp;子类中需要修改或扩展基类中的某个成员</a>
+</h3>
+<h3 class="topic">
+<a name="1pbk9neonq36s8fjne369tvd73">&nbsp;多继承</a>
+</h3>
+<h3 class="topic">
+<a name="5hprve29dbesqd9epd7u56s0dh">&nbsp;&nbsp;有多个父类时,按照该类定义的时候继承的顺序进行构造函数的调用的</a>
+</h3>
+<h3 class="topic">
+<a name="31phuofv4j0d4e2ssqbkt6pai7">&nbsp;&nbsp;两个父类中存在重名的成员函数时,子类的对象在调用该函数会错误,此时需要加上相应父类名和作用域选择符</a>
+</h3>
+<h3 class="topic">
+<a name="2lkkbblpeuj18b2uk6ita3knca">&nbsp;&nbsp;&nbsp;此时如果遇到重名,需要使用  父类名::重名函数 的方式指定使用的重名函数的作用域</a>
+</h3>
+<h3 class="topic">
+<a name="1spk1efep21to9vsm4l4d7hgsq">&nbsp;&nbsp;多继承中的二义性</a>
+</h3>
+<h3 class="topic">
+<a name="6rppvr8oguekqb5jjb8acc2t9b">&nbsp;&nbsp;&nbsp;多继承的两个父类均是一个相同爷爷类的子类</a>
+</h3>
+<h3 class="topic">
+<a name="35lebouldeuadn3pp72oo1ji1m">&nbsp;&nbsp;虚继承</a>
+</h3>
+<h3 class="topic">
+<a name="4cs5ll4l5600bbursgc45qdh7i">&nbsp;&nbsp;&nbsp;专门用于解决菱形继承</a>
+</h3>
+<h3 class="topic">
+<a name="14rcjnul94nhed497i7hmdr3i8">&nbsp;&nbsp;&nbsp;在两个父类继承相同的爷爷类时加上vritual关键字,这样可以避免爷爷类被重复继承两次,占据两个内存空间,有的时候还会出现逻辑上的错误</a>
+</h3>
+<h3 class="topic">
+<a name="3e7s5vj5ssce5sbj08sh7sgnba">&nbsp;&nbsp;&nbsp;&nbsp;使用虚继承的时候,原来爷爷类重复占有的内存空间会多出虚基表.</a>
+</h3>
+<h3 class="topic">
+<a name="7a9kalmm4voj6a5o3t28unaudv">&nbsp;&nbsp;&nbsp;&nbsp;此时内存空间的大小=父类成员字节数+子类成员自身的字节数+父类个数*4(这里就是虚基表)</a>
+</h3>
+<h3 class="topic">
+<a name="4ve8tmgtagkddji2s2fec3oe4q">&nbsp;&nbsp;&nbsp;形式</a>
+</h3>
+<h3 class="topic">
+<a name="0b3m2eevva3aqoch2tmvif199m">&nbsp;&nbsp;&nbsp;&nbsp;class A:virtual public B</a>
+</h3>
+<h3 class="topic">
+<a name="5eense0agc2cdepqpsfsvp0skj">&nbsp;&nbsp;&nbsp;&nbsp;class A:public virtual B</a>
+</h3>
+<h3 class="topic">
+<a name="1ngcb3rhmu4s4gs57q2jfq5vqf">&nbsp;&nbsp;&nbsp;&nbsp;即virtual关键字可以放在继承方式前面,也可以放在继承方式后面</a>
+</h3>
+<h3 class="topic">
+<a name="3se0uka8vm49pknildn5anv580">&nbsp;继承的应用方向</a>
+</h3>
+<h3 class="topic">
+<a name="7d1h2ku44tqe6397klrvgv1364">&nbsp;&nbsp;代码复用</a>
+</h3>
+<h3 class="topic">
+<a name="5uf9fod0vtri5ddscv7tdijebb">&nbsp;&nbsp;&nbsp;为旧的类扩展新的功能</a>
+</h3>
+<h3 class="topic">
+<a name="51mogqnnofeof7obn1j44ffh5g">&nbsp;&nbsp;&nbsp;&nbsp;构造函数是不能被继承的,在现有累的基础上扩展类功能创建新的类时,需要自己写该类的构造函数</a>
+</h3>
+<h3 class="topic">
+<a name="6kmpk1p61bud67dmvlqj8lrcjt">&nbsp;&nbsp;&nbsp;&nbsp;class MyString:public string&#13;
+{&#13;
+public:&#13;
+MyString&#13;
+&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="1qe987rli4qscs58f905lubjco">&nbsp;&nbsp;代码重构</a>
+</h3>
+<h3 class="topic">
+<a name="260fmqneootp3nh3m6f1s20ndb">&nbsp;&nbsp;&nbsp;当多个类中存在重复的属性时,可以将这些属性抽离出来,单独设置一个类,由该类派生多个类,增加相关类独有的性质,从而减少代码重用</a>
+</h3>
+<h3 class="topic">
+<a name="5ttd862lgmevjnca46p38bc3r6">&nbsp;&nbsp;组合多父类中的的功能</a>
+</h3>
+<h3 class="topic">
+<a name="3ch7v65v7mjqmu7nn1kpjhg4jo">&nbsp;&nbsp;&nbsp;完全不使用父类功能</a>
+</h3>
+<h3 class="topic">
+<a name="3mjph7vaf172lafvc43u8d8h8s">&nbsp;&nbsp;&nbsp;&nbsp;如果子类中的功能与父类中有很大区别,可以在子类中重定义这个功能,让子类重新实现这个功能,</a>
+</h3>
+<h3 class="topic">
+<a name="6mvn5nqrr2oo8ufoa6ht43u0a1">&nbsp;&nbsp;&nbsp;完全使用父类功能</a>
+</h3>
+<h3 class="topic">
+<a name="4k0p79dmo312of93mm58lm4r0j">&nbsp;&nbsp;&nbsp;&nbsp;如果子类中的功能与父类一样,则直接调用父类中的成员函数即可</a>
+</h3>
+<h3 class="topic">
+<a name="5ffcvv4n7qm342mr2ofdpdg4rj">&nbsp;&nbsp;&nbsp;部分使用父类功能呢</a>
+</h3>
+<h3 class="topic">
+<a name="61uj20av1kkde4fs7vigurllip">&nbsp;&nbsp;&nbsp;&nbsp;如果子类中的功能需要使用父类的功能,但是最终的效果与父类中不太一样,那么可以在子类中调用父类功能,之后再加上新的功能</a>
+</h3>
+<h3 class="topic">
+<a name="6hs18vtq1t6rjlfsm8cha362r3">&nbsp;&nbsp;&nbsp;以上三点利用了子类与父类中成员函数重名时,就近原则调用子类中重名函数的机制,在子类中完成了对父类功能的修改</a>
+</h3>
+<h3 class="topic">
+<a name="0ids1thd7fvfelm7kslnpdq8ev">&nbsp;&nbsp;&nbsp;&nbsp;即重定义</a>
+</h3>
+<h3 class="topic">
+<a name="1s7ke3nasm9nnach3flc1r2tn9">&nbsp;&nbsp;&nbsp;接口</a>
+</h3>
+<h3 class="topic">
+<a name="5js3bd0ipm4jnnm5c7nahdnjof">&nbsp;&nbsp;&nbsp;&nbsp;定义一个类,专门用于提供接口</a>
+</h3>
+<h3 class="topic">
+<a name="3ei6kbro9ct3u3hr8e523pbaoa">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;接口的内部不需要实现函数代码,仅仅需要函数的定义,需要定义这个函数在什么时候会被调用</a>
+</h3>
+<h3 class="topic">
+<a name="1ocs44jn47r7rlh75i1k56451n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;?????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????</a>
+</h3>
+<h3 class="topic">
+<a name="76mrtbjnlce43344mqcdaoq19v">&nbsp;类和类之间的关系</a>
+</h3>
+<h3 class="topic">
+<a name="32v1h1kuriicrp717286t6p9p5">&nbsp;&nbsp;继承关系</a>
+</h3>
+<h3 class="topic">
+<a name="0758gtesvos1iv9f6u1nu7sksc">&nbsp;&nbsp;&nbsp;当两者满足一定的逻辑时:XX是YY中的一种,可以使用继承</a>
+</h3>
+<h3 class="topic">
+<a name="4nfqhoepfvp1e5oh4ft4kldjhc">&nbsp;&nbsp;&nbsp;&nbsp;包含于的关系</a>
+</h3>
+<h3 class="topic">
+<a name="14dmm3tr03vipv448865taap0d">&nbsp;&nbsp;组合</a>
+</h3>
+<h3 class="topic">
+<a name="7723pijh5m287h5q2nu0r8i6h0">&nbsp;&nbsp;&nbsp;使用另外一个类在本类中定义一个成员对象</a>
+</h3>
+<h3 class="topic">
+<a name="1l97h552jqs8hlfn49c9qptdm1">&nbsp;&nbsp;&nbsp;当两者满足一定的逻辑时:XX是YY中的一个部分,可以使用组合</a>
+</h3>
+<h3 class="topic">
+<a name="6ptjjjpb9h5ce42gl3ai5uivd6">&nbsp;&nbsp;&nbsp;分类</a>
+</h3>
+<h3 class="topic">
+<a name="7kttqnrtvr1nsg5jcbhc0eruf0">&nbsp;&nbsp;&nbsp;&nbsp;依赖关系</a>
+</h3>
+<h3 class="topic">
+<a name="02lkqfaqrra4euaa8sdk24uf4n">&nbsp;&nbsp;&nbsp;&nbsp;聚合关系</a>
+</h3>
+<h3 class="topic">
+<a name="32gagpfddbphorl0ao9633hhqa">&nbsp;类和成员变量,成员函数的关系</a>
+</h3>
+<h3 class="topic">
+<a name="77ar20daeap7ak3079pqco814e">&nbsp;&nbsp;一个类里面能够定义什么样的成员变量\成员函数</a>
+</h3>
+<h3 class="topic">
+<a name="6jk4fga4oilrr2epav34f7rhr0">&nbsp;&nbsp;&nbsp;成员变量是用于修饰类的个体,如果一个成员变量不能修饰类的个体,不应该成为成员变量</a>
+</h3>
+<h3 class="topic">
+<a name="535lmvvimahjfln9i4p5tucs7c">&nbsp;&nbsp;&nbsp;成员函数用于操作成员数据,如果该成员函数与成员数据无关,则就不应该定义成员函数</a>
+</h3>
+<h3 class="topic">
+<a name="0jg3cjkj10kr74ekgrupuivjr1">&nbsp;复习</a>
+</h3>
+<h3 class="topic">
+<a name="3fv9oi00qlrm34bgmb5f98f4qa">&nbsp;&nbsp;私有继承中父类所有成员在子类中都变成私有属性(子类内部可以访问父类的公有成员和保护成员,不能访问父类的私有成员),如果再派生一个孙子类,爷爷的成员就不能被孙子类访问到了</a>
+</h3>
+<h3 class="topic">
+<a name="14k442p6vh135gknnboe8ub7pa">&nbsp;&nbsp;函数重载与函数重定义</a>
+</h3>
+<h3 class="topic">
+<a name="6hr4dsrn5duvueneiaqqjrc8mi">&nbsp;&nbsp;&nbsp;重定义</a>
+</h3>
+<h3 class="topic">
+<a name="7089i6fuk6goica5isnhmqlcqo">&nbsp;&nbsp;&nbsp;&nbsp;函数作用域不同,函数名相同,参数可以相同也可以不相同</a>
+</h3>
+<h3 class="topic">
+<a name="01e6rtouqen4n6gsn6a4blr4pc">&nbsp;&nbsp;&nbsp;&nbsp;常用于子类对父类同名函数的重定义</a>
+</h3>
+<h3 class="topic">
+<a name="6qijeggsp775b1vf1bskq7529b">&nbsp;&nbsp;&nbsp;重载</a>
+</h3>
+<h3 class="topic">
+<a name="0pscttop9s66m85pjkbvffo57q">&nbsp;&nbsp;&nbsp;&nbsp;作用域相同 函数名相同 函数参数不能相同</a>
+</h3>
+<h3 class="topic">
+<a name="6c8dtqg26u7jree6e90secdilg">&nbsp;&nbsp;&nbsp;&nbsp;常用于提供函数多态性,比如构造函数的多态性</a>
+</h3>
+<h3 class="topic">
+<a name="7f48d42jiaa8n1e2b2r241bpvg">&nbsp;&nbsp;&nbsp;重写</a>
+</h3>
+<h3 class="topic">
+<a name="266rped8avsgok8ne4i4ou180j">&nbsp;&nbsp;&nbsp;&nbsp;函数作用域相同 函数名相同 参数相同 需要在基类虚函数中备注virtual</a>
+</h3>
+<h3 class="topic">
+<a name="3d9jq1oru0al83krau17182hho">&nbsp;&nbsp;&nbsp;&nbsp;常用于子类中改写父类的虚函数,提供虚函数机制</a>
+</h3>
+<h3 class="topic">
+<a name="21igobq0fgimt2rujlacslp12k">&nbsp;&nbsp;在子类中通过"父类名::父类成员函数名();"来调用子类与父类中的同名函数</a>
+</h3>
+<h3 class="topic">
+<a name="4rmtibc8t517glekgiljpf3suc">&nbsp;&nbsp;继承的作用</a>
+</h3>
+<h3 class="topic">
+<a name="32m66knq6bl61c48uv8k5rvala">&nbsp;&nbsp;&nbsp;代码重构</a>
+</h3>
+<h3 class="topic">
+<a name="6jgem4ibmkhoqrnbbmcavesvm9">&nbsp;&nbsp;&nbsp;代码重用(在原有类的基础上扩展新的功能)</a>
+</h3>
+<h3 class="topic">
+<a name="70icdsr87gf3370lc9b6hmmhcq">&nbsp;&nbsp;&nbsp;组合多各个类的功能</a>
+</h3>
+<h3 class="topic">
+<a name="1plpvog85q4sdlsn4hjqpl8qgj">&nbsp;&nbsp;什么是继承,什么是组合</a>
+</h3>
+<h3 class="topic">
+<a name="5qvvdm8chh0fnu2jpoth9nfk41">&nbsp;&nbsp;&nbsp;继承:子类属于父类中的一种(当两个类满足xxx是yy的一种)</a>
+</h3>
+<h3 class="topic">
+<a name="0fl9coehbssqfb98sv2am2os93">&nbsp;&nbsp;&nbsp;组合:xx是yy的一部分,xx就可以作为yy的一个成员变量(成员对象)</a>
+</h3>
+<h3 class="topic">
+<a name="39ul7gpq0u1vebp6mqodaa6hvb">&nbsp;&nbsp;继承之后子类对象的大小</a>
+</h3>
+<h3 class="topic">
+<a name="3llpf81rcai9t70idfjcpk9b7e">&nbsp;&nbsp;&nbsp;父类成员字节数+子类自身成员的字节数</a>
+</h3>
+<h3 class="topic">
+<a name="3jbq7jrcsquh8vbq90em6na137">&nbsp;&nbsp;子类父类的构造 析构函数执行顺序</a>
+</h3>
+<h3 class="topic">
+<a name="0baa4upfij8qio1tp70ab2cu18">&nbsp;&nbsp;&nbsp;构造顺序</a>
+</h3>
+<h3 class="topic">
+<a name="36mi75btr4ua19qk9bm999cqs9">&nbsp;&nbsp;&nbsp;&nbsp;父类-&gt;成员变量-&gt;子类</a>
+</h3>
+<h3 class="topic">
+<a name="3pjl03ui77lv909cokd9e4dq5g">&nbsp;&nbsp;&nbsp;析构顺序相反</a>
+</h3>
+<h3 class="topic">
+<a name="1q16u9tbc5ekgg9c8a920edt0s">&nbsp;&nbsp;父类中没有无参构造函数,时,子类需要为在父类中添加一个无参的构造函数或者在子类初始化列表中显示调用父类的的带参构造函数,这样使用子类对象才不会报错</a>
+</h3>
+<h3 class="topic">
+<a name="6kt7aa16ql2tmspla6ie2p6vvg">&nbsp;&nbsp;如何用一个数组保存不同类型的类对象,并使用这些类对象的成员函数</a>
+</h3>
+<h3 class="topic">
+<a name="4jq1t3oes0uqg15rh4q3j068gs">&nbsp;&nbsp;&nbsp;如果多个类型的对象没有共同的父类是无法保存的</a>
+</h3>
+<h3 class="topic">
+<a name="1mjme586rgdvrp2ugmgh9c61pn">&nbsp;&nbsp;&nbsp;当这些类存在相同基类(可以是父类,可以是祖父类)时候,就可以用基类定义一个指针数组,让指针数组中的元素指向不同的派生类对象</a>
+</h3>
+<h3 class="topic">
+<a name="21tqnf45t9micnnttrcf8qa75g">&nbsp;&nbsp;&nbsp;&nbsp;通过这些指针只能调用基类自身的成员变量或成员函数, 因此通过这些指针是无法直接调用保存在数组中的对象的成员函数的.</a>
+</h3>
+<h3 class="topic">
+<a name="0ahfvtrtoa7j6im2dfafahb798">&nbsp;&nbsp;&nbsp;可以把这些派生类的成员函数放在基类中定义.但是通过这种方式, 通过基类指针调用函数时,调用用仍然是基类自身的成员函数,而不是派生类的.</a>
+</h3>
+<h3 class="topic">
+<a name="0e9hc5jood0aji92uvqpunq4me">&nbsp;&nbsp;&nbsp;&nbsp;究其原因:c++中存在两种生成代码(二进制底层代码)的方式</a>
+</h3>
+<h3 class="topic">
+<a name="4tjv37iolsdilr7lpghl4sjc3d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;静态联编</a>
+</h3>
+<h3 class="topic">
+<a name="3cmi85j7uara4pm4rc4vhqctdr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用就近原则确定这里的基类指针调用的是哪个函数,,在编译的阶段已经确定</a>
+</h3>
+<h3 class="topic">
+<a name="63c2gir1qa1ckep2ttnevi2214">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;基类的指针调用的成员函数,一定会调用基类的成员函数</a>
+</h3>
+<h3 class="topic">
+<a name="34gau3mm270ln17uufob3up9i2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;动态联编</a>
+</h3>
+<h3 class="topic">
+<a name="4muivogp1erafd21ft28i7olq4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;不使用就近原则生成代码,不会根据指针的类型确定成员函数是属于哪个类的,是根据指针所指向的对象的类型来确定调用的是哪个成员函数的</a>
+</h3>
+<h3 class="topic">
+<a name="0n6eip15dg0sif08tamcfvf7k4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;启动动态联编的方式:在基类中对相应函数加上virtual关键字,即变成虚函数</a>
+</h3>
+<h3 class="topic">
+<a name="4vfoefm3ca9uivk6989uln4ue6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;基类中加了virtual,子类中的同名函数不需要加关键字也可以变成虚函数</a>
+</h3>
+<h3 class="topic">
+<a name="3hbhq5sfag3oisf7alf8tijd1d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;父类中的虚函数与子类中的虚函数必须函数名和参数名一模一样</a>
+</h3>
+<h3 class="topic">
+<a name="7sl95tvqer1aij4iu1e2dgsdrv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果父类虚函数中的参数与子类中同名函数之间参数不同会怎么样?</a>
+</h3>
+<h3 class="topic">
+<a name="0ac0fe36j64ihv0gf8m0gobnge">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;子类中的对应函数不作为虚函数处理,无法达成函数重写的特性</a>
+</h3>
+<h3 class="topic">
+<a name="74388rniv7p5l2cv6j600r6afr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;此时函数重载机制发挥了作用,相当于对应虚函数在子类中被重载了</a>
+</h3>
+<h3 class="topic">
+<a name="05kr7quil0f529llcb2f3nfri8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这里应该是错的??????概念应该是重定义</a>
+</h3>
+<h2 class="topic">
+<a name="3m8iled3c9ca5gn6igs157542o">tips</a>
+</h2>
+<h3 class="topic">
+<a name="3eg7pk8i1hlccsehmtm4viokdn">&nbsp;本届复习关键在老师代码</a>
+</h3>
+<h3 class="topic">
+<a name="3saq92sivf2tcgmj8u0s6thnrj">&nbsp;&nbsp;将密码本转换为面向对对象型编程</a>
+</h3>
+<h3 class="topic">
+<a name="5gsbhu0v4691204urcj9u1dhr0">&nbsp;成员函数名后面放const后面是什么鬼?</a>
+</h3>
+<h3 class="topic">
+<a name="7vofs4oh8gin98uo4ge58g5jk6">&nbsp;&nbsp;void fun()const{};</a>
+</h3>
+<h3 class="topic">
+<a name="7r7hjvmos7ko3u2qank76443ql">&nbsp;&nbsp;指的是该成员函数的this指针为const类型,则在该函数中调用该函数的对象的成员变量不会被修改,此种成员函数能够在特定函数中执行,该种函数形参为 const类型对象或const类型对象的引用</a>
+</h3>
+<h3 class="topic">
+<a name="7o74k6hej7vnggo2qi5v9sjhpb">&nbsp;&nbsp;成员函数后面放congst,保证了对象中成员变量不会被修改,常用于输出对象内成员变量的函数</a>
+</h3>
+<h3 class="topic">
+<a name="57s26a8favgj3l6pot7l66s736">&nbsp;&nbsp;&nbsp;string getText()const { return m_text; }</a>
+</h3>
+<h3 class="topic">
+<a name="7gthooqbkj3e3peil3cinnqkur">&nbsp;有在相应类没有默认构造函数的情况下没有办法申请对象数组?       其实并不是</a>
+</h3>
+<h3 class="topic">
+<a name="30bss5211g82f1nmo7dh6csh77">&nbsp;&nbsp;通过new方式生成对象数组只能在该对象存在默认构造函数的情况,可以通过默认构造函数先生成对象数组,然后通过类内其他成员函数为类内成员变量赋值</a>
+</h3>
+<h3 class="topic">
+<a name="563jj3hh8fg4pa94u3dem889p2">&nbsp;&nbsp;要灵活运用构造函数的默认参数,如果有了默认参数,可以在对象定义的时候不指定参数,则此时申请对象数组就成为了可能</a>
+</h3>
+<h3 class="topic">
+<a name="2gk2lnaauhdr2smohlpfa58c55">&nbsp;&nbsp;当有参构造函数,参数全部都有默认值时,此时也可以相当于有默认构造函数</a>
+</h3>
+<h3 class="topic">
+<a name="1mjlr7bmjaqrvpro7rdvc1m6oc">&nbsp;&nbsp;&nbsp;一般是在函数声明中指定默认参数,注意不能在定义和声明中均进行默认参指定</a>
+</h3>
+<h3 class="topic">
+<a name="7d9vmso5mb109n49ldhda9rjca">&nbsp;&nbsp;&nbsp;经试验,此时只有当默认参数在构造函数声明的时候指定才能使该构造函数等同于默认构造函数(在构造函数定义与声明不在一个类中或函数中时)</a>
+</h3>
+<h3 class="topic">
+<a name="3h3mrerf4nliom7267ebujqvqn">&nbsp;右击项目,查看继承类图,可以查看类的继承方式</a>
+</h3>
+<h3 class="topic">
+<a name="0scg58p18p1nq01024n0r48fcf">&nbsp;int*p=new int[10]();//申请10个int空间,并且赋值为0</a>
+</h3>
+<h3 class="topic">
+<a name="6mglklmaded6karnf3l10lqa0s">&nbsp;函数重载</a>
+</h3>
+<h3 class="topic">
+<a name="4k8bvq0q2ca8utv5h8vidfpk41">&nbsp;&nbsp;函数名同名且在同一作用域(命名空间)</a>
+</h3>
+<h3 class="topic">
+<a name="0l650317r0qkoc0fpbv1t9qkpt">&nbsp;&nbsp;参数的个数 顺序 类型之一不同</a>
+</h3>
+<h3 class="topic">
+<a name="3vmtch7j6nl9ue71cm7t8j3jbg">&nbsp;&nbsp;参数名称无所谓</a>
+</h3>
+<h3 class="topic">
+<a name="6t53ptl8rctt831q4q3o8r4pp8">&nbsp;&nbsp;返回值类型无所谓</a>
+</h3>
+<h3 class="topic">
+<a name="5kp8catjtte7smiueldfmnqvc9">&nbsp;对引用取地址,就是对被引用的变量取地址</a>
+</h3>
+<h3 class="topic">
+<a name="5oijf50gsohcq6v47idrffo4lk">&nbsp;从底层的层面来说,指针就是引用,引用就是指针</a>
+</h3>
+<h3 class="topic">
+<a name="5eson8rhbks024q4cvjp869rhq">&nbsp;&nbsp;其实引用也是在系统中开拓了内存空间用于保存被引用的变量的地址</a>
+</h3>
+<h3 class="topic">
+<a name="7q3ubla35360jmtd7csu36hng0">&nbsp;面向对象的三大基本特征</a>
+</h3>
+<h3 class="topic">
+<a name="5c05g2jfgc23fh938vt476bdmc">&nbsp;&nbsp;封装 是基础</a>
+</h3>
+<h3 class="topic">
+<a name="4lof3dk5kp0i8ro7795l3cquro">&nbsp;&nbsp;继承 是关键</a>
+</h3>
+<h3 class="topic">
+<a name="460cfdu1sqp5nane7nknq3runm">&nbsp;&nbsp;多态 是扩展</a>
+</h3>
+<h3 class="topic">
+<a name="54lvll693n0hbnurpb2m7gm6uc">&nbsp;当形参为对象时,传参过程会调用拷贝函数</a>
+</h3>
+<h3 class="topic">
+<a name="3s1b2nuk5ntossb61jah6bjjka">&nbsp;&nbsp;返回值为形参时,返回过程一定会调用拷贝函数</a>
+</h3>
+<h3 class="topic">
+<a name="28djfcpbj7te8boj4t6cq90bce">&nbsp;继承方式</a>
+</h3>
+<h3 class="topic">
+<a name="5nng88kgsvf2098ht8p06lon9g">&nbsp;&nbsp;private&gt;protected&gt;public</a>
+</h3>
+<h3 class="topic">
+<a name="6ii2ugr0cdkraaq4hpi6etkg93">&nbsp;&nbsp;如果原来是private,不管以哪种方式继承都是privated</a>
+</h3>
+<h3 class="topic">
+<a name="4e6rp1e8n2m8cnrge9c6rfog1t">&nbsp;&nbsp;原来是public,继承中是那种决定于继承方式</a>
+</h3>
+<h3 class="topic">
+<a name="2rno71amin8o85l25taeoi40ar">&nbsp;重定义</a>
+</h3>
+<h3 class="topic">
+<a name="6qheeavjktr7efjo4nsatmavu1">&nbsp;&nbsp;子类继承父类出现了同名函数(必须是不同的作用域)</a>
+</h3>
+<h3 class="topic">
+<a name="22i1ieii441ckebrkf28lse7pl">&nbsp;&nbsp;不管参数是否一样都会被重定义</a>
+</h3>
+<h3 class="topic">
+<a name="3fot14hamsqgd1q6h06n7aa3ks">&nbsp;&nbsp;子类对象会调用子类重定义后的函数(就近原则)</a>
+</h3>
+<h3 class="topic">
+<a name="1118tb596d61av8831pf6iu5cm">&nbsp;&nbsp;如果想要调用父类的重名函数,需要使用作用域指定符::</a>
+</h3>
+<h3 class="topic">
+<a name="4qebh37allt7s0jh6pl7bs6tn1">&nbsp;报错信息为无法解析外部符号</a>
+</h3>
+<h3 class="topic">
+<a name="4o7cqeg93f0nba34ab5brp0pia">&nbsp;&nbsp;即声明了一个东西,但是没有定义</a>
+</h3>
+<h3 class="topic">
+<a name="1vgj0mkc7rme591h6vvgmk7nm4">&nbsp;密码本项目面向对象化经验(可以去的看,作为相关操作的模板)</a>
+</h3>
+<h3 class="topic">
+<a name="08ef9sqihcgajheu2md5llrae1">&nbsp;&nbsp;nullptr指的是空路径,常用于作为一个文件打开函数的中路径选项的默认初始值</a>
+</h3>
+<h3 class="topic">
+<a name="503n4b3i2sjb7hp7tl5kb751qb">&nbsp;&nbsp;在一个类中,成员函数(包括构造\析构函数等)中可以调用本类的其成员函数从而方便的完成相关功能</a>
+</h3>
+<h3 class="topic">
+<a name="2427vt4d3ihnq73avchvoifap8">&nbsp;&nbsp;要灵活运用构造函数的默认参数,如果有了默认参数,可以在对象定义的时候不指定参数,则此时申请对象数组就成为了可能</a>
+</h3>
+<h3 class="topic">
+<a name="23j3in72dfp1e09mjkq0b0got1">&nbsp;习题上值得总结的点</a>
+</h3>
+<h3 class="topic">
+<a name="52nmt11p3nv3j9puuhetcbdi6n">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class11day0109_files/7daq2on64o52mjbib54besi6bh.png"></p>
+<h3 class="topic">
+<a name="1ings8cad45qreldes38mkt3pi">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class11day0109_files/74b7sph4dh4d411u0dk3r322lc.png"></p>
+<h3 class="topic">
+<a name="5250qiackbefhmqqdvrbh9247u">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="class11day0109_files/66a2rr04q457cf0p26o75a6tha.png"></p>
+<h2 class="topic">
+<a name="6qq2fv73irfc5b1cq6s0uekc7o">C*p=new C("hello",18)</a>
+</h2>
+<h3 class="topic">
+<a name="7g8t9dosanl0os81m0im027skn">&nbsp;此种方式为对象申请内存空间会调用类的构造函数</a>
+</h3>
+<h3 class="topic">
+<a name="66q667a9qmvd8t2bssvokh60qn">&nbsp;C*p=new C</a>
+</h3>
+<h3 class="topic">
+<a name="7k7b009o3ndmvi9l429jkmg9kd">&nbsp;&nbsp;这种是使用默认构造函数</a>
+</h3>
+<h2 class="topic">
+<a name="6ms3b82h8fb5csv6qk1q6rsuf0">C+p=(C*)malloc(sizeof(C));</a>
+</h2>
+<h3 class="topic">
+<a name="5ojg46nrklikl9vkg5i4rvkq6t">&nbsp;这种方法为对象申请内存不会调用构造函数</a>
+</h3>
+<h2 class="topic">
+<a name="0hcnnfns955lrf3g9vphdr275s">继承</a>
+</h2>
+<h3 class="topic">
+<a name="4c3svicrg45h934qva3tma9o4a">&nbsp;公有继承</a>
+</h3>
+<h3 class="topic">
+<a name="3pvrki2536t9bek523j4144c1a">&nbsp;&nbsp;公有</a>
+</h3>
+<h3 class="topic">
+<a name="2sskjd961g8r80nta98p7s2bpf">&nbsp;&nbsp;&nbsp;公有</a>
+</h3>
+<h3 class="topic">
+<a name="1kc81lltmcdb7oedokeac6l4jn">&nbsp;&nbsp;私有</a>
+</h3>
+<h3 class="topic">
+<a name="2qjitim4fgvivognq5uuvh102g">&nbsp;&nbsp;&nbsp;无法访问</a>
+</h3>
+<h3 class="topic">
+<a name="3q4mr66g9uuqrc4juaa5s67hnc">&nbsp;&nbsp;保护</a>
+</h3>
+<h3 class="topic">
+<a name="04ce8dk27sjqj5vkp5it99ka7j">&nbsp;&nbsp;&nbsp;类的内部可以访问</a>
+</h3>
+<h3 class="topic">
+<a name="742rijec7ece839v09hmlv33o7">&nbsp;私有继承</a>
+</h3>
+<h3 class="topic">
+<a name="6nsht13bd8ca0mj14gg19v8atq">&nbsp;&nbsp;公有</a>
+</h3>
+<h3 class="topic">
+<a name="396gt7alqetquou50opqgfvnfl">&nbsp;&nbsp;&nbsp;无法访问</a>
+</h3>
+<h3 class="topic">
+<a name="6bblj2caev9llbrnffihfl8nji">&nbsp;&nbsp;私有</a>
+</h3>
+<h3 class="topic">
+<a name="03epaledh8r7vppigqq98ier92">&nbsp;&nbsp;&nbsp;无法访问</a>
+</h3>
+<h3 class="topic">
+<a name="6pghs97v1ovq2jk3f0jjj0rsed">&nbsp;&nbsp;保护</a>
+</h3>
+<h3 class="topic">
+<a name="6qgmrdju9a762dmcgdpo8ucukp">&nbsp;&nbsp;&nbsp;无法访问</a>
+</h3>
+<h3 class="topic">
+<a name="5ip5rakp59d18h7k3v82cla2ui">&nbsp;保护继承</a>
+</h3>
+<h3 class="topic">
+<a name="6hvdrepfhohkq5ho0eeltisr85">&nbsp;&nbsp;公有</a>
+</h3>
+<h3 class="topic">
+<a name="2s325l5uj85dkhdfo1io0tpcp6">&nbsp;&nbsp;&nbsp;变成保护</a>
+</h3>
+<h3 class="topic">
+<a name="2q575bo4o867r8pkfl8hqk5dn4">&nbsp;&nbsp;保护</a>
+</h3>
+<h3 class="topic">
+<a name="53jesa9on02amagjt2hoa3mn88">&nbsp;&nbsp;&nbsp;仍然是保护</a>
+</h3>
+<h3 class="topic">
+<a name="6h7amnjga0vu3p6ngh86tg35kc">&nbsp;&nbsp;私有</a>
+</h3>
+<h3 class="topic">
+<a name="5mvnanhac4kfjkn36aag5caskf">&nbsp;&nbsp;&nbsp;无法访问</a>
+</h3>
+<h2 class="topic">
+<a name="7ru2l9af7kloh2pnlsevbu4dl0">手机上有一个很厉害的,说明公有私有保护在不同继承方式下的访问情况的图</a>
+</h2>
+<h2 class="topic">
+<a name="295a08rmbqb81c8dqa230pj2kj">保护成员</a>
+</h2>
+<h3 class="topic">
+<a name="1i4elr3ddttc66q4hamehnvt7j">&nbsp;类中可以访问,但是在类外(即该类的对象)不可以访问</a>
+</h3>
+<h2 class="topic">
+<a name="29k58rf2k7ek2699u2jq5ibcak">使用new进行父类指针的初始化和子类对象的创建</a>
+</h2>
+<h3 class="topic">
+<a name="5f3aao1kbiauq4h1s08arp6f2a">&nbsp;Shape*p = new Rectangle(2, 3);   &#13;
+&#13;
+delete p;&#13;
+&#13;
+      //在使用父类指针指向子类对象的时候,可以使用这种方法进行父类指针的定义以及子类对象的定义和初始化</a>
+</h3>
+<h3 class="topic">
+<a name="7r0qrnif9fdt5hl5keim62dmp1">&nbsp;使用父类指针指向子类变量</a>
+</h3>
+<h2 class="topic">
+<a name="7i8k2pf0blumtcd43he9a2c97t">申请一个父类类型的指针数组,每一个元素为父类类型的指针,每一个指针指向子类对象</a>
+</h2>
+<h3 class="topic">
+<a name="3d2vec2mn9kivbe0piiv2huqn9">&nbsp;通过申请数组的方法</a>
+</h3>
+<h3 class="topic">
+<a name="1nkhmvpn1g1a83t834qddbucli">&nbsp;&nbsp;Shape*p3[10];</a>
+</h3>
+<h3 class="topic">
+<a name="4iskuboa8uij02faf4jdb312ul">&nbsp;&nbsp;使用父类指针指向子类对象可以使用new</a>
+</h3>
+<h3 class="topic">
+<a name="3nls00d7opuqtbo4jqchr8d6fi">&nbsp;&nbsp;&nbsp;p3=new 子类类名(构造函数参数1,构造函数参数2)</a>
+</h3>
+<h3 class="topic">
+<a name="43f5grj4mmjh5d6hgaol48lrr8">&nbsp;通过new的方法</a>
+</h3>
+<h3 class="topic">
+<a name="6ls7299albcevk6k4j112p39lc">&nbsp;&nbsp;Shape **p3=new Shape*[10];</a>
+</h3>
+<h3 class="topic">
+<a name="78bnetcgo7o8sf591cri2mq414">&nbsp;&nbsp;&nbsp;此时申请了父类指针数组,可以将父类指针指向子类对象从而触发纯虚函数的函数重写</a>
+</h3>
+<h3 class="topic">
+<a name="5sa6rt8ndf6sakar580s1btqfd">&nbsp;&nbsp;&nbsp;&nbsp;此时就可以是使用new的方式来申请子类对象</a>
+</h3>
+<h3 class="topic">
+<a name="55ecs8gobljvh24eeh8j9fgmki">&nbsp;&nbsp;通过这种方法在释放内存空间时,分为两个阶段,首先释放指针数组元素所指向的子类的内存空间,即delet p3[i](通过循环释放),其次要释放指针数组所占据的内存空间,即delete[]p3;&#13;
+&#13;
+注意在释放数组元素所指向的子类对象的内存空间时,不能使用delete[]p3[i],只能使用delete p3[i]</a>
+</h3>
+<h2 class="topic">
+<a name="6i974h1rtjgvt27pf0odp206k6">使用new函数为对象申请内存会调用类型对应的构造函数</a>
+</h2>
+</body>
+</html>

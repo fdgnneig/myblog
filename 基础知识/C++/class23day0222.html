@@ -1,0 +1,1211 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>class23day0222</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="4stabi3fknkmi9j4lpfohva8as">class23day0222</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="class23day0222_files/images/class23day0222.jpg"></div>
+<h2 class="topic">
+<a name="0apugg1ooa4seln19nmvnbg9jf">c++提高第二天</a>
+</h2>
+<h3 class="topic">
+<a name="73q8s6vcj6tkgdcuhlskrhsmf0">&nbsp;作用域-可见性（作用域覆盖问题）</a>
+</h3>
+<h3 class="topic">
+<a name="3kvmmftulc58d6ebng7agiqcrs">&nbsp;&nbsp;作用域从内向外，内部作用域会将外部作用域覆盖</a>
+</h3>
+<h3 class="topic">
+<a name="234n2f9u17heol2c4rkkea35ga">&nbsp;&nbsp;局部变量的名称与外部类的类名发生重名，&#13;
+此时若想在内部作用域使用类，需要指定class</a>
+</h3>
+<h3 class="topic">
+<a name="6ic573ih3gp1722b0rhtp6seb0">&nbsp;&nbsp;&nbsp;calss OBJ{&#13;
+public:&#13;
+int number;&#13;
+}；&#13;
+&#13;
+int test_func(int OBJ)&#13;
+{&#13;
+	// 编写代码的过程中报错: 请输入分号(;)&#13;
+	// 大致可能产生的原因是无法识别类型&#13;
+&#13;
+	// 此时，使用的是函数的形参 OBJ&#13;
+	// OBJ obj;&#13;
+&#13;
+	此时如果想要使用OBJ类定义对象，需要在OBJ前面加class&#13;
+	class OBJ obj;&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="6i959vk1e9ga83db26feiog9la">&nbsp;&nbsp;类的名字和外部全局变量名称发生重合，&#13;
+需要指定作用域才能在类内部访问外部全局变量</a>
+</h3>
+<h3 class="topic">
+<a name="5n9tnujhr0g79l5rs7qtmesmlh">&nbsp;&nbsp;&nbsp;int Number；&#13;
+class Number&#13;
+{&#13;
+public:&#13;
+  void show&#13;
+  {&#13;
+  // 从内向外查找，第一个找到的是 class Number&#13;
+  // printf("Number = %d\n", Number);&#13;
+&#13;
+  //通过指定作用域的方式访问到 Number 的数值&#13;
+  std::cout&lt;&lt;::Number;&#13;
+  }&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="5a5b7ct09gapvek4918is3v559">&nbsp;特殊的类</a>
+</h3>
+<h3 class="topic">
+<a name="5dgqq1n7ofrkr7dvtdk9i8g593">&nbsp;&nbsp;一个外部类的其中又包含了一个内部类（内部类的嵌套可以无限进行）</a>
+</h3>
+<h3 class="topic">
+<a name="03mnrnehjjvmj0ilal1bck8quc">&nbsp;&nbsp;&nbsp;当内部类被定义为公有，外部类与内部类均可以被访问和被使用（但是如果使用内部类数据成员或成员函数需要先加上外部类的类域）</a>
+</h3>
+<h3 class="topic">
+<a name="3i09809b2usbjs4nrfv29ssktu">&nbsp;&nbsp;&nbsp;当内部类被定义为私有，在外部类之外，相当于内部类被隐藏了起来</a>
+</h3>
+<h3 class="topic">
+<a name="10qkq3ak61qncimdibrtq2huh9">&nbsp;&nbsp;&nbsp;嵌套类的关系除了作用域，其他关系更多是平行的，相互之间不能访问彼此的私有变量</a>
+</h3>
+<h3 class="topic">
+<a name="6l8qmhm80seomje6tpahp3o49l">&nbsp;&nbsp;&nbsp;内部类（嵌套类）成员函数的定义可以写在外部类之外</a>
+</h3>
+<h3 class="topic">
+<a name="47aua7bj03bqerqf9olaigchbn">&nbsp;&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="0oqothne5suvp17bgda1lrdg43">&nbsp;&nbsp;&nbsp;&nbsp;class Outer &#13;
+{&#13;
+public:&#13;
+	// 一个内部类，其中定义了自己的成员&#13;
+	class Inner &#13;
+	{ &#13;
+		// 如果是公有的,相当于这两个类是平行关系&#13;
+		// 如果是私有的,相当于是隐藏了这个内部类&#13;
+	public:&#13;
+		void Fun();&#13;
+	};&#13;
+public:&#13;
+	// 使用内部类定义了一个对象&#13;
+	Inner obj_;&#13;
+&#13;
+	// 是属于 Outer 类的成员函数&#13;
+	void Fun() &#13;
+	{&#13;
+		cout &lt;&lt; "Outer::Fun ..." &lt;&lt; endl;&#13;
+		// 调用了内部函数的成员函数&#13;
+		obj_.Fun();&#13;
+	}&#13;
+};&#13;
+&#13;
+// 外部类::内部类::成员函数的名字&#13;
+void Outer::Inner::Fun()&#13;
+{&#13;
+	cout &lt;&lt; "Inner::Fun ..." &lt;&lt; endl;&#13;
+}&#13;
+&#13;
+int main(void) &#13;
+{&#13;
+	Outer o;&#13;
+	o.Fun();&#13;
+&#13;
+	Outer::Inner i;&#13;
+	i.Fun();&#13;
+	return 0;&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="73sbsmp8jnga0j4eqsd7orcvuv">&nbsp;&nbsp;局部类：定义在局部作用域中的类（比如定义在一个函数中）</a>
+</h3>
+<h3 class="topic">
+<a name="37tmo096f92l737t8k8g26v1sd">&nbsp;&nbsp;&nbsp;局部类内部不能定义静态成员,因为类的静态成员是所有类对象共享的，但是局部类的作用域仅仅在所定义的函数{}之内</a>
+</h3>
+<h3 class="topic">
+<a name="2uedl6rnffime4m86r5heicc50">&nbsp;&nbsp;&nbsp;局部类的成员函数的定义不能写在类外，因为函数中不能定义函数</a>
+</h3>
+<h3 class="topic">
+<a name="2bhecltrhfs04n9j3svlsodn4e">&nbsp;&nbsp;&nbsp;因为函数内不能定义函数，所有局部类的成员函数只能类内声明且定义</a>
+</h3>
+<h3 class="topic">
+<a name="5hchr0kp42rkqkcgj22shcvt7k">&nbsp;&nbsp;&nbsp;局部类只能在定义他的函数体内使用，不能再其他作用域中使用</a>
+</h3>
+<h3 class="topic">
+<a name="3qv3meormod54aobds2equvael">&nbsp;&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="3f8jmj1phvlfvqtq4f6ttr2mkr">&nbsp;&nbsp;&nbsp;&nbsp;//这是一个全局函数&#13;
+void Fun() &#13;
+{&#13;
+	// 这是一个局部类&#13;
+	class LocalClass &#13;
+	{&#13;
+	public:   &#13;
+		int m_num;&#13;
+		void Init(int num) &#13;
+		{&#13;
+			m_num = num;&#13;
+		}&#13;
+&#13;
+		// 在函数内声明但是没有定义&#13;
+		void Display();&#13;
+&#13;
+		//static int num2_; &nbsp; &nbsp;// 局部类内部不能定义静态成员&#13;
+	};&#13;
+&#13;
+	// 函数内不能定义函数，所以说明局部类的成员&#13;
+	// 函数只能被定义在类的内部&#13;
+	// 局部类成员函数的定义不能写在类外&#13;
+	// void LocalClass::Display() {}&#13;
+&#13;
+	&#13;
+	LocalClass lc;&#13;
+	lc.Init(10);&#13;
+}&#13;
+&#13;
+int main(void) &#13;
+{&#13;
+	Fun();&#13;
+&#13;
+	// 错误,局部类只能在定义它的函数体中使用&#13;
+	LocalClass lc;&#13;
+&#13;
+	return 0;&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="70il38fei8hs1f9irsif5spc1c">&nbsp;构造与析构</a>
+</h3>
+<h3 class="topic">
+<a name="60r9l210s9n8e64bfiivicpfrm">&nbsp;&nbsp;构造函数</a>
+</h3>
+<h3 class="topic">
+<a name="7opssji8rqlj0ftcg363apa1fk">&nbsp;&nbsp;&nbsp;通常用于初始化类的数据成员</a>
+</h3>
+<h3 class="topic">
+<a name="0424uq5ablqc6vnvuuqpve0db6">&nbsp;&nbsp;&nbsp;当不编写任何构造函数，编译器会生成一个无参的，什么也不做的构造函数</a>
+</h3>
+<h3 class="topic">
+<a name="5kkoanha4jv2jbkroheau7tgun">&nbsp;&nbsp;&nbsp;当对象被定义使会自动调用一次构造函数</a>
+</h3>
+<h3 class="topic">
+<a name="2qm9ijhd5bhcj8t9suaoqcqrvr">&nbsp;&nbsp;&nbsp;构造函数的名字与类名相同，没有返回值</a>
+</h3>
+<h3 class="topic">
+<a name="0gae7e50hddfb9boepbfltr2ig">&nbsp;&nbsp;&nbsp;构造函数可以有多个，可以重载，可以设置默认参数</a>
+</h3>
+<h3 class="topic">
+<a name="1h7ahff944vookjtp8f50rhcs8">&nbsp;&nbsp;&nbsp;当定义一个对象数组的时候，必须提供一个无参的构造函数</a>
+</h3>
+<h3 class="topic">
+<a name="2c9m6olb7l2n5v1af7u74oinjo">&nbsp;&nbsp;&nbsp;&nbsp;不用非要是默认构造函数，无参构造函数即可</a>
+</h3>
+<h3 class="topic">
+<a name="1bp6fkc9gsec5djukgoq1ludbv">&nbsp;&nbsp;&nbsp;&nbsp;因为在使用new定义对象数组的时候，无法指定构造函数的参数</a>
+</h3>
+<h3 class="topic">
+<a name="4b4b9ae5n24grqa5nefrlq41ob">&nbsp;&nbsp;&nbsp;含参构造函数因为默认参数和函数重载可能导致二义性问题，即 使用一个参数初始化对象时，不能确定调用的是哪个构造函数</a>
+</h3>
+<h3 class="topic">
+<a name="2oic0v0tc5r98a8r938qqh4m73">&nbsp;&nbsp;&nbsp;新标准下使用/不使用 默认构造函数</a>
+</h3>
+<h3 class="topic">
+<a name="2srk65rjr5je6mbtj01jjh20tc">&nbsp;&nbsp;&nbsp;&nbsp;OBJECT() = default;//使用默认构造函数</a>
+</h3>
+<h3 class="topic">
+<a name="1ks1r70se8s9lchtmgvrdlhnr8">&nbsp;&nbsp;&nbsp;&nbsp;OBJECT() = delete;  //删除默认构造函数</a>
+</h3>
+<h3 class="topic">
+<a name="56afcvafefqe5e1gnj85i3sgnv">&nbsp;&nbsp;&nbsp;class OBJ{&#13;
+private:&#13;
+//c++新标准，支持类内初始化&#13;
+int number=0;&#13;
+&#13;
+public:&#13;
+//构造函数通常是公有的，因为需要被自动调用并被外界访问&#13;
+//定义一个无参构造函数&#13;
+OBJ(){&#13;
+	number=100;&#13;
+	printf("OBJ::OBJ():%d\n",number);&#13;
+}&#13;
+//定义一个有参数的构造函数&#13;
+OBJ(int number){&#13;
+	//使用this显示指明作用域&#13;
+	this-&gt;number=number;&#13;
+	printf("OBJ::OBJ():%d\n",number);&#13;
+}&#13;
+&#13;
+//可以使用一个函数实现以上两个函数 即使用默认参数&#13;
+OBJ(int number=100){&#13;
+	//使用this显示指明作用域&#13;
+	this-&gt;number=number;&#13;
+	printf("OBJ::OBJ():%d\n",number);&#13;
+}&#13;
+&#13;
+};&#13;
+&#13;
+int main(){&#13;
+//如果不想为构造函数传参，不能加(),因为此时会变成一个函数声明&#13;
+OBJ obj3();&#13;
+&#13;
+//调用无参构造函数&#13;
+OBJ obj;&#13;
+OBJ*obj=new OBJ;&#13;
+&#13;
+//调用有参构造函数&#13;
+OBJ obj2(2);&#13;
+OBJ*obj2=new OBJ(2);&#13;
+&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="13jfevk4ekplkmkv5sieeoo9ri">&nbsp;&nbsp;析构函数</a>
+</h3>
+<h3 class="topic">
+<a name="38gvfp52jua7c5mmn0vfm3ib71">&nbsp;&nbsp;&nbsp;对象被销毁的时候释放对象占用的资源</a>
+</h3>
+<h3 class="topic">
+<a name="1u0m6i39kimusrq14n12jrapcn">&nbsp;&nbsp;&nbsp;对象被销毁时自动调用</a>
+</h3>
+<h3 class="topic">
+<a name="0iv1or6hasbvmo17ficra52ek1">&nbsp;&nbsp;&nbsp;析构函数函数名为： ~类名  没有返回值</a>
+</h3>
+<h3 class="topic">
+<a name="3n79mvlr1v58krjrpbrrtguup7">&nbsp;&nbsp;&nbsp;无参数，只有一个固定的写法，不能重载</a>
+</h3>
+<h3 class="topic">
+<a name="4lhr6tk4d0dkihe92l5a1hv5c4">&nbsp;&nbsp;&nbsp;当不编写析构函数时，系统默认生成一个什么也不做的析构函数</a>
+</h3>
+<h3 class="topic">
+<a name="44eip5h0o6333ms8qua7eml96i">&nbsp;&nbsp;&nbsp;class OBJ&#13;
+{	&#13;
+	private:&#13;
+	int* arr=nullptr；&#13;
+	&#13;
+	public:		&#13;
+	OBJ(int size=10){&#13;
+	//申请空间，并将其初始化为0&#13;
+	array=new int[size]{0};&#13;
+	}&#13;
+&#13;
+	~OBJ(){&#13;
+	if(arr!=nullptr)&#13;
+	{&#13;
+	delete[]arr;&#13;
+	//为防止悬空指针，释放内存空间后将指针置为null&#13;
+	arr=nullptr;&#13;
+	}&#13;
+	}&#13;
+};&#13;
+&#13;
+int main(){}</a>
+</h3>
+<h3 class="topic">
+<a name="6ndr24mdjmlrrlhptt466tv4m0">&nbsp;&nbsp;构造、析构函数执行顺序：</a>
+</h3>
+<h3 class="topic">
+<a name="0cshq29i44btnvl0keq9bnbvrc">&nbsp;&nbsp;&nbsp;构造函数</a>
+</h3>
+<h3 class="topic">
+<a name="3m1kovlaaj44fn05qmb9boqemu">&nbsp;&nbsp;&nbsp;&nbsp;父类构造函数-&gt;成员对象构造函数-&gt;自身构造函数</a>
+</h3>
+<h3 class="topic">
+<a name="4vusu4092cfj2n7piaemt3ji89">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;成员对象的顺序决定了成员对象构造函数的调用顺序</a>
+</h3>
+<h3 class="topic">
+<a name="63e0h24nutmp01c13lgk3ep95u">&nbsp;&nbsp;&nbsp;析构函数</a>
+</h3>
+<h3 class="topic">
+<a name="4oplq01g440ara2asvoluengdl">&nbsp;&nbsp;&nbsp;&nbsp;顺序构造函数相反</a>
+</h3>
+<h3 class="topic">
+<a name="03vad3hpf1gifl2ajau4pifuf7">&nbsp;&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="67va8u5p64krijgofqdts1ttr3">&nbsp;&nbsp;&nbsp;&nbsp;class CMonitor &#13;
+{&#13;
+public:&#13;
+	CMonitor() { cout &lt;&lt; " 构造 显示器.\n"; }&#13;
+	~CMonitor() { cout &lt;&lt; " 析构 显示器.\n"; }&#13;
+};&#13;
+class CKeyboard &#13;
+{&#13;
+public:&#13;
+	CKeyboard() { cout &lt;&lt; " 构造 键盘.\n"; }&#13;
+	~CKeyboard() { cout &lt;&lt; " 析构 键盘.\n"; }&#13;
+};&#13;
+class CComputer &#13;
+{&#13;
+public:&#13;
+	CComputer() { cout &lt;&lt; " 构造 电脑.\n"; }&#13;
+	~CComputer() { cout &lt;&lt; " 析构 电脑.\n"; }&#13;
+protected:&#13;
+	CMonitor  m_objMonitor;   // 数据成员是类对象&#13;
+	CKeyboard m_objKeyboard;  // 数据成员是类对象&#13;
+};&#13;
+&#13;
+int main() &#13;
+{&#13;
+	// 当前类 -&gt; 依次构造成员对象&#13;
+	CComputer* com = new CComputer(); //显式调用无参构造&#13;
+	// 逆序析构成员对象 -&gt; 当前类&#13;
+	delete com;&#13;
+	return 0;&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="7q6a53h4v3vi666nntqtniiubn">&nbsp;&nbsp;初始化列表</a>
+</h3>
+<h3 class="topic">
+<a name="39bnm4qheokqel8ahubiq0lonv">&nbsp;&nbsp;&nbsp;赋值与初始化</a>
+</h3>
+<h3 class="topic">
+<a name="2hpjqukp6vf7erue6obige86v4">&nbsp;&nbsp;&nbsp;&nbsp;赋值</a>
+</h3>
+<h3 class="topic">
+<a name="1feo78mqqfuedv05tgkcp63m90">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;进行赋值</a>
+</h3>
+<h3 class="topic">
+<a name="6kmlo1s2n9tjk3ejgutncre64f">&nbsp;&nbsp;&nbsp;&nbsp;初始化</a>
+</h3>
+<h3 class="topic">
+<a name="2mlh4fhqhk2v0ak4ios1mg8emk">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;只能在初始化列表进行初始化的情况</a>
+</h3>
+<h3 class="topic">
+<a name="0qq89j3k6meiduemk5ibejnjvt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;引用对象</a>
+</h3>
+<h3 class="topic">
+<a name="5qabkgocotn4dq9cg9tsdkrgah">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;引用对象名(初始化的值)</a>
+</h3>
+<h3 class="topic">
+<a name="0g0vepp375o59ankhpt6s0ah7a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const常量</a>
+</h3>
+<h3 class="topic">
+<a name="1dhombe39gslgkt8nv5v9nruss">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;常量名(初始化的值)</a>
+</h3>
+<h3 class="topic">
+<a name="4onh9nn4c2hfvbsc4gne31rqri">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;没有无参构造函数的成员对象</a>
+</h3>
+<h3 class="topic">
+<a name="21uu7usjeu76blqqppntn5sk53">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;没有无参构造函数的父类 </a>
+</h3>
+<h3 class="topic">
+<a name="4a3oe4ni1966r9ram665k7et1q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在新的标准中，可以使用类内初始化 将原本只能在初始化列表中初始化的成员变量在类内初始化</a>
+</h3>
+<h3 class="topic">
+<a name="1n314npq7d4f0rqvkes3ingu4o">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;成员对象在类内初始化必须使用{}</a>
+</h3>
+<h3 class="topic">
+<a name="0cseu4vtj84vnp5jjqgdlfh6cs">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;即  成员对象类型 成员对象名 {构造函数参数}</a>
+</h3>
+<h3 class="topic">
+<a name="5c46kdn4t2b5fgas82ipnhkvep">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Member member{ 100 };</a>
+</h3>
+<h3 class="topic">
+<a name="6l14fe37gkgpma1k8m0ci8v16n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在进行初始化的时候，如果出现问题，一律可以尝试使用{}进行初始化</a>
+</h3>
+<h3 class="topic">
+<a name="318dcsmq532pshko9oukusa6hl">&nbsp;&nbsp;&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="42klj2t4f1khv3kfvqnkhp2vip">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;int g_number = 0;&#13;
+&#13;
+// 没有无参构造的成员类&#13;
+class Member&#13;
+{&#13;
+public: Member(int n) {}&#13;
+};&#13;
+&#13;
+class OBJECT&#13;
+{&#13;
+private:&#13;
+	// 两个私有成员&#13;
+	int numberA = 0;&#13;
+	int numberB = 0;&#13;
+&#13;
+public:&#13;
+	//// 构造函数，通过赋值的方式进行构造&#13;
+	//OBJECT(int number1, int number2)&#13;
+	//{&#13;
+	//	// 在进入函数之前 numberA/B 已经存在了&#13;
+	//	// 所以说这里是一个单纯的赋值操作，因为&#13;
+	//	// 是赋值操作，所以有些东西不能在这里进&#13;
+	//	// 行初始化&#13;
+	//	numberA = number1;&#13;
+	//	numberB = number2;&#13;
+	//}&#13;
+&#13;
+	// 构造函数，通过初始化列表的方式进行构造&#13;
+	OBJECT(int number1, int number2)&#13;
+		: numberA(number1), numberB(number2),&#13;
+		// 使用成员对象的名字(传入的参数)&#13;
+		member(123), ref_int(number1), cnumber(100)&#13;
+	{&#13;
+		// 在对象内的成员创建的时候直接对它进行初始化&#13;
+&#13;
+		// 哪些东西只能值初始化列表中进行初始化&#13;
+		// 1. 引用类型&#13;
+		// 2. 没有无参构造的成员对象&#13;
+		// 3. const 常量&#13;
+		// 4. 没有无参构造的父类&#13;
+	}&#13;
+&#13;
+private:&#13;
+	// 引用类型&#13;
+	int&amp; ref_int;&#13;
+	// 成员对象&#13;
+	Member member;&#13;
+	// 常量数据&#13;
+	const int cnumber;&#13;
+&#13;
+	// 使用类内初始化进行初始化&#13;
+	int&amp; ref_intA = g_number;&#13;
+	const int cnumberA = 100;&#13;
+	// 成员对象必须使用{ }进行初始化&#13;
+	Member member{ 100 };&#13;
+};</a>
+</h3>
+<h3 class="topic">
+<a name="7j7980p8itklvjjicggtm80q83">&nbsp;&nbsp;&nbsp;使用初始化列表的问题</a>
+</h3>
+<h3 class="topic">
+<a name="39cddpd3kt0j0ok2f83uitp5kg">&nbsp;&nbsp;&nbsp;&nbsp;初始化列表中，成员变量初始化的顺序取决于其在类中定义的先后顺序，先定义的先在初始化列表中初始化</a>
+</h3>
+<h3 class="topic">
+<a name="4ue5nq2poskk9lhsphrubnm2fg">&nbsp;&nbsp;&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="5j7p1cgjmvnjn6fpp2cd811luv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;class OBJECT&#13;
+{&#13;
+private:&#13;
+	// 两个私有成员&#13;
+	int numberA = 0;&#13;
+	int numberB = 0;&#13;
+public:&#13;
+	OBJECT(int number1, int number2)&#13;
+		: numberA(number1), numberB(number2)&#13;
+	{	}&#13;
+&#13;
+	OBJECT(int number)&#13;
+		// 初始化列表的初始化顺序和成员在类内&#13;
+		// 的定义位置相关，先定义的先初始化&#13;
+		: numberB(number), numberA(numberB)&#13;
+	{	}&#13;
+&#13;
+	void show()&#13;
+	{&#13;
+		printf("numberA = %x\n", numberA);&#13;
+		printf("numberB = %x\n", numberB);&#13;
+	}&#13;
+};&#13;
+&#13;
+int main()&#13;
+{&#13;
+	OBJECT obj(100, 200);&#13;
+	obj.show();&#13;
+&#13;
+	OBJECT obj2(100);&#13;
+	obj2.show();&#13;
+&#13;
+	return 0;&#13;
+}</a>
+</h3>
+<h3 class="topic">
+<a name="3v146ful6m5sp3rnfndr6elunm">&nbsp;&nbsp;拷贝构造</a>
+</h3>
+<h3 class="topic">
+<a name="1bcd8039vv1oeac63hbi08ot1d">&nbsp;&nbsp;&nbsp;用于：使用一个对象初始化另一个相同类型的对象</a>
+</h3>
+<h3 class="topic">
+<a name="3vdgusqrifh0nl7s9h7o3bvhvg">&nbsp;&nbsp;&nbsp;拷贝构造的参数必须是相同类型的对象的引用</a>
+</h3>
+<h3 class="topic">
+<a name="0omuhm221s92o35jtjcgugp6k9">&nbsp;&nbsp;&nbsp;因为在进行值传递的时候会调用拷贝构造函数，如果拷贝构造本身就是值传递，就会进行递归，最后导致程序崩溃</a>
+</h3>
+<h3 class="topic">
+<a name="1piqf7edcoaus4pv46garqqah6">&nbsp;&nbsp;&nbsp;若不定义拷贝构造默认生成的拷贝构造函数是浅拷贝</a>
+</h3>
+<h3 class="topic">
+<a name="5iaqnkiasqo7sd441g9fe6j698">&nbsp;&nbsp;&nbsp;拷贝构造可以有两种</a>
+</h3>
+<h3 class="topic">
+<a name="6itgahd2lnid7u89o8s0cab8os">&nbsp;&nbsp;&nbsp;&nbsp;OBJ(OBJ&amp; obj)；</a>
+</h3>
+<h3 class="topic">
+<a name="7bd52ueu73b6ttnca9m3s01noi">&nbsp;&nbsp;&nbsp;&nbsp;OBJ(const OBJ&amp; obj);</a>
+</h3>
+<h3 class="topic">
+<a name="33u7tpsfog2h34ir15bmsq0u01">&nbsp;&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="7cemovt8lo5h314hninl9tg305">&nbsp;&nbsp;&nbsp;&nbsp;      class OBJECT&#13;
+      {&#13;
+      private:&#13;
+      	// 两个私有成员&#13;
+      	int numberA = 100;&#13;
+      	int numberB = 200;&#13;
+      &#13;
+      public:&#13;
+      	// 当想要使用默认的构造函数时&#13;
+      	OBJECT() = default;&#13;
+      	// OBJECT() = delete;  删除构造函数&#13;
+      &#13;
+      	// 一个非常量的拷贝构造函数&#13;
+      	OBJECT(OBJECT&amp; obj)&#13;
+      	{&#13;
+      		this-&gt;numberA = obj.numberA;&#13;
+      		this-&gt;numberB = obj.numberB;&#13;
+      		printf("OBJECT(OBJECT&amp; obj)\n");&#13;
+      	}&#13;
+      &#13;
+      	// 一个常量的拷贝构造函数&#13;
+      	OBJECT(const OBJECT&amp; obj)&#13;
+      	{&#13;
+      		this-&gt;numberA = obj.numberA;&#13;
+      		this-&gt;numberB = obj.numberB;&#13;
+      		printf("const OBJECT(OBJECT&amp; obj)\n");&#13;
+      	}&#13;
+      };&#13;
+      &#13;
+      int main()&#13;
+      {&#13;
+      	OBJECT obj;&#13;
+      	const OBJECT cobj;&#13;
+      &#13;
+      	OBJECT obj1(obj);&#13;
+      	OBJECT cobj1(cobj);&#13;
+   &#13;
+      	return 0;&#13;
+      }</a>
+</h3>
+<h3 class="topic">
+<a name="6g37gbusn9vbm2v8i9qh5hjd8f">&nbsp;&nbsp;&nbsp;拷贝构造函数的调用时机</a>
+</h3>
+<h3 class="topic">
+<a name="6c4aigktt5ftnnnghnrl7mi2cb">&nbsp;&nbsp;&nbsp;&nbsp;使用一个对象初始化另一个对象</a>
+</h3>
+<h3 class="topic">
+<a name="132kvtvct95a4bd2lvehpmkhup">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OBJ obj&#13;
+&#13;
+OBJ boj1(obj);//使用()显示调用拷贝构造函数&#13;
+OBJ boj2=obj;  //使用=调用拷贝构造函数&#13;
+OBJ *boj3=new OBJ(obj);</a>
+</h3>
+<h3 class="topic">
+<a name="2np66chif65h97gc7lvn420tk8">&nbsp;&nbsp;&nbsp;&nbsp;当将一个对象以值传递的方式进行传参</a>
+</h3>
+<h3 class="topic">
+<a name="6r5o1chvln3dnnanq3h0geevi2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OBJ test_func(OBJ obj){return obj};</a>
+</h3>
+<h3 class="topic">
+<a name="3vomimlp7mc1e7amnibb3pe4rl">&nbsp;&nbsp;&nbsp;&nbsp;当将一个对象以值的方式从函数内返回</a>
+</h3>
+<h3 class="topic">
+<a name="2mlflpp3je92480isss425fmc1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OBJ test_func(OBJ obj){return obj};</a>
+</h3>
+<h3 class="topic">
+<a name="48panv4a0b6vqkudmgbp0hp2as">&nbsp;&nbsp;&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="00slmppm24b9ee9o9qedn81pcd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    class OBJECT&#13;
+    {&#13;
+    public:&#13;
+    	OBJECT() = default;&#13;
+    &#13;
+    	OBJECT(OBJECT&amp; obj)&#13;
+    	{&#13;
+    		printf("调用了 OBJECT(OBJECT&amp; obj) 函数\n");&#13;
+    	}&#13;
+    };&#13;
+    &#13;
+    // 将 OBJECT 作为参数传入并返回一个 OBJECT&#13;
+    OBJECT test_func(OBJECT obj)&#13;
+    {&#13;
+    	// 3. 将一个对象以值的方式从函数内进行返回&#13;
+    	return obj;&#13;
+    }&#13;
+    &#13;
+    int main()&#13;
+    {&#13;
+    	OBJECT obj;&#13;
+    &#13;
+    	// 1. 一个对象初始化另一个对象&#13;
+    	OBJECT obj1(obj);&#13;
+    	OBJECT obj2 = obj;&#13;
+    	OBJECT* obj3 = new OBJECT(obj);&#13;
+    &#13;
+    	// 2. 将一个对象以值传递的方式进行传参&#13;
+    	test_func(obj);&#13;
+    	&#13;
+    	return 0;&#13;
+    }</a>
+</h3>
+<h3 class="topic">
+<a name="6etnv6i0br5lri0emsfa5od3mq">&nbsp;&nbsp;&nbsp;深拷贝与浅拷贝</a>
+</h3>
+<h3 class="topic">
+<a name="3ffjjqsnd75j3rh478fdn72a7p">&nbsp;&nbsp;&nbsp;&nbsp;默认拷贝构造函数执行的是浅拷贝</a>
+</h3>
+<h3 class="topic">
+<a name="6bv4m960ol693391sfubo0rceu">&nbsp;&nbsp;&nbsp;&nbsp;深拷贝</a>
+</h3>
+<h3 class="topic">
+<a name="6euutb8a6d06f9on7l8cknosa3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;拷贝了指针指向的空间</a>
+</h3>
+<h3 class="topic">
+<a name="2n4cb17ei8gar4nm5tn9d0igr0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;memcpy(ptr1, ptr2);</a>
+</h3>
+<h3 class="topic">
+<a name="4qjfimejt40g13drqg29e0drih">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;相当于为拷贝出的对象单独分配相应的内存空间，而不仅仅是复制一份指向被拷贝对象的指针</a>
+</h3>
+<h3 class="topic">
+<a name="5iaed11dh95atb7mvgpd6nqtsv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this-&gt;name=_strdup(obj.name);</a>
+</h3>
+<h3 class="topic">
+<a name="090n39u33blt2dol2e9lbmmv27">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_strdup()函数可以根据参数的内容重新开辟内存空间</a>
+</h3>
+<h3 class="topic">
+<a name="705fcu3120tmsnms0becbujk0n">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_strdup()可以替代下面三条指令    		&#13;
+int size = strlen(obj.name) + 1;&#13;
+this-&gt;name = new char[size];&#13;
+strcpy_s(this-&gt;name, size, obj.name);</a>
+</h3>
+<h3 class="topic">
+<a name="74k9r9r59abmh8q6u3numoq8p2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以替代深拷贝构造函数当中的一些内存操作</a>
+</h3>
+<h3 class="topic">
+<a name="25klq5pftsskpv2cn3gf4ur459">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;需要注意_strdup(）申请内存的底层是通过malloc实现的，所以其深拷贝构造出来的对象在析构函数中必须使用free()释放，不能使用delete释放，</a>
+</h3>
+<h3 class="topic">
+<a name="1pek9mja8u9tpl8r6al3ttrcq8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果类中是通过new delete来进行内存申请与释放的，进行深拷贝是就不能用_strdup</a>
+</h3>
+<h3 class="topic">
+<a name="43lpengv067o1cqh2v1po4rc4k">&nbsp;&nbsp;&nbsp;&nbsp;浅拷贝</a>
+</h3>
+<h3 class="topic">
+<a name="5a5isslfvc2g2a2rr14omuseqo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;拷贝了指针本身的值</a>
+</h3>
+<h3 class="topic">
+<a name="4ov63t7an66fhft9k9c27rr8rc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ptr1=ptr2;</a>
+</h3>
+<h3 class="topic">
+<a name="3vgcklf418g3bt75bnhcnn2ep4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当类中存在申请内存空间的操作时，使用浅拷贝生成的对象在销毁的过程中会导致一片相同的内存空间被释放两次，造成内存释放错误</a>
+</h3>
+<h3 class="topic">
+<a name="0ghkoda52brgf8t2dqribmkl5k">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;因为浅拷贝中是将被拷贝的对象中的指针变量复制一份，所以浅拷贝生成的对象并没有为指针申请相应的内存空间，只是获得了一个指向被拷贝对象申请的内存空间的指针，在该对象销毁的时候，析构函数中的内存释放函数会将指针所指向的内存空间释放</a>
+</h3>
+<h3 class="topic">
+<a name="5u608mn2c9do405a6m47uneojh">&nbsp;&nbsp;&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="6bmse9clk77g171gvkbmm0tp2f">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    class OBJECT&#13;
+    {&#13;
+    private:&#13;
+    	// 一块内存空间，理论应该进行深拷贝&#13;
+    	char* name = nullptr;&#13;
+    &#13;
+    public:&#13;
+    	// 构造函数，用于传入一个字符串给name&#13;
+    	OBJECT(const char* name)&#13;
+    	{&#13;
+    		// 1. 计算需要的空间大小&#13;
+    		int size = strlen(name) + 1;&#13;
+    &#13;
+    		// 2. 根据 name 的大小创建缓冲区&#13;
+    		this-&gt;name = new char[size];&#13;
+    &#13;
+    		// 3. 将字符串的数据拷贝到堆空间&#13;
+    		strcpy_s(this-&gt;name, size, name);&#13;
+    	}&#13;
+    &#13;
+    	// 析构函数内释放空间&#13;
+    	~OBJECT()&#13;
+    	{&#13;
+    		if (this-&gt;name != nullptr)&#13;
+    		{&#13;
+    			delete[] name;&#13;
+    			name = nullptr;&#13;
+    		}&#13;
+    	}&#13;
+    &#13;
+    	// 一个浅拷贝的的例子&#13;
+    	//OBJECT(OBJECT&amp; obj)&#13;
+    	//{&#13;
+    	//	// 浅拷贝: 简单指针赋值&#13;
+    	//	name = obj.name;&#13;
+    	//}&#13;
+    &#13;
+    	// 一个深拷贝的的例子&#13;
+    	OBJECT(OBJECT&amp; obj)&#13;
+    	{&#13;
+    		// 如果当前有指向的空间，先释放防止内存泄漏&#13;
+    		if (this-&gt;name != nullptr)&#13;
+    		{&#13;
+    			delete[] name;&#13;
+    			name = nullptr;&#13;
+    		}&#13;
+    &#13;
+    		// 进行深拷贝&#13;
+    		// int size = strlen(obj.name) + 1;&#13;
+    		// this-&gt;name = new char[size];&#13;
+    		// strcpy_s(this-&gt;name, size, obj.name);&#13;
+    		&#13;
+                //以下该函数可以替代上面三条语句，根据&#13;
+		//被拷贝的对象为拷贝出的对象的分配内存空间&#13;
+		this-&gt;name = _strdup(obj.name);&#13;
+        //这里实际上是不能替代的，因为_strdup底层是通过malloc实现的，在析构函数中需要使用free()释放&#13;
+    	}&#13;
+    };&#13;
+    &#13;
+    &#13;
+    int main()&#13;
+    {&#13;
+    	OBJECT* obj1 = new OBJECT("xiaoming");&#13;
+    &#13;
+    	// 待用拷贝构造函数构造新的对象&#13;
+    	OBJECT* obj2 = new OBJECT(*obj1);&#13;
+    &#13;
+    	// 释放 obj1 本身&#13;
+    	delete obj1;&#13;
+    &#13;
+    	// 释放 obj2 本身&#13;
+    	delete obj2;	&#13;
+    &#13;
+    	return 0;&#13;
+    }</a>
+</h3>
+<h3 class="topic">
+<a name="2h76413bgcbp3iispc1rl35q0k">&nbsp;&nbsp;转换构造</a>
+</h3>
+<h3 class="topic">
+<a name="4na65s96d9g6cp4v9ue2uvse3p">&nbsp;&nbsp;&nbsp;将其他类型转换成当前类类型</a>
+</h3>
+<h3 class="topic">
+<a name="62id92ilr4v7idf7k6cfttlhh9">&nbsp;&nbsp;&nbsp;转换构造需要传入一个参数</a>
+</h3>
+<h3 class="topic">
+<a name="29hkka1iin64isq207u5v251vu">&nbsp;&nbsp;&nbsp;&nbsp;所以一般将传入两个参数及以上的构造函数才称为有参构造，只传入一个参数的一般称为转换构造</a>
+</h3>
+<h3 class="topic">
+<a name="0aefcvks6s0m2kv2jhmusouu4u">&nbsp;&nbsp;&nbsp;常用于当函数参数为类对象时，可以使用其他类型数据调用该函数，相当于提供了函数参数隐式转换的机制</a>
+</h3>
+<h3 class="topic">
+<a name="4r173hneblm51gv0acnv30k71u">&nbsp;&nbsp;&nbsp;函数定义前面加上 explicit 可以禁止该函数进行隐式转换</a>
+</h3>
+<h3 class="topic">
+<a name="0k3m12f6mbtfph5u1nu81qquq8">&nbsp;&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="1fgbov097h9ufn9n1e6rqfm7qs">&nbsp;&nbsp;&nbsp;&nbsp;  class OBJECT&#13;
+  {&#13;
+  public:&#13;
+  	OBJECT(int n) // 将 int -&gt; OBJECT&#13;
+  	{&#13;
+  		printf("OBJECT(int n)\n");&#13;
+  	}&#13;
+  &#13;
+  	OBJECT(double n) // 将 double -&gt; OBJECT&#13;
+  	{&#13;
+  		printf("OBJECT(double n)\n");&#13;
+  	}&#13;
+  &#13;
+   	explicit OBJECT(const char* str) // 将 const char* -&gt; OBJECT&#13;
+   	{&#13;
+   		printf("OBJECT(const char* n)\n");&#13;
+   	}&#13;
+  };&#13;
+  &#13;
+  void test_func(OBJECT obj){}&#13;
+  &#13;
+  int main()&#13;
+  {&#13;
+  	test_func(1);&#13;
+  	test_func(1.1);&#13;
+  	// 使用了 explicit 修饰的转换构造必须要显示的进行调用&#13;
+  	test_func(OBJECT("123"));&#13;
+  	return 0;&#13;
+  }</a>
+</h3>
+<h3 class="topic">
+<a name="77fccba07as9m0mdn98n6k8obd">&nbsp;&nbsp;总结</a>
+</h3>
+<h3 class="topic">
+<a name="73vcgfa8usd27ois0mddfhavd0">&nbsp;静态成员（新内容哦）</a>
+</h3>
+<h3 class="topic">
+<a name="5fpknr6827ckg59a20ptm9ho93">&nbsp;&nbsp;可以让特定类的所有对象都可以共享某一个数据</a>
+</h3>
+<h3 class="topic">
+<a name="1t4kq9e2mtj9un80mg1ocsdl8f">&nbsp;&nbsp;在类中声明一个static类型的成员便能够在类范围内共享数据，称之为静态成员</a>
+</h3>
+<h3 class="topic">
+<a name="1f9510qt0godeo2407s5micmsn">&nbsp;&nbsp;分类</a>
+</h3>
+<h3 class="topic">
+<a name="6l7165nmuuc0388dcol851jt1a">&nbsp;&nbsp;&nbsp;静态数据成员</a>
+</h3>
+<h3 class="topic">
+<a name="7vdpfe54j14v3menutaohb537m">&nbsp;&nbsp;&nbsp;静态成员函数</a>
+</h3>
+<h3 class="topic">
+<a name="1hha6tovhocic57fpgvqnkuqoj">&nbsp;&nbsp;&nbsp;&nbsp;是成员函数，但是没有this指针</a>
+</h3>
+<h3 class="topic">
+<a name="4c2hhddgiehakqb3foacccqidq">&nbsp;&nbsp;用途</a>
+</h3>
+<h3 class="topic">
+<a name="2190rg1c86sv0k13v96lj2ap3o">&nbsp;&nbsp;&nbsp;保存所有对象的共享数据</a>
+</h3>
+<h3 class="topic">
+<a name="6f3dhepuf6h2k59tvb60j1obqj">&nbsp;&nbsp;&nbsp;&nbsp;统计一个类被实例化了多少次</a>
+</h3>
+<h3 class="topic">
+<a name="5ov46vm9t5curn5cbtd60t7kce">&nbsp;&nbsp;&nbsp;&nbsp;维护一个最大编号</a>
+</h3>
+<h3 class="topic">
+<a name="4bs4u3dq18ck4c87ncim76e01b">&nbsp;&nbsp;&nbsp;作为一个标志，标识一个特定的动作是否发生</a>
+</h3>
+<h3 class="topic">
+<a name="6hisefdfob2p87vbmpn01nbplt">&nbsp;&nbsp;&nbsp;指向链表第一个元素或最后一个元素的指针</a>
+</h3>
+<h3 class="topic">
+<a name="088jop1dqodl8v2bs09joghvub">&nbsp;&nbsp;使用静态成员</a>
+</h3>
+<h3 class="topic">
+<a name="3ucrn4id603qd6rs5npscjmqbn">&nbsp;&nbsp;&nbsp;使用静态数据成员</a>
+</h3>
+<h3 class="topic">
+<a name="49vk9ckporjgtlk1afgmuv65ul">&nbsp;&nbsp;&nbsp;&nbsp;步骤1：在普通的数据成员前使用static可以声明一个静态数据成员</a>
+</h3>
+<h3 class="topic">
+<a name="71n2g544tudt98pcumut7m5qje">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;static int count;</a>
+</h3>
+<h3 class="topic">
+<a name="214ma8k07d8rj6i9k915hjmkr7">&nbsp;&nbsp;&nbsp;&nbsp;步骤2：在类外使用类域对静态成员进行定义，可以初始化，也可以不初始化</a>
+</h3>
+<h3 class="topic">
+<a name="603j2lsu402a121qfkptig40ol">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int OBJECT::count = 0;</a>
+</h3>
+<h3 class="topic">
+<a name="4lv7oe9thjkvjdua7udkrth12s">&nbsp;&nbsp;&nbsp;&nbsp;所有的静态成员都不占用对象的空间，可以使用对象或类名对它进行访问</a>
+</h3>
+<h3 class="topic">
+<a name="00a6v15t0kllik687t22rs2llo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;静态数据成员被保存在静态数据区</a>
+</h3>
+<h3 class="topic">
+<a name="610253kpsr7n4rvqdqp18bbgpg">&nbsp;&nbsp;&nbsp;&nbsp;访问静态数据成员的几种方式</a>
+</h3>
+<h3 class="topic">
+<a name="5bc1j1imcuensco21k9s7bq7o4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;静态数据要想被直接访问需要定义为public</a>
+</h3>
+<h3 class="topic">
+<a name="0tg45riq72rjeoodinhhonec7a">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;直接使用类名进行访问</a>
+</h3>
+<h3 class="topic">
+<a name="5jbktpi1dvtmcvm3c33ins2avv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;类名::静态数据名</a>
+</h3>
+<h3 class="topic">
+<a name="0hl3nm91bdrsoeldqqs5bq16eb">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;推荐</a>
+</h3>
+<h3 class="topic">
+<a name="2vvftrhsbffeq93q6f9o6jsdlq">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用对象进行访问</a>
+</h3>
+<h3 class="topic">
+<a name="5jugo2tlq16uavcol5jss4f7ig">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.</a>
+</h3>
+<h3 class="topic">
+<a name="53bhl5kio40ttqdjitf6epvrt9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可读性较差，不能体现出其是一个和对象无关的数据</a>
+</h3>
+<h3 class="topic">
+<a name="0rqpehabj6s12q3d2lqt54s3dj">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用指针进行访问</a>
+</h3>
+<h3 class="topic">
+<a name="3h4qilbcic9kp9blqb6aqs7mv6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&gt;</a>
+</h3>
+<h3 class="topic">
+<a name="5mdae5s780c834umoq1ohtsu7m">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可读性较差，不能体现出其是一个和对象无关的数据</a>
+</h3>
+<h3 class="topic">
+<a name="2r2ijjiuunp1ugord9iicodtqa">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="7gas683mjll49u88c9evdtpmag">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;      #include &lt;iostream&gt;&#13;
+      using namespace std;&#13;
+      &#13;
+      class OBJECT&#13;
+      {&#13;
+      public:&#13;
+      	// 声明静态数据&#13;
+      	static int number;&#13;
+      };&#13;
+      &#13;
+      // 定义静态数据&#13;
+      int OBJECT::number = 0;&#13;
+      &#13;
+      int main()&#13;
+      {&#13;
+      	OBJECT obj, * pobj = &amp;obj;&#13;
+      	// 访问静态数据的几种方式&#13;
+      	// 推荐使用类名进行访问，对象和指针虽然可以修改&#13;
+      	// 但是可读性较差，不能体现出这是一个和对象无关的数据&#13;
+      &#13;
+      	// 1. 直接使用类名进行访问&#13;
+      	printf("OBJECT::number = %d\n", OBJECT::number);&#13;
+      &#13;
+      	// 2. 使用对象进行访问&#13;
+      	printf("obj.number = %d\n", obj.number);&#13;
+      &#13;
+      	// 3. 使用指针进行访问&#13;
+      	printf("pobj-&gt;number = %d\n", pobj-&gt;number);&#13;
+      	&#13;
+      	return 0;&#13;
+      }</a>
+</h3>
+<h3 class="topic">
+<a name="1rces6nlsngnkdcg3o44evfrb8">&nbsp;&nbsp;&nbsp;使用静态成员函数（也是成员函数，只是没有this指针）</a>
+</h3>
+<h3 class="topic">
+<a name="24p9en9t5fienftjbg6j79t9eq">&nbsp;&nbsp;&nbsp;&nbsp;在成员函数前使用static可以声明静态函数</a>
+</h3>
+<h3 class="topic">
+<a name="49ll5vj3vq23ibr7l2hr4mgkin">&nbsp;&nbsp;&nbsp;&nbsp;访问静态数据成员，推荐使用静态函数</a>
+</h3>
+<h3 class="topic">
+<a name="75j4djqatkmv3upu4l4s5fbv0s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;比如专门用于输出静态数据成员的静态函数</a>
+</h3>
+<h3 class="topic">
+<a name="4g8ur8f7d5s6i8s7064ob15npp">&nbsp;&nbsp;&nbsp;&nbsp;静态函数可以不通过类的对象而进行调用</a>
+</h3>
+<h3 class="topic">
+<a name="1g2lu77c0d4pqrcq1iftrjbk4l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;推荐直接使用类名进行访问</a>
+</h3>
+<h3 class="topic">
+<a name="4rt9su9680r6avo5n0p19bno95">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;类名::静态函数名()</a>
+</h3>
+<h3 class="topic">
+<a name="6tjk92ltftau4nha8unr4k7291">&nbsp;&nbsp;&nbsp;&nbsp;静态函数直接归类所有，没有this指针</a>
+</h3>
+<h3 class="topic">
+<a name="7u0rqlr8pp2dfg54i7q26mnaff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;故其无法在静态函数内部调用成员函数，无法访问非静态数据成员</a>
+</h3>
+<h3 class="topic">
+<a name="2vvgruhqohgbbn8l6saof03iic">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;但是在普通成员函数中可以访问静态函数或静态数据成员</a>
+</h3>
+<h3 class="topic">
+<a name="079ghqbi739k900hu1f698ujn9">&nbsp;&nbsp;&nbsp;&nbsp;静态函数的用途</a>
+</h3>
+<h3 class="topic">
+<a name="6bgsoeealrrsdar4m3gnrbn0q3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;制作工具类</a>
+</h3>
+<h3 class="topic">
+<a name="3tvfgjn5bm0h2co1vqj01lq3rv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;工具类中没有数据成员，只有函数，且此类工具函数均被声明为静态函数，就可以在不需要类对象的前提下使用此类函数</a>
+</h3>
+<h3 class="topic">
+<a name="7mj3usd97q74jm7m5e93fctkr8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用 类名::静态函数名</a>
+</h3>
+<h3 class="topic">
+<a name="43mq5t4ut6e6ra383l3siu5l7f">&nbsp;&nbsp;&nbsp;&nbsp;代码</a>
+</h3>
+<h3 class="topic">
+<a name="2d7thqgkk8iugahqk7gla33c4e">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  class OBJECT&#13;
+  {&#13;
+  	// 普通的私有成员，占用对象的大小&#13;
+  	int number;&#13;
+  public:&#13;
+  	// 声明静态数据&#13;
+  	static int snumber;&#13;
+  &#13;
+  public:&#13;
+  	// 普通成员函数&#13;
+  	void show_number()&#13;
+  	{&#13;
+  		// 可以访问成员函数&#13;
+  		printf("number = %d\n", number);&#13;
+  &#13;
+  		// 可以访问静态函数&#13;
+  		show_snumber();&#13;
+  &#13;
+  		// 可以访问静态数据&#13;
+  		printf("snumber = %d\n", this-&gt;snumber);&#13;
+  	}&#13;
+  &#13;
+  	// 静态函数的使用，访问静态成员推荐使用静态函数&#13;
+  	// 在函数前使用 static 可以声明一个静态函数&#13;
+  	static void show_snumber()&#13;
+  	{&#13;
+  		printf("snumber = %d\n", snumber);&#13;
+  		// 1. 静态函数是直接归类所有的，[没有 this 指针]&#13;
+  		//	- 无法调用成员函数，无法访问非静态数据&#13;
+  		//		number = 10;&#13;
+  		//		this-&gt;number = 10;&#13;
+  	}&#13;
+  };&#13;
+  &#13;
+  // 定义静态数据&#13;
+  int OBJECT::snumber = 0;&#13;
+  &#13;
+  int main()&#13;
+  {&#13;
+  	// 静态数据是否占用类对象的大小&#13;
+	//静态数据成员保存在静态数据区&#13;
+  	printf("OBJECT::snumber = %d", OBJECT::snumber);&#13;
+  	OBJECT::show_snumber();&#13;
+  &#13;
+  	// 静态数据是否占用类对象的大小&#13;
+  	OBJECT obj1, obj2;&#13;
+  &#13;
+  	// 输出对象的大小，静态不占用大小&#13;
+  	printf("sizeof(obj1) = %d\n", sizeof(obj1));&#13;
+  	printf("sizeof(obj2) = %d\n", sizeof(obj2));&#13;
+  	&#13;
+  	return 0;&#13;
+  }</a>
+</h3>
+<h3 class="topic">
+<a name="5q1n87p56ipe09ke07he9cd088">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- 静态函数的用途之一：制作工具库&#13;
+&#13;
+  - ```cpp&#13;
+    class CALC&#13;
+    {&#13;
+    public:&#13;
+    	static int add(int n, int m)&#13;
+    	{&#13;
+    		return n + m;&#13;
+    	}&#13;
+    	static int min(int n, int m)&#13;
+    	{&#13;
+    		return n &lt; m ? n : m;&#13;
+    	}&#13;
+    	static int mul(int n, int m)&#13;
+    	{&#13;
+    		return n * m;&#13;
+    	}&#13;
+    };&#13;
+    &#13;
+    int main()&#13;
+    {&#13;
+    	int x = 10, y = 20;&#13;
+    &#13;
+    	printf("x + y = %d\n", CALC::add(x, y));&#13;
+    	printf("x * y = %d\n", CALC::mul(x, y));&#13;
+    	&#13;
+    	return 0;&#13;
+    }</a>
+</h3>
+<h3 class="topic">
+<a name="6460g58a8l2900er7babi2bocd">&nbsp;&nbsp;举例</a>
+</h3>
+<h3 class="topic">
+<a name="12q8fcvnhpk68ulhjokpn8pr1t">&nbsp;&nbsp;&nbsp;不使用静态成员统计一个类有多少个实例</a>
+</h3>
+<h3 class="topic">
+<a name="237qu7elmbk9kgupir7cqkhkbg">&nbsp;&nbsp;&nbsp;&nbsp;如果不使用静态成员，唯一的选择就是使用全局变量标识实例化次数</a>
+</h3>
+<h3 class="topic">
+<a name="3dfhje53kr7562sugc728dj95d">&nbsp;&nbsp;&nbsp;&nbsp;但是使用全局变量会影响程序的封装性，当代码量很多时，容易在不同的位置破坏该全局变量</a>
+</h3>
+<h3 class="topic">
+<a name="086g8i9ll7it31j8eu30be6p5r">&nbsp;&nbsp;&nbsp;&nbsp;全局变量与类之间没有编译器层面的联系，只有人工指定的联系</a>
+</h3>
+<h3 class="topic">
+<a name="2ogvu0oc9svf6pjer861bjrvlg">&nbsp;&nbsp;&nbsp;&nbsp;其实就是在构造 析构函数中分别进行全局变量的自增自减</a>
+</h3>
+<h3 class="topic">
+<a name="50gunb2qlm6o83pb8bd2rf619c">&nbsp;&nbsp;&nbsp;使用静态成员统计一个类有多少个实例</a>
+</h3>
+<h3 class="topic">
+<a name="22pjmiksvjhtgk4tvlqf2291lo">&nbsp;&nbsp;&nbsp;&nbsp;// 使用静态成员统计一个类有多个实例&#13;
+  &#13;
+  class OBJECT&#13;
+  {&#13;
+  private:&#13;
+  	// 一个想要用于计算总个数的变量&#13;
+  	// 如果不是静态的话，每一个类对象中都会产生这个变量&#13;
+  	// 在数据成员的定义前加上 static 关键字可以 [声明] 一个静态数据&#13;
+  	// 因为数据是保存在类内的，所以和类本身是由关联的&#13;
+  	static int count;&#13;
+  &#13;
+  public:&#13;
+  	OBJECT() { ++count; }&#13;
+  	~OBJECT() { --count; }&#13;
+  	void show_count()&#13;
+  	{&#13;
+  		// 如果没有定义的话，就会产生无法解析的外部符号错误&#13;
+  		printf("count = %d\n", count);&#13;
+  	}&#13;
+  };&#13;
+  &#13;
+  // 必须在类外使用类域对静态成员进行定义，可以初始化，也可以不初始化&#13;
+  int OBJECT::count = 0;&#13;
+  &#13;
+  int main()&#13;
+  {&#13;
+  	OBJECT obj;&#13;
+  	obj.show_count();&#13;
+  	OBJECT* obj1 = new OBJECT;&#13;
+  	obj1-&gt;show_count();&#13;
+  	OBJECT* obj2 = new OBJECT;&#13;
+  	obj2-&gt;show_count();&#13;
+  	delete obj1;&#13;
+  	obj.show_count();&#13;
+  	return 0;&#13;
+  }</a>
+</h3>
+<h3 class="topic">
+<a name="7a4u9qr1a7h8ngav40ukpgm6vm">&nbsp;&nbsp;&nbsp;&nbsp;必须在类外使用类域对静态数据成员进行定义、初始化，可以不进行初始化，因为静态变量会默认初始化</a>
+</h3>
+<h3 class="topic">
+<a name="1991jk3j457v5fv6tb0pv1h64r">&nbsp;变量初始化与存储位置</a>
+</h3>
+<h3 class="topic">
+<a name="3qombbbvue5dm0ubhuqresuo9a">&nbsp;&nbsp;全局变量</a>
+</h3>
+<h3 class="topic">
+<a name="0hrad6v590lbr8m7sd2lvr6ghu">&nbsp;&nbsp;&nbsp;默认初始化为0 存储在静态存储区</a>
+</h3>
+<h3 class="topic">
+<a name="4m6l7mit5mnh0c8cgo81rkvm2f">&nbsp;&nbsp;局部变量</a>
+</h3>
+<h3 class="topic">
+<a name="2t2klca0lo3n5j7jeo2r31d7nk">&nbsp;&nbsp;&nbsp;默认初始化为0xcc 存储在栈区</a>
+</h3>
+<h3 class="topic">
+<a name="4qdn4mj7b8qh2bleqbimmgtqa9">&nbsp;&nbsp;静态变量</a>
+</h3>
+<h3 class="topic">
+<a name="497ei7p1n2fgihegln7kbn3ce3">&nbsp;&nbsp;&nbsp;默认初始化为0 存储在静态存储区</a>
+</h3>
+<h3 class="topic">
+<a name="5al4mi0cp1fg5umm9ip0i4jv7c">&nbsp;&nbsp;堆空间变量</a>
+</h3>
+<h3 class="topic">
+<a name="66rvomkj7ppu5dad717ed1vua4">&nbsp;&nbsp;&nbsp;默认初始化为0xcd 存储在堆区</a>
+</h3>
+<h3 class="topic">
+<a name="60dp9mokr1pmbj4s9kg1l9qgt0">&nbsp;~运算符其意义是取反</a>
+</h3>
+<h3 class="topic">
+<a name="0hvtapliqtfsnhmboj8duhc4p3">&nbsp;当想要使用默认构造函数时</a>
+</h3>
+<h3 class="topic">
+<a name="12qm312gudpt96s9b2huj5f7bo">&nbsp;&nbsp;OBJ()=default；</a>
+</h3>
+<h3 class="topic">
+<a name="373pfkpgcsaihlmj6vo3jdebrs">&nbsp;当想要删除默认构造函数时</a>
+</h3>
+<h3 class="topic">
+<a name="354beg3naor2d93b8j7q9213s3">&nbsp;&nbsp;OBJ()=delete；</a>
+</h3>
+<h3 class="topic">
+<a name="61qtjl689tem03tat29shjunj7">&nbsp;函数定义前面加上 explicit 可以禁止该函数进行隐式转换</a>
+</h3>
+</body>
+</html>
