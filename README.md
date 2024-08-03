@@ -8,11 +8,8 @@
   - https://htmlpreview.github.io/?https://github.com/fdgnneig/myblog/blob/main/%E5%AE%89%E5%8D%93/%E5%AE%89%E5%8D%93_HTML/index.html
 ## 内容概览
 - 安卓
-  - [安卓基础]
-  - [安卓_HTML](https://github.com/fdgnneig/myblog/blob/main/%E5%AE%89%E5%8D%93/%E5%AE%89%E5%8D%93_HTML/)
+  - 安卓基础
+  - 安卓_HTML（更深入的一些安卓内容）
   - 安卓应用漏洞
   - 加壳与反调试
   - 逆向基础
-
-
-[]
