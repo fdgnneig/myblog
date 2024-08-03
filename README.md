@@ -4,7 +4,7 @@
 - 博客内容引用相关外部资料，若涉及版权问题，请提交issue，本人配合删除
 - 感兴趣的领域：加密协议逻辑漏洞；基带；底层驱动；TEE；硬件安全
 - 相关知识仅供个人学习分享，不包含任何工作内容，不得用于网络攻击行为
-- 文档格式包含markdown、html两类，针对后者，在对应html文件url前加"https://htmlpreview.github.io/?"即可显示，如下
+- 文档格式包含markdown、html两类，针对后者，在对应html文件url前加 "https://htmlpreview.github.io/?" 即可显示，如下
   - https://htmlpreview.github.io/?https://github.com/fdgnneig/myblog/blob/main/%E5%AE%89%E5%8D%93/%E5%AE%89%E5%8D%93_HTML/index.html
 ## 内容概览
 - 安卓
