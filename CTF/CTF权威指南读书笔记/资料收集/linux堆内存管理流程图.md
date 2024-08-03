@@ -1,0 +1,4 @@
+- linux malloc.c源码地址
+  - https://code.woboq.org/userspace/glibc/malloc/malloc.c.html
+- 流程图
+  - ![](pic/2021-07-11-09-40-46.png)

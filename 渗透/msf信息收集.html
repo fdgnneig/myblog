@@ -1,0 +1,693 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>msf信息收集</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="5k4sm3j19micb8sfljnj602fqq">msf信息收集</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="msf%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/images/msf%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86.jpg"></div>
+<h2 class="topic">
+<a name="0g746iu4ikv0ban24qr5hu2s9p">nmap扫描</a>
+</h2>
+<h3 class="topic">
+<a name="5n9vhlie6tpvduraul4638b9fi">&nbsp;结果会保存在msf数据库中</a>
+</h3>
+<h3 class="topic">
+<a name="1b03v8dsaru5raggm0r0d5vlql">&nbsp;db nmap -sV 192.168.1.0/24</a>
+</h3>
+<h3 class="topic">
+<a name="2dislb8bc71nnm5u9rprk516g9">&nbsp;db nmap 192.168.1.0/24</a>
+</h3>
+<h3 class="topic">
+<a name="2gubbf6r554vnppto4473e1iii">&nbsp;&nbsp;扫描当前网段，用于主机发现</a>
+</h3>
+<h2 class="topic">
+<a name="7eerqjcv2mfhsubmafv03984na">实例一</a>
+</h2>
+<h3 class="topic">
+<a name="0ssk54icd949mb8ifut0uho07l">&nbsp;openvas-stop</a>
+</h3>
+<h3 class="topic">
+<a name="07uscubh3dp8gl9rq72eugkkta">&nbsp;service postgresql start</a>
+</h3>
+<h3 class="topic">
+<a name="2tjqv0ug3v2cik0flgacalc3c9">&nbsp;&nbsp;启动数据库</a>
+</h3>
+<h3 class="topic">
+<a name="2uuudq4me746650o3l300vo7fp">&nbsp;msfconsole</a>
+</h3>
+<h3 class="topic">
+<a name="70shao7q53sf6tklaun9gukgf6">&nbsp;use auxiliary/scanner</a>
+</h3>
+<h3 class="topic">
+<a name="2qm67htk1mbqpl4a14bt4mjlsm">&nbsp;&nbsp;按两下tab键显示该目录下可用的扫描器</a>
+</h3>
+<h3 class="topic">
+<a name="2sc0a47uqk73fcmnsi6vlrpue5">&nbsp;&nbsp;auxiliary类似于一个没有payload的exploit模块，执行一些辅助功能，其主要扫描功能的实现在/scanner/目录下</a>
+</h3>
+<h3 class="topic">
+<a name="08k3dq08bfd3u9gq053l8sg6jh">&nbsp;&nbsp;auxiliary扫描模块中因为需要扫描的ip较多，所以使用rhosts作为参数设置，且可以用多种格式指定需要扫描的ip范围</a>
+</h3>
+<h3 class="topic">
+<a name="779jgug88k25b5rn0v7jbsn7ju">&nbsp;&nbsp;&nbsp;192.168.1.20-192.168.1.30</a>
+</h3>
+<h3 class="topic">
+<a name="2aimunn7jjacjg5atgg6n54587">&nbsp;&nbsp;&nbsp;192.168.1.0/24,192.168.11.0/24</a>
+</h3>
+<h3 class="topic">
+<a name="1f4asa6rdh4gdifbglkuts86c3">&nbsp;&nbsp;&nbsp;&nbsp;需要扫描两个网段时使用,隔开</a>
+</h3>
+<h3 class="topic">
+<a name="0gdbmbkrf35pefn0f7i9lf2f14">&nbsp;&nbsp;&nbsp;file:/root/h.txt</a>
+</h3>
+<h3 class="topic">
+<a name="7hfuav8d6c0p142oubb0rq3g5n">&nbsp;&nbsp;&nbsp;&nbsp;直接调用文件，对其中的ip进行扫描</a>
+</h3>
+<h3 class="topic">
+<a name="24eir3sftso7m1427d7v154ki5">&nbsp;search arp</a>
+</h3>
+<h3 class="topic">
+<a name="12dhloi2alvmvnqlcb98oq7hir">&nbsp;&nbsp;一般对本网段内的主机进行使用arp相关协议进行</a>
+</h3>
+<h3 class="topic">
+<a name="7q3k0btkib48s8ecj17p4pk4a7">&nbsp;use auxiliary/scanner/discovery/arp_sweep</a>
+</h3>
+<h3 class="topic">
+<a name="4jnlj6mjvpuakgi4bppi09gpnf">&nbsp;show option</a>
+</h3>
+<h3 class="topic">
+<a name="4cm4c3brmdmg0h714oaf1f4los">&nbsp;set interface eth0</a>
+</h3>
+<h3 class="topic">
+<a name="6u4klujrsjgoft05uqema7j0v1">&nbsp;&nbsp;本机使用哪一个接口进行发包</a>
+</h3>
+<h3 class="topic">
+<a name="7p8elrsk8ea972o00loigsks5u">&nbsp;set rhosts 192.168.1.0/24</a>
+</h3>
+<h3 class="topic">
+<a name="3rdk0ejnfcvthq83ccc0lf0r9u">&nbsp;set shost 192.168.1.155</a>
+</h3>
+<h3 class="topic">
+<a name="6o63un40dh6nfq5gprc1rbu12d">&nbsp;&nbsp;指定源ip用于来源ip的伪造</a>
+</h3>
+<h3 class="topic">
+<a name="08vqo5jc7vol6h0c300klf7ffi">&nbsp;set threads 20</a>
+</h3>
+<h3 class="topic">
+<a name="2l6nedtbb9rko50i13n4pvfkck">&nbsp;&nbsp;指定使用20个线程扫描，默认使用一个线程</a>
+</h3>
+<h3 class="topic">
+<a name="2d19pah3co2imcse479hh7hjkd">&nbsp;run</a>
+</h3>
+<h3 class="topic">
+<a name="2t88v7icmqvrbd50bte30bsapt">&nbsp;&nbsp;进行扫描</a>
+</h3>
+<h3 class="topic">
+<a name="1aj22ltfda71f4tn64c6eocp67">&nbsp;use auxiliary/scanner/portscan</a>
+</h3>
+<h3 class="topic">
+<a name="2hno8cje1fi9b509ar99rkqdnu">&nbsp;&nbsp;按两下tab显示可以使用的扫描方式</a>
+</h3>
+<h3 class="topic">
+<a name="29mffsmjekphrv3sm0a2l0uhki">&nbsp;use auxiliary/scanner/portscan/syn</a>
+</h3>
+<h3 class="topic">
+<a name="626al43hhge25i6rb73ni2u68o">&nbsp;&nbsp;使用syn扫瞄，运行该命令后直接从原来的扫描模块进入新的扫描模块</a>
+</h3>
+<h3 class="topic">
+<a name="72viij8fbtv1oeit37g3hcd823">&nbsp;show option</a>
+</h3>
+<h3 class="topic">
+<a name="77sda66m0784srmh1mt0ba58b1">&nbsp;set ports 80</a>
+</h3>
+<h3 class="topic">
+<a name="22llv0d8ukrgbm84ma86ctq219">&nbsp;&nbsp;扫描是否开放80端口</a>
+</h3>
+<h3 class="topic">
+<a name="5qvnfgmj7rlntviso012d7ljd8">&nbsp;set rhosts 192.168.1.0/24</a>
+</h3>
+<h3 class="topic">
+<a name="6hciormnm11hb4rbr2jocma6qk">&nbsp;set thread 20</a>
+</h3>
+<h3 class="topic">
+<a name="3g13i6u0uvigs3odgnd9jjk239">&nbsp;run</a>
+</h3>
+<h3 class="topic">
+<a name="01ek77foguv1t24mil22tqcmnj">&nbsp;&nbsp;查找目前网段中哪些主机开放80端口</a>
+</h3>
+<h2 class="topic">
+<a name="5rp6ben2hlh7g20ioaqh85vl1v">nmap ipid ldle扫描</a>
+</h2>
+<h3 class="topic">
+<a name="137eacmpjdk6vmamv4jvrue6bq">&nbsp;ldle扫描方式</a>
+</h3>
+<h3 class="topic">
+<a name="6vfhe6610ubc7r7vqrakfpnfqi">&nbsp;&nbsp;进行扫描的过程中不是直接向目标主机进行发包，而是向ldle主机（主机是空闲的）进行发包，</a>
+</h3>
+<h3 class="topic">
+<a name="70kls0gsrnul92ck5i8ncvje1g">&nbsp;&nbsp;ldle主机的ip包头中的id必须是顺序增长的</a>
+</h3>
+<h3 class="topic">
+<a name="10famm24sf5ufcjueueei4qfjj">&nbsp;&nbsp;伪造扫描的源ip地址，将目的主机的ip地址作为源IP地址向ldle主机进行发包，根据返回的ipid变化的值判断目的主机相关性质（主机是否活着，目标端口是否开放）</a>
+</h3>
+<h3 class="topic">
+<a name="6j38ol8t385eduqum624mi4so0">&nbsp;&nbsp;关键在于要找到一台空闲的ldle主机，该主机与网络中的其他主机很少通讯或不通讯，ipid也必须是递增的</a>
+</h3>
+<h3 class="topic">
+<a name="7b85g2k2irp35hna4sq68b9slg">&nbsp;ues auxiliary/scanner/ip/ipidseq</a>
+</h3>
+<h3 class="topic">
+<a name="41j98d4s05seb2ju199tp9i1al">&nbsp;&nbsp;可以通过search寻找具体模块或者直接阅读模块中的相关文件(info)进行模块的应用</a>
+</h3>
+<h3 class="topic">
+<a name="1d5ojv0uvct6alt62hp54sjjod">&nbsp;show option</a>
+</h3>
+<h3 class="topic">
+<a name="4ieem1jepne2gqb84a9uver5v1">&nbsp;set interface eth0</a>
+</h3>
+<h3 class="topic">
+<a name="7es7qrninhf3qvde2qlal4hr4n">&nbsp;set rhosts 192.168.1.1-130</a>
+</h3>
+<h3 class="topic">
+<a name="6tiv5ncfoo30f0pvfp5ir59er4">&nbsp;set  threads 10</a>
+</h3>
+<h3 class="topic">
+<a name="15qh9ie2otl2gkot8l67aao76t">&nbsp;run</a>
+</h3>
+<h3 class="topic">
+<a name="1vch08ba4c3gce34i2iqbjudd6">&nbsp;&nbsp;之后可以显示ldle主机的IP地址</a>
+</h3>
+<h3 class="topic">
+<a name="0muu2sj4j33gg2finb4mve7mkv">&nbsp;nmap -PN -sI 1.1.1.2 1.1.1.3</a>
+</h3>
+<h3 class="topic">
+<a name="0db3nhrtm6cs3kprs1108i4163">&nbsp;&nbsp;1.1.1.2是找到的ldle主机的地址</a>
+</h3>
+<h3 class="topic">
+<a name="27qptaja8k2gi38eak0to4h2kv">&nbsp;&nbsp;1.1.1.3是目的主机的地址</a>
+</h3>
+<h2 class="topic">
+<a name="11bi86emrucgqpq3hbi0k1l4ae">udp扫描</a>
+</h2>
+<h3 class="topic">
+<a name="6qc00lcqq4at10jq57puscuoit">&nbsp;对于开放udp端口的主机可以使用udp扫描进行发现</a>
+</h3>
+<h3 class="topic">
+<a name="1a55bc9pkg8rvdrr04hdl21e01">&nbsp;use auxiliary/scanner/discovery/udp_sweep</a>
+</h3>
+<h3 class="topic">
+<a name="0itkbig9h3ju04438th9ppfpa3">&nbsp;show optin</a>
+</h3>
+<h3 class="topic">
+<a name="2v7cdqvkjq2tn2ju6g1l27eleb">&nbsp;set rhosts 192.168.1.100-192.168.1.130</a>
+</h3>
+<h3 class="topic">
+<a name="5rgm4hrrcc9slngvcqmk1ucg26">&nbsp;run</a>
+</h3>
+<h3 class="topic">
+<a name="0gja308eug28ui7kl3faesaubu">&nbsp;use auxiliary/scanner/discovery/udp_sweep</a>
+</h3>
+<h3 class="topic">
+<a name="68ve8lonomq1rl6ih7pcb9hi1t">&nbsp;show optin</a>
+</h3>
+<h3 class="topic">
+<a name="1vf4mkl1defein1871nk8v4p95">&nbsp;set rhosts 192.168.1.112-192.168.1.123</a>
+</h3>
+<h3 class="topic">
+<a name="1dg2hhon0ct5cgm5m72atobcm6">&nbsp;run</a>
+</h3>
+<h2 class="topic">
+<a name="1174s8nv6rj378upnb1tn5hecu">被动信息扫描</a>
+</h2>
+<h3 class="topic">
+<a name="0fdobob8v725stfvknde2aejf9">&nbsp;密码嗅探</a>
+</h3>
+<h3 class="topic">
+<a name="38vq1hg8hud21r4nrhe6vr1sjl">&nbsp;&nbsp;use auxiliary/sniffer/psnuffle</a>
+</h3>
+<h3 class="topic">
+<a name="6f3c5ne0ukrrfj3fbqlue3vcf8">&nbsp;&nbsp;show option</a>
+</h3>
+<h3 class="topic">
+<a name="7ci2vd77g9tr99kivcol8skjtg">&nbsp;&nbsp;set interface eth0</a>
+</h3>
+<h3 class="topic">
+<a name="6j5328i1pv2e4gm5c98m6gp6fk">&nbsp;&nbsp;&nbsp;该项可以使用默认设置</a>
+</h3>
+<h3 class="topic">
+<a name="20g5vn57v085msttrd1605rfd0">&nbsp;&nbsp;&nbsp;如果不进行参数设置，直接run该模块可以嗅探当前主机对外进行访问时协议中可能包含的密码信息 即实时在线进行扫描</a>
+</h3>
+<h3 class="topic">
+<a name="3sq2g4qnmu88kecfslr3h3iees">&nbsp;&nbsp;&nbsp;此时如果本机执行以下指令</a>
+</h3>
+<h3 class="topic">
+<a name="1fb7qs3q10500lk3ovqcfl5htn">&nbsp;&nbsp;&nbsp;&nbsp;nmap -p21 192.168.1.122</a>
+</h3>
+<h3 class="topic">
+<a name="6teks1glmm45f6lrosee5q8a8p">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;扫描对应主机是否开放21端口（针对ftp文件传输协议）</a>
+</h3>
+<h3 class="topic">
+<a name="0vvf2fnp3ri7p6e28ov9lohp88">&nbsp;&nbsp;&nbsp;&nbsp;ftp 192.168.1.122</a>
+</h3>
+<h3 class="topic">
+<a name="7tp0up8tigd9h1vmbmc3fv7bhv">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;连接之后需要输入用户名和密码</a>
+</h3>
+<h3 class="topic">
+<a name="4cce6pcvg64k1ba0uaqgv9689e">&nbsp;&nbsp;&nbsp;则相应输入的用户名和密码会被嗅探到</a>
+</h3>
+<h3 class="topic">
+<a name="1m89qtnlrhb41kf7qbbpfppbkv">&nbsp;&nbsp;set pcapfile root/ftp.pcap</a>
+</h3>
+<h3 class="topic">
+<a name="4tavt7ahsdpmiuomi1ine97rlv">&nbsp;&nbsp;&nbsp;如果对该项进行设置，即默认使用离线扫描方式，指定一个之前保存的抓包文件，使用该模块进行扫描。看其中是否存在密码相关信息</a>
+</h3>
+<h3 class="topic">
+<a name="0f670m8gfbmv4vn68utlpq6euf">&nbsp;&nbsp;jobs</a>
+</h3>
+<h3 class="topic">
+<a name="5grlneujb8caln7t6gor7ee96u">&nbsp;&nbsp;&nbsp;该命令用于查看目前后台正在运行的模块，因为之前该模块已经启动了在线嗅探，现在欲使用离线嗅探需要kill之前的程序</a>
+</h3>
+<h3 class="topic">
+<a name="681rsg9p9fuhbrqg7dmfqmvtsq">&nbsp;&nbsp;&nbsp;其实不kill也没有事 -。-</a>
+</h3>
+<h3 class="topic">
+<a name="5e8rmoall105n26eqmbdil6cr1">&nbsp;&nbsp;kill 0 </a>
+</h3>
+<h3 class="topic">
+<a name="2uhq6256icv56nor3d6fuqbtmh">&nbsp;&nbsp;&nbsp;杀死编号为0的job</a>
+</h3>
+<h3 class="topic">
+<a name="6nsddn2ioapn5hfkgfrjujvqcf">&nbsp;&nbsp;run</a>
+</h3>
+<h3 class="topic">
+<a name="279t7gt7jdm1jgv7un0nvs3dmr">&nbsp;&nbsp;&nbsp;从抓包文件中寻找用户名密码信息</a>
+</h3>
+<h3 class="topic">
+<a name="22kj8fg87kd8mcg678v38lg24g">&nbsp;snmp扫描模块</a>
+</h3>
+<h3 class="topic">
+<a name="1oq04oka7tncoqon266ehvqcrp">&nbsp;&nbsp;nmap -p161 -sU 192.168.1.122</a>
+</h3>
+<h3 class="topic">
+<a name="5loil7tal8qbhd4sf02mg7vbnq">&nbsp;&nbsp;&nbsp;查看目的主机的161端口是否开放（对应snmp服务）</a>
+</h3>
+<h3 class="topic">
+<a name="0tm7r850gbeqsrfvmosnbpvlnt">&nbsp;&nbsp;&nbsp;在目的主机上查看161端口情况，发现其侦听的端口为127.0.0.1的161端口，说明只能从本机的161端口进行连接，为了实验进行，这里需要修改为允许远程连接</a>
+</h3>
+<h3 class="topic">
+<a name="7qh42ucbfs4omvfacnsg2drhmm">&nbsp;&nbsp;vi /etc/default/snmpd</a>
+</h3>
+<h3 class="topic">
+<a name="73motc1v6pspb14odv62og1v45">&nbsp;&nbsp;&nbsp;将默认侦听的ip地址改为0.0.0.0，即所有ip均允许连接</a>
+</h3>
+<h3 class="topic">
+<a name="7nascfgu5dfam28p9ufqbib10q">&nbsp;&nbsp;ues auxiliary/scanner/snmp/snmp_login</a>
+</h3>
+<h3 class="topic">
+<a name="7jgrofp9h6l2h9i346csapkat9">&nbsp;&nbsp;&nbsp;该模块用于破解snmp服务中的communicate字符串，主要用于登录snmp服务</a>
+</h3>
+<h3 class="topic">
+<a name="5rp9qoo66d9ni0s6bqgbhu2bfv">&nbsp;&nbsp;&nbsp;该模块会使用一个字典进行暴力破解</a>
+</h3>
+<h3 class="topic">
+<a name="6afbvi9rltlqq738qsoha1te83">&nbsp;&nbsp;set rhosts 192.168.1.122</a>
+</h3>
+<h3 class="topic">
+<a name="6n0medrjn49g1m2jdhudgkthl2">&nbsp;&nbsp;set threads 10</a>
+</h3>
+<h3 class="topic">
+<a name="09ui21iigjfeqovoom8t90vs85">&nbsp;&nbsp;run</a>
+</h3>
+<h3 class="topic">
+<a name="2346mc08u9d83005p6i7fu65sr">&nbsp;&nbsp;&nbsp;可以破解出拥有读写权限，或只读、只写权限的login</a>
+</h3>
+<h3 class="topic">
+<a name="7dj72qirarl1vqi3u0osj8le34">&nbsp;&nbsp;ues auxiliary/scanner/snmp/snmp_enum</a>
+</h3>
+<h3 class="topic">
+<a name="7e33tstbjsn563uv4qcssglaqa">&nbsp;&nbsp;&nbsp;该模块用枚举snmp服务器相关配置</a>
+</h3>
+<h3 class="topic">
+<a name="3l00aootff7g03qnit1pghvbbg">&nbsp;&nbsp;show optin</a>
+</h3>
+<h3 class="topic">
+<a name="1oqajld2khijj309s4h90ql4ra">&nbsp;&nbsp;set rhosts 192.168.1.122</a>
+</h3>
+<h3 class="topic">
+<a name="11f15lg2npto30q3osa8022p0o">&nbsp;&nbsp;run</a>
+</h3>
+<h3 class="topic">
+<a name="419jsamd27fnc6ddnq2i5g9pfd">&nbsp;&nbsp;&nbsp;这一步可以得到大量有关目的主机的配置信息</a>
+</h3>
+<h3 class="topic">
+<a name="17vtqft01ajsborlah0dvrv30o">&nbsp;&nbsp;ues auxiliary/scanner/snmp/snmp_enumusers</a>
+</h3>
+<h3 class="topic">
+<a name="2nnh85a2arf558nnacu4ef295d">&nbsp;&nbsp;&nbsp;针对windows系统中枚举存在的用户</a>
+</h3>
+<h3 class="topic">
+<a name="481le2lcvi83k9t0nflsfp26tv">&nbsp;&nbsp;&nbsp;设置rhosts</a>
+</h3>
+<h3 class="topic">
+<a name="7u5i8md6bkhgd2sqmt0c65q7ls">&nbsp;&nbsp;&nbsp;run</a>
+</h3>
+<h3 class="topic">
+<a name="3qfv20hk7sebsea02gmjm9g06c">&nbsp;&nbsp;ues auxiliary/scanner/snmp/snmp_enumshares</a>
+</h3>
+<h3 class="topic">
+<a name="7e5e26ta0isgkufpp4kqdsl346">&nbsp;&nbsp;&nbsp;针对windows系统中枚举存在的共享</a>
+</h3>
+<h3 class="topic">
+<a name="7v78kvqh86tbtaetgdckiok34p">&nbsp;&nbsp;&nbsp;show option</a>
+</h3>
+<h3 class="topic">
+<a name="6pois6ijiea42pactn6muv3653">&nbsp;&nbsp;&nbsp;设置rhosts</a>
+</h3>
+<h3 class="topic">
+<a name="7846k7sljeg7s1qqunv4r2hdju">&nbsp;&nbsp;&nbsp;show advanced</a>
+</h3>
+<h3 class="topic">
+<a name="0lojfcftkt2k02sphud16enm9o">&nbsp;&nbsp;&nbsp;&nbsp;显示该模块高级参数</a>
+</h3>
+<h3 class="topic">
+<a name="0rg5emc2l6m0rf60l7tcuj1581">&nbsp;&nbsp;&nbsp;set verbose yes</a>
+</h3>
+<h3 class="topic">
+<a name="33ofgahf4a4vlo80eosl6u3i7t">&nbsp;&nbsp;&nbsp;&nbsp;执行结果中显示执行详细信息</a>
+</h3>
+<h3 class="topic">
+<a name="3ab4r5u0dr540ja5juocsfj8nr">&nbsp;&nbsp;&nbsp;run</a>
+</h3>
+<h3 class="topic">
+<a name="3aa6gklqf3ci3qddu0qsk4pdg0">&nbsp;&nbsp;&nbsp;&nbsp;最后显示的共享都是非隐藏的共享文件夹</a>
+</h3>
+<h3 class="topic">
+<a name="15llj5obi78k3oatpckjj7v9et">&nbsp;&nbsp;&nbsp;&nbsp;没有显示隐藏的管理共享</a>
+</h3>
+<h3 class="topic">
+<a name="3jnhhui1r2nafrn9bnju0ft84v">&nbsp;smb服务扫描</a>
+</h3>
+<h3 class="topic">
+<a name="3rrk1c6vt8h16vduh6i64tdkgf">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="msf%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/1ps1ruag6qfi3mghuupautufcq.png"></p>
+<h3 class="topic">
+<a name="1dumpoct1asgkl8vcb32pl6u4k">&nbsp;&nbsp;use auxiliary/scanner/smb/smb_version</a>
+</h3>
+<h3 class="topic">
+<a name="7vo16auqi7r7fk5klnrem09dbq">&nbsp;&nbsp;&nbsp;查看目的主机smb版本信息</a>
+</h3>
+<h3 class="topic">
+<a name="376b1q5kv5ial13uc42d90cjbh">&nbsp;&nbsp;&nbsp;set rhosts 192.168.1.122, 192.168.1.126, 192.168.1.1-192.168.1.3</a>
+</h3>
+<h3 class="topic">
+<a name="3r9opo71omb8187kqfce9j70gc">&nbsp;&nbsp;&nbsp;&nbsp;注意使用,连接多个不同的ip时注意在后面加上空格</a>
+</h3>
+<h3 class="topic">
+<a name="5r380024c8s88j5h2hs7977t08">&nbsp;&nbsp;&nbsp;其他参数包括目的主机的域、用户名、密码如果知道可以进行设置</a>
+</h3>
+<h3 class="topic">
+<a name="0f604h8hneubfge34lj2l90quo">&nbsp;&nbsp;&nbsp;&nbsp;set smbpass aa</a>
+</h3>
+<h3 class="topic">
+<a name="7mn8p6jtoflftl4mcsj6dtmre7">&nbsp;&nbsp;&nbsp;&nbsp;set smbuser administrator</a>
+</h3>
+<h3 class="topic">
+<a name="539020d9ajck4ecvd1g8tbbtbl">&nbsp;&nbsp;&nbsp;&nbsp;run</a>
+</h3>
+<h3 class="topic">
+<a name="5lpbintl1n0ibqrojhiuce1r54">&nbsp;&nbsp;use auxiliary/scanner/smb/pipe_auditor</a>
+</h3>
+<h3 class="topic">
+<a name="1n7c5bmahskiue76jmpqk0isrk">&nbsp;&nbsp;&nbsp;扫描smb命名管道，判断smb服务类型（账号、密码）</a>
+</h3>
+<h3 class="topic">
+<a name="0j0av2gr318g4pp4f84bn5cvt7">&nbsp;&nbsp;&nbsp;show option</a>
+</h3>
+<h3 class="topic">
+<a name="4a20br70g2dm57ib3c9mel1vek">&nbsp;&nbsp;&nbsp;set rhosts 192.168.1.126</a>
+</h3>
+<h3 class="topic">
+<a name="5a3f6h8o7qg5j066hpnsnuh8tm">&nbsp;&nbsp;&nbsp;run</a>
+</h3>
+<h3 class="topic">
+<a name="19lbkk9rs81rfdgfmkm3mv4amj">&nbsp;&nbsp;&nbsp;set smbpass 密码</a>
+</h3>
+<h3 class="topic">
+<a name="776293pf3u2ni9lg4ste9vickm">&nbsp;&nbsp;&nbsp;set smbuser 用户名</a>
+</h3>
+<h3 class="topic">
+<a name="1fsn9dlqur0khstqtipllf4joi">&nbsp;&nbsp;&nbsp;run</a>
+</h3>
+<h3 class="topic">
+<a name="1stv6ggqvasnagc56dnab0gf96">&nbsp;&nbsp;&nbsp;&nbsp;由于本次指定了用户名密码，故较上次run可以跑出更多的信息</a>
+</h3>
+<h3 class="topic">
+<a name="5jc424m90gm582p5krahtdhjln">&nbsp;&nbsp;use auxiliary/scanner/smb/pipe_dcerpc_auditor</a>
+</h3>
+<h3 class="topic">
+<a name="3l452i87p4apdmnq24sebilcnj">&nbsp;&nbsp;&nbsp;扫描通过smb管道可以访问的rcerpc服务</a>
+</h3>
+<h3 class="topic">
+<a name="096mblvmnkmab0bn56ss6rmaf6">&nbsp;&nbsp;&nbsp;set rhosts 192.168.1.122</a>
+</h3>
+<h3 class="topic">
+<a name="375868fl1fp6pfsrei1vs98ooi">&nbsp;&nbsp;&nbsp;run</a>
+</h3>
+<h3 class="topic">
+<a name="5hjamuh1gebj8dcfhcd13nur27">&nbsp;&nbsp;&nbsp;set smbpaaa 密码</a>
+</h3>
+<h3 class="topic">
+<a name="72t3dj5v04arkk2atckb7gfqjd">&nbsp;&nbsp;&nbsp;set smbuser 用户名</a>
+</h3>
+<h3 class="topic">
+<a name="0g3u6qbi8f10r0jdeagteg97aj">&nbsp;&nbsp;&nbsp;run</a>
+</h3>
+<h3 class="topic">
+<a name="7hrd2kuf3d7cr375j1ic792ogo">&nbsp;&nbsp;&nbsp;&nbsp;出现更多的相关信息</a>
+</h3>
+<h3 class="topic">
+<a name="5aplr3tqt9noipcojedugkpcqr">&nbsp;&nbsp;use auxiliary/scanner/smb/smb_enumshares</a>
+</h3>
+<h3 class="topic">
+<a name="1i33eq9pi6jqosqf2gqd4rgpgd">&nbsp;&nbsp;&nbsp;枚举smb共享</a>
+</h3>
+<h3 class="topic">
+<a name="3sm5qmv9hvdtee4t8enkmg9hi8">&nbsp;&nbsp;&nbsp;show optin</a>
+</h3>
+<h3 class="topic">
+<a name="2u7i45vtb3v760nuok43hf3tvs">&nbsp;&nbsp;&nbsp;与之前的设置差不多</a>
+</h3>
+<h3 class="topic">
+<a name="73hkgk6iorrj35isf7m67rks5o">&nbsp;&nbsp;&nbsp;使用smb方式枚举共享可以将隐藏的系统共享也枚举出来</a>
+</h3>
+<h3 class="topic">
+<a name="0nvfsrapdabvha0s3883ogvfcs">&nbsp;&nbsp;use auxiliary/scanner/smb/smb_lookupsid </a>
+</h3>
+<h3 class="topic">
+<a name="4c3amtfodiq3kks09i1j7o9o4p">&nbsp;&nbsp;&nbsp;sid即系统中每一个账户在操作系统中的唯一标识符，通过篡改sid可以达到伪造系统账号的目的，可以使用被伪造账户的所有权限</a>
+</h3>
+<h3 class="topic">
+<a name="558dak7718vku1g5eqnouq1ute">&nbsp;&nbsp;&nbsp;本模块如果没有用户名和密码是无法读取出sid的</a>
+</h3>
+<h3 class="topic">
+<a name="7kqiaps9j2g15845dh3s5kovuc">&nbsp;&nbsp;&nbsp;&nbsp;所有windows系统管理员账号的sid均是500</a>
+</h3>
+<h3 class="topic">
+<a name="3gihrhhnc0rktq0ncld4d7g3ck">&nbsp;&nbsp;&nbsp;&nbsp;也许管理员账号的信息名字不是admin，但是其sid仍为500</a>
+</h3>
+<h3 class="topic">
+<a name="2ppv161bpg5a6o16q9beq2slb3">&nbsp;ssh服务扫描</a>
+</h3>
+<h3 class="topic">
+<a name="48utieagl8ka7kkpc23t0fnre8">&nbsp;&nbsp;ssh版本扫描</a>
+</h3>
+<h3 class="topic">
+<a name="4lfudqorrfafsrliqh6eepp7ks">&nbsp;&nbsp;&nbsp;ssh1或者ssh1.99版本存在安全隐患，ssh目前来看还是较为安全的</a>
+</h3>
+<h3 class="topic">
+<a name="25cq25da1kq7srh8fjqra035l4">&nbsp;&nbsp;&nbsp;use auxiliary/scanner/ssh/ssh_version</a>
+</h3>
+<h3 class="topic">
+<a name="1rcno5l2895nttmgu6cjnhk4da">&nbsp;&nbsp;&nbsp;&nbsp;查看ssh版本信息</a>
+</h3>
+<h3 class="topic">
+<a name="4o2a1cmcs6eskl7t54itlpe8do">&nbsp;&nbsp;&nbsp;&nbsp;show option</a>
+</h3>
+<h3 class="topic">
+<a name="4vd4i0pas7cm11vsefnpnjfhdb">&nbsp;&nbsp;&nbsp;&nbsp;set rhosts 192.168.1.122</a>
+</h3>
+<h3 class="topic">
+<a name="09agj5j0hg6sfb057bdhciic67">&nbsp;&nbsp;&nbsp;&nbsp;run</a>
+</h3>
+<h3 class="topic">
+<a name="16jo3i41siu3itbpejhtj3mqck">&nbsp;&nbsp;&nbsp;use auxiliary/scanner/ssh/ssh_login</a>
+</h3>
+<h3 class="topic">
+<a name="3rfr6sub32eh8u616drdhp7btq">&nbsp;&nbsp;&nbsp;&nbsp;ssh密码爆破</a>
+</h3>
+<h3 class="topic">
+<a name="1bg3po3fdv96c6q2e5gf4eqo5k">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用某一个字典</a>
+</h3>
+<h3 class="topic">
+<a name="0q25sgpmd644kf4v820397677a">&nbsp;&nbsp;&nbsp;&nbsp;show option</a>
+</h3>
+<h3 class="topic">
+<a name="1gloi702kg5bd5diahd7hv0d5r">&nbsp;&nbsp;&nbsp;&nbsp;set rhosts 192.168.1.122</a>
+</h3>
+<h3 class="topic">
+<a name="4abceai4is3mk59jr7udglvh4h">&nbsp;&nbsp;&nbsp;&nbsp;set userpass_file /usr/share/metasploit-framework/data/wordlists/root_userpass.txt</a>
+</h3>
+<h3 class="topic">
+<a name="6rmajuo60va4q0gvf3g1odq2jf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用msf自带的密码字典进行暴力破解，userpass文件中信息是以&ldquo;用户名 密码&rdquo;的格式储存的</a>
+</h3>
+<h3 class="topic">
+<a name="0n6tvv37dsqpv1ihd7jdlldiou">&nbsp;&nbsp;&nbsp;&nbsp;run</a>
+</h3>
+<h3 class="topic">
+<a name="4815d0h4jff3jtu5n4vuh7cqcc">&nbsp;&nbsp;&nbsp;ssh可以使用公钥进行登录，如果能够获取相应秘钥表格，或者获取硬件出厂时默认的秘钥，则可以用于登录ssh</a>
+</h3>
+<h3 class="topic">
+<a name="6jkh0p4m805u56973j1r6c1ioc">&nbsp;&nbsp;&nbsp;&nbsp;ssh使用公钥登录，即不使用用户名密码进行登录</a>
+</h3>
+<h3 class="topic">
+<a name="2ogc2cf67816s8supjnsq9vk39">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="msf%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/2d0sb2pinqlmr3830ar3k7dh3u.png"></p>
+<h3 class="topic">
+<a name="1qqtocm6qk6anfo71hr7jl8jrd">&nbsp;系统补丁信息收集</a>
+</h3>
+<h3 class="topic">
+<a name="0e4kmgccdc152drjppagprl8rl">&nbsp;&nbsp;收集目标主机的操作系统的补丁情况</a>
+</h3>
+<h3 class="topic">
+<a name="2vptjh877g6htm99rd93sqs0ed">&nbsp;&nbsp;use post/windows/gather/enum_patches</a>
+</h3>
+<h3 class="topic">
+<a name="5v16gv59840vn1q1dj79rlem68">&nbsp;&nbsp;&nbsp;这是一个基于session的模块，即该模块中只能指定一个已经建立的session作为执行目标，这就需要之前已经获得了目标系统的shell</a>
+</h3>
+<h3 class="topic">
+<a name="3aeg43gpgt0c3s92pktbkmsfp2">&nbsp;&nbsp;&nbsp;show option</a>
+</h3>
+<h3 class="topic">
+<a name="63hlenpa683r847pqjp19cvp0k">&nbsp;&nbsp;&nbsp;&nbsp;在选项中可以指定kb选项，指定在目标系统中查找特定的补丁是否存在</a>
+</h3>
+<h3 class="topic">
+<a name="2oqd4uq1jqaaek6aqlp35pq4h5">&nbsp;&nbsp;&nbsp;&nbsp;如果使用的是特定的直接注入进程的payload，可能会出现bug，这时需要将payload迁移到目的主机的另一个进程中</a>
+</h3>
+<h3 class="topic">
+<a name="6qlgetdmgm5o3gm818tpeggt1b">&nbsp;&nbsp;&nbsp;set session 1</a>
+</h3>
+<h3 class="topic">
+<a name="1mp6ogegumm3bs9496l3rrik4l">&nbsp;&nbsp;&nbsp;&nbsp;设置sessionid为1的session</a>
+</h3>
+<h3 class="topic">
+<a name="50itd3bvcge410gpdcuahaabes">&nbsp;&nbsp;&nbsp;set kb kb958644,kb2871997</a>
+</h3>
+<h3 class="topic">
+<a name="055fq2o2gbhoijdouit61lhldf">&nbsp;&nbsp;&nbsp;&nbsp;查看目标系统是否存在两个补丁</a>
+</h3>
+<h3 class="topic">
+<a name="14r1a6g579geq52s46f5aj6p4n">&nbsp;&nbsp;&nbsp;run</a>
+</h3>
+<h3 class="topic">
+<a name="2kmo1dn73k4t7m6h2bsl5o6cin">&nbsp;&nbsp;&nbsp;&nbsp;执行之后可以查看到目的主机已经安装的补丁</a>
+</h3>
+<h3 class="topic">
+<a name="54u6hj5jb73nacdnund7h4r6fn">&nbsp;sqlserver扫描</a>
+</h3>
+<h3 class="topic">
+<a name="0mo8pp1o545nu6mhigmvq1ustm">&nbsp;&nbsp;sqlserver的侦听端口是tcp的1433，也可以使用不是1433的动态端口</a>
+</h3>
+<h3 class="topic">
+<a name="13go71144rgnlt8u8s3saij88q">&nbsp;&nbsp;可以使用udp的1434端口是否开放来判断系统中是否存在sqlserver服务，通过对udp的1434端口进行查询，可以查到sqlserver侦听的是哪一个tcp端口</a>
+</h3>
+<h3 class="topic">
+<a name="7ujrems48o6ecn3v7oej8m6a7p">&nbsp;&nbsp;use auxiliary/scanner/mssql/mssql_ping</a>
+</h3>
+<h3 class="topic">
+<a name="5haib4s2cdp50l52jih1nsrn2p">&nbsp;&nbsp;&nbsp;通过连接14343来判断tcp 或直接连接1433</a>
+</h3>
+<h3 class="topic">
+<a name="6uqlbcj64pvoevvbvkia7bkpc4">&nbsp;&nbsp;&nbsp;set rhosts 192.168.1.122</a>
+</h3>
+<h3 class="topic">
+<a name="72m0t8qk6jjnkqpqhpnnhsaql1">&nbsp;&nbsp;&nbsp;run</a>
+</h3>
+<h3 class="topic">
+<a name="2afsjhasomvcelc12r9o4aplm2">&nbsp;&nbsp;use auxiliary/scanner/mssql/mssql_login</a>
+</h3>
+<h3 class="topic">
+<a name="3pshc4mcndp14f6hb6n31ap95p">&nbsp;&nbsp;&nbsp;指导sqlserver的侦听的tcp端口之后，可以针对sqlserver的密码进行破解，一般数据库用户名都是sa</a>
+</h3>
+<h3 class="topic">
+<a name="6u4guhar97df86b8pn3bsshdrd">&nbsp;&nbsp;&nbsp;show option</a>
+</h3>
+<h3 class="topic">
+<a name="09spnnfu0s5c8d7ni5i8ckun8k">&nbsp;&nbsp;&nbsp;set rhosts 192.169.1.114</a>
+</h3>
+<h3 class="topic">
+<a name="2njulkctmo4dq7a843f2eo55m1">&nbsp;&nbsp;&nbsp;set username sa</a>
+</h3>
+<h3 class="topic">
+<a name="6vhlvr9fhmhash67t1os1ar1v0">&nbsp;&nbsp;&nbsp;&nbsp;设置登录用户名为sa</a>
+</h3>
+<h3 class="topic">
+<a name="7fhgfe8taap355c135ekkh1pc6">&nbsp;&nbsp;&nbsp;set password 密码文件路径</a>
+</h3>
+<h3 class="topic">
+<a name="02lskh9g2q7p3m0glg6bgs94hu">&nbsp;&nbsp;&nbsp;run</a>
+</h3>
+<h3 class="topic">
+<a name="12bek6kopv7121hlupvbjp5s4l">&nbsp;&nbsp;&nbsp;&nbsp;如果破解成功，可以使用下面一个模块，连接数据库端口，通过数据库执行操作系统命令</a>
+</h3>
+<h3 class="topic">
+<a name="2sdosr8ue995r9149v07osunj7">&nbsp;&nbsp;use auxiliary/scanner/mssql/mssql_exec</a>
+</h3>
+<h3 class="topic">
+<a name="0b8qmotlvra0bbqokl0918p3l5">&nbsp;&nbsp;&nbsp;已知数据库用户名和密码的情况下，连接数据库侦听端口，登录数据库执行系统命令</a>
+</h3>
+<h3 class="topic">
+<a name="1upu3kmentu1l7l5tph9q1ph05">&nbsp;&nbsp;&nbsp;set rhosts 192.168.1.114</a>
+</h3>
+<h3 class="topic">
+<a name="137d35gco46b0mk25imn6ksnoi">&nbsp;&nbsp;&nbsp;set password pass</a>
+</h3>
+<h3 class="topic">
+<a name="19efk0ihqc9ctlso2huve3e2mp">&nbsp;&nbsp;&nbsp;set rport 49165 </a>
+</h3>
+<h3 class="topic">
+<a name="02418kmaneaco0s9tr38afaa57">&nbsp;&nbsp;&nbsp;set cmd net user user pass /add</a>
+</h3>
+<h3 class="topic">
+<a name="5lbrli96ftimf0qn0qilb10mk6">&nbsp;&nbsp;&nbsp;&nbsp;即在目的主机上执行 net user user pass /add命令，用于在系统中添加一个账户和密码</a>
+</h3>
+<h3 class="topic">
+<a name="4hb9q82gahu67i9hq534ch5cli">&nbsp;ftp扫描</a>
+</h3>
+<h3 class="topic">
+<a name="67b32afhao6tu8u1u67g5phbqb">&nbsp;&nbsp;获取版本消息</a>
+</h3>
+<h3 class="topic">
+<a name="010q3uklu77b8cbufr3m167j5l">&nbsp;&nbsp;扫描是否支持anonymous登录（匿名登录）</a>
+</h3>
+<h3 class="topic">
+<a name="50bovsctsofruorj23q7na3d6n">&nbsp;&nbsp;若不知匿名登录，则需要密码暴力破解</a>
+</h3>
+<h3 class="topic">
+<a name="617ub617nscaqevk6420ragcae">&nbsp;&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="msf%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86_files/62de8sp1orrvj4mi426cqllu6n.png"></p>
+<h2 class="topic">
+<a name="6r5utgj22ufl3r5nk5s6hg29lg">分支主题 6</a>
+</h2>
+</body>
+</html>

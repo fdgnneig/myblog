@@ -1,0 +1,4 @@
+- 对last_remainder获取进一步的理解
+  - 根据ctf权威指南的解释，当chunk发生拆分时，剩下的部分（称为remainder）则加入unsorted bin中。***同时malloc_state中的last_remainder会记录最近拆分出的remainder。*** 
+  - 分析_int_malloc 源码，找到所有引用last_remainder的位置，发现上述分析部分正确，即last_remainder的唯一来源是chunk切分时的剩余部分，且切分发生后，其剩余部分首先会被链入unsorted bin中，***但是注意，只有在大小为small bin范围的chunk发生切割时，剩余部分会被赋值给last_remainder，large chunk的切分会将剩余部分链入unsorted bin，但不会将剩余部分赋值给last_remainder*** 说明last_remainder 目的在于提升small bin内存分配的局部性
+  - 当前情况下，last_remainder指向的chunk位于samll bin中，推测原因是经过malloc操作，是的unsorted bin中的chunk被清空，从而链入到small bin中

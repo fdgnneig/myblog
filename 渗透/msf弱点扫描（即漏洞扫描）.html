@@ -1,0 +1,456 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>msf弱点扫描（即漏洞扫描）</title>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="0nqelaqvvk9vm5c5h7b7cea7kd">msf弱点扫描（即漏洞扫描）</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="msf%E5%BC%B1%E7%82%B9%E6%89%AB%E6%8F%8F%EF%BC%88%E5%8D%B3%E6%BC%8F%E6%B4%9E%E6%89%AB%E6%8F%8F%EF%BC%89_files/images/msf%E5%BC%B1%E7%82%B9%E6%89%AB%E6%8F%8F%EF%BC%88%E5%8D%B3%E6%BC%8F%E6%B4%9E%E6%89%AB%E6%8F%8F%EF%BC%89.jpg"></div>
+<h2 class="topic">
+<a name="5iu1ui8ru5ml7lugs6sdah27ks">根据信息收集的结果搜索漏洞利用模块</a>
+</h2>
+<h3 class="topic">
+<a name="2g7dq3461nihs6k6ujqrso27np">&nbsp;通过之前的信息收集，已经知道了目的主机提供那些服务，开放那些端口，针对已开放的端口及其对应服务存在哪些安全漏洞的查询过程称为漏洞扫描或者弱点扫描</a>
+</h3>
+<h2 class="topic">
+<a name="0ekook5bho6mg98bot1v8ek6a6">结合外部漏洞扫描系统对大ip地址段进行批量扫描</a>
+</h2>
+<h3 class="topic">
+<a name="2vd6u2o69f2p3368p0kaktt8c1">&nbsp;利用插件功能，使用外部漏洞扫描系统，针对漏洞进行扫描，之后再结合msf漏洞利用的功能进行渗透测试</a>
+</h3>
+<h3 class="topic">
+<a name="1t3jldr95i9fdrlr13sotfbs8p">&nbsp;直接将外部漏洞扫描系统的扫描结果保存在msf中，利用msf本身的漏洞验证、利用功能进行渗透</a>
+</h3>
+<h3 class="topic">
+<a name="3mhjgtvqbc59g3uud16uheg6kj">&nbsp;msf主要针对漏洞验证和利用，目前仍不具备大范围ip漏洞扫描的功能，所以这一个过程一般仍然使用外部漏洞扫描系统</a>
+</h3>
+<h2 class="topic">
+<a name="4svkur4s110l5ubra5uejp1brj">误判率、漏判率</a>
+</h2>
+<h3 class="topic">
+<a name="69at862n608e9k0e7nmagj5har">&nbsp;所有的扫描均存在误判，可以使用msf来进行验证</a>
+</h3>
+<h2 class="topic">
+<a name="656cjd2l9t1arhpb070f6akj4j">实例</a>
+</h2>
+<h3 class="topic">
+<a name="6iq5v646eefgfef1c2l3j28ef1">&nbsp;use auxiliary/scanner/vnc/vnc_login</a>
+</h3>
+<h3 class="topic">
+<a name="3dh7tp5ektsvf1nddl8si7qgvg">&nbsp;&nbsp;vnc密码破解</a>
+</h3>
+<h3 class="topic">
+<a name="2pecct4i7n0fghisbqumukr813">&nbsp;&nbsp;show option</a>
+</h3>
+<h3 class="topic">
+<a name="35p2e69emvjcpvrvhao4tttaml">&nbsp;&nbsp;set blank_passwords yes</a>
+</h3>
+<h3 class="topic">
+<a name="09r5sjld1h86oevaosre63poq6">&nbsp;&nbsp;&nbsp;自动检测空密码</a>
+</h3>
+<h3 class="topic">
+<a name="3ar4vft77267s80ddc379q0urd">&nbsp;&nbsp;set pass_file 密码路径</a>
+</h3>
+<h3 class="topic">
+<a name="4vcs20d5gcp2knsgc5l8dgdt9r">&nbsp;&nbsp;&nbsp;默认msf提供一个vnc对应密码字典</a>
+</h3>
+<h3 class="topic">
+<a name="56hg9kudm8jrokejp6lace712o">&nbsp;&nbsp;&nbsp;保存在/usr/share/metasploit-framework/data/wordlists/vnc_passwords.txt</a>
+</h3>
+<h3 class="topic">
+<a name="2rc9s8tfhrfv894tmnhhqjfsqb">&nbsp;&nbsp;&nbsp;&nbsp;该路径下还有msf针对不同服务提供的密码字典</a>
+</h3>
+<h3 class="topic">
+<a name="6119o4rr7unj0n5ntq930rmbru">&nbsp;&nbsp;set rhosts 192.168.1.120</a>
+</h3>
+<h3 class="topic">
+<a name="15coihbn3sh8p4s3l29uijqpm2">&nbsp;&nbsp;set thread 30</a>
+</h3>
+<h3 class="topic">
+<a name="5kfdks07vgv5c77768l87hs661">&nbsp;&nbsp;run</a>
+</h3>
+<h3 class="topic">
+<a name="1it56r3ib1f2c1suoo8cfv0go5">&nbsp;&nbsp;&nbsp;破解成功后使用vnc客户端对目的主机进行连接即可获得shell</a>
+</h3>
+<h3 class="topic">
+<a name="2d499scvbgfdnn0uutu9v0rdn9">&nbsp;ues auxiliary/scanner/vnc/vmc_none_auth</a>
+</h3>
+<h3 class="topic">
+<a name="7vcftrqi9g4fj0k7dd6evm7clb">&nbsp;&nbsp;vnc无密码登录扫描</a>
+</h3>
+<h3 class="topic">
+<a name="4qdde9f1ogai1b2o8f4bpusn04">&nbsp;&nbsp;&nbsp;有的时候vnc进行配置不当或没有安全配置可能导致vnc无密码即可登录的情况</a>
+</h3>
+<h3 class="topic">
+<a name="50ta93kl38hp2917a5iifh802g">&nbsp;&nbsp;show optin</a>
+</h3>
+<h3 class="topic">
+<a name="689fd4713mob31jpav9puf9gev">&nbsp;&nbsp;&nbsp;如果对于目的主机vnc端口没有使用默认的5900，则可能需要进行对rport配置，指定目的主机的vnc端口</a>
+</h3>
+<h3 class="topic">
+<a name="3miuup2m42b14c49fe089nkkgg">&nbsp;&nbsp;set rhosts 192.168.1.120</a>
+</h3>
+<h3 class="topic">
+<a name="4etl0gg5m4ag91h1pop7e6r5l0">&nbsp;&nbsp;run</a>
+</h3>
+<h3 class="topic">
+<a name="52nhl0sk46hl8909bf8tv4ad6t">&nbsp;use auxiliary/scanner/rdp/ms12_020_check</a>
+</h3>
+<h3 class="topic">
+<a name="359bv6cb6su3p7veo0m4kvtkjb">&nbsp;&nbsp;rdp远程桌面漏洞，检查目的主机是否存在该远程桌面漏洞</a>
+</h3>
+<h3 class="topic">
+<a name="1shh4qmovss94tjdemh1dect9v">&nbsp;&nbsp;show option</a>
+</h3>
+<h3 class="topic">
+<a name="26uhk5q3fko8ici3la9bb7cd5n">&nbsp;&nbsp;&nbsp;远程桌面的端口是3389</a>
+</h3>
+<h3 class="topic">
+<a name="4265krdesghjbtmrp9pc0et7cv">&nbsp;&nbsp;set rhosts 192.168.1.122, 192.168.1.123</a>
+</h3>
+<h3 class="topic">
+<a name="6163p5hgj1ql9pp7rsg5v10l94">&nbsp;&nbsp;run</a>
+</h3>
+<h3 class="topic">
+<a name="6rhibav6cb7vqqcek53a7i777t">&nbsp;&nbsp;search ms12-020</a>
+</h3>
+<h3 class="topic">
+<a name="01pea5kmqoin50qlev13hqhjh8">&nbsp;&nbsp;use auxiliary/dos/windows/rdp/ms12_020_maxchannelids</a>
+</h3>
+<h3 class="topic">
+<a name="60rvvtp003et2asm6u2pvdgpo6">&nbsp;&nbsp;&nbsp;该模块会导致dos攻击</a>
+</h3>
+<h3 class="topic">
+<a name="0u0rjgff6sput9ej1thc0uca22">&nbsp;&nbsp;&nbsp;auxiliary运行的结果并不会在客户目的主机执行payload，仅仅是影响目的主机的运行或检测目的主机的状态</a>
+</h3>
+<h3 class="topic">
+<a name="6eela5v3rl63sifp9i99qlovd9">&nbsp;&nbsp;info</a>
+</h3>
+<h3 class="topic">
+<a name="5j9ai8uusvbm72s4mo2nr6qqjm">&nbsp;&nbsp;show rhost 192.168.1.122</a>
+</h3>
+<h3 class="topic">
+<a name="0cmvckn0ts4sl29cehb4feq578">&nbsp;&nbsp;run</a>
+</h3>
+<h3 class="topic">
+<a name="5rddi70v486nfjpktp1ark2ocb">&nbsp;&nbsp;&nbsp;目的主机蓝屏重启 dos奏效</a>
+</h3>
+<h3 class="topic">
+<a name="4cr1f205a7uqml417k0hhot13v">&nbsp;use auxiliary/scanner/ssh/juniper_backdoor</a>
+</h3>
+<h3 class="topic">
+<a name="6vrbg4ujdcffud36chbbps5tb6">&nbsp;&nbsp;针对juniper防火墙设备其本身使用ssh方式登录的过程存在后门</a>
+</h3>
+<h3 class="topic">
+<a name="7bnjask2opi5ntijdioahjgd7r">&nbsp;&nbsp;set rhosts 192.168.1.122</a>
+</h3>
+<h3 class="topic">
+<a name="36bsqmosvo1l2994ra5e6cq4lf">&nbsp;use auxiliary/scanner/ssh/fortinet_backdoor</a>
+</h3>
+<h3 class="topic">
+<a name="3qqdf0g10pc18ud7tha5ib5avp">&nbsp;&nbsp;fortinet设备后门检测</a>
+</h3>
+<h3 class="topic">
+<a name="7808tm7k1up24ql06ipth9q5f0">&nbsp;use auxiliary/scanner/vmware/vmauthd_login</a>
+</h3>
+<h3 class="topic">
+<a name="1254hslall1m6p0v0cbavpt4m3">&nbsp;&nbsp;vmware esxi密码爆破</a>
+</h3>
+<h3 class="topic">
+<a name="1n09pqipre2idgpg8ebsovv8g9">&nbsp;&nbsp;set blank_passwords yes</a>
+</h3>
+<h3 class="topic">
+<a name="0i8k1gh3gi7ctmntkvdgi4p2b4">&nbsp;&nbsp;set rhosts 192.168.1.0/24</a>
+</h3>
+<h3 class="topic">
+<a name="3ijm19pqmpcia81edqrc3s3idk">&nbsp;&nbsp;set passfile 密码文件路径</a>
+</h3>
+<h3 class="topic">
+<a name="50e8382rigpqtf76cji329juhk">&nbsp;&nbsp;set username root</a>
+</h3>
+<h3 class="topic">
+<a name="49ivkd6bfgtn9jfj6kj9bhe846">&nbsp;&nbsp;run</a>
+</h3>
+<h3 class="topic">
+<a name="7aitb6cf6antb7v28fphjq1pq3">&nbsp;&nbsp;use auxiliary/scanner/vmware/vmware_enum_vms</a>
+</h3>
+<h3 class="topic">
+<a name="3n2dt7db45eq2h1pk8gvd6534t">&nbsp;&nbsp;&nbsp;之前爆破出用户名和密码之后可以使用该模块列出所有虚拟机</a>
+</h3>
+<h3 class="topic">
+<a name="0op1desr9mip1bbo4l1kfc2bis">&nbsp;&nbsp;&nbsp;set rhos 192.168.1.122</a>
+</h3>
+<h3 class="topic">
+<a name="35rifp0pdms3qhs6gvbfgqh5v7">&nbsp;&nbsp;&nbsp;run</a>
+</h3>
+<h3 class="topic">
+<a name="3ekghvl8t1qn4gsf0ufbnk5mq2">&nbsp;use auxiliary/admin/vmware/poweron_vm</a>
+</h3>
+<h3 class="topic">
+<a name="61kpchj830gm5d71ncpq3ps41q">&nbsp;&nbsp;使用web api远程开启虚拟机</a>
+</h3>
+<h3 class="topic">
+<a name="63r9q2imf31u2uog92jcsbt4bh">&nbsp;&nbsp;&nbsp;即在获取了vmware的用户名和密码之后可以使用auxiliary的admin模块对相应虚拟机进行管理</a>
+</h3>
+<h3 class="topic">
+<a name="29o319m6c0smdoa2rpouh0cmn4">&nbsp;http弱点扫描</a>
+</h3>
+<h3 class="topic">
+<a name="6gqifdab0vket8deegbf1k5i4s">&nbsp;&nbsp; use auxiliary/scanner/http/cert</a>
+</h3>
+<h3 class="topic">
+<a name="13749l1eu35bh0ioc9vrehgqgm">&nbsp;&nbsp;&nbsp;查看目标主机服务器的http服务是否过期</a>
+</h3>
+<h3 class="topic">
+<a name="2an2ku4vak2rth432sq3qhvc09">&nbsp;&nbsp;&nbsp;使用时只要指定rhosts即可</a>
+</h3>
+<h3 class="topic">
+<a name="7sdhf45bpp42p8ok9r9c9302r8">&nbsp;&nbsp;显示目录及文件</a>
+</h3>
+<h3 class="topic">
+<a name="51udkr995oqcujtipu5nf7amfn">&nbsp;&nbsp;&nbsp;由于管理员配置不当，导致文件目录被列举出来</a>
+</h3>
+<h3 class="topic">
+<a name="4891a0jjpe8i3vb8t4a23hdlkc">&nbsp;&nbsp;&nbsp;use auxiliary/scanner/http/dir_listing</a>
+</h3>
+<h3 class="topic">
+<a name="7botkilhrjjbcf87hakh19r48k">&nbsp;&nbsp;&nbsp;&nbsp;show option</a>
+</h3>
+<h3 class="topic">
+<a name="2v9vpu6udmt8k784mtp3tses04">&nbsp;&nbsp;&nbsp;&nbsp;set rhosts 192.168.1.122</a>
+</h3>
+<h3 class="topic">
+<a name="7dfapsicik70mf676dg6de524l">&nbsp;&nbsp;&nbsp;&nbsp;run</a>
+</h3>
+<h3 class="topic">
+<a name="6jg5epq535ieafbekne8irg4ge">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;直接从根目录进行查询</a>
+</h3>
+<h3 class="topic">
+<a name="6i4p33gmvdbpovjqq7ld0sfmj5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果知道特定路径，可以在 path选项下进行设置特定路径下进行查找</a>
+</h3>
+<h3 class="topic">
+<a name="4kolmuqg1cm5uoa760l2nkpaeh">&nbsp;&nbsp;&nbsp;use auxiliary/scanner/http/files_dir</a>
+</h3>
+<h3 class="topic">
+<a name="7pgb67hj8rs5ijmcla3auoj4im">&nbsp;&nbsp;&nbsp;&nbsp;需要指定字典，使用字典中的常见webserver下的文件和目录对目的主机进行查询爆破</a>
+</h3>
+<h3 class="topic">
+<a name="7ag2s8hkfiit9mgcfdg8qq2l81">&nbsp;&nbsp;&nbsp;&nbsp;rhosts</a>
+</h3>
+<h3 class="topic">
+<a name="4d0frdekq03leu9gjpm5ni97p7">&nbsp;&nbsp;&nbsp;&nbsp;path</a>
+</h3>
+<h3 class="topic">
+<a name="6jim0hvifht33ajn6deuk7iupr">&nbsp;&nbsp;&nbsp;&nbsp;run</a>
+</h3>
+<h3 class="topic">
+<a name="7bn9lkqas72r4d85p44q26ric7">&nbsp;&nbsp;webdav unicode编码身份验证绕过</a>
+</h3>
+<h3 class="topic">
+<a name="73b9473tudc3ej9ohvkhbm1mkd">&nbsp;&nbsp;&nbsp;use auxiliary/scanner/http/dir_webdav_unicode_bypass</a>
+</h3>
+<h3 class="topic">
+<a name="091sk7jkc28epamk4sinuoj170">&nbsp;&nbsp;&nbsp;&nbsp;show option</a>
+</h3>
+<h3 class="topic">
+<a name="2lq726esc8un3qqr038stktqt3">&nbsp;&nbsp;&nbsp;&nbsp;rhosts</a>
+</h3>
+<h3 class="topic">
+<a name="24onukup0ur943nu4e5iet6dv4">&nbsp;&nbsp;&nbsp;&nbsp;run</a>
+</h3>
+<h3 class="topic">
+<a name="7jddd5pkbaktm5j331eqcsf6nc">&nbsp;&nbsp;tomcat管理页面登录</a>
+</h3>
+<h3 class="topic">
+<a name="4u3rqihb5c2h5lh7o1leu14226">&nbsp;&nbsp;&nbsp;use auxiliary/scanner/http/tomcat_mgr_login</a>
+</h3>
+<h3 class="topic">
+<a name="2l57tscniiacjr503flfp8igpk">&nbsp;&nbsp;&nbsp;对tomcat(一种web容器)管理页面进行字典暴力破解</a>
+</h3>
+<h3 class="topic">
+<a name="46l3le7bksqjoirmkbp0gd8td1">&nbsp;&nbsp;&nbsp;注意在msf配置模块的时候，required选项如果是yes说明该设置是必选的，如果是no说明该选项非必须设置</a>
+</h3>
+<h3 class="topic">
+<a name="17e6vlg7pt69mp3ancnt2vsruc">&nbsp;&nbsp;&nbsp;rhosts</a>
+</h3>
+<h3 class="topic">
+<a name="51taaci2qv36l5c9eugt169s78">&nbsp;&nbsp;&nbsp;run</a>
+</h3>
+<h3 class="topic">
+<a name="5pi3d0bukuu813ilpjhf0hbem2">&nbsp;&nbsp;基于http方法的身份验证绕过</a>
+</h3>
+<h3 class="topic">
+<a name="445pm5smmf77lsnfk19bhortta">&nbsp;&nbsp;&nbsp;使用http的各种请求方法（get post等）尝试进行登录绕过</a>
+</h3>
+<h3 class="topic">
+<a name="7let7sspbm2nvegqok1eg0t0mt">&nbsp;&nbsp;&nbsp;use auxiliary/scanner/http/verb_auth_bypass</a>
+</h3>
+<h3 class="topic">
+<a name="06lrfmnlr9n54esnriqknje0pb">&nbsp;&nbsp;&nbsp;&nbsp;rhosts</a>
+</h3>
+<h3 class="topic">
+<a name="42f301iul40j245n878cdt5920">&nbsp;&nbsp;&nbsp;&nbsp;run</a>
+</h3>
+<h3 class="topic">
+<a name="7vtrkphnqpcddggbbi01vjlbcu">&nbsp;&nbsp;wordpress密码爆破</a>
+</h3>
+<h3 class="topic">
+<a name="384jdscicv41uiffpol553nght">&nbsp;&nbsp;&nbsp;基于常用的web应用（比如博客web应用）的漏洞进行密码暴力破解</a>
+</h3>
+<h3 class="topic">
+<a name="74fbbv9d41dfml3ktnbp7o33oj">&nbsp;&nbsp;&nbsp;use auxiliary/scanner/http/wordpress_login_enum</a>
+</h3>
+<h3 class="topic">
+<a name="2b43052c82o18om9dpqv9mdphb">&nbsp;wmap web应用扫描器</a>
+</h3>
+<h3 class="topic">
+<a name="49vffinj91cmecfv90nvmn71o2">&nbsp;&nbsp;wmap是msf中的针对web应用的扫描器插件</a>
+</h3>
+<h3 class="topic">
+<a name="6vvds9vu3qvuvldev06ne0rfqa">&nbsp;&nbsp;load wmap</a>
+</h3>
+<h3 class="topic">
+<a name="7hmjhrlc8700hvlhl4qtt30tdt">&nbsp;&nbsp;&nbsp;在msfconsole在界面中加载wmap</a>
+</h3>
+<h3 class="topic">
+<a name="2n8ln8tfggllgm2cflj9oeaujc">&nbsp;&nbsp;help</a>
+</h3>
+<h3 class="topic">
+<a name="6poq2vnj5bgl2nbg0m1fumhhlq">&nbsp;&nbsp;&nbsp;查看help中多出有关wmap的命令帮助</a>
+</h3>
+<h3 class="topic">
+<a name="6p1k54pmbnri4f5vauvbr5dhkn">&nbsp;&nbsp;wmap_sites -h</a>
+</h3>
+<h3 class="topic">
+<a name="0gdjcidlhr6sejg6t2r06i8j76">&nbsp;&nbsp;&nbsp;查看该命令具体帮助</a>
+</h3>
+<h3 class="topic">
+<a name="3sd94sr1qbmv9m5fjqthamfjm8">&nbsp;&nbsp;wmap_sites -a http://192.168.1.120</a>
+</h3>
+<h3 class="topic">
+<a name="1aj93qll8c35qbf119cq27vkqf">&nbsp;&nbsp;&nbsp;指定需要进行扫描的站点</a>
+</h3>
+<h3 class="topic">
+<a name="2fat1qlvkafhtaiuh0q3d1osrc">&nbsp;&nbsp;wmap_site -l</a>
+</h3>
+<h3 class="topic">
+<a name="5e7pfvnsvg0vm1edc2srmpqvc2">&nbsp;&nbsp;&nbsp;显示目前加入到的目标主机的网址</a>
+</h3>
+<h3 class="topic">
+<a name="7kie2f0d5s8qd1hhsrabjfa98p">&nbsp;&nbsp;wmap_targets -t http://192.168.1.120/mutillidae/index.php</a>
+</h3>
+<h3 class="topic">
+<a name="63g8rd2kdodv40bpp133kd7hh3">&nbsp;&nbsp;&nbsp;一个服务器中可能有多个网站，需要指定到底对哪一个网站进行扫描，需要在ip的基础上指定网站的路径</a>
+</h3>
+<h3 class="topic">
+<a name="5v96gf43tlu1alpo276fne1s0f">&nbsp;&nbsp;wmap_run -t</a>
+</h3>
+<h3 class="topic">
+<a name="4i89b71uc06bhc1jrkb5klrvqs">&nbsp;&nbsp;&nbsp;显示可以使用的具体模块</a>
+</h3>
+<h3 class="topic">
+<a name="68f7aff0vojhp83pneffdu184g">&nbsp;&nbsp;&nbsp;&nbsp;这些模块都是maf中的模块</a>
+</h3>
+<h3 class="topic">
+<a name="51ai5b4ap60j7uu8mm9610dv49">&nbsp;&nbsp;wmap_run -e</a>
+</h3>
+<h3 class="topic">
+<a name="3bjplo94ob9laop1ttrnkeakln">&nbsp;&nbsp;&nbsp;进行扫描</a>
+</h3>
+<h3 class="topic">
+<a name="3nelbep40tqne3stsembi4c0vc">&nbsp;&nbsp;wmap_vulns -l</a>
+</h3>
+<h3 class="topic">
+<a name="4vlh7lq293ubbsmcsfrls482v0">&nbsp;&nbsp;&nbsp;显示扫描出的结果</a>
+</h3>
+<h3 class="topic">
+<a name="2rkqkblon37h4vjjol0b8drdm4">&nbsp;msf与openvas联合使用 </a>
+</h3>
+<h3 class="topic">
+<a name="3fhtn481a6o2cs0qe9lngpr1kh">&nbsp;&nbsp;一种基于web的漏洞扫描工具</a>
+</h3>
+<h3 class="topic">
+<a name="1aul29j25noa19162fgkgo8gum">&nbsp;&nbsp;load openvas</a>
+</h3>
+<h3 class="topic">
+<a name="7tcp8363vkfsscqh0pm0i9stq7">&nbsp;&nbsp;&nbsp;在msf中为了使用openvas，加载openvas扫描器插件</a>
+</h3>
+<h3 class="topic">
+<a name="7cgh1gr2dpd5hbbo0bssup6kue">&nbsp;&nbsp;&nbsp;&nbsp;需要使用命令行界面对openvas进行操作，比较繁琐</a>
+</h3>
+<h3 class="topic">
+<a name="1914qvbn31b2d29cnje67p5hv6">&nbsp;&nbsp;&nbsp;本质上是msf作为一个管理工具，连接openvas的接口</a>
+</h3>
+<h3 class="topic">
+<a name="6e8dhtlcpoqk0gbdrj98i30441">&nbsp;&nbsp;使用openvas的图形化界面进行扫描，然后将结果导出成为nbe格式，将该格式的文件导入msf中进行使用</a>
+</h3>
+<h3 class="topic">
+<a name="5i3cl3sjihcc27tvv1qt83bbdh">&nbsp;&nbsp;&nbsp;db_import 1.nbe</a>
+</h3>
+<h3 class="topic">
+<a name="5lrd0skojej9sb2oggkuofidop">&nbsp;&nbsp;&nbsp;openvas使用功能的端口包括9391以及9392</a>
+</h3>
+<h3 class="topic">
+<a name="5sel5fhhprf56tgkpo9f09s0l6">&nbsp;&nbsp;&nbsp;&nbsp;可以直接使用浏览器访问本机9392端口的方式进行使用</a>
+</h3>
+<h3 class="topic">
+<a name="3vaon9blibojs7lsrdsraqqlh7">&nbsp;nessus与msf联合使用</a>
+</h3>
+<h3 class="topic">
+<a name="40mrulj19tq1npa2erhre8g7n9">&nbsp;&nbsp;也是用nbe的数据格式对扫描的结果进行保存</a>
+</h3>
+<h3 class="topic">
+<a name="4f2mu7slltfr7t85v24g47n13a">&nbsp;&nbsp;nessus的使用一般也是通过web浏览器来实现，一般安装nessus之后使用浏览器访问本机的8834端口即可使用功能</a>
+</h3>
+<h3 class="topic">
+<a name="097etc04ckc3e5j35e8j9lja91">&nbsp;&nbsp;load nessus</a>
+</h3>
+<h3 class="topic">
+<a name="0vv2jgslt3srrtpgjgcpen3bpu">&nbsp;&nbsp;nessus _help</a>
+</h3>
+<h3 class="topic">
+<a name="4qeuqt0rajjs5guu78sdq9b2ob">&nbsp;&nbsp;&nbsp;查看加载nessus之后msf多出来的可使用的命令</a>
+</h3>
+<h3 class="topic">
+<a name="1tc3qnin314vsvscul2n72t4ag">&nbsp;&nbsp;nessus_connect -h</a>
+</h3>
+<h3 class="topic">
+<a name="3vnsdi2i07rotdbq0ab488t0rn">&nbsp;&nbsp;nuessus_connect admin:toor@127.0.0.1</a>
+</h3>
+<h3 class="topic">
+<a name="2cuvm31dk1j7ovakpnea2l6966">&nbsp;&nbsp;&nbsp;使用本机的用户名（admin）和密码（toor）登录本机上安装的nessus服务器</a>
+</h3>
+<h3 class="topic">
+<a name="181ouqbl6iiqgl41ejcohkuo28">&nbsp;&nbsp;nessus_policy_list</a>
+</h3>
+<h3 class="topic">
+<a name="787fh0urv9ui0bacq9hstsc6s5">&nbsp;&nbsp;&nbsp;查看当前nessus服务中存在的扫描策略配置文件</a>
+</h3>
+<h3 class="topic">
+<a name="6m7qusalcfl10bn4vnrsevkc0a">&nbsp;&nbsp;nessus_scan_new 配置文件的uuid 本次的扫描的名称 本次扫描的描述 目的主机ip地址</a>
+</h3>
+<h3 class="topic">
+<a name="11uie6mrt85b99qjerq2oiml7b">&nbsp;&nbsp;nessus_scan_list</a>
+</h3>
+<h3 class="topic">
+<a name="2s5tglhibkrercle218n1me94i">&nbsp;&nbsp;&nbsp;查看当前的扫描任务</a>
+</h3>
+<h3 class="topic">
+<a name="2dfg15q4m3qqgdqomt8vtk13m2">&nbsp;&nbsp;nessus_scan_launch 扫描任务id</a>
+</h3>
+<h3 class="topic">
+<a name="464njhjl5fuacio2hiv1c4du3n">&nbsp;&nbsp;&nbsp;开始执行进行扫描任务</a>
+</h3>
+<h3 class="topic">
+<a name="222dkq55ber6slvflfugulj92i">&nbsp;&nbsp; nessus_report_list</a>
+</h3>
+<h3 class="topic">
+<a name="62pb951iepdt5vlbv4e7nhvmno">&nbsp;&nbsp;&nbsp;显示nessus扫描的报告结果</a>
+</h3>
+</body>
+</html>

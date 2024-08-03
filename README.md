@@ -2,8 +2,17 @@
 - 博客内容来自个人不同时期的学习记录，包含读书笔记、课程笔记、外部资料收集、个人项目记录等
 - 本人能力有限，博客内容可能存在错漏，请读者自行分辨，欢迎提交issue
 - 博客内容引用相关外部资料，若涉及版权问题，请提交issue，本人配合删除
-- 感兴趣的领域：加密协议逻辑漏洞、信息泄露、条件竞争、UAF；基带；底层驱动；TEE；硬件安全
-- 相关知识仅供个人学习分享，不得用于网络攻击行为
+- 感兴趣的领域：加密协议逻辑漏洞；基带；底层驱动；TEE；硬件安全
+- 相关知识仅供个人学习分享，不包含任何工作内容，不得用于网络攻击行为
+- 文档格式包含markdown、html两类，针对后者，在对应html文件url前加"https://htmlpreview.github.io/?"即可显示，如下
+  - https://htmlpreview.github.io/?https://github.com/fdgnneig/myblog/blob/main/%E5%AE%89%E5%8D%93/%E5%AE%89%E5%8D%93_HTML/index.html
+## 内容概览
+- 安卓
+  - [安卓基础]
+  - [安卓_HTML](https://github.com/fdgnneig/myblog/blob/main/%E5%AE%89%E5%8D%93/%E5%AE%89%E5%8D%93_HTML/)
+  - 安卓应用漏洞
+  - 加壳与反调试
+  - 逆向基础
 
-* [安卓](https://github.com/fdgnneig/myblog/tree/main/%E5%AE%89%E5%8D%93)
 
+[]
